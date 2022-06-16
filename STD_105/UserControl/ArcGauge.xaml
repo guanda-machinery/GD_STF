@@ -1,0 +1,116 @@
+﻿<UserControl x:Class="STD_105.ArcGauge"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:STD_105"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <SolidColorBrush Color="#FF242424" x:Key="BR2"/>
+        <SolidColorBrush Color="#494949" x:Key="BR3"/>
+    </UserControl.Resources>
+    <Viewbox Stretch="Fill" Height="200" Width="200">
+        <Grid Height="350" Width="350"
+              DataContext="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType=UserControl, Mode=FindAncestor}}">
+            <!--金屬色外框-->
+            <Ellipse Fill="{StaticResource linear_MetalFrame}"/>
+            <Grid Width="320" Height="320">
+                <!--下方遮蔽區域-->
+                <Ellipse Width="320" Height="320" Fill="{StaticResource BR2}"/>
+                <!--扇形刻度-->
+                <Path StrokeThickness="1"
+                    Data="M160,160l138.6,80l0,0c13.6-23.6,21.4-50.9,21.4-80C320,71.6,248.4,0,160,0S0,71.6,0,160
+		                c0,29.1,7.8,56.5,21.4,80l0,0L160,160z"
+                    Fill="{StaticResource BR3}"/>
+                <!--Progress Bar-->
+                <Path StrokeThickness="1" Fill="{Binding GaugeColor}">
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathGeometry.Figures>
+                                <PathFigureCollection>
+                                    <PathFigure StartPoint="160,160">
+                                        <PathFigure.Segments>
+                                            <PathSegmentCollection>
+                                                <LineSegment Point="21.44,240"/>
+                                                <ArcSegment Size="160,160" x:Name="arcGauge" IsLargeArc="False" SweepDirection="Clockwise" Point="21.44, 240"/>
+                                                <LineSegment Point="160,160"/>
+                                            </PathSegmentCollection>
+                                        </PathFigure.Segments>
+                                    </PathFigure>
+                                </PathFigureCollection>
+                            </PathGeometry.Figures>
+                        </PathGeometry>
+                    </Path.Data>
+                </Path>
+                <!--分隔線-->
+                <Rectangle Stroke="{x:Null}" Width="320" Height="1" Fill="{StaticResource BR2}"/>
+                <Rectangle Stroke="{x:Null}" Width="320" Height="1" Fill="{StaticResource BR2}" RenderTransformOrigin="0.5,0.5" Margin="0,160,0,0" VerticalAlignment="Top">
+                    <Rectangle.RenderTransform>
+                        <RotateTransform Angle="-30"/>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+                <Rectangle Stroke="{x:Null}" Width="320" Height="1" Fill="{StaticResource BR2}" RenderTransformOrigin="0.5,0.5" Margin="0,160,0,0" VerticalAlignment="Top">
+                    <Rectangle.RenderTransform>
+                        <RotateTransform Angle="30"/>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+                <Rectangle Stroke="{x:Null}" Width="320" Height="1" Fill="{StaticResource BR2}" RenderTransformOrigin="0.5,0.5" Margin="0,160,0,0" VerticalAlignment="Top">
+                    <Rectangle.RenderTransform>
+                        <RotateTransform Angle="60"/>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+                <Rectangle Stroke="{x:Null}" Width="320" Height="1" Fill="{StaticResource BR2}" RenderTransformOrigin="0.5,0.5" Margin="0,160,0,0" VerticalAlignment="Top">
+                    <Rectangle.RenderTransform>
+                        <RotateTransform Angle="90"/>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+                <Rectangle Stroke="{x:Null}" Width="320" Height="1" Fill="{StaticResource BR2}" RenderTransformOrigin="0.5,0.5" Margin="0,160,0,0" VerticalAlignment="Top">
+                    <Rectangle.RenderTransform>
+                        <RotateTransform Angle="120"/>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+                <!--中央按鈕區塊-->
+                <Grid x:Name="grid_ButtonArea" MouseLeftButtonDown="Grid_MouseLeftButtonDown" MouseRightButtonDown="Grid_MouseRightButtonDown">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="39*"/>
+                        <RowDefinition Height="281*"/>
+                    </Grid.RowDefinitions>
+                    <Ellipse Width="230" Height="230" StrokeThickness="10"
+                        Fill="{ StaticResource linear_ButtonMaterial1 }" Stroke="{ StaticResource radial_ButtonMaterial }" Margin="45,6,45,45" Grid.Row="1"/>
+                    <Ellipse Width="180" Height="180" Fill="{ StaticResource linear_ButtonMaterial1_Mirror }" Margin="70,31,70,70" Grid.Row="1"/>
+                    <TextBlock Text="{ Binding SettingValue }" Foreground="White" FontSize="32" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,102,0,0" Grid.Row="1"/>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                </Grid>
+            </Grid>
+            <!--三角形指針-->
+            <Path x:Name="ptSetup" Stretch="Fill"
+                Fill="{Binding SettingGaugeColor}"
+                StrokeThickness="1"
+                VerticalAlignment="Bottom"
+                Height="14"
+                Data="M19.9,241 2.6,241 11.3,256 19.9,241"
+                RenderTransformOrigin="9.7,-5.7" Margin="20,0,314,81">
+                <Path.RenderTransform>
+                    <RotateTransform Angle="0"/>
+                </Path.RenderTransform>
+            </Path>
+            <Label Content="1-1" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,70,260,0"/>
+            <Label Content="1-2" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,260,70"/>
+            <Label Content="1-3" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="0,0,200,190"/>
+            <Label Content="1-4" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,70,260"/>
+            <Label Content="1-5" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="70,0,0,260"/>
+            <Label Content="1-6" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="200,0,0,190"/>
+            <Label Content="1-7" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="260,0,0,70"/>
+            <Label Content="1-8" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="260,70,0,0"/>
+        </Grid>
+    </Viewbox>
+</UserControl>

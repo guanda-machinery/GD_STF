@@ -1,0 +1,303 @@
+﻿<WPFBase:BasePage x:Class="STD_105.Office.ProjectsManager_Office"
+      xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105" 
+      xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+      xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+      xmlns:STD="clr-namespace:STD_105"
+      xmlns:local="clr-namespace:STD_105.Office"
+      mc:Ignorable="d" x:Name="MainPage"
+      Title="ProjectsManager_Office">
+    <Grid>
+        <TabControl Style="{ StaticResource tabcontrol_Office }" Margin="5">
+            <TabControl.Resources>
+                <Style TargetType="Label" BasedOn="{ StaticResource lab_Title }">
+                    <Setter Property="Foreground" Value="{ StaticResource solidclr_DarkGray }"/>
+                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="5"/>
+                </Style>
+                <Style TargetType="TextBox" BasedOn="{ StaticResource tbx_BlueUnderline }">
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                    <Setter Property="Foreground" Value="{ StaticResource solidclr_DarkGray }"/>
+                    <Setter Property="FontSize" Value="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"/>
+                    <Setter Property="Width" Value="250"/>
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                </Style>
+                <Style TargetType="TabItem" BasedOn="{ StaticResource tabitem_Office }"/>
+            </TabControl.Resources>
+            <!--新建專案-->
+            <TabItem Header="新建專案" >
+                <TabItem.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding NewProjectShowCommand}"/>
+                </TabItem.InputBindings>
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Label Content="※" Foreground="Red"/>
+                        <Label Content="工程案號："/>
+                    </StackPanel>
+                    <TextBox Grid.Column="2" Text="{Binding OfficeViewModel.ProjectProperty.Number, Source={x:Static WPFSTD:ViewLocator.Instance}}"/>
+
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Label Content="※" Foreground="Red"/>
+                        <Label Content="專案名稱："/>
+                    </StackPanel>
+                    <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding OfficeViewModel.ProjectProperty.Name, Source={x:Static WPFSTD:ViewLocator.Instance}}"/>
+
+                    <Label Grid.Row="2" Content="專案繪圖員："/>
+                    <StackPanel x:Name="stac_NewPorject" Grid.Row="2" Grid.Column="2" Orientation="Horizontal" DataContext="{ dxmvvm:ViewModelSource Type=WPFSTD:FolderBrowserDialogViewModel}">
+                        <TextBox Text="{Binding OfficeViewModel.ProjectProperty.Design, Source={x:Static WPFSTD:ViewLocator.Instance}}"/>
+                        <Button Style="{ StaticResource btn_FunctionKey3 }">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:FolderBrowserDialogService Description="請選擇資料夾做為專案儲存的路徑"
+                                    ShowNewFolderButton="True" RootFolder="Desktop" RestorePreviouslySelectedDirectory="True"/>
+                            </dxmvvm:Interaction.Behaviors>
+                            <Image Width="25" Source="{ StaticResource ImportFile }"/>
+                        </Button>
+                    </StackPanel>
+
+                    <Label Grid.Row="3" Content="工地位置："/>
+                    <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal" DataContext="{ dxmvvm:ViewModelSource Type=WPFSTD:FolderBrowserDialogViewModel}">
+                        <TextBox Text="{Binding OfficeViewModel.ProjectProperty.Location, Source={x:Static WPFSTD:ViewLocator.Instance}}"/>
+                        <Button Style="{ StaticResource btn_FunctionKey3 }">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:FolderBrowserDialogService Description="請選擇資料夾做為專案儲存的路徑"
+                                    ShowNewFolderButton="True" RootFolder="Desktop" RestorePreviouslySelectedDirectory="True"/>
+                            </dxmvvm:Interaction.Behaviors>
+                            <Image Width="25" Source="{ StaticResource ImportFile }"/>
+                        </Button>
+                    </StackPanel>
+
+                    <Label Grid.Row="4" Content="專案路徑："/>
+                    <StackPanel Grid.Row="4" Grid.Column="2" Orientation="Horizontal" DataContext="{ dxmvvm:ViewModelSource Type=WPFSTD:FolderBrowserDialogViewModel}">
+                        <TextBox x:Name="tbx_ProjectPath" Text="{ Binding ResultPath }"/>
+                        <Button Style="{ StaticResource btn_FunctionKey3 }" Command="{ Binding ShowFolderDialogCommand }" HorizontalAlignment="Right">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:FolderBrowserDialogService Description="請選擇資料夾做為專案儲存的路徑"
+                                    ShowNewFolderButton="True" RootFolder="Desktop" RestorePreviouslySelectedDirectory="True"/>
+                            </dxmvvm:Interaction.Behaviors>
+                            <Image Width="25" Source="{ StaticResource ImportFile }"/>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="1">
+                        <Button x:Name="YesButton" Content="建立" Width="120" Height="40" Style="{ StaticResource btn_FunctionKey7 }"
+                                Command="{Binding OutProjectNameCommand }" CommandParameter="{Binding DataContext, ElementName=stac_NewPorject }"/>
+                        <Button x:Name="NoButton" Width="120" Height="40" Content="{ DynamicResource Language_Cancel }"  Style="{ StaticResource btn_FunctionKey7 }" 
+                                Command="{Binding CloseCommand }" Margin="20"  />
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <!--專案瀏覽-->
+            <TabItem Header="專案瀏覽">
+                <Grid x:Name="grid_ProjectBrowser" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="專案路徑：" HorizontalAlignment="Right"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" DataContext="{ dxmvvm:ViewModelSource Type=WPFSTD:OpenOldFileDialogViewModel}">
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:FolderBrowserDialogService Description="請選擇專案放置的資料夾"
+                                ShowNewFolderButton="False" RootFolder="Desktop" RestorePreviouslySelectedDirectory="True"/>
+                        </dxmvvm:Interaction.Behaviors>
+                        <TextBox Text="{ Binding ResultPath }"/>
+                        <Button Style="{ StaticResource btn_FunctionKey3 }" ToolTip="選擇路徑" Command="{ Binding ShowFolderDialogCommand }">
+                            <Image Source="{ StaticResource ImportFile }"/>
+                        </Button>
+                    </StackPanel>
+
+                    <Label Grid.Row="1" Content="專案名稱：" HorizontalAlignment="Right"/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" x:Name="InputTextBox1" ItemsSource="{Binding OfficeViewModel.ProjectList, Source={x:Static WPFSTD:ViewLocator.Instance}}"  
+                        Width="250" Style="{StaticResource cbb_DarkMain}" FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" 
+                        HorizontalAlignment="Left" SelectedIndex="{Binding SelectProject}" Margin="5"/>
+
+                    <Label Grid.Row="2" Content="工程案號：" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding OfficeViewModel.ProjectProperty.Number, Source={x:Static WPFSTD:ViewLocator.Instance}}" IsReadOnly="True"/>
+
+                    <Label Grid.Row="3" Content="專案名稱：" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding OfficeViewModel.ProjectProperty.Name, Source={x:Static WPFSTD:ViewLocator.Instance}}" IsReadOnly="True"/>
+
+                    <Label Grid.Row="4" Content="專案繪圖員：" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding OfficeViewModel.ProjectProperty.Design, Source={x:Static WPFSTD:ViewLocator.Instance}}" IsReadOnly="True"/>
+
+                    <Label  Grid.Row="5" Content="工地位置：" HorizontalAlignment="Right"/>
+                    <TextBox  Grid.Row="5" Grid.Column="1" Text="{Binding OfficeViewModel.ProjectProperty.Location, Source={x:Static WPFSTD:ViewLocator.Instance}}" IsReadOnly="True"/>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.ColumnSpan="2">
+                        <Button Content="匯出至遠端" Width="160" Height="40" Style="{ StaticResource btn_FunctionKey7 }" Command="{ Binding }"/>
+                        <Button x:Name="YesButton1" Content="載入" Width="120" Height="40" Style="{ StaticResource btn_FunctionKey7 }"               
+                                Command="{ Binding OpenProjectCommand }" CommandParameter="{Binding Path=DataContext ,ElementName=grid_ProjectBrowser}"  Margin="20"/>
+                        <Button x:Name="NoButton1" Width="120" Height="40" Content="{ DynamicResource Language_Cancel }"  Style="{ StaticResource btn_FunctionKey7 }"
+                                Command="{ Binding CloseCommand }"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <!--專案修改-->
+            <TabItem Header="專案修改" IsEnabled="{Binding OfficeViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance},Converter={STD:NullToEnabledConverter}}">
+                <Grid x:Name="grid_ModifyProject" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Label Content="※" Foreground="Red"/>
+                        <Label Content="工程案號："/>
+                    </StackPanel>
+                    
+                    <TextBox Grid.Column="1" Text="{Binding OfficeViewModel.ProjectProperty.Number, Source={x:Static WPFSTD:ViewLocator.Instance}}"/>
+
+                    <Label Grid.Row="1" Content="專案名稱："/>
+                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                        <TextBox x:Name="tbx_ProjectName" Text="{Binding OfficeViewModel.ProjectProperty.Name, Source={x:Static WPFSTD:ViewLocator.Instance}}" IsEnabled="False"/>
+                        <Button Style="{ StaticResource btn_FunctionKey3 }">
+                            <Image Source="{ StaticResource edit_Blue }"/>
+                            <Button.Triggers>
+                                <EventTrigger RoutedEvent="Button.Click">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <BooleanAnimationUsingKeyFrames Storyboard.TargetName="tbx_ProjectName" Storyboard.TargetProperty="IsEnabled" FillBehavior="HoldEnd">
+                                                <DiscreteBooleanKeyFrame Value="True" KeyTime="0"/>
+                                            </BooleanAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Button.Triggers>
+                        </Button>
+                    </StackPanel>
+                    
+                    <Label Grid.Row="2" Content="專案繪圖員：" />
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding OfficeViewModel.ProjectProperty.Design, Source={x:Static WPFSTD:ViewLocator.Instance}}" IsReadOnly="True"/>
+
+                    <Label  Grid.Row="3" Content="工地位置："/>
+                    <TextBox  Grid.Row="3" Grid.Column="1" Text="{Binding OfficeViewModel.ProjectProperty.Location, Source={x:Static WPFSTD:ViewLocator.Instance}}" IsReadOnly="True"/>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Right">
+                        <Button Content="另存專案" Width="160" Height="40" Style="{ StaticResource btn_FunctionKey7 }"/>
+                        <Button x:Name="YesButton2" Content="修改" Width="120" Height="40" Style="{ StaticResource btn_FunctionKey7 }" Margin="20"                   
+                            Command="{ Binding OpenProjectCommand }" CommandParameter="{Binding Path=DataContext ,ElementName=grid_ModifyProject}"/>
+                        <Button x:Name="NoButton2" Width="120" Height="40" Content="{ DynamicResource Language_Cancel }"  Style="{ StaticResource btn_FunctionKey7 }"
+                            Command="{ Binding CloseCommand }"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="匯入檔案" IsEnabled="{Binding OfficeViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance},Converter={STD:NullToEnabledConverter}}">
+                <Grid x:Name="grid_ImportFiles" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                    DataContext="{ Binding OfficeViewModel.ImportNCFilesVM, Source={x:Static WPFSTD:ViewLocator.Instance}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="2.5*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="工 程 案 號："/>
+                    <TextBox Grid.Column="1" Text="{ Binding Number }" IsEnabled="False"/>
+                    
+                    <Label Grid.Row="1" Content="專 案 名 稱："/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding OfficeViewModel.ProjectProperty.Name, Source={x:Static WPFSTD:ViewLocator.Instance}}" IsEnabled="False"/>
+
+                    <Grid Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <RadioButton Content="NC檔初次載入" IsChecked="True" FontSize="{ Binding TitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
+                            HorizontalAlignment="Right" Style="{ StaticResource rad_Gray }" IsEnabled="False"/>
+                        <RadioButton Grid.Row="1" Content="NC檔重新載入" IsChecked="{ Binding IsNcLoad }" HorizontalAlignment="Center" IsEnabled="False"
+                        FontSize="{ Binding TitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" Foreground="{ StaticResource solidclr_TiffanyBlue }" Style="{ StaticResource rad_Gray }"/>
+                        <Label Grid.Row="1" Grid.Column="1"  Content="{ Binding NcLoad,  StringFormat={}上次匯入時間：{0:yyyy-MM-dd HH:mm:ss} }"/>
+                    </Grid>
+
+                    <Label Grid.Row="3" Content="NC檔路徑："/>
+                    <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+                        <!--<dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:OpenFileDialogService RestorePreviouslySelectedDirectory="True"/>
+                        </dxmvvm:Interaction.Behaviors>-->
+                        <TextBox Text="{ Binding NcPath }"/>
+                        <Button Style="{ StaticResource btn_FunctionKey3 }" Command="{Binding ImportNcCommand}">
+                            <Image Source="{ StaticResource ImportFile }"/>
+                        </Button>
+                    </StackPanel>
+
+                    <Grid Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Left">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <RadioButton Content="BOM表初次載入" IsChecked="True" HorizontalAlignment="Right"  IsEnabled="False"
+                            FontSize="{ Binding TitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" Style="{ StaticResource rad_Gray }"/>
+                        <RadioButton Grid.Row="1" Content="BOM表重新載入" IsChecked="{Binding OfficeViewModel.ProjectProperty.IsBomLoad, Source={x:Static WPFSTD:ViewLocator.Instance}}" HorizontalAlignment="Center"  IsEnabled="False"
+                            FontSize="{ Binding TitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" Foreground="{ StaticResource solidclr_TiffanyBlue }" Style="{ StaticResource rad_Gray }"/>
+                        <Label Grid.Row="1" Grid.Column="1" Content="{Binding BomLoad, StringFormat={}Bom表匯入時間：{0:yyyy-MM-dd HH:mm:ss}}"/>
+                    </Grid>
+                    
+                    <Label Grid.Row="5" Content="BOM表路徑："/>
+                    <StackPanel >
+                        <!--<dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:OpenFileDialogService RestorePreviouslySelectedDirectory="True"/>
+                        </dxmvvm:Interaction.Behaviors>-->
+                        <TextBox Text="{ Binding BomPath}" IsReadOnly="True"/>
+                        <Button Style="{ StaticResource btn_FunctionKey3 }" Command="{Binding ImportBomCommand}">
+                            <Image Width="25" Source="{ StaticResource ImportFile }"/>
+                        </Button>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
+                        <Button x:Name="YesButton3" Content="匯入" Width="120" Height="40" Style="{ StaticResource btn_FunctionKey7 }"
+                            Command="{ Binding ImportNcCommand }" CommandParameter="{Binding Path=DataContext ,ElementName=grid_ImportFiles}"/>
+                        <Button x:Name="NoButton3" Width="120" Height="40" Content="{ DynamicResource Language_Cancel }"  Style="{ StaticResource btn_FunctionKey7 }"
+                            Command="{ Binding CloseCommand }" DataContext="{ Binding DataContext, ElementName=MainPage }" Margin="20"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</WPFBase:BasePage>

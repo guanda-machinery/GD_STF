@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/GD_STD" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/GD_STD" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/GD_STD.Enum" />
+  <xs:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/GD_STD.Base" />
+  <xs:complexType name="Host">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Analysis" type="xs:boolean" />
+      <xs:element minOccurs="0" name="AutoDrill" type="xs:boolean" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="CodesysStatus" type="q1:CODESYS_STATUS" />
+      <xs:element minOccurs="0" name="CodesysWrite" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Comply" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Deserialize" type="xs:boolean" />
+      <xs:element minOccurs="0" name="EtherCATOpen" type="xs:boolean" />
+      <xs:element minOccurs="0" name="PCOpen" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ReplaceHole" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Serializable" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Withdraw" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Host" nillable="true" type="tns:Host" />
+  <xs:complexType name="PanelButton">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="Alarm" type="q2:ERROR_CODE" />
+      <xs:element minOccurs="0" name="AxisEffluent" type="xs:boolean" />
+      <xs:element minOccurs="0" name="AxisLooseKnife" type="xs:boolean" />
+      <xs:element minOccurs="0" name="AxisRotation" type="xs:boolean" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="AxisSelect" type="q3:AXIS_SELECTED" />
+      <xs:element minOccurs="0" name="AxisStop" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ClampDown" type="xs:boolean" />
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="ClampDownSelected" type="q4:CLAMP_DOWN" />
+      <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="DrillSelected" type="q5:DRILL_POSITION" />
+      <xs:element minOccurs="0" name="DrillWarehouse" type="xs:boolean" />
+      <xs:element minOccurs="0" name="EMS" type="xs:boolean" />
+      <xs:element minOccurs="0" name="EntranceRack" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ExportRack" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Hand" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HandSpeed" type="xs:short" />
+      <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="Key" type="q6:KEY_HOLE" />
+      <xs:element minOccurs="0" name="MainAxisMode" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Oil" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="RackOperation" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Run" type="xs:boolean" />
+      <xs:element minOccurs="0" name="SideClamp" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Stop" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Volume" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PanelButton" nillable="true" type="tns:PanelButton" />
+  <xs:complexType name="DrillWarehouse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:SerializationHelperOfDrillWarehouseki0MEyFl">
+        <xs:sequence>
+          <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/GD_STD.Base" minOccurs="0" name="LeftEntrance" nillable="true" type="q7:ArrayOfDrillSetting" />
+          <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/GD_STD.Base" minOccurs="0" name="LeftExport" nillable="true" type="q8:ArrayOfDrillSetting" />
+          <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/GD_STD.Base" minOccurs="0" name="Middle" nillable="true" type="q9:ArrayOfDrillSetting" />
+          <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/GD_STD.Base" minOccurs="0" name="RightEntrance" nillable="true" type="q10:ArrayOfDrillSetting" />
+          <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/GD_STD.Base" minOccurs="0" name="RightExport" nillable="true" type="q11:ArrayOfDrillSetting" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DrillWarehouse" nillable="true" type="tns:DrillWarehouse" />
+  <xs:complexType name="SerializationHelperOfDrillWarehouseki0MEyFl">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="SerializationHelperOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/GD_STD" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="DrillWarehouse" Namespace="http://schemas.datacontract.org/2004/07/GD_STD" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="SerializationHelperOfDrillWarehouseki0MEyFl" nillable="true" type="tns:SerializationHelperOfDrillWarehouseki0MEyFl" />
+  <xs:complexType name="Axis4D">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="MasterPhase" type="xs:double" />
+      <xs:element minOccurs="0" name="X" type="xs:double" />
+      <xs:element minOccurs="0" name="Y" type="xs:double" />
+      <xs:element minOccurs="0" name="Z" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Axis4D" nillable="true" type="tns:Axis4D" />
+  <xs:complexType name="OillSystem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CutOilSystem" type="tns:CutOilSystem" />
+      <xs:element minOccurs="0" name="HydraulicSystem" nillable="true" type="tns:ArrayOfHydraulicSystem" />
+      <xs:element minOccurs="0" name="LubricantSystem" type="tns:LubricantSystem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OillSystem" nillable="true" type="tns:OillSystem" />
+  <xs:complexType name="CutOilSystem">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="CutOilSystem" nillable="true" type="tns:CutOilSystem" />
+  <xs:complexType name="ArrayOfHydraulicSystem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="HydraulicSystem" type="tns:HydraulicSystem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfHydraulicSystem" nillable="true" type="tns:ArrayOfHydraulicSystem" />
+  <xs:complexType name="HydraulicSystem">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Deviation" type="xs:float" />
+      <xs:element minOccurs="0" name="DownReady" type="xs:short" />
+      <xs:element minOccurs="0" name="Index" type="xs:short" />
+      <xs:element minOccurs="0" name="MaxRange" type="xs:short" />
+      <xs:element minOccurs="0" name="MinRange" type="xs:short" />
+      <xs:element minOccurs="0" name="Power" type="xs:unsignedShort" />
+      <xs:element minOccurs="0" name="SideReady" type="xs:short" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="HydraulicSystem" nillable="true" type="tns:HydraulicSystem" />
+  <xs:complexType name="LubricantSystem">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Time" type="xs:short" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LubricantSystem" nillable="true" type="tns:LubricantSystem" />
+  <xs:complexType name="AxisInfo">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ClampDown" type="tns:ClampDown" />
+      <xs:element minOccurs="0" name="Hand" type="tns:SingleAxisInfo" />
+      <xs:element minOccurs="0" name="Left" type="tns:SingleAxisInfo" />
+      <xs:element minOccurs="0" name="Material" type="tns:Material" />
+      <xs:element minOccurs="0" name="Middle" type="tns:SingleAxisInfo" />
+      <xs:element minOccurs="0" name="Right" type="tns:SingleAxisInfo" />
+      <xs:element minOccurs="0" name="SideClamp" type="tns:SideClamp" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AxisInfo" nillable="true" type="tns:AxisInfo" />
+  <xs:complexType name="ClampDown">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EntranceL" type="xs:double" />
+      <xs:element minOccurs="0" name="EntranceR" type="xs:double" />
+      <xs:element minOccurs="0" name="ExportL" type="xs:double" />
+      <xs:element minOccurs="0" name="ExportR" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ClampDown" nillable="true" type="tns:ClampDown" />
+  <xs:complexType name="SingleAxisInfo">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Rpm" type="xs:double" />
+      <xs:element minOccurs="0" name="SpindleCurrent" type="xs:double" />
+      <xs:element minOccurs="0" name="X" type="xs:double" />
+      <xs:element minOccurs="0" name="Y" type="xs:double" />
+      <xs:element minOccurs="0" name="Z" type="xs:double" />
+      <xs:element minOccurs="0" name="ZFeed" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SingleAxisInfo" nillable="true" type="tns:SingleAxisInfo" />
+  <xs:complexType name="Material">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Current" type="xs:double" />
+      <xs:element minOccurs="0" name="Length" type="xs:double" />
+      <xs:element minOccurs="0" name="NotPerformed" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Material" nillable="true" type="tns:Material" />
+  <xs:complexType name="SideClamp">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EntranceL" type="xs:double" />
+      <xs:element minOccurs="0" name="ExportL" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SideClamp" nillable="true" type="tns:SideClamp" />
+  <xs:complexType name="Outage">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Arm" type="tns:Axis3D" />
+      <xs:element minOccurs="0" name="Left" type="tns:Axis3D" />
+      <xs:element minOccurs="0" name="Middle" type="tns:Axis3D" />
+      <xs:element minOccurs="0" name="Right" type="tns:Axis3D" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Outage" nillable="true" type="tns:Outage" />
+  <xs:complexType name="Axis3D">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="X" type="xs:double" />
+      <xs:element minOccurs="0" name="Y" type="xs:double" />
+      <xs:element minOccurs="0" name="Z" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Axis3D" nillable="true" type="tns:Axis3D" />
+  <xs:complexType name="ArrayOfDrill">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Drill" type="tns:Drill" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDrill" nillable="true" type="tns:ArrayOfDrill" />
+  <xs:complexType name="Drill">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="AXIS_MODE" type="q12:AXIS_MODE" />
+      <xs:element minOccurs="0" name="Dia" type="xs:double" />
+      <xs:element minOccurs="0" name="Finish" type="xs:boolean" />
+      <xs:element minOccurs="0" name="G_Code" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="NoMatch" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Ox" type="xs:double" />
+      <xs:element minOccurs="0" name="P1" type="tns:Axis2D" />
+      <xs:element minOccurs="0" name="P2" type="tns:Axis2D" />
+      <xs:element minOccurs="0" name="P3" type="tns:Axis2D" />
+      <xs:element minOccurs="0" name="Through" type="xs:boolean" />
+      <xs:element minOccurs="0" name="X" type="xs:double" />
+      <xs:element minOccurs="0" name="Y" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Drill" nillable="true" type="tns:Drill" />
+  <xs:complexType name="Axis2D">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="X" type="xs:double" />
+      <xs:element minOccurs="0" name="Y" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Axis2D" nillable="true" type="tns:Axis2D" />
+  <xs:complexType name="ArrayOfStamp">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Stamp" type="tns:Stamp" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfStamp" nillable="true" type="tns:ArrayOfStamp" />
+  <xs:complexType name="Stamp">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Content" nillable="true" type="xs:base64Binary" />
+      <xs:element minOccurs="0" name="Finish" type="xs:boolean" />
+      <xs:element minOccurs="0" name="StartX" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Stamp" nillable="true" type="tns:Stamp" />
+  <xs:complexType name="MiddleAxisSetting">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="HighSensorZ" type="xs:double" />
+      <xs:element minOccurs="0" name="MeasuringPosition" type="tns:Axis3D" />
+      <xs:element minOccurs="0" name="SensorZero" type="xs:double" />
+      <xs:element minOccurs="0" name="TotalLength" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MiddleAxisSetting" nillable="true" type="tns:MiddleAxisSetting" />
+</xs:schema>

@@ -1,0 +1,21 @@
+﻿<Window x:Class="STD_105.GraphWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:STD_105"
+        mc:Ignorable="d"
+        Title="GraphWin" Height="450" Width="800"
+            xmlns:STD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
+      xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+      xmlns:ddes="http://schemas.devdept.com/winfx/2008/xaml/control"
+      xmlns:ddgr="http://schemas.devdept.com/winfx/2008/xaml/graphics" 
+      xmlns:SofSettings="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+      d:DesignHeight="1160" d:DesignWidth="755"
+      xmlns:spa="clr-namespace:WPFSTD105;assembly=WPFSTD105">
+    <Grid>
+        <TabControl Name="tabControl" SelectionChanged="TabControlSelectedIndexChanged" Style="{StaticResource tabcontrol_STD}" >
+        
+        </TabControl>
+    </Grid>
+</Window>

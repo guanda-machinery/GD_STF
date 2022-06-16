@@ -1,0 +1,82 @@
+﻿<WPFBase:BasePage x:Class="STD_105.Office.AutoTypeSettingMaterialNumber_Office"
+      xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+      xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:STD_105.Office"
+      xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes" 
+      mc:Ignorable="d"
+      Title="AutoTypeSettingMaterialNumber_Office">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <TextBox x:Name="tbxFilter" Width="{ Binding ElementName=grid_Main, Path=Width}" DockPanel.Dock="Top" HorizontalAlignment="Left"  FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" Style="{ StaticResource tbx_BlueUnderline }" Margin="20,15,20,5"
+            wpf:HintAssist.Hint="關鍵字過濾"
+            wpf:HintAssist.Background="{ Binding BaseBackColor, Source={ x:Static SofSetting:SofSetting.Default } }"
+            wpf:HintAssist.IsFloating="True"
+            wpf:TextFieldAssist.HasClearButton="True"
+            wpf:TextFieldAssist.HasOutlinedTextField="True"
+            wpf:TextFieldAssist.DecorationVisibility="Collapsed"
+            wpf:TextFieldAssist.TextFieldCornerRadius="5">
+            <TextBox.InputBindings>
+                <KeyBinding Key="Enter" Command="{ Binding FilterCommand }" CommandParameter="{ Binding ElementName=tbxFilter, Path=Text }"/>
+            </TextBox.InputBindings>
+        </TextBox>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <DataGrid x:Name="grid_Main" Width="500" Margin="5">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="項目"/>
+                    <DataGridTemplateColumn Header="型態"/>
+                    <DataGridTextColumn Header="斷面規格"/>
+                    <DataGridTextColumn Header="材質"/>
+                    <DataGridTemplateColumn Header="長度配料參數TYPE綁定"/>
+                    <DataGridTextColumn Header="狀態"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <DataGrid HorizontalAlignment="Right" Margin="40,5,5,5">
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Header="預排確認"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <StackPanel.Resources>
+                <Style TargetType="Button" BasedOn="{ StaticResource btn_FunctionKey7 }">
+                    <Setter Property="Height" Value="40"/>
+                    <Setter Property="Width" Value="160"/>
+                    <Setter Property="Margin" Value="5"/>
+                </Style>
+                <Style TargetType="Label" BasedOn="{ StaticResource lab_Title }">
+                    <Setter Property="Foreground" Value="{ StaticResource solidclr_DarkGray }"/>
+                </Style>
+            </StackPanel.Resources>
+            <StackPanel>
+                <Button Content="匯入ERP庫存"/>
+                <Button Content="查看匯入名單"/>
+            </StackPanel>
+            <StackPanel>
+                <Button Content="Phase設定"/>
+                <Button Content="車次設定"/>
+            </StackPanel>
+            <StackPanel Margin="5">
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Label Content="材質配對："/>
+                    <CheckBox Style="{ StaticResource OnOffSwitchStyle1 }"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Label Content="導入單價："/>
+                    <CheckBox Style="{ StaticResource OnOffSwitchStyle1 }"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel>
+                <Button Content="回上一頁"/>
+                <Button Content="產生"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</WPFBase:BasePage>

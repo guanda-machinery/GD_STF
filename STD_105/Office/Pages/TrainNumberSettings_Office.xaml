@@ -1,0 +1,39 @@
+﻿<WPFBase:BasePage x:Class="STD_105.Office.TrainNumberSettings_Office"
+      xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:STD_105.Office"
+      mc:Ignorable="d" 
+      Title="TrainNumberSettings_Office">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="車次輔助分類" Foreground="{ StaticResource solidclr_DarkGray }" Style="{ StaticResource lab_Title }" Margin="40,5"/>
+            <CheckBox Style="{ StaticResource OnOffSwitchStyle1 }"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <RadioButton Content="每區獨立配料" VerticalAlignment="Center" FontSize="20" Style="{ StaticResource rad_Gray }"/>
+                <RadioButton Grid.Row="1" Content="指定範圍區別：" VerticalAlignment="Center" FontSize="20" Style="{ StaticResource rad_Gray }"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="1-5 6-8 9-12 12-15" Height="40" FontSize="20" Foreground="{ StaticResource solidclr_DarkGray }" Style="{ StaticResource tbx_BlueUnderline }"/>
+            </Grid>
+            <StackPanel Margin="5">
+                <Button Content="回上一頁" Width="120" Height="40" Style="{ StaticResource btn_FunctionKey7 }" Margin="5"/>
+                <Button Content="確定" Width="120" Height="40" Style="{ StaticResource btn_FunctionKey7 }" Margin="5"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</WPFBase:BasePage>

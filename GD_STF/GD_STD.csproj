@@ -1,0 +1,406 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3EFFA436-F171-45E9-B999-50690A7E2A2B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>GD_STD</RootNamespace>
+    <AssemblyName>GD_STD</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Debug,_DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\GD_STD.xml</DocumentationFile>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <Content Include="Log.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="GD_STD.cd" />
+    <None Include="packages.config" />
+    <None Include="Properties\Optional.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Optional.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Charts.Designer.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Charts.21.1.4\lib\net452\DevExpress.Charts.Designer.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Charts.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Charts.Core.21.1.4\lib\net452\DevExpress.Charts.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.CodeParser.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.CodeParser.21.1.4\lib\net452\DevExpress.CodeParser.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.Desktop.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Data.Desktop.21.1.4\lib\net452\DevExpress.Data.Desktop.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Data.21.1.4\lib\net452\DevExpress.Data.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DataAccess.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.DataAccess.21.1.4\lib\net452\DevExpress.DataAccess.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DataVisualization.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.DataVisualization.Core.21.1.4\lib\net452\DevExpress.DataVisualization.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Diagram.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Diagram.Core.21.1.4\lib\net452\DevExpress.Diagram.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Dialogs.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Win.Dialogs.Core.21.1.4\lib\net452\DevExpress.Dialogs.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Images.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Images.21.1.4\lib\net452\DevExpress.Images.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Map.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Map.Core.21.1.4\lib\net452\DevExpress.Map.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Mvvm.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Mvvm.21.1.4\lib\net452\DevExpress.Mvvm.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Mvvm.v21.1.DataModel, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Scaffolding.Core.21.1.4\lib\net452\DevExpress.Mvvm.v21.1.DataModel.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Mvvm.v21.1.DataModel.EFCore, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Scaffolding.EFCore.21.1.4\lib\net452\DevExpress.Mvvm.v21.1.DataModel.EFCore.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Mvvm.v21.1.ViewModel, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Scaffolding.Core.21.1.4\lib\net452\DevExpress.Mvvm.v21.1.ViewModel.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Office.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Office.Core.21.1.4\lib\net452\DevExpress.Office.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Pdf.Core.21.1.4\lib\net452\DevExpress.Pdf.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v21.1.Drawing, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Pdf.Drawing.21.1.4\lib\net452\DevExpress.Pdf.v21.1.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.PivotGrid.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.PivotGrid.Core.21.1.4\lib\net452\DevExpress.PivotGrid.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Printing.Core.21.1.4\lib\net452\DevExpress.Printing.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.RichEdit.Core.21.1.4\lib\net452\DevExpress.RichEdit.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v21.1.Export, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.RichEdit.Export.21.1.4\lib\net452\DevExpress.RichEdit.v21.1.Export.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Sparkline.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Sparkline.Core.21.1.4\lib\net452\DevExpress.Sparkline.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.SpellChecker.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.SpellChecker.Core.21.1.4\lib\net452\DevExpress.SpellChecker.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Spreadsheet.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Spreadsheet.Core.21.1.4\lib\net452\DevExpress.Spreadsheet.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.TreeMap.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.TreeMap.Core.21.1.4\lib\net452\DevExpress.TreeMap.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Utils.21.1.4\lib\net452\DevExpress.Utils.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Accordion.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Accordion.21.1.4\lib\net452\DevExpress.Xpf.Accordion.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Carousel.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Carousel.21.1.4\lib\net452\DevExpress.Xpf.Carousel.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Charts.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Charts.21.1.4\lib\net452\DevExpress.Xpf.Charts.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.CodeView.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Reporting.21.1.4\lib\net452\DevExpress.Xpf.CodeView.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Controls.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Controls.21.1.4\lib\net452\DevExpress.Xpf.Controls.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Core.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Core.21.1.4\lib\net452\DevExpress.Xpf.Core.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Core.v21.1.Extensions, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Core.Extensions.21.1.4\lib\net452\DevExpress.Xpf.Core.v21.1.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.DataAccess.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Reporting.21.1.4\lib\net452\DevExpress.Xpf.DataAccess.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Diagram.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Diagram.21.1.4\lib\net452\DevExpress.Xpf.Diagram.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Dialogs.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Dialogs.21.1.4\lib\net452\DevExpress.Xpf.Dialogs.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Docking.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Docking.21.1.4\lib\net452\DevExpress.Xpf.Docking.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.DocumentViewer.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.DocumentViewer.Core.21.1.4\lib\net452\DevExpress.Xpf.DocumentViewer.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.ExpressionEditor.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.ExpressionEditor.21.1.4\lib\net452\DevExpress.Xpf.ExpressionEditor.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Gantt.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Gantt.21.1.4\lib\net452\DevExpress.Xpf.Gantt.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Gauges.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Gauges.21.1.4\lib\net452\DevExpress.Xpf.Gauges.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Grid.Core.21.1.4\lib\net452\DevExpress.Xpf.Grid.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Grid.Core.21.1.4\lib\net452\DevExpress.Xpf.Grid.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v21.1.Extensions, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Grid.Core.21.1.4\lib\net452\DevExpress.Xpf.Grid.v21.1.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Layout.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Docking.21.1.4\lib\net452\DevExpress.Xpf.Layout.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.LayoutControl.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.LayoutControl.21.1.4\lib\net452\DevExpress.Xpf.LayoutControl.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Map.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Map.21.1.4\lib\net452\DevExpress.Xpf.Map.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.NavBar.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.NavBar.21.1.4\lib\net452\DevExpress.Xpf.NavBar.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Office.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Office.21.1.4\lib\net452\DevExpress.Xpf.Office.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.PdfViewer.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.PdfViewer.21.1.4\lib\net452\DevExpress.Xpf.PdfViewer.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.PivotGrid.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.PivotGrid.21.1.4\lib\net452\DevExpress.Xpf.PivotGrid.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Printing.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Printing.21.1.4\lib\net452\DevExpress.Xpf.Printing.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.PrismAdapters.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.PrismAdapters.21.1.4\lib\net452\DevExpress.Xpf.PrismAdapters.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.PropertyGrid.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.PropertyGrid.21.1.4\lib\net452\DevExpress.Xpf.PropertyGrid.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.ReportDesigner.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Reporting.21.1.4\lib\net452\DevExpress.Xpf.ReportDesigner.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Ribbon.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Ribbon.21.1.4\lib\net452\DevExpress.Xpf.Ribbon.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.RichEdit.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.RichEdit.21.1.4\lib\net452\DevExpress.Xpf.RichEdit.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Scheduling.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Scheduling.21.1.4\lib\net452\DevExpress.Xpf.Scheduling.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.SpellChecker.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.SpellChecker.21.1.4\lib\net452\DevExpress.Xpf.SpellChecker.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Spreadsheet.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Spreadsheet.21.1.4\lib\net452\DevExpress.Xpf.Spreadsheet.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2019Colorful.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Themes.Office2019Colorful.21.1.4\lib\net452\DevExpress.Xpf.Themes.Office2019Colorful.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.TreeMap.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.TreeMap.21.1.4\lib\net452\DevExpress.Xpf.TreeMap.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.TypedStyles.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.TypedStyles.21.1.4\lib\net452\DevExpress.Xpf.TypedStyles.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpo.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Xpo.21.1.4\lib\net452\DevExpress.Xpo.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Win.Navigation.21.1.4\lib\net452\DevExpress.XtraBars.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Charts.21.1.4\lib\net452\DevExpress.XtraCharts.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Win.Navigation.21.1.4\lib\net452\DevExpress.XtraEditors.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGauges.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Gauges.Core.21.1.4\lib\net452\DevExpress.XtraGauges.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Win.Grid.21.1.4\lib\net452\DevExpress.XtraGrid.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Win.Navigation.21.1.4\lib\net452\DevExpress.XtraLayout.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Win.Printing.21.1.4\lib\net452\DevExpress.XtraPrinting.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Reporting.Core.21.1.4\lib\net452\DevExpress.XtraReports.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Win.Scheduler.21.1.4\lib\net452\DevExpress.XtraScheduler.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Scheduler.Core.21.1.4\lib\net452\DevExpress.XtraScheduler.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v21.1.Core.Desktop, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Scheduler.CoreDesktop.21.1.4\lib\net452\DevExpress.XtraScheduler.v21.1.Core.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v21.1.Reporting, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Win.SchedulerReporting.21.1.4\lib\net452\DevExpress.XtraScheduler.v21.1.Reporting.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeList.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Win.TreeList.21.1.4\lib\net452\DevExpress.XtraTreeList.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Presentation" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="zxing, Version=0.16.8.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.8\lib\net47\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.8.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.8\lib\net47\zxing.presentation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AndroidTest.cs" />
+    <Compile Include="Attribute\AttributeHelper.cs" />
+    <Compile Include="Attribute\AbsCustomAttribute.cs" />
+    <Compile Include="Attribute\MSFieldAttribute.cs" />
+    <Compile Include="Attribute\MSTableAttribute.cs" />
+    <Compile Include="CompletedAsyncResult.cs" />
+    <Compile Include="DrillBrand.cs" />
+    <Compile Include="Host.cs" />
+    <Compile Include="ClampDown.cs" />
+    <Compile Include="Attribute\CodesysAttribute.cs" />
+    <Compile Include="CutOilSystem.cs" />
+    <Compile Include="DrillWarehouse.cs" />
+    <Compile Include="HydraulicSystem.cs" />
+    <Compile Include="Input.cs" />
+    <Compile Include="MainAxisLocation.cs" />
+    <Compile Include="MiddleAxisSetting.cs" />
+    <Compile Include="MPG.cs" />
+    <Compile Include="MS\AbsMS.cs" />
+    <Compile Include="MS\IMS.cs" />
+    <Compile Include="MS\MSAxisMain.cs" />
+    <Compile Include="MS\MSIO.cs" />
+    <Compile Include="MS\MSRuler.cs" />
+    <Compile Include="MS\MSServoAxis.cs" />
+    <Compile Include="Outage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Optional.cs" />
+    <Compile Include="Properties\Optional.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Optional.settings</DependentUpon>
+    </Compile>
+    <Compile Include="SelectAxisAction.cs" />
+    <Compile Include="ServerError.cs" />
+    <Compile Include="ServerLogHelper.cs" />
+    <Compile Include="lubricantSystem.cs" />
+    <Compile Include="Material.cs" />
+    <Compile Include="MemoryHelper.cs" />
+    <Compile Include="OillSystem.cs" />
+    <Compile Include="Output.cs" />
+    <Compile Include="PanelButton.cs" />
+    <Compile Include="AxisInfo.cs" />
+    <Compile Include="SerializationHelper.cs" />
+    <Compile Include="PCSharedMemory.cs" />
+    <Compile Include="SingleAxisInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GD_STD.Data\GD_STD.Data.csproj">
+      <Project>{390C0859-C722-45E8-9B21-5FA41CA5C18C}</Project>
+      <Name>GD_STD.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GD_STD.Enum\GD_STD.Enum.csproj">
+      <Project>{9dfd02bd-8e10-4518-8c06-d8a369183f14}</Project>
+      <Name>GD_STD.Enum</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GD_STD.IBase\GD_STD.Base.csproj">
+      <Project>{04de5146-0a39-444f-8746-239d36ac5a7e}</Project>
+      <Name>GD_STD.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PhoneLibrary\GD_STD.Phone.csproj">
+      <Project>{d9966631-507a-4e80-8306-827892055c02}</Project>
+      <Name>GD_STD.Phone</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFWindowsBase\WPFWindowsBase.csproj">
+      <Project>{f7706c9a-000f-4e0d-ba49-d73211329274}</Project>
+      <Name>WPFWindowsBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wsdl\Wsdl.csproj">
+      <Project>{bb03e7cb-69d9-48d1-81ca-831a5a8e1f73}</Project>
+      <Name>Wsdl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties Reactor_Deploy="0" Reactor_Output="" Reactor_Configuration="ALL" Reactor_Project="" Reactor_Commands="" Reactor_Enabled="0" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="..\packages\DevExpress.Reporting.Core.21.1.4\build\DevExpress.Reporting.Core.targets" Condition="Exists('..\packages\DevExpress.Reporting.Core.21.1.4\build\DevExpress.Reporting.Core.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>此專案參考這部電腦上所缺少的 NuGet 套件。請啟用 NuGet 套件還原，以下載該套件。如需詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的檔案是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\DevExpress.Reporting.Core.21.1.4\build\DevExpress.Reporting.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\DevExpress.Reporting.Core.21.1.4\build\DevExpress.Reporting.Core.targets'))" />
+  </Target>
+</Project>

@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="STD_105.OfficeAssembledControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:STD_105"
+             mc:Ignorable="d">
+    <Grid Width="480">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBlock Name="tbkSymbol" Foreground="Red" Style="{ StaticResource tbk_SubTitle }"/>
+            <TextBlock Name="tbkText" Text="TitleText" HorizontalAlignment="Right" Foreground="{ StaticResource solidclr_DarkGray }" Style="{ StaticResource tbk_Title }"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" HorizontalAlignment="Left">
+            <TextBox Name="tbxText" Width="250" Foreground="{ StaticResource solidclr_DarkGray }" 
+                FontSize="16" HorizontalAlignment="Left" Style="{ StaticResource tbx_BlueUnderline }"/>
+            <Button Name="btnImg" Style="{ StaticResource btn_CommonIconKey }" Padding="10,5" Visibility="Hidden">
+                <Image x:Name="img" Width="25" Source="{ StaticResource ImportFile }"/>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

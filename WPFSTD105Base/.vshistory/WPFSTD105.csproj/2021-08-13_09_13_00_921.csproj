@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\PropertyChanged.Fody.3.2.8\build\PropertyChanged.Fody.props" Condition="Exists('..\packages\PropertyChanged.Fody.3.2.8\build\PropertyChanged.Fody.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{993757F9-1671-4583-ACF6-10E02A50FD51}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WPFSTD105</RootNamespace>
+    <AssemblyName>WPFSTD105</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;PROFESSIONAL, NURBS, FEM, SOLID, ULTIMATE, WPF</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <DocumentationFile>bin\Debug\WPFSTD105.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AccountNumber.cs" />
+    <Compile Include="ACTION_USER.cs" />
+    <Compile Include="Attribute\AbsAttr.cs" />
+    <Compile Include="Attribute\ArrayBoltsAttr.cs" />
+    <Compile Include="Attribute\BoltAttr.cs" />
+    <Compile Include="Attribute\GroupBoltsAttr.cs" />
+    <Compile Include="Attribute\HtmlAttribute.cs" />
+    <Compile Include="Attribute\IAbsAttr.cs" />
+    <Compile Include="Attribute\IBoltAttr.cs" />
+    <Compile Include="Attribute\IGroupBoltsAttr.cs" />
+    <Compile Include="Attribute\ISteelAttr.cs" />
+    <Compile Include="Attribute\ModelAttr.cs" />
+    <Compile Include="Attribute\SteelAttr.cs" />
+    <Compile Include="CallbackHandler.cs" />
+    <Compile Include="Connected Services\Memor\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\PhoneMemor\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ProjectInfo.cs" />
+    <Compile Include="SettingHelper.cs" />
+    <Compile Include="Surrogate\BoltAttrSurrogate.cs" />
+    <Compile Include="Surrogate\CutListSurrogate.cs" />
+    <Compile Include="Surrogate\CutPointSurrogate.cs" />
+    <Compile Include="CodesysIIS.cs" />
+    <Compile Include="DataCorrespond.cs" />
+    <Compile Include="DevEx.cs" />
+    <Compile Include="Drawing\Cursors.cs" />
+    <Compile Include="Drawing\Dimensioning.cs" />
+    <Compile Include="Drawing\DrawingsExt.cs" />
+    <Compile Include="Drawing\EventHandlers.cs" />
+    <Compile Include="Drawing\Snapping.cs" />
+    <Compile Include="Enum\Language.cs" />
+    <Compile Include="Expand.cs" />
+    <Compile Include="IModelData.cs" />
+    <Compile Include="Listening\AbsListening.cs" />
+    <Compile Include="ApplicationPage.cs" />
+    <Compile Include="IoC\IoC.cs" />
+    <Compile Include="Listening\AxisInfoListening.cs" />
+    <Compile Include="Listening\HostListening.cs" />
+    <Compile Include="Listening\IListening.cs" />
+    <Compile Include="Listening\LEVEL.cs" />
+    <Compile Include="Listening\OutageListening.cs" />
+    <Compile Include="Listening\PanelListening.cs" />
+    <Compile Include="MachineMode.cs" />
+    <Compile Include="ModelPath.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelPath.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Bolt.cs" />
+    <Compile Include="Model\Bolts2DBlock.cs" />
+    <Compile Include="Model\CutLine.cs" />
+    <Compile Include="Model\CutList.cs" />
+    <Compile Include="Model\CutPoint.cs" />
+    <Compile Include="Model\Dim.cs" />
+    <Compile Include="Model\Drawing.cs" />
+    <Compile Include="Model\Editing.cs" />
+    <Compile Include="Model\EntityList.cs" />
+    <Compile Include="Model\Expand.cs" />
+    <Compile Include="Model\Bolts3DBlock.cs" />
+    <Compile Include="Model\FileSerializerExt.cs" />
+    <Compile Include="Model\I2DBlock.cs" />
+    <Compile Include="Model\IBolts.cs" />
+    <Compile Include="Model\IdevDeptModel.cs" />
+    <Compile Include="Model\LayerList.cs" />
+    <Compile Include="Model\ModelExt.cs" />
+    <Compile Include="Model\ModelVM.cs" />
+    <Compile Include="Model\Shape.cs" />
+    <Compile Include="Model\Snapping.cs" />
+    <Compile Include="Model\Steel.cs" />
+    <Compile Include="Model\Steel2DBlock.cs" />
+    <Compile Include="Model\Steel3DBlock.cs" />
+    <Compile Include="Model\ThreeViewBlock.cs" />
+    <Compile Include="OBJETC_TYPE.cs" />
+    <Compile Include="Properties\MecSetting.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>MecSetting.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Power.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Power.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\SofSetting.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>SofSetting.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Reduction.cs" />
+    <Compile Include="ReductionList.cs" />
+    <Compile Include="START_HOLE.cs" />
+    <Compile Include="Surrogate\GroupBoltsAttrSurrogate.cs" />
+    <Compile Include="Surrogate\SteelAttrSurrogate.cs" />
+    <Compile Include="Tekla\TeklaHtemlFactory.cs" />
+    <Compile Include="TreeNode.cs" />
+    <Compile Include="ViewModel\LoginVM.cs" />
+    <Compile Include="ViewModel\MessageVM.cs" />
+    <Compile Include="ViewModel\ModeSelectedVM.cs" />
+    <Compile Include="ViewModel\ObSettingVM.cs" />
+    <Compile Include="ViewModel\OfficePageVM.cs" />
+    <Compile Include="ViewModel\SelectFilesFileSource.cs" />
+    <Compile Include="ViewModel\SelectFilesIconManager.cs" />
+    <Compile Include="ViewModel\SelectFilesImageList.cs" />
+    <Compile Include="ViewModel\SelectFilesViewModel.cs" />
+    <Compile Include="ViewModel\SettingParVM.cs" />
+    <Compile Include="ViewModel\SofSettingVM.cs" />
+    <Compile Include="ViewModel\TypeSettingVM.cs" />
+    <Compile Include="ViewModel\Windows\ApplicationVM.cs" />
+    <Compile Include="ViewModel\Windows\OfficeVM.cs" />
+    <Compile Include="ViewModel\Windows\ViewLocator.cs" />
+    <Compile Include="ViewModel\Windows\WindowsVM.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GD_STD.Enum\GD_STD.Enum.csproj">
+      <Project>{9dfd02bd-8e10-4518-8c06-d8a369183f14}</Project>
+      <Name>GD_STD.Enum</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GD_STD.IBase\GD_STD.Base.csproj">
+      <Project>{04de5146-0a39-444f-8746-239d36ac5a7e}</Project>
+      <Name>GD_STD.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GD_STF\GD_STD.csproj">
+      <Project>{3effa436-f171-45e9-b999-50690a7e2a2b}</Project>
+      <Name>GD_STD</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PhoneLibrary\GD_STD.Phone.csproj">
+      <Project>{d9966631-507a-4e80-8306-827892055c02}</Project>
+      <Name>GD_STD.Phone</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFWindowsBase\WPFWindowsBase.csproj">
+      <Project>{f7706c9a-000f-4e0d-ba49-d73211329274}</Project>
+      <Name>WPFWindowsBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wsdl\Wsdl.csproj">
+      <Project>{bb03e7cb-69d9-48d1-81ca-831a5a8e1f73}</Project>
+      <Name>Wsdl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Connected Services\Memor\Memor.wsdl" />
+    <None Include="Connected Services\Memor\Memor.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Memor\Memor1.wsdl" />
+    <None Include="Connected Services\Memor\Memor1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Memor\Memor2.wsdl" />
+    <None Include="Connected Services\Memor\Memor2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Memor\Memor3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Memor\Memor4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Memor\Memor5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Memor\Memor6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\PhoneMemor\PhoneConnectDuplex2.wsdl" />
+    <None Include="Connected Services\PhoneMemor\PhoneConnectDuplex21.wsdl" />
+    <None Include="Connected Services\PhoneMemor\PhoneConnectDuplex4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\PhoneMemor\PhoneConnectDuplex41.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\PhoneMemor\PhoneConnectDuplex42.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\PhoneMemor\PhoneConnectDuplex43.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\DataSources\GD_STD.AxisInfo.datasource" />
+    <None Include="Properties\DataSources\GD_STD.CutOilSystem.datasource" />
+    <None Include="Properties\DataSources\GD_STD.DrillWarehouse.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Host.datasource" />
+    <None Include="Properties\DataSources\GD_STD.HydraulicSystem.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Input.datasource" />
+    <None Include="Properties\DataSources\GD_STD.LubricantSystem.datasource" />
+    <None Include="Properties\DataSources\GD_STD.OillSystem.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Outage.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Output.datasource" />
+    <None Include="Properties\DataSources\GD_STD.PanelButton.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Phone.APP_Struct.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Phone.MonitorMec.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Phone.MonitorWork.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Phone.Operating.datasource" />
+    <None Include="Properties\DataSources\GD_STD.ProcessingInfo.datasource" />
+    <None Include="Properties\MecSetting.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>MecSetting.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Properties\Power.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Power.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Properties\SofSetting.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>SofSetting.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ModelPath.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ModelPath.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\PhoneMemor\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\PhoneMemor\configuration.svcinfo" />
+    <None Include="Connected Services\PhoneMemor\configuration91.svcinfo" />
+    <None Include="Connected Services\PhoneMemor\PhoneConnectDuplex1.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\Memor\" />
+    <WCFMetadataStorage Include="Connected Services\PhoneMemor\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\Memor\Memor.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\Memor\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\Memor\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\Memor\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Fody.6.2.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.2.0\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>此專案參考這部電腦上所缺少的 NuGet 套件。請啟用 NuGet 套件還原，以下載該套件。如需詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的檔案是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.6.2.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.2.0\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\PropertyChanged.Fody.3.2.8\build\PropertyChanged.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.3.2.8\build\PropertyChanged.Fody.props'))" />
+    <Error Condition="!Exists('..\packages\DevExpress.Reporting.Core.21.1.4\build\DevExpress.Reporting.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\DevExpress.Reporting.Core.21.1.4\build\DevExpress.Reporting.Core.targets'))" />
+  </Target>
+  <Import Project="..\packages\DevExpress.Reporting.Core.21.1.4\build\DevExpress.Reporting.Core.targets" Condition="Exists('..\packages\DevExpress.Reporting.Core.21.1.4\build\DevExpress.Reporting.Core.targets')" />
+</Project>

@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="STD_105.MachiningCuttingDetailsReport"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:local="clr-namespace:STD_105"
+             mc:Ignorable="d" >
+    <Grid>
+        <dxg:GridControl x:Name="gridControl" MaxHeight="10000" dx:ThemeManager.ThemeName="Office2013LightGray">
+            <dxg:GridControl.View>
+                <dxg:TableView/>
+            </dxg:GridControl.View>
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="Profile" Header="斷面類型" GroupIndex="0"/>
+                <dxg:GridColumn FieldName="MaterialNumber" Header="素材編號"/>
+                <dxg:GridColumn FieldName="Material" Header="材質"/>
+                <dxg:GridColumn FieldName="LengthStr" Header="購料長度"/>
+                <dxg:GridColumn FieldName="Parts" Header="餘料長度"/>
+                <!--<dxg:GridColumn FieldName="購料來源"/>-->
+            </dxg:GridControl.Columns>
+            <dxg:GridControl.DetailDescriptor>
+                <dxg:DataControlDetailDescriptor>
+                    <dxg:GridControl ItemsSource="{Binding Parts}">
+                        <dxg:GridControl.View>
+                            <dxg:TableView AllowCellMerge="True">
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn FieldName="QR Code" Header="QrCode"/>
+                            <dxg:GridColumn FieldName="AssemblyNumber" Header="構件編號"/>
+                            <dxg:GridColumn FieldName="PartNumber" Header="零件編號"/>
+                            <dxg:GridColumn FieldName="Length" Header="長度"/>
+                            <dxg:GridColumn FieldName="Phase" Header="分區"/>
+                            <dxg:GridColumn FieldName="ShippingNumber" Header="車次"/>
+                            <dxg:GridColumn FieldName="條碼"/>
+                        </dxg:GridControl.Columns>
+                    </dxg:GridControl>
+                </dxg:DataControlDetailDescriptor>
+            </dxg:GridControl.DetailDescriptor>
+        </dxg:GridControl>
+    </Grid>
+</UserControl>

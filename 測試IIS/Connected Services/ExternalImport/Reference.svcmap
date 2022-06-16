@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="81ce2b17-3909-4b48-a4b6-d213fe31a6ab" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:59183/ExternalImport.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="ExternalImport.xsd" MetadataType="Schema" ID="209168f4-72ae-4070-a4c3-939b6168cef9" SourceId="1" SourceUrl="http://localhost:59183/ExternalImport.svc?xsd=xsd0" />
+    <MetadataFile FileName="ExternalImport1.xsd" MetadataType="Schema" ID="c14eefa2-616b-4908-ab1c-659ed41317b5" SourceId="1" SourceUrl="http://localhost:59183/ExternalImport.svc?xsd=xsd1" />
+    <MetadataFile FileName="ExternalImport.disco" MetadataType="Disco" ID="d77c947f-a1ab-43e9-b033-7c7c0ea849aa" SourceId="1" SourceUrl="http://localhost:59183/ExternalImport.svc?disco" />
+    <MetadataFile FileName="ExternalImport2.xsd" MetadataType="Schema" ID="92055ff6-8ecb-4bca-86af-ed2ffe6bb8ec" SourceId="1" SourceUrl="http://localhost:59183/ExternalImport.svc?xsd=xsd4" />
+    <MetadataFile FileName="ExternalImport.wsdl" MetadataType="Wsdl" ID="5a27427f-5b90-4e34-8952-6637e43102ef" SourceId="1" SourceUrl="http://localhost:59183/ExternalImport.svc?wsdl" />
+    <MetadataFile FileName="ExternalImport3.xsd" MetadataType="Schema" ID="99f02b3a-f040-4bf0-aff2-6bd689c7abe9" SourceId="1" SourceUrl="http://localhost:59183/ExternalImport.svc?xsd=xsd3" />
+    <MetadataFile FileName="ExternalImport1.wsdl" MetadataType="Wsdl" ID="36bfa1af-6c32-4d1f-9ce7-e174c6ac10f6" SourceId="1" SourceUrl="http://localhost:59183/ExternalImport.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="ExternalImport4.xsd" MetadataType="Schema" ID="6fd572fb-dad5-49d3-b1ef-e27f567898e9" SourceId="1" SourceUrl="http://localhost:59183/ExternalImport.svc?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

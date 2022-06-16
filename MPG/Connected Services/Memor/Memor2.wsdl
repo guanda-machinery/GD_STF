@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:i0="http://Codesys.Memor" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:i1="http://Codesys.ReadMemor" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:i2="http://Codesys.WriteMemor" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Memor" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:import namespace="http://Codesys.Memor" location="http://192.168.31.137:820/CodesysIIS/Memor.svc?wsdl=wsdl0" />
+  <wsdl:import namespace="http://Codesys.ReadMemor" location="http://192.168.31.137:820/CodesysIIS/Memor.svc?wsdl=wsdl1" />
+  <wsdl:import namespace="http://Codesys.WriteMemor" location="http://192.168.31.137:820/CodesysIIS/Memor.svc?wsdl=wsdl2" />
+  <wsdl:types />
+  <wsdl:binding name="BasicHttpBinding_IMemor" type="i0:IMemor">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Create">
+      <soap:operation soapAction="http://Codesys.Memor/IMemor/Create" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_IReadMemor" type="i1:IReadMemor">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetPanel">
+      <soap:operation soapAction="http://Codesys.ReadMemor/IReadMemor/GetPanel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDrillWarehouse">
+      <soap:operation soapAction="http://Codesys.ReadMemor/IReadMemor/GetDrillWarehouse" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOill">
+      <soap:operation soapAction="http://Codesys.ReadMemor/IReadMemor/GetOill" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetHydraulic">
+      <soap:operation soapAction="http://Codesys.ReadMemor/IReadMemor/GetHydraulic" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLubricant">
+      <soap:operation soapAction="http://Codesys.ReadMemor/IReadMemor/GetLubricant" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCut">
+      <soap:operation soapAction="http://Codesys.ReadMemor/IReadMemor/GetCut" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInput">
+      <soap:operation soapAction="http://Codesys.ReadMemor/IReadMemor/GetInput" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOutput">
+      <soap:operation soapAction="http://Codesys.ReadMemor/IReadMemor/GetOutput" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAxisInfo">
+      <soap:operation soapAction="http://Codesys.ReadMemor/IReadMemor/GetAxisInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetHost">
+      <soap:operation soapAction="http://Codesys.ReadMemor/IReadMemor/GetHost" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProcessingInfo">
+      <soap:operation soapAction="http://Codesys.ReadMemor/IReadMemor/GetProcessingInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOutage">
+      <soap:operation soapAction="http://Codesys.ReadMemor/IReadMemor/GetOutage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_IWriteMemor" type="i2:IWriteMemor">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SetPanel">
+      <soap:operation soapAction="http://Codesys.WriteMemor/IWriteMemor/SetPanel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetDrillWarehouse">
+      <soap:operation soapAction="http://Codesys.WriteMemor/IWriteMemor/SetDrillWarehouse" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetOill">
+      <soap:operation soapAction="http://Codesys.WriteMemor/IWriteMemor/SetOill" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetHydraulic">
+      <soap:operation soapAction="http://Codesys.WriteMemor/IWriteMemor/SetHydraulic" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetLubricant">
+      <soap:operation soapAction="http://Codesys.WriteMemor/IWriteMemor/SetLubricant" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetCut">
+      <soap:operation soapAction="http://Codesys.WriteMemor/IWriteMemor/SetCut" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetHost">
+      <soap:operation soapAction="http://Codesys.WriteMemor/IWriteMemor/SetHost" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetProcessingInfo">
+      <soap:operation soapAction="http://Codesys.WriteMemor/IWriteMemor/SetProcessingInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetOutage">
+      <soap:operation soapAction="http://Codesys.WriteMemor/IWriteMemor/SetOutage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetMPG">
+      <soap:operation soapAction="http://Codesys.WriteMemor/IWriteMemor/SetMPG" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Memor">
+    <wsdl:port name="BasicHttpBinding_IMemor" binding="tns:BasicHttpBinding_IMemor">
+      <soap:address location="http://192.168.31.137:820/CodesysIIS/Memor.svc" />
+    </wsdl:port>
+    <wsdl:port name="BasicHttpBinding_IReadMemor" binding="tns:BasicHttpBinding_IReadMemor">
+      <soap:address location="http://192.168.31.137:820/CodesysIIS/Memor.svc" />
+    </wsdl:port>
+    <wsdl:port name="BasicHttpBinding_IWriteMemor" binding="tns:BasicHttpBinding_IWriteMemor">
+      <soap:address location="http://192.168.31.137:820/CodesysIIS/Memor.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

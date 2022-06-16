@@ -1,0 +1,243 @@
+﻿<WPFBase:BasePage x:Class="STD_105.Office.PartsList_Office" x:TypeArguments="WPFSTD105:OfficeTypeSettingVM"   
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:STD_105.Office"
+      xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes" 
+      xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+      xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+      xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+      xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+      xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+      xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase" 
+      mc:Ignorable="d" Width="1820" Height="1020" 
+      dx:ThemeManager.ThemeName="None"
+      xmlns:sys="clr-namespace:System;assembly=System.ServiceModel"
+      xmlns:STD105="clr-namespace:STD_105"
+      xmlns:WPFSTD105="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+      Title="PartsList_Office">
+    <GroupBox Header="已建立零件" Style="{ StaticResource gbxParameter }" dx:ThemeManager.ThemeName="Win10Light">
+        <Grid>
+            <Grid.Resources>
+                <Style x:Key="arrowButton" TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Viewbox>
+                                    <Path Name="arrow" Fill="Transparent" Stroke="{ StaticResource solidclr_DarkGray }" StrokeThickness="25" Data="M509.035,248.212l-213.504-212.8c-3.051-3.029-7.595-3.904-11.627-2.304c-3.989,1.664-6.571,5.547-6.571,9.856v117.333
+			                            H10.667C4.779,160.298,0,165.076,0,170.964v170.667c0,5.888,4.779,10.667,10.667,10.667h266.667v116.885
+			                            c0,4.309,2.603,8.192,6.592,9.856c1.323,0.555,2.709,0.811,4.075,0.811c2.773,0,5.504-1.088,7.552-3.115l213.504-213.419
+			                            c2.005-2.005,3.115-4.715,3.115-7.552C512.171,252.927,511.04,250.218,509.035,248.212z">
+                                    </Path>
+                                </Viewbox>
+                                <ControlTemplate.Triggers>
+                                    <EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="arrow" Storyboard.TargetProperty="(Path.Stroke).Color" Duration="0:0:0.3" FillBehavior="Stop">
+                                                    <EasingColorKeyFrame KeyTime="0" Value="{ StaticResource clr_ButtonBlue }"/>
+                                                </ColorAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Cursor" Value="Hand"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="15*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="1">
+                <dxg:GridControl Name="gridControl" AutoGenerateColumns="None" ItemsSource="{ Binding DataViews}" HorizontalAlignment="Center" >
+                    <dxg:GridControl.View>
+                        <dxg:TableView ShowFixedTotalSummary="True">
+                            <dxg:TableView.RuntimeLocalizationStrings>
+                                <dxg:GridRuntimeStringCollection>
+                                    <dxg:RuntimeStringIdInfo Id="GridGroupPanelText" Value="拖曳欲分組的列標題至此..." />
+                                </dxg:GridRuntimeStringCollection>
+                            </dxg:TableView.RuntimeLocalizationStrings>
+                            <dxg:TableView.TotalSummaryMenuCustomizations>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultSummaryMenuItemNames.Count }" PropertyName="Content" Value="顯示計數/隱藏計數"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultSummaryMenuItemNames.Customize }" PropertyName="Content" Value="調整大小"/>
+                            </dxg:TableView.TotalSummaryMenuCustomizations>
+                            <dxg:TableView.GroupPanelMenuCustomizations>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNames.FullExpand }" PropertyName="Content" Value="展開全部"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNames.FullCollapse }" PropertyName="Content" Value="折疊全部"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNames.ClearGrouping }" PropertyName="Content" Value="清除分組"/>
+                            </dxg:TableView.GroupPanelMenuCustomizations>
+                            <dxg:TableView.BandMenuCustomizations>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNames.BestFit }" PropertyName="Content" Value="最佳化寬度"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNames.BestFitColumns }" PropertyName="Content" Value="最佳化寬度(全部行)"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNamesBase.FilterEditor }" PropertyName="Content" Value="開關篩選編輯器"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNamesBase.SearchPanel }" PropertyName="Content" Value="開關搜尋列"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNamesBase.ColumnChooser }" PropertyName="Content" Value="顯示標頭選擇器"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNames.GroupBox }" PropertyName="Content" Value="開關群組分類功能"/>
+                            </dxg:TableView.BandMenuCustomizations>
+                            <dxg:TableView.ColumnMenuCustomizations>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNamesBase.SortAscending }" PropertyName="Content" Value="升冪排序"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNamesBase.SortDescending }" PropertyName="Content" Value="降冪排序"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNamesBase.ClearSorting }" PropertyName="Content" Value="清除排序"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNames.GroupColumn }" PropertyName="Content" Value="按此列分組"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNames.GroupBox }" PropertyName="Content" Value="開關群組排序"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNamesBase.ColumnChooser }" PropertyName="Content" Value="顯示標頭選擇器"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNames.BestFit }" PropertyName="Content" Value="最佳化排序"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNames.BestFitColumns }" PropertyName="Content" Value="最佳化排序(全部)"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNamesBase.FilterEditor }" PropertyName="Content" Value="開關篩選編輯器"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNamesBase.SearchPanel }" PropertyName="Content" Value="開關搜尋列"/>
+                            </dxg:TableView.ColumnMenuCustomizations>
+                        </dxg:TableView>
+                    </dxg:GridControl.View>
+                    <dxg:GridControl.Bands>
+                        <dxg:GridControlBand Header="圖紙" HorizontalHeaderContentAlignment="Center">
+                            <dxg:GridColumn Header="改變" FieldName="" Width="80"/>
+                            <dxg:GridColumn Header="上鎖" FieldName="Lock"  Width="80">
+                                <dxg:GridColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Width="25" Height="25" IsChecked="{ Binding Value }" Style="{ StaticResource Locker }"/>
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellTemplate>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn Header="建立日期" Binding="{Binding Creation}" Width="120"/>
+                            <dxg:GridColumn Header="修改日期" FieldName="{Binding Revise, Converter={STD105:DateTimeConverter}}"  Width="120"/>
+                        </dxg:GridControlBand>
+                        <dxg:GridControlBand Header="零件訊息" HorizontalHeaderContentAlignment="Center">
+                            <dxg:GridColumn Header="加工種類" FieldName="" Width="120"/>
+                            <dxg:GridColumn Header="構件編號" Binding="{Binding AssemblyNumber}"  Width="120"/>
+                            <dxg:GridColumn Header="零件編號" Binding="{Binding PartNumber}"  Width="120"/>
+                            <dxg:GridColumn Header="斷面規格" Binding="{Binding Profile}"  Width="160"/>
+                            <dxg:GridColumn Header="材質" Binding="{Binding Material}"  Width="120"/>
+                            <dxg:GridColumn Header="總數量" Binding="{Binding Match, Converter={STD105:IListToCountConerter}}"  Width="60"/>
+                            <dxg:GridColumn Header="車次" Binding="{Binding Phase}"  Width="60"/>
+                            <dxg:GridColumn Header="分區" Binding="{Binding ShippingNumber}"  Width="60"/>
+                        </dxg:GridControlBand>
+                        <dxg:GridControlBand Header="排版訊息" HorizontalHeaderContentAlignment="Center">
+                            <dxg:GridColumn Header="已排版" Binding="{Binding Match, Converter={STD105:IListFilterToCountConverter}, ConverterParameter={WPFBase:SystemType Bool=False}}"  Width="60"/>
+                            <dxg:GridColumn Header="未排版" Binding="{Binding Match, Converter={STD105:IListFilterToCountConverter}, ConverterParameter={WPFBase:SystemType Bool=True}}"  Width="60"/>
+                            <dxg:GridColumn Header="完成" Binding="{Binding Match,Converter={STD105:IListFilterAllToCountConverter}, ConverterParameter={WPFBase:SystemType Bool=False}}"  Width="40"/>
+                            <dxg:GridColumn Header="預排數量" Binding="{Binding Match,Converter={STD105:IListFilterToCountConverter}, ConverterParameter={WPFBase:SystemType Bool=True}}"  Width="80"/>
+                        </dxg:GridControlBand>
+                    </dxg:GridControl.Bands>
+                    <dxg:GridControl.TotalSummary>
+                        <dxg:GridSummaryItem Alignment="Left" DisplayFormat="{}(採購)尚未排版零件數量：{0}支"/>
+                        <dxg:GridSummaryItem Alignment="Left" DisplayFormat="{}(加工)尚未排版零件數量：{0}支"/>
+                        <dxg:GridSummaryItem Alignment="Left" DisplayFormat="{}(採購/加工)尚未排版零件數量：{0}支"/>
+                        <dxg:GridSummaryItem Alignment="Right" DisplayFormat="{}加工完成度：{0}%"/>
+                    </dxg:GridControl.TotalSummary>
+                </dxg:GridControl>
+            </Grid>
+
+            <Grid Grid.Row="2" Grid.Column="1">
+                <!--母表-->
+                <dxg:GridControl AutoGenerateColumns="None" ItemsSource="{ Binding MaterialDataViews}" HorizontalAlignment="Center">
+                    <dxg:GridControl.View>
+                        <dxg:TableView>
+                            <dxg:TableView.RuntimeLocalizationStrings>
+                                <dxg:GridRuntimeStringCollection>
+                                    <dxg:RuntimeStringIdInfo Id="GridGroupPanelText" Value="拖曳欲分組的列標題至此..." />
+                                </dxg:GridRuntimeStringCollection>
+                            </dxg:TableView.RuntimeLocalizationStrings>
+                            <dxg:TableView.ColumnMenuCustomizations>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNamesBase.SortAscending }" PropertyName="Content" Value="升冪排序"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNamesBase.SortDescending }" PropertyName="Content" Value="降冪排序"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNamesBase.ClearSorting }" PropertyName="Content" Value="清除排序"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNames.GroupColumn }" PropertyName="Content" Value="按此列分組"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNames.GroupBox }" PropertyName="Content" Value="開關群組排序"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNamesBase.ColumnChooser }" PropertyName="Content" Value="顯示標頭選擇器"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNames.BestFit }" PropertyName="Content" Value="最佳化排序"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNames.BestFitColumns }" PropertyName="Content" Value="最佳化排序(全部)"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNamesBase.FilterEditor }" PropertyName="Content" Value="開關篩選編輯器"/>
+                                <dxb:UpdateAction ElementName="{ x:Static dxg:DefaultColumnMenuItemNamesBase.SearchPanel }" PropertyName="Content" Value="開關搜尋列"/>
+                            </dxg:TableView.ColumnMenuCustomizations>
+                        </dxg:TableView>
+                    </dxg:GridControl.View>
+                    <dxg:GridControl.DetailDescriptor>
+                        <dxg:DataControlDetailDescriptor Name="gridDetailDescriptor" ItemsSourceBinding="{Binding Parts}" ShowHeader="False">
+                            <!--子表-->
+                            <dxg:GridControl>
+                                <dxg:GridControl.Columns>
+                                    <dxg:GridColumn Header="構件編號" FieldName="AssemblyNumber" Width="120"/>
+                                    <dxg:GridColumn Header="零件編號" FieldName="PartNumber" Width="120"/>
+                                    <dxg:GridColumn Header="長度" FieldName="Length" Width="160"/>
+                                    <dxg:GridColumn Header="分區" FieldName="Phase"  Width="80"/>
+                                    <dxg:GridColumn Header="車次" FieldName="ShippingNumber" Width="80"/>
+                                </dxg:GridControl.Columns>
+                                <dxg:GridControl.TotalSummary>
+                                    <dxg:GridSummaryItem SummaryType="Sum" FieldName="Length" ShowInColumn="Length" />
+                                    <dxg:GridSummaryItem SummaryType="Count" FieldName="PartNumber" ShowInColumn="PartNumber" />
+                                </dxg:GridControl.TotalSummary>
+                                <dxg:GridControl.View>
+                                    <dxg:TableView Name="subDetailView" DetailHeaderContent="Parts" UseAnimationWhenExpanding="true"
+                                        ShowColumnHeaders="True" AllowFixedColumnMenu="true" ShowTotalSummary="True" />
+                                </dxg:GridControl.View>
+                            </dxg:GridControl>
+                        </dxg:DataControlDetailDescriptor>
+                    </dxg:GridControl.DetailDescriptor>
+                    <!--<dxg:GridColumn Header="項目" FieldName=""/>-->
+                    <dxg:GridColumn Header="加工機種" FieldName="" Width="120"/>
+                    <dxg:GridColumn Header="組合編號" FieldName="MaterialNumber" Width="120"/>
+                    <dxg:GridColumn Header="斷面規格" FieldName="Profile" Width="200"/>
+                    <dxg:GridColumn Header="材質" FieldName="Material" Width="120"/>
+                    <dxg:GridColumn Header="購料長" FieldName="LengthIndex"  Width="120">
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <dxe:ComboBoxEdit ItemsSource="{Binding MatchSetting.MainLengths}" >
+                                </dxe:ComboBoxEdit> 
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                    </dxg:GridColumn>
+                    <!--
+                    <dxg:GridColumn Header="餘料長" FieldName=""/>
+                    <dxg:GridColumn Header="使用 率" FieldName=""/>
+                    <dxg:GridColumn Header="配料細節" FieldName=""/>
+                    <dxg:GridColumn Header="總數量" FieldName=""/>
+                    -->
+                    <dxg:GridColumn Header="購料來源" FieldName="" Width="120">
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <dxe:ComboBoxEdit ItemsSource="{ Binding Value }" SelectedIndex="0">
+                                    <dxe:ComboBoxEditItem Content="ERP庫存"/>
+                                    <dxe:ComboBoxEditItem Content="廠商1"/>
+                                    <dxe:ComboBoxEditItem Content="廠商2"/>
+                                    <dxe:ComboBoxEditItem Content="廠商3"/>
+                                </dxe:ComboBoxEdit>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn Header="狀態" FieldName="" Width="120"/>
+                </dxg:GridControl>
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="1">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <!--向上移動按鈕-->
+                    <Button Width="80" Height="80" Style="{ StaticResource arrowButton }" RenderTransformOrigin="0.5,0.5">
+                        <Button.RenderTransform>
+                            <RotateTransform Angle="270"/>
+                        </Button.RenderTransform>
+                    </Button>
+                    <!--向下移動按鈕-->
+                    <Button Width="80" Height="80" Style="{ StaticResource arrowButton }" RenderTransformOrigin="0.5,0.5" Margin="20,0">
+                        <Button.RenderTransform>
+                            <RotateTransform Angle="90"/>
+                        </Button.RenderTransform>
+                    </Button>
+                </StackPanel>
+                <!--排版按鈕-->
+                <Button Content="自動排版" Width="160" Height="40" Style="{ StaticResource btn_FunctionKey7 }" HorizontalAlignment="Right" VerticalAlignment="Top"
+                    Command="{Binding AutoCommand}" CommandParameter="{Binding ElementName=gridControl}" Margin="20,10"/>
+            </Grid>
+        </Grid>
+    </GroupBox>
+</WPFBase:BasePage>

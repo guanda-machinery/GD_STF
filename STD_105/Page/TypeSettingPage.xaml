@@ -1,0 +1,340 @@
+﻿<WPFBase:BasePage x:TypeArguments="STD105VM:TypeSettingVM"
+                  x:Class="STD_105.TypeSettingPage"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:local="clr-namespace:STD_105"
+                  xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+                  xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
+                  xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                  xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+                  xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                  xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                  xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+                  xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+                  xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
+                  xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+                  xmlns:STD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
+                  mc:Ignorable="d"
+                  Title="排版設定">
+    <dxlc:ScrollBox Width="950"
+                    Style="{ StaticResource sbx_STD }"
+                    Margin="5">
+        <Grid Width="940">
+            <!--定義控件組態-->
+            <Grid.Resources>
+                <Style TargetType="GroupBox"
+                       BasedOn="{ StaticResource gbx_WithBorder }"></Style>
+            </Grid.Resources>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="850" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="750" />
+                </Grid.RowDefinitions>
+                <!--零件列表-->
+                <GroupBox Header="零件列表">
+                    <dxlc:ScrollBox Style="{ StaticResource sbx_STD }">
+                        <dxg:GridControl Name="gridControl"
+                                         MaxHeight="10000"
+                                         HorizontalAlignment="Center"
+                                         dx:ThemeManager.ThemeName="Office2019DarkGray"
+                                         AutoGenerateColumns="None"
+                                         ItemsSource="{Binding DataViews}"
+                                         SelectionMode="MultipleRow"
+                                         dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap">
+                            <dxg:GridControl.Resources>
+                                <Style TargetType="{ x:Type dxg:GridColumn }"></Style>
+                            </dxg:GridControl.Resources>
+                            <dxg:GridControl.View>
+                                <dxg:TableView ShowFixedTotalSummary="False" />
+                            </dxg:GridControl.View>
+                            <dxg:GridControl.Bands>
+                                <dxg:GridControlBand Header="圖紙"
+                                                     HorizontalHeaderContentAlignment="Center">
+                                    <dxg:GridColumn FieldName=""
+                                                    Header="改變" />
+                                    <dxg:GridColumn FieldName="Lock"
+                                                    Header="上鎖">
+                                        <dxg:GridColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox Width="25"
+                                                          Height="25"
+                                                          Margin="5"
+                                                          IsChecked="{Binding Value}"
+                                                          Style="{StaticResource Locker}" />
+                                            </DataTemplate>
+                                        </dxg:GridColumn.CellTemplate>
+                                    </dxg:GridColumn>
+                                    <dxg:GridColumn Binding="{Binding Creation}"
+                                                    Header="建立日期" />
+                                    <dxg:GridColumn FieldName="{Binding Revise, Converter={local:DateTimeConverter}}"
+                                                    Header="修改日期" />
+                                </dxg:GridControlBand>
+                                <dxg:GridControlBand Header="零件訊息"
+                                                     HorizontalHeaderContentAlignment="Center">
+                                    <dxg:GridColumn FieldName=""
+                                                    Header="加工種類" />
+                                    <dxg:GridColumn Binding="{Binding AssemblyNumber}"
+                                                    Header="構件編號" />
+                                    <dxg:GridColumn Binding="{Binding PartNumber}"
+                                                    Header="零件編號">
+                                        <dxg:GridColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Name="PART1"
+                                                        MouseDoubleClick="BrowserGraph"
+                                                        Content="{Binding Value}"
+                                                        Foreground="{StaticResource solidclr_DarkGray}"
+                                                        Style="{StaticResource btn_CommonIconKey}"
+                                                        ToolTip="預覽圖形">
+                                                    <!--<i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                                                    <i:InvokeCommandAction  Command="{Binding PartDrawingCommand}" CommandParameter="{Binding Content,ElementName=PART1}"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>-->
+                                                </Button>
+                                            </DataTemplate>
+                                        </dxg:GridColumn.CellTemplate>
+                                    </dxg:GridColumn>
+                                    <dxg:GridColumn Binding="{Binding Profile}"
+                                                    Header="斷面規格" />
+                                    <dxg:GridColumn Binding="{Binding Material}"
+                                                    Header="材質" />
+                                    <dxg:GridColumn Binding="{Binding Match, Converter={local:IListToCountConerter}}"
+                                                    Header="總數量" />
+                                    <dxg:GridColumn Binding="{Binding Phase}"
+                                                    Header="車次" />
+                                    <dxg:GridColumn Binding="{Binding ShippingNumber}"
+                                                    Header="分區" />
+                                </dxg:GridControlBand>
+                                <dxg:GridControlBand Header="排版訊息"
+                                                     HorizontalHeaderContentAlignment="Center">
+                                    <dxg:GridColumn Binding="{Binding Match, Converter={local:IListFilterToCountConverter}, ConverterParameter={WPFBase:SystemType Bool=False}}"
+                                                    Header="已排版" />
+                                    <dxg:GridColumn Binding="{Binding Match, Converter={local:IListFilterToCountConverter}, ConverterParameter={WPFBase:SystemType Bool=True}}"
+                                                    Header="未排版" />
+                                    <dxg:GridColumn Binding="{Binding Match, Converter={local:IListFilterAllToCountConverter}, ConverterParameter={WPFBase:SystemType Bool=False}}"
+                                                    Header="完成" />
+                                    <dxg:GridColumn Width="60"
+                                                    Binding="{Binding Match, Converter={local:IListFilterToCountConverter}, ConverterParameter={WPFBase:SystemType Bool=True}}"
+                                                    Header="預排數量" />
+                                </dxg:GridControlBand>
+                            </dxg:GridControl.Bands>
+                            <dxg:GridControl.TotalSummary>
+                                <dxg:GridSummaryItem SummaryType="Custom"
+                                                     Alignment="Left"
+                                                     DisplayFormat="{}(採購)尚未排版零件數量：{0}支" />
+                                <dxg:GridSummaryItem SummaryType="Custom"
+                                                     Alignment="Left"
+                                                     DisplayFormat="{}(加工)尚未排版零件數量：{0}支" />
+                                <dxg:GridSummaryItem SummaryType="Custom"
+                                                     Alignment="Left"
+                                                     DisplayFormat="{}(採購/加工)尚未排版零件數量：{0}支" />
+                                <dxg:GridSummaryItem SummaryType="Custom"
+                                                     Alignment="Right"
+                                                     DisplayFormat="{}加工完成度：{0}%" />
+                            </dxg:GridControl.TotalSummary>
+                        </dxg:GridControl>
+                    </dxlc:ScrollBox>
+                </GroupBox>
+                <!--配置結果-->
+                <GroupBox Grid.Row="4"
+                          Header="配置結果">
+                    <Grid Visibility="{Binding ShowTypeResult, Converter={WPFBase:OppositeBooleanToVisibilityConverter}}">
+                        <dxlc:ScrollBox Style="{ StaticResource sbx_STD }">
+                            <dxg:GridControl x:Name="grid_Result"
+                                             MaxHeight="10000"
+                                             dx:ThemeManager.ThemeName="Office2019DarkGray"
+                                             AutoExpandAllGroups="{Binding NotShowDetail}"
+                                             AutoGenerateColumns="None"
+                                             ItemsSource="{Binding MaterialDataViews}"
+                                             SelectionMode="MultipleRow"
+                                             dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap">
+                                <dxg:GridControl.View>
+                                    <dxg:TableView />
+                                </dxg:GridControl.View>
+                                <dxg:GridControl.DetailDescriptor>
+                                    <dxg:DataControlDetailDescriptor Name="gridDetailDescriptor"
+                                                                     ItemsSourceBinding="{Binding Parts}"
+                                                                     ShowHeader="False">
+                                        <!--  子表  -->
+                                        <dxg:GridControl AutoGenerateColumns="None">
+                                            <dxg:GridControl.Resources>
+                                                <Style TargetType="dxe:BaseEdit"
+                                                       BasedOn="{StaticResource {dxgt:TableViewThemeKey ResourceKey=DefaultPrintCellStyle}}">
+                                                    <Setter Property="dxp:ExportSettings.TargetType"
+                                                            Value="Panel" />
+                                                    <Setter Property="DisplayTemplate">
+                                                        <Setter.Value>
+                                                            <ControlTemplate>
+                                                                <StackPanel Orientation="Horizontal"
+                                                                            HorizontalAlignment="Right">
+                                                                    <TextBlock VerticalAlignment="Center"
+                                                                               Text="{Binding Path=RowData.Row.CurrencySymbol}"
+                                                                               dxp:ExportSettings.TargetType="Text" />
+                                                                    <dxe:TextEdit EditValue="{Binding Value}"
+                                                                                  Mask="N0"
+                                                                                  MaskType="None"
+                                                                                  MaskUseAsDisplayFormat="True"
+                                                                                  IsPrintingMode="True" />
+                                                                </StackPanel>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                                <Style TargetType="dxg:GridColumn">
+                                                    <Setter Property="HorizontalHeaderContentAlignment"
+                                                            Value="Right" />
+                                                </Style>
+                                                <Style TargetType="dxg:HeaderContentControl">
+                                                    <Setter Property="HorizontalContentAlignment"
+                                                            Value="Right" />
+                                                </Style>
+                                            </dxg:GridControl.Resources>
+                                            <dxg:GridControl.Columns>
+                                                <dxg:GridColumn Tag="空白1" />
+                                                <dxg:GridColumn FieldName="AssemblyNumber"
+                                                                Header="構件編號" />
+                                                <dxg:GridColumn FieldName="PartNumber"
+                                                                Header="零件編號">
+                                                    <dxg:GridColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Button Name="PART2"
+                                                                    MouseDoubleClick="BrowserGraph"
+                                                                    Content="{Binding Value}"
+                                                                    Foreground="{StaticResource solidclr_DarkGray}"
+                                                                    Style="{StaticResource btn_CommonIconKey}"
+                                                                    ToolTip="預覽圖形">
+                                                                <!--<i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                                                            <i:InvokeCommandAction  Command="{Binding PartDrawingCommand}" CommandParameter="{Binding Content,ElementName=PART2}"/>
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>-->
+                                                            </Button>
+                                                        </DataTemplate>
+                                                    </dxg:GridColumn.CellTemplate>
+                                                </dxg:GridColumn>
+                                                <dxg:GridColumn FieldName="Length"
+                                                                Header="長度">
+                                                    <dxg:GridColumn.EditSettings>
+                                                        <dxe:TextEditSettings DisplayFormat="N0" />
+                                                    </dxg:GridColumn.EditSettings>
+                                                </dxg:GridColumn>
+                                                <dxg:GridColumn FieldName=""
+                                                                Header="餘長" />
+                                                <dxg:GridColumn FieldName="Phase"
+                                                                Header="分區" />
+                                                <dxg:GridColumn FieldName="ShippingNumber"
+                                                                Header="車次" />
+                                            </dxg:GridControl.Columns>
+                                            <dxg:GridControl.TotalSummary>
+                                                <dxg:GridSummaryItem FieldName="Length"
+                                                                     ShowInColumn="Length"
+                                                                     SummaryType="Sum"
+                                                                     DisplayFormat="{}總計：{0:N0}" />
+                                                <dxg:GridSummaryItem FieldName="PartNumber"
+                                                                     ShowInColumn="PartNumber"
+                                                                     SummaryType="Count"
+                                                                     DisplayFormat="{}總數：{0:N0}" />
+                                            </dxg:GridControl.TotalSummary>
+                                            <dxg:GridControl.View>
+                                                <dxg:TableView Name="subDetailView"
+                                                               AllowFixedColumnMenu="true"
+                                                               DetailHeaderContent="Parts"
+                                                               ShowColumnHeaders="True"
+                                                               ShowTotalSummary="True"
+                                                               UseAnimationWhenExpanding="true"
+                                                               AutoWidth="False" />
+                                            </dxg:GridControl.View>
+                                        </dxg:GridControl>
+                                    </dxg:DataControlDetailDescriptor>
+                                </dxg:GridControl.DetailDescriptor>
+                                <!--  母表  -->
+                                <dxg:GridColumn FieldName=""
+                                                Header="加工機種" />
+                                <dxg:GridColumn FieldName="MaterialNumber"
+                                                Header="組合編號">
+                                    <dxg:GridColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button MouseDoubleClick="Button_Click"
+                                                    Command="{Binding OpenPreview}"
+                                                    CommandParameter="{Binding ElementName=view}"
+                                                    Content="{Binding Value}"
+                                                    Foreground="{StaticResource solidclr_DarkGray}"
+                                                    Style="{StaticResource btn_CommonIconKey}"
+                                                    ToolTip="預覽圖形" />
+                                        </DataTemplate>
+                                    </dxg:GridColumn.CellTemplate>
+                                </dxg:GridColumn>
+                                <dxg:GridColumn FieldName="Profile"
+                                                Header="斷面規格" />
+                                <dxg:GridColumn FieldName="Material"
+                                                Header="材質" />
+                                <dxg:GridColumn FieldName="LengthStr"
+                                                Header="購料長" />
+                                <dxg:GridColumn FieldName=""
+                                                Header="購料來源">
+                                    <dxg:GridColumn.EditSettings>
+                                        <dxe:ComboBoxEditSettings DisplayMember="ERP庫存">
+                                            <dxe:ComboBoxEditSettings.Items>
+                                                <dxe:ComboBoxEditItem Content="ERP庫存" />
+                                                <dxe:ComboBoxEditItem Content="廠商1" />
+                                                <dxe:ComboBoxEditItem Content="廠商2" />
+                                                <dxe:ComboBoxEditItem Content="廠商3" />
+                                            </dxe:ComboBoxEditSettings.Items>
+                                        </dxe:ComboBoxEditSettings>
+                                    </dxg:GridColumn.EditSettings>
+                                </dxg:GridColumn>
+                                <dxg:GridColumn FieldName=""
+                                                Header="狀態" />
+                            </dxg:GridControl>
+                        </dxlc:ScrollBox>
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Margin="0,-40,0,0">
+                            <RadioButton Content="顯示清單"
+                                         Foreground="{ Binding ParameterFontColor, Source={ x:Static SofSetting:SofSetting.Default } }"
+                                         IsChecked="{Binding NotShowDetail}"
+                                         Command="{ Binding ExpandTableDetailCommand }"
+                                         CommandParameter="{ Binding ElementName=grid_Result }"
+                                         Style="{StaticResource rad_Hook1}" />
+                            <RadioButton Content="顯示明細"
+                                         Foreground="{ Binding ParameterFontColor, Source={ x:Static SofSetting:SofSetting.Default } }"
+                                         Command="{ Binding ExpandTableDetailCommand }"
+                                         CommandParameter="{ Binding ElementName=grid_Result }"
+                                         Style="{StaticResource rad_Hook1}"
+                                         Margin="10" />
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+                <Grid Grid.Row="2">
+                    <Grid.Resources>
+                        <Style BasedOn="{StaticResource btn_CommonFunctionKey_STD}"
+                               TargetType="Button">
+                            <Setter Property="Height"
+                                    Value="40" />
+                            <Setter Property="Width"
+                                    Value="160" />
+                            <Setter Property="Margin"
+                                    Value="10" />
+                        </Style>
+                    </Grid.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="向上排序" />
+                        <Button Content="向下排序" />
+                        <Button Content="長度配料參數" />
+                        <Button Command="{Binding AutoCommand}"
+                                CommandParameter="{Binding ElementName=gridControl}"
+                                Content="自動排版" />
+                        <Button Content="儲存配置"
+                                Command="{Binding SaveMatchCommand}" />
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+    </dxlc:ScrollBox>
+</WPFBase:BasePage>

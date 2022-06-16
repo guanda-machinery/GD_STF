@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="HMI.ExternalImport" CodeBehind="ExternalImport.svc.cs" %>

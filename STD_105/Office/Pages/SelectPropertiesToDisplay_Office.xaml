@@ -1,0 +1,22 @@
+﻿<WPFBase:BasePage x:Class="STD_105.Office.SelectPropertiesToDisplay_Office"
+      xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:STD_105.Office"
+      mc:Ignorable="d" 
+      Title="SelectPropertiesToDisplay_Office">
+    <Grid>
+        <GroupBox Header="BOM表-屬性" Style="{ StaticResource gbxParameter }">
+            <DataGrid>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="項目"/>
+                    <DataGridTemplateColumn Header="型態"/>
+                    <DataGridTextColumn Header="型鋼TYPE"/>
+                    <DataGridCheckBoxColumn Header="顯示"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+    </Grid>
+</WPFBase:BasePage>

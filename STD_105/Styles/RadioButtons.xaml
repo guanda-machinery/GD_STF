@@ -1,0 +1,195 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105">
+    <Style x:Key="rad_Hook" TargetType="{x:Type RadioButton}">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource RadioButtonFocusVisual}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <BulletDecorator Margin="5,3" Background="Transparent">
+                        <BulletDecorator.Bullet>
+                            <Viewbox Width="20" Height="20">
+                                <Grid>
+                                    <!--  外框  -->
+                                    <Path
+                                        x:Name="CheckMark"
+                                        Data="M512,452c0,33.1-26.9,60-60,60H60c-33.1,0-60-26.9-60-60V60C0,26.9,26.9,0,60,0h392c33.1,0,60,26.9,60,60"
+                                        Fill="#FF9E9E9E" />
+                                    <!--  勾勾  -->
+                                    <Path Data="M113.5,239.5L113.5,239.5c9.1-9.1,23.9-9.1,33.1,0l55.9,55.9c9.1,9.1,23.9,9.1,33.1,0l133.9-133.9c9.1-9.1,23.9-9.1,33.1,0                                   l2.4,2.4c9.1,9.1,9.1,23.9,0,33.1L237.6,364.4c-9.2,9.2-24,9.1-33.1-0.1l-91.1-91.8C104.3,263.4,104.4,248.6,113.5,239.5z" Fill="White" />
+                                </Grid>
+                            </Viewbox>
+                        </BulletDecorator.Bullet>
+                        <ContentPresenter
+                            Margin="5,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            RecognizesAccessKey="True" />
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames
+                                            FillBehavior="HoldEnd"
+                                            Storyboard.TargetName="CheckMark"
+                                            Storyboard.TargetProperty="(Shape.Fill).Color">
+                                            <EasingColorKeyFrame KeyTime="0" Value="#FF2196F3" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked" />
+                                <VisualState x:Name="Indeterminate" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </BulletDecorator>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="rad_Gray" TargetType="{x:Type RadioButton}">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource RadioButtonFocusVisual}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <BulletDecorator Margin="5,3" Background="Transparent">
+                        <BulletDecorator.Bullet>
+                            <Grid
+                                Width="16"
+                                Height="16"
+                                Margin="0,3">
+                                <Ellipse
+                                    x:Name="Border"
+                                    Fill="Transparent"
+                                    Stroke="#FF303030"
+                                    StrokeThickness="1" />
+                                <Ellipse
+                                    x:Name="CheckMark"
+                                    Margin="3"
+                                    Fill="#FF303030"
+                                    Visibility="Collapsed" />
+                            </Grid>
+                        </BulletDecorator.Bullet>
+                        <ContentPresenter
+                            Margin="5,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            RecognizesAccessKey="True" />
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(Shape.Fill).Color">
+                                            <EasingColorKeyFrame KeyTime="0" Value="#FFC0C0C0" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames
+                                            FillBehavior="HoldEnd"
+                                            Storyboard.TargetName="CheckMark"
+                                            Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked" />
+                                <VisualState x:Name="Indeterminate" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </BulletDecorator>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="rad_Hook1" TargetType="{x:Type RadioButton}">
+        <Setter Property="Foreground" Value="{Binding ParameterFontColor, Source={x:Static SofSetting:SofSetting.Default}}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource RadioButtonFocusVisual}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <BulletDecorator x:Name="Main">
+                        <BulletDecorator.Bullet>
+                            <Viewbox Width="16" Height="16">
+                                <Grid>
+                                    <Path
+                                        x:Name="Hook"
+                                        Data="M512,57.1L468.4,18L197.6,320.4L40.4,171.1L0,213.5l201.1,190.9L512,57.1z"
+                                        Fill="{TemplateBinding Foreground}"
+                                        Visibility="Hidden" />
+                                    <Path
+                                        x:Name="Circle"
+                                        Data="M256,0C114.6,0,0,114.6,0,256s114.6,256,256,256s256-114.6,256-256S397.4,0,256,0z M256,456c-110.5,0-200-89.5-200-200                                      S145.5,56,256,56s200,89.5,200,200S366.5,456,256,456z"
+                                        Fill="{TemplateBinding Foreground}"
+                                        Visibility="Visible" />
+                                </Grid>
+                            </Viewbox>
+                        </BulletDecorator.Bullet>
+                        <ContentPresenter
+                            Margin="5,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            RecognizesAccessKey="True" />
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver" />
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames
+                                            FillBehavior="HoldEnd"
+                                            Storyboard.TargetName="Hook"
+                                            Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames
+                                            FillBehavior="HoldEnd"
+                                            Storyboard.TargetName="Circle"
+                                            Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Hidden}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames
+                                            FillBehavior="HoldEnd"
+                                            Storyboard.TargetName="Circle"
+                                            Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Hidden}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked" />
+                                <VisualState x:Name="Indeterminate" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </BulletDecorator>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Cursor" Value="Hand" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Cursor" Value="Arrow" />
+                            <Setter Property="Opacity" Value="1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

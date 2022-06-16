@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="f2c7e457-6659-435a-801e-fb7f287234f2" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:63506/MonitorDuplex.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="MonitorDuplex.disco" MetadataType="Disco" ID="76ffda94-4a46-4938-9778-b32e6844a279" SourceId="1" SourceUrl="http://localhost:63506/MonitorDuplex.svc?disco" />
+    <MetadataFile FileName="MonitorDuplex.wsdl" MetadataType="Wsdl" ID="53019e97-03fb-4da9-97d8-e017a33b020d" SourceId="1" SourceUrl="http://localhost:63506/MonitorDuplex.svc?wsdl" />
+    <MetadataFile FileName="MonitorDuplex.xsd" MetadataType="Schema" ID="0e7ef1c6-4693-4254-b4d5-d96f3ff34b21" SourceId="1" SourceUrl="http://localhost:63506/MonitorDuplex.svc?xsd=xsd2" />
+    <MetadataFile FileName="MonitorDuplex1.xsd" MetadataType="Schema" ID="3bae6c50-7ade-4b7d-a825-ce9fcde7d2dd" SourceId="1" SourceUrl="http://localhost:63506/MonitorDuplex.svc?xsd=xsd3" />
+    <MetadataFile FileName="MonitorDuplex2.xsd" MetadataType="Schema" ID="fbb43628-2574-4b88-9b88-08970a18cbd1" SourceId="1" SourceUrl="http://localhost:63506/MonitorDuplex.svc?xsd=xsd0" />
+    <MetadataFile FileName="MonitorDuplex1.wsdl" MetadataType="Wsdl" ID="ada82b9f-69d2-4918-a8ec-955bcc4b5823" SourceId="1" SourceUrl="http://localhost:63506/MonitorDuplex.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="MonitorDuplex11.xsd" MetadataType="Schema" ID="045ab086-feea-4292-a22c-bf2d8e5bb04c" SourceId="1" SourceUrl="http://localhost:63506/MonitorDuplex.svc?xsd=xsd4" />
+    <MetadataFile FileName="MonitorDuplex12.xsd" MetadataType="Schema" ID="6a976a4d-619c-4389-8121-398b689aaa21" SourceId="1" SourceUrl="http://localhost:63506/MonitorDuplex.svc?xsd=xsd5" />
+    <MetadataFile FileName="MonitorDuplex5.xsd" MetadataType="Schema" ID="6fdc3826-6695-484f-a0ae-07d2c6da2583" SourceId="1" SourceUrl="http://localhost:63506/MonitorDuplex.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

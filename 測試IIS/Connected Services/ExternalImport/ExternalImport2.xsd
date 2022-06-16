@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/GD_STD.Enum" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/GD_STD.Enum" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="DRAWING_STATE">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NULL" />
+      <xs:enumeration value="INCREASE_COUNT" />
+      <xs:enumeration value="REDUCE_COUNT" />
+      <xs:enumeration value="CHANGE" />
+      <xs:enumeration value="NEW" />
+      <xs:enumeration value="DELETE" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="DRAWING_STATE" nillable="true" type="tns:DRAWING_STATE" />
+  <xs:simpleType name="OBJETC_TYPE">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="RH" />
+      <xs:enumeration value="CH" />
+      <xs:enumeration value="L" />
+      <xs:enumeration value="BOX" />
+      <xs:enumeration value="BH" />
+      <xs:enumeration value="PLATE" />
+      <xs:enumeration value="C" />
+      <xs:enumeration value="RB" />
+      <xs:enumeration value="FB" />
+      <xs:enumeration value="PIPE" />
+      <xs:enumeration value="Unknown" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="OBJETC_TYPE" nillable="true" type="tns:OBJETC_TYPE" />
+</xs:schema>

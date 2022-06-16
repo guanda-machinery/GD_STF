@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A59261DA-2151-42CA-BA6A-9919D1801DBB}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>ConsoleApp3</RootNamespace>
+    <AssemblyName>ConsoleApp3</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="HtmlAgilityPack, Version=1.11.34.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.34\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Connected Services\Memor\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Interface1.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Connected Services\Memor\Memor.wsdl" />
+    <None Include="Connected Services\Memor\Memor.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Memor\Memor1.wsdl" />
+    <None Include="Connected Services\Memor\Memor1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Memor\Memor2.wsdl" />
+    <None Include="Connected Services\Memor\Memor2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Memor\Memor3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Memor\Memor4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Memor\Memor5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\Memor\Memor6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\DataSources\GD_STD.AxisInfo.datasource" />
+    <None Include="Properties\DataSources\GD_STD.CutOilSystem.datasource" />
+    <None Include="Properties\DataSources\GD_STD.DrillWarehouse.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Host.datasource" />
+    <None Include="Properties\DataSources\GD_STD.HydraulicSystem.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Input.datasource" />
+    <None Include="Properties\DataSources\GD_STD.LubricantSystem.datasource" />
+    <None Include="Properties\DataSources\GD_STD.OillSystem.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Outage.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Output.datasource" />
+    <None Include="Properties\DataSources\GD_STD.PanelButton.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Phone.APP_Struct.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Phone.MonitorMec.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Phone.MonitorWork.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Phone.Operating.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Phone.WorkMaterial.datasource" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WPFSTD105Base\WPFSTD105.csproj">
+      <Project>{993757F9-1671-4583-ACF6-10E02A50FD51}</Project>
+      <Name>WPFSTD105</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="OK_Test_1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\Memor\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\Memor\Memor.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\Memor\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\Memor\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\Memor\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="NetFwTypeLib">
+      <Guid>{58FBCF7C-E7A9-467C-80B3-FC65E8FCCA08}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

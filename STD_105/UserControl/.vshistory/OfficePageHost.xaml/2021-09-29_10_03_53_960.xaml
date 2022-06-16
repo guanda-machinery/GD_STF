@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="STD_105.OfficePageHost"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:STD_105"
+             xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+             xmlns:office="clr-namespace:STD_105.Office"
+             mc:Ignorable="d">
+    <Grid Margin="10,0,20,0">
+        <!--頁面顯示區域-->
+        <Frame x:Name="newPage" NavigationUIVisibility="Hidden" Margin="0,0,15,20"/>
+        <Frame x:Name="oldPage" NavigationUIVisibility="Hidden"/>
+    </Grid>
+</UserControl>

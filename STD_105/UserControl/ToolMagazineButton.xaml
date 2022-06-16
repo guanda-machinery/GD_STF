@@ -1,0 +1,151 @@
+﻿<UserControl x:Class="STD_105.ToolMagazineButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:STD_105"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <Storyboard x:Key="buttonDown">
+            <ThicknessAnimation Storyboard.TargetName="grid_img"
+                                Storyboard.TargetProperty="Margin"
+                                To="-1,-1,1,1"
+                                Duration="0:0:0.1" />
+            <ThicknessAnimation Storyboard.TargetName="content"
+                                Storyboard.TargetProperty="Margin"
+                                To="-1,-1,1,1"
+                                Duration="0:0:0.1" />
+            <ColorAnimation Storyboard.TargetName="leftBorder"
+                            Storyboard.TargetProperty="(Border.BorderBrush).Color"
+                            To="#49000000"
+                            Duration="0:0:0.1" />
+            <ColorAnimation Storyboard.TargetName="MainBorder"
+                            Storyboard.TargetProperty="(Border.BorderBrush).Color"
+                            To="#49FFFFFF"
+                            Duration="0:0:0.1" />
+            <ColorAnimation Storyboard.TargetName="tbk_Title"
+                            Storyboard.TargetProperty="(TextBlock.Foreground).Color"
+                            To="Lime"
+                            Duration="0:0:0.1" />
+            <ColorAnimation Storyboard.TargetName="tbk_SubTitle"
+                            Storyboard.TargetProperty="(TextBlock.Foreground).Color"
+                            To="Lime"
+                            Duration="0:0:0.1" />
+        </Storyboard>
+        <Storyboard x:Key="buttonUp">
+            <ThicknessAnimation Storyboard.TargetName="grid_img"
+                                Storyboard.TargetProperty="Margin"
+                                To="0"
+                                Duration="0:0:0.1" />
+            <ThicknessAnimation Storyboard.TargetName="content"
+                                Storyboard.TargetProperty="Margin"
+                                To="0"
+                                Duration="0:0:0.1" />
+            <ColorAnimation Storyboard.TargetName="leftBorder"
+                            Storyboard.TargetProperty="(Border.BorderBrush).Color"
+                            To="#49FFFFFF"
+                            Duration="0:0:0.1" />
+            <ColorAnimation Storyboard.TargetName="MainBorder"
+                            Storyboard.TargetProperty="(Border.BorderBrush).Color"
+                            To="#49000000"
+                            Duration="0:0:0.1" />
+            <ColorAnimation Storyboard.TargetName="tbk_Title"
+                            Storyboard.TargetProperty="(TextBlock.Foreground).Color"
+                            To="{ StaticResource clr_CreamyGray }"
+                            Duration="0:0:0.1" />
+            <ColorAnimation Storyboard.TargetName="tbk_SubTitle"
+                            Storyboard.TargetProperty="(TextBlock.Foreground).Color"
+                            To="{ StaticResource clr_CreamyGray }"
+                            Duration="0:0:0.1" />
+        </Storyboard>
+    </UserControl.Resources>
+    <Grid Width="160"
+          Height="60"
+          Margin="1.5,0">
+        <Border x:Name="MainBorder"
+                CornerRadius="5"
+                Grid.ColumnSpan="2"
+                BorderBrush="#49000000"
+                BorderThickness="0,0,0,2">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0.5,0"
+                                     EndPoint="0.5,1">
+                    <GradientStop Color="{ StaticResource clr_Gray }"
+                                  Offset="0" />
+                    <GradientStop Color="{ StaticResource clr_BlackGray }"
+                                  Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.2*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+                <Border x:Name="leftBorder"
+                        Grid.ColumnSpan="2"
+                        CornerRadius="5"
+                        BorderBrush="#49FFFFFF"
+                        Background="Transparent"
+                        BorderThickness="2,2,2,0"
+                        Margin="-1,-1,0,0" />
+                <Grid x:Name="grid_img">
+                    <Image x:Name="img"
+                           Source="{ StaticResource ToolMagazine }"
+                           Margin="10" />
+                    <Line X1="10"
+                          Y1="0"
+                          X2="10"
+                          Y2="10"
+                          Stretch="Fill"
+                          HorizontalAlignment="Right"
+                          Stroke="#0C0C0C"
+                          Margin="0,2" />
+                </Grid>
+                <Grid Grid.Column="1"
+                      x:Name="content"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Line X1="10"
+                          Y1="0"
+                          X2="10"
+                          Y2="10"
+                          Stretch="Fill"
+                          HorizontalAlignment="Left"
+                          Grid.RowSpan="2">
+                        <Line.Stroke>
+                            <LinearGradientBrush StartPoint="0,0"
+                                                 EndPoint="0,1">
+                                <GradientStop Color="#4D4D4D"
+                                              Offset="0" />
+                                <GradientStop Color="#2C2C2C"
+                                              Offset="1" />
+                            </LinearGradientBrush>
+                        </Line.Stroke>
+                    </Line>
+                    <TextBlock x:Name="tbk_Title"
+                               Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title, FallbackValue='TitleText'}"
+                               Grid.Column="1"
+                               VerticalAlignment="Bottom"
+                               FontWeight="Bold"
+                               FontSize="16"
+                               Foreground="{ StaticResource solidclr_CreamyGray }"
+                               Margin="20,0,0,0" />
+                    <TextBlock x:Name="tbk_SubTitle"
+                               Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SubTitle, FallbackValue='SubTitleText'}"
+                               Grid.Column="1"
+                               Grid.Row="1"
+                               VerticalAlignment="top"
+                               FontSize="12"
+                               Foreground="{ StaticResource solidclr_CreamyGray }"
+                               Margin="20,0,0,0" />
+                </Grid>
+            </Grid>
+        </Border>
+        <Button x:Name="btn_Main"
+                Style="{ StaticResource btn_RectButton }" />
+    </Grid>
+</UserControl>

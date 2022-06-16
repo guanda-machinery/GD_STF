@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/GD_STD.Phone" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/GD_STD.Phone" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/GD_STD.Enum" />
+  <xs:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/GD_STD" />
+  <xs:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd6" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="APP_Struct">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Arm" type="tns:Arm" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="AxisSelect" type="q1:AXIS_SELECTED" />
+      <xs:element minOccurs="0" name="DrillMiddle" type="xs:boolean" />
+      <xs:element minOccurs="0" name="DrillWarehouse" type="tns:DrillWarehouse" />
+      <xs:element minOccurs="0" name="LeftEntrance" type="xs:boolean" />
+      <xs:element minOccurs="0" name="LeftExport" type="xs:boolean" />
+      <xs:element minOccurs="0" name="LoosenDril" type="xs:boolean" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="Move_OutSide" type="q2:MOBILE_RACK" />
+      <xs:element minOccurs="0" name="OpenApp" type="xs:boolean" />
+      <xs:element minOccurs="0" name="OpenOil" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="PullDrill" type="xs:boolean" />
+      <xs:element minOccurs="0" name="RightEntrance" type="xs:boolean" />
+      <xs:element minOccurs="0" name="RightExport" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Traverse_Shelf_UP" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="APP_Struct" nillable="true" type="tns:APP_Struct" />
+  <xs:complexType name="Arm">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AutoClamp" type="xs:boolean" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="Axis" type="q3:COORDINATE" />
+      <xs:element minOccurs="0" name="Clamping" type="xs:boolean" />
+      <xs:element minOccurs="0" name="MoveDown" type="xs:boolean" />
+      <xs:element minOccurs="0" name="MoveUp" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Origin" type="xs:boolean" />
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="WhichClamp" type="q4:ARM_CLAMP" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Arm" nillable="true" type="tns:Arm" />
+  <xs:complexType name="DrillWarehouse">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/GD_STD" minOccurs="0" name="LeftEntrance" nillable="true" type="q5:ArrayOfDrillSetting" />
+      <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/GD_STD" minOccurs="0" name="LeftExport" nillable="true" type="q6:ArrayOfDrillSetting" />
+      <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/GD_STD" minOccurs="0" name="Middle" nillable="true" type="q7:ArrayOfDrillSetting" />
+      <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/GD_STD" minOccurs="0" name="RightEntrance" nillable="true" type="q8:ArrayOfDrillSetting" />
+      <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/GD_STD" minOccurs="0" name="RightExport" nillable="true" type="q9:ArrayOfDrillSetting" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DrillWarehouse" nillable="true" type="tns:DrillWarehouse" />
+  <xs:complexType name="MonitorWork">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Count" type="xs:int" />
+      <xs:element xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="PoojectName" nillable="true" type="q10:ArrayOfchar" />
+      <xs:element minOccurs="0" name="Schedule" type="xs:unsignedShort" />
+      <xs:element minOccurs="0" name="WorkMaterial" nillable="true" type="tns:ArrayOfWorkMaterial" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MonitorWork" nillable="true" type="tns:MonitorWork" />
+  <xs:complexType name="ArrayOfWorkMaterial">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WorkMaterial" type="tns:WorkMaterial" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfWorkMaterial" nillable="true" type="tns:ArrayOfWorkMaterial" />
+  <xs:complexType name="WorkMaterial">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Finish" type="xs:unsignedShort" />
+      <xs:element minOccurs="0" name="Length" type="xs:double" />
+      <xs:element xmlns:q11="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="MaterialNumber" nillable="true" type="q11:ArrayOfchar" />
+      <xs:element xmlns:q12="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="PartNumber" nillable="true" type="q12:ArrayOfchar" />
+      <xs:element xmlns:q13="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Profile" nillable="true" type="q13:ArrayOfchar" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkMaterial" nillable="true" type="tns:WorkMaterial" />
+  <xs:complexType name="MonitorMec">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BootTime" type="xs:unsignedInt" />
+      <xs:element minOccurs="0" name="CutOil" type="xs:boolean" />
+      <xs:element minOccurs="0" name="DrillLeft" type="xs:unsignedShort" />
+      <xs:element minOccurs="0" name="DrillMiddle" type="xs:unsignedShort" />
+      <xs:element minOccurs="0" name="DrillRight" type="xs:unsignedShort" />
+      <xs:element minOccurs="0" name="FinishKg" type="xs:double" />
+      <xs:element minOccurs="0" name="FinishNumber" type="xs:unsignedShort" />
+      <xs:element minOccurs="0" name="HydraulicOil" type="xs:boolean" />
+      <xs:element minOccurs="0" name="LubricantOil" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MonitorMec" nillable="true" type="tns:MonitorMec" />
+</xs:schema>

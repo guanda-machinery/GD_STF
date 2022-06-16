@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="STD_105.PurchasmentDetailsReport"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:local="clr-namespace:STD_105"
+             mc:Ignorable="d" >
+    <Grid>
+        <dxg:GridControl x:Name="gridControl" MaxHeight="10000" dx:ThemeManager.ThemeName="Office2013LightGray">
+            <dxg:GridControl.View>
+                <dxg:TableView/>
+            </dxg:GridControl.View>
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="型鋼規格" GroupIndex="0"/>
+                <dxg:GridColumn FieldName="購料長"/>
+                <dxg:GridColumn FieldName="數量"/>
+                <dxg:GridColumn FieldName="切割長度組合(mm)"/>
+                <dxg:GridColumn FieldName="材質"/>
+                <dxg:GridColumn FieldName="加工長度(mm)"/>
+                <dxg:GridColumn FieldName="損耗(%)"/>
+                <dxg:GridColumn FieldName="購料重量(kg)"/>
+                <dxg:GridColumn FieldName="購料預設來源"/>
+                <dxg:GridColumn FieldName="狀態"/>
+            </dxg:GridControl.Columns>
+            <dxg:GridControl.TotalSummary>
+                <dxg:GridSummaryItem SummaryType="Custom" Alignment="Left" DisplayFormat="{}合計：{0}" />
+                <dxg:GridSummaryItem SummaryType="Custom" Alignment="Right" DisplayFormat="{}{0:N1}(kg)" />
+            </dxg:GridControl.TotalSummary>
+        </dxg:GridControl>
+    </Grid>
+</UserControl>

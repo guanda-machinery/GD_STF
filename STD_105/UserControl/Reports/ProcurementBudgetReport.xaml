@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="STD_105.ProcurementBudgetReport"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:STD_105"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             mc:Ignorable="d">
+    <Grid>
+        <dxg:GridControl x:Name="gridControl" MaxHeight="10000" dx:ThemeManager.ThemeName="Office2013LightGray">
+            <dxg:GridControl.View>
+                <dxg:TableView/>
+            </dxg:GridControl.View>
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="型鋼型態" GroupIndex="0"/>
+                <dxg:GridColumn FieldName="材質型態" GroupIndex="1"/>
+                <dxg:GridColumn FieldName="購料長"/>
+                <dxg:GridColumn FieldName="數量"/>
+                <dxg:GridColumn FieldName="型鋼規格"/>
+                <dxg:GridColumn FieldName="購料重量(kg)"/>
+                <dxg:GridColumn FieldName="單價(元/KG)"/>
+                <dxg:GridColumn FieldName="單價參數TYPE綁定"/>
+                <dxg:GridColumn FieldName="狀態"/>                
+            </dxg:GridControl.Columns>
+            <dxg:GridControl.TotalSummary>
+                <dxg:GridSummaryItem SummaryType="Custom" Alignment="Left" DisplayFormat="{}合計：{0}" />
+                <dxg:GridSummaryItem SummaryType="Custom" Alignment="Default" DisplayFormat="{}{0:N1}(kg)" />
+                <dxg:GridSummaryItem SummaryType="Custom" Alignment="Right" DisplayFormat="{}預估單向金額：{0}(元整)" />
+            </dxg:GridControl.TotalSummary>
+        </dxg:GridControl>
+    </Grid>
+</UserControl>

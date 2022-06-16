@@ -1,0 +1,99 @@
+﻿<WPFBase:BasePage x:Class="STD_105.MiddleAxisPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:STD_105"
+        xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+      mc:Ignorable="d" 
+      d:DesignHeight="1049" d:DesignWidth="800"
+      Title="MiddleAxisPage">
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="120"/>
+        </Grid.RowDefinitions>
+        <Border Grid.ColumnSpan="5" Grid.RowSpan="3" BorderThickness="5" BorderBrush="#FF303030"/>
+        <Grid Grid.Column="1" VerticalAlignment="Top" Margin="0,0,0,-5">
+            <Grid.Resources>
+                <Style TargetType="Button" BasedOn="{ StaticResource btn_FunctionKey4 }">
+                    <Setter Property="Background" Value="#FF303030"/>
+                    <Setter Property="Foreground" Value="{ Binding ParameterFontColor, Source={ x:Static  } }"/>
+                    <Setter Property="Margin" Value="10,5"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="1"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Grid.ColumnSpan="3" CornerRadius="5" Background="#FF303030"/>
+            <Border Grid.Column="1" BorderThickness="1,0,1,0" BorderBrush="#FF666666" Background="#FF303030"/>
+            <Button Grid.Column="0" Opacity="0.5">
+                <Button.Content>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Height="30">
+                            <Image Source="{ StaticResource Spindle }"/>
+                        </Border>
+                        <TextBlock Grid.Column="1" Foreground="White" Text="左軸" Margin="10,0"/>
+                    </Grid>
+                </Button.Content>
+            </Button>
+            <Button Grid.Column="1">
+                <Button.Content>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Height="30">
+                            <Image Source="{ StaticResource Spindle }"/>
+                        </Border>
+                        <TextBlock Grid.Column="1" Foreground="White" Text="上軸" Margin="10,0"/>
+                    </Grid>
+                </Button.Content>
+            </Button>
+            <Button Grid.Column="2" Opacity="0.5">
+                <Button.Content>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Height="30">
+                            <Image Source="{ StaticResource Spindle }"/>
+                        </Border>
+                        <TextBlock Grid.Column="1" Foreground="White" Text="右軸" Margin="10,0"/>
+                    </Grid>
+                </Button.Content>
+            </Button>
+        </Grid>
+        <GroupBox Grid.Row="1" Grid.ColumnSpan="3" Header="我是上軸" Margin="10" Style="{ StaticResource gbxBase }">
+            <Grid>
+                <WrapPanel HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                    <Button Content="放刀" FontSize="20" Width="120" Height="40" Style="{ StaticResource btn_FunctionKey }" Margin="10"/>
+                    <Button Content="換刀" FontSize="20" Width="120" Height="40" Style="{ StaticResource btn_FunctionKey }" Margin="10"/>
+                </WrapPanel>
+            </Grid>
+        </GroupBox>
+        <Grid Grid.Column="1" Grid.Row="2">
+            <local:BaseButton Grid.Column="0" TitleText="A刀庫" ButtonImageSource="{ StaticResource Clamping }"/>
+        </Grid>
+    </Grid>
+</WPFBase:BasePage>

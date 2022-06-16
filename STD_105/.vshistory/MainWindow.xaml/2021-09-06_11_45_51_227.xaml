@@ -1,0 +1,650 @@
+﻿<Window x:Class="STD_105.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:STD_105"
+        xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+        xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+        xmlns:MecSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+        xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105" 
+        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Topmost="False"
+        WindowStartupLocation="CenterScreen"
+        x:Name="AppWindows"
+        MinWidth="{Binding WindowMinimmumWidth}"
+        Closing="AppWindows_Closing"
+        Title="STD_105" Height="1280" Width="1024">
+    <Window.Resources>
+        <!--主視窗標題遮蔽點位-->
+        <PointCollection x:Key="TitlePoints">
+            <Point X="0" Y="3"/>
+            <Point X="116" Y="3"/>
+            <Point X="114" Y="0"/>
+            <Point X="0" Y="0"/>
+        </PointCollection>
+        <!--主視窗遮蔽形狀-->
+        <Style TargetType="{x:Type Polygon}" x:Key="TitleShape">
+            <Setter Property="Fill" Value="Black"/>
+            <Setter Property="Stretch" Value="Fill"/>
+            <Setter Property="Points" Value="{StaticResource TitlePoints}"/>
+        </Style>
+        <local:ComParConverter x:Key="DoubleConditionToIsEnabledConerter"/>
+        <Style x:Key="texRow" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Style.Setters>
+                <Setter Property="FontFamily" Value="{StaticResource Standard}"/>
+                <Setter Property="BorderBrush" Value="{ Binding BorderBrushColor, Source={ x:Static SofSetting:SofSetting.Default } }"/>
+                <Setter Property="Background" Value="{ Binding ParameterBackColor, Source={ x:Static SofSetting:SofSetting.Default } }"/>
+                <Setter Property="Foreground" Value="{ Binding ParameterFontColor, Source={ x:Static SofSetting:SofSetting.Default } }"/>
+                <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}"/>
+            </Style.Setters>
+        </Style>
+        <!--遮蔽背景-->
+        <Style x:Key="Fade" TargetType="{x:Type Grid}">
+            <Setter Property="Visibility" Value="Visible"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="Opacity" Value="0.5"/>
+        </Style>
+        <Style TargetType="{x:Type local:MainWindow}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Window}">
+                        <!--  帶有陰影邊距的外邊界  -->
+                        <Border Padding="{Binding OuterMarginSizeThickness, FallbackValue=10}">
+                            <!--  網格角上的不透明蒙版  -->
+                            <Grid>
+                                <!--  陰影邊距的外邊界  -->
+                                <Border x:Name="Container" Background="{StaticResource BackgroundLightBrush}" CornerRadius="0"/>
+                                <!--  窗口邊框和下拉菜單 Background="#FF18CD18" Background="{Binding ForegroundLightBrush , FallbackValue=White}"  -->
+                                <Border Background="Black" CornerRadius="0">
+                                    <Border.Effect>
+                                        <DropShadowEffect ShadowDepth="0.2" />
+                                    </Border.Effect>
+                                </Border>
+                                <Grid>
+                                    <Grid.OpacityMask>
+                                        <VisualBrush Visual="{Binding ElementName=Container}" />
+                                    </Grid.OpacityMask>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="{Binding TitleHeightGridLength, FallbackValue=50}" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Column="0" Panel.ZIndex="3">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0" Grid.ColumnSpan="4" Background="{ StaticResource solidclr_LightGray }">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="0.9*"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid Grid.Column="0">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition/>
+                                                    <RowDefinition Height="{StaticResource TitleShapeValue}"/>
+                                                </Grid.RowDefinitions>
+                                                <!--遮蔽形狀-->
+                                                <Polygon Style="{StaticResource TitleShape}" Grid.Row="1"/>
+                                            </Grid>
+                                            <Grid Grid.Column="3">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition/>
+                                                    <RowDefinition Height="{StaticResource TitleShapeValue}"/>
+                                                </Grid.RowDefinitions>
+                                                <Polygon Style="{StaticResource TitleShape}" Grid.Row="1" RenderTransformOrigin="0.5,0.5">
+                                                    <Polygon.RenderTransform>
+                                                        <TransformGroup>
+                                                            <ScaleTransform ScaleY="1" ScaleX="-1"/>
+                                                            <SkewTransform AngleY="0" AngleX="0"/>
+                                                            <RotateTransform Angle="0"/>
+                                                            <TranslateTransform/>
+                                                        </TransformGroup>
+                                                    </Polygon.RenderTransform>
+                                                </Polygon>
+                                            </Grid>
+                                            <Grid Grid.Column="1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <!--返回功能面板按鈕-->
+                                                <Button Grid.Column="2" WindowChrome.IsHitTestVisibleInChrome="True" Style="{ StaticResource btn_LogoButton }" Height="Auto" Margin="3"                                                 
+                                                     Command="{Binding HomeCommand}" ToolTip="{ DynamicResource Language_ReturnFunctionPanel }">
+                                                    <Image Source="{ StaticResource Logo }">
+                                                        <Image.BitmapEffect>
+                                                            <DropShadowBitmapEffect Opacity="0.5"/>
+                                                        </Image.BitmapEffect>
+                                                    </Image>
+                                                </Button>
+                                            </Grid>
+                                        </Grid>
+                                        <!--專案名稱-->
+                                        <TextBlock Text="{Binding ApplicationViewModel.ProjectName,Source={x:Static WPFSTD:ViewLocator.Instance}, StringFormat={}專案名稱 : {0:d}}" 
+                                            Visibility="{Binding ApplicationViewModel.ProjectName,Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToVisibilityConverter}}"
+                                            Style="{ StaticResource tbk_Title }" Foreground="{ StaticResource solidclr_Gray }" VerticalAlignment="Top" FontWeight="Bold" TextDecorations="Underline" Margin="10,5"/>
+                                        <!--視窗工具列-->
+                                        <StackPanel x:Name="WindowTools" Grid.Column="3" Orientation="Horizontal" DataContext="{ Binding }" Margin="0,0,1,10">
+                                            <!--時鐘-->
+                                            <TextBlock Text="{Binding ApplicationViewModel.GetNowTime,Source={x:Static WPFSTD:ViewLocator.Instance}}" VerticalAlignment="Center"
+                                                FontSize="18" Foreground="{ StaticResource solidclr_Gray }" FontFamily="{ StaticResource font_Clock }" Margin="10,5"/>
+                                            <!--斷電保持按鈕-->
+                                            <Button Command="{ Binding }" Style="{ StaticResource WindowWarningButton }">
+                                                <Image Source="{ StaticResource Battery_Middle }" Opacity="0.5"/>
+                                            </Button>
+                                            <!--警告按鈕-->
+                                            <Button Command="{ Binding }" Style="{ StaticResource WindowWarningButton }">
+                                                <Image Source="{ StaticResource Warning }" Opacity="0.5"/>
+                                            </Button>
+                                            <!--縮小按鈕-->
+                                            <Button Command="{Binding MinimizeCommand}" Style="{StaticResource WindowControlButton}">
+                                                <Image Source="{ StaticResource Window_Minimize }" Opacity="0.5" Width="12"/>
+                                            </Button>
+                                            <!--放大按鈕-->
+                                            <Button Command="{Binding MaximizeCommand}" Style="{StaticResource WindowControlButton}">
+                                                <Image Source="{ StaticResource Window_Maximize }" Opacity="0.5"/>
+                                            </Button>
+                                            <!--關閉按鈕-->
+                                            <Button Command="{Binding CloseCommand}" Style="{StaticResource WindowCloseButton}"
+                                                Visibility="{Binding  HMI, Source={x:Static MecSetting:MecSetting.Default},Converter={WPFBase:OppositeBooleanToVisibilityConverter}}">
+                                                <Image Source="{ StaticResource Window_Close }" Opacity="0.5"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Border Grid.Row="1" Padding="{Binding InnerContentPadding}" ClipToBounds="True">
+                                        <Border>
+                                            <ContentPresenter Content="{TemplateBinding Content}" />
+                                        </Border>
+                                    </Border>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--菜單縮小動畫-->
+        <Storyboard x:Key="panelMax">
+            <DoubleAnimation Storyboard.TargetName="grid_LeftMenu"
+               Storyboard.TargetProperty="Width"
+               Duration="0:0:0.5" From="0" To="190"
+               FillBehavior="HoldEnd"/>
+            <DoubleAnimation Storyboard.TargetName="dtArrow"
+               Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+               Duration="0:0:0.5" From="180" To="360"
+               FillBehavior="HoldEnd"/>
+        </Storyboard>
+        <Storyboard x:Key="panelMin">
+            <DoubleAnimation Storyboard.TargetName="grid_LeftMenu"
+               Storyboard.TargetProperty="Width"
+               Duration="0:0:0.5" From="190" To="0"
+               FillBehavior="HoldEnd"/>
+            <DoubleAnimation Storyboard.TargetName="dtArrow"
+               Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+               Duration="0:0:0.5" From="0" To="180"
+               FillBehavior="HoldEnd"/>
+        </Storyboard>
+    </Window.Resources>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="{Binding TitleHeight}" CornerRadius="0" GlassFrameThickness="0"
+            ResizeBorderThickness="{Binding ResizeBorderThickness}"/>
+    </WindowChrome.WindowChrome>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <!--頁面切換區域-->
+            <local:PageHost Grid.Column="1" CurrentPage="{Binding}"
+                DataContext="{Binding ApplicationViewModel.CurrentPage, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:ApplicationPageConverter}}"/>
+            <!--新建專案-->
+            <Grid Grid.Column="1" x:Name="Fade" Visibility="{Binding NewProjectControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                <Grid.Resources>
+                    <Style TargetType="Label" BasedOn="{ StaticResource lab_SubTitle }">
+                        <Setter Property="Margin" Value="5"/>
+                    </Style>
+                    <Style TargetType="TextBox" BasedOn="{ StaticResource tbx_BlueUnderline }">
+                        <Setter Property="Width" Value="150"/>
+                        <Setter Property="Margin" Value="5"/>
+                    </Style>
+                </Grid.Resources>
+                <Grid Style="{StaticResource Fade}" Opacity="0.5"/>
+                <Border Width="350" Background="{ Binding ParameterBackColor, Source={ x:Static SofSetting:SofSetting.Default } }" 
+                    CornerRadius="0,50,0,50" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="{StaticResource buttEff}">
+                    <StackPanel>
+                        <TextBlock Margin="5" Text="新建專案" Style="{ StaticResource tbk_SubTitle }"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="※" Foreground="Red" Style="{ StaticResource lab_Title }"/>
+                            <Label Content="工 程 案 號："/>
+                            <TextBox Text="{Binding ApplicationViewModel.ProjectProperty.Number, Source={x:Static WPFSTD:ViewLocator.Instance}}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="※" Foreground="Red" Style="{ StaticResource lab_Title }"/>
+                            <Label Content="專 案 名 稱："/>
+                            <TextBox Text="{Binding ApplicationViewModel.ProjectProperty.Name, Source={x:Static WPFSTD:ViewLocator.Instance}}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="專案繪圖員：" Margin="25,0,0,0"/>
+                            <TextBox Text="{Binding ApplicationViewModel.ProjectProperty.Design, Source={x:Static WPFSTD:ViewLocator.Instance}}"/>
+                            <Button Style="{ StaticResource btn_FunctionKey3 }">
+                                <Image Width="25" Source="{ StaticResource ImportFile }"/>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="工 地 位 置：" Margin="25,0,0,0"/>
+                            <TextBox Text="{Binding ApplicationViewModel.ProjectProperty.Location, Source={x:Static WPFSTD:ViewLocator.Instance}}"/>
+                            <Button Style="{ StaticResource btn_FunctionKey3 }">
+                                <Image Width="25" Source="{ StaticResource ImportFile }"/>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" DataContext="{ dxmvvm:ViewModelSource Type=WPFSTD:FolderBrowserDialogViewModel}" Name="StackInputTextBox">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:FolderBrowserDialogService Description="請選擇資料夾做為專案儲存的路徑"
+                                    ShowNewFolderButton="True" RootFolder="Desktop" RestorePreviouslySelectedDirectory="True"/>
+                            </dxmvvm:Interaction.Behaviors>
+                            <Label Content="專 案 路 徑：" Margin="25,0,0,0"/>
+                            <TextBox x:Name="tbx_ProjectPath" Text="{ Binding ResultPath }"/>
+                            <Button Style="{ StaticResource btn_FunctionKey3 }" Command="{ Binding ShowFolderDialogCommand }">
+                                <Image Width="25" Source="{ StaticResource ImportFile }"/>
+                            </Button>
+                        </StackPanel>
+                        <TextBox Style="{StaticResource tbx_BlueUnderline}" VerticalAlignment="Center" x:Name="InputTextBox" Margin="20,5" />
+                        <Grid Margin="25,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="YesButton" Content="建立" Style="{ StaticResource btn_FunctionKey5 }" Margin="5" Background="#FF606060"                                   
+                                Command="{Binding OutProjectNameCommand}" CommandParameter="{Binding Text, Path=DataContext ,ElementName=StackInputTextBox}"/>
+                            <Button Grid.Column="1" x:Name="NoButton" Content="{ DynamicResource Language_Cancel }"  Style="{ StaticResource btn_FunctionKey5 }" Margin="5" Background="#FF606060"
+                                Foreground="{ Binding ParameterFontColor, Source={ x:Static SofSetting:SofSetting.Default } }"
+                                BorderBrush="{ Binding BorderBrushColor, Source={ x:Static SofSetting:SofSetting.Default } }"
+                                Command="{Binding CollapsedCommand}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+            <!--專案瀏覽-->
+            <Grid Grid.Column="1" x:Name="Fade1" Visibility="{Binding OpenProjectControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                <Grid Style="{StaticResource Fade}" Opacity="0.5"/>
+                <Border Background="{ Binding ParameterBackColor, Source={ x:Static SofSetting:SofSetting.Default } }" 
+                    CornerRadius="0,50,0,50" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="{StaticResource buttEff}">
+                    <StackPanel>
+                        <TextBlock Text="專案瀏覽" Style="{ StaticResource tbk_SubTitle }" Margin="5"/>
+                        <StackPanel Orientation="Horizontal" DataContext="{ dxmvvm:ViewModelSource Type=WPFSTD:FolderBrowserDialogViewModel}">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:FolderBrowserDialogService Description="請選擇專案放置的資料夾"
+                                    ShowNewFolderButton="False" RootFolder="Desktop"  RestorePreviouslySelectedDirectory="True"/>
+                            </dxmvvm:Interaction.Behaviors>
+                            <Label Content="專案路徑：【" Style="{ StaticResource lab_Description }" Margin="10,0"/>
+                            <TextBox Text="{ Binding ResultPath }" Style="{ StaticResource tbx_BlueUnderline }"/>
+                            <Label Content="】" Style="{ StaticResource lab_Description }"/>
+                            <Button Style="{ StaticResource btn_FunctionKey3 }" ToolTip="選擇路徑" Command="{ Binding ShowFolderDialogCommand }" Margin="5,0">
+                                <Image Source="{ StaticResource ImportFile }"/>
+                            </Button>
+                        </StackPanel>
+                        <ComboBox x:Name="InputTextBox1" Style="{StaticResource cbb_Main}" FontSize="{ Binding ParameterFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" ItemsSource="{Binding ProjectList}" HorizontalAlignment="Stretch" Margin="20,5"/>
+                        <Grid Margin="25,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="YesButton1" Content="{ DynamicResource Language_OpenProject }" Width="120" Style="{ StaticResource btn_FunctionKey5 }" Background="#FF606060" Margin="5"
+                                Command="{Binding OpenProjectCommand}" CommandParameter="{Binding SelectedItem, ElementName=InputTextBox1}"/>
+                            <Button Grid.Column="1" x:Name="NoButton1" Content="{ DynamicResource Language_Cancel }" Width="120" Style="{ StaticResource btn_FunctionKey5 }" Background="#FF606060" Margin="5"
+                                Command="{Binding CollapsedCommand}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+            <!--匯入檔案-->
+            <Grid Grid.Column="1" x:Name="Fade2" Visibility="{Binding ImportFileControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                <Grid Style="{StaticResource Fade}" Opacity="0.5"/>
+                <Border Width="300" Background="{ Binding ParameterBackColor, Source={ x:Static SofSetting:SofSetting.Default } }" 
+                    CornerRadius="0,50,0,50" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="{StaticResource buttEff}">
+                    <StackPanel>
+                        <TextBlock Margin="5" Text="匯入檔案" Style="{ StaticResource tbk_SubTitle }"/>
+                        <Grid Margin="20,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="tbx_BomInput" Text="匯入BOM表" Opacity="0.5" Style="{ StaticResource tbx_BlueUnderline }" HorizontalAlignment="Stretch" />
+                            <Button Grid.Column="1" Style="{ StaticResource btn_FunctionKey3 }" Width="50" ToolTip="匯入BOM表">
+                                <Image Source="{ StaticResource ImportFile }"/>
+                            </Button>
+                        </Grid>
+                        <Grid Margin="20,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="tbx_NCInput" Text="匯入NC檔" Opacity="0.5" Style="{ StaticResource tbx_BlueUnderline }" HorizontalAlignment="Stretch" />
+                            <Button Grid.Column="1" Style="{ StaticResource btn_FunctionKey3 }" Width="50" ToolTip="匯入NC檔" Click="Button_Click_1">
+                                <Image Source="{ StaticResource ImportFile }"/>
+                            </Button>
+                        </Grid>
+                        <Button Background="{ StaticResource solidclr_DimGray }" Style="{ StaticResource btn_LoginButton }" Width="200" Height="40" HorizontalAlignment="Center" Margin="5">
+                            <Button.Content>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="4*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" Background="{ StaticResource solidclr_CreamyWhite }" Height="30" Width="30" CornerRadius="20">
+                                        <Image Source="{ StaticResource ImportFile }" Margin="5"/>
+                                    </Border>
+                                    <TextBlock Grid.Column="1" Text="遠端檔案匯入" FontSize="16" Foreground="{ StaticResource solidclr_CreamyWhite }" Margin="10,0" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+                        <Grid Margin="25,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="YesButton2" Content="匯入" Style="{ StaticResource btn_FunctionKey5 }" Background="{ StaticResource solidclr_DimGray }" Margin="5"/>
+                            <Button Grid.Column="1" x:Name="NoButton2" Style="{ StaticResource btn_FunctionKey5 }" Background="{  StaticResource solidclr_DimGray}" 
+                                 Content="{ DynamicResource Language_Cancel }" Command="{Binding CollapsedCommand}" Margin="5"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+            <Border Grid.Column="0" Width="auto" WPFBase:AnimateSlideInFromLeftProperty.Value="{Binding ApplicationViewModel.SideMenuVisible, 
+                Source={x:Static WPFSTD:ViewLocator.Instance}}" Style="{StaticResource Block}" Background="Black" BorderThickness="0">
+                <!--控制面板導航-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <!--功能按鈕-->
+                    <Grid x:Name="grid_LeftMenu" Grid.Column="0" Width="190" Background="{ Binding ParameterBackColor, Source={ x:Static SofSetting:SofSetting.Default } }">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="{StaticResource StandardPitch}"/>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="{StaticResource StandardPitch}"/>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="{StaticResource StandardPitch}"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <!--Logo線條圖-->
+                        <Image Grid.Row="14" Grid.ColumnSpan="3" Source="{StaticResource NewLogoLine}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="{Binding ApplicationViewModel.SideMenuVisible, 
+                            Source={x:Static WPFSTD:ViewLocator.Instance},Converter={WPFBase:NoNullBooleanToVisibilityConverter}}"/>
+                        <!--油壓開關-->
+                        <local:BaseButton Grid.Column="0" Grid.Row="0" TitleText="{ DynamicResource Language_HydraulicSwitch }" 
+                            ButtonImageSource="{Binding ApplicationViewModel.PanelButton.Oil, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:OillBoolToImageSourceConverter}}" 
+                            ButtonCommand="{Binding OillCommand}" IsEnabled="{Binding ApplicationViewModel.PanelButton.Alarm, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:ConditionToIsEnabledConerter}}"/>
+                        <!--參數設定-->
+                        <local:BaseButton Grid.Column="2" Grid.Row="1" TitleText="{ DynamicResource Language_ParameterSettings }" 
+                            ButtonImageSource="{StaticResource ParameterSetting}" ButtonCommand="{Binding SettingParCommand}"/>
+                        <!--警報-->
+                        <local:BaseButton Grid.Column="2" Grid.Row="0" TitleText="{ DynamicResource Language_Alert }" 
+                            ButtonCommand="{Binding AlarmCommand}" ButtonImageSource="{Binding ApplicationViewModel.PanelButton.Alarm, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:ErrorCodeToAlarmConverter}}"/>
+                        <!--雙語切換-->
+                        <local:BaseButton Grid.Column="1" Grid.Row="1" TitleText="{ DynamicResource Language_LanguageSwitch }" 
+                            ButtonCommand="{Binding LanguageCommand}" ButtonImageSource="{StaticResource LanguageSwitcher}"/>
+                        <!--一鍵返航-->
+                        <local:BaseButton Grid.Column="1" Grid.Row="0" TitleText="{ DynamicResource Language_ReturnButton }"
+                            ButtonCommand="{Binding OriginCommand}" ButtonImageSource="{StaticResource Spindle_Return}" 
+                            Lock="{Binding ApplicationViewModel.PanelButton.Origin, Source={x:Static WPFSTD:ViewLocator.Instance}}"/>
+                        <!--分隔線-->
+                        <Border Grid.Row="2" Grid.ColumnSpan="3" Background="{ Binding BaseBackColor, Source={ x:Static SofSetting:SofSetting.Default } }" Height="2" Margin="5,4" >
+                            <Border.BitmapEffect>
+                                <DropShadowBitmapEffect ShadowDepth="0" Opacity="1" Softness="0.1" Color="{ Binding BorderBrushColor, Source={ x:Static SofSetting:SofSetting.Default } }"/>
+                            </Border.BitmapEffect>
+                        </Border>
+                        <!--周邊料架-->
+                        <local:BaseButton Grid.Row="7" Grid.Column="2" TitleText="周邊料架" 
+                            ButtonCommand="{Binding RackOperationCommand }" ButtonImageSource="{StaticResource EntryRack}"
+                            StartState="{Binding ApplicationViewModel.PanelButton.RackOperation, Source={x:Static WPFSTD:ViewLocator.Instance}}">
+                            <local:BaseButton.IsEnabled>
+                                <MultiBinding Converter="{local:DoubleConditionToIsEnabledConerter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="ApplicationViewModel.PanelButton.Key" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                        <Binding Path="ApplicationViewModel.PanelButton.Alarm" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                        <Binding Path="ApplicationViewModel.AppManualConnect" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </local:BaseButton.IsEnabled>
+                        </local:BaseButton>
+                        <!--主軸模式-->
+                        <local:BaseButton Grid.Row="3" Grid.Column="0" TitleText="{ DynamicResource Language_SpindleMode }" 
+                            ButtonCommand="{Binding MainAxisModeCommand}" ButtonImageSource="{StaticResource Spindle}"
+                            StartState="{Binding ApplicationViewModel.PanelButton.MainAxisMode, Source={x:Static WPFSTD:ViewLocator.Instance}}">
+                            <local:BaseButton.IsEnabled>
+                                <MultiBinding Converter="{local:DoubleConditionToIsEnabledConerter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="ApplicationViewModel.PanelButton.Key" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                        <Binding Path="ApplicationViewModel.PanelButton.Alarm" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                        <Binding Path="ApplicationViewModel.AppManualConnect" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </local:BaseButton.IsEnabled>
+                        </local:BaseButton>
+                        <!--主軸旋轉-->
+                        <local:BaseButton Grid.Row="3" Grid.Column="1" TitleText="{ DynamicResource Language_SpindleSpin }" 
+                            ButtonCommand="{Binding MainAxisRotationCommand}" ButtonImageSource="{StaticResource Spindle_Spin}"
+                            IsEnabled="{Binding ApplicationViewModel.PanelButton.MainAxisMode, Source={x:Static WPFSTD:ViewLocator.Instance}}" 
+                            StartState="{Binding ApplicationViewModel.PanelButton.AxisRotation, Source={x:Static WPFSTD:ViewLocator.Instance}}"/>
+                        <!--主軸靜止-->
+                        <local:BaseButton Grid.Row="3" Grid.Column="2" TitleText="{ DynamicResource Language_SpindleStop }" 
+                            ButtonCommand="{Binding MainAxisStopCommand}" ButtonImageSource="{StaticResource Spindle_Stop}"
+                            IsEnabled="{Binding ApplicationViewModel.PanelButton.MainAxisMode, Source={x:Static WPFSTD:ViewLocator.Instance}}" 
+                            StartState="{Binding ApplicationViewModel.PanelButton.AxisStop, Source={x:Static WPFSTD:ViewLocator.Instance}}"/>
+                        <!--中心出水-->
+                        <local:BaseButton Grid.Row="4" Grid.Column="2" TitleText="{ DynamicResource Language_CoreEffluent }" 
+                            ButtonCommand="{Binding EffluentCommand}" ButtonImageSource="{StaticResource Sprinkler}"
+                            IsEnabled="{Binding ApplicationViewModel.PanelButton.MainAxisMode, Source={x:Static WPFSTD:ViewLocator.Instance}}" 
+                            StartState="{Binding ApplicationViewModel.PanelButton.AxisEffluent, Source={x:Static WPFSTD:ViewLocator.Instance}}"/>
+                        <!--鬆拉刀-->
+                        <local:BaseButton Grid.Row="4" Grid.Column="1" TitleText="{ DynamicResource Language_DrillAction }" 
+                            ButtonCommand="{Binding LooseKnifeCommand}" ButtonImageSource="{StaticResource Clamping_Open}"
+                            IsEnabled="{Binding ApplicationViewModel.PanelButton.MainAxisMode, Source={x:Static WPFSTD:ViewLocator.Instance}}" 
+                            StartState="{Binding ApplicationViewModel.PanelButton.AxisLooseKnife, Source={x:Static WPFSTD:ViewLocator.Instance}}"/>
+                        <!--刀庫-->
+                        <local:BaseButton Grid.Row="6" Grid.Column="1" TitleText="{ DynamicResource Language_ToolMagazine }" 
+                            ButtonCommand="{Binding DrillWarehouseCommand}" ButtonImageSource="{StaticResource ToolMagazine}" 
+                            StartState="{Binding ApplicationViewModel.PanelButton.DrillWarehouse, Source={x:Static WPFSTD:ViewLocator.Instance}}">
+                            <local:BaseButton.IsEnabled>
+                                <MultiBinding Converter="{local:DoubleConditionToIsEnabledConerter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="ApplicationViewModel.PanelButton.Key" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                        <Binding Path="ApplicationViewModel.PanelButton.Alarm" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                        <Binding Path="ApplicationViewModel.AppManualConnect" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </local:BaseButton.IsEnabled>
+                        </local:BaseButton>
+                        <!--送料手臂-->
+                        <local:BaseButton Grid.Row="6"  Grid.Column="2" TitleText="{ DynamicResource Language_FeedingArm }" 
+                            ButtonCommand="{Binding FeederCommand}" ButtonImageSource="{StaticResource Arm}" 
+                            StartState="{Binding ApplicationViewModel.PanelButton.Hand, Source={x:Static WPFSTD:ViewLocator.Instance}}">
+                            <local:BaseButton.IsEnabled>
+                                <MultiBinding Converter="{local:DoubleConditionToIsEnabledConerter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="ApplicationViewModel.PanelButton.Key" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                        <Binding Path="ApplicationViewModel.PanelButton.Alarm" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                        <Binding Path="ApplicationViewModel.AppManualConnect" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </local:BaseButton.IsEnabled>
+                        </local:BaseButton>
+                        <!--夾具下壓-->
+                        <local:BaseButton Grid.Row="5" Grid.Column="1" TitleText="{ DynamicResource Language_DownPressure }" 
+                            ButtonCommand="{Binding ClampDownCommand}" ButtonImageSource="{StaticResource DownPress}" 
+                            StartState="{Binding ApplicationViewModel.PanelButton.ClampDown, Source={x:Static WPFSTD:ViewLocator.Instance}}">
+                            <local:BaseButton.IsEnabled>
+                                <MultiBinding Converter="{local:DoubleConditionToIsEnabledConerter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="ApplicationViewModel.PanelButton.Key" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                        <Binding Path="ApplicationViewModel.PanelButton.Alarm" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                        <Binding Path="ApplicationViewModel.AppManualConnect" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </local:BaseButton.IsEnabled>
+                        </local:BaseButton>
+                        <!--夾具側壓-->
+                        <local:BaseButton Grid.Row="5" Grid.Column="2" TitleText="{ DynamicResource Language_SidePressure }" 
+                            ButtonCommand="{Binding SideClampCommand}" ButtonImageSource="{StaticResource SidePress}" 
+                            StartState="{Binding ApplicationViewModel.PanelButton.SideClamp, Source={x:Static WPFSTD:ViewLocator.Instance}}">
+                            <local:BaseButton.IsEnabled>
+                                <MultiBinding Converter="{local:DoubleConditionToIsEnabledConerter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="ApplicationViewModel.PanelButton.Key" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                        <Binding Path="ApplicationViewModel.PanelButton.Alarm" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                        <Binding Path="ApplicationViewModel.AppManualConnect" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </local:BaseButton.IsEnabled>
+                        </local:BaseButton>
+                        <!--捲屑機-->
+                        <local:BaseButton Grid.Row="7" Grid.Column="1" TitleText="{ DynamicResource Language_IndustrialScraper }" 
+                            ButtonCommand="{Binding RollingCommand}" ButtonImageSource="{StaticResource Rolling}" 
+                            StartState="{Binding ApplicationViewModel.PanelButton.Volume, Source={x:Static WPFSTD:ViewLocator.Instance}}">
+                            <local:BaseButton.IsEnabled>
+                                <MultiBinding Converter="{local:DoubleConditionToIsEnabledConerter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="ApplicationViewModel.PanelButton.Key" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                        <Binding Path="ApplicationViewModel.PanelButton.Alarm" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                        <Binding Path="ApplicationViewModel.AppManualConnect" Source="{x:Static WPFSTD:ViewLocator.Instance}"/>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </local:BaseButton.IsEnabled>
+                        </local:BaseButton>
+                        <!--分隔線-->
+                        <Border Grid.Row="8" Grid.ColumnSpan="3" Background="{ Binding BaseBackColor, Source={ x:Static SofSetting:SofSetting.Default } }" Height="2"  Margin="5,4,5,4" >
+                            <Border.BitmapEffect>
+                                <DropShadowBitmapEffect ShadowDepth="0" Color="{ Binding BorderBrushColor, Source={ x:Static SofSetting:SofSetting.Default } }" Opacity="1" Softness="0.1"  />
+                            </Border.BitmapEffect>
+                        </Border>
+                        <!--建立專案-->
+                        <local:BaseButton Grid.Row="9" Grid.Column="0" TitleText="{ DynamicResource Language_NewProject }" 
+                            ButtonCommand="{Binding NewProjectShowCommand}" ButtonImageSource="{StaticResource NewProject}"/>
+                        <!--專案瀏覽-->
+                        <local:BaseButton Grid.Row="10" Grid.Column="0" TitleText="{ DynamicResource Language_ProjectBrowser }" 
+                            ButtonCommand="{Binding WatchProjectCommand}" ButtonImageSource="{StaticResource WatchProject}"/>
+                        <!--匯入檔案-->
+                        <local:BaseButton Grid.Row="9" Grid.Column="2" TitleText="{ DynamicResource Language_ImportFiles }"
+                            ButtonCommand="{Binding ImportFileCommand}" ButtonImageSource="{StaticResource ImportFile}" 
+                            IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance},Converter={local:NullToEnabledConverter}}"/>
+                        <!--製品設定-->
+                        <local:BaseButton Grid.Row="9" Grid.Column="1" TitleText="{ DynamicResource Language_ProductsSettings }" 
+                            ButtonCommand="{Binding ProductSettingCommand}" ButtonImageSource="{StaticResource NewProductSettings}" 
+                            IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance},Converter={local:NullToEnabledConverter}}"/>
+                        <!--排版設定-->
+                        <local:BaseButton Grid.Row="10" Grid.Column="1" TitleText="{ DynamicResource Language_TypesettingSettings }" 
+                            ButtonCommand="{Binding TypeSettingCommand}" ButtonImageSource="{StaticResource Layout}" 
+                            IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance},Converter={local:NullToEnabledConverter}}"/>
+                        <!--加工監控-->
+                        <local:BaseButton Grid.Row="10" Grid.Column="2" TitleText="{ DynamicResource Language_ProcessingSettings }" 
+                            ButtonCommand="{Binding MonitorCommand}" ButtonImageSource="{StaticResource Monitor_New}" 
+                            IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance},Converter={local:NullToEnabledConverter}}"/>
+                        <!--軟體設定-->
+                        <local:BaseButton Grid.Row="11" Grid.Column="2" TitleText="{ DynamicResource Language_SoftSettings }" 
+                            ButtonCommand="{Binding SoftwareSettingsCommand}" ButtonImageSource="{StaticResource SoftwareSettings}"/>
+                        <!--辦公室軟體測試-->
+                        <local:BaseButton Grid.Row="11" Grid.Column="0" TitleText="辦公室介面" MouseDoubleClick="BaseButton_MouseDoubleClick"
+                            ButtonImageSource="{ StaticResource OfficeIcon }"/>
+                    </Grid>
+                    <!--面板縮放按鈕-->
+                    <Grid Grid.Column="1" VerticalAlignment="Top" Margin="-1,0,0,0">
+                        <Path Data="M0,0h0.2h17.9C24.6,0,30,6,30,13.3v173.3c0,7.3-5.4,13.3-11.9,13.3H0.2L0,0z" Fill="{ Binding ParameterBackColor, Source={ x:Static SofSetting:SofSetting.Default } }"/>
+                        <Button Style="{ StaticResource btn_PanelButton }" Click="PanelZoom">
+                            <Button.LayoutTransform>
+                                <RotateTransform Angle="270"/>
+                            </Button.LayoutTransform>
+                            <Button.Content>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="功能面板" Style="{ StaticResource tbk_Title }"  Margin="10,0"/>
+                                    <Image x:Name="dtArrow" Grid.Column="1" Source="{ StaticResource dtLeftArrow }" RenderTransformOrigin="0.5,0.5">
+                                        <Image.RenderTransform>
+                                            <RotateTransform Angle="0"/>
+                                        </Image.RenderTransform>
+                                    </Image>
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+        <!--加減速與狀態面板-->
+        <Grid Grid.Row="1" Width="auto" WPFBase:AnimateSlideInFromDownProperty.Value="{Binding ApplicationViewModel.SideMenuVisible, Source={x:Static WPFSTD:ViewLocator.Instance}}">
+            <!--<Grid 
+            Grid.Row="2"  
+            Width="auto" >-->
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="60"/>
+            </Grid.RowDefinitions>
+            <Border Style="{StaticResource Block}" Grid.Row="1" Background="{ StaticResource solidclr_LightGray }" BorderBrush="Transparent" BorderThickness="1,2,1,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <!--減速按鈕-->
+                    <!--
+                     <local:BaseButton x:Name="Sub" Grid.Column="1" TextHide="True" ButtonCommand="{Binding MonitorCommand}" ButtonImageSource="{StaticResource Subtraction}" Height="52"/>
+                    -->
+                    <Button Grid.Column="1" x:Name="Sub" Background="{ StaticResource solidclr_SilverGray }" Width="52" Height="52" Style="{ StaticResource btn_3DRaisedButton }">
+                        <Image Source="{ StaticResource Subtraction }" Margin="10"/>
+                    </Button>
+                    <Button Grid.Column="3" x:Name="Add" Background="{ StaticResource solidclr_SilverGray }" Width="52" Height="52" Style="{ StaticResource btn_3DRaisedButton }">
+                        <Image Source="{ StaticResource Addition }" Margin="10"/>
+                    </Button>
+
+                    <!--加速按鈕-->
+                    <!--
+                     <local:BaseButton x:Name="Add" Grid.Column="3" TextHide="True" ButtonImageSource="{StaticResource Addition}" Height="52"/>
+                    -->
+                    <!--速度表示區域-->
+                    <Grid Grid.Column="2" HorizontalAlignment="Stretch" Margin="25,10,25,3">
+                        <ProgressBar Value="{ Binding ApplicationViewModel.PanelButton.HandSpeed, Source={x:Static WPFSTD:ViewLocator.Instance } }" Style="{ StaticResource YellowProgressBar }"/>
+                        <Slider x:Name="slider" Style="{ StaticResource TriangleSliderStyleKey }" PreviewMouseLeftButtonUp="slider_PreviewMouseLeftButtonUp"
+                            DataContext="{ Binding ApplicationViewModel.PanelButton, Source={x:Static WPFSTD:ViewLocator.Instance } }" Value="{ Binding HandSpeed }"/>
+                        <Label Content="{ Binding ApplicationViewModel.PanelButton.HandSpeed, Source={x:Static WPFSTD:ViewLocator.Instance } }" Foreground="White" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" ContentStringFormat="{}{0}%"/>
+                    </Grid>
+                    <!--機器登入模式-->
+                    <TextBlock Grid.Column="4" Foreground="{ StaticResource solidclr_Gray }" Style="{ StaticResource tbk_Title }" FontWeight="Bold" HorizontalAlignment="Center"
+                        Text="{Binding ApplicationViewModel.UserMode, Source={x:Static WPFSTD:ViewLocator.Instance},Converter={local:MchineModeToStringConverter},StringFormat={}機器模式:{0:D}}"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

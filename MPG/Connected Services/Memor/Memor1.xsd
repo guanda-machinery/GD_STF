@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/GD_STD.Enum" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/GD_STD.Enum" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:simpleType name="CODESYS_STATUS">
+    <xs:annotation>
+      <xs:appinfo>
+        <ActualType Name="short" Namespace="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="STANDBY" />
+      <xs:enumeration value="RUN" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="CODESYS_STATUS" nillable="true" type="tns:CODESYS_STATUS" />
+  <xs:simpleType name="PHONE_SATUS">
+    <xs:annotation>
+      <xs:appinfo>
+        <ActualType Name="short" Namespace="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NULL" />
+      <xs:enumeration value="WAIT" />
+      <xs:enumeration value="OK" />
+      <xs:enumeration value="REFUSE" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="PHONE_SATUS" nillable="true" type="tns:PHONE_SATUS" />
+  <xs:simpleType name="ERROR_CODE">
+    <xs:annotation>
+      <xs:appinfo>
+        <ActualType Name="short" Namespace="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Null" />
+      <xs:enumeration value="L_IN_DrillHome1_Error" />
+      <xs:enumeration value="L_IN_DrillHome2_Error" />
+      <xs:enumeration value="L_IN_DrillHome3_Error" />
+      <xs:enumeration value="L_IN_DrillHome4_Error" />
+      <xs:enumeration value="L_Out_DrillHome1_Error" />
+      <xs:enumeration value="L_Out_DrillHome2_Error" />
+      <xs:enumeration value="L_Out_DrillHome3_Error" />
+      <xs:enumeration value="L_Out_DrillHome4_Error" />
+      <xs:enumeration value="R_IN_DrillHome1_Error" />
+      <xs:enumeration value="R_IN_DrillHome2_Error" />
+      <xs:enumeration value="R_IN_DrillHome3_Error" />
+      <xs:enumeration value="R_IN_DrillHome4_Error" />
+      <xs:enumeration value="R_Out_DrillHome1_Error" />
+      <xs:enumeration value="R_Out_DrillHome2_Error" />
+      <xs:enumeration value="R_Out_DrillHome3_Error" />
+      <xs:enumeration value="R_Out_DrillHome4_Error" />
+      <xs:enumeration value="M_DrillHome1_Error" />
+      <xs:enumeration value="M_DrillHome2_Error" />
+      <xs:enumeration value="M_DrillHome3_Error" />
+      <xs:enumeration value="M_DrillHome4_Error" />
+      <xs:enumeration value="M_DrillHome5_Error" />
+      <xs:enumeration value="Ethercat_NG" />
+      <xs:enumeration value="AutoNotOnOrigin" />
+      <xs:enumeration value="Traverse_Error" />
+      <xs:enumeration value="Arm_Clamp_Failed" />
+      <xs:enumeration value="Material_Width_Error" />
+      <xs:enumeration value="Material_Height_Error" />
+      <xs:enumeration value="Laser_Material_Error" />
+      <xs:enumeration value="L_Drill_Length_Error" />
+      <xs:enumeration value="M_Drill_Length_Error" />
+      <xs:enumeration value="R_Drill_Length_Error" />
+      <xs:enumeration value="Work_Arr_Error" />
+      <xs:enumeration value="M_BOX_Penetrate_NoMatch" />
+      <xs:enumeration value="Auto_Mode_NoNeed_Work" />
+      <xs:enumeration value="Axis_LAndM_Touch">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10000</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Axis_MAndR_Touch">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10001</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Axis_LAndR_Touch">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10002</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="L_X_LimitBack">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10003</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="L_Y_LimitBack">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10004</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="L_Y_LimitFront">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10005</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="L_Z_LimitBack">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10006</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="L_Z_LimitFornt">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10007</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="R_X_LimitBack">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10008</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="R_X_LimitFornt">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10009</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="R_Y_LimitBack">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10010</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="R_Y_LimitFornt">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10011</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="R_Z_LimitBack">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10012</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="R_Z_LimitFornt">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10013</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M_X_LimitBack">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10014</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M_X_LimitFornt">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10015</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M_Y_LimitBack">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10016</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M_Y_LimitFornt">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10017</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M_Z_LimitBack">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10018</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="M_Z_LimitFornt">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10019</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Arm_X_Limit_Back">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10020</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Arm_X_Limit_Fornt">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10021</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Arm_Z_Limit_Back">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10022</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Arm_Z_Limit_Front">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10023</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Axis_Position_NG">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10024</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Phone_Not_Manual">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">20000</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Phone_Machine_Busy">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">20001</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PC_Refuse_Phone_Connect">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">20002</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ERROR_CODE" nillable="true" type="tns:ERROR_CODE" />
+  <xs:simpleType name="AXIS_SELECTED">
+    <xs:annotation>
+      <xs:appinfo>
+        <ActualType Name="short" Namespace="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Left" />
+      <xs:enumeration value="Middle" />
+      <xs:enumeration value="Right" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="AXIS_SELECTED" nillable="true" type="tns:AXIS_SELECTED" />
+  <xs:simpleType name="CLAMP_DOWN">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Entrance" />
+      <xs:enumeration value="Export" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="CLAMP_DOWN" nillable="true" type="tns:CLAMP_DOWN" />
+  <xs:simpleType name="DRILL_POSITION">
+    <xs:annotation>
+      <xs:appinfo>
+        <ActualType Name="short" Namespace="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="EXPORT_L" />
+      <xs:enumeration value="EXPORT_R" />
+      <xs:enumeration value="MIDDLE" />
+      <xs:enumeration value="ENTRANCE_L" />
+      <xs:enumeration value="ENTRANCE_R" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="DRILL_POSITION" nillable="true" type="tns:DRILL_POSITION" />
+  <xs:simpleType name="KEY_HOLE">
+    <xs:annotation>
+      <xs:appinfo>
+        <ActualType Name="short" Namespace="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="LOCK" />
+      <xs:enumeration value="AUTO" />
+      <xs:enumeration value="MANUAL" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="KEY_HOLE" nillable="true" type="tns:KEY_HOLE" />
+  <xs:simpleType name="DRILL_TYPE">
+    <xs:annotation>
+      <xs:appinfo>
+        <ActualType Name="short" Namespace="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="DRILL" />
+      <xs:enumeration value="PAINTED" />
+      <xs:enumeration value="TAPPING" />
+      <xs:enumeration value="WASH" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="DRILL_TYPE" nillable="true" type="tns:DRILL_TYPE" />
+  <xs:simpleType name="DRILL_LEVEL">
+    <xs:annotation>
+      <xs:appinfo>
+        <ActualType Name="short" Namespace="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="LEVEL1" />
+      <xs:enumeration value="LEVEL2" />
+      <xs:enumeration value="LEVEL3" />
+      <xs:enumeration value="LEVEL4" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="DRILL_LEVEL" nillable="true" type="tns:DRILL_LEVEL" />
+  <xs:simpleType name="AXIS_MODE">
+    <xs:annotation>
+      <xs:appinfo>
+        <ActualType Name="short" Namespace="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PIERCE" />
+      <xs:enumeration value="POINT" />
+      <xs:enumeration value="LINE" />
+      <xs:enumeration value="Arc" />
+      <xs:enumeration value="Round" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="AXIS_MODE" nillable="true" type="tns:AXIS_MODE" />
+  <xs:simpleType name="PROFILE_TYPE">
+    <xs:annotation>
+      <xs:appinfo>
+        <ActualType Name="short" Namespace="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="H" />
+      <xs:enumeration value="U" />
+      <xs:enumeration value="BOX" />
+      <xs:enumeration value="L" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="PROFILE_TYPE" nillable="true" type="tns:PROFILE_TYPE" />
+  <xs:simpleType name="COORDINATE">
+    <xs:annotation>
+      <xs:appinfo>
+        <ActualType Name="short" Namespace="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="X" />
+      <xs:enumeration value="Z" />
+      <xs:enumeration value="Y" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="COORDINATE" nillable="true" type="tns:COORDINATE" />
+  <xs:simpleType name="MAGNIFICATION">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="LEVLE1" />
+      <xs:enumeration value="LEVLE2" />
+      <xs:enumeration value="LEVLE3" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="MAGNIFICATION" nillable="true" type="tns:MAGNIFICATION" />
+</xs:schema>

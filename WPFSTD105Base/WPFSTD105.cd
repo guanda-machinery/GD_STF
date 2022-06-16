@@ -1,0 +1,914 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="WPFSTD105.Attribute.AbsAttr" Collapsed="true">
+    <Position X="6.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAQAAAAAAABA=</HashCode>
+      <FileName>Attribute\AbsAttr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WPFSTD105.Attribute.BoltAttr" Collapsed="true">
+    <Position X="5.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAgAAAABAAAAAAAAAAAAAQAAAAAaAE=</HashCode>
+      <FileName>Attribute\BoltAttr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WPFSTD105.Attribute.GroupBoltsAttr" Collapsed="true">
+    <Position X="5.25" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEBIAIAAAAAAAAAAEAABAQAIAAAAAAAAAAIAACAaAE=</HashCode>
+      <FileName>Attribute\GroupBoltsAttr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WPFSTD105.Attribute.HtmlAttribute" Collapsed="true">
+    <Position X="24.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Attribute\HtmlAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.Attribute.SteelAttr" Collapsed="true">
+    <Position X="7.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAEAEAAAAAAAAIQkQAAQBCABAIAAAEAVgAiEAICIU=</HashCode>
+      <FileName>Attribute\SteelAttr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WPFSTD105.ModelAttr" Collapsed="true">
+    <Position X="38.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAABAAAQAAAAAABAAAIAAAAAAAAgEAAAAAAA=</HashCode>
+      <FileName>Attribute\ModelAttr.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.FluentAPI.Axis3D" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAE=</HashCode>
+      <FileName>FluentAPI\Axis3D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.FluentAPI.Axis4D" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="33" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAACAAYAE=</HashCode>
+      <FileName>FluentAPI\Axis4D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.FluentAPI.AxisSetting" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="34.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAACAAgAACAAAAAAAgAAAAAQAAAAAAAA=</HashCode>
+      <FileName>FluentAPI\AxisSetting.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.FluentAPI.ClampDownSetting" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="27.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>FluentAPI\ClampDownSetting.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.FluentAPI.HandSetting" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="38.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAEAAAgAAAAIIAAIBAAIFAACAABAAUCGgBIAhAQAA=</HashCode>
+      <FileName>FluentAPI\HandSetting.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.FluentAPI.MecSetting" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="33" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CyWmljBA1CJCDKYHvKRAdIHkpXASnoBcG2mXbDvsV/E=</HashCode>
+      <FileName>FluentAPI\MecSetting.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.FluentAPI.MecSettingBehavior" Collapsed="true">
+    <Position X="34.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABIAAAFAAAAAAAAAAAABAEBAEAAAIAADABAAAAAAA=</HashCode>
+      <FileName>FluentAPI\MecSettingBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.FluentAPI.MetadataFluentAPI" Collapsed="true">
+    <Position X="36.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>FluentAPI\MetadataFluentAPI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.FluentAPI.OptionSettings" Collapsed="true">
+    <Position X="38.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AogABACBBAAABCgGAgAAAQAAAABAAAAAAEASEAAAAAA=</HashCode>
+      <FileName>FluentAPI\OptionSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.FluentAPI.ProtectionDistance" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="34.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAQEAAAAAAAAAAAQAA=</HashCode>
+      <FileName>FluentAPI\ProtectionDistance.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.FluentAPI.ShapeTraverse" Collapsed="true">
+    <Position X="16.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>FluentAPI\ShapeTraverse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.FluentAPI.SideClamp" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="24.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>FluentAPI\SideClamp.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.FluentAPI.Traverse" Collapsed="true">
+    <Position X="16.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAYAAAAAAAAAiAIAAQAAAAAgAAAgAAQAAAAAAAA=</HashCode>
+      <FileName>FluentAPI\Traverse.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WPFSTD105.IoC" Collapsed="true">
+    <Position X="27.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAABAAAAAAAAAAAAAAAQAAAAAAgAAAAA=</HashCode>
+      <FileName>IoC\IoC.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.AbsListening" Collapsed="true">
+    <Position X="10" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABBAAAEAYAAAAAAAAAAAAAAAQAAAABAAACAAAACAIA=</HashCode>
+      <FileName>Listening\AbsListening.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WPFSTD105.AxisInfoListening" Collapsed="true">
+    <Position X="10" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Listening\AxisInfoListening.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.PanelListening" Collapsed="true">
+    <Position X="5.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FBAAEAAAAAYAIAgAAAAAAAAAAAAAIABAgAAAAACBAAA=</HashCode>
+      <FileName>Listening\PanelListening.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.Listening.MainAxisListening" Collapsed="true">
+    <Position X="14.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Listening\MainAxisListening.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.Listening.OutageListening" Collapsed="true">
+    <Position X="7.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Listening\OutageListening.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.Listening.PhoneListening" Collapsed="true">
+    <Position X="12.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Listening\PhoneListening.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.Model.Bolt" Collapsed="true">
+    <Position X="36.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAMAAAAAAAAAAEAAAAABA=</HashCode>
+      <FileName>Model\Bolt.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.Model.Bolts2DBlock" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="24.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIBAQAAAAAAIAAAAABAAAAABAAAIAAACAAAAQAAA=</HashCode>
+      <FileName>Model\Bolts2DBlock.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.Model.Bolts3DBlock" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAgAAAAAAAAEQAAABAAQAAAAEAAAAA=</HashCode>
+      <FileName>Model\Bolts3DBlock.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.Model.CutContour" Collapsed="true">
+    <Position X="31.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgABBAAAAAAAAAAAABAACAAEBAAAABAoAAgAAA=</HashCode>
+      <FileName>Model\CutLine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.Model.CutList" Collapsed="true">
+    <Position X="33" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgABAAAAAAAAAAAAAAAACAAEAAAAAAAAAAACAA=</HashCode>
+      <FileName>Model\CutList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.Model.CutPoint" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="36.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaAA=</HashCode>
+      <FileName>Model\CutPoint.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.Model.Expand" Collapsed="true">
+    <Position X="31.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAIAAAAAAAAAAAAAFACIAQAAAAAAEAEAAEACAAAA=</HashCode>
+      <FileName>Model\Expand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.Model.FileSerializerExt" Collapsed="true">
+    <Position X="34.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAgAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Model\FileSerializerExt.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.Model.NcPoint3D" Collapsed="true">
+    <Position X="27.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAgAAAAIAAQAAAAEAAAAAAAQA=</HashCode>
+      <FileName>Model\NcPoint3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.Model.ProjectInfo" Collapsed="true">
+    <Position X="29.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAQAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Model\ProjectInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.Model.Shape" Collapsed="true">
+    <Position X="38.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Shape.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.Model.Steel2DBlock" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAggIAAQAIAFAAgCAAAAAAAIAJAgAABAEAAAAQAQAAA=</HashCode>
+      <FileName>Model\Steel2DBlock.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.Model.Steel3DBlock" Collapsed="true">
+    <Position X="33" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEIAAABAAAACAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Steel3DBlock.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ModelExt" Collapsed="true">
+    <Position X="24.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAGgugC6fCGzmqINgKRBDhHD6dKRJj0McLoXyhsYGAY=</HashCode>
+      <FileName>Model\Dim.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.LayerList" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="29.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAABAAAAgAAAAAAAA=</HashCode>
+      <FileName>Model\LayerList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.Surrogate.BoltAttrSurrogate" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="38.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAIAAAAAgAAAABIAIAAAAAQAAAQQBAAAAaAE=</HashCode>
+      <FileName>Surrogate\BoltAttrSurrogate.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.Surrogate.CutListSurrogate" Collapsed="true">
+    <Position X="34.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgABAAAAABAAAAAAAAAACAAUQAAAAABAAAACAA=</HashCode>
+      <FileName>Surrogate\CutListSurrogate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.Surrogate.CutPointSurrogate" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="38.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAQAAAAAAAAQEAAAABAAAAaAA=</HashCode>
+      <FileName>Surrogate\CutPointSurrogate.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.Surrogate.GroupBoltsAttrSurrogate" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="36.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAFBAAAAAIAAAAAgAEAABAAAAAAAAQAAAQQJAACAaAE=</HashCode>
+      <FileName>Surrogate\GroupBoltsAttrSurrogate.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.Surrogate.ProjectPropertySurrogate" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="33" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEABAAAAAQCAAgAEIAAAQAAAEAAEACAAAAAAAAAAA=</HashCode>
+      <FileName>Surrogate\ProjectPropertySurrogate.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.Surrogate.SteelAttrSurrogate" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="34.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KEBAAAEAAAAAAAAAQEAAAQBCABAAAQAAAVgBAEAICAU=</HashCode>
+      <FileName>Surrogate\SteelAttrSurrogate.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.Tekla.AK" Collapsed="true">
+    <Position X="27.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAACIQAAgIAAAAAEAgAAkABQAAAAAEQAAAAAAAA=</HashCode>
+      <FileName>Tekla\AK.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.Tekla.PartMatch" Collapsed="true">
+    <Position X="24.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tekla\PartMatch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.Tekla.TeklaBomFactory" Collapsed="true">
+    <Position X="38.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAgAEAACABIAQAgAAAQAAAgIAAEAYAABABAAAAAAA=</HashCode>
+      <FileName>Tekla\TeklaBomFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.Tekla.TeklaNcFactory" Collapsed="true">
+    <Position X="24.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEgAAAIBIEAAQAAAAAAAAAAQAAAAAAACAAAEAAAAA=</HashCode>
+      <FileName>Tekla\TeklaNcFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.AbsBaseWindowView" Collapsed="true">
+    <Position X="11.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAFAAAEiAQAACAAAgAAAAQABoAgEAAEABAAAAkABIA=</HashCode>
+      <FileName>ViewModel\Windows\AbsBaseWindowView.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="WPFSTD105.ApplicationVM" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="29.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEEACQTgAQAQEAoZyBRAElCAC0wIAFgQABCYhQGDAAI=</HashCode>
+      <FileName>ViewModel\Windows\ApplicationVM.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.OfficePageVM" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="34.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAARBAAAQAAIASAAAAEAAAAwAAkkAABCAAIDAAAI=</HashCode>
+      <FileName>ViewModel\Windows\OfficePageVM.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.OfficeVM" Collapsed="true">
+    <Position X="10.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAggAFAAABAEgAAAABAAAACAAoBgAAIAgDBAgAAKYAg=</HashCode>
+      <FileName>ViewModel\Windows\OfficeVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewLocator" Collapsed="true">
+    <Position X="27.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAACAAAAAAAAAAAQAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\Windows\ViewLocator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.WindowsVM" Collapsed="true">
+    <Position X="12.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VBYAihSUwlQZA4SAG4KoRgAGkgKgNAAEhFJ4LAgAFlg=</HashCode>
+      <FileName>ViewModel\Windows\WindowsVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.AbsTypeSettingVM" Collapsed="true">
+    <Position X="6.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAASAAAYoAIDAQABgBQAgAEAYQAAAAAAABAAACAYBA=</HashCode>
+      <FileName>ViewModel\AbsTypeSettingVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.FolderBrowserDialogViewModel" Collapsed="true">
+    <Position X="10.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAgwAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>ViewModel\FolderBrowserDialogViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ImportNCFilesVM" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEEpAAAABQCAAwIELAAARCAAEIDEACAQQAAAAEAAA=</HashCode>
+      <FileName>ViewModel\ImportNCFilesVM.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.OfficeTypeSettingVM" Collapsed="true">
+    <Position X="5.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAQACAAAAAAQUABAAAAAAAAAgAAAAAAAABhAA=</HashCode>
+      <FileName>ViewModel\OfficeTypeSettingVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.OpenFilesDialogViewModel" Collapsed="true">
+    <Position X="36.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAEAAAAAEAAAAQBgBAGAEhAABAAAAAAA=</HashCode>
+      <FileName>ViewModel\OpenFilesDialogViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.OpenOldFileDialogViewModel" Collapsed="true">
+    <Position X="10.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>ViewModel\OpenOldFileDialogViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.PopupWindowsVM" Collapsed="true">
+    <Position X="26" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAgAABAAAAAAA=</HashCode>
+      <FileName>ViewModel\PopupWindowsVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.SplashScreenMainViewModel" Collapsed="true">
+    <Position X="27.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAgAAAAAAAAAAAEAAAAAIA=</HashCode>
+      <FileName>ViewModel\SplashScreenMainViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.AccountNumber" Collapsed="true">
+    <Position X="26" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAEA=</HashCode>
+      <FileName>AccountNumber.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.CodesysIIS" Collapsed="true">
+    <Position X="29.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAIAAAAAAAABAAAIAAAAAAAgIAAAAAAQA=</HashCode>
+      <FileName>CodesysIIS.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.DataCorrespond" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="24.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAUAAAAAARAAAAAAAAA=</HashCode>
+      <FileName>DataCorrespond.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.DevEx" Collapsed="true">
+    <Position X="27.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAEAAQAABAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DevEx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.DevExpand" Collapsed="true">
+    <Position X="29.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DevExpand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.Expand" Collapsed="true">
+    <Position X="33" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAgAAAAAAIAAAAAAAAAAAAAAAgAAQAAA=</HashCode>
+      <FileName>Expand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.NcTemp" Collapsed="true">
+    <Position X="29.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAQAAA=</HashCode>
+      <FileName>NcTemp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.NcTempList" Collapsed="true">
+    <Position X="31.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NcTempList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ProjectProperty" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEABAAAAAQCAAgAEIAAAQAAAEAAEACAAAAAAAAAAA=</HashCode>
+      <FileName>ProjectProperty.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.ReadMemoryCallbackHandler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="38.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FFBQEAAAAAYAQAEAAAAAAAAAAAgAAAAQACAACACAABA=</HashCode>
+      <FileName>ReadMemoryCallbackHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.Reduction" Collapsed="true">
+    <Position X="24.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAACAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Reduction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ReductionList" Collapsed="true">
+    <Position X="26" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgIgAIBAAAAAAgAAAAAAAAAACAAAAAAAAAQAAAgAAIA=</HashCode>
+      <FileName>ReductionList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.SettingHelper" Collapsed="true">
+    <Position X="34.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CQAAAAAAAAAAAAAAAAIAACAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>SettingHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.STDSerialization" Collapsed="true">
+    <Position X="29.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABIAIUIhCEkQAAAQAAEBAUAAEBABAyAECAGDEAAYQEQ=</HashCode>
+      <FileName>STDSerialization.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.SystemVerification" Collapsed="true">
+    <Position X="36.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAQAAAEAAAAAAQACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SystemVerification.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.TreeNode" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAEAAAAACEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TreeNode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.ChangeDrillPageVM" Collapsed="true">
+    <Position X="6" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ApwEQEkFAQBAQCACiwQIgEAQDwIIFBICYEAQAgAAICw=</HashCode>
+      <FileName>ViewModel\ChangeDrillPageVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewModel._drillSetting" Collapsed="true">
+    <Position X="24.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAhAAAAIQAAAAAAQBAAAEAAAAAQAEAAQAAAAA=</HashCode>
+      <FileName>ViewModel\ChangeDrillPageVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.ExClampDownVM" Collapsed="true">
+    <Position X="8.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\ExClampDownVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.HandVM" Collapsed="true">
+    <Position X="10.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\HandVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.JoystickVM" Collapsed="true">
+    <Position X="13.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQCCAEAAIEAAAAABAAICACAAAAAEEAEAAA=</HashCode>
+      <FileName>ViewModel\JoystickVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.LeftAxisVM" Collapsed="true">
+    <Position X="17.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\LeftAxisVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.LoginVM" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="31.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAACBAAAAAAAAAAAAAAAAAAAAAABAAAAAFAAA=</HashCode>
+      <FileName>ViewModel\LoginVM.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.MiddleAxisVM" Collapsed="true">
+    <Position X="19.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\MiddleAxisVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.ModeSelectedVM" Collapsed="true">
+    <Position X="26" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\ModeSelectedVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.ObSettingVM" Collapsed="true">
+    <Position X="33" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>A0QQOAgAliQAGgEyFDsCEVQIEVECyAcAIQdJgDjcAPQ=</HashCode>
+      <FileName>ViewModel\ObSettingVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.ProcessingMonitorVM" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="27.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQBlGABjyogSWFgDESAAQkKAGEARgAMABBiEACIsJI=</HashCode>
+      <FileName>ViewModel\ProcessingMonitorVM.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.RacksOperationVM" Collapsed="true">
+    <Position X="36.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QwJAAABBAIAgAgBwIAAGAEQgAAEABACAAAAAgEAAAAA=</HashCode>
+      <FileName>ViewModel\RacksOperationVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.RightAxisVM" Collapsed="true">
+    <Position X="12.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\RightAxisVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.SelectFilesFileSource" Collapsed="true">
+    <Position X="27.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CSAEAAAAAAAggAAAAAAAAAAAAAAAAEAAAQAAiAFAAAA=</HashCode>
+      <FileName>ViewModel\SelectFilesFileSource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.SelectFilesIconManager" Collapsed="true">
+    <Position X="29.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIACAoAwAkBCABAAUAAQACAEACAACQAQAAAAAAQQ=</HashCode>
+      <FileName>ViewModel\SelectFilesIconManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.SelectFilesImageList" Collapsed="true">
+    <Position X="31.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\SelectFilesImageList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.SelectFilesViewModel" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="33" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IQQgAAAAAgECoSIAIBKAAAQAAABEAQYAAAAAAAEAAAI=</HashCode>
+      <FileName>ViewModel\SelectFilesViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.SettingParVM" Collapsed="true">
+    <Position X="36.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>8dwoMuShAweRR30Gw4M7Sw2QeKFRAhUSHHQFEkzBeDg=</HashCode>
+      <FileName>ViewModel\SettingParVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.DataGridData" Collapsed="true">
+    <Position X="26" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAgAQAACAA=</HashCode>
+      <FileName>ViewModel\SettingParVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.SideClampVM" Collapsed="true">
+    <Position X="15" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\SideClampVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.SofSettingVM" Collapsed="true">
+    <Position X="26" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwEAAAAIAAAAAAAECAAEBQAAAIWAIAAAQBAgACBABA=</HashCode>
+      <FileName>ViewModel\SofSettingVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.TypeSettingVM" Collapsed="true">
+    <Position X="7.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAQAABAAAAAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>ViewModel\TypeSettingVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WPFSTD105.ViewModel.VolumeVM" Collapsed="true">
+    <Position X="21.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\VolumeVM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="WPFSTD105.Attribute.IBoltAttr" Collapsed="true">
+    <Position X="27.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAgAAAABAAAAAAAAAAAAAQAAAAAYAE=</HashCode>
+      <FileName>Attribute\IBoltAttr.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WPFSTD105.Attribute.IGroupBoltsAttr" Collapsed="true">
+    <Position X="33" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEBAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAIAACAAAA=</HashCode>
+      <FileName>Attribute\IGroupBoltsAttr.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WPFSTD105.Attribute.ISteelAttr" Collapsed="true">
+    <Position X="38.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAEAAAAAAAAAIAAAAAEAAgAAAAIU=</HashCode>
+      <FileName>Attribute\ISteelAttr.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WPFSTD105.IAbsListening" Collapsed="true">
+    <Position X="26" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAYAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Listening\IListening.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WPFSTD105.Model.I2DBlock" Collapsed="true">
+    <Position X="24.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\I2DBlock.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WPFSTD105.Model.IBolts" Collapsed="true">
+    <Position X="29.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Model\IBolts.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WPFSTD105.IdevDeptModel" Collapsed="true">
+    <Position X="31.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Model\IdevDeptModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WPFSTD105.IApplicationVM" Collapsed="true">
+    <Position X="13.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAIACAAAAEAAAAwAAEgAABCAAAAAAAA=</HashCode>
+      <FileName>ViewModel\Windows\IApplicationVM.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WPFSTD105.IChildWin" Collapsed="true">
+    <Position X="13.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>ViewModel\Windows\IChildWin.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WPFSTD105.IWindowsVM" Collapsed="true">
+    <Position X="24.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAFAAAAAAQAACAAAAAAAAQABAAAEAAAAAAAAAkAAAA=</HashCode>
+      <FileName>ViewModel\Windows\IWindowsVM.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WPFSTD105.IProjectProperty" Collapsed="true">
+    <Position X="36.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEABAAAAAQCAAgAEIAAAQAAAEAAEACAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\IProjectProperty.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="WPFSTD105.IModelData" Collapsed="true">
+    <Position X="34.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IModelData.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="WPFSTD105.Enum.Language" Collapsed="true">
+    <Position X="27.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAACAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Enum\Language.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WPFSTD105.Listening.LEVEL" Collapsed="true">
+    <Position X="29.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAQAA=</HashCode>
+      <FileName>Listening\LEVEL.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WPFSTD105.ACTION_USER" Collapsed="true">
+    <Position X="24.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAQAAAAAAAAACAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>ACTION_USER.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WPFSTD105.ApplicationPage" Collapsed="true">
+    <Position X="26" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAQxAAAQACAAQEACEACABAEAAAQAYAAAAgJIEAAAgCA=</HashCode>
+      <FileName>ApplicationPage.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WPFSTD105.OfficePage" Collapsed="true">
+    <Position X="33" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAABAAAAAAAAAAAAAAAIQAAAAAAABAAAAIAAA=</HashCode>
+      <FileName>ApplicationPage.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WPFSTD105.PopupWindows" Collapsed="true">
+    <Position X="34.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABABgAAAABA=</HashCode>
+      <FileName>ApplicationPage.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WPFSTD105.MachineMode" Collapsed="true">
+    <Position X="31.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAEAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>MachineMode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WPFSTD105.START_HOLE" Collapsed="true">
+    <Position X="38.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAgAAAA=</HashCode>
+      <FileName>START_HOLE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="WPFSTD105.ViewModel.SizeIcon" Collapsed="true">
+    <Position X="36.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>ViewModel\SelectFilesViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Microsoft JhengHei UI" Size="9" />
+</ClassDiagram>

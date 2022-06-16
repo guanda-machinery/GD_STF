@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="492026d4-7e32-4cbf-a955-f21c14f3233a" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para></para>
+    </introduction>
+
+    <section>
+      <title>修改內容</title>
+      <content>
+        <list class="bullet">
+          <listItem>
+            <para>
+              多處變更<codeEntityReference>T:GD_STD.Phone.APP_Struct</codeEntityReference>
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              新增結構 <codeEntityReference>T:GD_STD.Phone.MecOptional</codeEntityReference>
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              多處變更 <codeEntityReference>T:GD_STD.Phone.WorkMaterial</codeEntityReference>
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              新增參數 <codeEntityReference>T:GD_STD.Phone.Operating</codeEntityReference>
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              多處變更 <codeEntityReference>T:GD_STD.Phone.Arm</codeEntityReference>
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              新增 <codeEntityReference>T:GD_STD.Enum.SELECT_DEVICE</codeEntityReference>
+            </para>
+          </listItem>
+        </list>
+      </content>
+    </section>
+
+    <relatedTopics>
+      <link xlink:href="9aee30af-e12b-4c50-98cd-83a192847219" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

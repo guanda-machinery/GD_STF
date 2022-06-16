@@ -1,0 +1,5119 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GD_STD</name>
+    </assembly>
+    <members>
+        <member name="T:GD_STD.IBase.IFixture">
+            <summary>
+            夾具介面
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IFixture.EntranceL">
+            <summary>
+            入口左側
+            </summary>
+             <remarks>面對加工機出料左邊向</remarks>
+        </member>
+        <member name="T:GD_STD.IBase.IBinaryData">
+            <summary>
+            二進制序列化介面
+            </summary>
+        </member>
+        <member name="M:GD_STD.IBase.IBinaryData.WriteBinary(System.Object,System.String)">
+            <summary>
+            寫入二進制檔案
+            </summary>
+        </member>
+        <member name="T:GD_STD.IBase.ILine">
+            <summary>
+            繪畫線段的介面
+            </summary>
+        </member>
+        <member name="T:GD_STD.IBase.IPainted">
+            <summary>
+            給予加工軸的座標與畫線介面
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IPainted.P1">
+            <summary>
+            畫線第一點座標
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IPainted.P2">
+            <summary>
+            畫線第二點座標
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IPainted.Dia">
+            <summary>
+            直徑
+            </summary>
+        </member>
+        <member name="M:GD_STD.IBase.IPainted.AddP1(GD_STD.IBase.IAxis2D)">
+            <summary>
+            加入畫線第一點
+            </summary>
+            <param name="axis2D"></param>
+        </member>
+        <member name="M:GD_STD.IBase.IPainted.AddP2(GD_STD.IBase.IAxis2D)">
+            <summary>
+            加入畫線第二點
+            </summary>
+            <param name="axis2D"></param>
+        </member>
+        <member name="M:GD_STD.IBase.IPainted.Reverse">
+            <summary>
+            對調 <see cref="P:GD_STD.IBase.IPainted.P1"/> <see cref="P:GD_STD.IBase.IPainted.P2"/> 座標位置
+            </summary>
+        </member>
+        <member name="T:GD_STD.IBase.ISharedMemory">
+            <summary>
+            共享記憶體介面
+            </summary>
+        </member>
+        <member name="M:GD_STD.IBase.ISharedMemory.ReadMemory">
+            <summary>
+            讀取 Codesys 的共享記憶體內
+            </summary>
+        </member>
+        <member name="M:GD_STD.IBase.ISharedMemory.WriteMemory">
+            <summary>
+            寫入 Codesys 的共享記憶體內
+            </summary>
+        </member>
+        <member name="T:GD_STD.IBase.IDrillSetting">
+            <summary>
+            鑽頭設定介面
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IDrillSetting.Dia">
+            <summary>
+            鑽頭直徑
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IDrillSetting.Level">
+            <summary>
+            鑽頭等級(材質)
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IDrillSetting.Rpm">
+            <summary>
+            主軸設定轉速
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IDrillSetting.DrillType">
+            <summary>
+            鑽頭類型
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IDrillSetting.Length">
+            <summary>
+            鑽頭長度
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IDrillSetting.Limit">
+            <summary>
+            鑽頭鑽過幾米內要通知換刀
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IDrillSetting.FeedQuantity">
+            <summary>
+            走刀量。一般指切削加工中工件或切削工具每鏇轉一周(如車削)或往返一次(稱雙行程，如刨削)時，工件或切削工具的相對移動距離。
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IDrillSetting.Index">
+            <summary>
+            刀具位置
+            <para>如果是放在刀庫內的刀具則回傳 刀具目前號碼 </para>
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IDrillSetting.IsCurrent">
+            <summary>
+            是目前使用的刀具。如果是回傳 true ，不是則回傳 false 。
+            </summary>
+        </member>
+        <member name="T:GD_STD.IBase.IHydraulicSystem">
+            <summary>
+            液壓油系統介面
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IHydraulicSystem.Index">
+            <summary>
+            項目
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IHydraulicSystem.Power">
+            <summary>
+            夾持力道 (kg)
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IHydraulicSystem.MinRange">
+            <summary>
+            最小範圍
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IHydraulicSystem.MaxRange">
+            <summary>
+            最大範圍
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IHydraulicSystem.SideReady">
+            <summary>
+            側壓預備位置
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IHydraulicSystem.DownReady">
+            <summary>
+            下壓預備位置
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IHydraulicSystem.Deviation">
+            <summary>
+            誤差距離
+            </summary>
+        </member>
+        <member name="T:GD_STD.IBase.IInput">
+            <summary>
+            輸入接點介面
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.EMS">
+            <summary>
+            急停
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X0</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.TH_RY">
+            <summary>
+            油壓,排屑,出料過載
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X1</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.AirPSI">
+            <summary>
+            氣壓壓力檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X2</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HydraulicPSI">
+            <summary>
+            油壓壓力檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X3</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_X_Origin">
+            <summary>
+            左X原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X4</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_X_LimitBack">
+            <summary>
+            左X負極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X5</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_Y_Origin">
+            <summary>
+            左Y原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X6</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_Y_LimitBack">
+            <summary>
+            左Y負極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X7</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_Y_LimitFront">
+            <summary>
+            左Y正極限(B)X8
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X8</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_Z_Origin">
+            <summary>
+            左Z原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X9</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_Z_LimitBack">
+            <summary>
+            左Z負極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X10</para>
+            </remarks> 
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_Z_LimitFornt">
+            <summary>
+            左Z正極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X1</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_X_Origin">
+            <summary>
+            右X原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X12</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_X_LimitBack">
+            <summary>
+            右X負極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X13</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_X_LimitFornt">
+            <summary>
+            右X正極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X14</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_Y_Origin">
+            <summary>
+            右Y原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X15</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_Y_LimitBack">
+            <summary>
+            右Y負極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X16</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_Y_LimitFornt">
+            <summary>
+            右Y正極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X17</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_Z_Origin">
+            <summary>
+            右Z原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X18</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_Z_LimitBack">
+            <summary>
+            右Z負極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X19</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_Z_LimitFornt">
+            <summary>
+            右Z正極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X20</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_X_Origin">
+            <summary>
+            上X原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X21</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_X_LimitBack">
+            <summary>
+            上X負極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X22</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_X_LimitFornt">
+            <summary>
+            上X正極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X23</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_Y_Origin">
+            <summary>
+            上Y原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X24</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_Y_LimitBack">
+            <summary>
+            上Y負極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X25</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_Y_LimitFornt">
+            <summary>
+            上Y正極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X26</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_Z_Origin">
+            <summary>
+            上Z原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X27</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_Z_LimitBack">
+            <summary>
+            上Z負極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X28</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_Z_LimitFornt">
+            <summary>
+            上Z正極限(B)X29
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X29</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.LX_MX_Touch">
+            <summary>
+            左X and上X碰撞
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X30</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.MX_RX_Touch">
+            <summary>
+            上X and 右X碰撞
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X31</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_Spindle_Origin">
+            <summary>
+            左主軸相位原點X32
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X32</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_Spindle_Origin">
+            <summary>
+            右主軸項為原點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X33</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_SpindleClip">
+            <summary>
+            左主軸夾刀
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X34</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_SpindleLoosen">
+            <summary>
+            左主軸鬆刀
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X35</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_SpindleClip">
+            <summary>
+            右主軸夾刀
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X36</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_SpindleLoosen">
+            <summary>
+            右主軸鬆刀X37
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X37</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_SpindleClip">
+            <summary>
+            上主軸夾刀
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X38</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_SpindleLoosen">
+            <summary>
+            上主軸鬆刀
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X39</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_DrillHomeOrigin">
+            <summary>
+            上軸刀庫原點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X40</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_DrillHomeChange">
+            <summary>
+            上軸刀庫換刀點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X41</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_IN_DrillHomeOrigin">
+            <summary>
+            左刀庫(進料邊)原點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X42</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_IN_DrillHomeChange">
+            <summary>
+            左刀庫(進料邊)換刀點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X43</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_OUT_DrillHomeOrigin">
+            <summary>
+            左刀庫(出料邊)原點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X44</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_OUT_DrillHomeChange">
+            <summary>
+            左刀庫(出料邊)換刀點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X45</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_IN_DrillHomeOrigin">
+            <summary>
+            右刀庫(進料邊)原點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X46</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_IN_DrillHomeChange">
+            <summary>
+            右刀庫(進料邊)換刀點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X47</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_OUT_DrillHomeOrigin">
+            <summary>
+            右刀庫(出料邊)原點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X48</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_OUT_DrillHomeChange">
+            <summary>
+            右刀庫(出料邊)換刀點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X49</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.Z_HighSensorDoor_Close">
+            <summary>
+            Z軸側距閘門_關
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X50</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.Z_HighSensorDoor_Open">
+            <summary>
+            Z軸側距閘門_開
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X51</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_X_lubricating">
+            <summary>
+            左X潤滑分路檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X52</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_Y_lubricating">
+            <summary>
+            左Y潤滑分路檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X53</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_Z_lubricating">
+            <summary>
+            左Z潤滑分路檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X54</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_X_lubricating">
+            <summary>
+            右X潤滑分路檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X55</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_Y_lubricating">
+            <summary>
+            右Y潤滑分路檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X56</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_Z_lubricating">
+            <summary>
+            右Z潤滑分路檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X57</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_X_lubricating">
+            <summary>
+            上X潤滑分路檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X58</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_Y_lubricating">
+            <summary>
+            上Y潤滑分路檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X59</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_Z_lubricating">
+            <summary>
+            上Z潤滑分路檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X60</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_IN_Clip_Down_Origin">
+            <summary>
+            左壓料電阻尺原點(進料端)
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X61</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_OUT_Clip_Down_Origin">
+            <summary>
+            左壓料電阻尺原點(出料端)
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X62</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_IN_Clip_Down_Origin">
+            <summary>
+            右壓料電阻尺原點(進料端)
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X63</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_OUT_Clip_Down_Origin">
+            <summary>
+            右壓料電阻尺原點(出料端)
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X64</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.Side_IN_Clip_Origin">
+            <summary>
+            側壓料電阻尺原點(進料端)
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X65</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.Side_OUT_Clip_Origin">
+            <summary>
+            側壓料電阻尺原點(出料端)
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X66</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_DrillLength">
+            <summary>
+            左軸側刀長感測
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X67</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_DrillLength">
+            <summary>
+            右軸側刀長感測(B)X68
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X68</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_DrillLength">
+            <summary>
+            上軸側刀長感測
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X69</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_IN_DrillHome_1">
+            <summary>
+            左刀庫進料端-刀具1 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X70</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_IN_DrillHome_2">
+            <summary>
+            左刀庫進料端-刀具2 X71
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X71</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_IN_DrillHome_3">
+            <summary>
+            左刀庫進料端-刀具3 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X72</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_IN_DrillHome_4">
+            <summary>
+            左刀庫進料端-刀具4 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X73</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_OUT_DrillHome_1">
+            <summary>
+            左刀庫出料端-刀具1 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X74</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_OUT_DrillHome_2">
+            <summary>
+            左刀庫出料端-刀具2 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X75</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_OUT_DrillHome_3">
+            <summary>
+            左刀庫出料端-刀具3 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X76</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.L_OUT_DrillHome_4">
+            <summary>
+            左刀庫出料端-刀具4 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X77</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_IN_DrillHome_1">
+            <summary>
+            右刀庫進料端-刀具1 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X78</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_IN_DrillHome_2">
+            <summary>
+            右刀庫進料端-刀具2 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X79</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_IN_DrillHome_3">
+            <summary>
+            右刀庫進料端-刀具3 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X80</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_IN_DrillHome_4">
+            <summary>
+            右刀庫進料端-刀具4
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X81</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_OUT_DrillHome_1">
+            <summary>
+            右刀庫出料端-刀具1 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X82</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_OUT_DrillHome_2">
+            <summary>
+            右刀庫出料端-刀具2 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X83</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_OUT_DrillHome_3">
+            <summary>
+            右刀庫出料端-刀具3 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X84</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.R_OUT_DrillHome_4">
+            <summary>
+            右刀庫出料端-刀具4 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X85</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_DrillHome_1">
+            <summary>
+            上刀庫-刀具1 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X86</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_DrillHome_2">
+            <summary>
+            上刀庫-刀具2 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X87</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_DrillHome_3">
+            <summary>
+            上刀庫-刀具3 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X88</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_DrillHome_4">
+            <summary>
+            上刀庫-刀具4 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X89</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.M_DrillHome_5">
+            <summary>
+            上刀庫-刀具5 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X90</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.Feed_Slow_Down_Point">
+            <summary>
+            手臂送料減速點檢知
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X91</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.Feed_Origin">
+            <summary>
+            手臂送料原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X92</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.FinishOut">
+            <summary>
+            出料料件口檢測
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X93</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.Total_Lubricatig">
+            <summary>
+            潤滑油液位檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X94</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.Electrical_BOX_Colse">
+            <summary>
+            強電箱關門檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X95</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.Electrical_BOX_Lock">
+            <summary>
+            強電箱LOCK檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X96</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.Case_1_Close">
+            <summary>
+            外罩門(1)關門檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X97</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.Case_1_Lock">
+            <summary>
+            外罩門(1)LOCK檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X98</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.Case_2_Close">
+            <summary>
+            外罩門(2)關門檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X99</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.Case_2_Lock">
+            <summary>
+            外罩門(2)LOCK檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X100</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.Case_3_Close">
+            <summary>
+            外罩門(3)關門檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X101</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.Case_3_Lock">
+            <summary>
+            外罩門(3)LOCK檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X102</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Key_Lcok">
+            <summary>
+            面板KEY(2點鐘)_LOCK 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X112</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Key_Manual">
+            <summary>
+            面板KEY(10點鐘)_手動
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X113</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Reset">
+            <summary>
+            面板_Reset
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X114</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Oil_Start">
+            <summary>
+            面板_油壓
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X115</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Pause">
+            <summary>
+            面板_暫停
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X116</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Start_AutoRun">
+            <summary>
+            面板_啟動
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X117</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Fully_Automatic">
+            <summary>
+            面板_全自動
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X118</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Semi_Automatic">
+            <summary>
+            面板_半自動
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X119</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Origin_Return">
+            <summary>
+            面板_原點復歸
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X120</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Arm_Slow_Down">
+            <summary>
+            面板_減速
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X122</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Arm_Speed_Up">
+            <summary>
+            面板_加速
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X123</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Effluent">
+            <summary>
+            面板_中心出水
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X124</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Spindle_Loosen">
+            <summary>
+            面板_主軸鬆刀
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X125</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_DrillHome_Mode">
+            <summary>
+            面板_刀庫模式
+            </summary>
+            <remarks>
+            <para>類型 : 搖桿</para>
+            <para>地址 : X126</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_HandWheel">
+            <summary>
+            面板_啟動手搖輪
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X127</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Alarm_Return">
+            <summary>
+            面板_警報復位
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X128</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Arm_Select">
+            <summary>
+            面板_送料手臂
+            </summary>
+            <remarks>
+            <para>類型 : 搖桿</para>
+            <para>地址 : X130</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_IN_Rack">
+            <summary>
+            面板_入口料架
+            </summary>
+            <remarks>
+            <para>類型 : 搖桿</para>
+            <para>地址 : X131</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_OUT_Rack">
+            <summary>
+            面板_出口料架
+            </summary>
+            <remarks>
+            <para>類型 : 搖桿</para>
+            <para>地址 : X132</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Spindle_Mode">
+            <summary>
+            面板_主軸模式
+            </summary>
+            <remarks>
+            <para>類型 : 搖桿</para>
+            <para>地址 : X133</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Spindle_CW">
+            <summary>
+            面板_主軸正轉
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X134</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Spindle_Stop">
+            <summary>
+            面板_主軸停止
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X135</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Clip_Side_Mode">
+            <summary>
+            面板_夾具側壓
+            </summary>
+            <remarks>
+            <para>類型 : 搖桿</para>
+            <para>地址 : X139</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Clip_Down_Mode">
+            <summary>
+            面板_夾具下壓
+            </summary>
+            <remarks>
+            <para>類型 : 搖桿</para>
+            <para>地址 : X140</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.HMI_Volume_scrap">
+            <summary>
+            面板_捲屑機動作
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X141</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.JoyStick_Left">
+            <summary>
+            搖桿_左
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X145</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.JoyStick_Right">
+            <summary>
+            搖桿_右
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X146</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.JoyStick_Front">
+            <summary>
+            搖桿_前
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X147</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.JoyStick_Back">
+            <summary>
+            搖桿_後
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X148</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.JoyStick_PB_1">
+            <summary>
+            搖桿  Push Button 1
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X149</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.JoyStick_PB_2">
+            <summary>
+            搖桿 Push Button 2
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X150</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.JoyStick_PB_3">
+            <summary>
+            搖桿 Push Button 3
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X151</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.JoyStick_PB_4">
+            <summary>
+            搖桿 Push Button 4
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X152</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.JoyStick_PB_5">
+            <summary>
+            搖桿 Push Button 5
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X153</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IInput.JoyStick_PB_6">
+            <summary>
+            搖桿 Push Button 6
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X153</para>
+            </remarks>
+        </member>
+        <member name="T:GD_STD.IBase.IOrder">
+            <summary>
+            有項目的物件
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IOrder.Index">
+            <summary>
+            項目
+            </summary>
+        </member>
+        <member name="T:GD_STD.IBase.IOutput">
+            <summary>
+            輸出接點介面
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.Hydraulic_On">
+            <summary>
+            油壓啟動
+            </summary>
+            <remarks>
+            <para>地址 : Y0</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.Volume_Scrap_On">
+            <summary>
+            排屑啟動
+            </summary>
+            <remarks>
+            <para>地址 : Y1</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.Finish_Motor_On">
+            <summary>
+            完工出料馬達啟動
+            </summary>
+            <remarks>
+            <para>地址 : Y2</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.Materials_Side_Move_CCW">
+            <summary>
+            進料橫移正轉
+            </summary>
+            <remarks>
+            <para>地址 : Y3</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.Materials_Side_Move_CW">
+            <summary>
+            進料橫移逆轉
+            </summary>
+            <remarks>
+            <para>地址 : Y4</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.Materials_Side_Move_Speed_1">
+            <summary>
+            進料橫移速度(一)
+            <remarks>
+            <para>地址 : Y5</para>
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.Materials_Side_Move_Speed_2">
+            <summary>
+            進料橫移速度(二)
+            </summary>
+            <remarks>
+            <para>地址 : Y6</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.L_Spray_OilFog">
+            <summary>
+            左主軸噴油霧Y7
+            </summary>
+            <remarks>
+            <para>地址 : Y7</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.R_Spray_OilFog">
+            <summary>
+            右主軸噴油霧
+            </summary>
+            <remarks>
+            <para>地址 : Y8</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.M_Spray_OilFog">
+            <summary>
+            上主軸噴油霧
+            </summary>
+            <remarks>
+            <para>地址 : Y9</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.L_Spary_Air">
+            <summary>
+            左主軸外管出風
+            </summary>
+            <remarks>
+            <para>地址 : Y10</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.R_Spary_Air">
+            <summary>
+            右主軸外管出風Y11
+            </summary>
+            <remarks>
+            <para>地址 : Y11</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.M_Spary_Air">
+            <summary>
+            上主軸外管出風
+            </summary>
+            <remarks>
+            <para>地址 : Y12</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.L_Spindle_Change_Air">
+            <summary>
+            左軸換刀吹氣
+            </summary>
+            <remarks>
+            <para>地址 : Y13</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.R_Spindle_Change_Air">
+            <summary>
+            右軸換刀吹氣
+            </summary>
+            <remarks>
+            <para>地址 : Y14</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.M_Spindle_Change_Air">
+            <summary>
+            上軸換刀吹氣
+            </summary>
+            <remarks>
+            <para>地址 : Y15</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.L_Spindle_Loosen">
+            <summary>
+            左主軸鬆刀
+            </summary>
+            <remarks>
+            <para>地址 : Y16</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.R_Spindle_Loosen">
+            <summary>
+            右主軸鬆刀
+            </summary>
+            <remarks>
+            <para>地址 : Y17</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.M_Spindle_Loosen">
+            <summary>
+            上主軸鬆刀
+            </summary>
+            <remarks>
+            <para>地址 : Y18</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.M_DirllHome_Origin">
+            <summary>
+            上刀庫回原點
+            </summary>
+            <remarks>
+            <para>地址 : Y19</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.M_DrillHome_Change">
+            <summary>
+            上刀庫到換刀點
+            </summary>
+            <remarks>
+            <para>地址 : Y20</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.L_IN_DrillHome_Origin">
+            <summary>
+            左刀庫復歸(進料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y21</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.L_IN_DrillHome_RollOut">
+            <summary>
+            左刀庫推出(進料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y22</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.L_OUT_DrillHome_Origin">
+            <summary>
+            左刀庫復歸(出料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y23</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.L_OUT_DrillHome_RollOut">
+            <summary>
+            左刀庫推出(出料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y24</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.R_IN_DrillHome_Origin">
+            <summary>
+            右刀庫復歸(進料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y25</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.R_IN_DrillHome_RollOut">
+            <summary>
+            右刀庫推出(進料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y26</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.R_OUT_DrillHome_Origin">
+            <summary>
+            右刀庫復歸(出料端)
+            </summary>
+             <remarks>
+            <para>地址 : Y27</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.R_OUT_DrillHome_RollOut">
+            <summary>
+            右刀庫推出(出料端)
+            </summary>
+             <remarks>
+            <para>地址 : Y28</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.L_IN_Clip_Down_Origin">
+            <summary>
+            左下壓復歸(進料端)
+            </summary>
+             <remarks>
+            <para>地址 : Y29</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.L_IN_Clip_Down">
+            <summary>
+            左下壓動作(進料端)
+            </summary>
+             <remarks>
+            <para>地址 : Y30</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.L_OUT_Clip_Down_Origin">
+            <summary>
+            左下壓復歸(出料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y31</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.L_OUT_Clip_Down">
+            <summary>
+            左下壓動作(出料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y32</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.R_IN_Clip_Down_Origin">
+            <summary>
+            右下壓復歸(進料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y33</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.R_IN_Clip_Down">
+            <summary>
+            右下壓動作(進料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y34</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.R_OUT_Clip_Down_Origin">
+            <summary>
+            右下壓復歸(出料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y35</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.R_OUT_Clip_Down">
+            <summary> 
+            右下壓動作(出料端)
+            </summary> 
+            <remarks>
+            <para>地址 : Y36</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.SIDE_Clip_Origin">
+            <summary>
+            側壓復歸
+            </summary> 
+            <remarks>
+            <para>地址 : Y37</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.SIDE_Clip">
+            <summary> 
+            側壓動作
+            </summary> 
+            <remarks>
+            <para>地址 : Y38</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.Z_High_Sensor_Door_Open">
+            <summary> 
+            Z軸側距閘門 Open
+            </summary> 
+            <remarks>
+            <para>地址 : Y39</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.Electrical_BOX_Lock">
+            <summary> 
+            強電箱門LOCK 
+            </summary> 
+            <remarks>
+            <para>地址 : Y40</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.Case_1_Lock">
+            <summary> 
+            外罩門(1)LOCK 
+            </summary> 
+            <remarks>
+            <para>地址 : Y41</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.Case_2_Lock">
+            <summary> 
+            外罩門(2)LOCK 
+            </summary> 
+            <remarks>
+            <para>地址 : Y42</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.Case_3_Lock">
+            <summary> 
+            外罩門(3)LOCK 
+            </summary> 
+            <remarks>
+            <para>地址 : Y43</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.L_Z_Break_Open">
+            <summary> 
+            左軸Z軸剎車 Open
+            </summary> 
+            <remarks>
+            <para>地址 : Y44</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.R_Z_Break_Open">
+            <summary> 
+            右軸Z軸剎車 Open Y45
+            </summary> 
+            <remarks>
+            <para>地址 : Y45</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.M_Z_Break_Open">
+            <summary> 
+            上軸Z軸剎車OPEN
+            </summary> 
+            <remarks>
+            <para>地址 : Y46</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_Power_Light">
+            <summary> 
+            面板_總電源燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y48</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_Hydraulic_Light">
+            <summary> 
+            面板_油壓啟動燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y49</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_AutoRun_Light">
+            <summary> 
+            面板_加工直行燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y50</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_Pause_Light">
+            <summary> 
+            面板_暫停燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y51</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_OverLoad_Light">
+            <summary> 
+            面板_OverLoad燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y53</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_Alarm_Light">
+            <summary>
+            面板_Alarm燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y54</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_Fully_Automatic_Light">
+            <summary> 
+            面板_全自動燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y57</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_Semi_Automatic_Light">
+            <summary> 
+            面板_半自動燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y58</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_Origin_Return_Light">
+            <summary>
+            面板_原點復歸燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y59</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_Arm_Slow_Down_Light">
+            <summary> 
+            面板_減速燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y61</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_Arm_Speed_Up_Light">
+            <summary> 
+            面板_加速燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y61</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_Effluent_Light">
+            <summary> 
+            面板_中心出水燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y63</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_Spindle_Loosen_Light">
+            <summary> 
+            面板鬆刀燈Y64
+            </summary> 
+            <remarks>
+            <para>地址 : Y64</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_DrillHome_Mode_Light">
+            <summary> 
+            面板_刀庫模式燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y65</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_HandWheel_Light">
+            <summary> 
+            面板_啟動手搖輪燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y66</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_Alarm_Return_Light">
+            <summary> 
+            面板_警報復位燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y67</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_Arm_Select_Light">
+            <summary> 
+            面板_手臂選擇燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y69</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_IN_Rack_Light">
+            <summary> 
+            面板_入口料架燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y70</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_OUT_Rack_Light">
+            <summary> 
+            面板_出口料架燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y71</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_Spindle_Mode_Light">
+            <summary> 
+            面板_主軸模式燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y72</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_Spindle_CW_Light">
+            <summary> 
+            面板_主軸正轉燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y73</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_Spindle_Stop_Light">
+            <summary> 
+            面板_主軸停止燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y74</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_Clip_Side_Mode_Light">
+            <summary> 
+            面板_夾具側壓模式燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y78</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_Clip_Down_Mode_Light">
+            <summary> 
+            面板_夾具下壓模式(搖桿)
+            </summary> 
+            <remarks>
+            <para>地址 : Y79</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IOutput.HMI_Volume_scrap_Light">
+            <summary> 
+            面板_捲屑機動作燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y80</para>
+            </remarks>
+        </member>
+        <member name="T:GD_STD.IBase.IAxis2D">
+            <summary>
+            提供二維座標的介面
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IAxis2D.X">
+            <summary>
+            座標 X 
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IAxis2D.Y">
+            <summary>
+            座標 Y 
+            </summary>
+        </member>
+        <member name="T:GD_STD.IBase.IAxis3D">
+            <summary>
+            提供三維座標的介面
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IAxis3D.Z">
+            <summary>
+            座標 Z
+            </summary>
+        </member>
+        <member name="T:GD_STD.IBase.ISingleAxisInfo">
+            <summary>
+            單一軸的軸向的資訊
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.ISingleAxisInfo.Rpm">
+            <summary>
+            主軸速度
+            </summary>
+        </member>
+        <member name="T:GD_STD.IBase.IJob">
+            <summary>
+            Codesys工作完成後的訊號
+            </summary>
+            <remarks>代表工作完成訊號</remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IJob.Finish">
+            <summary>
+            代表著此機械工作座標已經執行完畢
+            </summary>
+        </member>
+        <member name="T:GD_STD.IBase.IPart">
+            <summary>
+            單支鋼材的相關資訊
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IPart.Length">
+            <summary>
+            長度
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IPart.Material">
+            <summary>
+            物件材質
+            </summary>
+        </member>
+        <member name="T:GD_STD.IBase.IProfile">
+            <summary>
+            各類型剛的斷面輪廓資訊
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IProfile.H">
+            <summary>
+            高度
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IProfile.W">
+            <summary>
+            寬度
+            </summary>
+        </member>
+        <member name="P:GD_STD.IBase.IProfile.t1">
+            <summary>
+            腹板厚度
+            </summary>
+            <remarks>腹板厚度</remarks>
+        </member>
+        <member name="P:GD_STD.IBase.IProfile.t2">
+            <summary>
+            翼板厚度
+            </summary>
+        </member>
+        <member name="T:GD_STD.Base.IOill">
+            <summary>
+            非液壓油系統介面
+            </summary>
+        </member>
+        <member name="P:GD_STD.Base.IOill.Frequency">
+            <summary>
+            頻率/次數
+            </summary>
+        </member>
+        <member name="T:GD_STD.ClampDown">
+            <summary>
+            下壓夾具
+            </summary>
+            <remarks>
+            代表著側壓夾具的相關資訊
+            Codesys  Memory 讀取
+            </remarks>
+        </member>
+        <member name="P:GD_STD.ClampDown.EntranceR">
+            <summary>
+            入口右側
+            </summary>
+             <remarks>面對加工機出料右邊向</remarks>
+        </member>
+        <member name="P:GD_STD.ClampDown.ExportL">
+            <summary>
+            出口左側
+            </summary>
+             <remarks>面對加工機出料左邊向</remarks>
+        </member>
+        <member name="P:GD_STD.ClampDown.ExportR">
+            <summary>
+            出口右側
+            </summary>
+             <remarks>面對加工機出料右邊向</remarks>
+        </member>
+        <member name="T:GD_STD.Enum.CLAMP_DOWN">
+            <summary>
+            下壓夾具選擇
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.CLAMP_DOWN.Entrance">
+            <summary>
+            入口
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.CLAMP_DOWN.Export">
+            <summary>
+            出口
+            </summary>
+        </member>
+        <member name="T:GD_STD.Enum.AXIS_SELECTED">
+            <summary>
+            軸向選擇
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.AXIS_SELECTED.Left">
+            <summary>
+            左軸
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.AXIS_SELECTED.Middle">
+            <summary>
+            中軸
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.AXIS_SELECTED.Right">
+            <summary>
+            右軸
+            </summary>
+        </member>
+        <member name="T:GD_STD.Enum.FACE">
+            <summary>
+            實體面的方向
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.FACE.TOP">
+            <summary>
+            頂面
+            </summary>
+            <remarks>
+            中軸
+            </remarks>
+        </member>
+        <member name="F:GD_STD.Enum.FACE.FRONT">
+            <summary>
+            前面
+            </summary>
+            <remarks>
+            右軸
+            </remarks>
+        </member>
+        <member name="F:GD_STD.Enum.FACE.BACK">
+            <summary>
+            後面
+            </summary>
+            <remarks>
+            左軸
+            </remarks>
+        </member>
+        <member name="T:GD_STD.Enum.DRILL_LEVEL">
+            <summary>
+            鑽頭等級
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.DRILL_LEVEL.LEVEL1">
+            <summary>
+            HHS
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.DRILL_LEVEL.LEVEL2">
+            <summary>
+            HHS油孔
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.DRILL_LEVEL.LEVEL3">
+            <summary>
+            鎢化鋼刀片
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.DRILL_LEVEL.LEVEL4">
+            <summary>
+            鎢化鋼刀片+
+            </summary>
+        </member>
+        <member name="T:GD_STD.Enum.DRILL_POSITION">
+            <summary>
+            刀庫選項
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.DRILL_POSITION.EXPORT_L">
+            <summary>
+            左軸出料口刀庫
+            </summary>
+            <remarks>面對加工機出料左邊的軸向</remarks>
+        </member>
+        <member name="F:GD_STD.Enum.DRILL_POSITION.EXPORT_R">
+            <summary>
+            右軸出料口刀庫
+            </summary>
+            <remarks>面對加工機出料右邊的軸向</remarks>
+        </member>
+        <member name="F:GD_STD.Enum.DRILL_POSITION.MIDDLE">
+            <summary>
+            中軸刀庫
+            </summary>
+            <remarks>面對加工機出料中間的軸向</remarks>
+        </member>
+        <member name="F:GD_STD.Enum.DRILL_POSITION.ENTRANCE_L">
+            <summary>
+            左軸入料口刀庫
+            </summary>
+            <remarks>面對加工機入料左邊的軸向</remarks>
+        </member>
+        <member name="F:GD_STD.Enum.DRILL_POSITION.ENTRANCE_R">
+            <summary>
+            右軸入料口刀庫
+            </summary>
+            <remarks>面對加工機入料右邊的軸向</remarks>
+        </member>
+        <member name="T:GD_STD.Enum.DRILL_TYPE">
+            <summary>
+            鑽頭類型
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.DRILL_TYPE.DRILL">
+            <summary>
+            鑽孔鑽頭
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.DRILL_TYPE.PAINTED">
+            <summary>
+            繪畫線段的鑽頭
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.DRILL_TYPE.TAPPING">
+            <summary>
+            攻牙鑽頭
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.DRILL_TYPE.WASH">
+            <summary>
+            洗刀
+            </summary>
+        </member>
+        <member name="T:GD_STD.Enum.KEY_HOLE">
+            <summary>
+            面板鑰匙孔
+            </summary>
+            <remarks>
+            LOCK 人機介面會上鎖
+            AUTO 自動加工
+            MANUAL 可手動操作
+            </remarks>
+        </member>
+        <member name="F:GD_STD.Enum.KEY_HOLE.LOCK">
+            <summary>
+            畫面上鎖
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.KEY_HOLE.AUTO">
+            <summary>
+            自動加工
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.KEY_HOLE.MANUAL">
+            <summary>
+            手動操作
+            </summary>
+        </member>
+        <member name="T:GD_STD.Enum.MATERIAL">
+            <summary>
+            鋼構材質
+            </summary>
+        </member>
+        <member name="T:GD_STD.Enum.AXIS_MODE">
+            <summary>
+            鑽頭的工作模式
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.AXIS_MODE.PIERCE">
+            <summary>
+            鑽穿
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.AXIS_MODE.POINT">
+            <summary>
+            打點
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.AXIS_MODE.LINE">
+            <summary>
+            畫線
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.AXIS_MODE.Arc">
+            <summary>
+            畫弧
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.AXIS_MODE.Round">
+            <summary>
+            畫圓
+            </summary>
+        </member>
+        <member name="T:GD_STD.Enum.PROFILE_TYPE">
+            <summary>
+            斷面規格類型
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.PROFILE_TYPE.H">
+            <summary>
+            H型鋼
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.PROFILE_TYPE.U">
+            <summary>
+            曹鐵
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.PROFILE_TYPE.BOX">
+            <summary>
+            方型
+            </summary>
+        </member>
+        <member name="F:GD_STD.Enum.PROFILE_TYPE.L">
+            <summary>
+            角鐵
+            </summary>
+        </member>
+        <member name="T:GD_STD.IOAttribute">
+            <summary>
+            Codesys 接點屬性
+            </summary>
+        </member>
+        <member name="P:GD_STD.IOAttribute.Name">
+            <summary>
+            接點名稱
+            </summary>
+        </member>
+        <member name="P:GD_STD.IOAttribute.Description">
+            <summary>
+            接點類型說明
+            </summary>
+        </member>
+        <member name="M:GD_STD.IOAttribute.#ctor(System.String,System.String)">
+            <summary>
+            Codesys 接點屬性
+            </summary>
+            <param name="name">接點名稱</param>
+            <param name="description">接點類型說明</param>
+        </member>
+        <member name="M:GD_STD.IOAttribute.GetIOName(System.Type,System.String)">
+            <summary>
+            取得 io 名稱
+            </summary>
+            <param name="type"></param>
+            <param name="name">屬性名稱</param>
+            <returns></returns>
+        </member>
+        <member name="M:GD_STD.IOAttribute.GetIODescription(System.Type,System.String)">
+            <summary>
+            取得 io 說明
+            </summary>
+            <param name="type"></param>
+            <param name="name">屬性名稱</param>
+            <returns></returns>
+        </member>
+        <member name="M:GD_STD.IOAttribute.GetIOAttribute(System.Type,System.String)">
+            <summary>
+            取得 <see cref="T:GD_STD.IOAttribute"/> 特性
+            </summary>
+            <param name="type"></param>
+            <param name="name">屬性名稱</param>
+            <returns></returns>
+        </member>
+        <member name="T:GD_STD.CutOilSystem">
+            <summary>
+            切消油系統設定
+            </summary>
+            <remarks>Codesys Memory 讀取/寫入</remarks>
+        </member>
+        <member name="T:GD_STD.DrillSetting">
+            <summary>
+            鑽頭設定參數
+            <para>可序列化的結構</para>
+            </summary>
+            <remarks>Codesys Memory 讀取/寫入</remarks>
+        </member>
+        <member name="P:GD_STD.DrillSetting.Dia">
+            <summary>
+            鑽頭直徑
+            </summary>
+        </member>
+        <member name="P:GD_STD.DrillSetting.Level">
+            <summary>
+            鑽頭等級(材質)
+            </summary>
+        </member>
+        <member name="P:GD_STD.DrillSetting.Rpm">
+            <summary>
+            主軸設定轉速
+            </summary>
+        </member>
+        <member name="P:GD_STD.DrillSetting.DrillType">
+            <summary>
+            鑽頭類型
+            </summary>
+        </member>
+        <member name="P:GD_STD.DrillSetting.Length">
+            <summary>
+            鑽頭長度
+            </summary>
+        </member>
+        <member name="P:GD_STD.DrillSetting.Limit">
+            <summary>
+            鑽頭鑽過幾米內要通知換刀
+            </summary>
+        </member>
+        <member name="P:GD_STD.DrillSetting.FeedQuantity">
+            <summary>
+            走刀量。一般指切削加工中工件或切削工具每鏇轉一周(如車削)或往返一次(稱雙行程，如刨削)時，工件或切削工具的相對移動距離。
+            </summary>
+        </member>
+        <member name="P:GD_STD.DrillSetting.Index">
+            <summary>
+            刀具位置
+            <para>如果是放在刀庫內的刀具則回傳 刀具目前號碼 </para>
+            </summary>
+        </member>
+        <member name="P:GD_STD.DrillSetting.IsCurrent">
+            <summary>
+            是目前使用的刀具。如果是回傳 true ，不是則回傳 false 。
+            </summary>
+        </member>
+        <member name="T:GD_STD.DrillWarehouse">
+            <summary>
+            使用者設定的刀具庫  
+            <para>可序列化的類型</para></summary>
+            <remarks>
+            <see cref="P:GD_STD.DrillWarehouse.Middle"/> Codesys Memory 讀取/寫入
+            <see cref="P:GD_STD.DrillWarehouse.LeftExport"/> Codesys Memory 讀取/寫入
+            <see cref="P:GD_STD.DrillWarehouse.RightExport"/> Codesys Memory 讀取/寫入
+            <see cref="P:GD_STD.DrillWarehouse.LeftEntrance"/> Codesys Memory 讀取/寫入
+            <see cref="P:GD_STD.DrillWarehouse.RightEntrance"/> Codesys Memory 讀取/寫入
+            </remarks>
+        </member>
+        <member name="M:GD_STD.DrillWarehouse.#ctor">
+            <summary>
+            預設建構式
+            </summary>
+        </member>
+        <member name="P:GD_STD.DrillWarehouse.Middle">
+            <summary>
+            中軸刀庫
+            </summary>
+            <remarks>面對加工機出料中間的軸向</remarks>
+        </member>
+        <member name="P:GD_STD.DrillWarehouse.LeftExport">
+            <summary>
+            左軸出料口刀庫
+            </summary>
+            <remarks>面對加工機出料左邊的軸向</remarks>
+        </member>
+        <member name="P:GD_STD.DrillWarehouse.RightExport">
+            <summary>
+            右軸出料口刀庫
+            </summary>
+            <remarks>面對加工機出料右邊的軸向</remarks>
+        </member>
+        <member name="P:GD_STD.DrillWarehouse.LeftEntrance">
+            <summary>
+            左軸入料口刀庫
+            </summary>
+            <remarks>面對加工機入料左邊的軸向</remarks>
+        </member>
+        <member name="P:GD_STD.DrillWarehouse.RightEntrance">
+            <summary>
+            右軸入料口刀庫
+            </summary>
+            <remarks>面對加工機入料右邊的軸向</remarks>
+        </member>
+        <member name="T:GD_STD.Axis2D">
+            <summary>
+            二維座標
+            <para>可序列化的結構</para>
+            </summary>
+        </member>
+        <member name="T:GD_STD.Axis3D">
+            <summary>
+            提供三維座標
+            </summary>
+        </member>
+        <member name="T:GD_STD.HydraulicSystem">
+            <summary>
+            液壓油系統
+            </summary>
+        </member>
+        <member name="P:GD_STD.HydraulicSystem.Index">
+            <summary>
+            項目
+            </summary>
+        </member>
+        <member name="P:GD_STD.HydraulicSystem.Power">
+            <summary>
+            夾持力道 (kg)
+            </summary>
+        </member>
+        <member name="P:GD_STD.HydraulicSystem.MinRange">
+            <summary>
+            最小範圍
+            </summary>
+        </member>
+        <member name="P:GD_STD.HydraulicSystem.MaxRange">
+            <summary>
+            最大範圍
+            </summary>
+        </member>
+        <member name="P:GD_STD.HydraulicSystem.SideReady">
+            <summary>
+            側壓預備位置
+            </summary>
+        </member>
+        <member name="P:GD_STD.HydraulicSystem.DownReady">
+            <summary>
+            下壓預備位置
+            </summary>
+        </member>
+        <member name="P:GD_STD.HydraulicSystem.Deviation">
+            <summary>
+            誤差距離
+            </summary>
+        </member>
+        <member name="T:GD_STD.Input">
+            <summary>
+            輸入接點
+            </summary>
+            <remarks>Codesys Memory 讀取</remarks>
+        </member>
+        <member name="P:GD_STD.Input.EMS">
+            <summary>
+            急停
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X0</para>
+            </remarks>
+            
+        </member>
+        <member name="P:GD_STD.Input.TH_RY">
+            <summary>
+            油壓,排屑,出料過載
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X1</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.AirPSI">
+            <summary>
+            氣壓壓力檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X2</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HydraulicPSI">
+            <summary>
+            油壓壓力檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X3</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_X_Origin">
+            <summary>
+            左X原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X4</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_X_LimitBack">
+            <summary>
+            左X負極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X5</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_Y_Origin">
+            <summary>
+            左Y原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X6</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_Y_LimitBack">
+            <summary>
+            左Y負極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X7</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_Y_LimitFront">
+            <summary>
+            左Y正極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X8</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_Z_Origin">
+            <summary>
+            左Z原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X9</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_Z_LimitBack">
+            <summary>
+            左Z負極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X10</para>
+            </remarks> 
+        </member>
+        <member name="P:GD_STD.Input.L_Z_LimitFornt">
+            <summary>
+            左Z正極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X1</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_X_Origin">
+            <summary>
+            右X原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X12</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_X_LimitBack">
+            <summary>
+            右X負極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X13</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_X_LimitFornt">
+            <summary>
+            右X正極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X14</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_Y_Origin">
+            <summary>
+            右Y原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X15</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_Y_LimitBack">
+            <summary>
+            右Y負極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X16</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_Y_LimitFornt">
+            <summary>
+            右Y正極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X17</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_Z_Origin">
+            <summary>
+            右Z原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X18</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_Z_LimitBack">
+            <summary>
+            右Z負極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X19</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_Z_LimitFornt">
+            <summary>
+            右Z正極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X20</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_X_Origin">
+            <summary>
+            上X原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X21</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_X_LimitBack">
+            <summary>
+            上X負極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X22</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_X_LimitFornt">
+            <summary>
+            上X正極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X23</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_Y_Origin">
+            <summary>
+            上Y原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X24</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_Y_LimitBack">
+            <summary>
+            上Y負極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X25</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_Y_LimitFornt">
+            <summary>
+            上Y正極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X26</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_Z_Origin">
+            <summary>
+            上Z原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X27</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_Z_LimitBack">
+            <summary>
+            上Z負極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X28</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_Z_LimitFornt">
+            <summary>
+            上Z正極限
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X29</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.LX_MX_Touch">
+            <summary>
+            左X and上X碰撞
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X30</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.MX_RX_Touch">
+            <summary>
+            上X and 右X碰撞
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X31</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_Spindle_Origin">
+            <summary>
+            左主軸相位原點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X32</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_Spindle_Origin">
+            <summary>
+            右主軸相位原點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X33</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_SpindleClip">
+            <summary>
+            左主軸夾刀
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X34</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_SpindleLoosen">
+            <summary>
+            左主軸鬆刀
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X35</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_SpindleClip">
+            <summary>
+            右主軸夾刀
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X36</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_SpindleLoosen">
+            <summary>
+            右主軸鬆刀
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X37</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_SpindleClip">
+            <summary>
+            上主軸夾刀
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X38</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_SpindleLoosen">
+            <summary>
+            上主軸鬆刀
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X39</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_DrillHomeOrigin">
+            <summary>
+            上軸刀庫原點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X40</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_DrillHomeChange">
+            <summary>
+            上軸刀庫換刀檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X41</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_IN_DrillHomeOrigin">
+            <summary>
+            左刀庫(進料邊)原點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X42</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_IN_DrillHomeChange">
+            <summary>
+            左刀庫(進料邊)換刀檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X43</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_OUT_DrillHomeOrigin">
+            <summary>
+            左刀庫(出料邊)原點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X44</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_OUT_DrillHomeChange">
+            <summary>
+            左刀庫(出料邊)換刀檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X45</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_IN_DrillHomeOrigin">
+            <summary>
+            右刀庫(進料邊)原點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X46</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_IN_DrillHomeChange">
+            <summary>
+            右刀庫(進料邊)換刀點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X47</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_OUT_DrillHomeOrigin">
+            <summary>
+            右刀庫(出料邊)原點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X48</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_OUT_DrillHomeChange">
+            <summary>
+            右刀庫(出料邊)換刀點
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X49</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.Z_HighSensorDoor_Close">
+            <summary>
+            Z軸側距閘門_關
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X50</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.Z_HighSensorDoor_Open">
+            <summary>
+            Z軸側距閘門_開
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X51</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_X_lubricating">
+            <summary>
+            左X軸潤滑分路檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X52</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_Y_lubricating">
+            <summary>
+            左Y軸潤滑分路檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X53</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_Z_lubricating">
+            <summary>
+            左Z軸潤滑分路檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X54</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_X_lubricating">
+            <summary>
+            右X軸潤滑分路檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X55</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_Y_lubricating">
+            <summary>
+            右Y軸潤滑分路檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X56</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_Z_lubricating">
+            <summary>
+            右Z軸潤滑分路檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X57</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_X_lubricating">
+            <summary>
+            中X軸潤滑分路檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X58</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_Y_lubricating">
+            <summary>
+            上Y軸潤滑分路檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X59</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_Z_lubricating">
+            <summary>
+            上Z軸潤滑分路檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X60</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_IN_Clip_Down_Origin">
+            <summary>
+            左壓料電阻尺原點(進料端)
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X61</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_OUT_Clip_Down_Origin">
+            <summary>
+            左壓料電阻尺原點(出料端)
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X62</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_IN_Clip_Down_Origin">
+            <summary>
+            右壓料電阻尺原點(進料端)
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X63</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_OUT_Clip_Down_Origin">
+            <summary>
+            右壓料電阻尺原點(出料端)
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X64</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.Side_IN_Clip_Origin">
+            <summary>
+            側壓料電阻尺原點(進料端)
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X65</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.Side_OUT_Clip_Origin">
+            <summary>
+            側壓料電阻尺原點(出料端)
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X66</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_DrillLength">
+            <summary>
+            左軸刀長感測器
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X67</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_DrillLength">
+            <summary>
+            右軸刀長感測
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X68</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_DrillLength">
+            <summary>
+            上軸刀長感測器
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X69</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_IN_DrillHome_1">
+            <summary>
+            左刀庫進料端-刀具1 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X70</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_IN_DrillHome_2">
+            <summary>
+            左刀庫進料端-刀具2 X71
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X71</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_IN_DrillHome_3">
+            <summary>
+            左刀庫進料端-刀具3 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X72</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_IN_DrillHome_4">
+            <summary>
+            左刀庫進料端-刀具4 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X73</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_OUT_DrillHome_1">
+            <summary>
+            左刀庫出料端-刀具1 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X74</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_OUT_DrillHome_2">
+            <summary>
+            左刀庫出料端-刀具2 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X75</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_OUT_DrillHome_3">
+            <summary>
+            左刀庫出料端-刀具3 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X76</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.L_OUT_DrillHome_4">
+            <summary>
+            左刀庫出料端-刀具4 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X77</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_IN_DrillHome_1">
+            <summary>
+            右刀庫進料端-刀具1 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X78</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_IN_DrillHome_2">
+            <summary>
+            右刀庫進料端-刀具2 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X79</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_IN_DrillHome_3">
+            <summary>
+            右刀庫進料端-刀具3 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X80</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_IN_DrillHome_4">
+            <summary>
+            右刀庫進料端-刀具4
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X81</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_OUT_DrillHome_1">
+            <summary>
+            右刀庫出料端-刀具1 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X82</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_OUT_DrillHome_2">
+            <summary>
+            右刀庫出料端-刀具2 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X83</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_OUT_DrillHome_3">
+            <summary>
+            右刀庫出料端-刀具3 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X84</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.R_OUT_DrillHome_4">
+            <summary>
+            右刀庫出料端-刀具4 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X85</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_DrillHome_1">
+            <summary>
+            上刀庫-刀具1 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X86</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_DrillHome_2">
+            <summary>
+            上刀庫-刀具2 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X87</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_DrillHome_3">
+            <summary>
+            上刀庫-刀具3 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X88</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_DrillHome_4">
+            <summary>
+            上刀庫-刀具4 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X89</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.M_DrillHome_5">
+            <summary>
+            上刀庫-刀具5 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X90</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.Feed_Slow_Down_Point">
+            <summary>
+            手臂送料減速點檢知
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X91</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.Feed_Origin">
+            <summary>
+            手臂送料原點
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X92</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.FinishOut">
+            <summary>
+            出料料件口檢測
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X93</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.Total_Lubricatig">
+            <summary>
+            潤滑油液位檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X94</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.Electrical_BOX_Colse">
+            <summary>
+            強電箱關門檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X95</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.Electrical_BOX_Lock">
+            <summary>
+            強電箱LOCK檢知
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X96</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.Case_1_Close">
+            <summary>
+            外罩門(1)關門檢知
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X97</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.Case_1_Lock">
+            <summary>
+            外罩門(1)LOCK檢知
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X98</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.Case_2_Close">
+            <summary>
+            外罩門(2)關門檢知
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X99</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.Case_2_Lock">
+            <summary>
+            外罩門(2)LOCK檢知
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X100</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.Case_3_Close">
+            <summary>
+            外罩門(3)關門檢知
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X101</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.Case_3_Lock">
+            <summary>
+            外罩門(3)LOCK檢知
+            </summary>
+            <remarks>
+            <para>類型 : B 接點</para>
+            <para>地址 : X102</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Key_Lcok">
+            <summary>
+            面板KEY(2點鐘)_LOCK 
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X112</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Key_Manual">
+            <summary>
+            面板KEY(10點鐘)_手動
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X113</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Reset">
+            <summary>
+            面板_Reset
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X114</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Oil_Start">
+            <summary>
+            面板_油壓
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X115</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Pause">
+            <summary>
+            面板_暫停
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X116</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Start_AutoRun">
+            <summary>
+            面板_啟動
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X117</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Fully_Automatic">
+            <summary>
+            面板_全自動
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X118</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Semi_Automatic">
+            <summary>
+            面板_半自動
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X119</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Origin_Return">
+            <summary>
+            面板_原點復歸
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X120</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Arm_Slow_Down">
+            <summary>
+            面板_減速
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X122</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Arm_Speed_Up">
+            <summary>
+            面板_加速
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X123</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Effluent">
+            <summary>
+            面板_中心出水
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X124</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Spindle_Loosen">
+            <summary>
+            面板_主軸鬆刀
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X125</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_DrillHome_Mode">
+            <summary>
+            面板_刀庫模式
+            </summary>
+            <remarks>
+            <para>類型 : 搖桿</para>
+            <para>地址 : X126</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_HandWheel">
+            <summary>
+            面板_啟動手搖輪
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X127</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Alarm_Return">
+            <summary>
+            面板_警報復位
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X128</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Arm_Select">
+            <summary>
+            面板_送料手臂
+            </summary>
+            <remarks>
+            <para>類型 : 搖桿</para>
+            <para>地址 : X130</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_IN_Rack">
+            <summary>
+            面板_入口料架
+            </summary>
+            <remarks>
+            <para>類型 : 搖桿</para>
+            <para>地址 : X131</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_OUT_Rack">
+            <summary>
+            面板_出口料架
+            </summary>
+            <remarks>
+            <para>類型 : 搖桿</para>
+            <para>地址 : X132</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Spindle_Mode">
+            <summary>
+            面板_主軸模式
+            </summary>
+            <remarks>
+            <para>類型 : 搖桿</para>
+            <para>地址 : X133</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Spindle_CW">
+            <summary>
+            面板_主軸正轉
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X134</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Spindle_Stop">
+            <summary>
+            面板_主軸停止
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X135</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Clip_Side_Mode">
+            <summary>
+            面板_夾具側壓
+            </summary>
+            <remarks>
+            <para>類型 : 搖桿</para>
+            <para>地址 : X139</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Clip_Down_Mode">
+            <summary>
+            面板_夾具下壓
+            </summary>
+            <remarks>
+            <para>類型 : 搖桿</para>
+            <para>地址 : X140</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.HMI_Volume_scrap">
+            <summary>
+            面板_捲屑機動作
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X141</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.JoyStick_Left">
+            <summary>
+            搖桿_左
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X145</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.JoyStick_Right">
+            <summary>
+            搖桿_右
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X146</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.JoyStick_Front">
+            <summary>
+            搖桿_前
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X147</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.JoyStick_Back">
+            <summary>
+            搖桿_後
+            </summary>
+            <remarks>
+            <para>類型 : A 接點</para>
+            <para>地址 : X148</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.JoyStick_PB_1">
+            <summary>
+            搖桿  Push Button 1
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X149</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.JoyStick_PB_2">
+            <summary>
+            搖桿 Push Button 2
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X150</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.JoyStick_PB_3">
+            <summary>
+            搖桿 Push Button 3
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X151</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.JoyStick_PB_4">
+            <summary>
+            搖桿 Push Button 4
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X152</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.JoyStick_PB_5">
+            <summary>
+            搖桿 Push Button 5
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X153</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Input.JoyStick_PB_6">
+            <summary>
+            搖桿 Push Button 6
+            </summary>
+            <remarks>
+            <para>類型 : Push Button</para>
+            <para>地址 : X153</para>
+            </remarks>
+        </member>
+        <member name="T:GD_STD.LubricantSystem">
+            <summary>
+            潤滑油系統
+            </summary>
+        </member>
+        <member name="P:GD_STD.LubricantSystem.Time">
+            <summary>
+            時間
+            </summary>
+        </member>
+        <member name="T:GD_STD.Material">
+            <summary>
+            材料位置資訊
+            </summary>
+            <remarks> 代表著材料位置資訊的相關資訊 Codesys  Memory 讀取</remarks>
+        </member>
+        <member name="P:GD_STD.Material.Length">
+            <summary>
+            材料長度
+            </summary>
+        </member>
+        <member name="P:GD_STD.Material.Current">
+            <summary>
+            目前位置
+            </summary>
+        </member>
+        <member name="P:GD_STD.Material.NotPerformed">
+            <summary>
+            未執行位置
+            </summary>
+        </member>
+        <member name="T:GD_STD.OillSystem">
+            <summary>
+            油壓系統參數
+            </summary>
+            <remarks>Codesys Memory 讀取/寫入</remarks>
+        </member>
+        <member name="P:GD_STD.OillSystem.HydraulicSystem">
+            <summary>
+            液壓油系統
+            </summary>
+        </member>
+        <member name="P:GD_STD.OillSystem.CutOilSystem">
+            <summary>
+            切消油系統
+            </summary>
+        </member>
+        <member name="P:GD_STD.OillSystem.LubricantSystem">
+            <summary>
+            潤滑油系統
+            </summary>
+        </member>
+        <member name="M:GD_STD.OillSystem.WriteHydraulic">
+            <summary>
+            寫入液壓油系統參數給 Codesys 
+            </summary>
+        </member>
+        <member name="M:GD_STD.OillSystem.ReadHydraulic">
+            <summary>
+            讀取 Codesys 液壓油系統參數
+            </summary>
+        </member>
+        <member name="M:GD_STD.OillSystem.WriteLubricant">
+            <summary>
+            寫入潤滑油系統參數給 Codesys 
+            </summary>
+        </member>
+        <member name="M:GD_STD.OillSystem.ReadLubricant">
+            <summary>
+            讀取 Codesys 滑道油系統參數
+            </summary>
+        </member>
+        <member name="M:GD_STD.OillSystem.WriteCut">
+            <summary>
+            寫入切削系統參數給 Codesys 
+            </summary>
+        </member>
+        <member name="M:GD_STD.OillSystem.ReadCut">
+            <summary>
+            讀取 Codesys 切削油系統參數
+            </summary>
+        </member>
+        <member name="T:GD_STD.Output">
+            <summary>
+            輸出接點
+            </summary>
+            <remarks>Codesys Memory 讀取</remarks>
+        </member>
+        <member name="P:GD_STD.Output.Hydraulic_On">
+            <summary>
+            油壓啟動
+            </summary>
+            <remarks>
+            <para>地址 : Y0</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.Volume_Scrap_On">
+            <summary>
+            排屑啟動
+            </summary>
+            <remarks>
+            <para>地址 : Y1</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.Finish_Motor_On">
+            <summary>
+            完工出料馬達啟動
+            </summary>
+            <remarks>
+            <para>地址 : Y2</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.Materials_Side_Move_CCW">
+            <summary>
+            進料橫移正轉
+            </summary>
+            <remarks>
+            <para>地址 : Y3</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.Materials_Side_Move_CW">
+            <summary>
+            進料橫移逆轉
+            </summary>
+            <remarks>
+            <para>地址 : Y4</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.Materials_Side_Move_Speed_1">
+            <summary>
+            進料橫移速度(一)
+            <remarks>
+            <para>地址 : Y5</para>
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:GD_STD.Output.Materials_Side_Move_Speed_2">
+            <summary>
+            進料橫移速度(二)
+            </summary>
+            <remarks>
+            <para>地址 : Y6</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.L_Spray_OilFog">
+            <summary>
+            左主軸噴油霧
+            </summary>
+            <remarks>
+            <para>地址 : Y7</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.R_Spray_OilFog">
+            <summary>
+            右主軸噴油霧
+            </summary>
+            <remarks>
+            <para>地址 : Y8</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.M_Spray_OilFog">
+            <summary>
+            上主軸噴油霧
+            </summary>
+            <remarks>
+            <para>地址 : Y9</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.L_Spary_Air">
+            <summary>
+            左主軸外管出風
+            </summary>
+            <remarks>
+            <para>地址 : Y10</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.R_Spary_Air">
+            <summary>
+            右主軸外管出風
+            </summary>
+            <remarks>
+            <para>地址 : Y11</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.M_Spary_Air">
+            <summary>
+            上主軸外管出風
+            </summary>
+            <remarks>
+            <para>地址 : Y12</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.L_Spindle_Change_Air">
+            <summary>
+            左主軸換刀出風
+            </summary>
+            <remarks>
+            <para>地址 : Y13</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.R_Spindle_Change_Air">
+            <summary>
+            右主軸換刀出風
+            </summary>
+            <remarks>
+            <para>地址 : Y14</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.M_Spindle_Change_Air">
+            <summary>
+            上軸換刀吹氣
+            </summary>
+            <remarks>
+            <para>地址 : Y15</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.L_Spindle_Loosen">
+            <summary>
+            左主軸鬆刀
+            </summary>
+            <remarks>
+            <para>地址 : Y16</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.R_Spindle_Loosen">
+            <summary>
+            右主軸鬆刀
+            </summary>
+            <remarks>
+            <para>地址 : Y17</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.M_Spindle_Loosen">
+            <summary>
+            上主軸鬆刀
+            </summary>
+            <remarks>
+            <para>地址 : Y18</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.M_DirllHome_Origin">
+            <summary>
+            上刀庫原點
+            </summary>
+            <remarks>
+            <para>地址 : Y19</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.M_DrillHome_Change">
+            <summary>
+            上刀庫到換刀點
+            </summary>
+            <remarks>
+            <para>地址 : Y20</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.L_IN_DrillHome_Origin">
+            <summary>
+            左刀庫復歸(進料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y21</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.L_IN_DrillHome_RollOut">
+            <summary>
+            左刀庫推出(進料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y22</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.L_OUT_DrillHome_Origin">
+            <summary>
+            左刀庫復歸(出料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y23</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.L_OUT_DrillHome_RollOut">
+            <summary>
+            左刀庫推出(出料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y24</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.R_IN_DrillHome_Origin">
+            <summary>
+            右刀庫復歸(進料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y25</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.R_IN_DrillHome_RollOut">
+            <summary>
+            右刀庫推出(進料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y26</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.R_OUT_DrillHome_Origin">
+            <summary>
+            右刀庫復歸(出料端)
+            </summary>
+             <remarks>
+            <para>地址 : Y27</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.R_OUT_DrillHome_RollOut">
+            <summary>
+            右刀庫推出(出料端)
+            </summary>
+             <remarks>
+            <para>地址 : Y28</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.L_IN_Clip_Down_Origin">
+            <summary>
+            左下壓復歸(進料端)
+            </summary>
+             <remarks>
+            <para>地址 : Y29</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.L_IN_Clip_Down">
+            <summary>
+            左下壓動作(進料端)
+            </summary>
+             <remarks>
+            <para>地址 : Y30</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.L_OUT_Clip_Down_Origin">
+            <summary>
+            左下壓復歸(出料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y31</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.L_OUT_Clip_Down">
+            <summary>
+            左下壓動作(出料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y32</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.R_IN_Clip_Down_Origin">
+            <summary>
+            右下壓復歸(進料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y33</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.R_IN_Clip_Down">
+            <summary>
+            右下壓動作(進料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y34</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.R_OUT_Clip_Down_Origin">
+            <summary>
+            右下壓復歸(出料端)
+            </summary>
+            <remarks>
+            <para>地址 : Y35</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.R_OUT_Clip_Down">
+            <summary> 
+            右下壓動作(出料端)
+            </summary> 
+            <remarks>
+            <para>地址 : Y36</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.SIDE_Clip_Origin">
+            <summary>
+            側壓復歸
+            </summary> 
+            <remarks>
+            <para>地址 : Y37</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.SIDE_Clip">
+            <summary> 
+            側壓動作
+            </summary> 
+            <remarks>
+            <para>地址 : Y38</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.Z_High_Sensor_Door_Open">
+            <summary> 
+            Z軸側距閘門 Open
+            </summary> 
+            <remarks>
+            <para>地址 : Y39</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.Electrical_BOX_Lock">
+            <summary> 
+            強電箱門LOCK 
+            </summary> 
+            <remarks>
+            <para>地址 : Y40</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.Case_1_Lock">
+            <summary> 
+            外罩門(1)LOCK 
+            </summary> 
+            <remarks>
+            <para>地址 : Y41</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.Case_2_Lock">
+            <summary> 
+            外罩門(2)LOCK 
+            </summary> 
+            <remarks>
+            <para>地址 : Y42</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.Case_3_Lock">
+            <summary> 
+            外罩門(3)LOCK 
+            </summary> 
+            <remarks>
+            <para>地址 : Y43</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.L_Z_Break_Open">
+            <summary> 
+            左軸Z軸剎車 Open
+            </summary> 
+            <remarks>
+            <para>地址 : Y44</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.R_Z_Break_Open">
+            <summary> 
+            右軸Z軸剎車 Open
+            </summary> 
+            <remarks>
+            <para>地址 : Y45</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.M_Z_Break_Open">
+            <summary> 
+            上軸Z軸剎車OPEN
+            </summary> 
+            <remarks>
+            <para>地址 : Y46</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_Power_Light">
+            <summary> 
+            面板_總電源燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y48</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_Hydraulic_Light">
+            <summary> 
+            面板_油壓啟動燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y49</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_AutoRun_Light">
+            <summary> 
+            面板_加工直行燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y50</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_Pause_Light">
+            <summary> 
+            面板_暫停燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y51</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_OverLoad_Light">
+            <summary> 
+            面板_OverLoad燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y53</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_Alarm_Light">
+            <summary>
+            面板_Alarm燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y54</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_Fully_Automatic_Light">
+            <summary> 
+            面板_全自動燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y57</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_Semi_Automatic_Light">
+            <summary> 
+            面板_半自動燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y58</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_Origin_Return_Light">
+            <summary>
+            面板_原點復歸燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y59</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_Arm_Slow_Down_Light">
+            <summary> 
+            面板_減速燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y61</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_Arm_Speed_Up_Light">
+            <summary> 
+            面板_加速燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y61</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_Effluent_Light">
+            <summary> 
+            面板_中心出水燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y63</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_Spindle_Loosen_Light">
+            <summary> 
+            面板鬆刀燈Y64
+            </summary> 
+            <remarks>
+            <para>地址 : Y64</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_DrillHome_Mode_Light">
+            <summary> 
+            面板_刀庫模式燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y65</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_HandWheel_Light">
+            <summary> 
+            面板_啟動手搖輪燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y66</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_Alarm_Return_Light">
+            <summary> 
+            面板_警報復位燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y67</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_Arm_Select_Light">
+            <summary> 
+            面板_手臂選擇燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y69</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_IN_Rack_Light">
+            <summary> 
+            面板_入口料架燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y70</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_OUT_Rack_Light">
+            <summary> 
+            面板_出口料架燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y71</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_Spindle_Mode_Light">
+            <summary> 
+            面板_主軸模式燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y72</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_Spindle_CW_Light">
+            <summary> 
+            面板_主軸正轉燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y73</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_Spindle_Stop_Light">
+            <summary> 
+            面板_主軸停止燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y74</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_Clip_Side_Mode_Light">
+            <summary> 
+            面板_夾具側壓模式燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y78</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_Clip_Down_Mode_Light">
+            <summary> 
+            面板_夾具下壓模式(搖桿)
+            </summary> 
+            <remarks>
+            <para>地址 : Y79</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.HMI_Volume_scrap_Light">
+            <summary> 
+            面板_捲屑機動作燈
+            </summary> 
+            <remarks>
+            <para>地址 : Y80</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.Red_light">
+            <summary> 
+            警示燈_R
+            </summary> 
+            <remarks>
+            <para>地址 :  Y84</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.Yellow_Light">
+            <summary> 
+            警示燈_Y
+            </summary> 
+            <remarks>
+            <para>地址 :  Y85</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.Green_Light">
+            <summary> 
+            警示燈_G
+            </summary> 
+            <remarks>
+            <para>地址 :  Y86</para>
+            </remarks>
+        </member>
+        <member name="P:GD_STD.Output.BZ">
+            <summary> 
+            蜂鳴器
+            </summary> 
+            <remarks>
+            <para>地址 :  Y87</para>
+            </remarks>
+        </member>
+        <member name="T:GD_STD.PanelButton">
+            <summary>
+            代表面板功能結構
+            </summary>
+            <remarks>
+            對應人機操控面板的按鈕
+            Codesys Memory 讀取/寫入
+            </remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.Key">
+            <summary>
+            代表操作面板鑰匙孔的功能
+            </summary>
+            <remarks>實體面板的要鑰匙孔</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.EMS">
+            <summary>
+            代表操作面板緊急停止
+            </summary>
+            <remarks>實體面板的緊急停止</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.MainAxisMode">
+            <summary>
+            主軸模式
+            </summary>
+            <remarks>虛擬或實體面板的按鈕</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.MainAxisRotation">
+            <summary>
+            主軸旋轉
+            </summary>
+            <remarks>虛擬或實體面板的按鈕</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.MainAxisStop">
+            <summary>
+            主軸靜止
+            </summary>
+            <remarks>虛擬或實體面板的按鈕</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.Effluent">
+            <summary>
+            中心出水
+            </summary>
+            <remarks>虛擬或實體面板的按鈕</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.LooseKnife">
+            <summary>
+            鬆刀
+            </summary>
+            <remarks>虛擬或實體面板的按鈕</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.EntranceRack">
+            <summary>
+            入口料架
+            </summary>
+            <remarks>虛擬或實體面板的按鈕</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.ExportRack">
+            <summary>
+            出口料架
+            </summary>
+            <remarks>虛擬或實體面板的按鈕</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.Volume">
+            <summary>
+            捲削機
+            </summary>
+            <remarks>虛擬或實體面板的按鈕</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.SideClamp">
+            <summary>
+            側壓夾具
+            </summary>
+            <remarks>虛擬或實體面板的按鈕</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.ClampDown">
+            <summary>
+            下壓夾具
+            </summary>
+            <remarks>虛擬或實體面板的按鈕</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.Run">
+            <summary>
+            開始執行
+            </summary>
+            <remarks>實體面板的按鈕</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.Stop">
+            <summary>
+            暫停執行
+            </summary>
+             <remarks>實體面板的按鈕</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.Oil">
+            <summary>
+            油壓啟動
+            </summary>
+            <remarks>虛擬或實體面板的按鈕</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.HandSpeed">
+            <summary>
+            手臂速度
+            </summary>
+            <remarks>虛擬或實體面板的按鈕</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.Origin">
+            <summary>
+            原點復歸
+            </summary>
+            <remarks>虛擬或實體面板的按鈕</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.Hand">
+            <summary>
+            送料手臂
+            </summary>
+            <remarks>虛擬或實體面板的按鈕</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.AxisSelect">
+            <summary>
+            軸向選擇
+            </summary>
+            <remarks>實體搖桿的選項</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.DrillWarehouse">
+            <summary>
+            刀庫
+            </summary>
+            <remarks>虛擬或實體面板的按鈕</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.DrillSelected">
+            <summary>
+            刀庫選擇
+            </summary>
+            <remarks>實體搖桿的選項</remarks>
+        </member>
+        <member name="P:GD_STD.PanelButton.Alarm">
+            <summary>
+            警報
+            </summary>
+        </member>
+        <member name="P:GD_STD.PanelButton.ClampDownSelected">
+            <summary>
+            下壓夾具選擇
+            </summary>
+            <remarks>實體搖桿的選項</remarks>
+        </member>
+        <member name="T:GD_STD.ProcessingInfo">
+            <summary>
+            給予加工三個軸向的加工資訊列表
+            <para>可序列化的類型</para></summary>
+            <remarks>
+             <see cref="P:GD_STD.ProcessingInfo.DrFront" />Codesys Memory 讀取/寫入
+            <see cref="P:GD_STD.ProcessingInfo.DrBottom" />Codesys Memory 讀取/寫入
+            <see cref="P:GD_STD.ProcessingInfo.DrTop" />Codesys Memory 讀取/寫入
+            <see cref="!:PaFront" />Codesys Memory 讀取/寫入
+            <see cref="!:PaBottom" />Codesys Memory 讀取/寫入
+            <see cref="!:PaTop" />Codesys Memory 讀取/寫入
+            </remarks>
+        </member>
+        <member name="P:GD_STD.ProcessingInfo.DrFront">
+            <summary>
+            前視圖鑽孔資訊列表
+            </summary>
+            <remarks>面對加工機出料中間的軸向</remarks>
+        </member>
+        <member name="P:GD_STD.ProcessingInfo.DrBottom">
+            <summary>
+            底視圖鑽孔資訊列表
+            </summary>
+            <remarks>面對加工機出料右邊的軸向</remarks>
+        </member>
+        <member name="P:GD_STD.ProcessingInfo.DrTop">
+            <summary>
+            上視圖鑽孔資訊列表
+            </summary>
+            <remarks>面對加工機出料左邊的軸向</remarks>
+        </member>
+        <member name="P:GD_STD.ProcessingInfo.JobInfo">
+            <summary>
+            素材加工訊息
+            </summary>
+        </member>
+        <member name="M:GD_STD.ProcessingInfo.ReadMemory">
+            <summary>
+            讀取 Codesys 的共享記憶體內
+            </summary>
+        </member>
+        <member name="M:GD_STD.ProcessingInfo.WriteMemory">
+            <summary>
+            寫入 Codesys 的共享記憶體內
+            </summary>
+        </member>
+        <member name="T:GD_STD.AxisInfo">
+            <summary>
+            目前三支主軸的 X,Y,Z 軸向的目前軸向座標，側壓資訊，下壓資訊，材料位置資訊
+            </summary>
+            <remarks>Codesys Memory 讀取</remarks>
+        </member>
+        <member name="P:GD_STD.AxisInfo.Middle">
+            <summary>
+            中軸資訊
+            </summary>
+            <remarks>面對加工機出料中間的軸向</remarks>
+        </member>
+        <member name="P:GD_STD.AxisInfo.Left">
+            <summary>
+            左軸資訊
+            </summary>
+            <remarks>面對加工機出料左邊的軸向</remarks>
+        </member>
+        <member name="P:GD_STD.AxisInfo.Right">
+            <summary>
+            右軸資訊
+            </summary>
+            <remarks>面對加工機出料右邊的軸向</remarks>
+        </member>
+        <member name="P:GD_STD.AxisInfo.Hand">
+            <summary>
+            送料手臂
+            </summary>
+        </member>
+        <member name="P:GD_STD.AxisInfo.ClampDown">
+            <summary>
+            下壓夾具
+            </summary>
+        </member>
+        <member name="P:GD_STD.AxisInfo.SideClamp">
+            <summary>
+            側壓夾具
+            </summary>
+        </member>
+        <member name="P:GD_STD.AxisInfo.Material">
+            <summary>
+            材料位置資訊
+            </summary>
+        </member>
+        <member name="T:GD_STD.Drill">
+            <summary>
+            給予加工軸的加工資訊
+            <para>可序列化的結構</para>
+            </summary>
+            <remarks>Codesys Memory 讀取/寫入</remarks>
+        </member>
+        <member name="M:GD_STD.Drill.#ctor(GD_STD.Enum.AXIS_MODE,System.Double,System.Double,System.Double)">
+            <summary>
+            給予加工軸的座標與鑽孔直徑資訊
+            </summary>
+            <param name="x">中心點 X 絕對座標</param>
+            <param name="y">中心點 Y 絕對座標</param>
+            <param name="dia">直徑</param>
+            <param name="AXIS_MODE">鑽頭的工作模式</param>
+        </member>
+        <member name="M:GD_STD.Drill.#ctor(GD_STD.IBase.IAxis2D,GD_STD.Enum.AXIS_MODE,System.Double)">
+            <summary>
+             給予加工軸的座標與鑽孔直徑資訊
+            </summary>
+            <param name="axis2D">中心二維座標</param>
+            <param name="dia">直徑</param>
+            <param name="AXIS_MODE">鑽頭的工作模式</param>
+        </member>
+        <member name="P:GD_STD.Drill.X">
+            <summary>
+            中心點 X 絕對座標
+            </summary>
+        </member>
+        <member name="P:GD_STD.Drill.Y">
+            <summary>
+            中心點 Y 絕對座標
+            </summary>
+        </member>
+        <member name="P:GD_STD.Drill.Dia">
+            <summary>
+            機械加工要執行直徑
+            </summary>
+        </member>
+        <member name="P:GD_STD.Drill.AXIS_MODE">
+            <summary>
+            鑽頭的工作模式
+            </summary>
+        </member>
+        <member name="M:GD_STD.Drill.ConvertToAxis(GD_STD.IBase.IAxis2D)">
+            <summary>
+            轉換類型
+            </summary>
+            <param name="axis2D"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GD_STD.JobInfo">
+            <summary>
+            素材加工訊息
+            <para>可序列化的結構</para></summary>
+            <remarks>
+            代表著素材要加工的相關資訊
+            Codesys  Memory 寫入
+            </remarks>
+        </member>
+        <member name="P:GD_STD.JobInfo.Number">
+            <summary>
+            素材編號
+            </summary>
+            <remarks>表示素材配料完成的編號，非單一零件的編號</remarks>
+        </member>
+        <member name="P:GD_STD.JobInfo.BoltsCountL">
+            <summary>
+            左軸加工孔位的陣列長度
+            </summary>
+            <remarks>面對出料口的左邊主軸</remarks>
+        </member>
+        <member name="P:GD_STD.JobInfo.BoltsCountM">
+            <summary>
+            中間軸加工孔位的陣列長度
+            </summary>
+            <remarks>面對出料口的中間主軸</remarks>
+        </member>
+        <member name="P:GD_STD.JobInfo.BoltsCountR">
+            <summary>
+            右軸加工孔位的陣列長度
+            </summary>
+            <remarks>面對出料口的右邊主軸</remarks>
+        </member>
+        <member name="P:GD_STD.JobInfo.IndexBoltsL">
+            <summary>
+            左軸加工的陣列起始位置
+            </summary>
+            <remarks>
+            面對出料口的左邊主軸
+            代表機械加工軸是要從第幾的陣列開始執行
+            </remarks>
+        </member>
+        <member name="P:GD_STD.JobInfo.IndexBoltsM">
+            <summary>
+            中間軸加工的陣列起始位置
+            </summary>
+            <remarks>
+            面對出料口的中間主軸
+            代表機械加工軸是要從第幾的陣列開始執行
+            </remarks>
+        </member>
+        <member name="P:GD_STD.JobInfo.IndexBoltsR">
+            <summary>
+            右軸加工的陣列起始位置
+            </summary>
+            <remarks>
+            面對出料口的右邊主軸
+            代表機械加工軸是要從第幾的陣列開始執行
+            </remarks>
+        </member>
+        <member name="P:GD_STD.JobInfo.Type">
+            <summary>
+            斷面規格類型
+            </summary>
+        </member>
+        <member name="M:GD_STD.JobInfo.AddPartInfo(GD_STD.IBase.IPart)">
+            <summary>
+            加入零件訊息
+            </summary>
+        </member>
+        <member name="T:GD_STD.SerializationHelper">
+            <summary>
+            二進制序列化處理幫手
+            </summary>
+        </member>
+        <member name="M:GD_STD.SerializationHelper.SerializeBinary(System.Object,System.String)">
+            <summary>
+            序列化二進制檔案
+            </summary>
+            <param name="obj">要序列化二進制檔案的物件</param>
+            <param name="pathTarget">存放路徑</param>
+        </member>
+        <member name="M:GD_STD.SerializationHelper.Deserialize``1(System.String)">
+            <summary>
+            反序列化檔案
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="path">存放路徑</param>
+            <returns>找不到檔案回傳 Null</returns>
+        </member>
+        <member name="T:GD_STD.SerializationHelper`1">
+            <summary>
+            具有序列化與反序列化功能的泛行物件
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:GD_STD.SerializationHelper`1.SerializeBinary(System.String)">
+            <summary>
+            序列化二進制檔案
+            </summary>
+            <param name="obj">要序列化二進制檔案的物件</param>
+            <param name="pathTarget">存放路徑</param>
+        </member>
+        <member name="M:GD_STD.SerializationHelper`1.Deserialize(System.String)">
+            <summary>
+            反序列化檔案
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="path">存放路徑</param>
+            <returns>找不到檔案回傳 Null</returns>
+        </member>
+        <member name="T:GD_STD.SideClamp">
+            <summary>
+            側壓夾具
+            </summary>
+            <remarks>
+            代表著側壓夾具的相關資訊
+            Codesys  Memory 讀取
+            </remarks>
+        </member>
+        <member name="T:GD_STD.SingleAxisInfo">
+            <summary>
+            單支主軸訊息
+            </summary>
+            <remarks>Codesys Memory 讀取</remarks>
+        </member>
+        <member name="T:GD_STD.MemoryHelper">
+            <summary>
+            PC 與 Codesys 共享記憶體的幫手
+            </summary>
+        </member>
+        <member name="F:GD_STD.MemoryHelper.MAX_ARRAY_LENGTH">
+            <summary>
+            Codesys 陣列最大長度
+            </summary>
+        </member>
+        <member name="F:GD_STD.MemoryHelper.LEFT_MAX_NUMBER_DRILL">
+            <summary>
+            左邊刀具庫最大數量
+            </summary>
+            <remarks>代表機械的刀具庫最大數量</remarks>
+        </member>
+        <member name="F:GD_STD.MemoryHelper.RIGTH_MAX_NUMBER_DRILL">
+            <summary>
+            右邊刀具庫最大數量
+            </summary>
+            <remarks>代表機械的刀具庫最大數量</remarks>
+        </member>
+        <member name="F:GD_STD.MemoryHelper.MIDDLE_MAX_NUMBER_DRILL">
+            <summary>
+            中間刀具庫最大數量
+            </summary>
+            <remarks>代表機械的刀具庫最大數量</remarks>
+        </member>
+        <member name="F:GD_STD.MemoryHelper.HYD_SYSTEM">
+            <summary>
+            液壓油系統最大設定數量
+            </summary>
+        </member>
+        <member name="P:GD_STD.MemoryHelper.DrFrontMemory">
+            <summary>
+            共享 <see cref="P:GD_STD.ProcessingInfo.DrFront"/> 前視圖鑽孔資訊列表給 Codesys 
+            <para>備註 : <see cref="T:System.Type"/> = <see cref="T:GD_STD.Drill"/></para>
+            </summary>
+            <remarks>面對加工機出料中間的軸向</remarks>
+        </member>
+        <member name="P:GD_STD.MemoryHelper.DrBottomMemory">
+            <summary>
+             共享 <see cref="P:GD_STD.ProcessingInfo.DrBottom"/> 底視圖鑽孔資訊列表給 Codesys
+             <para>備註 : <see cref="T:System.Type"/> = <see cref="T:GD_STD.Drill"/></para>
+            </summary>
+            <remarks>面對加工機出料右邊的軸向</remarks>
+        </member>
+        <member name="P:GD_STD.MemoryHelper.DrTopMemory">
+            <summary>
+            共享 <see cref="P:GD_STD.ProcessingInfo.DrBottom"/> 上視圖鑽孔資訊列表給 Codesys
+            <para>備註 : <see cref="T:System.Type"/> = <see cref="T:GD_STD.Drill"/></para>
+            </summary>
+            <remarks>面對加工機出料左邊的軸向</remarks>
+        </member>
+        <member name="P:GD_STD.MemoryHelper.JobInfoMemory">
+            <summary>
+            共享 <see cref="P:GD_STD.ProcessingInfo.JobInfo"/> 素材加工資訊列表列表給 Codesys
+            <para>備註 : <see cref="T:System.Type"/> = <see cref="T:GD_STD.JobInfo"/></para>
+            </summary>
+            <remarks>
+            包含三軸孔位陣列長度、三軸劃線陣列長度、素材規格、長度、三軸陣列起始位置
+            </remarks>
+        </member>
+        <member name="P:GD_STD.MemoryHelper.DrSettingMiddleMemory">
+            <summary>
+            共享 <see cref="P:GD_STD.DrillWarehouse.Middle"/> 中軸刀庫資訊列表給 Codesys 
+            <para>備註 : <see cref="T:System.Type"/> = <see cref="T:GD_STD.DrillSetting"/></para>
+            </summary>
+            <remarks>面對加工機出料中間的軸向</remarks>
+        </member>
+        <member name="P:GD_STD.MemoryHelper.DrSettingLeftExportMemory">
+            <summary>
+            共享 <see cref="P:GD_STD.DrillWarehouse.LeftExport"/> 左軸出料口刀庫 Codesys 
+            <para>備註 : <see cref="T:System.Type"/> = <see cref="T:GD_STD.DrillSetting"/></para>
+            </summary>
+            <remarks>面對加工機出料左邊的軸向</remarks>
+        </member>
+        <member name="P:GD_STD.MemoryHelper.DrSettingRightExportMemory">
+            <summary>
+            共享 <see cref="P:GD_STD.DrillWarehouse.RightExport"/> 右軸出料口刀庫 Codesys 
+            <para>備註 : <see cref="T:System.Type"/> = <see cref="T:GD_STD.DrillSetting"/></para>
+            </summary>
+            <remarks>面對加工機出料右邊的軸向</remarks>
+        </member>
+        <member name="P:GD_STD.MemoryHelper.DrSettingLeftEntranceMemory">
+            <summary>
+            共享 <see cref="P:GD_STD.DrillWarehouse.LeftEntrance"/> 左軸入料口刀庫 Codesys 
+            <para>備註 : <see cref="T:System.Type"/> = <see cref="T:GD_STD.DrillSetting"/></para>
+            </summary>
+            <remarks>面對加工機出料左邊的軸向</remarks>
+        </member>
+        <member name="P:GD_STD.MemoryHelper.DrSettingRightEntranceMemory">
+            <summary>
+            共享 <see cref="P:GD_STD.DrillWarehouse.RightEntrance"/> 右軸入料口刀庫 Codesys 
+            <para>備註 : <see cref="T:System.Type"/> = <see cref="T:GD_STD.DrillSetting"/></para>
+            </summary>
+            <remarks>面對加工機出料右邊的軸向</remarks>
+        </member>
+        <member name="P:GD_STD.MemoryHelper.PanelMemory">
+            <summary>
+            共享 <see cref="T:GD_STD.PanelButton"/> 人機面板 Codesys
+            <para>備註 : <see cref="T:System.Type"/> = <see cref="T:GD_STD.PanelButton"/></para>
+            </summary>
+        </member>
+        <member name="P:GD_STD.MemoryHelper.AxisInfoMemory">
+            <summary>
+            共享 <see cref="T:GD_STD.AxisInfo"/> 主軸訊息 Codesys
+            <para>備註 : <see cref="T:System.Type"/> = <see cref="T:GD_STD.AxisInfo"/>只讀不寫</para>
+            </summary>
+        </member>
+        <member name="P:GD_STD.MemoryHelper.HydraulicSystemMemory">
+            <summary>
+            共享 <see cref="P:GD_STD.OillSystem.HydraulicSystem"/> 訊息 Codesys
+            <para>備註 <see cref="T:System.Type"/> = <see cref="T:GD_STD.HydraulicSystem"/></para>
+            </summary>
+        </member>
+        <member name="P:GD_STD.MemoryHelper.CutSystemMemory">
+            <summary>
+            共享 <see cref="P:GD_STD.OillSystem.CutOilSystem"/> 訊息 Codesys
+            <para>備註 <see cref="T:System.Type"/> = <see cref="T:GD_STD.CutOilSystem"/></para>
+            </summary>
+        </member>
+        <member name="P:GD_STD.MemoryHelper.LubricantSystemMemory">
+            <summary>
+            共享 <see cref="P:GD_STD.OillSystem.LubricantSystem"/> 訊息 Codesys
+            <para>備註 <see cref="T:System.Type"/> = <see cref="T:GD_STD.LubricantSystem"/></para>
+            </summary>
+        </member>
+        <member name="P:GD_STD.MemoryHelper.OpenMemory">
+            <summary>
+            通知 Codesys 目前軟體是開起還是關閉
+            <para>備註 <see cref="T:System.Type"/> = <see cref="T:GD_STD.LubricantSystem"/></para>
+            </summary>
+        </member>
+        <member name="P:GD_STD.MemoryHelper.InPutMemory">
+            <summary>
+             共享 <see cref="T:GD_STD.Input"/> 訊息 Codesys
+            <para>備註 <see cref="T:System.Type"/> = <see cref="T:GD_STD.Input"/></para>
+            </summary>
+        </member>
+        <member name="P:GD_STD.MemoryHelper.OutputMemory">
+            <summary>
+             共享 <see cref="T:GD_STD.Output"/> 訊息 Codesys
+            <para>備註 <see cref="T:System.Type"/> = <see cref="T:GD_STD.Output"/></para>
+            </summary>
+        </member>
+        <member name="M:GD_STD.MemoryHelper.OpenSharedMemory">
+            <summary>
+            開啟共享記憶體
+            </summary>
+        </member>
+        <member name="M:GD_STD.MemoryHelper.Dispose">
+            <summary>
+            釋放 <see cref="T:GD_STD.MemoryHelper"/> 內的所有 <see cref="T:System.IO.MemoryMappedFiles.MemoryMappedFile"/> 資源。
+            </summary>
+        </member>
+        <member name="M:GD_STD.MemoryHelper.GetArraySizeOf(System.Type)">
+            <summary>
+            取得在 Codesys Array SizeOf  
+            </summary>
+            <param name="Type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GD_STD.MemoryHelper.IsOpen(System.Boolean)">
+            <summary>
+            目前軟體是開啟的
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:GD_STD.MemoryHelper.DrMemory(System.String)">
+            <summary>
+            創建鑽孔資訊列表記憶體
+            </summary>
+            <param name="Name">記憶體名稱</param>
+            <returns></returns>
+        </member>
+        <member name="M:GD_STD.MemoryHelper.DrSettingMemory(System.String,System.Int32)">
+            <summary>
+            創建刀具庫資訊列表記憶體
+            </summary>
+            <param name="Name">記憶體名稱</param>
+            <param name="drillNumber">鑽頭數量</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

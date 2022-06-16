@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/GD_STD.Base" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/GD_STD.Base" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:63506/Memor.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/GD_STD.Enum" />
+  <xs:import schemaLocation="http://localhost:63506/Memor.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/GD_STD" />
+  <xs:import schemaLocation="http://localhost:63506/Memor.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://localhost:63506/Memor.svc?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="WorkOther">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Current" type="xs:short" />
+      <xs:element minOccurs="0" name="EntranceOccupy" type="xs:double" />
+      <xs:element minOccurs="0" name="ExportOccupy1" type="xs:double" />
+      <xs:element minOccurs="0" name="ExportOccupy2" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkOther" nillable="true" type="tns:WorkOther" />
+  <xs:complexType name="ArrayOfDrillSetting">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DrillSetting" type="tns:DrillSetting" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDrillSetting" nillable="true" type="tns:ArrayOfDrillSetting" />
+  <xs:complexType name="DrillSetting">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AutoError" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Change" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Dia" type="xs:double" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="DrillType" type="q1:DRILL_TYPE" />
+      <xs:element minOccurs="0" name="F" type="xs:double" />
+      <xs:element minOccurs="0" name="GUID" nillable="true" type="xs:base64Binary" />
+      <xs:element minOccurs="0" name="Index" type="xs:short" />
+      <xs:element minOccurs="0" name="IsCurrent" type="xs:boolean" />
+      <xs:element minOccurs="0" name="KnifeHandle" type="xs:float" />
+      <xs:element minOccurs="0" name="L4Length" type="xs:double" />
+      <xs:element minOccurs="0" name="Length" type="xs:float" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="Level" type="q2:DRILL_LEVEL" />
+      <xs:element minOccurs="0" name="Limit" type="xs:short" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/GD_STD" minOccurs="0" name="Position" type="q3:Axis4D" />
+      <xs:element minOccurs="0" name="Rpm" type="xs:double" />
+      <xs:element minOccurs="0" name="Sensor" type="xs:boolean" />
+      <xs:element minOccurs="0" name="SettingIndex" type="xs:unsignedShort" />
+      <xs:element minOccurs="0" name="SumLength" type="xs:float" />
+      <xs:element minOccurs="0" name="TestLength" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DrillSetting" nillable="true" type="tns:DrillSetting" />
+  <xs:complexType name="SideClamp">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EntranceL" type="xs:double" />
+      <xs:element minOccurs="0" name="ExportL" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SideClamp" nillable="true" type="tns:SideClamp" />
+  <xs:complexType name="ClampDownSetting">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EntranceL" type="xs:double" />
+      <xs:element minOccurs="0" name="EntranceR" type="xs:double" />
+      <xs:element minOccurs="0" name="ExportL" type="xs:double" />
+      <xs:element minOccurs="0" name="ExportR" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ClampDownSetting" nillable="true" type="tns:ClampDownSetting" />
+  <xs:complexType name="ProtectionDistance">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="LRY" type="xs:double" />
+      <xs:element minOccurs="0" name="MY" type="xs:double" />
+      <xs:element minOccurs="0" name="U_And_BOX_Y_Protection_Length" type="xs:double" />
+      <xs:element minOccurs="0" name="X" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProtectionDistance" nillable="true" type="tns:ProtectionDistance" />
+  <xs:complexType name="Traverse">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CarLength" type="xs:double" />
+      <xs:element minOccurs="0" name="CarRaisedLength" type="xs:double" />
+      <xs:element minOccurs="0" name="Limit" type="xs:double" />
+      <xs:element minOccurs="0" name="OriginToLocationPoint" type="xs:double" />
+      <xs:element minOccurs="0" name="Resolution" type="xs:double" />
+      <xs:element minOccurs="0" name="RideRange" type="xs:double" />
+      <xs:element minOccurs="0" name="SafetyGap" type="xs:double" />
+      <xs:element minOccurs="0" name="SortTotalLength" type="xs:double" />
+      <xs:element minOccurs="0" name="Speed1Correct" type="xs:double" />
+      <xs:element minOccurs="0" name="Speed2Correct" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Traverse" nillable="true" type="tns:Traverse" />
+  <xs:complexType name="ShapeTraverse">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CarLength" type="xs:double" />
+      <xs:element minOccurs="0" name="CarRaisedLength" type="xs:double" />
+      <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ConveyorPosition" nillable="true" type="q4:ArrayOfdouble" />
+      <xs:element minOccurs="0" name="Limit" type="xs:double" />
+      <xs:element minOccurs="0" name="OriginToLocationPoint" type="xs:double" />
+      <xs:element minOccurs="0" name="Resolution" type="xs:double" />
+      <xs:element minOccurs="0" name="RideRange" type="xs:double" />
+      <xs:element minOccurs="0" name="Safety" type="xs:double" />
+      <xs:element minOccurs="0" name="SafetyGap" type="xs:double" />
+      <xs:element minOccurs="0" name="Speed1Correct" type="xs:double" />
+      <xs:element minOccurs="0" name="Speed2Correct" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ShapeTraverse" nillable="true" type="tns:ShapeTraverse" />
+  <xs:complexType name="HandSetting">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ArmFeedOriginToOutUpRoll" type="xs:double" />
+      <xs:element minOccurs="0" name="ArmInDownBellySensorToForntLength" type="xs:double" />
+      <xs:element minOccurs="0" name="ArmInDownCheckPosition" type="xs:double" />
+      <xs:element minOccurs="0" name="ArmInDownWingSensorToForntLength" type="xs:double" />
+      <xs:element minOccurs="0" name="ArmInTouchOriginLength" type="xs:double" />
+      <xs:element minOccurs="0" name="ArmInZSafeLength" type="xs:double" />
+      <xs:element minOccurs="0" name="ArmOutZSafeLength" type="xs:double" />
+      <xs:element minOccurs="0" name="ArmXToOriginPoint" type="xs:double" />
+      <xs:element minOccurs="0" name="BellySensorHigh" type="xs:double" />
+      <xs:element minOccurs="0" name="DeceleratingOrigin" type="xs:double" />
+      <xs:element minOccurs="0" name="FeedSlowDownPointTotalLength" type="xs:double" />
+      <xs:element minOccurs="0" name="HandJobLimit" type="xs:double" />
+      <xs:element minOccurs="0" name="HorizontalCompensate" type="xs:double" />
+      <xs:element minOccurs="0" name="InTotalLength" type="xs:double" />
+      <xs:element minOccurs="0" name="Length" type="xs:double" />
+      <xs:element minOccurs="0" name="MaterialCorrectionWorkRange" type="xs:double" />
+      <xs:element minOccurs="0" name="MaterialZeroToWorkRange" type="xs:double" />
+      <xs:element minOccurs="0" name="OutClampToZeroLength" type="xs:double" />
+      <xs:element minOccurs="0" name="OutTotalLength" type="xs:double" />
+      <xs:element minOccurs="0" name="SlowToOriginLength" type="xs:double" />
+      <xs:element minOccurs="0" name="VerticalGrippingXLimit" type="xs:double" />
+      <xs:element minOccurs="0" name="VerticalToOriginLength" type="xs:double" />
+      <xs:element minOccurs="0" name="WingSensorHigh" type="xs:double" />
+      <xs:element minOccurs="0" name="XLimit" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="HandSetting" nillable="true" type="tns:HandSetting" />
+  <xs:complexType name="AxisSetting">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ElectricalCurrent" type="xs:double" />
+      <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/GD_STD" minOccurs="0" name="MeasuringPosition" type="q5:Axis3D" />
+      <xs:element minOccurs="0" name="OriginToSideLength" type="xs:double" />
+      <xs:element minOccurs="0" name="Torque" type="xs:short" />
+      <xs:element minOccurs="0" name="TotalLength" type="xs:double" />
+      <xs:element minOccurs="0" name="YAxisLimit" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AxisSetting" nillable="true" type="tns:AxisSetting" />
+</xs:schema>

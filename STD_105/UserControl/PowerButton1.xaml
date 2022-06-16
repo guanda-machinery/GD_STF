@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="STD_105.PowerButton1"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:STD_105"
+             mc:Ignorable="d" >
+    <Viewbox>
+        <Grid>
+            <Ellipse Width="120" Height="120" Fill="{ StaticResource linear_MetalFrame }">
+        </Ellipse>
+        <Ellipse Width="105" Height="105" StrokeThickness="5">
+            <Ellipse.Fill>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop x:Name="ChangeColor1" Color="#FFCAE5F9" Offset="0.0"/>
+                    <GradientStop x:Name="ChangeColor2" Color="#FFBEE1F8" Offset="0.5"/>
+                    <GradientStop x:Name="ChangeColor3" Color="#FFB8D4E9" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Ellipse.Fill>
+            <Ellipse.Stroke>
+                <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                    <GradientStop Color="Transparent" Offset="0.0"/>
+                    <GradientStop Color="#FFB8D4E9" Offset="0.9"/>
+                    <GradientStop Color="#FFA7BFD3" Offset="0.925"/>
+                    <GradientStop Color="#FF354653" Offset="0.95"/>
+                    <GradientStop Color="Transparent" Offset="1.0"/>
+                </RadialGradientBrush>
+            </Ellipse.Stroke>
+        </Ellipse>
+            <Grid>
+                <Ellipse Width="90" Height="90" StrokeThickness="5" 
+                Fill="{ StaticResource linear_ButtonMaterial1 }" Stroke="{ StaticResource radial_ButtonMaterial }">
+            </Ellipse>
+                <Ellipse Width="70" Height="70" StrokeThickness="5">
+                    <Ellipse.Fill>
+                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                            <GradientStop Color="#FF6C7177" Offset="0.0"/>
+                            <GradientStop Color="#FF676B71" Offset="0.90"/>
+                            <GradientStop Color="#FF4B5158" Offset="0.75"/>
+                            <GradientStop Color="#FF273031" Offset="0.60"/>
+                            <GradientStop Color="#FF141718" Offset="0.45"/>
+                            <GradientStop Color="#FF16191A" Offset="0.30"/>
+                            <GradientStop Color="#FF1C2020" Offset="0.15"/>
+                            <GradientStop Color="#FF1C2020" Offset="0.0"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <Button x:Name="btn_Content" Content="按鈕文字" Foreground="{ StaticResource solidclr_CreamyWhite }" FontSize="24"
+                        Height="70" Width="70" Style="{ StaticResource btn_TransparentCircleButton }">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="ChangeColor1" Storyboard.TargetProperty="Color" To="#FFF9423A" Duration="0:0:0.1"/>
+                                    <ColorAnimation Storyboard.TargetName="ChangeColor2" Storyboard.TargetProperty="Color" To="#FFFF3855" Duration="0:0:0.1"/>
+                                    <ColorAnimation Storyboard.TargetName="ChangeColor3" Storyboard.TargetProperty="Color" To="#FFFF404C" Duration="0:0:0.1"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="PreviewMouseLeftButtonUp">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="ChangeColor1" Storyboard.TargetProperty="Color" To="#FFCAE5F9" Duration="0:0:0.1"/>
+                                    <ColorAnimation Storyboard.TargetName="ChangeColor2" Storyboard.TargetProperty="Color" To="#FFBEE1F8" Duration="0:0:0.1"/>
+                                    <ColorAnimation Storyboard.TargetName="ChangeColor3" Storyboard.TargetProperty="Color" To="#FFB8D4E9" Duration="0:0:0.1"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+            </Grid>
+    </Grid>
+    </Viewbox>    
+</UserControl>

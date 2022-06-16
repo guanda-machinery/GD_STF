@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/GD_STD.Phone" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/GD_STD.Phone" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:63506/ReadMemoryDuplex.svc?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://localhost:63506/ReadMemoryDuplex.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://localhost:63506/ReadMemoryDuplex.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/GD_STD" />
+  <xs:import schemaLocation="http://localhost:63506/ReadMemoryDuplex.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/GD_STD.Enum" />
+  <xs:complexType name="Login">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Code" nillable="true" type="q1:ArrayOfchar" />
+      <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Passwpord" nillable="true" type="q2:ArrayOfchar" />
+      <xs:element minOccurs="0" name="Remote" type="xs:boolean" />
+      <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="UID" nillable="true" type="q3:ArrayOfchar" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Login" nillable="true" type="tns:Login" />
+  <xs:complexType name="ArrayOfWorkMaterial">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WorkMaterial" type="tns:WorkMaterial" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfWorkMaterial" nillable="true" type="tns:ArrayOfWorkMaterial" />
+  <xs:complexType name="WorkMaterial">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="AssemblyNumber" nillable="true" type="q4:ArrayOfunsignedShort" />
+      <xs:element minOccurs="0" name="BoltsCountL" type="xs:unsignedShort" />
+      <xs:element minOccurs="0" name="BoltsCountM" type="xs:unsignedShort" />
+      <xs:element minOccurs="0" name="BoltsCountR" type="xs:unsignedShort" />
+      <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/GD_STD" minOccurs="0" name="DrLeft" nillable="true" type="q5:ArrayOfDrill" />
+      <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/GD_STD" minOccurs="0" name="DrMiddle" nillable="true" type="q6:ArrayOfDrill" />
+      <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/GD_STD" minOccurs="0" name="DrRight" nillable="true" type="q7:ArrayOfDrill" />
+      <xs:element minOccurs="0" name="Finish" type="xs:unsignedShort" />
+      <xs:element minOccurs="0" name="GUID" nillable="true" type="xs:base64Binary" />
+      <xs:element minOccurs="0" name="H" type="xs:float" />
+      <xs:element minOccurs="0" name="ID" nillable="true" type="xs:base64Binary" />
+      <xs:element minOccurs="0" name="IndexBoltsL" type="xs:unsignedShort" />
+      <xs:element minOccurs="0" name="IndexBoltsM" type="xs:unsignedShort" />
+      <xs:element minOccurs="0" name="IndexBoltsR" type="xs:unsignedShort" />
+      <xs:element minOccurs="0" name="Insert" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsExport" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Length" type="xs:double" />
+      <xs:element minOccurs="0" name="Material" nillable="true" type="xs:base64Binary" />
+      <xs:element xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="MaterialNumber" nillable="true" type="q8:ArrayOfunsignedShort" />
+      <xs:element minOccurs="0" name="MoveLocation" type="xs:double" />
+      <xs:element minOccurs="0" name="Moving" type="xs:boolean" />
+      <xs:element xmlns:q9="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="PartNumber" nillable="true" type="q9:ArrayOfunsignedShort" />
+      <xs:element minOccurs="0" name="Position" type="xs:float" />
+      <xs:element minOccurs="0" name="Profile" nillable="true" type="xs:base64Binary" />
+      <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="ProfileType" type="q10:PROFILE_TYPE" />
+      <xs:element minOccurs="0" name="R" type="xs:double" />
+      <xs:element minOccurs="0" name="SmeltingNumber" nillable="true" type="xs:base64Binary" />
+      <xs:element xmlns:q11="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Source" nillable="true" type="q11:ArrayOfunsignedShort" />
+      <xs:element minOccurs="0" name="Stamp" type="xs:boolean" />
+      <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/GD_STD" minOccurs="0" name="StampData" nillable="true" type="q12:ArrayOfStamp" />
+      <xs:element minOccurs="0" name="W" type="xs:float" />
+      <xs:element minOccurs="0" name="t1" type="xs:float" />
+      <xs:element minOccurs="0" name="t2" type="xs:float" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkMaterial" nillable="true" type="tns:WorkMaterial" />
+</xs:schema>

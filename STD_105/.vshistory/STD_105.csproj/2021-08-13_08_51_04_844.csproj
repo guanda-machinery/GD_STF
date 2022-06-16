@@ -1,0 +1,1097 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="..\packages\PropertyChanged.Fody.3.2.8\build\PropertyChanged.Fody.props" Condition="Exists('..\packages\PropertyChanged.Fody.3.2.8\build\PropertyChanged.Fody.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{97D1ED9B-3A06-4556-BFE2-99F002C16E4B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>STD_105</RootNamespace>
+    <AssemblyName>STD_105</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <PublishUrl>C:\Users\User\Desktop\Test\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <InstallUrl>http://localhost:8080/</InstallUrl>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Debug</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Logo.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>9F41A0D06A609624A5FE5BEF5B9A399E8A265D14</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>STD_105_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
+      <HintPath>..\packages\ControlzEx.4.3.0\lib\net45\ControlzEx.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Eyeshot.Control.Wpf.v2020, Version=2020.3.428.0, Culture=neutral, PublicKeyToken=5385d83d2fb4d7d9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\devDept Software\Eyeshot Ultimate 2020\Bin\devDept.Eyeshot.Control.Wpf.v2020.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Geometry.v2020, Version=2020.3.428.0, Culture=neutral, PublicKeyToken=9440825e8b4733bc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\devDept Software\Eyeshot Ultimate 2020\Bin\devDept.Geometry.v2020.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Graphics.Shaders.v2020, Version=2020.3.428.0, Culture=neutral, PublicKeyToken=54ce5f5f803e4b42, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\devDept Software\Eyeshot Ultimate 2020\Bin\devDept.Graphics.Shaders.v2020.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Graphics.Wpf.v2020, Version=2020.3.428.0, Culture=neutral, PublicKeyToken=f3cd437f0d8061b5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\devDept Software\Eyeshot Ultimate 2020\Bin\devDept.Graphics.Wpf.v2020.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Charts.Designer.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Charts.21.1.4\lib\net452\DevExpress.Charts.Designer.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Charts.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Charts.Core.21.1.4\lib\net452\DevExpress.Charts.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.CodeParser.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.CodeParser.21.1.4\lib\net452\DevExpress.CodeParser.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.Desktop.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Data.Desktop.21.1.4\lib\net452\DevExpress.Data.Desktop.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Data.21.1.4\lib\net452\DevExpress.Data.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DataAccess.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.DataAccess.21.1.4\lib\net452\DevExpress.DataAccess.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DataVisualization.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.DataVisualization.Core.21.1.4\lib\net452\DevExpress.DataVisualization.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Diagram.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Diagram.Core.21.1.4\lib\net452\DevExpress.Diagram.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Dialogs.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Win.Dialogs.Core.21.1.4\lib\net452\DevExpress.Dialogs.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Images.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Images.21.1.4\lib\net452\DevExpress.Images.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Map.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Map.Core.21.1.4\lib\net452\DevExpress.Map.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Mvvm.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Mvvm.21.1.4\lib\net452\DevExpress.Mvvm.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Mvvm.v21.1.DataModel, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Scaffolding.Core.21.1.4\lib\net452\DevExpress.Mvvm.v21.1.DataModel.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Mvvm.v21.1.DataModel.EFCore, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Scaffolding.EFCore.21.1.4\lib\net452\DevExpress.Mvvm.v21.1.DataModel.EFCore.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Mvvm.v21.1.ViewModel, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Scaffolding.Core.21.1.4\lib\net452\DevExpress.Mvvm.v21.1.ViewModel.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Office.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Office.Core.21.1.4\lib\net452\DevExpress.Office.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Pdf.Core.21.1.4\lib\net452\DevExpress.Pdf.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v21.1.Drawing, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Pdf.Drawing.21.1.4\lib\net452\DevExpress.Pdf.v21.1.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.PivotGrid.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.PivotGrid.Core.21.1.4\lib\net452\DevExpress.PivotGrid.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Printing.Core.21.1.4\lib\net452\DevExpress.Printing.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.RichEdit.Core.21.1.4\lib\net452\DevExpress.RichEdit.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v21.1.Export, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.RichEdit.Export.21.1.4\lib\net452\DevExpress.RichEdit.v21.1.Export.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Sparkline.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Sparkline.Core.21.1.4\lib\net452\DevExpress.Sparkline.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.SpellChecker.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.SpellChecker.Core.21.1.4\lib\net452\DevExpress.SpellChecker.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Spreadsheet.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Spreadsheet.Core.21.1.4\lib\net452\DevExpress.Spreadsheet.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.TreeMap.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.TreeMap.Core.21.1.4\lib\net452\DevExpress.TreeMap.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Utils.21.1.4\lib\net452\DevExpress.Utils.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Accordion.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Accordion.21.1.4\lib\net452\DevExpress.Xpf.Accordion.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Carousel.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Carousel.21.1.4\lib\net452\DevExpress.Xpf.Carousel.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Charts.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Charts.21.1.4\lib\net452\DevExpress.Xpf.Charts.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.CodeView.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Reporting.21.1.4\lib\net452\DevExpress.Xpf.CodeView.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Controls.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Controls.21.1.4\lib\net452\DevExpress.Xpf.Controls.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Core.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Core.21.1.4\lib\net452\DevExpress.Xpf.Core.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Core.v21.1.Extensions, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Core.Extensions.21.1.4\lib\net452\DevExpress.Xpf.Core.v21.1.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.DataAccess.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Reporting.21.1.4\lib\net452\DevExpress.Xpf.DataAccess.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Diagram.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Diagram.21.1.4\lib\net452\DevExpress.Xpf.Diagram.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Dialogs.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Dialogs.21.1.4\lib\net452\DevExpress.Xpf.Dialogs.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Docking.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Docking.21.1.4\lib\net452\DevExpress.Xpf.Docking.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.DocumentViewer.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.DocumentViewer.Core.21.1.4\lib\net452\DevExpress.Xpf.DocumentViewer.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.ExpressionEditor.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.ExpressionEditor.21.1.4\lib\net452\DevExpress.Xpf.ExpressionEditor.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Gantt.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Gantt.21.1.4\lib\net452\DevExpress.Xpf.Gantt.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Gauges.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Gauges.21.1.4\lib\net452\DevExpress.Xpf.Gauges.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Grid.Core.21.1.4\lib\net452\DevExpress.Xpf.Grid.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Grid.Core.21.1.4\lib\net452\DevExpress.Xpf.Grid.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v21.1.Extensions, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Grid.Core.21.1.4\lib\net452\DevExpress.Xpf.Grid.v21.1.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Layout.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Docking.21.1.4\lib\net452\DevExpress.Xpf.Layout.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.LayoutControl.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.LayoutControl.21.1.4\lib\net452\DevExpress.Xpf.LayoutControl.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Map.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Map.21.1.4\lib\net452\DevExpress.Xpf.Map.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.NavBar.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.NavBar.21.1.4\lib\net452\DevExpress.Xpf.NavBar.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Office.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Office.21.1.4\lib\net452\DevExpress.Xpf.Office.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.PdfViewer.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.PdfViewer.21.1.4\lib\net452\DevExpress.Xpf.PdfViewer.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.PivotGrid.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.PivotGrid.21.1.4\lib\net452\DevExpress.Xpf.PivotGrid.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Printing.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Printing.21.1.4\lib\net452\DevExpress.Xpf.Printing.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.PrismAdapters.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.PrismAdapters.21.1.4\lib\net452\DevExpress.Xpf.PrismAdapters.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.PropertyGrid.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.PropertyGrid.21.1.4\lib\net452\DevExpress.Xpf.PropertyGrid.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.ReportDesigner.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Reporting.21.1.4\lib\net452\DevExpress.Xpf.ReportDesigner.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Ribbon.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Ribbon.21.1.4\lib\net452\DevExpress.Xpf.Ribbon.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.RichEdit.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.RichEdit.21.1.4\lib\net452\DevExpress.Xpf.RichEdit.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Scheduling.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Scheduling.21.1.4\lib\net452\DevExpress.Xpf.Scheduling.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.SpellChecker.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.SpellChecker.21.1.4\lib\net452\DevExpress.Xpf.SpellChecker.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Spreadsheet.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Spreadsheet.21.1.4\lib\net452\DevExpress.Xpf.Spreadsheet.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Themes.Office2019Colorful.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.Themes.Office2019Colorful.21.1.4\lib\net452\DevExpress.Xpf.Themes.Office2019Colorful.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.TreeMap.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.TreeMap.21.1.4\lib\net452\DevExpress.Xpf.TreeMap.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.TypedStyles.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Wpf.TypedStyles.21.1.4\lib\net452\DevExpress.Xpf.TypedStyles.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpo.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Xpo.21.1.4\lib\net452\DevExpress.Xpo.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Win.Navigation.21.1.4\lib\net452\DevExpress.XtraBars.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Charts.21.1.4\lib\net452\DevExpress.XtraCharts.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Win.Navigation.21.1.4\lib\net452\DevExpress.XtraEditors.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGauges.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Gauges.Core.21.1.4\lib\net452\DevExpress.XtraGauges.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Win.Grid.21.1.4\lib\net452\DevExpress.XtraGrid.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Win.Navigation.21.1.4\lib\net452\DevExpress.XtraLayout.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Win.Printing.21.1.4\lib\net452\DevExpress.XtraPrinting.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Reporting.Core.21.1.4\lib\net452\DevExpress.XtraReports.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Win.Scheduler.21.1.4\lib\net452\DevExpress.XtraScheduler.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Scheduler.Core.21.1.4\lib\net452\DevExpress.XtraScheduler.v21.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v21.1.Core.Desktop, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Scheduler.CoreDesktop.21.1.4\lib\net452\DevExpress.XtraScheduler.v21.1.Core.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v21.1.Reporting, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Win.SchedulerReporting.21.1.4\lib\net452\DevExpress.XtraScheduler.v21.1.Reporting.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeList.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExpress.Win.TreeList.21.1.4\lib\net452\DevExpress.XtraTreeList.v21.1.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro, Version=2.0.0.0, Culture=neutral, PublicKeyToken=51482d6f650b2b3f, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.2.0.0\lib\net46\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignColors, Version=2.0.0.2422, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.2.0.0\lib\net452\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.MahApps, Version=0.1.6.2422, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.MahApps.0.1.6\lib\net452\MaterialDesignThemes.MahApps.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=4.0.0.2422, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.4.0.0\lib\net452\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="PropertyChanged, Version=3.2.8.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
+      <HintPath>..\packages\PropertyChanged.Fody.3.2.8\lib\net40\PropertyChanged.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="DisplayControls.cs" />
+    <Compile Include="EmptyWindows.xaml.cs">
+      <DependentUpon>EmptyWindows.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IPerformAccele.cs" />
+    <Compile Include="Office\CheckEnvironment.xaml.cs">
+      <DependentUpon>CheckEnvironment.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Office\EnvironmentVM.cs" />
+    <Compile Include="Office\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Office\OfficeBaseWindow.xaml.cs">
+      <DependentUpon>OfficeBaseWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Office\Pages\HomePage.xaml.cs">
+      <DependentUpon>HomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Office\Pages\Test.xaml.cs">
+      <DependentUpon>Test.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OpFunction.cs" />
+    <Compile Include="Page\AlarmPage.xaml.cs">
+      <DependentUpon>AlarmPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\DrillEntranceLPage.xaml.cs">
+      <DependentUpon>DrillEntranceLPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\DrillEntranceRPage.xaml.cs">
+      <DependentUpon>DrillEntranceRPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\DrillExportLPage.xaml.cs">
+      <DependentUpon>DrillExportLPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\DrillExportRPage.xaml.cs">
+      <DependentUpon>DrillExportRPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\DrillMiddlePage.xaml.cs">
+      <DependentUpon>DrillMiddlePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\EnClampDownPage.xaml.cs">
+      <DependentUpon>EnClampDownPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\ExClampDownPage.xaml.cs">
+      <DependentUpon>ExClampDownPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\EntranceRackPage.xaml.cs">
+      <DependentUpon>EntranceRackPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\ExportRackPage.xaml.cs">
+      <DependentUpon>ExportRackPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\HandPage.xaml.cs">
+      <DependentUpon>HandPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\ImportFiles.xaml.cs">
+      <DependentUpon>ImportFiles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\IoTLoginPage.xaml.cs">
+      <DependentUpon>IoTLoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\LeftAxisPage.xaml.cs">
+      <DependentUpon>LeftAxisPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\MachineModePage.xaml.cs">
+      <DependentUpon>MachineModePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\ChangeDrillPage.xaml.cs">
+      <DependentUpon>ChangeDrillPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\MiddleAxisPage.xaml.cs">
+      <DependentUpon>MiddleAxisPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\MachiningMonitorPage.xaml.cs">
+      <DependentUpon>MachiningMonitorPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\NewLoginPage.xaml.cs">
+      <DependentUpon>NewLoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\ObSettingPage.xaml.cs">
+      <DependentUpon>ObSettingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\RacksOperation.xaml.cs">
+      <DependentUpon>RacksOperation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\RightAxisPage.xaml.cs">
+      <DependentUpon>RightAxisPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\SelectFiles.xaml.cs">
+      <DependentUpon>SelectFiles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\SettingParPage.xaml.cs">
+      <DependentUpon>SettingParPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\SideClampPage.xaml.cs">
+      <DependentUpon>SideClampPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\SingleLoginPage.xaml.cs">
+      <DependentUpon>SingleLoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\SofSettingsPage.xaml.cs">
+      <DependentUpon>SofSettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\TypeSettingPage.xaml.cs">
+      <DependentUpon>TypeSettingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\VolumePage.xaml.cs">
+      <DependentUpon>VolumePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\AssembledControl3.xaml.cs">
+      <DependentUpon>AssembledControl3.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\AssembledControl4.xaml.cs">
+      <DependentUpon>AssembledControl4.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\BaseButton.xaml.cs">
+      <DependentUpon>BaseButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\HomePage.xaml.cs">
+      <DependentUpon>HomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\CircularSectorControl.xaml.cs">
+      <DependentUpon>CircularSectorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\CloseButton.xaml.cs">
+      <DependentUpon>CloseButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\ColorPicker.xaml.cs">
+      <DependentUpon>ColorPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\DataButton.xaml.cs">
+      <DependentUpon>DataButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\DigitialClock.xaml.cs">
+      <DependentUpon>DigitialClock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\DrillLevelTitleControl.xaml.cs">
+      <DependentUpon>DrillLevelTitleControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\DrillListControl.xaml.cs">
+      <DependentUpon>DrillListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\FunctionLockControl.xaml.cs">
+      <DependentUpon>FunctionLockControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\InputTitleControl.xaml.cs">
+      <DependentUpon>InputTitleControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\OfficePageHost.xaml.cs">
+      <DependentUpon>OfficePageHost.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\PMListControl.xaml.cs">
+      <DependentUpon>PMListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\RackControlButton.xaml.cs">
+      <DependentUpon>RackControlButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\RackControlSlider.xaml.cs">
+      <DependentUpon>RackControlSlider.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\SaveReduction.xaml.cs">
+      <DependentUpon>SaveReduction.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\AssembledControl1.xaml.cs">
+      <DependentUpon>AssembledControl1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\AssembledControl2.xaml.cs">
+      <DependentUpon>AssembledControl2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\ZoomButton.xaml.cs">
+      <DependentUpon>ZoomButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ValueConverters\AntiLogicConverter.cs" />
+    <Compile Include="ValueConverters\ApplicationPageConverter.cs" />
+    <Compile Include="UserControl\PageHost.xaml.cs">
+      <DependentUpon>PageHost.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ValueConverters\ConditionToIsEnabledConerter.cs" />
+    <Compile Include="ValueConverters\DoubleConditionToIsEnabledConerter.cs" />
+    <Compile Include="ValueConverters\ErrorCodeInfoConverter.cs" />
+    <Compile Include="ValueConverters\ErrorCodeToAlarmConverter.cs" />
+    <Compile Include="ValueConverters\BoolToOnImageConverter.cs" />
+    <Compile Include="ValueConverters\DrawingImageToBitmapSourceConverter.cs" />
+    <Compile Include="ValueConverters\FACE_ToStringConverter.cs" />
+    <Compile Include="ValueConverters\Language_ToStringConverter.cs" />
+    <Compile Include="ValueConverters\MATERIAL_ToStringConverter.cs" />
+    <Compile Include="ValueConverters\OBJECT_TYPE_ToStringConverter.cs" />
+    <Compile Include="ValueConverters\OfficePageConverter.cs" />
+    <Compile Include="ValueConverters\START_HOLE_ToStringConverter.cs" />
+    <Compile Include="ValueConverters\SteelMultiValueConverter.cs" />
+    <Compile Include="ValueConverters\StringToBrushConverter.cs" />
+    <Compile Include="ValueConverters\StringToDrawingColoConverter.cs" />
+    <Compile Include="ValueConverters\ComParConverter.cs" />
+    <Compile Include="ValueConverters\ConnectToStringConverter.cs" />
+    <Compile Include="ValueConverters\DRILL_LEVEL_ToStringConverter.cs" />
+    <Compile Include="ValueConverters\DRILL_TYPE_ToStringConverter.cs" />
+    <Compile Include="ValueConverters\EngineeringModeToVisibillityConverter.cs" />
+    <Compile Include="ValueConverters\KeyHoleToBoolConverter.cs" />
+    <Compile Include="ValueConverters\MchineModeToStringConverter.cs" />
+    <Compile Include="ValueConverters\NullToEnabledConverter.cs" />
+    <Compile Include="ValueConverters\NullToVisibilityConverter.cs" />
+    <Compile Include="ValueConverters\OillBoolToImageSourceConverter.cs" />
+    <Compile Include="ValueConverters\PageEnumToBoolConverter.cs" />
+    <Compile Include="ValueConverters\PerformanceToConverter.cs" />
+    <Compile Include="ZoomControls.cs" />
+    <Page Include="EmptyWindows.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LanguagePackages\EN.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LanguagePackages\TH.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LanguagePackages\TW.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LanguagePackages\VN.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Office\CheckEnvironment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Office\LoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Office\OfficeBaseWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Office\Pages\HomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Office\Pages\Test.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\AlarmPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\DrillEntranceLPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\DrillEntranceRPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\DrillExportLPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\DrillExportRPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\DrillMiddlePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\EnClampDownPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\ExClampDownPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\EntranceRackPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\ExportRackPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\HandPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\ImportFiles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\LeftAxisPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\LockPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\IoTLoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\MachineModePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\ChangeDrillPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\MiddleAxisPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\MachiningMonitorPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\NewLoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\ObSettingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\RacksOperation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\RightAxisPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\SelectFiles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\SettingParPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\SideClampPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\SingleLoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\SofSettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\TypeSettingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\VolumePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Borders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\CheckBoxs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\CustomTreeViews.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\DataGrids.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\DefaultScrollBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Drawings_Common.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Drawings_Office.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\GroupBoxs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Images.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Drawings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Fonts.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ProgressBars.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\RadioButtons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\SelectFilesTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Sliders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Texts.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Const.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\ComBoxs.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TabControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TreeViews.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Windows.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Colours.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Buttons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Page\LockPage.xaml.cs">
+      <DependentUpon>LockPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="UserControl\AssembledControl3.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\AssembledControl4.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\BaseButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\HomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\CircularSectorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\CloseButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\ColorPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\DataButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\DigitialClock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\DrillLevelTitleControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\DrillListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\FunctionLockControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\InputTitleControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\OfficePageHost.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\PageHost.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\PMListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\RackControlButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\RackControlSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\SaveReduction.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\AssembledControl1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\AssembledControl2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControl\ZoomButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Resource Include="Logo\SmallLogo.svg" />
+    <Resource Include="Logo\Logo.svg" />
+    <Resource Include="Logo.ico" />
+    <Resource Include="Fonts\DSEG14ClassicMini-Bold.ttf" />
+    <Resource Include="Fonts\DSEG7Modern-Regular.ttf" />
+    <None Include="Properties\app.manifest" />
+    <Resource Include="Logo\STD-105.jpg" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Resource Include="Fonts\Font Awesome 5 Brands-Regular-400.otf" />
+    <Resource Include="Fonts\Font Awesome 5 Duotone-Solid-900.otf" />
+    <Resource Include="Fonts\Font Awesome 5 Pro-Light-300.otf" />
+    <Resource Include="Fonts\Font Awesome 5 Pro-Regular-400.otf" />
+    <Resource Include="Fonts\Font Awesome 5 Pro-Solid-900.otf" />
+    <Resource Include="Fonts\fontawesome-webfont.ttf" />
+    <Resource Include="Fonts\Lato-Black.ttf" />
+    <Resource Include="Fonts\Lato-BlackItalic.ttf" />
+    <Resource Include="Fonts\Lato-Bold.ttf" />
+    <Resource Include="Fonts\Lato-BoldItalic.ttf" />
+    <Resource Include="Fonts\Lato-Hairline.ttf" />
+    <Resource Include="Fonts\Lato-HairlineItalic.ttf" />
+    <Resource Include="Fonts\Lato-Heavy.ttf" />
+    <Resource Include="Fonts\Lato-HeavyItalic.ttf" />
+    <Resource Include="Fonts\Lato-Italic.ttf" />
+    <Resource Include="Fonts\Lato-Light.ttf" />
+    <Resource Include="Fonts\Lato-LightItalic.ttf" />
+    <Resource Include="Fonts\Lato-Medium.ttf" />
+    <Resource Include="Fonts\Lato-MediumItalic.ttf" />
+    <Resource Include="Fonts\Lato-Regular.ttf" />
+    <Resource Include="Fonts\Lato-Semibold.ttf" />
+    <Resource Include="Fonts\Lato-SemiboldItalic.ttf" />
+    <Resource Include="Fonts\Lato-Thin.ttf" />
+    <Resource Include="Fonts\Lato-ThinItalic.ttf" />
+    <Resource Include="favicon_32.ico" />
+    <Resource Include="favicon_64.ico" />
+    <Resource Include="favicon_128.ico" />
+    <Content Include="Log.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GD_STD.Enum\GD_STD.Enum.csproj">
+      <Project>{9dfd02bd-8e10-4518-8c06-d8a369183f14}</Project>
+      <Name>GD_STD.Enum</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GD_STD.IBase\GD_STD.Base.csproj">
+      <Project>{04de5146-0a39-444f-8746-239d36ac5a7e}</Project>
+      <Name>GD_STD.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GD_STF\GD_STD.csproj">
+      <Project>{3effa436-f171-45e9-b999-50690a7e2a2b}</Project>
+      <Name>GD_STD</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFSTD105Base\WPFSTD105.csproj">
+      <Project>{993757f9-1671-4583-acf6-10e02a50fd51}</Project>
+      <Name>WPFSTD105</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFWindowsBase\WPFWindowsBase.csproj">
+      <Project>{f7706c9a-000f-4e0d-ba49-d73211329274}</Project>
+      <Name>WPFWindowsBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wsdl\Wsdl.csproj">
+      <Project>{bb03e7cb-69d9-48d1-81ca-831a5a8e1f73}</Project>
+      <Name>Wsdl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Logo\1.png" />
+    <Resource Include="Logo\2.png" />
+    <Resource Include="Logo\3.png" />
+    <Resource Include="Logo\4 %28修改%29.png" />
+    <Resource Include="Logo\4.png" />
+    <Resource Include="Logo\5.png" />
+    <Resource Include="Logo\7.png" />
+    <Resource Include="Logo\Logo.png" />
+    <Resource Include="Logo\Logo1.png" />
+    <Resource Include="Logo\S34775051.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Logo\Lock.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Logo\par1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Logo\SettingPar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Logo\Home.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6 %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\DataSources\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>此專案參考這部電腦上所缺少的 NuGet 套件。請啟用 NuGet 套件還原，以下載該套件。如需詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的檔案是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.6.2.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.2.0\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\PropertyChanged.Fody.3.2.8\build\PropertyChanged.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.3.2.8\build\PropertyChanged.Fody.props'))" />
+    <Error Condition="!Exists('..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\DevExpress.Reporting.Core.21.1.4\build\DevExpress.Reporting.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\DevExpress.Reporting.Core.21.1.4\build\DevExpress.Reporting.Core.targets'))" />
+  </Target>
+  <Import Project="..\packages\Fody.6.2.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.2.0\build\Fody.targets')" />
+  <Import Project="..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets')" />
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <Import Project="..\packages\DevExpress.Reporting.Core.21.1.4\build\DevExpress.Reporting.Core.targets" Condition="Exists('..\packages\DevExpress.Reporting.Core.21.1.4\build\DevExpress.Reporting.Core.targets')" />
+</Project>

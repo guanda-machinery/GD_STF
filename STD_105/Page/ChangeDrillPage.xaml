@@ -1,0 +1,286 @@
+﻿<WPFBase:BasePage x:Class="STD_105.ChangeDrillPage"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:STD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
+                  xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+                  xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                  xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                  xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                  xmlns:local="clr-namespace:STD_105"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  Title="刀庫"
+                  d:DesignHeight="1049"
+                  d:DesignWidth="800"
+                  x:TypeArguments="STD105VM:ChangeDrillPageVM"
+                  mc:Ignorable="d">
+    <Grid>
+        <TabControl Style="{StaticResource tabcontrol_STD}">
+            <TabControl.Resources>
+                <Style BasedOn="{StaticResource gbx_WithBorder}"
+                       TargetType="GroupBox" />
+                <Style TargetType="local:MainFunctionButton">
+                    <Setter Property="FontSize"
+                            Value="{Binding ParameterFontSize, Source={x:Static SofSetting:SofSetting.Default}}" />
+                    <Setter Property="Margin"
+                            Value="10,0" />
+                </Style>
+            </TabControl.Resources>
+            <!--  刀庫控制  -->
+            <TabItem Header="刀庫控制"
+                     Style="{StaticResource tabitem_STD}">
+                <GroupBox Header="刀庫控制">
+                    <local:Joystick Height="950" Width="950"/>
+                </GroupBox>
+            </TabItem>
+            <!--  刀庫設定  -->
+            <TabItem Header="刀庫設定"
+                     Style="{StaticResource tabitem_STD}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1.5*" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <!--  目前刀庫  -->
+                    <GroupBox Header="刀庫列表">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="2*" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid>
+                                <Border  Height="74"
+                                         Width="834"
+                                         Background="#FF242424"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Top"
+                                         CornerRadius="12"
+                                         BorderThickness="0,5,0,0"
+                                         BorderBrush="#FF1E1E1E" />
+                                <Border  Height="74"
+                                         Width="834"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Top"
+                                         CornerRadius="12"
+                                         BorderThickness="0,0,0,5"
+                                         BorderBrush="#FF373737" />
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Top"
+                                            Margin="0,8">
+                                    <local:ToolMagazineButton ButtonCommand="{Binding MiddleCommand}"
+                                                              ButtonImageSource="{StaticResource Clamping}"
+                                                              StartState="{Binding IsSelectdMiddle}"
+                                                              IsEnabled="{Binding MiddleIsEnabled}"
+                                                              TitleText="A刀庫"
+                                                              SubTitleText="上軸" />
+                                    <local:ToolMagazineButton ButtonCommand="{Binding LeftExportCommand}"
+                                                              ButtonImageSource="{StaticResource Clamping}"
+                                                              StartState="{Binding IsSelectdLeftExport}"
+                                                              IsEnabled="{Binding LeftExportIsEnabled}"
+                                                              TitleText="B刀庫"
+                                                              SubTitleText="左軸"
+                                                              Margin="1,0" />
+                                    <local:ToolMagazineButton ButtonCommand="{Binding RightExportCommand}"
+                                                              ButtonImageSource="{StaticResource Clamping}"
+                                                              StartState="{Binding IsSelectdRightExport}"
+                                                              IsEnabled="{Binding RightExportIsEnabled}"
+                                                              TitleText="C刀庫"
+                                                              SubTitleText="右軸" />
+                                    <local:ToolMagazineButton ButtonCommand="{Binding LeftEntranceCommand}"
+                                                              ButtonImageSource="{StaticResource Clamping}"
+                                                              IsEnabled="{Binding LeftEntranceIsEnabled}"
+                                                              StartState="{Binding IsSelectdLeftEntrance}"
+                                                              TitleText="D刀庫"
+                                                              SubTitleText="左軸"
+                                                              Margin="1,0" />
+                                    <local:ToolMagazineButton ButtonCommand="{Binding RightEntranceCommand}"
+                                                              ButtonImageSource="{StaticResource Clamping}"
+                                                              IsEnabled="{Binding RightEntranceIsEnabled}"
+                                                              StartState="{Binding IsSelectdRightEntrance}"
+                                                              TitleText="E刀庫"
+                                                              SubTitleText="右軸" />
+                                    <!--
+                                    <local:MainFunctionButton ButtonCommand="{Binding MiddleCommand}"
+                                                              ButtonImageSource="{StaticResource Clamping}"
+                                                              StartState="{Binding IsSelectdMiddle}"
+                                                              IsEnabled="{Binding MiddleIsEnabled}"
+                                                              TitleText="A刀庫" />
+                                    <local:MainFunctionButton ButtonCommand="{Binding LeftExportCommand}"
+                                                              ButtonImageSource="{StaticResource Clamping}"
+                                                              StartState="{Binding IsSelectdLeftExport}"
+                                                              IsEnabled="{Binding LeftExportIsEnabled}"
+                                                              TitleText="B刀庫" />
+                                    <local:MainFunctionButton ButtonCommand="{Binding RightExportCommand}"
+                                                              ButtonImageSource="{StaticResource Clamping}"
+                                                              StartState="{Binding IsSelectdRightExport}"
+                                                              IsEnabled="{Binding RightExportIsEnabled}"
+                                                              TitleText="C刀庫" />
+                                    <local:MainFunctionButton ButtonCommand="{Binding LeftEntranceCommand}"
+                                                              ButtonImageSource="{StaticResource Clamping}"
+                                                              IsEnabled="{Binding LeftEntranceIsEnabled}"
+                                                              StartState="{Binding IsSelectdLeftEntrance}"
+                                                              TitleText="D刀庫" />
+                                    <local:MainFunctionButton ButtonCommand="{Binding RightEntranceCommand}"
+                                                              ButtonImageSource="{StaticResource Clamping}"
+                                                              IsEnabled="{Binding RightEntranceIsEnabled}"
+                                                              StartState="{Binding IsSelectdRightEntrance}"
+                                                              TitleText="E刀庫" />
+                                    -->
+                                </StackPanel>
+                            </Grid>
+                            <dxg:GridControl Grid.Row="1"
+                                             MaxHeight="500"
+                                             dx:ThemeManager.ThemeName="Office2019DarkGray"
+                                             ItemsSource="{Binding UnusedSelected}">
+                                <dxg:GridControl.View>
+                                    <dxg:TableView ShowGroupPanel="False"
+                                                   AllowEditing="{Binding DrillEditing}" />
+                                </dxg:GridControl.View>
+                                <dxg:GridControl.Columns>
+                                    <dxg:GridColumn FieldName="Index"
+                                                    Header="位置" />
+                                    <dxg:GridColumn FieldName="SettingName"
+                                                    Header="設定檔名稱">
+                                        <dxg:GridColumn.EditSettings>
+                                            <dxe:ComboBoxEditSettings DisplayMember="DataName"
+                                                                      ItemsSource="{Binding DrillBrands}"
+                                                                      ValueMember="DataName" />
+                                        </dxg:GridColumn.EditSettings>
+                                    </dxg:GridColumn>
+                                    <dxg:GridColumn FieldName="Name"
+                                                    Header="品牌"
+                                                    ReadOnly="True" />
+                                    <dxg:GridColumn FieldName="Dia"
+                                                    Header="直徑&#x0a;(mm)"
+                                                    ReadOnly="True" />
+                                    <dxg:GridColumn FieldName="Rpm"
+                                                    Header="主軸轉速&#x0a;(RPM)"
+                                                    ReadOnly="True" />
+                                    <dxg:GridColumn FieldName="Length"
+                                                    Header="鑽頭長度&#x0a;(mm)"
+                                                    ReadOnly="True" />
+                                    <dxg:GridColumn FieldName="Limit"
+                                                    Header="極限設定&#x0a;(M)" />
+                                </dxg:GridControl.Columns>
+                            </dxg:GridControl>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.5*" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <local:DrillLevelTitleControl VerticalAlignment="Center"
+                                                              Visibility="Collapsed" />
+                                <StackPanel Grid.Column="1"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Bottom"
+                                            Orientation="Horizontal">
+                                    <StackPanel.Resources>
+                                        <Style BasedOn="{StaticResource btn_CommonFunctionKey_STD}"
+                                               TargetType="{x:Type Button}"></Style>
+                                    </StackPanel.Resources>
+                                    <Button Command="{Binding UpDateCommand}"
+                                            Content="重新讀取" />
+                                    <Button Command="{Binding UnusedSaveCommand}"
+                                            Content="存檔" />
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </GroupBox>
+                    <!--  目前刀具  -->
+                    <GroupBox Grid.Row="2"
+                              Header="目前刀具">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid>
+                                <Border  Height="74"
+                                         Width="505"
+                                         Background="#FF242424"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Top"
+                                         CornerRadius="12"
+                                         BorderThickness="0,5,0,0"
+                                         BorderBrush="#FF1E1E1E" />
+                                <Border  Height="74"
+                                         Width="505"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Top"
+                                         CornerRadius="12"
+                                         BorderThickness="0,0,0,5"
+                                         BorderBrush="#FF373737" />
+                                <StackPanel HorizontalAlignment="Center"
+                                            VerticalAlignment="Top"
+                                            Orientation="Horizontal"
+                                            Margin="0,8">
+                                    <local:ToolMagazineButton ButtonCommand="{Binding CurrentLeftCommand}"
+                                                              ButtonImageSource="{StaticResource NewDrill}"
+                                                              StartState="{Binding IsCurrentLeft}"
+                                                              TitleText="左軸"
+                                                              SubTitleText="" />
+                                    <local:ToolMagazineButton ButtonCommand="{Binding CurrentMiddleCommand}"
+                                                              ButtonImageSource="{StaticResource NewDrill}"
+                                                              StartState="{Binding IsCurrentMiddle}"
+                                                              TitleText="中軸"
+                                                              SubTitleText=""
+                                                              Margin="1,0" />
+                                    <local:ToolMagazineButton ButtonCommand="{Binding CurrentRightCommand}"
+                                                              ButtonImageSource="{StaticResource NewDrill}"
+                                                              StartState="{Binding IsCurrentRight}"
+                                                              TitleText="右軸"
+                                                              SubTitleText="" />
+                                </StackPanel>
+                            </Grid>                            
+                                <!--
+                                <local:MainFunctionButton
+                                    ButtonCommand="{Binding CurrentLeftCommand}"
+                                    ButtonImageSource="{StaticResource NewDrill}"
+                                    StartState="{Binding IsCurrentLeft}"
+                                    TitleText="左軸" />
+                                <local:MainFunctionButton
+                                    ButtonCommand="{Binding CurrentMiddleCommand}"
+                                    ButtonImageSource="{StaticResource NewDrill}"
+                                    StartState="{Binding IsCurrentMiddle}"
+                                    TitleText="中軸" />
+                                <local:MainFunctionButton
+                                    ButtonCommand="{Binding CurrentRightCommand}"
+                                    ButtonImageSource="{StaticResource NewDrill}"
+                                    StartState="{Binding IsCurrentRight}"
+                                    TitleText="右軸" />-->                            
+                            <local:DrillListControl Grid.Row="1"
+                                                    VerticalAlignment="Top"
+                                                    DataContext="{Binding UseSelected}" />
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.5*" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <local:DrillLevelTitleControl VerticalAlignment="Center"
+                                                              Visibility="Collapsed" />
+                                <StackPanel Grid.Column="1"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Bottom"
+                                            Orientation="Horizontal">
+                                    <StackPanel.Resources>
+                                        <Style BasedOn="{StaticResource btn_CommonFunctionKey_STD}"
+                                               TargetType="{x:Type Button}"></Style>
+                                    </StackPanel.Resources>
+                                    <Button Command="{Binding UpDateCommand}"
+                                            Content="重新讀取" />
+                                    <Button Command="{Binding UnusedSaveCommand}"
+                                            Content="存檔" />
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</WPFBase:BasePage>

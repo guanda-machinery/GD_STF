@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="STD_105.CircleProgressBarWithChecked"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:STD_105"
+             mc:Ignorable="d">
+    <Grid Width="200" Height="200">
+        <Grid.Resources>
+            <Style x:Key="grid_Checked" TargetType="{ x:Type Grid }">
+                <Setter Property="Visibility" Value="Collapsed"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding ElementName=slider, Path=Value}" Value="100">
+                        <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Resources>
+        <Viewbox>
+            <Canvas Width="512" Height="512">
+                <Slider x:Name="slider" Minimum="0" Maximum="100" Width="512" ValueChanged="slider_ValueChanged" Visibility="Collapsed"/>
+                <Path Stroke="{ StaticResource solidclr_CreamyWhite }" Canvas.Left="256" Canvas.Top="450" StrokeThickness="20">
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathFigure IsClosed="True" StartPoint="0,0">
+                                <ArcSegment IsLargeArc="True"
+                            Point="0.0001,0"
+                            Size="180,180"
+                            SweepDirection="Clockwise" />
+                            </PathFigure>
+                        </PathGeometry>
+                    </Path.Data>
+                </Path>
+                <Path Stroke="{ StaticResource solidclr_ButtonBlue }" Canvas.Left="256" Canvas.Top="450" StrokeThickness="30">
+                    <Path.Data>
+                        <PathGeometry>
+                            <PathFigure x:Name="path" IsClosed="False" StartPoint="0,0">
+                                <ArcSegment x:Name="percentage" IsLargeArc="True"
+                            Point="0.0001,0"
+                            Size="180,180"
+                            SweepDirection="Clockwise" />
+                            </PathFigure>
+                        </PathGeometry>
+                    </Path.Data>
+                </Path>
+                <Grid x:Name="checked" Style="{ StaticResource grid_Checked }">
+                    <Path Fill="#FF3F3756" Data="M461.7,127.9c-7.2-13.9-15.4-27.2-24-40.2c-3.3-7.1-10.2-6.9-16.1-3c-80.3,48.6-144.5,124.6-207.4,189.6
+		                c-24.5-34.5-48.5-70-78.5-100c-5.6-6.4-11.1,3.4-15.9,6.2c-17,14.7-34.8,28.6-50.8,44.4c-5.3,5.8,5.6,12.9,8.5,17.7
+		                c36.5,39.5,70.9,80.8,105.3,122.1c16.2,15.5,24.1,42.6,41.4,10.3c61.4-81.8,129.5-159.7,213.1-219.6
+		                C444.6,148.1,469.7,140,461.7,127.9z"/>
+                    <Path Fill="Lime" Data="M71.2,228.5l138.3,158.3c26.5-31.1,78.8-106.4,144.8-168.7c42.6-36.9,105.1-84.3,105.1-84.3l-28.1-46.5
+		                c0,0-89.6,65.4-122.8,96.6s-93.9,95.4-93.9,95.4c-5.1-7-68-92.1-82.8-101.7L71.2,228.5z"/>
+                    <Path Fill="#FF3F3756" Data="M461.7,127.9c-7.2-13.9-15.4-27.2-24-40.2c-3.3-7.1-10.2-6.9-16.1-3c-80.3,48.6-144.5,124.6-207.4,189.6
+		                c-24.5-34.5-48.5-70-78.5-100c-5.6-6.4-11.1,3.4-15.9,6.2c-17,14.7-34.8,28.6-50.8,44.4c-5.3,5.8,5.6,12.9,8.5,17.7
+		                c36.5,39.5,70.9,80.8,105.3,122.1c16.2,15.5,24.1,42.6,41.4,10.3c61.4-81.8,129.5-159.7,213.1-219.6
+		                C444.6,148.1,469.7,140,461.7,127.9z M452.6,132.9c-12.8,8.7-26.7,18.4-39,27.8l0,0l0,0c-61.3,48.4-99.2,88.4-136.6,132.7l0,0
+		                c-22.6,28.3-45.4,56.6-66.4,86.2c-0.9,1.3-1.3,0.7-2-0.1c-42.7-50.1-83.5-101.8-129.9-148.6l0,0l0,0c-8.7-2.2,54-49.3,54.6-47.9
+		                c25.9,30.2,49.1,62.7,72,95.3c2.5,2.6,4.3,9.3,8.4,8.6c49.2-48.6,94.9-101.5,148.8-145.3c20.7-17.1,42.1-33.4,64.6-48
+		                c3.6-2.6,23.6,33.7,25.7,37.6C453.2,131.7,453.5,132.3,452.6,132.9z">
+                    </Path>
+                </Grid>
+            </Canvas>
+        </Viewbox>
+    </Grid>
+</UserControl>

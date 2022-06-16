@@ -1,0 +1,203 @@
+﻿<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="shortcut icon" href="../icons/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="../styles/branding.css" />
+    <link rel="stylesheet" type="text/css" href="../styles/branding-zh-CHS.css" />
+    <script type="text/javascript" src="../scripts/branding.js"> </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>IOutput Interface</title>
+    <meta name="Language" content="zh-chs" />
+    <meta name="System.Keywords" content="IOutput interface" />
+    <meta name="System.Keywords" content="GD_STD.Base.IOutput interface" />
+    <meta name="Microsoft.Help.F1" content="GD_STD.Base.IOutput" />
+    <meta name="Microsoft.Help.Id" content="T:GD_STD.Base.IOutput" />
+    <meta name="Description" content="輸出接點介面" />
+    <meta name="Microsoft.Help.ContentType" content="Reference" />
+    <meta name="BrandingAware" content="true" />
+    
+    <meta name="container" content="GD_STD.Base" />
+    <meta name="file" content="b40db15a-db88-eeeb-1bf5-d570c1a3b101" />
+    <meta name="guid" content="b40db15a-db88-eeeb-1bf5-d570c1a3b101" />
+    
+    <link rel="stylesheet" type="text/css" href="../styles/branding-Website.css" />
+    <script type="text/javascript" src="../scripts/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="../scripts/branding-Website.js"></script>
+    <script type="text/javascript" src="../scripts/clipboard.min.js"></script>
+  </head>
+  <body onload="OnLoad('cs')">
+    <input type="hidden" id="userDataCache" class="userDataStyle" />
+    <div class="pageHeader" id="PageHeader">A Sandcastle Documented Class Library<form id="SearchForm" method="get" action="#" onsubmit="javascript:TransferToSearchPage(); return false;"><input id="SearchTextBox" type="text" maxlength="200" /><button id="SearchButton" type="submit"></button></form></div>
+    <div class="pageBody">
+      <div class="leftNav" id="leftNav"><div id="tocNav"><div class="toclevel0" data-toclevel="0"><a class="tocCollapsed" onclick="javascript: Toggle(this);" href="#!" /><a data-tochassubtree="true" href="../html/6d3bbd86-f9ed-4a68-a760-95c88ed843c3.htm" title="A Sandcastle Documented Class Library" tocid="roottoc">A Sandcastle Documented Class Library</a></div><div class="toclevel0" data-toclevel="0"><a class="tocCollapsed" onclick="javascript: Toggle(this);" href="#!" /><a data-tochassubtree="true" href="../html/eed64dd1-2790-7bdc-72a0-3b0228147031.htm" title="GD_STD.Base" tocid="eed64dd1-2790-7bdc-72a0-3b0228147031">GD_STD.Base</a></div><div class="toclevel1 current" data-toclevel="1" data-childrenloaded="true"><a class="tocExpanded" onclick="javascript: Toggle(this);" href="#!" /><a data-tochassubtree="true" href="../html/b40db15a-db88-eeeb-1bf5-d570c1a3b101.htm" title="IOutput Interface" tocid="b40db15a-db88-eeeb-1bf5-d570c1a3b101">IOutput Interface</a></div><div class="toclevel2" data-toclevel="2"><a class="tocCollapsed" onclick="javascript: Toggle(this);" href="#!" /><a data-tochassubtree="true" href="../html/88beeeef-45fc-d8a3-8312-c855a295d3c3.htm" title="IOutput Properties" tocid="88beeeef-45fc-d8a3-8312-c855a295d3c3">IOutput Properties</a></div></div><div id="tocResizableEW" onmousedown="OnMouseDown(event);"></div><div id="TocResize" class="tocResize"><img id="ResizeImageIncrease" src="../icons/TocOpen.gif" onclick="OnIncreaseToc()" alt="Click or drag to resize" title="Click or drag to resize" /><img id="ResizeImageReset" src="../icons/TocClose.gif" style="display:none" onclick="OnResetToc()" alt="Click or drag to resize" title="Click or drag to resize" /></div></div><div class="topicContent" id="TopicContent">
+        <table class="titleTable">
+          <tr>
+            <td class="logoColumn">
+              <img src="../icons/Help.png" />
+            </td>
+            <td class="titleColumn">
+              <h1>IOutput Interface</h1>
+            </td>
+          </tr>
+        </table>
+        <span class="introStyle"></span> <div class="summary">
+            輸出接點介面
+            </div><p> </p>
+    <strong>Namespace:</strong> 
+   <a href="eed64dd1-2790-7bdc-72a0-3b0228147031.htm">GD_STD.Base</a><br />
+    <strong>Assembly:</strong>
+   GD_STD.Base (in GD_STD.Base.dll) Version: 1.0.0.2 (1.0.0.2)<div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID1RB')" onkeypress="SectionExpandCollapse_CheckKey('ID1RB', event)" tabindex="0"><img id="ID1RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Syntax</span></div><div id="ID1RBSection" class="collapsibleSection"><div class="codeSnippetContainer"><div class="codeSnippetContainerTabs"><div id="ID0ECCA_tab1" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0ECCA','cs','1','3');return false;">C#</a></div><div id="ID0ECCA_tab2" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0ECCA','vb','2','3');return false;">VB</a></div><div id="ID0ECCA_tab3" class="codeSnippetContainerTab"><a href="#" onclick="javascript:ChangeTab('ID0ECCA','cpp','3','3');return false;">C++</a></div></div><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID0ECCA_copyCode" href="#" class="copyCodeSnippet" onclick="javascript:CopyToClipboard('ID0ECCA');return false;" title="Copy">Copy</a></div></div><div id="ID0ECCA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="identifier">IOutput</span></pre></div><div id="ID0ECCA_code_Div2" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">Public</span> <span class="keyword">Interface</span> <span class="identifier">IOutput</span></pre></div><div id="ID0ECCA_code_Div3" class="codeSnippetContainerCode" style="display: none"><pre xml:space="preserve"><span class="keyword">public</span> <span class="keyword">interface class</span> <span class="identifier">IOutput</span></pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID0ECCA");</script></div><p>The <span class="selflink">IOutput</span> type exposes the following members.</p><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID3RB')" onkeypress="SectionExpandCollapse_CheckKey('ID3RB', event)" tabindex="0"><img id="ID3RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Properties</span></div><div id="ID3RBSection" class="collapsibleSection"><table class="members" id="propertyList"><tr><th class="iconColumn">
+								 
+							</th><th>Name</th><th>Description</th></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="1d09aa48-2329-3bbd-afe9-5010556a8cc1.htm">Boot_Open</a></td><td><div class="summary">
+            幫 PC 主機開機
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="80a3ba52-df43-5a98-6100-e4e255811c9f.htm">Case_1_Lock</a></td><td><div class="summary"> 
+            外罩門(1)LOCK 
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="df67c0f6-9f80-b6e4-daeb-3ed4c56c89b8.htm">Case_2_Lock</a></td><td><div class="summary"> 
+            外罩門(2)LOCK 
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="1fc20649-88d5-671a-3b18-c0d6e5a959ff.htm">Case_3_Lock</a></td><td><div class="summary"> 
+            外罩門(3)LOCK 
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="e7c5f65d-39ff-7069-5292-417bd96a6649.htm">Electrical_BOX_Lock</a></td><td><div class="summary"> 
+            強電箱門LOCK 
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="01efbd13-0bcc-f90f-5a0d-35e69e85d5fd.htm">Finish_Motor_On</a></td><td><div class="summary">
+            完工出料馬達啟動
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="9159b312-86a8-45c1-0871-a3e8a38880cb.htm">HMI_Alarm_Light</a></td><td><div class="summary">
+            面板_Alarm燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="2dab6d27-ce89-5205-c061-00cef0b0ef1f.htm">HMI_Alarm_Return_Light</a></td><td><div class="summary"> 
+            面板_警報復位燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="9f6cfcb2-5a6e-529f-4b41-f291835d6e84.htm">HMI_Arm_Select_Light</a></td><td><div class="summary"> 
+            面板_手臂選擇燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="ab44a5c4-69e1-c5f8-90cc-321770f53cc5.htm">HMI_Arm_Slow_Down_Light</a></td><td><div class="summary"> 
+            面板_減速燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="a9d5592e-a7da-df91-f785-c064ffd9f2e3.htm">HMI_Arm_Speed_Up_Light</a></td><td><div class="summary"> 
+            面板_加速燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="b29c27d6-039c-dab3-92db-23dfd76cb3ee.htm">HMI_AutoRun_Light</a></td><td><div class="summary"> 
+            面板_加工直行燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="0b010333-a384-22f4-3d5c-d0e254a061d4.htm">HMI_Clip_Down_Mode_Light</a></td><td><div class="summary"> 
+            面板_夾具下壓模式(搖桿)
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="30703f7c-7c32-9c5e-8040-dd030ac172d0.htm">HMI_Clip_Side_Mode_Light</a></td><td><div class="summary"> 
+            面板_夾具側壓模式燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="58243c5a-cfbb-2977-e7e6-21b2c3e01be5.htm">HMI_DrillHome_Mode_Light</a></td><td><div class="summary"> 
+            面板_刀庫模式燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="ad72f589-c51e-e29c-7f50-b5df8db8d472.htm">HMI_Effluent_Light</a></td><td><div class="summary"> 
+            面板_中心出水燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="1845b3a1-4ed1-7f5e-dc1c-0078cafb4316.htm">HMI_EtherCAT_Light</a></td><td><div class="summary">
+            EtherCAT 燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="1ac067c6-2374-d24a-c281-d6637d565504.htm">HMI_Fully_Automatic_Light</a></td><td><div class="summary"> 
+            面板_全自動燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="00e3b310-5398-d2ac-4254-96176c536250.htm">HMI_HandWheel_Light</a></td><td><div class="summary"> 
+            面板_啟動手搖輪燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="1b0d8ddd-61cb-5a5b-c93c-774c47202c05.htm">HMI_Hydraulic_Light</a></td><td><div class="summary"> 
+            面板_油壓啟動燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="ef2f3c84-9d8f-f7a7-4382-f9fd537b8e5f.htm">HMI_IN_Rack_Light</a></td><td><div class="summary"> 
+            面板_入口料架燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="2db33de3-b902-59d3-c2b5-1622e2d5bc6a.htm">HMI_Origin_Return_Light</a></td><td><div class="summary">
+            面板_原點復歸燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="64207c5f-4d53-ee04-1d26-6e79aaee2636.htm">HMI_OUT_Rack_Light</a></td><td><div class="summary"> 
+            面板_出口料架燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="b4a6279f-ebee-aa62-4a0b-04adbb2e9fce.htm">HMI_OverLoad_Light</a></td><td><div class="summary"> 
+            面板_OverLoad燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="89aff417-2594-f5a2-dc23-d7c6dd758251.htm">HMI_Pause_Light</a></td><td><div class="summary"> 
+            面板_暫停燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="81748747-617a-f6c7-5327-9cbed773c7d0.htm">HMI_Power_Light</a></td><td><div class="summary"> 
+            面板_總電源燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="289d61d4-4495-89bd-c48e-4365d6de1d74.htm">HMI_Semi_Automatic_Light</a></td><td><div class="summary"> 
+            面板_半自動燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="f98edfaa-c950-458c-aa39-235c9ebeeb60.htm">HMI_Spindle_CW_Light</a></td><td><div class="summary"> 
+            面板_主軸正轉燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="6063d157-f597-9c2c-c09a-df324db56ad4.htm">HMI_Spindle_Loosen_Light</a></td><td><div class="summary"> 
+            面板鬆刀燈Y64
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="6e7b4e60-df96-78f3-cc30-a7b123eeee4d.htm">HMI_Spindle_Mode_Light</a></td><td><div class="summary"> 
+            面板_主軸模式燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="e8e80411-9a81-e4f9-60cd-6a948bf5b662.htm">HMI_Spindle_Stop_Light</a></td><td><div class="summary"> 
+            面板_主軸停止燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="fc593ed7-51ce-1b71-2f50-dbd0740db39b.htm">HMI_Volume_scrap_Light</a></td><td><div class="summary"> 
+            面板_捲屑機動作燈
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="a8d5a144-ac8c-6cb9-1545-269c61c53662.htm">Hydraulic_On</a></td><td><div class="summary">
+            油壓啟動
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="986b47dc-2c1b-a4aa-08e8-e8eb840bbc63.htm">L_IN_Clip_Down</a></td><td><div class="summary">
+            左下壓動作(進料端)
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="55a0ac0c-5528-adbc-5609-03dbbb33c008.htm">L_IN_Clip_Down_Origin</a></td><td><div class="summary">
+            左下壓復歸(進料端)
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="ed3d68e7-879e-bbbb-d1b7-55cd1e20671f.htm">L_IN_DrillHome_Origin</a></td><td><div class="summary">
+            左刀庫復歸(進料端)
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="b313d0ca-1f4e-a4a7-3690-769b550f6f22.htm">L_IN_DrillHome_RollOut</a></td><td><div class="summary">
+            左刀庫推出(進料端)
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="8a00b24c-3dea-4950-2dcc-199bfe581c03.htm">L_OUT_Clip_Down</a></td><td><div class="summary">
+            左下壓動作(出料端)
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="e1512687-88e7-39a3-85ca-a5cb5243b6c7.htm">L_OUT_Clip_Down_Origin</a></td><td><div class="summary">
+            左下壓復歸(出料端)
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="ae29f53a-c51c-7004-0bb2-88409163c2fd.htm">L_OUT_DrillHome_Origin</a></td><td><div class="summary">
+            左刀庫復歸(出料端)
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="3af2805b-ae1f-6133-5cd0-179113a43f86.htm">L_OUT_DrillHome_RollOut</a></td><td><div class="summary">
+            左刀庫推出(出料端)
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="8c15a75e-b876-cf22-ddd9-536b06a6dff6.htm">L_Spary_Air</a></td><td><div class="summary">
+            左主軸外管出風
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="24c20ce3-7d02-e31d-ed3c-6c96522f13fa.htm">L_Spindle_Change_Air</a></td><td><div class="summary">
+            左軸換刀吹氣
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="c03a4019-5eb8-d2dc-3f94-9bf9f1b7966f.htm">L_Spindle_Loosen</a></td><td><div class="summary">
+            左主軸鬆刀
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="f4da2e1a-895e-700e-6bba-307006afa21c.htm">L_Spray_OilFog</a></td><td><div class="summary">
+            左主軸噴油霧Y7
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="8d9dfe1b-eb0b-043b-892b-0aeba273091c.htm">L_Z_Break_Open</a></td><td><div class="summary"> 
+            左軸Z軸剎車 Open
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="7e9ea6fe-ca39-1a7a-5402-4ba9a284e27f.htm">M_DirllHome_Origin</a></td><td><div class="summary">
+            上刀庫回原點
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="a759bfff-f659-d3b7-0057-6b62c5600571.htm">M_DrillHome_Change</a></td><td><div class="summary">
+            上刀庫到換刀點
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="6775ce4f-0643-6b45-2357-35df761d1ef9.htm">M_Spary_Air</a></td><td><div class="summary">
+            上主軸外管出風
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="f887f1eb-faba-5934-6a6a-ff091e7f0db5.htm">M_Spindle_Change_Air</a></td><td><div class="summary">
+            上軸換刀吹氣
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="b15316da-0ae8-74b1-2246-0bff1b393136.htm">M_Spindle_Loosen</a></td><td><div class="summary">
+            上主軸鬆刀
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="6fa5c5d3-5899-5e2d-d04f-6bc83d8167e8.htm">M_Spray_OilFog</a></td><td><div class="summary">
+            上主軸噴油霧
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="632619e5-7956-85d6-cca2-e28e3be27ee7.htm">M_Z_Break_Open</a></td><td><div class="summary"> 
+            上軸Z軸剎車OPEN
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="4ea30c58-6f7a-f8e9-39e4-9cf9dae2603a.htm">Materials_Side_Move_CCW</a></td><td><div class="summary">
+            進料橫移正轉
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="494df548-015e-a6f3-c99d-225e88959723.htm">Materials_Side_Move_CW</a></td><td><div class="summary">
+            進料橫移逆轉
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="a2713e34-d1df-724f-63b6-04cdfa3fa204.htm">Materials_Side_Move_Speed_1</a></td><td><div class="summary">
+            進料橫移速度(一)
+            <div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID2RB')" onkeypress="SectionExpandCollapse_CheckKey('ID2RB', event)" tabindex="0"><img id="ID2RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Remarks</span></div><div id="ID2RBSection" class="collapsibleSection"><p>地址 : Y5</p></div></div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="5b73ad6f-b4c0-2551-57ec-8c9d9a09e285.htm">Materials_Side_Move_Speed_2</a></td><td><div class="summary">
+            進料橫移速度(二)
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="e1cdc2da-f2f6-aba1-8678-9893a14ef700.htm">R_IN_Clip_Down</a></td><td><div class="summary">
+            右下壓動作(進料端)
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="df2aa2dc-dad1-a1e3-2084-f604f9d66eab.htm">R_IN_Clip_Down_Origin</a></td><td><div class="summary">
+            右下壓復歸(進料端)
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="702e8025-53da-bec3-e735-f62f888fee23.htm">R_IN_DrillHome_Origin</a></td><td><div class="summary">
+            右刀庫復歸(進料端)
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="32f7e0b5-600b-2150-87ee-eed73593a54e.htm">R_IN_DrillHome_RollOut</a></td><td><div class="summary">
+            右刀庫推出(進料端)
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="b49e4b2d-4a22-a7c5-eddb-70004c994105.htm">R_OUT_Clip_Down</a></td><td><div class="summary"> 
+            右下壓動作(出料端)
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="fac6910d-65be-339f-9023-d45a39c9b2e8.htm">R_OUT_Clip_Down_Origin</a></td><td><div class="summary">
+            右下壓復歸(出料端)
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="9d4f76c6-b9fa-5486-8d08-fc829d0a7e95.htm">R_OUT_DrillHome_Origin</a></td><td><div class="summary">
+            右刀庫復歸(出料端)
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="6570f5f6-9cf7-ba47-c4e6-65b9d3bfc891.htm">R_OUT_DrillHome_RollOut</a></td><td><div class="summary">
+            右刀庫推出(出料端)
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="f16a91ec-9a3a-481a-a144-256a473ff117.htm">R_Spary_Air</a></td><td><div class="summary">
+            右主軸外管出風Y11
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="8ab2323d-414b-46c7-5bda-334cd5dbe7dd.htm">R_Spindle_Change_Air</a></td><td><div class="summary">
+            右軸換刀吹氣
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="bc3d7894-b6fb-9d46-ff4c-167c4b04059a.htm">R_Spindle_Loosen</a></td><td><div class="summary">
+            右主軸鬆刀
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="7c08f887-ee60-b465-9df6-94bbff87efe2.htm">R_Spray_OilFog</a></td><td><div class="summary">
+            右主軸噴油霧
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="b577ef5f-9185-db2e-3111-da518d95b9cd.htm">R_Z_Break_Open</a></td><td><div class="summary"> 
+            右軸Z軸剎車 Open Y45
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="e1dd4ef8-7546-0798-ecb6-9bb99ca0eb72.htm">SIDE_Clip</a></td><td><div class="summary"> 
+            側壓動作
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="3531441b-ef82-1672-8019-ec93840cd218.htm">SIDE_Clip_Origin</a></td><td><div class="summary">
+            側壓復歸
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="5ef109e7-c8b1-7412-3444-73645e4f68d2.htm">Volume_Scrap_On</a></td><td><div class="summary">
+            排屑啟動
+            </div></td></tr><tr data="public;declared;notNetfw;"><td><img src="../icons/pubproperty.gif" alt="Public property" title="Public property" /></td><td><a href="a5357bf8-8247-8891-ad03-a8d3789dabb4.htm">Z_High_Sensor_Door_Open</a></td><td><div class="summary"> 
+            Z軸側距閘門 Open
+            </div></td></tr></table><a href="#PageHeader">Top</a></div><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID4RB')" onkeypress="SectionExpandCollapse_CheckKey('ID4RB', event)" tabindex="0"><img id="ID4RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Remarks</span></div><div id="ID4RBSection" class="collapsibleSection"><p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;remarks&gt; documentation for "T:GD_STD.Base.IOutput"]</p></div><div class="collapsibleAreaRegion" id="seeAlsoSection"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID5RB')" onkeypress="SectionExpandCollapse_CheckKey('ID5RB', event)" tabindex="0"><img id="ID5RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />See Also</span></div><div id="ID5RBSection" class="collapsibleSection"><h4 class="subHeading">Reference</h4><div class="seeAlsoStyle"><a href="eed64dd1-2790-7bdc-72a0-3b0228147031.htm">GD_STD.Base Namespace</a></div></div></div>
+    </div>
+    <div id="pageFooter" class="pageFooter"> </div>
+  </body>
+</html>

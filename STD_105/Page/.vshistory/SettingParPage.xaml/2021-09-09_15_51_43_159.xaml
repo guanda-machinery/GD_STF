@@ -1,0 +1,935 @@
+﻿<WPFBase:BasePage x:Class="STD_105.SettingParPage" x:TypeArguments="STD105VM:SettingParVM"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:STD_105"
+      mc:Ignorable="d" 
+      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" d:DataContext="{d:DesignInstance Type=STD105VM:SettingParVM}"
+      xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+      xmlns:STD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
+      xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+      xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf" 
+      xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes" 
+      xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+      d:DesignHeight="1049" d:DesignWidth="755"
+      Name="control"
+      Title="SettingParPage">
+    <WPFBase:BasePage.Resources>
+        <ResourceDictionary>
+            <!--光源與厚度-->
+            <Style x:Key="bro" TargetType="{x:Type Border}">
+                <Setter Property="Margin" Value="-5"/>
+                <Setter Property="BorderThickness" Value="5,0,5,5"/>
+                <Setter Property="BorderBrush" Value="{ Binding ParameterBackColor, Source={ x:Static SofSetting:SofSetting.Default } }"/>
+            </Style>
+            <!--間距-->
+            <Style x:Key="broPanle" TargetType="{x:Type Border}">
+                <Setter Property="BorderThickness" Value="10,10,10,0"/>
+            </Style>
+            <Style x:Key="boRow" TargetType="{x:Type Border}">
+                <Style.Setters>
+                    <Setter Property="Margin" Value="1"/>
+                    <Setter Property="Width" Value="100"/>
+                </Style.Setters>
+            </Style>
+            <Style TargetType="TabControl" BasedOn="{ StaticResource tabcontrol_STD }">
+            </Style>
+            <Style TargetType="TabItem" BasedOn="{ StaticResource tabitem_STD }">
+            </Style>
+            <Style TargetType="GroupBox" BasedOn="{ StaticResource gbx_WithBorder }">
+            </Style>
+            <local:OBJECT_TYPE_ToStringConverter x:Key="obType"/>
+        </ResourceDictionary>
+    </WPFBase:BasePage.Resources>
+    <Grid x:Name="grid_Main" Margin="5">
+        <TabControl x:Name="Main" SelectedIndex="2">
+            <!-- 斷面設定-->
+            <TabItem PreviewMouseLeftButtonUp="Profile_PreviewMouseLeftButtonUp" Header="{ DynamicResource Language_SectionSettings }" Style="{ StaticResource tabitem_STD }" IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance},Converter={local:NullToEnabledConverter}}">
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="4*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="10*"/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.RowSpan="2" Style="{ StaticResource bor_LightThinLine }" Margin="5"/>
+                        <!--關鍵字過濾-->
+                        <TextBox x:Name="tbxFilter" DockPanel.Dock="Top"  FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" Style="{ StaticResource tbx_BlueUnderline }" Margin="20,15,20,5"
+                            wpf:HintAssist.Hint="關鍵字過濾"
+                            wpf:HintAssist.Background="{ Binding BaseBackColor, Source={ x:Static SofSetting:SofSetting.Default } }"
+                            wpf:HintAssist.IsFloating="True"
+                            wpf:TextFieldAssist.HasClearButton="True"
+                            wpf:TextFieldAssist.HasOutlinedTextField="True"
+                            wpf:TextFieldAssist.DecorationVisibility="Collapsed"
+                            wpf:TextFieldAssist.TextFieldCornerRadius="5">
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Enter" Command="{ Binding FilterCommand }" CommandParameter="{ Binding ElementName=tbxFilter, Path=Text }"/>
+                            </TextBox.InputBindings>
+                        </TextBox>
+                        <!--樹狀圖-->
+                        <ScrollViewer Grid.Row="1" Style="{ StaticResource for_Scrollviewer }" VerticalScrollBarVisibility="Auto" Margin="5">
+                            <TreeView Name="tree" Style="{ StaticResource tree_Main }" Foreground="{ Binding ParameterFontColor, Source={ x:Static SofSetting:SofSetting.Default } }" Margin="0,0,15,0">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectedItemChanged">
+                                        <i:InvokeCommandAction Command="{ Binding SegmentString }" CommandParameter="{ Binding ElementName=tree, Path=SelectedItem }"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <TreeView.Resources>
+                                    <Style TargetType="ScrollViewer" BasedOn="{ StaticResource for_Scrollviewer }"/>
+                                    <Style TargetType="TreeViewItem" BasedOn="{ StaticResource MaterialDesignTreeViewItem }"/>
+                                </TreeView.Resources>
+                                <TreeViewItem ItemsSource="{Binding RH}" DisplayMemberPath="Profile">
+                                    <TreeViewItem.Header>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Image Grid.Column="0" Source="{ StaticResource Beam }" Width="20" Height="20" Margin="0,0,5,0"/>
+                                            <TextBlock Grid.Column="1"  Margin="0,2,0,0">
+                                                <TextBlock.Text>
+                                                    <MultiBinding  StringFormat="{}RH ( {0} )">
+                                                        <Binding Path="RH.Count" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </Grid>
+                                    </TreeViewItem.Header>
+                                </TreeViewItem>
+                                <TreeViewItem ItemsSource="{Binding BH}" DisplayMemberPath="Profile">
+                                    <TreeViewItem.Header>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Image Grid.Column="0" Source="{ StaticResource Beam }" Width="20" Height="20" Margin="0,0,5,0"/>
+                                            <TextBlock Grid.Column="1"  Margin="0,2,0,0">
+                                                <TextBlock.Text>
+                                                    <MultiBinding  StringFormat="{}BH ( {0} )">
+                                                        <Binding Path="BH.Count" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </Grid>
+                                    </TreeViewItem.Header>
+                                </TreeViewItem>
+                                <TreeViewItem ItemsSource="{Binding CH}" DisplayMemberPath="Profile">
+                                    <TreeViewItem.Header>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Image Grid.Column="0" Source="{ StaticResource CH }" Width="20" Height="20" Margin="0,0,5,0"/>
+                                            <TextBlock Grid.Column="1"  Margin="0,2,0,0">
+                                                <TextBlock.Text>
+                                                    <MultiBinding  StringFormat="{}CH ( {0} )">
+                                                        <Binding Path="CH.Count" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </Grid>
+                                    </TreeViewItem.Header>
+                                </TreeViewItem>
+                                <TreeViewItem ItemsSource="{Binding BOX}" DisplayMemberPath="Profile">
+                                    <TreeViewItem.Header>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Image Grid.Column="0" Source="{ StaticResource BOX }" Width="20" Height="20" Margin="0,0,5,0"/>
+                                            <TextBlock Grid.Column="1"  Margin="0,2,0,0">
+                                                <TextBlock.Text>
+                                                    <MultiBinding  StringFormat="{}BOX ( {0} )">
+                                                        <Binding Path="BOX.Count" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </Grid>
+                                    </TreeViewItem.Header>
+                                </TreeViewItem>
+                                <TreeViewItem ItemsSource="{Binding L}" DisplayMemberPath="Profile">
+                                    <TreeViewItem.Header>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Image Grid.Column="0" Source="{ StaticResource L }" Width="20" Height="20" Margin="0,0,5,0"/>
+                                            <TextBlock Grid.Column="1"  Margin="0,2,0,0">
+                                                <TextBlock.Text>
+                                                    <MultiBinding  StringFormat="{}L ( {0} )">
+                                                        <Binding Path="L.Count" />
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </Grid>
+                                    </TreeViewItem.Header>
+                                </TreeViewItem>
+                            </TreeView>
+                        </ScrollViewer>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0">
+                            <!--斷面規格名稱-->
+                            <GroupBox Header="{ DynamicResource Language_SectionSpecificationName }" Margin="5">
+                                <TextBox x:Name="tbx_SectionName" Grid.Column="1" Text="{ Binding ProfileName}" Style="{ StaticResource tbx_BlueUnderline }" FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"/>
+                            </GroupBox>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <!--斷面規格類型-->
+                                <GroupBox Header="{ DynamicResource Language_SectionSpecificationType }" Grid.Row="2" Margin="5">
+                                    <Grid>
+                                        <ComboBox SelectedItem="{Binding ElementName=tree, Path=SelectedItem.Type, Converter={local:OBJECT_TYPE_ToStringConverter}}" SelectedIndex="{Binding SelectType}" Style="{ StaticResource cbb_Main }" FontSize="{ Binding ParameterFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" ItemsSource="{Binding Source={StaticResource  obType} , Path=Strings}"/>
+                                    </Grid>
+                                </GroupBox>
+                                <!--單位重量-->
+                                <GroupBox Grid.Column="1" Header="{ DynamicResource Language_UnitWeight }" Margin="5">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="5*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox Grid.Column="0" Text="{Binding SelectSteelAtte.Kg}" Style="{ StaticResource tbx_BlueUnderline }" Height="30"/>
+                                        <Label Grid.Column="1" Content="kg/m" Style="{ StaticResource lab_Description }"  VerticalAlignment="Center"/>
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                            <!--2D圖形-->
+                            <GroupBox Header="{ DynamicResource Language_2DGraphics }" Height="400" Margin="5">
+                                <Grid>
+                                    <Grid.Resources>
+                                        <Style TargetType="Label" BasedOn="{ StaticResource lab_Description }">
+                                            <Setter Property="FontSize" Value="60"/>
+                                        </Style>
+                                        <Style TargetType="Line">
+                                            <Setter Property="StrokeThickness" Value="2"/>
+                                            <Setter Property="Stroke" Value="{ Binding BorderBrushColor, Source={ x:Static SofSetting:SofSetting.Default } }"/>
+                                        </Style>
+                                        <Style TargetType="Path">
+                                            <Setter Property="StrokeThickness" Value="2"/>
+                                            <Setter Property="Stroke" Value="{ Binding BorderBrushColor, Source={ x:Static SofSetting:SofSetting.Default } }"/>
+                                        </Style>
+                                    </Grid.Resources>
+                                    <!--BOX-->
+                                    <Viewbox Visibility="{Binding VisibilityBOX, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                        <Canvas Name="can_BOX" Width="1280" Height="1024">
+                                            <Image Source="{ StaticResource Box_Profile }" Canvas.Left="260" Canvas.Top="60"/>
+                                            <Label Content="{ Binding InsertionData[0].Value}" ContentStringFormat="H=0.#" Canvas.Left="70" Canvas.Top="445"/>
+                                            <Label Content="{ Binding  InsertionData[1].Value}" ContentStringFormat="W=0.#" Canvas.Left="580" Canvas.Top="920"/>
+                                            <Label Content="{ Binding  InsertionData[2].Value}" ContentStringFormat="t=0.#" Canvas.Left="1050" Canvas.Top="445"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                    <!--Beam-->
+                                    <Viewbox Visibility="{Binding VisibilityH, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                        <Canvas Name="can_Beam" Width="1280" Height="1024">
+                                            <Image Source="{ StaticResource Beam_Profile }" Canvas.Left="260" Canvas.Top="90"/>
+                                            <Label Content="{ Binding InsertionData[0].Value}" ContentStringFormat="H=0.#" Canvas.Left="1000" Canvas.Top="450"/>
+                                            <Label Content="{ Binding InsertionData[1].Value }" ContentStringFormat="W=0.#" Canvas.Left="520" Canvas.Top="950"/>
+                                            <Label Content="{ Binding InsertionData[2].Value }" ContentStringFormat="t1=0.#" Canvas.Left="320" Canvas.Top="450"/>
+                                            <Label Content="{ Binding InsertionData[3].Value }" ContentStringFormat="t2=0.#" Canvas.Left="700" Canvas.Top="0"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                    <!--CH-->
+                                    <Viewbox Visibility="{Binding VisibilityCH, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                        <Canvas Name="can_CH" Width="1280" Height="1024">
+                                            <Image Source="{ StaticResource CH_Profile }" Canvas.Left="420" Canvas.Top="60"/>
+                                            <Label Content="{Binding InsertionData[0].Value }" ContentStringFormat="H=0.#" Canvas.Left="210" Canvas.Top="425"/>
+                                            <Label Content="{Binding InsertionData[1].Value }" ContentStringFormat="W=0.#" Canvas.Left="580" Canvas.Top="940"/>
+                                            <Label Content="{Binding InsertionData[2].Value }" ContentStringFormat="t1=0.#"  Canvas.Left="650" Canvas.Top="425"/>
+                                            <Label Content="{Binding InsertionData[3].Value}" ContentStringFormat="t2=0.#" Canvas.Left="600" Canvas.Top="-20"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                    <!--L-->
+                                    <Viewbox Visibility="{Binding VisibilityL, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                        <Canvas Name="can_L" Width="1280" Height="1024">
+                                            <Image Source="{ StaticResource L_Profile }" Canvas.Left="420" Canvas.Top="60"/>
+                                            <Label Content="{ Binding InsertionData[0].Value }" ContentStringFormat="H=0.#" Canvas.Left="240" Canvas.Top="410"/>
+                                            <Label Content="{ Binding InsertionData[1].Value }" ContentStringFormat="W=0.#" Canvas.Left="650" Canvas.Top="950"/>
+                                            <Label Content="{ Binding InsertionData[2].Value}" ContentStringFormat="t1=0.#" Canvas.Left="730" Canvas.Top="410"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                </Grid>
+                            </GroupBox>
+                            <!--斷面規格屬性-->
+                            <GroupBox Header="斷面屬性" Margin="5">
+                                <DataGrid ItemsSource="{ Binding InsertionData }" Style="{ StaticResource datagrid_Main }"
+                                     CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False">
+                                    <DataGrid.Resources>
+                                        <Style TargetType="DataGridColumnHeader" BasedOn="{ StaticResource datagrid_Header }"/>
+                                        <Style TargetType="DataGridCell" BasedOn="{ StaticResource datagrid_Cell }"/>
+                                    </DataGrid.Resources>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="性質" Width="4*" Binding="{ Binding Property }" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="符號" Width="3*" Binding="{ Binding Symbol }" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="數值" Width="3*" Binding="{ Binding Value }" EditingElementStyle="{ StaticResource datagrid_EditingTextBox}"/>
+                                        <DataGridTextColumn Header="單位" Width="3*" Binding="{ Binding Unit }" IsReadOnly="True"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </GroupBox>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                            <StackPanel.Resources>
+                                <Style TargetType="Button" BasedOn="{ StaticResource btn_FunctionKey2 }">
+                                    <Setter Property="Margin" Value="10"/>
+                                    <Setter Property="Height" Value="40"/>
+                                    <Setter Property="Width" Value="120"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <Button Content="{ DynamicResource Language_New }" FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" Command="{Binding NewCommand}"/>
+                            <Button Content="{ DynamicResource Language_Delete }" FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" Command="{Binding DeleteCommand}"/>
+                            <Button Content="{ DynamicResource Language_Update }" FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" Command="{Binding UpdateTreeCommand}"/>
+                        </StackPanel>
+                    </Grid>
+                    <!--選擇儲存修改位置--><!--
+                    <Grid Grid.ColumnSpan="2" Visibility="{ Binding DisplaySavePosition, Converter={ WPFBase:NoNullBooleanToVisibilityConverter }}">
+                        <local:SaveAs SubmitButtonCommand="{Binding SaveProfileCommand}" CancelButtonCommand="{ Binding CloseSavePosition }"/>
+                    </Grid>-->
+                </Grid>
+            </TabItem>
+            <!--材質設定-->
+            <TabItem   Header="材質設定" PreviewMouseLeftButtonUp="Material_PreviewMouseLeftButtonUp" FontSize="{ Binding TitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance},Converter={local:NullToEnabledConverter}}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="1">
+                        <Border Style="{ StaticResource bor_LightThinLine }" Margin="5">
+                            <StackPanel>
+                                <!--關鍵字過濾-->
+                                <TextBox x:Name="tbxFilter1" DockPanel.Dock="Top"  FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" Style="{ StaticResource tbx_BlueUnderline }" Margin="20,15,20,5"
+                                    wpf:HintAssist.Hint="關鍵字過濾"
+                                    wpf:HintAssist.Background="{ Binding BaseBackColor, Source={ x:Static SofSetting:SofSetting.Default } }"
+                                    wpf:HintAssist.IsFloating="True"
+                                    wpf:TextFieldAssist.HasClearButton="True"
+                                    wpf:TextFieldAssist.HasOutlinedTextField="True"
+                                    wpf:TextFieldAssist.DecorationVisibility="Collapsed"
+                                    wpf:TextFieldAssist.TextFieldCornerRadius="5">
+                                    <TextBox.InputBindings>
+                                        <KeyBinding Key="Enter" Command="{ Binding FilterCommand }" CommandParameter="{ Binding ElementName=tbxFilter, Path=Text }"/>
+                                    </TextBox.InputBindings>
+                                </TextBox>
+                                <ListView Style="{ StaticResource list_STD }" Height="600" ItemsSource="{Binding Materials}" SelectedIndex="{Binding MatrialIndex}">
+                                    <ListView.Resources>
+                                        <Style TargetType="ListViewItem" BasedOn="{ StaticResource for_ListViewItem }"/>
+                                    </ListView.Resources>
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn DisplayMemberBinding="{ Binding Name}">
+                                                <GridViewColumn.Header>
+                                                    <GridViewColumnHeader Content="材質列表" Style="{ StaticResource gridviewheader_STD }"/>
+                                                </GridViewColumn.Header>
+                                            </GridViewColumn>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </StackPanel>
+                        </Border>
+                        <GroupBox Header="材質名稱" Margin="5">
+                            <GroupItem>
+                                <TextBox Style="{ StaticResource tbx_BlueUnderline }" Text="{Binding SelectMaterial.Name}"/>
+                            </GroupItem>
+                        </GroupBox>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <GroupBox Header="板密度" Margin="5">
+                                <Grid Height="30">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="5*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Style="{ StaticResource tbx_BlueUnderline }" Height="30" Text="{Binding SelectMaterial.PlateDensity}"/>
+                                    <Label Grid.Column="1" Content="kg/m3" Style="{ StaticResource lab_Description }"  VerticalAlignment="Center" />
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Grid.Column="1" Header="斷面積密度" Margin="5">
+                                <Grid Height="30">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="5*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Style="{ StaticResource tbx_BlueUnderline }" Height="30" Text="{Binding SelectMaterial.ProfileDensity}"/>
+                                    <Label Grid.Column="1" Content="kg/m3" Style="{ StaticResource lab_Description }"  VerticalAlignment="Center"/>
+                                </Grid>
+                            </GroupBox>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="5">
+                        <Button Content="新增" Width="120" Height="40" Style="{ StaticResource btn_FunctionKey2 }" Margin="10" Command="{Binding NewCommand}"/>
+                        <Button Content="刪除" Width="120" Height="40" Style="{ StaticResource btn_FunctionKey2 }" Margin="10" Command="{Binding DeleteMaterialCommand}"/>
+                        <Button Content="更新" Width="120" Height="40" Style="{ StaticResource btn_FunctionKey2 }" Margin="10" Command="{ Binding UpdateMaterialCommand }"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <!--刀庫設定-->
+            <TabItem Header="刀庫設定" PreviewMouseLeftButtonUp="AbortIOThread" FontSize="{ Binding TitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }">
+                <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="local:BaseButton">
+                            <Setter Property="FontSize" Value="{ Binding ParameterFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"/>
+                            <Setter Property="Margin" Value="10,0"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1.3*"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <!--目前刀庫-->
+                    <GroupBox Header="目前刀庫" Margin="5">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
+                                    <local:BaseButton TitleText="A刀庫" ButtonCommand="{Binding MiddleCommand}" ButtonImageSource="{StaticResource Clamping}" StartState="{Binding IsSelectdMiddle}"/>
+                                    <local:BaseButton TitleText="B刀庫" ButtonCommand="{Binding LeftExportCommand}" ButtonImageSource="{StaticResource Clamping}" StartState="{Binding IsSelectdLeftExport}"/>
+                                    <local:BaseButton TitleText="C刀庫" ButtonCommand="{Binding RightExportCommand}" ButtonImageSource="{StaticResource Clamping}" StartState="{Binding IsSelectdRightExport}"/>
+                                    <local:BaseButton TitleText="D刀庫" ButtonCommand="{Binding LeftEntranceCommand}" ButtonImageSource="{StaticResource Clamping}" StartState="{Binding IsSelectdLeftEntrance}" IsEnabled="{Binding LeftIsEnabled}"/>
+                                    <local:BaseButton TitleText="E刀庫" ButtonCommand="{Binding RightEntranceCommand}" ButtonImageSource="{StaticResource Clamping}" StartState="{Binding IsSelectdRightEntrance}" IsEnabled="{Binding RightIsEnabled}"/>
+                                </WrapPanel>
+                            </Grid>
+                            <local:DrillListControl Grid.Row="1" DataContext="{Binding UnusedSelected}" VerticalAlignment="Top"/>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <local:DrillLevelTitleControl VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    <Button Content="重新讀取" Style="{ StaticResource btn_FunctionKey2 }" Height="40" Command="{Binding UpDateCommand}" Margin="5"/>
+                                    <Button Content="存檔" Style="{ StaticResource btn_FunctionKey2 }" Height="40" Command="{Binding UnusedSaveCommand}" Margin="5"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </GroupBox>
+                    <!--目前刀具-->
+                    <GroupBox Grid.Row="1" Header="目前刀具" Margin="5">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+                                <local:BaseButton TitleText="左軸" ButtonCommand="{ Binding CurrentLeftCommand }" ButtonImageSource="{StaticResource NewDrill}" StartState="{Binding IsCurrentLeft }"/>
+                                <local:BaseButton TitleText="中軸" ButtonCommand="{ Binding CurrentMiddleCommand }" ButtonImageSource="{StaticResource NewDrill}" StartState="{Binding IsCurrentMiddle }"/>
+                                <local:BaseButton TitleText="右軸" ButtonCommand="{ Binding CurrentRightCommand }" ButtonImageSource="{StaticResource NewDrill}" StartState="{Binding IsCurrentRight }"/>
+                            </WrapPanel>
+                            <local:DrillListControl Grid.Row="1" DataContext="{Binding UseSelected}" VerticalAlignment="Top"/>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <local:DrillLevelTitleControl VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    <Button Content="重新讀取" Style="{ StaticResource btn_FunctionKey2 }" Height="40" Command="{Binding UpDateCommand}" Margin="5"/>
+                                    <Button Content="存檔" Style="{ StaticResource btn_FunctionKey2 }" Height="40" Command="{Binding UnusedSaveCommand}" Margin="5"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid >
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <!--刀具設定-->
+            <TabItem Header="刀具設定" PreviewMouseLeftButtonUp="AbortIOThread" FontSize="{ Binding TitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }">
+                <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="local:BaseButton">
+                            <Setter Property="FontSize" Value="{ Binding ParameterFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"/>
+                            <Setter Property="Margin" Value="10,0"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1.3*"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <!--刀具設定-->
+                    <GroupBox Grid.Row="0" Header="刀具設定" Margin="5">
+                        <Grid>
+                            <DataGrid Style="{ StaticResource datagrid_Main }" ItemsSource="{Binding DrillBrands}"
+                                      CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" CanUserAddRows="True">
+                                <DataGrid.Resources>
+                                    <Style TargetType="DataGridColumnHeader" BasedOn="{ StaticResource datagrid_Header }">
+                                        <Setter Property="Height" Value="60"/>
+                                    </Style>
+                                    <Style TargetType="DataGridCell" BasedOn="{ StaticResource datagrid_Cell }"/>
+                                </DataGrid.Resources>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Width="1*" Header="品牌" EditingElementStyle="{ StaticResource datagrid_EditingTextBox }" Binding="{Binding Name}"/>
+                                    <DataGridTextColumn Width="1*" Header="刀徑" EditingElementStyle="{ StaticResource datagrid_EditingTextBox }" Binding="{Binding Dia}"/>
+                                    <DataGridTextColumn Width="1*" Header="Vc" EditingElementStyle="{ StaticResource datagrid_EditingTextBox }" Binding="{Binding Vc}"/>
+                                    <DataGridTextColumn Width="1*" Header="RPM" EditingElementStyle="{ StaticResource datagrid_EditingTextBox }" Binding="{Binding Rpm}"/>
+                                    <DataGridTextColumn Width="1*" Header="進給率&#x0a;(mm/s)" EditingElementStyle="{ StaticResource datagrid_EditingTextBox }" Binding="{Binding FeedQuantity}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </GroupBox>
+                    <!--目前刀具-->
+                    <GroupBox Grid.Row="1" Header="目前刀具" Margin="5">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+                                <local:BaseButton TitleText="左軸" ButtonCommand="{Binding CurrentLeftCommand}" ButtonImageSource="{StaticResource NewDrill}" StartState="{Binding IsCurrentLeft }"/>
+                                <local:BaseButton TitleText="中軸" ButtonCommand="{Binding CurrentMiddleCommand}" ButtonImageSource="{StaticResource NewDrill}" StartState="{Binding IsCurrentMiddle }"/>
+                                <local:BaseButton TitleText="右軸" ButtonCommand="{Binding CurrentRightCommand}" ButtonImageSource="{StaticResource NewDrill}" StartState="{Binding IsCurrentRight }"/>
+                            </WrapPanel>
+                            <local:DrillListControl Grid.Row="1" DataContext="{Binding UseSelected}" VerticalAlignment="Top"/>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <local:DrillLevelTitleControl HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    <Button Content="重新讀取" Style="{ StaticResource btn_FunctionKey2 }" Height="40" Command="{Binding UpDateCommand}" Margin="5"/>
+                                    <Button Content="存檔" Style="{ StaticResource btn_FunctionKey2 }" Height="40" Command="{Binding UnusedSaveCommand}" Margin="5"/>
+                                    <!--
+                                    <local:BaseButton TitleText="重新讀取" ButtonCommand="{Binding UpDateCommand}" ButtonImageSource="{StaticResource download}"/>
+                                    <local:BaseButton TitleText="存檔" ButtonCommand="{Binding UseSaveCommand}" ButtonImageSource="{StaticResource Save}"/>
+                                    -->
+                                </StackPanel>
+                            </Grid>
+                        </Grid >
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <!--鋼印機設定-->
+            <TabItem Header="鋼印機設定" PreviewMouseLeftButtonUp="AbortIOThread" FontSize="{ Binding TitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }">
+            </TabItem>
+            <TabItem Header="保養設定" PreviewMouseLeftButtonUp="AbortIOThread" FontSize="{ Binding TitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }">
+                <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="local:BaseButton">
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="VerticalAlignment" Value="Bottom"/>
+                            <Setter Property="Margin" Value="5"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid Background="Transparent" Margin="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="0.65*"/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0" Margin="5,10,5,5" BorderThickness="1" BorderBrush="{ Binding ParameterBackColor, Source={ x:Static SofSetting:SofSetting.Default } }">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.4*"/>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="0.6*"/>
+                                </Grid.RowDefinitions>
+                                <local:BaseButton ButtonImageSource="{StaticResource OilSett}" FontSize="12" TitleText="液壓油系統" Height="80"/>
+                                <local:PMListControl Grid.Row="1" DataContext="{Binding HydList}"/>
+                                <local:FunctionLockControl Grid.Row="1" Margin="11,45,11,0" />
+                                <Grid Grid.Row="2" Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.Resources>
+                                        <Style TargetType="TextBlock" BasedOn="{ StaticResource tbk_ContentTitle }">
+                                        </Style>
+                                    </Grid.Resources>
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="下壓預備位"/>
+                                        <TextBlock Text="測壓預備位" 
+                                                   Grid.Column="0"
+                                                   Grid.Row="1"/>
+                                        <TextBlock Text="誤差    距離" 
+                                                   Grid.Column="0"
+                                                   Grid.Row="2"/>
+                                        <TextBox Text="{Binding DownReady}"
+                                                 Background="#ff303030"
+                                                 Width="60"
+                                                 FontSize="12"
+                                                 Height="22"
+                                                 Grid.Row="0"
+                                                 Grid.Column="1" 
+                                                 Margin="0,1"/>
+                                        <TextBox Text="{Binding SideReady}"
+                                                 Background="#ff303030"
+                                                 Width="60"
+                                                 FontSize="12"
+                                                 Height="22"
+                                                 Grid.Row="1"
+                                                 Grid.Column="1" 
+                                                 Margin="0,1"/>
+                                        <Grid 
+                                            Grid.Column="1"
+                                            Grid.Row="2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0.3*"/>
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock 
+                                                FontSize="10"
+                                                Text="±"
+                                                Margin="1,1,0,1"/>
+                                            <TextBox Text="{Binding Deviation}"
+                                                 Background="#ff303030"
+                                                 FontSize="12"
+                                                 Height="22"
+                                                 Grid.Column="1" 
+                                                 Margin="0,1"/>
+                                        </Grid>
+                                        <TextBlock Text="mm" 
+                                                   Grid.Column="2"
+                                                   FontSize="10"
+                                                   Grid.Row="0"
+                                                   Margin="0,1,1,1"/>
+                                        <TextBlock Text="mm" 
+                                                   Grid.Column="2"
+                                                   FontSize="10"
+                                                   Grid.Row="1"
+                                                   Margin="0,1,1,1"/>
+                                        <TextBlock Text="mm" 
+                                                   Grid.Column="2"
+                                                   FontSize="10"
+                                                   Margin="0,1,1,1"
+                                                   Grid.Row="2"/>
+                                        <local:FunctionLockControl Grid.ColumnSpan="2" Margin="0,1,1,1" Grid.RowSpan="3" Grid.Column="1" />
+                                    </Grid>
+                                    <local:SaveReduction Grid.Column="2" Save="{Binding SaveHydCommand}" Reduction="{Binding ReductionHydCommand}"/>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Border Margin="5,0,2.5,5" BorderThickness="1" BorderBrush="#ff303030">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <local:BaseButton ButtonImageSource="{StaticResource OilSett}" FontSize="12" TitleText="滑道油系統" Height="80"/>
+                                    <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="循環時間"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="循環間隔"/>
+                                        <TextBox Grid.Row="0" Grid.Column="1"  Text="{Binding LubTime}"
+                                                 Background="#ff303030"
+                                                 Width="60"
+                                                 FontSize="12"
+                                                 Height="22"
+                                                 Margin="0,1"/>
+                                        <TextBox Grid.Row="1" Grid.Column="1"  Text="{Binding LubFrequency}"
+                                                 Background="#ff303030"
+                                                 Width="60"
+                                                 FontSize="12"
+                                                 Height="22"
+                                                 Margin="0,1"/>
+                                        <TextBlock Grid.Row="0" Grid.Column="2" Text="Sec" 
+                                                   FontSize="10"
+                                                   Margin="0,1,1,1"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="2" Text="Min" 
+                                                   FontSize="10"
+                                                   Margin="0,1,1,1"/>
+                                        <local:FunctionLockControl Grid.ColumnSpan="2" Margin="0,1,1,1" Grid.RowSpan="2" Grid.Column="1" />
+                                    </Grid>
+                                    <local:SaveReduction Grid.Row="2" Save="{Binding SaveLubCommand}" Reduction="{Binding ReductionLubCommand}"/>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Column="1" BorderThickness="1" BorderBrush="#ff303030" Margin="2.5,0,5,5">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <local:BaseButton ButtonImageSource="{StaticResource OilSett}" FontSize="12" TitleText="切削油系統" Height="80"/>
+                                    <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="打油頻率"/>
+                                        <TextBox Text="{Binding CutFrequency}"
+                                                 Style="{StaticResource texRow}"
+                                                 Background="#ff303030"
+                                                 Width="60"
+                                                 FontSize="12"
+                                                 Height="22"
+                                                 Grid.Row="0"
+                                                 Grid.Column="1" 
+                                                 Margin="0,1"/>
+                                        <TextBlock Text="次/S" 
+                                                   Grid.Column="2"
+                                                   FontSize="10"
+                                                   Grid.Row="0"
+                                                   Margin="0,1,1,1"
+                                                   Style="{StaticResource titleRow}"/>
+                                        <local:FunctionLockControl Grid.ColumnSpan="2" Margin="0,1,1,1" Grid.RowSpan="2" Grid.Column="1" />
+                                    </Grid>
+                                    <local:SaveReduction Grid.Row="2" Save="{Binding SaveCutCommand}" Reduction="{Binding ReductionCutCommand}"/>
+                                </Grid>
+                            </Border>
+                            <!--<Border Margin="2.5,0,5,5"
+                                    Grid.Column="2"
+                                    BorderThickness="1"
+                                    BorderBrush="#ff303030">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <local:BaseButton ButtonImageSource="{StaticResource System}" FontSize="12" TitleText="選配系統" Height="80"/>
+                                  
+                                    <Grid Grid.Row="1" DataContext="{x:Static Sett:Optional.Default}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+
+                                        <CheckBox Margin="20,0,20,0" Content="中軸刀庫" IsChecked="{Binding Middle}" FontSize="12" Background="#FF673AB7" Foreground="White" Grid.Row="0"/>
+                                        <CheckBox Margin="20,0,20,0"  Content="左軸出料口刀庫" IsChecked="{Binding LeftExport}" FontSize="12" Background="#FF673AB7" Foreground="White" Grid.Row="1"/>
+                                        <CheckBox Margin="20,0,20,0"  Content="右軸出料口刀庫" IsChecked="{Binding RightExport}" FontSize="12" Background="#FF673AB7" Foreground="White" Grid.Row="2"/>
+                                        <CheckBox Margin="20,0,20,0"  Content="左軸入料口刀庫" IsChecked="{Binding LeftEntrance}" FontSize="12"  Background="#FF673AB7" Foreground="White" Grid.Row="3"/>
+                                        <CheckBox Margin="20,0,20,0"  Content="右軸入料口刀庫" IsChecked="{Binding RightEntrance}" FontSize="12"  Background="#FF673AB7" Foreground="White" Grid.Row="4"/>
+                                        <CheckBox Margin="20,0,20,0"  Content="橫移料架" IsChecked="{Binding Traverse}" FontSize="12" Background="#FF673AB7" Foreground="White" Grid.Row="5"/>
+                                        <CheckBox Margin="20,0,20,0"  Content="手臂自動夾料" IsChecked="{Binding HandAuto}" FontSize="12"  Background="#FF673AB7" Foreground="White" Grid.Row="6"/>
+                                    </Grid>
+                                    <local:FunctionLockControl Grid.Row="1" Margin="20,0,20,0"/>
+                                    <local:SaveReduction Save="{Binding SaveOptionalCommand}" 
+                                        Grid.Row="2"
+                                        FontSize="12" 
+                                        Margin="0,0,10,0"/>
+                                </Grid>
+                            </Border>-->
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="In Put" FontSize="20" MouseLeftButtonUp="Input_MouseLeftButtonUp">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Background="Transparent" Margin="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height ="0.125*"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="local:BaseButton">
+                                <Setter Property="FontSize" Value="{ Binding ParameterFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"/>
+                                <Setter Property="Height" Value="80"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Border Padding="10">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                <Border Style="{StaticResource broPanle}">
+                                    <local:BaseButton TitleText="軸向" ButtonCommand="{Binding AxisCommand}" ButtonImageSource="{StaticResource MainAxisMode}" StartState="{Binding InSelectAxis }"/>
+                                </Border>
+                                <Border Style="{StaticResource broPanle}">
+                                    <local:BaseButton TitleText="刀庫" ButtonCommand="{Binding WarehouseCommand}"  ButtonImageSource="{StaticResource Drill}" StartState="{Binding InSelectWarehouse }"/>
+                                </Border>
+                                <Border Style="{StaticResource broPanle}">
+                                    <local:BaseButton TitleText="電阻尺與潤滑" ButtonCommand="{Binding LubCommand}" ButtonImageSource="{StaticResource OilSett}" StartState="{Binding InSelectLub }"/>
+                                </Border>
+                                <Border Style="{StaticResource broPanle}">
+                                    <local:BaseButton TitleText="其他感測器" ButtonCommand="{Binding SensorCommand}" ButtonImageSource="{StaticResource Sensor}" StartState="{Binding InSensor}"/>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Row="2" BorderThickness="1" BorderBrush="#ff303030" Margin="5,0,5,5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="0.9*"/>
+                                </Grid.RowDefinitions>
+                                <GroupBox Grid.Row="0"  Grid.Column="0" 
+                                    Header="{Binding InChangeHeader}"
+                                    Foreground="White" 
+                                    Background="Transparent" 
+                                    BorderBrush="White"
+                                    BorderThickness="1"
+                                    wpf:ColorZoneAssist.Mode="Dark"
+                                    Margin="10 10 5 5"
+                                    FontSize="16">
+                                    <local:InputTitleControl DataContext="{Binding LeftAxis}"/>
+                                </GroupBox>
+                                <GroupBox 
+                                    Header="上軸"
+                                    Grid.Row="0"
+                                    Grid.Column="1" 
+                                    Foreground="White" 
+                                    Background="Transparent" 
+                                    BorderBrush="White"
+                                    Style="{DynamicResource MaterialDesignGroupBox}" 
+                                    BorderThickness="1"
+                                    wpf:ColorZoneAssist.Mode="Dark"
+                                    Margin="5 10 10 5"
+                                    FontSize="16"
+                                    Visibility="{Binding InSensor, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                                    <local:InputTitleControl DataContext="{Binding MiddleAxis}"/>
+                                </GroupBox>
+                                <GroupBox 
+                                    Header="右軸"
+                                    Grid.Row="1"
+                                    Grid.Column="0" 
+                                    Foreground="White" 
+                                    Background="Transparent" 
+                                    BorderBrush="White"
+                                    BorderThickness="1"
+                                    wpf:ColorZoneAssist.Mode="Dark"
+                                    Margin="10 5 5 10"
+                                    FontSize="16"
+                                    Visibility="{Binding InSensor, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                                    <local:InputTitleControl DataContext="{Binding RightAxis}"/>
+                                </GroupBox>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Out Put" FontSize="20" PreviewMouseLeftButtonUp="Out_PreviewMouseLeftButtonUp">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Background="Transparent" Margin="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height ="0.125*"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Border Padding="10">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                <Border Style="{StaticResource broPanle}">
+                                    <local:BaseButton TitleText="軸向" ButtonCommand="{Binding OAxisCommand}" ButtonImageSource="{StaticResource MainAxisMode}" StartState="{Binding OutSelectAxis }"/>
+                                </Border>
+                                <Border Style="{StaticResource broPanle}">
+                                    <local:BaseButton TitleText="其他感測器" ButtonCommand="{Binding OSensorCommand}" ButtonImageSource="{StaticResource Sensor}" StartState="{Binding OutSensor}"/>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Row="2" BorderThickness="1" BorderBrush="#ff303030" Margin="5,0,5,5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="0.9*"/>
+                                </Grid.RowDefinitions>
+                                <GroupBox 
+                                    Header="{Binding OutChangeHeader}"
+                                    Grid.Row="0"
+                                    Grid.Column="0" 
+                                    Foreground="White" 
+                                    Background="Transparent" 
+                                    BorderBrush="White"
+                                    BorderThickness="1"
+                                    wpf:ColorZoneAssist.Mode="Dark"
+                                    Margin="10 10 5 5"
+                                    FontSize="16">
+                                    <local:InputTitleControl DataContext="{Binding LeftAxis}"/>
+                                </GroupBox>
+                                <GroupBox 
+                                    Header="上軸"
+                                    Grid.Row="0"
+                                    Grid.Column="1" 
+                                    Foreground="White" 
+                                    Background="Transparent" 
+                                    BorderBrush="White"
+                                    BorderThickness="1"
+                                    wpf:ColorZoneAssist.Mode="Dark"
+                                    Margin="5 10 10 5"
+                                    FontSize="16"
+                                    Visibility="{Binding OutSensor, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                                    <local:InputTitleControl DataContext="{Binding MiddleAxis}"/>
+                                </GroupBox>
+                                <GroupBox 
+                                    Header="右軸"
+                                    Grid.Row="1"
+                                    Grid.Column="0" 
+                                    Foreground="White" 
+                                    Background="Transparent" 
+                                    BorderBrush="White"
+                                    BorderThickness="1"
+                                    wpf:ColorZoneAssist.Mode="Dark"
+                                    Margin="10 5 5 10"
+                                    FontSize="16"
+                                    Visibility="{Binding OutSensor, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                                    <local:InputTitleControl DataContext="{Binding RightAxis}"/>
+                                </GroupBox>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <!--另存視窗-->
+        <Grid Visibility="{ Binding SaveAsWindowsControl, Converter={WPFBase:BooleanToVisiblityConverter} }">
+            <local:SaveAs CancelButtonCommand="{ Binding CloseSaveAsWindowsCommand }" />
+        </Grid>
+    </Grid>
+</WPFBase:BasePage>

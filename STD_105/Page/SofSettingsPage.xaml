@@ -1,0 +1,387 @@
+﻿<WPFBase:BasePage
+    x:Class="STD_105.SofSettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Attr="[Attr ]clr-namespace:WPFSTD105.Attribute;assembly=WPFSTD105"
+    xmlns:GD_STD="clr-namespace:GD_STD;assembly=GD_STD.Base"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:fluentAPI="clr-namespace:WPFSTD105.FluentAPI;assembly=WPFSTD105"
+    xmlns:MecSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+    xmlns:Optional="clr-namespace:GD_STD.Properties;assembly=GD_STD"
+    xmlns:STD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
+    xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+    xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:local="clr-namespace:STD_105"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
+    Title="SofSettingsPage"
+    d:DataContext="{d:DesignInstance Type=STD105VM:SofSettingVM}"
+    d:DesignHeight="1049"
+    d:DesignWidth="800"
+    x:TypeArguments="STD105VM:SofSettingVM"
+    mc:Ignorable="d">
+    <WPFBase:BasePage.Resources>
+        <ResourceDictionary>
+            <local:Language_ToStringConverter x:Key="Language" />          
+        </ResourceDictionary>
+    </WPFBase:BasePage.Resources>
+    <Grid x:Name="grid_Main">
+        <!--  快顯示窗  -->
+        <Grid
+            Name="grid_Popup"
+            Grid.RowSpan="3"
+            Background="{Binding BaseBackColor, Source={x:Static SofSetting:SofSetting.Default}}"
+            Visibility="Collapsed" />
+        <!--  調色盤懸浮視窗  -->
+        <local:ColorPicker />
+        <TabControl Style="{StaticResource tabcontrol_STD}">
+            <TabItem Header="{DynamicResource LANGUAGE_SoftSettings}" Style="{StaticResource tabitem_STD}">
+                <Grid>
+                    <Grid.Resources>
+                        <Style TargetType="local:AssembledControl2">
+                            <Setter Property="Margin" Value="3" />
+                        </Style>
+                        <Style TargetType="local:AssembledControl3">
+                            <Setter Property="Margin" Value="3" />
+                        </Style>
+                        <Style BasedOn="{StaticResource gbx_WithBorder}" TargetType="GroupBox">
+                            <Setter Property="Margin" Value="5" />
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <!--  製品頁面設定  -->
+                    <StackPanel Grid.Column="1">
+                        <GroupBox Header="製品頁面設定">
+                            <GroupItem>
+                                <StackPanel>
+                                    <local:AssembledControl2
+                                        x:Name="hole"
+                                        ButtonCommand="{Binding OpenColorPickerCommand}"
+                                        ButtonImageSource="{StaticResource ColorPicker}"
+                                        ButtonParameter="{Binding ElementName=hole, Path=TextBlockText}"
+                                        TextBlockText="{DynamicResource LANGUAGE_DrillHoleColorSettings}"
+                                        TextBoxText="{Binding Hole, Source={x:Static SofSetting:SofSetting.Default}}" />
+                                    <local:AssembledControl2
+                                        x:Name="selection"
+                                        ButtonCommand="{Binding OpenColorPickerCommand}"
+                                        ButtonImageSource="{StaticResource ColorPicker}"
+                                        ButtonParameter="{Binding ElementName=selection, Path=TextBlockText}"
+                                        TextBlockText="{DynamicResource LANGUAGE_ReversedOutColorSettings}"
+                                        TextBoxText="{Binding Selection, Source={x:Static SofSetting:SofSetting.Default}}" />
+                                    <local:AssembledControl2
+                                        x:Name="axisX"
+                                        ButtonCommand="{Binding OpenColorPickerCommand}"
+                                        ButtonImageSource="{StaticResource ColorPicker}"
+                                        ButtonParameter="{Binding ElementName=axisX, Path=TextBlockText}"
+                                        TextBlockText="{DynamicResource LANGUAGE_X-AxisColorSettings}"
+                                        TextBoxText="{Binding AxisX, Source={x:Static SofSetting:SofSetting.Default}}" />
+                                    <local:AssembledControl2
+                                        x:Name="axisY"
+                                        ButtonCommand="{Binding OpenColorPickerCommand}"
+                                        ButtonImageSource="{StaticResource ColorPicker}"
+                                        ButtonParameter="{Binding ElementName=axisY, Path=TextBlockText}"
+                                        TextBlockText="{DynamicResource LANGUAGE_Y-AxisColorSettings}"
+                                        TextBoxText="{Binding AxisY, Source={x:Static SofSetting:SofSetting.Default}}" />
+                                    <local:AssembledControl2
+                                        x:Name="axisZ"
+                                        ButtonCommand="{Binding OpenColorPickerCommand}"
+                                        ButtonImageSource="{StaticResource ColorPicker}"
+                                        ButtonParameter="{Binding ElementName=axisZ, Path=TextBlockText}"
+                                        TextBlockText="{DynamicResource LANGUAGE_Z-AxisColorSettings}"
+                                        TextBoxText="{Binding AxisZ, Source={x:Static SofSetting:SofSetting.Default}}" />
+                                    <local:AssembledControl2
+                                        x:Name="viewCubeIcon"
+                                        ButtonCommand="{Binding OpenColorPickerCommand}"
+                                        ButtonImageSource="{StaticResource ColorPicker}"
+                                        ButtonParameter="{Binding ElementName=viewCubeIcon, Path=TextBlockText}"
+                                        TextBlockText="{DynamicResource LANGUAGE_PreviewIconColorSettings}"
+                                        TextBoxText="{Binding ViewCubeIcon, Source={x:Static SofSetting:SofSetting.Default}}" />
+                                    <local:AssembledControl2
+                                        x:Name="part"
+                                        ButtonCommand="{Binding OpenColorPickerCommand}"
+                                        ButtonImageSource="{StaticResource ColorPicker}"
+                                        ButtonParameter="{Binding ElementName=part, Path=TextBlockText}"
+                                        TextBlockText="{DynamicResource LANGUAGE_PartsColorSettings}"
+                                        TextBoxText="{Binding Part, Source={x:Static SofSetting:SofSetting.Default}}" />
+                                    <local:AssembledControl2
+                                        x:Name="ingredient1"
+                                        ButtonCommand="{Binding OpenColorPickerCommand}"
+                                        ButtonImageSource="{StaticResource ColorPicker}"
+                                        ButtonParameter="{Binding ElementName=ingredient1, Path=TextBlockText}"
+                                        TextBlockText="{DynamicResource LANGUAGE_AssemblyAColorSettings}"
+                                        TextBoxText="{Binding Ingredient1, Source={x:Static SofSetting:SofSetting.Default}}" />
+                                    <local:AssembledControl2
+                                        x:Name="ingredient2"
+                                        ButtonCommand="{Binding OpenColorPickerCommand}"
+                                        ButtonImageSource="{StaticResource ColorPicker}"
+                                        ButtonParameter="{Binding ElementName=ingredient2, Path=TextBlockText}"
+                                        TextBlockText="{DynamicResource LANGUAGE_AssemblyBColorSettings}"
+                                        TextBoxText="{Binding Ingredient2, Source={x:Static SofSetting:SofSetting.Default}}" />
+                                    <local:AssembledControl2
+                                        x:Name="null"
+                                        ButtonCommand="{Binding OpenColorPickerCommand}"
+                                        ButtonImageSource="{StaticResource ColorPicker}"
+                                        ButtonParameter="{Binding ElementName=null, Path=TextBlockText}"
+                                        TextBlockText="{DynamicResource LANGUAGE_ScrapColorSettings}"
+                                        TextBoxText="{Binding Null, Source={x:Static SofSetting:SofSetting.Default}}" />
+                                    <local:AssembledControl2
+                                        x:Name="point"
+                                        ButtonCommand="{Binding OpenColorPickerCommand}"
+                                        ButtonImageSource="{StaticResource ColorPicker}"
+                                        ButtonParameter="{Binding ElementName=null, Path=TextBlockText}"
+                                        TextBlockText="{DynamicResource LANGUAGE_Point}"
+                                        TextBoxText="{Binding Point, Source={x:Static SofSetting:SofSetting.Default}}" />
+                                    <local:AssembledControl3 IsChecked="{Binding OsVisible, Source={x:Static SofSetting:SofSetting.Default}}" LabelText="{DynamicResource LANGUAGE_VisibilitySettings}" />
+                                    <local:SaveReduction
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Bottom"
+                                        Reduction="{Binding ReductionSofCommand}"
+                                        Save="{Binding SaveSofCommand}" />
+                                </StackPanel>
+                            </GroupItem>
+                        </GroupBox>
+                        <!--加工監控頁面設定-->
+                        <GroupBox Header="加工監控報表設定">
+                            <GroupItem>
+                                <StackPanel>
+                                    <local:AssembledControl2 x:Name="report_Finish"
+                                                             ButtonCommand="{Binding OpenColorPickerCommand}"
+                                                             ButtonImageSource="{StaticResource ColorPicker}"
+                                                             ButtonParameter="{Binding RelativeSource={ x:Static RelativeSource.Self }, Path=TextBlockText}"
+                                                             TextBlockText="完工"
+                                                             TextBoxText="{Binding Report_Finish, Source={x:Static SofSetting:SofSetting.Default}}" />
+                                    <local:AssembledControl2 x:Name="report_Processing"
+                                                             ButtonCommand="{Binding OpenColorPickerCommand}"
+                                                             ButtonImageSource="{StaticResource ColorPicker}"
+                                                             ButtonParameter="{Binding RelativeSource={ x:Static RelativeSource.Self }, Path=TextBlockText}"
+                                                             TextBlockText="加工中"
+                                                             TextBoxText="{Binding Report_Processing, Source={x:Static SofSetting:SofSetting.Default}}" />
+                                    <local:AssembledControl2 x:Name="report_Waiting"
+                                                             ButtonCommand="{Binding OpenColorPickerCommand}"
+                                                             ButtonImageSource="{StaticResource ColorPicker}"
+                                                             ButtonParameter="{Binding RelativeSource={ x:Static RelativeSource.Self }, Path=TextBlockText}"
+                                                             TextBlockText="等待搬運"
+                                                             TextBoxText="{Binding Report_Waiting, Source={x:Static SofSetting:SofSetting.Default}}" />
+                                    <local:SaveReduction HorizontalAlignment="Right"
+                                                         VerticalAlignment="Bottom"
+                                                         Reduction="{Binding ReductionSofCommand}"
+                                                         Save="{Binding SaveSofCommand}" />
+                                </StackPanel>
+                            </GroupItem>
+                        </GroupBox>
+                        <!--  字體切換  -->
+                        <GroupBox Header="字體設定">
+                            <Grid>
+                                <Grid.Resources>
+                                    <ItemsPanelTemplate x:Key="VSP">
+                                        <VirtualizingStackPanel />
+                                    </ItemsPanelTemplate>
+                                </Grid.Resources>
+                                <ComboBox
+                                    x:Name="cbb_FontFamily"
+                                    FontSize="{ Binding TitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
+                                    ItemsPanel="{StaticResource VSP}"
+                                    ItemsSource="{x:Static Fonts.SystemFontFamilies}"
+                                    SelectedItem="{Binding FontFamily, Source={x:Static SofSetting:SofSetting.Default}}"
+                                    Style="{StaticResource cbb_DarkMain}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <i:InvokeCommandAction Command="{Binding SaveSofCommand}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock FontFamily="{Binding}" Text="{Binding}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </Grid>
+                        </GroupBox>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <!--  機械設定  -->
+            <TabItem Header="{DynamicResource LANGUAGE_MachineSettings}" Style="{StaticResource tabitem_STD}" Visibility="Collapsed">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="7*" />
+                        <RowDefinition Height="3*" />
+                    </Grid.RowDefinitions>
+                    <!--  機械參數  -->
+                    <GroupBox
+                        Grid.Row="0"
+                        Margin="5"
+                        Header="{DynamicResource LANGUAGE_MachineParameters}"
+                        Style="{StaticResource gbx_WithBorder}">
+                        <GroupItem>
+                            <Grid>
+                                <Grid.Resources>
+                                    <Style TargetType="local:AssembledControl4">
+                                        <Setter Property="Margin" Value="3" />
+                                    </Style>
+                                </Grid.Resources>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <!--  左側畫面起點  -->
+                                <StackPanel Grid.Column="0">
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_DrillingProcessingRange}" RightText="{Binding DrillJobLimit, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_ArmWorkingRange}" RightText="{Binding HandJobLimit, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_SpeedDownPoint}" RightText="{Binding SlowDownPoint, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_X-AxisMiddleSpindleDrillLength}" RightText="{Binding MiddleMeasuringPositionX, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_Y-AxisMiddleSpindleDrillLength}" RightText="{Binding MiddleMeasuringPositionY, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_Z-AxisMiddleSpindleDrillLength}" RightText="{Binding MiddleMeasuringPositionZ, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_X-AxisLeftSpindleDrillLength}" RightText="{Binding LeftMeasuringPositionX, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_Y-AxisLeftSpindleDrillLength}" RightText="{Binding LeftMeasuringPositionY, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_Z-AxisLeftSpindleDrillLength}" RightText="{Binding LeftMeasuringPositionZ, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_X-AxisRightSpindleDrillLength}" RightText="{Binding RightMeasuringPositionX, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_Y-AxisRightSpindleDrillLength}" RightText="{Binding RightMeasuringPositionY, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_Z-AxisRightSpindleDrillLength}" RightText="{Binding RightMeasuringPositionZ, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_X-AxisMiddleSpindleToolMagazine}" RightText="{Binding MiddleDrillWarehouseX, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_Y-AxisMiddleSpindleToolMagazine}" RightText="{Binding MiddleDrillWarehouseY, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_Z-AxisMiddleSpindleToolMagazine}" RightText="{Binding MiddleDrillWarehouseZ, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                </StackPanel>
+                                <!--  右側畫面起點  -->
+                                <StackPanel Grid.Column="1">
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_X-AxisLeftFeed}" RightText="{Binding LeftEntranceDrillWarehouseX, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_Y-AxisLeftFeed}" RightText="{Binding LeftEntranceDrillWarehouseY, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_Z-AxisLeftFeed}" RightText="{Binding LeftEntranceDrillWarehouseZ, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_X-AxisLeftOut}" RightText="{Binding LeftExportDrillWarehouseX, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_Y-AxisLeftOut}" RightText="{Binding LeftExportDrillWarehouseY, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_Z-AxisLeftOut}" RightText="{Binding LeftExportDrillWarehouseZ, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_X-AxisRightFeed}" RightText="{Binding RightEntranceDrillWarehouseX, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_Y-AxisRightFeed}" RightText="{Binding RightEntranceDrillWarehouseY, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_Z-AxisRightFeed}" RightText="{Binding RightEntranceDrillWarehouseZ, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_X-AxisRightOut}" RightText="{Binding RightExportDrillWarehouseX, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_Y-AxisRightOut}" RightText="{Binding RightExportDrillWarehouseY, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl4 LeftText="{DynamicResource LANGUAGE_Z-AxisRightOut}" RightText="{Binding RightExportDrillWarehouseZ, Source={x:Static MecSetting:MecSetting.Default}}" />
+                                    <local:AssembledControl3
+                                        Margin="3"
+                                        IsChecked="{Binding OsVisible, Source={x:Static SofSetting:SofSetting.Default}}"
+                                        LabelText="斷電保持" />
+                                </StackPanel>
+                                <local:SaveReduction
+                                    Grid.ColumnSpan="2"
+                                    Margin="5"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Reduction="{Binding ReductionMecCommand}"
+                                    Save="{Binding SaveMecCommand}" />
+                                <local:FunctionLockControl Grid.ColumnSpan="2" />
+                            </Grid>
+                        </GroupItem>
+                    </GroupBox>
+                    <!--  選配設定  -->
+                    <GroupBox
+                        Grid.Row="1"
+                        Margin="5"
+                        Header="{DynamicResource LANGUAGE_OptionalSettings}"
+                        Style="{StaticResource gbx_WithBorder}">
+                        <GroupItem>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.Resources>
+                                    <Style TargetType="local:AssembledControl3">
+                                        <Setter Property="Margin" Value="3" />
+                                    </Style>
+                                </Grid.Resources>
+                                <!--  左側畫面起點  -->
+                                <StackPanel Grid.Column="0">
+                                    <local:AssembledControl3 IsChecked="{Binding Middle, Source={x:Static Optional:Optional.Default}}" LabelText="{DynamicResource LANGUAGE_MiddleSpindleOptional}" />
+                                    <local:AssembledControl3 IsChecked="{Binding LeftExport, Source={x:Static Optional:Optional.Default}}" LabelText="{DynamicResource LANGUAGE_LeftOutToolMagazineOptional}" />
+                                    <local:AssembledControl3 IsChecked="{Binding RightExport, Source={x:Static Optional:Optional.Default}}" LabelText="{DynamicResource LANGUAGE_RightOutToolMagazineOptional}" />
+                                    <local:AssembledControl3 IsChecked="{Binding LeftEntrance, Source={x:Static Optional:Optional.Default}}" LabelText="{DynamicResource LANGUAGE_LeftFeedToolMagazineOptional}" />
+                                    <local:AssembledControl3 IsChecked="{Binding RightEntrance, Source={x:Static Optional:Optional.Default}}" LabelText="{DynamicResource LANGUAGE_RightFeedToolMagazineOptional}" />
+                                </StackPanel>
+                                <!--  右側畫面起點  -->
+                                <StackPanel Grid.Column="1">
+                                    <local:AssembledControl3 IsChecked="{Binding Traverse, Source={x:Static Optional:Optional.Default}}" LabelText="{DynamicResource LANGUAGE_SwayRackOptional}" />
+                                    <local:AssembledControl3 IsChecked="{Binding HandAuto, Source={x:Static Optional:Optional.Default}}" LabelText="{DynamicResource LANGUAGE_ArmAutoClipOptional}" />
+                                </StackPanel>
+                                <local:SaveReduction
+                                    Grid.ColumnSpan="2"
+                                    Margin="5"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Reduction="{Binding ReductionOptionalCommand}"
+                                    Save="{Binding SaveOptionalCommand}" />
+                                <local:FunctionLockControl Grid.ColumnSpan="2" />
+                            </Grid>
+                        </GroupItem>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="校機參數" Cursor="Arrow" Style="{StaticResource tabitem_STD}">
+                <Grid dx:ScrollBarExtensions.IsTouchScrollBarMode="False">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <dxlc:LayoutControl Name="layoutControl" dx:ThemeManager.ThemeName="VS2019Dark"
+                            Background="Transparent" Orientation="Vertical" StretchContentVertically="False">
+                        <dxlc:LayoutControl.Resources>
+                            <Style TargetType="{ x:Type dxlc:DataLayoutItem }" BasedOn="{ StaticResource lab_LayoutControl_STD }">
+                            </Style>
+                            <Style TargetType="{x:Type dxlc:GroupBox}" BasedOn="{ StaticResource gbx_LayoutControl_STD }">
+                            </Style>
+                            <Style TargetType="{ x:Type ScrollBar }" BasedOn="{ StaticResource VerticalScrollBar }"/>
+                        </dxlc:LayoutControl.Resources>
+                        <dxlc:DataLayoutControl Name="dataLayoutControl" CurrentItem="{Binding MecSetting}">
+                            <dxmvvm:Interaction.Behaviors>
+                                <fluentAPI:MecSettingBehavior AllowCustomization="False"/>
+                            </dxmvvm:Interaction.Behaviors>
+                        </dxlc:DataLayoutControl>
+                    </dxlc:LayoutControl>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0">
+                        <Button Content="恢復出廠設定" Width="160" Style="{ StaticResource btn_CommonFunctionKey_STD }" Command="{Binding SaveMecSettingCommand}" Margin="10"/>
+                        <Button Content="存檔" Style="{ StaticResource btn_CommonFunctionKey_STD }" Command="{Binding SaveMecSettingCommand}"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="選配設定" Cursor="Arrow" Style="{StaticResource tabitem_STD}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <dxlc:LayoutControl Name="layoutControl1" dx:ThemeManager.ThemeName="VS2019Dark"
+                         Background="Transparent" Orientation="Vertical" StretchContentVertically="False" dx:ScrollBarExtensions.ScrollBarMode="Standard">
+                        <dxlc:LayoutControl.Resources>
+                            <Style TargetType="{ x:Type dxlc:DataLayoutItem }" BasedOn="{ StaticResource lab_LayoutControl_STD }">
+                            </Style>
+                            <Style TargetType="{x:Type dxlc:GroupBox}" BasedOn="{ StaticResource gbx_LayoutControl_STD }">
+                            </Style>
+                            <Style TargetType="{ x:Type dxe:CheckEdit }">
+                                <Setter Property="CheckedGlyph" Value="{ StaticResource CheckBox_Hook }"/>
+                                <Setter Property="UncheckedGlyph" Value="{ StaticResource CheckBox_Cirle }"/>
+                            </Style>
+                            <Style TargetType="{ x:Type ScrollBar }" BasedOn="{ StaticResource VerticalScrollBar }"/>
+                        </dxlc:LayoutControl.Resources>
+                        <dxlc:DataLayoutControl Name="dataLayoutControl1" CurrentItem="{Binding OptionSettings}" >
+                            <dxmvvm:Interaction.Behaviors>
+                                <fluentAPI:MecSettingBehavior AllowCustomization="False"/>
+                            </dxmvvm:Interaction.Behaviors>
+                        </dxlc:DataLayoutControl>
+                    </dxlc:LayoutControl>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0">
+                        <Button Content="恢復出廠設定" Width="160" Style="{ StaticResource btn_CommonFunctionKey_STD }" Command="{Binding }" Margin="10"/>
+                        <Button Content="存檔" Style="{ StaticResource btn_CommonFunctionKey_STD }" Command="{Binding SaveOptionSettingCommand }"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</WPFBase:BasePage>

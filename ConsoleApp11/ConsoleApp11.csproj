@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{26969C4B-9D0A-4C3C-8073-23F94CD7F417}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>ConsoleApp11</RootNamespace>
+    <AssemblyName>ConsoleApp11</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Connected Services\ServiceReference1\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Connected Services\ServiceReference1\Memor3.wsdl" />
+    <None Include="Connected Services\ServiceReference1\Memor31.wsdl" />
+    <None Include="Connected Services\ServiceReference1\Memor32.wsdl" />
+    <None Include="Connected Services\ServiceReference1\Memor7.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ServiceReference1\Memor71.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ServiceReference1\Memor72.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ServiceReference1\Memor73.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ServiceReference1\Memor74.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ServiceReference1\Memor75.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ServiceReference1\Memor76.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\DataSources\GD_STD.AndroidTest.datasource" />
+    <None Include="Properties\DataSources\GD_STD.AxisInfo.datasource" />
+    <None Include="Properties\DataSources\GD_STD.CutOilSystem.datasource" />
+    <None Include="Properties\DataSources\GD_STD.DrillWarehouse.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Host.datasource" />
+    <None Include="Properties\DataSources\GD_STD.HydraulicSystem.datasource" />
+    <None Include="Properties\DataSources\GD_STD.LubricantSystem.datasource" />
+    <None Include="Properties\DataSources\GD_STD.OillSystem.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Outage.datasource" />
+    <None Include="Properties\DataSources\GD_STD.PanelButton.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Phone.APP_Struct.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Phone.MonitorMec.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Phone.Operating.datasource" />
+    <None Include="Properties\DataSources\GD_STD.Phone.WorkMaterial.datasource" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\ServiceReference1\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\ServiceReference1\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\ServiceReference1\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\ServiceReference1\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GD_STD.Data\GD_STD.Data.csproj">
+      <Project>{390c0859-c722-45e8-9b21-5fa41ca5c18c}</Project>
+      <Name>GD_STD.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GD_STD.Enum\GD_STD.Enum.csproj">
+      <Project>{9dfd02bd-8e10-4518-8c06-d8a369183f14}</Project>
+      <Name>GD_STD.Enum</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GD_STD.IBase\GD_STD.Base.csproj">
+      <Project>{04de5146-0a39-444f-8746-239d36ac5a7e}</Project>
+      <Name>GD_STD.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GD_STF\GD_STD.csproj">
+      <Project>{3effa436-f171-45e9-b999-50690a7e2a2b}</Project>
+      <Name>GD_STD</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PhoneLibrary\GD_STD.Phone.csproj">
+      <Project>{d9966631-507a-4e80-8306-827892055c02}</Project>
+      <Name>GD_STD.Phone</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\ServiceReference1\Memor1.disco" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

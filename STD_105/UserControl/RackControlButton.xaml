@@ -1,0 +1,138 @@
+﻿<UserControl x:Class="STD_105.RackControlButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:STD_105"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style TargetType="Label" BasedOn="{ StaticResource lab_Description }">
+        </Style>
+        <Storyboard x:Key="stbShow">
+            <DoubleAnimation Storyboard.TargetName="myEllipseGeometry"
+               Storyboard.TargetProperty="RadiusX"
+               Duration="0:0:0.5" From="0" To="125"
+               FillBehavior="HoldEnd"/>
+            <DoubleAnimation Storyboard.TargetName="myEllipseGeometry"
+               Storyboard.TargetProperty="RadiusY"
+               Duration="0:0:0.5" From="0" To="125"
+               FillBehavior="HoldEnd" />
+        </Storyboard>
+        <Storyboard x:Key="stbHide">
+            <DoubleAnimation Storyboard.TargetName="myEllipseGeometry"
+               Storyboard.TargetProperty="RadiusX"
+               Duration="0:0:0.5" From="125" To="0"
+               FillBehavior="HoldEnd"/>
+            <DoubleAnimation Storyboard.TargetName="myEllipseGeometry"
+               Storyboard.TargetProperty="RadiusY"
+               Duration="0:0:0.5" From="125" To="0"
+               FillBehavior="HoldEnd" />
+        </Storyboard>
+    </UserControl.Resources>
+    <Canvas x:Name="mainCanvas" Cursor="Hand" ClipToBounds="True" Width="250" Height="250">
+        <Canvas x:Name="sectorCanvas" Canvas.Left="125" Canvas.Top="125">
+            <local:CircularSectorControl x:Name="zone_1"/>
+            <local:CircularSectorControl x:Name="zone_2">
+                <local:CircularSectorControl.RenderTransform>
+                    <RotateTransform Angle="-30"/>
+                </local:CircularSectorControl.RenderTransform>
+            </local:CircularSectorControl>
+            <local:CircularSectorControl x:Name="zone_3">
+                <local:CircularSectorControl.RenderTransform>
+                    <RotateTransform Angle="-60"/>
+                </local:CircularSectorControl.RenderTransform>
+            </local:CircularSectorControl>
+            <local:CircularSectorControl x:Name="zone_4">
+                <local:CircularSectorControl.RenderTransform>
+                    <RotateTransform Angle="-90"/>
+                </local:CircularSectorControl.RenderTransform>
+            </local:CircularSectorControl>
+            <local:CircularSectorControl x:Name="zone_5">
+                <local:CircularSectorControl.RenderTransform>
+                    <RotateTransform Angle="-120"/>
+                </local:CircularSectorControl.RenderTransform>
+            </local:CircularSectorControl>
+            <local:CircularSectorControl x:Name="zone_6">
+                <local:CircularSectorControl.RenderTransform>
+                    <RotateTransform Angle="-150"/>
+                </local:CircularSectorControl.RenderTransform>
+            </local:CircularSectorControl>
+            <local:CircularSectorControl x:Name="zone_7">
+                <local:CircularSectorControl.RenderTransform>
+                    <RotateTransform Angle="-180"/>
+                </local:CircularSectorControl.RenderTransform>
+            </local:CircularSectorControl>
+            <local:CircularSectorControl x:Name="zone_8">
+                <local:CircularSectorControl.RenderTransform>
+                    <RotateTransform Angle="-210"/>
+                </local:CircularSectorControl.RenderTransform>
+            </local:CircularSectorControl>
+        </Canvas>
+        <Path Canvas.Left="125" Canvas.Top="125">
+            <Path.Data>
+                <EllipseGeometry x:Name="myEllipseGeometry" RadiusX="0" RadiusY="0" Center="0,0"/>
+            </Path.Data>
+        </Path>
+        <Grid x:Name="grid_Button" Height="100" Width="100" Tag="false" Canvas.Left="75" Canvas.Top="75" MouseLeftButtonDown="BottomGrid_MouseLeftButtonDown">
+            <Ellipse Width="100" Height="100" StrokeThickness="1">
+                <Ellipse.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientBrush.GradientStops>
+                            <GradientStopCollection>
+                                <GradientStop Color="#FFE76200" Offset="0.0" />
+                                <GradientStop Color="#FFF58600" Offset="1.0"/>
+                            </GradientStopCollection>
+                        </GradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </Ellipse.Fill>
+                <Ellipse.Stroke>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientBrush.GradientStops>
+                            <GradientStopCollection>
+                                <GradientStop Color="#FF303030" Offset="0.0"/>
+                                <GradientStop Color="#49FFFFFF" Offset="0.4"/>
+                                <GradientStop Color="#AAF3F3F3" Offset="0.5"/>
+                                <GradientStop Color="#49FFFFFF" Offset="0.6"/>
+                                <GradientStop Color="#FF303030" Offset="1.0"/>
+                            </GradientStopCollection>
+                        </GradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </Ellipse.Stroke>
+            </Ellipse>
+            <Ellipse Height="70" Width="80" Margin="10,5,10,25">
+                <Ellipse.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientBrush.GradientStops>
+                            <GradientStopCollection>
+                                <GradientStop Color="#FFF8F5F3" Offset="0.0" />
+                                <GradientStop Color="#FFF58600" Offset="1.0"/>
+                            </GradientStopCollection>
+                        </GradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+            <Ellipse Width="60" Height="60" Margin="0,10,0,0">
+                <Ellipse.Fill>
+                    <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                        <GradientStop Color="#EEFAEE4E" Offset="0" />
+                        <GradientStop Color="#00FAC664" Offset="1.0" />
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+            <Path Fill="#FFF3F3F3" Data="M93.7,65.1l-18.4-4.9c-1.6-0.4-2.6-2.1-2.1-3.7v0c0.4-1.6,2.1-2.6,3.7-2.1l18.4,4.9c1.6,0.4,2.6,2.1,2.1,3.7v0
+	C96.9,64.6,95.3,65.5,93.7,65.1z">
+                <Path.RenderTransform>
+                    <RotateTransform Angle="-210" CenterX="50" CenterY="50"/>
+                </Path.RenderTransform>
+            </Path>
+        </Grid>
+        <Label Content="1-1" Canvas.Left="50" Canvas.Top="130"/>
+        <Label Content="1-2" Canvas.Left="50" Canvas.Top="95"/>
+        <Label Content="1-3" Canvas.Left="65" Canvas.Top="65"/>
+        <Label Content="1-4" Canvas.Left="100" Canvas.Top="50"/>
+        <Label Content="1-5" Canvas.Left="130" Canvas.Top="50"/>
+        <Label Content="1-6" Canvas.Left="165" Canvas.Top="65"/>
+        <Label Content="1-7" Canvas.Left="180" Canvas.Top="95"/>
+        <Label Content="1-8" Canvas.Left="180" Canvas.Top="130"/>
+    </Canvas>
+</UserControl>

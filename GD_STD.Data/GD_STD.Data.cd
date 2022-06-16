@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="GD_STD.Data.MatchDI.Average" Collapsed="true">
+    <Position X="10" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MatchDI\Average.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Data.MatchDI.MultipleUsageRate" Collapsed="true">
+    <Position X="12.25" Y="8.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>MatchDI\MultipleUsageRate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Data.MatchDI.UsageRate" Collapsed="true">
+    <Position X="12.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MatchDI\UsageRate.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GD_STD.Data.MatchDI.Weights" Collapsed="true">
+    <Position X="14.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MatchDI\Weights.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Data.BomProperty">
+    <Position X="10" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAIAAAAAAA=</HashCode>
+      <FileName>BomProperty.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Data.Chromosome" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYwAgIAAAAEAAAEQEAAAABAAAEAAhBCAAJADAAAAhE=</HashCode>
+      <FileName>Chromosome.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GD_STD.Data.ExcelService" Collapsed="true">
+    <Position X="23" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ExcelService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Data.MatchSetting" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="24.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIRQAAAAAQAAAAAAAAAAAAQAAAAAAAACAQAABAIAAAA=</HashCode>
+      <FileName>MatchSetting.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GD_STD.Data.MaterialDataView" BaseTypeListCollapsed="true">
+    <Position X="12.5" Y="1.75" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AEQAAAgAAAAIAAAgABAAAgAAAEAQABACABAABAAIAAg=</HashCode>
+      <FileName>MaterialDataView.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GD_STD.Data.Population" Collapsed="true">
+    <Position X="26.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAIAAAAQAEAkAEAAAAAAAAAwQAAAJACAAAAgI=</HashCode>
+      <FileName>Population.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Data.SteelAssembly" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIRAAgACAAAAgAAggEACACRBAAIBAYAAEAAEBEgIBiA=</HashCode>
+      <FileName>SteelAssembly.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GD_STD.Data.SteelBolts" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="23" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AMQAAgACAAAAAAAggAAAAAQAAAABAYAAERABBAAAAiA=</HashCode>
+      <FileName>SteelBolts.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GD_STD.Data.SteelMaterial" Collapsed="true">
+    <Position X="24.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAABAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>SteelMaterial.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Data.SteelPart" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BMRQAgACAEAAiAAggEACACRBABABAYAAERgBBEAIgiA=</HashCode>
+      <FileName>SteelPart.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GD_STD.Data.TeklaBomAttribute" Collapsed="true">
+    <Position X="21.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>TeklaBomAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Data.TypeSettingDataView" BaseTypeListCollapsed="true">
+    <Position X="17" Y="1.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AMIUAgACAAAAgAAgwAAAAAFAAAAAAIgAQBAEBAAABiA=</HashCode>
+      <FileName>TypeSettingDataView.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="WPFWindowsBase.BaseViewModel" Collapsed="true">
+    <Position X="14.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Struct Name="GD_STD.Data.SinglePart" Collapsed="true">
+    <Position X="21.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAEgEAAAABAAQAAAIAAAAEAAAAAAiA=</HashCode>
+      <FileName>SinglePart.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="GD_STD.Data.IChange" Collapsed="true">
+    <Position X="21.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IChange.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Data.IConfiguration" Collapsed="true">
+    <Position X="23" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Data.IDrawing" Collapsed="true">
+    <Position X="24.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAgAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>IDrawing.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Data.IMatchSetting" Collapsed="true">
+    <Position X="26.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAABAAAAAA=</HashCode>
+      <FileName>IMatchSetting.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Data.IMerge" Collapsed="true">
+    <Position X="21.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>IMerge.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Data.ISteelPart" Collapsed="true">
+    <Position X="23" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAgAAAAAAgAAAAEAAACAAABAAAAAAABgAAEAIAAA=</HashCode>
+      <FileName>ISteelPart.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Data.ISteelProfile" Collapsed="true">
+    <Position X="24.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAAABAAAAAAARgAAEAIAAA=</HashCode>
+      <FileName>ISteelProfile.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Data.ITekla" Collapsed="true">
+    <Position X="26.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ITekla.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Data.ITeklaObject" Collapsed="true">
+    <Position X="21.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAEAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ITeklaObject.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Data.ITypeSettingAssemblyView" Collapsed="true">
+    <Position X="23" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ITypeSettingAssemblyView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Data.ITypeSettingDataView" Collapsed="true">
+    <Position X="24.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAA=</HashCode>
+      <FileName>ITypeSettingDataView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Data.ITypeSettingPartView" Collapsed="true">
+    <Position X="26.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAQAAACAAAAgAAgAEAAAABAAAAAAAAAABAABAAAAAA=</HashCode>
+      <FileName>ITypeSettingPartView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Microsoft JhengHei UI" Size="9" />
+</ClassDiagram>

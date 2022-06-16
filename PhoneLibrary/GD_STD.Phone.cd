@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GD_STD.Phone.MemoryExpand">
+    <Position X="5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACACAAAAAAAAAAAAIAEAAAAAAAQAAAAAAAAACAAAAA=</HashCode>
+      <FileName>MemoryExpand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Phone.MemoryHelper" Collapsed="true">
+    <Position X="6.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAACgAAACAABAAACAABAAgAgAAIEAEAIAAAARAAAAI=</HashCode>
+      <FileName>MemoryHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Phone.PhoneConditionFactory&lt;T&gt;" Collapsed="true">
+    <Position X="8.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAFAAIAAIAAAAABAAAAAAQAAAAAAAAAAAAAAAggA=</HashCode>
+      <FileName>PhoneConditionFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Phone.SharedMemory" Collapsed="true">
+    <Position X="10.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAgACACQACAEAAIgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SharedMemory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="GD_STD.Phone.APP_Struct" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgxAIAAAAAQAACAAAgCgAAQEBAQECIAQAAIAgAjAgwI=</HashCode>
+      <FileName>APP_Struct.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Phone.Arm" Collapsed="true">
+    <Position X="6.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAQAAAAAAAAAACAQAAAAAAAAACAgAAAA=</HashCode>
+      <FileName>Arm.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="GD_STD.Phone.DrillWarehouse" Collapsed="true">
+    <Position X="8.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AggAAAAAAAAAACAAAgAAAAAAAAAAAAAAAAAQAACAAAA=</HashCode>
+      <FileName>DrillWarehouse.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="GD_STD.Phone.Login" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAkAAAAAAAAAAAAAIAAAABBEQA=</HashCode>
+      <FileName>Login.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Phone.MechanicalSetting" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEkAiAAQCAAAIIEEIAABAAEBSAAAIAICCCQAAAIExA=</HashCode>
+      <FileName>MechanicalSetting.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Phone.MecOptional" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="6.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AogABACBBAAABCgCAgAAAQAAAABAAAAAAEASEAAAAwA=</HashCode>
+      <FileName>MecOptional.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Phone.MonitorMec" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ICQAAgAAAAAAAAAAAAACAIAAAAAAAAAAAAAAEEAIAwA=</HashCode>
+      <FileName>MonitorMec.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Phone.MonitorWork" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgEAMAAAIAIIAsACECAAAQAAEAAggQAAAEEACCAEAA=</HashCode>
+      <FileName>MonitorWork.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Phone.Operating" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAIAAAAAAAAEAAAAgAAAAAAAAABACwA=</HashCode>
+      <FileName>Operating.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Phone.WorkMaterial" Collapsed="true">
+    <Position X="6.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEBEAECRAgABgAAgSAAIAABAABAAkAABARgAAkCIZUg=</HashCode>
+      <FileName>WorkMaterial.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Microsoft JhengHei UI" Size="9" />
+</ClassDiagram>

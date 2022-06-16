@@ -1,0 +1,414 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GD_STD.Base.Egis" Collapsed="true">
+    <Position X="17.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Egis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Base.MemoryException" Collapsed="true">
+    <Position X="19.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MemoryException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Base.PhoneConditionAttribute" Collapsed="true">
+    <Position X="22.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAgAAAQAAIAAEACAgAAAAAAgAAQAAAA=</HashCode>
+      <FileName>PhoneConditionAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Base.WorkOther" Collapsed="true">
+    <Position X="24.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAIAEAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WorkOther.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Base.Additional.MVVMAttribute" Collapsed="true">
+    <Position X="21" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAEAAAAAAIAAAAAAAAAAAAAAIAAAIAAA=</HashCode>
+      <FileName>MVVMAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="GD_STD.Axis2D" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Axis2D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Axis3D" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAE=</HashCode>
+      <FileName>Axis3D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Axis4D" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAYAE=</HashCode>
+      <FileName>Axis4D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Drill" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQACAgABAAQBQAoCAAIAQAAAACAAAAAAAACAAAAYAg=</HashCode>
+      <FileName>Drill.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Stamp" Collapsed="true">
+    <Position X="19.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAiAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Stamp.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="GD_STD.Base.AxisSetting" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAACEAgAACAAAAAAAgAAAAAQAAAAAAAA=</HashCode>
+      <FileName>AxisSetting.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Base.ClampDownSetting" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="24.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>ClampDownSetting.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Base.DrillSetting" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQBAAAAAAQBAQAAgJAAAAQBAIEAAAAABAAEAFAAAIAA=</HashCode>
+      <FileName>DrillSetting.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Base.HandSetting" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAEAAAgAAAAIIAAIBAAIFAACAABAAUCGgBIAhAQAA=</HashCode>
+      <FileName>HandSetting.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Base.ProtectionDistance" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAQEAAAAAAAAAAAQAA=</HashCode>
+      <FileName>ProtectionDistance.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Base.ShapeTraverse" Collapsed="true">
+    <Position X="24.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAYgAAAAAAAAgAIAAQAAAAAgAAAgCAQAAAAAAAA=</HashCode>
+      <FileName>ShapeTraverse.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="GD_STD.Base.SideClamp" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>SideClamp.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Base.Traverse" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAYAAAAAAAAAiAIAAQAAAAAgAAAgAAQAAAAAAAA=</HashCode>
+      <FileName>Traverse.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Interface Name="GD_STD.Base.IAxis2D" Collapsed="true">
+    <Position X="7" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Interface\IAxis2D.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IAxis3D" Collapsed="true">
+    <Position X="7" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Interface\IAxis3D.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IAxis4D" Collapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>Interface\IAxis4D.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IAxisAction" Collapsed="true">
+    <Position X="17.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAQCAABAAAA=</HashCode>
+      <FileName>Interface\IAxisAction.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.ISingleAxisInfo" Collapsed="true">
+    <Position X="8" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IAxisInfo.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IAxisSetting" Collapsed="true">
+    <Position X="19.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAgAACAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IAxisSetting.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IBinaryData" Collapsed="true">
+    <Position X="21" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IBinaryData.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IClampDown" Collapsed="true">
+    <Position X="22.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Interface\IClampDown.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IDrillParameter" Collapsed="true">
+    <Position X="8.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Interface\IDrillParameter.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IDrillSetting" Collapsed="true">
+    <Position X="8.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAQAAgAAAAAQBAAAAAAAABAAEAAAAAAAA=</HashCode>
+      <FileName>Interface\IDrillSetting.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IDrillWarehouse" Collapsed="true">
+    <Position X="24.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AggAAAAAAAAAACAAAgAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Interface\IDrillWarehouse.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IFixture" Collapsed="true">
+    <Position X="17.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Interface\IFixture.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IHandSetting" Collapsed="true">
+    <Position X="19.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAEAAAgAAAAIIAAIBAAIFAACAABAAUCGgBIAhAQAA=</HashCode>
+      <FileName>Interface\IHandSetting.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IHydraulicSystem" Collapsed="true">
+    <Position X="13.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAIAAACAAAAAAAAAAAAABABAAAAACAAAAA=</HashCode>
+      <FileName>Interface\IHydraulicSystem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IInput" Collapsed="true">
+    <Position X="21" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>4IdAFgBmSR9HCEFkAIOAwkhMgKAN0BIiUKfiSB+Zfwg=</HashCode>
+      <FileName>Interface\IInput.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.ILine" Collapsed="true">
+    <Position X="22.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\ILine.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IMecOptional" Collapsed="true">
+    <Position X="24.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AogABACBBAAABCgCAgAAAQAAAABAAAAAAEASEAAAAAA=</HashCode>
+      <FileName>Interface\IMecOptional.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IMecSetting" Collapsed="true">
+    <Position X="17.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEgAiAAQAAAAIIAAAAAAAAAASAAAIAIACAAAAAAEAA=</HashCode>
+      <FileName>Interface\IMecSetting.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IMemoryPointer" Collapsed="true">
+    <Position X="15" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IMemoryPointer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IModelObjectBase" Collapsed="true">
+    <Position X="5.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IModelObjectBase.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IOill" Collapsed="true">
+    <Position X="19.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IOill.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IOillSystem" Collapsed="true">
+    <Position X="21" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAIAAAAAAAAAAAAAAAgIAAgAAAAAEAAA=</HashCode>
+      <FileName>Interface\IOillSystem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IOrder" Collapsed="true">
+    <Position X="13.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Interface\IOrder.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IOutput" Collapsed="true">
+    <Position X="22.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KUQpBAMACAAAEEUIGAITTQxMSEAVCIHQcAIKrBMEQCQ=</HashCode>
+      <FileName>Interface\IOutput.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IPart" Collapsed="true">
+    <Position X="17.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAQgAAAAAAAA=</HashCode>
+      <FileName>Interface\IPart.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IPCSharedMemory" Collapsed="true">
+    <Position X="8.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IPCSharedMemory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IPCSharedMemoryOffset" Collapsed="true">
+    <Position X="14.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IPCSharedMemoryOffset.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IPhoneSharedMemory" Collapsed="true">
+    <Position X="11" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IPhoneSharedMemory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IPhoneSharedMemoryOffset" Collapsed="true">
+    <Position X="12" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IPhoneSharedMemoryOffset.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IProfile" Collapsed="true">
+    <Position X="10.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Interface\IProfile.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IProtectionDistance" Collapsed="true">
+    <Position X="19.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAQEAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Interface\IProtectionDistance.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IRectangle" Collapsed="true">
+    <Position X="5.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAARBAAAAAAAAAAAAAEAIAAA=</HashCode>
+      <FileName>Interface\IRectangle.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.ISecondary" Collapsed="true">
+    <Position X="21" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Interface\ISecondary.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.ISharedMemory" Collapsed="true">
+    <Position X="10" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\ISharedMemory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.ISharedMemoryOffset" Collapsed="true">
+    <Position X="12" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\ISharedMemoryOffset.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.ISteelBase" Collapsed="true">
+    <Position X="5.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAQAAAAQBAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\ISteelBase.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.ITraverse" Collapsed="true">
+    <Position X="22.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAYAAAAAAAAAiAIAAQAAAAAgAAAgAAQAAAAAAAA=</HashCode>
+      <FileName>Interface\ITraverse.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.Base.IWeight" Collapsed="true">
+    <Position X="5.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IWeight.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.IBase.IPainted" Collapsed="true">
+    <Position X="24.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAgAAAIAQAAAACAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Interface\IPainted.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Microsoft JhengHei UI" Size="9" />
+</ClassDiagram>

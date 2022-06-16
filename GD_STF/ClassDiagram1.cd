@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Comment CommentText="程式執行時請開啟請先呼叫OpenSharedMemory()">
+    <Position X="15.096" Y="0.913" Height="0.75" Width="1.815" />
+  </Comment>
+  <Class Name="GD_STD.ProcessingInfo">
+    <Position X="6" Y="5.75" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAIAAAAAAAAAACAAgAAAAAAAgAAAAAI=</HashCode>
+      <FileName>ProcessingInfo.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DrFront" />
+      <Property Name="DrBottom" />
+      <Property Name="DrTop" />
+      <Property Name="JobInfo" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GD_STD.MemoryHelper" Collapsed="true">
+    <Position X="15.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIgAAgAIACEAAAAAAACAgAgEAAAiAQIAAAAMABAAAgg=</HashCode>
+      <FileName>MemoryHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.DrillWarehouse">
+    <Position X="11.25" Y="5.75" Width="7" />
+    <TypeIdentifier>
+      <HashCode>AggAAAAAAAAAACIAAgAAAAAAAAAAgAAAAAAQAAAAAAA=</HashCode>
+      <FileName>DrillWarehouse.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Middle" />
+      <Property Name="LeftExport" />
+      <Property Name="RightExport" />
+      <Property Name="LeftEntrance" />
+      <Property Name="RightEntrance" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GD_STD.SerializationHelper" Collapsed="true">
+    <Position X="24" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SerializationHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.SerializationHelper&lt;T&gt;" Collapsed="true">
+    <Position X="11.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SerializationHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="GD_STD.Drill">
+    <Position X="0.5" Y="0.75" Width="5.25" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAQAAAoAAAIAQAAAACAAAAAAAACAAAAYAg=</HashCode>
+      <FileName>Drill.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Struct>
+  <Struct Name="GD_STD.AxisInfo" Collapsed="true">
+    <Position X="8.5" Y="14.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAgAAACACQAAAAAAA=</HashCode>
+      <FileName>AxisInfo.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Middle" />
+      <Property Name="Left" />
+      <Property Name="Right" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Struct>
+  <Struct Name="GD_STD.JobInfo">
+    <Position X="6.75" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAABAAAAAAAAAEAIABBAABAAEAAAAQgAAECIQEA=</HashCode>
+      <FileName>JobInfo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Struct>
+  <Struct Name="GD_STD.SingleAxisInfo">
+    <Position X="7.25" Y="15.75" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAE=</HashCode>
+      <FileName>SingleAxisInfo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Struct>
+  <Struct Name="GD_STD.Axis2D" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Axis2D.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.DrillSetting">
+    <Position X="12" Y="8" Width="9.25" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAQAAgQAAAAUBAAAAAAAABAAAAAAABAAA=</HashCode>
+      <FileName>DrillSetting.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DRILL_TYPE" />
+    </ShowAsAssociation>
+  </Struct>
+  <Struct Name="GD_STD.PanelButtom">
+    <Position X="12.75" Y="16.25" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>ABAAAACAAAIQIS4AWKECCAAWAAAAgAAAoAIAJBAAAgY=</HashCode>
+      <FileName>PanelButtom.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Key" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Struct>
+  <Interface Name="GD_STD.IBase.IAxis2D">
+    <Position X="5.5" Y="8.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Base\IAxis2D.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.IBase.ISingleAxisInfo">
+    <Position X="5.5" Y="12.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\IAxisInfo.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.IBase.IProfile">
+    <Position X="8.75" Y="8.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAgAAEAIAAA=</HashCode>
+      <FileName>Base\IProfile.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.IBase.IPart">
+    <Position X="8.5" Y="10.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\IPart.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.IBase.IJob" Collapsed="true">
+    <Position X="24" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Base\IJob.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.IBase.IAxis3D">
+    <Position X="5.5" Y="10.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Base\IAxis3D.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.IBase.ISharedMemory" Collapsed="true">
+    <Position X="22.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\ISharedMemory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GD_STD.IBase.IBinaryData" Collapsed="true">
+    <Position X="22.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\IBinaryData.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="GD_STD.AXIS_MODE" Collapsed="true">
+    <Position X="22.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAgEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enum\AXIS_MODE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.DRILL_TYPE">
+    <Position X="16" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAQAAAABAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Enum\DRILL_TYPE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.PROFILE_TYPE" Collapsed="true">
+    <Position X="24" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAEQCAAA=</HashCode>
+      <FileName>Enum\PROFILE_TYPE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.KEY_HOLE">
+    <Position X="17.5" Y="17.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAEAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Enum\KEY_HOLE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Microsoft JhengHei UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,62 @@
+﻿<Window xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OfficeMode"
+        xmlns:vm="clr-namespace:OfficeMode.ViewModels"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" x:Class="OfficeMode.MainWindow"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Topmost="False"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d" Width="500" Height="200"
+        Title="MainWindow" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+    <Grid x:Name="grid_main" Background="#FFF3F3F3">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.5*"/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="1"  FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,5">
+            <TextBlock.Style>
+                <Style TargetType="{ x:Type TextBlock }">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{ Binding CurrentStatus }" Value="CheckingUpdate">
+                            <Setter Property="TextBlock.Text" Value="檢查更新中"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{ Binding CurrentStatus }" Value="Downloading">
+                            <Setter Property="TextBlock.Text" Value="下載更新中"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{ Binding CurrentStatus }" Value="Installing">
+                            <Setter Property="TextBlock.Text" Value="安裝更新中"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{ Binding CurrentStatus }" Value="CheckingCodesys">
+                            <Setter Property="TextBlock.Text" Value="檢查Codesys中"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{ Binding CurrentStatus }" Value="CheckingServer">
+                            <Setter Property="TextBlock.Text" Value="檢查伺服器中"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+        <Button Grid.Column="2" Width="20" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{ StaticResource btn_FunctionKey3 }" Margin="5" Click="Button_Click">
+            <Image Source="{ StaticResource Cross_Gray }" Opacity="0.5"/>
+        </Button>
+        <Grid Grid.Column="1" Grid.Row="1">
+            <ProgressBar x:Name="progress" VerticalAlignment="Top" Value="0" Height="30" Style="{StaticResource BlueProgressBar}"/>
+            <Label Content="{Binding Value, ElementName=progress}" FontSize="16" Foreground="#FFF3F3F3" ContentStringFormat="{}{0}%" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        </Grid>
+        <WrapPanel Grid.ColumnSpan="3" Grid.Row="2"  HorizontalAlignment="Right" Margin="10">
+            <Label x:Name="lab_Message" Content="驗證完成，啟動中..." Visibility="Collapsed" FontSize="20" />
+            <Button x:Name="btn_Ignore" Content="略過" Width="80" Style="{ StaticResource btn_FunctionKey5 }" Visibility="Hidden" Margin="10,0"/>
+            <Button x:Name="btn_Comfirm" Content="確定" Width="80" Style="{ StaticResource btn_FunctionKey5 }" Visibility="Hidden" Margin="10,0"/>
+        </WrapPanel>
+    </Grid>
+</Window>

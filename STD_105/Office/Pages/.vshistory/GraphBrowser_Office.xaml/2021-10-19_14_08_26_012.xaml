@@ -1,0 +1,73 @@
+﻿<WPFBase:BasePage x:Class="STD_105.Office.GraphBrowser_Office"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+      xmlns:local="clr-namespace:STD_105.Office"
+      xmlns:ddes="http://schemas.devdept.com/winfx/2008/xaml/control"
+      xmlns:ddgr="http://schemas.devdept.com/winfx/2008/xaml/graphics" 
+      xmlns:spa="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+      mc:Ignorable="d" 
+      Title="GraphBrowser">
+    <Grid>
+        <TabControl Style="{ StaticResource tabcontrol_Office }">
+            <TabItem Header="2D圖形預覽" Style="{ StaticResource tabitem_Office }">
+
+            </TabItem>
+            <TabItem Header="3D圖形預覽" Style="{ StaticResource tabitem_Office }">
+                <!--新增3D模型處-->
+                <spa:ModelExt
+                            SelectionChanged="model_SelectionChanged"
+                            Margin="0,-5,0,0"
+                            x:Name="model"
+                            AutoRefresh ="True"
+                            ActionMode="{Binding ActionMode}" 
+                            DefaultColor="Beige" 
+                            KeyDown="model_KeyDown"
+                            Focusable="True" 
+                            AntiAliasingSamples="x16" 
+                            Renderer="NativeExperimental" 
+                            ShowFps="True">
+                    <ddes:Model.ProgressBar>
+                        <ddes:ProgressBar Lighting="False"/>
+                    </ddes:Model.ProgressBar>
+                    <ddes:Model.Viewports>
+                        <ddes:Viewport DisplayMode="Flat" InitialView="vcFrontFaceTopLeft" OriginSymbols="{Binding OriginSymbols}" SmallSizeRatio="0.001">
+                            <ddes:Viewport.Background>
+                                <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#FF303030"/>
+                            </ddes:Viewport.Background>
+                            <ddes:Viewport.CoordinateSystemIcon>
+                                <ddes:CoordinateSystemIcon Lighting="True" 
+                                            ArrowColorX="{Binding Setting.ArrowColorX, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                            ArrowColorY="{Binding Setting.ArrowColorY, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                            ArrowColorZ="{Binding Setting.ArrowColorZ, Converter={WPFBase:StringRGBToBrushConverter}}"/>
+                            </ddes:Viewport.CoordinateSystemIcon>
+                            <ddes:Viewport.Camera>
+                                <ddes:Camera Distance="380" ProjectionMode="Orthographic" Target="0, 0, 45" ZoomFactor="2"/>
+                            </ddes:Viewport.Camera>
+                            <ddes:Viewport.Rotate>
+                                <ddes:RotateSettings RotationCenter="CursorLocation"/>
+                            </ddes:Viewport.Rotate>
+                            <ddes:Viewport.ToolBars>
+                                <ddes:ToolBar>
+                                    <ddes:ToolBar.Buttons>
+                                        <ddes:HomeToolBarButton/>
+                                        <ddes:ZoomWindowToolBarButton/>
+                                        <ddes:ZoomToolBarButton/>
+                                        <ddes:PanToolBarButton/>
+                                        <ddes:RotateToolBarButton/>
+                                        <ddes:ZoomFitToolBarButton/>
+                                    </ddes:ToolBar.Buttons>
+                                </ddes:ToolBar>
+                            </ddes:Viewport.ToolBars>
+                            <ddes:Viewport.ViewCubeIcon>
+                                <ddes:ViewCubeIcon Lighting="True"/>
+                            </ddes:Viewport.ViewCubeIcon>
+                        </ddes:Viewport>
+                    </ddes:Model.Viewports>
+                </spa:ModelExt>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</WPFBase:BasePage>

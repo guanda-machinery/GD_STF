@@ -1,0 +1,63 @@
+﻿<WPFBase:BasePage x:Class="STD_105.Office.HBeamPriceAnalysisTable_Office"
+      xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:STD_105.Office"
+      mc:Ignorable="d" 
+      Title="HBeamPriceAnalysisTable_Office">
+    <Grid>
+        <GroupBox Header="RH&amp;H型鋼單價分析表" Style="{ StaticResource gbxParameter }">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="材料型態：" Foreground="{ StaticResource solidclr_DarkGray }" Style="{ StaticResource lab_SubTitle }"/>
+                    <ComboBox SelectedIndex="0" Width="50" Style="{ StaticResource cbb_DarkMain }">
+                        <ComboBoxItem Content="H"/>
+                        <ComboBoxItem Content="RH"/>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="※" Foreground="Red"/>
+                    <Label Content="TYPE名稱：" Foreground="{ StaticResource solidclr_DarkGray }" Style="{ StaticResource lab_SubTitle }"/>
+                    <TextBox Text="中龍鋼鐵" FontSize="16" Foreground="{ StaticResource solidclr_DarkGray }" Style="{ StaticResource tbx_BlueUnderline }" IsEnabled="False"/>
+                    <Button Style="{ StaticResource btn_CommonIconKey }">
+                        <Image Source="{ StaticResource edit_Gray }"/>
+                    </Button>
+                    <Button Style="{ StaticResource btn_CommonIconKey }">
+                        <Image Source="{ StaticResource ImportFile }"/>
+                    </Button>
+                    <Label Content="長度配料設定：" Foreground="{ StaticResource solidclr_DarkGray }" Style="{ StaticResource lab_SubTitle }" Margin="40,0,0,0"/>
+                    <Button Content="設定" Width="80" Height="40" Style="{ StaticResource btn_FunctionKey7 }"/>
+                </StackPanel>
+                <Label Content="公式：" Foreground="{ StaticResource solidclr_DarkGray }" Style="{ StaticResource lab_SubTitle }"/>
+                <DataGrid>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="基價"/>
+                        <DataGridTextColumn Header="斷面規格"/>
+                        <DataGridTextColumn Header="尺寸附價"/>
+                        <DataGridTextColumn Header="材質加價"/>
+                        <DataGridTextColumn Header="長度加價"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Label Content="儲存日期：" Foreground="{ StaticResource solidclr_DarkGray }" Style="{ StaticResource lab_SubTitle }"/>
+                    <TextBlock Text="1970/01/01 00:00" Foreground="{ StaticResource solidclr_DarkGray }" Style="{ StaticResource tbk_SubTitle }"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <StackPanel.Resources>
+                        <Style TargetType="Button" BasedOn="{ StaticResource btn_FunctionKey7 }">
+                            <Setter Property="Margin" Value="5"/>
+                            <Setter Property="Width" Value="80"/>
+                            <Setter Property="Height" Value="40"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <Button Content="查看歷史單價" Width="160"/>
+                    <Button Content="另存"/>
+                    <Button Content="修改"/>
+                    <Button Content="儲存"/>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</WPFBase:BasePage>

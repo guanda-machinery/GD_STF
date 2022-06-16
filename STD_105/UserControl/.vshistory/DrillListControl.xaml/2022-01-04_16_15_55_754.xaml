@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="STD_105.DrillListControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:core="clr-namespace:System;assembly=mscorlib"
+             xmlns:local="clr-namespace:STD_105"
+             xmlns:SofSettings="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             mc:Ignorable="d" 
+             Name="use">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <local:DRILL_TYPE_ToStringConverter x:Key="DrillTypes"/>
+            <local:DRILL_LEVEL_ToStringConverter x:Key="DrillLevel"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <dxg:GridControl ItemsSource="{Binding DataContext, ElementName=use }" dx:ThemeManager.ThemeName="VS2019Dark">
+            <dxg:GridControl.View>
+                <dxg:TableView ShowGroupPanel="False"/>
+            </dxg:GridControl.View>
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn Header="位置" FieldName="Index"/>
+                <dxg:GridColumn Header="設定檔名稱" FieldName="SettingName">
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:ComboBoxEditSettings  ItemsSource="{Binding DrillBrands, Source={x:Static  SofSettings:SofSetting.Default}}" DisplayMember="DataName" ValueMember="DataName" />
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn Header="品牌"/>
+                <dxg:GridColumn Header="直徑&#x0a;(mm)"/>
+                <dxg:GridColumn Header="主軸轉速&#x0a;(RPM)"/>
+                <dxg:GridColumn Header="鑽頭長度&#x0a;(mm)"/>
+                <dxg:GridColumn Header="極限設定&#x0a;(M)"/>
+            </dxg:GridControl.Columns>
+        </dxg:GridControl>
+    </Grid>
+</UserControl>

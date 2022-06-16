@@ -1,0 +1,106 @@
+﻿<WPFBase:BasePage x:Class="STD_105.Office.LengthDodageParameterType_Office"
+      xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:SofSettings="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+      xmlns:GDSTD="clr-namespace:GD_STD.Data;assembly=GD_STD.Data"
+      xmlns:local="clr-namespace:STD_105.Office"
+      mc:Ignorable="d" 
+      Title="長度參數設定"
+       Unloaded="BasePage_Unloaded">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="Label" BasedOn="{ StaticResource lab_Title }">
+                <Setter Property="Foreground" Value="{ StaticResource solidclr_DarkGray }"/>
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+            <Style TargetType="TextBlock" BasedOn="{ StaticResource tbk_Title }">
+                <Setter Property="Foreground" Value="{ StaticResource solidclr_DarkGray }"/>
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+            <Style TargetType="TextBox" BasedOn="{ StaticResource tbx_BlueUnderline }">
+                <Setter Property="Foreground" Value="{ StaticResource solidclr_DarkGray }"/>
+                <Setter Property="Width" Value="250"/>
+                <Setter Property="FontSize" Value="{ Binding TitleFontSize, Source={ x:Static SofSettings:SofSetting.Default } }"/>
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+            <Style TargetType="Button" BasedOn="{ StaticResource btn_FunctionKey7 }">
+                <Setter Property="Width" Value="160"/>
+                <Setter Property="Height" Value="50"/>
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+            <Style TargetType="StackPanel">
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{ Binding Type, StringFormat={}材料型態：{0} }"/>
+                <!--圖片待綁-->
+                <Image/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{ Binding Name, StringFormat={}TYPE名稱：{0}}"/>
+                <Image/>
+            </StackPanel>
+            <Border Style="{ StaticResource bor_DarkThinLine }" Margin="5"/>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="組合編號："/>
+                    <TextBox Text="{ Binding StartNumber }"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="預設長度："/>
+                    <TextBox Text="9000 10000 12000" Name="MainLength"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="次要條件："/>
+                    <TextBox Text="11000 13000 14000 15000" Name="SecLength"/>
+                </StackPanel>
+                <!--<StackPanel Orientation="Horizontal">
+                    <Label Content="短料設定："/>
+                    <ComboBox SelectedIndex="0" FontSize="20">
+                        <ComboBoxItem Content="&lt;="/>
+                    </ComboBox>
+                    <TextBox Text="{ Binding ShortMaterial }" Width="80"/>
+                    <Label Content="mm"/>
+                </StackPanel>-->
+                <GroupBox Header="※裁切預留" Style="{ StaticResource gbxParameter }">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="前端切除合計："/>
+                            <TextBox Text="{ Binding StartCut }"  Width="120"/>
+                            <Label Content="mm"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="末端切除合計："/>
+                            <TextBox Text="{ Binding EndCut }"  Width="120"/>
+                            <Label Content="mm"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="每次切割耗損："/>
+                            <TextBox Text="{ Binding Cut }"  Width="120"/>
+                            <Label Content="mm"/>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+            <StackPanel Grid.Column="1" VerticalAlignment="Bottom">
+                <Button Content="修改"/>
+                <Button Content="回上一頁"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</WPFBase:BasePage>

@@ -1,0 +1,641 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/GD_STD" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/GD_STD" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/GD_STD.Enum" />
+  <xs:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="Host">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Analysis" type="xs:boolean" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="CodesysStatus" type="q1:CODESYS_STATUS" />
+      <xs:element minOccurs="0" name="CodesysWrite" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Comply" type="xs:boolean" />
+      <xs:element minOccurs="0" name="DrillJobLimit" type="xs:double" />
+      <xs:element minOccurs="0" name="EtherCATOpen" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HandAuto" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HandJobLimit" type="xs:double" />
+      <xs:element minOccurs="0" name="L_Drill_0_TO_Sensor" type="xs:double" />
+      <xs:element minOccurs="0" name="LeftEntrance" type="xs:boolean" />
+      <xs:element minOccurs="0" name="LeftExport" type="xs:boolean" />
+      <xs:element minOccurs="0" name="LeftMeasuringPosition" type="tns:Axis3D" />
+      <xs:element minOccurs="0" name="M_Drill_0_TO_Sensor" type="xs:double" />
+      <xs:element minOccurs="0" name="M_borrow_L_Drill_Sensor" type="tns:Axis3D" />
+      <xs:element minOccurs="0" name="MeasuringKnifeLength" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Middle" type="xs:boolean" />
+      <xs:element minOccurs="0" name="MiddleMeasuringPosition" type="tns:Axis3D" />
+      <xs:element minOccurs="0" name="PCOpen" type="xs:boolean" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="PhoneOpen" type="q2:PHONE_SATUS" />
+      <xs:element minOccurs="0" name="RM_borrow_L_Drill_0_Sensor" type="xs:double" />
+      <xs:element minOccurs="0" name="R_Drill_0_TO_Sensor" type="xs:double" />
+      <xs:element minOccurs="0" name="ReplaceHole" type="xs:boolean" />
+      <xs:element minOccurs="0" name="RightEntrance" type="xs:boolean" />
+      <xs:element minOccurs="0" name="RightExport" type="xs:boolean" />
+      <xs:element minOccurs="0" name="RightMeasuringPosition" type="tns:Axis3D" />
+      <xs:element minOccurs="0" name="SlowDownPoint" type="xs:double" />
+      <xs:element minOccurs="0" name="Traverse" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Withdraw" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Host" nillable="true" type="tns:Host" />
+  <xs:complexType name="Axis3D">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="X" type="xs:double" />
+      <xs:element minOccurs="0" name="Y" type="xs:double" />
+      <xs:element minOccurs="0" name="Z" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Axis3D" nillable="true" type="tns:Axis3D" />
+  <xs:complexType name="PanelButton">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="Alarm" type="q3:ERROR_CODE" />
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="AxisSelect" type="q4:AXIS_SELECTED" />
+      <xs:element minOccurs="0" name="ClampDown" type="xs:boolean" />
+      <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="ClampDownSelected" type="q5:CLAMP_DOWN" />
+      <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="DrillSelected" type="q6:DRILL_POSITION" />
+      <xs:element minOccurs="0" name="DrillWarehouse" type="xs:boolean" />
+      <xs:element minOccurs="0" name="EMS" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Effluent" type="xs:boolean" />
+      <xs:element minOccurs="0" name="EntranceRack" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ExportRack" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Hand" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HandSpeed" type="xs:short" />
+      <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="Key" type="q7:KEY_HOLE" />
+      <xs:element minOccurs="0" name="LooseKnife" type="xs:boolean" />
+      <xs:element minOccurs="0" name="MainAxisMode" type="xs:boolean" />
+      <xs:element minOccurs="0" name="MainAxisRotation" type="xs:boolean" />
+      <xs:element minOccurs="0" name="MainAxisStop" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Oil" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Run" type="xs:boolean" />
+      <xs:element minOccurs="0" name="SideClamp" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Stop" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Volume" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PanelButton" nillable="true" type="tns:PanelButton" />
+  <xs:complexType name="DrillWarehouse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:SerializationHelperOfDrillWarehouseki0MEyFl">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="LeftEntrance" nillable="true" type="tns:ArrayOfDrillSetting" />
+          <xs:element minOccurs="0" name="LeftExport" nillable="true" type="tns:ArrayOfDrillSetting" />
+          <xs:element minOccurs="0" name="Middle" nillable="true" type="tns:ArrayOfDrillSetting" />
+          <xs:element minOccurs="0" name="RightEntrance" nillable="true" type="tns:ArrayOfDrillSetting" />
+          <xs:element minOccurs="0" name="RightExport" nillable="true" type="tns:ArrayOfDrillSetting" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DrillWarehouse" nillable="true" type="tns:DrillWarehouse" />
+  <xs:complexType name="SerializationHelperOfDrillWarehouseki0MEyFl">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="SerializationHelperOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/GD_STD" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="DrillWarehouse" Namespace="http://schemas.datacontract.org/2004/07/GD_STD" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="SerializationHelperOfDrillWarehouseki0MEyFl" nillable="true" type="tns:SerializationHelperOfDrillWarehouseki0MEyFl" />
+  <xs:complexType name="ArrayOfDrillSetting">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DrillSetting" type="tns:DrillSetting" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDrillSetting" nillable="true" type="tns:ArrayOfDrillSetting" />
+  <xs:complexType name="DrillSetting">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Change" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Dia" type="xs:double" />
+      <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="DrillType" type="q8:DRILL_TYPE" />
+      <xs:element minOccurs="0" name="FeedQuantity" type="xs:float" />
+      <xs:element minOccurs="0" name="Index" type="xs:short" />
+      <xs:element minOccurs="0" name="IsCurrent" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Length" type="xs:float" />
+      <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="Level" type="q9:DRILL_LEVEL" />
+      <xs:element minOccurs="0" name="Limit" type="xs:short" />
+      <xs:element minOccurs="0" name="Position" type="tns:Axis3D" />
+      <xs:element minOccurs="0" name="Rpm" type="xs:double" />
+      <xs:element minOccurs="0" name="Sensor" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DrillSetting" nillable="true" type="tns:DrillSetting" />
+  <xs:complexType name="OillSystem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CutOilSystem" type="tns:CutOilSystem" />
+      <xs:element minOccurs="0" name="HydraulicSystem" nillable="true" type="tns:ArrayOfHydraulicSystem" />
+      <xs:element minOccurs="0" name="LubricantSystem" type="tns:LubricantSystem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OillSystem" nillable="true" type="tns:OillSystem" />
+  <xs:complexType name="CutOilSystem">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="CutOilSystem" nillable="true" type="tns:CutOilSystem" />
+  <xs:complexType name="ArrayOfHydraulicSystem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="HydraulicSystem" type="tns:HydraulicSystem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfHydraulicSystem" nillable="true" type="tns:ArrayOfHydraulicSystem" />
+  <xs:complexType name="HydraulicSystem">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Deviation" type="xs:float" />
+      <xs:element minOccurs="0" name="DownReady" type="xs:short" />
+      <xs:element minOccurs="0" name="Index" type="xs:short" />
+      <xs:element minOccurs="0" name="MaxRange" type="xs:short" />
+      <xs:element minOccurs="0" name="MinRange" type="xs:short" />
+      <xs:element minOccurs="0" name="Power" type="xs:unsignedShort" />
+      <xs:element minOccurs="0" name="SideReady" type="xs:short" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="HydraulicSystem" nillable="true" type="tns:HydraulicSystem" />
+  <xs:complexType name="LubricantSystem">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Time" type="xs:short" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LubricantSystem" nillable="true" type="tns:LubricantSystem" />
+  <xs:complexType name="Input">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AirPSI" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Case_1_Close" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Case_1_Lock" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Case_2_Close" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Case_2_Lock" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Case_3_Close" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Case_3_Lock" type="xs:boolean" />
+      <xs:element minOccurs="0" name="EMS" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Electrical_BOX_Colse" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Electrical_BOX_Lock" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Feed_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Feed_Slow_Down_Point" type="xs:boolean" />
+      <xs:element minOccurs="0" name="FinishOut" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Alarm_Return" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Arm_Select" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Arm_Slow_Down" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Arm_Speed_Up" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Clip_Down_Mode" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Clip_Side_Mode" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_DrillHome_Mode" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Effluent" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Fully_Automatic" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_HandWheel" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_IN_Rack" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Key_Lcok" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Key_Manual" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_OUT_Rack" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Oil_Start" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Origin_Return" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Pause" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Reset" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Semi_Automatic" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Spindle_CW" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Spindle_Loosen" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Spindle_Mode" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Spindle_Stop" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Start_AutoRun" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Volume_scrap" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HydraulicPSI" type="xs:boolean" />
+      <xs:element minOccurs="0" name="JoyStick_Back" type="xs:boolean" />
+      <xs:element minOccurs="0" name="JoyStick_Front" type="xs:boolean" />
+      <xs:element minOccurs="0" name="JoyStick_Left" type="xs:boolean" />
+      <xs:element minOccurs="0" name="JoyStick_PB_1" type="xs:boolean" />
+      <xs:element minOccurs="0" name="JoyStick_PB_2" type="xs:boolean" />
+      <xs:element minOccurs="0" name="JoyStick_PB_3" type="xs:boolean" />
+      <xs:element minOccurs="0" name="JoyStick_PB_4" type="xs:boolean" />
+      <xs:element minOccurs="0" name="JoyStick_PB_5" type="xs:boolean" />
+      <xs:element minOccurs="0" name="JoyStick_PB_6" type="xs:boolean" />
+      <xs:element minOccurs="0" name="JoyStick_Right" type="xs:boolean" />
+      <xs:element minOccurs="0" name="LX_MX_Touch" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_DrillLength" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_IN_Clip_Down_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_IN_DrillHomeChange" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_IN_DrillHomeOrigin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_IN_DrillHome_1" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_IN_DrillHome_2" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_IN_DrillHome_3" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_IN_DrillHome_4" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_OUT_Clip_Down_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_OUT_DrillHomeChange" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_OUT_DrillHomeOrigin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_OUT_DrillHome_1" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_OUT_DrillHome_2" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_OUT_DrillHome_3" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_OUT_DrillHome_4" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_SpindleClip" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_SpindleLoosen" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_Spindle_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_X_LimitBack" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_X_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_X_lubricating" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_Y_LimitBack" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_Y_LimitFornt" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_Y_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_Y_lubricating" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_Z_LimitBack" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_Z_LimitFront" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_Z_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_Z_lubricating" type="xs:boolean" />
+      <xs:element minOccurs="0" name="MX_RX_Touch" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_DrillHomeChange" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_DrillHomeOrigin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_DrillHome_1" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_DrillHome_2" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_DrillHome_3" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_DrillHome_4" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_DrillHome_5" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_DrillLength" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_SpindleClip" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_SpindleLoosen" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_X_LimitBack" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_X_LimitFornt" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_X_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_X_lubricating" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_Y_LimitBack" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_Y_LimitFornt" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_Y_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_Y_lubricating" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_Z_LimitBack" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_Z_LimitFornt" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_Z_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_Z_lubricating" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_DrillLength" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_IN_Clip_Down_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_IN_DrillHomeChange" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_IN_DrillHomeOrigin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_IN_DrillHome_1" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_IN_DrillHome_2" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_IN_DrillHome_3" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_IN_DrillHome_4" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_OUT_Clip_Down_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_OUT_DrillHomeChange" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_OUT_DrillHomeOrigin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_OUT_DrillHome_1" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_OUT_DrillHome_2" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_OUT_DrillHome_3" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_OUT_DrillHome_4" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_SpindleClip" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_SpindleLoosen" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_Spindle_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_X_LimitBack" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_X_LimitFornt" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_X_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_X_lubricating" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_Y_LimitBack" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_Y_LimitFornt" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_Y_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_Y_lubricating" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_Z_LimitBack" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_Z_LimitFornt" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_Z_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_Z_lubricating" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Side_IN_Clip_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="TH_RY" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Total_Lubricatig" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Z_HighSensorDoor_Close" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Z_HighSensorDoor_Open" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Input" nillable="true" type="tns:Input" />
+  <xs:complexType name="Output">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="All_Spindle_Air_On" type="xs:boolean" />
+      <xs:element minOccurs="0" name="BZ" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Boot_Open" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Case_1_Lock" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Case_2_Lock" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Case_3_Lock" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Electrical_BOX_Lock" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Finish_Motor_Back" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Finish_Motor_On" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Green_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Alarm_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Alarm_Return_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Arm_Select_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Arm_Slow_Down_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Arm_Speed_Up_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_AutoRun_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Clip_Down_Mode_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Clip_Side_Mode_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_DrillHome_Mode_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Effluent_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_EtherCAT_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Fully_Automatic_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_HandWheel_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Hydraulic_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_IN_Rack_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_OUT_Rack_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Origin_Return_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_OverLoad_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Pause_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Power_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Semi_Automatic_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Spindle_CW_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Spindle_Loosen_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Spindle_Mode_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Spindle_Stop_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="HMI_Volume_scrap_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="High_Sensor_Laser_ON" type="xs:boolean" />
+      <xs:element minOccurs="0" name="High_Sensor_Return_0" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Hydraulic_On" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_IN_Clip_Down" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_IN_Clip_Down_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_IN_DrillHome_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_IN_DrillHome_RollOut" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_OUT_Clip_Down" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_OUT_Clip_Down_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_OUT_DrillHome_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_OUT_DrillHome_RollOut" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_Spary_Air" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_Spindle_Change_Air" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_Spindle_Fan" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_Spindle_Loosen" type="xs:boolean" />
+      <xs:element minOccurs="0" name="L_Spray_OilFog" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Lubricating_On" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_DirllHome_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_DrillHome_Change" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_Spary_Air" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_Spindle_Change_Air" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_Spindle_Fan" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_Spindle_Loosen" type="xs:boolean" />
+      <xs:element minOccurs="0" name="M_Spray_OilFog" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Materials_Side_Move_CCW" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Materials_Side_Move_CW" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Materials_Side_Move_Speed_1" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Materials_Side_Move_Speed_2" type="xs:boolean" />
+      <xs:element minOccurs="0" name="PC_HMI_Open_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_IN_Clip_Down" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_IN_Clip_Down_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_IN_DrillHome_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_IN_DrillHome_RollOut" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_OUT_Clip_Down" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_OUT_Clip_Down_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_OUT_DrillHome_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_OUT_DrillHome_RollOut" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_Spary_Air" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_Spindle_Change_Air" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_Spindle_Fan" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_Spindle_Loosen" type="xs:boolean" />
+      <xs:element minOccurs="0" name="R_Spray_OilFog" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Red_light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="SIDE_Clip" type="xs:boolean" />
+      <xs:element minOccurs="0" name="SIDE_Clip_Origin" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Total_Spray_OilFog_On" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Volume_Scrap_CCW_On" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Volume_Scrap_On" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Yellow_Light" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Z_High_Sensor_Door_Open" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Output" nillable="true" type="tns:Output" />
+  <xs:complexType name="AxisInfo">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ClampDown" type="tns:ClampDown" />
+      <xs:element minOccurs="0" name="Hand" type="tns:SingleAxisInfo" />
+      <xs:element minOccurs="0" name="Left" type="tns:SingleAxisInfo" />
+      <xs:element minOccurs="0" name="Material" type="tns:Material" />
+      <xs:element minOccurs="0" name="Middle" type="tns:SingleAxisInfo" />
+      <xs:element minOccurs="0" name="Right" type="tns:SingleAxisInfo" />
+      <xs:element minOccurs="0" name="SideClamp" type="tns:SideClamp" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AxisInfo" nillable="true" type="tns:AxisInfo" />
+  <xs:complexType name="ClampDown">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EntranceL" type="xs:double" />
+      <xs:element minOccurs="0" name="EntranceR" type="xs:double" />
+      <xs:element minOccurs="0" name="ExportL" type="xs:double" />
+      <xs:element minOccurs="0" name="ExportR" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ClampDown" nillable="true" type="tns:ClampDown" />
+  <xs:complexType name="SingleAxisInfo">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Rpm" type="xs:double" />
+      <xs:element minOccurs="0" name="X" type="xs:double" />
+      <xs:element minOccurs="0" name="Y" type="xs:double" />
+      <xs:element minOccurs="0" name="Z" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SingleAxisInfo" nillable="true" type="tns:SingleAxisInfo" />
+  <xs:complexType name="Material">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Current" type="xs:double" />
+      <xs:element minOccurs="0" name="Length" type="xs:double" />
+      <xs:element minOccurs="0" name="NotPerformed" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Material" nillable="true" type="tns:Material" />
+  <xs:complexType name="SideClamp">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EntranceL" type="xs:double" />
+      <xs:element minOccurs="0" name="ExportL" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SideClamp" nillable="true" type="tns:SideClamp" />
+  <xs:complexType name="ProcessingInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:SerializationHelperOfProcessingInfoki0MEyFl">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DrLeft" nillable="true" type="tns:ArrayOfDrill" />
+          <xs:element minOccurs="0" name="DrMiddle" nillable="true" type="tns:ArrayOfDrill" />
+          <xs:element minOccurs="0" name="DrRight" nillable="true" type="tns:ArrayOfDrill" />
+          <xs:element minOccurs="0" name="JobInfo" type="tns:JobInfo" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ProcessingInfo" nillable="true" type="tns:ProcessingInfo" />
+  <xs:complexType name="SerializationHelperOfProcessingInfoki0MEyFl">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="SerializationHelperOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/GD_STD" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="ProcessingInfo" Namespace="http://schemas.datacontract.org/2004/07/GD_STD" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="SerializationHelperOfProcessingInfoki0MEyFl" nillable="true" type="tns:SerializationHelperOfProcessingInfoki0MEyFl" />
+  <xs:complexType name="ArrayOfDrill">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Drill" type="tns:Drill" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDrill" nillable="true" type="tns:ArrayOfDrill" />
+  <xs:complexType name="Drill">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="AXIS_MODE" type="q10:AXIS_MODE" />
+      <xs:element minOccurs="0" name="Dia" type="xs:double" />
+      <xs:element minOccurs="0" name="Finish" type="xs:boolean" />
+      <xs:element minOccurs="0" name="NoMatch" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Ox" type="xs:double" />
+      <xs:element minOccurs="0" name="P1" type="tns:Axis2D" />
+      <xs:element minOccurs="0" name="P2" type="tns:Axis2D" />
+      <xs:element minOccurs="0" name="P3" type="tns:Axis2D" />
+      <xs:element minOccurs="0" name="Through" type="xs:boolean" />
+      <xs:element minOccurs="0" name="X" type="xs:double" />
+      <xs:element minOccurs="0" name="Y" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Drill" nillable="true" type="tns:Drill" />
+  <xs:complexType name="Axis2D">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="X" type="xs:double" />
+      <xs:element minOccurs="0" name="Y" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Axis2D" nillable="true" type="tns:Axis2D" />
+  <xs:complexType name="JobInfo">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BoltsCountL" type="xs:short" />
+      <xs:element minOccurs="0" name="BoltsCountM" type="xs:short" />
+      <xs:element minOccurs="0" name="BoltsCountR" type="xs:short" />
+      <xs:element minOccurs="0" name="H" type="xs:float" />
+      <xs:element minOccurs="0" name="IndexBoltsL" type="xs:short" />
+      <xs:element minOccurs="0" name="IndexBoltsM" type="xs:short" />
+      <xs:element minOccurs="0" name="IndexBoltsR" type="xs:short" />
+      <xs:element minOccurs="0" name="Length" type="xs:double" />
+      <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="Material" type="q11:MATERIAL" />
+      <xs:element minOccurs="0" name="Number" type="xs:int" />
+      <xs:element minOccurs="0" name="Stamp" type="xs:boolean" />
+      <xs:element minOccurs="0" name="StampData" nillable="true" type="tns:ArrayOfStamp" />
+      <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="Type" type="q12:PROFILE_TYPE" />
+      <xs:element minOccurs="0" name="W" type="xs:float" />
+      <xs:element minOccurs="0" name="t1" type="xs:float" />
+      <xs:element minOccurs="0" name="t2" type="xs:float" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="JobInfo" nillable="true" type="tns:JobInfo" />
+  <xs:complexType name="ArrayOfStamp">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Stamp" type="tns:Stamp" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfStamp" nillable="true" type="tns:ArrayOfStamp" />
+  <xs:complexType name="Stamp">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Content" nillable="true" type="xs:base64Binary" />
+      <xs:element minOccurs="0" name="Finish" type="xs:boolean" />
+      <xs:element minOccurs="0" name="StartX" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Stamp" nillable="true" type="tns:Stamp" />
+  <xs:complexType name="Outage">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Arm" type="tns:Axis3D" />
+      <xs:element minOccurs="0" name="Left" type="tns:Axis3D" />
+      <xs:element minOccurs="0" name="Middle" type="tns:Axis3D" />
+      <xs:element minOccurs="0" name="Right" type="tns:Axis3D" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Outage" nillable="true" type="tns:Outage" />
+  <xs:complexType name="MPG">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="AxisSelected" type="q13:AXIS_SELECTED" />
+      <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="Coordinate" type="q14:COORDINATE" />
+      <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="Magnification" type="q15:MAGNIFICATION" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MPG" nillable="true" type="tns:MPG" />
+</xs:schema>

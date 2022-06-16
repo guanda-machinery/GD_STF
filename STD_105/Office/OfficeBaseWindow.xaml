@@ -1,0 +1,208 @@
+﻿<Window x:Class="STD_105.Office.OfficeBaseWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:STD_105.Office"
+    xmlns:std="clr-namespace:STD_105" 
+    xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+    xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105" 
+    xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+    mc:Ignorable="d" 
+    Height="720" Width="1280"
+    Background="{ StaticResource solidclr_CreamyWhite }"
+    WindowStyle="None"
+    AllowsTransparency="True"
+    Topmost="False"
+    x:Name="MainWindows"
+    WindowStartupLocation="CenterScreen"
+    Title="辦公室頁面基底">
+    <Window.Resources>
+        <!--菜單縮放動畫-->
+        <Storyboard x:Key="stbMax">
+            <DoubleAnimation Storyboard.TargetName="grid_TopMenu"
+               Storyboard.TargetProperty="Height" Duration="0:0:0.5" From="0" To="180" FillBehavior="HoldEnd"/>
+            <DoubleAnimation Storyboard.TargetName="dtArrow"
+               Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+               Duration="0:0:0.5" From="180" To="360" FillBehavior="HoldEnd"/>
+        </Storyboard>
+        <Storyboard x:Key="stbMin">
+            <DoubleAnimation Storyboard.TargetName="grid_TopMenu"
+               Storyboard.TargetProperty="Height" Duration="0:0:0.5" From="180" To="0" FillBehavior="HoldEnd"/>
+            <DoubleAnimation Storyboard.TargetName="dtArrow"
+               Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+               Duration="0:0:0.5" From="0" To="180" FillBehavior="HoldEnd"/>
+        </Storyboard>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <!--頁面切換區域-->
+        <Grid x:Name="grid_PageHost" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="60"/>
+            </Grid.ColumnDefinitions>
+            <!--上一頁按鈕-->
+            <Button x:Name="btn_Left" Width="40" Height="80" Style="{ StaticResource btn_CommonIconKey }"
+                    Command="{ Binding PreviousPageCommand }" HorizontalAlignment="Left" VerticalAlignment="Center" Opacity="0.1">
+                <Image Source="{ StaticResource PrePage }" Height="40"/>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.MouseEnter">
+                        <BeginStoryboard >
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="btn_Left"
+                                Storyboard.TargetProperty="Opacity" Duration="0:0:0.5" From="0" To="1"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Button.MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="btn_Left"
+                                Storyboard.TargetProperty="Opacity" Duration="0:0:0.5" From="1" To="0"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
+            <!--下一頁按鈕-->
+            <Button x:Name="btn_Right" Grid.Column="2" Width="40" Height="80" Style="{ StaticResource btn_CommonIconKey }" 
+                    Command="{ Binding NextPageCommand }" HorizontalAlignment="Right" VerticalAlignment="Center" Opacity="1">
+                <Image Source="{ StaticResource NextPage }" Height="40"/>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.MouseEnter">
+                        <BeginStoryboard >
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="btn_Right"
+                                Storyboard.TargetProperty="Opacity" Duration="0:0:0.7" From="0.1" To="1"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Button.MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="btn_Right"
+                                Storyboard.TargetProperty="Opacity" Duration="0:0:0.7" From="1" To="0.1"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
+            <!--頁面切換區域-->
+            <std:OfficePageHost Grid.Row="2" Grid.Column="1" x:Name="pageHost" CurrentPage="{ Binding }"
+                Width="{ Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}" Height="{ Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
+                DataContext="{ Binding OfficeViewModel.CurrentPage, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={ local:OfficePageConverter } }"/>
+        </Grid>
+        <!--遮蔽底層物件-->
+        <Grid x:Name="shadow" Grid.RowSpan="3" Background="{ StaticResource solidclr_Gray }"
+              Height="{ Binding ElementName=MainWindows, Path=Height}"
+            Visibility="{ Binding OfficeViewModel.ProjectManagerControl, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={ WPFBase:BooleanToVisiblityConverter } }"/>
+        <!--至頂菜單區域-->
+        <Grid Grid.Row="0" x:Name="grid_TopMenu" Tag="Max" Background="Black" Height="180">
+            <Grid.InputBindings>
+                <MouseBinding MouseAction="LeftDoubleClick" Command="{ Binding PageHostMaximizedCommand }"/>
+                <MouseBinding MouseAction="LeftClick" Command="{ Binding DragMoveWindowCommand }" CommandParameter="{ Binding ElementName=MainWindows}"/>
+            </Grid.InputBindings>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="230"/>
+            </Grid.ColumnDefinitions>
+            <!--Logo按鈕&標題-->
+            <Button Style="{ StaticResource btn_LogoButton }" ToolTip="開啟專案" Margin="20" Command="{ Binding ProjectManagerCommand }">
+                <Button.BitmapEffect>
+                    <DropShadowBitmapEffect ShadowDepth="0.5"/>
+                </Button.BitmapEffect>
+                <Image Source="{StaticResource Logo}"/>
+            </Button>
+            <!--頁面切換按鈕區域-->
+            <WrapPanel Grid.ColumnSpan="3" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="40" Margin="10">
+                <WrapPanel.Resources>
+                    <Style TargetType="{ x:Type Button }" BasedOn="{ StaticResource btn_MainFunctionKey_Office }"/>
+                </WrapPanel.Resources>
+                <Button Content="專案管理" Command="{ Binding ProjectManagerCommand }"/>
+                <Button Content="製品設定" Command="{ Binding ObSettingsPage_Office }" IsEnabled="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={std:NullToEnabledConverter} }"/>
+                <Button Content="排版設定" Command="{ Binding AutoTypeSettingsCommand }" IsEnabled="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={std:NullToEnabledConverter} }"/>
+                <Button Content="加工監控" Command="{ Binding ProcessingMonitorCommand }" IsEnabled="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={std:NullToEnabledConverter} }"/>
+                <Button Content="廠區監控" Command="{ Binding WorkingAreaMonitorCommand }"/>
+                <Button Content="參數設定" Command="{ Binding ParameterSettingsCommand }" IsEnabled="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={std:NullToEnabledConverter} }"/>
+            </WrapPanel>
+            <Grid Grid.Column="1">
+                <StackPanel VerticalAlignment="Center" Margin="0,0,0,20">
+                    <!--公司名稱-->
+                    <Label Content="GUANDA Machinery" FontSize="32" Style="{ StaticResource lab_SubTitle }"/>
+                    <Label Content="以創意科技為動力，讓產品更加人性與便利" FontSize="20" Style="{ StaticResource lab_SubTitle }"/>
+                </StackPanel>
+                <StackPanel Margin="10">
+                    <!--使用者登錄顯示-->
+                    <Grid HorizontalAlignment="Right">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Hello!" Style="{ StaticResource lab_SubTitle }"/>
+                        <TextBlock Grid.Column="1" Text="{ Binding Code, Source={ x:Static SofSetting:SofSetting.Default }, FallbackValue='本機使用者' }" Style="{ StaticResource tbk_SubTitle }"/>
+                    </Grid>
+                    <!--專案名稱-->
+                    <TextBlock Text="{Binding OfficeViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, StringFormat={}當前專案 : {0:d}}" 
+                        HorizontalAlignment="Right" Foreground="{ StaticResource solidclr_CreamyWhite }" TextDecorations="Underline" Style="{ StaticResource tbk_Title }"
+                        Visibility="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={ std:NullToVisibilityConverter } }"/>
+                    <!--
+                    <TextBlock Text="{ Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}, StringFormat={}工作區域高度:{0} }" HorizontalAlignment="Right" Foreground="{ StaticResource solidclr_CreamyWhite }" Visibility="Visible"/>
+                    <TextBlock Text="{ Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}, StringFormat={}工作區域寬度:{0} }" HorizontalAlignment="Right" Foreground="{ StaticResource solidclr_CreamyWhite }" Visibility="Visible"/>
+                    -->
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Column="2">
+                <!--數位時間控件-->
+                <std:DigitialClock HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10"/>
+            </Grid>
+        </Grid>
+        <!--視窗控制按鈕區域-->
+        <Grid x:Name="grid_Controller" Grid.Row="1" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-1,0,0">
+            <Grid.InputBindings>
+                <MouseBinding MouseAction="LeftClick" Command="{ Binding DragMoveWindowCommand }" CommandParameter="{ Binding ElementName=MainWindows}"/>
+            </Grid.InputBindings>
+            <Border Height="40" Width="300" Background="Black" CornerRadius="0,0,15,15"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <!--解鎖區域移動-->
+                <Button Style="{ StaticResource OfficeWarningButton }" Padding="5">
+                    <Image Source="{ StaticResource Lock_Little }" Width="20"/>
+                </Button>
+                <!--縮放置頂菜單-->
+                <Button Style="{ StaticResource OfficeWarningButton }" Click="ControlHeaderDisplay">
+                    <Image x:Name="dtArrow" Source="{ StaticResource dtUpArrow }" Width="16" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <RotateTransform Angle="0"/>
+                        </Image.RenderTransform>
+                    </Image>
+                </Button>
+                <!--查看警告-->
+                <Button Style="{ StaticResource OfficeWarningButton }" Padding="5">
+                    <Image Source="{ StaticResource Warning }" Width="20"/>
+                </Button>
+                <!--縮小視窗-->
+                <Button Command="{ Binding MinimizeCommand }" Style="{ StaticResource OfficeControlButton }">
+                    <Image Source="{ StaticResource Window_Minimize_Light }" Width="15"/>
+                </Button>
+                <!--放大視窗-->
+                <Button Command="{ Binding PageHostMaximizedCommand }" Style="{ StaticResource OfficeControlButton }">
+                    <Image Source="{ StaticResource Window_Maximize_Light }" Width="16"/>
+                </Button>
+                <!--關閉視窗-->
+                <Button Command="{ Binding CloseCommand }" Style="{ StaticResource OfficeCloseButton }">
+                    <Image Source="{ StaticResource Window_Close_Light }" Width="13"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <!--專案管理-->
+        <Grid Grid.Row="2">
+            <std:OfficeProjectManager/>
+        </Grid>
+    </Grid>
+</Window>

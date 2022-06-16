@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="492026d4-7e32-4cbf-a955-f21c14f3233a" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para></para>
+    </introduction>
+    <section>
+      <title>文件版本</title>
+      <content>
+		  <para>1.0.0.8</para>
+      </content>
+    </section>
+	  <section>
+		  <title>.NET 最低版本</title>
+		  <content>
+			  <para>.Net Framework 4.7.2</para>
+		  </content>
+	  </section>
+    <relatedTopics>
+      <link xlink:href="9aee30af-e12b-4c50-98cd-83a192847219" />
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

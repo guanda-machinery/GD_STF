@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="STD_105.SaveAs"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:STD_105"
+             mc:Ignorable="d">
+    <Grid x:Name="grid_Main"
+          Background="{ StaticResource solidclr_Gray }"
+          Opacity="0.9">
+        <Border Width="350"
+                Height="200"
+                Background="{ StaticResource solidclr_CreamyGray }"
+                CornerRadius="8"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Effect="{StaticResource buttEff}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="80" />
+                </Grid.RowDefinitions>
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="選擇資料建立位置"
+                               Style="{ StaticResource tbk_Title }"
+                               Foreground="{ StaticResource solidclr_DimGray }"
+                               HorizontalAlignment="Center"
+                               Margin="5" />
+                    <Border BorderThickness="1"
+                            BorderBrush="{ StaticResource  solidclr_DimGray }" />
+                    <StackPanel Orientation="Horizontal"
+                                Margin="10">
+                        <RadioButton x:Name="radio"
+                                     IsChecked="True"
+                                     Foreground="{ StaticResource solidclr_DimGray }"
+                                     FontSize="20"
+                                     Content="模型"
+                                     Style="{ StaticResource rad_Hook1 }"
+                                     Margin="5" />
+                        <RadioButton x:Name="radio1"
+                                     Content="模型&amp;系統"
+                                     Foreground="{ StaticResource solidclr_DimGray }"
+                                     FontSize="20"
+                                     Style="{ StaticResource rad_Hook1 }"
+                                     Margin="5" />
+                        <TextBlock x:Name="tbk_SelectedContent"
+                                   Visibility="Collapsed">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=radio, Path=IsChecked}"
+                                                     Value="true">
+                                            <Setter Property="Text"
+                                                    Value="{Binding ElementName=radio, Path=Content}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=radio1, Path=IsChecked}"
+                                                     Value="true">
+                                            <Setter Property="Text"
+                                                    Value="{Binding ElementName=radio1, Path=Content}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style></TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Row="1"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <Button x:Name="btn_Confirm"
+                            Content="確定"
+                            Style="{ StaticResource btn_CommonFunctionKey_STD }"
+                            CommandParameter="{ Binding  ElementName=tbk_SelectedContent, Path=Text }"
+                            Margin="5" />
+                    <Button x:Name="btn_Cancel"
+                            Content="取消"
+                            Style="{ StaticResource btn_CommonFunctionKey_STD }"
+                            Margin="5" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

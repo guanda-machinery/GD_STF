@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://Codesys.ReadMemoryDuplex" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" targetNamespace="http://Codesys.ReadMemoryDuplex" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="ReadMemoryDuplex_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <wsrm:RMAssertion xmlns:wsrm="http://schemas.xmlsoap.org/ws/2005/02/rm/policy">
+          <wsrm:InactivityTimeout Milliseconds="600000" />
+          <wsrm:AcknowledgementInterval Milliseconds="200" />
+        </wsrm:RMAssertion>
+        <cdp:CompositeDuplex xmlns:cdp="http://schemas.microsoft.com/net/2006/06/duplex" />
+        <ow:OneWay xmlns:ow="http://schemas.microsoft.com/ws/2005/05/routing/policy" />
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://Codesys.ReadMemoryDuplex/Imports">
+      <xsd:import schemaLocation="http://localhost:63506/ReadMemoryDuplex.svc?xsd=xsd0" namespace="http://Codesys.ReadMemoryDuplex" />
+      <xsd:import schemaLocation="http://localhost:63506/ReadMemoryDuplex.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:63506/ReadMemoryDuplex.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/GD_STD" />
+      <xsd:import schemaLocation="http://localhost:63506/ReadMemoryDuplex.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/GD_STD.Enum" />
+      <xsd:import schemaLocation="http://localhost:63506/ReadMemoryDuplex.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/GD_STD.Phone" />
+      <xsd:import schemaLocation="http://localhost:63506/ReadMemoryDuplex.svc?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IReadMemoryDuplex_GetPanel_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPanel" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemoryDuplex_GetHost_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetHost" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemoryDuplex_GetMainAxisLocation_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMainAxisLocation" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemoryDuplex_GetToken_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetToken" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemoryDuplex_GetToken_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTokenResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemoryDuplex_StartLogin_InputMessage">
+    <wsdl:part name="parameters" element="tns:StartLogin" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemoryDuplex_StartLogin_OutputMessage">
+    <wsdl:part name="parameters" element="tns:StartLoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemoryDuplex_GetCurrent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCurrent" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemoryDuplex_SendPanel_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SendPanel" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemoryDuplex_SendHost_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SendHost" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemoryDuplex_SendMainAxisLocation_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SendMainAxisLocation" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemoryDuplex_SendLogin_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SendLogin" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemoryDuplex_SendDrills_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SendDrills" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemoryDuplex_SendIndex_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SendIndex" />
+  </wsdl:message>
+  <wsdl:portType msc:usingSession="true" name="IReadMemoryDuplex">
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetPanel">
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/GetPanel" message="tns:IReadMemoryDuplex_GetPanel_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetHost">
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/GetHost" message="tns:IReadMemoryDuplex_GetHost_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetMainAxisLocation">
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/GetMainAxisLocation" message="tns:IReadMemoryDuplex_GetMainAxisLocation_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetToken">
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/GetToken" message="tns:IReadMemoryDuplex_GetToken_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/GetTokenResponse" message="tns:IReadMemoryDuplex_GetToken_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="StartLogin">
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/StartLogin" message="tns:IReadMemoryDuplex_StartLogin_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/StartLoginResponse" message="tns:IReadMemoryDuplex_StartLogin_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetCurrent">
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/GetCurrent" message="tns:IReadMemoryDuplex_GetCurrent_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendPanel">
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/SendPanel" message="tns:IReadMemoryDuplex_SendPanel_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendHost">
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/SendHost" message="tns:IReadMemoryDuplex_SendHost_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendMainAxisLocation">
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/SendMainAxisLocation" message="tns:IReadMemoryDuplex_SendMainAxisLocation_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendLogin">
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/SendLogin" message="tns:IReadMemoryDuplex_SendLogin_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendDrills">
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/SendDrills" message="tns:IReadMemoryDuplex_SendDrills_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendIndex">
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/SendIndex" message="tns:IReadMemoryDuplex_SendIndex_OutputCallbackMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ReadMemoryDuplex" type="tns:IReadMemoryDuplex">
+    <wsp:PolicyReference URI="#ReadMemoryDuplex_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetPanel">
+      <soap12:operation soapAction="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/GetPanel" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="GetHost">
+      <soap12:operation soapAction="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/GetHost" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="GetMainAxisLocation">
+      <soap12:operation soapAction="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/GetMainAxisLocation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="GetToken">
+      <soap12:operation soapAction="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/GetToken" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StartLogin">
+      <soap12:operation soapAction="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/StartLogin" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCurrent">
+      <soap12:operation soapAction="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/GetCurrent" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="SendPanel">
+      <soap12:operation soapAction="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/SendPanel" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendHost">
+      <soap12:operation soapAction="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/SendHost" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendMainAxisLocation">
+      <soap12:operation soapAction="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/SendMainAxisLocation" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendLogin">
+      <soap12:operation soapAction="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/SendLogin" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendDrills">
+      <soap12:operation soapAction="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/SendDrills" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendIndex">
+      <soap12:operation soapAction="http://Codesys.ReadMemoryDuplex/IReadMemoryDuplex/SendIndex" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+</wsdl:definitions>

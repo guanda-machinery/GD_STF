@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/GD_STD" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/GD_STD" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:63506/MonitorDuplex.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/GD_STD.Enum" />
+  <xs:import schemaLocation="http://localhost:63506/MonitorDuplex.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="ArrayOfDrill">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Drill" type="tns:Drill" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDrill" nillable="true" type="tns:ArrayOfDrill" />
+  <xs:complexType name="Drill">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/GD_STD.Enum" minOccurs="0" name="AXIS_MODE" type="q1:AXIS_MODE" />
+      <xs:element minOccurs="0" name="Dia" type="xs:double" />
+      <xs:element minOccurs="0" name="Finish" type="xs:boolean" />
+      <xs:element minOccurs="0" name="G_Code" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="NoMatch" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Ox" type="xs:double" />
+      <xs:element minOccurs="0" name="P1" type="tns:Axis2D" />
+      <xs:element minOccurs="0" name="P2" type="tns:Axis2D" />
+      <xs:element minOccurs="0" name="P3" type="tns:Axis2D" />
+      <xs:element minOccurs="0" name="Through" type="xs:boolean" />
+      <xs:element minOccurs="0" name="X" type="xs:double" />
+      <xs:element minOccurs="0" name="Y" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Drill" nillable="true" type="tns:Drill" />
+  <xs:complexType name="Axis2D">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="X" type="xs:double" />
+      <xs:element minOccurs="0" name="Y" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Axis2D" nillable="true" type="tns:Axis2D" />
+  <xs:complexType name="ArrayOfStamp">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Stamp" type="tns:Stamp" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfStamp" nillable="true" type="tns:ArrayOfStamp" />
+  <xs:complexType name="Stamp">
+    <xs:annotation>
+      <xs:appinfo>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Content" nillable="true" type="xs:base64Binary" />
+      <xs:element minOccurs="0" name="Finish" type="xs:boolean" />
+      <xs:element minOccurs="0" name="StartX" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Stamp" nillable="true" type="tns:Stamp" />
+</xs:schema>

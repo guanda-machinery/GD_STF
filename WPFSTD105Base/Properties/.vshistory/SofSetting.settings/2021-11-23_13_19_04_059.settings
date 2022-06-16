@@ -1,0 +1,87 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WPFSTD105.Properties" GeneratedClassName="SofSetting">
+  <Profiles />
+  <Settings>
+    <Setting Name="Hole" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFFF0000</Value>
+    </Setting>
+    <Setting Name="HoleFinish" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FF0000FF</Value>
+    </Setting>
+    <Setting Name="Selection" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFFFFF4D</Value>
+    </Setting>
+    <Setting Name="OsVisible" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AxisX" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFFF0000</Value>
+    </Setting>
+    <Setting Name="AxisY" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FF66FF00</Value>
+    </Setting>
+    <Setting Name="AxisZ" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FF0000FF</Value>
+    </Setting>
+    <Setting Name="ViewCubeIcon" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FF303030</Value>
+    </Setting>
+    <Setting Name="Part" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFB8FF34</Value>
+    </Setting>
+    <Setting Name="Ingredient1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFC71585</Value>
+    </Setting>
+    <Setting Name="Ingredient2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FF008080</Value>
+    </Setting>
+    <Setting Name="Null" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFFAEBD7</Value>
+    </Setting>
+    <Setting Name="ParameterBackColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FF303030</Value>
+    </Setting>
+    <Setting Name="Language" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="BaseBackColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FF1E1E1E</Value>
+    </Setting>
+    <Setting Name="ParameterFontColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFFFFFFF</Value>
+    </Setting>
+    <Setting Name="ParameterFontSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">12</Value>
+    </Setting>
+    <Setting Name="TitleFontSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="SubTitleFontSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">16</Value>
+    </Setting>
+    <Setting Name="BorderBrushColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FF666666</Value>
+    </Setting>
+    <Setting Name="Point" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FF008000</Value>
+    </Setting>
+    <Setting Name="FontFamily" Type="System.Windows.Media.FontFamily" Scope="User">
+      <Value Profile="(Default)">Microsoft JhengHei</Value>
+    </Setting>
+    <Setting Name="LoadPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\User\Desktop\Model</Value>
+    </Setting>
+    <Setting Name="OfficeMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Account" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="PasswordText" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Record" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

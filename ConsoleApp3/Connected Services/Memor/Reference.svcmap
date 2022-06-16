@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="7dd7d22f-5ec7-458a-87f0-15146162c2f2" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://192.168.31.137:820/CodesysIIS/Memor.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="Memor.xsd" MetadataType="Schema" ID="0ead1651-1126-4515-ad23-799ebbd80bb3" SourceId="1" SourceUrl="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd5" />
+    <MetadataFile FileName="Memor1.xsd" MetadataType="Schema" ID="777e0fa6-0797-475f-8a9e-e472757c5dde" SourceId="1" SourceUrl="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd3" />
+    <MetadataFile FileName="Memor.wsdl" MetadataType="Wsdl" ID="de1b13ae-aa1d-4365-bd9c-6b3c00aa0f9e" SourceId="1" SourceUrl="http://192.168.31.137:820/CodesysIIS/Memor.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="Memor.disco" MetadataType="Disco" ID="0f1002c9-17e5-4969-b503-25e86316bc49" SourceId="1" SourceUrl="http://192.168.31.137:820/CodesysIIS/Memor.svc?disco" />
+    <MetadataFile FileName="Memor2.xsd" MetadataType="Schema" ID="46399057-f913-40d3-99eb-fe817ad17b92" SourceId="1" SourceUrl="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd0" />
+    <MetadataFile FileName="Memor1.wsdl" MetadataType="Wsdl" ID="6b82dcf6-76ea-4da9-9ff3-0df7edd9c74e" SourceId="1" SourceUrl="http://192.168.31.137:820/CodesysIIS/Memor.svc?wsdl=wsdl1" />
+    <MetadataFile FileName="Memor3.xsd" MetadataType="Schema" ID="2e9ad685-8a09-480a-ab39-332b5a5ad069" SourceId="1" SourceUrl="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd1" />
+    <MetadataFile FileName="Memor2.wsdl" MetadataType="Wsdl" ID="4b760ce0-5ebf-4971-b509-0c73ff316fe2" SourceId="1" SourceUrl="http://192.168.31.137:820/CodesysIIS/Memor.svc?wsdl" />
+    <MetadataFile FileName="Memor4.xsd" MetadataType="Schema" ID="3aa3ee2b-905d-4310-9b77-750f544c1420" SourceId="1" SourceUrl="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd2" />
+    <MetadataFile FileName="Memor5.xsd" MetadataType="Schema" ID="674274c0-a6c4-4764-8e8c-dd24f22d5bc7" SourceId="1" SourceUrl="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd6" />
+    <MetadataFile FileName="Memor6.xsd" MetadataType="Schema" ID="078d4ba1-3009-4d07-9a22-52603687033a" SourceId="1" SourceUrl="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd4" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

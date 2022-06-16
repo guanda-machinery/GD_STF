@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="PC_Authenticatication" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://122.117.88.137/PC_Authenticatication.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://122.117.88.137/PC_Authenticatication.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://122.117.88.137/PC_Authenticatication.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://122.117.88.137/PC_Authenticatication.svc?xsd=xsd3" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IPC_OperatingDatabase_SoftwareModel_InputMessage">
+    <wsdl:part name="parameters" element="tns:SoftwareModel" />
+  </wsdl:message>
+  <wsdl:message name="IPC_OperatingDatabase_SoftwareModel_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SoftwareModelResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPC_OperatingDatabase_CompanyAccount_InputMessage">
+    <wsdl:part name="parameters" element="tns:CompanyAccount" />
+  </wsdl:message>
+  <wsdl:message name="IPC_OperatingDatabase_CompanyAccount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CompanyAccountResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPC_OperatingDatabase_GetUserAccount_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserAccount" />
+  </wsdl:message>
+  <wsdl:message name="IPC_OperatingDatabase_GetUserAccount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserAccountResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPC_OperatingDatabase_NewUserAccount_InputMessage">
+    <wsdl:part name="parameters" element="tns:NewUserAccount" />
+  </wsdl:message>
+  <wsdl:message name="IPC_OperatingDatabase_NewUserAccount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:NewUserAccountResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPC_OperatingDatabase_UploadData_InputMessage">
+    <wsdl:part name="parameters" element="tns:UploadData" />
+  </wsdl:message>
+  <wsdl:message name="IPC_OperatingDatabase_UploadData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UploadDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPC_OperatingDatabase_GetServerDataPath_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetServerDataPath" />
+  </wsdl:message>
+  <wsdl:message name="IPC_OperatingDatabase_GetServerDataPath_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetServerDataPathResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPC_OperatingDatabase_MatchStream_InputMessage">
+    <wsdl:part name="parameters" element="tns:MatchStream" />
+  </wsdl:message>
+  <wsdl:message name="IPC_OperatingDatabase_MatchStream_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MatchStreamResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPC_OperatingDatabase_DeleteData_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteData" />
+  </wsdl:message>
+  <wsdl:message name="IPC_OperatingDatabase_DeleteData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPC_OperatingDatabase_GetProjects_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetProjects" />
+  </wsdl:message>
+  <wsdl:message name="IPC_OperatingDatabase_GetProjects_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetProjectsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IPC_OperatingDatabase">
+    <wsdl:operation name="SoftwareModel">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOperatingDatabase/SoftwareModel" message="tns:IPC_OperatingDatabase_SoftwareModel_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOperatingDatabase/SoftwareModelResponse" message="tns:IPC_OperatingDatabase_SoftwareModel_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CompanyAccount">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPC_OperatingDatabase/CompanyAccount" message="tns:IPC_OperatingDatabase_CompanyAccount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPC_OperatingDatabase/CompanyAccountResponse" message="tns:IPC_OperatingDatabase_CompanyAccount_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserAccount">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPC_OperatingDatabase/GetUserAccount" message="tns:IPC_OperatingDatabase_GetUserAccount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPC_OperatingDatabase/GetUserAccountResponse" message="tns:IPC_OperatingDatabase_GetUserAccount_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="NewUserAccount">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPC_OperatingDatabase/NewUserAccount" message="tns:IPC_OperatingDatabase_NewUserAccount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPC_OperatingDatabase/NewUserAccountResponse" message="tns:IPC_OperatingDatabase_NewUserAccount_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPC_OperatingDatabase/UploadData" message="tns:IPC_OperatingDatabase_UploadData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPC_OperatingDatabase/UploadDataResponse" message="tns:IPC_OperatingDatabase_UploadData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetServerDataPath">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPC_OperatingDatabase/GetServerDataPath" message="tns:IPC_OperatingDatabase_GetServerDataPath_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPC_OperatingDatabase/GetServerDataPathResponse" message="tns:IPC_OperatingDatabase_GetServerDataPath_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MatchStream">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPC_OperatingDatabase/MatchStream" message="tns:IPC_OperatingDatabase_MatchStream_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPC_OperatingDatabase/MatchStreamResponse" message="tns:IPC_OperatingDatabase_MatchStream_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPC_OperatingDatabase/DeleteData" message="tns:IPC_OperatingDatabase_DeleteData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPC_OperatingDatabase/DeleteDataResponse" message="tns:IPC_OperatingDatabase_DeleteData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProjects">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPC_OperatingDatabase/GetProjects" message="tns:IPC_OperatingDatabase_GetProjects_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPC_OperatingDatabase/GetProjectsResponse" message="tns:IPC_OperatingDatabase_GetProjects_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="IOperatingDatabase">
+    <wsdl:operation name="SoftwareModel">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOperatingDatabase/SoftwareModel" message="tns:IPC_OperatingDatabase_SoftwareModel_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOperatingDatabase/SoftwareModelResponse" message="tns:IPC_OperatingDatabase_SoftwareModel_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="IPC_OperatingDatabase" type="tns:IPC_OperatingDatabase">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SoftwareModel">
+      <soap:operation soapAction="http://tempuri.org/IOperatingDatabase/SoftwareModel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CompanyAccount">
+      <soap:operation soapAction="http://tempuri.org/IPC_OperatingDatabase/CompanyAccount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserAccount">
+      <soap:operation soapAction="http://tempuri.org/IPC_OperatingDatabase/GetUserAccount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewUserAccount">
+      <soap:operation soapAction="http://tempuri.org/IPC_OperatingDatabase/NewUserAccount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadData">
+      <soap:operation soapAction="http://tempuri.org/IPC_OperatingDatabase/UploadData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServerDataPath">
+      <soap:operation soapAction="http://tempuri.org/IPC_OperatingDatabase/GetServerDataPath" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MatchStream">
+      <soap:operation soapAction="http://tempuri.org/IPC_OperatingDatabase/MatchStream" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteData">
+      <soap:operation soapAction="http://tempuri.org/IPC_OperatingDatabase/DeleteData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjects">
+      <soap:operation soapAction="http://tempuri.org/IPC_OperatingDatabase/GetProjects" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="IOperatingDatabase" type="tns:IOperatingDatabase">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SoftwareModel">
+      <soap:operation soapAction="http://tempuri.org/IOperatingDatabase/SoftwareModel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PC_Authenticatication">
+    <wsdl:port name="IPC_OperatingDatabase" binding="tns:IPC_OperatingDatabase">
+      <soap:address location="http://122.117.88.137/PC_Authenticatication.svc/IPC_OperatingDatabase" />
+    </wsdl:port>
+    <wsdl:port name="IOperatingDatabase" binding="tns:IOperatingDatabase">
+      <soap:address location="http://122.117.88.137/PC_Authenticatication.svc/IOperatingDatabase" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

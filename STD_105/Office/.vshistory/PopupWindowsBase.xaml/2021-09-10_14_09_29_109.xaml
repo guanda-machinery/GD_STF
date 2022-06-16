@@ -1,0 +1,14 @@
+﻿<Window x:Class="STD_105.Office.PopupWindowsBase"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+        xmlns:local="clr-namespace:STD_105.Office"
+        xmlns:STD="clr-namespace:STD_105"
+        xmlns:WPFSTD105="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+        Title="{ Binding TitleText }" Width="{ Binding WindowsWidth }" Height="{ Binding WindowsHeight }">
+    <Grid>
+        <STD:PopupPageHost CurrentPage="{ Binding }" DataContext="{ Binding OfficeViewModel.CurrentPage, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={ STD:PopupWindowsConverter } }"/>
+    </Grid>
+</Window>

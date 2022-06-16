@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="9aee30af-e12b-4c50-98cd-83a192847219" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>版本紀錄</para>
+		</introduction>
+ 
+		<!--<section>
+			<title>Version History</title>
+			<content>
+				<para>Select a version below to see a description of its changes.</para>
+
+				<list class="bullet">
+					<listItem>
+						<para><link xlink:href="fc26ba99-ba8a-40fc-8bf8-52784b9bafd7" /></para>
+					</listItem>
+					<listItem>
+						<para>[TODO: Add links to each specific version page]</para>
+					</listItem>
+				</list>
+			</content>
+		</section>-->
+
+		<relatedTopics>
+			<link xlink:href="492026d4-7e32-4cbf-a955-f21c14f3233a" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="STD_105.SaveReduction"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:STD_105"
+             mc:Ignorable="d"
+             xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105">
+    <StackPanel Orientation="Horizontal">
+        <Button x:Name="reduction" Content="還原" Style="{ StaticResource btn_CommonFunctionKey_STD }"/>
+        <Button x:Name="save" Content="存檔" Style="{ StaticResource btn_CommonFunctionKey_STD }"/>
+        <!--<local:BaseButton ButtonImageSource="{StaticResource Reduction}" TitleText="還原" x:Name="reduction" FontSize="{ Binding ParameterFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"/>
+        <local:BaseButton Grid.Column="2" ButtonImageSource="{StaticResource Save}" TitleText="存檔" x:Name="save" FontSize="{ Binding ParameterFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"/>
+    </Grid>
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+        <local:BaseButton ButtonImageSource="{StaticResource Reduction}" TitleText="還原" Height="80" x:Name="reduction" FontSize="{ Binding ParameterFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"/>
+        <Border Width="10"/>
+        <local:BaseButton ButtonImageSource="{StaticResource Save}" TitleText="存檔" Height="80" x:Name="save" FontSize="{ Binding ParameterFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"/>
+    </StackPanel>-->
+    </StackPanel>
+</UserControl>

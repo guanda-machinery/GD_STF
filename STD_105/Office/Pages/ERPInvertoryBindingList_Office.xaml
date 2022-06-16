@@ -1,0 +1,27 @@
+﻿<WPFBase:BasePage x:Class="STD_105.Office.ERPInvertoryBindingList_Office"
+      xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:STD_105.Office"
+      mc:Ignorable="d" 
+      Title="ERPInvertoryBindingList_Office">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <DataGrid>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="項目"/>
+                <DataGridTextColumn Header="斷面規格"/>
+                <DataGridTextColumn Header="材質"/>
+                <DataGridTextColumn Header="長度mm"/>
+                <DataGridTextColumn Header="已綁定數量"/>
+                <DataGridTextColumn Header="配對專案"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Grid.Row="1" Content="回上一頁" HorizontalAlignment="Right" Width="160" Height="40" Style="{ StaticResource btn_FunctionKey7 }" Margin="5"/>
+    </Grid>
+</WPFBase:BasePage>

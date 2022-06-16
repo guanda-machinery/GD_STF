@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="eb3f6afe-4981-4d2e-879f-3a082c9aef00" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:63506/Memor.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="Memor.xsd" MetadataType="Schema" ID="4402e393-e588-483f-9b29-d2ae95ce7dba" SourceId="1" SourceUrl="http://localhost:63506/Memor.svc?xsd=xsd1" />
+    <MetadataFile FileName="Memor.wsdl" MetadataType="Wsdl" ID="4bcd4dad-bdb6-4a7c-8d7b-bf380de98ac7" SourceId="1" SourceUrl="http://localhost:63506/Memor.svc?wsdl=wsdl1" />
+    <MetadataFile FileName="Memor1.wsdl" MetadataType="Wsdl" ID="5c9ade92-1021-44f5-94ae-ea74649befbb" SourceId="1" SourceUrl="http://localhost:63506/Memor.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="Memor1.xsd" MetadataType="Schema" ID="b83bbefb-5eef-44e2-be83-43c760218413" SourceId="1" SourceUrl="http://localhost:63506/Memor.svc?xsd=xsd4" />
+    <MetadataFile FileName="Memor2.xsd" MetadataType="Schema" ID="35c0a645-3789-4172-8598-75412b580b6d" SourceId="1" SourceUrl="http://localhost:63506/Memor.svc?xsd=xsd5" />
+    <MetadataFile FileName="Memor3.xsd" MetadataType="Schema" ID="a462d3fe-e4ee-40fa-b86d-049188d4c305" SourceId="1" SourceUrl="http://localhost:63506/Memor.svc?xsd=xsd6" />
+    <MetadataFile FileName="Memor4.xsd" MetadataType="Schema" ID="4eef2b90-67af-4bc3-a6c0-6e1e17733ed4" SourceId="1" SourceUrl="http://localhost:63506/Memor.svc?xsd=xsd2" />
+    <MetadataFile FileName="Memor5.xsd" MetadataType="Schema" ID="376a7d10-fcaf-40c1-a010-df8325c4c2d1" SourceId="1" SourceUrl="http://localhost:63506/Memor.svc?xsd=xsd3" />
+    <MetadataFile FileName="Memor.disco" MetadataType="Disco" ID="117c2917-fa3a-4013-861e-f462cfaefb1b" SourceId="1" SourceUrl="http://localhost:63506/Memor.svc?disco" />
+    <MetadataFile FileName="Memor2.wsdl" MetadataType="Wsdl" ID="0419a543-5217-43b4-bbaa-d56ebee45e9d" SourceId="1" SourceUrl="http://localhost:63506/Memor.svc?wsdl" />
+    <MetadataFile FileName="Memor6.xsd" MetadataType="Schema" ID="a933d9c1-316b-477b-a0f9-1edc59fc02f1" SourceId="1" SourceUrl="http://localhost:63506/Memor.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

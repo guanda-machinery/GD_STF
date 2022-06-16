@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="GD_STD.Enum.ErrorCodeAttribute" Collapsed="true">
+    <Position X="3.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ErrorCodeAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Enum.Expand" Collapsed="true">
+    <Position X="5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Expand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="GD_STD.Enum.ARM_CLAMP" Collapsed="true">
+    <Position X="3.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>ARM_CLAMP.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.AXIS_MODE" Collapsed="true">
+    <Position X="5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAQAAAAAAAAgEAAIAAAAAAAAIAAAA=</HashCode>
+      <FileName>AXIS_MODE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.AXIS_SELECTED" Collapsed="true">
+    <Position X="6.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACACQAAAAAAA=</HashCode>
+      <FileName>AXIS_SELECTED.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.BAVT" Collapsed="true">
+    <Position X="8.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAAAAAAAAAABCAAAAAAAAAAAA=</HashCode>
+      <FileName>BAVT.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.BOLT_TYPE" Collapsed="true">
+    <Position X="10.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAI=</HashCode>
+      <FileName>BOLT_TYPE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.CLAMP_DOWN" Collapsed="true">
+    <Position X="12" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>CLAMP_DOWN.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.CODESYS_STATUS" Collapsed="true">
+    <Position X="3.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>CODESYS_STATUS.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.COORDINATE" Collapsed="true">
+    <Position X="5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAYAE=</HashCode>
+      <FileName>COORDINATE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.DRAWING_STATE" Collapsed="true">
+    <Position X="6.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACQAAQAAAAAAAAAAAAIEAAAAAAABAAAA=</HashCode>
+      <FileName>DRAWING_STATE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.DRILL_LEVEL" Collapsed="true">
+    <Position X="8.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DRILL_LEVEL.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.DRILL_POSITION" Collapsed="true">
+    <Position X="10.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAEAAAAABAAAAAJAAAAAAAAAAAAA=</HashCode>
+      <FileName>DRILL_POSITION.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.DRILL_TYPE" Collapsed="true">
+    <Position X="12" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAQAAAABAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>DRILL_TYPE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.ERROR_CODE" Collapsed="true">
+    <Position X="3.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>OkQF9DgrkZQRUAuWbViD6njgSgc+VICeCILABjcDABA=</HashCode>
+      <FileName>ERROR_CODE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.FACE" Collapsed="true">
+    <Position X="5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAEAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>FACE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.GROUP_DEVICE" Collapsed="true">
+    <Position X="6.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAgAIAQAAAAACAAAAA=</HashCode>
+      <FileName>GROUP_DEVICE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.JOYSTICK" Collapsed="true">
+    <Position X="8.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAgACAAAoAAAAEAAIAAABAAAAACAAE=</HashCode>
+      <FileName>JOYSTICK.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.KEY_HOLE" Collapsed="true">
+    <Position X="10.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAEAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>KEY_HOLE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.LOGIN_STATUS" Collapsed="true">
+    <Position X="12" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABCAAAAAAAAAAAAAAAAAAAAAAIAAAQAAAAAAAAE=</HashCode>
+      <FileName>LOGIN_STATUS.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.MACTH" Collapsed="true">
+    <Position X="3.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgCAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MACTH.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.MAGNIFICATION" Collapsed="true">
+    <Position X="5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MAGNIFICATION.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.MOBILE_RACK" Collapsed="true">
+    <Position X="6.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAAAAIAAAAAAAAAAAQA=</HashCode>
+      <FileName>MOBILE_RACK.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.OBJETC_TYPE" Collapsed="true">
+    <Position X="8.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAIIAAAAgAEAAQAAAAAAAAAAAAAAgEQAABQ=</HashCode>
+      <FileName>OBJETC_TYPE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.OPERATOR" Collapsed="true">
+    <Position X="10.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAIAAAAAAAAECgAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>OPERATOR.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.ORIGIN" Collapsed="true">
+    <Position X="12" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAIAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>ORIGIN.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.PHONE_SATUS" Collapsed="true">
+    <Position X="3.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABACkAAAAAAAAgAAAAAAAAAAAAAgAAAAAI=</HashCode>
+      <FileName>PHONE_SATUS.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.PROFILE_TYPE" Collapsed="true">
+    <Position X="5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIIAAAAAAAAAAAAAAAAAAAAAAAAAEQCAAA=</HashCode>
+      <FileName>PROFILE_TYPE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.PUSH" Collapsed="true">
+    <Position X="6.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAgAAAEA=</HashCode>
+      <FileName>PUSH.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.RACK_ROUTE" Collapsed="true">
+    <Position X="8.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACIAA=</HashCode>
+      <FileName>RACK_ROUTE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.SELECT_DEVICE" Collapsed="true">
+    <Position X="10.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEEAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>SELECT_DEVICE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.SHELF" Collapsed="true">
+    <Position X="12" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>SHELF.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GD_STD.Enum.STATUS_CODE" Collapsed="true">
+    <Position X="3.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAQAAAAAAAAAAAAAgAAAEAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>STATUS_CODE.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Microsoft JhengHei UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,230 @@
+﻿<UserControl x:Class="STD_105.DirectionKeys"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:STD_105"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:STDEnum="clr-namespace:GD_STD.Enum;assembly=GD_STD.Enum"
+             xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+             mc:Ignorable="d">
+    <!--方向鍵-->
+    <Viewbox>
+        <Grid Height="200"
+              Width="200">
+            <Grid.Resources>
+                <Storyboard x:Key="PressUpButton">
+                    <ColorAnimation Storyboard.TargetName="UpButton"
+                                    Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
+                                    To="Lime"
+                                    Duration="0:0:0.1" />
+                </Storyboard>
+                <Storyboard x:Key="PressDownButton">
+                    <ColorAnimation Storyboard.TargetName="DownButton"
+                                    Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
+                                    To="Lime"
+                                    Duration="0:0:0.1" />
+                </Storyboard>
+                <Storyboard x:Key="PressRightButton">
+                    <ColorAnimation Storyboard.TargetName="RightButton"
+                                    Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
+                                    To="Lime"
+                                    Duration="0:0:0.1" />
+                </Storyboard>
+                <Storyboard x:Key="PressLeftButton">
+                    <ColorAnimation Storyboard.TargetName="LeftButton"
+                                    Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
+                                    To="Lime"
+                                    Duration="0:0:0.1" />
+                </Storyboard>
+                <Storyboard x:Key="AllTextBlockColorRecover">
+                    <ColorAnimation Storyboard.TargetName="UpButton"
+                                    Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
+                                    To="{ StaticResource clr_CreamyGray }"
+                                    Duration="0" />
+                    <ColorAnimation Storyboard.TargetName="DownButton"
+                                    Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
+                                    To="{ StaticResource clr_CreamyGray }"
+                                    Duration="0" />
+                    <ColorAnimation Storyboard.TargetName="RightButton"
+                                    Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
+                                    To="{ StaticResource clr_CreamyGray }"
+                                    Duration="0" />
+                    <ColorAnimation Storyboard.TargetName="LeftButton"
+                                    Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
+                                    To="{ StaticResource clr_CreamyGray }"
+                                    Duration="0" />
+                </Storyboard>
+                <Style TargetType="Button"
+                       BasedOn="{ StaticResource btn_3D_DirectionKey }">
+                    <Setter Property="Background"
+                            Value="Transparent" />
+                    <Setter Property="Height"
+                            Value="100" />
+                    <Setter Property="Width"
+                            Value="83" />
+                </Style>
+                <Style TargetType="TextBlock"
+                       BasedOn="{ StaticResource tbk_Title }">
+                    <Setter Property="Foreground"
+                            Value="{ StaticResource solidclr_CreamyGray }" />
+                    <Setter Property="FontSize"
+                            Value="10" />
+                </Style>
+            </Grid.Resources>
+            <!--上按鈕-->
+            <Button HorizontalAlignment="Center"
+                    Margin="0,0,0,100">
+                <Button.Effect>
+                    <DropShadowEffect Opacity="0.5"
+                                      ShadowDepth="5"
+                                      BlurRadius="3" />
+                </Button.Effect>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                        <i:InvokeCommandAction  Command="{Binding RiseCommand}"
+                                                CommandParameter="1" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.PreviewMouseLeftButtonDown">
+                        <BeginStoryboard Storyboard="{ StaticResource PressUpButton }" />
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Button.PreviewMouseLeftButtonUp">
+                        <BeginStoryboard Storyboard="{ StaticResource AllTextBlockColorRecover }" />
+                    </EventTrigger>
+                </Button.Triggers>
+                <Button.Content>
+                    <TextBlock x:Name="UpButton" 
+                               Text="台車上升"
+                               Visibility="{ Binding DescriptionDisplayControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }" />
+                </Button.Content>
+            </Button>
+            <!--左按鈕-->
+            <Button HorizontalAlignment="Left"
+                    VerticalAlignment="Center">
+                <Button.LayoutTransform>
+                    <RotateTransform Angle="270" />
+                </Button.LayoutTransform>
+                <Button.Effect>
+                    <DropShadowEffect Opacity="0.5"
+                                      ShadowDepth="5"
+                                      BlurRadius="3"
+                                      Direction="270" />
+                </Button.Effect>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                        <i:InvokeCommandAction  Command="{Binding MoveCommand}"
+                                                CommandParameter="{x:Static STDEnum:MOBILE_RACK.INSIDE}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                        <i:InvokeCommandAction  Command="{Binding MoveCommand}"
+                                                CommandParameter="{x:Static STDEnum:MOBILE_RACK.NULL}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.PreviewMouseLeftButtonDown">
+                        <BeginStoryboard Storyboard="{ StaticResource PressLeftButton }" />
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Button.PreviewMouseLeftButtonUp">
+                        <BeginStoryboard Storyboard="{ StaticResource AllTextBlockColorRecover }" />
+                    </EventTrigger>
+                </Button.Triggers>
+                <Button.Content>
+                    <TextBlock x:Name="LeftButton"
+                               Text="台車左移"
+                               RenderTransformOrigin="0.5,0.5"
+                               Visibility="{ Binding DescriptionDisplayControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }">
+                        <TextBlock.RenderTransform>
+                            <RotateTransform Angle="-270" />
+                        </TextBlock.RenderTransform></TextBlock>
+                </Button.Content>
+            </Button>
+            <!--右按鈕-->
+            <Button HorizontalAlignment="Right"
+                    VerticalAlignment="Center">
+                <Button.LayoutTransform>
+                    <RotateTransform Angle="90" />
+                </Button.LayoutTransform>
+                <Button.Effect>
+                    <DropShadowEffect Opacity="0.5"
+                                      ShadowDepth="5"
+                                      BlurRadius="3"
+                                      Direction="90" />
+                </Button.Effect>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                        <i:InvokeCommandAction  Command="{Binding MoveCommand}"
+                                                CommandParameter="{x:Static STDEnum:MOBILE_RACK.OUTER}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                        <i:InvokeCommandAction  Command="{Binding MoveCommand}"
+                                                CommandParameter="{x:Static STDEnum:MOBILE_RACK.NULL}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.PreviewMouseLeftButtonDown">
+                        <BeginStoryboard Storyboard="{ StaticResource PressRightButton }" />
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Button.PreviewMouseLeftButtonUp">
+                        <BeginStoryboard Storyboard="{ StaticResource AllTextBlockColorRecover }" />
+                    </EventTrigger>
+                </Button.Triggers>
+                <Button.Content>
+                    <TextBlock x:Name="RightButton"
+                               Text="台車右移"
+                               RenderTransformOrigin="0.5,0.5"
+                               Visibility="{ Binding DescriptionDisplayControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }">
+                        <TextBlock.RenderTransform>
+                            <RotateTransform Angle="-90" />
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Button.Content>
+            </Button>
+            <!--下按鈕-->
+            <Button HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom">
+                <Button.LayoutTransform>
+                    <RotateTransform Angle="180" />
+                </Button.LayoutTransform>
+                <Button.Effect>
+                    <DropShadowEffect Opacity="0.5"
+                                      ShadowDepth="5"
+                                      BlurRadius="3"
+                                      Direction="180" />
+                </Button.Effect>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                        <i:InvokeCommandAction  Command="{Binding RiseCommand}"
+                                                CommandParameter="-1" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.PreviewMouseLeftButtonDown">
+                        <BeginStoryboard Storyboard="{ StaticResource PressDownButton }" />
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Button.PreviewMouseLeftButtonUp">
+                        <BeginStoryboard Storyboard="{ StaticResource AllTextBlockColorRecover }" />
+                    </EventTrigger>
+                </Button.Triggers>
+                <Button.Content>
+                    <TextBlock x:Name="DownButton"
+                               Text="台車下降"
+                               RenderTransformOrigin="0.5,0.5"
+                               Visibility="{ Binding DescriptionDisplayControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }">
+                        <TextBlock.RenderTransform>
+                            <RotateTransform Angle="-180" />
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Button.Content>
+            </Button>
+            <!--顯示文字-->
+            <CheckBox Grid.Column="2"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Top"                      
+                      Width="35"
+                      IsChecked="{ Binding DescriptionDisplayControl }"
+                      Style="{ StaticResource GreenSwitch }" />
+        </Grid>
+    </Viewbox>
+</UserControl>

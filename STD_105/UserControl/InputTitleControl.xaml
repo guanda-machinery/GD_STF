@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="STD_105.InputTitleControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:STD_105"
+             mc:Ignorable="d" 
+             Name="use"
+             d:DesignHeight="450" d:DesignWidth="324">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="26"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Margin="0" Height="26" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*" />
+                <ColumnDefinition Width="0.2*"/>
+                <ColumnDefinition Width="0.2*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock  Text="名稱"
+                                               Grid.Column="0"
+                                               Style="{StaticResource titleRow}"/>
+            
+            <TextBlock Text="接點" 
+                                               Grid.Column="1"
+                                               Style="{StaticResource titleRow}"/>
+            <TextBlock Text="狀態"
+                                               Grid.Column="2"
+                                               Style="{StaticResource titleRow}"/>
+        </Grid>
+        <ItemsControl Margin="0" ItemsSource="{Binding DataContext, ElementName=use}" Grid.Row="1">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*" />
+                            <ColumnDefinition Width="0.2*"/>
+                            <ColumnDefinition Width="0.2*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Name}" Grid.Column="0"   Style="{StaticResource titleRow}"/>
+                        <TextBlock Text="{Binding Contact}" Grid.Column="1"   Style="{StaticResource titleRow}"/>
+                        <TextBlock Style="{StaticResource titleRow}"  Grid.Column="2" Height="26">
+                                                <Image Source="{Binding Status, Converter={local:BoolToOnImageConverter}}" 
+                                                   Margin="2" Grid.Column="2" Effect="{StaticResource buttEff}"/>
+                        </TextBlock>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</UserControl>

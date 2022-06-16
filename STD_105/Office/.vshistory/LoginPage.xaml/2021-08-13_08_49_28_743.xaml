@@ -1,0 +1,121 @@
+﻿<Window x:Class="STD_105.Office.LoginPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:STD_105.Office"
+        xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+        mc:Ignorable="d" 
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Topmost="False"
+        WindowStartupLocation="CenterScreen" Background="Transparent"
+        Title="LoginPage" Width="800" Height="500" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+    <Grid x:Name="grid_main">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="1.5*"/>
+        </Grid.RowDefinitions>
+        <Border Grid.RowSpan="3" Grid.Column="0"  BorderThickness="0" CornerRadius="20,0,0,20" Background="{ StaticResource solidclr_DarkGray }"/>
+        <Border Grid.RowSpan="3" Grid.Column="1" BorderThickness="0" CornerRadius="0,20,20,0" Background="{ StaticResource solidclr_CreamyWhite }" />
+        <Viewbox Grid.Row="2" Grid.ColumnSpan="2" Width="120" Height="120">
+            <Grid>
+                <Polygon x:Name="logo_Left" Fill="Red" Points="180.1,30.1 38.8,138.9 38.8,410.5 289.3,508.2 289.3,265.8 186.9,233.2 186.9,303.2 219.4,314.6 
+		                    219.4,391 118.5,352 118.5,168.2 178.7,121"/>
+                <Polygon x:Name="logo_Right" Fill="#FF808080" Points="398.3,165.4 398.3,352 330.3,402.1 330.3,493.2 473.2,376.4 473.2,106.8"/>
+                <Polygon x:Name="logo_Top" Fill="#FFDFDFDF" Points="473.2,106.3 216.1,3.8 216.1,143.8 289.3,164.9 289.3,124.2 398.3,164.9 398.3,165.4 "/>
+                <Polygon Fill="#FFDFDFDF" Points="216.1,174.7 216.1,212.1 289.3,234.9 289.3,195.8"/>
+            </Grid>
+        </Viewbox>
+        <Grid Grid.Row="1">
+            <TextBlock Text="STD-105" Foreground="{ StaticResource solidclr_CreamyWhite }"  FontSize="48" FontFamily="STENCIL" 
+                TextDecorations="Underline" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <TextBlock Text="這是一台附有鑽孔功能的點唱機" Foreground="{ StaticResource solidclr_CreamyWhite }" FontSize="24" 
+                HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button  Width="200" Height="40" VerticalAlignment="Bottom" Background="{ StaticResource solidclr_CreamyWhite }" 
+                 Style="{ StaticResource btn_LoginButton }" Click="Button_Click">
+                <Button.Content>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="4*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Background="{ StaticResource solidclr_DarkGray }" Height="30" Width="30" CornerRadius="15">
+                            <Image Source="{ StaticResource SingleMode_White }"/>
+                        </Border>
+                        <TextBlock Grid.Column="1" Text="單機登入" Foreground="{ StaticResource solidclr_DarkGray }"
+                            FontFamily="{Binding FontFamily, Source={ x:Static SofSetting:SofSetting.Default }}" VerticalAlignment="Center" Margin="10,0"/>
+                    </Grid>
+                </Button.Content>
+            </Button>
+        </Grid>
+        <StackPanel Grid.Row="2" VerticalAlignment="Bottom">
+            <StackPanel.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="FontSize" Value="12"/>
+                    <Setter Property="Foreground" Value="{ StaticResource solidclr_CreamyWhite }"/>
+                    <Setter Property="Padding" Value="2"/>
+                </Style>
+            </StackPanel.Resources>
+            <Label Content="廣達國際機械有限公司"/>
+            <Label Content="Tel: 04-2335-6118"/>
+            <Label Content="Fax: 04-2335-6618"/>
+        </StackPanel>
+        <Grid Grid.Column="1">
+            <TextBlock Text="Sign in" FontFamily="Gabriola" FontSize="48" Foreground="{ StaticResource solidclr_DarkGray }" 
+                TextDecorations="Underline" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,-30"/>
+            <Button Style="{ StaticResource btn_FunctionKey3 }" HorizontalAlignment="Right" VerticalAlignment="Top" Width="25" 
+                 Height="25" Margin="10" Opacity="0.5" Click="CloseWindow">
+                <Image Source="{ StaticResource Cross_Gray }"/>
+            </Button>
+        </Grid>
+        <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
+            <StackPanel.Resources>
+                <Style TargetType="TextBox">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="20"/>
+                    <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="Width" Value="250"/>
+                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    <Setter Property="Background" Value="{ StaticResource solidclr_CreamyWhite }"/>
+                    <Setter Property="Foreground" Value="{ StaticResource solidclr_DarkGray }"/>
+                    <Setter Property="Opacity" Value="0.5"/>
+                </Style>
+            </StackPanel.Resources>
+            <TextBox Text="公司帳號"/>
+            <TextBox Text="使用者代號" />
+            <TextBox Text="使用者密碼"/>
+        </StackPanel>
+        <Grid Grid.Row="1" Grid.Column="1" Height="30" Width="80" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="50,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Viewbox Width="20" Height="20">
+                <CheckBox Style="{ StaticResource CheckedStyle }" IsChecked="{Binding RememberAccount}" />
+            </Viewbox>
+            <Label Grid.Column="1" Content="記住帳號" FontSize="12" VerticalAlignment="Center" Foreground="{ StaticResource solidclr_DarkGray }" Opacity="0.5"/>
+        </Grid>
+        <Button Grid.Row="2" Grid.Column="1"  Width="220" Height="40" Background="{ StaticResource solidclr_DarkGray }" Style="{ StaticResource btn_LoginButton }" VerticalAlignment="Top" Click="Button_Click">
+            <Button.Content>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Background="{ StaticResource solidclr_CreamyWhite }" Height="30" Width="30" CornerRadius="15">
+                        <Image Source="{ StaticResource IoTMode }"/>
+                    </Border>
+                    <TextBlock Grid.Column="1" Foreground="{ StaticResource solidclr_CreamyWhite }" Text="物聯網登入"
+                        FontFamily="{Binding FontFamily, Source={ x:Static SofSetting:SofSetting.Default }}" Margin="10,0" VerticalAlignment="Center"/>
+                </Grid>
+            </Button.Content>
+        </Button>
+    </Grid>
+</Window>

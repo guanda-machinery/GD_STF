@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/GD_STD.Data" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/GD_STD.Data" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:59183/ExternalImport.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://localhost:59183/ExternalImport.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://localhost:59183/ExternalImport.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/GD_STD.Enum" />
+  <xs:complexType name="ArrayOfSteelPart">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SteelPart" nillable="true" type="tns:SteelPart" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSteelPart" nillable="true" type="tns:ArrayOfSteelPart" />
+  <xs:complexType name="SteelPart">
+    <xs:sequence>
+      <xs:element name="_x003C_Count_x003E_k__BackingField" type="xs:int" />
+      <xs:element name="_x003C_Creation_x003E_k__BackingField" type="xs:dateTime" />
+      <xs:element name="_x003C_DrawingName_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_Father_x003E_k__BackingField" nillable="true" type="q1:ArrayOfint" />
+      <xs:element name="_x003C_GUID_x003E_k__BackingField" nillable="true" type="ser:guid" />
+      <xs:element name="_x003C_H_x003E_k__BackingField" type="xs:float" />
+      <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_ID_x003E_k__BackingField" nillable="true" type="q2:ArrayOfint" />
+      <xs:element name="_x003C_IsTekla_x003E_k__BackingField" type="xs:boolean" />
+      <xs:element name="_x003C_Length_x003E_k__BackingField" type="xs:double" />
+      <xs:element name="_x003C_Lock_x003E_k__BackingField" type="xs:boolean" />
+      <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_Match_x003E_k__BackingField" nillable="true" type="q3:ArrayOfboolean" />
+      <xs:element name="_x003C_Material_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_Nc_x003E_k__BackingField" type="xs:boolean" />
+      <xs:element name="_x003C_Number_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_Profile_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_Revise_x003E_k__BackingField" type="xs:dateTime" />
+      <xs:element name="_x003C_SortCount_x003E_k__BackingField" type="xs:int" />
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/GD_STD.Enum" name="_x003C_State_x003E_k__BackingField" type="q4:DRAWING_STATE" />
+      <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/GD_STD.Enum" name="_x003C_Type_x003E_k__BackingField" type="q5:OBJETC_TYPE" />
+      <xs:element name="_x003C_UnitArea_x003E_k__BackingField" type="xs:double" />
+      <xs:element name="_x003C_UnitWeight_x003E_k__BackingField" type="xs:double" />
+      <xs:element name="_x003C_W_x003E_k__BackingField" type="xs:float" />
+      <xs:element name="_x003C_t1_x003E_k__BackingField" type="xs:float" />
+      <xs:element name="_x003C_t2_x003E_k__BackingField" type="xs:float" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SteelPart" nillable="true" type="tns:SteelPart" />
+</xs:schema>

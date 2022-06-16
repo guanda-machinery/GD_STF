@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Topics>
+  <Topic id="492026d4-7e32-4cbf-a955-f21c14f3233a" visible="True" isDefault="true" title="STDMemoryLibrary">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="Welcome" />
+      <HelpKeyword index="K" term="" />
+    </HelpKeywords>
+  </Topic>
+  <Topic id="9aee30af-e12b-4c50-98cd-83a192847219" visible="True" isExpanded="true" title="更新說明">
+    <HelpKeywords>
+      <HelpKeyword index="K" term="version, history" />
+      <HelpKeyword index="K" term="" />
+    </HelpKeywords>
+    <Topic id="aa0bd302-cb0e-4b7b-b1ea-c3dacdbfd507" visible="True" />
+    <Topic id="111b7e7e-3f2b-40a6-b432-be931ba358d2" visible="True" title="Version1.0.0.7" tocTitle="Version1.0.0.7" />
+    <Topic id="8c438dde-8ebe-4383-aa59-4946f5083199" visible="True" isSelected="true" />
+  </Topic>
+</Topics>

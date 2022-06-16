@@ -1,0 +1,16 @@
+﻿<WPFBase:BasePage
+    x:Class="STD_105.LockPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:STD_105"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="LockPage"
+    d:DesignHeight="1280"
+    d:DesignWidth="1024"
+    mc:Ignorable="d">
+    <Grid>
+        <Image Source="/LOGO/STD-105.jpg" />
+    </Grid>
+</WPFBase:BasePage>

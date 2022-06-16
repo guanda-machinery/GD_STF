@@ -1,0 +1,14 @@
+#pragma once
+#include <iostream>
+#include <wtypes.h>
+#include <minwinbase.h>
+#include <atlbase.h>
+#include <winnt.h>
+#include <atlstr.h>
+#include <WinBase.h>
+#include <WtsApi32.h>
+#include <Windows.h>
+#include <Windowsx.h>
+#include <stdio.h>
+#include <conio.h>
+#include <stdlib.h>

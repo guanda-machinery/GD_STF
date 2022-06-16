@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="STD_105.DrillListControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:core="clr-namespace:System;assembly=mscorlib"
+             xmlns:local="clr-namespace:STD_105"
+             xmlns:SofSettings="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             Name="use">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <local:DRILL_TYPE_ToStringConverter x:Key="DrillTypes"/>
+            <local:DRILL_LEVEL_ToStringConverter x:Key="DrillLevel"/>
+            <!--品牌名稱-->
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <DataGrid ItemsSource="{Binding DataContext, ElementName=use }" Style="{ StaticResource dataGrid_STD }"
+            CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridColumnHeader" BasedOn="{ StaticResource dataGridColumnHeader_STD }"/>
+                <Style TargetType="DataGridCell" BasedOn="{ StaticResource dataGridCell_STD }"/>
+                <Style TargetType="DataGridRow" BasedOn="{ StaticResource dataRow_STD }"/>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="位置" Binding="{ Binding Index }" EditingElementStyle="{ StaticResource datagrid_EditingTextBox }" IsReadOnly="True"/>
+                <DataGridTemplateColumn Header="設定檔名稱">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding DrillBrands, Source={x:Static SofSettings:SofSetting.Default}, Converter={local:DrillBrandToDataNameConverter}}" SelectedIndex="{Binding SettingIndex}" 
+                                FontSize="{ Binding ParameterFontSize, Source={ x:Static SofSettings:SofSetting.Default } }" Style="{ StaticResource cbb_Main }"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="品牌" Binding="{Binding SettingIndex, Converter={local:DrillBrandGetPropertyConverter},ConverterParameter={StaticResource Name}}" EditingElementStyle="{ StaticResource datagrid_EditingTextBox }" IsReadOnly="True"/>
+                <DataGridTemplateColumn Header="鑽頭類型">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding Source={ StaticResource DrillTypes }, Path=Strings }" SelectedIndex="{Binding DrillTypeIndex}" 
+                                FontSize="{ Binding ParameterFontSize, Source={ x:Static SofSettings:SofSetting.Default } }" Style="{ StaticResource cbb_Main }"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="直徑&#x0a;(mm)" Binding="{ Binding Dia }" EditingElementStyle="{ StaticResource datagrid_EditingTextBox }" IsReadOnly="True"/>
+                <DataGridTextColumn Header="主軸轉速&#x0a;(RPM)" Binding="{ Binding Rpm }" EditingElementStyle="{ StaticResource datagrid_EditingTextBox }" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Z軸進給量&#x0a;(mm)" Binding="{ Binding FeedQuantity }" EditingElementStyle="{ StaticResource datagrid_EditingTextBox }" IsReadOnly="True"/>
+                <DataGridTextColumn Header="鑽頭長度&#x0a;(mm)" Binding="{ Binding Length }" EditingElementStyle="{ StaticResource datagrid_EditingTextBox }" IsReadOnly="True"/>
+                <DataGridTextColumn Header="極限設定&#x0a;(M)" Binding="{ Binding Limit }" EditingElementStyle="{ StaticResource datagrid_EditingTextBox }" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

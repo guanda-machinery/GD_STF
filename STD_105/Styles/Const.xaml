@@ -1,0 +1,27 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:STD_105"
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <!--  主畫面遮蔽物高度  -->
+    <GridLength x:Key="TitleShapeValue">10</GridLength>
+    <system:Double x:Key="TitleShapeValueDo">10</system:Double>
+    <Thickness x:Key="Th">0,-10,0,0</Thickness>
+    <GridLength x:Key="StandardPitch">10</GridLength>
+    <!--  外包框  -->
+    <Style x:Key="Block" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="#FF2A2930" />
+        <Setter Property="BorderBrush" Value="#FF2A2930" />
+        <Setter Property="BorderThickness" Value="1" />
+        <!--
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect ShadowDepth="5"
+                                              Color="Black"
+                                              Opacity="1"
+                                              BlurRadius="5"/>
+            </Setter.Value>
+        </Setter>
+        -->
+    </Style>
+</ResourceDictionary>

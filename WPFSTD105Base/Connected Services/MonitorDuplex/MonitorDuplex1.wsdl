@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://Codesys.MonitorDuplex" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" targetNamespace="http://Codesys.MonitorDuplex" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="MonitorDuplex_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <wsrm:RMAssertion xmlns:wsrm="http://schemas.xmlsoap.org/ws/2005/02/rm/policy">
+          <wsrm:InactivityTimeout Milliseconds="600000" />
+          <wsrm:AcknowledgementInterval Milliseconds="200" />
+        </wsrm:RMAssertion>
+        <cdp:CompositeDuplex xmlns:cdp="http://schemas.microsoft.com/net/2006/06/duplex" />
+        <ow:OneWay xmlns:ow="http://schemas.microsoft.com/ws/2005/05/routing/policy" />
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://Codesys.MonitorDuplex/Imports">
+      <xsd:import schemaLocation="http://localhost:63506/MonitorDuplex.svc?xsd=xsd0" namespace="http://Codesys.MonitorDuplex" />
+      <xsd:import schemaLocation="http://localhost:63506/MonitorDuplex.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:63506/MonitorDuplex.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/GD_STD.Phone" />
+      <xsd:import schemaLocation="http://localhost:63506/MonitorDuplex.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:63506/MonitorDuplex.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/GD_STD" />
+      <xsd:import schemaLocation="http://localhost:63506/MonitorDuplex.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/GD_STD.Enum" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IMonitorDuplex_SetMonitorWorkOffset_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetMonitorWorkOffset" />
+  </wsdl:message>
+  <wsdl:message name="IMonitorDuplex_SetMonitorWorkOffset_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetMonitorWorkOffsetResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMonitorDuplex_GetWorkMaterial_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetWorkMaterial" />
+  </wsdl:message>
+  <wsdl:message name="IMonitorDuplex_GetWorkMaterial_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetWorkMaterialResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMonitorDuplex_GetIndex_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetIndex" />
+  </wsdl:message>
+  <wsdl:message name="IMonitorDuplex_SendIndex_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SendIndex" />
+  </wsdl:message>
+  <wsdl:message name="IMonitorDuplex_SendOther_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SendOther" />
+  </wsdl:message>
+  <wsdl:portType msc:usingSession="true" name="IMonitorDuplex">
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SetMonitorWorkOffset">
+      <wsdl:input wsaw:Action="http://Codesys.MonitorDuplex/IMonitorDuplex/SetMonitorWorkOffset" message="tns:IMonitorDuplex_SetMonitorWorkOffset_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.MonitorDuplex/IMonitorDuplex/SetMonitorWorkOffsetResponse" message="tns:IMonitorDuplex_SetMonitorWorkOffset_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetWorkMaterial">
+      <wsdl:input wsaw:Action="http://Codesys.MonitorDuplex/IMonitorDuplex/GetWorkMaterial" message="tns:IMonitorDuplex_GetWorkMaterial_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.MonitorDuplex/IMonitorDuplex/GetWorkMaterialResponse" message="tns:IMonitorDuplex_GetWorkMaterial_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetIndex">
+      <wsdl:input wsaw:Action="http://Codesys.MonitorDuplex/IMonitorDuplex/GetIndex" message="tns:IMonitorDuplex_GetIndex_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendIndex">
+      <wsdl:output wsaw:Action="http://Codesys.MonitorDuplex/IMonitorDuplex/SendIndex" message="tns:IMonitorDuplex_SendIndex_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendOther">
+      <wsdl:output wsaw:Action="http://Codesys.MonitorDuplex/IMonitorDuplex/SendOther" message="tns:IMonitorDuplex_SendOther_OutputCallbackMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MonitorDuplex" type="tns:IMonitorDuplex">
+    <wsp:PolicyReference URI="#MonitorDuplex_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SetMonitorWorkOffset">
+      <soap12:operation soapAction="http://Codesys.MonitorDuplex/IMonitorDuplex/SetMonitorWorkOffset" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkMaterial">
+      <soap12:operation soapAction="http://Codesys.MonitorDuplex/IMonitorDuplex/GetWorkMaterial" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetIndex">
+      <soap12:operation soapAction="http://Codesys.MonitorDuplex/IMonitorDuplex/GetIndex" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="SendIndex">
+      <soap12:operation soapAction="http://Codesys.MonitorDuplex/IMonitorDuplex/SendIndex" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendOther">
+      <soap12:operation soapAction="http://Codesys.MonitorDuplex/IMonitorDuplex/SendOther" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+</wsdl:definitions>

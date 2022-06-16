@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://Codesys.ReadMemor" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://Codesys.ReadMemor" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://Codesys.ReadMemor/Imports">
+      <xsd:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd4" namespace="http://Codesys.ReadMemor" />
+      <xsd:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd0" namespace="http://Codesys.Memor" />
+      <xsd:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/GD_STD" />
+      <xsd:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/GD_STD.Enum" />
+      <xsd:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/GD_STD.Phone" />
+      <xsd:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd6" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IReadMemor_GetPanel_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPanel" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetPanel_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPanelResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetDrillWarehouse_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDrillWarehouse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetDrillWarehouse_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDrillWarehouseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetOill_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetOill" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetOill_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetOillResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetHydraulic_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetHydraulic" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetHydraulic_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetHydraulicResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetLubricant_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLubricant" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetLubricant_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLubricantResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetCut_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCut" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetCut_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCutResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetInput_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetInput" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetInput_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetInputResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetOutput_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetOutput" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetOutput_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetOutputResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetAxisInfo_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAxisInfo" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetAxisInfo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAxisInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetHost_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetHost" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetHost_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetHostResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetProcessingInfo_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetProcessingInfo" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetProcessingInfo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetProcessingInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetOutage_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetOutage" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetOutage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetOutageResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetUnknownCode_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUnknownCode" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetUnknownCode_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUnknownCodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetAPP_Struct_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAPP_Struct" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetAPP_Struct_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAPP_StructResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetAPPMonitorWork_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAPPMonitorWork" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetAPPMonitorWork_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAPPMonitorWorkResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetAPPMonitorMec_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAPPMonitorMec" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor_GetAPPMonitorMec_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAPPMonitorMecResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor__GetAPP_Struct_InputMessage">
+    <wsdl:part name="parameters" element="tns:_GetAPP_Struct" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor__GetAPP_Struct_OutputMessage">
+    <wsdl:part name="parameters" element="tns:_GetAPP_StructResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor__GetAPPMonitorWork_InputMessage">
+    <wsdl:part name="parameters" element="tns:_GetAPPMonitorWork" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor__GetAPPMonitorWork_OutputMessage">
+    <wsdl:part name="parameters" element="tns:_GetAPPMonitorWorkResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor__GetAPPMonitorMec_InputMessage">
+    <wsdl:part name="parameters" element="tns:_GetAPPMonitorMec" />
+  </wsdl:message>
+  <wsdl:message name="IReadMemor__GetAPPMonitorMec_OutputMessage">
+    <wsdl:part name="parameters" element="tns:_GetAPPMonitorMecResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IReadMemor">
+    <wsdl:documentation>
+      <summary>讀取 Codesys 共享記憶體的服務介面</summary>
+    </wsdl:documentation>
+    <wsdl:operation name="GetPanel">
+      <wsdl:documentation>
+        <summary>取得目前 Codesys 人機操控面板 IO 狀態</summary>
+        <returns>取得目前 Codesys 人機操控面板 IO 狀態</returns>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetPanel" message="tns:IReadMemor_GetPanel_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetPanelResponse" message="tns:IReadMemor_GetPanel_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDrillWarehouse">
+      <wsdl:documentation>
+        <summary>取得 Codesys 刀庫設定</summary>
+        <returns>用戶在 Codesys 設定的刀庫</returns>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetDrillWarehouse" message="tns:IReadMemor_GetDrillWarehouse_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetDrillWarehouseResponse" message="tns:IReadMemor_GetDrillWarehouse_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOill">
+      <wsdl:documentation>
+        <summary>取得 Codesys 油壓系統參數</summary>
+        <returns>用戶在 Codesys 設定的完整油壓系統參數</returns>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetOill" message="tns:IReadMemor_GetOill_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetOillResponse" message="tns:IReadMemor_GetOill_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetHydraulic">
+      <wsdl:documentation>
+        <summary>取得 Codesys 液壓油系統參數</summary>
+        <returns>用戶在 Codesys 設定的液壓油系統參數</returns>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetHydraulic" message="tns:IReadMemor_GetHydraulic_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetHydraulicResponse" message="tns:IReadMemor_GetHydraulic_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLubricant">
+      <wsdl:documentation>
+        <summary>取得 Codesys 潤滑油系統參數</summary>
+        <returns>用戶在 Codesys 設定的潤滑油系統參數</returns>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetLubricant" message="tns:IReadMemor_GetLubricant_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetLubricantResponse" message="tns:IReadMemor_GetLubricant_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCut">
+      <wsdl:documentation>
+        <summary>取得 Codesys 切削油系統參數</summary>
+        <returns>用戶在 Codesys 設定的切削油系統參數</returns>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetCut" message="tns:IReadMemor_GetCut_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetCutResponse" message="tns:IReadMemor_GetCut_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInput">
+      <wsdl:documentation>
+        <summary>取得 Input 訊號</summary>
+        <returns>目前 Codesys input 訊號</returns>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetInput" message="tns:IReadMemor_GetInput_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetInputResponse" message="tns:IReadMemor_GetInput_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOutput">
+      <wsdl:documentation>
+        <summary>取得 Output 訊號</summary>
+        <returns>目前 Codesys Output 訊號</returns>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetOutput" message="tns:IReadMemor_GetOutput_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetOutputResponse" message="tns:IReadMemor_GetOutput_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAxisInfo">
+      <wsdl:documentation>
+        <summary>取得目前 Codesys 軸向訊息</summary>
+        <returns>目前 Codesys 軸向訊息</returns>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetAxisInfo" message="tns:IReadMemor_GetAxisInfo_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetAxisInfoResponse" message="tns:IReadMemor_GetAxisInfo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetHost">
+      <wsdl:documentation>
+        <summary>取得 PC 與 Codesys 主機交握狀態</summary>
+        <returns>目前 PC 與 Codesys 主機交握狀態</returns>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetHost" message="tns:IReadMemor_GetHost_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetHostResponse" message="tns:IReadMemor_GetHost_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProcessingInfo">
+      <wsdl:documentation>
+        <summary>取得 Codesys 目前的工作清單列表</summary>
+        <returns>目前的工作清單列表</returns>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetProcessingInfo" message="tns:IReadMemor_GetProcessingInfo_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetProcessingInfoResponse" message="tns:IReadMemor_GetProcessingInfo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOutage">
+      <wsdl:documentation>
+        <summary>取得斷電保持數值</summary>
+        <returns>目前的斷電保持數值</returns>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetOutage" message="tns:IReadMemor_GetOutage_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetOutageResponse" message="tns:IReadMemor_GetOutage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUnknownCode">
+      <wsdl:documentation>
+        <summary>取得其他錯誤代碼</summary>
+        <returns>文字錯誤代碼</returns>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetUnknownCode" message="tns:IReadMemor_GetUnknownCode_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetUnknownCodeResponse" message="tns:IReadMemor_GetUnknownCode_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAPP_Struct">
+      <wsdl:documentation>
+        <summary>取得 APP 手動操作</summary>
+        <returns>取得 APP 手動操作</returns>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetAPP_Struct" message="tns:IReadMemor_GetAPP_Struct_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetAPP_StructResponse" message="tns:IReadMemor_GetAPP_Struct_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAPPMonitorWork">
+      <wsdl:documentation>
+        <summary>取得 APP 加工監控</summary>
+        <returns>APP 加工監控參數</returns>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetAPPMonitorWork" message="tns:IReadMemor_GetAPPMonitorWork_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetAPPMonitorWorkResponse" message="tns:IReadMemor_GetAPPMonitorWork_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAPPMonitorMec">
+      <wsdl:documentation>
+        <summary>取得 APP 及時監控</summary>
+        <returns>APP 及時監控參數</returns>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetAPPMonitorMec" message="tns:IReadMemor_GetAPPMonitorMec_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemor/IReadMemor/GetAPPMonitorMecResponse" message="tns:IReadMemor_GetAPPMonitorMec_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="_GetAPP_Struct">
+      <wsdl:documentation>
+        <summary>取得 APP 手動操作</summary>
+        <returns>取得 APP 手動操作</returns>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemor/IReadMemor/_GetAPP_Struct" message="tns:IReadMemor__GetAPP_Struct_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemor/IReadMemor/_GetAPP_StructResponse" message="tns:IReadMemor__GetAPP_Struct_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="_GetAPPMonitorWork">
+      <wsdl:documentation>
+        <summary>取得 APP 加工監控</summary>
+        <returns>APP 加工監控參數</returns>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemor/IReadMemor/_GetAPPMonitorWork" message="tns:IReadMemor__GetAPPMonitorWork_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemor/IReadMemor/_GetAPPMonitorWorkResponse" message="tns:IReadMemor__GetAPPMonitorWork_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="_GetAPPMonitorMec">
+      <wsdl:documentation>
+        <summary>取得 APP 及時監控</summary>
+        <returns>APP 及時監控參數</returns>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.ReadMemor/IReadMemor/_GetAPPMonitorMec" message="tns:IReadMemor__GetAPPMonitorMec_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.ReadMemor/IReadMemor/_GetAPPMonitorMecResponse" message="tns:IReadMemor__GetAPPMonitorMec_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

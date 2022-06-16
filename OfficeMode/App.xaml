@@ -1,0 +1,42 @@
+﻿<Application x:Class="OfficeMode.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:OfficeMode"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/STD_105;component/LanguagePackages/TW.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/STD_105;component/Styles/Fonts.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/STD_105;component/Styles/Colours.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/STD_105;component/Styles/Buttons.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/STD_105;component/Styles/texts.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/STD_105;component/Styles/Colours.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/STD_105;component/Styles/Images.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/STD_105;component/Styles/Comboxs.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/STD_105;component/Styles/TabControl.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/STD_105;component/Styles/Const.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/STD_105;component/Styles/Drawings.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/STD_105;component/Styles/CheckBoxs.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/STD_105;component/Styles/GroupBoxs.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/STD_105;component/Styles/Borders.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/STD_105;component/Styles/TreeViews.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/STD_105;component/Styles/DefaultScrollBar.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/STD_105;component/Styles/DataGrids.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/STD_105;component/Styles/Sliders.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/STD_105;component/Styles/ProgressBars.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.ComboBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Thumb.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

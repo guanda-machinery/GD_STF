@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://Codesys.WriteMemor" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://Codesys.WriteMemor" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://Codesys.WriteMemor/Imports">
+      <xsd:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd7" namespace="http://Codesys.WriteMemor" />
+      <xsd:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd0" namespace="http://Codesys.Memor" />
+      <xsd:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/GD_STD" />
+      <xsd:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/GD_STD.Enum" />
+      <xsd:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd4" namespace="http://Codesys.ReadMemor" />
+      <xsd:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/GD_STD.Phone" />
+      <xsd:import schemaLocation="http://192.168.31.137:820/CodesysIIS/Memor.svc?xsd=xsd6" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IWriteMemor_SetPanel_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetPanel" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetPanel_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetPanelResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetDrillWarehouse_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetDrillWarehouse" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetDrillWarehouse_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetDrillWarehouseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetOill_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetOill" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetOill_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetOillResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetHydraulic_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetHydraulic" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetHydraulic_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetHydraulicResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetLubricant_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetLubricant" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetLubricant_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetLubricantResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetCut_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetCut" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetCut_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetCutResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetHost_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetHost" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetHost_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetHostResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetProcessingInfo_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetProcessingInfo" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetProcessingInfo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetProcessingInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetOutage_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetOutage" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetOutage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetOutageResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetMPG_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetMPG" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetMPG_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetMPGResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetAPPStruct_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetAPPStruct" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetAPPStruct_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetAPPStructResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetAPPMonitorWork_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetAPPMonitorWork" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetAPPMonitorWork_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetAPPMonitorWorkResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetAPPMonitorMec_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetAPPMonitorMec" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor_SetAPPMonitorMec_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetAPPMonitorMecResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor__SetAPPStruct_InputMessage">
+    <wsdl:part name="parameters" element="tns:_SetAPPStruct" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor__SetAPPStruct_OutputMessage">
+    <wsdl:part name="parameters" element="tns:_SetAPPStructResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor__SetAPPMonitorWork_InputMessage">
+    <wsdl:part name="parameters" element="tns:_SetAPPMonitorWork" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor__SetAPPMonitorWork_OutputMessage">
+    <wsdl:part name="parameters" element="tns:_SetAPPMonitorWorkResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor__SetAPPMonitorMec_InputMessage">
+    <wsdl:part name="parameters" element="tns:_SetAPPMonitorMec" />
+  </wsdl:message>
+  <wsdl:message name="IWriteMemor__SetAPPMonitorMec_OutputMessage">
+    <wsdl:part name="parameters" element="tns:_SetAPPMonitorMecResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IWriteMemor">
+    <wsdl:documentation>
+      <summary>寫入 Codesys 共享記憶體的服務介面</summary>
+    </wsdl:documentation>
+    <wsdl:operation name="SetPanel">
+      <wsdl:documentation>
+        <summary>修改 Codesys 修改人機操控面板按 IO 狀態</summary>
+        <param name="value">要修改的值</param>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetPanel" message="tns:IWriteMemor_SetPanel_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetPanelResponse" message="tns:IWriteMemor_SetPanel_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetDrillWarehouse">
+      <wsdl:documentation>
+        <summary>修改 Codesys 刀庫設定</summary>
+        <param name="value">要修改的值</param>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetDrillWarehouse" message="tns:IWriteMemor_SetDrillWarehouse_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetDrillWarehouseResponse" message="tns:IWriteMemor_SetDrillWarehouse_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetOill">
+      <wsdl:documentation>
+        <summary>修改 Codesys 完整油壓系統設定</summary>
+        <param name="value">要修改的值</param>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetOill" message="tns:IWriteMemor_SetOill_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetOillResponse" message="tns:IWriteMemor_SetOill_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetHydraulic">
+      <wsdl:documentation>
+        <summary>修改 Codesys 液壓油系統參數</summary>
+        <param name="value">要修改的值</param>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetHydraulic" message="tns:IWriteMemor_SetHydraulic_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetHydraulicResponse" message="tns:IWriteMemor_SetHydraulic_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetLubricant">
+      <wsdl:documentation>
+        <summary>修改 Codesys 潤滑油系統參數</summary>
+        <param name="value">要修改的值</param>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetLubricant" message="tns:IWriteMemor_SetLubricant_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetLubricantResponse" message="tns:IWriteMemor_SetLubricant_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetCut">
+      <wsdl:documentation>
+        <summary>修改 Codesys 切削油系統參數</summary>
+        <param name="value">要修改的值</param>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetCut" message="tns:IWriteMemor_SetCut_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetCutResponse" message="tns:IWriteMemor_SetCut_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetHost">
+      <wsdl:documentation>
+        <summary>修改 PC 主機狀態</summary>
+        <param name="value">要修改的值</param>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetHost" message="tns:IWriteMemor_SetHost_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetHostResponse" message="tns:IWriteMemor_SetHost_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetProcessingInfo">
+      <wsdl:documentation>
+        <summary>存取工作清單列表 To Codesys</summary>
+        <param name="value">要加工的清單列表</param>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetProcessingInfo" message="tns:IWriteMemor_SetProcessingInfo_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetProcessingInfoResponse" message="tns:IWriteMemor_SetProcessingInfo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetOutage">
+      <wsdl:documentation>
+        <summary>修改 Codesys 斷電保持數值</summary>
+        <param name="value">修改 Codesys 斷電保持數值</param>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetOutage" message="tns:IWriteMemor_SetOutage_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetOutageResponse" message="tns:IWriteMemor_SetOutage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetMPG">
+      <wsdl:documentation>
+        <summary>修改 Codesys 手搖輪參數</summary>
+        <param name="value">修改 Codesys 手搖輪參數</param>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetMPG" message="tns:IWriteMemor_SetMPG_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetMPGResponse" message="tns:IWriteMemor_SetMPG_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetAPPStruct">
+      <wsdl:documentation>
+        <summary>修改 APP 手動操作</summary>
+        <param name="value">修改 APP 手動操作參數</param>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetAPPStruct" message="tns:IWriteMemor_SetAPPStruct_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetAPPStructResponse" message="tns:IWriteMemor_SetAPPStruct_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetAPPMonitorWork">
+      <wsdl:documentation>
+        <summary>修改 APP 加工監控參數</summary>
+        <param name="value">修改 APP 加工監控參數</param>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetAPPMonitorWork" message="tns:IWriteMemor_SetAPPMonitorWork_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetAPPMonitorWorkResponse" message="tns:IWriteMemor_SetAPPMonitorWork_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetAPPMonitorMec">
+      <wsdl:documentation>
+        <summary>修改 APP 及時監控參數</summary>
+        <param name="value">修改 APP 及時監控參數</param>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetAPPMonitorMec" message="tns:IWriteMemor_SetAPPMonitorMec_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/SetAPPMonitorMecResponse" message="tns:IWriteMemor_SetAPPMonitorMec_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="_SetAPPStruct">
+      <wsdl:documentation>
+        <summary>修改 APP 手動操作</summary>
+        <param name="value">修改 APP 手動操作參數</param>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/_SetAPPStruct" message="tns:IWriteMemor__SetAPPStruct_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/_SetAPPStructResponse" message="tns:IWriteMemor__SetAPPStruct_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="_SetAPPMonitorWork">
+      <wsdl:documentation>
+        <summary>修改 APP 加工監控參數</summary>
+        <param name="value">修改 APP 加工監控參數</param>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/_SetAPPMonitorWork" message="tns:IWriteMemor__SetAPPMonitorWork_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/_SetAPPMonitorWorkResponse" message="tns:IWriteMemor__SetAPPMonitorWork_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="_SetAPPMonitorMec">
+      <wsdl:documentation>
+        <summary>修改 APP 及時監控參數</summary>
+        <param name="value">修改 APP 及時監控參數</param>
+      </wsdl:documentation>
+      <wsdl:input wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/_SetAPPMonitorMec" message="tns:IWriteMemor__SetAPPMonitorMec_InputMessage" />
+      <wsdl:output wsaw:Action="http://Codesys.WriteMemor/IWriteMemor/_SetAPPMonitorMecResponse" message="tns:IWriteMemor__SetAPPMonitorMec_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

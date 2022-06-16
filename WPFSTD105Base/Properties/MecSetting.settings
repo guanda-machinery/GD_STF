@@ -1,0 +1,273 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WPFSTD105.Properties" GeneratedClassName="MecSetting">
+  <Profiles />
+  <Settings>
+    <Setting Name="LeftMeasuringPosition" Type="System.String" Scope="User">
+      <Value Profile="(Default)">50,514.2,530.51</Value>
+    </Setting>
+    <Setting Name="MiddleMeasuringPosition" Type="System.String" Scope="User">
+      <Value Profile="(Default)">50,350,413.23</Value>
+    </Setting>
+    <Setting Name="RighMeasuringPosition" Type="System.String" Scope="User">
+      <Value Profile="(Default)">50,511.22,431.69</Value>
+    </Setting>
+    <Setting Name="LeftTotalLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1698.427</Value>
+    </Setting>
+    <Setting Name="MiddleTotalLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1003.772</Value>
+    </Setting>
+    <Setting Name="RighTotalLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">549.105</Value>
+    </Setting>
+    <Setting Name="HandMaterialCorrectionWorkRange" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">2.5</Value>
+    </Setting>
+    <Setting Name="HandMaterialZeroToWorkRange" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1248</Value>
+    </Setting>
+    <Setting Name="HandJobLimit" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">9140</Value>
+    </Setting>
+    <Setting Name="HandOutClampToZeroLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">45</Value>
+    </Setting>
+    <Setting Name="ClampDownEntranceL" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">519.46</Value>
+    </Setting>
+    <Setting Name="ClampDownExportL" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">519.3</Value>
+    </Setting>
+    <Setting Name="ClampDownEntranceR" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">520.82</Value>
+    </Setting>
+    <Setting Name="ClampDownExportR" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">517.46</Value>
+    </Setting>
+    <Setting Name="SideClampEntranceL" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1083.35</Value>
+    </Setting>
+    <Setting Name="SideClampExportL" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1083.4</Value>
+    </Setting>
+    <Setting Name="LeftEntranceDrillSetting" Type="System.String" Scope="User">
+      <Value Profile="(Default)">(290.1,312.99,192.65,319.8)(290.1,219.88,192.88,321.8)(290.1,125.32,192.88,321.8)(290.1,26.94,193,318.75)</Value>
+    </Setting>
+    <Setting Name="LeftExportDrillSetting" Type="System.String" Scope="User">
+      <Value Profile="(Default)">(9.05,312.37,191.68,320.3)(9.35,219.04,191.68,319.1)(9.05,122.41,191.68,320.4)(9.05,28.9,191.68,319.4)</Value>
+    </Setting>
+    <Setting Name="MiddleDrillSetting" Type="System.String" Scope="User">
+      <Value Profile="(Default)">(307.87,150,112.26,-115.4)(227.7,150,112.65,-115.66)(147.57,150,112.65,-115.57)(66.72,150,112.4,-116.36)(-12.5,150,112.4,-115.92)</Value>
+    </Setting>
+    <Setting Name="RightEntranceDrillSetting" Type="System.String" Scope="User">
+      <Value Profile="(Default)">(289.86,312.57,126.26,269.7)(289.23,220.63,126.72,267.6)(289.45,123.23,126.72,269.9)(288.83,29.97,127.19,268)</Value>
+    </Setting>
+    <Setting Name="RightExportDrillSetting" Type="System.String" Scope="User">
+      <Value Profile="(Default)">(10.54,312.68,126.96,268.8)(10.2,218.67,126.96,269.7)(10.39,123.55,126.96,269.7)(10.06,29.7,126.96,270.6)</Value>
+    </Setting>
+    <Setting Name="HMI" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Company" Type="System.String" Scope="User">
+      <Value Profile="(Default)">GUANDA</Value>
+    </Setting>
+    <Setting Name="ClampDownThickness" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">9999999</Value>
+    </Setting>
+    <Setting Name="HandSpeed" Type="System.Int16" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="Deserialize" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="InTotalLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">615.2</Value>
+    </Setting>
+    <Setting Name="OutTotalLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">576</Value>
+    </Setting>
+    <Setting Name="Length" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">2290</Value>
+    </Setting>
+    <Setting Name="VerticalToOriginLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">2250</Value>
+    </Setting>
+    <Setting Name="ArmInDownWingSensorToForntLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1800</Value>
+    </Setting>
+    <Setting Name="ArmInDownCheckPosition" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">50</Value>
+    </Setting>
+    <Setting Name="ArmXToOriginPoint" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">9292</Value>
+    </Setting>
+    <Setting Name="ArmInTouchOriginLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">830</Value>
+    </Setting>
+    <Setting Name="VerticalGrippingXLimit" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">10328</Value>
+    </Setting>
+    <Setting Name="SafeTouchLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="EntranceVehicle_Length" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1100</Value>
+    </Setting>
+    <Setting Name="EntranceVehicle_Raised_Length" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">25</Value>
+    </Setting>
+    <Setting Name="EntranceVehicle_Origin_To_Location_Point_Length" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">60</Value>
+    </Setting>
+    <Setting Name="EntranceTraverse_Sort_Total_Length" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">2355</Value>
+    </Setting>
+    <Setting Name="EntranceIn_Traverse_Limit_Total_Length" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">3530</Value>
+    </Setting>
+    <Setting Name="EntranceSort_Traverse_Correction" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="EntranceTo_ArmSide_Traverse_Correction" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">-20</Value>
+    </Setting>
+    <Setting Name="EntranceTraverseResolution" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.1</Value>
+    </Setting>
+    <Setting Name="ExportTraverseResolution" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.1</Value>
+    </Setting>
+    <Setting Name="ExportVehicle_Length" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="ExportVehicle_Raised_Length" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="ExportVehicle_Origin_To_Location_Point_Length" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="ExportIn_Traverse_Limit_Total_Length" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="ExportSort_Traverse_Correction" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="ExportTo_ArmSide_Traverse_Correction" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="MiddleAxisTorque" Type="System.Int16" Scope="User">
+      <Value Profile="(Default)">350</Value>
+    </Setting>
+    <Setting Name="RighAxisTorque" Type="System.Int16" Scope="User">
+      <Value Profile="(Default)">80</Value>
+    </Setting>
+    <Setting Name="LeftAxisTorque" Type="System.Int16" Scope="User">
+      <Value Profile="(Default)">80</Value>
+    </Setting>
+    <Setting Name="ThroughLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">7</Value>
+    </Setting>
+    <Setting Name="RankStratLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="RankEndLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">7</Value>
+    </Setting>
+    <Setting Name="TouchMUL" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.8</Value>
+    </Setting>
+    <Setting Name="EndMUL" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.8</Value>
+    </Setting>
+    <Setting Name="AllowDrillTolerance" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">2.5</Value>
+    </Setting>
+    <Setting Name="ArmInDownBellySensorToForntLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">99999</Value>
+    </Setting>
+    <Setting Name="ArmFeedOriginToOutUpRoll" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">99999</Value>
+    </Setting>
+    <Setting Name="WingSensorHigh" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">99999</Value>
+    </Setting>
+    <Setting Name="BellySensorHigh" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">99999</Value>
+    </Setting>
+    <Setting Name="Entrance_SafetyGap" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">60</Value>
+    </Setting>
+    <Setting Name="ExportTraverse_Sort_Total_Length" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="ConveyorPosition" Type="System.String" Scope="User">
+      <Value Profile="(Default)">100,100,100,100</Value>
+    </Setting>
+    <Setting Name="HandSlowToOriginLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">170</Value>
+    </Setting>
+    <Setting Name="DrillProtectionX" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">35</Value>
+    </Setting>
+    <Setting Name="DrillProtectionLRY" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="DrillProtectionMY" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">40</Value>
+    </Setting>
+    <Setting Name="OtherProtectionX" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="OtherProtectionLRY" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="OtherProtectionMY" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">40</Value>
+    </Setting>
+    <Setting Name="StrWidth" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">12</Value>
+    </Setting>
+    <Setting Name="LeftYAxisLimit" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">520</Value>
+    </Setting>
+    <Setting Name="RightYAxisLimit" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">520</Value>
+    </Setting>
+    <Setting Name="MiddleYAxisLimit" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+    <Setting Name="LeftOriginToSideLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">500</Value>
+    </Setting>
+    <Setting Name="RightOriginToSideLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">500</Value>
+    </Setting>
+    <Setting Name="MiddleOriginToSideLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">500</Value>
+    </Setting>
+    <Setting Name="HandXLimit" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">10655</Value>
+    </Setting>
+    <Setting Name="HandArmInZSafeLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">80</Value>
+    </Setting>
+    <Setting Name="HandArmOutZSafeLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">60</Value>
+    </Setting>
+    <Setting Name="HandFeedSlowDownPointTotalLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1100</Value>
+    </Setting>
+    <Setting Name="MZOriginToDownBlockHeight" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">600</Value>
+    </Setting>
+    <Setting Name="MZOriginToPillarHeight" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">700</Value>
+    </Setting>
+    <Setting Name="MYSafeLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">300</Value>
+    </Setting>
+    <Setting Name="MRZSafeLength" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">505</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net46</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PhoneLibrary\GD_STD.Phone.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="GD_STD.Base">
+      <HintPath>bin\Debug\net46\GD_STD.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="GD_STD.Enum">
+      <HintPath>bin\Debug\net46\GD_STD.Enum.dll</HintPath>
+    </Reference>
+    <Reference Include="GD_STD.Phone">
+      <HintPath>bin\Debug\net46\GD_STD.Phone.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

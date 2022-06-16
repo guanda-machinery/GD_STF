@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3EFFA436-F171-45E9-B999-50690A7E2A2B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>GD_STF</RootNamespace>
+    <AssemblyName>GD_STF</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Presentation" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DrillSetting.cs" />
+    <Compile Include="DrillWarehouse.cs" />
+    <Compile Include="DRILL_TYPE.cs" />
+    <Compile Include="IBinaryData.cs" />
+    <Compile Include="ILine.cs" />
+    <Compile Include="IPainted.cs" />
+    <Compile Include="ISharedMemory.cs" />
+    <Compile Include="KEY_HOLE.cs" />
+    <Compile Include="Axis2D.cs" />
+    <Compile Include="Axis3D.cs" />
+    <Compile Include="PanelButtom.cs" />
+    <Compile Include="ProcessingInfo.cs" />
+    <Compile Include="AxisPosition.cs" />
+    <Compile Include="AXIS_MODE.cs" />
+    <Compile Include="Drill.cs" />
+    <Compile Include="IAxis2D.cs" />
+    <Compile Include="IAxis3D.cs" />
+    <Compile Include="IAxisInfo.cs" />
+    <Compile Include="IJob.cs" />
+    <Compile Include="IPart.cs" />
+    <Compile Include="IProfile.cs" />
+    <Compile Include="JobInfo.cs" />
+    <Compile Include="PROFILE_TYPE.cs" />
+    <Compile Include="SerializationHelper.cs" />
+    <Compile Include="SingleAxisInfo.cs" />
+    <Compile Include="MemoryHelper.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

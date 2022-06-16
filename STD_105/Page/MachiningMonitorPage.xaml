@@ -1,0 +1,548 @@
+﻿<WPFBase:BasePage x:Class="STD_105.MachiningMonitorPage"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:STD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
+                  xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+                  xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+                  xmlns:WPFSTD="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:ddes="http://schemas.devdept.com/winfx/2008/xaml/control"
+                  xmlns:ddgr="http://schemas.devdept.com/winfx/2008/xaml/graphics"
+                  xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                  xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+                  xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                  xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                  xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+                  xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+                  xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                  xmlns:local="clr-namespace:STD_105"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:spa="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+                  xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
+                  Title="加工監控"
+                  d:DesignHeight="1049"
+                  d:DesignWidth="800"
+                  x:TypeArguments="STD105VM:ProcessingMonitorVM"
+                  KeepAlive="True"
+                  Unloaded="BasePage_Unloaded"
+                  mc:Ignorable="d">
+    <Grid Margin="5">
+        <Grid.Resources>
+            <Style TargetType="GroupBox"
+                   BasedOn="{StaticResource gbx_WithBorder}">
+                <Setter Property="HorizontalAlignment"
+                        Value="Center" />
+            </Style>
+            <Style TargetType="dxg:RowControl">
+                <Style.Triggers>
+                    <Trigger Property="SelectionState"
+                             Value="None">
+                        <Setter Property="Background"
+                                Value="{Binding Row.Position, Converter={local:RowValueToBackgroundConverter}}" />
+                        <Setter Property="Foreground"
+                                Value="{Binding Row.Position, Converter={local:RowValueToForegroundConverter}}" />
+                    </Trigger>
+                    <Trigger Property="dxg:GridViewBase.IsFocusedRow"
+                             Value="True">
+                        <Setter Property="Background"
+                                Value="{Binding Row.Position, Converter={local:RowValueToBackgroundConverter}}" />
+                        <Setter Property="Foreground"
+                                Value="{ StaticResource solidclr_DarkGray }" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.3*" />
+            <RowDefinition Height="5" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <!--  3D圖形  -->
+        <Grid Grid.RowSpan="3"
+              Panel.ZIndex="10000"
+              Visibility="{Binding ThreeDimensionalDisplayControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+            <GroupBox Header="3D視圖"
+                      Style="{StaticResource gbx_WithBorder}">
+                <spa:ModelExt x:Name="model"
+                              ActionMode="{Binding ActionMode}"
+                              AntiAliasingSamples="x16"
+                              AutoRefresh="True"
+                              DefaultColor="Beige"
+                              Focusable="True"
+                              Loaded="model_Loaded"
+                              Renderer="NativeExperimental"
+                              SelectionColor="{Binding Setting.SelectionColor, Converter={local:StringToDrawingColoConverter}}"
+                              ShowFps="True">
+                    <spa:ModelExt.ContextMenu>
+                        <ContextMenu FontSize="12"
+                                     Style="{StaticResource BaseStyle}">
+                            <MenuItem Name="esc"
+                                      Command="{Binding Esc}"
+                                      Header="取消"
+                                      Style="{StaticResource BaseStyle}" />
+                            <MenuItem Command="{Binding ZoomWindow}"
+                                      Header="放大選取範圍"
+                                      Style="{StaticResource BaseStyle}" />
+                            <MenuItem Command="{Binding Zoom}"
+                                      Header="縮放"
+                                      Style="{StaticResource BaseStyle}" />
+                            <MenuItem Command="{Binding Rotate}"
+                                      Header="旋轉"
+                                      Style="{StaticResource BaseStyle}" />
+                            <MenuItem Command="{Binding Pan}"
+                                      Header="平移"
+                                      Style="{StaticResource BaseStyle}" />
+                            <MenuItem Name="edit"
+                                      Command="{Binding EditObject}"
+                                      Header="編輯已選擇"
+                                      Style="{StaticResource BaseStyle}"
+                                      Visibility="Collapsed" />
+                            <MenuItem x:Name="delete"
+                                      Command="{Binding Delete}"
+                                      Header="刪除已選擇"
+                                      Style="{StaticResource BaseStyle}"
+                                      Visibility="Collapsed" />
+                            <MenuItem Command="{Binding ClearDim}"
+                                      CommandParameter="{Binding ElementName=model}"
+                                      Header="清除標註"
+                                      Style="{StaticResource BaseStyle}" />
+                            <MenuItem Command="{Binding Recovery}"
+                                      Header="恢復上一個動作"
+                                      Style="{StaticResource BaseStyle}" />
+                            <MenuItem Command="{Binding Recovery}"
+                                      Header="恢復下一個動作"
+                                      Style="{StaticResource BaseStyle}" />
+                        </ContextMenu>
+                    </spa:ModelExt.ContextMenu>
+                    <ddes:Model.ProgressBar>
+                        <ddes:ProgressBar Lighting="False" />
+                    </ddes:Model.ProgressBar>
+                    <ddes:Model.Viewports>
+                        <ddes:Viewport DisplayMode="Flat"
+                                       InitialView="vcFrontFaceTopLeft"
+                                       OriginSymbols="{Binding OriginSymbols}"
+                                       SmallSizeRatio="0.001">
+                            <ddes:Viewport.Background>
+                                <ddgr:BackgroundSettings StyleMode="Solid"
+                                                         TopColor="{StaticResource solidclr_LightGray}" />
+                            </ddes:Viewport.Background>
+                            <ddes:Viewport.CoordinateSystemIcon>
+                                <ddes:CoordinateSystemIcon ArrowColorX="{Binding Setting.ArrowColorX, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                                           ArrowColorY="{Binding Setting.ArrowColorY, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                                           ArrowColorZ="{Binding Setting.ArrowColorZ, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                                           Lighting="True" />
+                            </ddes:Viewport.CoordinateSystemIcon>
+                            <ddes:Viewport.Camera>
+                                <ddes:Camera Distance="380"
+                                             ProjectionMode="Orthographic"
+                                             Target="0, 0, 45"
+                                             ZoomFactor="2" />
+                            </ddes:Viewport.Camera>
+                            <ddes:Viewport.Rotate>
+                                <ddes:RotateSettings RotationCenter="CursorLocation" />
+                            </ddes:Viewport.Rotate>
+                            <ddes:Viewport.ToolBars>
+                                <ddes:ToolBar>
+                                    <ddes:ToolBar.Buttons>
+                                        <ddes:HomeToolBarButton />
+                                        <ddes:ZoomWindowToolBarButton />
+                                        <ddes:ZoomToolBarButton />
+                                        <ddes:PanToolBarButton />
+                                        <ddes:RotateToolBarButton />
+                                        <ddes:ZoomFitToolBarButton />
+                                    </ddes:ToolBar.Buttons>
+                                </ddes:ToolBar>
+                            </ddes:Viewport.ToolBars>
+                            <ddes:Viewport.ViewCubeIcon>
+                                <ddes:ViewCubeIcon BackColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                                   BackRingColor="White"
+                                                   BackRingLabel="北"
+                                                   BottomColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                                   FrontColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                                   FrontRingColor="White"
+                                                   FrontRingLabel="南"
+                                                   LeftColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                                   LeftRingColor="White"
+                                                   LeftRingLabel="西"
+                                                   Lighting="True"
+                                                   RightColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                                   RightRingColor="White"
+                                                   RightRingLabel="東"
+                                                   TopColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}" />
+                            </ddes:Viewport.ViewCubeIcon>
+                        </ddes:Viewport>
+                    </ddes:Model.Viewports>
+                </spa:ModelExt>
+            </GroupBox>
+            <!--  啟動3D追隨 ButtonClick="PowerButton1_ButtonClick"  -->
+            <local:PowerButton1 Width="200"
+                                Margin="20"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                ButtonText="啟動"
+                                ToolTip="啟動3D追隨"
+                                Visibility="Collapsed" />
+            <!--  關閉區域  -->
+            <Button Margin="5"
+                    Background="{StaticResource solidclr_DimGray}"
+                    Command="{Binding Display3DViewerCommand}"
+                    Style="{StaticResource btn_CloseIcon_STD}">
+                <Image Width="25"
+                       Height="25"
+                       Source="{StaticResource Cross_Red}" />
+            </Button>
+        </Grid>
+        <!--  加工組合件料表  -->
+        <Grid HorizontalAlignment="Stretch">
+            <GroupBox HorizontalAlignment="Stretch"
+                      Header="{StaticResource LANGUAGE_ProcessingAssemblyList}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="5" />
+                        <ColumnDefinition Width="180" />
+                    </Grid.ColumnDefinitions>
+                    <dxlc:ScrollBox Style="{ StaticResource sbx_STD }">
+                        <dxg:GridControl x:Name="Material"
+                                         MaxWidth="800"
+                                         MaxHeight="10000"
+                                         dx:ThemeManager.ThemeName="Office2019DarkGray"
+                                         AutoGenerateColumns="None"
+                                         EnableSmartColumnsGeneration="True"
+                                         ItemsSource="{Binding UndoneDataView}"
+                                         SelectedItem="{Binding SelectedItem}">
+                            <dxg:GridControl.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Command="{Binding AddCommand}"
+                                              CommandParameter="{Binding SelectedItem, ElementName=Material}"
+                                              Header="加入任務" />
+                                    <MenuItem Command="{Binding DeleteCommand}"
+                                              CommandParameter="{Binding SelectedItem, ElementName=Material}"
+                                              Header="移除任務" />
+                                    <MenuItem Command="{Binding FinishCommand}"
+                                              CommandParameter="{Binding SelectedItem}"
+                                              Header="完成" />
+                                    <MenuItem Header="插單" />
+                                </ContextMenu>
+                            </dxg:GridControl.ContextMenu>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectedItemChanged">
+                                    <i:InvokeCommandAction Command="{Binding SelectedItemChangedCommand}"
+                                                           CommandParameter="{Binding SelectedItem, ElementName=Material}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <dxg:GridControl.View>
+                                <dxg:TableView AllowEditing="False"
+                                               AllowFixedColumnMenu="True"
+                                               EnableImmediatePosting="True" />
+                            </dxg:GridControl.View>
+                            <dxg:GridControl.Columns>
+                                <dxg:GridColumn FieldName="MaterialNumber"
+                                                Width="Auto"
+                                                Header="素材編號" />
+                                <dxg:GridColumn FieldName="Profile"
+                                                Width="Auto"
+                                                Header="斷面規格" />
+                                <dxg:GridColumn Binding="{Binding Parts, Converter={local:ConverterAssemblyNumber}}"
+                                                Width="160"
+                                                Header="構件編號" />
+                                <dxg:GridColumn Binding="{Binding Parts, Converter={local:ConverterToPartNumber}}"
+                                                Width="160"
+                                                Header="零件編號" />
+                                <dxg:GridColumn Binding="{Binding Position}"
+                                                Width="100"
+                                                Header="位置" />
+                                <dxg:GridColumn Binding="{Binding Schedule}"
+                                                Width="70"
+                                                Header="進度(%)" />
+                            </dxg:GridControl.Columns>
+                        </dxg:GridControl>
+                    </dxlc:ScrollBox>
+                    <!--  顯示3D  -->
+                    <Button Grid.Column="2"
+                            Command="{Binding Display3DViewerCommand}"
+                            Style="{StaticResource btn_Display3D}">
+                        <Image Width="50"
+                               Source="{StaticResource 3DViewer}" />
+                    </Button>
+                    <StackPanel Grid.Column="2"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom">
+                        <Button Content="刪單"
+                                Style="{StaticResource btn_CommonFunctionKey_STD}" />
+                        <Button Content="取消配對"
+                                Style="{StaticResource btn_CommonFunctionKey_STD}" />
+                        <!--  專案續接  -->
+                        <local:PowerButton1 Width="175"
+                                            Height="175"
+                                            ButtonCommand="{Binding ContinueCommand}"
+                                            ButtonText="續接"
+                                            ToolTip="專案續接" />
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+        </Grid>
+        <!--組合件過濾器
+                        <GroupBox Header="{ StaticResource LANGUAGE_AssemblyFilter }" FontSize="{ Binding ParameterFontSize, Source={ x:Static  SofSetting:SofSetting.Default} }" wpf:ColorZoneAssist.Mode="Dark">
+                            <GroupBox.Resources>
+                                <Style TargetType="ScrollViewer" BasedOn="{ StaticResource scrollviewer_STD }"/>
+                            </GroupBox.Resources>
+                            <TreeView Grid.Column="0" Style="{ StaticResource tree_Main }" HorizontalAlignment="Stretch">
+                                <TreeViewItem Header="{ StaticResource LANGUAGE_SectionFormat }">
+                                    <TextBlock Text="H型鋼(SN490B)"/>
+                                    <TextBlock Text="槽鋼CH"/>
+                                    <TextBlock Text="方管&amp;扁管"/>
+                                </TreeViewItem>
+                            </TreeView>
+                        </GroupBox>
+                        <DataGrid Style="{ StaticResource dataGrid_STD }" Margin="5,0,0,0">
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGridColumnHeader" BasedOn="{ StaticResource dataGridColumnHeader_STD }">
+                                </Style>
+                                <Style TargetType="DataGridCell" BasedOn="{ StaticResource dataGridCell_STD }">
+                                </Style>
+                            </DataGrid.Resources>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="1*" Header="{ StaticResource LANGUAGE_Items }"/>
+                                <DataGridTextColumn Width="1*" Header="{ StaticResource LANGUAGE_ProcessingNumber }"/>
+                                <DataGridTextColumn Width="1*" Header="{ StaticResource LANGUAGE_Quantity }"/>
+                                <DataGridTextColumn Width="1*" Header="已完成(%)"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+        -->
+        <!--加工中料表
+                <StackPanel Grid.Column="2">
+                    <GroupBox  Height="Auto" Header="{StaticResource LANGUAGE_ProcessingList}">
+                        <dxlc:ScrollBox>
+                            <dxlc:ScrollBox.VerticalScrollBarStyle>
+                                <Style TargetType="ScrollBar" BasedOn="{ StaticResource VerticalScrollBar_STD }"/>
+                            </dxlc:ScrollBox.VerticalScrollBarStyle>
+                            <dxlc:ScrollBox.HorizontalScrollBarStyle>
+                                <Style TargetType="ScrollBar" BasedOn="{ StaticResource HorizontalScrollBar_STD }"/>
+                            </dxlc:ScrollBox.HorizontalScrollBarStyle>
+                            <dxg:GridControl
+                            MaxHeight="10000"
+                        dx:ThemeManager.ThemeName="VS2019Dark"
+                        AutoGenerateColumns="None"
+                        ItemsSource="{Binding Path=SelectedItem.Parts, ElementName=Material}">
+                                <dxg:GridControl.View>
+                                    <dxg:TableView />
+                                </dxg:GridControl.View>
+                                <dxg:GridControl.Columns>
+                                    <dxg:GridColumn
+                                Width="120"
+                                FieldName="PartNumber"
+                                Header="{StaticResource LANGUAGE_PartsNumber}" />
+                                    <dxg:GridColumn Width="80" Header="完成進度" />
+                                </dxg:GridControl.Columns>
+                            </dxg:GridControl>
+                        </dxlc:ScrollBox>
+                    </GroupBox>
+                </StackPanel>-->
+        <!--  加工完成列表  -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="180" />
+            </Grid.ColumnDefinitions>
+            <GroupBox HorizontalAlignment="Stretch"
+                      Header="加工完成列表">
+                <dxlc:ScrollBox Style="{StaticResource sbx_STD}">
+                    <dxg:GridControl Name="Finish"
+                                     MaxHeight="10000"
+                                     dx:ThemeManager.ThemeName="Office2019DarkGray"
+                                     AutoGenerateColumns="None"
+                                     EnableSmartColumnsGeneration="True"
+                                     ItemsSource="{Binding FinishDataViews}"
+                                     SelectedItem="{Binding __SelectedItem}">
+                        <dxg:GridControl.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="{Binding AddCommand}"
+                                          CommandParameter="{Binding SelectedItem, ElementName=Material}"
+                                          Header="加入任務" />
+                                <MenuItem Command="{Binding DeleteCommand}"
+                                          CommandParameter="{Binding SelectedItem, ElementName=Material}"
+                                          Header="移除任務" />
+                                <MenuItem Command="{Binding FinishCommand}"
+                                          CommandParameter="{Binding __SelectedItem}"
+                                          Header="完成" />
+                                <MenuItem Header="插單" />
+                            </ContextMenu>
+                        </dxg:GridControl.ContextMenu>
+                        <dxg:GridControl.View>
+                            <dxg:TableView AllowEditing="False" />
+                        </dxg:GridControl.View>
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn FieldName="MaterialNumber"
+                                            Width="Auto"
+                                            Header="素材編號" />
+                            <dxg:GridColumn FieldName="Profile"
+                                            Width="Auto"
+                                            Header="斷面規格" />
+                            <dxg:GridColumn Binding="{Binding Parts, Converter={local:ConverterAssemblyNumber}}"
+                                            Width="160"
+                                            Header="構件編號" />
+                            <dxg:GridColumn Binding="{Binding Parts, Converter={local:ConverterToPartNumber}}"
+                                            Width="160"
+                                            Header="零件編號" />
+                            <dxg:GridColumn Binding="{Binding Position}"
+                                            Width="100"
+                                            Header="位置" />
+                        </dxg:GridControl.Columns>
+                    </dxg:GridControl>
+                </dxlc:ScrollBox>
+            </GroupBox>
+            <Grid Grid.Column="2"
+                  HorizontalAlignment="Stretch">
+                <!--  加工設定  -->
+                <StackPanel>
+                    <GroupBox HorizontalAlignment="Stretch"
+                              Header="加工設定">
+                        <StackPanel>
+                            <StackPanel.Resources>
+                                <Style BasedOn="{StaticResource tbx_BlueUnderline}"
+                                       TargetType="TextBox">
+                                    <Setter Property="VerticalAlignment"
+                                            Value="Center" />
+                                    <Setter Property="Grid.Column"
+                                            Value="1" />
+                                    <Setter Property="IsReadOnly"
+                                            Value="True" />
+                                </Style>
+                                <Style BasedOn="{StaticResource lab_Description}"
+                                       TargetType="Label">
+                                    <Setter Property="HorizontalAlignment"
+                                            Value="Left" />
+                                    <Setter Property="VerticalAlignment"
+                                            Value="Center" />
+                                    <Setter Property="Margin"
+                                            Value="5" />
+                                </Style>
+                                <Style BasedOn="{StaticResource bor_LightThinLine}"
+                                       TargetType="Border">
+                                    <Setter Property="Margin"
+                                            Value="0,0,0,5" />
+                                    <Setter Property="Background"
+                                            Value="{StaticResource solidclr_DimGray}" />
+                                    <Setter Property="Height"
+                                            Value="32" />
+                                    <Setter Property="Grid.ColumnSpan"
+                                            Value="2" />
+                                </Style>
+                            </StackPanel.Resources>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Border />
+                                <Label Content="目前加工索引" />
+                                <TextBox Grid.Column="1"
+                                         Text="{Binding Current}" />
+                            </Grid>
+                            <!--<Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.7*"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Border />
+                            <Label Content="{StaticResource LANGUAGE_LeftSpindleStartFrom}" />
+                            <TextBox Text="第一孔(預設)" />
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.7*"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Border />
+                            <Label Content="{StaticResource LANGUAGE_TopSpindleStartFrom}" />
+                            <TextBox Text="第一孔(預設)" />
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.7*"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Border />
+                            <Label Content="{StaticResource LANGUAGE_RightSpindleStartFrom}" />
+                            <TextBox Text="第一孔(預設)" />
+                        </Grid>-->
+                            <local:AssembledControl3 LabelText="{StaticResource LANGUAGE_TestPoint}" />
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+                <Button Content="呼叫出口台車"
+                        Width="160"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Style="{ StaticResource btn_CommonFunctionKey_STD }" />
+                <!--  呼叫台車  -->
+                <local:PowerButton1 Grid.Row="1"
+                                    Width="175"
+                                    Height="175"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    ButtonCommand="{Binding CallCarCommand}"
+                                    ButtonText="召喚"
+                                    ToolTip="呼叫台車" />
+            </Grid>
+        </Grid>
+        <!--參數設定
+            <GroupBox Header="參數設定" Width="300" Height="300" Margin="0,5">
+                <dxlc:ScrollBox>
+                    <dxlc:ScrollBox.VerticalScrollBarStyle>
+                        <Style TargetType="ScrollBar" BasedOn="{ StaticResource VerticalScrollBar_STD }"/>
+                    </dxlc:ScrollBox.VerticalScrollBarStyle>
+                    <dxlc:ScrollBox.HorizontalScrollBarStyle>
+                        <Style TargetType="ScrollBar" BasedOn="{ StaticResource HorizontalScrollBar_STD }"/>
+                    </dxlc:ScrollBox.HorizontalScrollBarStyle>
+                    <StackPanel>
+                        <StackPanel.Resources>
+                            <Style TargetType="local:AssembledControl3">
+                                <Setter Property="Width" Value="200"/>
+                                <Setter Property="Margin" Value="0,0,0,5" />
+                            </Style>
+                        </StackPanel.Resources>
+                        <local:AssembledControl3 LabelText="{StaticResource LANGUAGE_TestPoint}" />
+                        <local:AssembledControl3 LabelText="{StaticResource LANGUAGE_Tap}" />
+                        <local:AssembledControl3 LabelText="{StaticResource LANGUAGE_Lettering}" />
+                        <local:AssembledControl3 LabelText="{StaticResource LANGUAGE_Milling}" />
+                        <local:AssembledControl3 LabelText="{StaticResource LANGUAGE_Mark}" />
+                        <local:AssembledControl3 LabelText="{StaticResource LANGUAGE_AutoFeed}" />
+                        <local:AssembledControl3 LabelText="{StaticResource LANGUAGE_AutoToolChanging}" />
+                        <local:AssembledControl3 LabelText="{StaticResource LANGUAGE_Mapping}" />
+                    </StackPanel>
+                </dxlc:ScrollBox>
+            </GroupBox>
+                <DataGrid Style="{ StaticResource datagrid_Main }">
+                    <DataGrid.Resources>
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{ StaticResource datagrid_Header }">
+                        </Style>
+                        <Style TargetType="DataGridCell" BasedOn="{ StaticResource datagrid_Cell }"/>
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="1.5*" Header="構件編號" EditingElementStyle="{ StaticResource tbx_BlueUnderline }"/>
+                        <DataGridTextColumn Width="1.5*" Header="零件編號" EditingElementStyle="{ StaticResource tbx_BlueUnderline }"/>
+                        <DataGridTextColumn Width="1*" Header="數量" EditingElementStyle="{ StaticResource tbx_BlueUnderline }"/>
+                        <DataGridCheckBoxColumn Width="1*" Header="鑽孔"/>
+                        <DataGridCheckBoxColumn Width="1*" Header="鋸台"/>
+                        <DataGridCheckBoxColumn Width="1*" Header="铣床"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <dxg:GridControl dx:ThemeManager.ThemeName="Office2019Black">
+                    <dxg:GridControl.View>
+                        <dxg:TableView>
+                        </dxg:TableView>
+                    </dxg:GridControl.View>
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn Header="構件編號" Width="120"/>
+                        <dxg:GridColumn Header="零件編號" Width="120"/>
+                        <dxg:GridColumn Header="數量" Width="60"/>
+                        <dxg:GridColumn Header="鑽孔" Width="40"/>
+                        <dxg:GridColumn Header="鋸台" Width="120"/>
+                        <dxg:GridColumn Header="铣床" Width="80"/>
+                    </dxg:GridControl.Columns>
+                </dxg:GridControl>-->
+    </Grid>
+</WPFBase:BasePage>

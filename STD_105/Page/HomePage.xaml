@@ -1,0 +1,111 @@
+﻿<WPFBase:BasePage x:Class="STD_105.HomePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:STD_105"
+      xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes" 
+      xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+      xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+      mc:Ignorable="d" 
+      xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+      d:DesignHeight="1049" d:DesignWidth="800"
+      Title="HomePage">
+    <WPFBase:BasePage.Resources>
+        <Style TargetType="GroupBox" BasedOn="{ StaticResource gbx_WithBorder }">
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="local:AssembledControl4">
+            <Setter Property="Margin" Value="3"/>
+        </Style>
+    </WPFBase:BasePage.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <!--左軸-->
+            <GroupBox Grid.Row="0" x:Name="group1" Header="{ StaticResource LANGUAGE_LeftSpindle }">
+                <StackPanel>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_L-XSpindle }" RightText="{ Binding ApplicationViewModel.AxisInfo.Left.X, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_L-YSpindle }" RightText="{ Binding ApplicationViewModel.AxisInfo.Left.Y, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_L-ZSpindle }" RightText="{ Binding ApplicationViewModel.AxisInfo.Left.Z, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_SpindleRPM }" RightText="{ Binding ApplicationViewModel.AxisInfo.Left.Rpm, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="進給率" RightText="{ Binding ApplicationViewModel.AxisInfo.Left.ZFeed, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="電流" RightText="{ Binding ApplicationViewModel.AxisInfo.Left.SpindleCurrent, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="扭力" RightText="{ Binding ApplicationViewModel.AxisInfo.Left.Torque, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                </StackPanel>
+            </GroupBox>
+            <!--中軸-->
+            <GroupBox Grid.Row="1" x:Name="group2" Header="{ StaticResource LANGUAGE_TopSpindle }">
+                <StackPanel>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_O-XSpindle }" RightText="{ Binding ApplicationViewModel.AxisInfo.Middle.X, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_O-YSpindle }" RightText="{ Binding ApplicationViewModel.AxisInfo.Middle.Y, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_O-ZSpindle }" RightText="{ Binding ApplicationViewModel.AxisInfo.Middle.Z, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_SpindleRPM }" RightText="{ Binding ApplicationViewModel.AxisInfo.Middle.Rpm, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="進給率" RightText="{ Binding ApplicationViewModel.AxisInfo.Middle.ZFeed, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="電流" RightText="{ Binding ApplicationViewModel.AxisInfo.Middle.SpindleCurrent, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="扭力" RightText="{ Binding ApplicationViewModel.AxisInfo.Middle.Torque, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                </StackPanel>
+            </GroupBox>
+            <!--右軸-->
+            <GroupBox Grid.Row="2" x:Name="group3" Header="{ StaticResource LANGUAGE_RightSpindle }">
+                <StackPanel>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_R-XSpindle }" RightText="{ Binding ApplicationViewModel.AxisInfo.Right.X, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_R-YSpindle }" RightText="{ Binding ApplicationViewModel.AxisInfo.Right.Y, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_R-ZSpindle }" RightText="{ Binding ApplicationViewModel.AxisInfo.Right.Z, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_SpindleRPM }" RightText="{ Binding ApplicationViewModel.AxisInfo.Right.Rpm, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="進給率" RightText="{ Binding ApplicationViewModel.AxisInfo.Right.ZFeed, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="電流" RightText="{ Binding ApplicationViewModel.AxisInfo.Right.SpindleCurrent, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="扭力" RightText="{ Binding ApplicationViewModel.AxisInfo.Right.Torque, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <!--送料手臂-->
+            <GroupBox Grid.Row="2" x:Name="group4" Header="{ StaticResource LANGUAGE_FeedingArm }">
+                <StackPanel>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_A-XSpindle }" RightText="{ Binding ApplicationViewModel.AxisInfo.Hand.X, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_A-YSpindle }" RightText="{ Binding ApplicationViewModel.AxisInfo.Hand.Y, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_A-ZSpindle }" RightText="{ Binding ApplicationViewModel.AxisInfo.Hand.Z, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                </StackPanel>
+            </GroupBox>
+            <!--材料位置-->
+            <GroupBox Grid.Row="3" x:Name="group5" Header="{ StaticResource LANGUAGE_MaterialPosition }" Visibility="Collapsed">
+                <StackPanel>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_MaterialLength }" RightText="{ Binding ApplicationViewModel.AxisInfo.Material.Length, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_Postition }" RightText="{ Binding ApplicationViewModel.AxisInfo.Material.Current, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_UnexceutedDistance }" RightText="{ Binding ApplicationViewModel.AxisInfo.Material.NotPerformed, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                </StackPanel>
+            </GroupBox>
+            <!--夾具下壓-->
+            <GroupBox Grid.Row="0" x:Name="group6" Header="{ StaticResource LANGUAGE_FixtureDownPressure }">
+                <StackPanel>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_FeedRight }" RightText="{ Binding ApplicationViewModel.AxisInfo.ClampDown.EntranceL, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_FeedLeft }" RightText="{ Binding ApplicationViewModel.AxisInfo.ClampDown.EntranceR, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_OutLeft }" RightText="{ Binding ApplicationViewModel.AxisInfo.ClampDown.ExportL, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_OutRight }" RightText="{ Binding ApplicationViewModel.AxisInfo.ClampDown.ExportR, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                </StackPanel>
+            </GroupBox>
+            <!--夾具側壓-->
+            <GroupBox Grid.Row="1" x:Name="group7" Header="{ StaticResource LANGUAGE_FixureSidePressure }">
+                <StackPanel>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_FeedLeft }" RightText="{ Binding ApplicationViewModel.AxisInfo.SideClamp.EntranceL, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                    <local:AssembledControl4 LeftText="{ StaticResource LANGUAGE_OutLeft }" RightText="{ Binding ApplicationViewModel.AxisInfo.SideClamp.ExportL, StringFormat={}{0:F2}, Source={x:Static WPFSTD:ViewLocator.Instance} }" ReadOnly="True"/>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</WPFBase:BasePage>

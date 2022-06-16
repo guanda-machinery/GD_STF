@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="OfficeMode.CircularSectorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OfficeMode"
+             mc:Ignorable="d">
+    <Grid x:Name="mainGrid" MouseEnter="MainGrid_MouseEnter" MouseLeave="MainGrid_MouseLeave">
+        <Path x:Name="sectorPath" Data="M 200,200 0,200 A 200,200 0 0 1 58.6,58.6z" Fill="Black"/>
+        <Image x:Name="img" Source="{ StaticResource Logo }" Stretch="Fill" Width="40" Height="40" HorizontalAlignment="Left" Margin="34,0,0,7" VerticalAlignment="Bottom">
+            <Image.RenderTransform>
+                <RotateTransform Angle="-67.5"/>
+            </Image.RenderTransform>
+        </Image>
+    </Grid>
+</UserControl>

@@ -1,0 +1,32 @@
+﻿<WPFBase:BasePage x:Class="STD_105.Office.BOMSettings_Office"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:STD_105.Office"
+      xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+      xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"            
+      mc:Ignorable="d"
+      Title="BOMSettings">
+
+    <StackPanel>
+        <StackPanel.Resources>
+            <WPFSTD:PopupWindowsVM x:Key="popupVM"/>
+        </StackPanel.Resources>
+        <GroupBox Header="BOM表屬性" Style="{ StaticResource gbxParameter }" Margin="5">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <DataGrid ItemsSource="{ Binding CommonViewModel.ImportNCFilesVM.BomProperties , Source={x:Static WPFSTD:ViewLocator.Instance}}" AutoGenerateColumns="False" CanUserAddRows="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="型鋼TYPE" Binding="{Binding Type}" IsReadOnly="True"/>
+                        <DataGridCheckBoxColumn Header="採購報表" Binding="{Binding Purchase}"/>
+                        <DataGridCheckBoxColumn Header="加工報表" Binding="{Binding Working}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ScrollViewer>
+        </GroupBox>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="儲存" Width="100" Height="40" Style="{ StaticResource btn_FunctionKey7 }" Command="{ Binding }" DataContext="{ StaticResource popupVM }" Margin="10"/>
+            <Button Content="取消" Width="100" Height="40" Style="{ StaticResource btn_FunctionKey7 }" Command="{ Binding ChildClose }" Margin="10"/>
+        </StackPanel>
+    </StackPanel>
+</WPFBase:BasePage>

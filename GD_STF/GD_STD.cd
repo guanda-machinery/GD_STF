@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GD_STD.Attribute.AbsCustomAttribute" Collapsed="true">
+    <Position X="9.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Attribute\AbsCustomAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Attribute.AttributeHelper" Collapsed="true">
+    <Position X="16.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Attribute\AttributeHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Attribute.CodesysAttribute" Collapsed="true">
+    <Position X="11.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAABAA=</HashCode>
+      <FileName>Attribute\CodesysAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Attribute.MSFieldAttribute" Collapsed="true">
+    <Position X="7.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Attribute\MSFieldAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.Attribute.MSTableAttribute" Collapsed="true">
+    <Position X="9.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Attribute\MSTableAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.MS.AbsMS" Collapsed="true">
+    <Position X="10.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAABAAAAAAQAAQAABAAAAAA=</HashCode>
+      <FileName>MS\AbsMS.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GD_STD.MS.MSAxisMain" Collapsed="true">
+    <Position X="11.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgQQAAAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MS\MSAxisMain.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.MS.MSIO" Collapsed="true">
+    <Position X="7.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MS\MSIO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.MS.MSRuler" Collapsed="true">
+    <Position X="9.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>MS\MSRuler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.MS.MSServoAxis" Collapsed="true">
+    <Position X="14" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAACAQBAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MS\MSServoAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.CompletedAsyncResult&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAEAAAAAAAABAQAAAQAAAAAAA=</HashCode>
+      <FileName>CompletedAsyncResult.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GD_STD.DrillBrand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AaCAAAAgAAAAAAAgBAAAAAQCIAEABQAQACEAEAGCIAA=</HashCode>
+      <FileName>DrillBrand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GD_STD.DrillBrands" Collapsed="true">
+    <Position X="21.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DrillBrand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.DrillWarehouse" Collapsed="true">
+    <Position X="7" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AggAAAAAAAAAACAAAgAAAAAAAAAAAAAAAAAQAACAAAA=</HashCode>
+      <FileName>DrillWarehouse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.MemoryHelper" Collapsed="true">
+    <Position X="16.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIgIAiAABGUABAAAIACQgAwEIAAuAAIAEAAMAJCAogg=</HashCode>
+      <FileName>MemoryHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.OillSystem" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AoACABAQAgAAAAAAAAAAAAAAAACAAIAAAAAAAAAAEwA=</HashCode>
+      <FileName>OillSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GD_STD.PCSharedMemory" Collapsed="true">
+    <Position X="20" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PCSharedMemory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.SerializationHelper" Collapsed="true">
+    <Position X="21.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SerializationHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.SerializationHelper&lt;T&gt;" Collapsed="true">
+    <Position X="7" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SerializationHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.ServerError" Collapsed="true">
+    <Position X="16.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>ServerError.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GD_STD.ServerLogHelper" Collapsed="true">
+    <Position X="18.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAQIAAAAAAAQAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ServerLogHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="GD_STD.AndroidTest" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAgAAAAAAAAAAAAAAAAAAAQAwA=</HashCode>
+      <FileName>AndroidTest.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.AxisInfo" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAACAAAAAAEAAAAAAEAAAAAAAACACQAAAAAwA=</HashCode>
+      <FileName>AxisInfo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.ClampDown" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>ClampDown.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.CutOilSystem" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CutOilSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Host" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAQAiARAAAAAAAAAAAAAAAEAABAAAAAAEAABAgAAwA=</HashCode>
+      <FileName>Host.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.HydraulicSystem" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAIAAACAAAAAAAAAAAAABABAAEAACAAAAA=</HashCode>
+      <FileName>HydraulicSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Input" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>4IdAFgBmSR9HCEFkAIOAwkhMgKAN0BIiUKfiSB+Zfwg=</HashCode>
+      <FileName>Input.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.LubricantSystem" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>lubricantSystem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.MainAxisLocation" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACACQAAAAAwA=</HashCode>
+      <FileName>MainAxisLocation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Material" Collapsed="true">
+    <Position X="20" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAAABAAAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Material.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="GD_STD.MPG" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAQAAIAAAAAAAAAAAAAAAAwA=</HashCode>
+      <FileName>MPG.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Outage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAACACQAAAAAwA=</HashCode>
+      <FileName>Outage.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.Output" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KUQrBEOECCAAEEUoGAITTQxMyEAXCoXQcAYIrBIEQSQ=</HashCode>
+      <FileName>Output.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.PanelButton" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQBAAQAACCQQAAQAUAGAQAwUAAQECABQIAZChAhAAwY=</HashCode>
+      <FileName>PanelButton.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.AxisAction" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAQCAABAAAA=</HashCode>
+      <FileName>SelectAxisAction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="GD_STD.SingleAxisInfo" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAIAAAAAAAAAAAIAAACAAAAAAAQAAAAAAAAAAAYAE=</HashCode>
+      <FileName>SingleAxisInfo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Interface Name="GD_STD.MS.IMS" Collapsed="true">
+    <Position X="16.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>MS\IMS.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Microsoft JhengHei UI" Size="9" />
+</ClassDiagram>

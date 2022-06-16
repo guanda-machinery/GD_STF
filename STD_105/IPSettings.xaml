@@ -1,0 +1,45 @@
+﻿<Window x:Class="STD_105.IPSettings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Setting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:STD_105"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="IP設定"
+        Topmost="True"
+        Width="400"
+        Height="200"
+        WindowStartupLocation="Manual"
+        WindowStyle="None"
+        mc:Ignorable="d">
+    <Border CornerRadius="5"
+            Background="{StaticResource solidclr_CreamyWhite}">
+        <Grid>
+            <Grid.Resources>
+                <Style BasedOn="{StaticResource tbk_Title}"
+                       TargetType="TextBlock" />
+                <Style BasedOn="{StaticResource tbx_BlueUnderline}"
+                       TargetType="TextBox" />
+            </Grid.Resources>          
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition  Height="1.5*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Address："
+                       Foreground="{ StaticResource solidclr_Gray }" 
+                       Margin="5"/>
+            <TextBox Grid.Row="1"
+                     Text="{Binding Address, Source={x:Static Setting:SofSetting.Default}}"
+                     FontSize="20"
+                     Foreground="{ StaticResource solidclr_DimGray }" 
+                     Margin="10"/>
+            <Button Grid.Row="2"
+                    Content="確定"
+                    HorizontalAlignment="Right"
+                    Style="{ StaticResource btn_CommonFunctionKey_STD }"
+                    PreviewMouseLeftButtonDown="Button_PreviewMouseLeftButtonDown_1" 
+                    Margin="10"/>
+        </Grid>
+    </Border>
+</Window>

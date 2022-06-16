@@ -1,0 +1,811 @@
+﻿<WPFBase:BasePage  x:TypeArguments="STD105VM:ObSettingVM"  x:Class="STD_105.ObSettingPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:STD_105"
+      mc:Ignorable="d" 
+      xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+      xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes" 
+      xmlns:STD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
+      xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+      xmlns:ddes="http://schemas.devdept.com/winfx/2008/xaml/control"
+      xmlns:ddgr="http://schemas.devdept.com/winfx/2008/xaml/graphics" 
+      d:DesignHeight="1160" d:DesignWidth="755"
+      xmlns:spa="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+      Title="ObSetting"
+      Unloaded="BasePage_Unloaded">
+    <WPFBase:BasePage.Resources>
+        <ResourceDictionary>
+            <!--厚度-->
+            <Style x:Key="bro" TargetType="{x:Type Border}">
+                <Setter Property="Margin" Value="-5"/>
+                <Setter Property="BorderThickness" Value="5,0,5,5"/>
+                <Setter Property="BorderBrush" Value="#ff303030"/>
+            </Style>
+            <!--間距-->
+            <Style x:Key="broPanle" TargetType="{x:Type Border}">
+                <Setter Property="BorderThickness" Value="10,10,10,0"/>
+            </Style>
+            <Style x:Key="boRow" TargetType="{x:Type Border}">
+                <Style.Setters>
+                    <Setter Property="Margin" Value="1"/>
+                    <Setter Property="Width" Value="100"/>
+                </Style.Setters>
+            </Style>
+            <local:OBJECT_TYPE_ToStringConverter x:Key="obType"/>
+            <!--<local:MATERIAL_ToStringConverter x:Key="Material"/>-->
+            <local:FACE_ToStringConverter x:Key="Face"/>
+            <local:START_HOLE_ToStringConverter x:Key="StartHole"/>
+        </ResourceDictionary>
+    </WPFBase:BasePage.Resources>
+    <!--頁面框架-->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{StaticResource StandardPitch}"/>
+            <ColumnDefinition />
+            <ColumnDefinition Width="{StaticResource StandardPitch}"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="{StaticResource StandardPitch}"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid
+            Grid.Row="1"
+            Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="300" />
+                <RowDefinition Height="10"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <!--繪圖顯示模型-->
+            <TabControl Name="tabControl"
+                SelectionChanged="TabControlSelectedIndexChanged"
+                Style="{StaticResource styleTabControl}" >
+                <TabItem Header="3D視圖" 
+                         FontSize="20"
+                         Style="{StaticResource styleTabItemDefault}">
+                    <Grid>
+                        <Border Style="{StaticResource bro}"/>
+                        <!--新增3D模型處-->
+                        <spa:ModelExt
+                            SelectionChanged="model_SelectionChanged"
+                            Loaded="Model3D_Loaded"
+                            Margin="0,-5,0,0"
+                            x:Name="model"
+                            AutoRefresh ="True"
+                            SelectionColor="{Binding Setting.SelectionColor, Converter={local:StringToDrawingColoConverter}}"
+                            ActionMode="{Binding ActionMode}" 
+                            DefaultColor="Beige" 
+                            KeyDown="model_KeyDown"
+                            PreviewMouseRightButtonDown="model_PreviewMouseRightButtonDown"
+                            Focusable="True" 
+                            AntiAliasingSamples="x16" 
+                            Renderer="NativeExperimental" 
+                            ShowFps="True">
+                            <spa:ModelExt.ContextMenu>
+                                <ContextMenu
+                                    Style="{StaticResource BaseStyle}"
+                                    FontSize="12">
+                                    <MenuItem Header="取消" 
+                                              Name="esc"
+                                              Style="{StaticResource BaseStyle}"
+                                              Command="{Binding Esc}"/>
+                                    <MenuItem Header="放大選取範圍" 
+                                              Style="{StaticResource BaseStyle}"
+                                              Command="{Binding ZoomWindow}"/>
+                                    <MenuItem Header="縮放"
+                                              Style="{StaticResource BaseStyle}"
+                                              Command="{Binding Zoom}"/>
+                                    <MenuItem Header="旋轉" 
+                                              Style="{StaticResource BaseStyle}"
+                                              Command="{Binding Rotate}"/>
+                                    <MenuItem Header="平移" 
+                              Style="{StaticResource BaseStyle}"
+                              Command="{Binding Pan}"/>
+                                    <MenuItem Header="編輯已選擇" 
+                              Name="edit"
+                              Style="{StaticResource BaseStyle}"
+                              Command="{Binding EditObject}"
+                              Visibility="Collapsed"/>
+                                    <MenuItem Header="刪除已選擇" 
+                              x:Name="delete"
+                              Style="{StaticResource BaseStyle}"
+                              Command="{Binding Delete}"
+                              Visibility="Collapsed"/>
+                                    <MenuItem Header="清除標註"
+                              Command="{Binding ClearDim}"
+                              CommandParameter="{Binding ElementName=model}"
+                              Style="{StaticResource BaseStyle}"/>
+                                    <MenuItem Header="恢復上一個動作"
+                              Command="{Binding Recovery}"
+                              Style="{StaticResource BaseStyle}"/>
+                                    <MenuItem Header="恢復下一個動作"
+                              Command="{Binding Recovery}"
+                              Style="{StaticResource BaseStyle}"/>
+                                </ContextMenu>
+                            </spa:ModelExt.ContextMenu>
+                            <ddes:Model.ProgressBar>
+                                <ddes:ProgressBar 
+                                    Lighting="False"/>
+                            </ddes:Model.ProgressBar>
+                            <ddes:Model.Viewports>
+                                <ddes:Viewport 
+                                    DisplayMode="Flat" 
+                                    InitialView="vcFrontFaceTopLeft"
+                                    OriginSymbols="{Binding OriginSymbols}"
+                                    SmallSizeRatio="0.001">
+                                    <ddes:Viewport.Background>
+                                        <ddgr:BackgroundSettings 
+                            StyleMode="Solid" 
+                            TopColor="#FF303030"/>
+                                    </ddes:Viewport.Background>
+                                    <ddes:Viewport.CoordinateSystemIcon>
+                                        <ddes:CoordinateSystemIcon 
+                            Lighting="True" 
+                            ArrowColorX="{Binding Setting.ArrowColorX, Converter={WPFBase:StringRGBToBrushConverter}}"
+                            ArrowColorY="{Binding Setting.ArrowColorY, Converter={WPFBase:StringRGBToBrushConverter}}"
+                            ArrowColorZ="{Binding Setting.ArrowColorZ, Converter={WPFBase:StringRGBToBrushConverter}}"/>
+                                    </ddes:Viewport.CoordinateSystemIcon>
+                                    <ddes:Viewport.Camera>
+                                        <ddes:Camera 
+                                            Distance="380" 
+                                            ProjectionMode="Orthographic" 
+                                            Target="0, 0, 45" 
+                                            ZoomFactor="2"/>
+                                    </ddes:Viewport.Camera>
+                                    <ddes:Viewport.Rotate>
+                                        <ddes:RotateSettings 
+                                            RotationCenter="CursorLocation"/>
+                                    </ddes:Viewport.Rotate>
+                                    <ddes:Viewport.ToolBars>
+                                        <ddes:ToolBar>
+                                            <ddes:ToolBar.Buttons>
+                                                <ddes:HomeToolBarButton/>
+                                                <ddes:ZoomWindowToolBarButton/>
+                                                <ddes:ZoomToolBarButton/>
+                                                <ddes:PanToolBarButton/>
+                                                <ddes:RotateToolBarButton/>
+                                                <ddes:ZoomFitToolBarButton/>
+                                                <ddes:ToolBarButton ToolTipText="線性標註"
+                                                                    Click="LinearDim"
+                                                                    StyleMode="PushButton"
+                                                                    Image="{Binding Source={StaticResource LinearDim},Converter={local:DrawingImageToBitmapSourceConverter}}"/>
+                                                <ddes:ToolBarButton ToolTipText="角度標註"
+                                                                    StyleMode="PushButton"
+                                                                    Image="{Binding Source={StaticResource AngleDim},Converter={local:DrawingImageToBitmapSourceConverter}}"/>
+                                                <ddes:ToolBarButton ToolTipText="絕對座標"
+                                                                    StyleMode="PushButton"
+                                                                    Image="{Binding Source={StaticResource AbsDim},Converter={local:DrawingImageToBitmapSourceConverter}}"/>
+                                            </ddes:ToolBar.Buttons>
+                                        </ddes:ToolBar>
+                                    </ddes:Viewport.ToolBars>
+                                    <ddes:Viewport.ViewCubeIcon>
+                                        <ddes:ViewCubeIcon Lighting="True"
+                                                           FrontColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                                           BackColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                                           TopColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                                           BottomColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                                           RightColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                                           LeftColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                                           BackRingLabel="北"
+                                                           FrontRingLabel="南"
+                                                           RightRingLabel="東"
+                                                           LeftRingLabel="西"
+                                                           LeftRingColor="White"
+                                                           RightRingColor="White"
+                                                           FrontRingColor="White"
+                                                           BackRingColor="White"/>
+                                    </ddes:Viewport.ViewCubeIcon>
+                                </ddes:Viewport>
+                            </ddes:Model.Viewports>
+                        </spa:ModelExt>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="2D視圖" 
+                FontSize="20"
+                Style="{StaticResource styleTabItemDefault}">
+                    <Grid>
+                        <Border Style="{StaticResource bro}"/>
+                        <spa:ModelExt
+                            SelectionChanged="model_SelectionChanged"
+                            Loaded="drawing_Loaded"
+                            Margin="0,-5,0,0"
+                            x:Name="drawing"
+                            AutoRefresh ="True"
+                            SelectionColor="{Binding Setting.SelectionColor, Converter={local:StringToDrawingColoConverter}}"
+                            ActionMode="{Binding ActionMode}" 
+                            DefaultColor="Beige" 
+                            KeyDown="model_KeyDown"
+                            PreviewMouseRightButtonDown="model_PreviewMouseRightButtonDown"
+                            Focusable="True" 
+                            AntiAliasingSamples="x16" 
+                            Renderer="NativeExperimental" 
+                            ShowFps="True">
+                            <spa:ModelExt.ContextMenu>
+                                <ContextMenu
+                                    Style="{StaticResource BaseStyle}"
+                                    FontSize="12">
+                                    <MenuItem Header="取消" 
+                                              Name="esc2D"
+                                              Style="{StaticResource BaseStyle}"
+                                              Command="{Binding Esc}"/>
+                                    <MenuItem Header="放大選取範圍" 
+                                              Style="{StaticResource BaseStyle}"
+                                              Command="{Binding ZoomWindow}"/>
+                                    <MenuItem Header="縮放"
+                                              Style="{StaticResource BaseStyle}"
+                                              Command="{Binding Zoom}"/>
+                                    <MenuItem Header="平移" 
+                              Style="{StaticResource BaseStyle}"
+                              Command="{Binding Pan}"/>
+                                    <MenuItem Header="編輯已選擇" 
+                              Name="edit2D"
+                              Style="{StaticResource BaseStyle}"
+                              Command="{Binding EditObject}"
+                              Visibility="Collapsed"/>
+                                    <MenuItem Header="刪除已選擇" 
+                              x:Name="delete2D"
+                              Style="{StaticResource BaseStyle}"
+                              Command="{Binding Delete}"
+                              Visibility="Collapsed"/>
+                                    <MenuItem Header="清除標註"
+                              Command="{Binding ClearDim}"
+                              Style="{StaticResource BaseStyle}"/>
+                                    <MenuItem Header="恢復上一個動作"
+                              Command="{Binding Recovery}"
+                              Style="{StaticResource BaseStyle}"/>
+                                    <MenuItem Header="恢復下一個動作"
+                              Command="{Binding Recovery}"
+                              Style="{StaticResource BaseStyle}"/>
+                                </ContextMenu>
+                            </spa:ModelExt.ContextMenu>
+                            <ddes:Model.ProgressBar>
+                                <ddes:ProgressBar Lighting="False"/>
+                            </ddes:Model.ProgressBar>
+                            <ddes:Model.Viewports>
+                                <ddes:Viewport 
+                                    DisplayMode="Flat" 
+                                    InitialView="Top"
+                                    OriginSymbols="{Binding OriginSymbols}">
+                                    <ddes:Viewport.Background>
+                                        <ddgr:BackgroundSettings 
+                                            StyleMode="Solid" 
+                                            TopColor="#FF303030"/>
+                                    </ddes:Viewport.Background>
+                                    <ddes:Viewport.Camera>
+                                        <ddes:Camera 
+                                            Distance="380" 
+                                            ProjectionMode="Orthographic" 
+                                            Target="0, 0, 45" 
+                                            ZoomFactor="2"/>
+                                    </ddes:Viewport.Camera>
+                                    <ddes:Viewport.Rotate>
+                                        <ddes:RotateSettings 
+                                            RotationCenter="CursorLocation"
+                                            Enabled="False"/>
+                                    </ddes:Viewport.Rotate>
+                                    <ddes:Viewport.ToolBars>
+                                        <ddes:ToolBar>
+                                            <ddes:ToolBar.Buttons>
+                                                <ddes:HomeToolBarButton/>
+                                                <ddes:ZoomWindowToolBarButton/>
+                                                <ddes:ZoomToolBarButton/>
+                                                <ddes:PanToolBarButton/>
+                                                <ddes:ZoomFitToolBarButton/>
+                                                <ddes:ToolBarButton ToolTipText="線性標註"
+                                                                    Click="LinearDim"
+                                                                    StyleMode="PushButton"
+                                                                    Image="{Binding Source={StaticResource LinearDim},Converter={local:DrawingImageToBitmapSourceConverter}}"/>
+                                                <ddes:ToolBarButton ToolTipText="角度標註"
+                                                                    Click="AngleDim"
+                                                                    StyleMode="PushButton"
+                                                                    Image="{Binding Source={StaticResource AngleDim},Converter={local:DrawingImageToBitmapSourceConverter}}"/>
+                                                <ddes:ToolBarButton ToolTipText="絕對座標"
+                                                                    StyleMode="PushButton"
+                                                                    Image="{Binding Source={StaticResource AbsDim},Converter={local:DrawingImageToBitmapSourceConverter}}"/>
+                                            </ddes:ToolBar.Buttons>
+                                        </ddes:ToolBar>
+                                    </ddes:Viewport.ToolBars>
+                                </ddes:Viewport>
+                            </ddes:Model.Viewports>
+                        </spa:ModelExt>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            <!--繪圖顯示模型-->
+
+            <!--物件設定與設定完成的物件列表-->
+            <Grid 
+                Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="0.7*"/>
+                </Grid.ColumnDefinitions>
+                <Border
+                    Style="{StaticResource bro}"
+                    BorderThickness="5"
+                    Margin="0" 
+                    Effect="{StaticResource buttEff}">
+                    <GroupBox Header="已建立的清單"
+                            FontFamily="{StaticResource Standard}"
+                            Foreground="White" 
+                            Background="Transparent" 
+                            BorderBrush="White"
+                            FontSize="14"
+                            Style="{DynamicResource MaterialDesignGroupBox}" 
+                            BorderThickness="0"
+                            wpf:ColorZoneAssist.Mode="Dark" Margin="-1">
+                        <Grid>
+                            <TreeView 
+                                Style="{StaticResource MaterialDesignTreeView}" 
+                                Foreground="White"
+                                FontSize="12"
+                                ItemsSource="{Binding TreeNode}"
+                                SelectedItemChanged="TreeView_SelectedItemChanged">
+                                <TreeView.Resources>
+                                    <Style TargetType="ScrollViewer" BasedOn="{ StaticResource for_Scrollviewer }"/>
+                                    <Style TargetType="TreeViewItem" BasedOn="{ StaticResource MaterialDesignTreeViewItem }"/>
+                                </TreeView.Resources>
+                                <TreeView.ItemTemplate>
+                                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                                        <TreeViewItem >
+                                            <TreeViewItem.Header>
+                                                <TextBlock Text="{Binding ItemName}" Height="20"/>
+                                            </TreeViewItem.Header>
+                                        </TreeViewItem>
+                                    </HierarchicalDataTemplate>
+                                </TreeView.ItemTemplate>
+                            </TreeView>
+                        </Grid>
+                    </GroupBox>
+                </Border>
+                <Border
+                    Grid.Column="2"
+                    Style="{StaticResource bro}"
+                    BorderThickness="5"
+                    Margin="0" 
+                    Effect="{StaticResource buttEff}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height ="0.8*"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <GroupBox 
+                            Margin="-1"
+                            Header="零件"
+                            FontFamily="{StaticResource Standard}"
+                            Foreground="White" 
+                            Background="Transparent" 
+                            BorderBrush="White"
+                            FontSize="14"
+                            Style="{DynamicResource MaterialDesignGroupBox}" 
+                            BorderThickness="0"
+                            wpf:ColorZoneAssist.Mode="Dark">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="5"/>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="5"/>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="40"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="零件編號 :" 
+                                           Grid.Row="0"
+                                           FontSize="10"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center" Margin="0,3,0,2"/>
+                                <TextBlock Text="零件材質 :" 
+                                           Grid.Row="0"
+                                           FontSize="10"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Margin="120,3,0,2"/>
+                                <TextBox Text="{Binding SteelAttr.PartNumber}"  
+                                         FontSize="10" 
+                                         Grid.Row="1" 
+                                         Style="{StaticResource texRow}" 
+                                         HorizontalAlignment="Left"
+                                         Width="100"
+                                         Name="partNumber" 
+                                         Margin="0,2"/>
+                                <ComboBox ItemsSource="{Binding Materials, Converter={local:MaterialToNameConverter}}" 
+                                          SelectedIndex ="{Binding MaterialIndex}"
+                                          Style="{StaticResource ComboBoxS}"
+                                          FontSize="10"
+                                          Grid.Row="1"
+                                          VerticalContentAlignment="Center"
+                                          HorizontalAlignment="Left"
+                                          Margin="120,2,0,2" 
+                                          Width="130"
+                                          Height="{Binding ActualHeight,ElementName=partNumber}"/>
+                                <TextBlock Text="斷面規格 :" 
+                                           Grid.Row="3"
+                                           FontSize="10"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center" Margin="0,3,0,2"/>
+                                <ComboBox ItemsSource="{Binding Source={StaticResource obType},Path=Strings}" 
+                                          Style="{StaticResource ComboBoxS}"
+                                          SelectedIndex ="{Binding ProfileType}"
+                                          FontSize="10"
+                                          Grid.Row="4"
+                                          VerticalContentAlignment="Center"
+                                          FontFamily="{StaticResource MaterialDesignFont}"
+                                          HorizontalAlignment="Left"
+                                          Width="100" 
+                                          Margin="0,3"/>
+                                <ComboBox ItemsSource="{Binding ProfileList}" 
+                                          SelectedIndex="{Binding ProfileIndex}"
+                                          DisplayMemberPath="Profile"
+                                          Name="profile"
+                                          Style="{StaticResource ComboBoxS}"
+                                          FontSize="10"
+                                          Grid.Row="4"
+                                          VerticalContentAlignment="Center"
+                                          HorizontalAlignment="Left"
+                                          Margin="100,3,0,3"
+                                          Width="150"/>
+                                <TextBlock Text="零件長度(mm) :"
+                                           FontSize="12"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Grid.Row="6" Margin="0,3,0,2"/>
+                                <TextBlock Text="零件數量 :"
+                                           FontSize="12"
+                                           Margin="120,3,0,2"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Grid.Row="6"/>
+                                <TextBox Text="{Binding SteelAttr.Length}"  
+                                         Name="length"
+                                         FontSize="12" 
+                                         Grid.Row="7" 
+                                         Style="{StaticResource texRow}" 
+                                         HorizontalAlignment="Left"
+                                         Width="100" 
+                                         Margin="0,2" />
+                                <TextBox Text="{Binding SteelAttr.Number}" 
+                                         Name="number"
+                                         Margin="120,2,0,2"
+                                         Grid.Row="7"
+                                         HorizontalAlignment="Left"
+                                         Style="{StaticResource texRow}" 
+                                         Height="{Binding ActualHeight,ElementName=partNumber}"
+                                         Width="130"/>
+                                <local:DataButton Grid.Row="8"
+                                                  DeleteVisibility="Collapsed"
+                                                  Height="30"
+                                                  Margin="0,0,5,5" 
+                                                  Read="{Binding ReadPart}"
+                                                  Add="{Binding AddPart}" 
+                                                  Modify="{Binding ModifyPart}"
+                                                  VerticalAlignment="Bottom" 
+                                                  HorizontalAlignment="Right" />
+                            </Grid>
+                        </GroupBox>
+                        <!--繪圖顯示模型-->
+                        <TabControl Grid.Row="1"
+                                    Margin="-1"
+                                    Style="{StaticResource BaseStyle}" Background="{x:Null}" BorderBrush="#FF303030">
+                            <TabItem Header="鑽孔" 
+                                     FontSize="14" 
+                                     Style="{StaticResource BaseStyle}" BorderBrush="#FF8D8080" >
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="5"/>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition Height="5"/>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition Height="5"/>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition Height="5"/>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition Height="5"/>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition Height="5"/>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <!--直徑設定-->
+                                    <CheckBox IsChecked="{Binding CheckDia}" 
+                                              Grid.Row="1" 
+                                              Content="直徑"
+                                              Style="{StaticResource Che}"/>
+                                    <TextBox Text="{Binding GroupBoltsAttr.Dia}" Grid.Row="1" 
+                                              Style="{StaticResource texRow}" 
+                                              FontSize="12"
+                                              Margin="63,2.5,0,2.5"    
+                                              HorizontalAlignment="Left" 
+                                              Width="60"/>
+                                    <ComboBox Grid.Row="1" 
+                                             SelectedIndex="{Binding AxisModeType}"
+                                              Style="{StaticResource ComboBoxS}" 
+                                              FontSize="12"
+                                              Margin="140,3,0,3"
+                                              HorizontalAlignment="Left" 
+                                              Width="114">
+                                        <ComboBoxItem Content="鑽孔"/>
+                                        <ComboBoxItem Content="打點"/>
+                                    </ComboBox>
+                                    <!--直徑設定-->
+                                    <!--孔的起始位置-->
+                                    <CheckBox IsChecked="{Binding CheckStartHole}" 
+                                              Grid.Row="3"
+                                              Style="{StaticResource Che}"/>
+                                    <ComboBox  SelectedIndex="{Binding StartHoleType}"
+                                               Grid.Row="3" 
+                                               ItemsSource="{Binding Source={StaticResource StartHole}, Path=Strings}"
+                                              Style="{StaticResource ComboBoxS}" 
+                                              FontSize="12"
+                                              Margin="30,2.5,0,2.5"
+                                              HorizontalAlignment="Left" 
+                                              Width="95"/>
+                                    <TextBlock Text="X" 
+                                               FontSize="12"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Margin="135,2.5,2.5,0"
+                                               Grid.Row="3" 
+                                               Foreground="White"/>
+                                    <TextBox Text="{Binding GroupBoltsAttr.X}" 
+                                             Grid.Row="3"
+                                             FontSize="12"
+                                             HorizontalAlignment="Left"
+                                             Margin="147,2,0,2" 
+                                             Width="50"
+                                             Style="{StaticResource texRow}"/>
+                                    <TextBlock Text="Y" 
+                                               FontSize="12"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Margin="210,2.5,2.5,0"
+                                               Grid.Row="3" 
+                                               Foreground="White"/>
+                                    <TextBox Text="{Binding StartY}" 
+                                             Grid.Row="3"
+                                             FontSize="12"
+                                             HorizontalAlignment="Left"
+                                             Margin="222,2,0,2" 
+                                             Width="50"
+                                             Style="{StaticResource texRow}"/>
+                                    <!--孔的起始位置-->
+                                    <!--水平數量-->
+                                    <CheckBox IsChecked="{Binding CheckX}" 
+                                              Grid.Row="5"
+                                              Content="水平向"
+                                              Style="{StaticResource Che}"/>
+                                    <TextBlock Text="數量" 
+                                               FontSize="12"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Margin="70,2.5,2.5,0"
+                                               Grid.Row="5" 
+                                               Foreground="White"/>
+                                    <TextBox Text="{Binding GroupBoltsAttr.xCount}" 
+                                             Grid.Row="5"
+                                             FontSize="12"
+                                             HorizontalAlignment="Left"
+                                             Margin="99,2.5,0,2.5" 
+                                             Width="50"
+                                             Style="{StaticResource texRow}"/>
+                                    <TextBlock Text="間距" 
+                                               FontSize="12"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Margin="165,2.5,2.5,0"
+                                               Grid.Row="5" 
+                                               Foreground="White"/>
+                                    <TextBox Text="{Binding GroupBoltsAttr.dX}" Grid.Row="5"
+                                             FontSize="12"
+                                             HorizontalAlignment="Left"
+                                             Margin="194,2.5,0,2.5" 
+                                             Width="78"
+                                             Style="{StaticResource texRow}"/>
+                                    <!--水平數量-->
+
+                                    <!--垂直數量-->
+                                    <CheckBox IsChecked="{Binding CheckY}" Grid.Row="7"
+                                              Content="垂直向"
+                                              Style="{StaticResource Che}"/>
+                                    <TextBlock Text="數量" 
+                                               FontSize="12"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Margin="70,2.5,2.5,0"
+                                               Grid.Row="7" 
+                                               Foreground="White"/>
+                                    <TextBox Text="{Binding GroupBoltsAttr.yCount}" 
+                                             Grid.Row="7"
+                                             FontSize="12"
+                                             HorizontalAlignment="Left"
+                                             Margin="99,2.5,0,2.5" 
+                                             Width="50"
+                                             Style="{StaticResource texRow}"/>
+                                    <TextBlock Text="間距" 
+                                               FontSize="12"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               Margin="165,2.5,2.5,0"
+                                               Grid.Row="7" 
+                                               Foreground="White"/>
+                                    <TextBox Text="{Binding GroupBoltsAttr.dY}" 
+                                             Grid.Row="7"
+                                             FontSize="12"
+                                             HorizontalAlignment="Left"
+                                             Margin="194,2.5,0,2.5" 
+                                             Width="78"
+                                             Style="{StaticResource texRow}"/>
+                                    <!--垂直數量-->
+                                    <!--選擇面-->
+                                    <CheckBox IsChecked="{Binding CheckFace}" 
+                                              Grid.Row="9"
+                                              Style="{StaticResource Che}"/>
+                                    <ComboBox Grid.Row="9" 
+                                              ItemsSource="{Binding Source={StaticResource Face},Path=Strings}"
+                                              SelectedIndex="{Binding BoltsFaceType}"
+                                              Style="{StaticResource ComboBoxS}" 
+                                              FontSize="12"
+                                              Margin="30,2.5,0,2.5"
+                                              HorizontalAlignment="Left" 
+                                              Width="95"/>
+                                    <!--選擇面-->
+                                    <!--鏡射-->
+                                    <Button Content="X軸鏡射" 
+                                            Grid.Row="11"
+                                            FontSize="12"
+                                            Width="80"
+                                            Height="Auto" 
+                                            Background="#FF303030"
+                                            HorizontalAlignment="Left"
+                                            Margin="79,2.5,0,2.5"
+                                            Command="{Binding MirrorX}"
+                                            BorderBrush="#FF303030"/>
+                                    <Button Content="Y軸鏡射" 
+                                            Grid.Row="11"
+                                            FontSize="12"
+                                            Width="80"
+                                            Height="Auto" 
+                                            Background="#FF303030"
+                                            HorizontalAlignment="Left"
+                                            Margin="174,2.5,0,2.5"
+                                            Command="{Binding MirrorY}"
+                                            BorderBrush="#FF303030"/>
+                                    <!--鏡射-->
+                                    <local:DataButton Grid.Row="12"
+                                                      Margin="30,29,5,10"
+                                                      Read="{Binding ReadHole}"
+                                                      Delete="{Binding DeleteHole}"
+                                                      Add="{Binding AddHole}"
+                                                      Modify="{Binding ModifyHole}"/>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="铣削" 
+                                     FontSize="14"
+                                     Style="{StaticResource BaseStyle}" >
+                            </TabItem>
+                            <TabItem Header="畫線" 
+                                     FontSize="14" 
+                                     Style="{StaticResource BaseStyle}"  >
+                            </TabItem>
+                            <TabItem Header="切割線" 
+                                     FontSize="14" 
+                                     Style="{StaticResource BaseStyle}">
+                                <Canvas Margin="0">
+                                    <ComboBox Style="{StaticResource ComboBoxS}"
+                                              FontSize="12" 
+                                              Width="94" 
+                                              Canvas.Left="96" 
+                                              Canvas.Top="109"
+                                              ItemsSource="{Binding Source={StaticResource Face},Path=Strings}"
+                                              SelectedIndex="{Binding CutFaceType}"/>
+                                    <Path 
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        x:Name="pa"
+                                        Data="M147.57261,23.44316 L236.3045,23.44316 236.3045,58.513851 z M140.147,6.3996129 L243.72928,6.3996129 M147.57261,0.49999999 L147.57261,20.166036 M236.67491,0.49999999 L236.67491,20.166036 M260.08409,17.756814 L260.08409,64.987999 M267.4995,23.363259 L242.7798,23.363259 M267.5,58.994403 L242.78027,58.994403 M120.4274,23.44316 L31.695509,23.44316 31.695509,58.513851 z M127.853,6.3996129 L24.27073,6.3996129 M120.4274,0.49999999 L120.4274,20.166036 M31.325098,0.49999999 L31.325098,20.166036 M7.9159134,17.756814 L7.9159134,64.987999 M0.50050692,23.363259 L25.220208,23.363259 M0.50000144,58.994403 L25.219735,58.994403 M147.57261,127.04484 L236.3045,127.04484 236.3045,91.974149 z M140.147,144.08839 L243.72928,144.08839 M147.57261,149.988 L147.57261,130.32196 M236.67491,149.988 L236.67491,130.32196 M260.08409,132.73119 L260.08409,85.500001 M267.4995,127.12474 L242.7798,127.12474 M267.5,91.493597 L242.78027,91.493597 M120.4274,127.04484 L31.695509,127.04484 31.695509,91.974149 z M127.853,144.08839 L24.27073,144.08839 M120.4274,149.988 L120.4274,130.32196 M31.325098,149.988 L31.325098,130.32196 M7.9159134,132.73119 L7.9159134,85.500001 M0.50050692,127.12474 L25.220208,127.12474 M0.50000144,91.493597 L25.219735,91.493597" 
+                                        Fill="#FF303030" 
+                                        Height="160" 
+                                        Canvas.Left="65" 
+                                        Stretch="Fill" 
+                                        Stroke="#FF303030" 
+                                        Canvas.Top="40" 
+                                        Width="160"/>
+                                    <TextBox Text="{Binding ULPoint.X}" 
+                                             Grid.Row="3"
+                                             FontSize="12"
+                                             HorizontalAlignment="Left" 
+                                             Width="50"
+                                             Style="{StaticResource texRow}" 
+                                             Canvas.Left="86" 
+                                             Canvas.Top="10"/>
+                                    <TextBox Text="{Binding URPoint.X}" Grid.Row="3"
+                                             FontSize="12"
+                                             HorizontalAlignment="Left" 
+                                             Width="50"
+                                             Style="{StaticResource texRow}" 
+                                             Canvas.Left="154" 
+                                             Canvas.Top="10"/>
+                                    <TextBox Text="{Binding ULPoint.Y}" 
+                                             FontSize="12"
+                                             HorizontalAlignment="Left" 
+                                             Width="50"
+                                             Style="{StaticResource texRow}" 
+                                             Canvas.Left="10" 
+                                             Canvas.Top="70"/>
+                                    <TextBox Text="{Binding DLPoint.Y}" 
+                                             FontSize="12"
+                                             HorizontalAlignment="Left" 
+                                             Width="50"
+                                             Style="{StaticResource texRow}" 
+                                             Canvas.Left="10" 
+                                             Canvas.Top="143"/>
+                                    <TextBox Text="{Binding URPoint.Y}" FontSize="12"
+                                             HorizontalAlignment="Left" 
+                                             Width="50"
+                                             Style="{StaticResource texRow}" 
+                                             Canvas.Left="230" 
+                                             Canvas.Top="70"/>
+                                    <TextBox Text="{Binding DRPoint.Y}" 
+                                             FontSize="12"
+                                             HorizontalAlignment="Left" 
+                                             Width="50"
+                                             Style="{StaticResource texRow}" 
+                                             Canvas.Left="230" 
+                                             Canvas.Top="143"/>
+                                    <TextBox Text="{Binding DLPoint.X}" 
+                                             FontSize="12"
+                                             HorizontalAlignment="Left" 
+                                             Width="50"
+                                             Style="{StaticResource texRow}" 
+                                             Canvas.Left="86" 
+                                             Canvas.Top="205"/>
+                                    <TextBox Text="{Binding DRPoint.X}" 
+                                             FontSize="12"
+                                             HorizontalAlignment="Left" 
+                                             Width="50"
+                                             Style="{StaticResource texRow}" 
+                                             Canvas.Left="154" 
+                                             Canvas.Top="205"/>
+                                    <CheckBox IsChecked="{Binding ULCheck}" 
+                                              Style="{StaticResource Che}" 
+                                              Canvas.Left="86" 
+                                              Margin="0" 
+                                              Canvas.Top="70"/>
+                                    <CheckBox IsChecked="{Binding DLCheck}" 
+                                              Style="{StaticResource Che}" 
+                                              Canvas.Left="86" 
+                                              Margin="0" 
+                                              Canvas.Top="152"/>
+                                    <CheckBox IsChecked="{Binding URCheck}" Style="{StaticResource Che}" 
+                                              Canvas.Left="188" 
+                                              Margin="0" 
+                                              Canvas.Top="70"/>
+                                    <CheckBox IsChecked="{Binding DRCheck}" Style="{StaticResource Che}" 
+                                              Canvas.Left="188" 
+                                              Margin="0" 
+                                              Canvas.Top="152"/>
+                                    <local:DataButton Canvas.Left="30" 
+                                                      Canvas.Top="244" 
+                                                      Modify="{Binding AddCut}"
+                                                      Add="{Binding AddCut}"
+                                                      Read="{Binding ReadCut}"/>
+                                </Canvas>
+                            </TabItem>
+                            <TabItem Header="構件號" 
+                                     FontSize="14" 
+                                     Style="{StaticResource BaseStyle}">
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
+                </Border>
+            </Grid>
+            <!--物件設定與設定完成的物件列表-->
+        </Grid>
+    </Grid>
+    <!--頁面框架-->
+</WPFBase:BasePage>

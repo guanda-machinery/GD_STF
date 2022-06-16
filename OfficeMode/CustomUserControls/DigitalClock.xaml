@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="OfficeMode.DigitalClock"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OfficeMode"
+             mc:Ignorable="d" 
+             Width="200" Height="100" 
+             Background="#FF034F48" ToolTip="{ Binding NowWeekOfYear }">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="Lime"/>
+                <Setter Property="FontFamily" Value="Imapct"/>
+                <Setter Property="FontFamily" Value="pack://application:,,,/STD_105;component/Fonts/#DSEG14 Classic Mini"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+            </Style>
+        </Grid.Resources>
+        <Grid Background="#FF303030">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{ Binding NowDate }" Foreground="#FFF3F3F3" FontSize="20" Margin="5,0"/>
+            <TextBlock Grid.Column="1" Text="{ Binding NowDaysOfWeek , ConverterCulture=en-us}" Foreground="#FFF3F3F3" FontSize="18" Margin="5,0"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{ Binding NowSecond }" FontSize="20"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{ Binding NowTT }" FontSize="20" VerticalAlignment="Top"/>
+            <TextBlock Grid.RowSpan="2" Grid.Column="0" Text="{ Binding NowHM }" FontSize="40" Margin="5,0"/>
+        </Grid>
+    </Grid>
+</UserControl>
