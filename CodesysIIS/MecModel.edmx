@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="三軸Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BuildErrorCode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CompanyName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Info" Type="ntext" Nullable="false" />
+          <Property Name="WriteDate" Type="datetime" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DrillData">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CompanyName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Dia" Type="float" Nullable="false" />
+          <Property Name="RunSeconds" Type="float" Nullable="false" />
+          <Property Name="FeedQuantity" Type="float" Nullable="false" />
+          <Property Name="Rpm" Type="float" Nullable="false" />
+          <Property Name="Speed" Type="float" Nullable="false" />
+          <Property Name="WriteDate" Type="datetime" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MSAxisMain">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CompanyName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Electric" Type="real" Nullable="false" />
+          <Property Name="Position" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Speed" Type="real" Nullable="false" />
+          <Property Name="FeedQuantity" Type="real" Nullable="false" />
+          <Property Name="WriteDate" Type="datetime" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MSIO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CompanyName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="ObjectName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="255" />
+          <Property Name="WriteDate" Type="datetime" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MSRuler">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CompanyName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="ObjectName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Value" Type="real" Nullable="false" />
+          <Property Name="WriteDate" Type="datetime" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MSServoAxis">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CompanyName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="ObjectName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Torsional" Type="real" Nullable="false" />
+          <Property Name="Position" Type="real" Nullable="false" />
+          <Property Name="Speed" Type="real" Nullable="false" />
+          <Property Name="WriteDate" Type="datetime" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ThrowErrorCode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="Code" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Info" Type="ntext" Nullable="false" />
+          <Property Name="CompanyName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="WriteDate" Type="datetime" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="三軸ModelStoreContainer">
+          <EntitySet Name="BuildErrorCode" EntityType="Self.BuildErrorCode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DrillData" EntityType="Self.DrillData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MSAxisMain" EntityType="Self.MSAxisMain" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MSIO" EntityType="Self.MSIO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MSRuler" EntityType="Self.MSRuler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MSServoAxis" EntityType="Self.MSServoAxis" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ThrowErrorCode" EntityType="Self.ThrowErrorCode" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="三軸Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BuildErrorCode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CompanyName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="Info" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="WriteDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+        </EntityType>
+        <EntityType Name="DrillData">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CompanyName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="Dia" Type="Double" Nullable="false" />
+          <Property Name="RunSeconds" Type="Double" Nullable="false" />
+          <Property Name="FeedQuantity" Type="Double" Nullable="false" />
+          <Property Name="Rpm" Type="Double" Nullable="false" />
+          <Property Name="Speed" Type="Double" Nullable="false" />
+          <Property Name="WriteDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ID" Nullable="false" Type="Int32" />
+        </EntityType>
+        <EntityType Name="MSAxisMain">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CompanyName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="Electric" Type="Single" Nullable="false" />
+          <Property Name="Position" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Speed" Type="Single" Nullable="false" />
+          <Property Name="FeedQuantity" Type="Single" Nullable="false" />
+          <Property Name="WriteDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+        </EntityType>
+        <EntityType Name="MSRuler">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CompanyName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="ObjectName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Value" Type="Single" Nullable="false" />
+          <Property Name="WriteDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+        </EntityType>
+        <EntityType Name="MSServoAxis">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CompanyName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="ObjectName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Torsional" Type="Single" Nullable="false" />
+          <Property Name="Position" Type="Single" Nullable="false" />
+          <Property Name="Speed" Type="Single" Nullable="false" />
+          <Property Name="WriteDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+        </EntityType>
+        <EntityType Name="ThrowErrorCode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="Code" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Info" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="WriteDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="MecEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BuildErrorCode" EntityType="Self.BuildErrorCode" />
+          <EntitySet Name="DrillData" EntityType="Self.DrillData" />
+          <EntitySet Name="MSAxisMain" EntityType="Self.MSAxisMain" />
+          <EntitySet Name="MSRuler" EntityType="Self.MSRuler" />
+          <EntitySet Name="MSServoAxis" EntityType="Self.MSServoAxis" />
+          <EntitySet Name="ThrowErrorCode" EntityType="Self.ThrowErrorCode" />
+          <EntitySet Name="MSIO" EntityType="三軸Model.MSIO" />
+        </EntityContainer>
+        <EntityType Name="MSIO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CompanyName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="ObjectName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="WriteDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="三軸ModelStoreContainer" CdmEntityContainer="MecEntities">
+          <EntitySetMapping Name="BuildErrorCode">
+            <EntityTypeMapping TypeName="三軸Model.BuildErrorCode">
+              <MappingFragment StoreEntitySet="BuildErrorCode">
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="WriteDate" ColumnName="WriteDate" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DrillData">
+            <EntityTypeMapping TypeName="三軸Model.DrillData">
+              <MappingFragment StoreEntitySet="DrillData">
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="Dia" ColumnName="Dia" />
+                <ScalarProperty Name="RunSeconds" ColumnName="RunSeconds" />
+                <ScalarProperty Name="FeedQuantity" ColumnName="FeedQuantity" />
+                <ScalarProperty Name="Rpm" ColumnName="Rpm" />
+                <ScalarProperty Name="Speed" ColumnName="Speed" />
+                <ScalarProperty Name="WriteDate" ColumnName="WriteDate" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MSAxisMain">
+            <EntityTypeMapping TypeName="三軸Model.MSAxisMain">
+              <MappingFragment StoreEntitySet="MSAxisMain">
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="Electric" ColumnName="Electric" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Speed" ColumnName="Speed" />
+                <ScalarProperty Name="FeedQuantity" ColumnName="FeedQuantity" />
+                <ScalarProperty Name="WriteDate" ColumnName="WriteDate" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MSRuler">
+            <EntityTypeMapping TypeName="三軸Model.MSRuler">
+              <MappingFragment StoreEntitySet="MSRuler">
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="ObjectName" ColumnName="ObjectName" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="WriteDate" ColumnName="WriteDate" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MSServoAxis">
+            <EntityTypeMapping TypeName="三軸Model.MSServoAxis">
+              <MappingFragment StoreEntitySet="MSServoAxis">
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="ObjectName" ColumnName="ObjectName" />
+                <ScalarProperty Name="Torsional" ColumnName="Torsional" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Speed" ColumnName="Speed" />
+                <ScalarProperty Name="WriteDate" ColumnName="WriteDate" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ThrowErrorCode">
+            <EntityTypeMapping TypeName="三軸Model.ThrowErrorCode">
+              <MappingFragment StoreEntitySet="ThrowErrorCode">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="WriteDate" ColumnName="WriteDate" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MSIO">
+            <EntityTypeMapping TypeName="三軸Model.MSIO">
+              <MappingFragment StoreEntitySet="MSIO">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="WriteDate" ColumnName="WriteDate" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ObjectName" ColumnName="ObjectName" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
