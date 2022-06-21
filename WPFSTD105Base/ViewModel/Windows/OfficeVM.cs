@@ -231,7 +231,9 @@ namespace WPFSTD105
         {
             return new WPFBase.RelayParameterizedCommand(e =>
             {
-                string path = ((FolderBrowserDialogViewModel)e).ResultPath;
+                // 2020.06.21  呂宗霖 路徑調整抓Properties
+                //string path = ((FolderBrowserDialogViewModel)e).ResultPath;
+                string path = Properties.SofSetting.Default.LoadPath;
                 bool result = ApplicationVM.CreateModel(path); //創建模型
                 if (result)
                 {
