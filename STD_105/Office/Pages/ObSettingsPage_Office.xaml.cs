@@ -1069,7 +1069,6 @@ namespace STD_105.Office
 #endif
             if (ViewModel.SteelAttr.PartNumber == "" || ViewModel.SteelAttr.PartNumber == null)//檢測用戶是否有輸入零件編號
             {
-                //MessageBox.Show("請輸入零件編號", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,
                     $"請輸入零件編號",
                     "通知",
@@ -1082,7 +1081,6 @@ namespace STD_105.Office
             }
             if (ViewModel.SteelAttr.Length <= 0)//檢測用戶長度是否有大於0
             {
-                //MessageBox.Show("長度不可以小於等於 0", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,
                     $"長度不可以小於等於 0",
                     "通知",
@@ -1095,7 +1093,6 @@ namespace STD_105.Office
             }
             if (ViewModel.SteelAttr.Number <= 0) //檢測用戶是否零件數量大於0
             {
-                //MessageBox.Show("數量不可以小於等於 0", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,
                     $"數量不可以小於等於 0",
                     "通知",
@@ -1108,7 +1105,6 @@ namespace STD_105.Office
             }
             if (ViewModel.DataCorrespond.FindIndex(el => el.Number == ViewModel.SteelAttr.PartNumber) != -1)
             {
-                //MessageBox.Show("重複編號", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,
                     $"重複編號",
                     "通知",
