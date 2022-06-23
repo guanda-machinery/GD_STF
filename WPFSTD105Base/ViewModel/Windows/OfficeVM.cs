@@ -1,19 +1,13 @@
 ﻿using DevExpress.Mvvm;
 using DevExpress.Mvvm.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DevExpress.Xpf.Core;
+using DevExpress.Xpf.WindowsUI;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using WPFWindowsBase;
 using static WPFSTD105.ViewLocator;
 using WPFBase = WPFWindowsBase;
-using GD_STD;
-using System.Collections.ObjectModel;
-using DevExpress.Xpf.WindowsUI;
-using DevExpress.Xpf.Core;
 
 namespace WPFSTD105
 {
@@ -229,11 +223,16 @@ namespace WPFSTD105
         /// <inheritdoc/>
         protected override RelayParameterizedCommand OutProjectName()
         {
-            return new WPFBase.RelayParameterizedCommand(e =>
+            return new WPFBase.RelayParameterizedCommand(e=>
             {
-                // 2020.06.21  呂宗霖 路徑調整抓Properties
-                //string path = ((FolderBrowserDialogViewModel)e).ResultPath;
-                string path = Properties.SofSetting.Default.LoadPath;
+
+                // 2020.06.21  呂宗霖 路徑調整抓 FolderBrowserDialogViewModel 因為選擇資料夾時已異動Properties.SofSetting.Default.LoadPath
+                string path = ((FolderBrowserDialogViewModel)e).ResultPath;
+                Properties.SofSetting.Default.LoadPath = path;
+                Properties.SofSetting.Default.Save();
+                //string path = Properties.SofSetting.Default.LoadPath;
+                //string path =  tbx_ProjectPath.Text;
+                //path = string.IsNullOrEmpty("") ? path : "";
                 bool result = ApplicationVM.CreateModel(path); //創建模型
                 if (result)
                 {
@@ -282,6 +281,11 @@ namespace WPFSTD105
         {
             return new RelayParameterizedCommand(el =>
             {
+                // 2022.06.23 呂宗霖 新增Null判斷 避免所選路徑無專案
+                if (el == null)
+                {
+                    return;
+                }
                 base.OpenProject().Execute(el);
                 string _ = ApplicationVM.FileProjectProperty();
                 if (_ == null)

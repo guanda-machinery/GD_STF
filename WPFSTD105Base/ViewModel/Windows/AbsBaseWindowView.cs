@@ -177,10 +177,10 @@ namespace WPFSTD105
         /// <returns></returns>
         protected virtual WPFBase.RelayCommand WatchProject()
         {
-            return new WPFBase.RelayCommand(() => 
+            return new WPFBase.RelayCommand(() =>
             {
                 CommonViewModel.ProjectList = new ObservableCollection<string>(ApplicationVM.GetModelDirectory(Properties.SofSetting.Default.LoadPath));
-            });
+            }); 
         }
 
         /// <inheritdoc/>

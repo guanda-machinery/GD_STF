@@ -385,8 +385,9 @@ namespace WPFSTD105
         public string SecondaryLength { get; set; } = "11000 13000 14000 15000";
         private void AutoMatchAsync()
         {
-            MatchSetting.MainLengths = MainLength.Split(' ').Select(el => Convert.ToDouble(el)).ToList();
-            MatchSetting.SecondaryLengths = SecondaryLength.Split(' ').Select(el => Convert.ToDouble(el)).ToList();
+            // 2020.06.22  呂宗霖 新增IsNullOrEmpty條件
+            MatchSetting.MainLengths = MainLength.Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(el => Convert.ToDouble(el)).ToList();
+            MatchSetting.SecondaryLengths = SecondaryLength.Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(el => Convert.ToDouble(el)).ToList();
             //嵐:這邊我註解掉
             //Window.ShowDialog();
             //開啟長度配料視窗
