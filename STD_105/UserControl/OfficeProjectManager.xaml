@@ -100,8 +100,9 @@
                         <TextBlock Text="專案路徑：" />
                         <StackPanel Orientation="Horizontal"
                                     DataContext="{ dxmvvm:ViewModelSource Type=WPFSTD:FolderBrowserDialogViewModel}">
-                            <TextBox x:Name="tbx_ProjectPath"
-                                     Text="{ Binding ResultPath }" />
+                            <TextBox 
+                                x:Name="tbx_ProjectPath"
+                                Text="{ Binding ResultPath }" />
                             <Button Style="{ StaticResource btn_CommonIconKey }"
                                     Command="{ Binding ShowFolderDialogCommand }"
                                     HorizontalAlignment="Right">
@@ -146,7 +147,10 @@
                                                                    RootFolder="Desktop"
                                                                    RestorePreviouslySelectedDirectory="True" />
                             </dxmvvm:Interaction.Behaviors>
-                            <TextBox Text="{ Binding ResultPath }" />
+                            <!-- 2022/06/22 呂宗霖 給定Name -->
+                            <TextBox 
+                                x:Name="tbx_ProjectSearchPath" 
+                                Text="{ Binding ResultPath }" />
                             <Button Style="{ StaticResource btn_CommonIconKey }"
                                     ToolTip="選擇路徑"
                                     Command="{ Binding ShowFolderDialogCommand }">
@@ -155,6 +159,7 @@
                             </Button>
                         </StackPanel>
                         <TextBlock Text="專案名稱：" />
+                        <!-- 2022/06/22 呂宗霖 新增 PreviewMouseDown -->
                         <ComboBox x:Name="InputTextBox1"
                                   ItemsSource="{Binding OfficeViewModel.ProjectList, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                                   SelectedIndex="{Binding SelectProject}"
@@ -162,7 +167,9 @@
                                   HorizontalAlignment="Left"
                                   Style="{StaticResource cbb_DarkMain}"
                                   FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
-                                  Margin="40,5" />
+                                  Margin="40,5"
+                                  PreviewMouseDown="ComboBox_PreviewMouseDown"
+                                  />
                         <TextBlock Text="工程案號：" />
                         <TextBox Text="{Binding OfficeViewModel.ProjectProperty.Number, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                                  IsReadOnly="True" />

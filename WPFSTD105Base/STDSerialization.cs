@@ -245,6 +245,11 @@ namespace WPFSTD105
         public ProjectProperty GetProjectProperty(string path)
         {
             ProjectPropertySurrogate project = GZipDeserialize<ProjectPropertySurrogate>($@"{path}");//解壓縮反序列化
+            // 2022.06.23 呂宗霖 避免所選路徑無專案
+            if (project== null)
+            {
+                return null;
+            }
             ProjectProperty result = new ProjectProperty(project);
             return result;
         }
