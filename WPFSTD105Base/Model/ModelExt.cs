@@ -67,12 +67,12 @@ namespace WPFSTD105
                         foreach (var rem in e.RemovedItems)
                         {
                             vm.Select3DItem.Remove(rem);//選擇移除 3D
-                            //vm.Select2DItem.Remove(new SelectedItem() { Item = Selected(Secondary, (BlockReference)rem.Item, false) });//選擇移除 2D
+                            vm.Select2DItem.Remove(new SelectedItem() { Item = Selected(Secondary, (BlockReference)rem.Item, false) });//選擇移除 2D
                         }
                         foreach (var selected in e.AddedItems)
                         {
                             vm.Select3DItem.Add(selected);//加入到 3D 選擇物件
-                            //vm.Select2DItem.Add(new SelectedItem() { Item = Selected(Secondary, (BlockReference)selected.Item, true) });//加入到 2D 選擇物件
+                            vm.Select2DItem.Add(new SelectedItem() { Item = Selected(Secondary, (BlockReference)selected.Item, true) });//加入到 2D 選擇物件
 
                         }
                         //foreach (var rem in e.RemovedItems)
@@ -89,13 +89,13 @@ namespace WPFSTD105
                             foreach (var selected in e.AddedItems)
                             {
                                 vm.tem3DRecycle.Add((Entity)selected.Item); //加入到 3D 以選擇的物件內
-                                //vm.tem2DRecycle.AddRange(Selected(Secondary, (Entity)selected.Item, true));//加入到 2D 選擇物件
+                                vm.tem2DRecycle.AddRange(Selected(Secondary, (Entity)selected.Item, true));//加入到 2D 選擇物件
 
                             }
                             foreach (var rem in e.RemovedItems)
                             {
                                 vm.tem3DRecycle.Remove((Entity)rem.Item); //選擇移除 3D
-                                //Selected(Secondary, (Entity)rem.Item, false).ForEach(el => vm.tem2DRecycle.Remove(el)); //選擇移除 2D
+                                Selected(Secondary, (Entity)rem.Item, false).ForEach(el => vm.tem2DRecycle.Remove(el)); //選擇移除 2D
                             }
                         }
                         catch (Exception ex)
@@ -115,12 +115,12 @@ namespace WPFSTD105
                     {
                         foreach (var item in e.AddedItems)
                         {
-                            //vm.Select2DItem.Add(item);//加入到 2D 選擇物件
+                            vm.Select2DItem.Add(item);//加入到 2D 選擇物件
                             vm.Select3DItem.Add(new SelectedItem() { Item = Selected(Secondary, (BlockReference)item.Item, true) });//加入到 3D 選擇物件
                         }
                         foreach (var item in e.RemovedItems)
                         {
-                            //vm.Select2DItem.Remove(item); //選擇移除 2D
+                            vm.Select2DItem.Remove(item); //選擇移除 2D
                             vm.Select3DItem.Remove(new SelectedItem() { Item = Selected(Secondary, (BlockReference)item.Item, false) }); //選擇移除 3D
                         }
                     }
@@ -128,7 +128,7 @@ namespace WPFSTD105
                     {
                         foreach (var selected in e.AddedItems)
                         {
-                            //vm.tem2DRecycle.AddRange(Selected(this, (Entity)selected.Item, true));//加入到 2D 選擇物件
+                            vm.tem2DRecycle.AddRange(Selected(this, (Entity)selected.Item, true));//加入到 2D 選擇物件
                             vm.tem3DRecycle.AddRange(Selected(Secondary, (Entity)selected.Item, true));//加入到 3D 選擇物件
                         }
                         foreach (var rem in e.RemovedItems)

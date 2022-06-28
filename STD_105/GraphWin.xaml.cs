@@ -570,7 +570,7 @@ namespace STD_105
 
         }
 
-        private BlockReference SteelTriangulation(Mesh mesh)
+        public BlockReference SteelTriangulation(Mesh mesh)
         {
 #if DEBUG
             log4net.LogManager.GetLogger("產生2D").Debug("開始");
@@ -599,7 +599,7 @@ namespace STD_105
         /// <param name="bolts"></param>
         /// <param name="refresh">刷新模型</param>
         /// <returns></returns>
-        private BlockReference Add2DHole(Bolts3DBlock bolts, bool refresh = true)
+        public BlockReference Add2DHole(Bolts3DBlock bolts, bool refresh = true)
         {
             /*2D螺栓*/
             BlockReference referenceMain = (BlockReference)drawing.Entities[drawing.Entities.Count - 1]; //主件圖形
