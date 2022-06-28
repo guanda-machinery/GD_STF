@@ -59,6 +59,9 @@ namespace WPFSTD105
             WatchProjectCommand = WatchProject();
             LanguageCommand = Language();
             NewProjectShowCommand = NewProjectShow();
+
+            OutProjectPathCommand = OutProjectPath();
+            OpenProjectPathCommand = OpenProjectPath();
         }
         
         /// <inheritdoc/>
@@ -152,10 +155,28 @@ namespace WPFSTD105
         /// <inheritdoc/>
         public ICommand OutProjectNameCommand { get; set; }
         /// <summary>
+        /// 
+        /// </summary>
+        public ICommand OutProjectPathCommand { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand OpenProjectPathCommand { get; set; }
+        /// <summary>
         /// 建立專案功能
         /// </summary>
         /// <returns></returns>
-        protected abstract  WPFBase.RelayParameterizedCommand OutProjectName();
+        protected abstract WPFBase.RelayParameterizedCommand OutProjectName();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        protected abstract WPFBase.RelayCommand OutProjectPath();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        protected abstract WPFBase.RelayCommand OpenProjectPath();
         /// <inheritdoc/>
         public ICommand SaveAsCommand { get; set; }
         /// <summary>
