@@ -5,7 +5,7 @@ namespace WPFSTD105
     /// <summary>
     /// 共用命令
     /// </summary>
-    public interface IWindowsVM
+    public interface IWindowsVM 
     {
         /// <summary>
         /// 語言命令
@@ -31,14 +31,6 @@ namespace WPFSTD105
         /// 新建專案命令
         /// </summary>
         ICommand OutProjectNameCommand { get; set; }
-        /// <summary>
-        /// 新建專案存路徑命令
-        /// </summary>
-        ICommand OutProjectPathCommand { get; set; }
-        /// <summary>
-        /// 開啟專案存路徑命令
-        /// </summary>
-        ICommand OpenProjectPathCommand { get; set; }
         /// <summary>
         /// 另存專案命令
         /// </summary>

@@ -12,7 +12,7 @@
     <!--專案管理-->
     <Grid x:Name="grid_Manager"
           Visibility="{ Binding OfficeViewModel.ProjectManagerControl, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={ WPFBase:BooleanToVisiblityConverter } }">
-        <TabControl Style="{ StaticResource tabcontrol_Vertical }">
+        <TabControl Style="{ StaticResource tabcontrol_Vertical }"> 
             <TabControl.Resources>
                 <Style TargetType="Label"
                        BasedOn="{ StaticResource lab_Title }">
@@ -98,20 +98,20 @@
                             </Button>
                         </StackPanel>
                         <TextBlock Text="專案路徑：" />
-                        <StackPanel Orientation="Horizontal">
-                          <!--  DataContext="{ dxmvvm:ViewModelSource Type=WPFSTD:FolderBrowserDialogViewModel}">-->
+                        <StackPanel Orientation="Horizontal"
+                                    DataContext="{ dxmvvm:ViewModelSource Type=WPFSTD:FolderBrowserDialogViewModel}">
                             <TextBox 
                                 x:Name="tbx_ProjectPath"
-                                Text="{ Binding AddPath }" />
+                                Text="{ Binding ResultPath }" />
                             <Button Style="{ StaticResource btn_CommonIconKey }"
-                                    Command="{ Binding OutProjectPathCommand }"
+                                    Command="{ Binding ShowFolderDialogCommand }"
                                     HorizontalAlignment="Right">
-                             <!--   <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:Interaction.Behaviors>
                                     <dxmvvm:FolderBrowserDialogService Description="請選擇資料夾做為專案儲存的路徑"
                                                                        ShowNewFolderButton="True"
                                                                        RootFolder="Desktop"
                                                                        RestorePreviouslySelectedDirectory="True" />
-                                </dxmvvm:Interaction.Behaviors>-->
+                                </dxmvvm:Interaction.Behaviors>
                                 <Image Width="25"
                                        Source="{ StaticResource ImportFile }" />
                             </Button>
@@ -139,22 +139,21 @@
                     </Grid.RowDefinitions>
                     <StackPanel>
                         <TextBlock Text="專案路徑：" />
-                        <StackPanel Orientation="Horizontal">
-                         <!--   DataContext="{ dxmvvm:ViewModelSource Type=WPFSTD:FolderBrowserDialogViewModel}">
+                        <StackPanel Orientation="Horizontal"
+                                    DataContext="{ dxmvvm:ViewModelSource Type=WPFSTD:FolderBrowserDialogViewModel}">
                             <dxmvvm:Interaction.Behaviors>
                                 <dxmvvm:FolderBrowserDialogService Description="請選擇專案放置的資料夾"
                                                                    ShowNewFolderButton="False"
                                                                    RootFolder="Desktop"
                                                                    RestorePreviouslySelectedDirectory="True" />
-                            </dxmvvm:Interaction.Behaviors>-->
+                            </dxmvvm:Interaction.Behaviors>
                             <!-- 2022/06/22 呂宗霖 給定Name -->
-                            <!--="{ Binding ShowFolderDialogCommand }"> -->
                             <TextBox 
                                 x:Name="tbx_ProjectSearchPath" 
-                                Text="{ Binding SearchPath }" />
+                                Text="{ Binding ResultPath }" />
                             <Button Style="{ StaticResource btn_CommonIconKey }"
                                     ToolTip="選擇路徑"
-                                Command="{ Binding OpenProjectPathCommand }">
+                                    Command="{ Binding ShowFolderDialogCommand }">
                                 <Image Width="25"
                                        Source="{ StaticResource ImportFile }" />
                             </Button>
