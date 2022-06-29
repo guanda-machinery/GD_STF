@@ -31,7 +31,8 @@ namespace WPFSTD105
         /// <param name="reduction2D"></param>
         public void Add(Reduction reduction3D, Reduction reduction2D = null)
         {
-            return;
+            // 2022/06/24 呂宗霖 尚未解謎 為什麼要註解掉
+            //return;
             Reductions3D.Insert(_Index == -1 ? 0 : _Index, reduction3D);
             if (reduction2D != null)
             {
@@ -112,7 +113,7 @@ namespace WPFSTD105
                 //記住用戶的編輯圖塊層
                 BlockReference modelReference = _Model.CurrentBlockReference;
 
-                BlockReference drawingReference = null;
+                BlockReference drawingReference = _Drawing.CurrentBlockReference;
                 if (_Drawing != null)
                     drawingReference= _Drawing.CurrentBlockReference;
 

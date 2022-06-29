@@ -1,13 +1,13 @@
 ﻿using GD_STD;
 using GD_STD.Enum;
-using OpenGL.Delegates;
+using OpenGL.Delegates; 
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
-using static WPFSTD105.CodesysIIS;
+using static WPFSTD105.CodesysIIS; 
 using static WPFSTD105.PanelListening;
 using static WPFSTD105.ViewLocator;
 using WPFBase = WPFWindowsBase;

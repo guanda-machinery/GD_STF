@@ -10,7 +10,7 @@ namespace STD_105
     /// <summary>
     /// OfficeProjectManager.xaml 的互動邏輯
     /// </summary>
-    public partial class OfficeProjectManager : UserControl
+    public partial class OfficeProjectManager : UserControl  
     {
         public OfficeProjectManager()
         {

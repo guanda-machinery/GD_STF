@@ -633,7 +633,14 @@ namespace STD_105.Office
                                 return;
                             }
                             //如果選擇的物件不是孔位
-                            else if (reference3D == null || model.Blocks[reference3D.BlockName].Equals(typeof(Bolts3DBlock)))
+                            else if (
+                            //3D 2D皆無選擇
+                            (reference3D == null && reference2D == null ) ||
+                            //3D 無選擇 或 
+
+                            reference3D == null || model.Blocks[reference3D.BlockName].Equals(typeof(Bolts3DBlock))
+                            
+                            )
                             {
                                 //MessageBox.Show("選擇類型必須是孔，才可鏡射", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                                 WinUIMessageBox.Show(null,

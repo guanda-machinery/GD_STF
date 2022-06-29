@@ -8,11 +8,11 @@ using System.Windows.Input;
 using WPFWindowsBase;
 using static WPFSTD105.ViewLocator;
 using WPFBase = WPFWindowsBase;
-
+ 
 namespace WPFSTD105
 {
     /// <summary>
-    /// OfficeBasePage ViewModelz
+    /// OfficeBasePage ViewModelz 
     /// </summary>
     public class OfficeVM : AbsBaseWindowView
     {

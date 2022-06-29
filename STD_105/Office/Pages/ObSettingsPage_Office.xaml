@@ -206,7 +206,7 @@
             <TabItem Header="2D視圖">
                 <Grid>
                     <Border />
-                    <!--<spa:ModelExt x:Name="drawing" SelectionChanged="model_SelectionChanged" Loaded="drawing_Loaded"
+                    <spa:ModelExt x:Name="drawing" SelectionChanged="model_SelectionChanged" Loaded="drawing_Loaded"
                         SelectionColor="{Binding Setting.SelectionColor, Converter={STD105:StringToDrawingColoConverter}}"
                         ActionMode="{Binding ActionMode}" DefaultColor="Beige" AutoRefresh ="True" KeyDown="model_KeyDown"
                         PreviewMouseRightButtonDown="model_PreviewMouseRightButtonDown"
@@ -257,7 +257,7 @@
                                 </ddes:Viewport.ToolBars>
                             </ddes:Viewport>
                         </ddes:Model.Viewports>
-                    </spa:ModelExt>-->
+                    </spa:ModelExt>
                 </Grid>
             </TabItem>
         </TabControl>
