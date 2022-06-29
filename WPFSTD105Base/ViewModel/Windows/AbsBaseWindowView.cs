@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using static WPFSTD105.ViewLocator;
-using WPFBase = WPFWindowsBase;
+using WPFBase = WPFWindowsBase; 
 using static WPFSTD105.CodesysIIS;
 namespace WPFSTD105
 {

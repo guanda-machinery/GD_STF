@@ -8,7 +8,7 @@ using System.Windows.Input;
 using WPFWindowsBase;
 using static WPFSTD105.ViewLocator;
 using WPFBase = WPFWindowsBase;
-
+ 
 namespace WPFSTD105
 {
     /// <summary>
