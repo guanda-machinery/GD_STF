@@ -626,15 +626,15 @@ namespace STD_105.Office
             ViewModel.MirrorX = new RelayCommand(() =>
             {
                 try
+            {
+                //查看用戶是否有選擇圖塊
+                if (ViewModel.Select3DItem.Count > 0)
                 {
-                    //查看用戶是否有選擇圖塊
-                    if (ViewModel.Select3DItem.Count > 0)
-                    {
-                        BlockReference reference3D;
-                        BlockReference reference2D;
+                    BlockReference reference3D;
+                    BlockReference reference2D;
 
-                        List<SelectedItem> select3D = ViewModel.Select3DItem.ToList();//暫存容器
-                        List<SelectedItem> select2D = ViewModel.Select2DItem.ToList();//暫存容器
+                    List<SelectedItem> select3D = ViewModel.Select3DItem.ToList();//暫存容器
+                    List<SelectedItem> select2D = ViewModel.Select2DItem.ToList();//暫存容器
                         for (int i = 0; i < select3D.Count; i++)
                         {
                             reference3D = select3D.Count != 0 ? (BlockReference)select3D[i].Item : null;
@@ -654,8 +654,7 @@ namespace STD_105.Office
                                 return;
                             }
                             //如果選擇的物件不是孔位
-                            else if (
-                            reference3D == null || model.Blocks[reference3D.BlockName].Equals(typeof(Bolts3DBlock)))
+                            else if (reference3D == null || model.Blocks[reference3D.BlockName].Equals(typeof(Bolts3DBlock)))
                             {
                                 //MessageBox.Show("選擇類型必須是孔，才可鏡射", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                                 WinUIMessageBox.Show(null,
@@ -681,7 +680,7 @@ namespace STD_105.Office
                             model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);//先取得主件資訊
                             SteelAttr steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
 
-                            //產生物件物件頂點
+                            //產生物件物件頂點(整支素材的最起點和最末端)
                             Point3D boxMin, boxMax;
                             Utility.ComputeBoundingBox(null, model.Entities[model.Entities.Count - 1].Vertices, out boxMin, out boxMax);
                             Point3D center = (boxMin + boxMax) / 2; //鏡射中心點
@@ -689,7 +688,7 @@ namespace STD_105.Office
                             model.SetCurrent(null);
                             model.SetCurrent(reference3D);
                             drawing.SetCurrent(reference2D);
-
+                            //存放孔位資訊
                             Entity[] buffer3D = new Entity[model.Entities.Count]; //3D 鏡射物件緩衝區
                             Entity[] buffer2D = new Entity[drawing.Entities.Count]; //2D 鏡射物件緩衝區
                             model.Entities.CopyTo(buffer3D, 0);
@@ -707,13 +706,19 @@ namespace STD_105.Office
                                 User = new List<ACTION_USER>() { ACTION_USER.DELETE }
                             });
 
+                            //if (model.Entities[model.Entities.Count - 1].EntityData is GroupBoltsAttr boltsAttr)
+                            //{
+                            //    BlockReference blockReference = (BlockReference)model.Entities[model.Entities.Count - 1]; //取得參考圖塊
+                            //    Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
+                            //    Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生螺栓圖塊
 
-                            //BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
-                            //Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
-                            //Bolts3DBlock groupBolts = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生螺栓圖塊
-                                                                                                                                     
-                            Bolts3DBlock groupBolts = (Bolts3DBlock)model.Blocks[reference3D.BlockName];//轉換型別
-                            FACE face = groupBolts.Info.Face; //孔位的面
+                            //}
+
+                            BoltAttr  boltAttr = (BoltAttr)model.Entities[model.Entities.Count - 1].EntityData;
+                            FACE face = boltAttr.Face;
+
+                            //Bolts3DBlock groupBolts = (Bolts3DBlock)model.Blocks[reference3D.BlockName];//轉換型別
+                            //FACE face = groupBolts.Info.Face; //孔位的面
 
                             //3D鏡射參數
                             //Vector3D axis3DX = new Vector3D();
@@ -797,7 +802,7 @@ namespace STD_105.Office
                             model.Entities.AddRange(modify3D);
 
 
-                            ViewModel.Reductions.AddContinuous(modify3D, modify2D);
+                            ViewModel.Reductions.AddContinuous(modify3D, modify2D);                           
                             model.SetCurrent(null);
                             drawing.SetCurrent(null);
                         }
@@ -845,8 +850,8 @@ namespace STD_105.Office
 
                         for (int i = 0; i < select3D.Count; i++)
                         {
-                            reference3D = (BlockReference)select3D[i].Item;
-                            reference2D = (BlockReference)select2D[i].Item;
+                            reference3D = select3D.Count != 0 ? (BlockReference)select3D[i].Item : null;
+                            reference2D = select2D.Count != 0 ? (BlockReference)select2D[i].Item : null;
                             //如果在編輯模式
                             if (model.CurrentBlockReference != null)
                             {
@@ -906,39 +911,92 @@ namespace STD_105.Office
                                 SelectReference = reference2D,
                                 User = new List<ACTION_USER>() { ACTION_USER.DELETE }
                             });
-                            Bolts3DBlock groupBolts = (Bolts3DBlock)model.Blocks[reference3D.BlockName];//轉換型別
-                            FACE face = groupBolts.Info.Face; //孔位的面
+                            
+                            //Bolts3DBlock groupBolts = (Bolts3DBlock)model.Blocks[reference3D.BlockName];//轉換型別
+                            BoltAttr BoltAttr = (BoltAttr)model.Entities[model.Entities.Count - 1].EntityData;
+                            FACE face = BoltAttr.Face; //孔位的面
 
                             //TODO:中心座標
                             List<Point3D> points = new List<Point3D>();
                             Point3D boxMin, boxMax;
-                            groupBolts.Entities.ForEach(el => points.AddRange(el.Vertices));
+
+                            model.Entities.ForEach(e => points.AddRange(e.Vertices));
+                            
+                            //groupBolts.Entities.ForEach(el => points.AddRange(el.Vertices));
+                            //取得所有點在該區域中的最邊端 及 求出中心點
                             Utility.ComputeBoundingBox(null, points, out boxMin, out boxMax);
                             Point3D center = (boxMin + boxMax) / 2; //鏡射中心點
 
                             //鏡射參數
-                            Point3D p1 = new Point3D(center.X, 0), p2 = new Point3D(center.X, 10);//鏡射座標
-                            Vector3D axisX = new Vector3D(p1, p2);
-                            Plane mirrorPlane = new Plane(p1, axisX, Vector3D.AxisZ);
+                            Point3D p3D1 = new Point3D(center.X, 0), p3D2 = new Point3D(center.X, 10);//鏡射座標
+                            Vector3D axis3DX = new Vector3D(p3D1, p3D2);
+                            
+                            Point3D p2D1 = new Point3D(center.X, 0), p2D2 = new Point3D(center.X, 10);//鏡射座標
+                            Vector3D axis2DX = new Vector3D(p2D1, p2D2);
+                            
+                            Bolts2DBlock bolts2DBlock = (Bolts2DBlock)drawing.Blocks[reference2D.BlockName];
+
+                            switch (face)
+                            {
+                                case FACE.TOP:
+                                    p3D1 = new Point3D(center.X, 0, 0);
+                                    p3D2 = new Point3D(center.X, 10, 0);
+                                    axis3DX = new Vector3D(0, center.Y, 0);
+                                    
+                                    p2D1.Y = p2D2.Y = steelAttr.H / 2;
+                                    break;
+                                case FACE.FRONT:                                   
+                                case FACE.BACK:
+                                    p3D1 = new Point3D(0, 0, center.Z); //鏡射第一點
+                                    p3D2 = new Point3D(10, 0, center.Z);//鏡射第二點
+                                    axis3DX = new Vector3D( 0, 0,center.Z);
+                                    switch (face)
+                                    {
+                                        case FACE.TOP:
+                                            p2D1.X = p2D2.X = bolts2DBlock.MoveFront + steelAttr.H / 2;
+                                            break;
+                                        case FACE.FRONT:
+                                            break;
+                                        case FACE.BACK:
+                                            p2D1.X = p2D2.X = bolts2DBlock.MoveBack - steelAttr.H / 2;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            //修改 3D 參數
+                            //Vector3D axis3DX = new Vector3D(p3D1, p3D2);
+                            axis3DX = new Vector3D(new Point3D(p3D1.X, p3D1.Y, p3D1.Z), new Point3D(p3D2.X, p3D2.Y, p3D2.Z));
+                            Plane mirror3DPlane = new Plane(p3D1, axis3DX);
+                            //修改 2D 參數
+                            //Vector3D axis2DX = new Vector3D(p2D1, p2D2);
+                            axis2DX = new Vector3D(new Point3D(p2D1.X, p2D1.Y, p2D1.Z), new Point3D(p2D2.X, p2D2.Y, p2D2.Z));
+                            Plane mirror2DPlane = new Plane(p2D1, axis2DX);
 
 
                             List<Entity> modify3D = new List<Entity>(), modify2D = new List<Entity>();
 
-                            Mirror mirror = new Mirror(mirrorPlane);
+                            Mirror mirror3D = new Mirror(mirror3DPlane);
+                            Mirror mirror2D = new Mirror(mirror2DPlane);
                             //清除要鏡射的物件
                             model.Entities.Clear();
-                            //drawing.Entities.Clear();
+                            drawing.Entities.Clear();
 
                             buffer3D.ForEach(el =>
                             {
                                 Entity entity = (Entity)el.Clone();
-                                entity.TransformBy(mirror);
+                                entity.TransformBy(mirror3D);
                                 modify3D.Add(entity);
                             });
                             buffer2D.ForEach(el =>
                             {
                                 Entity entity = (Entity)el.Clone();
-                                entity.TransformBy(mirror);
+                                entity.TransformBy(mirror2D);
                                 modify2D.Add(entity);
                             });
 
