@@ -13,7 +13,7 @@
     <Grid x:Name="grid_Manager"
           Visibility="{ Binding OfficeViewModel.ProjectManagerControl, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={ WPFBase:BooleanToVisiblityConverter } }">
         <TabControl Style="{ StaticResource tabcontrol_Vertical }"> 
-            <TabControl.Resources>
+            <TabControl.Resources> 
                 <Style TargetType="Label"
                        BasedOn="{ StaticResource lab_Title }">
                     <Setter Property="Foreground"

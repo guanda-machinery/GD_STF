@@ -6,7 +6,7 @@ namespace WPFSTD105
     /// 共用命令
     /// </summary>
     public interface IWindowsVM 
-    {
+    { 
         /// <summary>
         /// 語言命令
         /// </summary>

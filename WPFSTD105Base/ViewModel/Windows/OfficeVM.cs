@@ -12,7 +12,7 @@ using WPFBase = WPFWindowsBase;
 namespace WPFSTD105
 {
     /// <summary>
-    /// OfficeBasePage ViewModelz
+    /// OfficeBasePage ViewModelz 
     /// </summary>
     public class OfficeVM : AbsBaseWindowView
     {
