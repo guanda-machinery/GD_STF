@@ -30,7 +30,7 @@ namespace STD_105
             SofSetting.Default.LoadPath = path;
             SofSetting.Default.Save();
 
-            if (string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path)) 
             {
                 WinUIMessageBox.Show(null,
                         $"請選擇專案路徑",

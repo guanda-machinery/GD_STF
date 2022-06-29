@@ -252,7 +252,7 @@ namespace WPFSTD105
             {
                 FolderBrowserDialogService service = DevExpand.NewFolder("請選擇專案放置的資料夾");
                 IFolderBrowserDialogService folder = service;
-                folder.ShowDialog();//Show 視窗
+                folder.ShowDialog();//Show 視窗 
                 SearchPath = folder.ResultPath;//選擇的路徑
                 //修改全域路徑變數 供載入用
                 Properties.SofSetting.Default.LoadPath = SearchPath;

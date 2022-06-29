@@ -63,7 +63,7 @@ namespace WPFSTD105
             OutProjectPathCommand = OutProjectPath();
             OpenProjectPathCommand = OpenProjectPath();
         }
-        
+
         /// <inheritdoc/>
         public ICommand HomeCommand { get; set; }
         private WPFBase.RelayCommand HomePage()
@@ -143,7 +143,7 @@ namespace WPFSTD105
                 string projectName = ReadCodesysMemor?.GetProjectName();
 
                 string _ = e.ToString();
-           
+
                 CommonViewModel.ProjectName = _;
                 if (CommonViewModel.ActionLoadProfile != null) //如果載入專案實有發現載入斷面規格與材質
                 {
@@ -201,7 +201,7 @@ namespace WPFSTD105
             return new WPFBase.RelayCommand(() =>
             {
                 CommonViewModel.ProjectList = new ObservableCollection<string>(ApplicationVM.GetModelDirectory(Properties.SofSetting.Default.LoadPath));
-            }); 
+            });
         }
 
         /// <inheritdoc/>
@@ -305,7 +305,7 @@ namespace WPFSTD105
                 catch
                 {
                     //WinUIMessageBox.Show();
-                }
+                } 
                 /*
                 if (!LanguageFlag)
                 {

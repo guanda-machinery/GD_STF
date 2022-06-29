@@ -9,7 +9,7 @@
       xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
       xmlns:STD="clr-namespace:STD_105"
       xmlns:local="clr-namespace:STD_105.Office"
-      mc:Ignorable="d" x:Name="MainPage"
+      mc:Ignorable="d" x:Name="MainPage"  
       Title="ProjectsManager_Office">
     <WPFBase:BasePage.Resources>
         <WPFSTD:ImportNCFilesVM x:Key="ImportFiles" />
