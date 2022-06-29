@@ -1,4 +1,4 @@
-﻿using GD_STD;
+using GD_STD;
 using GD_STD.Enum;
 using OpenGL.Delegates;
 using System;

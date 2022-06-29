@@ -1,4 +1,4 @@
-﻿using devDept.Eyeshot;
+using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
