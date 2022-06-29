@@ -1,4 +1,4 @@
-﻿using devDept.Eyeshot;
+using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
@@ -739,7 +739,7 @@ namespace STD_105.Office
 
                                     p3D1 = new Point3D(0, center.Y, 0); //鏡射第一點
                                     p3D2 = new Point3D(10, center.Y, 0);//鏡射第二點
-                                    axis3D = new Vector3D(center.X, 0, 0);
+                                    axis3D = Vector3D.AxisZ;
 
                                     p2D1.Y = p2D2.Y = steelAttr.H / 2;
                                     break;
@@ -747,7 +747,7 @@ namespace STD_105.Office
                                 case GD_STD.Enum.FACE.FRONT:
                                     p3D1 = new Point3D(0, 0, center.Z); //鏡射第一點
                                     p3D2 = new Point3D(10, 0, center.Z);//鏡射第二點
-                                    axis3D = new Vector3D(0, center.Y, 0);
+                                    axis3D = Vector3D.AxisY;
                                     switch (face)
                                     {
                                         case FACE.FRONT:
@@ -775,8 +775,8 @@ namespace STD_105.Office
                             //Vector3D axis2DX = new Vector3D(p2D1, p2D2);
                             Vector3D axis2DX = new Vector3D(new Point3D(p2D1.X, p2D1.Y, p2D1.Z), new Point3D(p2D2.X, p2D2.Y, p2D2.Z));
 
-                            mirror3DPlane = new Plane(p3D1, axis3DX);
-                            mirror2DPlane = new Plane(p2D1, axis2DX);
+                            mirror3DPlane = new Plane(p3D1, axis3DX, axis3D);
+                            mirror2DPlane = new Plane(p2D1, axis2DX, axis2D);
 
                             //鏡像轉換。
                             Mirror mirror3D = new Mirror(mirror3DPlane);
@@ -802,8 +802,7 @@ namespace STD_105.Office
                             model.Entities.AddRange(modify3D);
 
 
-                            ViewModel.Reductions.AddContinuous(modify3D, modify2D);
-                            
+                            ViewModel.Reductions.AddContinuous(modify3D, modify2D);                           
                             model.SetCurrent(null);
                             drawing.SetCurrent(null);
                         }

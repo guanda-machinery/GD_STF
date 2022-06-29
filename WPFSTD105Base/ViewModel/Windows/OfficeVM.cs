@@ -1,4 +1,4 @@
-﻿using DevExpress.Mvvm;
+using DevExpress.Mvvm;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.WindowsUI;
@@ -8,14 +8,22 @@ using System.Windows.Input;
 using WPFWindowsBase;
 using static WPFSTD105.ViewLocator;
 using WPFBase = WPFWindowsBase;
- 
+
 namespace WPFSTD105
 {
     /// <summary>
-    /// OfficeBasePage ViewModelz 
+    /// OfficeBasePage ViewModelz
     /// </summary>
     public class OfficeVM : AbsBaseWindowView
     {
+        /// <summary>
+        /// 新建路徑
+        /// </summary>
+        public string AddPath { get; set; }
+        /// <summary>
+        /// 瀏覽路徑
+        /// </summary>
+        public string SearchPath { get; set; }
         /// <summary>
         /// 輸出客製化
         /// </summary>
@@ -219,19 +227,47 @@ namespace WPFSTD105
                 OfficeViewModel.WorkAreaWidth = System.Windows.Forms.SystemInformation.WorkingArea.Width - 220;
             });
         }
-
+        /// <summary>
+        /// 新建專案 存路徑
+        /// </summary>
+        /// <returns></returns>
+        protected override WPFWindowsBase.RelayCommand OutProjectPath()
+        {
+            return new WPFWindowsBase.RelayCommand(() =>
+            {
+                FolderBrowserDialogService service = DevExpand.NewFolder("請選擇專案放置的資料夾");
+                IFolderBrowserDialogService folder = service;
+                folder.ShowDialog();//Show 視窗
+                AddPath = folder.ResultPath;//選擇的路徑
+                //不異動Properties.SofSetting.Default.LoadPath，因為修改時，需先在專案瀏覽選到正確的專案
+            });
+        }
+        /// <summary>
+        /// 開啟專案 存路徑
+        /// </summary>
+        /// <returns></returns>
+        protected override WPFWindowsBase.RelayCommand OpenProjectPath()
+        {
+            return new WPFWindowsBase.RelayCommand(() =>
+            {
+                FolderBrowserDialogService service = DevExpand.NewFolder("請選擇專案放置的資料夾");
+                IFolderBrowserDialogService folder = service;
+                folder.ShowDialog();//Show 視窗 
+                SearchPath = folder.ResultPath;//選擇的路徑
+                //修改全域路徑變數 供載入用
+                Properties.SofSetting.Default.LoadPath = SearchPath;
+                Properties.SofSetting.Default.Save();
+            });
+        }
         /// <inheritdoc/>
         protected override RelayParameterizedCommand OutProjectName()
         {
             return new WPFBase.RelayParameterizedCommand(e=>
             {
-
-                // 2020.06.21  呂宗霖 路徑調整抓 FolderBrowserDialogViewModel 因為選擇資料夾時已異動Properties.SofSetting.Default.LoadPath
-                string path = ((FolderBrowserDialogViewModel)e).ResultPath;
-                Properties.SofSetting.Default.LoadPath = path;
-                Properties.SofSetting.Default.Save();
+                // 2020.06.21  呂宗霖 路徑調整抓 AddPath 因為選擇資料夾時已異動Properties.SofSetting.Default.LoadPath
+                string path = this.AddPath;
                 //string path = Properties.SofSetting.Default.LoadPath;
-                //string path =  tbx_ProjectPath.Text;
+                //string path2 =  tbx_ProjectPath.Text;
                 //path = string.IsNullOrEmpty("") ? path : "";
                 bool result = ApplicationVM.CreateModel(path); //創建模型
                 if (result)

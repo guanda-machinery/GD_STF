@@ -1,4 +1,4 @@
-﻿using System.Windows.Input;
+using System.Windows.Input;
 
 namespace WPFSTD105
 {
@@ -6,7 +6,7 @@ namespace WPFSTD105
     /// 共用命令
     /// </summary>
     public interface IWindowsVM 
-    { 
+    {
         /// <summary>
         /// 語言命令
         /// </summary>
@@ -31,6 +31,14 @@ namespace WPFSTD105
         /// 新建專案命令
         /// </summary>
         ICommand OutProjectNameCommand { get; set; }
+        /// <summary>
+        /// 新建專案存路徑命令
+        /// </summary>
+        ICommand OutProjectPathCommand { get; set; }
+        /// <summary>
+        /// 開啟專案存路徑命令
+        /// </summary>
+        ICommand OpenProjectPathCommand { get; set; }
         /// <summary>
         /// 另存專案命令
         /// </summary>
