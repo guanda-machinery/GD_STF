@@ -509,30 +509,6 @@ namespace WPFSTD105
             });
         }
         ///// <summary>
-        ///// 
-        ///// </summary>
-        //public ICommand OpenProjectPathCommand { get; set; }
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public ICommand OutProjectPathCommand { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        protected override WPFWindowsBase.RelayCommand OutProjectPath()
-        {
-            return new WPFBase.RelayCommand(() => { });
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        protected override WPFWindowsBase.RelayCommand OpenProjectPath()
-        {
-            return new WPFBase.RelayCommand(() => { });
-        }
-        ///// <summary>
         ///// 修改專案屬性
         ///// </summary>
         //public ICommand ModifyProjectInfoCommand { get; set; }
@@ -885,8 +861,6 @@ namespace WPFSTD105
                 }
             });
         }
-
-
         #endregion
 
         #region 公有屬性
@@ -999,12 +973,13 @@ namespace WPFSTD105
             ProjectManagerCommand = ProjectManager();
             LanguageSwitchCommand = LanguageSwitch();
             CloseSubWindowsCommand = CloseSubWindow();
-
-            //OutProjectPathCommand = OutProjectPath();
-            //OpenProjectPathCommand = OpenProjectPath();
         }
         #region 私有方法
-         
+        /// <summary>
+        /// 清除Codesys原有的按鈕狀態
+        /// </summary>
+        /// <param name="panelButton"></param>
+        /// <returns></returns>
         private PanelButton StateClear(PanelButton panelButton)
         {
             panelButton.AxisEffluent = false;

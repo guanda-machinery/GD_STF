@@ -88,7 +88,7 @@
                     <Label Grid.Row="4" Content="專案路徑："/>
                     <StackPanel Grid.Row="4" Grid.Column="2" Orientation="Horizontal" DataContext="{ dxmvvm:ViewModelSource Type=WPFSTD:FolderBrowserDialogViewModel}">
                         <TextBox x:Name="tbx_ProjectPath" Text="{ Binding ResultPath }"/>
-                        <Button Style="{ StaticResource btn_CommonIconKey }" Command="{ Binding OutProjectPathCommand }" HorizontalAlignment="Right">
+                        <Button Style="{ StaticResource btn_CommonIconKey }" Command="{ Binding ShowFolderDialogCommand }" HorizontalAlignment="Right">
                             <dxmvvm:Interaction.Behaviors>
                                 <dxmvvm:FolderBrowserDialogService Description="請選擇資料夾做為專案儲存的路徑"
                                     ShowNewFolderButton="True" RootFolder="Desktop" RestorePreviouslySelectedDirectory="True"/>
@@ -129,7 +129,7 @@
                                 ShowNewFolderButton="False" RootFolder="Desktop" RestorePreviouslySelectedDirectory="True"/>
                         </dxmvvm:Interaction.Behaviors>
                         <TextBox Text="{ Binding ResultPath }"/>
-                        <Button Style="{ StaticResource btn_CommonIconKey }" ToolTip="選擇路徑" Command="{ Binding OpenProjectPathCommand }">
+                        <Button Style="{ StaticResource btn_CommonIconKey }" ToolTip="選擇路徑" Command="{ Binding ShowFolderDialogCommand }">
                             <Image Width="25" Source="{ StaticResource ImportFile }"/>
                         </Button>
                     </StackPanel>

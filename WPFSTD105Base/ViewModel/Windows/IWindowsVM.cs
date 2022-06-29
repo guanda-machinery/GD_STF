@@ -32,14 +32,6 @@ namespace WPFSTD105
         /// </summary>
         ICommand OutProjectNameCommand { get; set; }
         /// <summary>
-        /// 新建專案存路徑命令
-        /// </summary>
-        ICommand OutProjectPathCommand { get; set; }
-        /// <summary>
-        /// 開啟專案存路徑命令
-        /// </summary>
-        ICommand OpenProjectPathCommand { get; set; }
-        /// <summary>
         /// 另存專案命令
         /// </summary>
         ICommand SaveAsCommand { get; set; }
