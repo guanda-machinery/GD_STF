@@ -43,6 +43,9 @@ namespace WPFSTD105
             NextPageCommand = NextPage();
             PreviousPageCommand = PreviousPage();
             WorkingAreaMonitorCommand = WorkingAreaMonitor();
+
+            OpenProjectPathCommand = OpenProjectPath();
+            OutProjectPathCommand = OutProjectPath();
         }
         /// <summary>
         /// 更改客製化狀態
