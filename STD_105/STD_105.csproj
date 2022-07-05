@@ -233,6 +233,10 @@
     <Reference Include="DevExpress.Xpf.Grid.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <HintPath>..\packages\DevExpress.Wpf.Grid.Core.21.1.4\lib\net452\DevExpress.Xpf.Grid.v21.1.Core.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v21.1.Core.resources, Version=21.1.0.0, Culture=de, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\專案備份\GD_STF\STD_105\bin\Debug\zh-TW\DevExpress.Xpf.Grid.v21.1.Core.resources.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Xpf.Grid.v21.1.Extensions, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <HintPath>..\packages\DevExpress.Wpf.Grid.Core.21.1.4\lib\net452\DevExpress.Xpf.Grid.v21.1.Extensions.dll</HintPath>
     </Reference>
@@ -1427,6 +1431,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Content Include="Logo\Joystick.svg" />
+    <None Include="zh-TW\DevExpress.Xpf.Grid.v21.1.Core.resources.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Resource Include="Logo\SmallLogo.svg" />
     <Resource Include="Logo\Logo.svg" />
     <Resource Include="Logo.ico" />

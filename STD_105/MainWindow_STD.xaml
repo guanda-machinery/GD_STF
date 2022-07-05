@@ -948,11 +948,12 @@
                             </StackPanel>
                             <TextBlock Text="專案名稱："
                                        Margin="30,0" />
+                            <!-- 2022.06.21 呂宗霖 ApplicationViewModel 改為 CommonViewModel -->
                             <StackPanel Orientation="Horizontal">
                                 <ComboBox x:Name="InputTextBox1"
                                           MinWidth="300"
                                           FontSize="{Binding SubTitleFontSize, Source={x:Static SofSetting:SofSetting.Default}}"
-                                          ItemsSource="{Binding ApplicationViewModel.ProjectList, Source={x:Static WPFSTD:ViewLocator.Instance}}"
+                                          ItemsSource="{Binding CommonViewModel.ProjectList, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                                           SelectedIndex="{Binding SelectProject}"
                                           Style="{StaticResource cbb_DarkMain}"
                                           Margin="100,0,0,0" />

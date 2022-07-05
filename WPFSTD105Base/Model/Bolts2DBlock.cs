@@ -47,7 +47,7 @@ namespace WPFSTD105.Model
             {
                 CreatePoint(bolts3DBlock, steel2DBlock);
             }
-            Face = bolts3DBlock.Info.Face;
+            this.Face = bolts3DBlock.Info.Face;
         }
         /// <summary>
         /// 創建打點

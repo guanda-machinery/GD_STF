@@ -6,12 +6,12 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Text; 
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using static WPFSTD105.ViewLocator;
-using WPFBase = WPFWindowsBase;
+using WPFBase = WPFWindowsBase; 
 using static WPFSTD105.CodesysIIS;
 namespace WPFSTD105
 {
@@ -59,8 +59,11 @@ namespace WPFSTD105
             WatchProjectCommand = WatchProject();
             LanguageCommand = Language();
             NewProjectShowCommand = NewProjectShow();
+
+            OutProjectPathCommand = OutProjectPath();
+            OpenProjectPathCommand = OpenProjectPath();
         }
-        
+
         /// <inheritdoc/>
         public ICommand HomeCommand { get; set; }
         private WPFBase.RelayCommand HomePage()
@@ -140,7 +143,7 @@ namespace WPFSTD105
                 string projectName = ReadCodesysMemor?.GetProjectName();
 
                 string _ = e.ToString();
-           
+
                 CommonViewModel.ProjectName = _;
                 if (CommonViewModel.ActionLoadProfile != null) //如果載入專案實有發現載入斷面規格與材質
                 {
@@ -150,12 +153,26 @@ namespace WPFSTD105
             });
         }
         /// <inheritdoc/>
+        public ICommand OutProjectPathCommand { get; set; }
+        /// <inheritdoc/>
+        public ICommand OpenProjectPathCommand { get; set; }
+        /// <inheritdoc/>
         public ICommand OutProjectNameCommand { get; set; }
         /// <summary>
         /// 建立專案功能
         /// </summary>
         /// <returns></returns>
-        protected abstract  WPFBase.RelayParameterizedCommand OutProjectName();
+        protected abstract WPFBase.RelayParameterizedCommand OutProjectName();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        protected abstract WPFBase.RelayCommand OutProjectPath();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        protected abstract WPFBase.RelayCommand OpenProjectPath();
         /// <inheritdoc/>
         public ICommand SaveAsCommand { get; set; }
         /// <summary>
@@ -177,7 +194,7 @@ namespace WPFSTD105
         /// <returns></returns>
         protected virtual WPFBase.RelayCommand WatchProject()
         {
-            return new WPFBase.RelayCommand(() => 
+            return new WPFBase.RelayCommand(() =>
             {
                 CommonViewModel.ProjectList = new ObservableCollection<string>(ApplicationVM.GetModelDirectory(Properties.SofSetting.Default.LoadPath));
             });
@@ -284,7 +301,7 @@ namespace WPFSTD105
                 catch
                 {
                     //WinUIMessageBox.Show();
-                }
+                } 
                 /*
                 if (!LanguageFlag)
                 {

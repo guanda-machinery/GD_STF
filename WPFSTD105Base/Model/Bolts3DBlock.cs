@@ -30,7 +30,7 @@ namespace WPFSTD105.Model
         public Bolts3DBlock(EntityList meshes, GroupBoltsAttr groupBoltsAttr) : base(groupBoltsAttr.GUID.ToString())
         {
             this.Entities.AddRange(meshes);
-            Info = groupBoltsAttr;
+            this.Info = groupBoltsAttr;
         }
 
         /// <summary>

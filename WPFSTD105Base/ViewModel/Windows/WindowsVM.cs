@@ -1,4 +1,4 @@
-﻿using GD_STD;
+using GD_STD;
 using GD_STD.Enum;
 using OpenGL.Delegates;
 using System;
@@ -457,7 +457,7 @@ namespace WPFSTD105
         protected override WPFBase.RelayParameterizedCommand OpenProject()
         {
             return new WPFBase.RelayParameterizedCommand(e =>
-            {                
+            {
                 string projectName = ReadCodesysMemor.GetProjectName();
                 if (String.IsNullOrEmpty(projectName))
                 {
@@ -468,7 +468,7 @@ namespace WPFSTD105
                     return;
                 }
                 else
-                {                    
+                {
                     var messageBoxResult = MessageBox.Show("請確認是否續接專案，\n不續接專案將會初始化所有工件的當前位置。", "通知", MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                     if (messageBoxResult == MessageBoxResult.No)
                     {
@@ -478,7 +478,7 @@ namespace WPFSTD105
                     {
                         //在加工監控下匯入別的專案前先回首頁
                         ApplicationViewModel.CurrentPage = ApplicationPage.Home;
-                        
+
                         Task.Run(() =>
                         {
                             while (!ApplicationViewModel.IsHome)
@@ -507,6 +507,30 @@ namespace WPFSTD105
                 string path = ((FolderBrowserDialogViewModel)e).ResultPath;
                 this.NewProjectControl = ApplicationVM.CreateModel(path); //創建模型
             });
+        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public ICommand OpenProjectPathCommand { get; set; }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public ICommand OutProjectPathCommand { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        protected override WPFWindowsBase.RelayCommand OutProjectPath()
+        {
+            return new WPFBase.RelayCommand(() => { });
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        protected override WPFWindowsBase.RelayCommand OpenProjectPath()
+        {
+            return new WPFBase.RelayCommand(() => { });
         }
         ///// <summary>
         ///// 修改專案屬性
@@ -861,6 +885,8 @@ namespace WPFSTD105
                 }
             });
         }
+
+
         #endregion
 
         #region 公有屬性
@@ -973,13 +999,12 @@ namespace WPFSTD105
             ProjectManagerCommand = ProjectManager();
             LanguageSwitchCommand = LanguageSwitch();
             CloseSubWindowsCommand = CloseSubWindow();
+
+            //OutProjectPathCommand = OutProjectPath();
+            //OpenProjectPathCommand = OpenProjectPath();
         }
         #region 私有方法
-        /// <summary>
-        /// 清除Codesys原有的按鈕狀態
-        /// </summary>
-        /// <param name="panelButton"></param>
-        /// <returns></returns>
+
         private PanelButton StateClear(PanelButton panelButton)
         {
             panelButton.AxisEffluent = false;

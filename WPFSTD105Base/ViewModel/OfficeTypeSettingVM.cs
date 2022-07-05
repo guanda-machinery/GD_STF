@@ -1,4 +1,5 @@
-﻿using DevExpress.Xpf.Grid;
+﻿using DevExpress.Xpf.Core;
+using DevExpress.Xpf.Grid;
 using DevExpress.Xpf.Grid.Printing;
 using DevExpress.Xpf.Reports.UserDesigner;
 using DevExpress.Xpf.WindowsUI;
@@ -122,7 +123,20 @@ namespace WPFSTD105
             return new RelayParameterizedCommand(el =>
             {
                 ExcelCutService execl = new ExcelCutService();
-                execl.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.xls", MaterialDataViews);
+                //execl.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.xls", MaterialDataViews);
+
+                //新增檔案儲存完成提示 - 2022/06/24 by CYH
+                var stringFilePath = $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.xls";
+                execl.CreateFile(stringFilePath, MaterialDataViews);
+                
+                WinUIMessageBox.Show(null,
+                    $"檔案已下載",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Popup);
             });
         }
         private static void ShowDesigner(IGridViewFactory<ColumnWrapper, RowBaseWrapper> factory)
@@ -146,7 +160,20 @@ namespace WPFSTD105
             return new RelayParameterizedCommand(el =>
             {
                 ExcelBuyService execl = new ExcelBuyService();
-                execl.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.xls", MaterialDataViews);
+                //execl.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.xls", MaterialDataViews);
+
+                //新增檔案儲存完成提示 - 2022/06/27 by CYH
+                var stringFilePath = $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.xls";
+                execl.CreateFile(stringFilePath, MaterialDataViews);
+
+                WinUIMessageBox.Show(null,
+                    $"檔案已下載",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Popup);
             });
         }
         /// <summary>
@@ -158,7 +185,20 @@ namespace WPFSTD105
             return new RelayParameterizedCommand(el =>
             {
                 ExcelAmountService execl = new ExcelAmountService();
-                execl.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購金額預算表.xls", MaterialDataViews);
+                //execl.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購金額預算表.xls", MaterialDataViews);
+
+                //新增檔案儲存完成提示 - 2022/06/27 by CYH
+                var stringFilePath = $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購金額預算表.xls";
+                execl.CreateFile(stringFilePath, MaterialDataViews);
+
+                WinUIMessageBox.Show(null,
+                    $"檔案已下載",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Popup);
             });
         }
         /// <summary>

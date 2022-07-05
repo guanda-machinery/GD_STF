@@ -1,4 +1,4 @@
-﻿using devDept.Eyeshot;
+using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
@@ -39,14 +39,21 @@ namespace STD_105.Office
         public ObSettingsPage_Office()
         {
             InitializeComponent();
+            //2022.06.24 呂宗霖 此Class與GraphWin.xaml.cs皆有SteelTriangulation與Add2DHole
+            //                  先使用本Class 若有問題再修改
+            //GraphWin service = new GraphWin();
+            #region 3D
             model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             //model.Unlock("UF20-HN12H-22P6C-71M1-FXP4");
             this.PageUnloadAnimation = PageAnimation.SlideAndFadeOutToRight;
-            //drawing.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
+            model.Secondary = drawing; 
+            #endregion
+            #region 2D
+            drawing.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             //drawing.Unlock("UF20-HN12H-22P6C-71M1-FXP4");
-            //drawing.LineTypes.Add(Steel2DBlock.LineTypeName, new float[] { 35, -35, 35, -35 });
-            //model.Secondary = drawing;
-            //drawing.Secondary = model;
+            drawing.LineTypes.Add(Steel2DBlock.LineTypeName, new float[] { 35, -35, 35, -35 });
+            drawing.Secondary = model; 
+            #endregion
 
             #region 定義 MenuItem 綁定的命令
             //放大縮小
@@ -96,7 +103,7 @@ namespace STD_105.Office
                 //刷新模型
                 model.Refresh();
                 //更新模型
-                //drawing.Refresh();
+                drawing.Refresh();
             });
             //編輯物件
             ViewModel.EditObject = new RelayCommand(() =>
@@ -108,8 +115,9 @@ namespace STD_105.Office
                 {
                     //層級 To 要編輯的BlockReference
                     model.SetCurrent((BlockReference)ViewModel.Select3DItem[0].Item);
-                    //drawing.SetCurrent((BlockReference)drawing.Entities.Find(el => ((BlockReference)el).BlockName == model.CurrentBlockReference.BlockName));
+                    drawing.SetCurrent((BlockReference)drawing.Entities.Find(el => ((BlockReference)el).BlockName == model.CurrentBlockReference.BlockName));
                     model.Refresh();//更新模型
+                    drawing.Refresh();
                 }
                 catch (Exception ex)
                 {
@@ -133,7 +141,7 @@ namespace STD_105.Office
 #endif
                 ViewModel.Reductions.Previous();//回到上一個動作
                 model.Refresh();//更新模型
-                //drawing.Refresh();//更新模型
+                drawing.Refresh();//更新模型
 #if DEBUG
                 log4net.LogManager.GetLogger("按下選單命令").Debug("完成上一個動作");
 #endif
@@ -146,7 +154,7 @@ namespace STD_105.Office
 #endif
                 ViewModel.Reductions.Next();//回到上一個動作
                 model.Refresh();//更新模型
-                //drawing.Refresh();//更新模型
+                drawing.Refresh();//更新模型
 #if DEBUG
                 log4net.LogManager.GetLogger("按下選單命令").Debug("完成下一個動作");
 #endif
@@ -174,7 +182,8 @@ namespace STD_105.Office
                     }
                     else
                     {
-                        //modelExt = drawing;
+                        // 2022.06.24 呂宗霖 還原註解
+                        modelExt = drawing;
                     }
                     List<Entity> dimensions = new List<Entity>();//標註物件
                     modelExt.Entities.ForEach(el =>
@@ -218,6 +227,8 @@ namespace STD_105.Office
 #if DEBUG
                 log4net.LogManager.GetLogger("加入主件").Debug("產生圖塊");
 #endif
+
+                #region 已改為AddSteel,故註解
                 //SteelAttr steelAttr = ViewModel.GetSteelAttr();
                 //Steel3DBlock steel = new Steel3DBlock(Steel3DBlock.GetProfile(steelAttr)); //產生鋼構圖塊
                 //model.Blocks.Add(steel);//加入鋼構圖塊到模型
@@ -225,10 +236,11 @@ namespace STD_105.Office
                 //blockReference.EntityData = steelAttr;
                 //blockReference.Selectable = false;//關閉用戶選擇
                 //blockReference.Attributes.Add("Steel", new AttributeReference(0, 0, 0));
-                //model.Entities.Add(blockReference);//加入參考圖塊到模型
+                //model.Entities.Add(blockReference);//加入參考圖塊到模型 
+                #endregion
 
                 Steel3DBlock steel = Steel3DBlock.AddSteel(ViewModel.GetSteelAttr(), model, out BlockReference blockReference);
-                //BlockReference steel2D = SteelTriangulation((Mesh)steel.Entities[0]);
+                BlockReference steel2D = SteelTriangulation((Mesh)steel.Entities[0]);
                 ViewModel.Reductions.Add(new Reduction()
                 {
                     Recycle = new List<List<Entity>>() { new List<Entity>() { blockReference } },
@@ -236,20 +248,22 @@ namespace STD_105.Office
                     User = new List<ACTION_USER>() { ACTION_USER.Add }
                 }, new Reduction()
                 {
-                    //Recycle = new List<List<Entity>>() { new List<Entity>() { steel2D } },
+                    // 2022.06.24 呂宗霖 還原註解
+                    Recycle = new List<List<Entity>>() { new List<Entity>() { steel2D } },
                     SelectReference = null,
                     User = new List<ACTION_USER>() { ACTION_USER.Add }
                 });
                 model.ZoomFit();//設置道適合的視口
                 model.Refresh();//刷新模型
+
                 SaveModel(true);
                 #endregion
             });
             //修改主零件
             ViewModel.ModifyPart = new RelayCommand(() =>
             {
-                //if (!CheckPart()) //檢測用戶輸入的參數是否有完整
-                //    return;
+                if (!CheckPart()) //檢測用戶輸入的參數是否有完整
+                    return;
                 if (model.CurrentBlockReference != null)
                 {
                     //MessageBox.Show("退出編輯模式，才可修改主件", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
@@ -268,54 +282,54 @@ namespace STD_105.Office
 #endif
 
                 SelectedItem sele3D = new SelectedItem(model.Entities[model.Entities.Count - 1]);
-                //SelectedItem sele2D = new SelectedItem(drawing.Entities[drawing.Entities.Count - 1]);
+                SelectedItem sele2D = new SelectedItem(drawing.Entities[drawing.Entities.Count - 1]);
                 //模擬用戶實際選擇編輯
                 ViewModel.Select3DItem.Add(sele3D);
-                //ViewModel.Select2DItem.Add(sele2D);
+                ViewModel.Select2DItem.Add(sele2D);
                 //層級 To 要編輯的BlockReference
                 model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);
-                //drawing.SetCurrent((BlockReference)drawing.Entities[0]);
+                drawing.SetCurrent((BlockReference)drawing.Entities[0]);
 
                 SteelAttr steelAttr = ViewModel.GetSteelAttr();
                 steelAttr.GUID = ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).GUID;//修改唯一識別ID
                 Mesh modify = Steel3DBlock.GetProfile(steelAttr); //修改的形狀
                 ViewModel.tem3DRecycle.Add(model.Entities[model.Entities.Count - 1]);//加入垃圾桶準備刪除
-                //ViewModel.tem2DRecycle.AddRange(drawing.Entities);//加入垃圾桶準備刪除
+                ViewModel.tem2DRecycle.AddRange(drawing.Entities);//加入垃圾桶準備刪除
 
                 //model.Entities[0].Selected = true;//選擇物件
-                //drawing.Entities.ForEach(el => el.Selected = true);
-                //List<Entity> steel2D = new Steel2DBlock(modify, "123").Entities.ToList();
-                //Steel2DBlock steel2DBlock = (Steel2DBlock)drawing.Blocks[drawing.CurrentBlockReference.BlockName];
-                //steel2DBlock.ChangeMesh(modify);
+                drawing.Entities.ForEach(el => el.Selected = true);
+                List<Entity> steel2D = new Steel2DBlock(modify, "123").Entities.ToList();
+                Steel2DBlock steel2DBlock = (Steel2DBlock)drawing.Blocks[drawing.CurrentBlockReference.BlockName];
+                steel2DBlock.ChangeMesh(modify);
                 //加入到垃圾桶內
                 ViewModel.Reductions.Add(new Reduction()
                 {
                     SelectReference = model.CurrentBlockReference,
                     Recycle = new List<List<Entity>>() { ViewModel.tem3DRecycle.ToList() },
                     User = new List<ACTION_USER>() { ACTION_USER.DELETE }
-                }/*, new Reduction() //加入到垃圾桶內
+                }, new Reduction() //加入到垃圾桶內
                 {
-                    //SelectReference = drawing.CurrentBlockReference,
+                    SelectReference = drawing.CurrentBlockReference,
                     Recycle = new List<List<Entity>>() { ViewModel.tem2DRecycle.ToList() },
                     User = new List<ACTION_USER>() { ACTION_USER.DELETE }
-                }*/);
+                });
                 //刪除指定物件
                 model.Entities.RemoveAt(0);
-                //drawing.Entities.Clear();
+                drawing.Entities.Clear();
                 //清空選擇物件
-                //ViewModel.Select2DItem.Clear();
+                ViewModel.Select2DItem.Clear();
                 ViewModel.Select3DItem.Clear();
                 //清空圖塊內物件
                 ViewModel.tem3DRecycle.Clear();
-                //ViewModel.tem2DRecycle.Clear();
+                ViewModel.tem2DRecycle.Clear();
 
-                //ViewModel.Reductions.AddContinuous(new List<Entity>() { modify }, steel2D);
+                ViewModel.Reductions.AddContinuous(new List<Entity>() { modify }, steel2D);
                 model.Entities.Insert(0, modify);//加入參考圖塊到模型
-                //drawing.Entities.AddRange(steel2D);
+                drawing.Entities.AddRange(steel2D);
                 Esc();
                 //刷新模型
                 model.Invalidate();
-                //drawing.Invalidate();
+                drawing.Invalidate();
                 SaveModel(false);//存取檔案
 
 #if DEBUG
@@ -394,9 +408,9 @@ namespace STD_105.Office
                 /*3D螺栓*/
                 ViewModel.GroupBoltsAttr.GUID = Guid.NewGuid();
 
-                Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference);
 
-                //BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference);
+                BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
 
                 SaveModel(false);//存取檔案
 
@@ -408,16 +422,16 @@ namespace STD_105.Office
                         Recycle = new List<List<Entity>>() { new List<Entity>() { blockReference } },
                         SelectReference = null,
                         User = new List<ACTION_USER>() { ACTION_USER.Add }
-                    }/*, new Reduction()
+                    }, new Reduction()
                     {
-                        //Recycle = new List<List<Entity>>() { new List<Entity>() { referenceBolts } },
+                        Recycle = new List<List<Entity>>() { new List<Entity>() { referenceBolts } },
                         SelectReference = null,
                         User = new List<ACTION_USER>() { ACTION_USER.Add }
-                    }*/);
+                    });
                 }
                 //刷新模型
                 model.Refresh();
-                //drawing.Refresh();
+                drawing.Refresh();
                 SaveModel(false);//存取檔案
             });
             //修改孔
@@ -466,7 +480,9 @@ namespace STD_105.Office
                                 MessageBoxResult.None,
                                 MessageBoxOptions.None,
                                 FloatingMode.Popup);
-                             return;
+
+                            return;
+
                         }
 
 #if DEBUG
@@ -479,7 +495,7 @@ namespace STD_105.Office
                         bool mFocus = model.Focus();
                         if (!mFocus)
                         {
-                            //drawing.Focus();
+                            drawing.Focus();
                         }
                         ViewModel.GroupBoltsAttr = ViewModel.GetGroupBoltsAttr(groupBoltsAttr);
                         ViewModel.Select3DItem.Add(selectItem[i]);//模擬選擇
@@ -568,7 +584,7 @@ namespace STD_105.Office
                 ViewModel.SaveCut();
                 ViewModel.ModifyPart.Execute(null);
 
-                //SteelTriangulation();//產生2D三視圖
+                SteelTriangulation((Mesh)model.Blocks[1].Entities[0]) ;//產生2D三視圖
 #if DEBUG
                 log4net.LogManager.GetLogger("加入切割線").Debug("結束");
 #endif
@@ -613,19 +629,19 @@ namespace STD_105.Office
             ViewModel.MirrorX = new RelayCommand(() =>
             {
                 try
+            {
+                //查看用戶是否有選擇圖塊
+                if (ViewModel.Select3DItem.Count > 0)
                 {
-                    //查看用戶是否有選擇圖塊
-                    if (ViewModel.Select3DItem.Count > 0)
-                    {
-                        BlockReference reference3D;
-                        BlockReference reference2D;
+                    BlockReference reference3D;
+                    BlockReference reference2D;
 
-                        List<SelectedItem> select3D = ViewModel.Select3DItem.ToList();//暫存容器
-                        List<SelectedItem> select2D = ViewModel.Select2DItem.ToList();//暫存容器
+                    List<SelectedItem> select3D = ViewModel.Select3DItem.ToList();//暫存容器
+                    List<SelectedItem> select2D = ViewModel.Select2DItem.ToList();//暫存容器
                         for (int i = 0; i < select3D.Count; i++)
                         {
-                            reference3D = (BlockReference)select3D[i].Item;
-                            reference2D = (BlockReference)select2D[i].Item;
+                            reference3D = select3D.Count != 0 ? (BlockReference)select3D[i].Item : null;
+                            reference2D = select2D.Count != 0 ? (BlockReference)select2D[i].Item : null;
                             //如果在編輯模式
                             if (model.CurrentBlockReference != null)
                             {
@@ -666,47 +682,58 @@ namespace STD_105.Office
                             model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);//先取得主件資訊
                             SteelAttr steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
 
-                            //產生物件物件頂點
+                            //產生物件物件頂點(整支素材的最起點和最末端)
                             Point3D boxMin, boxMax;
                             Utility.ComputeBoundingBox(null, model.Entities[model.Entities.Count - 1].Vertices, out boxMin, out boxMax);
                             Point3D center = (boxMin + boxMax) / 2; //鏡射中心點
 
                             model.SetCurrent(null);
                             model.SetCurrent(reference3D);
-                            //drawing.SetCurrent(reference2D);
-
+                            drawing.SetCurrent(reference2D);
+                            //存放孔位資訊
                             Entity[] buffer3D = new Entity[model.Entities.Count]; //3D 鏡射物件緩衝區
-                            //buffer2D = new Entity[drawing.Entities.Count]; //2D 鏡射物件緩衝區
+                            Entity[] buffer2D = new Entity[drawing.Entities.Count]; //2D 鏡射物件緩衝區
                             model.Entities.CopyTo(buffer3D, 0);
-                            //drawing.Entities.CopyTo(buffer2D, 0);
+                            drawing.Entities.CopyTo(buffer2D, 0);
                             //模擬選取
                             ViewModel.Reductions.Add(new Reduction()
                             {
                                 Recycle = new List<List<Entity>>() { buffer3D.ToList() },
                                 SelectReference = reference3D,
                                 User = new List<ACTION_USER>() { ACTION_USER.DELETE }
-                            }/*, new Reduction()
+                            }, new Reduction()
                             {
                                 Recycle = new List<List<Entity>>() { buffer2D.ToList() },
                                 SelectReference = reference2D,
                                 User = new List<ACTION_USER>() { ACTION_USER.DELETE }
-                            }*/);
+                            });
 
-                            Bolts3DBlock groupBolts = (Bolts3DBlock)model.Blocks[reference3D.BlockName];//轉換型別
-                            FACE face = groupBolts.Info.Face; //孔位的面
+                            //if (model.Entities[model.Entities.Count - 1].EntityData is GroupBoltsAttr boltsAttr)
+                            //{
+                            //    BlockReference blockReference = (BlockReference)model.Entities[model.Entities.Count - 1]; //取得參考圖塊
+                            //    Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
+                            //    Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生螺栓圖塊
+
+                            //}
+
+                            BoltAttr  boltAttr = (BoltAttr)model.Entities[model.Entities.Count - 1].EntityData;
+                            FACE face = boltAttr.Face;
+
+                            //Bolts3DBlock groupBolts = (Bolts3DBlock)model.Blocks[reference3D.BlockName];//轉換型別
+                            //FACE face = groupBolts.Info.Face; //孔位的面
 
                             //3D鏡射參數
-                            Vector3D axis3DX = new Vector3D();
+                            //Vector3D axis3DX = new Vector3D();
                             Plane mirror3DPlane = new Plane();
                             Point3D p3D1 = new Point3D(), p3D2 = new Point3D();//鏡射座標
                             Vector3D axis3D = new Vector3D();//鏡射軸
 
                             //2D鏡射
-                            Vector3D axis2DX = new Vector3D();
+                            //Vector3D axis2DX = new Vector3D();
                             Plane mirror2DPlane = new Plane();
                             Point3D p2D1 = new Point3D(0, 0), p2D2 = new Point3D(10, 0);//鏡射座標
                             Vector3D axis2D = Vector3D.AxisZ;//鏡射軸
-                            //Bolts2DBlock bolts2DBlock = (Bolts2DBlock)drawing.Blocks[reference2D.BlockName];
+                            Bolts2DBlock bolts2DBlock = (Bolts2DBlock)drawing.Blocks[reference2D.BlockName];
 
                             switch (face)
                             {
@@ -726,10 +753,10 @@ namespace STD_105.Office
                                     switch (face)
                                     {
                                         case FACE.FRONT:
-                                            //p2D1.Y = p2D2.Y = bolts2DBlock.MoveFront + steelAttr.W / 2;
+                                            p2D1.Y = p2D2.Y = bolts2DBlock.MoveFront + steelAttr.W / 2;
                                             break;
                                         case FACE.BACK:
-                                            //p2D1.Y = p2D2.Y = bolts2DBlock.MoveBack - steelAttr.W / 2;
+                                            p2D1.Y = p2D2.Y = bolts2DBlock.MoveBack - steelAttr.W / 2;
                                             break;
                                         default:
                                             break;
@@ -741,13 +768,14 @@ namespace STD_105.Office
 
                             //清除要鏡射的物件
                             model.Entities.Clear();
-                            //drawing.Entities.Clear();
+                            drawing.Entities.Clear();
 
                             //修改 3D 參數
-                            axis3DX = new Vector3D(p3D1, p3D2);
-
+                            //Vector3D axis3DX = new Vector3D(p3D1, p3D2);
+                            Vector3D axis3DX = new Vector3D(new Point3D(p3D1.X, p3D1.Y, p3D1.Z), new Point3D(p3D2.X, p3D2.Y, p3D2.Z));
                             //修改 2D 參數
-                            axis2DX = new Vector3D(p2D1, p2D2);
+                            //Vector3D axis2DX = new Vector3D(p2D1, p2D2);
+                            Vector3D axis2DX = new Vector3D(new Point3D(p2D1.X, p2D1.Y, p2D1.Z), new Point3D(p2D2.X, p2D2.Y, p2D2.Z));
 
                             mirror3DPlane = new Plane(p3D1, axis3DX, axis3D);
                             mirror2DPlane = new Plane(p2D1, axis2DX, axis2D);
@@ -762,27 +790,27 @@ namespace STD_105.Office
                                 entity.TransformBy(mirror3D);
                                 modify3D.Add(entity);
                             });
-                            //buffer2D.ForEach(el =>
-                            //{
-                            //    Entity entity = (Entity)el.Clone();
-                            //    if (entity.Selectable)
-                            //    {
-                            //        entity.TransformBy(mirror2D);
-                            //    }
-                            //    modify2D.Add(entity);
-                            //});
+                            buffer2D.ForEach(el =>
+                            {
+                                Entity entity = (Entity)el.Clone();
+                                if (entity.Selectable)
+                                {
+                                    entity.TransformBy(mirror2D);
+                                }
+                                modify2D.Add(entity);
+                            });
 
-                            //drawing.Entities.AddRange(modify2D);
+                            drawing.Entities.AddRange(modify2D);
                             model.Entities.AddRange(modify3D);
 
 
-                            ViewModel.Reductions.AddContinuous(modify3D/*, modify2D*/);
+                            ViewModel.Reductions.AddContinuous(modify3D, modify2D);                           
                             model.SetCurrent(null);
-                            //drawing.SetCurrent(null);
+                            drawing.SetCurrent(null);
                         }
                         Esc();
                         model.Refresh();//刷新模型
-                        //drawing.Refresh();
+                        drawing.Refresh();
                         SaveModel(false);//存取檔案
 #if DEBUG
                         log4net.LogManager.GetLogger("鏡射孔位").Debug("結束");
@@ -823,8 +851,8 @@ namespace STD_105.Office
 
                         for (int i = 0; i < select3D.Count; i++)
                         {
-                            reference3D = (BlockReference)select3D[i].Item;
-                            reference2D = (BlockReference)select2D[i].Item;
+                            reference3D = select3D.Count != 0 ? (BlockReference)select3D[i].Item : null;
+                            reference2D = select2D.Count != 0 ? (BlockReference)select2D[i].Item : null;
                             //如果在編輯模式
                             if (model.CurrentBlockReference != null)
                             {
@@ -868,9 +896,9 @@ namespace STD_105.Office
 
                             model.SetCurrent(null);
                             model.SetCurrent(reference3D);
-                            //drawing.SetCurrent(reference2D);
+                            drawing.SetCurrent(reference2D);
 
-                            List<Entity> buffer3D = model.Entities.ToList()/*, buffer2D = drawing.Entities.ToList()*/;
+                            List<Entity> buffer3D = model.Entities.ToList(), buffer2D = drawing.Entities.ToList();
 
                             //模擬選取
                             ViewModel.Reductions.Add(new Reduction()
@@ -878,57 +906,110 @@ namespace STD_105.Office
                                 Recycle = new List<List<Entity>>() { buffer3D.ToList() },
                                 SelectReference = reference3D,
                                 User = new List<ACTION_USER>() { ACTION_USER.DELETE }
-                            }/*, new Reduction()
+                            }, new Reduction()
                             {
                                 Recycle = new List<List<Entity>>() { buffer2D.ToList() },
                                 SelectReference = reference2D,
                                 User = new List<ACTION_USER>() { ACTION_USER.DELETE }
-                            }*/);
-                            Bolts3DBlock groupBolts = (Bolts3DBlock)model.Blocks[reference3D.BlockName];//轉換型別
-                            FACE face = groupBolts.Info.Face; //孔位的面
+                            });
+                            
+                            //Bolts3DBlock groupBolts = (Bolts3DBlock)model.Blocks[reference3D.BlockName];//轉換型別
+                            BoltAttr BoltAttr = (BoltAttr)model.Entities[model.Entities.Count - 1].EntityData;
+                            FACE face = BoltAttr.Face; //孔位的面
 
                             //TODO:中心座標
                             List<Point3D> points = new List<Point3D>();
                             Point3D boxMin, boxMax;
-                            groupBolts.Entities.ForEach(el => points.AddRange(el.Vertices));
+
+                            model.Entities.ForEach(e => points.AddRange(e.Vertices));
+                            
+                            //groupBolts.Entities.ForEach(el => points.AddRange(el.Vertices));
+                            //取得所有點在該區域中的最邊端 及 求出中心點
                             Utility.ComputeBoundingBox(null, points, out boxMin, out boxMax);
                             Point3D center = (boxMin + boxMax) / 2; //鏡射中心點
 
                             //鏡射參數
-                            Point3D p1 = new Point3D(center.X, 0), p2 = new Point3D(center.X, 10);//鏡射座標
-                            Vector3D axisX = new Vector3D(p1, p2);
-                            Plane mirrorPlane = new Plane(p1, axisX, Vector3D.AxisZ);
+                            Point3D p3D1 = new Point3D(center.X, 0), p3D2 = new Point3D(center.X, 10);//鏡射座標
+                            Vector3D axis3DX = new Vector3D(p3D1, p3D2);
+                            
+                            Point3D p2D1 = new Point3D(center.X, 0), p2D2 = new Point3D(center.X, 10);//鏡射座標
+                            Vector3D axis2DX = new Vector3D(p2D1, p2D2);
+                            
+                            Bolts2DBlock bolts2DBlock = (Bolts2DBlock)drawing.Blocks[reference2D.BlockName];
+
+                            switch (face)
+                            {
+                                case FACE.TOP:
+                                    p3D1 = new Point3D(center.X, 0, 0);
+                                    p3D2 = new Point3D(center.X, 10, 0);
+                                    axis3DX = new Vector3D(0, center.Y, 0);
+                                    
+                                    p2D1.Y = p2D2.Y = steelAttr.H / 2;
+                                    break;
+                                case FACE.FRONT:                                   
+                                case FACE.BACK:
+                                    p3D1 = new Point3D(0, 0, center.Z); //鏡射第一點
+                                    p3D2 = new Point3D(10, 0, center.Z);//鏡射第二點
+                                    axis3DX = new Vector3D( 0, 0,center.Z);
+                                    switch (face)
+                                    {
+                                        case FACE.TOP:
+                                            p2D1.X = p2D2.X = bolts2DBlock.MoveFront + steelAttr.H / 2;
+                                            break;
+                                        case FACE.FRONT:
+                                            break;
+                                        case FACE.BACK:
+                                            p2D1.X = p2D2.X = bolts2DBlock.MoveBack - steelAttr.H / 2;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            //修改 3D 參數
+                            //Vector3D axis3DX = new Vector3D(p3D1, p3D2);
+                            axis3DX = new Vector3D(new Point3D(p3D1.X, p3D1.Y, p3D1.Z), new Point3D(p3D2.X, p3D2.Y, p3D2.Z));
+                            Plane mirror3DPlane = new Plane(p3D1, axis3DX);
+                            //修改 2D 參數
+                            //Vector3D axis2DX = new Vector3D(p2D1, p2D2);
+                            axis2DX = new Vector3D(new Point3D(p2D1.X, p2D1.Y, p2D1.Z), new Point3D(p2D2.X, p2D2.Y, p2D2.Z));
+                            Plane mirror2DPlane = new Plane(p2D1, axis2DX);
 
 
                             List<Entity> modify3D = new List<Entity>(), modify2D = new List<Entity>();
 
-                            Mirror mirror = new Mirror(mirrorPlane);
+                            Mirror mirror3D = new Mirror(mirror3DPlane);
+                            Mirror mirror2D = new Mirror(mirror2DPlane);
                             //清除要鏡射的物件
                             model.Entities.Clear();
-                            //drawing.Entities.Clear();
+                            drawing.Entities.Clear();
 
                             buffer3D.ForEach(el =>
                             {
                                 Entity entity = (Entity)el.Clone();
-                                entity.TransformBy(mirror);
+                                entity.TransformBy(mirror3D);
                                 modify3D.Add(entity);
                             });
-                            //buffer2D.ForEach(el =>
-                            //{
-                            //    Entity entity = (Entity)el.Clone();
-                            //    entity.TransformBy(mirror);
-                            //    modify2D.Add(entity);
-                            //});
+                            buffer2D.ForEach(el =>
+                            {
+                                Entity entity = (Entity)el.Clone();
+                                entity.TransformBy(mirror2D);
+                                modify2D.Add(entity);
+                            });
 
-                            //drawing.Entities.AddRange(modify2D);
+                            drawing.Entities.AddRange(modify2D);
                             model.Entities.AddRange(modify3D);
                             ViewModel.Reductions.AddContinuous(modify3D, modify2D);
                             model.SetCurrent(null);
-                            //drawing.SetCurrent(null);
+                            drawing.SetCurrent(null);
                         }
                         Esc();
                         model.Refresh();//刷新模型
-                        //drawing.Refresh();
+                        drawing.Refresh();
                         SaveModel(false);//存取檔案
 #if DEBUG
                         log4net.LogManager.GetLogger("鏡射孔位").Debug("結束");
@@ -959,10 +1040,10 @@ namespace STD_105.Office
                 bool mFocus = model.Focus();
                 if (!mFocus)
                 {
-                    //drawing.Focus();
+                    drawing.Focus();
                 }
                 SimulationDelete();
-                //SaveModel();
+                SaveModel(false);
             });
             #endregion
         }
@@ -983,7 +1064,7 @@ namespace STD_105.Office
             /*旋轉軸中心設定當前的鼠標光標位置。 如果模型全部位於相機視錐內部，
              * 它圍繞其邊界框中心旋轉。 否則它繞著下點旋轉鼠標。 如果在鼠標下方沒有深度，則旋轉發生在
              * 視口中心位於當前可見場景的平均深度處。*/
-            //model.Rotate.RotationCenter = rotationCenterType.CursorLocation;
+            model.Rotate.RotationCenter = rotationCenterType.CursorLocation;
             //旋轉視圖 滑鼠中鍵 + Ctrl
             model.Rotate.MouseButton = new MouseButton(mouseButtonsZPR.Middle, modifierKeys.Ctrl);
             //平移滑鼠中鍵
@@ -1054,7 +1135,7 @@ namespace STD_105.Office
                 SimulationDelete();
             }
             model.Invalidate();
-            //drawing.Invalidate();
+            drawing.Invalidate();
         }
         /// <summary>
         /// 檢測用戶輸入的零件參數是否有完整
@@ -1139,8 +1220,8 @@ namespace STD_105.Office
                 //開啟取消功能
                 delete.Visibility = Visibility.Visible;
                 esc.Visibility = Visibility.Visible;
-                //delete2D.Visibility = Visibility.Visible;
-                //esc2D.Visibility = Visibility.Visible;
+                delete2D.Visibility = Visibility.Visible;
+                esc2D.Visibility = Visibility.Visible;
             }
             //開啟編輯功能
             if (ViewModel.Select3DItem.Count == 1 && ViewModel.Select3DItem[0].Item is BlockReference)
@@ -1149,7 +1230,7 @@ namespace STD_105.Office
                 log4net.LogManager.GetLogger("啟用").Debug("編輯功能");
 #endif
                 edit.Visibility = Visibility.Visible;
-                //edit2D.Visibility = Visibility.Visible;
+                edit2D.Visibility = Visibility.Visible;
             }
             //關閉刪除功能與編輯功能
             if (ViewModel.Select3DItem.Count == 0)
@@ -1159,8 +1240,8 @@ namespace STD_105.Office
 #endif
                 edit.Visibility = Visibility.Collapsed;
                 delete.Visibility = Visibility.Collapsed;
-                //edit2D.Visibility = Visibility.Collapsed;
-                //delete2D.Visibility = Visibility.Collapsed;
+                edit2D.Visibility = Visibility.Collapsed;
+                delete2D.Visibility = Visibility.Collapsed;
             }
 #if DEBUG
             log4net.LogManager.GetLogger("在Model按下了右鍵").Debug("查看完畢");
@@ -1289,15 +1370,15 @@ namespace STD_105.Office
         private void Esc()
         {
             model.ActionMode = actionType.SelectByBox;
-            //drawing.ActionMode = actionType.SelectByBox;
+            drawing.ActionMode = actionType.SelectByBox;
             model.Entities.ClearSelection();//清除全部選取的物件
             ViewModel.Select3DItem.Clear();
             ViewModel.tem3DRecycle.Clear();
             ViewModel.Select2DItem.Clear();
             ViewModel.tem2DRecycle.Clear();
             model.ClearAllPreviousCommandData();
-            //drawing.ClearAllPreviousCommandData();
-            //drawing.SetCurrent(null);
+            drawing.ClearAllPreviousCommandData();
+            drawing.SetCurrent(null);
             model.SetCurrent(null);//層級 To 要編輯的 BlockReference
         }
         /// <summary>
@@ -1318,7 +1399,7 @@ namespace STD_105.Office
                 Phase = new List<int>(new int[ViewModel.SteelAttr.Number]),
                 Number = ViewModel.SteelAttr.PartNumber,
             };
-            if (ViewModel.SteelAssemblies.IndexOf(ass) ==-1 && add)
+            if (ViewModel.SteelAssemblies.IndexOf(ass) == -1 && add)
             {
                 ass.ID = new List<int>();
                 List<int> buffer = new List<int>(), _buffer = new List<int>();
@@ -1347,7 +1428,7 @@ namespace STD_105.Office
                 }
                 SteelPart steelPart = new SteelPart(ViewModel.SteelAttr, ViewModel.SteelAttr.PartNumber, ViewModel.SteelAttr.Number, ViewModel.SteelAttr.GUID.Value);
                 steelPart.ID = new List<int>();
-                steelPart.Match =new List<bool>();
+                steelPart.Match = new List<bool>();
                 steelPart.Material = ViewModel.SteelAttr.Material;
                 steelPart.Father = ass.ID;
                 steelPart.Length = ViewModel.SteelAttr.Length;
@@ -1377,7 +1458,7 @@ namespace STD_105.Office
             }
             //if (add)
             //{
-                ser.SetSteelAssemblies(ViewModel.SteelAssemblies);
+            ser.SetSteelAssemblies(ViewModel.SteelAssemblies);
             //}
             ViewModel.SaveDataCorrespond();
         }
@@ -1400,8 +1481,7 @@ namespace STD_105.Office
         /// <param name="e"></param>
         private void AngleDim(object sender, EventArgs e)
         {
-            ModelExt modelExt;
-            Dim(out modelExt);
+            Dim(out ModelExt modelExt);
             modelExt.drawingAngularDim = true;
         }
         /// <summary>
@@ -1411,50 +1491,50 @@ namespace STD_105.Office
         /// <param name="e"></param>
         private void LinearDim(object sender, EventArgs e)
         {
-            //#if DEBUG
-            //            log4net.LogManager.GetLogger("觸發線性標註").Debug("");
-            //#endif
-            //            ModelExt modelExt = null;
-
-            //            if (tabControl.SelectedIndex == 0)
-            //            {
-            //                modelExt = model;
-            //            }
-            //            else
-            //            {
-            //                modelExt = drawing;
-            //            }
-            //            try
-            //            {
-            //                if (model.Entities.Count > 0)
-            //                {
-            //#if DEBUG
-            //                    log4net.LogManager.GetLogger("層級 To 要主件的BlockReference").Debug("成功");
-            //#endif
-            //                    modelExt.Entities[0].Selectable = true;
-            //                    modelExt.ClearAllPreviousCommandData();
-            //                    modelExt.ActionMode = actionType.None;
-            //                    modelExt.objectSnapEnabled = true;
-            //                    modelExt.drawingLinearDim = true;
-            //                    return;
-            //                }
-            //#if DEBUG
-            //                else
-            //                {
-            //                    throw new Exception("層級 To 主件的BlockReference 失敗，找不到主件");
-            //                }
-            //#endif
-
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(ex.Message, ex.StackTrace);
-            //                Debugger.Break();
-            //            }
 #if DEBUG
             log4net.LogManager.GetLogger("觸發線性標註").Debug("");
 #endif
-            ModelExt modelExt;
+            ModelExt modelExt = null;
+
+            if (tabControl.SelectedIndex == 0)
+            {
+                modelExt = model;
+            }
+            else
+            {
+                modelExt = drawing;
+            }
+            try
+            {
+                if (model.Entities.Count > 0)
+                {
+#if DEBUG
+                    log4net.LogManager.GetLogger("層級 To 要主件的BlockReference").Debug("成功");
+#endif
+                    modelExt.Entities[0].Selectable = true;
+                    modelExt.ClearAllPreviousCommandData();
+                    modelExt.ActionMode = actionType.None;
+                    modelExt.objectSnapEnabled = true;
+                    modelExt.drawingLinearDim = true;
+                    return;
+                }
+#if DEBUG
+                else
+                {
+                    throw new Exception("層級 To 主件的BlockReference 失敗，找不到主件");
+                }
+#endif
+
+            }
+            catch (Exception ex)
+            {
+                log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(ex.Message, ex.StackTrace);
+                Debugger.Break();
+            }
+#if DEBUG
+            log4net.LogManager.GetLogger("觸發線性標註").Debug("");
+#endif
+            //ModelExt modelExt= new ModelExt();
             Dim(out modelExt);
             modelExt.drawingLinearDim = true;
 
@@ -1465,14 +1545,14 @@ namespace STD_105.Office
         private void Dim(out ModelExt modelExt)
         {
             //ModelExt modelExt = null;
-            //if (tabControl.SelectedIndex == 0)
-            //{
-            modelExt = model;
-            //}
-            //else
-            //{
-            //    //modelExt = drawing;
-            //}
+            if (tabControl.SelectedIndex == 0)
+            {
+                modelExt = model;
+            }
+            else
+            {
+                modelExt = drawing;
+            }
             try
             {
                 if (modelExt.Entities.Count > 0)
@@ -1498,8 +1578,8 @@ namespace STD_105.Office
         private void BasePage_Unloaded(object sender, RoutedEventArgs e)
         {
             model.Dispose();//釋放資源
-            //drawing.Dispose();//釋放資源
-            //drawing.Loaded -= drawing_Loaded;
+            drawing.Dispose();//釋放資源
+            drawing.Loaded -= drawing_Loaded;
             GC.Collect();
         }
         /// <summary>
@@ -1546,84 +1626,84 @@ namespace STD_105.Office
         {
             if (tabControl.SelectedIndex == 1)
             {
-                //drawing.CurrentModel = true;
+                drawing.CurrentModel = true;
             }
             else
             {
-                //drawing.CurrentModel = false;
+                drawing.CurrentModel = false;
             }
         }
 
         private void drawing_Loaded(object sender, RoutedEventArgs e)
         {
             //平移滑鼠中鍵
-            //drawing.Pan.MouseButton = new MouseButton(mouseButtonsZPR.Middle, modifierKeys.None);
-            //drawing.ActionMode = actionType.SelectByBox;
+            drawing.Pan.MouseButton = new MouseButton(mouseButtonsZPR.Middle, modifierKeys.None);
+            drawing.ActionMode = actionType.SelectByBox;
 
-            //drawing.ZoomFit();//設置道適合的視口
-            //drawing.Refresh();//刷新模型
+            drawing.ZoomFit();//設置道適合的視口
+            drawing.Refresh();//刷新模型
 
         }
 
-        //        private BlockReference SteelTriangulation(Mesh mesh)
-        //        {
-        //#if DEBUG
-        //            log4net.LogManager.GetLogger("產生2D").Debug("開始");
-        //#endif
-        //            drawing.Blocks.Clear();
-        //            drawing.Entities.Clear();
+        private BlockReference SteelTriangulation(Mesh mesh)
+        {
+#if DEBUG
+            log4net.LogManager.GetLogger("產生2D").Debug("開始");
+#endif
+            drawing.Blocks.Clear();
+            drawing.Entities.Clear();
 
-        //            Steel2DBlock steel2DBlock = new Steel2DBlock(mesh, model.Blocks[1].Name);
-        //            drawing.Blocks.Add(steel2DBlock);
-        //            BlockReference block2D = new BlockReference(0, 0, 0, steel2DBlock.Name, 1, 1, 1, 0);//產生鋼構參考圖塊
+            Steel2DBlock steel2DBlock = new Steel2DBlock(mesh, model.Blocks[1].Name);
+            drawing.Blocks.Add(steel2DBlock);
+            BlockReference block2D = new BlockReference(0, 0, 0, steel2DBlock.Name, 1, 1, 1, 0);//產生鋼構參考圖塊
 
-        //            //關閉三視圖用戶選擇
-        //            block2D.Selectable = false;
+            //關閉三視圖用戶選擇
+            block2D.Selectable = false;
 
-        //            drawing.Entities.Add(block2D);
-        //#if DEBUG
-        //            log4net.LogManager.GetLogger("產生2D").Debug("結束");
-        //#endif
-        //            drawing.ZoomFit();//設置道適合的視口
-        //            drawing.Refresh();//刷新模型
-        //            return block2D;
-        //        }
-        ///// <summary>
-        ///// 加入2d 孔位
-        ///// </summary>
-        ///// <param name="bolts"></param>
-        ///// <param name="refresh">刷新模型</param>
-        ///// <returns></returns>
-        //private BlockReference Add2DHole(Bolts3DBlock bolts, bool refresh = true)
-        //{
-        //    try
-        //    {
-        //        /*2D螺栓*/
-        //        BlockReference referenceMain = (BlockReference)drawing.Entities[drawing.Entities.Count - 1]; //主件圖形
-        //        Steel2DBlock steel2DBlock = (Steel2DBlock)drawing.Blocks[referenceMain.BlockName]; //取得鋼構圖塊
+            drawing.Entities.Add(block2D);
+#if DEBUG
+            log4net.LogManager.GetLogger("產生2D").Debug("結束");
+#endif
+            drawing.ZoomFit();//設置道適合的視口
+            drawing.Refresh();//刷新模型
+            return block2D;
+        }
+        /// <summary>
+        /// 加入2d 孔位
+        /// </summary>
+        /// <param name="bolts"></param>
+        /// <param name="refresh">刷新模型</param>
+        /// <returns></returns>
+        private BlockReference Add2DHole(Bolts3DBlock bolts, bool refresh = true)
+        {
+            try
+            {
+                /*2D螺栓*/
+                BlockReference referenceMain = (BlockReference)drawing.Entities[drawing.Entities.Count - 1]; //主件圖形
+                Steel2DBlock steel2DBlock = (Steel2DBlock)drawing.Blocks[referenceMain.BlockName]; //取得鋼構圖塊
 
-        //        string blockName = string.Empty; //圖塊名稱
-        //        Bolts2DBlock bolts2DBlock = new Bolts2DBlock(bolts, steel2DBlock); //產生螺栓圖塊
-        //        drawing.Blocks.Add(bolts2DBlock); //加入螺栓圖塊
-        //        blockName = bolts2DBlock.Name;
-        //        BlockReference result = new BlockReference(0, 0, 0, bolts2DBlock.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
-        //        drawing.Entities.Insert(0, result);
-        //        if (refresh)
-        //        {
-        //            drawing.Refresh();//刷新模型
-        //        }
+                string blockName = string.Empty; //圖塊名稱
+                Bolts2DBlock bolts2DBlock = new Bolts2DBlock(bolts, steel2DBlock); //產生螺栓圖塊
+                drawing.Blocks.Add(bolts2DBlock); //加入螺栓圖塊
+                blockName = bolts2DBlock.Name;
+                BlockReference result = new BlockReference(0, 0, 0, bolts2DBlock.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+                drawing.Entities.Insert(0, result);
+                if (refresh)
+                {
+                    drawing.Refresh();//刷新模型
+                }
 
-        //        return result;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return null;
-        //    }
+                return result;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
 
-        //}
+        }
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            TreeView treeView = (TreeView)sender; //樹壯列表
+            TreeView treeView = (TreeView)sender; //樹狀列表
             TreeNode data = (TreeNode)e.NewValue;
             if (data.DataName == null)
                 return;
@@ -1639,7 +1719,7 @@ namespace STD_105.Office
                 ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
                 ViewModel.GetSteelAttr();
                 model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
-                //SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
+                SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
                 for (int i = 0; i < model.Entities.Count; i++)//逐步展開 3d 模型實體
                 {
                     if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
@@ -1647,19 +1727,19 @@ namespace STD_105.Office
                         BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
                         Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
                         Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生螺栓圖塊
-                        //Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
+                        Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
                     }
                 }
             }
             else //如果需要載入 nc 設定檔
             {
                 model.LoadNcToModel(data.DataName);
-                //SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
+                SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
             }
             model.ZoomFit();//設置道適合的視口
             model.Invalidate();//初始化模型
-            //drawing.ZoomFit();//設置道適合的視口
-            //drawing.Invalidate();
+            drawing.ZoomFit();//設置道適合的視口
+            drawing.Invalidate();
         }
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
