@@ -332,7 +332,6 @@
     <Compile Include="Base\AyncParameterizedCommand.cs" />
     <Compile Include="Base\BaseUserControl.cs" />
     <Compile Include="Base\IAsyncCommand.cs" />
-    <Compile Include="Base\OfficeViewModel.cs" />
     <Compile Include="Base\SystemType.cs" />
     <Compile Include="Connected Services\PC\Reference.cs">
       <AutoGen>True</AutoGen>
