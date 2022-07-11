@@ -90,7 +90,7 @@ namespace STD_105
         }
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            //更改語系為繁體中文 - 0630 CYH
+            //20220630 張燕華 更改語系為繁體中文
             Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("zh-TW");
 
             string _ = System.Diagnostics.Process.GetCurrentProcess().MainModule.ModuleName;

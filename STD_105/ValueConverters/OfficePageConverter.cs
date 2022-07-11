@@ -33,6 +33,10 @@ namespace STD_105.Office
                 case OfficePage.ParameterSettings:
                     basePage = new ParametersSettings_Office();
                     break;
+                // 20220711 張燕華 參數設定 - 選單功能
+                case OfficePage.ParameterSettings_FuncList:
+                    basePage = new ParametersSettings_Office_FuncList();
+                    break;
                 //排版設定
                 case OfficePage.AutoTypeSettings:
                     basePage = new PartsList_Office();
@@ -44,6 +48,50 @@ namespace STD_105.Office
                 // 廠區監控
                 case OfficePage.WorkingAreaMonitor:
                     basePage = new WorkingAreaMonitor_Office();
+                    break;
+                default:
+                    break;
+            }
+            OfficeBaseWindow.ActivateLoading();
+            OfficeViewModel.ProjectManagerControl = true;
+            basePage.CloseLoadingWindow += BasePage_LoadingEvent;
+            return basePage;
+        }
+
+        private static void BasePage_LoadingEvent(object sender, EventArgs e)
+        {
+            OfficeBaseWindow.DeactivateLoading();
+        }
+
+        public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    /// <summary>
+    /// 20220711 張燕華 參數設定 - 功能頁面切換轉換器
+    /// </summary>
+    public class ParaSettingFuncPageConverter : WPFBase.BaseValueConverter<ParaSettingFuncPageConverter>
+    {
+        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            WPFBase.BasePage basePage = null;
+
+            switch ((ParameterSettingPage)value)
+            {
+                // 空白遮蔽頁面
+                case ParameterSettingPage.Home:
+                    basePage = new FirstPage();
+                    break;
+                // 斷面規格
+                case ParameterSettingPage.SectionSpecificationSetting:
+                    basePage = new ParametersSettings_Office();
+                    break;
+                // 語言設定
+                case ParameterSettingPage.LanguageSetting:
+                    //20220711 張燕華 從切換畫面改為顯示DecExpress的Dialog Service
+                    //basePage = new ParametersSettings_Office_Language();
                     break;
                 default:
                     break;

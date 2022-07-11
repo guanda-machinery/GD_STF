@@ -576,6 +576,15 @@
     <Compile Include="Office\Pages\ObSettingsPage_Office.xaml.cs">
       <DependentUpon>ObSettingsPage_Office.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Office\Pages\ParametersSettings_Office_LanguageVM.xaml.cs">
+      <DependentUpon>ParametersSettings_Office_LanguageVM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Office\Pages\ParametersSettings_Office_Language.xaml.cs">
+      <DependentUpon>ParametersSettings_Office_Language.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Office\Pages\ParametersSettings_Office_FuncList.xaml.cs">
+      <DependentUpon>ParametersSettings_Office_FuncList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Office\Pages\ParametersSettings_Office.xaml.cs">
       <DependentUpon>ParametersSettings_Office.xaml</DependentUpon>
     </Compile>
@@ -960,6 +969,18 @@
     <Page Include="Office\Pages\ObSettingsPage_Office.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Office\Pages\ParametersSettings_Office_LanguageVM.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Office\Pages\ParametersSettings_Office_Language.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Office\Pages\ParametersSettings_Office_FuncList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Office\Pages\ParametersSettings_Office.xaml">
       <SubType>Designer</SubType>

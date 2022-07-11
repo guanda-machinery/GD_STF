@@ -143,8 +143,7 @@
                             Value="24" />
                     <Setter Property="Foreground"
                             Value="{ StaticResource solidclr_DimGray }" />
-                    <Setter Property="FontWeight"
-                            Value="Bold" />
+                    <Setter Property="FontWeight" Value="Bold" />
                     <Setter Property="Margin"
                             Value="20,0" />
                 </Style>
@@ -207,7 +206,8 @@
                         </Button.Content>
                     </Button>
                     <!--參數設定-->
-                    <Button Command="{ Binding ParameterSettingsCommand }"
+                    <!--20220711 張燕華 Command Binding的Path由ParameterSettingsCommand改為ParameterSettingsFuncListCommand-->
+                    <Button Command="{ Binding ParameterSettingsFuncListCommand }"
                             IsEnabled="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={std:NullToEnabledConverter} }">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">

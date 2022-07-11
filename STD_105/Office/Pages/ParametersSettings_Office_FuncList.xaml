@@ -1,0 +1,121 @@
+﻿<WPFBase:BasePage x:Class="STD_105.Office.ParametersSettings_Office_FuncList"
+                  xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:STD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
+                  xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                  xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
+                  xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+                  xmlns:std="clr-namespace:STD_105"
+                  xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+                  xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                  xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+                  xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                  xmlns:local="clr-namespace:STD_105.Office"
+                  xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+                  xmlns:uc_language="clr-namespace:LanguageSettingDialog.View"
+                  Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
+                  Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
+                  mc:Ignorable="d"
+                  Title="參數設定 - 選單功能">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="Button">
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                <Setter Property="Background" Value="white"/>
+                <Setter Property="Foreground" Value="{StaticResource ForegroundMainBrush}"/>
+                <Setter Property="IsEnabled" Value="True"/>
+                <Setter Property="BorderBrush" Value="{x:Null}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="AliceBlue"/>
+                        </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style TargetType="TextBlock">
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="Foreground" Value="{ StaticResource solidclr_DimGray }" />
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" Background="{ StaticResource solidclr_LightGray }">
+            <Border CornerRadius="15"
+                    Background="white"
+                    Margin="0,0,5,0">
+                <Grid>
+                <StackPanel>
+                    <TextBlock/>
+                        <!--斷面規格設定-->
+                        <Button Command="{ Binding Path=ParameterSettingsCommand }">
+                            <Button.Content>
+                                <TextBlock Text="原參數設定" />
+                            </Button.Content>
+                        </Button>
+                        <!--斷面規格目錄-->
+                        <Button>
+                            <Button.Content>
+                                <TextBlock Text="斷面規格目錄" />
+                            </Button.Content>
+                        </Button>
+                        <!--切割線設定-->
+                        <Button>
+                            <Button.Content>
+                                <TextBlock Text="切割線設定" />
+                            </Button.Content>
+                        </Button>
+                        <!--型鋼加工區域設定-->
+                        <Button>
+                            <Button.Content>
+                                <TextBlock Text="型鋼加工區域設定" />
+                            </Button.Content>
+                        </Button>
+                        <!--刀具資料庫-->
+                        <Button>
+                            <Button.Content>
+                                <TextBlock Text="刀具資料庫" />
+                            </Button.Content>
+                        </Button>
+                        <!--語言設定-->
+                        <uc_language:MainView/>
+                        <!--軟體版本-->
+                        <Button>
+                            <Button.Content>
+                                <TextBlock Text="軟體版本" />
+                            </Button.Content>
+                        </Button>
+                        <!--貼紙機設定-->
+                        <Button>
+                            <Button.Content>
+                                <TextBlock Text="貼紙機設定" />
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+        <Grid Grid.Column="1">
+            <Border CornerRadius="15"
+                    Background="White"
+                    Margin="5,0,0,0">
+                <Grid>
+                    <dxlc:ScrollBox Height="{Binding ElementName=workArea, Path=Height}"
+                                    Width="{Binding ElementName=workArea, Path=Width}">
+                        <!--頁面切換區域-->
+                        <std:OfficePageHost x:Name="pageHost1"
+                                            ParaSettingCurrentPage="{ Binding }"
+                                            DataContext="{ Binding OfficeViewModel.ParaSettingCurrentPage, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={ local:ParaSettingFuncPageConverter } }" />
+                    </dxlc:ScrollBox>
+                </Grid>
+            </Border>
+        </Grid>
+
+    </Grid>
+</WPFBase:BasePage>

@@ -125,7 +125,7 @@ namespace WPFSTD105
                 ExcelCutService execl = new ExcelCutService();
                 //execl.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.xls", MaterialDataViews);
 
-                //新增檔案儲存完成提示 - 2022/06/24 by CYH
+                //20220624 張燕華 新增檔案儲存完成提示
                 var stringFilePath = $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.xls";
                 execl.CreateFile(stringFilePath, MaterialDataViews);
                 
@@ -162,7 +162,7 @@ namespace WPFSTD105
                 ExcelBuyService execl = new ExcelBuyService();
                 //execl.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.xls", MaterialDataViews);
 
-                //新增檔案儲存完成提示 - 2022/06/27 by CYH
+                //20220627 張燕華 新增檔案儲存完成提示
                 var stringFilePath = $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.xls";
                 execl.CreateFile(stringFilePath, MaterialDataViews);
 
@@ -187,7 +187,7 @@ namespace WPFSTD105
                 ExcelAmountService execl = new ExcelAmountService();
                 //execl.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購金額預算表.xls", MaterialDataViews);
 
-                //新增檔案儲存完成提示 - 2022/06/27 by CYH
+                //20220627 張燕華 新增檔案儲存完成提示
                 var stringFilePath = $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購金額預算表.xls";
                 execl.CreateFile(stringFilePath, MaterialDataViews);
 

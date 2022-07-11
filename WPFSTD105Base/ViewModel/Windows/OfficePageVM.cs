@@ -38,6 +38,10 @@ namespace WPFSTD105
         /// </summary>
         public OfficePage CurrentPage { get; set; } = OfficePage.Home;
         /// <summary>
+        /// 20220711 張燕華 參數設定 - 功能列表的當前頁面
+        /// </summary>
+        public ParameterSettingPage ParaSettingCurrentPage { get; set; } = ParameterSettingPage.Home;
+        /// <summary>
         /// 彈跳視窗的當前頁面
         /// </summary>
         public PopupWindows PopupCurrentPage { get; set; } = PopupWindows.FirstPage;

@@ -65,5 +65,46 @@ namespace STD_105
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }
+
+        //20220711 張燕華 參數設定 - 功能列表當前頁面
+        public BasePage ParaSettingCurrentPage
+        {
+            get => (BasePage)GetValue(ParaSettingCurrentPageProperty);
+            set => SetValue(ParaSettingCurrentPageProperty, value);
+        }
+
+        public static readonly DependencyProperty ParaSettingCurrentPageProperty =
+            DependencyProperty.Register(nameof(ParaSettingCurrentPage), typeof(BasePage), typeof(OfficePageHost), new UIPropertyMetadata(ParaSettingCurrentPagePropertyChanged));
+        private static void ParaSettingCurrentPagePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            /*
+            //取得框架
+            Frame newFrame = (d as OfficePageHost).newPage;
+            Frame oldFrame = (d as OfficePageHost).oldPage;
+            //取得目前頁面的內容
+            object oldPageContent = newFrame.Content;
+            //清空頁面
+            newFrame.Content = null;
+            //將上一頁移至舊頁面框架            
+            oldFrame.Content = null;           
+            oldFrame.Content = oldPageContent;
+            //當Loaded事件觸發時在上一頁製作動畫
+            //由於框架]移動，此調用之後
+            if (oldPageContent is BasePage oldPage)
+                oldPage.ShouldAnimateOut = true;           
+            
+            newFrame.Content = e.NewValue;
+            // 回收記憶體
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            */
+
+            //保存舊頁面會讓ScrollBox有問題導致頁面凍結，所以辦公室頁面不再保存舊頁面
+            Frame newFrame = (d as OfficePageHost).newPage;
+            newFrame.Content = e.NewValue;
+            // 回收記憶體
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+        }
     }
 }
