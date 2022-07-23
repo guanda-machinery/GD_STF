@@ -35,7 +35,8 @@ namespace WPFSTD105
         {
             ObSettingsPage_Office = ObSettings_Office();
             ProjectManagerCommand = ProjectManager();
-            ParameterSettingsCommand = ParameterSettings();
+            //ParameterSettingsCommand = ParameterSettings(); //20220711 張燕華 由顯示參數設定頁面改為顯示參數設定功能選單
+            ParameterSettingsFuncListCommand = ParameterSettingsFuncList(); //20220711 張燕華 由顯示參數設定頁面改為顯示參數設定功能選單
             AutoTypeSettingsCommand = AutoTypeSettings();
             ProcessingMonitorCommand = ProcessingMonitor();
             PageHostMaximizedCommand = PageHostMaximized();
@@ -47,6 +48,7 @@ namespace WPFSTD105
             OpenProjectPathCommand = OpenProjectPath();
             OutProjectPathCommand = OutProjectPath();
         }
+
         /// <summary>
         /// 更改客製化狀態
         /// </summary>
@@ -87,14 +89,14 @@ namespace WPFSTD105
         }
 
         /// <summary>
-        /// 開啟參數設定
+        /// 20220711 張燕華 開啟參數設定 - 功能列表 頁面
         /// </summary>
-        public ICommand ParameterSettingsCommand { get; set; }
-        private WPFBase.RelayCommand ParameterSettings()
+        public ICommand ParameterSettingsFuncListCommand { get; set; }
+        private WPFBase.RelayCommand ParameterSettingsFuncList()
         {
             return new WPFBase.RelayCommand(() =>
             {
-                OfficeViewModel.CurrentPage = OfficePage.ParameterSettings;
+                OfficeViewModel.CurrentPage = OfficePage.ParameterSettings_FuncList;
             });
         }
 

@@ -150,6 +150,28 @@ namespace WPFSTD105
         /// 參數設定
         /// </summary>
         ParameterSettings,
+        /// <summary>
+        /// 20220711 張燕華 參數設定 - 選單功能
+        /// </summary>
+        ParameterSettings_FuncList,
+    }
+    /// <summary>
+    /// 20220711 張燕華 參數設定 - 選單功能的所有頁面
+    /// </summary>
+    public enum ParameterSettingPage
+    {
+        /// <summary>
+        /// 空白遮蔽頁面
+        /// </summary>
+        Home,
+        /// <summary>
+        /// 斷面規格頁面
+        /// </summary>
+        SectionSpecificationSetting,
+        /// <summary>
+        /// 語言設定頁面
+        /// </summary>
+        LanguageSetting,
     }
     /// <summary>
     /// 彈跳視窗

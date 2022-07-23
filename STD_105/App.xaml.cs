@@ -15,6 +15,7 @@ using DevExpress.Xpf.Core;
 using DevExpress.Xpf.WindowsUI;
 using Newtonsoft.Json;
 using System.Windows.Controls;
+using System.Globalization;
 
 namespace STD_105
 {
@@ -89,6 +90,9 @@ namespace STD_105
         }
         private void App_Startup(object sender, StartupEventArgs e)
         {
+            //20220630 張燕華 更改語系為繁體中文
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("zh-TW");
+
             string _ = System.Diagnostics.Process.GetCurrentProcess().MainModule.ModuleName;
             mutex = new System.Threading.Mutex(true, System.Diagnostics.Process.GetCurrentProcess().MainModule.ModuleName, out bool ret);
 

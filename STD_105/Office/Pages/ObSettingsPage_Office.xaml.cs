@@ -390,7 +390,6 @@ namespace STD_105.Office
 #endif
                 if (model.Entities.Count <= 0)
                 {
-                    //MessageBox.Show("模型內找不到主件", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                     WinUIMessageBox.Show(null,
                     $"模型內找不到主件",
                     "通知",
@@ -401,23 +400,27 @@ namespace STD_105.Office
                     FloatingMode.Popup);
                     return;
                 }
+
+
+                if (ComparisonBolts())  // 欲新增孔位重複比對
+                {
+                    WinUIMessageBox.Show(null,
+                    $"新增孔位重複，請重新輸入",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Popup);
+                    return;
+                }
+
                 /*3D螺栓*/
                 ViewModel.GroupBoltsAttr.GUID = Guid.NewGuid();
 
-                #region 已加入AddBolts,故註解
-                //Bolts3DBlock bolts = new Bolts3DBlock(ViewModel.GetGroupBoltsAttr()); //產生孔位圖塊
-                //bolts.CreateBolts();//創建孔位群組
-                //model.Blocks.Add(bolts);//加入孔位群組圖塊到模型
-                ////BlockReference blockReference = new BlockReference(bolts.Info.X, bolts.Info.Y, bolts.Info.Z, bolts.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
-                //BlockReference blockReference = new BlockReference(0, 0, 0, bolts.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
-                //blockReference.EntityData = bolts.Info;
-                //blockReference.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-                //model.Entities.Add(blockReference);//加入參考圖塊到模型 
-                #endregion
 
                 Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference);
                 BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
-
 
                 SaveModel(false);//存取檔案
 
@@ -471,7 +474,6 @@ namespace STD_105.Office
                         //如果選擇的物件不是孔位
                         else if (blockReference == null || blockReference.EntityData.Equals(typeof(GroupBoltsAttr)))
                         {
-                            //MessageBox.Show("選擇類型必須是孔，才可修改", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                             WinUIMessageBox.Show(null,
                                 $"選擇類型必須是孔，才可修改",
                                 "通知",
@@ -488,7 +490,9 @@ namespace STD_105.Office
                                 MessageBoxResult.None,
                                 MessageBoxOptions.None,
                                 FloatingMode.Popup);
+
                             return;
+
                         }
 
 #if DEBUG
@@ -520,7 +524,6 @@ namespace STD_105.Office
                 }
                 else
                 {
-                    //MessageBox.Show("請選擇孔，才可修改", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                     WinUIMessageBox.Show(null,
                     $"請選擇孔，才可修改",
                     "通知",
@@ -666,7 +669,6 @@ namespace STD_105.Office
                             //如果選擇的物件不是孔位
                             else if (reference3D == null || model.Blocks[reference3D.BlockName].Equals(typeof(Bolts3DBlock)))
                             {
-                                //MessageBox.Show("選擇類型必須是孔，才可鏡射", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                                 WinUIMessageBox.Show(null,
                                     $"選擇類型必須是孔，才可鏡射",
                                     "通知",
@@ -958,7 +960,6 @@ namespace STD_105.Office
                     }
                     else
                     {
-                        //MessageBox.Show("請選擇孔，才可鏡射", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                         WinUIMessageBox.Show(null,
                             $"請選擇孔，才可鏡射",
                             "通知",
@@ -1247,7 +1248,6 @@ namespace STD_105.Office
                     }
                     else
                     {
-                        //MessageBox.Show("請選擇孔，才可鏡射", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                         WinUIMessageBox.Show(null,
                             $"請選擇孔，才可鏡射",
                             "通知",
@@ -1382,7 +1382,6 @@ namespace STD_105.Office
 #endif
             if (ViewModel.SteelAttr.PartNumber == "" || ViewModel.SteelAttr.PartNumber == null)//檢測用戶是否有輸入零件編號
             {
-                //MessageBox.Show("請輸入零件編號", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,
                     $"請輸入零件編號",
                     "通知",
@@ -1395,7 +1394,6 @@ namespace STD_105.Office
             }
             if (ViewModel.SteelAttr.Length <= 0)//檢測用戶長度是否有大於0
             {
-                //MessageBox.Show("長度不可以小於等於 0", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,
                     $"長度不可以小於等於 0",
                     "通知",
@@ -1408,7 +1406,6 @@ namespace STD_105.Office
             }
             if (ViewModel.SteelAttr.Number <= 0) //檢測用戶是否零件數量大於0
             {
-                //MessageBox.Show("數量不可以小於等於 0", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,
                     $"數量不可以小於等於 0",
                     "通知",
@@ -1421,7 +1418,6 @@ namespace STD_105.Office
             }
             if (ViewModel.DataCorrespond.FindIndex(el => el.Number == ViewModel.SteelAttr.PartNumber) != -1)
             {
-                //MessageBox.Show("重複編號", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,
                     $"重複編號",
                     "通知",
@@ -1483,6 +1479,123 @@ namespace STD_105.Office
             log4net.LogManager.GetLogger("在Model按下了右鍵").Debug("查看完畢");
 #endif
         }
+
+
+        /// <summary>
+        /// 新增孔位比對
+        /// </summary>
+        public bool ComparisonBolts()
+        {
+            GroupBoltsAttr TmpBoltsArr = new GroupBoltsAttr();
+            TmpBoltsArr = ViewModel.GetGroupBoltsAttr();
+            double valueX = 0d;
+            double valueY = 0d;
+            double TmpXPos = 0d;
+            double TmpYPos = 0d;
+            bool bFindSamePos = false;
+            List<(double,double)> AddBoltsList =new List<(double,double)>();
+
+            TmpXPos = TmpBoltsArr.X;
+            TmpYPos = TmpBoltsArr.Y;
+
+            // 分解與儲存預建立之孔群各孔座標於LIST
+            for (int i = 1; i <= TmpBoltsArr.xCount; i++)
+            {
+                AddBoltsList.Add((TmpXPos, TmpYPos));
+
+                for (int j = 1; j < TmpBoltsArr.yCount; j++)
+                {
+                    if (j < TmpBoltsArr.dYs.Count) //判斷孔位Y向矩陣列表是否有超出長度,超過都取最後一位偏移量
+                        valueY = TmpBoltsArr.dYs[j - 1];
+                    else
+                        valueY = TmpBoltsArr.dYs[TmpBoltsArr.dYs.Count - 1];
+                  
+                    TmpYPos = TmpYPos + valueY;
+
+                    AddBoltsList.Add((TmpXPos, TmpYPos));
+                }
+
+                if (i < TmpBoltsArr.dXs.Count) //判斷孔位X向矩陣列表是否有超出長度,超過都取最後一位偏移量
+                    valueX = TmpBoltsArr.dXs[i - 1];
+                else
+                    valueX = TmpBoltsArr.dXs[TmpBoltsArr.dXs.Count - 1];
+
+                TmpXPos = TmpXPos + valueX;
+
+                TmpYPos = TmpBoltsArr.Y;
+            }
+             TmpXPos = 0d;
+             TmpYPos = 0d;
+
+            // 原3D模組各孔位座標存於各LIST
+            List<(double, double)> AllBoltsAddList = new List<(double, double)>();  
+            List<(double, double)> TopBoltsAddList = new List<(double, double)>();    
+            List<(double, double)> FRONTBoltsAddList = new List<(double, double)>();    
+            List<(double, double)> BACKBoltsAddList = new List<(double, double)>();    
+
+            for (int i = 0; i < model.Entities.Count; i++)//逐步展開孔群資訊
+            {
+                if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //判斷孔群
+                {
+                    BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
+                    Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
+                    Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生孔群圖塊
+
+                    for (int j = 0; j < bolts3DBlock.Entities.Count; j++)
+                    {
+
+                        TmpXPos = ((BoltAttr)bolts3DBlock.Entities[j].EntityData).X;
+                        TmpYPos = ((BoltAttr)bolts3DBlock.Entities[j].EntityData).Y;
+
+                        switch (boltsAttr.Face)
+                        {
+                            case GD_STD.Enum.FACE.TOP:
+                                TopBoltsAddList.Add((TmpXPos, TmpYPos));
+                                break;
+                            case GD_STD.Enum.FACE.FRONT:
+                                FRONTBoltsAddList.Add((TmpXPos, TmpYPos));
+                                break;
+                            case GD_STD.Enum.FACE.BACK:
+                                BACKBoltsAddList.Add((TmpXPos, TmpYPos));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+            
+            // 將原3D各孔群座標存於共用LIST
+            switch (TmpBoltsArr.Face)
+            {
+                case GD_STD.Enum.FACE.TOP:
+                    AllBoltsAddList = TopBoltsAddList;
+                    break;
+                case GD_STD.Enum.FACE.FRONT:
+                    AllBoltsAddList = FRONTBoltsAddList;
+                    break;
+                case GD_STD.Enum.FACE.BACK:
+                    AllBoltsAddList = BACKBoltsAddList;
+                    break;
+                default:
+                    break;
+            }
+
+            // 指定LIST比對是否有相同座標
+            foreach (var x in AddBoltsList)
+            {
+                if (AllBoltsAddList.Contains(x))
+                {
+                    bFindSamePos = true;
+                    break;
+                }
+                else
+                    bFindSamePos = false;
+            }
+        return bFindSamePos;
+        }
+
+
         /// <summary>
         /// 取消所有動作
         /// </summary>

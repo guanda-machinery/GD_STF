@@ -234,6 +234,10 @@
     <Reference Include="DevExpress.Xpf.Grid.v21.1.Core, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <HintPath>..\packages\DevExpress.Wpf.Grid.Core.21.1.4\lib\net452\DevExpress.Xpf.Grid.v21.1.Core.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v21.1.Core.resources, Version=21.1.0.0, Culture=de, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\專案備份\GD_STF\STD_105\bin\Debug\zh-TW\DevExpress.Xpf.Grid.v21.1.Core.resources.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Xpf.Grid.v21.1.Extensions, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <HintPath>..\packages\DevExpress.Wpf.Grid.Core.21.1.4\lib\net452\DevExpress.Xpf.Grid.v21.1.Extensions.dll</HintPath>
     </Reference>
@@ -572,6 +576,15 @@
     </Compile>
     <Compile Include="Office\Pages\ObSettingsPage_Office.xaml.cs">
       <DependentUpon>ObSettingsPage_Office.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Office\Pages\ParametersSettings_Office_LanguageVM.xaml.cs">
+      <DependentUpon>ParametersSettings_Office_LanguageVM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Office\Pages\ParametersSettings_Office_Language.xaml.cs">
+      <DependentUpon>ParametersSettings_Office_Language.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Office\Pages\ParametersSettings_Office_FuncList.xaml.cs">
+      <DependentUpon>ParametersSettings_Office_FuncList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Office\Pages\ParametersSettings_Office.xaml.cs">
       <DependentUpon>ParametersSettings_Office.xaml</DependentUpon>
@@ -957,6 +970,18 @@
     <Page Include="Office\Pages\ObSettingsPage_Office.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Office\Pages\ParametersSettings_Office_LanguageVM.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Office\Pages\ParametersSettings_Office_Language.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Office\Pages\ParametersSettings_Office_FuncList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Office\Pages\ParametersSettings_Office.xaml">
       <SubType>Designer</SubType>
@@ -1428,6 +1453,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Content Include="Logo\Joystick.svg" />
+    <None Include="zh-TW\DevExpress.Xpf.Grid.v21.1.Core.resources.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Resource Include="Logo\SmallLogo.svg" />
     <Resource Include="Logo\Logo.svg" />
     <Resource Include="Logo.ico" />
