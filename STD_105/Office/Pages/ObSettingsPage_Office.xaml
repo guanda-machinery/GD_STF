@@ -168,16 +168,16 @@
                                             <ddes:PanToolBarButton />
                                             <ddes:RotateToolBarButton />
                                             <ddes:ZoomFitToolBarButton />
-                                            <ddes:ToolBarButton ToolTipText="線性標註"
-                                                                Click="LinearDim"
-                                                                StyleMode="PushButton"
-                                                                Image="{Binding Source={StaticResource LinearDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
-                                            <ddes:ToolBarButton ToolTipText="角度標註"
-                                                                StyleMode="PushButton"
-                                                                Image="{Binding Source={StaticResource AngleDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
-                                            <ddes:ToolBarButton ToolTipText="絕對座標"
-                                                                StyleMode="PushButton"
-                                                                Image="{Binding Source={StaticResource AbsDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
+                                           <ddes:ToolBarButton ToolTipText="線性標註"
+                                                               Click="LinearDim"
+                                                               StyleMode="PushButton" Visible="False"
+                                                               Image="{Binding Source={StaticResource LinearDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
+                                           <ddes:ToolBarButton ToolTipText="角度標註"
+                                                               StyleMode="PushButton"  Visible="False"
+                                                               Image="{Binding Source={StaticResource AngleDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
+                                           <ddes:ToolBarButton ToolTipText="絕對座標"
+                                                               StyleMode="PushButton"  Visible="False"
+                                                               Image="{Binding Source={StaticResource AbsDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
                                         </ddes:ToolBar.Buttons>
                                     </ddes:ToolBar>
                                 </ddes:Viewport.ToolBars>
@@ -203,6 +203,7 @@
                     </spa:ModelExt>
                 </Grid>
             </TabItem>
+
             <TabItem Header="2D視圖">
                 <Grid>
                     <Border />
@@ -228,7 +229,7 @@
                             <ddes:ProgressBar Lighting="False"/>
                         </ddes:Model.ProgressBar>
                         <ddes:Model.Viewports>
-                            <ddes:Viewport DisplayMode="Flat" InitialView="Top" OriginSymbols="{Binding OriginSymbols}">
+                            <ddes:Viewport DisplayMode= "Flat" InitialView="Top" OriginSymbols="{Binding OriginSymbols}">
                                 <ddes:Viewport.Background>
                                     <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#FF303030"/>
                                 </ddes:Viewport.Background>
