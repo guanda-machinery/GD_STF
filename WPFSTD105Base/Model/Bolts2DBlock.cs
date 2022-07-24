@@ -127,8 +127,11 @@ namespace WPFSTD105.Model
             for (int i = 0; i < bolts3DBlock.Entities.Count; i++)
             {
                 BoltAttr boltAttr = (BoltAttr)bolts3DBlock.Entities[i].EntityData;
-            
-                Circle circle = new Circle(Plane.XY, new Point3D(boltAttr.X, boltAttr.Y), boltAttr.Dia / 2)
+
+                // 圓心點
+                Point3D center = new Point3D(boltAttr.X, boltAttr.Y);
+
+                Circle circle = new Circle(Plane.XY, center, boltAttr.Dia / 2)
                 {
                     Color = System.Drawing.ColorTranslator.FromHtml(Default.Hole),
                     ColorMethod = colorMethodType.byEntity,
@@ -143,12 +146,40 @@ namespace WPFSTD105.Model
                 {
                     case FACE.TOP:
                         meshes = new[] { (Mesh)meshFlange.Clone(), (Mesh)meshFlange.Clone() };
+                        #region FRONT
                         meshes[0].Translate(circle.Center.X - boltAttr.Dia / 2, yFront);
-                        meshes[0].EntityData = boltAttr;
+                        meshes[0].EntityData = boltAttr;                        
+                        this.Entities.Add(Piercing(steelAttr.t2, new Point3D(circle.Center.X, yFront + steelAttr.t1 / 2), boltAttr));
+#if DEBUG
+                        log4net.LogManager.GetLogger($"TOP").Debug(
+                            $"[FRONT]座標轉換\n" +
+                            $"原始座標:X:{circle.Center.X},\t半徑:{boltAttr.Dia / 2},\tY:0,\t(X=X-半徑)\n" +
+                            $"原始座標:({boltAttr.X},\t{boltAttr.Y},\t{boltAttr.Z})\t計算後如下\n" +
+                            $"算後座標:({circle.Center.X - boltAttr.Dia / 2},\t{yFront},\t{0})");
+                        log4net.LogManager.GetLogger($"TOP").Debug(
+                            $"[FRONT]孔位穿過中心的線段\n" +
+                            $"高度:{steelAttr.t2}\n" +
+                            $"X:{circle.Center.X},\tY:{yFront},\t腹板厚度:{steelAttr.t1} (y=y+腹板厚度/2)\t計算後如下\n" +
+                            $"X:{circle.Center.X},\tY:{yFront + steelAttr.t1 / 2}\n");
+#endif
+                        #endregion
+                        #region BACK
                         meshes[1].Translate(circle.Center.X - boltAttr.Dia / 2, yBack);
                         meshes[1].EntityData = boltAttr;
-                        this.Entities.Add(Piercing(steelAttr.t2, new Point3D(circle.Center.X, yFront + steelAttr.t1 / 2), boltAttr));
                         this.Entities.Add(Piercing(steelAttr.t2, new Point3D(circle.Center.X, yBack + steelAttr.t1 / 2), boltAttr));
+#if DEBUG
+                        log4net.LogManager.GetLogger($"TOP").Debug(
+                            $"[BACK]座標轉換\n" +
+                            $"原始座標:X:{circle.Center.X},\t半徑:{boltAttr.Dia / 2},\tY:0,\t(X=X-半徑)\n" +
+                            $"原始座標:({boltAttr.X},\t{boltAttr.Y},\t{boltAttr.Z})\t計算後如下\n" +
+                            $"算後座標:({circle.Center.X},\t{yBack + steelAttr.t1 / 2},\t{0})");
+                        log4net.LogManager.GetLogger($"TOP").Debug(
+                            $"[BACK]孔位穿過中心的線段\n" +
+                            $"高度:{steelAttr.t2}\n" +
+                            $"X:{circle.Center.X},\tY:{yBack},\t腹板厚度:{steelAttr.t1} (y=y+腹板厚度/2)\t計算後如下\n" +
+                            $"X:{circle.Center.X},\tY:{yBack + steelAttr.t1 / 2}\n");
+#endif
+                        #endregion
                         break;
                     case FACE.FRONT:
                         circle.Translate(0, MoveFront);
@@ -156,6 +187,18 @@ namespace WPFSTD105.Model
                         meshes[0].Translate(circle.Center.X - boltAttr.Dia / 2, 0);
                         meshes[0].EntityData = boltAttr;
                         this.Entities.Add(Piercing(steelAttr.t2, new Point3D(circle.Center.X, steelAttr.t2 / 2), boltAttr));
+#if DEBUG
+                        log4net.LogManager.GetLogger($"FRONT").Debug(
+                            $"[FRONT]座標轉換\n" +
+                            $"原始座標:X:{circle.Center.X},\t半徑:{boltAttr.Dia / 2},\tY:0,\t(X=X-半徑)\n" +
+                            $"原始座標:({boltAttr.X},\t{boltAttr.Y},\t{boltAttr.Z})\t計算後如下\n" +
+                            $"算後座標:({circle.Center.X - boltAttr.Dia / 2},\t{0},\t{0})");
+                        log4net.LogManager.GetLogger($"FRONT").Debug(
+                            $"[FRONT]孔位穿過中心的線段\n" +
+                            $"高度:{steelAttr.t2}\n" +
+                            $"X:{circle.Center.X},\tY:0,\t翼板厚度:{steelAttr.t2} (y=y+翼板厚度/2)\t計算後如下\n" +
+                            $"(X:{circle.Center.X},\tY:{steelAttr.t2 / 2},\t0)\n");
+#endif
                         break;
                     case FACE.BACK:
                         circle.Rotate(Math.PI, Vector3D.AxisX);
@@ -164,10 +207,23 @@ namespace WPFSTD105.Model
                         meshes[0].Translate(circle.Center.X - boltAttr.Dia / 2, yTop);
                         meshes[0].EntityData = boltAttr;
                         this.Entities.Add(Piercing(steelAttr.t2, new Point3D(circle.Center.X, yTop + steelAttr.t2 / 2), boltAttr));
+#if DEBUG
+                        log4net.LogManager.GetLogger($"BACK").Debug(
+                            $"[BACK]座標轉換\n" +
+                            $"原始座標:X:{circle.Center.X},\t半徑:{boltAttr.Dia / 2},\tY:{yTop},\t(X=X-半徑)\n" +
+                            $"原始座標:({boltAttr.X},\t{boltAttr.Y},\t{boltAttr.Z})\t計算後如下\n" +
+                            $"算後座標:({circle.Center.X - boltAttr.Dia / 2},\t{yTop},\t{0})");
+                        log4net.LogManager.GetLogger($"BACK").Debug(
+                            $"[BACK]孔位穿過中心的線段\n" +
+                            $"高度:{steelAttr.t2}\n" +
+                            $"X:{circle.Center.X},\tY:{yTop},\t翼板厚度:{steelAttr.t2} (y=y+翼板厚度/2)\t計算後如下\n" +
+                            $"X:({circle.Center.X},\tY:{yTop + steelAttr.t2 / 2},\t0)\n");
+#endif
                         break;
                     default:
                         throw new Exception($"找不到 {boltAttr.Face.ToString()}");
                 }
+
                 this.Entities.AddRange(GetCross(boltAttr.Dia, circle.Center, boltAttr, true));
                 this.Entities.AddRange(meshes);
                 //}

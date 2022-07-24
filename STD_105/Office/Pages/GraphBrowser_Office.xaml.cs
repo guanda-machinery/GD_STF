@@ -635,12 +635,9 @@ namespace STD_105.Office
                             //如果選擇的物件不是孔位
                             else if (
                             //3D 2D皆無選擇
-                            (reference3D == null && reference2D == null ) ||
+                            (reference3D == null && reference2D == null) ||
                             //3D 無選擇 或 
-
-                            reference3D == null || model.Blocks[reference3D.BlockName].Equals(typeof(Bolts3DBlock))
-                            
-                            )
+                            reference3D == null || model.Blocks[reference3D.BlockName].Equals(typeof(Bolts3DBlock)))
                             {
                                 //MessageBox.Show("選擇類型必須是孔，才可鏡射", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                                 WinUIMessageBox.Show(null,
@@ -662,8 +659,9 @@ namespace STD_105.Office
                             //模擬用戶實際選擇編輯
                             ViewModel.Select3DItem.Add(sele3D);
                             ViewModel.Select2DItem.Add(sele2D);
-
-                            model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);//先取得主件資訊
+                            
+                            //先取得主件資訊
+                            model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);
                             SteelAttr steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
 
                             //產生物件物件頂點
@@ -679,6 +677,7 @@ namespace STD_105.Office
                             buffer2D = new Entity[drawing.Entities.Count]; //2D 鏡射物件緩衝區
                             model.Entities.CopyTo(buffer3D, 0);
                             drawing.Entities.CopyTo(buffer2D, 0);
+
                             //模擬選取
                             ViewModel.Reductions.Add(new Reduction()
                             {
@@ -691,21 +690,24 @@ namespace STD_105.Office
                                 SelectReference = reference2D,
                                 User = new List<ACTION_USER>() { ACTION_USER.DELETE }
                             });
-
-                            Bolts3DBlock groupBolts = (Bolts3DBlock)model.Blocks[reference3D.BlockName];//轉換型別
-                            FACE face = groupBolts.Info.Face; //孔位的面
+                            
+                            //轉換型別
+                            Bolts3DBlock groupBolts = (Bolts3DBlock)model.Blocks[reference3D.BlockName];
+                            //孔位的面
+                            FACE face = groupBolts.Info.Face; 
 
                             //3D鏡射參數
+                            Point3D p3D1 = new Point3D(), p3D2 = new Point3D();//鏡射座標
                             Vector3D axis3DX = new Vector3D();
                             Plane mirror3DPlane = new Plane();
-                            Point3D p3D1 = new Point3D(), p3D2 = new Point3D();//鏡射座標
                             Vector3D axis3D = new Vector3D();//鏡射軸
 
                             //2D鏡射
+                            Point3D p2D1 = new Point3D(0, 0), p2D2 = new Point3D(10, 0);//鏡射座標
                             Vector3D axis2DX = new Vector3D();
                             Plane mirror2DPlane = new Plane();
-                            Point3D p2D1 = new Point3D(0, 0), p2D2 = new Point3D(10, 0);//鏡射座標
                             Vector3D axis2D = Vector3D.AxisZ;//鏡射軸
+
                             Bolts2DBlock bolts2DBlock = (Bolts2DBlock)drawing.Blocks[reference2D.BlockName];
 
                             switch (face)
@@ -1432,6 +1434,8 @@ namespace STD_105.Office
 
             return result;
         }
+
+
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             TreeView treeView = (TreeView)sender; //樹壯列表
