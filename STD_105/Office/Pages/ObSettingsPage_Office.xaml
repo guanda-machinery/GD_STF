@@ -513,13 +513,13 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Bottom"
                                     Margin="10">
-                            <Button Content="X軸鏡射"
+                            <Button Content="水平鏡射"
                                     Width="120"
                                     Height="40"
                                     Style="{ StaticResource btn_CommonFunctionKey_STD }"
                                     Command="{Binding MirrorX}"
                                     Margin="10,0" />
-                            <Button Content="Y軸鏡射"
+                            <Button Content="垂直鏡射"
                                     Width="120"
                                     Height="40"
                                     Style="{ StaticResource btn_CommonFunctionKey_STD }"

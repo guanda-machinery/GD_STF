@@ -254,6 +254,7 @@ namespace STD_105
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
                     FloatingMode.Popup);
+                
                 return false;
             }
             if (ViewModel.SteelAttr.Length <= 0)//檢測用戶長度是否有大於0
