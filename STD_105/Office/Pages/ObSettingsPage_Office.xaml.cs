@@ -1,12 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
@@ -16,6 +7,15 @@ using DevExpress.Xpf.Core;
 using DevExpress.Xpf.WindowsUI;
 using GD_STD.Data;
 using GD_STD.Enum;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using WPFSTD105;
 using WPFSTD105.Attribute;
 using WPFSTD105.Model;
@@ -25,7 +25,6 @@ using static devDept.Eyeshot.Entities.Mesh;
 using static devDept.Eyeshot.Environment;
 using BlockReference = devDept.Eyeshot.Entities.BlockReference;
 using MouseButton = devDept.Eyeshot.MouseButton;
-using static GD_STD.ServerLogHelper;
 
 namespace STD_105.Office
 {
@@ -53,6 +52,8 @@ namespace STD_105.Office
             drawing.LineTypes.Add(Steel2DBlock.LineTypeName, new float[] { 35, -35, 35, -35 });
             drawing.Secondary = model;
             #endregion
+
+            tabControl.SelectedIndex = 1;
 
             #region 定義 MenuItem 綁定的命令
             //放大縮小
@@ -263,39 +264,39 @@ namespace STD_105.Office
             //修改主零件
             ViewModel.ModifyPart = new RelayCommand(() =>
             {
-            if (!CheckPart()) //檢測用戶輸入的參數是否有完整
-                return;
-            if (model.CurrentBlockReference != null)
-            {
-                //MessageBox.Show("退出編輯模式，才可修改主件", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
-                WinUIMessageBox.Show(null,
-                $"退出編輯模式，才可修改主件",
-                "通知",
-                MessageBoxButton.OK,
-                MessageBoxImage.Exclamation,
-                MessageBoxResult.None,
-                MessageBoxOptions.None,
-                FloatingMode.Popup);
-                return;
-            }
+                if (!CheckPart()) //檢測用戶輸入的參數是否有完整
+                    return;
+                if (model.CurrentBlockReference != null)
+                {
+                    //MessageBox.Show("退出編輯模式，才可修改主件", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                    WinUIMessageBox.Show(null,
+                    $"退出編輯模式，才可修改主件",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Popup);
+                    return;
+                }
 #if DEBUG
-            log4net.LogManager.GetLogger("修改主件").Debug("開始");
+                log4net.LogManager.GetLogger("修改主件").Debug("開始");
 #endif
 
-            SelectedItem sele3D = new SelectedItem(model.Entities[model.Entities.Count - 1]);
-            SelectedItem sele2D = new SelectedItem(drawing.Entities[drawing.Entities.Count - 1]);
+                SelectedItem sele3D = new SelectedItem(model.Entities[model.Entities.Count - 1]);
+                SelectedItem sele2D = new SelectedItem(drawing.Entities[drawing.Entities.Count - 1]);
 
 
                 BlockReference reference3D = (BlockReference)sele3D.Item;
-                BlockReference reference2D =(BlockReference)sele2D.Item;
+                BlockReference reference2D = (BlockReference)sele2D.Item;
 
 
 
                 //模擬用戶實際選擇編輯
                 ViewModel.Select3DItem.Add(sele3D);
-            ViewModel.Select2DItem.Add(sele2D);
-            //層級 To 要編輯的BlockReference
-            model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);
+                ViewModel.Select2DItem.Add(sele2D);
+                //層級 To 要編輯的BlockReference
+                model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);
 
 
                 drawing.SetCurrent((BlockReference)drawing.Entities[0]);
@@ -638,8 +639,8 @@ namespace STD_105.Office
             //鏡射 X 軸
             ViewModel.MirrorX = new RelayCommand(() =>
             {
-            try
-            {
+                try
+                {
                     //查看用戶是否有選擇圖塊
                     if (ViewModel.Select3DItem.Count > 0)
                     {
@@ -699,33 +700,59 @@ namespace STD_105.Office
                             //TODO:中心座標
                             List<Point3D> points = new List<Point3D>();
                             List<Point3D> finalPoint = new List<Point3D>();
-                            Point3D boxMin, boxMax;
+                            Point3D boxMin = new Point3D(), boxMax = new Point3D();
                             //model.Entities.ForEach(el => points.AddRange(el.Vertices));
 
-                            var modelSelected = model.Blocks[reference3D.BlockName].Entities.Where(x => x.Selectable).ToList();
+                            var modelSelected = model.Blocks[reference3D.BlockName].Entities.Select(x => x).ToList();
                             var drawingSelected = drawing.Blocks[reference2D.BlockName].Entities.Where(x => x.Selectable && x.GetType().Name == "Circle").ToList();
 
-                            modelSelected.ForEach(x =>
+                            foreach (var item in modelSelected)
                             {
-                                BoltAttr ba = (BoltAttr)x.EntityData;
-                                Point3D p = new Point3D(ba.X, ba.Y, ba.Z);
-                                points.Add(p);
-                            });
+                                BoltAttr ba = (BoltAttr)item.EntityData;
+                                Point3D p = new Point3D();
+                                p = new Point3D() { X = ba.X, Y = ba.Y, Z = ba.Z };
+
+                               switch (ba.Face)
+                               {
+                                   case FACE.TOP:
+                                       break;
+                                   case FACE.FRONT:
+                                   case FACE.BACK:
+                                       double y = 0, z = 0;
+                                       y = p.Z;
+                                       z = p.Y;
+                                       p.Y = y;
+                                       p.Z = z;
+                                       break;
+                                   default:
+                                       break;
+                               }
+                                finalPoint.Add(p);
+                            }
+
+                            //modelSelected.ForEach(x =>
+                            //{
+                            //    BoltAttr ba = (BoltAttr)x.EntityData;
+                            //    Point3D p = new Point3D();
+                            //    p = new Point3D() { X = ba.X, Y = ba.Y, Z = ba.Z };
+                            //    finalPoint.Add(p);
+                            //});
                             //drawingSelected.ForEach(x =>
                             //{
                             //    BoltAttr ba = (BoltAttr)x.EntityData;
                             //    Point3D p = new Point3D(ba.X, ba.Y, ba.Z);
                             //    points.Add(p);
                             //});
-                            points.ForEach(p =>
-                            {
-                                finalPoint.Add(new Point3D { X = p.X, Y = p.Y, Z = p.Z });
-                            });
-                            finalPoint = finalPoint.Distinct().ToList();                     
+                            //points.ForEach(p =>
+                            //{
+                            //    finalPoint.Add(new Point3D { X = p.X, Y = p.Y, Z = p.Z });
+                            //});
+                            //finalPoint = finalPoint.Distinct().ToList();                     
 
                             Utility.ComputeBoundingBox(null, finalPoint, out boxMin, out boxMax);
                             Point3D center = (boxMin + boxMax) / 2; //鏡射中心點
 
+                            //通過最大點、最小點及中間值之平面
                             Point3D p31 = new Point3D { X = boxMax.X, Y = boxMax.Y, Z = boxMax.Z };
                             Point3D p32 = new Point3D { X = boxMin.X, Y = boxMin.Y, Z = boxMin.Z };
                             Point3D p33 = new Point3D { X = (boxMax.X + boxMin.X) / 2, Y = (boxMax.Y + boxMin.Y) / 2, Z = (boxMax.Z + boxMin.Z) / 2 };
@@ -765,6 +792,72 @@ namespace STD_105.Office
                             BoltAttr boltAttr = (BoltAttr)model.Entities[model.Entities.Count - 1].EntityData;
                             FACE face = boltAttr.Face;
 
+
+                            #region 原始寫法
+                            ////3D鏡射參數
+                            //Vector3D axis3DX = new Vector3D();
+                            //Plane mirror3DPlane = new Plane();
+                            //Point3D p3D1 = new Point3D(), p3D2 = new Point3D();//鏡射座標
+                            //Vector3D axis3D = new Vector3D();//鏡射軸
+
+                            ////2D鏡射
+                            //Vector3D axis2DX = new Vector3D();
+                            //Plane mirror2DPlane = new Plane();
+                            //Point3D p2D1 = new Point3D(0, 0), p2D2 = new Point3D(10, 0);//鏡射座標
+                            //Vector3D axis2D = Vector3D.AxisZ;//鏡射軸
+                            //Bolts2DBlock bolts2DBlock = (Bolts2DBlock)drawing.Blocks[reference2D.BlockName];
+
+                            //switch (face)
+                            //{
+                            //    case GD_STD.Enum.FACE.TOP:
+
+                            //        p3D1 = new Point3D(0, center.Y, 0); //鏡射第一點
+                            //        p3D2 = new Point3D(10, center.Y, 0);//鏡射第二點
+                            //        axis3D = Vector3D.AxisZ;
+
+                            //        p2D1.Y = p2D2.Y = steelAttr.H / 2;
+                            //        break;
+                            //    case GD_STD.Enum.FACE.BACK:
+                            //    case GD_STD.Enum.FACE.FRONT:
+                            //        p3D1 = new Point3D(0, 0, center.Z); //鏡射第一點
+                            //        p3D2 = new Point3D(10, 0, center.Z);//鏡射第二點
+                            //        axis3D = Vector3D.AxisY;
+                            //        switch (face)
+                            //        {
+                            //            case FACE.FRONT:
+                            //                p2D1.Y = p2D2.Y = bolts2DBlock.MoveFront + steelAttr.W / 2;
+                            //                break;
+                            //            case FACE.BACK:
+                            //                p2D1.Y = p2D2.Y = bolts2DBlock.MoveBack - steelAttr.W / 2;
+                            //                break;
+                            //            default:
+                            //                break;
+                            //        }
+                            //        break;
+                            //    default:
+                            //        break;
+                            //}
+
+                            ////清除要鏡射的物件
+                            //model.Entities.Clear();
+                            //drawing.Entities.Clear();
+
+                            ////修改 3D 參數
+                            //axis3DX = new Vector3D(p3D1, p3D2);
+
+                            ////修改 2D 參數
+                            //axis2DX = new Vector3D(p2D1, p2D2);
+
+                            //mirror3DPlane = new Plane(p3D1, axis3DX, axis3D);
+                            //mirror2DPlane = new Plane(p2D1, axis2DX, axis2D);
+
+                            ////鏡像轉換。
+                            //Mirror mirror3D = new Mirror(mirror3DPlane);
+                            //Mirror mirror2D = new Mirror(mirror2DPlane); 
+                            #endregion
+
+
+
                             //FACE face = groupBolts.Info.Face; //孔位的面
 
                             //3D鏡射參數
@@ -772,9 +865,9 @@ namespace STD_105.Office
 
                             //2D鏡射
                             Point3D p2D1 = p21, p2D2 = p22;//鏡射座標
-                            Vector3D axis2D = new Vector3D();//鏡射軸
+                            Vector3D axis2D = Vector3D.AxisZ;//鏡射軸
                             Vector3D axis3D = new Vector3D();//鏡射軸
-
+                            
                             Bolts2DBlock bolts2DBlock = (Bolts2DBlock)drawing.Blocks[reference2D.BlockName];
                             // 鏡射 X 軸 : 需要三個點
                             // 俯視圖:XY平面.Y軸.中心點
@@ -782,38 +875,34 @@ namespace STD_105.Office
                             switch (face)
                             {
                                 case GD_STD.Enum.FACE.TOP:
-                                    p3D1 = p31;
-                                    p3D2 = p32;
-                                    p3D3 = p33;
-                                    axis3D = Vector3D.AxisY;
+                                    p3D1 = new Point3D(0, center.Y, 0); //鏡射第一點
+                                    p3D2 = new Point3D(10, center.Y, 0);//鏡射第二點
+                                    axis3D = Vector3D.AxisZ;
 
-                                    //axis3D = new Vector3D(1, 1, 0);
-                                    //p2D1.Y = p2D2.Y = steelAttr.H / 2;
-                                    p2D1 = new Point3D(center.X, center.Y);
-                                    axis2D = Vector3D.AxisY;
+                                    p2D1.Y = p2D2.Y = steelAttr.H / 2;
                                     break;
+                                    //p3D1 = p31;
+                                    //p3D2 = p32;
+                                    //p3D3 = p33;
+                                    //axis3D = Vector3D.AxisY;
+                                    //
+                                    ////axis3D = new Vector3D(1, 1, 0);
+                                    ////p2D1.Y = p2D2.Y = steelAttr.H / 2;
+                                    //p2D1 = new Point3D(center.X, center.Y);
+                                    //axis2D = Vector3D.AxisY;
+                                    //break;
                                 case GD_STD.Enum.FACE.BACK:
                                 case GD_STD.Enum.FACE.FRONT:
-                                    //p3D1 = new Point3D(center.X, center.Y, steelAttr.W / 2);//+ steelAttr.W / 2
-                                    //p3D2 = new Point3D(center.X, 0, steelAttr.W / 2);//+ steelAttr.W / 2
-                                    //p3D3 = new Point3D(center.X, center.Y, center.Z+ steelAttr.W / 2);//+ steelAttr.W / 2
-                                    //以Back及FRONT來說，Z=Y,Y=Z
-                                    p3D1 = new Point3D { X = p31.X,Z = p31.Y, Y = p31.Z + steelAttr.W / 2 };//+ steelAttr.W / 2
-                                    p3D2 = new Point3D { X = p32.X,Z = p32.Y, Y = p32.Z + steelAttr.W / 2 };//+ steelAttr.W / 2
-                                    p3D3 = new Point3D { X = p33.X, Z = p33.Y, Y = p33.Z + steelAttr.W / 2 };// + steelAttr.W / 2
-                                    axis3D = Vector3D.AxisX;
-
-                                    axis2D = Vector3D.AxisX;
+                                    p3D1 = new Point3D(0, 0, center.Z); //鏡射第一點
+                                    p3D2 = new Point3D(10, 0, center.Z);//鏡射第二點
+                                    axis3D = Vector3D.AxisY;
                                     switch (face)
                                     {
                                         case FACE.FRONT:
-                                            //axis3D = new Vector3D(0, 0, 0);
                                             p2D1.Y = p2D2.Y = bolts2DBlock.MoveFront + steelAttr.W / 2;
-                                            //p2D1.Y = p2D2.Y = bolts2DBlock.MoveFront + (steelAttr.W / 2 - steelAttr.t1 / 2);
                                             break;
                                         case FACE.BACK:
                                             p2D1.Y = p2D2.Y = bolts2DBlock.MoveBack - steelAttr.W / 2;
-                                            //p2D1.Y = p2D2.Y = bolts2DBlock.MoveFront - (steelAttr.W / 2 - steelAttr.t1 / 2);
                                             break;
                                         default:
                                             break;
@@ -822,13 +911,58 @@ namespace STD_105.Office
                                 default:
                                     break;
                             }
+                            //    case GD_STD.Enum.FACE.BACK:
+                            //    case GD_STD.Enum.FACE.FRONT:
+                            //        //p3D1 = new Point3D(center.X, center.Y, steelAttr.W / 2);//+ steelAttr.W / 2
+                            //        //p3D2 = new Point3D(center.X, 0, steelAttr.W / 2);//+ steelAttr.W / 2
+                            //        //p3D3 = new Point3D(center.X, center.Y, center.Z+ steelAttr.W / 2);//+ steelAttr.W / 2
+                            //        //以Back及FRONT來說，Z=Y,Y=Z
+                            //        p3D1 = new Point3D { X = p31.X, Y = p31.Y, Z = p31.Z + steelAttr.W / 2 };//+ steelAttr.W / 2
+                            //        p3D2 = new Point3D { X = p32.X, Y = p32.Y, Z = p32.Z + steelAttr.W / 2 };//+ steelAttr.W / 2
+                            //        p3D3 = new Point3D { X = p33.X, Y = p33.Y, Z = p33.Z + steelAttr.W / 2 };// + steelAttr.W / 2
+                            //        axis3D = Vector3D.AxisX;
 
+                            //        axis2D = Vector3D.AxisX;
+                            //        switch (face)
+                            //        {
+                            //            case FACE.FRONT:
+                            //                //axis3D = new Vector3D(0, 0, 0);
+                            //                p2D1.Y = p2D2.Y = bolts2DBlock.MoveFront + steelAttr.W / 2;
+                            //                //p2D1.Y = p2D2.Y = bolts2DBlock.MoveFront + (steelAttr.W / 2 - steelAttr.t1 / 2);
+                            //                break;
+                            //            case FACE.BACK:
+                            //                p2D1.Y = p2D2.Y = bolts2DBlock.MoveBack - steelAttr.W / 2;
+                            //                //p2D1.Y = p2D2.Y = bolts2DBlock.MoveFront - (steelAttr.W / 2 - steelAttr.t1 / 2);
+                            //                break;
+                            //            default:
+                            //                break;
+                            //        }
+                            //        break;
+                            //    default:
+                            //        break;
+                            //}
                             //清除要鏡射的物件
                             model.Entities.Clear();
                             drawing.Entities.Clear();
 
-                            //Vector3D axis3DX = new Vector3D();
-                            Vector3D axis2DX = new Vector3D();
+                            //修改 3D 參數
+                            Vector3D axis3DX = new Vector3D(p3D1, p3D2);
+
+                            //修改 2D 參數
+                            Vector3D axis2DX = new Vector3D(p2D1, p2D2);
+
+                            Plane mirror3DPlane = new Plane(p3D1, axis3DX, axis3D);
+                            Plane mirror2DPlane = new Plane(p2D1, axis2DX, axis2D);
+
+                            //鏡像轉換。
+                            Mirror mirror3D = new Mirror(mirror3DPlane);
+                            Mirror mirror2D = new Mirror(mirror2DPlane);
+                            ////清除要鏡射的物件
+                            //model.Entities.Clear();
+                            //drawing.Entities.Clear();
+
+                            ////Vector3D axis3DX = new Vector3D();
+                            //Vector3D axis2DX = new Vector3D();
 
                             //修改 3D 參數
                             //axis3DX = new Vector3D(new Point3D(p3D1.X, p3D1.Y, p3D1.Z), new Point3D(p3D2.X, p3D2.Y, p3D2.Z));
@@ -853,80 +987,91 @@ namespace STD_105.Office
 
                             //Plane mirror3DPlane = new Plane(p31, p32, p33);
 
-                            Plane mirror3DPlane = new Plane(center, axis3D);
-                            Plane mirror2DPlane = new Plane(center, axis2D);
+                            //Plane mirror3DPlane = new Plane(center, axis3D);
 
-                            //鏡像轉換。
-                            Mirror mirror3D = new Mirror(mirror3DPlane);
-                            Mirror mirror2D = new Mirror(mirror2DPlane);
+
+                            //Plane mirror3DPlane = new Plane(center, axis3D);
+                            //switch (face)
+                            //{
+                            //    case FACE.TOP:
+                            //        mirror3DPlane = new Plane(center, axis3D);
+                            //        break;
+                            //    case FACE.FRONT:
+                            //        double a = center.X, b = center.Y, c = center.Z;
+                            //        Vector3D d = Vector3D.AxisZ;
+                            //        mirror3DPlane = new Plane(new Point3D(a, b, c), axis3D);
+                            //        break;
+                            //    case FACE.BACK:
+                            //        mirror3DPlane = new Plane(new Point3D(0, center.Y, 0), axis3D);
+                            //        break;
+                            //    default:
+                            //        break;
+                            //}
+
+
+                            //Point3D PPP = new Point3D(0, 0, 50);
+                            //Point3D PPPP = new Point3D(1, 0, 50);
+                            //Vector3D axis3DX111 = new Vector3D(PPP, PPPP);
+                            //mirror3DPlane = new Plane(PPP, axis3DX111);
+                            //switch (face)
+                            //{
+                            //    case FACE.TOP:
+                            //        break;
+                            //    case FACE.FRONT:
+                            //    case FACE.BACK:
+                            //        double y = 0, z = 0;
+                            //        y = center.Z;
+                            //        z = center.Y;
+                            //        center.Y = y;
+                            //        center.Z = z;
+                            //        break;
+                            //    default:
+                            //        break;
+                            //}
+                            //Plane mirror2DPlane = new Plane(center, axis2D);
+                            //
+                            ////鏡像轉換。
+                            //Mirror mirror3D = new Mirror(mirror3DPlane);
+                            //Mirror mirror2D = new Mirror(mirror2DPlane);
 
                             List<Entity> modify3D = new List<Entity>(), modify2D = new List<Entity>();
                             foreach (Entity item in buffer3D)
-                            {
-                                //Entity entity = (Entity)item.Clone();
-                                ////entity.Mirror(axis3D, center, new Point3D() { X = center.X, Y = 0, Z = 0 });
-                                //entity.TransformBy(mirror3D);
-                                //modify3D.Add(entity);
+                            {                               
                                 Entity entity = (Entity)item.Clone();
-                                //entity.Mirror(axis3D, p1, p2);
-                                ////暫時註解 轉換世界座標
-                                //switch (face)
-                                //{
-                                //    case FACE.TOP:
-                                //        break;
-                                //    case FACE.FRONT:
-                                //    case FACE.BACK:
-                                //        double y = 0, z = 0;
-                                //        var vt = entity.Vertices;
-                                //        vt.ForEach(v =>
-                                //        {
-                                //            y = v.Z;
-                                //            z = v.Y;
-                                //            v.Y = z;
-                                //            v.Z = y;
-                                //        });
-                                //        entity.Vertices = vt;
-                                //        break;
-                                //    default:
-                                //        break;
-                                //}
-
-
                                 entity.TransformBy(mirror3D);
                                 modify3D.Add(entity);
-
-
-
-
-
-
-
                             }
                             foreach (var item in buffer2D)
                             {
-                                //Entity entity = (Entity)item.Clone();
-                                ////entity.Mirror(axis2D, center, new Point3D() { X = p2D2.X, Y = p2D2.Y, Z = 1 });
-                                //entity.TransformBy(mirror2D);
-                                //modify2D.Add(entity);
                                 Entity entity = (Entity)item.Clone();
-                                //entity.Mirror(axis2D, p1, p2);
-                                entity.TransformBy(mirror2D);
+                                if (entity.Selectable)
+                                {
+                                    entity.TransformBy(mirror2D);
+                                }
                                 modify2D.Add(entity);
                             }
+
+                          
+
                             drawing.Entities.AddRange(modify2D);
                             model.Entities.AddRange(modify3D);
 
                             #region 若無此段去更改EntityData的XYZ的話，切換零件時，2D顯示會打回異常
 
                             var baList = new List<BoltAttr>();
-                            foreach (var et in model.Entities)
+                            foreach (var et in model.Blocks[reference3D.BlockName].Entities)
                             {
                                 BoltAttr ba = (BoltAttr)et.EntityData;
+                                double y=0, z = 0;
                                 Point3D ori = new Point3D() { X = ba.X, Y = ba.Y, Z = ba.Z };
                                 ori.TransformBy(mirror3D);
                                 ba.X = ori.X;
                                 ba.Y = ori.Y;
                                 ba.Z = ori.Z;
+                                //y = ba.Z;
+                                //z = ba.Y;
+                                //ba.Y = y;
+                                //ba.Z = z;
                                 baList.Add(ba);
                                 et.EntityData = ba;
                             }
@@ -1133,18 +1278,18 @@ namespace STD_105.Office
                                     {
                                         case FACE.TOP:
                                             p2D1.Y = p2D2.Y = bolts2DBlock.MoveFront + steelAttr.H / 2;
-                                            #if Debug
+#if Debug
                                             log4net.LogManager
                                             .GetLogger($"FRONT.BACK 3D TOP 依據 以下之構面\n")
                                             .Debug($"Y=移動前視圖距離({bolts2DBlock.MoveFront})+高度{steelAttr.H}/2");
-                                            #endif
-                                             break;
+#endif
+                                            break;
                                         case FACE.FRONT:
-                                            #if Debug
+#if Debug
                                             log4net.LogManager
                                             .GetLogger($"FRONT.BACK 3D FRONT 依據 以下之構面\n")
                                             .Debug($"Y=移動前視圖距離({bolts2DBlock.MoveFront})+寬度{steelAttr.W}/2");
-                                            #endif
+#endif
                                             p2D1.Y = p2D2.Y = bolts2DBlock.MoveFront + steelAttr.W / 2;
                                             break;
                                         case FACE.BACK:
@@ -1867,9 +2012,14 @@ namespace STD_105.Office
             }
         }
 
+        /// <summary>
+        /// 此設定會影響2D 3D的顯示
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TabControlSelectedIndexChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if (tabControl.SelectedIndex == 1)
+            if (((System.Windows.FrameworkElement)tabControl.SelectedValue).Name== "drawingTab")
             {
                 drawing.CurrentModel = true;
             }
@@ -1887,6 +2037,9 @@ namespace STD_105.Office
 
             drawing.ZoomFit();//設置道適合的視口
             drawing.Refresh();//刷新模型
+
+            model.ZoomFit();
+            model.Refresh();
 
         }
 
@@ -1928,7 +2081,6 @@ namespace STD_105.Office
                 /*2D螺栓*/
                 BlockReference referenceMain = (BlockReference)drawing.Entities[drawing.Entities.Count - 1]; //主件圖形
                 Steel2DBlock steel2DBlock = (Steel2DBlock)drawing.Blocks[referenceMain.BlockName]; //取得鋼構圖塊
-
 #if DEBUG
                 log4net.LogManager.GetLogger($"產生 {bolts.Name} 2D螺栓圖塊").Debug($"開始");
 #endif
@@ -2018,6 +2170,9 @@ namespace STD_105.Office
                         log4net.LogManager.GetLogger($"產生3D螺栓圖塊").Debug($"產生 {blockReference.BlockName} 圖塊內部3D螺栓圖塊");
 #endif
                         Add2DHole(bolts3DBlock, true);//加入孔位不刷新 2d 視圖
+
+
+                        
                     }
                 }
             }
@@ -2028,6 +2183,7 @@ namespace STD_105.Office
             }
             model.ZoomFit();//設置道適合的視口
             model.Invalidate();//初始化模型
+            model.Refresh();
             drawing.ZoomFit();//設置道適合的視口
             drawing.Invalidate();
             drawing.Refresh();
