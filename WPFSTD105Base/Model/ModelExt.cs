@@ -256,7 +256,8 @@ namespace WPFSTD105
         /// </summary>
         public Point3D quadrantPoint = null;
 #pragma warning disable CS1591 // 遺漏公用可見類型或成員 'ModelExt.DrawingColor' 的 XML 註解
-        public static Color DrawingColor = Color.White;
+        public static Color DrawingColor_White = Color.White;
+        public static Color DrawingColor_Red = Color.Red;
 #pragma warning restore CS1591 // 遺漏公用可見類型或成員 'ModelExt.DrawingColor' 的 XML 註解
         #endregion
         /// <summary>
@@ -833,7 +834,7 @@ namespace WPFSTD105
                             text = "Select the leader end point";
 
                         DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10,
-                            text, new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                            text, new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
                         //
                         //摘要：
                         //啟用或禁用XOR（反色）繪圖模式。
@@ -870,7 +871,7 @@ namespace WPFSTD105
                     renderContext.EnableXOR(false);
 
                     DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10,
-                        "Select Arc or Circle", new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                        "Select Arc or Circle", new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
                     //
                     //摘要：
                     //啟用或禁用XOR（反色）繪圖模式。
@@ -909,7 +910,7 @@ namespace WPFSTD105
                         text = "選擇第二點";
 
                     DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10,
-                        text, new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                        text, new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
                     //
                     //摘要：
                     //啟用或禁用XOR（反色）繪圖模式。
@@ -937,7 +938,7 @@ namespace WPFSTD105
                     double angleAMB = Math.Acos(cosM) * 180 / Math.PI;
 
                     DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10,
-                       $"選擇第三點。目前角度 : {Math.Round(angleAMB, 2, MidpointRounding.AwayFromZero) }", new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                       $"選擇第三點。目前角度 : {Math.Round(angleAMB, 2, MidpointRounding.AwayFromZero) }", new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
 
                     DrawInteractiveArc();
                 }
@@ -1093,7 +1094,7 @@ namespace WPFSTD105
                     renderContext.EnableXOR(false);
 
                     DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10,
-                        "Select entity to mirror", new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                        "Select entity to mirror", new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
                     //
                     //摘要：
                     //啟用或禁用XOR（反色）繪圖模式。
@@ -1128,7 +1129,7 @@ namespace WPFSTD105
                     renderContext.EnableXOR(false);
 
                     DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10,
-                        "Select entity to offset", new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                        "Select entity to offset", new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
                     //
                     //摘要：
                     //啟用或禁用XOR（反色）繪圖模式。
@@ -1175,7 +1176,7 @@ namespace WPFSTD105
                     renderContext.EnableXOR(false);
 
                     DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10,
-                        "Select first curve", new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                        "Select first curve", new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
                     //
                     //摘要：
                     //啟用或禁用XOR（反色）繪圖模式。
@@ -1211,7 +1212,7 @@ namespace WPFSTD105
                         renderContext.EnableXOR(false);
 
                         DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10,
-                            "Select first circle", new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                            "Select first circle", new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
                         //
                         //摘要：
                         //啟用或禁用XOR（反色）繪圖模式。
@@ -1248,7 +1249,7 @@ namespace WPFSTD105
                     renderContext.EnableXOR(false);
 
                     DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10,
-                        "Select first curve", new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                        "Select first curve", new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
                     //
                     //摘要：
                     //啟用或禁用XOR（反色）繪圖模式。
@@ -1283,7 +1284,7 @@ namespace WPFSTD105
                     renderContext.EnableXOR(false);
 
                     DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10,
-                        "Select boundary entity", new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                        "Select boundary entity", new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
                     //
                     //摘要：
                     //啟用或禁用XOR（反色）繪圖模式。
@@ -1318,7 +1319,7 @@ namespace WPFSTD105
                     renderContext.EnableXOR(false);
 
                     DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10,
-                        "Select trimming entity", new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                        "Select trimming entity", new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
                     //
                     //摘要：
                     //啟用或禁用XOR（反色）繪圖模式。
@@ -1396,7 +1397,7 @@ namespace WPFSTD105
                 titel += $"{current.X.ToString("f1") }, {current.Y.ToString("f1")}, {current.Z.ToString("f1")}";
             }
             DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10,
-                titel, new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                titel, new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
             //
             //摘要：
             //啟用或禁用XOR（反色）繪圖模式。

@@ -106,7 +106,7 @@ namespace WPFSTD105
 
             string dimText = "長度 : " + extPt1.DistanceTo(new Point3D(extPt2.X, extPt2.Y, extPt1.Z)).ToString("f3");
             DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10, dimText,
-                new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                new Font("Tahoma", 8.25f), DrawingColor_Red, ContentAlignment.BottomLeft);
         }
         /// <summary>
         /// 繪製線條的水平/垂直尺寸預覽
@@ -198,7 +198,7 @@ namespace WPFSTD105
 
             string dimText = "長度 : " + extPt1.DistanceTo(new Point3D(extPt2.X, extPt2.Y, extPt1.Z)).ToString("f3");
             DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10, dimText,
-                new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
 
         }
         /// <summary>
@@ -260,7 +260,7 @@ namespace WPFSTD105
 
             string dimText = "L " + extPt1.DistanceTo(extPt2).ToString("f3");
             DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10, dimText,
-                new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
         }
         /// <summary>
         /// 繪製縱坐標尺寸的預覽
@@ -291,7 +291,7 @@ namespace WPFSTD105
 
             string dimText = "D " + distance.ToString("f3");
             DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10, dimText,
-                new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
         }
         /// <summary>
         /// 使用R5.25，Ø12.62之類的文字繪製半徑/直徑尺寸的預覽 ( 圓弧 ) 
@@ -320,7 +320,7 @@ namespace WPFSTD105
                         dimText = "R" + cicularEntity.Radius.ToString("f3");
 
                     DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10, dimText,
-                        new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                        new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
                 }
             }
         }
@@ -348,7 +348,7 @@ namespace WPFSTD105
 
                     string dimText = "A " + Utility.RadToDeg(selectedArc.Domain.Length).ToString("f3") + "°";
 
-                    DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10, dimText, new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                    DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10, dimText, new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
                 }
             }
             else if (drawingAngularDimFromLines && quadrantPoint != null)
@@ -362,7 +362,7 @@ namespace WPFSTD105
                 //禁用反轉繪製
                 renderContext.EnableXOR(false);
 
-                DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10, "", new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10, "", new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
             }
         }
 
@@ -410,8 +410,9 @@ namespace WPFSTD105
 
         /// <summary>
         /// 標註尺寸文字高度
+        /// 2022/08/04 呂宗霖 副總指示 35→20
         /// </summary>
-        public double dimTextHeight = 35;
+        public double dimTextHeight = 20;
 
         #endregion
     }
