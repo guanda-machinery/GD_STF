@@ -384,7 +384,7 @@ namespace STD_105
                 //blockReference.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
                 //model.Entities.Add(blockReference);//加入參考圖塊到模型
 
-                Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference);
+                Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference, out bool check);
 
                 BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
 

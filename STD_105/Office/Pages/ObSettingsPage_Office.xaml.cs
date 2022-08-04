@@ -420,30 +420,45 @@ namespace STD_105.Office
                 ViewModel.GroupBoltsAttr.GUID = Guid.NewGuid();
 
 
-                Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference);
+                Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference, out bool check);
                 BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
-
-                SaveModel(false);//存取檔案
-
-                //不是修改孔位狀態
-                if (!modifyHole)
+                if (check)
                 {
-                    ViewModel.Reductions.Add(new Reduction()
+                    SaveModel(false);//存取檔案
+
+                    //不是修改孔位狀態
+                    if (!modifyHole)
                     {
-                        Recycle = new List<List<Entity>>() { new List<Entity>() { blockReference } },
-                        SelectReference = null,
-                        User = new List<ACTION_USER>() { ACTION_USER.Add }
-                    }, new Reduction()
-                    {
-                        Recycle = new List<List<Entity>>() { new List<Entity>() { referenceBolts } },
-                        SelectReference = null,
-                        User = new List<ACTION_USER>() { ACTION_USER.Add }
-                    });
+                        ViewModel.Reductions.Add(new Reduction()
+                        {
+                            Recycle = new List<List<Entity>>() { new List<Entity>() { blockReference } },
+                            SelectReference = null,
+                            User = new List<ACTION_USER>() { ACTION_USER.Add }
+                        }, new Reduction()
+                        {
+                            Recycle = new List<List<Entity>>() { new List<Entity>() { referenceBolts } },
+                            SelectReference = null,
+                            User = new List<ACTION_USER>() { ACTION_USER.Add }
+                        });
+                    }
+                    //刷新模型
+                    model.Refresh();
+                    drawing.Refresh();
+                    SaveModel(false);//存取檔案
                 }
-                //刷新模型
-                model.Refresh();
-                drawing.Refresh();
-                SaveModel(false);//存取檔案
+                else
+                {
+                    WinUIMessageBox.Show(null,
+                                 $"孔群落入非加工區域，請再確認",
+                                 "通知",
+                                 MessageBoxButton.OK,
+                                 MessageBoxImage.Exclamation,
+                                 MessageBoxResult.None,
+                                 MessageBoxOptions.None,
+                                 FloatingMode.Popup);
+                    return;
+                }
+                
             });
             //修改孔
             ViewModel.ModifyHole = new RelayCommand(() =>
@@ -1464,7 +1479,7 @@ namespace STD_105.Office
                 RoutedEvent = Keyboard.KeyDownEvent
             };
             InputManager.Current.ProcessInput(c);
-            //SaveModel();
+            //SaveModel(false);
         }
         /// <summary>
         /// 在模型視圖按下鍵盤
@@ -1507,10 +1522,11 @@ namespace STD_105.Office
                 log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y 完成");
 #endif
             }
-            else if (Keyboard.IsKeyDown(Key.Delete))
-            {
-                SimulationDelete();
-            }
+            // 2020/08/04 呂宗霖 因按Delete會造成無窮迴圈 跳不出去系統造成當掉 故先停用直接按Delete的動作
+            //else if (Keyboard.IsKeyDown(Key.Delete))
+            //{
+                //SimulationDelete();
+            //}
             model.Invalidate();
             drawing.Invalidate();
         }
@@ -1687,8 +1703,7 @@ namespace STD_105.Office
                     Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生孔群圖塊
 
                     for (int j = 0; j < bolts3DBlock.Entities.Count; j++)
-                    {
-
+                    { 
                         TmpXPos = ((BoltAttr)bolts3DBlock.Entities[j].EntityData).X;
                         TmpYPos = ((BoltAttr)bolts3DBlock.Entities[j].EntityData).Y;
 

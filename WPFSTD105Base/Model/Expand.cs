@@ -588,7 +588,7 @@ namespace WPFSTD105.Model
 
             nc.GroupBoltsAttrs.ForEach(bolt =>
             {
-                Bolts3DBlock.AddBolts(bolt, model, out BlockReference botsBlock); //加入到 3d 視圖
+                Bolts3DBlock.AddBolts(bolt, model, out BlockReference botsBlock, out bool check); //加入到 3d 視圖
             });
 
             ser.SetPartModel(dataName, model);//儲存 3d 視圖

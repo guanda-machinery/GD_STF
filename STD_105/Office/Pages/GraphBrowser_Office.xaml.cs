@@ -391,7 +391,7 @@ namespace STD_105.Office
                 //blockReference.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
                 //model.Entities.Add(blockReference);//加入參考圖塊到模型
 
-                Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference);
+                Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference,out bool check);
 
                 BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
 
@@ -1472,7 +1472,7 @@ namespace STD_105.Office
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
                 for (int i = 0; i < ncTemp.GroupBoltsAttrs.Count; i++) //逐步展開 nc 檔案的螺栓
                 {
-                    Bolts3DBlock.AddBolts(ncTemp.GroupBoltsAttrs[i], model, out BlockReference botsBlock); //加入到 3d 視圖
+                    Bolts3DBlock.AddBolts(ncTemp.GroupBoltsAttrs[i], model, out BlockReference botsBlock, out bool check); //加入到 3d 視圖
                     Add2DHole((Bolts3DBlock)model.Blocks[botsBlock.BlockName], false);//加入孔位不刷新 2d 視圖
                 }
                 ser.SetNcTempList(ncTemps);//儲存檔案
