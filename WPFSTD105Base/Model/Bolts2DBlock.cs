@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WPFSTD105.Attribute;
+﻿using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using GD_STD.Enum;
-using GD_STD;
-using devDept.Eyeshot;
-using static WPFSTD105.Properties.SofSetting;
-using devDept.Graphics;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using WPFSTD105.Attribute;
+using static WPFSTD105.Properties.SofSetting;
 
 namespace WPFSTD105.Model
 {
@@ -127,8 +123,16 @@ namespace WPFSTD105.Model
             for (int i = 0; i < bolts3DBlock.Entities.Count; i++)
             {
                 BoltAttr boltAttr = (BoltAttr)bolts3DBlock.Entities[i].EntityData;
-            
-                Circle circle = new Circle(Plane.XY, new Point3D(boltAttr.X, boltAttr.Y), boltAttr.Dia / 2)
+
+                // 圓心點
+                Point3D center = new Point3D(boltAttr.X, boltAttr.Y);
+                Point3D[] temp= bolts3DBlock.Entities[i].Vertices;
+                Point3D a = new Point3D(temp[0].X, temp[0].Y, temp[0].Z);
+                Point3D b = new Point3D(temp[1].X, temp[1].Y, temp[1].Z);
+                Point3D c = new Point3D(temp[2].X, temp[2].Y, temp[2].Z);
+                center = CenterCalculator(boltAttr.Face, a, b, c);
+
+                Circle circle = new Circle(Plane.XY, center, boltAttr.Dia / 2)
                 {
                     Color = System.Drawing.ColorTranslator.FromHtml(Default.Hole),
                     ColorMethod = colorMethodType.byEntity,
@@ -143,19 +147,60 @@ namespace WPFSTD105.Model
                 {
                     case FACE.TOP:
                         meshes = new[] { (Mesh)meshFlange.Clone(), (Mesh)meshFlange.Clone() };
+                        #region FRONT
                         meshes[0].Translate(circle.Center.X - boltAttr.Dia / 2, yFront);
-                        meshes[0].EntityData = boltAttr;
+                        meshes[0].EntityData = boltAttr;                        
+                        this.Entities.Add(Piercing(steelAttr.t2, new Point3D(circle.Center.X, yFront + steelAttr.t1 / 2), boltAttr));
+#if DEBUG
+                        log4net.LogManager.GetLogger($"TOP").Debug(
+                            $"[FRONT]座標轉換\n" +
+                            $"原始座標:X:{circle.Center.X},\t半徑:{boltAttr.Dia / 2},\tY:0,\t(X=X-半徑)\n" +
+                            $"原始座標:({boltAttr.X},\t{boltAttr.Y},\t{boltAttr.Z})\t計算後如下\n" +
+                            $"算後座標:({circle.Center.X - boltAttr.Dia / 2},\t{yFront},\t{0})");
+                        log4net.LogManager.GetLogger($"TOP").Debug(
+                            $"[FRONT]孔位穿過中心的線段\n" +
+                            $"高度:{steelAttr.t2}\n" +
+                            $"X:{circle.Center.X},\tY:{yFront},\t腹板厚度:{steelAttr.t1} (y=y+腹板厚度/2)\t計算後如下\n" +
+                            $"X:{circle.Center.X},\tY:{yFront + steelAttr.t1 / 2}\n");
+#endif
+                        #endregion
+                        #region BACK
                         meshes[1].Translate(circle.Center.X - boltAttr.Dia / 2, yBack);
                         meshes[1].EntityData = boltAttr;
-                        this.Entities.Add(Piercing(steelAttr.t2, new Point3D(circle.Center.X, yFront + steelAttr.t1 / 2), boltAttr));
                         this.Entities.Add(Piercing(steelAttr.t2, new Point3D(circle.Center.X, yBack + steelAttr.t1 / 2), boltAttr));
+#if DEBUG
+                        log4net.LogManager.GetLogger($"TOP").Debug(
+                            $"[BACK]座標轉換\n" +
+                            $"原始座標:X:{circle.Center.X},\t半徑:{boltAttr.Dia / 2},\tY:0,\t(X=X-半徑)\n" +
+                            $"原始座標:({boltAttr.X},\t{boltAttr.Y},\t{boltAttr.Z})\t計算後如下\n" +
+                            $"算後座標:({circle.Center.X},\t{yBack + steelAttr.t1 / 2},\t{0})");
+                        log4net.LogManager.GetLogger($"TOP").Debug(
+                            $"[BACK]孔位穿過中心的線段\n" +
+                            $"高度:{steelAttr.t2}\n" +
+                            $"X:{circle.Center.X},\tY:{yBack},\t腹板厚度:{steelAttr.t1} (y=y+腹板厚度/2)\t計算後如下\n" +
+                            $"X:{circle.Center.X},\tY:{yBack + steelAttr.t1 / 2}\n");
+#endif
+                        #endregion
                         break;
                     case FACE.FRONT:
                         circle.Translate(0, MoveFront);
                         meshes = new[] { (Mesh)meshWeb.Clone() };
                         meshes[0].Translate(circle.Center.X - boltAttr.Dia / 2, 0);
                         meshes[0].EntityData = boltAttr;
+                        //高度    中心點 物件boltAttr
                         this.Entities.Add(Piercing(steelAttr.t2, new Point3D(circle.Center.X, steelAttr.t2 / 2), boltAttr));
+#if DEBUG
+                        log4net.LogManager.GetLogger($"FRONT").Debug(
+                            $"[FRONT]座標轉換\n" +
+                            $"原始座標:X:{circle.Center.X},\t半徑:{boltAttr.Dia / 2},\tY:0,\t(X=X-半徑)\n" +
+                            $"原始座標:({boltAttr.X},\t{boltAttr.Y},\t{boltAttr.Z})\t計算後如下\n" +
+                            $"算後座標:({circle.Center.X - boltAttr.Dia / 2},\t{0},\t{0})");
+                        log4net.LogManager.GetLogger($"FRONT").Debug(
+                            $"[FRONT]孔位穿過中心的線段\n" +
+                            $"高度:{steelAttr.t2}\n" +
+                            $"X:{circle.Center.X},\tY:0,\t翼板厚度:{steelAttr.t2} (y=y+翼板厚度/2)\t計算後如下\n" +
+                            $"(X:{circle.Center.X},\tY:{steelAttr.t2 / 2},\t0)\n");
+#endif
                         break;
                     case FACE.BACK:
                         circle.Rotate(Math.PI, Vector3D.AxisX);
@@ -164,16 +209,118 @@ namespace WPFSTD105.Model
                         meshes[0].Translate(circle.Center.X - boltAttr.Dia / 2, yTop);
                         meshes[0].EntityData = boltAttr;
                         this.Entities.Add(Piercing(steelAttr.t2, new Point3D(circle.Center.X, yTop + steelAttr.t2 / 2), boltAttr));
+#if DEBUG
+                        log4net.LogManager.GetLogger($"BACK").Debug(
+                            $"[BACK]座標轉換\n" +
+                            $"原始座標:X:{circle.Center.X},\t半徑:{boltAttr.Dia / 2},\tY:{yTop},\t(X=X-半徑)\n" +
+                            $"原始座標:({boltAttr.X},\t{boltAttr.Y},\t{boltAttr.Z})\t計算後如下\n" +
+                            $"算後座標:({circle.Center.X - boltAttr.Dia / 2},\t{yTop},\t{0})");
+                        log4net.LogManager.GetLogger($"BACK").Debug(
+                            $"[BACK]孔位穿過中心的線段\n" +
+                            $"高度:{steelAttr.t2}\n" +
+                            $"X:{circle.Center.X},\tY:{yTop},\t翼板厚度:{steelAttr.t2} (y=y+翼板厚度/2)\t計算後如下\n" +
+                            $"X:({circle.Center.X},\tY:{yTop + steelAttr.t2 / 2},\t0)\n");
+#endif
                         break;
                     default:
                         throw new Exception($"找不到 {boltAttr.Face.ToString()}");
                 }
+
                 this.Entities.AddRange(GetCross(boltAttr.Dia, circle.Center, boltAttr, true));
                 this.Entities.AddRange(meshes);
                 //}
                 this.Entities.Add(circle);
             }
         }
+
+        /// <summary>
+        /// 圓心計算
+        /// 給定三點ABC
+        /// 計算AB.BC.AC長
+        /// (AX*AB+BX*BC+CX*AC)/(AB+BC+AC)=X座標
+        /// </summary>
+        /// <returns></returns>
+        public Point3D CenterCalculator(FACE face, Point3D a, Point3D b, Point3D c)
+        {
+            //// 計算長度
+            //double ab = Math.Sqrt(Math.Abs((a.X * a.X - b.X * b.X) + (a.Y * a.Y - b.Y * b.Y) + (a.Z * a.Z - b.Z * b.Z)));
+            //double bc = Math.Sqrt(Math.Abs((c.X * c.X - b.X * b.X) + (c.Y * c.Y - b.Y * b.Y) + (c.Z * c.Z - b.Z * b.Z)));
+            //double ac = Math.Sqrt(Math.Abs((a.X * a.X - c.X * c.X) + (a.Y * a.Y - c.Y * c.Y) + (a.Z * a.Z - c.Z * c.Z)));
+            //
+            //// X座標
+            //double x = (ab * a.X + bc * b.X + ac * c.X) / (ab + bc + ac);
+            //// Y座標
+            //double y = (ab * a.Y + bc * b.Y + ac * c.Y) / (ab + bc + ac);
+            //// Z座標
+            //double z = (ab * a.Z + bc * b.Z + ac * c.Z) / (ab + bc + ac);
+
+            //return new Point3D(x, y, z);
+
+            double fix = 0;
+            switch (face)
+            {
+                case FACE.TOP:
+                    fix = a.Z;
+                    break;
+                case FACE.FRONT:
+                case FACE.BACK:
+                    // Y軸依樣
+                    fix = a.Y;
+                    a = new Point3D(a.X, a.Z, 0);
+                    b = new Point3D(b.X, b.Z, 0);
+                    c = new Point3D(c.X, c.Z, 0);
+                    break;
+                default:
+                    break;
+            }
+
+            double x1, y1, z1, x2, y2, z2, x3, y3, z3;
+            double e, f, a1, b1, c1, d, g;
+            x1 = a.X;
+            y1 = a.Y;
+            x2 = b.X;
+            y2 = b.Y;
+            x3 = c.X;
+            y3 = c.Y;
+            e = 2 * (x2 - x1);
+            f = 2 * (y2 - y1);
+            g = x2 * x2 - x1 * x1 + y2 * y2 - y1 * y1;
+            a1 = 2 * (x3 - x2);
+            b1 = 2 * (y3 - y2);
+            d = x3 * x3 - x2 * x2 + y3 * y3 - y2 * y2;
+
+            double X = (g * b1 - d * f) / (e * b1 - a1 * f);
+            double Y = (g * a1 - d * e) / (a1 * f - b1 * e);
+
+            double R = (float)Math.Sqrt((X - x1) * (X - x1) + (Y - y1) * (Y - y1));
+
+            switch (face)
+            {
+                case FACE.TOP:
+                    // TOP視角 Z軸不變
+                    return new Point3D(X, Y, fix);
+                case FACE.FRONT:
+                case FACE.BACK:
+                    // 前後視角 Y軸不變
+                    Point3D r = new Point3D(X, fix, Y);
+                    double z = 0, y = 0;
+                    y = r.Z;
+                    z = r.Y;
+                    r.Y = y;
+                    r.Z = z;
+                    return r;
+                default:
+                    return new Point3D();
+            }
+
+
+
+
+            return new Point3D();
+        }
+
+
+
         const double extend = 10;
         /// <summary>
         /// 取得圓形十字線

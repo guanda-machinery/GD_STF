@@ -50,6 +50,7 @@
     <WarningLevel>4</WarningLevel>
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Debug\STD_105.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -91,7 +92,7 @@
     </Reference>
     <Reference Include="devDept.Geometry.v2020, Version=2020.3.428.0, Culture=neutral, PublicKeyToken=9440825e8b4733bc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\devDept Software\Eyeshot Ultimate 2020\Bin\devDept.Geometry.v2020.dll</HintPath>
+      <HintPath>C:\Program Files\devDept Software\Eyeshot Ultimate 2020\Bin\devDept.Geometry.v2020.dll</HintPath>
     </Reference>
     <Reference Include="devDept.Graphics.Shaders.v2020, Version=2020.3.428.0, Culture=neutral, PublicKeyToken=54ce5f5f803e4b42, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -708,6 +709,11 @@
     </Compile>
     <Compile Include="Page\VolumePage.xaml.cs">
       <DependentUpon>VolumePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="UserControl\ArcGauge.xaml.cs">
       <DependentUpon>ArcGauge.xaml</DependentUpon>

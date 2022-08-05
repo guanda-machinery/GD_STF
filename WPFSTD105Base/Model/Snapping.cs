@@ -70,7 +70,8 @@ namespace WPFSTD105
             {
                 entity.LayerName = layerName;
                 entity.LineWeightMethod = colorMethodType.byEntity;
-                entity.Color = System.Drawing.Color.White;
+                //20220729 呂宗霖 副總 指示 使用紅色
+                entity.Color = System.Drawing.Color.Red;
                 entity.ColorMethod = colorMethodType.byEntity;
                 Entities.Insert(0, entity);
             }

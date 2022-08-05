@@ -32,7 +32,7 @@ namespace WPFSTD105
             {
                 DrawSelectionMark(mouseLocation);
                 renderContext.EnableXOR(false);//啟用或禁用XOR（反色）繪圖模式。如果enable為true，則將其設置為白色，並將devDept.Graphics.blendStateType.XOR混合狀態，否則將設置devDept.Graphics.blendStateType.NoBlend混合狀態。
-                DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10, "選擇要延伸的實體", new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10, "選擇要延伸的實體", new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
             }
 
             if (secondSelectedEntity == null)
@@ -459,7 +459,7 @@ namespace WPFSTD105
                 {
                     renderContext.EnableXOR(false);
 
-                    DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10, "點擊偏移位置", new Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);
+                    DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10, "點擊偏移位置", new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
 
                     return;
                 }
@@ -494,11 +494,11 @@ namespace WPFSTD105
                 renderContext.EnableXOR(false);//啟用或禁用XOR（反色）繪圖模式。
                 if (points.Count == 0 && !waitingForSelection)
                 {
-                    DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10, "請點選鏡射第一點", new System.Drawing.Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);//顯示動作提示
+                    DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10, "請點選鏡射第一點", new System.Drawing.Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);//顯示動作提示
                 }
                 else if (points.Count == 1)
                 {
-                    DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10, "請點選鏡射結束點", new System.Drawing.Font("Tahoma", 8.25f), DrawingColor, ContentAlignment.BottomLeft);//顯示動作提示
+                    DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10, "請點選鏡射結束點", new System.Drawing.Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);//顯示動作提示
                 }
                 DrawInteractiveLines();
             }
