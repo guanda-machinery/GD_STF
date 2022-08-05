@@ -336,6 +336,7 @@
   <ItemGroup>
     <Compile Include="AccountNumber.cs" />
     <Compile Include="ACTION_USER.cs" />
+    <Compile Include="Attribute\AbsAttrInExcel.cs" />
     <Compile Include="Attribute\AbsAttr.cs" />
     <Compile Include="Attribute\ArrayBoltsAttr.cs" />
     <Compile Include="Attribute\BoltAttr.cs" />
@@ -347,6 +348,7 @@
     <Compile Include="Attribute\ISteelAttr.cs" />
     <Compile Include="Attribute\ModelAttr.cs" />
     <Compile Include="Attribute\MVVMAttribute.cs" />
+    <Compile Include="Attribute\SteelAttrInExcel.cs" />
     <Compile Include="Attribute\SteelAttr.cs" />
     <Compile Include="ExcelAmountService.cs" />
     <Compile Include="Connected Services\MonitorDuplex\Reference.cs">

@@ -1,0 +1,669 @@
+﻿<WPFBase:BasePage x:Class="STD_105.Office.SectionSpecificationMenu"
+                  x:TypeArguments="STD105VM:SettingParVM"
+                  xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:STD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
+                  xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                  d:DataContext="{d:DesignInstance Type=STD105VM:SettingParVM}"
+                  xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
+                  xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+                  xmlns:STD="clr-namespace:STD_105"
+                  xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+                  xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                  xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+                  xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                  xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                  xmlns:local="clr-namespace:STD_105.Office"
+                  xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+                  Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
+                  Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
+                  mc:Ignorable="d"
+                  Title="參數設定">
+    <WPFBase:BasePage.Resources>
+        <Color x:Key="white1">White</Color>
+    </WPFBase:BasePage.Resources>
+    <Grid HorizontalAlignment="Center">
+        <Grid.Resources>
+            <Style TargetType="GroupBox"
+                   BasedOn="{ StaticResource BaseStyle }">
+                <Setter Property="Background" Value="WhiteSmoke"/>
+            </Style>
+            <Style TargetType="Button"
+                   BasedOn="{ StaticResource btn_CommonFunctionKey_STD }">
+                <Setter Property="Width"
+                        Value="100" />
+            </Style>
+            <Style TargetType="TextBox"
+                   BasedOn="{ StaticResource tbx_BlueUnderline }">
+                <Setter Property="Foreground"
+                        Value="{ StaticResource solidclr_Gray }" />
+                <Setter Property="FontSize"
+                        Value="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" />
+            </Style>
+
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="560" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="350" />
+        </Grid.ColumnDefinitions>
+        <!--斷面規格目錄-->
+        <Grid  Grid.Column="0">
+            <GroupBox Header="斷面規格目錄" FontSize="14">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="80" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <!--顯示所選斷面規格名稱-->
+                        <TextBlock Grid.Column="0" Text="斷面規格名稱：" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="5,0,222,0"/>
+                        <Border Grid.Column="1"
+                                CornerRadius="1"
+                                Margin="5,0,0,0"
+                                Background="Transparent"
+                                BorderThickness="1"
+                                BorderBrush="Transparent"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Path=ProfileName}" VerticalAlignment="Center" Margin="10" FontSize="14" Background="Transparent" Foreground="{ StaticResource solidclr_DimGray }"/>
+
+                    </Grid>
+                    <!--關鍵字過濾-->
+                    <TextBox Grid.Row="1"
+                             x:Name="tbxFilter"
+                             Height="50"
+                             DockPanel.Dock="Top"
+                             Foreground="{ StaticResource solidclr_DimGray }"
+                             Background="White"
+                             FontSize="14"
+                             Style="{ StaticResource tbx_BlueUnderline }"
+                             wpf:HintAssist.Hint="關鍵字過濾"
+                             wpf:HintAssist.Background="{ StaticResource solidclr_LightGray }"
+                             wpf:HintAssist.IsFloating="True"
+                             wpf:TextFieldAssist.HasClearButton="True"
+                             wpf:TextFieldAssist.HasOutlinedTextField="True"
+                             wpf:TextFieldAssist.DecorationVisibility="Collapsed"
+                             wpf:TextFieldAssist.TextFieldCornerRadius="1"
+                             Margin="5,-5,5,24">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter"
+                                        Command="{ Binding FilterCommand }"
+                                        CommandParameter="{ Binding ElementName=tbxFilter, Path=Text }" />
+                        </TextBox.InputBindings>
+                    </TextBox>
+                    <!--樹狀圖-->
+                    <Border Grid.Row="2"
+                            Background="White"
+                            Style="{ StaticResource bor_DarkThinLine }"
+                            CornerRadius="1"
+                            Margin="5,-24,5,5">
+                        <TreeView x:Name="tree"
+                                  Style="{ StaticResource treeView_STD }" Margin="0,0,0,5">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectedItemChanged">
+                                    <i:InvokeCommandAction Command="{ Binding SegmentString }"
+                                                           CommandParameter="{ Binding ElementName=tree, Path=SelectedItem }" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <TreeView.Resources>
+                                <Style TargetType="TreeViewItem"
+                                       BasedOn="{ StaticResource treeViewItem_STD }"></Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Width"
+                                            Value="20" />
+                                </Style>
+                                <Style TargetType="TextBlock"
+                                       BasedOn="{ StaticResource tbk_SubTitle }">
+                                    <Setter Property="Foreground"
+                                            Value="{ StaticResource solidclr_DimGray }" />
+                                    <Setter Property="Margin"
+                                            Value="10,0" />
+                                    <Setter Property="FontSize" Value="14"/>
+                                </Style>
+                            </TreeView.Resources>
+                            <!--TreeView Test START-->
+                            <TreeViewItem ItemsSource="{Binding TUBE}"
+                                          DisplayMemberPath="Profile">
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{ StaticResource BOX }" />
+                                        <TextBlock Text="TUBE-->X"/>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            <TreeViewItem ItemsSource="{Binding BOX}"
+                                          DisplayMemberPath="Profile">
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{ StaticResource BOX }" />
+                                        <TextBlock Text="BOX-->X"/>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            
+                            
+                            <TreeViewItem ItemsSource="{Binding BH}"
+                                          DisplayMemberPath="Profile">
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{ StaticResource Beam }" />
+                                        <TextBlock Text="BH--->X"/>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            <TreeViewItem ItemsSource="{Binding H}"
+                                          DisplayMemberPath="Profile">
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{ StaticResource Beam }" />
+                                        <TextBlock Text="H--->X"/>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            <TreeViewItem ItemsSource="{Binding RH}"
+                                          DisplayMemberPath="Profile">
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{ StaticResource Beam }" />
+                                        <TextBlock Text="RH--->X"/>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            
+                            <TreeViewItem Header="I型鋼" Visibility="Collapsed">
+                                <TreeViewItem Header="I-->X"
+                                              ItemsSource="{Binding I}"
+                                              DisplayMemberPath="Profile"/>
+                            </TreeViewItem>
+                            <TreeViewItem Header="L斷面規格" Visibility="Collapsed">
+                                <TreeViewItem Header="L-->X" 
+                                              ItemsSource="{Binding L}"
+                                              DisplayMemberPath="Profile"/>
+                            </TreeViewItem>
+                            
+                            <TreeViewItem ItemsSource="{Binding LB}"
+                                          DisplayMemberPath="Profile">
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{ StaticResource CH }" />
+                                        <TextBlock Text="[-->X"/>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            <TreeViewItem ItemsSource="{Binding CH}"
+                                          DisplayMemberPath="Profile">
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{ StaticResource CH }" />
+                                        <TextBlock Text="U(CH)-->X"/>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+
+                            <TreeViewItem Header="T斷面規格" Visibility="Collapsed">
+                                <TreeViewItem Header="BT-->X"
+                                              ItemsSource="{Binding BT}"
+                                              DisplayMemberPath="Profile"/>
+                                <TreeViewItem Header="CT-->X"
+                                              ItemsSource="{Binding CT}"
+                                              DisplayMemberPath="Profile"/>
+                                <TreeViewItem Header="T-->X"
+                                              ItemsSource="{Binding T}"
+                                              DisplayMemberPath="Profile"/>
+                            </TreeViewItem>
+                            <TreeViewItem Header="CC斷面規格" Visibility="Collapsed">
+                                <TreeViewItem Header="C-->X"
+                                              ItemsSource="{Binding C}"
+                                              DisplayMemberPath="Profile"/>
+                            </TreeViewItem>
+                            <TreeViewItem Header="圓管" Visibility="Collapsed">
+                                <TreeViewItem Header="PIPE-->X"
+                                              ItemsSource="{Binding PIPE}"
+                                              DisplayMemberPath="Profile"/>
+                            </TreeViewItem>
+                            <TreeViewItem Header="TURN BUCKLE"
+                                          ItemsSource="{Binding TURN_BUCKLE}"
+                                          DisplayMemberPath="Profile" Visibility="Collapsed"/>
+                            <TreeViewItem Header="鋼筋接續器" Visibility="Collapsed">
+                                <TreeViewItem Header="WELD"
+                                              ItemsSource="{Binding WELD}"
+                                              DisplayMemberPath="Profile"/>
+                                <TreeViewItem Header="SA"
+                                              ItemsSource="{Binding SA}"
+                                              DisplayMemberPath="Profile"/>
+                            </TreeViewItem>
+                            <TreeViewItem Header="格柵板踏階"
+                                          ItemsSource="{Binding GRATING}"
+                                          DisplayMemberPath="Profile" Visibility="Collapsed"/>
+                            <TreeViewItem Header="扁鐵FB" Visibility="Collapsed">
+                                <TreeViewItem Header="FB-->X"
+                                              ItemsSource="{Binding FB}"
+                                              DisplayMemberPath="Profile"/>
+                            </TreeViewItem>
+                            <TreeViewItem Header="圓棒" Visibility="Collapsed">
+                                <TreeViewItem Header="RB-->X"
+                                              ItemsSource="{Binding RB}"
+                                              DisplayMemberPath="Profile"/>
+                            </TreeViewItem>
+                            <TreeViewItem Header="重型螺帽"
+                                          ItemsSource="{Binding HNUT}"
+                                          DisplayMemberPath="Profile" Visibility="Collapsed"/>
+                            <TreeViewItem Header="螺帽"
+                                          ItemsSource="{Binding NUT}"
+                                          DisplayMemberPath="Profile" Visibility="Collapsed"/>
+                            <!--TreeView Test END-->
+                        </TreeView>
+                    </Border>
+                </Grid>
+            </GroupBox>
+        </Grid>
+        <Grid Grid.Column="2">
+            <Grid.Resources>
+                <STD:OBJECT_TYPE_ToStringConverter x:Key="obType" />
+            </Grid.Resources>
+            <GroupBox Header="一般的" FontSize="14">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="80" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel.Resources>
+                            <Style TargetType="GroupBox"
+                                   BasedOn="{ StaticResource BaseStyle }">
+                                <Setter Property="Margin"
+                                        Value="5" />
+                            </Style>
+                        </StackPanel.Resources>
+
+                        <!--斷面規格名稱-->
+                        <GroupBox Header="{ DynamicResource LANGUAGE_SectionSpecificationName }" 
+                                  Background="White">
+                            <TextBox x:Name="tbx_SectionName"
+                                     Text="{ Binding ProfileName}"
+                                     FontSize="14"
+                                     Foreground="{StaticResource solidclr_DimGray}"
+                                     BorderThickness="0,0,0,0"
+                                     Margin="5,0,0,0"/>
+                        </GroupBox>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <!--斷面規格類型-->
+                            <GroupBox Header="{ DynamicResource LANGUAGE_SectionSpecificationType }" FontSize="14" Background="White">
+                                <ComboBox SelectedIndex="{Binding SelectType}"
+                                          Style="{ StaticResource cbb_ParaSecType }"
+                                          ItemsSource="{Binding Source={StaticResource  obType} , Path=Strings}"
+                                          FontSize="14"
+                                          Margin="5,0,0,0"/>
+                            </GroupBox>
+                            <!--單位重量-->
+                            <GroupBox Grid.Column="2"
+                                      Header="{ DynamicResource LANGUAGE_UnitWeight }"  Visibility="Collapsed">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="50" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding SelectSteelAtte.Kg}" />
+                                    <Label Grid.Column="1"
+                                           Content="kg/m" />
+                                </Grid>
+                            </GroupBox>
+                        </Grid>
+                        <!--2D圖形-->
+                        <GroupBox Height="300"
+                                  Header="{ DynamicResource LANGUAGE_2DGraphics }">
+                            <Grid>
+                                <Grid.Resources>
+                                    <Style TargetType="Label"
+                                           BasedOn="{ StaticResource lab_SubTitle }">
+                                        <Setter Property="Foreground"
+                                                Value="{ StaticResource solidclr_DimGray }" />
+                                        <Setter Property="FontSize"
+                                                Value="50" />
+                                    </Style>
+                                    <Style TargetType="Line">
+                                        <Setter Property="StrokeThickness"
+                                                Value="2" />
+                                        <Setter Property="Stroke"
+                                                Value="{ Binding BorderBrushColor, Source={ x:Static SofSetting:SofSetting.Default } }" />
+                                    </Style>
+                                    <Style TargetType="Path">
+                                        <Setter Property="StrokeThickness"
+                                                Value="2" />
+                                        <Setter Property="Stroke"
+                                                Value="{ Binding BorderBrushColor, Source={ x:Static SofSetting:SofSetting.Default } }" />
+                                    </Style>
+                                </Grid.Resources>
+                                <!--BOX-->
+                                <Viewbox Visibility="{Binding VisibilityBOX, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                    <Canvas Name="can_BOX"
+                                            Width="1280"
+                                            Height="1024">
+                                        <Image Source="{ StaticResource Box_Profile_Office }"
+                                               Canvas.Left="260"
+                                               Canvas.Top="60" />
+                                        <Label Content="{ Binding InsertionData[0].Value}"
+                                               ContentStringFormat="H=0.#"
+                                               Canvas.Left="70"
+                                               Canvas.Top="445" />
+                                        <Label Content="{ Binding  InsertionData[1].Value}"
+                                               ContentStringFormat="W=0.#"
+                                               Canvas.Left="580"
+                                               Canvas.Top="920" />
+                                        <Label Content="{ Binding  InsertionData[2].Value}"
+                                               ContentStringFormat="t=0.#"
+                                               Canvas.Left="1050"
+                                               Canvas.Top="445" />
+                                    </Canvas>
+                                </Viewbox>
+                                <!--Beam-->
+                                <Viewbox Visibility="{Binding VisibilityH, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                    <Canvas Name="can_Beam"
+                                            Width="1280"
+                                            Height="1024">
+                                        <Image Source="{ StaticResource Beam_Profile_Office }"
+                                               Canvas.Left="260"
+                                               Canvas.Top="90" />
+                                        <Label Content="{ Binding InsertionData[0].Value}"
+                                               ContentStringFormat="H=0.#"
+                                               Canvas.Left="1000"
+                                               Canvas.Top="450" />
+                                        <Label Content="{ Binding InsertionData[1].Value }"
+                                               ContentStringFormat="W=0.#"
+                                               Canvas.Left="520"
+                                               Canvas.Top="950" />
+                                        <Label Content="{ Binding InsertionData[2].Value }"
+                                               ContentStringFormat="t1=0.#"
+                                               Canvas.Left="320"
+                                               Canvas.Top="450"/>
+                                        <Label Content="{ Binding InsertionData[3].Value }"
+                                               ContentStringFormat="t2=0.#"
+                                               Canvas.Left="700"
+                                               Canvas.Top="0" />
+                                    </Canvas>
+                                </Viewbox>
+                                <!--CH-->
+                                <Viewbox Visibility="{Binding VisibilityCH, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                    <Canvas Name="can_CH"
+                                            Width="1280"
+                                            Height="1024">
+                                        <Image Source="{ StaticResource CH_Profile_Office }"
+                                               Canvas.Left="420"
+                                               Canvas.Top="60" />
+                                        <Label Content="{Binding InsertionData[0].Value }"
+                                               ContentStringFormat="H=0.#"
+                                               Canvas.Left="210"
+                                               Canvas.Top="425" />
+                                        <Label Content="{Binding InsertionData[1].Value }"
+                                               ContentStringFormat="W=0.#"
+                                               Canvas.Left="580"
+                                               Canvas.Top="940" />
+                                        <Label Content="{Binding InsertionData[2].Value }"
+                                               ContentStringFormat="t1=0.#"
+                                               Canvas.Left="650"
+                                               Canvas.Top="425" />
+                                        <Label Content="{Binding InsertionData[3].Value}"
+                                               ContentStringFormat="t2=0.#"
+                                               Canvas.Left="600"
+                                               Canvas.Top="-20" />
+                                    </Canvas>
+                                </Viewbox>
+                                <!--L-->
+                                <Viewbox Visibility="{Binding VisibilityL, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                    <Canvas Name="can_L"
+                                            Width="1280"
+                                            Height="1024">
+                                        <Image Source="{ StaticResource L_Profile_Office }"
+                                               Canvas.Left="420"
+                                               Canvas.Top="60" />
+                                        <Label Content="{ Binding InsertionData[0].Value }"
+                                               ContentStringFormat="H=0.#"
+                                               Canvas.Left="240"
+                                               Canvas.Top="410" />
+                                        <Label Content="{ Binding InsertionData[1].Value }"
+                                               ContentStringFormat="W=0.#"
+                                               Canvas.Left="650"
+                                               Canvas.Top="950" />
+                                        <Label Content="{ Binding InsertionData[2].Value}"
+                                               ContentStringFormat="t1=0.#"
+                                               Canvas.Left="730"
+                                               Canvas.Top="410" />
+                                    </Canvas>
+                                </Viewbox>
+                            </Grid>
+                        </GroupBox>
+                        <!--斷面規格屬性-->
+                        <GroupBox Height="269"
+                                  Header="斷面規格屬性" 
+                                  Padding="20,2,18,-2"
+                                  Visibility="Visible">
+                            <GroupBox.Resources>
+                                <Style TargetType="{x:Type dxg:RowControl}">
+                                    <!--20220805 張燕華 縮小列高度, 使row看起來緊密排列-->
+                                    <Setter Property="Height" Value="22"></Setter>
+                                </Style>
+                                <Style TargetType="{x:Type dxg:TableView}">
+                                    <Setter Property="BorderBrush" Value="Red"/>
+                                    <Setter Property="ShowHorizontalLines" Value="False"/>
+                                    <Setter Property="ShowVerticalLines" Value="False"/>
+                                </Style>
+                            </GroupBox.Resources>
+                            <dxg:GridControl Name="gridControl" Grid.Row="3"
+                                 Width="525"
+                                 HorizontalAlignment="Center"
+                                 dx:ThemeManager.ThemeName="Office2013LightGray"
+                                 ItemsSource="{Binding InsertionData}"
+                                 Background="white">
+
+                                <dxg:GridControl.View>
+                                    <!--20220805 張燕華 隱藏TableView的ScrollBar, 同時使用GroupBox的Padding將ScrollBar遮住-->
+                                    <dxg:TableView ShowFixedTotalSummary="False" 
+                                                   AllowEditing="True" 
+                                                   VerticalScrollbarVisibility="Hidden"
+                                                   HorizontalScrollbarVisibility="Hidden"
+                                                   ShowGroupPanel="False">
+                                        <dxg:TableView.CellStyle>
+                                            <Style>
+                                                <Setter Property="TextBlock.FontSize" Value="14"/>
+                                            </Style>
+                                        </dxg:TableView.CellStyle>
+                                    </dxg:TableView>
+                                </dxg:GridControl.View>
+                                <dxg:GridControl.Columns>
+                                    <dxg:GridColumn FieldName="Property"
+                                                    Header="性質"
+                                                    Width="100"
+                                                    ReadOnly="True"/>
+                                    <dxg:GridColumn FieldName="Symbol"
+                                                    Header="符號" 
+                                                    Width="50"
+                                                    ReadOnly="True"/>
+                                    <dxg:GridColumn FieldName="Value"
+                                                    Header="數值" 
+                                                    Width="250"
+                                                    HorizontalHeaderContentAlignment="Right"/>
+                                    <dxg:GridColumn FieldName="Unit"
+                                                    Header="單位" 
+                                                    Width="90"
+                                                    ReadOnly="True"/>
+                                </dxg:GridControl.Columns>
+                            </dxg:GridControl>
+                        </GroupBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center" Margin="0,540,0,24" Grid.RowSpan="2">
+                        <RepeatButton Name="btn_material"
+                                      Content="{ DynamicResource LANGUAGE_New }"
+                                      FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
+                                      Command="{Binding NewCommand}"
+                                      CommandParameter="{ Binding RelativeSource={ x:Static RelativeSource.Self }, Path=Name}" 
+                                      Background="RoyalBlue"
+                                      Foreground="Azure"
+                                      BorderBrush="RoyalBlue"
+                                      Height="25"
+                                      Width="80"
+                                      Margin="10"/>
+                        <RepeatButton Content="{ DynamicResource LANGUAGE_Delete }"
+                                      FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
+                                      Command="{Binding DeleteCommand}"
+                                      CommandParameter="{ Binding ElementName=tree, Path=SelectedItem }" 
+                                      Background="RoyalBlue"
+                                      Foreground="Azure"
+                                      BorderBrush="RoyalBlue"
+                                      Height="25"
+                                      Width="80"
+                                      Margin="10"/>
+                        <RepeatButton Content="{ DynamicResource LANGUAGE_Update }"
+                                      FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
+                                      Command="{Binding UpdateTreeCommand}"
+                                      CommandParameter="{ Binding ElementName=tree, Path=SelectedItem }" 
+                                      Background="RoyalBlue"
+                                      Foreground="Azure"
+                                      BorderBrush="RoyalBlue"
+                                      Height="25"
+                                      Width="80"
+                                      Margin="10"/>
+                    </StackPanel>
+
+                </Grid>
+            </GroupBox>
+        </Grid>
+        <!--材質設定-->
+        <GroupBox Grid.Column="4"
+                  Header="材質設定" Visibility="Collapsed">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80" />
+                    <RowDefinition />
+                    <RowDefinition Height="80" />
+                </Grid.RowDefinitions>
+                <!--關鍵字過濾-->
+                <TextBox x:Name="tbxFilter1"
+                         Height="60"
+                         DockPanel.Dock="Top"
+                         Foreground="{ StaticResource solidclr_DimGray }"
+                         FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
+                         Style="{ StaticResource tbx_BlueUnderline }"
+                         wpf:HintAssist.Hint="關鍵字過濾"
+                         wpf:HintAssist.Background="{ StaticResource solidclr_LightGray }"
+                         wpf:HintAssist.IsFloating="True"
+                         wpf:TextFieldAssist.HasClearButton="True"
+                         wpf:TextFieldAssist.HasOutlinedTextField="True"
+                         wpf:TextFieldAssist.DecorationVisibility="Collapsed"
+                         wpf:TextFieldAssist.TextFieldCornerRadius="5"
+                         Margin="5">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter"
+                                    Command="{ Binding FilterMaterialCommand }"
+                                    CommandParameter="{ Binding ElementName=tbxFilter1, Path=Text }" />
+                    </TextBox.InputBindings>
+                </TextBox>
+                <StackPanel Grid.Row="1">
+                    <ListView Name="Materials"
+                              Height="600"
+                              ItemsSource="{Binding Materials}"
+                              SelectedIndex="{Binding MatrialIndex}"
+                              Style="{ StaticResource list_STD }"
+                              HorizontalAlignment="Stretch"
+                              Margin="5">
+                        <ListView.Resources>
+                            <Style TargetType="ListViewItem"
+                                   BasedOn="{ StaticResource listViewItem_STD }" />
+                        </ListView.Resources>
+                        <ListView.View>
+                            <GridView ColumnHeaderContainerStyle="{ StaticResource gridViewHeader_Office }">
+                                <GridViewColumn DisplayMemberBinding="{ Binding Name}">
+                                    <GridViewColumn.Header>
+                                        <GridViewColumnHeader Content="材質列表" />
+                                    </GridViewColumn.Header>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <StackPanel Grid.Row="2">
+                        <GroupBox Header="材質名稱"
+                                  Margin="5">
+                            <TextBox Text="{Binding SelectMaterial.Name}" />
+                        </GroupBox>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <GroupBox Header="板密度"
+                                      Margin="5">
+                                <Grid Height="30">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="55" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0"
+                                             Text="{Binding SelectMaterial.PlateDensity}" />
+                                    <Label Grid.Column="1"
+                                           Content="kg/m3"
+                                           Foreground="{ StaticResource solidclr_DarkGray }"
+                                           Style="{ StaticResource lab_SubTitle }" />
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Grid.Column="1"
+                                      Header="斷面積密度"
+                                      Margin="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="55" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0"
+                                             Text="{Binding SelectMaterial.ProfileDensity}" />
+                                    <Label Grid.Column="1"
+                                           Content="kg/m3"
+                                           Foreground="{ StaticResource solidclr_DarkGray }"
+                                           Style="{ StaticResource lab_SubTitle }"
+                                           VerticalAlignment="Center" />
+                                </Grid>
+                            </GroupBox>
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Row="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <Button Name="btn_profile"
+                            Content="新增"
+                            Command="{Binding NewCommand}"
+                            CommandParameter="{ Binding RelativeSource={ x:Static RelativeSource.Self }, Path=Name}" />
+                    <Button Content="刪除"
+                            Command="{Binding DeleteMaterialCommand}"
+                            CommandParameter="{Binding SelectedItem, ElementName=Materials}" />
+                    <Button Content="更新"
+                            Command="{ Binding UpdateMaterialCommand }"
+                            CommandParameter="{Binding SelectedItem, ElementName=Materials}" />
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+        <!--打點設定-->
+        <GroupBox Grid.Column="4"
+                  Header="打點設定" 
+                  Visibility="Collapsed"/>
+        <Grid Grid.ColumnSpan="5" Margin="0,4,0,-4">
+            <!--另存視窗-->
+            <Grid Visibility="{ Binding SaveAsWindowsControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                <STD:SaveAs SubmitButtonCommand="{Binding SaveModelRoSystemCommand}"
+                            CancelButtonCommand="{ Binding CloseSaveAsWindowsCommand }" />
+            </Grid>
+        </Grid>
+    </Grid>
+</WPFBase:BasePage>

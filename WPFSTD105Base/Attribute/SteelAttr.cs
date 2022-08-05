@@ -48,6 +48,22 @@ namespace WPFSTD105.Attribute
             Material = profile.Material;
             //GUID = Guid.NewGuid();
         }
+        //20220728 張燕華 轉換出inp檔案->新增斷面規格屬性
+        //圓角半徑r1(mm)
+        public float r1 { get; set; }
+        //圓角半徑r2(mm)
+        public float r2 { get; set; }
+        //表面積(m2/m)
+        public float surface_area { get; set; }
+        //斷面積(m2)
+        public float section_area { get; set; }
+        //密度(kg/m3)
+        public float density { get; set; }
+        //突出肢長度e(mm)
+        public float e { get; set; }
+        //直徑d(mm)
+        public float diameter { get; set; }
+
         /// <inheritdoc/>
         public double Length { get; set; } = 5000;
         /// <inheritdoc/>

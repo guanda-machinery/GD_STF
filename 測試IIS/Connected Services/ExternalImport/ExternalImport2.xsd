@@ -24,6 +24,20 @@
       <xs:enumeration value="FB" />
       <xs:enumeration value="PIPE" />
       <xs:enumeration value="Unknown" />
+      <!--20220729 張燕華 斷面規格目錄-增加斷面規格-->
+      <xs:enumeration value="TUBE" />
+      <xs:enumeration value="H" />
+      <xs:enumeration value="I" />
+      <xs:enumeration value="LB" />
+      <xs:enumeration value="BT" />
+      <xs:enumeration value="CT" />
+      <xs:enumeration value="T" />
+      <xs:enumeration value="TURN_BUCKLE" />
+      <xs:enumeration value="WELD" />
+      <xs:enumeration value="SA" />
+      <xs:enumeration value="GRATING" />
+      <xs:enumeration value="HNUT" />
+      <xs:enumeration value="NUT" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="OBJETC_TYPE" nillable="true" type="tns:OBJETC_TYPE" />

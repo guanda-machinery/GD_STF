@@ -84,14 +84,23 @@ namespace STD_105.Office
                 case ParameterSettingPage.Home:
                     basePage = new FirstPage();
                     break;
-                // 斷面規格
+                // 原斷面規格頁面
                 case ParameterSettingPage.SectionSpecificationSetting:
                     basePage = new ParametersSettings_Office();
+                    break;
+                // 斷面規格目錄
+                case ParameterSettingPage.SectionSpecificationMenu:
+                    basePage = new SectionSpecificationMenu();
                     break;
                 // 語言設定
                 case ParameterSettingPage.LanguageSetting:
                     //20220711 張燕華 從切換畫面改為顯示DecExpress的Dialog Service
                     //basePage = new ParametersSettings_Office_Language();
+                    break;
+                // 斷面規格Excel轉Inp
+                case ParameterSettingPage.SectionSpecificationExcel2Inp:
+                    //20220711 張燕華 從切換畫面改為顯示DecExpress的Dialog Service
+                    basePage = new SectionSpecExcel2Inp();
                     break;
                 default:
                     break;

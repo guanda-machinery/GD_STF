@@ -88,6 +88,20 @@ namespace WPFSTD105.Tekla
             Profile.Add(OBJETC_TYPE.BOX, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\BOX.inp"));//加入 BOX 字典
             Profile.Add(OBJETC_TYPE.CH, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\CH.inp"));//加入 CH 字典
             Profile.Add(OBJETC_TYPE.L, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\L.inp"));//加入 L 字典
+            //20220729 張燕華 斷面規格目錄-增加斷面規格
+            Profile.Add(OBJETC_TYPE.TUBE, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\TUBE.inp"));//加入 L 字典
+            Profile.Add(OBJETC_TYPE.H, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\H.inp"));//加入 L 字典
+            Profile.Add(OBJETC_TYPE.I, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\I.inp"));//加入 L 字典
+            Profile.Add(OBJETC_TYPE.LB, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\LB.inp"));//加入 L 字典
+            Profile.Add(OBJETC_TYPE.BT, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\BT.inp"));//加入 L 字典
+            Profile.Add(OBJETC_TYPE.CT, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\CT.inp"));//加入 L 字典
+            Profile.Add(OBJETC_TYPE.T, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\T.inp"));//加入 L 字典
+            Profile.Add(OBJETC_TYPE.TURN_BUCKLE, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\TURN_BUCKLE.inp"));//加入 L 字典
+            Profile.Add(OBJETC_TYPE.WELD, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\WELD.inp"));//加入 L 字典
+            Profile.Add(OBJETC_TYPE.SA, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\SA.inp"));//加入 L 字典
+            Profile.Add(OBJETC_TYPE.GRATING, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\GRATING.inp"));//加入 L 字典
+            Profile.Add(OBJETC_TYPE.HNUT, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\HNUT.inp"));//加入 L 字典
+            Profile.Add(OBJETC_TYPE.NUT, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\NUT.inp"));//加入 L 字典
         }
 
         #region 私有方法
