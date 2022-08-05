@@ -62,7 +62,7 @@
                             Grid.ColumnSpan="4"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="3">
+                            CornerRadius="0">
                             <Border.OpacityMask>
                                 <MultiBinding Converter="{StaticResource BorderGapMaskConverter}" ConverterParameter="6">
                                     <Binding ElementName="Header" Path="ActualWidth" />

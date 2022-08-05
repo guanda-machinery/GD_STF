@@ -36,7 +36,7 @@
                 Grid.RowSpan="4"
                 Background="{ StaticResource solidclr_CreamyWhite }"
                 BorderThickness="0"
-                CornerRadius="15" />
+                CornerRadius="0" />
         <!--拖曳視窗區域-->
         <Grid Grid.RowSpan="4"
               Background="Transparent">
@@ -228,7 +228,7 @@
         <Grid Grid.Column="1"
               Grid.RowSpan="4">
             <Border Name="workArea"
-                    CornerRadius="15"
+                    CornerRadius="0"
                     Background="{ StaticResource solidclr_LightGray }"
                     Margin="10">
                 <Grid>

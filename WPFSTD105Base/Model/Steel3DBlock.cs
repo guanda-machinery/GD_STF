@@ -123,6 +123,7 @@ namespace WPFSTD105.Model
                 //組合實際斷面規格
                 switch (steelAttr.Type)
                 {
+                    case OBJETC_TYPE.H: //20220805 張燕華 新增斷面規格H型鋼
                     case OBJETC_TYPE.BH:
                     case OBJETC_TYPE.RH:
                         curves.Add(BaseProfile(steelAttr.H - (steelAttr.t2 * 2), (steelAttr.W * 0.5) - (steelAttr.t1 * 0.5), 0, steelAttr.t2));
@@ -131,6 +132,7 @@ namespace WPFSTD105.Model
                         log4net.LogManager.GetLogger("產生H型鋼").Debug($"H{steelAttr.H},W{steelAttr.W},t1{steelAttr.t1},t2{steelAttr.t2}");
 #endif
                         break;
+                    case OBJETC_TYPE.LB: //20220805 張燕華 新增斷面規格槽鐵[(程式內標記為LB, 即longitudinal beam)
                     case OBJETC_TYPE.CH:
                         double b = Math.Sin(Radian) * ((steelAttr.W / 2) / Math.Cos(Radian)); //計算斜率點到點
                         double c = Math.Sin(Radian) * ((steelAttr.W / 2 - steelAttr.t1) / Math.Cos(Radian)); //計算斜率點到點
@@ -154,6 +156,7 @@ namespace WPFSTD105.Model
                         log4net.LogManager.GetLogger("產生L型鋼").Debug($"H {steelAttr.H},W {steelAttr.W},t1 {steelAttr.t1}");
 #endif
                         break;
+                    case OBJETC_TYPE.TUBE: //20220805 張燕華 新增斷面規格TUBE
                     case OBJETC_TYPE.BOX:
                         curves.Add(BaseProfile(steelAttr.H - (steelAttr.t2 * 2), steelAttr.W - (steelAttr.t1 * 2), steelAttr.t1, steelAttr.t2));
 #if DEBUG

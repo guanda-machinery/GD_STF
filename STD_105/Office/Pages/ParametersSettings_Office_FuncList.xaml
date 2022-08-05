@@ -47,7 +47,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Background="{ StaticResource solidclr_LightGray }">
-            <Border CornerRadius="15"
+            <Border CornerRadius="0"
                     Background="white"
                     Margin="0,0,5,0">
                 <Grid>
@@ -60,7 +60,7 @@
                             </Button.Content>
                         </Button>
                         <!--斷面規格目錄-->
-                        <Button>
+                        <Button Command="{ Binding Path=SectionSpecMenuCommand }">
                             <Button.Content>
                                 <TextBlock Text="斷面規格目錄" />
                             </Button.Content>
@@ -97,12 +97,18 @@
                                 <TextBlock Text="貼紙機設定" />
                             </Button.Content>
                         </Button>
+                        <!--斷面規格轉inp-->
+                        <Button Command="{ Binding Path=SectionSpecExcel2InpCommand }" Visibility="Collapsed">
+                            <Button.Content>
+                                <TextBlock Text="斷面規格excel轉inp" />
+                            </Button.Content>
+                        </Button>
                     </StackPanel>
                 </Grid>
             </Border>
         </Grid>
         <Grid Grid.Column="1">
-            <Border CornerRadius="15"
+            <Border CornerRadius="0"
                     Background="White"
                     Margin="5,0,0,0">
                 <Grid>

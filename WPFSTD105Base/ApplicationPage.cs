@@ -165,13 +165,21 @@ namespace WPFSTD105
         /// </summary>
         Home,
         /// <summary>
-        /// 斷面規格頁面
+        /// 原斷面規格頁面
         /// </summary>
         SectionSpecificationSetting,
+        /// <summary>
+        /// 斷面規格目錄
+        /// </summary>
+        SectionSpecificationMenu,
         /// <summary>
         /// 語言設定頁面
         /// </summary>
         LanguageSetting,
+        /// <summary>
+        /// 語言設定頁面
+        /// </summary>
+        SectionSpecificationExcel2Inp,
     }
     /// <summary>
     /// 彈跳視窗

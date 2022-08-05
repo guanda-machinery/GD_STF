@@ -577,6 +577,12 @@
     <Compile Include="Office\Pages\ObSettingsPage_Office.xaml.cs">
       <DependentUpon>ObSettingsPage_Office.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Office\Pages\SectionSpecExcel2Inp.xaml.cs">
+      <DependentUpon>SectionSpecExcel2Inp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Office\Pages\SectionSpecificationMenu.xaml.cs">
+      <DependentUpon>SectionSpecificationMenu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Office\Pages\ParametersSettings_Office_LanguageVM.xaml.cs">
       <DependentUpon>ParametersSettings_Office_LanguageVM.xaml</DependentUpon>
     </Compile>
@@ -975,6 +981,14 @@
     <Page Include="Office\Pages\ObSettingsPage_Office.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Office\Pages\SectionSpecExcel2Inp.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Office\Pages\SectionSpecificationMenu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Office\Pages\ParametersSettings_Office_LanguageVM.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -1458,9 +1472,56 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Content Include="Logo\Joystick.svg" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    <None Include="Profile\BT.inp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Profile\C.inp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Profile\CT.inp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Profile\FB.inp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Profile\GRATING.inp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Profile\H.inp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Profile\HNUT.inp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Profile\I.inp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Profile\LB.inp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Profile\NUT.inp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Profile\PIPE.inp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Profile\RB.inp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Profile\SA.inp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Profile\T.inp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Profile\TUBE.inp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Profile\TURN_BUCKLE.inp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Profile\WELD.inp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="zh-TW\DevExpress.Xpf.Grid.v21.1.Core.resources.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

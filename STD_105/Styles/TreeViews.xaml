@@ -244,7 +244,7 @@
     <Style x:Key="treeViewItem_STD" TargetType="{x:Type TreeViewItem}">
         <Setter Property="HorizontalContentAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
         <Setter Property="VerticalContentAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-        <Setter Property="FontSize" Value="{Binding SubTitleFontSize, Source={x:Static SofSetting:SofSetting.Default}}" />
+        <Setter Property="FontSize" Value="14" />
         <Setter Property="Foreground" Value="{StaticResource solidclr_Gray}" />
         <Setter Property="FocusVisualStyle" Value="{StaticResource TreeViewItemFocusVisual}" />
         <Setter Property="Template">
@@ -275,7 +275,7 @@
                             BorderThickness="2">
                             <ContentPresenter
                                 x:Name="PART_Header"
-                                Margin="10,5"
+                                Margin="0"
                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                 ContentSource="Header"
