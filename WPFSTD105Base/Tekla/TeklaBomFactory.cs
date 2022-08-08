@@ -264,10 +264,12 @@ namespace WPFSTD105.Tekla
             }
         }
         private string _Status = "轉換 Tekla Structures 物件中 ...";
+
         /// <summary>
         /// 載入報表物件
         /// </summary>
         /// <param name="vm">為 SplashScreenManager 指定數據和選項的視圖模型。</param>
+        /// <param name="KeyValuePairs"></param>
         /// <returns>載入成功回傳true，失敗則 false。</returns>
         public bool Load(DXSplashScreenViewModel vm = null)
         {
@@ -345,10 +347,11 @@ namespace WPFSTD105.Tekla
                                     SteelAssemblies.Add(Father);//加入物件
                                 }
                             }
-                            else
+                            else if (objType == typeof(SteelPart))
                             {
                                 ((ISecondary)obj).Father.Add(Father.ID[Father.ID.Count - 1]);//加入主件 ID
-                                string key = ((IProfile)obj).Profile; //字典 key 
+                                string profile = ((IProfile)obj).Profile; //字典 key 
+                                string key = ((SteelPart)obj).Number; //字典 key 
                                 if (KeyValuePairs.ContainsKey(key))//如果找到相同的 key
                                 {
                                     int index = 0;//索引位置
@@ -359,10 +362,11 @@ namespace WPFSTD105.Tekla
 
                                         //判斷需要加入的斷面規格類型
                                         if (part.Type == OBJETC_TYPE.BH ||
-                                            part.Type == OBJETC_TYPE.BOX ||
-                                            part.Type == OBJETC_TYPE.CH ||
                                             part.Type == OBJETC_TYPE.RH ||
-                                            part.Type == OBJETC_TYPE.L)
+                                            part.Type == OBJETC_TYPE.CH ||
+                                            part.Type == OBJETC_TYPE.BOX
+                                            //|| part.Type == OBJETC_TYPE.L
+                                            )
                                         {
                                             if (Profile[part.Type].FindIndex(el => el.Profile == part.Profile) == -1)//如果模型找不到相同的斷面規格
                                             {
@@ -383,6 +387,48 @@ namespace WPFSTD105.Tekla
                                     {
                                         index = KeyValuePairs[key].FindIndex(el => el.GetType() == typeof(SteelBolts) && ((SteelBolts)el).Profile == ((SteelBolts)obj).Profile);//找出字典檔內物件
                                     }
+                                    if (index == -1) //如果找不到物件
+                                    {
+                                        KeyValuePairs[key].Add(obj);//將物件加入字典
+                                    }
+                                    else
+                                    {
+                                        if (KeyValuePairs[key][index].GetHashCode() == obj.GetHashCode())//使用雜湊確認合併物件
+                                        {
+                                            ((IMerge)KeyValuePairs[key][index]).Merge(obj);//合併物件
+                                        }
+                                        else
+                                        {
+                                            //MessageBox.Show($"雜湊不相符，在資料行 {number} 。\n請檢查報表是否有相同物件，\n但長度 or 寬度 or 高度 or 單重 or 單面積 or 圖紙名稱不相符。", "錯誤", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                                            WinUIMessageBox.Show(null,
+                                                $"雜湊不相符，在資料行 {number} 。\n請檢查報表是否有相同物件，\n但長度、寬度、高度、單重、單面積、圖紙名稱不相符",
+                                                "錯誤",
+                                                MessageBoxButton.OK,
+                                                MessageBoxImage.Error,
+                                                MessageBoxResult.None,
+                                                MessageBoxOptions.None,
+                                                FloatingMode.Popup);
+                                            return false;
+                                        }
+                                    }
+                                }
+                                else//如果找不到相同的 key
+                                {
+                                    KeyValuePairs.Add(key, new ObservableCollection<object> { obj });
+                                    if (obj.GetType() == typeof(SteelPart))//只存入 SteelPart 的 Profile 
+                                        ProfileList.Add(key);
+                                }
+                            }
+                            else if (objType == typeof(SteelBolts))
+                            {
+                                ((ISecondary)obj).Father.Add(Father.ID[Father.ID.Count - 1]);//加入主件 ID
+                                string profile = ((IProfile)obj).Profile; //字典 key 
+                                string key = ((SteelBolts)obj).Profile; //字典 key 
+                                if (KeyValuePairs.ContainsKey(key))//如果找到相同的 key
+                                {
+                                    int index = 0;//索引位置
+                                    index = KeyValuePairs[key].FindIndex(el => el.GetType() == typeof(SteelBolts) && ((SteelBolts)el).Profile == ((SteelBolts)obj).Profile);//找出字典檔內物件
+                                   
                                     if (index == -1) //如果找不到物件
                                     {
                                         KeyValuePairs[key].Add(obj);//將物件加入字典

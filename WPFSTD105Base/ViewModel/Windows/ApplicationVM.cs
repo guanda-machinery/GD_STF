@@ -581,6 +581,19 @@ namespace WPFSTD105
         /// <returns>創建成功回傳 true，失敗則false</returns>
         public static bool CreateModel(string savePath)
         {
+            // 2022/08/05 呂宗霖 請選擇專案路徑
+            if (string.IsNullOrEmpty(savePath))
+            {
+                WinUIMessageBox.Show(null,
+               $"專案路徑不可空白，請選擇專案路徑",
+               "通知",
+               MessageBoxButton.OK,
+               MessageBoxImage.Exclamation,
+               MessageBoxResult.None,
+               MessageBoxOptions.None,
+               FloatingMode.Popup);
+                return false;
+            }
             //FolderBrowserDialogViewModel vm =value;
             Properties.SofSetting.Default.LoadPath = savePath; //記住用戶載入的路徑
             Properties.SofSetting.Default.Save();//存取在設定檔內
