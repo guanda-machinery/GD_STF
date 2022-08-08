@@ -28,6 +28,8 @@ using DevExpress.XtraSpreadsheet.Commands.Internal;
 using System.Threading;
 using System.Drawing;
 using System.IO;
+using DevExpress.Xpf.WindowsUI;
+using DevExpress.Xpf.Core;
 
 namespace STD_105.Office
 {
@@ -74,6 +76,18 @@ namespace STD_105.Office
                 else
                 {
                     ReadFile readFile = ser.ReadPartModel(data.DataName);
+                    if (readFile == null)
+                    {
+                        WinUIMessageBox.Show(null,
+                            $"專案Dev_Part資料夾讀取失敗",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Popup);
+                        return;
+                    }
                     readFile.DoWork();
                     readFile.AddToScene(graphWin.model);
                 }

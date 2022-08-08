@@ -306,6 +306,11 @@ namespace WPFSTD105.ViewModel
                     _ProfileType = value;
                     List<SteelAttr> list = new List<SteelAttr>();
                     OBJETC_TYPE TYPE = (OBJETC_TYPE)value;
+
+                    if (!File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{TYPE}.inp"))
+                    {
+                        File.Copy($@"Profile\{TYPE}.inp", $@"{ApplicationVM.DirectoryPorfile()}\{TYPE}.inp");//複製 BH 斷面規格到模型內
+                    }
 #if DEBUG
                     log4net.LogManager.GetLogger("載入斷面規格").Debug(TYPE.ToString());
 #endif

@@ -355,8 +355,16 @@ namespace WPFSTD105
         /// </remarks>
         public ReadFile ReadModel(string path, string dataName)
         {
-            ReadFile result = new ReadFile($@"{path}\{dataName}.dm", new FileSerializerExt(devDept.Serialization.contentType.GeometryAndTessellation));
-            return result;
+            try
+            {
+                ReadFile result = new ReadFile($@"{path}\{dataName}.dm", new FileSerializerExt(devDept.Serialization.contentType.GeometryAndTessellation));
+                return result;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            
         }
         /// <summary>
         ///  儲存序列化檔案資料

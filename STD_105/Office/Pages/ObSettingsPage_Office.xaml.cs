@@ -704,7 +704,7 @@ namespace STD_105.Office
                             //模擬用戶實際選擇編輯
                             ViewModel.Select3DItem.Add(sele3D);
                             ViewModel.Select2DItem.Add(sele2D);
-
+                            
                             model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);//先取得主件資訊
                             SteelAttr steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
 
@@ -2157,6 +2157,18 @@ namespace STD_105.Office
             if (ncTemp == null) //NC 檔案是空值
             {
                 ReadFile readFile = ser.ReadPartModel(data.DataName); //讀取檔案內容
+                if (readFile == null)
+                {
+                    WinUIMessageBox.Show(null,
+                        $"專案Dev_Part資料夾讀取失敗",
+                        "通知",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                        FloatingMode.Popup);
+                    return;
+                }
                 readFile.DoWork();//開始工作
                 readFile.AddToScene(model);//將讀取完的檔案放入到模型
                 if (model.Entities[model.Entities.Count - 1].EntityData is null)
@@ -2187,7 +2199,7 @@ namespace STD_105.Office
                         Add2DHole(bolts3DBlock, true);//加入孔位不刷新 2d 視圖
 
 
-                        
+
                     }
                 }
             }
