@@ -16,7 +16,9 @@ namespace STD_105.Office
         public OfficeVM_ParaSettingFuncList()
         {
             ParameterSettingsCommand = ParameterSettings();
+            SectionSpecMenuCommand = SectionSpecMenu();
             //LanguageSettingsCommand = LanguageSettings();
+            SectionSpecExcel2InpCommand = SectionSpecExcel2Inp();
         }
 
         /// <summary>
@@ -28,6 +30,30 @@ namespace STD_105.Office
             return new WPFBase.RelayCommand(() =>
             {
                 OfficeViewModel.ParaSettingCurrentPage = ParameterSettingPage.SectionSpecificationSetting;
+            });
+        }
+
+        /// <summary>
+        /// 20220725 張燕華 斷面規格目錄
+        /// </summary>
+        public ICommand SectionSpecMenuCommand { get; set; }
+        public WPFBase.RelayCommand SectionSpecMenu()
+        {
+            return new WPFBase.RelayCommand(() =>
+            {
+                OfficeViewModel.ParaSettingCurrentPage = ParameterSettingPage.SectionSpecificationMenu;
+            });
+        }
+
+        /// <summary>
+        /// 20220727 張燕華 斷面規格Excel轉Inp
+        /// </summary>
+        public ICommand SectionSpecExcel2InpCommand { get; set; }
+        public WPFBase.RelayCommand SectionSpecExcel2Inp()
+        {
+            return new WPFBase.RelayCommand(() =>
+            {
+                OfficeViewModel.ParaSettingCurrentPage = ParameterSettingPage.SectionSpecificationExcel2Inp;
             });
         }
     }

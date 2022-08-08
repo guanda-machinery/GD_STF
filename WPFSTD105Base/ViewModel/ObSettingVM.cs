@@ -311,9 +311,12 @@ namespace WPFSTD105.ViewModel
 #endif
                     switch (TYPE)
                     {
+                        case OBJETC_TYPE.TUBE://20220802 張燕華 新增斷面規格
+                        case OBJETC_TYPE.H: //20220802 張燕華 新增斷面規格
+                        case OBJETC_TYPE.LB: //20220802 張燕華 新增斷面規格
                         case OBJETC_TYPE.RH:
                         case OBJETC_TYPE.CH:
-                        case OBJETC_TYPE.L:
+                        //case OBJETC_TYPE.L: //20220805 張燕華 新增斷面規格 - 已不在介面上顯示此規格
                         case OBJETC_TYPE.BOX:
                         case OBJETC_TYPE.BH:
                             ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{ (TYPE).ToString()}.inp");
@@ -810,11 +813,12 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public void AddNode(DataCorrespond data)
         {
-            //TODO : 
-            if (data.Type != OBJETC_TYPE.RH)
-            {
-                return;
-            }
+            //20220805 張燕華 新增斷面規格 - 因斷面規格已經在data中有定義, 故略過這層判斷直接執行以下程式
+            //if (data.Type != OBJETC_TYPE.RH)
+            //{
+            //    return;
+            //}
+
             string level1Key = data.Type.GetType().GetMember(data.Type.ToString())[0].GetCustomAttribute<DescriptionAttribute>().Description; //第一層要設置的 key 值
             string level2Key = data.Profile; //第二層要設置的 key 值
             if (!level1.ContainsKey(level1Key))

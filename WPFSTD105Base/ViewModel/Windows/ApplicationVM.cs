@@ -635,6 +635,24 @@ namespace WPFSTD105
                 File.Copy($@"Profile\L.inp", $@"{ApplicationVM.DirectoryPorfile()}\L.inp");//複製 L 斷面規格到模型內
                 File.Copy($@"Profile\CH.inp", $@"{ApplicationVM.DirectoryPorfile()}\CH.inp");//複製 CH 斷面規格到模型內
                 File.Copy($@"Profile\BOX.inp", $@"{ApplicationVM.DirectoryPorfile()}\BOX.inp");//複製 BOX 斷面規格到模型內
+                //20220729 張燕華 斷面規格目錄-增加斷面規格
+                File.Copy($@"Profile\TUBE.inp", $@"{ApplicationVM.DirectoryPorfile()}\TUBE.inp");//複製 RH 斷面規格到模型內
+                File.Copy($@"Profile\H.inp", $@"{ApplicationVM.DirectoryPorfile()}\H.inp");//複製 RH 斷面規格到模型內
+                File.Copy($@"Profile\I.inp", $@"{ApplicationVM.DirectoryPorfile()}\I.inp");//複製 RH 斷面規格到模型內
+                File.Copy($@"Profile\LB.inp", $@"{ApplicationVM.DirectoryPorfile()}\LB.inp");//複製 RH 斷面規格到模型內
+                File.Copy($@"Profile\BT.inp", $@"{ApplicationVM.DirectoryPorfile()}\BT.inp");//複製 RH 斷面規格到模型內
+                File.Copy($@"Profile\CT.inp", $@"{ApplicationVM.DirectoryPorfile()}\CT.inp");//複製 RH 斷面規格到模型內
+                File.Copy($@"Profile\T.inp", $@"{ApplicationVM.DirectoryPorfile()}\T.inp");//複製 RH 斷面規格到模型內
+                File.Copy($@"Profile\C.inp", $@"{ApplicationVM.DirectoryPorfile()}\C.inp");//複製 RH 斷面規格到模型內
+                File.Copy($@"Profile\PIPE.inp", $@"{ApplicationVM.DirectoryPorfile()}\PIPE.inp");//複製 RH 斷面規格到模型內
+                File.Copy($@"Profile\TURN_BUCKLE.inp", $@"{ApplicationVM.DirectoryPorfile()}\TURN_BUCKLE.inp");//複製 RH 斷面規格到模型內
+                File.Copy($@"Profile\WELD.inp", $@"{ApplicationVM.DirectoryPorfile()}\WELD.inp");//複製 RH 斷面規格到模型內
+                File.Copy($@"Profile\SA.inp", $@"{ApplicationVM.DirectoryPorfile()}\SA.inp");//複製 RH 斷面規格到模型內
+                File.Copy($@"Profile\GRATING.inp", $@"{ApplicationVM.DirectoryPorfile()}\GRATING.inp");//複製 RH 斷面規格到模型內
+                File.Copy($@"Profile\FB.inp", $@"{ApplicationVM.DirectoryPorfile()}\FB.inp");//複製 RH 斷面規格到模型內
+                File.Copy($@"Profile\RB.inp", $@"{ApplicationVM.DirectoryPorfile()}\RB.inp");//複製 RH 斷面規格到模型內
+                File.Copy($@"Profile\HNUT.inp", $@"{ApplicationVM.DirectoryPorfile()}\HNUT.inp");//複製 RH 斷面規格到模型內
+                File.Copy($@"Profile\NUT.inp", $@"{ApplicationVM.DirectoryPorfile()}\NUT.inp");//複製 RH 斷面規格到模型內
                 File.Copy($@"Mater.lis", $@"{ApplicationVM.FileMaterial()}");//複製材質到模型內
                 STDSerialization ser = new STDSerialization();
                 CommonViewModel.ProjectProperty.Create = DateTime.Now;
