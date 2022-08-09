@@ -52,6 +52,14 @@ namespace WPFSTD105.Tekla
         /// </summary>
         private AK uAK { get; set; }
         /// <summary>
+        /// NC檔讀取資訊
+        /// </summary>
+        public ObservableCollection<DataCorrespond> DataCorrespond { get; set; }
+        /// <summary>
+        /// NC檔讀取資訊
+        /// </summary>
+        public NcTempList ncTemps { get; set; }
+        /// <summary>
         /// 加入鋼構訊息
         /// </summary>
         /// <param name="steel"></param>
@@ -391,6 +399,8 @@ namespace WPFSTD105.Tekla
                 }
                 ser.SetDataCorrespond(DataCorrespond);
                 ser.SetNcTempList(ncTemps);
+                this.DataCorrespond = DataCorrespond;
+                this.ncTemps = ncTemps;
                 return true;
             }
             catch (Exception ex)
@@ -407,6 +417,12 @@ namespace WPFSTD105.Tekla
                 return false;
             }
         }
+
+        //public SaveNCFile(bool save) 
+        //{
+        //        
+        //}
+
         /// <summary>
         /// nc1 標示區塊
         /// </summary>

@@ -18,6 +18,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using WPFSTD105.Attribute;
 using WPFSTD105.Tekla;
 using static WPFSTD105.ViewLocator;
 
@@ -184,7 +185,8 @@ namespace WPFSTD105
                 }
                 ScreenManager.ViewModel.Status = "複製文件到 Model 中 ...";
                 Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
-                if (BomPath != string.Empty)//如果有選擇報表路徑
+                // 只跑BOM
+                if (BomPath != string.Empty && string.IsNullOrEmpty( NcPath))//如果有選擇報表路徑
                 {
                     if (File.Exists(ApplicationVM.FileTeklaBom())) //檔案存在
                     {
@@ -195,7 +197,7 @@ namespace WPFSTD105
                     CommonViewModel.ProjectProperty.Revise = DateTime.Now;//專案變動所以修改日期
 
                     TeklaBomFactory teklaHtemlFactory = new TeklaBomFactory($@"{ ApplicationVM.FileTeklaBom()}"); //報表讀取器
-                    bool loadBomResult = teklaHtemlFactory.Load(ScreenManager.ViewModel);//載入報表物件結果
+                    bool loadBomResult = teklaHtemlFactory.Load( ScreenManager.ViewModel);//載入報表物件結果
                     if (loadBomResult) //載入成功
                     {
                         CommonViewModel.ProjectProperty.IsBomLoad = true;//改變報表載入參數
@@ -234,7 +236,8 @@ namespace WPFSTD105
                     CommonViewModel.ProjectProperty.BomLoad = DateTime.Now;//bom載入時間
                     CommonViewModel.ProjectProperty.Revise = DateTime.Now;//專案變動所以修改日期
                 }
-                if (NcPath != string.Empty) //如果有選擇nc路徑
+                // 只跑NC1
+                if (NcPath != string.Empty && string.IsNullOrEmpty( BomPath)) //如果有選擇nc路徑
                 {
                     DeleteFolder(ApplicationVM.DirectoryNc());//刪除既有nc檔案
                     CopyFolder(NcPath);//複製nc路徑的nc1檔案
@@ -248,6 +251,81 @@ namespace WPFSTD105
                         CommonViewModel.ProjectProperty.IsNcLoad = true;//改變報表載入參數
                     }
                 }
+
+                if (!string.IsNullOrEmpty(BomPath) && !string.IsNullOrEmpty(NcPath))
+                {
+                    #region BOM表
+                   if (File.Exists(ApplicationVM.FileTeklaBom())) //檔案存在
+                   {
+                       File.Delete(ApplicationVM.FileTeklaBom());//刪除檔案
+                   }
+                   File.Copy(BomPath, ApplicationVM.FileTeklaBom());//複製報表到模型
+                    CommonViewModel.ProjectProperty.BomLoad = DateTime.Now; //bom載入時間
+                    CommonViewModel.ProjectProperty.Revise = DateTime.Now;//專案變動所以修改日期
+
+                    TeklaBomFactory teklaHtemlFactory = new TeklaBomFactory($@"{ApplicationVM.FileTeklaBom()}"); //報表讀取器 
+                    bool loadBomResult = teklaHtemlFactory.Load(ScreenManager.ViewModel);//載入報表物件結果
+                    #endregion
+
+                    #region NC檔
+                    DeleteFolder(ApplicationVM.DirectoryNc());//刪除既有nc檔案
+                    CopyFolder(NcPath);//複製nc路徑的nc1檔案
+
+                    TeklaNcFactory factory = new TeklaNcFactory();//nc1 讀取器
+                    bool loadNcResult = factory.Load(ScreenManager.ViewModel); //載入NC檔案
+
+                    // 皆讀取成功
+                    if (loadBomResult && loadNcResult)
+                    {
+                        foreach (var nc in factory.DataCorrespond)
+                        {
+                            // 零件編號
+                            string number = nc.Number;
+                            // 斷面規格
+                            string profile = nc.Profile;
+                            // 長度
+                            SteelAttr sa = factory.ncTemps.FirstOrDefault(x => x.SteelAttr.PartNumber == number).SteelAttr;
+                            double length = ((sa != null) ? sa.Length : 0);
+                            // 材質
+                            string material = ((sa != null) ? sa.Material : "");
+                            // 取得BOM表中 對應NC檔中零件編號的資料
+                            foreach (var keyValuePair in teklaHtemlFactory.KeyValuePairs.Where(x => x.Key == number))
+                            {
+                                foreach (var kp in keyValuePair.Value.Where(x => ((SteelPart)x).Profile != profile))
+                                {
+                                    SteelPart sp = (SteelPart)kp;
+                                    //使用者選擇匯入資料來源
+                                    MessageBoxResult saveAsResult = MessageBox.Show(
+                                        $"斷面規格相異，請選擇正確資料為何\nNC1(Yes):{profile}\nBOM(No):{sp.Profile}",
+                                        "通知",
+                                        MessageBoxButton.YesNo,
+                                        MessageBoxImage.Information,
+                                        MessageBoxResult.None,
+                                        MessageBoxOptions.ServiceNotification);
+                                    if (saveAsResult == MessageBoxResult.Yes) //如果要備份檔案
+                                    {
+                                        sp.Profile = profile;
+                                    }
+                                    else
+                                    {
+                                        nc.Profile = sp.Profile;
+                                    }
+                                    //foreach (var kp in keyValuePair.Value.Where(x => ((SteelPart)x).Length != length))
+                                    //{
+                                    //    //使用者選擇匯入資料來源
+                                    //}
+                                    //foreach (var kp in keyValuePair.Value.Where(x => ((SteelPart)x).Material != material))
+                                    //{
+                                    //    //使用者選擇匯入資料來源
+                                    //}
+                                    //SteelPart sp = (SteelPart)keyValuePair.Value;
+                                }
+                            }
+                        }
+                    }
+                    #endregion
+                }
+
                 CommonViewModel.ProjectProperty.BomProperties = BomProperties; //改變ioc內部報表屬性參數
                 WriteProjectProperty(CommonViewModel.ProjectProperty);//改變目前vm的參數
                 ser.SetProjectProperty(CommonViewModel.ProjectProperty);
