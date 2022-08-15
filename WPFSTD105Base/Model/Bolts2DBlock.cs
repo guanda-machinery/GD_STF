@@ -238,6 +238,7 @@ namespace WPFSTD105.Model
         /// 給定三點ABC
         /// 計算AB.BC.AC長
         /// (AX*AB+BX*BC+CX*AC)/(AB+BC+AC)=X座標
+        /// 小葉有寫圓心計算公式 若不對再參考CircleCenter
         /// </summary>
         /// <returns></returns>
         public Point3D CenterCalculator(FACE face, Point3D a, Point3D b, Point3D c)
