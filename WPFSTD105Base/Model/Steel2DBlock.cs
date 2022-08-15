@@ -358,7 +358,9 @@ namespace WPFSTD105.Model
                     Line top = new Line(solidPortion.Vertices[item.V1], solidPortion.Vertices[item.V2]) { Color = Color.Yellow, ColorMethod = colorMethodType.byEntity };
                     //複製線段
                     Line from = (Line)top.Clone();
+                    //from.Color = System.Drawing.Color.Blue;
                     Line back = (Line)top.Clone();
+                    //back.Color = System.Drawing.Color.Gray;
                     //旋轉線段到正確位置
                     from.Rotate(Math.PI / -2, Vector3D.AxisX);
                     back.Rotate(Math.PI / 2, Vector3D.AxisX);
@@ -381,16 +383,20 @@ namespace WPFSTD105.Model
                 }
             }
             //找尋虛線
+            int recursiveTime = 0;
             switch (SteelAttr.Type)
             {
                 case OBJETC_TYPE.BH:
                 case OBJETC_TYPE.RH:
-                    topList = ModifyLine(topList, SteelAttr.W / 2 + SteelAttr.t1 / 2);
+                    recursiveTime = 0;
+                    topList = ModifyLine(topList, SteelAttr.W / 2 + SteelAttr.t1 / 2,ref recursiveTime);
                     break;
+                case OBJETC_TYPE.TUBE:
                 case OBJETC_TYPE.BOX:
                 case OBJETC_TYPE.L:
                 case OBJETC_TYPE.CH:
-                    topList = ModifyLine(topList, SteelAttr.W);
+                    recursiveTime = 0;
+                    topList = ModifyLine(topList, SteelAttr.W,ref recursiveTime);
                     break;
                 default:
                     break;
@@ -400,8 +406,10 @@ namespace WPFSTD105.Model
             {
                 correctionY = SteelAttr.W - SteelAttr.t1 + MoveBack;
             }
-            backList = ModifyLine(backList, SteelAttr.H, correctionY);
-            fromList = ModifyLine(fromList, 0);
+            recursiveTime = 0;
+            backList = ModifyLine(backList, SteelAttr.H,ref recursiveTime, correctionY);
+            recursiveTime = 0;
+            fromList = ModifyLine(fromList, 0,ref recursiveTime);
             //加入到圖塊內
             this.Entities.AddRange(topList);
             this.Entities.AddRange(backList);
@@ -535,18 +543,27 @@ namespace WPFSTD105.Model
 
         /// <summary>
         /// 修改看不到的線段為虛線
+        /// 2022/08/09 呂宗霖 因遞迴造成StackOverFlow故限制20次(StackOverFlow無法利用try抓到錯誤)
         /// </summary>
         /// <param name="lines">線段集合</param>
         /// <param name="minZ">最小 Z 軸範圍</param>
         /// <param name="correctionY">補正 Y 軸</param>
-        private List<Line> ModifyLine(List<Line> lines, double minZ, double correctionY = 0)
+        private List<Line> ModifyLine(List<Line> lines, double minZ,ref int recursiveTime, double correctionY = 0)
         {
             try
             {
+                int outTime = 20;
                 var result = lines.Where(el => el.StartPoint.Z >= minZ && el.EndPoint.Z >= minZ)?.ToList(); //在指定 Z 軸範圍內的線段
-                if (result == null)
+                if (result == null || recursiveTime> outTime)
                 {
-                    return new List<Line>();
+                    if (result == null)
+                    {
+                        return new List<Line>();
+                    }
+                    else {
+                        return result;
+                    }
+                    
                 }
                 var noSuitable = lines.Where(el => !result.Contains(el)).ToList(); //在不再指定 Z 軸範圍內的線段(可能要改變的線段)
                 double maxX = result.Max(el => el.EndPoint.X);//在指定 Z 軸範圍內的線段最大 X 座標
@@ -559,7 +576,8 @@ namespace WPFSTD105.Model
                         || (noSuitable[i].StartPoint.X < minX || noSuitable[i].EndPoint.X > maxX && SteelAttr.Type != OBJETC_TYPE.L))
                     {
                         minZ = noSuitable[i].StartPoint.Z;
-                        return ModifyLine(lines, minZ);
+                        recursiveTime++;
+                        return ModifyLine(lines, minZ,ref recursiveTime);
                     }
                     else
                     {

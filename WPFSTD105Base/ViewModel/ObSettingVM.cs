@@ -525,6 +525,7 @@ namespace WPFSTD105.ViewModel
                             case OBJETC_TYPE.RH:
                                 Boltsbuffer.Z = Steelbuffer.W * 0.5 - Steelbuffer.t1 * 0.5;
                                 break;
+                            case OBJETC_TYPE.TUBE:
                             case OBJETC_TYPE.BOX:
                             case OBJETC_TYPE.CH:
                                 Boltsbuffer.Z = Steelbuffer.W - Steelbuffer.t1;
