@@ -102,6 +102,7 @@ namespace WPFSTD105.ViewModel
             DeleteDrillBrandsCommand = DeleteDrillBrands();
             initializationInsertionData();//20220801 張燕華 因為不同素材具有不同規格屬性, 若無參數則預設為H型鋼規格屬性
 
+            initializationProcessingZoneData();//20220818 張燕華 加工區域設定 - 檢查設定值檔案存在, 若否則新增預設設定值
             ShowProcessingZoneCommand = ShowProcessingZone();//20220810 張燕華 加工區域設定 - 顯示斷面規格設定圖片
             ShowProcessingSettingValueCommand = ShowProcessingSettingValue();//20220811 張燕華 加工區域設定 - 加工方式
             NewProcessingZoneCommand = NewProcessingZone();//20220811 張燕華 加工區域設定 - 新增加工區域設定數值
@@ -407,6 +408,59 @@ namespace WPFSTD105.ViewModel
             catch (Exception)
             {
                 //Thread.CurrentThread.Abort();
+            }
+        }
+        /// <summary>
+        /// 初始化切割線設定 20220816 張燕華
+        /// </summary>
+        private void initializationProcessingZoneData()
+        {
+            //檢查使用者專案中是否已經存在設定檔案H_DRILLING_processingzone.lis, BOX_DRILLING_processingzone.lis, CH_DRILLING_processingzone.lis
+            STDSerialization ser_file = new STDSerialization();
+            bool[] checkSectionTypeProcessingDataFile = ser_file.CheckSectionTypeProcessingDataFile();
+
+            if (checkSectionTypeProcessingDataFile[0] == false)//若設定值檔案H_DRILLING_processingzone.lis不存在
+            {
+                //新增設定值檔案
+                STDSerialization ser = new STDSerialization();
+                ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
+                listSectionData.Add(new SectionTypeProcessingData()
+                {
+                    SectionCategoryType = "H",
+                    ProcessingBehavior = 0,
+                    A = 25,
+                    B = 15,
+                    C = 5
+                });
+                ser.SetSectionTypeProcessingData(listSectionData);//加入到H型鋼的斷面加工資料檔案
+            }
+            if (checkSectionTypeProcessingDataFile[1] == false)//若設定值檔案BOX_DRILLING_processingzone.lis不存在
+            {
+                //新增設定值檔案
+                STDSerialization ser = new STDSerialization();
+                ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
+                listSectionData.Add(new SectionTypeProcessingData()
+                {
+                    SectionCategoryType = "BOX",
+                    ProcessingBehavior = 0,
+                    A = 15,
+                    B = 15
+                });
+                ser.SetSectionTypeProcessingData(listSectionData);//加入到H型鋼的斷面加工資料檔案
+            }
+            if (checkSectionTypeProcessingDataFile[2] == false)//若設定值檔案CH_DRILLING_processingzone.lis不存在
+            {
+                //新增設定值檔案
+                STDSerialization ser = new STDSerialization();
+                ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
+                listSectionData.Add(new SectionTypeProcessingData()
+                {
+                    SectionCategoryType = "CH",
+                    ProcessingBehavior = 0,
+                    A = 15,
+                    B = 15
+                });
+                ser.SetSectionTypeProcessingData(listSectionData);//加入到H型鋼的斷面加工資料檔案
             }
         }
         #endregion
@@ -3291,6 +3345,27 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         private void initializationSplitLineSettingData()
         {
+            //檢查使用者專案中是否已經存在設定檔案SplitLineSetting.lis
+            STDSerialization ser_file = new STDSerialization();
+            bool checkSplitLineDataFile = ser_file.CheckSplitLineDataFile();
+
+            if (checkSplitLineDataFile == false)//若設定值檔案不存在
+            {
+                //新增設定值檔案
+                STDSerialization ser_AddFile = new STDSerialization(); //序列化處理器
+                ObservableCollection<SplitLineSettingClass> listSplitLineData = new ObservableCollection<SplitLineSettingClass>();
+                listSplitLineData.Add(new SplitLineSettingClass()
+                {
+                    A = "1/5",
+                    B = "4/5",
+                    C = "1/5",
+                    D = "4/5",
+                    Thickness = 3,
+                    RemainingLength = 500.00
+                });
+                ser_AddFile.SetSplitLineData(listSplitLineData);
+            }
+
             //載入所有combobox的item source
             SplitLineSettingClass SplitLineComboBox = new SplitLineSettingClass();
             cbb_A_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_A);
@@ -3301,7 +3376,7 @@ namespace WPFSTD105.ViewModel
             //讀入SplitLineSetting.lis中切割線設定值
             STDSerialization ser = new STDSerialization(); //序列化處理器
             ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();//備份當前加工區域數值
-            
+
             PointA_Value = ReadSplitLineSettingData[0].A;
             PointB_Value = ReadSplitLineSettingData[0].B;
             PointC_Value = ReadSplitLineSettingData[0].C;
@@ -3322,7 +3397,6 @@ namespace WPFSTD105.ViewModel
             //設定當前復原設定值陣列最後一個元素的index
             CurrentIndex_BackupSplitLineSettingData = BackupSplitLineSettingData.Count - 1;
         }
-
         /// <summary>
         /// 儲存到資料格
         /// </summary>

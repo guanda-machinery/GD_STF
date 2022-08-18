@@ -398,6 +398,13 @@ namespace WPFSTD105
             return GZipDeserialize<ObservableCollection<SectionTypeProcessingData>>(ApplicationVM.FileProcessingZone(SectionType_ProcessingBehavior));
         }
         /// <summary>
+        /// 型鋼加工區域設定 - 檢查設定值檔案是否存在 20220818 張燕華
+        /// </summary>
+        public bool[] CheckSectionTypeProcessingDataFile()
+        {
+            return ApplicationVM.CheckFileSectionTypeProcessingData();
+        }
+        /// <summary>
         ///  切割線設定 - 儲存序列化檔案資料 20220816 張燕華
         /// </summary>
         /// <param name="splitLineData"></param>
@@ -411,6 +418,13 @@ namespace WPFSTD105
         public ObservableCollection<SplitLineSettingClass> GetSplitLineData()
         {
             return GZipDeserialize<ObservableCollection<SplitLineSettingClass>>(ApplicationVM.FileSplitLine());
+        }
+        /// <summary>
+        ///  切割線設定 - 檢查設定值檔案是否存在 20220818 張燕華
+        /// </summary>
+        public bool CheckSplitLineDataFile()
+        {
+            return ApplicationVM.CheckFileSplitLine();
         }
         /// <summary>
         ///  儲存序列化檔案資料

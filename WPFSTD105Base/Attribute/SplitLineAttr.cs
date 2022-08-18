@@ -42,24 +42,24 @@ namespace SplitLineSettingData
                 case SplitLineCombobox.cbb_A:
                     SL_ItemSource.Add("1/5");
                     SL_ItemSource.Add("2/5");
-                    SL_ItemSource.Add("3/5");
-                    SL_ItemSource.Add("4/5");
+                    //SL_ItemSource.Add("3/5");
+                    //SL_ItemSource.Add("4/5");
                     return SL_ItemSource;
                 case SplitLineCombobox.cbb_B:
-                    SL_ItemSource.Add("1/5");
-                    SL_ItemSource.Add("2/5");
+                    //SL_ItemSource.Add("1/5");
+                    //SL_ItemSource.Add("2/5");
                     SL_ItemSource.Add("3/5");
                     SL_ItemSource.Add("4/5");
                     return SL_ItemSource;
                 case SplitLineCombobox.cbb_C:
                     SL_ItemSource.Add("1/5");
                     SL_ItemSource.Add("2/5");
-                    SL_ItemSource.Add("3/5");
-                    SL_ItemSource.Add("4/5");
+                    //SL_ItemSource.Add("3/5");
+                    //SL_ItemSource.Add("4/5");
                     return SL_ItemSource;
                 case SplitLineCombobox.cbb_D:
-                    SL_ItemSource.Add("1/5");
-                    SL_ItemSource.Add("2/5");
+                    //SL_ItemSource.Add("1/5");
+                    //SL_ItemSource.Add("2/5");
                     SL_ItemSource.Add("3/5");
                     SL_ItemSource.Add("4/5");
                     return SL_ItemSource;
