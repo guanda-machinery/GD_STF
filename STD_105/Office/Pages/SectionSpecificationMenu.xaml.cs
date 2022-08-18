@@ -12,10 +12,5 @@ namespace STD_105.Office
         {
             InitializeComponent();
         }
-
-        private void tbxFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-
-        }
     }
 }

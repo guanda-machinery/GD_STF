@@ -708,6 +708,30 @@ namespace WPFSTD105
 
             throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }
+        ///// <summary>
+        ///// 型鋼加工區域設定 - 設定數值儲存的檔案位置 20220811 張燕華
+        ///// </summary>
+        public static string FileProcessingZone(string SectionType)
+        {
+            string projectName = CommonViewModel.ProjectName; //專案名稱
+
+            if (projectName != null)
+                return $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\{SectionType}_processingzone.lis";
+
+            throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
+        }
+        ///// <summary>
+        ///// 切割線設定 - 設定數值儲存的檔案位置 20220816 張燕華
+        ///// </summary>
+        public static string FileSplitLine()
+        {
+            string projectName = CommonViewModel.ProjectName; //專案名稱
+
+            if (projectName != null)
+                return $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\SplitLineSetting.lis";
+
+            throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
+        }
         /// <summary>
         /// 複製文件
         /// </summary>

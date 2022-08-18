@@ -19,6 +19,12 @@ namespace STD_105.Office
             SectionSpecMenuCommand = SectionSpecMenu();
             //LanguageSettingsCommand = LanguageSettings();
             SectionSpecExcel2InpCommand = SectionSpecExcel2Inp();
+
+            SpiltLineSettingCommand = SpiltLineSetting();
+
+            ShapedSteelMachiningAreaSettingCommand = ShapedSteelMachiningAreaSetting();
+            ToolManagerSettingCommand = ToolManagerSetting();
+            SoftwareVersionCommand = SoftwareVersion();
         }
 
         /// <summary>
@@ -54,6 +60,56 @@ namespace STD_105.Office
             return new WPFBase.RelayCommand(() =>
             {
                 OfficeViewModel.ParaSettingCurrentPage = ParameterSettingPage.SectionSpecificationExcel2Inp;
+            });
+        }
+
+        /// <summary>
+        /// 20220801 蘇冠綸 顯示切割線畫面
+        /// </summary>
+        public ICommand SpiltLineSettingCommand { get; set; }
+
+        public WPFBase.RelayCommand SpiltLineSetting()
+        {
+            return new WPFBase.RelayCommand(() =>
+            {
+                OfficeViewModel.ParaSettingCurrentPage = ParameterSettingPage.SpiltLineSetting;
+            });
+        }
+
+        /// <summary>
+        /// 20220801 蘇冠綸 型鋼加工區域設定
+        /// </summary>
+        public ICommand ShapedSteelMachiningAreaSettingCommand { get; set; }
+
+        public WPFBase.RelayCommand ShapedSteelMachiningAreaSetting()
+        {
+            return new WPFBase.RelayCommand(() =>
+            {
+                OfficeViewModel.ParaSettingCurrentPage = ParameterSettingPage.ShapedSteelMachiningAreaSetting;
+            });
+        }
+
+        /// <summary>
+        /// 20220801 蘇冠綸 刀具管理設定
+        /// </summary>
+        public ICommand ToolManagerSettingCommand { get; set; }
+        public WPFBase.RelayCommand ToolManagerSetting()
+        {
+            return new WPFBase.RelayCommand(() =>
+            {
+                OfficeViewModel.ParaSettingCurrentPage = ParameterSettingPage.ToolManagerSetting;
+            });
+        }
+
+        /// <summary>
+        /// 20220801 蘇冠綸 軟體版本
+        /// </summary>
+        public ICommand SoftwareVersionCommand { get; set; }
+        public WPFBase.RelayCommand SoftwareVersion()
+        {
+            return new WPFBase.RelayCommand(() =>
+            {
+                OfficeViewModel.ParaSettingCurrentPage = ParameterSettingPage.SoftwareVersion;
             });
         }
     }

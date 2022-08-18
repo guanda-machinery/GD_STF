@@ -30,6 +30,8 @@ using DevExpress.Xpf.WindowsUI;
 using DevExpress.Xpf.Core;
 using System.IO;
 using System.Collections;
+using SectionData;
+using SplitLineSettingData;
 
 namespace WPFSTD105.ViewModel
 {
@@ -38,7 +40,6 @@ namespace WPFSTD105.ViewModel
     /// </summary>
     public class SettingParVM : WPFBase.BaseViewModel
     {
-
         /// <inheritdoc/>
         public SettingParVM()
         {
@@ -100,6 +101,18 @@ namespace WPFSTD105.ViewModel
             NewDrillBrandsCommand = NewDrillBrands();
             DeleteDrillBrandsCommand = DeleteDrillBrands();
             initializationInsertionData();//20220801 張燕華 因為不同素材具有不同規格屬性, 若無參數則預設為H型鋼規格屬性
+
+            ShowProcessingZoneCommand = ShowProcessingZone();//20220810 張燕華 加工區域設定 - 顯示斷面規格設定圖片
+            ShowProcessingSettingValueCommand = ShowProcessingSettingValue();//20220811 張燕華 加工區域設定 - 加工方式
+            NewProcessingZoneCommand = NewProcessingZone();//20220811 張燕華 加工區域設定 - 新增加工區域設定數值
+            AllSelectedToggleCommand = AllSelectedToggle();//20220811 張燕華 加工區域設定 - CheckBox全選按鈕
+            ModifyProcessingZoneCommand = ModifyProcessingZone();//20220812 張燕華 加工區域設定 - 修改按鈕
+            GoBackProcessingZoneCommand = GoBackProcessingZone();//20220812 張燕華 加工區域設定 - 復原按鈕
+
+            initializationSplitLineSettingData();//20220816 張燕華 切割線設定 - 讀取目前檔案中的設定值
+            NewSplitLineCommand = NewSplitLine();//20220816 張燕華 切割線設定 - 新增設定數值
+            ToggleAllSplitLineCheckboxCommand = ToggleAllSplitLineCheckbox();//20220816 張燕華 切割線設定 - CheckBox全選按鈕
+            GoBackSplitLineCommand = GoBackSplitLine();//20220816 張燕華 切割線設定 - 復原按鈕
         }
 
         #region 公開方法
@@ -399,6 +412,768 @@ namespace WPFSTD105.ViewModel
         #endregion
 
         #region 命令
+        /// <summary>
+        /// 加工區域 - 新增加工區域設定數值 20220810 張燕華
+        /// </summary>
+        public ICommand NewProcessingZoneCommand { get; set; }
+        private WPFBase.RelayParameterizedCommand NewProcessingZone()
+        {
+            return new WPFBase.RelayParameterizedCommand((object cbxSelectedIndex) =>
+            {
+            switch (Convert.ToInt32(cbxSelectedIndex))
+            {
+                case (int)SectionProcessing_SteelType.H:
+                    //若型鋼型態&加工行為&數值checkbox皆無勾選, 需提示錯誤
+                    if (chb_SteelType && chb_ProcessingBehavior && chb_H_Avalue && chb_H_Bvalue && chb_H_Cvalue == true)
+                    {
+                        STDSerialization ser = new STDSerialization(); //序列化處理器
+                        ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
+                        listSectionData.Add(new SectionTypeProcessingData()
+                        {
+                            SectionCategoryType = "H",
+                            ProcessingBehavior = SelectProcessingBehavior,
+                            A = ProcessingZone_A,
+                            B = ProcessingZone_B,
+                            C = ProcessingZone_C
+                        });
+                        ser.SetSectionTypeProcessingData(listSectionData);//加入到H型鋼的斷面加工資料檔案
+
+                        WinUIMessageBox.Show(null,
+                                             $"新建完成",
+                                             "通知",
+                                             MessageBoxButton.OK,
+                                             MessageBoxImage.Exclamation,
+                                             MessageBoxResult.None,
+                                             MessageBoxOptions.None,
+                                             FloatingMode.Popup);
+
+                        chb_SteelType = false;
+                        chb_ProcessingBehavior = false;
+                        chb_H_Avalue = false;
+                        chb_H_Bvalue = false;
+                        chb_H_Cvalue = false;
+                    }
+                    else
+                    {
+                        WinUIMessageBox.Show(null,
+                                             $"請確認各選項並勾選",
+                                             "通知",
+                                             MessageBoxButton.OK,
+                                             MessageBoxImage.Exclamation,
+                                             MessageBoxResult.None,
+                                             MessageBoxOptions.None,
+                                             FloatingMode.Popup);
+                    }
+                    break;
+                case (int)SectionProcessing_SteelType.BOX:
+                    //若型鋼型態&加工行為&數值checkbox皆無勾選, 需提示錯誤
+                    if (chb_SteelType && chb_ProcessingBehavior && chb_BOX_Avalue && chb_BOX_Bvalue == true)
+                    {
+                        STDSerialization ser = new STDSerialization(); //序列化處理器
+                        ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
+                        listSectionData.Add(new SectionTypeProcessingData()
+                        {
+                            SectionCategoryType = "BOX",
+                            ProcessingBehavior = SelectProcessingBehavior,
+                            A = ProcessingZone_A,
+                            B = ProcessingZone_B,
+                        });
+                        ser.SetSectionTypeProcessingData(listSectionData);//加入到BOX的斷面加工資料檔案
+
+                        WinUIMessageBox.Show(null,
+                                             $"新建完成",
+                                             "通知",
+                                             MessageBoxButton.OK,
+                                             MessageBoxImage.Exclamation,
+                                             MessageBoxResult.None,
+                                             MessageBoxOptions.None,
+                                             FloatingMode.Popup);
+
+                        chb_SteelType = false;
+                        chb_ProcessingBehavior = false;
+                        chb_BOX_Avalue = false;
+                        chb_BOX_Bvalue = false;
+                    }
+                    else
+                    {
+                        WinUIMessageBox.Show(null,
+                                             $"請確認各選項並勾選",
+                                             "通知",
+                                             MessageBoxButton.OK,
+                                             MessageBoxImage.Exclamation,
+                                             MessageBoxResult.None,
+                                             MessageBoxOptions.None,
+                                             FloatingMode.Popup);
+                    }
+                    break;
+                case (int)SectionProcessing_SteelType.CH:
+                    //若型鋼型態&加工行為&數值checkbox皆無勾選, 需提示錯誤
+                    if (chb_SteelType && chb_ProcessingBehavior && chb_CH_Avalue && chb_CH_Bvalue == true)
+                    {
+                        STDSerialization ser = new STDSerialization(); //序列化處理器
+                        ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
+                        listSectionData.Add(new SectionTypeProcessingData()
+                        {
+                            SectionCategoryType = "CH",
+                            ProcessingBehavior = SelectProcessingBehavior,
+                            A = ProcessingZone_A,
+                            B = ProcessingZone_B,
+                        });
+                        ser.SetSectionTypeProcessingData(listSectionData);//加入到CH的斷面加工資料檔案
+
+                        WinUIMessageBox.Show(null,
+                                             $"新建完成",
+                                             "通知",
+                                             MessageBoxButton.OK,
+                                             MessageBoxImage.Exclamation,
+                                             MessageBoxResult.None,
+                                             MessageBoxOptions.None,
+                                             FloatingMode.Popup);
+
+                        chb_SteelType = false;
+                        chb_ProcessingBehavior = false;
+                        chb_CH_Avalue = false;
+                        chb_CH_Bvalue = false;
+                    }
+                    else
+                    {
+                        WinUIMessageBox.Show(null,
+                                             $"請確認各選項並勾選",
+                                             "通知",
+                                             MessageBoxButton.OK,
+                                             MessageBoxImage.Exclamation,
+                                             MessageBoxResult.None,
+                                             MessageBoxOptions.None,
+                                             FloatingMode.Popup);
+                    }
+                    break;
+                default:
+                    WinUIMessageBox.Show(null,
+                                         $"請選擇型鋼型態並確認",
+                                         "通知",
+                                         MessageBoxButton.OK,
+                                         MessageBoxImage.Exclamation,
+                                         MessageBoxResult.None,
+                                         MessageBoxOptions.None,
+                                         FloatingMode.Popup);
+                    break;
+                }
+            });
+        }
+        /// <summary>
+        /// 加工區域 - CheckBox全選按鈕 20220810 張燕華
+        /// </summary>
+        public ICommand AllSelectedToggleCommand { get; set; }
+        private WPFBase.RelayParameterizedCommand AllSelectedToggle()
+        {
+            return new WPFBase.RelayParameterizedCommand((object cbxSelectedIndex) =>
+            {
+                switch (Convert.ToInt32(cbxSelectedIndex))
+                {
+                    case (int)SectionProcessing_SteelType.H:
+                        if (chb_SteelType && chb_ProcessingBehavior && chb_H_Avalue && chb_H_Bvalue && chb_H_Cvalue == true)
+                        {
+                            chb_SteelType = false;
+                            chb_ProcessingBehavior = false;
+                            chb_H_Avalue = false;
+                            chb_H_Bvalue = false;
+                            chb_H_Cvalue = false;
+                        }
+                        else
+                        {
+                            chb_SteelType = true;
+                            chb_ProcessingBehavior = true;
+                            chb_H_Avalue = true;
+                            chb_H_Bvalue = true;
+                            chb_H_Cvalue = true;
+                        }
+                        break;
+                    case (int)SectionProcessing_SteelType.BOX:
+                        if (chb_SteelType && chb_ProcessingBehavior && chb_BOX_Avalue && chb_BOX_Bvalue == true)
+                        {
+                            chb_SteelType = false;
+                            chb_ProcessingBehavior = false;
+                            chb_BOX_Avalue = false;
+                            chb_BOX_Bvalue = false;
+                        }
+                        else
+                        {
+                            chb_SteelType = true;
+                            chb_ProcessingBehavior = true;
+                            chb_BOX_Avalue = true;
+                            chb_BOX_Bvalue = true;
+                        }
+                        break;
+                    case (int)SectionProcessing_SteelType.CH:
+                        if (chb_SteelType && chb_ProcessingBehavior && chb_CH_Avalue && chb_CH_Bvalue == true)
+                        {
+                            chb_SteelType = false;
+                            chb_ProcessingBehavior = false;
+                            chb_CH_Avalue = false;
+                            chb_CH_Bvalue = false;
+                        }
+                        else
+                        {
+                            chb_SteelType = true;
+                            chb_ProcessingBehavior = true;
+                            chb_CH_Avalue = true;
+                            chb_CH_Bvalue = true;
+                        }
+                        break;
+                    default:
+                        WinUIMessageBox.Show(null,
+                                             $"請先選擇型鋼型態",
+                                             "通知",
+                                             MessageBoxButton.OK,
+                                             MessageBoxImage.Exclamation,
+                                             MessageBoxResult.None,
+                                             MessageBoxOptions.None,
+                                             FloatingMode.Popup);
+
+                        break;
+                }
+            });
+        }
+        /// <summary>
+        /// 加工區域 - 修改按鈕 20220812 張燕華
+        /// </summary>
+        public ICommand ModifyProcessingZoneCommand { get; set; }
+        private WPFBase.RelayCommand ModifyProcessingZone()
+        {
+            return new WPFBase.RelayCommand(() =>
+            {
+                //清除備份的加工區域數值
+                BackupData_ProcessingZone.Clear();
+                
+                switch (SelectSectionType)
+                {
+                    case (int)SectionProcessing_SteelType.H:
+                        if ((chb_SteelType && chb_ProcessingBehavior) == true && (chb_H_Avalue || chb_H_Bvalue || chb_H_Cvalue) == true)
+                        {
+                            //讀入加工區域設定值
+                            STDSerialization serH = new STDSerialization(); //序列化處理器
+                            BackupData_ProcessingZone = serH.GetSectionTypeProcessingData("H", SelectProcessingBehavior);//備份當前加工區域數值
+
+
+                            STDSerialization ser = new STDSerialization();
+                            ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
+                            listSectionData.Add(new SectionTypeProcessingData()//以前次加工區域數值初始化數值
+                            {
+                                SectionCategoryType = BackupData_ProcessingZone[0].SectionCategoryType,
+                                ProcessingBehavior = BackupData_ProcessingZone[0].ProcessingBehavior,
+                                A = BackupData_ProcessingZone[0].A,
+                                B = BackupData_ProcessingZone[0].B,
+                                C = BackupData_ProcessingZone[0].C,
+                            });
+                            if (chb_H_Avalue == true) { listSectionData[0].A = ProcessingZone_A; }
+                            if (chb_H_Bvalue == true) { listSectionData[0].B = ProcessingZone_B; }
+                            if (chb_H_Cvalue == true) { listSectionData[0].C = ProcessingZone_C; }
+                            ser.SetSectionTypeProcessingData(listSectionData);//寫入已更新的數值
+
+                            //取消所有checkbox
+                            chb_SteelType = false;
+                            chb_ProcessingBehavior = false;
+                            chb_H_Avalue = false;
+                            chb_H_Bvalue = false;
+                            chb_H_Cvalue = false;
+
+                            //打開復原按鈕
+                            GoBackButtonEnabled = true;
+                        }
+                        else
+                        {
+                            WinUIMessageBox.Show(null,
+                                                 $"請確認種類設定並至少勾選一個數值來修改",
+                                                 "通知",
+                                                 MessageBoxButton.OK,
+                                                 MessageBoxImage.Exclamation,
+                                                 MessageBoxResult.None,
+                                                 MessageBoxOptions.None,
+                                                 FloatingMode.Popup);
+                        }
+                        break;
+                    case (int)SectionProcessing_SteelType.BOX:
+                        if ((chb_SteelType && chb_ProcessingBehavior) == true && (chb_BOX_Avalue || chb_BOX_Bvalue) == true)
+                        {
+                            //讀入加工區域設定值
+                            STDSerialization serBOX = new STDSerialization(); //序列化處理器
+                            BackupData_ProcessingZone = serBOX.GetSectionTypeProcessingData("BOX", SelectProcessingBehavior);//備份當前加工區域數值
+
+
+                            STDSerialization ser = new STDSerialization(); //序列化處理器
+                            ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
+                            listSectionData.Add(new SectionTypeProcessingData()//以前次加工區域數值初始化數值
+                            {
+                                SectionCategoryType = BackupData_ProcessingZone[0].SectionCategoryType,
+                                ProcessingBehavior = BackupData_ProcessingZone[0].ProcessingBehavior,
+                                A = BackupData_ProcessingZone[0].A,
+                                B = BackupData_ProcessingZone[0].B,
+                            });
+                            if (chb_BOX_Avalue == true) { listSectionData[0].A = ProcessingZone_A; }
+                            if (chb_BOX_Bvalue == true) { listSectionData[0].B = ProcessingZone_B; }
+                            ser.SetSectionTypeProcessingData(listSectionData);//寫入已更新的數值
+
+                            //取消所有checkbox
+                            chb_SteelType = false;
+                            chb_ProcessingBehavior = false;
+                            chb_BOX_Avalue = false;
+                            chb_BOX_Bvalue = false;
+
+                            //打開復原按鈕
+                            GoBackButtonEnabled = true;
+                        }
+                        else
+                        {
+                            WinUIMessageBox.Show(null,
+                                                 $"請確認種類設定並至少勾選一個數值來修改",
+                                                 "通知",
+                                                 MessageBoxButton.OK,
+                                                 MessageBoxImage.Exclamation,
+                                                 MessageBoxResult.None,
+                                                 MessageBoxOptions.None,
+                                                 FloatingMode.Popup);
+                        }
+                        break;
+                    case (int)SectionProcessing_SteelType.CH:
+                        if ((chb_SteelType && chb_ProcessingBehavior) == true && (chb_CH_Avalue || chb_CH_Bvalue) == true)
+                        {
+                            //讀入加工區域設定值
+                            STDSerialization serCH = new STDSerialization(); //序列化處理器
+                            BackupData_ProcessingZone = serCH.GetSectionTypeProcessingData("CH", SelectProcessingBehavior);//備份當前加工區域數值
+
+
+                            STDSerialization ser = new STDSerialization(); //序列化處理器
+                            ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
+                            listSectionData.Add(new SectionTypeProcessingData()//以前次加工區域數值初始化數值
+                            {
+                                SectionCategoryType = BackupData_ProcessingZone[0].SectionCategoryType,
+                                ProcessingBehavior = BackupData_ProcessingZone[0].ProcessingBehavior,
+                                A = BackupData_ProcessingZone[0].A,
+                                B = BackupData_ProcessingZone[0].B,
+                            });
+                            if (chb_CH_Avalue == true) { listSectionData[0].A = ProcessingZone_A; }
+                            if (chb_CH_Bvalue == true) { listSectionData[0].B = ProcessingZone_B; }
+                            ser.SetSectionTypeProcessingData(listSectionData);//寫入已更新的數值
+
+                            //取消所有checkbox
+                            chb_SteelType = false;
+                            chb_ProcessingBehavior = false;
+                            chb_CH_Avalue = false;
+                            chb_CH_Bvalue = false;
+
+                            //打開復原按鈕
+                            GoBackButtonEnabled = true;
+                        }
+                        else
+                        {
+                            WinUIMessageBox.Show(null,
+                                                 $"請確認種類設定並至少勾選一個數值來修改",
+                                                 "通知",
+                                                 MessageBoxButton.OK,
+                                                 MessageBoxImage.Exclamation,
+                                                 MessageBoxResult.None,
+                                                 MessageBoxOptions.None,
+                                                 FloatingMode.Popup);
+                        }
+                        break;
+                    default:
+                        WinUIMessageBox.Show(null,
+                                             $"請先選擇型鋼型態",
+                                             "通知",
+                                             MessageBoxButton.OK,
+                                             MessageBoxImage.Exclamation,
+                                             MessageBoxResult.None,
+                                             MessageBoxOptions.None,
+                                             FloatingMode.Popup);
+
+                        break;
+                }
+
+                if (GoBackButtonEnabled == true)
+                {
+                    WinUIMessageBox.Show(null,
+                                         $"修改完成",
+                                         "通知",
+                                         MessageBoxButton.OK,
+                                         MessageBoxImage.Exclamation,
+                                         MessageBoxResult.None,
+                                         MessageBoxOptions.None,
+                                         FloatingMode.Popup);
+                }
+            });
+        }
+        /// <summary>
+        /// 加工區域 - 復原按鈕 20220812 張燕華
+        /// </summary>
+        public ICommand GoBackProcessingZoneCommand { get; set; }
+        private WPFBase.RelayCommand GoBackProcessingZone()
+        {
+            return new WPFBase.RelayCommand(() =>
+            {
+                STDSerialization ser = new STDSerialization(); //序列化處理器
+                ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
+                switch (SelectSectionType)
+                {
+                    case (int)SectionProcessing_SteelType.H:
+                        ProcessingZone_A = BackupData_ProcessingZone[0].A;
+                        ProcessingZone_B = BackupData_ProcessingZone[0].B;
+                        ProcessingZone_C = BackupData_ProcessingZone[0].C;
+
+                        listSectionData.Add(new SectionTypeProcessingData()
+                        {
+                            SectionCategoryType = "H",
+                            ProcessingBehavior = SelectProcessingBehavior,
+                            A = ProcessingZone_A,
+                            B = ProcessingZone_B,
+                            C = ProcessingZone_C,
+                        });
+                        ser.SetSectionTypeProcessingData(listSectionData);//加入到H的斷面加工資料檔案
+                        break;
+                    case (int)SectionProcessing_SteelType.BOX:
+                        ProcessingZone_A = BackupData_ProcessingZone[0].A;
+                        ProcessingZone_B = BackupData_ProcessingZone[0].B;
+
+                        listSectionData.Add(new SectionTypeProcessingData()
+                        {
+                            SectionCategoryType = "BOX",
+                            ProcessingBehavior = SelectProcessingBehavior,
+                            A = ProcessingZone_A,
+                            B = ProcessingZone_B,
+                        });
+                        ser.SetSectionTypeProcessingData(listSectionData);//加入到BOX的斷面加工資料檔案
+                        break;
+                    case (int)SectionProcessing_SteelType.CH:
+                        ProcessingZone_A = BackupData_ProcessingZone[0].A;
+                        ProcessingZone_B = BackupData_ProcessingZone[0].B;
+
+                        listSectionData.Add(new SectionTypeProcessingData()
+                        {
+                            SectionCategoryType = "CH",
+                            ProcessingBehavior = SelectProcessingBehavior,
+                            A = ProcessingZone_A,
+                            B = ProcessingZone_B,
+                        });
+                        ser.SetSectionTypeProcessingData(listSectionData);//加入到CH的斷面加工資料檔案
+                        break;
+                    default:
+                        break;
+                }
+
+                GoBackButtonEnabled = false; //關閉復原按鈕
+
+                WinUIMessageBox.Show(null,
+                                     $"復原完成",
+                                     "通知",
+                                     MessageBoxButton.OK,
+                                     MessageBoxImage.Exclamation,
+                                     MessageBoxResult.None,
+                                     MessageBoxOptions.None,
+                                     FloatingMode.Popup);
+            });
+        }
+        /// <summary>
+        /// 加工區域 - 顯示加工區域圖片 20220810 張燕華
+        /// </summary>
+        public ICommand ShowProcessingZoneCommand { get; set; }
+        private WPFBase.RelayParameterizedCommand ShowProcessingZone()
+        {
+            return new WPFBase.RelayParameterizedCommand((object cbxSelectedIndex) =>
+            {
+                GoBackButtonEnabled = false; //關閉復原按鈕
+                SelectProcessingBehavior = (int)ProcessingBehavior.DRILLING; //預設開啟"鑽孔", 若當前SelectProcessingBehavior不是"鑽孔", 則會進入ShowProcessingSettingValue()
+                VisibleH_Process = false;
+                VisibleBOX_Process = false;
+                VisibleCH_Process = false;
+                
+                switch (Convert.ToInt32(cbxSelectedIndex))
+                {
+                    case (int)SectionProcessing_SteelType.H:
+                        VisibleH_Process = true;
+                        //讀入加工區域設定值
+                        STDSerialization serH = new STDSerialization(); //序列化處理器
+                        ObservableCollection<SectionTypeProcessingData> sectionTypeProcessingData_H = serH.GetSectionTypeProcessingData("H", SelectProcessingBehavior);//讀取H_加工方式_processingzone.lis
+                        SelectProcessingBehavior = sectionTypeProcessingData_H[0].ProcessingBehavior;
+                        ProcessingZone_A = sectionTypeProcessingData_H[0].A;
+                        ProcessingZone_B = sectionTypeProcessingData_H[0].B;
+                        ProcessingZone_C = sectionTypeProcessingData_H[0].C;
+                        break;
+                    case (int)SectionProcessing_SteelType.BOX:
+                        VisibleBOX_Process = true;
+                        //讀入加工區域設定值
+                        STDSerialization serBOX = new STDSerialization(); //序列化處理器
+                        ObservableCollection<SectionTypeProcessingData> sectionTypeProcessingData_BOX = serBOX.GetSectionTypeProcessingData("BOX", SelectProcessingBehavior);//讀取BOX_加工方式_processingzone.lis
+                        SelectProcessingBehavior = sectionTypeProcessingData_BOX[0].ProcessingBehavior;
+                        ProcessingZone_A = sectionTypeProcessingData_BOX[0].A;
+                        ProcessingZone_B = sectionTypeProcessingData_BOX[0].B;
+                        break;
+                    case (int)SectionProcessing_SteelType.CH:
+                        VisibleCH_Process = true;
+                        //讀入加工區域設定值
+                        STDSerialization serCH = new STDSerialization(); //序列化處理器
+                        ObservableCollection<SectionTypeProcessingData> sectionTypeProcessingData_CH = serCH.GetSectionTypeProcessingData("CH", SelectProcessingBehavior);//讀取CH_加工方式_processingzone.lis
+                        SelectProcessingBehavior = sectionTypeProcessingData_CH[0].ProcessingBehavior;
+                        ProcessingZone_A = sectionTypeProcessingData_CH[0].A;
+                        ProcessingZone_B = sectionTypeProcessingData_CH[0].B;
+                        break;
+                    default:
+                        break;
+                }
+
+                if(SelectSectionType != -1)//若已選擇型鋼型態, 則開啟修改和復原按鈕
+                {
+                    NewProcessingZoneButtonEnabled = true;
+                    AllSelectedToggleButtonEnabled = true;
+                    ModifyButtonEnabled = true;
+                    //GoBackButtonEnabled = true;
+                }
+            });
+        }
+        /// <summary>
+        /// 加工區域 - 因加工方式變動來顯示加工區域數值 20220811 張燕華
+        /// </summary>
+        public ICommand ShowProcessingSettingValueCommand { get; set; }
+        private WPFBase.RelayParameterizedCommand ShowProcessingSettingValue()
+        {
+            return new WPFBase.RelayParameterizedCommand((object cbxSelectedIndex_ProcessingBehavior) =>
+            {
+                GoBackButtonEnabled = false; //關閉復原按鈕
+
+                if ((VisibleH_Process || VisibleBOX_Process || VisibleCH_Process))//若前次已有選擇型鋼型態的話
+                {
+                    switch (SelectSectionType)
+                    {
+                        case (int)SectionProcessing_SteelType.H:
+                            //VisibleH_Process = true;
+                            //讀入加工區域設定值
+                            STDSerialization serH_PSV = new STDSerialization(); //序列化處理器
+                            ObservableCollection<SectionTypeProcessingData> sectionTypeProcessingData_H_PSV = serH_PSV.GetSectionTypeProcessingData("H", Convert.ToInt32(cbxSelectedIndex_ProcessingBehavior));//讀取H_加工方式_processingzone.lis
+                            SelectProcessingBehavior = sectionTypeProcessingData_H_PSV[0].ProcessingBehavior;
+                            ProcessingZone_A = sectionTypeProcessingData_H_PSV[0].A;
+                            ProcessingZone_B = sectionTypeProcessingData_H_PSV[0].B;
+                            ProcessingZone_C = sectionTypeProcessingData_H_PSV[0].C;
+                            break;
+                        case (int)SectionProcessing_SteelType.BOX:
+                            //VisibleBOX_Process = true;
+                            //讀入加工區域設定值
+                            STDSerialization serBOX_PSV = new STDSerialization(); //序列化處理器
+                            ObservableCollection<SectionTypeProcessingData> sectionTypeProcessingData_BOX_PSV = serBOX_PSV.GetSectionTypeProcessingData("BOX", Convert.ToInt32(cbxSelectedIndex_ProcessingBehavior));//讀取BOX_加工方式_processingzone.lis
+                            SelectProcessingBehavior = sectionTypeProcessingData_BOX_PSV[0].ProcessingBehavior;
+                            ProcessingZone_A = sectionTypeProcessingData_BOX_PSV[0].A;
+                            ProcessingZone_B = sectionTypeProcessingData_BOX_PSV[0].B;
+                            break;
+                        case (int)SectionProcessing_SteelType.CH:
+                            //VisibleCH_Process = true;
+                            //讀入加工區域設定值
+                            STDSerialization serCH_PSV = new STDSerialization(); //序列化處理器
+                            ObservableCollection<SectionTypeProcessingData> sectionTypeProcessingData_CH_PSV = serCH_PSV.GetSectionTypeProcessingData("CH", Convert.ToInt32(cbxSelectedIndex_ProcessingBehavior));//讀取CH_加工方式_processingzone.lis
+                            SelectProcessingBehavior = sectionTypeProcessingData_CH_PSV[0].ProcessingBehavior;
+                            ProcessingZone_A = sectionTypeProcessingData_CH_PSV[0].A;
+                            ProcessingZone_B = sectionTypeProcessingData_CH_PSV[0].B;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else if(Convert.ToInt32(cbxSelectedIndex_ProcessingBehavior) != 0)//若前次已有選擇型鋼型態的話, 接著判斷若加工方式不是第一個(鑽孔)的話
+                {
+                    if(SelectSectionType == -1)//若型鋼型態未選擇
+                    {
+                        WinUIMessageBox.Show(null,
+                                             $"請選擇型鋼型態",
+                                             "通知",
+                                             MessageBoxButton.OK,
+                                             MessageBoxImage.Exclamation,
+                                             MessageBoxResult.None,
+                                             MessageBoxOptions.None,
+                                             FloatingMode.Popup);
+                    }
+                    else
+                    {
+                        //do nothing
+                        //待此command method結束後回到ShowProcessingZone()繼續
+                    }
+                }
+                else//若未選擇型鋼型態且加工方式為選單第一個
+                {
+                    WinUIMessageBox.Show(null,
+                                         $"請選擇型鋼型態",
+                                         "通知",
+                                         MessageBoxButton.OK,
+                                         MessageBoxImage.Exclamation,
+                                         MessageBoxResult.None,
+                                         MessageBoxOptions.None,
+                                         FloatingMode.Popup);
+                }
+            });
+        }
+        /// <summary>
+        /// 切割線設定 - 新增設定數值 20220816 張燕華
+        /// </summary>
+        public ICommand NewSplitLineCommand { get; set; }
+        private WPFBase.RelayCommand NewSplitLine()
+        {
+            return new WPFBase.RelayCommand(() =>
+            {
+                //若型鋼型態&加工行為&數值checkbox皆無勾選, 需提示錯誤
+                if (chb_PointA_SplitLineSetting && chb_PointB_SplitLineSetting && chb_PointC_SplitLineSetting && chb_PointD_SplitLineSetting && chb_Thickness_SplitLineSetting && chb_RemainingLength_SplitLineSetting == true)
+                {
+                    //儲存使用者設定的資料到檔案
+                    STDSerialization ser = new STDSerialization(); //序列化處理器
+                    ObservableCollection<SplitLineSettingClass> listSplitLineData = new ObservableCollection<SplitLineSettingClass>();
+                    listSplitLineData.Add(new SplitLineSettingClass()
+                    {
+                        A = PointA_Value,
+                        B = PointB_Value,
+                        C = PointC_Value,
+                        D = PointD_Value,
+                        Thickness = CutThickness,
+                        RemainingLength = SplitRemainingLength
+                    });
+                    ser.SetSplitLineData(listSplitLineData);
+
+                    WinUIMessageBox.Show(null,
+                                         $"新建完成",
+                                         "通知",
+                                         MessageBoxButton.OK,
+                                         MessageBoxImage.Exclamation,
+                                         MessageBoxResult.None,
+                                         MessageBoxOptions.None,
+                                         FloatingMode.Popup);
+
+                    //儲存使用者到目前為止使用系統時所有新增的切割線資料
+                    BackupSplitLineSettingData.Add(new SplitLineSettingClass()
+                    {
+                        A = PointA_Value,
+                        B = PointB_Value,
+                        C = PointC_Value,
+                        D = PointD_Value,
+                        Thickness = CutThickness,
+                        RemainingLength = SplitRemainingLength
+                    });
+                    //設定當前復原設定值陣列最後一個元素的index
+                    CurrentIndex_BackupSplitLineSettingData = BackupSplitLineSettingData.Count - 1;
+
+                    //新增動作完畢後取消所有checkbox勾選
+                    chb_PointA_SplitLineSetting = false;
+                    chb_PointB_SplitLineSetting = false;
+                    chb_PointC_SplitLineSetting = false;
+                    chb_PointD_SplitLineSetting = false;
+                    chb_Thickness_SplitLineSetting = false;
+                    chb_RemainingLength_SplitLineSetting = false;
+                }
+                else
+                {
+                    WinUIMessageBox.Show(null,
+                                         $"請確認各選項並勾選",
+                                         "通知",
+                                         MessageBoxButton.OK,
+                                         MessageBoxImage.Exclamation,
+                                         MessageBoxResult.None,
+                                         MessageBoxOptions.None,
+                                         FloatingMode.Popup);
+                }
+            });
+        }
+        /// <summary>
+        /// 切割線設定 - CheckBox全選按鈕 20220816 張燕華
+        /// </summary>
+        public ICommand ToggleAllSplitLineCheckboxCommand { get; set; }
+        private WPFBase.RelayCommand ToggleAllSplitLineCheckbox()
+        {
+            return new WPFBase.RelayCommand(() =>
+            {
+                if (chb_PointA_SplitLineSetting && chb_PointB_SplitLineSetting && chb_PointC_SplitLineSetting && chb_PointD_SplitLineSetting && chb_Thickness_SplitLineSetting && chb_RemainingLength_SplitLineSetting == true)
+                {
+                    chb_PointA_SplitLineSetting = false;
+                    chb_PointB_SplitLineSetting = false;
+                    chb_PointC_SplitLineSetting = false;
+                    chb_PointD_SplitLineSetting = false;
+                    chb_Thickness_SplitLineSetting = false;
+                    chb_RemainingLength_SplitLineSetting = false;
+                }
+                else
+                {
+                    chb_PointA_SplitLineSetting = true;
+                    chb_PointB_SplitLineSetting = true;
+                    chb_PointC_SplitLineSetting = true;
+                    chb_PointD_SplitLineSetting = true;
+                    chb_Thickness_SplitLineSetting = true;
+                    chb_RemainingLength_SplitLineSetting = true;
+                }
+            });
+        }
+        /// <summary>
+        /// 切割線設定 - 復原按鈕 20220817 張燕華
+        /// </summary>
+        public ICommand GoBackSplitLineCommand { get; set; }
+        private WPFBase.RelayCommand GoBackSplitLine()
+        {
+            return new WPFBase.RelayCommand(() =>
+            {
+                if (BackupSplitLineSettingData.Count <= 1) //若復原陣列裡只有最初從檔案載入的值
+                {
+                    WinUIMessageBox.Show(null,
+                                     $"沒有可供復原的設定值",
+                                     "通知",
+                                     MessageBoxButton.OK,
+                                     MessageBoxImage.Exclamation,
+                                     MessageBoxResult.None,
+                                     MessageBoxOptions.None,
+                                     FloatingMode.Popup);
+                }
+                else
+                {
+                    if (CurrentIndex_BackupSplitLineSettingData == 0) //已提示過已是最初檔案值,若仍按復原的話則提示
+                    {
+                        WinUIMessageBox.Show(null,
+                                             $"已是最初載入的設定值，可按新增來儲存本次的設定值。",
+                                             "通知",
+                                             MessageBoxButton.OK,
+                                             MessageBoxImage.Exclamation,
+                                             MessageBoxResult.None,
+                                             MessageBoxOptions.None,
+                                             FloatingMode.Popup);
+                    }
+                    else
+                    {
+                        PointA_Value = BackupSplitLineSettingData[CurrentIndex_BackupSplitLineSettingData - 1].A;
+                        PointB_Value = BackupSplitLineSettingData[CurrentIndex_BackupSplitLineSettingData - 1].B;
+                        PointC_Value = BackupSplitLineSettingData[CurrentIndex_BackupSplitLineSettingData - 1].C;
+                        PointD_Value = BackupSplitLineSettingData[CurrentIndex_BackupSplitLineSettingData - 1].D;
+                        CutThickness = BackupSplitLineSettingData[CurrentIndex_BackupSplitLineSettingData - 1].Thickness;
+                        SplitRemainingLength = BackupSplitLineSettingData[CurrentIndex_BackupSplitLineSettingData - 1].RemainingLength;
+
+                        if (CurrentIndex_BackupSplitLineSettingData - 1 >= 1) //尚有值可以還原
+                        {
+                            CurrentIndex_BackupSplitLineSettingData = CurrentIndex_BackupSplitLineSettingData - 1;
+
+                            WinUIMessageBox.Show(null,
+                                                 $"復原完成，請按新增來儲存本次的設定值。",
+                                                 "通知",
+                                                 MessageBoxButton.OK,
+                                                 MessageBoxImage.Exclamation,
+                                                 MessageBoxResult.None,
+                                                 MessageBoxOptions.None,
+                                                 FloatingMode.Popup);
+                        }
+                        else //提示已復原到最初從檔案載入的值
+                        {
+                            CurrentIndex_BackupSplitLineSettingData = 0;
+
+                            WinUIMessageBox.Show(null,
+                                                 $"已復原至最初載入的設定值，可按新增來儲存本次的設定值。",
+                                                 "通知",
+                                                 MessageBoxButton.OK,
+                                                 MessageBoxImage.Exclamation,
+                                                 MessageBoxResult.None,
+                                                 MessageBoxOptions.None,
+                                                 FloatingMode.Popup);
+                        }
+                    }
+                    
+                }
+            });
+        }
         /// <summary>
         /// 刪除刀庫內容
         /// </summary>
@@ -1808,6 +2583,21 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public ObservableCollection<put> RightAxis { get; set; } = new ObservableCollection<put>();
         /// <summary>
+        /// 加工區域 - 斷面規格的資料容器 張燕華
+        /// </summary>
+        /// <returns></returns>
+        public ObservableCollection<SectionTypeProcessingData> BackupData_ProcessingZone { get; set; } = new ObservableCollection<SectionTypeProcessingData>();
+        /// <summary>
+        /// 斷面規格的資料容器 for DataGrid
+        /// </summary>
+        /// <returns></returns>
+        public int CurrentIndex_BackupSplitLineSettingData { get; set; } = 0;
+        /// <summary>
+        /// 斷面規格的資料容器 for DataGrid
+        /// </summary>
+        /// <returns></returns>
+        public ObservableCollection<SplitLineSettingClass> BackupSplitLineSettingData { get; set; } = new ObservableCollection<SplitLineSettingClass>();
+        /// <summary>
         /// 斷面規格的資料容器 for DataGrid
         /// </summary>
         /// <returns></returns>
@@ -1816,6 +2606,168 @@ namespace WPFSTD105.ViewModel
         /// 選擇的參數檔案
         /// </summary>
         public SteelAttr SelectSteelAtte { get => _SelectSteelAtte; set => _SelectSteelAtte = value; }
+        /// <summary>
+        /// 顯示H型鋼加工區域
+        /// </summary>
+        public bool VisibleH_Process { get; set; } = false;
+        /// <summary>
+        /// 顯示方管加工區域
+        /// </summary>
+        public bool VisibleBOX_Process { get; set; } = false;
+        /// <summary>
+        /// 顯示槽鐵加工區域
+        /// </summary>
+        public bool VisibleCH_Process { get; set; } = false;
+        /// <summary>
+        /// 型鋼型態 for 型鋼加工區域設定
+        /// </summary>
+        public bool chb_SteelType { get; set; } = false;
+        /// <summary>
+        /// 加工方式 for 型鋼加工區域設定
+        /// </summary>
+        public bool chb_ProcessingBehavior { get; set; } = false;
+        /// <summary>
+        /// H型鋼A值 for 型鋼加工區域設定
+        /// </summary>
+        public bool chb_H_Avalue { get; set; } = false;
+        /// <summary>
+        /// H型鋼B值 for 型鋼加工區域設定
+        /// </summary>
+        public bool chb_H_Bvalue { get; set; } = false;
+        /// <summary>
+        /// H型鋼C值 for 型鋼加工區域設定
+        /// </summary>
+        public bool chb_H_Cvalue { get; set; } = false;
+        /// <summary>
+        /// 方管A值 for 型鋼加工區域設定
+        /// </summary>
+        public bool chb_BOX_Avalue { get; set; } = false;
+        /// <summary>
+        /// 方管B值 for 型鋼加工區域設定
+        /// </summary>
+        public bool chb_BOX_Bvalue { get; set; } = false;
+        /// <summary>
+        /// 槽鐵A值 for 型鋼加工區域設定
+        /// </summary>
+        public bool chb_CH_Avalue { get; set; } = false;
+        /// <summary>
+        /// 槽鐵B值 for 型鋼加工區域設定
+        /// </summary>
+        public bool chb_CH_Bvalue { get; set; } = false;
+        /// <summary>
+        /// 打點位置(A) for 切割線設定
+        /// </summary>
+        public bool chb_PointA_SplitLineSetting { get; set; } = false;
+        /// <summary>
+        /// 打點位置(B) for 切割線設定
+        /// </summary>
+        public bool chb_PointB_SplitLineSetting { get; set; } = false;
+        /// <summary>
+        /// 打點位置(C) for 切割線設定
+        /// </summary>
+        public bool chb_PointC_SplitLineSetting { get; set; } = false;
+        /// <summary>
+        /// 打點位置(D) for 切割線設定
+        /// </summary>
+        public bool chb_PointD_SplitLineSetting { get; set; } = false;
+        /// <summary>
+        /// 切割厚度 for 切割線設定
+        /// </summary>
+        public bool chb_Thickness_SplitLineSetting { get; set; } = false;
+        /// <summary>
+        /// 最小餘料長度 for 切割線設定
+        /// </summary>
+        public bool chb_RemainingLength_SplitLineSetting { get; set; } = false;
+        /// <summary>
+        /// combobox A值 item source for 切割線設定
+        /// </summary>
+        public List<string> cbb_A_ItemSource { get; set; } = new List<string>();
+        /// <summary>
+        /// combobox B值 item source for 切割線設定
+        /// </summary>
+        public List<string> cbb_B_ItemSource { get; set; } = new List<string>();
+        /// <summary>
+        /// combobox C值 item source for 切割線設定
+        /// </summary>
+        public List<string> cbb_C_ItemSource { get; set; } = new List<string>();
+        /// <summary>
+        /// combobox D值 item source for 切割線設定
+        /// </summary>
+        public List<string> cbb_D_ItemSource { get; set; } = new List<string>();
+        /// <summary>
+        /// 打點位置(A值)
+        /// </summary>
+        public string PointA_Value { get; set; }
+        /// <summary>
+        /// 打點位置(B值)
+        /// </summary>
+        public string PointB_Value { get; set; }
+        /// <summary>
+        /// 打點位置(C值)
+        /// </summary>
+        public string PointC_Value { get; set; }
+        /// <summary>
+        /// 打點位置(D值)
+        /// </summary>
+        public string PointD_Value { get; set; }
+        /// <summary>
+        /// 切割厚度
+        /// </summary>
+        public int CutThickness { get; set; } = 0; 
+        /// <summary>
+        /// 最小餘料長度
+        /// </summary>
+        public double SplitRemainingLength { get; set; } = 500.00;
+        /// <summary>
+        /// 型鋼型態 - 型鋼加工區域設定
+        /// </summary>
+        public int SelectSectionType
+        {
+            get => _SelectSectionType;
+            set
+            {
+                _SelectSectionType = value;
+            }
+        }
+        /// <summary>
+        /// 加工方式 - 型鋼加工區域設定
+        /// </summary>
+        public int SelectProcessingBehavior
+        {
+            get => _SelectProcessingBehavior;
+            set
+            {
+                _SelectProcessingBehavior = value;
+            }
+        }
+        /// <summary>
+        /// 型鋼加工區域設定 - 加工區域A
+        /// </summary>
+        public int ProcessingZone_A { get; set; } = 0;
+        /// <summary>
+        /// 型鋼加工區域設定 - 加工區域B
+        /// </summary>
+        public int ProcessingZone_B { get; set; } = 0;
+        /// <summary>
+        /// 型鋼加工區域設定 - 加工區域C
+        /// </summary>
+        public int ProcessingZone_C { get; set; } = 0;
+        /// <summary>
+        /// 型鋼加工區域設定 - 新增按鈕開關
+        /// </summary>
+        public bool NewProcessingZoneButtonEnabled { get; set; } = false;
+        /// <summary>
+        /// 型鋼加工區域設定 - 全選按鈕開關
+        /// </summary>
+        public bool AllSelectedToggleButtonEnabled { get; set; } = false;
+        /// <summary>
+        /// 型鋼加工區域設定 - 修改按鈕開關
+        /// </summary>
+        public bool ModifyButtonEnabled { get; set; } = false;
+        /// <summary>
+        /// 型鋼加工區域設定 - 復原按鈕開關
+        /// </summary>
+        public bool GoBackButtonEnabled { get; set; } = false;
         /// <summary>
         /// 顯示Beam 2D圖
         /// </summary>
@@ -1870,6 +2822,7 @@ namespace WPFSTD105.ViewModel
                 initializationInsertionData();//20220801 張燕華 因為不同素材具有不同規格屬性, 若無參數則預設為H型鋼規格屬性
             }
         }
+        
         /// <summary>
         /// 斷面規格
         /// </summary>
@@ -2330,16 +3283,44 @@ namespace WPFSTD105.ViewModel
                 InsertionData.Add(new DataGridData() { Property = "斷面積", Symbol = "", Value = SelectSteelAtte.section_area, Unit = "m2" });
                 InsertionData.Add(new DataGridData() { Property = "單位長度重量", Symbol = "", Value = SelectSteelAtte.Kg, Unit = "kg/m" });
                 InsertionData.Add(new DataGridData() { Property = "密度", Symbol = "", Value = SelectSteelAtte.density, Unit = "kg/m3" });
-
-                //20220803 張燕華 原項目欄位設定
-                //InsertionData.Add(new DataGridData() { Property = "高度", Symbol = "H", Value = SelectSteelAtte.H, Unit = "mm" });
-                //InsertionData.Add(new DataGridData() { Property = "寬度", Symbol = "W", Value = SelectSteelAtte.W, Unit = "mm" });
-                //InsertionData.Add(new DataGridData() { Property = "腹板", Symbol = "t1", Value = SelectSteelAtte.t1, Unit = "mm" });
-                ////if ((OBJETC_TYPE)_SelectType == OBJETC_TYPE.L || (OBJETC_TYPE)_SelectType == OBJETC_TYPE.BOX)
-                ////    return;
-                //
-                //InsertionData.Add(new DataGridData() { Property = "翼板", Symbol = "t2", Value = SelectSteelAtte.t2, Unit = "mm" });
             }
+        }
+
+        /// <summary>
+        /// 初始化切割線設定 20220816 張燕華
+        /// </summary>
+        private void initializationSplitLineSettingData()
+        {
+            //載入所有combobox的item source
+            SplitLineSettingClass SplitLineComboBox = new SplitLineSettingClass();
+            cbb_A_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_A);
+            cbb_B_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_B);
+            cbb_C_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_C);
+            cbb_D_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_D);
+
+            //讀入SplitLineSetting.lis中切割線設定值
+            STDSerialization ser = new STDSerialization(); //序列化處理器
+            ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();//備份當前加工區域數值
+            
+            PointA_Value = ReadSplitLineSettingData[0].A;
+            PointB_Value = ReadSplitLineSettingData[0].B;
+            PointC_Value = ReadSplitLineSettingData[0].C;
+            PointD_Value = ReadSplitLineSettingData[0].D;
+            CutThickness = ReadSplitLineSettingData[0].Thickness;
+            SplitRemainingLength = ReadSplitLineSettingData[0].RemainingLength;
+
+            //儲存使用者到目前為止使用系統時所有新增的切割線資料
+            BackupSplitLineSettingData.Add(new SplitLineSettingClass()
+            {
+                A = PointA_Value,
+                B = PointB_Value,
+                C = PointC_Value,
+                D = PointD_Value,
+                Thickness = CutThickness,
+                RemainingLength = SplitRemainingLength
+            });
+            //設定當前復原設定值陣列最後一個元素的index
+            CurrentIndex_BackupSplitLineSettingData = BackupSplitLineSettingData.Count - 1;
         }
 
         /// <summary>
@@ -2501,6 +3482,8 @@ namespace WPFSTD105.ViewModel
         private SteelAttr _SelectSteelAtte = new SteelAttr();
 
         private int _SelectType { get; set; } = -1;
+        private int _SelectProcessingBehavior { get; set; } = -1;
+        private int _SelectSectionType { get; set; } = -1;
         #endregion
 
         #region VM類型

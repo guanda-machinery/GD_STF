@@ -616,6 +616,18 @@
     <Compile Include="Office\Pages\SelectPropertiesToDisplay_Office.xaml.cs">
       <DependentUpon>SelectPropertiesToDisplay_Office.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Office\Pages\ShapedSteelMachiningAreaSetting.xaml.cs">
+      <DependentUpon>ShapedSteelMachiningAreaSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Office\Pages\SoftwareVersion.xaml.cs">
+      <DependentUpon>SoftwareVersion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Office\Pages\SpiltLineSetting.xaml.cs">
+      <DependentUpon>SpiltLineSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Office\Pages\ToolManagerSetting.xaml.cs">
+      <DependentUpon>ToolManagerSetting.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Office\Pages\TrainNumberSettings_Office.xaml.cs">
       <DependentUpon>TrainNumberSettings_Office.xaml</DependentUpon>
     </Compile>
@@ -1033,6 +1045,22 @@
     <Page Include="Office\Pages\SelectPropertiesToDisplay_Office.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Office\Pages\ShapedSteelMachiningAreaSetting.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Office\Pages\SoftwareVersion.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Office\Pages\SpiltLineSetting.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Office\Pages\ToolManagerSetting.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Office\Pages\TrainNumberSettings_Office.xaml">
       <SubType>Designer</SubType>
