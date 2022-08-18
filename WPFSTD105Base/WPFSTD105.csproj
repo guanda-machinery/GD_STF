@@ -348,6 +348,8 @@
     <Compile Include="Attribute\ISteelAttr.cs" />
     <Compile Include="Attribute\ModelAttr.cs" />
     <Compile Include="Attribute\MVVMAttribute.cs" />
+    <Compile Include="Attribute\SplitLineAttr.cs" />
+    <Compile Include="Attribute\SectionAttr.cs" />
     <Compile Include="Attribute\SteelAttrInExcel.cs" />
     <Compile Include="Attribute\SteelAttr.cs" />
     <Compile Include="ExcelAmountService.cs" />

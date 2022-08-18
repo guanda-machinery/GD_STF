@@ -21,7 +21,7 @@
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   mc:Ignorable="d"
                   Title="參數設定">
-    <Grid HorizontalAlignment="Center">
+    <Grid HorizontalAlignment="Left">
         <Grid.Resources>
             <Style TargetType="GroupBox"
                    BasedOn="{ StaticResource gbxParameter }"></Style>

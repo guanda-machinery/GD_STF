@@ -180,6 +180,22 @@ namespace WPFSTD105
         /// 語言設定頁面
         /// </summary>
         SectionSpecificationExcel2Inp,
+        /// <summary>
+        /// 顯示切割線畫面
+        /// </summary>
+        SpiltLineSetting,
+        /// <summary>
+        /// 型鋼加工區域設定
+        /// </summary>
+        ShapedSteelMachiningAreaSetting,
+        /// <summary>
+        /// 刀具管理設定
+        /// </summary>
+        ToolManagerSetting,
+        /// <summary>
+        /// 軟體版本
+        /// </summary>
+        SoftwareVersion,
     }
     /// <summary>
     /// 彈跳視窗

@@ -16,6 +16,9 @@ using WPFSTD105.Model;
 using WPFSTD105.Surrogate;
 using WPFSTD105.ViewModel;
 using static GD_STD.SerializationHelper;
+using SectionData;
+using SplitLineSettingData;
+
 namespace WPFSTD105
 {
     /// <summary>
@@ -365,6 +368,71 @@ namespace WPFSTD105
                 return null;
             }
             
+        }
+        /// <summary>
+        ///  加工區域 - 儲存序列化檔案資料 20220811 張燕華
+        /// </summary>
+        /// <param name="sectionTypeProcessingData"></param>
+        public void SetSectionTypeProcessingData(ObservableCollection<SectionTypeProcessingData> sectionTypeProcessingData)
+        {
+            string SectionType_ProcessingBehavior = "";
+            switch (sectionTypeProcessingData[0].ProcessingBehavior)
+            {
+                case (int)ProcessingBehavior.DRILLING:
+                    SectionType_ProcessingBehavior = sectionTypeProcessingData[0].SectionCategoryType + "_DRILLING";
+                    break;
+                case (int)ProcessingBehavior.POINT:
+                    SectionType_ProcessingBehavior = sectionTypeProcessingData[0].SectionCategoryType + "_POINT";
+                    break;
+            }
+            GZipSerializeBinary(sectionTypeProcessingData, ApplicationVM.FileProcessingZone(SectionType_ProcessingBehavior));
+        }
+        /// <summary>
+        ///  加工區域 - 讀出序列化檔案資料 20220811 張燕華
+        /// </summary>
+        public ObservableCollection<SectionTypeProcessingData> GetSectionTypeProcessingData(string SectionType, int intProcessingBehavior)
+        {
+            string SectionType_ProcessingBehavior = "";
+            switch (intProcessingBehavior)
+            {
+                case (int)ProcessingBehavior.DRILLING:
+                    SectionType_ProcessingBehavior = SectionType + "_DRILLING";
+                    break;
+                case (int)ProcessingBehavior.POINT:
+                    SectionType_ProcessingBehavior = SectionType + "_POINT";
+                    break;
+            }
+            
+            return GZipDeserialize<ObservableCollection<SectionTypeProcessingData>>(ApplicationVM.FileProcessingZone(SectionType_ProcessingBehavior));
+        }
+        /// <summary>
+        /// 型鋼加工區域設定 - 檢查設定值檔案是否存在 20220818 張燕華
+        /// </summary>
+        public bool[] CheckSectionTypeProcessingDataFile()
+        {
+            return ApplicationVM.CheckFileSectionTypeProcessingData();
+        }
+        /// <summary>
+        ///  切割線設定 - 儲存序列化檔案資料 20220816 張燕華
+        /// </summary>
+        /// <param name="splitLineData"></param>
+        public void SetSplitLineData(ObservableCollection<SplitLineSettingClass> splitLineData)
+        {
+            GZipSerializeBinary(splitLineData, ApplicationVM.FileSplitLine());
+        }
+        /// <summary>
+        ///  切割線設定 - 讀出序列化檔案資料 20220816 張燕華
+        /// </summary>
+        public ObservableCollection<SplitLineSettingClass> GetSplitLineData()
+        {
+            return GZipDeserialize<ObservableCollection<SplitLineSettingClass>>(ApplicationVM.FileSplitLine());
+        }
+        /// <summary>
+        ///  切割線設定 - 檢查設定值檔案是否存在 20220818 張燕華
+        /// </summary>
+        public bool CheckSplitLineDataFile()
+        {
+            return ApplicationVM.CheckFileSplitLine();
         }
         /// <summary>
         ///  儲存序列化檔案資料

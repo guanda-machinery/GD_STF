@@ -49,7 +49,7 @@ namespace GD_STD.Enum
         /// <summary>
         /// 未知斷面
         /// </summary>
-        [Description("未知斷面")]
+        //[Description("未知斷面")]
         Unknown,
         /// <summary>
         /// I 要顯示集合列表 - 20220729 張燕華

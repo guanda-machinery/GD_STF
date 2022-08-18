@@ -51,7 +51,7 @@
                 <Setter Property="Foreground" Value="{ StaticResource solidclr_DimGray }" />
             </Style>
         </Grid.Resources>
-        <Button Command="{Binding ShowRegistrationFormCommand}">
+        <Button Command="{Binding ShowRegistrationFormCommand}" Background="WhiteSmoke">
             <Button.Content>
                 <TextBlock Text="語言設定" />
             </Button.Content>

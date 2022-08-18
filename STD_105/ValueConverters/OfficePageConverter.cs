@@ -102,6 +102,22 @@ namespace STD_105.Office
                     //20220711 張燕華 從切換畫面改為顯示DecExpress的Dialog Service
                     basePage = new SectionSpecExcel2Inp();
                     break;
+                case ParameterSettingPage.SpiltLineSetting:
+                    //20220801 蘇冠綸 顯示切割線畫面
+                    basePage = new SpiltLineSetting();
+                    break;
+                case ParameterSettingPage.ShapedSteelMachiningAreaSetting:
+                    //20220801 蘇冠綸 型鋼加工區域設定
+                    basePage = new ShapedSteelMachiningAreaSetting();
+                    break;
+                //20220802  蘇冠綸 刀具管理設定
+                case ParameterSettingPage.ToolManagerSetting:
+                    basePage = new ToolManagerSetting();
+                    break;
+                //20220802 蘇冠綸 軟體版本
+                case ParameterSettingPage.SoftwareVersion:
+                    basePage = new SoftwareVersion();
+                    break;
                 default:
                     break;
             }

@@ -43,62 +43,62 @@
             </Style>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150" />
+            <ColumnDefinition Width="190" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Background="{ StaticResource solidclr_LightGray }">
             <Border CornerRadius="0"
-                    Background="white"
+                    Background="WhiteSmoke"
                     Margin="0,0,5,0">
                 <Grid>
                 <StackPanel>
                     <TextBlock/>
                         <!--斷面規格設定-->
-                        <Button Command="{ Binding Path=ParameterSettingsCommand }">
+                        <Button Command="{ Binding Path=ParameterSettingsCommand }" Visibility="Collapsed">
                             <Button.Content>
                                 <TextBlock Text="原參數設定" />
                             </Button.Content>
                         </Button>
                         <!--斷面規格目錄-->
-                        <Button Command="{ Binding Path=SectionSpecMenuCommand }">
+                        <Button Command="{ Binding Path=SectionSpecMenuCommand }" Background="WhiteSmoke">
                             <Button.Content>
-                                <TextBlock Text="斷面規格目錄" />
+                                <TextBlock Text="斷面規格目錄" Margin="5,-4,0,0"/>
                             </Button.Content>
                         </Button>
                         <!--切割線設定-->
-                        <Button>
+                        <Button  Command="{ Binding Path=SpiltLineSettingCommand }" Margin="5,8,0,0" Background="WhiteSmoke">
                             <Button.Content>
                                 <TextBlock Text="切割線設定" />
                             </Button.Content>
                         </Button>
                         <!--型鋼加工區域設定-->
-                        <Button>
+                        <Button Command="{Binding Path =ShapedSteelMachiningAreaSettingCommand}" Margin="5,8,0,0" Background="WhiteSmoke">
                             <Button.Content>
                                 <TextBlock Text="型鋼加工區域設定" />
                             </Button.Content>
                         </Button>
                         <!--刀具資料庫-->
-                        <Button>
+                        <Button Command="{Binding Path =ToolManagerSettingCommand}" Visibility="Collapsed">
                             <Button.Content>
                                 <TextBlock Text="刀具資料庫" />
                             </Button.Content>
                         </Button>
                         <!--語言設定-->
-                        <uc_language:MainView/>
+                        <uc_language:MainView Margin="5,8,0,0"/>
                         <!--軟體版本-->
-                        <Button>
+                        <Button Command="{Binding Path =SoftwareVersionCommand}" Margin="5,8,0,0" Background="WhiteSmoke">
                             <Button.Content>
                                 <TextBlock Text="軟體版本" />
                             </Button.Content>
                         </Button>
                         <!--貼紙機設定-->
-                        <Button>
+                        <Button Margin="5,8,0,0" Background="WhiteSmoke">
                             <Button.Content>
                                 <TextBlock Text="貼紙機設定" />
                             </Button.Content>
                         </Button>
                         <!--斷面規格轉inp-->
-                        <Button Command="{ Binding Path=SectionSpecExcel2InpCommand }" Visibility="Collapsed">
+                        <Button Command="{ Binding Path=SectionSpecExcel2InpCommand }" Visibility="Collapsed" Margin="5,8,0,0" Background="WhiteSmoke">
                             <Button.Content>
                                 <TextBlock Text="斷面規格excel轉inp" />
                             </Button.Content>
