@@ -20,7 +20,7 @@
                   Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   mc:Ignorable="d"
-                  Title="SpiltLineSetting">
+                  Title="SoftwareVersion">
 
 
     <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="940">

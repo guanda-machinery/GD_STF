@@ -35,7 +35,7 @@ namespace WPFWindowsBase
         /// <param name="comBoxTitle">下拉選單標題</param>
         /// <param name="comBoxContent">下拉選單內容</param>
         /// 
-        public MessageVM(string title, string content, bool leftButtonVisibility, bool rightButtonVisibility, string leftButtonText, string rightButtonText, bool autoClose, int s, bool comBoxVisibility, string comBoxTitle = default(string), string[] comBoxContent = default(string[]))
+        public MessageVM(string title, string content, bool leftButtonVisibility, bool rightButtonVisibility, string leftButtonText, string rightButtonText, bool autoClose, int s, Visibility comBoxVisibility, string comBoxTitle = default(string), string[] comBoxContent = default(string[]))
         {
             Title = title;
             Content = content;
@@ -121,7 +121,7 @@ namespace WPFWindowsBase
         /// <summary>
         /// 下拉選單能見度
         /// </summary>
-        public bool ComBoxVisibility { get; set; } = false;
+        public Visibility ComBoxVisibility { get; set; } = Visibility.Collapsed;
         /// <summary>
         /// 下拉選單標題
         /// </summary>
