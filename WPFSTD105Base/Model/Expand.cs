@@ -4,6 +4,8 @@ using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
 using DevExpress.Data.Extensions;
+using DevExpress.Xpf.Core;
+using DevExpress.Xpf.WindowsUI;
 using GD_STD.Data;
 using System;
 using System.Collections.Generic;
@@ -115,6 +117,18 @@ namespace WPFSTD105.Model
                     if (parts[partIndex].GUID.ToString() != "") //如果圖面檔案
                     {
                         ReadFile file = ser.ReadPartModel(parts[partIndex].GUID.ToString()); //讀取檔案內容
+                        if (file == null)
+                        {
+                            WinUIMessageBox.Show(null,
+                                $"專案Dev_Part資料夾讀取失敗",
+                                "通知",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Exclamation,
+                                MessageBoxResult.None,
+                                MessageBoxOptions.None,
+                                FloatingMode.Popup);
+                            return;
+                        }
                         file.DoWork();
                         file.AddToScene(model);
                         Point3D center = new Point3D();

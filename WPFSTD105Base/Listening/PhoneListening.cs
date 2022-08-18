@@ -81,7 +81,7 @@ namespace WPFSTD105.Listening
                             AutoClose = false,
                             CloseSecond = 0,
                             ComBoxTitle = "專案名稱",
-                            ComBoxVisibility = true,
+                            ComBoxVisibility = System.Windows.Visibility.Visible,
                             Content = "請選擇要配對的料單的專案"
 
                         };

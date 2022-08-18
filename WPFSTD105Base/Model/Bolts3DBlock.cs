@@ -351,7 +351,12 @@ namespace WPFSTD105.Model
         /// <returns></returns>
         public bool CheckWorkingRange(FACE face,OBJETC_TYPE type, double checkValue, List<double> workingRange) 
         {
-            bool check = true; 
+            bool check = true;
+            // 無加工範圍設定
+            if (workingRange.Count == 0)
+            {
+                return check;
+            }
             switch (face)
             {
                 case GD_STD.Enum.FACE.TOP:

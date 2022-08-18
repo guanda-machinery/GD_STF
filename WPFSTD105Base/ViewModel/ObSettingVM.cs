@@ -306,6 +306,11 @@ namespace WPFSTD105.ViewModel
                     _ProfileType = value;
                     List<SteelAttr> list = new List<SteelAttr>();
                     OBJETC_TYPE TYPE = (OBJETC_TYPE)value;
+
+                    if (!File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{TYPE}.inp"))
+                    {
+                        File.Copy($@"Profile\{TYPE}.inp", $@"{ApplicationVM.DirectoryPorfile()}\{TYPE}.inp");//複製 BH 斷面規格到模型內
+                    }
 #if DEBUG
                     log4net.LogManager.GetLogger("載入斷面規格").Debug(TYPE.ToString());
 #endif
@@ -520,6 +525,7 @@ namespace WPFSTD105.ViewModel
                             case OBJETC_TYPE.RH:
                                 Boltsbuffer.Z = Steelbuffer.W * 0.5 - Steelbuffer.t1 * 0.5;
                                 break;
+                            case OBJETC_TYPE.TUBE:
                             case OBJETC_TYPE.BOX:
                             case OBJETC_TYPE.CH:
                                 Boltsbuffer.Z = Steelbuffer.W - Steelbuffer.t1;
