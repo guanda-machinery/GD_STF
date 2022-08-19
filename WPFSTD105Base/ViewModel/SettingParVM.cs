@@ -102,6 +102,8 @@ namespace WPFSTD105.ViewModel
             DeleteDrillBrandsCommand = DeleteDrillBrands();
             initializationInsertionData();//20220801 張燕華 因為不同素材具有不同規格屬性, 若無參數則預設為H型鋼規格屬性
 
+            CheckParameterSettingDirectoryExists();//20220819 張燕華 檢查參數設定資料夾是否存在, 若否則新增
+
             initializationProcessingZoneData();//20220818 張燕華 加工區域設定 - 檢查設定值檔案存在, 若否則新增預設設定值
             ShowProcessingZoneCommand = ShowProcessingZone();//20220810 張燕華 加工區域設定 - 顯示斷面規格設定圖片
             ShowProcessingSettingValueCommand = ShowProcessingSettingValue();//20220811 張燕華 加工區域設定 - 加工方式
@@ -114,6 +116,8 @@ namespace WPFSTD105.ViewModel
             NewSplitLineCommand = NewSplitLine();//20220816 張燕華 切割線設定 - 新增設定數值
             ToggleAllSplitLineCheckboxCommand = ToggleAllSplitLineCheckbox();//20220816 張燕華 切割線設定 - CheckBox全選按鈕
             GoBackSplitLineCommand = GoBackSplitLine();//20220816 張燕華 切割線設定 - 復原按鈕
+
+            SoftwareVersionInstallCommand = SoftwareVersionInstall();//20220819 張燕華 軟體版本-安裝按鈕
         }
 
         #region 公開方法
@@ -411,6 +415,14 @@ namespace WPFSTD105.ViewModel
             }
         }
         /// <summary>
+        /// 檢查參數設定資料夾是否存在, 若否則新增 20220819 張燕華 
+        /// </summary>
+        private void CheckParameterSettingDirectoryExists()
+        {
+            STDSerialization ser_dir = new STDSerialization();
+            bool checkSectionTypeProcessingDataFile = ser_dir.CheckParameterSettingDirectory();
+        }
+        /// <summary>
         /// 初始化切割線設定 20220816 張燕華
         /// </summary>
         private void initializationProcessingZoneData()
@@ -480,32 +492,46 @@ namespace WPFSTD105.ViewModel
                     //若型鋼型態&加工行為&數值checkbox皆無勾選, 需提示錯誤
                     if (chb_SteelType && chb_ProcessingBehavior && chb_H_Avalue && chb_H_Bvalue && chb_H_Cvalue == true)
                     {
-                        STDSerialization ser = new STDSerialization(); //序列化處理器
-                        ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
-                        listSectionData.Add(new SectionTypeProcessingData()
+                        if (ProcessingZone_A >= 25 && ProcessingZone_B >= 15 && ProcessingZone_C >= 3)
                         {
-                            SectionCategoryType = "H",
-                            ProcessingBehavior = SelectProcessingBehavior,
-                            A = ProcessingZone_A,
-                            B = ProcessingZone_B,
-                            C = ProcessingZone_C
-                        });
-                        ser.SetSectionTypeProcessingData(listSectionData);//加入到H型鋼的斷面加工資料檔案
+                            STDSerialization ser = new STDSerialization(); //序列化處理器
+                            ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
+                            listSectionData.Add(new SectionTypeProcessingData()
+                            {
+                                SectionCategoryType = "H",
+                                ProcessingBehavior = SelectProcessingBehavior,
+                                A = ProcessingZone_A,
+                                B = ProcessingZone_B,
+                                C = ProcessingZone_C
+                            });
+                            ser.SetSectionTypeProcessingData(listSectionData);//加入到H型鋼的斷面加工資料檔案
 
-                        WinUIMessageBox.Show(null,
-                                             $"新建完成",
-                                             "通知",
-                                             MessageBoxButton.OK,
-                                             MessageBoxImage.Exclamation,
-                                             MessageBoxResult.None,
-                                             MessageBoxOptions.None,
-                                             FloatingMode.Popup);
+                            WinUIMessageBox.Show(null,
+                                                 $"新建完成",
+                                                 "通知",
+                                                 MessageBoxButton.OK,
+                                                 MessageBoxImage.Exclamation,
+                                                 MessageBoxResult.None,
+                                                 MessageBoxOptions.None,
+                                                 FloatingMode.Popup);
 
-                        chb_SteelType = false;
-                        chb_ProcessingBehavior = false;
-                        chb_H_Avalue = false;
-                        chb_H_Bvalue = false;
-                        chb_H_Cvalue = false;
+                            chb_SteelType = false;
+                            chb_ProcessingBehavior = false;
+                            chb_H_Avalue = false;
+                            chb_H_Bvalue = false;
+                            chb_H_Cvalue = false;
+                        }
+                        else
+                        {
+                            WinUIMessageBox.Show(null,
+                                                 $"請輸入適當的設定值",
+                                                 "通知",
+                                                 MessageBoxButton.OK,
+                                                 MessageBoxImage.Exclamation,
+                                                 MessageBoxResult.None,
+                                                 MessageBoxOptions.None,
+                                                 FloatingMode.Popup);
+                        }
                     }
                     else
                     {
@@ -523,30 +549,44 @@ namespace WPFSTD105.ViewModel
                     //若型鋼型態&加工行為&數值checkbox皆無勾選, 需提示錯誤
                     if (chb_SteelType && chb_ProcessingBehavior && chb_BOX_Avalue && chb_BOX_Bvalue == true)
                     {
-                        STDSerialization ser = new STDSerialization(); //序列化處理器
-                        ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
-                        listSectionData.Add(new SectionTypeProcessingData()
+                        if (ProcessingZone_A >= 15 && ProcessingZone_B >= 15)
                         {
-                            SectionCategoryType = "BOX",
-                            ProcessingBehavior = SelectProcessingBehavior,
-                            A = ProcessingZone_A,
-                            B = ProcessingZone_B,
-                        });
-                        ser.SetSectionTypeProcessingData(listSectionData);//加入到BOX的斷面加工資料檔案
+                            STDSerialization ser = new STDSerialization(); //序列化處理器
+                            ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
+                            listSectionData.Add(new SectionTypeProcessingData()
+                            {
+                                SectionCategoryType = "BOX",
+                                ProcessingBehavior = SelectProcessingBehavior,
+                                A = ProcessingZone_A,
+                                B = ProcessingZone_B,
+                            });
+                            ser.SetSectionTypeProcessingData(listSectionData);//加入到BOX的斷面加工資料檔案
 
-                        WinUIMessageBox.Show(null,
-                                             $"新建完成",
-                                             "通知",
-                                             MessageBoxButton.OK,
-                                             MessageBoxImage.Exclamation,
-                                             MessageBoxResult.None,
-                                             MessageBoxOptions.None,
-                                             FloatingMode.Popup);
+                            WinUIMessageBox.Show(null,
+                                                 $"新建完成",
+                                                 "通知",
+                                                 MessageBoxButton.OK,
+                                                 MessageBoxImage.Exclamation,
+                                                 MessageBoxResult.None,
+                                                 MessageBoxOptions.None,
+                                                 FloatingMode.Popup);
 
-                        chb_SteelType = false;
-                        chb_ProcessingBehavior = false;
-                        chb_BOX_Avalue = false;
-                        chb_BOX_Bvalue = false;
+                            chb_SteelType = false;
+                            chb_ProcessingBehavior = false;
+                            chb_BOX_Avalue = false;
+                            chb_BOX_Bvalue = false;
+                        }
+                        else
+                        {
+                            WinUIMessageBox.Show(null,
+                                                 $"請輸入適當的設定值",
+                                                 "通知",
+                                                 MessageBoxButton.OK,
+                                                 MessageBoxImage.Exclamation,
+                                                 MessageBoxResult.None,
+                                                 MessageBoxOptions.None,
+                                                 FloatingMode.Popup);
+                        }
                     }
                     else
                     {
@@ -564,30 +604,44 @@ namespace WPFSTD105.ViewModel
                     //若型鋼型態&加工行為&數值checkbox皆無勾選, 需提示錯誤
                     if (chb_SteelType && chb_ProcessingBehavior && chb_CH_Avalue && chb_CH_Bvalue == true)
                     {
-                        STDSerialization ser = new STDSerialization(); //序列化處理器
-                        ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
-                        listSectionData.Add(new SectionTypeProcessingData()
+                        if (ProcessingZone_A >= 15 && ProcessingZone_B >= 15)
                         {
-                            SectionCategoryType = "CH",
-                            ProcessingBehavior = SelectProcessingBehavior,
-                            A = ProcessingZone_A,
-                            B = ProcessingZone_B,
-                        });
-                        ser.SetSectionTypeProcessingData(listSectionData);//加入到CH的斷面加工資料檔案
+                            STDSerialization ser = new STDSerialization(); //序列化處理器
+                            ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
+                            listSectionData.Add(new SectionTypeProcessingData()
+                            {
+                                SectionCategoryType = "CH",
+                                ProcessingBehavior = SelectProcessingBehavior,
+                                A = ProcessingZone_A,
+                                B = ProcessingZone_B,
+                            });
+                            ser.SetSectionTypeProcessingData(listSectionData);//加入到CH的斷面加工資料檔案
 
-                        WinUIMessageBox.Show(null,
-                                             $"新建完成",
-                                             "通知",
-                                             MessageBoxButton.OK,
-                                             MessageBoxImage.Exclamation,
-                                             MessageBoxResult.None,
-                                             MessageBoxOptions.None,
-                                             FloatingMode.Popup);
+                            WinUIMessageBox.Show(null,
+                                                 $"新建完成",
+                                                 "通知",
+                                                 MessageBoxButton.OK,
+                                                 MessageBoxImage.Exclamation,
+                                                 MessageBoxResult.None,
+                                                 MessageBoxOptions.None,
+                                                 FloatingMode.Popup);
 
-                        chb_SteelType = false;
-                        chb_ProcessingBehavior = false;
-                        chb_CH_Avalue = false;
-                        chb_CH_Bvalue = false;
+                            chb_SteelType = false;
+                            chb_ProcessingBehavior = false;
+                            chb_CH_Avalue = false;
+                            chb_CH_Bvalue = false;
+                        }
+                        else
+                        {
+                            WinUIMessageBox.Show(null,
+                                                 $"請輸入適當的設定值",
+                                                 "通知",
+                                                 MessageBoxButton.OK,
+                                                 MessageBoxImage.Exclamation,
+                                                 MessageBoxResult.None,
+                                                 MessageBoxOptions.None,
+                                                 FloatingMode.Popup);
+                        }
                     }
                     else
                     {
@@ -698,41 +752,73 @@ namespace WPFSTD105.ViewModel
             {
                 //清除備份的加工區域數值
                 BackupData_ProcessingZone.Clear();
+
+                //已勾選數值的大小錯誤flag
+                bool f_ChbChecked_ValueError = false;
                 
                 switch (SelectSectionType)
                 {
                     case (int)SectionProcessing_SteelType.H:
                         if ((chb_SteelType && chb_ProcessingBehavior) == true && (chb_H_Avalue || chb_H_Bvalue || chb_H_Cvalue) == true)
                         {
-                            //讀入加工區域設定值
-                            STDSerialization serH = new STDSerialization(); //序列化處理器
-                            BackupData_ProcessingZone = serH.GetSectionTypeProcessingData("H", SelectProcessingBehavior);//備份當前加工區域數值
+                            if (chb_H_Avalue == true && ProcessingZone_A < 25) f_ChbChecked_ValueError = true;
+                            if (chb_H_Bvalue == true && ProcessingZone_B < 15) f_ChbChecked_ValueError = true;
+                            if (chb_H_Cvalue == true && ProcessingZone_C < 3)  f_ChbChecked_ValueError = true;
 
-
-                            STDSerialization ser = new STDSerialization();
-                            ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
-                            listSectionData.Add(new SectionTypeProcessingData()//以前次加工區域數值初始化數值
+                            if (f_ChbChecked_ValueError == false)
                             {
-                                SectionCategoryType = BackupData_ProcessingZone[0].SectionCategoryType,
-                                ProcessingBehavior = BackupData_ProcessingZone[0].ProcessingBehavior,
-                                A = BackupData_ProcessingZone[0].A,
-                                B = BackupData_ProcessingZone[0].B,
-                                C = BackupData_ProcessingZone[0].C,
-                            });
-                            if (chb_H_Avalue == true) { listSectionData[0].A = ProcessingZone_A; }
-                            if (chb_H_Bvalue == true) { listSectionData[0].B = ProcessingZone_B; }
-                            if (chb_H_Cvalue == true) { listSectionData[0].C = ProcessingZone_C; }
-                            ser.SetSectionTypeProcessingData(listSectionData);//寫入已更新的數值
+                                //讀入加工區域設定值
+                                STDSerialization serH = new STDSerialization(); //序列化處理器
+                                BackupData_ProcessingZone = serH.GetSectionTypeProcessingData("H", SelectProcessingBehavior);//備份當前加工區域數值
 
-                            //取消所有checkbox
-                            chb_SteelType = false;
-                            chb_ProcessingBehavior = false;
-                            chb_H_Avalue = false;
-                            chb_H_Bvalue = false;
-                            chb_H_Cvalue = false;
 
-                            //打開復原按鈕
-                            GoBackButtonEnabled = true;
+                                STDSerialization ser = new STDSerialization();
+                                ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
+                                listSectionData.Add(new SectionTypeProcessingData()//以前次加工區域數值初始化數值
+                                {
+                                    SectionCategoryType = BackupData_ProcessingZone[0].SectionCategoryType,
+                                    ProcessingBehavior = BackupData_ProcessingZone[0].ProcessingBehavior,
+                                    A = BackupData_ProcessingZone[0].A,
+                                    B = BackupData_ProcessingZone[0].B,
+                                    C = BackupData_ProcessingZone[0].C,
+                                });
+                                if (chb_H_Avalue == true) { listSectionData[0].A = ProcessingZone_A; }
+                                if (chb_H_Bvalue == true) { listSectionData[0].B = ProcessingZone_B; }
+                                if (chb_H_Cvalue == true) { listSectionData[0].C = ProcessingZone_C; }
+                                ser.SetSectionTypeProcessingData(listSectionData);//寫入已更新的數值
+
+                                //取消所有checkbox
+                                chb_SteelType = false;
+                                chb_ProcessingBehavior = false;
+                                chb_H_Avalue = false;
+                                chb_H_Bvalue = false;
+                                chb_H_Cvalue = false;
+
+                                //打開復原按鈕
+                                GoBackButtonEnabled = true;
+
+                                WinUIMessageBox.Show(null,
+                                                     $"修改完成",
+                                                     "通知",
+                                                     MessageBoxButton.OK,
+                                                     MessageBoxImage.Exclamation,
+                                                     MessageBoxResult.None,
+                                                     MessageBoxOptions.None,
+                                                     FloatingMode.Popup);
+                            }
+                            else
+                            {
+                                WinUIMessageBox.Show(null,
+                                                     $"請輸入適當的設定值",
+                                                     "通知",
+                                                     MessageBoxButton.OK,
+                                                     MessageBoxImage.Exclamation,
+                                                     MessageBoxResult.None,
+                                                     MessageBoxOptions.None,
+                                                     FloatingMode.Popup);
+
+                                f_ChbChecked_ValueError = false; //關閉檢查flag
+                            }
                         }
                         else
                         {
@@ -749,32 +835,60 @@ namespace WPFSTD105.ViewModel
                     case (int)SectionProcessing_SteelType.BOX:
                         if ((chb_SteelType && chb_ProcessingBehavior) == true && (chb_BOX_Avalue || chb_BOX_Bvalue) == true)
                         {
-                            //讀入加工區域設定值
-                            STDSerialization serBOX = new STDSerialization(); //序列化處理器
-                            BackupData_ProcessingZone = serBOX.GetSectionTypeProcessingData("BOX", SelectProcessingBehavior);//備份當前加工區域數值
+                            if (chb_BOX_Avalue == true && ProcessingZone_A < 15) f_ChbChecked_ValueError = true;
+                            if (chb_BOX_Bvalue == true && ProcessingZone_B < 15) f_ChbChecked_ValueError = true;
 
-
-                            STDSerialization ser = new STDSerialization(); //序列化處理器
-                            ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
-                            listSectionData.Add(new SectionTypeProcessingData()//以前次加工區域數值初始化數值
+                            if (f_ChbChecked_ValueError == false)
                             {
-                                SectionCategoryType = BackupData_ProcessingZone[0].SectionCategoryType,
-                                ProcessingBehavior = BackupData_ProcessingZone[0].ProcessingBehavior,
-                                A = BackupData_ProcessingZone[0].A,
-                                B = BackupData_ProcessingZone[0].B,
-                            });
-                            if (chb_BOX_Avalue == true) { listSectionData[0].A = ProcessingZone_A; }
-                            if (chb_BOX_Bvalue == true) { listSectionData[0].B = ProcessingZone_B; }
-                            ser.SetSectionTypeProcessingData(listSectionData);//寫入已更新的數值
+                                //讀入加工區域設定值
+                                STDSerialization serBOX = new STDSerialization(); //序列化處理器
+                                BackupData_ProcessingZone = serBOX.GetSectionTypeProcessingData("BOX", SelectProcessingBehavior);//備份當前加工區域數值
 
-                            //取消所有checkbox
-                            chb_SteelType = false;
-                            chb_ProcessingBehavior = false;
-                            chb_BOX_Avalue = false;
-                            chb_BOX_Bvalue = false;
 
-                            //打開復原按鈕
-                            GoBackButtonEnabled = true;
+                                STDSerialization ser = new STDSerialization(); //序列化處理器
+                                ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
+                                listSectionData.Add(new SectionTypeProcessingData()//以前次加工區域數值初始化數值
+                                {
+                                    SectionCategoryType = BackupData_ProcessingZone[0].SectionCategoryType,
+                                    ProcessingBehavior = BackupData_ProcessingZone[0].ProcessingBehavior,
+                                    A = BackupData_ProcessingZone[0].A,
+                                    B = BackupData_ProcessingZone[0].B,
+                                });
+                                if (chb_BOX_Avalue == true) { listSectionData[0].A = ProcessingZone_A; }
+                                if (chb_BOX_Bvalue == true) { listSectionData[0].B = ProcessingZone_B; }
+                                ser.SetSectionTypeProcessingData(listSectionData);//寫入已更新的數值
+
+                                //取消所有checkbox
+                                chb_SteelType = false;
+                                chb_ProcessingBehavior = false;
+                                chb_BOX_Avalue = false;
+                                chb_BOX_Bvalue = false;
+
+                                //打開復原按鈕
+                                GoBackButtonEnabled = true;
+
+                                WinUIMessageBox.Show(null,
+                                                     $"修改完成",
+                                                     "通知",
+                                                     MessageBoxButton.OK,
+                                                     MessageBoxImage.Exclamation,
+                                                     MessageBoxResult.None,
+                                                     MessageBoxOptions.None,
+                                                     FloatingMode.Popup);
+                            }
+                            else
+                            {
+                                WinUIMessageBox.Show(null,
+                                                     $"請輸入適當的設定值",
+                                                     "通知",
+                                                     MessageBoxButton.OK,
+                                                     MessageBoxImage.Exclamation,
+                                                     MessageBoxResult.None,
+                                                     MessageBoxOptions.None,
+                                                     FloatingMode.Popup);
+
+                                f_ChbChecked_ValueError = false; //關閉檢查flag
+                            }
                         }
                         else
                         {
@@ -791,32 +905,60 @@ namespace WPFSTD105.ViewModel
                     case (int)SectionProcessing_SteelType.CH:
                         if ((chb_SteelType && chb_ProcessingBehavior) == true && (chb_CH_Avalue || chb_CH_Bvalue) == true)
                         {
-                            //讀入加工區域設定值
-                            STDSerialization serCH = new STDSerialization(); //序列化處理器
-                            BackupData_ProcessingZone = serCH.GetSectionTypeProcessingData("CH", SelectProcessingBehavior);//備份當前加工區域數值
+                            if (chb_CH_Avalue == true && ProcessingZone_A < 15) f_ChbChecked_ValueError = true;
+                            if (chb_CH_Bvalue == true && ProcessingZone_B < 15) f_ChbChecked_ValueError = true;
 
-
-                            STDSerialization ser = new STDSerialization(); //序列化處理器
-                            ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
-                            listSectionData.Add(new SectionTypeProcessingData()//以前次加工區域數值初始化數值
+                            if (f_ChbChecked_ValueError == false)
                             {
-                                SectionCategoryType = BackupData_ProcessingZone[0].SectionCategoryType,
-                                ProcessingBehavior = BackupData_ProcessingZone[0].ProcessingBehavior,
-                                A = BackupData_ProcessingZone[0].A,
-                                B = BackupData_ProcessingZone[0].B,
-                            });
-                            if (chb_CH_Avalue == true) { listSectionData[0].A = ProcessingZone_A; }
-                            if (chb_CH_Bvalue == true) { listSectionData[0].B = ProcessingZone_B; }
-                            ser.SetSectionTypeProcessingData(listSectionData);//寫入已更新的數值
+                                //讀入加工區域設定值
+                                STDSerialization serCH = new STDSerialization(); //序列化處理器
+                                BackupData_ProcessingZone = serCH.GetSectionTypeProcessingData("CH", SelectProcessingBehavior);//備份當前加工區域數值
 
-                            //取消所有checkbox
-                            chb_SteelType = false;
-                            chb_ProcessingBehavior = false;
-                            chb_CH_Avalue = false;
-                            chb_CH_Bvalue = false;
 
-                            //打開復原按鈕
-                            GoBackButtonEnabled = true;
+                                STDSerialization ser = new STDSerialization(); //序列化處理器
+                                ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
+                                listSectionData.Add(new SectionTypeProcessingData()//以前次加工區域數值初始化數值
+                                {
+                                    SectionCategoryType = BackupData_ProcessingZone[0].SectionCategoryType,
+                                    ProcessingBehavior = BackupData_ProcessingZone[0].ProcessingBehavior,
+                                    A = BackupData_ProcessingZone[0].A,
+                                    B = BackupData_ProcessingZone[0].B,
+                                });
+                                if (chb_CH_Avalue == true) { listSectionData[0].A = ProcessingZone_A; }
+                                if (chb_CH_Bvalue == true) { listSectionData[0].B = ProcessingZone_B; }
+                                ser.SetSectionTypeProcessingData(listSectionData);//寫入已更新的數值
+
+                                //取消所有checkbox
+                                chb_SteelType = false;
+                                chb_ProcessingBehavior = false;
+                                chb_CH_Avalue = false;
+                                chb_CH_Bvalue = false;
+
+                                //打開復原按鈕
+                                GoBackButtonEnabled = true;
+
+                                WinUIMessageBox.Show(null,
+                                                     $"修改完成",
+                                                     "通知",
+                                                     MessageBoxButton.OK,
+                                                     MessageBoxImage.Exclamation,
+                                                     MessageBoxResult.None,
+                                                     MessageBoxOptions.None,
+                                                     FloatingMode.Popup);
+                            }
+                            else
+                            {
+                                WinUIMessageBox.Show(null,
+                                                     $"請輸入適當的設定值",
+                                                     "通知",
+                                                     MessageBoxButton.OK,
+                                                     MessageBoxImage.Exclamation,
+                                                     MessageBoxResult.None,
+                                                     MessageBoxOptions.None,
+                                                     FloatingMode.Popup);
+
+                                f_ChbChecked_ValueError = false; //關閉檢查flag
+                            }
                         }
                         else
                         {
@@ -841,18 +983,6 @@ namespace WPFSTD105.ViewModel
                                              FloatingMode.Popup);
 
                         break;
-                }
-
-                if (GoBackButtonEnabled == true)
-                {
-                    WinUIMessageBox.Show(null,
-                                         $"修改完成",
-                                         "通知",
-                                         MessageBoxButton.OK,
-                                         MessageBoxImage.Exclamation,
-                                         MessageBoxResult.None,
-                                         MessageBoxOptions.None,
-                                         FloatingMode.Popup);
                 }
             });
         }
@@ -1229,6 +1359,24 @@ namespace WPFSTD105.ViewModel
             });
         }
         /// <summary>
+        /// 軟體版本 - 安裝 20220819 張燕華
+        /// </summary>
+        public ICommand SoftwareVersionInstallCommand { get; set; }
+        private WPFBase.RelayCommand SoftwareVersionInstall()
+        {
+            return new WPFBase.RelayCommand(() =>
+            {
+                WinUIMessageBox.Show(null,
+                                     $"已是最新版本",
+                                     "通知",
+                                     MessageBoxButton.OK,
+                                     MessageBoxImage.Exclamation,
+                                     MessageBoxResult.None,
+                                     MessageBoxOptions.None,
+                                     FloatingMode.Popup);
+            });
+        }
+        /// <summary>
         /// 刪除刀庫內容
         /// </summary>
         public ICommand DeleteDrillBrandsCommand { get; set; }
@@ -1239,11 +1387,11 @@ namespace WPFSTD105.ViewModel
                 DrillBrand drillBrand = (DrillBrand)e;
                 GD_STD.DrillWarehouse drillWarehouse = ReadCodesysMemor.GetDrillWarehouse();
                 var _ = drillWarehouse.Middle
-                                                            .Union(drillWarehouse.LeftEntrance)
-                                                            .Union(drillWarehouse.LeftExport)
-                                                            .Union(drillWarehouse.RightEntrance)
-                                                            .Union(drillWarehouse.RightExport)
-                                                            .Where(el => System.Text.Encoding.ASCII.GetString(el.GUID) == drillBrand.Guid.ToString());
+                                      .Union(drillWarehouse.LeftEntrance)
+                                      .Union(drillWarehouse.LeftExport)
+                                      .Union(drillWarehouse.RightEntrance)
+                                      .Union(drillWarehouse.RightExport)
+                                      .Where(el => System.Text.Encoding.ASCII.GetString(el.GUID) == drillBrand.Guid.ToString());
                 if (_.Count() == 0)
                 {
                     DrillBrands.Remove((DrillBrand)e);

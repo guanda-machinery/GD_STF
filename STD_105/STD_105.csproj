@@ -577,6 +577,12 @@
     <Compile Include="Office\Pages\ObSettingsPage_Office.xaml.cs">
       <DependentUpon>ObSettingsPage_Office.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Office\Pages\ParametersSettings_Office_Sticker.xaml.cs">
+      <DependentUpon>ParametersSettings_Office_Sticker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Office\Pages\ParametersSettings_Office_StickerVM.xaml.cs">
+      <DependentUpon>ParametersSettings_Office_StickerVM.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Office\Pages\SectionSpecExcel2Inp.xaml.cs">
       <DependentUpon>SectionSpecExcel2Inp.xaml</DependentUpon>
     </Compile>
@@ -993,6 +999,14 @@
     <Page Include="Office\Pages\ObSettingsPage_Office.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Office\Pages\ParametersSettings_Office_Sticker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Office\Pages\ParametersSettings_Office_StickerVM.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Office\Pages\SectionSpecExcel2Inp.xaml">
       <Generator>MSBuild:Compile</Generator>

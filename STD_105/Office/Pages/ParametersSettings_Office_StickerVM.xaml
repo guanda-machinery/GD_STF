@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="StickerDialog.View.RegistrationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:controls="http://schemas.devdept.com/winfx/2008/xaml/control" xmlns:controls1="http://schemas.devexpress.com/winfx/2008/xaml/printing/native">
+
+    <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+        <TextBlock VerticalAlignment="Center" Text="IP設定   "/>
+        <Grid>
+            <TextBox  Width="150"  VerticalAlignment="Center" HorizontalAlignment="Left" x:Name="IPSettingTextBox" Margin="5"/>
+            <TextBlock IsHitTestVisible="False" Text="請輸入IP位置" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="DarkGray">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, ElementName=IPSettingTextBox}" Value="">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Grid>
+    </StackPanel>
+</UserControl>

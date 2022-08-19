@@ -16,6 +16,7 @@
                   xmlns:local="clr-namespace:STD_105.Office"
                   xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
                   xmlns:uc_language="clr-namespace:LanguageSettingDialog.View"
+                  xmlns:uc_sticker="clr-namespace:StickerDialog.View"
                   Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   mc:Ignorable="d"
@@ -92,11 +93,12 @@
                             </Button.Content>
                         </Button>
                         <!--貼紙機設定-->
-                        <Button Margin="5,8,0,0" Background="WhiteSmoke">
+                        <uc_sticker:MainView Margin="5,8,0,0"/>
+                        <!--Button Margin="5,8,0,0" Background="WhiteSmoke">
                             <Button.Content>
                                 <TextBlock Text="貼紙機設定" />
                             </Button.Content>
-                        </Button>
+                        </Button-->
                         <!--斷面規格轉inp-->
                         <Button Command="{ Binding Path=SectionSpecExcel2InpCommand }" Visibility="Collapsed" Margin="5,8,0,0" Background="WhiteSmoke">
                             <Button.Content>

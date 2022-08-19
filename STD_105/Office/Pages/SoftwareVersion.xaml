@@ -75,6 +75,7 @@
                 
                 <RepeatButton Grid.Row="2" Grid.Column="0"
                               Content="安裝"
+                              Command="{Binding SoftwareVersionInstallCommand}"
                               FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
                               VerticalContentAlignment="Center"
                               Background="Gold"
@@ -82,7 +83,7 @@
                               BorderBrush="Black"
                               Height="25"
                               Width="70"
-                              Margin="340,675,0,10"/>
+                              Margin="340,675,0,10" Cursor="Hand"/>
             </Grid>
         
             <Grid Grid.Column="1" Background="White">

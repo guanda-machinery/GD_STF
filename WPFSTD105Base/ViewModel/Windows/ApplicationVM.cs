@@ -743,7 +743,7 @@ namespace WPFSTD105
             string projectName = CommonViewModel.ProjectName; //專案名稱
 
             if (projectName != null)
-                return $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\{SectionType}_processingzone.lis";
+                return $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\ParameterSetting\{SectionType}_processingzone.lis";
 
             throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }
@@ -755,7 +755,7 @@ namespace WPFSTD105
             string projectName = CommonViewModel.ProjectName; //專案名稱
 
             if (projectName != null)
-                return $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\SplitLineSetting.lis";
+                return $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\ParameterSetting\SplitLineSetting.lis";
 
             throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }
@@ -768,7 +768,7 @@ namespace WPFSTD105
 
             if (projectName != null)
             {
-                bool fileExist = File.Exists($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\SplitLineSetting.lis");
+                bool fileExist = File.Exists($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\ParameterSetting\SplitLineSetting.lis");
                 if (fileExist)
                 {
                     return true;
@@ -793,13 +793,13 @@ namespace WPFSTD105
 
             if (projectName != null)
             {
-                bool fileExist_H = File.Exists($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\H_DRILLING_processingzone.lis");
+                bool fileExist_H = File.Exists($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\ParameterSetting\H_DRILLING_processingzone.lis");
                 if (fileExist_H) CheckFiles[0] = true;
 
-                bool fileExist_BOX = File.Exists($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\BOX_DRILLING_processingzone.lis");
+                bool fileExist_BOX = File.Exists($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\ParameterSetting\BOX_DRILLING_processingzone.lis");
                 if (fileExist_BOX) CheckFiles[1] = true;
 
-                bool fileExist_CH = File.Exists($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\CH_DRILLING_processingzone.lis");
+                bool fileExist_CH = File.Exists($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\ParameterSetting\CH_DRILLING_processingzone.lis");
                 if (fileExist_CH) CheckFiles[2] = true;
 
                 return CheckFiles;
@@ -808,6 +808,28 @@ namespace WPFSTD105
             {
                 throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
             }
+        }
+        ///// <summary>
+        ///// 型鋼加工區域設定 - 檢查設定值檔案是否存在 20220818 張燕華
+        ///// </summary>
+        public bool CheckParameterSettingDirectoryPath()
+        {
+            bool CheckDir = false;
+            string projectName = CommonViewModel.ProjectName; //專案名稱
+
+            if (projectName != null)
+            {
+                if (!System.IO.Directory.Exists($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\ParameterSetting"))//不存在就建立目錄
+                {
+                    System.IO.Directory.CreateDirectory($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\ParameterSetting");
+                    CheckDir = true;
+                }
+            }
+            else
+            {
+                throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
+            }
+            return CheckDir;
         }
         /// <summary>
         /// 複製文件
