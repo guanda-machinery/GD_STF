@@ -11,7 +11,7 @@ namespace SectionData
         /// </summary>
         public string SectionCategoryType { get; set; }
         /// <summary>
-        /// 加工行為
+        /// 加工方式
         /// </summary>
         public int ProcessingBehavior { get; set; }
         /// <summary>

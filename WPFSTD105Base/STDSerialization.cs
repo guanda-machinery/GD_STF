@@ -413,6 +413,14 @@ namespace WPFSTD105
             return ApplicationVM.CheckFileSectionTypeProcessingData();
         }
         /// <summary>
+        /// 檢查參數設定資料夾是否存在, 若否則新增 20220819 張燕華 
+        /// </summary>
+        public bool CheckParameterSettingDirectory()
+        {
+            ApplicationVM appvm = new ApplicationVM();
+            return appvm.CheckParameterSettingDirectoryPath();
+        }
+        /// <summary>
         ///  切割線設定 - 儲存序列化檔案資料 20220816 張燕華
         /// </summary>
         /// <param name="splitLineData"></param>
