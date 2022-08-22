@@ -364,8 +364,8 @@ namespace WPFSTD105.Tekla
                             else if (objType == typeof(SteelPart))
                             {
                                 ((ISecondary)obj).Father.Add(Father.ID[Father.ID.Count - 1]);//加入主件 ID
-                                string profile = ((IProfile)obj).Profile; //字典 key 
-                                string key = ((SteelPart)obj).Number; //字典 key 
+                                string key = ((IProfile)obj).Profile; //字典 key 
+                                //string key = ((SteelPart)obj).Number; //字典 key 
                                 if (KeyValuePairs.ContainsKey(key))//如果找到相同的 key
                                 {
                                     int index = 0;//索引位置

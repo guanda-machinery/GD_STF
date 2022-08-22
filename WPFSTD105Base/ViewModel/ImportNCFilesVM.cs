@@ -5,6 +5,7 @@ using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Dialogs;
+using DevExpress.Xpf.WindowsUI;
 using GD_STD;
 using GD_STD.Data;
 using Ionic.Zip;
@@ -151,42 +152,52 @@ namespace WPFSTD105
                 Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
                 if (IsNcLoad || IsBomLoad) //如果有載入過報表
                 {
-                    MessageBoxResult saveAsResult = MessageBox.Show($"請問是否要備份之前載入的檔案", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
-                    if (saveAsResult == MessageBoxResult.Yes) //如果要備份檔案
-                    {
-                        FolderBrowserDialogService service = DevExpand.NewFolder("請選擇另存路徑"); //文件夾瀏覽器對話服務
-                        IFolderBrowserDialogService folder = service;
-                        folder.ShowDialog();//Show 視窗
-                        string path = folder.ResultPath;//用戶選擇的路徑
-                        if (path != string.Empty) //如果有選擇路徑
-                        {
-                            string dataName = $"{CommonViewModel.ProjectName }{ DateTime.Now.ToString("yy-MM-dd-HH-mm-ss")}.zip";//壓縮檔名稱
-                            string zipPath = $@"{path}\{dataName}";//壓縮檔完整路徑
-                            if (File.Exists(zipPath))//如果有重複的壓縮檔
-                            {
-                                MessageBoxResult coverResult = MessageBox.Show($"發現重複的檔案名稱 '{dataName}'，請問是否覆蓋此壓縮檔", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
-                                if (coverResult == MessageBoxResult.Yes)//如果選擇要覆蓋檔案
-                                {
-                                    File.Delete(zipPath);//刪除檔案
-                                    BackupFile(zipPath);//備份檔案
-                                }
-                            }
-                            else
-                            {
-                                BackupFile(zipPath);//備份檔案
-                            }
-                        }
-                    }
-                    if (NcPath != string.Empty)//有選擇nc路徑
-                        DeleteFolder(ApplicationVM.DirectoryNc());//刪除既有nc檔案
-                    if (BomPath != string.Empty)//有選擇報表路徑
-                        File.Delete(ApplicationVM.FileTeklaBom());//刪除既有的報表
-
+                    // 2022/08/22 呂宗霖 因螺栓無法找到其歸屬零件編號，故架構師與副總討論後，決議先讓使用者只能匯入一次檔案，若要再次匯入，必須重新新增專案
+                    WinUIMessageBox.Show(null,
+                    $"已匯入專案，請重新建立專案",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Popup);
+                    return;
+                    //MessageBoxResult saveAsResult = MessageBox.Show($"請問是否要備份之前載入的檔案", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                    //if (saveAsResult == MessageBoxResult.Yes) //如果要備份檔案
+                    //{
+                    //    FolderBrowserDialogService service = DevExpand.NewFolder("請選擇另存路徑"); //文件夾瀏覽器對話服務
+                    //    IFolderBrowserDialogService folder = service;
+                    //    folder.ShowDialog();//Show 視窗
+                    //    string path = folder.ResultPath;//用戶選擇的路徑
+                    //    if (path != string.Empty) //如果有選擇路徑
+                    //    {
+                    //        string dataName = $"{CommonViewModel.ProjectName}{DateTime.Now.ToString("yy-MM-dd-HH-mm-ss")}.zip";//壓縮檔名稱
+                    //        string zipPath = $@"{path}\{dataName}";//壓縮檔完整路徑
+                    //        if (File.Exists(zipPath))//如果有重複的壓縮檔
+                    //        {
+                    //            MessageBoxResult coverResult = MessageBox.Show($"發現重複的檔案名稱 '{dataName}'，請問是否覆蓋此壓縮檔", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                    //            if (coverResult == MessageBoxResult.Yes)//如果選擇要覆蓋檔案
+                    //            {
+                    //                File.Delete(zipPath);//刪除檔案
+                    //                BackupFile(zipPath);//備份檔案
+                    //            }
+                    //        }
+                    //        else
+                    //        {
+                    //            BackupFile(zipPath);//備份檔案
+                    //        }
+                    //    }
+                    //}
+                    //if (NcPath != string.Empty)//有選擇nc路徑
+                    //    DeleteFolder(ApplicationVM.DirectoryNc());//刪除既有nc檔案
+                    //if (BomPath != string.Empty)//有選擇報表路徑
+                    //    File.Delete(ApplicationVM.FileTeklaBom());//刪除既有的報表
                 }
                 ScreenManager.ViewModel.Status = "複製文件到 Model 中 ...";
                 Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
-                // 只跑BOM
-                if (BomPath != string.Empty && string.IsNullOrEmpty( NcPath))//如果有選擇報表路徑
+                #region 只跑BOM
+                // 只跑BOM && string.IsNullOrEmpty(NcPath)
+                if (BomPath != string.Empty)//如果有選擇報表路徑
                 {
                     if (File.Exists(ApplicationVM.FileTeklaBom())) //檔案存在
                     {
@@ -196,8 +207,8 @@ namespace WPFSTD105
                     CommonViewModel.ProjectProperty.BomLoad = DateTime.Now; //bom載入時間
                     CommonViewModel.ProjectProperty.Revise = DateTime.Now;//專案變動所以修改日期
 
-                    TeklaBomFactory teklaHtemlFactory = new TeklaBomFactory($@"{ ApplicationVM.FileTeklaBom()}"); //報表讀取器
-                    bool loadBomResult = teklaHtemlFactory.Load( ScreenManager.ViewModel);//載入報表物件結果
+                    TeklaBomFactory teklaHtemlFactory = new TeklaBomFactory($@"{ApplicationVM.FileTeklaBom()}"); //報表讀取器
+                    bool loadBomResult = teklaHtemlFactory.Load(ScreenManager.ViewModel);//載入報表物件結果
                     if (loadBomResult) //載入成功
                     {
                         CommonViewModel.ProjectProperty.IsBomLoad = true;//改變報表載入參數
@@ -236,8 +247,11 @@ namespace WPFSTD105
                     CommonViewModel.ProjectProperty.BomLoad = DateTime.Now;//bom載入時間
                     CommonViewModel.ProjectProperty.Revise = DateTime.Now;//專案變動所以修改日期
                 }
-                // 只跑NC1
-                if (NcPath != string.Empty && string.IsNullOrEmpty( BomPath)) //如果有選擇nc路徑
+                #endregion
+
+                #region 只跑NC1
+                // 只跑NC1 && string.IsNullOrEmpty(BomPath)
+                if (NcPath != string.Empty) //如果有選擇nc路徑
                 {
                     DeleteFolder(ApplicationVM.DirectoryNc());//刪除既有nc檔案
                     CopyFolder(NcPath);//複製nc路徑的nc1檔案
@@ -251,81 +265,31 @@ namespace WPFSTD105
                         CommonViewModel.ProjectProperty.IsNcLoad = true;//改變報表載入參數
                     }
                 }
+                #endregion
 
-                if (!string.IsNullOrEmpty(BomPath) && !string.IsNullOrEmpty(NcPath))
-                {
-                    #region BOM表
-                   if (File.Exists(ApplicationVM.FileTeklaBom())) //檔案存在
-                   {
-                       File.Delete(ApplicationVM.FileTeklaBom());//刪除檔案
-                   }
-                   File.Copy(BomPath, ApplicationVM.FileTeklaBom());//複製報表到模型
-                    CommonViewModel.ProjectProperty.BomLoad = DateTime.Now; //bom載入時間
-                    CommonViewModel.ProjectProperty.Revise = DateTime.Now;//專案變動所以修改日期
+                //if (!string.IsNullOrEmpty(BomPath) && !string.IsNullOrEmpty(NcPath))
+                //{
+                //    #region BOM表
+                //    if (File.Exists(ApplicationVM.FileTeklaBom())) //檔案存在
+                //    {
+                //        File.Delete(ApplicationVM.FileTeklaBom());//刪除檔案
+                //    }
+                //    File.Copy(BomPath, ApplicationVM.FileTeklaBom());//複製報表到模型
+                //    CommonViewModel.ProjectProperty.BomLoad = DateTime.Now; //bom載入時間
+                //    CommonViewModel.ProjectProperty.Revise = DateTime.Now;//專案變動所以修改日期
 
-                    TeklaBomFactory teklaHtemlFactory = new TeklaBomFactory($@"{ApplicationVM.FileTeklaBom()}"); //報表讀取器 
-                    bool loadBomResult = teklaHtemlFactory.Load(ScreenManager.ViewModel);//載入報表物件結果
-                    #endregion
+                //    TeklaBomFactory teklaHtemlFactory = new TeklaBomFactory($@"{ApplicationVM.FileTeklaBom()}"); //報表讀取器 
+                //    bool loadBomResult = teklaHtemlFactory.Load(ScreenManager.ViewModel);//載入報表物件結果
+                //    #endregion
 
-                    #region NC檔
-                    DeleteFolder(ApplicationVM.DirectoryNc());//刪除既有nc檔案
-                    CopyFolder(NcPath);//複製nc路徑的nc1檔案
+                //    #region NC檔
+                //    DeleteFolder(ApplicationVM.DirectoryNc());//刪除既有nc檔案
+                //    CopyFolder(NcPath);//複製nc路徑的nc1檔案
 
-                    TeklaNcFactory factory = new TeklaNcFactory();//nc1 讀取器
-                    bool loadNcResult = factory.Load(ScreenManager.ViewModel); //載入NC檔案
-
-                    // 皆讀取成功
-                    if (loadBomResult && loadNcResult)
-                    {
-                        foreach (var nc in factory.DataCorrespond)
-                        {
-                            // 零件編號
-                            string number = nc.Number;
-                            // 斷面規格
-                            string profile = nc.Profile;
-                            // 長度
-                            SteelAttr sa = factory.ncTemps.FirstOrDefault(x => x.SteelAttr.PartNumber == number).SteelAttr;
-                            double length = ((sa != null) ? sa.Length : 0);
-                            // 材質
-                            string material = ((sa != null) ? sa.Material : "");
-                            // 取得BOM表中 對應NC檔中零件編號的資料
-                            foreach (var keyValuePair in teklaHtemlFactory.KeyValuePairs.Where(x => x.Key == number))
-                            {
-                                foreach (var kp in keyValuePair.Value.Where(x => ((SteelPart)x).Profile != profile))
-                                {
-                                    SteelPart sp = (SteelPart)kp;
-                                    //使用者選擇匯入資料來源
-                                    MessageBoxResult saveAsResult = MessageBox.Show(
-                                        $"斷面規格相異，請選擇正確資料為何\nNC1(Yes):{profile}\nBOM(No):{sp.Profile}",
-                                        "通知",
-                                        MessageBoxButton.YesNo,
-                                        MessageBoxImage.Information,
-                                        MessageBoxResult.None,
-                                        MessageBoxOptions.ServiceNotification);
-                                    if (saveAsResult == MessageBoxResult.Yes) //如果要備份檔案
-                                    {
-                                        sp.Profile = profile;
-                                    }
-                                    else
-                                    {
-                                        nc.Profile = sp.Profile;
-                                    }
-                                    //foreach (var kp in keyValuePair.Value.Where(x => ((SteelPart)x).Length != length))
-                                    //{
-                                    //    //使用者選擇匯入資料來源
-                                    //}
-                                    //foreach (var kp in keyValuePair.Value.Where(x => ((SteelPart)x).Material != material))
-                                    //{
-                                    //    //使用者選擇匯入資料來源
-                                    //}
-                                    //SteelPart sp = (SteelPart)keyValuePair.Value;
-                                }
-                            }
-                        }
-                    }
-                    #endregion
-                }
-
+                //    TeklaNcFactory factory = new TeklaNcFactory();//nc1 讀取器
+                //    bool loadNcResult = factory.Load(ScreenManager.ViewModel); //載入NC檔案
+                //    #endregion
+                //}
                 CommonViewModel.ProjectProperty.BomProperties = BomProperties; //改變ioc內部報表屬性參數
                 WriteProjectProperty(CommonViewModel.ProjectProperty);//改變目前vm的參數
                 ser.SetProjectProperty(CommonViewModel.ProjectProperty);
