@@ -219,7 +219,7 @@ namespace WPFSTD105.Tekla
                 }
             }
         }
-        private string _Status = "轉換 nc 物件 ...";
+        private string _Status = "轉換 nc 物件 ..."; 
         /// <summary>
         /// 載入報表物件
         /// </summary>

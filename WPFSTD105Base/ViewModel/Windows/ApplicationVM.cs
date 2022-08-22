@@ -631,6 +631,7 @@ namespace WPFSTD105
                 SerializationHelper.GZipSerializeBinary(new ObservableCollection<MaterialDataView>(), ApplicationVM.FileMaterialDataView());//斷面規格列表
                 SerializationHelper.GZipSerializeBinary(new NcTempList(), ApplicationVM.FileNcTemp()); //nc 尚未實體化的資料
 
+                // 2022/08/22 呂宗霖 若有缺少斷面規格，自動產生
                 foreach (OBJETC_TYPE format in System.Enum.GetValues(typeof(OBJETC_TYPE)))
                 {
                     if (format != OBJETC_TYPE.Unknown && format != OBJETC_TYPE.PLATE)
