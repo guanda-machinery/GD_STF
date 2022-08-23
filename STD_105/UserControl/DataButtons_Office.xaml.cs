@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 namespace STD_105
 {
     /// <summary>
-    /// DataButtons_Office.xaml 的互動邏輯
+    /// DataButtons_Office.xaml 的互動邏輯 20220822  蘇冠綸 版型更改
     /// </summary>
     public partial class DataButtons_Office : UserControl
     {
