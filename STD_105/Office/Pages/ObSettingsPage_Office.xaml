@@ -550,8 +550,6 @@
                                                    Modify="{Binding ModifyHole}" />
                     </Grid>
                 </TabItem>
-                <TabItem Header="铣削"/>
-                <TabItem Header="劃線"/>
                 <TabItem Header="切割線">
                     <TabItem.Resources>
                         <Style TargetType="{x:Type TextBox}"
@@ -651,7 +649,6 @@
                                                    VerticalAlignment="Bottom"/>
                     </Grid>
                 </TabItem>
-                <TabItem Header="構件號" />
             </TabControl>
         </Grid>
     </Grid>
