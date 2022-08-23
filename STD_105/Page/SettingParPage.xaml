@@ -121,6 +121,78 @@
                                 <Style TargetType="TreeViewItem"
                                        BasedOn="{ StaticResource treeViewItem_STD }"></Style>
                             </TreeView.Resources>
+                            <TreeViewItem ItemsSource="{Binding TUBE}"
+                                          DisplayMemberPath="Profile">
+                                <TreeViewItem.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="{ StaticResource BOX }"
+                                               Width="20"
+                                               Height="20"
+                                               Margin="0,0,5,0" />
+                                        <TextBlock Grid.Column="1"
+                                                   Margin="0,2,0,0" 
+                                                   Text="TUBE-->X"/>
+                                    </Grid>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            <TreeViewItem ItemsSource="{Binding BOX}"
+                                          DisplayMemberPath="Profile">
+                                <TreeViewItem.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="{ StaticResource BOX }"
+                                               Width="20"
+                                               Height="20"
+                                               Margin="0,0,5,0" />
+                                        <TextBlock Grid.Column="1"
+                                                   Margin="0,2,0,0" 
+                                                   Text="BOX-->X"/>
+                                    </Grid>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            <TreeViewItem ItemsSource="{Binding BH}"
+                                          DisplayMemberPath="Profile">
+                                <TreeViewItem.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="{ StaticResource Beam }"
+                                               Width="20"
+                                               Height="20"
+                                               Margin="0,0,5,0" />
+                                        <TextBlock Grid.Column="1"
+                                                   Margin="0,2,0,0" 
+                                                   Text="BH-->X"/>
+                                    </Grid>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            <TreeViewItem ItemsSource="{Binding H}"
+                                          DisplayMemberPath="Profile">
+                                <TreeViewItem.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="{ StaticResource Beam }"
+                                               Width="20"
+                                               Height="20"
+                                               Margin="0,0,5,0" />
+                                        <TextBlock Grid.Column="1"
+                                                   Margin="0,2,0,0" 
+                                                   Text="H-->X"/>
+                                    </Grid>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
                             <TreeViewItem ItemsSource="{Binding RH}"
                                           DisplayMemberPath="Profile">
                                 <TreeViewItem.Header>
@@ -134,16 +206,12 @@
                                                Height="20"
                                                Margin="0,0,5,0" />
                                         <TextBlock Grid.Column="1"
-                                                   Margin="0,2,0,0">
-                                            <TextBlock.Text>
-                                                <MultiBinding  StringFormat="{}RH ( {0} )">
-                                                    <Binding Path="RH.Count" />
-                                                </MultiBinding>
-                                            </TextBlock.Text></TextBlock>
+                                                   Margin="0,2,0,0" 
+                                                   Text="RH-->X"/>
                                     </Grid>
                                 </TreeViewItem.Header>
                             </TreeViewItem>
-                            <TreeViewItem ItemsSource="{Binding BH}"
+                            <TreeViewItem ItemsSource="{Binding LB}"
                                           DisplayMemberPath="Profile">
                                 <TreeViewItem.Header>
                                     <Grid>
@@ -151,18 +219,13 @@
                                             <ColumnDefinition />
                                             <ColumnDefinition />
                                         </Grid.ColumnDefinitions>
-                                        <Image Grid.Column="0"
-                                               Source="{ StaticResource Beam }"
+                                        <Image Source="{ StaticResource CH }"
                                                Width="20"
                                                Height="20"
                                                Margin="0,0,5,0" />
                                         <TextBlock Grid.Column="1"
-                                                   Margin="0,2,0,0">
-                                            <TextBlock.Text>
-                                                <MultiBinding  StringFormat="{}BH ( {0} )">
-                                                    <Binding Path="BH.Count" />
-                                                </MultiBinding>
-                                            </TextBlock.Text></TextBlock>
+                                                   Margin="0,2,0,0" 
+                                                   Text="[-->X"/>
                                     </Grid>
                                 </TreeViewItem.Header>
                             </TreeViewItem>
@@ -174,64 +237,13 @@
                                             <ColumnDefinition />
                                             <ColumnDefinition />
                                         </Grid.ColumnDefinitions>
-                                        <Image Grid.Column="0"
-                                               Source="{ StaticResource CH }"
+                                        <Image Source="{ StaticResource CH }"
                                                Width="20"
                                                Height="20"
                                                Margin="0,0,5,0" />
                                         <TextBlock Grid.Column="1"
-                                                   Margin="0,2,0,0">
-                                            <TextBlock.Text>
-                                                <MultiBinding  StringFormat="{}CH ( {0} )">
-                                                    <Binding Path="CH.Count" />
-                                                </MultiBinding>
-                                            </TextBlock.Text></TextBlock>
-                                    </Grid>
-                                </TreeViewItem.Header>
-                            </TreeViewItem>
-                            <TreeViewItem ItemsSource="{Binding BOX}"
-                                          DisplayMemberPath="Profile">
-                                <TreeViewItem.Header>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <Image Grid.Column="0"
-                                               Source="{ StaticResource BOX }"
-                                               Width="20"
-                                               Height="20"
-                                               Margin="0,0,5,0" />
-                                        <TextBlock Grid.Column="1"
-                                                   Margin="0,2,0,0">
-                                            <TextBlock.Text>
-                                                <MultiBinding  StringFormat="{}BOX ( {0} )">
-                                                    <Binding Path="BOX.Count" />
-                                                </MultiBinding>
-                                            </TextBlock.Text></TextBlock>
-                                    </Grid>
-                                </TreeViewItem.Header>
-                            </TreeViewItem>
-                            <TreeViewItem ItemsSource="{Binding L}"
-                                          DisplayMemberPath="Profile">
-                                <TreeViewItem.Header>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <Image Grid.Column="0"
-                                               Source="{ StaticResource L }"
-                                               Width="20"
-                                               Height="20"
-                                               Margin="0,0,5,0" />
-                                        <TextBlock Grid.Column="1"
-                                                   Margin="0,2,0,0">
-                                            <TextBlock.Text>
-                                                <MultiBinding  StringFormat="{}L ( {0} )">
-                                                    <Binding Path="L.Count" />
-                                                </MultiBinding>
-                                            </TextBlock.Text></TextBlock>
+                                                   Margin="0,2,0,0" 
+                                                   Text="CH-->X"/>
                                     </Grid>
                                 </TreeViewItem.Header>
                             </TreeViewItem>
@@ -415,7 +427,7 @@
                                                  dx:ThemeManager.ThemeName="Office2019DarkGray"
                                                  ItemsSource="{ Binding InsertionData }">
                                     <dxg:GridControl.View>
-                                        <dxg:TableView ShowGroupPanel="False" />
+                                        <dxg:TableView ShowGroupPanel="False"/>
                                     </dxg:GridControl.View>
                                     <dxg:GridControl.Columns>
                                         <dxg:GridColumn Header="性質"

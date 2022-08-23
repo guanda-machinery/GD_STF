@@ -99,7 +99,7 @@
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SteelType">
                                             <i:InvokeCommandAction Command="{ Binding ShowProcessingZoneCommand }"
-                                                           CommandParameter="{ Binding ElementName=cbx_SteelType, Path=SelectedIndex }" />
+                                                                   CommandParameter="{ Binding ElementName=cbx_SteelType, Path=SelectedIndex }" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                     <ComboBoxItem>
@@ -382,7 +382,6 @@
                             Width="80"
                             Margin="10"/>
                         <RepeatButton 
-                            Content="☑／□"
                             Command="{Binding AllSelectedToggleCommand}"
                             CommandParameter="{ Binding ElementName=cbx_SteelType, Path=SelectedIndex }" 
                             IsEnabled="{Binding AllSelectedToggleButtonEnabled}"
@@ -393,7 +392,15 @@
                             BorderBrush="RoyalBlue"
                             Height="30"
                             Width="80"
-                            Margin="10"/>
+                            Margin="10">
+                            <RepeatButton.Content>
+                                <StackPanel Orientation="Horizontal">
+                                <wpf:PackIcon Kind="CheckBoxOutline"/>
+                                    <TextBlock Text="／" Margin="0,-2,0,0"/>
+                                <wpf:PackIcon Kind="CheckboxBlankOutline"/>
+                                </StackPanel>
+                            </RepeatButton.Content>
+                        </RepeatButton>
                         <RepeatButton Content="修改"
                             Command="{Binding ModifyProcessingZoneCommand}"
                             IsEnabled="{Binding ModifyButtonEnabled}"

@@ -113,6 +113,7 @@ namespace WPFSTD105.ViewModel
             GoBackProcessingZoneCommand = GoBackProcessingZone();//20220812 張燕華 加工區域設定 - 復原按鈕
 
             initializationSplitLineSettingData();//20220816 張燕華 切割線設定 - 讀取目前檔案中的設定值
+            ShowHowManyPartsRelatedComboboxCommand = ShowHowManyPartsRelatedCombobox();//20220823 張燕華 切割線設定 - 設定切割等分
             NewSplitLineCommand = NewSplitLine();//20220816 張燕華 切割線設定 - 新增設定數值
             ToggleAllSplitLineCheckboxCommand = ToggleAllSplitLineCheckbox();//20220816 張燕華 切割線設定 - CheckBox全選按鈕
             GoBackSplitLineCommand = GoBackSplitLine();//20220816 張燕華 切割線設定 - 復原按鈕
@@ -1191,6 +1192,22 @@ namespace WPFSTD105.ViewModel
             });
         }
         /// <summary>
+        /// 切割線設定 - 切割幾等分 20220823 張燕華
+        /// </summary>
+        public ICommand ShowHowManyPartsRelatedComboboxCommand { get; set; }
+        private WPFBase.RelayParameterizedCommand ShowHowManyPartsRelatedCombobox()
+        {
+            return new WPFBase.RelayParameterizedCommand(e =>
+            {
+                //若設定值檔案存在, 載入所有combobox的item source
+                SplitLineSettingClass SplitLineComboBox = new SplitLineSettingClass();
+                cbb_A_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_A, e.ToString());
+                cbb_B_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_B, e.ToString());
+                cbb_C_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_C, e.ToString());
+                cbb_D_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_D, e.ToString());
+            });
+        }
+        /// <summary>
         /// 切割線設定 - 新增設定數值 20220816 張燕華
         /// </summary>
         public ICommand NewSplitLineCommand { get; set; }
@@ -1206,6 +1223,7 @@ namespace WPFSTD105.ViewModel
                     ObservableCollection<SplitLineSettingClass> listSplitLineData = new ObservableCollection<SplitLineSettingClass>();
                     listSplitLineData.Add(new SplitLineSettingClass()
                     {
+                        HowManyParts = HowManyParts_Value,
                         A = PointA_Value,
                         B = PointB_Value,
                         C = PointC_Value,
@@ -1227,6 +1245,7 @@ namespace WPFSTD105.ViewModel
                     //儲存使用者到目前為止使用系統時所有新增的切割線資料
                     BackupSplitLineSettingData.Add(new SplitLineSettingClass()
                     {
+                        HowManyParts = HowManyParts_Value,
                         A = PointA_Value,
                         B = PointB_Value,
                         C = PointC_Value,
@@ -1320,6 +1339,14 @@ namespace WPFSTD105.ViewModel
                     }
                     else
                     {
+                        HowManyParts_Value = PointA_Value = BackupSplitLineSettingData[CurrentIndex_BackupSplitLineSettingData - 1].HowManyParts;
+
+                        SplitLineSettingClass SplitLineComboBox = new SplitLineSettingClass();
+                        cbb_A_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_A, HowManyParts_Value);
+                        cbb_B_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_B, HowManyParts_Value);
+                        cbb_C_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_C, HowManyParts_Value);
+                        cbb_D_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_D, HowManyParts_Value);
+
                         PointA_Value = BackupSplitLineSettingData[CurrentIndex_BackupSplitLineSettingData - 1].A;
                         PointB_Value = BackupSplitLineSettingData[CurrentIndex_BackupSplitLineSettingData - 1].B;
                         PointC_Value = BackupSplitLineSettingData[CurrentIndex_BackupSplitLineSettingData - 1].C;
@@ -2881,6 +2908,10 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public bool chb_RemainingLength_SplitLineSetting { get; set; } = false;
         /// <summary>
+        /// 選擇記號等分 item source for 切割線設定
+        /// </summary>
+        public List<string> cbb_HowManyParts { get; set; } = new List<string>();
+        /// <summary>
         /// combobox A值 item source for 切割線設定
         /// </summary>
         public List<string> cbb_A_ItemSource { get; set; } = new List<string>();
@@ -2896,6 +2927,10 @@ namespace WPFSTD105.ViewModel
         /// combobox D值 item source for 切割線設定
         /// </summary>
         public List<string> cbb_D_ItemSource { get; set; } = new List<string>();
+        /// <summary>
+        /// 選擇記號等分
+        /// </summary>
+        public string HowManyParts_Value { get; set; }
         /// <summary>
         /// 打點位置(A值)
         /// </summary>
@@ -3504,6 +3539,7 @@ namespace WPFSTD105.ViewModel
                 ObservableCollection<SplitLineSettingClass> listSplitLineData = new ObservableCollection<SplitLineSettingClass>();
                 listSplitLineData.Add(new SplitLineSettingClass()
                 {
+                    HowManyParts = "5",
                     A = "1/5",
                     B = "4/5",
                     C = "1/5",
@@ -3514,27 +3550,45 @@ namespace WPFSTD105.ViewModel
                 ser_AddFile.SetSplitLineData(listSplitLineData);
             }
 
-            //載入所有combobox的item source
-            SplitLineSettingClass SplitLineComboBox = new SplitLineSettingClass();
-            cbb_A_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_A);
-            cbb_B_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_B);
-            cbb_C_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_C);
-            cbb_D_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_D);
-
             //讀入SplitLineSetting.lis中切割線設定值
             STDSerialization ser = new STDSerialization(); //序列化處理器
             ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();//備份當前加工區域數值
-
+            
+            HowManyParts_Value = ReadSplitLineSettingData[0].HowManyParts;
             PointA_Value = ReadSplitLineSettingData[0].A;
             PointB_Value = ReadSplitLineSettingData[0].B;
             PointC_Value = ReadSplitLineSettingData[0].C;
             PointD_Value = ReadSplitLineSettingData[0].D;
             CutThickness = ReadSplitLineSettingData[0].Thickness;
             SplitRemainingLength = ReadSplitLineSettingData[0].RemainingLength;
+            
+
+            //char[] HowManyParts_AB = new char[ReadSplitLineSettingData[0].A.Length];
+            //using (StringReader sr = new StringReader(ReadSplitLineSettingData[0].A))
+            //{
+            //    // Read 13 characters from the string into the array.
+            //    sr.Read(HowManyParts_AB, 2, 3);
+            //}
+            //char[] HowManyParts_CD = new char[ReadSplitLineSettingData[0].C.Length];
+            //using (StringReader sr = new StringReader(ReadSplitLineSettingData[0].C))
+            //{
+            //    // Read 13 characters from the string into the array.
+            //    sr.Read(HowManyParts_CD, 2, 3);
+            //}
+
+            //若設定值檔案存在, 載入所有combobox的item source
+            SplitLineSettingClass SplitLineComboBox = new SplitLineSettingClass();
+
+            cbb_HowManyParts = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_HowManyParts, HowManyParts_Value);
+            cbb_A_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_A, HowManyParts_Value);
+            cbb_B_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_B, HowManyParts_Value);
+            cbb_C_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_C, HowManyParts_Value);
+            cbb_D_ItemSource = SplitLineComboBox.GetSplitLineItemSource(SplitLineCombobox.cbb_D, HowManyParts_Value);
 
             //儲存使用者到目前為止使用系統時所有新增的切割線資料
             BackupSplitLineSettingData.Add(new SplitLineSettingClass()
             {
+                HowManyParts = HowManyParts_Value,
                 A = PointA_Value,
                 B = PointB_Value,
                 C = PointC_Value,

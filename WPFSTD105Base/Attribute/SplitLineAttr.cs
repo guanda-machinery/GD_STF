@@ -8,6 +8,10 @@ namespace SplitLineSettingData
     public class SplitLineSettingClass
     {
         /// <summary>
+        /// 選擇幾等分
+        /// </summary>
+        public string HowManyParts { get; set; }
+        /// <summary>
         /// 打點位置(A值)
         /// </summary>
         public string A { get; set; }
@@ -34,34 +38,77 @@ namespace SplitLineSettingData
         /// <summary>
         /// 取得combobox item source
         /// </summary>
-        public List<string> GetSplitLineItemSource(object current_cbb)
+        public List<string> GetSplitLineItemSource(object current_cbb, string HowMnayParts)
         {
             List<string> SL_ItemSource = new List<string>();
             switch (current_cbb)
             {
+                case SplitLineCombobox.cbb_HowManyParts:
+                    SL_ItemSource.Add("3");
+                    SL_ItemSource.Add("4");
+                    SL_ItemSource.Add("5");
+                    return SL_ItemSource;
                 case SplitLineCombobox.cbb_A:
-                    SL_ItemSource.Add("1/5");
-                    SL_ItemSource.Add("2/5");
-                    //SL_ItemSource.Add("3/5");
-                    //SL_ItemSource.Add("4/5");
+                    switch (HowMnayParts)
+                    {
+                        case "3":
+                            SL_ItemSource.Add("1/3");
+                            break;
+                        case "4":
+                            SL_ItemSource.Add("1/4");
+                            break;
+                        case "5":
+                            SL_ItemSource.Add("1/5");
+                            SL_ItemSource.Add("2/5");
+                            break;
+                    }
                     return SL_ItemSource;
                 case SplitLineCombobox.cbb_B:
-                    //SL_ItemSource.Add("1/5");
-                    //SL_ItemSource.Add("2/5");
-                    SL_ItemSource.Add("3/5");
-                    SL_ItemSource.Add("4/5");
+                    switch (HowMnayParts)
+                    {
+                        case "3":
+                            SL_ItemSource.Add("2/3");
+                            break;
+                        case "4":
+                            SL_ItemSource.Add("2/4");
+                            SL_ItemSource.Add("3/4");
+                            break;
+                        case "5":
+                            SL_ItemSource.Add("3/5");
+                            SL_ItemSource.Add("4/5");
+                            break;
+                    }
                     return SL_ItemSource;
                 case SplitLineCombobox.cbb_C:
-                    SL_ItemSource.Add("1/5");
-                    SL_ItemSource.Add("2/5");
-                    //SL_ItemSource.Add("3/5");
-                    //SL_ItemSource.Add("4/5");
+                    switch (HowMnayParts)
+                    {
+                        case "3":
+                            SL_ItemSource.Add("1/3");
+                            break;
+                        case "4":
+                            SL_ItemSource.Add("1/4");
+                            break;
+                        case "5":
+                            SL_ItemSource.Add("1/5");
+                            SL_ItemSource.Add("2/5");
+                            break;
+                    }
                     return SL_ItemSource;
                 case SplitLineCombobox.cbb_D:
-                    //SL_ItemSource.Add("1/5");
-                    //SL_ItemSource.Add("2/5");
-                    SL_ItemSource.Add("3/5");
-                    SL_ItemSource.Add("4/5");
+                    switch (HowMnayParts)
+                    {
+                        case "3":
+                            SL_ItemSource.Add("2/3");
+                            break;
+                        case "4":
+                            SL_ItemSource.Add("2/4");
+                            SL_ItemSource.Add("3/4");
+                            break;
+                        case "5":
+                            SL_ItemSource.Add("3/5");
+                            SL_ItemSource.Add("4/5");
+                            break;
+                    }
                     return SL_ItemSource;
                 default: 
                     return SL_ItemSource;
@@ -71,6 +118,10 @@ namespace SplitLineSettingData
 
     public enum SplitLineCombobox
     {
+        /// <summary>
+        /// 幾等分
+        /// </summary>
+        cbb_HowManyParts,
         /// <summary>
         /// Combobox A值
         /// </summary>

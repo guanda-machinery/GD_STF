@@ -117,6 +117,7 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
@@ -125,32 +126,43 @@
                                 <ColumnDefinition MaxWidth="200" />
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            
-                            
-                            <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="{Binding chb_PointA_SplitLineSetting}"/>
-                            <Label Content="A值(打點位置)"  Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"/>
-                            <ComboBox Grid.Row="0" Grid.Column="2" SelectedValue="{Binding PointA_Value}" ItemsSource="{Binding cbb_A_ItemSource}"/>
 
-                            <CheckBox Grid.Row="1" Grid.Column="0" IsChecked="{Binding chb_PointB_SplitLineSetting}" Margin="0,-13,0,0"/>
-                            <Label Content="B值(打點位置)"  Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="0,-13,0,0"/>
-                            <ComboBox Grid.Row="1" Grid.Column="2" SelectedValue="{Binding PointB_Value}" ItemsSource="{Binding cbb_B_ItemSource}" Margin="0,-13,0,0"/>
+                            <CheckBox Grid.Row="0" Grid.Column="0" Visibility="Hidden" Margin="0,0,0,-13"/>
+                            <Label Content="選擇記號比例"  Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,0,-13"/>
+                            <ComboBox Grid.Row="0" Grid.Column="2" x:Name="cbx_HowManyParts" SelectedValue="{Binding HowManyParts_Value}" ItemsSource="{Binding cbb_HowManyParts}" Margin="0,0,0,-13">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_HowManyParts">
+                                        <i:InvokeCommandAction Command="{ Binding ShowHowManyPartsRelatedComboboxCommand }"
+                                                               CommandParameter="{ Binding ElementName=cbx_HowManyParts, Path=SelectedValue }" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
+                            <Label Content="等分" Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" Margin="0,0,0,-13"/>
 
-                            <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding chb_PointC_SplitLineSetting}" Margin="0,-26,0,0"/>
-                            <Label Content="C值(打點位置)"  Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="0,-26,0,0"/>
-                            <ComboBox Grid.Row="2" Grid.Column="2" SelectedValue="{Binding PointC_Value}" ItemsSource="{Binding cbb_C_ItemSource}" Margin="0,-26,0,0"/>
+                            <CheckBox Grid.Row="1" Grid.Column="0" IsChecked="{Binding chb_PointA_SplitLineSetting}"/>
+                            <Label Content="A值(打點位置)"  Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"/>
+                            <ComboBox Grid.Row="1" Grid.Column="2" SelectedValue="{Binding PointA_Value}" ItemsSource="{Binding cbb_A_ItemSource}"/>
 
-                            <CheckBox  Grid.Row="3" Grid.Column="0" IsChecked="{Binding chb_PointD_SplitLineSetting}" Margin="0,-39,0,0"/>
-                            <Label Content="D值(打點位置)"  Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="0,-39,0,0"/>
-                            <ComboBox Grid.Row="3" Grid.Column="2" SelectedValue="{Binding PointD_Value}" ItemsSource="{Binding cbb_D_ItemSource}" Margin="0,-39,0,0"/>
+                            <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding chb_PointB_SplitLineSetting}" Margin="0,-13,0,0"/>
+                            <Label Content="B值(打點位置)"  Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="0,-13,0,0"/>
+                            <ComboBox Grid.Row="2" Grid.Column="2" SelectedValue="{Binding PointB_Value}" ItemsSource="{Binding cbb_B_ItemSource}" Margin="0,-13,0,0"/>
 
-                            <CheckBox  Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" IsChecked="{Binding chb_Thickness_SplitLineSetting}" Margin="0,-52,0,0"/>
-                            <Label Content="切割厚度："  Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="0,-52,0,0"/>
-                            <TextBox  Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" Text="{Binding CutThickness}" Margin="0,-52,0,0"/>
-                            <Label Grid.Row="4" Grid.Column="3" Content="(單位：mm)" VerticalAlignment="Center" Margin="0,-52,0,0"/>
+                            <CheckBox Grid.Row="3" Grid.Column="0" IsChecked="{Binding chb_PointC_SplitLineSetting}" Margin="0,-26,0,0"/>
+                            <Label Content="C值(打點位置)"  Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="0,-26,0,0"/>
+                            <ComboBox Grid.Row="3" Grid.Column="2" SelectedValue="{Binding PointC_Value}" ItemsSource="{Binding cbb_C_ItemSource}" Margin="0,-26,0,0"/>
 
-                            <CheckBox  Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" IsChecked="{Binding chb_RemainingLength_SplitLineSetting}" Margin="0,-65,0,0"/>
-                            <Label Content="餘料長度設定"  Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Margin="0,-65,0,0"/>
-                            <Grid Grid.Row="5" Grid.Column="2" Margin="0,-65,0,0">
+                            <CheckBox  Grid.Row="4" Grid.Column="0" IsChecked="{Binding chb_PointD_SplitLineSetting}" Margin="0,-39,0,0"/>
+                            <Label Content="D值(打點位置)"  Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="0,-39,0,0"/>
+                            <ComboBox Grid.Row="4" Grid.Column="2" SelectedValue="{Binding PointD_Value}" ItemsSource="{Binding cbb_D_ItemSource}" Margin="0,-39,0,0"/>
+
+                            <CheckBox  Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" IsChecked="{Binding chb_Thickness_SplitLineSetting}" Margin="0,-52,0,0"/>
+                            <Label Content="切割厚度："  Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Margin="0,-52,0,0"/>
+                            <TextBox  Grid.Row="5" Grid.Column="2" VerticalAlignment="Center" Text="{Binding CutThickness}" Margin="0,-52,0,0"/>
+                            <Label Grid.Row="5" Grid.Column="3" Content="(單位：mm)" VerticalAlignment="Center" Margin="0,-52,0,0"/>
+
+                            <CheckBox  Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" IsChecked="{Binding chb_RemainingLength_SplitLineSetting}" Margin="0,-65,0,0"/>
+                            <Label Content="餘料長度設定"  Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" Margin="0,-65,0,0"/>
+                            <Grid Grid.Row="6" Grid.Column="2" Margin="0,-65,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="*"/>
@@ -160,8 +172,8 @@
                                 </StackPanel>
                                     <TextBox  Grid.Column="1" Text="{Binding SplitRemainingLength}" VerticalAlignment="Center" />
                             </Grid>
-                            <Label Grid.Row="5" Grid.Column="3" Content="(單位：mm)" VerticalAlignment="Center" Margin="0,-65,0,0"/>
-                            <Label Content=" (小於餘料：廢料"  Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" Margin="0,-65,0,0"/>
+                            <Label Grid.Row="6" Grid.Column="3" Content="(單位：mm)" VerticalAlignment="Center" Margin="0,-65,0,0"/>
+                            <Label Content=" (小於餘料：廢料"  Grid.Row="7" Grid.Column="1" VerticalAlignment="Center" Margin="0,-65,0,0"/>
                         </Grid>
                     </GroupBox>
                     
@@ -180,7 +192,6 @@
                             Width="80"
                             Margin="10"/>
                         <RepeatButton 
-                            Content="☑／□"
                             Command="{Binding ToggleAllSplitLineCheckboxCommand}"
                             FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
                             VerticalContentAlignment="Center"
@@ -189,7 +200,15 @@
                             BorderBrush="RoyalBlue"
                             Height="30"
                             Width="80"
-                            Margin="10"/>
+                            Margin="10">
+                            <RepeatButton.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <wpf:PackIcon Kind="CheckBoxOutline"/>
+                                    <TextBlock Text="／" Margin="0,-2,0,0"/>
+                                    <wpf:PackIcon Kind="CheckboxBlankOutline"/>
+                                </StackPanel>
+                            </RepeatButton.Content>
+                        </RepeatButton>
                         <RepeatButton 
                             Content="復原"
                             Command="{Binding GoBackSplitLineCommand}"
@@ -207,22 +226,6 @@
                 </Grid>
             </Grid>
         </GroupBox>
-        
-        
-        <!--打點設定-->
-        <!--
-        <GroupBox Grid.Column="4"
-                  Header="打點設定" 
-                  Visibility="Collapsed"/>
-        <Grid Grid.ColumnSpan="5">-->
-            <!--另存視窗-->
-        <!--<Grid Visibility="{ Binding SaveAsWindowsControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
-                <STD:SaveAs SubmitButtonCommand="{Binding SaveModelRoSystemCommand}"
-                            CancelButtonCommand="{ Binding CloseSaveAsWindowsCommand }" />
-            </Grid>
-        </Grid>-->
-        
-        
     </Grid>
 
 
