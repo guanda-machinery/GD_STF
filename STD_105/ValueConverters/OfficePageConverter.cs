@@ -25,9 +25,11 @@ namespace STD_105.Office
                 case OfficePage.Home:
                     basePage = new FirstPage();
                     break;
+                //20220816 蘇冠綸 新排版
                 // 製品設定
                 case OfficePage.ObSettings:
-                    basePage = new ObSettingsPage_Office();
+                    //basePage = new ObSettingsPage_Office();//舊版頁面
+                    basePage = new ProductSettingsPage_Office();//新版頁面
                     break;
                 // 參數設定
                 case OfficePage.ParameterSettings:
@@ -38,9 +40,12 @@ namespace STD_105.Office
                     basePage = new ParametersSettings_Office_FuncList();
                     break;
                 //排版設定
+                //20220816 蘇冠綸 排版設定
                 case OfficePage.AutoTypeSettings:
-                    basePage = new PartsList_Office();
+                    //   basePage = new PartsList_Office();//舊版頁面
+                    basePage = new TypesettingsSetting();//新版頁面
                     break;
+
                 // 加工監控
                 case OfficePage.ProcessingMonitor:
                     basePage = new ProcessingMonitor_Office();
