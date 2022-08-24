@@ -25,6 +25,10 @@ namespace STD_105.Office
                 case OfficePage.Home:
                     basePage = new FirstPage();
                     break;
+                // 2022/08/24 張彥華 開啟舊排版
+                case OfficePage.old_ObSettings:
+                    basePage = new ObSettingsPage_Office();//舊版頁面
+                    break;
                 //20220816 蘇冠綸 新排版
                 // 製品設定
                 case OfficePage.ObSettings:
