@@ -167,7 +167,7 @@
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="30"
-                                       Source="{ StaticResource NewProductSettings }"/>
+                                       Source="{ StaticResource NewProductSettings }" />
                                 <TextBlock Text="(舊)製品" />
                             </StackPanel>
                         </Button.Content>
