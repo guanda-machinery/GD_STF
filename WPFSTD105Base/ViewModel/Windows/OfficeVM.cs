@@ -35,6 +35,7 @@ namespace WPFSTD105
         /// </summary>
         public OfficeVM(Window window) : base(window)
         {
+            Old_ObSettingsPage_Office = Old_ObSettings_Office(); //舊版製品設定 20220824 張燕華
             ObSettingsPage_Office = ObSettings_Office();
             ProjectManagerCommand = ProjectManager();
             //ParameterSettingsCommand = ParameterSettings(); //20220711 張燕華 由顯示參數設定頁面改為顯示參數設定功能選單
@@ -60,6 +61,18 @@ namespace WPFSTD105
             return new WPFBase.RelayCommand(() =>
             {
                 Customizable = Customizable ? false : true;
+            });
+        }
+        
+        /// <summary>
+        /// 製品設定命令
+        /// </summary>
+        public ICommand Old_ObSettingsPage_Office { get; set; } 
+        private WPFBase.RelayCommand Old_ObSettings_Office() 
+        {
+            return new WPFBase.RelayCommand(() =>
+            {
+                OfficeViewModel.CurrentPage = OfficePage.old_ObSettings;
             });
         }
         /// <summary>

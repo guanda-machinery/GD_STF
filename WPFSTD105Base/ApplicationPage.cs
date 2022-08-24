@@ -131,6 +131,10 @@ namespace WPFSTD105
         /// </summary>
         Home,
         /// <summary>
+        /// (舊)製品設定
+        /// </summary>
+        old_ObSettings,
+        /// <summary>
         /// 製品設定
         /// </summary>
         ObSettings,
