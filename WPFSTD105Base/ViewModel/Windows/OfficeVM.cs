@@ -8,6 +8,8 @@ using System.Windows.Input;
 using WPFWindowsBase;
 using static WPFSTD105.ViewLocator;
 using WPFBase = WPFWindowsBase;
+using GD_STD.Enum;
+using System.IO;
 
 namespace WPFSTD105
 {
@@ -33,6 +35,7 @@ namespace WPFSTD105
         /// </summary>
         public OfficeVM(Window window) : base(window)
         {
+            Old_ObSettingsPage_Office = Old_ObSettings_Office();//舊版製品設定 20220824 張燕華
             ObSettingsPage_Office = ObSettings_Office();
             ProjectManagerCommand = ProjectManager();
             //ParameterSettingsCommand = ParameterSettings(); //20220711 張燕華 由顯示參數設定頁面改為顯示參數設定功能選單
@@ -58,6 +61,18 @@ namespace WPFSTD105
             return new WPFBase.RelayCommand(() =>
             {
                 Customizable = Customizable ? false : true;
+            });
+        }
+        
+        /// <summary>
+        /// 製品設定命令
+        /// </summary>
+        public ICommand Old_ObSettingsPage_Office { get; set; }
+        private WPFBase.RelayCommand Old_ObSettings_Office()
+        {
+            return new WPFBase.RelayCommand(() =>
+            {
+                OfficeViewModel.CurrentPage = OfficePage.old_ObSettings;
             });
         }
         /// <summary>
@@ -334,6 +349,19 @@ namespace WPFSTD105
                     return;
                 }
                 CommonViewModel.ImportNCFilesVM = new ImportNCFilesVM();
+
+                // 2022/08/22 呂宗霖 若有缺少斷面規格，自動產生
+                foreach (OBJETC_TYPE format in System.Enum.GetValues(typeof(OBJETC_TYPE)))
+                {
+                    if (format != OBJETC_TYPE.Unknown && format != OBJETC_TYPE.PLATE)
+                    {
+                        if (!File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{format.ToString()}.inp"))
+                        {
+                            File.Copy(System.AppDomain.CurrentDomain.BaseDirectory + $@"Profile\\{format}.inp", $@"{ApplicationVM.DirectoryPorfile()}\{format.ToString()}.inp");//複製 BH 斷面規格到模型內
+                        }
+                    }
+                }
+
                 //MessageBox.Show("載入成功", "通知", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,
                     $"載入成功",

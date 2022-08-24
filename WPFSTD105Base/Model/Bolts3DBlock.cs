@@ -3,8 +3,10 @@ using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using GD_STD;
 using GD_STD.Enum;
+using SectionData;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using WPFSTD105.Attribute;
 using static WPFSTD105.Properties.SofSetting;
@@ -470,27 +472,70 @@ namespace WPFSTD105.Model
         /// <returns></returns>
         public List<double> WorkingRange(OBJETC_TYPE type, BoltAttr boltAttr)
         {
-            List<double> list = new List<double>();
+            STDSerialization serH = new STDSerialization(), serBOX = new STDSerialization(), serCH = new STDSerialization();
+            ObservableCollection<SectionTypeProcessingData> sectionTypeProcessingData_H =
+                serH.GetSectionTypeProcessingData("H", Convert.ToInt32(ProcessingBehavior.DRILLING));
+            ObservableCollection<SectionTypeProcessingData> sectionTypeProcessingData_BOX =
+                serBOX.GetSectionTypeProcessingData("BOX", Convert.ToInt32(ProcessingBehavior.DRILLING));
+            ObservableCollection<SectionTypeProcessingData> sectionTypeProcessingData_CH =
+                serCH.GetSectionTypeProcessingData("CH", Convert.ToInt32(ProcessingBehavior.DRILLING));
             // 假設 attr是加工區域設定參數
             double a = 0, b = 0, c = 0;
+
             switch (type)
             {
                 case OBJETC_TYPE.RH:
-                case OBJETC_TYPE.CH:
                 case OBJETC_TYPE.BH:
-                    a = 25 + steelAttr.t2;
-                    b = 15;
-                    c = 5 + steelAttr.t1;
+                    if (sectionTypeProcessingData_H.Count > 0)
+                    {
+                        a = sectionTypeProcessingData_H[0].A;
+                        b = sectionTypeProcessingData_H[0].B;
+                        c = sectionTypeProcessingData_H[0].C;
+                    }
                     break;
                 case OBJETC_TYPE.C:
-                    a = 15 + steelAttr.t2;
-                    b = 15;
-                    c = 0;
+                case OBJETC_TYPE.CH:
+                    if (sectionTypeProcessingData_CH.Count > 0)
+                    {
+                        a = sectionTypeProcessingData_CH[0].A;
+                        b = sectionTypeProcessingData_CH[0].B;
+                    }
                     break;
                 case OBJETC_TYPE.BOX:
-                    a = 15 + steelAttr.t2;
-                    b = 15 + steelAttr.t1;
-                    c = 0;
+                    if (sectionTypeProcessingData_BOX.Count > 0)
+                    {
+                        a = sectionTypeProcessingData_BOX[0].A;
+                        b = sectionTypeProcessingData_BOX[0].B;
+                    }                
+                    break;
+                case OBJETC_TYPE.L:
+                case OBJETC_TYPE.PLATE:
+                case OBJETC_TYPE.RB:
+                case OBJETC_TYPE.FB:
+                case OBJETC_TYPE.PIPE:
+                case OBJETC_TYPE.Unknown:
+                    break;
+                default:
+                    break;
+            }
+
+            List<double> list = new List<double>();
+            switch (type)
+            {
+                case OBJETC_TYPE.RH:
+                case OBJETC_TYPE.BH:
+                    a = a + steelAttr.t2;
+                    b = b + 0;
+                    c = c + steelAttr.t1;
+                    break;
+                case OBJETC_TYPE.C:
+                case OBJETC_TYPE.CH:
+                    a = a + steelAttr.t2;
+                    b = b + 0;
+                    break;
+                case OBJETC_TYPE.BOX:
+                    a = a + steelAttr.t2;
+                    b = b + steelAttr.t1;
                     break;
                 case OBJETC_TYPE.L:
                 case OBJETC_TYPE.PLATE:
