@@ -49,6 +49,12 @@ namespace STD_105.Office
                     //   basePage = new PartsList_Office();//舊版頁面
                     basePage = new TypesettingsSetting();//新版頁面
                     break;
+                //舊排版設定
+                //20220816 蘇冠綸 排版設定
+                case OfficePage.old_PartsList:
+                    basePage = new PartsList_Office();//舊版頁面
+
+                    break;
 
                 // 加工監控
                 case OfficePage.ProcessingMonitor:

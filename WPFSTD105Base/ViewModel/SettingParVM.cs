@@ -1758,63 +1758,7 @@ namespace WPFSTD105.ViewModel
                         {
                             SteelAttr steelAttr_Office = new SteelAttr();
 
-                            if (steel_type == "TUBE" || steel_type == "BOX" || steel_type == "BH" || steel_type == "H" || steel_type == "RH" || steel_type == "I" || steel_type == "L" || steel_type == "[" || steel_type == "U(CH)" || steel_type == "BT" || steel_type == "CT" || steel_type == "T")
-                            {
-                                switch (steel_type)
-                                {
-                                    case "TUBE":
-                                        steelAttr_Office.Type = OBJETC_TYPE.TUBE;
-                                        break;
-                                    case "BOX":
-                                        steelAttr_Office.Type = OBJETC_TYPE.BOX;
-                                        break;
-                                    case "BH":
-                                        steelAttr_Office.Type = OBJETC_TYPE.BH;
-                                        break;
-                                    case "H":
-                                        steelAttr_Office.Type = OBJETC_TYPE.H;
-                                        break;
-                                    case "RH":
-                                        steelAttr_Office.Type = OBJETC_TYPE.RH;
-                                        break;
-                                    case "I":
-                                        steelAttr_Office.Type = OBJETC_TYPE.I;
-                                        break;
-                                    case "L":
-                                        steelAttr_Office.Type = OBJETC_TYPE.L;
-                                        break;
-                                    case "[":
-                                        steelAttr_Office.Type = OBJETC_TYPE.LB;
-                                        break;
-                                    case "U(CH)":
-                                        steelAttr_Office.Type = OBJETC_TYPE.CH;
-                                        break;
-                                    case "BT":
-                                        steelAttr_Office.Type = OBJETC_TYPE.BT;
-                                        break;
-                                    case "CT":
-                                        steelAttr_Office.Type = OBJETC_TYPE.CT;
-                                        break;
-                                    case "T":
-                                        steelAttr_Office.Type = OBJETC_TYPE.T;
-                                        break;
-                                    default:
-                                        throw new Exception("無法辨認斷面規格類型");
-                                }
-                                
-                                steelAttr_Office.Profile = SingleSectionSpec.section_name;
-                                steelAttr_Office.H = SingleSectionSpec.h;
-                                steelAttr_Office.W = SingleSectionSpec.b;
-                                steelAttr_Office.t1 = SingleSectionSpec.t1;
-                                steelAttr_Office.t2 = SingleSectionSpec.t2;
-                                steelAttr_Office.r1 = SingleSectionSpec.r1;
-                                steelAttr_Office.r2 = SingleSectionSpec.r2;
-                                steelAttr_Office.surface_area = SingleSectionSpec.surface_area;
-                                steelAttr_Office.section_area = SingleSectionSpec.section_area;
-                                steelAttr_Office.Kg = SingleSectionSpec.weight_per_unit;
-                                steelAttr_Office.density = SingleSectionSpec.density;
-                            }
-                            else if(steel_type == "C")
+                            if(steel_type == "C")
                             {
                                 steelAttr_Office.Type = OBJETC_TYPE.C;
                                 steelAttr_Office.Profile = SingleSectionSpec.section_name;
@@ -1916,7 +1860,59 @@ namespace WPFSTD105.ViewModel
                             }
                             else
                             {
-                                MessageBox.Show("ERROR: 無定義的斷面規格類別!");
+                                switch (steel_type)
+                                {
+                                    case "TUBE":
+                                        steelAttr_Office.Type = OBJETC_TYPE.TUBE;
+                                        break;
+                                    case "BOX":
+                                        steelAttr_Office.Type = OBJETC_TYPE.BOX;
+                                        break;
+                                    case "BH":
+                                        steelAttr_Office.Type = OBJETC_TYPE.BH;
+                                        break;
+                                    case "H":
+                                        steelAttr_Office.Type = OBJETC_TYPE.H;
+                                        break;
+                                    case "RH":
+                                        steelAttr_Office.Type = OBJETC_TYPE.RH;
+                                        break;
+                                    case "I":
+                                        steelAttr_Office.Type = OBJETC_TYPE.I;
+                                        break;
+                                    case "L":
+                                        steelAttr_Office.Type = OBJETC_TYPE.L;
+                                        break;
+                                    case "[":
+                                        steelAttr_Office.Type = OBJETC_TYPE.LB;
+                                        break;
+                                    case "U(CH)":
+                                        steelAttr_Office.Type = OBJETC_TYPE.CH;
+                                        break;
+                                    case "BT":
+                                        steelAttr_Office.Type = OBJETC_TYPE.BT;
+                                        break;
+                                    case "CT":
+                                        steelAttr_Office.Type = OBJETC_TYPE.CT;
+                                        break;
+                                    case "T":
+                                        steelAttr_Office.Type = OBJETC_TYPE.T;
+                                        break;
+                                    default:
+                                        MessageBox.Show("ERROR: 無定義的斷面規格類別!");
+                                        throw new Exception("無法辨認斷面規格類型");
+                                }
+                                steelAttr_Office.Profile = SingleSectionSpec.section_name;
+                                steelAttr_Office.H = SingleSectionSpec.h;
+                                steelAttr_Office.W = SingleSectionSpec.b;
+                                steelAttr_Office.t1 = SingleSectionSpec.t1;
+                                steelAttr_Office.t2 = SingleSectionSpec.t2;
+                                steelAttr_Office.r1 = SingleSectionSpec.r1;
+                                steelAttr_Office.r2 = SingleSectionSpec.r2;
+                                steelAttr_Office.surface_area = SingleSectionSpec.surface_area;
+                                steelAttr_Office.section_area = SingleSectionSpec.section_area;
+                                steelAttr_Office.Kg = SingleSectionSpec.weight_per_unit;
+                                steelAttr_Office.density = SingleSectionSpec.density;
                             }
 
                             system.Add(steelAttr_Office);//加入到系統
