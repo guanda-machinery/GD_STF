@@ -480,6 +480,115 @@ namespace WPFSTD105.ViewModel
             return result;
         }
 
+
+        /// <summary>
+        /// 切割線打點設定值
+        /// </summary>
+        public GroupBoltsAttr GetHypotenuseBoltsAttr(FACE Face, START_HOLE SHoleType)
+        {
+            Boltsbuffer.GUID = GroupBoltsAttr.GUID;
+            //直徑設定
+            if (CheckDia)
+            {
+                Boltsbuffer.Dia = GroupBoltsAttr.Dia;
+                Boltsbuffer.Mode = (AXIS_MODE)AxisModeType;
+            }
+            //水平螺栓間距
+            if (CheckX)
+            {
+                Boltsbuffer.dX = GroupBoltsAttr.dX;
+
+                Boltsbuffer.xCount = GroupBoltsAttr.xCount;
+            }
+            //垂直螺栓
+            if (CheckY)
+            {
+                Boltsbuffer.dY = GroupBoltsAttr.dY;
+                Boltsbuffer.yCount = GroupBoltsAttr.yCount;
+            }
+            //要產生的面
+            if (CheckFace)
+            {
+                Boltsbuffer.Face = (GD_STD.Enum.FACE)Face;
+            }
+            //double value = 0d;
+            if (CheckStartHole)
+            {
+                //目前座標是2D座標只是需要先判斷 X Y 座標
+                switch (Face)
+                {
+                    case FACE.TOP:
+                        Boltsbuffer.t = Steelbuffer.t1; //孔位高度
+                        //斷面規格類型
+                        switch (Steelbuffer.Type)
+                        {
+                            case OBJETC_TYPE.BH:
+                            case OBJETC_TYPE.RH:
+                                Boltsbuffer.Z = Steelbuffer.W * 0.5 - Steelbuffer.t1 * 0.5;
+                                break;
+                            case OBJETC_TYPE.BOX:
+                            case OBJETC_TYPE.CH:
+                                Boltsbuffer.Z = Steelbuffer.W - Steelbuffer.t1;
+                                break;
+                            case OBJETC_TYPE.L:
+                                Boltsbuffer.Z = 0;
+                                break;
+                            default:
+                                break;
+                        }
+                        //value =
+                        break;
+                    case FACE.FRONT:
+                        Boltsbuffer.t = Steelbuffer.t2;
+                        Boltsbuffer.Z = Steelbuffer.t2;
+                        //value = Steelbuffer.W;
+                        break;
+                    case FACE.BACK:
+                        Boltsbuffer.t = Steelbuffer.t2;
+                        Boltsbuffer.Z = Steelbuffer.H;
+                        //value = Steelbuffer.W;
+                        break;
+                    default:
+                        break;
+                }
+                //改變 Y 座標起始點類型
+                switch (SHoleType)
+                {
+                    case START_HOLE.MIDDLE:
+                        Boltsbuffer.StartHole = START_HOLE.MIDDLE;
+                        //Boltsbuffer.Y = (GetBoltZ() * 0.5) - (Boltsbuffer.SumdY() * 0.5);
+                        break;
+                    case START_HOLE.START:
+                        Boltsbuffer.StartHole = START_HOLE.START;
+                        //Boltsbuffer.Y = this.StartY;
+                        break;
+                    default:
+                        break;
+                }
+                Boltsbuffer.X = GroupBoltsAttr.X;
+            }
+            //判斷 Y 軸起始座標
+            if (Boltsbuffer.StartHole == START_HOLE.MIDDLE)
+            {
+                Boltsbuffer.Y = (GetBoltZ() * 0.5) - (Boltsbuffer.SumdY() * 0.5);
+            }
+            else
+            {
+                Boltsbuffer.Y = this.StartY;
+            }
+#if DEBUG
+            log4net.LogManager.GetLogger("螺栓設定檔").Debug
+                ($"直徑 {Boltsbuffer.Dia} 鑽孔類型 {Boltsbuffer.Mode.ToString()}\n起始孔類型 {((START_HOLE)StartHoleType).ToString()} X {Boltsbuffer.X} Y {Boltsbuffer.Y}\nX數量 {Boltsbuffer.xCount} 間距 {Boltsbuffer.dX}\nY數量 {Boltsbuffer.yCount} 間距{Boltsbuffer.dY}\n方向{Boltsbuffer.Face.ToString()}");
+#endif
+            return (GroupBoltsAttr)Boltsbuffer.DeepClone();
+        }
+
+
+
+
+
+
+
         /// <summary>
         /// 取得設定好的值
         /// </summary>
