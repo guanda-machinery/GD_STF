@@ -41,16 +41,17 @@ namespace STD_105.Office
         public TypesettingsSetting()
         {
             InitializeComponent();
+            var Grid =  (ObservableCollection<TypeSettingDataView>)PartGridControl.ItemsSource;
+            var MGrid = (ObservableCollection<MaterialDataView>)Material_List_GridControl.ItemsSource;
+
+
         }
 
         private void Set_TypeSettingParameterGrid_AllCheckboxChecked_Click(object sender, RoutedEventArgs e)
         {
             GetWpfLogicalChildClass.SetAllCheckBoxTrueOrFalse(TypeSettingParameterGrid);
         }
-
-
     }
-
 
     #region 尋找所有子控制項
     /// <summary>
@@ -120,8 +121,6 @@ namespace STD_105.Office
       
     }
     #endregion
-
-
 }
 
 

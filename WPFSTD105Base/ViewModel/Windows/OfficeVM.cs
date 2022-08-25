@@ -41,6 +41,7 @@ namespace WPFSTD105
             //ParameterSettingsCommand = ParameterSettings(); //20220711 張燕華 由顯示參數設定頁面改為顯示參數設定功能選單
             ParameterSettingsFuncListCommand = ParameterSettingsFuncList(); //20220711 張燕華 由顯示參數設定頁面改為顯示參數設定功能選單
             AutoTypeSettingsCommand = AutoTypeSettings();
+            old_PartsListCommand = old_PartsList();
             ProcessingMonitorCommand = ProcessingMonitor();
             PageHostMaximizedCommand = PageHostMaximized();
             DragMoveWindowCommand = DragMoveWindow();
@@ -126,6 +127,22 @@ namespace WPFSTD105
                 OfficeViewModel.CurrentPage = OfficePage.AutoTypeSettings;
             });
         }
+
+        /// <summary>
+        /// 舊排版設定(自動)
+        /// </summary>
+        public ICommand old_PartsListCommand { get; set; }
+        private RelayCommand old_PartsList()
+        {
+            return new WPFBase.RelayCommand(() =>
+            {
+                OfficeViewModel.CurrentPage = OfficePage.old_PartsList;
+            });
+        }
+
+        
+
+
 
         /// <summary>
         /// 加工監控

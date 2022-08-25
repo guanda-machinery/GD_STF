@@ -98,7 +98,7 @@
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -112,9 +112,10 @@
                         </Grid.RowDefinitions>
                         <!--  ItemsSource="{Binding Path = DataViews}"對應為AbsTypeSettingVM OfficeTypeSettingVM--> 
                         <dxg:GridControl  
+                            Name="PartGridControl"
                                 AutoGenerateColumns="None"
                                 SelectionMode="MultipleRow"
-                                Height="480"              
+                                Height="380"              
                                 ItemsSource="{Binding DataViews}">
                             <dxg:GridControl.Resources>
                                 <Style TargetType="dxg:GridColumn" >
@@ -158,9 +159,9 @@
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
                             <dxg:GridColumn FieldName="Count"  IsSmart="True"  Width="auto" Header="數量"  />
-                            <dxg:GridColumn FieldName="SortCount"  IsSmart="True"  Width="auto" Header="已配對"  />
+                            <dxg:GridColumn FieldName="" Binding="{Binding Match, Converter={STD105:IListFilterToCountConverter}, ConverterParameter={WPFBase:SystemType Bool=False}}"  IsSmart="True"  Width="auto" Header="已配對"  />
                             <dxg:GridColumn Name="GridColumnSpace" FieldName=""  IsSmart="True"  Width="100" AllowResizing="false"  AllowMoving="false" />
-                            <dxg:GridColumn FieldName=""  IsSmart="True"  Header="預排數量" Width="100" AllowResizing="false" AllowMoving="false"  />
+                            <dxg:GridColumn FieldName="SortCount"  IsSmart="True"  Header="預排數量" Width="100" AllowResizing="false" AllowMoving="false"  />
                         </dxg:GridControl>
 
                         <StackPanel  HorizontalAlignment="Right"  Background="#D3D3D3"  Width="99">
@@ -184,7 +185,7 @@
                                     <TextBlock Text="加入素材" Margin="0,2,0,2"/>
                                 </StackPanel>
 
-                                <Button Margin="1,0">
+                                <Button Margin="1,0" Command="{Binding AddMaterial}"  CommandParameter="{Binding ElementName=Material_List_GridControl}">
                                     <Button.Content>
 
                                         <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Width="14"/>
@@ -223,7 +224,7 @@
                 <!--長度參數設定-->
 
                 <GroupBox Grid.Column="1"
-                      
+
                 Header="排版參數設定" 
                   Margin="5">
                     <Grid     Name="TypeSettingParameterGrid">
@@ -754,7 +755,7 @@
                                                             </dxg:TableView>
                                                         </dxg:GridControl.View>
 
-                                                        <dxg:GridColumn FieldName="Order" Header="順序"  Width="40"  />
+                                                        <dxg:GridColumn FieldName="Order" Header="順序"  MaxWidth="40"  />
                                                         <dxg:GridColumn FieldName="AssemblyNumber"   Header="構件編號"  Width="auto" />
                                                         <dxg:GridColumn FieldName="PartNumber" Header="零件編號"  Width="auto" />
                                                         <dxg:GridColumn FieldName="Length" Header="零件長"  Width="auto"  >
@@ -762,7 +763,7 @@
                                                                 <dxe:TextEditSettings DisplayFormat="F2"/>
                                                             </dxg:GridColumn.EditSettings>
                                                         </dxg:GridColumn>
-                                                        <dxg:GridColumn FieldName="Count" Header="數量"  Width="auto" />
+                                                        <dxg:GridColumn FieldName="" Header="數量"  Width="auto" />
                                                         <dxg:GridColumn FieldName="" Header="Phase"  Width="auto"/>
                                                         <dxg:GridColumn FieldName="" Header="拆運"  Width="auto" />
                                                     </dxg:GridControl>
@@ -817,7 +818,7 @@
                                                 </Grid.RowDefinitions>
                                                 <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                                                     <TextBlock Text="零件正轉"  />
-                                                    <Button Grid.Column="1" Grid.Row="0" Height="25" Margin="10,0,0,0"  MinWidth="70" >
+                                                    <Button Grid.Column="1" Grid.Row="0" Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding }" >
                                                         <Button.Content>
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>
