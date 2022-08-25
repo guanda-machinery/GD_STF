@@ -28,7 +28,6 @@ using MouseButton = devDept.Eyeshot.MouseButton;
 
 namespace STD_105.Office
 {
-#pragma warning disable 1591
     //TODO:假
     /// <summary>
     /// ObSettingsPage_Office.xaml 的互動邏輯
@@ -42,14 +41,14 @@ namespace STD_105.Office
             //                  先使用本Class 若有問題再修改
             //GraphWin service = new GraphWin();
             #region 3D
-            model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
-            //model.Unlock("UF20-HN12H-22P6C-71M1-FXP4");
+            //model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
+            model.Unlock("UF20-HN12H-22P6C-71M1-FXP4");
             this.PageUnloadAnimation = PageAnimation.SlideAndFadeOutToRight;
             model.Secondary = drawing;
             #endregion
             #region 2D
-            drawing.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
-            //drawing.Unlock("UF20-HN12H-22P6C-71M1-FXP4");
+            //drawing.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
+            drawing.Unlock("UF20-HN12H-22P6C-71M1-FXP4");
             drawing.LineTypes.Add(Steel2DBlock.LineTypeName, new float[] { 35, -35, 35, -35 });
             drawing.Secondary = model;
             #endregion
@@ -1778,7 +1777,7 @@ namespace STD_105.Office
                 return;
 
             SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
-            ViewModel.SteelAttr = TmpSteelAttr;
+
 
 
 
@@ -1811,10 +1810,10 @@ namespace STD_105.Office
                     Point3D TmpUR = new Point3D(tmplist[1].max, tmplist[1].key);
 
                     if (TmpDL.X == TmpUL.X && TmpDR.X == TmpUR.X)
-                        Viewbox.Visibility = Visibility.Visible;
+                        CutLineGrid.Visibility = Visibility.Visible;
 
                     else
-                        Viewbox.Visibility = Visibility.Hidden;
+                        CutLineGrid.Visibility = Visibility.Hidden;
 
 
                     Point3D PointDL1 = new Point3D((TmpUL.X - TmpDL.X) * PosRatio1, (TmpUL.Y - TmpDL.Y) * PosRatio1) + TmpDL;
@@ -1850,7 +1849,7 @@ namespace STD_105.Office
                         TmpBoltsArr.X = tmplist1[z].X;
                         TmpBoltsArr.Y = tmplist1[z].Y;
                         TmpBoltsArr.GUID = Guid.NewGuid();
-                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference);
                         BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                         lstBoltsCutPoint.Add(bolts);
                     }
@@ -1883,10 +1882,10 @@ namespace STD_105.Office
                      TmpUR = new Point3D(tmplist[1].max, tmplist[1].key);
 
                     if (TmpDL.X == TmpUL.X && TmpDR.X == TmpUR.X)
-                        Viewbox.Visibility = Visibility.Visible;
+                        CutLineGrid.Visibility = Visibility.Visible;
 
                     else
-                        Viewbox.Visibility = Visibility.Hidden;
+                        CutLineGrid.Visibility = Visibility.Hidden;
 
                      PointDL1 = new Point3D((TmpUL.X - TmpDL.X) * PosRatio1, (TmpUL.Y - TmpDL.Y) * PosRatio1) + TmpDL;
                      PointDL2 = new Point3D((TmpUL.X - TmpDL.X) * PosRatio2, (TmpUL.Y - TmpDL.Y) * PosRatio2) + TmpDL;
@@ -1921,7 +1920,7 @@ namespace STD_105.Office
                         TmpBoltsArr.X = tmplist1[z].X;
                         TmpBoltsArr.Y = tmplist1[z].Y;
                         TmpBoltsArr.GUID = Guid.NewGuid();
-                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference ,out bool CheckArea);
+                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference);
                         BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                         lstBoltsCutPoint.Add(bolts);
                     }
@@ -3057,11 +3056,11 @@ namespace STD_105.Office
         /// <param name="face"></param>
         /// <param name="p"></param>
         /// <returns></returns>
-        public Point3D XYPlane(FACE face, Point3D p)
+        public Point3D XYPlane(FACE face, Point3D p) 
         {
-            double y, z;
+            double y, z;                 
             switch (face)
-            {
+            {                
                 case FACE.FRONT:
                 case FACE.BACK:
                     y = p.Z;
@@ -3073,7 +3072,7 @@ namespace STD_105.Office
                     break;
             }
             return p;
-        }
+
 
         bool fAddPartAndBolt = false;       //  判斷執行新增零件及孔位
         bool fAddHypotenusePoint = false;   //  判斷執行斜邊打點
