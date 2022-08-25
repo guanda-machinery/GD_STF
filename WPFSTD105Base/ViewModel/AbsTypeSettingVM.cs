@@ -41,6 +41,8 @@ namespace WPFSTD105
             MaterialDataViews = ser.GetMaterialDataView();
             SureCommand = Sure();
             CancelCommand = Cancel();
+            //20220824 蘇 新增icommand
+            GoCommand = Go();
             foreach (var profile in ser.GetProfile()) //逐步展開斷面規格
             {
 
@@ -346,6 +348,15 @@ namespace WPFSTD105
         /// </summary>
         public ICommand SureCommand { get; set; }
 
+
+        /// <summary>
+        /// 確定配料
+        /// </summary>
+        public ICommand GoCommand { get; set; }
+
+
+
+
         /// <summary>
         /// 確定配料
         /// </summary>
@@ -361,7 +372,7 @@ namespace WPFSTD105
                     {
                         _GridControl.RefreshData();
                     });
-
+                    
                     if (MaterialDataViews != null)
                     {
                         ShowTypeResult = true;
@@ -381,6 +392,27 @@ namespace WPFSTD105
         }
         //public bool _Sure { get; set; }
         //public bool _Sure { get; set; }
+
+        public ICommand Go()
+        {
+            return new WPFBase.RelayParameterizedCommand(obj =>
+            {
+                _GridControl = (GridControl)obj;
+                AutoMatchAsync();
+                    _GridControl.Dispatcher.Invoke(() =>
+                    {
+                        _GridControl.RefreshData();
+                     
+                    });
+
+                    if (MaterialDataViews != null)
+                    {
+                 
+                    }
+            });
+        }
+
+
 
         public bool LengthDodageControl { get; set; } = false;
         public string MainLength { get; set; } = "9000 10000 12000";

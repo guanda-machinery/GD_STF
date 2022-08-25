@@ -43,111 +43,85 @@ namespace STD_105.Office
             InitializeComponent();
         }
 
+        private void Set_TypeSettingParameterGrid_AllCheckboxChecked_Click(object sender, RoutedEventArgs e)
+        {
+            GetWpfLogicalChildClass.SetAllCheckBoxTrueOrFalse(TypeSettingParameterGrid);
+        }
+
 
     }
 
 
-    #region 測試
+    #region 尋找所有子控制項
     /// <summary>
-    /// 表格測試用綁定資料，完成後須刪除以下函式
+    /// 尋找在控制元件中找尋所有符合條件的控制項
     /// </summary>
-    public class TestGridViewDataViewModel : System.ComponentModel.INotifyPropertyChanged
+    public class GetWpfLogicalChildClass
     {
-        #region Construction
-
-
-        public TestGridViewDataViewModel()
+        /// <summary>
+        /// 設定控制元件內所有子控制元件checkBox全勾選/全取消 , parent為母控制元件
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <returns></returns>
+        public static bool SetAllCheckBoxTrueOrFalse(object parent)
         {
+            try
+            {   
+                //勾選邏輯->checkbox中存在任意未勾選時，按鈕為全勾選
+                //當checkbox為全勾選時，才執行全部取消勾選
 
-            TestData = new ObservableCollection<TestGridViewData>();
-            TestData.Add(new TestGridViewData()
-            {
-                ExclamationMark = false,
-                GearMark = true,
-                LockMark = true,
-                BuildTime = DateTime.Now,
-                PieceLength = 100.5,
-                PieceWeight = 200.05,
-                MaterialPercent = 81,
-                TypesettingNumber = "Piece1",
-                EditTime = null,
-                TestGridViewDataDetailList = new ObservableCollection<TestGridViewDataDetail>()
+                List<CheckBox> AllCheckBoxList = GetWpfLogicalChildClass.GetLogicalChildCollection<CheckBox>(parent);
+                var AllCheckboxBoolen = AllCheckBoxList.Exists(x => (x.IsChecked == false));
+
+                foreach (var CBox in AllCheckBoxList)
                 {
-                    new TestGridViewDataDetail() { Order = 1, StructNumber = "N100", PieceNumber = "M5", PieceLength = 100.5, PieceCount = 5 } ,
-                    new TestGridViewDataDetail() { Order = 2, StructNumber = "N101", PieceNumber = "M6", PieceLength = 500.00, PieceCount = 1 }
+                    CBox.IsChecked = AllCheckboxBoolen;
                 }
-            });
-
-            TestData.Add(new TestGridViewData()
+                return true;
+            }
+            catch( Exception EX)
             {
-                ExclamationMark = false,
-                GearMark = true,
-                LockMark = true,
-                BuildTime = DateTime.Now,
-                PieceLength = 300,
-                PieceWeight = 50,
-                MaterialPercent = 50,
-                TypesettingNumber = "Piece2",
-                EditTime = null,
-                TestGridViewDataDetailList = new ObservableCollection<TestGridViewDataDetail>()
+                return false;
+            }
+
+        }
+
+
+
+        /// <summary>
+        /// 尋找控制項 T = 子控制元件的類型 , parent = 搜尋之母控制元件
+        /// </summary>
+        /// <typeparam name="T">子控制元件的類型</typeparam>
+        /// <param name="parent">目標搜尋的控制元件名稱</param>
+        /// <returns></returns>
+        public static List<T> GetLogicalChildCollection<T>(object parent) where T : DependencyObject
+        {
+            List<T> logicalCollection = new List<T>();
+            GetLogicalChildCollection(parent as DependencyObject, logicalCollection);
+            return logicalCollection;
+        }
+
+        private static void GetLogicalChildCollection<T>(DependencyObject parent, List<T> logicalCollection) where T : DependencyObject
+        {
+            System.Collections.IEnumerable children = LogicalTreeHelper.GetChildren(parent);
+            foreach (object child in children)
+            {
+                if (child is DependencyObject)
                 {
-                    new TestGridViewDataDetail() { Order = 1, StructNumber = "N100", PieceNumber = "M5", PieceLength = 100.5, PieceCount = 5 } ,
-                    new TestGridViewDataDetail() { Order = 2, StructNumber = "N101", PieceNumber = "M6", PieceLength = 500.00, PieceCount = 1 }
+                    DependencyObject depChild = child as DependencyObject;
+                    if (child is T)
+                    {
+                        logicalCollection.Add(child as T);
+                    }
+                    GetLogicalChildCollection(depChild, logicalCollection);
                 }
-            });
-
-            _testdata = TestData;
-        }
-        #endregion
-
-
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
-
-        public class TestGridViewData
-        {
-            public bool ExclamationMark { get; set; }
-            public bool GearMark { get; set; }
-            public bool LockMark { get; set; }
-            public DateTime BuildTime { get; set; }
-            public DateTime? EditTime { get; set; }
-            public string TypesettingNumber { get; set; }
-
-            public double PieceLength { get; set; }
-            public double PieceWeight { get; set; }
-            public int MaterialPercent { get; set; }
-
-            public ObservableCollection<TestGridViewDataDetail> TestGridViewDataDetailList { get; set; }
-
-        }
-
-        public class TestGridViewDataDetail
-        {
-            public int Order { get; set; }
-            public string StructNumber { get; set; }
-            public string PieceNumber { get; set; }
-            public double PieceLength { get; set; }
-            public int PieceCount { get; set; }
-            public string Phase { get; set; }
-        }
-
-
-
-        private ObservableCollection<TestGridViewData> _testdata { get; set; }
-
-        // 查詢結果
-        public ObservableCollection<TestGridViewData> TestData
-        {
-            get { return _testdata; }
-            set
-            {
-                _testdata = value;
-                //RaisePropertyChanged("TestData");
             }
         }
-
+      
     }
     #endregion
+
+
 }
 
 
