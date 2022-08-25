@@ -161,6 +161,17 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
+                    <!--(舊)製品設定-->
+                    <Button Command="{ Binding Old_ObSettingsPage_Office }"
+                            IsEnabled="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={std:NullToEnabledConverter} }">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="30"
+                                       Source="{ StaticResource NewProductSettings }" />
+                                <TextBlock Text="(舊)製品" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
                     <!--製品設定-->
                     <Button Command="{ Binding ObSettingsPage_Office }"
                             IsEnabled="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={std:NullToEnabledConverter} }">

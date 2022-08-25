@@ -631,6 +631,7 @@ namespace WPFSTD105
                 SerializationHelper.GZipSerializeBinary(new ObservableCollection<MaterialDataView>(), ApplicationVM.FileMaterialDataView());//斷面規格列表
                 SerializationHelper.GZipSerializeBinary(new NcTempList(), ApplicationVM.FileNcTemp()); //nc 尚未實體化的資料
 
+                // 2022/08/22 呂宗霖 若有缺少斷面規格，自動產生
                 foreach (OBJETC_TYPE format in System.Enum.GetValues(typeof(OBJETC_TYPE)))
                 {
                     if (format != OBJETC_TYPE.Unknown && format != OBJETC_TYPE.PLATE)
@@ -670,6 +671,32 @@ namespace WPFSTD105
                 File.Copy(System.AppDomain.CurrentDomain.BaseDirectory + $@"Mater.lis", $@"{ApplicationVM.FileMaterial()}");//複製材質到模型內
                 STDSerialization ser = new STDSerialization();
                 CommonViewModel.ProjectProperty.Create = DateTime.Now;
+
+                //若資料夾中無NC檔或BOM，調整 CommonViewModel.ProjectProperty.IsBomLoad及 CommonViewModel.ProjectProperty.IsNcLoad為false
+                if (!File.Exists(ApplicationVM.FileTeklaBom())) 
+                {
+                    CommonViewModel.ProjectProperty.IsBomLoad = false;
+                    CommonViewModel.ProjectProperty.BomLoad = new DateTime();//nc載入時間
+                    CommonViewModel.ProjectProperty.Revise = new DateTime();//專案變動所以修改日期
+                }
+                else
+                {
+                    CommonViewModel.ProjectProperty.IsBomLoad = true;
+                }
+                var a = GetAllNcPath(ApplicationVM.DirectoryNc());
+
+                if (a.Count==0)
+                {
+                    CommonViewModel.ProjectProperty.IsNcLoad = false;
+                    CommonViewModel.ProjectProperty.NcLoad = new DateTime();//nc載入時間
+                    CommonViewModel.ProjectProperty.Revise = new DateTime();//專案變動所以修改日期
+                }
+                else
+                {
+                    CommonViewModel.ProjectProperty.IsNcLoad = true;
+                }
+
+
                 ser.SetProjectProperty(CommonViewModel.ProjectProperty); //存取設定
                 if (CommonViewModel.ActionLoadProfile != null) //如果載入專案實有發現載入斷面規格與材質
                 {
@@ -679,7 +706,28 @@ namespace WPFSTD105
                 return true;
             }
         }
-
+        /// <summary>
+        /// 取得NC檔
+        /// </summary>
+        /// <param name="dir"></param>
+        /// <returns></returns>
+        public static List<string> GetAllNcPath(string dir)
+        {
+            List<string> list = new List<string>(); 
+            foreach (string d in Directory.GetFileSystemEntries(dir))
+            {
+                if (File.Exists(d))
+                {
+                    string dataName = Path.GetFileName(d);//檔案名稱
+                    string ext = Path.GetExtension(d);//副檔名
+                    if (ext == ".nc1") //如果是 nc 檔案
+                    {
+                        list.Add(dataName);
+                    }
+                }
+            }
+            return list;    
+        }
         /// <summary>
         /// 另存專案
         /// </summary>

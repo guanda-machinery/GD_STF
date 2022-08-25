@@ -156,7 +156,7 @@
                                 <TreeViewItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <Image Source="{ StaticResource Beam }" />
-                                        <TextBlock Text="BH--->X"/>
+                                        <TextBlock Text="BH-->X"/>
                                     </StackPanel>
                                 </TreeViewItem.Header>
                             </TreeViewItem>
@@ -165,7 +165,7 @@
                                 <TreeViewItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <Image Source="{ StaticResource Beam }" />
-                                        <TextBlock Text="H--->X"/>
+                                        <TextBlock Text="H-->X"/>
                                     </StackPanel>
                                 </TreeViewItem.Header>
                             </TreeViewItem>
@@ -174,7 +174,7 @@
                                 <TreeViewItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <Image Source="{ StaticResource Beam }" />
-                                        <TextBlock Text="RH--->X"/>
+                                        <TextBlock Text="RH-->X"/>
                                     </StackPanel>
                                 </TreeViewItem.Header>
                             </TreeViewItem>
