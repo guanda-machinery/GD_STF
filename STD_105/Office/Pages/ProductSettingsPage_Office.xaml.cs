@@ -2414,5 +2414,12 @@ namespace STD_105.Office
             }
             return p;
         }
+
+
+
+        private void Set_DrillSettingGrid_AllCheckboxChecked_Click(object sender, RoutedEventArgs e)
+        {
+            GetWpfLogicalChildClass.SetAllCheckBoxTrueOrFalse(DrillTabItem);
+        }
     }
 }

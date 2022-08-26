@@ -42,7 +42,7 @@ namespace GD_STD.Data
             Phase = steelAssembly.Phase[assemblyIndex];
             ShippingDescription = steelAssembly.ShippingDescription[assemblyIndex];
 
-            //Count = ID.Count;
+            Count = ID.Count;
         }
         /// <inheritdoc/>
         public override bool Equals(object obj)
@@ -83,11 +83,12 @@ namespace GD_STD.Data
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Profile);
             return hashCode;
         }
-        //private int _Count;
+
+        private int _Count;
         ///// <summary>
         ///// 物件數量
         ///// </summary>
-        //public int Count { get => ID.Count; set=> _Count = value; }
+        public int Count { get => ID.Count; set=> _Count = value; }
         /// <summary>
         /// 運輸說明
         /// </summary>

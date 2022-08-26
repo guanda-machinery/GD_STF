@@ -97,7 +97,7 @@
                                   Renderer="NativeExperimental"
                                   ShowFps="True">
                         <spa:ModelExt.ContextMenu>
-                            <ContextMenu Style="{StaticResource BaseStyle}" Visibility="Hidden"
+                            <ContextMenu Style="{StaticResource BaseStyle}"
                                          FontSize="12">
                                 <MenuItem x:Name="esc"
                                           Header="取消"
@@ -334,7 +334,7 @@
                              Text="{Binding SteelAttr.PartNumber}" />
                     <Label Grid.Row="1" Content="構件編號：" />
                     <TextBox Grid.Row="1"
-                             Text="{Binding SteelAttr.AsseNumber}" />
+                             Text="" />
                     <Label Grid.Row="2"
                            Content="零件材質：" />
                     <ComboBox Grid.Row="2"
@@ -367,9 +367,6 @@
                                                Read="{Binding ReadPart}"
                                                DeleteVisibility="Collapsed"
                                                HorizontalAlignment="Center" />
-                    <Button x:Name="AddPartOK" Content="存檔" HorizontalAlignment="Left" Height="25" Margin="36,0,0,0" Grid.Row="7" VerticalAlignment="Center" Width="82" Click="AddPartOK_Click" Cursor="Hand"/>
-                    <Button Grid.Column="1" Content="Button" HorizontalAlignment="Left" Height="24" Margin="18,0,0,0" Grid.Row="7" VerticalAlignment="Center" Width="87" Cursor="Hand" Click="Button_Click"/>
-
                 </Grid>
             </GroupBox>
             <!--繪圖顯示模型-->
@@ -562,7 +559,7 @@
                         </Style>
                     </TabItem.Resources>
                     <Grid>
-                        <Viewbox x:Name="Viewbox">
+                        <Viewbox>
                             <Canvas Width="280"
                                     Height="280">
                                 <ComboBox FontSize="12"
@@ -641,7 +638,6 @@
                                           Style="{StaticResource CheckedStyle}"
                                           Canvas.Left="188"
                                           Canvas.Top="152" />
-                                <Button Content="Button" Height="17" Canvas.Left="9" Canvas.Top="200" Width="66" FontSize="10" FontFamily="Font Awesome 5 Pro Light" HorizontalAlignment="Left" VerticalAlignment="Center" Click="Button_Click_1"/>
                             </Canvas>
                         </Viewbox>
                         <STD105:DataButtons_Office 
