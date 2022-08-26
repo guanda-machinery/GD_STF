@@ -368,7 +368,7 @@ namespace WPFSTD105.Tekla
                                         //{
                                             assNumber.Add(assemblies[indexAsse].Number);//加入到構件編號集合內
                                         //}                                        
-                                    });
+                                    }); 
                                     steelAttr.AsseNumber = assNumber.Aggregate((str1, str2) => $"{str1},{str2}");//組合構件編號
                                     ser.SetPart(fileName, new ObservableCollection<object>(steelParts));//存入模型零件列表
                                     Bolts.ForEach(el => groups.Add(BO(el, steelAttr)));
