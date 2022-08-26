@@ -358,12 +358,17 @@ namespace WPFSTD105.Tekla
                                     steelAttr.Number = steelParts[index].Count;//零件數量
                                     //steelAttr.Length = steelParts[index].Length;//寫入長度
                                     ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies(); //構件列表
+                                    // 2022/08/26 呂宗霖 避免構件重複顯示，故不存在List中的構件才加入
+                                    // 2022/08/26 架構師說其實這是正常的，雖然構件編號一樣，但其實ID是不同的
                                     List<string> assNumber = new List<string>();//構件編號
                                     steelParts[index].Father.ForEach(fatherID =>//取得指定零件的所有構件 ID
                                     {
                                         int indexAsse = assemblies.FindIndex(el => el.ID.Contains(fatherID)/*符合零件指定的構件ID*/);//構件索引位置
-                                        assNumber.Add(assemblies[indexAsse].Number);//加入到構件編號集合內
-                                    });
+                                        //if (!assNumber.Contains(assemblies[indexAsse].Number))
+                                        //{
+                                            assNumber.Add(assemblies[indexAsse].Number);//加入到構件編號集合內
+                                        //}                                        
+                                    }); 
                                     steelAttr.AsseNumber = assNumber.Aggregate((str1, str2) => $"{str1},{str2}");//組合構件編號
                                     ser.SetPart(fileName, new ObservableCollection<object>(steelParts));//存入模型零件列表
                                     Bolts.ForEach(el => groups.Add(BO(el, steelAttr)));

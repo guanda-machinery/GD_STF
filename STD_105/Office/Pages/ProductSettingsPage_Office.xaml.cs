@@ -41,6 +41,79 @@ namespace STD_105.Office
             //2022.06.24 呂宗霖 此Class與GraphWin.xaml.cs皆有SteelTriangulation與Add2DHole
             //                  先使用本Class 若有問題再修改
             //GraphWin service = new GraphWin();
+
+
+            STDSerialization ser = new STDSerialization();
+            //List<string> dataname = new List<string>();
+            //// 取得所有零件檔
+            //Dictionary<string, ObservableCollection<SteelPart>> DicSteelPart = ser.GetPart();
+
+            //var a = (from d in DicSteelPart.Values
+            //         select d
+            //         .Where(x => x.Type == OBJETC_TYPE.RH || x.Type == OBJETC_TYPE.BH)
+            //         .Select(x => new
+            //         {
+            //             x.Father,
+            //             x.ID,
+            //             x.Profile,
+            //             x.Type,
+            //             x.Number,
+            //             x.DrawingName
+            //         })).ToList();
+            //a.RemoveAll(x => x.Count() == 0);
+
+           
+
+            //ReadFile readFile = new ReadFile($@"{ApplicationVM.DirectoryDevPart()}\6df04fb4-4a90-4f15-abf1-d23dd764ba9d.dm", devDept.Serialization.contentType.GeometryAndTessellation);
+            ////ReadFile readFile = ser.ReadPartModel("6df04fb4-4a90-4f15-abf1-d23dd764ba9d", devDept.Serialization.contentType.GeometryAndTessellation); //讀取檔案內容
+            //readFile.DoWork();//開始工作
+            ////ModelExt model = new ModelExt();
+            //readFile.AddToScene(model);//將讀取完的檔案放入到模型
+         
+            //foreach (KeyValuePair<string, ObservableCollection<SteelPart>> dataCorrespond in DicSteelPart)
+            //{
+            //    foreach (TreeNode children in dataCorrespond)
+            //    {
+            //        foreach (var c in children)
+            //        {
+            //            dataname.Add(children2.);
+            //        }
+            //    }
+            //}
+
+
+
+            //NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
+            //NcTemp ncTemp = ncTemps.GetData(data.DataName);//需要實體化的nc物件
+            //model.Clear(); //清除目前模型
+            //if (ncTemp == null) //NC 檔案是空值
+            //{
+            //    ReadFile readFile = ser.ReadPartModel(data.DataName); //讀取檔案內容
+            //    if (readFile == null)
+            //    {
+            //        WinUIMessageBox.Show(null,
+            //            $"專案Dev_Part資料夾讀取失敗",
+            //            "通知",
+            //            MessageBoxButton.OK,
+            //            MessageBoxImage.Exclamation,
+            //            MessageBoxResult.None,
+            //            MessageBoxOptions.None,
+            //            FloatingMode.Popup);
+            //        return;
+            //    }
+            //    readFile.DoWork();//開始工作
+            //    readFile.AddToScene(model);//將讀取完的檔案放入到模型
+            //    if (model.Entities[model.Entities.Count - 1].EntityData is null)
+            //    {
+            //        return;
+            //    }            }
+            //else //如果需要載入 nc 設定檔
+            //{
+            //    model.LoadNcToModel(data.DataName);
+            //}
+
+
+
             #region 3D
             //model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             model.Unlock("UF20-HN12H-22P6C-71M1-FXP4");
@@ -2056,6 +2129,69 @@ namespace STD_105.Office
 
             model.ZoomFit();
             model.Refresh();
+
+            //ReadFile readFile = new ReadFile($@"{ApplicationVM.DirectoryDevPart()}\6df04fb4-4a90-4f15-abf1-d23dd764ba9d.dm", devDept.Serialization.contentType.GeometryAndTessellation);
+            ////ReadFile readFile = ser.ReadPartModel("6df04fb4-4a90-4f15-abf1-d23dd764ba9d", devDept.Serialization.contentType.GeometryAndTessellation); //讀取檔案內容
+            //readFile.DoWork();//開始工作
+            ////ModelExt model = new ModelExt();
+            //readFile.AddToScene(model);//將讀取完的檔案放入到模型
+
+
+            //// 取得Dev_Part中的dm檔
+            //List<string> dmlist = new List<string>();
+            //foreach (string d in Directory.GetFileSystemEntries(ApplicationVM.DirectoryDevPart()))
+            //{
+            //    if (File.Exists(d))
+            //    {
+            //        string dataName = Path.GetFileName(d);//檔案名稱
+            //        string ext = Path.GetExtension(d);//副檔名
+            //        if (ext == ".dm") //如果是 dm 檔案
+            //        {
+            //            dmlist.Add(dataName);
+            //        }
+            //    }
+            //}
+
+            //// 取得尚未實體化的nc檔案
+            //STDSerialization ser = new STDSerialization();
+            //NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
+
+            //// 跑已存在dm檔，產生未有dm檔之NC檔
+            //foreach (string DataName in dmlist)
+            //{
+            //    NcTemp ncTemp = ncTemps.GetData(DataName);//需要實體化的nc物件
+            //    model.Clear(); //清除目前模型
+            //    if (ncTemp == null) //NC 檔案是空值
+            //    {
+            //        readFile = ser.ReadPartModel(DataName); //讀取檔案內容
+            //        if (readFile == null)
+            //        {
+            //            WinUIMessageBox.Show(null,
+            //                $"專案Dev_Part資料夾讀取失敗",
+            //                "通知",
+            //                MessageBoxButton.OK,
+            //                MessageBoxImage.Exclamation,
+            //                MessageBoxResult.None,
+            //                MessageBoxOptions.None,
+            //                FloatingMode.Popup);
+            //            return;
+            //        }
+            //        readFile.DoWork();//開始工作
+            //        readFile.AddToScene(model);//將讀取完的檔案放入到模型
+            //        if (model.Entities[model.Entities.Count - 1].EntityData is null)
+            //        {
+            //            return;
+            //        }
+            //    }
+            //    else //如果需要載入 nc 設定檔
+            //    {
+            //        model.LoadNcToModel(DataName);
+            //    }
+            //}
+
+            //// 讀取dm檔
+            
+            //// 加入VM
 
         }
 

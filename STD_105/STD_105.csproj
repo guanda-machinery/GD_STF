@@ -710,7 +710,7 @@
     <Compile Include="Page\ObSettingPage.xaml.cs">
       <DependentUpon>ObSettingPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Page\ProductSettingsPage_Office.xaml.cs">
+    <Compile Include="Office\Pages\ProductSettingsPage_Office.xaml.cs">
       <DependentUpon>ProductSettingsPage_Office.xaml</DependentUpon>
     </Compile>
     <Compile Include="Page\RacksOperation.xaml.cs">
@@ -1184,7 +1184,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Page\ProductSettingsPage_Office.xaml">
+    <Page Include="Office\Pages\ProductSettingsPage_Office.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
