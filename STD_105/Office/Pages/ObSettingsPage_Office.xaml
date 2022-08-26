@@ -334,7 +334,7 @@
                              Text="{Binding SteelAttr.PartNumber}" />
                     <Label Grid.Row="1" Content="構件編號：" />
                     <TextBox Grid.Row="1"
-                             Text="" />
+                             Text="{Binding SteelAttr.AsseNumber}" />
                     <Label Grid.Row="2"
                            Content="零件材質：" />
                     <ComboBox Grid.Row="2"
