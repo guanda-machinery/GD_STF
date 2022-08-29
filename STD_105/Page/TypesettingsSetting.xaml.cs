@@ -41,9 +41,6 @@ namespace STD_105.Office
         public TypesettingsSetting()
         {
             InitializeComponent();
-            var Grid =  (ObservableCollection<TypeSettingDataView>)PartGridControl.ItemsSource;
-            var MGrid = (ObservableCollection<MaterialDataView>)Material_List_GridControl.ItemsSource;
-
 
         }
 

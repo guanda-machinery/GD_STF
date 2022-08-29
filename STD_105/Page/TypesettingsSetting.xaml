@@ -158,7 +158,7 @@
                                     <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
-                            <dxg:GridColumn FieldName="Count"  IsSmart="True"  Width="auto" Header="數量"  />
+                            <dxg:GridColumn FieldName="" Binding="{Binding ID , Converter={STD105:IListFilterToCountConverter} }"  IsSmart="True"  Width="auto" Header="數量"  />
                             <dxg:GridColumn FieldName="" Binding="{Binding Match, Converter={STD105:IListFilterToCountConverter}, ConverterParameter={WPFBase:SystemType Bool=False}}"  IsSmart="True"  Width="auto" Header="已配對"  />
                             <dxg:GridColumn Name="GridColumnSpace" FieldName=""  IsSmart="True"  Width="100" AllowResizing="false"  AllowMoving="false" />
                             <dxg:GridColumn FieldName="SortCount"  IsSmart="True"  Header="預排數量" Width="100" AllowResizing="false" AllowMoving="false"  />
@@ -185,18 +185,18 @@
                                     <TextBlock Text="加入素材" Margin="0,2,0,2"/>
                                 </StackPanel>
 
-                                <Button Margin="1,0" Command="{Binding AddMaterial}"  CommandParameter="{Binding ElementName=Material_List_GridControl}">
+                                <Button Margin="1,0" Command="{Binding AddMaterial}"  CommandParameter="{Binding ElementName=PartGridControl}">
                                     <Button.Content>
 
                                         <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Width="14"/>
                                     </Button.Content>
                                 </Button>
-                                <Button Margin="1,0">
+                                <Button Margin="1,0"  Command="{Binding DeductMaterial}"  CommandParameter="{Binding ElementName=PartGridControl}" >
                                     <Button.Content>
                                         <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Left.svg'}" Width="14"/>
                                     </Button.Content>
                                 </Button>
-                                <Button  Margin="1,0">
+                                <Button  Margin="1,0" Command="{Binding AddAllMaterial}"  CommandParameter="{Binding ElementName=PartGridControl}"  >
                                     <Button.Content>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="ALL" VerticalAlignment="Center" Margin="0,0,5,0"   />
@@ -204,7 +204,7 @@
                                         </StackPanel>
                                     </Button.Content>
                                 </Button>
-                                <Button Margin="1,0">
+                                <Button Margin="1,0" Command="{Binding DeductAllMaterial}"  CommandParameter="{Binding ElementName=PartGridControl}" >
                                     <Button.Content>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="ALL" VerticalAlignment="Center" Margin="0,0,5,0" />

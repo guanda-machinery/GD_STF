@@ -15,13 +15,22 @@ namespace STD_105
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (parameter == null)
-            {
-                return null;
+           
+            if(parameter is bool)
+           {
+                IList<bool> ts = (IList<bool>)value;
+                int result = ts.Where(el => el == (bool)parameter).Count();
+                return result;
             }
-            IList<bool> ts = (IList<bool>)value;
-            int result = ts.Where(el => el == (bool)parameter).Count();
-            return result;
+            else if(parameter is null)
+            {
+              int result = ((IList<int>)value).Count();
+              return result;
+            }
+
+            return null;
+
+
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

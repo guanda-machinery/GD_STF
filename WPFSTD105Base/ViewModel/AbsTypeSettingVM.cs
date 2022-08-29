@@ -392,18 +392,12 @@ namespace WPFSTD105
             {
                 return new WPFBase.RelayParameterizedCommand(obj =>
                 {
-                    _GridControl = (GridControl)obj;
                     AutoMatchAsync();
+                    /*_GridControl = (GridControl)obj;
                     _GridControl.Dispatcher.Invoke(() =>
                     {
                         _GridControl.RefreshData();
-
-                    });
-
-                    if (MaterialDataViews != null)
-                    {
-
-                    }
+                    });*/
                 });
             }
         }
@@ -417,19 +411,152 @@ namespace WPFSTD105
             {
                 return new WPFBase.RelayParameterizedCommand(obj =>
                 {
-                    _GridControl = (GridControl)obj;
-                    AutoMatchAsync();
-               
-                    _GridControl.Dispatcher.Invoke(() =>
+                    var PartGirdControl = (DevExpress.Xpf.Grid.GridControl)obj;
+                    var PartGirdControl_SelectedItem = PartGirdControl.SelectedItems;
+                    //只在有選擇的狀態下執行命令
+                    if(PartGirdControl_SelectedItem.Count > 0)
                     {
-                        _GridControl.RefreshData();
+                        foreach(GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl_SelectedItem)
+                        {                          
+                            //數量 -已配對 >= 預排數量
 
-                    });
-                });
+                            //數量
+                            var IDCount = PartGridColumn.ID.Count;
+                            //已配對
+                            //var MatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
+                            var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
+
+                            if(PartGridColumn.SortCount < IDCount - alreadyMatchCount)
+                                PartGridColumn.SortCount ++;
+
+
+                            //已配對
+                            //  PartGridColumn.Match.FindAll(x => (x == true)).Count;
+
+                            // DataViews[];
+                            //取得構件編號，將資料寫入datagrid
+
+                        }                    //需要重整才能更新data binding 
+                        PartGirdControl.Dispatcher.Invoke(() =>
+                        {
+                            PartGirdControl.RefreshData();
+                        });
+                    }
+                }
+                );
+            }
+        }
+
+        /// <summary>
+        /// 減少素材(單個)
+        /// </summary>
+        public ICommand DeductMaterial
+        {
+            get
+            {
+                return new WPFBase.RelayParameterizedCommand(obj =>
+                {
+                    var PartGirdControl = (DevExpress.Xpf.Grid.GridControl)obj;
+                    var PartGirdControl_SelectedItem = PartGirdControl.SelectedItems;
+                    //只在有選擇的狀態下執行命令
+                    if (PartGirdControl_SelectedItem.Count > 0)
+                    {
+                        foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl_SelectedItem)
+                        {
+                            //只在>=1的時候做加減
+                            if(PartGridColumn.SortCount >=1)
+                                PartGridColumn.SortCount--;
+
+                            //保險：避免出現負數的情況
+                            if (PartGridColumn.SortCount < 0)
+                                PartGridColumn.SortCount =0;
+
+                        }                    
+                        
+                        //需要重整才能更新data binding 
+                        PartGirdControl.Dispatcher.Invoke(() =>
+                        {
+                            PartGirdControl.RefreshData();
+                        });
+                    }
+                }
+                );
             }
         }
 
 
+        /// <summary>
+        /// 加入素材(全部)
+        /// </summary>
+        public ICommand AddAllMaterial
+        {
+            get
+            {
+                return new WPFBase.RelayParameterizedCommand(obj =>
+                {
+                    var PartGirdControl = (DevExpress.Xpf.Grid.GridControl)obj;
+                    var PartGirdControl_SelectedItem = PartGirdControl.SelectedItems;
+                    //只在有選擇的狀態下執行命令
+                    if (PartGirdControl_SelectedItem.Count > 0)
+                    {
+                        foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl_SelectedItem)
+                        {
+                            //數量 -已配對 >= 預排數量
+
+                            //數量
+                            var IDCount = PartGridColumn.ID.Count;
+                            //已配對
+                            var alreadyMatchCount = PartGridColumn.Match.FindAll(x=>(x == false)).Count;
+                            //var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
+
+                            PartGridColumn.SortCount = IDCount - alreadyMatchCount;
+
+
+                            //已配對
+                            //  PartGridColumn.Match.FindAll(x => (x == true)).Count;
+
+                            // DataViews[];
+                            //取得構件編號，將資料寫入datagrid
+
+                        }                    //需要重整才能更新data binding 
+                        PartGirdControl.Dispatcher.Invoke(() =>
+                        {
+                            PartGirdControl.RefreshData();
+                        });
+                    }
+                }
+                );
+            }
+        }
+
+        /// <summary>
+        /// 減少素材(全部)
+        /// </summary>
+        public ICommand DeductAllMaterial
+        {
+            get
+            {
+                return new WPFBase.RelayParameterizedCommand(obj =>
+                {
+                    var PartGirdControl = (DevExpress.Xpf.Grid.GridControl)obj;
+                    var PartGirdControl_SelectedItem = PartGirdControl.SelectedItems;
+                    //只在有選擇的狀態下執行命令
+                    if (PartGirdControl_SelectedItem.Count > 0)
+                    {
+                        foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl_SelectedItem)
+                        {
+                            PartGridColumn.SortCount = 0;
+                        }                    
+                        //需要重整才能更新data binding 
+                        PartGirdControl.Dispatcher.Invoke(() =>
+                        {
+                            PartGirdControl.RefreshData();
+                        });
+                    }
+                }
+                );
+            }
+        }
 
 
 
