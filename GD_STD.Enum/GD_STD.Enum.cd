@@ -161,11 +161,11 @@
       <FileName>MOBILE_RACK.cs</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="GD_STD.Enum.OBJETC_TYPE" Collapsed="true">
+  <Enum Name="GD_STD.Enum.OBJECT_TYPE" Collapsed="true">
     <Position X="8.5" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAQAAAAAAIIAAAAgAEAAQAAAAAAAAAAAAAAgEQAABQ=</HashCode>
-      <FileName>OBJETC_TYPE.cs</FileName>
+      <FileName>OBJECT_TYPE.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="GD_STD.Enum.OPERATOR" Collapsed="true">

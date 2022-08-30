@@ -9,7 +9,7 @@ namespace Space
     /// <summary>
     /// 物件類型
     /// </summary>
-    public enum OBJETC_TYPE
+    public enum OBJECT_TYPE
     {
         /// <summary>
         /// H型鋼

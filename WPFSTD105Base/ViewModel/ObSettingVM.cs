@@ -294,7 +294,7 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public ReductionList Reductions { get; set; } = null;
         /// <summary>
-        ///  選擇的斷面規格類型 <see cref="OBJETC_TYPE"/>索引值
+        ///  選擇的斷面規格類型 <see cref="OBJECT_TYPE"/>索引值
         /// </summary>
         public int ProfileType
         {
@@ -305,7 +305,7 @@ namespace WPFSTD105.ViewModel
                 {
                     _ProfileType = value;
                     List<SteelAttr> list = new List<SteelAttr>();
-                    OBJETC_TYPE TYPE = (OBJETC_TYPE)value;
+                    OBJECT_TYPE TYPE = (OBJECT_TYPE)value;
 
                     if (!File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{TYPE}.inp"))
                     {
@@ -316,14 +316,14 @@ namespace WPFSTD105.ViewModel
 #endif
                     switch (TYPE)
                     {
-                        case OBJETC_TYPE.TUBE://20220802 張燕華 新增斷面規格
-                        case OBJETC_TYPE.H: //20220802 張燕華 新增斷面規格
-                        case OBJETC_TYPE.LB: //20220802 張燕華 新增斷面規格
-                        case OBJETC_TYPE.RH:
-                        case OBJETC_TYPE.CH:
-                        //case OBJETC_TYPE.L: //20220805 張燕華 新增斷面規格 - 已不在介面上顯示此規格
-                        case OBJETC_TYPE.BOX:
-                        case OBJETC_TYPE.BH:
+                        case OBJECT_TYPE.TUBE://20220802 張燕華 新增斷面規格
+                        case OBJECT_TYPE.H: //20220802 張燕華 新增斷面規格
+                        case OBJECT_TYPE.LB: //20220802 張燕華 新增斷面規格
+                        case OBJECT_TYPE.RH:
+                        case OBJECT_TYPE.CH:
+                        //case OBJECT_TYPE.L: //20220805 張燕華 新增斷面規格 - 已不在介面上顯示此規格
+                        case OBJECT_TYPE.BOX:
+                        case OBJECT_TYPE.BH:
                             ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{ (TYPE).ToString()}.inp");
                             break;
                         default:
@@ -522,15 +522,15 @@ namespace WPFSTD105.ViewModel
                         //斷面規格類型
                         switch (Steelbuffer.Type)
                         {
-                            case OBJETC_TYPE.BH:
-                            case OBJETC_TYPE.RH:
+                            case OBJECT_TYPE.BH:
+                            case OBJECT_TYPE.RH:
                                 Boltsbuffer.Z = Steelbuffer.W * 0.5 - Steelbuffer.t1 * 0.5;
                                 break;
-                            case OBJETC_TYPE.BOX:
-                            case OBJETC_TYPE.CH:
+                            case OBJECT_TYPE.BOX:
+                            case OBJECT_TYPE.CH:
                                 Boltsbuffer.Z = Steelbuffer.W - Steelbuffer.t1;
                                 break;
-                            case OBJETC_TYPE.L:
+                            case OBJECT_TYPE.L:
                                 Boltsbuffer.Z = 0;
                                 break;
                             default:
@@ -630,16 +630,16 @@ namespace WPFSTD105.ViewModel
                         //斷面規格類型
                         switch (Steelbuffer.Type)
                         {
-                            case OBJETC_TYPE.BH:
-                            case OBJETC_TYPE.RH:
+                            case OBJECT_TYPE.BH:
+                            case OBJECT_TYPE.RH:
                                 Boltsbuffer.Z = Steelbuffer.W * 0.5 - Steelbuffer.t1 * 0.5;
                                 break;
-                            case OBJETC_TYPE.TUBE:
-                            case OBJETC_TYPE.BOX:
-                            case OBJETC_TYPE.CH:
+                            case OBJECT_TYPE.TUBE:
+                            case OBJECT_TYPE.BOX:
+                            case OBJECT_TYPE.CH:
                                 Boltsbuffer.Z = Steelbuffer.W - Steelbuffer.t1;
                                 break;
-                            case OBJETC_TYPE.L:
+                            case OBJECT_TYPE.L:
                                 Boltsbuffer.Z = 0;
                                 break;
                             default:
@@ -890,7 +890,7 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         private Dictionary<string, int> level2 = new Dictionary<string, int>();
         /// <summary>
-        /// 選擇的斷面規格類型 <see cref="OBJETC_TYPE"/>索引值
+        /// 選擇的斷面規格類型 <see cref="OBJECT_TYPE"/>索引值
         /// </summary>
         private int _ProfileType { get; set; } = -1;
         /// <summary>
@@ -929,7 +929,7 @@ namespace WPFSTD105.ViewModel
         public void AddNode(DataCorrespond data)
         {
             //20220805 張燕華 新增斷面規格 - 因斷面規格已經在data中有定義, 故略過這層判斷直接執行以下程式
-            //if (data.Type != OBJETC_TYPE.RH)
+            //if (data.Type != OBJECT_TYPE.RH)
             //{
             //    return;
             //}

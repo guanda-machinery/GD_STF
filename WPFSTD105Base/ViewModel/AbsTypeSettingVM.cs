@@ -48,12 +48,12 @@ namespace WPFSTD105
 
                 //只將 BH RH L BOX CH 加入到列表內
                 if (buffer != null &&(
-                    buffer[0].Type == OBJETC_TYPE.BH ||
-                    buffer[0].Type == OBJETC_TYPE.RH ||
-                    buffer[0].Type == OBJETC_TYPE.L ||
-                    buffer[0].Type == OBJETC_TYPE.TUBE ||
-                    buffer[0].Type == OBJETC_TYPE.BOX ||
-                    buffer[0].Type == OBJETC_TYPE.CH))
+                    buffer[0].Type == OBJECT_TYPE.BH ||
+                    buffer[0].Type == OBJECT_TYPE.RH ||
+                    buffer[0].Type == OBJECT_TYPE.L ||
+                    buffer[0].Type == OBJECT_TYPE.TUBE ||
+                    buffer[0].Type == OBJECT_TYPE.BOX ||
+                    buffer[0].Type == OBJECT_TYPE.CH))
                 {
                     foreach (var item in buffer) //逐步展開零件
                     {

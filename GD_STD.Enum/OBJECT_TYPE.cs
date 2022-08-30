@@ -7,7 +7,7 @@ namespace GD_STD.Enum
     /// 主零件類型
     /// </summary>
     
-    public enum OBJETC_TYPE
+    public enum OBJECT_TYPE
     {
         //20220801 張燕華 若要移動集合列表順序，則inp檔必需重新建立，因為修改的東西會記錄在inp檔中
         //20220805 張燕華 有使用的斷面規格要排列在最上面，因為斷面規格下拉選項(ComboBox)才能對應到正確位置

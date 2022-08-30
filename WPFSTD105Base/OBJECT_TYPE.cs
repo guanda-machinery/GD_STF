@@ -6,7 +6,7 @@
 //    /// <summary>
 //    /// 主零件類型
 //    /// </summary>
-//    public enum OBJETC_TYPE
+//    public enum OBJECT_TYPE
 //    {
 //        /// <summary>
 //        /// RH型鋼

@@ -37,7 +37,7 @@ namespace WPFSTD105.Surrogate
         /// <inheritdoc/>
         public Guid? GUID { get; set; }
         /// <inheritdoc/>
-        public OBJETC_TYPE Type { get; set; }
+        public OBJECT_TYPE Type { get; set; }
         /// <inheritdoc/>
         public string dX { get; set; }
         /// <inheritdoc/>
