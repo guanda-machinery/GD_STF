@@ -18,6 +18,6 @@ namespace GD_STD.Base
         ///// <summary>
         ///// 物件類型
         ///// </summary>
-        //OBJETC_TYPE Type { get; set; }
+        //OBJECT_TYPE Type { get; set; }
     }
 }

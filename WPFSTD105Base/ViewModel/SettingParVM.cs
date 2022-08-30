@@ -1707,7 +1707,9 @@ namespace WPFSTD105.ViewModel
                             }
                             else 
                             {
-                                MessageBox.Show("ERROR: 無定義的斷面規格類別!");
+                                MessageBox.Show($"ERROR: 無定義的{steel_type}斷面規格類別!");
+                                str.Close();
+                                return;
                             }
 
                             alSteelAttrFromFile.Add(steel_attr);
@@ -1760,7 +1762,7 @@ namespace WPFSTD105.ViewModel
 
                             if(steel_type == "C")
                             {
-                                steelAttr_Office.Type = OBJETC_TYPE.C;
+                                steelAttr_Office.Type = OBJECT_TYPE.C;
                                 steelAttr_Office.Profile = SingleSectionSpec.section_name;
                                 steelAttr_Office.H = SingleSectionSpec.h;
                                 steelAttr_Office.W = SingleSectionSpec.b;
@@ -1775,7 +1777,7 @@ namespace WPFSTD105.ViewModel
                             }
                             else if (steel_type == "PIPE")
                             {
-                                steelAttr_Office.Type = OBJETC_TYPE.PIPE;
+                                steelAttr_Office.Type = OBJECT_TYPE.PIPE;
                                 steelAttr_Office.Profile = SingleSectionSpec.section_name;
                                 steelAttr_Office.diameter = SingleSectionSpec.diameter;
                                 steelAttr_Office.W = SingleSectionSpec.b;
@@ -1790,14 +1792,14 @@ namespace WPFSTD105.ViewModel
                             }
                             else if (steel_type == "TURN BUCKLE")
                             {
-                                steelAttr_Office.Type = OBJETC_TYPE.TURN_BUCKLE;
+                                steelAttr_Office.Type = OBJECT_TYPE.TURN_BUCKLE;
                                 steelAttr_Office.Profile = SingleSectionSpec.section_name;
                                 steelAttr_Office.H = SingleSectionSpec.h;
                                 steelAttr_Office.W = SingleSectionSpec.b;
                             }
                             else if (steel_type == "WELD")
                             {
-                                steelAttr_Office.Type = OBJETC_TYPE.WELD;
+                                steelAttr_Office.Type = OBJECT_TYPE.WELD;
                                 steelAttr_Office.Profile = SingleSectionSpec.section_name;
                                 steelAttr_Office.diameter = SingleSectionSpec.diameter;
                                 steelAttr_Office.W = SingleSectionSpec.b;
@@ -1806,7 +1808,7 @@ namespace WPFSTD105.ViewModel
                             }
                             else if (steel_type == "SA")
                             {
-                                steelAttr_Office.Type = OBJETC_TYPE.SA;
+                                steelAttr_Office.Type = OBJECT_TYPE.SA;
                                 steelAttr_Office.Profile = SingleSectionSpec.section_name;
                                 steelAttr_Office.H = SingleSectionSpec.h;
                                 steelAttr_Office.W = SingleSectionSpec.b;
@@ -1815,14 +1817,14 @@ namespace WPFSTD105.ViewModel
                             }
                             else if (steel_type == "格柵板踏階")
                             {
-                                steelAttr_Office.Type = OBJETC_TYPE.GRATING;
+                                steelAttr_Office.Type = OBJECT_TYPE.GRATING;
                                 steelAttr_Office.Profile = SingleSectionSpec.section_name;
                                 steelAttr_Office.H = SingleSectionSpec.h;
                                 steelAttr_Office.W = SingleSectionSpec.b;
                             }
                             else if (steel_type == "FB")
                             {
-                                steelAttr_Office.Type = OBJETC_TYPE.FB;
+                                steelAttr_Office.Type = OBJECT_TYPE.FB;
                                 steelAttr_Office.Profile = SingleSectionSpec.section_name;
                                 steelAttr_Office.H = SingleSectionSpec.h;
                                 steelAttr_Office.W = SingleSectionSpec.b;
@@ -1835,7 +1837,7 @@ namespace WPFSTD105.ViewModel
                             }
                             else if (steel_type == "RB")
                             {
-                                steelAttr_Office.Type = OBJETC_TYPE.RB;
+                                steelAttr_Office.Type = OBJECT_TYPE.RB;
                                 steelAttr_Office.Profile = SingleSectionSpec.section_name;
                                 steelAttr_Office.diameter = SingleSectionSpec.diameter;
                                 steelAttr_Office.surface_area = SingleSectionSpec.surface_area;
@@ -1848,10 +1850,10 @@ namespace WPFSTD105.ViewModel
                                 switch (steel_type)
                                 {
                                     case "重型螺帽":
-                                        steelAttr_Office.Type = OBJETC_TYPE.HNUT;
+                                        steelAttr_Office.Type = OBJECT_TYPE.HNUT;
                                         break;
                                     case "螺帽":
-                                        steelAttr_Office.Type = OBJETC_TYPE.NUT;
+                                        steelAttr_Office.Type = OBJECT_TYPE.NUT;
                                         break;default:
                                         throw new Exception("無法辨認斷面規格類型");
                                 }
@@ -1863,40 +1865,40 @@ namespace WPFSTD105.ViewModel
                                 switch (steel_type)
                                 {
                                     case "TUBE":
-                                        steelAttr_Office.Type = OBJETC_TYPE.TUBE;
+                                        steelAttr_Office.Type = OBJECT_TYPE.TUBE;
                                         break;
                                     case "BOX":
-                                        steelAttr_Office.Type = OBJETC_TYPE.BOX;
+                                        steelAttr_Office.Type = OBJECT_TYPE.BOX;
                                         break;
                                     case "BH":
-                                        steelAttr_Office.Type = OBJETC_TYPE.BH;
+                                        steelAttr_Office.Type = OBJECT_TYPE.BH;
                                         break;
                                     case "H":
-                                        steelAttr_Office.Type = OBJETC_TYPE.H;
+                                        steelAttr_Office.Type = OBJECT_TYPE.H;
                                         break;
                                     case "RH":
-                                        steelAttr_Office.Type = OBJETC_TYPE.RH;
+                                        steelAttr_Office.Type = OBJECT_TYPE.RH;
                                         break;
                                     case "I":
-                                        steelAttr_Office.Type = OBJETC_TYPE.I;
+                                        steelAttr_Office.Type = OBJECT_TYPE.I;
                                         break;
                                     case "L":
-                                        steelAttr_Office.Type = OBJETC_TYPE.L;
+                                        steelAttr_Office.Type = OBJECT_TYPE.L;
                                         break;
                                     case "[":
-                                        steelAttr_Office.Type = OBJETC_TYPE.LB;
+                                        steelAttr_Office.Type = OBJECT_TYPE.LB;
                                         break;
                                     case "U(CH)":
-                                        steelAttr_Office.Type = OBJETC_TYPE.CH;
+                                        steelAttr_Office.Type = OBJECT_TYPE.CH;
                                         break;
                                     case "BT":
-                                        steelAttr_Office.Type = OBJETC_TYPE.BT;
+                                        steelAttr_Office.Type = OBJECT_TYPE.BT;
                                         break;
                                     case "CT":
-                                        steelAttr_Office.Type = OBJETC_TYPE.CT;
+                                        steelAttr_Office.Type = OBJECT_TYPE.CT;
                                         break;
                                     case "T":
-                                        steelAttr_Office.Type = OBJETC_TYPE.T;
+                                        steelAttr_Office.Type = OBJECT_TYPE.T;
                                         break;
                                     default:
                                         MessageBox.Show("ERROR: 無定義的斷面規格類別!");
@@ -2296,7 +2298,7 @@ namespace WPFSTD105.ViewModel
                 if (IsProfile)
                 {
                     string str = el.ToString();
-                    string strType = ((OBJETC_TYPE)_SelectType).ToString();
+                    string strType = ((OBJECT_TYPE)_SelectType).ToString();
                     PropertyInfo showPropertyInfo = this.GetType().GetProperty(strType);//反射在畫面顯示的資料列表
                     PropertyInfo backPropertyInfo = this.GetType().GetProperty($@"_{strType}", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);//反射在背景的資料列表欄位
                     object getValue = (ObservableCollection<SteelAttr>)backPropertyInfo.GetValue(this); //反射在背景的資料列表
@@ -2362,7 +2364,7 @@ namespace WPFSTD105.ViewModel
             return new WPFBase.RelayParameterizedCommand(el =>
             {
                 string str = el.ToString();
-                string strType = ((OBJETC_TYPE)_SelectType).ToString();
+                string strType = ((OBJECT_TYPE)_SelectType).ToString();
                 PropertyInfo showPropertyInfo = this.GetType().GetProperty(strType);//反射在畫面顯示的資料列表
                 PropertyInfo backPropertyInfo = this.GetType().GetProperty($@"_{strType}", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);//反射在背景的資料列表欄位
                 object getValue = (ObservableCollection<SteelAttr>)backPropertyInfo.GetValue(this); //反射在背景的資料列表
@@ -2449,7 +2451,7 @@ namespace WPFSTD105.ViewModel
                 DisplaySavePosition = true;
                 if (e is SteelAttr steelAttr)
                 {
-                    string strType = ((OBJETC_TYPE)steelAttr.Type).ToString();
+                    string strType = ((OBJECT_TYPE)steelAttr.Type).ToString();
                     PropertyInfo showPropertyInfo = this.GetType().GetProperty(strType);//反射在畫面顯示的資料列表
                     PropertyInfo backPropertyInfo = this.GetType().GetProperty($@"_{strType}", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);//反射在背景的資料列表欄位
 
@@ -3031,22 +3033,22 @@ namespace WPFSTD105.ViewModel
                 VisibilityCH = false;
                 VisibilityBOX = false;
                 VisibilityL = false;
-                switch ((OBJETC_TYPE)value)
+                switch ((OBJECT_TYPE)value)
                 {
-                    case OBJETC_TYPE.BH:
-                    case OBJETC_TYPE.H://20220802 張燕華 新增斷面規格
-                    case OBJETC_TYPE.RH:
+                    case OBJECT_TYPE.BH:
+                    case OBJECT_TYPE.H://20220802 張燕華 新增斷面規格
+                    case OBJECT_TYPE.RH:
                         VisibilityH = true;
                         break;
-                    case OBJETC_TYPE.LB://20220802 張燕華 新增斷面規格
-                    case OBJETC_TYPE.CH:
+                    case OBJECT_TYPE.LB://20220802 張燕華 新增斷面規格
+                    case OBJECT_TYPE.CH:
                         VisibilityCH = true;
                         break;
-                    case OBJETC_TYPE.L:
+                    case OBJECT_TYPE.L:
                         VisibilityL = true;
                         break;
-                    case OBJETC_TYPE.TUBE://20220802 張燕華 新增斷面規格
-                    case OBJETC_TYPE.BOX:
+                    case OBJECT_TYPE.TUBE://20220802 張燕華 新增斷面規格
+                    case OBJECT_TYPE.BOX:
                         VisibilityBOX = true;
                         break;
                     default:
@@ -3185,12 +3187,12 @@ namespace WPFSTD105.ViewModel
         private SteelAttr GetSettingSteelAttr()
         {
             SteelAttr data = new SteelAttr();
-            data.Type = (OBJETC_TYPE)_SelectType;
+            data.Type = (OBJECT_TYPE)_SelectType;
             //data.Kg = SelectSteelAtte.Kg;
             data.H = InsertionData[0].Value;
             data.W = InsertionData[1].Value;
             data.t1 = InsertionData[2].Value;
-            data.t2 = (OBJETC_TYPE)_SelectType == OBJETC_TYPE.L || (OBJETC_TYPE)_SelectType == OBJETC_TYPE.BOX ? InsertionData[2].Value : InsertionData[3].Value;
+            data.t2 = (OBJECT_TYPE)_SelectType == OBJECT_TYPE.L || (OBJECT_TYPE)_SelectType == OBJECT_TYPE.BOX ? InsertionData[2].Value : InsertionData[3].Value;
             data.Profile = ProfileName;
             //20220804 張燕華 新增斷規格目錄
             data.r1 = InsertionData[4].Value;
@@ -3416,7 +3418,7 @@ namespace WPFSTD105.ViewModel
             InsertionData.Clear();
 
             //20220801 張燕華 根據素材類型來顯示規格屬性
-            if (steelAttr.Type == OBJETC_TYPE.TUBE || steelAttr.Type == OBJETC_TYPE.BOX || steelAttr.Type == OBJETC_TYPE.BH || steelAttr.Type == OBJETC_TYPE.H || steelAttr.Type == OBJETC_TYPE.RH || steelAttr.Type == OBJETC_TYPE.I || steelAttr.Type == OBJETC_TYPE.L || steelAttr.Type == OBJETC_TYPE.LB || steelAttr.Type == OBJETC_TYPE.CH || steelAttr.Type == OBJETC_TYPE.BT || steelAttr.Type == OBJETC_TYPE.CT || steelAttr.Type == OBJETC_TYPE.T)
+            if (steelAttr.Type == OBJECT_TYPE.TUBE || steelAttr.Type == OBJECT_TYPE.BOX || steelAttr.Type == OBJECT_TYPE.BH || steelAttr.Type == OBJECT_TYPE.H || steelAttr.Type == OBJECT_TYPE.RH || steelAttr.Type == OBJECT_TYPE.I || steelAttr.Type == OBJECT_TYPE.L || steelAttr.Type == OBJECT_TYPE.LB || steelAttr.Type == OBJECT_TYPE.CH || steelAttr.Type == OBJECT_TYPE.BT || steelAttr.Type == OBJECT_TYPE.CT || steelAttr.Type == OBJECT_TYPE.T)
             {
                 InsertionData.Add(new DataGridData() { Property = "高度", Symbol = "H", Value = SelectSteelAtte.H, Unit = "mm" });
                 InsertionData.Add(new DataGridData() { Property = "寬度", Symbol = "W", Value = SelectSteelAtte.W, Unit = "mm" });
@@ -3429,7 +3431,7 @@ namespace WPFSTD105.ViewModel
                 InsertionData.Add(new DataGridData() { Property = "單位長度重量", Symbol = "", Value = SelectSteelAtte.Kg, Unit = "kg/m" });
                 InsertionData.Add(new DataGridData() { Property = "密度", Symbol = "", Value = SelectSteelAtte.density, Unit = "kg/m3" });
             }
-            else if (steelAttr.Type == OBJETC_TYPE.C)
+            else if (steelAttr.Type == OBJECT_TYPE.C)
             {
                 InsertionData.Add(new DataGridData() { Property = "高度", Symbol = "H", Value = SelectSteelAtte.H, Unit = "mm" });
                 InsertionData.Add(new DataGridData() { Property = "寬度", Symbol = "W", Value = SelectSteelAtte.W, Unit = "mm" });
@@ -3442,7 +3444,7 @@ namespace WPFSTD105.ViewModel
                 InsertionData.Add(new DataGridData() { Property = "單位長度重量", Symbol = "", Value = SelectSteelAtte.Kg, Unit = "kg/m" });
                 InsertionData.Add(new DataGridData() { Property = "密度", Symbol = "", Value = SelectSteelAtte.density, Unit = "kg/m3" });
             }
-            else if (steelAttr.Type == OBJETC_TYPE.PIPE)
+            else if (steelAttr.Type == OBJECT_TYPE.PIPE)
             {
                 InsertionData.Add(new DataGridData() { Property = "直徑", Symbol = "D", Value = SelectSteelAtte.diameter, Unit = "mm" });
                 InsertionData.Add(new DataGridData() { Property = "寬度", Symbol = "W", Value = SelectSteelAtte.W, Unit = "mm" });
@@ -3455,31 +3457,31 @@ namespace WPFSTD105.ViewModel
                 InsertionData.Add(new DataGridData() { Property = "單位長度重量", Symbol = "", Value = SelectSteelAtte.Kg, Unit = "kg/m" });
                 InsertionData.Add(new DataGridData() { Property = "密度", Symbol = "", Value = SelectSteelAtte.density, Unit = "kg/m3" });
             }
-            else if (steelAttr.Type == OBJETC_TYPE.TURN_BUCKLE)
+            else if (steelAttr.Type == OBJECT_TYPE.TURN_BUCKLE)
             {
                 InsertionData.Add(new DataGridData() { Property = "高度", Symbol = "H", Value = SelectSteelAtte.H, Unit = "mm" });
                 InsertionData.Add(new DataGridData() { Property = "寬度", Symbol = "W", Value = SelectSteelAtte.W, Unit = "mm" });
             }
-            else if (steelAttr.Type == OBJETC_TYPE.WELD)
+            else if (steelAttr.Type == OBJECT_TYPE.WELD)
             {
                 InsertionData.Add(new DataGridData() { Property = "直徑", Symbol = "D", Value = SelectSteelAtte.diameter, Unit = "mm" });
                 InsertionData.Add(new DataGridData() { Property = "寬度", Symbol = "W", Value = SelectSteelAtte.W, Unit = "mm" });
                 InsertionData.Add(new DataGridData() { Property = "腹板厚度", Symbol = "s/t1", Value = SelectSteelAtte.t1, Unit = "mm" });
                 InsertionData.Add(new DataGridData() { Property = "翼板厚度", Symbol = "t/t2", Value = SelectSteelAtte.t2, Unit = "mm" });
             }
-            else if (steelAttr.Type == OBJETC_TYPE.SA)
+            else if (steelAttr.Type == OBJECT_TYPE.SA)
             {
                 InsertionData.Add(new DataGridData() { Property = "高度", Symbol = "H", Value = SelectSteelAtte.H, Unit = "mm" });
                 InsertionData.Add(new DataGridData() { Property = "寬度", Symbol = "W", Value = SelectSteelAtte.W, Unit = "mm" });
                 InsertionData.Add(new DataGridData() { Property = "腹板厚度", Symbol = "s/t1", Value = SelectSteelAtte.t1, Unit = "mm" });
                 InsertionData.Add(new DataGridData() { Property = "翼板厚度", Symbol = "t/t2", Value = SelectSteelAtte.t2, Unit = "mm" });
             }
-            else if (steelAttr.Type == OBJETC_TYPE.GRATING)
+            else if (steelAttr.Type == OBJECT_TYPE.GRATING)
             {
                 InsertionData.Add(new DataGridData() { Property = "高度", Symbol = "H", Value = SelectSteelAtte.H, Unit = "mm" });
                 InsertionData.Add(new DataGridData() { Property = "寬度", Symbol = "W", Value = SelectSteelAtte.W, Unit = "mm" });
             }
-            else if (steelAttr.Type == OBJETC_TYPE.FB)
+            else if (steelAttr.Type == OBJECT_TYPE.FB)
             {
                 InsertionData.Add(new DataGridData() { Property = "高度", Symbol = "H", Value = SelectSteelAtte.H, Unit = "mm" });
                 InsertionData.Add(new DataGridData() { Property = "寬度", Symbol = "W", Value = SelectSteelAtte.W, Unit = "mm" });
@@ -3491,7 +3493,7 @@ namespace WPFSTD105.ViewModel
                 InsertionData.Add(new DataGridData() { Property = "單位長度重量", Symbol = "", Value = SelectSteelAtte.Kg, Unit = "kg/m" });
                 InsertionData.Add(new DataGridData() { Property = "密度", Symbol = "", Value = SelectSteelAtte.density, Unit = "kg/m3" });
             }
-            else if (steelAttr.Type == OBJETC_TYPE.RB)
+            else if (steelAttr.Type == OBJECT_TYPE.RB)
             {
                 InsertionData.Add(new DataGridData() { Property = "直徑", Symbol = "D", Value = SelectSteelAtte.diameter, Unit = "mm" });
 
@@ -3500,7 +3502,7 @@ namespace WPFSTD105.ViewModel
                 InsertionData.Add(new DataGridData() { Property = "單位長度重量", Symbol = "", Value = SelectSteelAtte.Kg, Unit = "kg/m" });
                 InsertionData.Add(new DataGridData() { Property = "密度", Symbol = "", Value = SelectSteelAtte.density, Unit = "kg/m3" });
             }
-            else if (steelAttr.Type == OBJETC_TYPE.HNUT || steelAttr.Type == OBJETC_TYPE.NUT)
+            else if (steelAttr.Type == OBJECT_TYPE.HNUT || steelAttr.Type == OBJECT_TYPE.NUT)
             {
                 InsertionData.Add(new DataGridData() { Property = "直徑", Symbol = "D", Value = SelectSteelAtte.diameter, Unit = "mm" });
             }
@@ -3652,7 +3654,7 @@ namespace WPFSTD105.ViewModel
                 data.H = InsertionData[0].Value;
                 data.W = InsertionData[1].Value;
                 data.t1 = InsertionData[2].Value;
-                data.t2 = (OBJETC_TYPE)_SelectType == OBJETC_TYPE.L || (OBJETC_TYPE)_SelectType == OBJETC_TYPE.BOX ? InsertionData[2].Value : InsertionData[3].Value;
+                data.t2 = (OBJECT_TYPE)_SelectType == OBJECT_TYPE.L || (OBJECT_TYPE)_SelectType == OBJECT_TYPE.BOX ? InsertionData[2].Value : InsertionData[3].Value;
                 data.Profile = ProfileName;
                 List<SteelAttr> result = new List<SteelAttr>(list.ToList());
                 result[index] = data;

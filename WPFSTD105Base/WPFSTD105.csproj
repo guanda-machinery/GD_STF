@@ -449,7 +449,7 @@
     <Compile Include="Model\Steel2DBlock.cs" />
     <Compile Include="Model\Steel3DBlock.cs" />
     <Compile Include="Model\ThreeViewBlock.cs" />
-    <Compile Include="OBJETC_TYPE.cs" />
+    <Compile Include="OBJECT_TYPE.cs" />
     <Compile Include="Properties\MecSetting.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>

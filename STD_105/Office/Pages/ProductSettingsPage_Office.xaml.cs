@@ -52,7 +52,7 @@ namespace STD_105.Office
 
             //var a = (from d in DicSteelPart.Values
             //         select d
-            //         .Where(x => x.Type == OBJETC_TYPE.RH || x.Type == OBJETC_TYPE.BH)
+            //         .Where(x => x.Type == OBJECT_TYPE.RH || x.Type == OBJECT_TYPE.BH)
             //         .Select(x => new
             //         {
             //             x.Father,

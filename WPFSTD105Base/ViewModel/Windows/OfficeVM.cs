@@ -368,9 +368,9 @@ namespace WPFSTD105
                 CommonViewModel.ImportNCFilesVM = new ImportNCFilesVM();
 
                 // 2022/08/22 呂宗霖 若有缺少斷面規格，自動產生
-                foreach (OBJETC_TYPE format in System.Enum.GetValues(typeof(OBJETC_TYPE)))
+                foreach (OBJECT_TYPE format in System.Enum.GetValues(typeof(OBJECT_TYPE)))
                 {
-                    if (format != OBJETC_TYPE.Unknown && format != OBJETC_TYPE.PLATE)
+                    if (format != OBJECT_TYPE.Unknown && format != OBJECT_TYPE.PLATE)
                     {
                         if (!File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{format.ToString()}.inp"))
                         {

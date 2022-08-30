@@ -16,7 +16,7 @@ namespace GD_STD.Data
         /// <summary>
         /// 斷面規格類型
         /// </summary>
-        public OBJETC_TYPE Type { get; set; }
+        public OBJECT_TYPE Type { get; set; }
 
         /// <summary>
         /// 採購

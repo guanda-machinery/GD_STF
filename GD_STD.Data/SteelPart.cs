@@ -69,7 +69,7 @@ namespace GD_STD.Data
         /// 斷面規格類型
         /// </summary>
         [TeklaBom(4)]
-        public OBJETC_TYPE Type { get; set; }
+        public OBJECT_TYPE Type { get; set; }
         /// <inheritdoc/>
         [TeklaBom(5)]
         public double Length { get; set; }
