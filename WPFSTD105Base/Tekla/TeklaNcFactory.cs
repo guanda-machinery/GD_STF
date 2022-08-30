@@ -135,15 +135,15 @@ namespace WPFSTD105.Tekla
                         //斷面規格類型
                         switch (steelAttr.Type)
                         {
-                            case OBJETC_TYPE.BH:
-                            case OBJETC_TYPE.RH:
+                            case OBJECT_TYPE.BH:
+                            case OBJECT_TYPE.RH:
                                 result.Z = steelAttr.W * 0.5 - steelAttr.t1 * 0.5;
                                 break;
-                            case OBJETC_TYPE.BOX:
-                            case OBJETC_TYPE.CH:
+                            case OBJECT_TYPE.BOX:
+                            case OBJECT_TYPE.CH:
                                 result.Z = steelAttr.W - steelAttr.t1;
                                 break;
-                            case OBJETC_TYPE.L:
+                            case OBJECT_TYPE.L:
                                 result.Z = 0;
                                 break;
                             default:

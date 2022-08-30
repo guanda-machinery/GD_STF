@@ -46,7 +46,7 @@ namespace WPFSTD105.Tekla
         /// <summary>
         /// 軟體缺少的斷面規格列表
         /// </summary>
-        public Dictionary<OBJETC_TYPE, ObservableCollection<SteelAttr>> Profile { get; private set; } = new Dictionary<OBJETC_TYPE, ObservableCollection<SteelAttr>>();
+        public Dictionary<OBJECT_TYPE, ObservableCollection<SteelAttr>> Profile { get; private set; } = new Dictionary<OBJECT_TYPE, ObservableCollection<SteelAttr>>();
         /// <summary>
         /// 軟體缺少的材質
         /// </summary>
@@ -83,25 +83,25 @@ namespace WPFSTD105.Tekla
         {
             _BomPath = bomPath;
             Material = SerializationHelper.GZipDeserialize<ObservableCollection<SteelMaterial>>(ApplicationVM.FileMaterial()); //系統內材質序列化檔案
-            Profile.Add(OBJETC_TYPE.BH, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\BH.inp")); //加入 BH 字典
-            Profile.Add(OBJETC_TYPE.RH, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\RH.inp"));//加入 RH 字典
-            Profile.Add(OBJETC_TYPE.BOX, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\BOX.inp"));//加入 BOX 字典
-            Profile.Add(OBJETC_TYPE.CH, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\CH.inp"));//加入 CH 字典
-            Profile.Add(OBJETC_TYPE.L, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\L.inp"));//加入 L 字典
+            Profile.Add(OBJECT_TYPE.BH, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\BH.inp")); //加入 BH 字典
+            Profile.Add(OBJECT_TYPE.RH, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\RH.inp"));//加入 RH 字典
+            Profile.Add(OBJECT_TYPE.BOX, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\BOX.inp"));//加入 BOX 字典
+            Profile.Add(OBJECT_TYPE.CH, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\CH.inp"));//加入 CH 字典
+            Profile.Add(OBJECT_TYPE.L, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\L.inp"));//加入 L 字典
             //20220729 張燕華 斷面規格目錄-增加斷面規格
-            Profile.Add(OBJETC_TYPE.TUBE, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\TUBE.inp"));//加入 L 字典
-            Profile.Add(OBJETC_TYPE.H, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\H.inp"));//加入 L 字典
-            Profile.Add(OBJETC_TYPE.I, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\I.inp"));//加入 L 字典
-            Profile.Add(OBJETC_TYPE.LB, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\LB.inp"));//加入 L 字典
-            Profile.Add(OBJETC_TYPE.BT, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\BT.inp"));//加入 L 字典
-            Profile.Add(OBJETC_TYPE.CT, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\CT.inp"));//加入 L 字典
-            Profile.Add(OBJETC_TYPE.T, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\T.inp"));//加入 L 字典
-            Profile.Add(OBJETC_TYPE.TURN_BUCKLE, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\TURN_BUCKLE.inp"));//加入 L 字典
-            Profile.Add(OBJETC_TYPE.WELD, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\WELD.inp"));//加入 L 字典
-            Profile.Add(OBJETC_TYPE.SA, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\SA.inp"));//加入 L 字典
-            Profile.Add(OBJETC_TYPE.GRATING, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\GRATING.inp"));//加入 L 字典
-            Profile.Add(OBJETC_TYPE.HNUT, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\HNUT.inp"));//加入 L 字典
-            Profile.Add(OBJETC_TYPE.NUT, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\NUT.inp"));//加入 L 字典
+            Profile.Add(OBJECT_TYPE.TUBE, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\TUBE.inp"));//加入 L 字典
+            Profile.Add(OBJECT_TYPE.H, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\H.inp"));//加入 L 字典
+            Profile.Add(OBJECT_TYPE.I, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\I.inp"));//加入 L 字典
+            Profile.Add(OBJECT_TYPE.LB, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\LB.inp"));//加入 L 字典
+            Profile.Add(OBJECT_TYPE.BT, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\BT.inp"));//加入 L 字典
+            Profile.Add(OBJECT_TYPE.CT, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\CT.inp"));//加入 L 字典
+            Profile.Add(OBJECT_TYPE.T, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\T.inp"));//加入 L 字典
+            Profile.Add(OBJECT_TYPE.TURN_BUCKLE, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\TURN_BUCKLE.inp"));//加入 L 字典
+            Profile.Add(OBJECT_TYPE.WELD, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\WELD.inp"));//加入 L 字典
+            Profile.Add(OBJECT_TYPE.SA, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\SA.inp"));//加入 L 字典
+            Profile.Add(OBJECT_TYPE.GRATING, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\GRATING.inp"));//加入 L 字典
+            Profile.Add(OBJECT_TYPE.HNUT, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\HNUT.inp"));//加入 L 字典
+            Profile.Add(OBJECT_TYPE.NUT, SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\NUT.inp"));//加入 L 字典
         }
 
         #region 私有方法
@@ -375,11 +375,11 @@ namespace WPFSTD105.Tekla
                                         SteelPart part = (SteelPart)obj; //轉換單零件
 
                                         //判斷需要加入的斷面規格類型
-                                        if (part.Type == OBJETC_TYPE.BH ||
-                                            part.Type == OBJETC_TYPE.RH ||
-                                            part.Type == OBJETC_TYPE.CH ||
-                                            part.Type == OBJETC_TYPE.BOX
-                                            //|| part.Type == OBJETC_TYPE.L
+                                        if (part.Type == OBJECT_TYPE.BH ||
+                                            part.Type == OBJECT_TYPE.RH ||
+                                            part.Type == OBJECT_TYPE.CH ||
+                                            part.Type == OBJECT_TYPE.BOX
+                                            //|| part.Type == OBJECT_TYPE.L
                                             )
                                         {
                                             if (Profile[part.Type].FindIndex(el => el.Profile == part.Profile) == -1)//如果模型找不到相同的斷面規格

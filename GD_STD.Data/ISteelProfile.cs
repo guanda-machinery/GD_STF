@@ -35,7 +35,7 @@ namespace GD_STD.Data
         /// <summary>
         /// 物件類型
         /// </summary>
-        OBJETC_TYPE Type { get; set; }
+        OBJECT_TYPE Type { get; set; }
         /// <summary>
         /// 材質
         /// </summary>

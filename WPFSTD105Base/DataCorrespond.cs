@@ -29,7 +29,7 @@ namespace WPFSTD105
         /// <summary>
         /// 物件類型
         /// </summary>
-        public OBJETC_TYPE Type { get; set; }
+        public OBJECT_TYPE Type { get; set; }
         /// <summary>
         /// NC 分析出來的佔存檔
         /// </summary>

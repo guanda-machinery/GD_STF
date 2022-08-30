@@ -233,35 +233,35 @@ namespace WPFSTD105.Model
                             check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttrEach.Y, list);
                             //switch (steelAttr.Type)
                             //{
-                            //    case OBJETC_TYPE.RH:
-                            //    case OBJETC_TYPE.CH:
-                            //    case OBJETC_TYPE.BH:
+                            //    case OBJECT_TYPE.RH:
+                            //    case OBJECT_TYPE.CH:
+                            //    case OBJECT_TYPE.BH:
                             //        if (boltAttrEach.Y < list[0] || (boltAttrEach.Y > list[1] && boltAttrEach.Y < list[2]) || boltAttrEach.Y > list[3])
                             //        {
                             //            // 不能加入
                             //            check = false;
                             //        }
                             //        break;
-                            //    case OBJETC_TYPE.C:
+                            //    case OBJECT_TYPE.C:
                             //        if (boltAttrEach.Y < list[0] || boltAttrEach.Y > list[1])
                             //        {
                             //            // 不能加入
                             //            check = false;
                             //        }
                             //        break;
-                            //    case OBJETC_TYPE.BOX:
+                            //    case OBJECT_TYPE.BOX:
                             //        if (boltAttrEach.Y < list[2] || boltAttrEach.Y > list[3])
                             //        {
                             //            // 不能加入
                             //            check = false;
                             //        }
                             //        break;
-                            //    case OBJETC_TYPE.L:
-                            //    case OBJETC_TYPE.PLATE:
-                            //    case OBJETC_TYPE.RB:
-                            //    case OBJETC_TYPE.FB:
-                            //    case OBJETC_TYPE.PIPE:
-                            //    case OBJETC_TYPE.Unknown:
+                            //    case OBJECT_TYPE.L:
+                            //    case OBJECT_TYPE.PLATE:
+                            //    case OBJECT_TYPE.RB:
+                            //    case OBJECT_TYPE.FB:
+                            //    case OBJECT_TYPE.PIPE:
+                            //    case OBJECT_TYPE.Unknown:
                             //        break;
                             //    default:
                             //        break;
@@ -351,7 +351,7 @@ namespace WPFSTD105.Model
         /// <param name="checkValue"></param>
         /// <param name="workingRange"></param>
         /// <returns></returns>
-        public bool CheckWorkingRange(FACE face,OBJETC_TYPE type, double checkValue, List<double> workingRange) 
+        public bool CheckWorkingRange(FACE face,OBJECT_TYPE type, double checkValue, List<double> workingRange) 
         {
             bool check = true;
             // 無加工範圍設定
@@ -372,9 +372,9 @@ namespace WPFSTD105.Model
                 case GD_STD.Enum.FACE.FRONT:
                     switch (type)
                     {
-                        case OBJETC_TYPE.RH:
-                        case OBJETC_TYPE.CH:
-                        case OBJETC_TYPE.BH:
+                        case OBJECT_TYPE.RH:
+                        case OBJECT_TYPE.CH:
+                        case OBJECT_TYPE.BH:
                             if (checkValue < workingRange[0] || 
                                 (checkValue > workingRange[1] && checkValue < workingRange[2]) || 
                                 checkValue > workingRange[3])
@@ -382,26 +382,26 @@ namespace WPFSTD105.Model
                                 check = false;
                             }
                             break;
-                        case OBJETC_TYPE.C:
+                        case OBJECT_TYPE.C:
                             if (checkValue < workingRange[0] || 
                                 checkValue > workingRange[1])
                             {
                                 check = false;
                             }
                             break;
-                        case OBJETC_TYPE.BOX:
+                        case OBJECT_TYPE.BOX:
                             if (checkValue < workingRange[2] || 
                                 checkValue > workingRange[3])
                             {
                                 check = false;
                             }
                             break;
-                        case OBJETC_TYPE.L:
-                        case OBJETC_TYPE.PLATE:
-                        case OBJETC_TYPE.RB:
-                        case OBJETC_TYPE.FB:
-                        case OBJETC_TYPE.PIPE:
-                        case OBJETC_TYPE.Unknown:
+                        case OBJECT_TYPE.L:
+                        case OBJECT_TYPE.PLATE:
+                        case OBJECT_TYPE.RB:
+                        case OBJECT_TYPE.FB:
+                        case OBJECT_TYPE.PIPE:
+                        case OBJECT_TYPE.Unknown:
                             break;
                         default:
                             break;
@@ -470,7 +470,7 @@ namespace WPFSTD105.Model
         /// <param name="boltAttr">孔洞參數</param>
         /// <param name="steelAttr">鋼材參數</param>
         /// <returns></returns>
-        public List<double> WorkingRange(OBJETC_TYPE type, BoltAttr boltAttr)
+        public List<double> WorkingRange(OBJECT_TYPE type, BoltAttr boltAttr)
         {
             STDSerialization serH = new STDSerialization(), serBOX = new STDSerialization(), serCH = new STDSerialization();
             ObservableCollection<SectionTypeProcessingData> sectionTypeProcessingData_H =
@@ -484,8 +484,8 @@ namespace WPFSTD105.Model
 
             switch (type)
             {
-                case OBJETC_TYPE.RH:
-                case OBJETC_TYPE.BH:
+                case OBJECT_TYPE.RH:
+                case OBJECT_TYPE.BH:
                     if (sectionTypeProcessingData_H.Count > 0)
                     {
                         a = sectionTypeProcessingData_H[0].A;
@@ -493,27 +493,27 @@ namespace WPFSTD105.Model
                         c = sectionTypeProcessingData_H[0].C;
                     }
                     break;
-                case OBJETC_TYPE.C:
-                case OBJETC_TYPE.CH:
+                case OBJECT_TYPE.C:
+                case OBJECT_TYPE.CH:
                     if (sectionTypeProcessingData_CH.Count > 0)
                     {
                         a = sectionTypeProcessingData_CH[0].A;
                         b = sectionTypeProcessingData_CH[0].B;
                     }
                     break;
-                case OBJETC_TYPE.BOX:
+                case OBJECT_TYPE.BOX:
                     if (sectionTypeProcessingData_BOX.Count > 0)
                     {
                         a = sectionTypeProcessingData_BOX[0].A;
                         b = sectionTypeProcessingData_BOX[0].B;
                     }                
                     break;
-                case OBJETC_TYPE.L:
-                case OBJETC_TYPE.PLATE:
-                case OBJETC_TYPE.RB:
-                case OBJETC_TYPE.FB:
-                case OBJETC_TYPE.PIPE:
-                case OBJETC_TYPE.Unknown:
+                case OBJECT_TYPE.L:
+                case OBJECT_TYPE.PLATE:
+                case OBJECT_TYPE.RB:
+                case OBJECT_TYPE.FB:
+                case OBJECT_TYPE.PIPE:
+                case OBJECT_TYPE.Unknown:
                     break;
                 default:
                     break;
@@ -522,27 +522,27 @@ namespace WPFSTD105.Model
             List<double> list = new List<double>();
             switch (type)
             {
-                case OBJETC_TYPE.RH:
-                case OBJETC_TYPE.BH:
+                case OBJECT_TYPE.RH:
+                case OBJECT_TYPE.BH:
                     a = a + steelAttr.t2;
                     b = b + 0;
                     c = c + steelAttr.t1;
                     break;
-                case OBJETC_TYPE.C:
-                case OBJETC_TYPE.CH:
+                case OBJECT_TYPE.C:
+                case OBJECT_TYPE.CH:
                     a = a + steelAttr.t2;
                     b = b + 0;
                     break;
-                case OBJETC_TYPE.BOX:
+                case OBJECT_TYPE.BOX:
                     a = a + steelAttr.t2;
                     b = b + steelAttr.t1;
                     break;
-                case OBJETC_TYPE.L:
-                case OBJETC_TYPE.PLATE:
-                case OBJETC_TYPE.RB:
-                case OBJETC_TYPE.FB:
-                case OBJETC_TYPE.PIPE:
-                case OBJETC_TYPE.Unknown:
+                case OBJECT_TYPE.L:
+                case OBJECT_TYPE.PLATE:
+                case OBJECT_TYPE.RB:
+                case OBJECT_TYPE.FB:
+                case OBJECT_TYPE.PIPE:
+                case OBJECT_TYPE.Unknown:
                     break;
                 default:
                     break;
@@ -565,9 +565,9 @@ namespace WPFSTD105.Model
             switch (type)
             {
                 #region H型鋼
-                case OBJETC_TYPE.RH:
-                case OBJETC_TYPE.CH:
-                case OBJETC_TYPE.BH:
+                case OBJECT_TYPE.RH:
+                case OBJECT_TYPE.CH:
+                case OBJECT_TYPE.BH:
                     switch (boltAttr.Face)
                     {
                         // 腹板
@@ -605,7 +605,7 @@ namespace WPFSTD105.Model
                     break;
                 #endregion
                 #region C型鋼
-                case OBJETC_TYPE.C:
+                case OBJECT_TYPE.C:
                     switch (boltAttr.Face)
                     {
                         // 腹板
@@ -638,7 +638,7 @@ namespace WPFSTD105.Model
                     break;
                 #endregion
                 #region 方管
-                case OBJETC_TYPE.BOX:
+                case OBJECT_TYPE.BOX:
                     switch (boltAttr.Face)
                     {
                         // 腹板
@@ -669,12 +669,12 @@ namespace WPFSTD105.Model
                     }
                     break; 
                 #endregion
-                case OBJETC_TYPE.L:
-                case OBJETC_TYPE.PLATE:
-                case OBJETC_TYPE.RB:
-                case OBJETC_TYPE.FB:
-                case OBJETC_TYPE.PIPE:
-                case OBJETC_TYPE.Unknown:
+                case OBJECT_TYPE.L:
+                case OBJECT_TYPE.PLATE:
+                case OBJECT_TYPE.RB:
+                case OBJECT_TYPE.FB:
+                case OBJECT_TYPE.PIPE:
+                case OBJECT_TYPE.Unknown:
                     break;
                 default:
                     break;
