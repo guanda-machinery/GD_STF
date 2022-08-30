@@ -27,6 +27,8 @@ using GD_STD.Data;
 using System.Collections.ObjectModel;
 using DevExpress.Xpf.WindowsUI;
 using DevExpress.Xpf.Core;
+using System.Reflection;
+using System.ComponentModel;
 
 namespace STD_105.Office
 {
@@ -128,6 +130,7 @@ namespace STD_105.Office
             #endregion
 
             tabControl.SelectedIndex = 1;
+
 
             #region 定義 MenuItem 綁定的命令
             //放大縮小
@@ -2130,68 +2133,161 @@ namespace STD_105.Office
             model.ZoomFit();
             model.Refresh();
 
-            //ReadFile readFile = new ReadFile($@"{ApplicationVM.DirectoryDevPart()}\6df04fb4-4a90-4f15-abf1-d23dd764ba9d.dm", devDept.Serialization.contentType.GeometryAndTessellation);
-            ////ReadFile readFile = ser.ReadPartModel("6df04fb4-4a90-4f15-abf1-d23dd764ba9d", devDept.Serialization.contentType.GeometryAndTessellation); //讀取檔案內容
-            //readFile.DoWork();//開始工作
-            ////ModelExt model = new ModelExt();
-            //readFile.AddToScene(model);//將讀取完的檔案放入到模型
 
 
-            //// 取得Dev_Part中的dm檔
-            //List<string> dmlist = new List<string>();
-            //foreach (string d in Directory.GetFileSystemEntries(ApplicationVM.DirectoryDevPart()))
-            //{
-            //    if (File.Exists(d))
+            STDSerialization ser = new STDSerialization();
+
+            //// 建立dm檔 for 尚未建立dm檔的零件
+            ApplicationVM appVM = new ApplicationVM();
+            appVM.CreateDMFile(model);
+
+            //////取得零件資料
+            //ObSettingVM obVM = new ObSettingVM(model);
+            ////obVM.GetPartData(model);
+
+            //// 取得構件資訊
+            //ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();
+
+            ////取得零件資訊
+            //Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
+
+            //// 取得孔群資訊
+            //Dictionary<string, ObservableCollection<SteelBolts>> bolts = ser.GeBolts();
+
+            //var assNumber_ID = assemblies
+            //    .Select(x => new { x.Number, x.ID })
+            //    .ToList()
+            //    .ToDictionary(x => x.Number, y => y.ID );//.SelectMany(x => x.Key, (x, y) =>new { x.Key, x.Value }).Select(x => new {x.Key,x.Value})
+
+            //var partNumber_ID = part.Values
+            //    .SelectMany(x => x)
+            //    .Select(x => new 
             //    {
-            //        string dataName = Path.GetFileName(d);//檔案名稱
-            //        string ext = Path.GetExtension(d);//副檔名
-            //        if (ext == ".dm") //如果是 dm 檔案
+            //        x.Number,
+            //        x.Type,
+            //        x.DrawingName,
+            //        x.Profile,
+            //        x.Material,
+            //        x.Count,
+            //        x.Length,
+            //        x.UnitWeight,
+            //        x.Father,
+            //        x.ID }).ToList();
+
+            //var boltsFather_ID = (bolts.Values).SelectMany(x => x).Select(x => new 
+            //{  Count = (x == null ? x.Count : 0), Father = (x == null ? null : x.Father), Profile = (x == null ? "" : x.Profile), Type = "Bolts", Material = (x == null ? "" : x.Material) });
+
+            //var boltsList = bolts.Values.ToList();
+
+            //List<ProductSettingsPageViewModel> steelAttrList = new List<ProductSettingsPageViewModel>();
+            //ProductSettingsPageViewModel steelAttr = new ProductSettingsPageViewModel();
+            //foreach (KeyValuePair<string,List<int>> assembliesItem in assNumber_ID)
+            //{                
+            //    // 構件編號
+            //    string assem = assembliesItem.Key;
+            //    // 構件ID List
+            //    foreach (int id in assembliesItem.Value)
+            //    {
+            //        // 構件ID
+            //        int assemID = id;
+            //        // 在零件清單中，比對Father找到此構件
+            //        var part_father = partNumber_ID.Where(x => x.Father.Contains(assemID)).ToList();
+            //        // 如果有找到的話
+            //        if (part_father.Any())
             //        {
-            //            dmlist.Add(dataName);
+            //            // 比對Father及零件ID之Index
+            //            foreach (var item in part_father)
+            //            {
+            //                while (item.Father.Contains(assemID))
+            //                {
+            //                    steelAttr = new ProductSettingsPageViewModel();
+            //                    steelAttr.steelAttr.TeklaAssemblyID = assemID.ToString();
+            //                    steelAttr.AssemblyNumber = assem;
+            //                    // 零件編號
+            //                    steelAttr.steelAttr.PartNumber = item.Number;
+            //                    // 零件ID List
+            //                    var partList = partNumber_ID.Where(x => x.Number == item.Number).Select(x => x.ID).FirstOrDefault();
+            //                    // 構件ID List
+            //                    var fatherList = partNumber_ID.Where(x => x.Number == item.Number).Select(x => x.Father).FirstOrDefault();
+            //                    // Father的index = Part的index
+            //                    var partIndex = fatherList.IndexOf(assemID);
+            //                    // 取得該筆零件ID
+            //                    int partID = partList[partIndex];
+            //                    //partNumber_ID.Where(x => x.Number == item.Number && x.Father[i] == assemID && x.ID[i] == partID).FirstOrDefault();
+            //                    //var idList = partNumber_ID.Where(x => x.Number == item.Number).Select(x => x.ID).FirstOrDefault();
+            //                    // 移除本次構件ID 避免下次 FirstOrDefault 重複抓到
+            //                    fatherList.Remove(assemID);
+            //                    // 移除本次零件ID 避免下次 FirstOrDefault 重複抓到
+            //                    partList.Remove(partID);
+            //                    // 零件ID
+            //                    steelAttr.steelAttr.TeklaPartID = partID.ToString();
+            //                    // Tekla 圖名稱
+            //                    string partName = item.DrawingName;
+            //                    steelAttr.TeklaName = item.DrawingName;
+            //                    // 鋼材類別
+            //                    var aa = item.Type.GetType().GetMember(item.Type.ToString())[0].GetCustomAttribute<DescriptionAttribute>();
+            //                    string type = aa == null ? "" : aa.Description;
+            //                    steelAttr.TypeDesc = type;
+            //                    // 斷面規格
+            //                    string profile = item.Profile;
+            //                    steelAttr.steelAttr.Profile = profile;
+            //                    // 材質
+            //                    string material = item.Material;
+            //                    steelAttr.steelAttr.Material = material;
+            //                    // 數量
+            //                    int count = item.Count;
+            //                    steelAttr.Count = count;
+            //                    // 零件長
+            //                    double length = item.Length;
+            //                    steelAttr.PieceLength = length;
+            //                    // 零件重
+            //                    double weight = item.UnitWeight;
+            //                    steelAttr.PieceWeight = weight;
+            //                    //partNumber_ID.Remove(delPart);
+            //                    steelAttrList.Add(steelAttr);
+            //                }
+            //            }
             //        }
+
+            //        if (boltsList[0]!=null)
+            //        {
+            //            var bolt_father = boltsFather_ID.Where(x => x.Father.Contains(assemID)).ToList();
+            //            foreach (var item in bolt_father)
+            //            {
+            //                while (item.Father.Contains(assemID))
+            //                {
+            //                    steelAttr = new ProductSettingsPageViewModel();
+            //                    steelAttr.steelAttr.TeklaAssemblyID = assemID.ToString();
+            //                    steelAttr.AssemblyNumber = assem;
+            //                    steelAttr.steelAttr.Profile = item.Profile;
+            //                    steelAttr.TypeDesc = "Bolts";
+            //                    steelAttr.Count = item.Count;
+            //                    steelAttr.steelAttr.Material = item.Material;
+            //                    var fatherList = boltsFather_ID.Where(x => x.Profile == steelAttr.steelAttr.Profile).Select(x => x.Father).FirstOrDefault();
+            //                    fatherList.Remove(assemID);
+            //                    steelAttrList.Add(steelAttr);
+            //                }
+            //            }
+            //        }
+
+
+
+
+
+
+
+            //        //int index_part_father = partNumber_ID.Where(x=>x.Father.Contains(assemID))
+
+
             //    }
             //}
 
-            //// 取得尚未實體化的nc檔案
-            //STDSerialization ser = new STDSerialization();
-            //NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
 
-            //// 跑已存在dm檔，產生未有dm檔之NC檔
-            //foreach (string DataName in dmlist)
-            //{
-            //    NcTemp ncTemp = ncTemps.GetData(DataName);//需要實體化的nc物件
-            //    model.Clear(); //清除目前模型
-            //    if (ncTemp == null) //NC 檔案是空值
-            //    {
-            //        readFile = ser.ReadPartModel(DataName); //讀取檔案內容
-            //        if (readFile == null)
-            //        {
-            //            WinUIMessageBox.Show(null,
-            //                $"專案Dev_Part資料夾讀取失敗",
-            //                "通知",
-            //                MessageBoxButton.OK,
-            //                MessageBoxImage.Exclamation,
-            //                MessageBoxResult.None,
-            //                MessageBoxOptions.None,
-            //                FloatingMode.Popup);
-            //            return;
-            //        }
-            //        readFile.DoWork();//開始工作
-            //        readFile.AddToScene(model);//將讀取完的檔案放入到模型
-            //        if (model.Entities[model.Entities.Count - 1].EntityData is null)
-            //        {
-            //            return;
-            //        }
-            //    }
-            //    else //如果需要載入 nc 設定檔
-            //    {
-            //        model.LoadNcToModel(DataName);
-            //    }
-            //}
+            ////foreach (var item in assNumber_ID)
+            ////{
+            ////    string key = item.Key;
+            ////}
 
-            //// 讀取dm檔
-            
-            //// 加入VM
 
         }
 

@@ -180,9 +180,11 @@ namespace WPFSTD105
             string dirPath = ApplicationVM.DirectorySteelBolts(); //螺栓資料夾路徑
             DirectoryInfo info = new DirectoryInfo(dirPath);//螺栓資料夾
             foreach (var item in info.GetFiles("*.lis")) //逐步尋找有關 .lis 檔案
-            {
-                ObservableCollection<SteelBolts> _ = GZipDeserialize<ObservableCollection<SteelBolts>>(item.FullName);//解壓縮反序列化只定路徑物件
-                result.Add(item.Name, _);
+            {//return new ObservableCollection<SteelPart>(GZipDeserialize<ObservableCollection<object>>(path).Select(el => (SteelPart)el));//解壓縮反序列化回傳資料
+                ObservableCollection<Object> _ = GZipDeserialize<ObservableCollection<Object>>(item.FullName);//解壓縮反序列化只定路徑物件
+
+                result.Add(item.Name, new ObservableCollection<SteelBolts>(GZipDeserialize<ObservableCollection<object>>(item.FullName).Select(el => (SteelBolts)el)));
+
             }
             return result;
         }

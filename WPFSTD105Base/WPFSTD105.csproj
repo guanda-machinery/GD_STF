@@ -491,6 +491,7 @@
     <Compile Include="ViewModel\ObSettingVM.cs" />
     <Compile Include="ViewModel\OfficeTypeSettingVM.cs" />
     <Compile Include="ViewModel\ProcessingMonitorVM.cs" />
+    <Compile Include="ViewModel\ProductSettingsPageViewModel.cs" />
     <Compile Include="ViewModel\RacksOperationVM.cs" />
     <Compile Include="ViewModel\RightAxisVM.cs" />
     <Compile Include="ViewModel\SideClampVM.cs" />

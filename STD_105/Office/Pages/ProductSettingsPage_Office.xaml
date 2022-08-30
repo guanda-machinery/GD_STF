@@ -176,6 +176,9 @@
                 </GroupBox>
 
                 <GroupBox Header="零件清單" Margin="5">
+                    <GroupBox.DataContext>
+                        <STD105VM:ObSettingVM/>
+                    </GroupBox.DataContext>
                     <dxg:GridControl  
                            Name="PieceListGridControl"
                                 AutoGenerateColumns="None"
@@ -295,12 +298,12 @@
 
                         <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"   Header="構件編號" Width="auto"/>
                         <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="auto" />
-                        <dxg:GridColumn  IsSmart="True"   Header="名稱" Width="auto"/>
+                        <dxg:GridColumn FieldName="TeklaName" IsSmart="True"   Header="名稱" Width="auto"/>
 
-                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="鋼材類型"/>
+                        <dxg:GridColumn FieldName="TypeDesc"  IsSmart="True" Header="鋼材類型"/>
                         <dxg:GridColumn FieldName="Profile"  IsSmart="True"  Header="斷面規格"  Width="auto"/>
                         <dxg:GridColumn FieldName="Material"  IsSmart="True"  Header="材質"  Width="auto"/>
-                        <dxg:GridColumn FieldName=""  IsSmart="True"  Width="auto" Header="數量"  />
+                        <dxg:GridColumn FieldName="Count"  IsSmart="True"  Width="auto" Header="數量"  />
                         <dxg:GridColumn FieldName="PieceLength"  IsSmart="True"  Header="零件長" Width="auto">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
@@ -311,7 +314,7 @@
                                 <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName=""  IsSmart="True"  Width="auto" Header="Phase"  />
+                        <dxg:GridColumn FieldName="Phase"  IsSmart="True"  Width="auto" Header="Phase"  />
                         <dxg:GridColumn FieldName=""  IsSmart="True"  Width="auto" Header="拆運"  />
                         <dxg:GridColumn FieldName=""  IsSmart="True"  Width="auto" Header="標題一"  />
                         <dxg:GridColumn FieldName=""  IsSmart="True"  Width="auto" Header="標題二"  />
