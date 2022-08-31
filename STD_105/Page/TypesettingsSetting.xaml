@@ -79,7 +79,7 @@
 
             </Style>
 
-
+            <STD105:ComParConverter x:Key="XComparConverter"/>
 
         </StackPanel.Resources>
 
@@ -146,14 +146,14 @@
                             </dxg:GridControl.View>
                             <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"    Header="構件編號" Width="auto" />
                             <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="auto" />
-                            <dxg:GridColumn FieldName="Profile"  IsSmart="True"  Header="斷面規格"  Width="auto"/>
+                            <dxg:GridColumn FieldName="Profile"  IsSmart="True"  Header="斷面規格"  Width="auto" />
                             <dxg:GridColumn FieldName="Material"  IsSmart="True"  Header="材質"  Width="auto"/>
                             <dxg:GridColumn FieldName="Length"  IsSmart="True"  Header="零件長" Width="auto">
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
-                            <dxg:GridColumn FieldName="Weight"  IsSmart="True"  Header="零件重"  Width="auto" >
+                            <dxg:GridColumn FieldName="Weigth"  IsSmart="True"  Header="零件重"  Width="auto" >
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
                                 </dxg:GridColumn.EditSettings>
@@ -185,7 +185,7 @@
                                     <TextBlock Text="加入素材" Margin="0,2,0,2"/>
                                 </StackPanel>
 
-                                <Button Margin="1,0" Command="{Binding AddMaterial}"  CommandParameter="{Binding ElementName=PartGridControl}">
+                                <Button Margin="1,0" Command="{Binding AddMaterial}"  CommandParameter="{Binding ElementName=PartGridControl }">
                                     <Button.Content>
 
                                         <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Width="14"/>
@@ -227,7 +227,7 @@
 
                 Header="排版參數設定" 
                   Margin="5">
-                    <Grid     Name="TypeSettingParameterGrid">
+                    <Grid Name="TypeSettingParameterGrid">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
@@ -421,8 +421,18 @@
 
                         <DockPanel Margin="5" Grid.Row="1" >
                             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom">
+
                                 <!--ElementName 綁定grid目標-->
-                                <Button Content="GO" Command="{Binding GoCommand}" CommandParameter="{Binding ElementName=Material_List_GridControl}" Background="Gold" Foreground="Black" Width="80" Margin="5"/>
+                                <Button Content="GO" Command="{Binding GoCommand}"   Background="Gold" Foreground="Black" Width="80" Margin="5" Cursor="Hand">
+                                    <Button.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource XComparConverter}">
+                                            <MultiBinding.Bindings>
+                                                <Binding ElementName="Material_List_GridControl"  />
+                                                <Binding ElementName="PartGridControl"/>
+                                            </MultiBinding.Bindings>
+                                        </MultiBinding>
+                                    </Button.CommandParameter>
+                                </Button>
                             </StackPanel >
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                                 <Button Command="" Width="80" Margin="5"  Background="#d8d8d8"  Click="Set_TypeSettingParameterGrid_AllCheckboxChecked_Click" Cursor="Hand">
@@ -538,10 +548,9 @@
                         AutoGenerateColumns="None"
                         Grid.Row="2"                               
                         ItemsSource="{Binding Path= MaterialDataViews}"
-                                     MinHeight="200"  MaxHeight="400">
+                        MinHeight="200"  MaxHeight="400">
                         <dxg:GridControl.View >
                             <dxg:TableView 
-
                                     VerticalScrollbarVisibility="Visible"
                                     ShowGroupPanel="False"
                                     ShowSearchPanelMode="Always"
@@ -556,7 +565,7 @@
                                     </Style>
                                 </dxg:TableView.CellStyle>
                             </dxg:TableView>
-                        </dxg:GridControl.View>
+                        </dxg:GridControl.View> 
 
 
                         <dxg:GridColumn FieldName="ExclamationMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" Width="40" FixedWidth="True">
@@ -570,7 +579,7 @@
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel VerticalAlignment="Center">
-                                        <CheckBox IsChecked="{Binding Row.ExclamationMark}">
+                                        <CheckBox IsChecked="{Binding ExclamationMark}">
                                             <CheckBox.Template>
                                                 <ControlTemplate>
                                                     <dx:DXImage  Width="16" Height="16">
@@ -604,7 +613,7 @@
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel VerticalAlignment="Center">
-                                        <CheckBox IsChecked="{Binding Row.LockMark}">
+                                        <CheckBox IsChecked="{Binding LockMark}" Name="LockCheckBox">
                                             <CheckBox.Template>
                                                 <ControlTemplate>
                                                     <dx:DXImage  Width="25" Height="25">
@@ -638,7 +647,7 @@
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel VerticalAlignment="Center">
-                                        <CheckBox IsChecked="{Binding Row.GearMark}">
+                                        <CheckBox IsChecked="{Binding GearMark}">
                                             <CheckBox.Template>
                                                 <ControlTemplate>
                                                     <dx:DXImage  Width="20" Height="20">
@@ -688,7 +697,7 @@
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="鋼材類型"   />
-                        <dxg:GridColumn FieldName="Profile"  IsSmart="True" Header="斷面規格"   />
+                        <dxg:GridColumn FieldName="Profile"  IsSmart="True" Header="斷面規格"  AllowEditing="{Binding Row.LockMark ,Converter={WPFBase:InverseLogicBoolConverter }}"/>
                         <dxg:GridColumn FieldName="Material"  IsSmart="True" Header="材質" Width="auto"   />
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="數量" Width="auto"  />
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="已完成" Width="auto"  />
@@ -730,7 +739,8 @@
                                             </Grid.RowDefinitions>
                                             <Border Grid.Column="0" BorderThickness="0,0,1.5,0" BorderBrush="#cfcfcf">
                                                 <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,5,0" >
-                                                    <dxg:GridControl  ItemsSource="{Binding Path=Parts}"   AutoGenerateColumns="None" MinHeight="50" MaxHeight="110" Height="auto">
+                                                    
+                                                    <dxg:GridControl Name="ComponentGridControl"  ItemsSource="{Binding Path =Parts}"   AutoGenerateColumns="None" MinHeight="50" MaxHeight="110" Height="auto">
                                                         <dxg:GridControl.Resources>
                                                             <Style TargetType="dxg:GridColumnHeader">
                                                                 <Setter Property="Background" Value="LemonChiffon"/>
@@ -818,7 +828,15 @@
                                                 </Grid.RowDefinitions>
                                                 <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                                                     <TextBlock Text="零件正轉"  />
-                                                    <Button Grid.Column="1" Grid.Row="0" Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding }" >
+                                                    <Button Grid.Column="1" Grid.Row="0" Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding ClockwiseRotationComponentCommand }">
+                                                        <Button.CommandParameter>
+                                                            <MultiBinding Converter="{StaticResource XComparConverter}">
+                                                                <MultiBinding.Bindings>
+                                                                    <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
+                                                                    <Binding ElementName="DrawTabControl"/>
+                                                                </MultiBinding.Bindings>
+                                                            </MultiBinding>
+                                                        </Button.CommandParameter>
                                                         <Button.Content>
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>
@@ -833,7 +851,15 @@
                                                 </StackPanel>
                                                 <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                                                     <TextBlock Text="零件逆轉"  />
-                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70">
+                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding CounterClockwiseRotationComponentCommand }">
+                                                        <Button.CommandParameter>
+                                                            <MultiBinding Converter="{StaticResource XComparConverter}">
+                                                                <MultiBinding.Bindings>
+                                                                    <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
+                                                                    <Binding ElementName="DrawTabControl"/>
+                                                                </MultiBinding.Bindings>
+                                                            </MultiBinding>
+                                                        </Button.CommandParameter>
 
                                                         <Button.Content>
                                                             <Grid>
@@ -853,7 +879,16 @@
                                                 </StackPanel>
                                                 <StackPanel Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                                                     <TextBlock Text="零件前進"  />
-                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70">
+                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding ForwardComponentCommand }">
+                                                        <Button.CommandParameter>
+                                                            <MultiBinding Converter="{StaticResource XComparConverter}">
+                                                                <MultiBinding.Bindings>
+                                                                    <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
+                                                                    <Binding ElementName="DrawTabControl"/>
+                                                                </MultiBinding.Bindings>
+                                                            </MultiBinding>
+                                                        </Button.CommandParameter>
+
                                                         <Button.Content>
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>
@@ -868,7 +903,16 @@
                                                 </StackPanel>
                                                 <StackPanel Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                                                     <TextBlock Text="零件後退"  />
-                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70">
+                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding BackwardComponentCommand }">
+                                                        <Button.CommandParameter>
+                                                            <MultiBinding Converter="{StaticResource XComparConverter}">
+                                                                <MultiBinding.Bindings>
+                                                                    <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
+                                                                    <Binding ElementName="DrawTabControl"/>
+                                                                </MultiBinding.Bindings>
+                                                            </MultiBinding>
+                                                        </Button.CommandParameter>
+
                                                         <Button.Content>
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>
@@ -884,7 +928,16 @@
 
                                                 <StackPanel Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                                                     <TextBlock Text="零件退位"  />
-                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70">
+                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding }">
+                                                        <Button.CommandParameter>
+                                                            <MultiBinding Converter="{StaticResource XComparConverter}">
+                                                                <MultiBinding.Bindings>
+                                                                    <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
+                                                                    <Binding ElementName="DrawTabControl"/>
+                                                                </MultiBinding.Bindings>
+                                                            </MultiBinding>
+                                                        </Button.CommandParameter>
+
                                                         <Button.Content>
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>
@@ -902,7 +955,15 @@
 
                                                 <StackPanel Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                                                     <TextBlock Text="零件進位"  />
-                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70">
+                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding }">
+                                                        <Button.CommandParameter>
+                                                            <MultiBinding Converter="{StaticResource XComparConverter}">
+                                                                <MultiBinding.Bindings>
+                                                                    <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
+                                                                    <Binding ElementName="DrawTabControl"/>
+                                                                </MultiBinding.Bindings>
+                                                            </MultiBinding>
+                                                        </Button.CommandParameter>
                                                         <Button.Content>
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>
@@ -933,9 +994,10 @@
 
 
                 <TabControl Grid.Column="1" Margin="5"
+
                         BorderThickness="0"
                         Background="#303030"
-                        x:Name="tabControl"
+                        x:Name="DrawTabControl"
                         Style="{StaticResource BaseStyle}" >
                     <TabControl.Resources>
                         <Style TargetType="TabItem">

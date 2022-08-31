@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace GD_STD.Data
 {
     [AttributeUsageAttribute(AttributeTargets.All, Inherited = true, AllowMultiple = false)]
@@ -84,11 +85,154 @@ namespace GD_STD.Data
         /// </summary>
         public ObservableCollection<TypeSettingDataView> Parts { get; set; } = new ObservableCollection<TypeSettingDataView>();
 
+        /// <summary>
+        /// 零件正轉命令
+        /// </summary>
+        public System.Windows.Input.ICommand ClockwiseRotationComponentCommand
+        {
+            get
+            {
+                return RotationComponent(true); ;
+            }
+        }
+
+        /// <summary>
+        /// 零件逆轉命令
+        /// </summary>
+        public System.Windows.Input.ICommand CounterClockwiseRotationComponentCommand
+        {
+            get
+            {
+                return  RotationComponent(false);
+            }
+        }
+
+        /// <summary>
+        /// 正逆轉功能，當ClockwiseRotation為false時為逆時針
+        /// </summary>
+        /// <param name="ClockwiseRotation"></param>
+        private WPFWindowsBase.RelayParameterizedCommand RotationComponent(bool ClockwiseRotation = true)
+        {
+            return new WPFWindowsBase.RelayParameterizedCommand(objArray =>
+            {
+                if (objArrayComponentCorrespond(objArray, out var SelectedCom, out var TabC))
+                {
+                    //找出目標及指向之顯示介面後，顯示零件
+                    if (SelectedCom != null)
+                    {
+                        if (ClockwiseRotation)
+                        {
+                            //正轉控制
+                        }
+                        else
+                        {
+                            //逆轉控制
+                        }
+                    }
+                }
+            });
+        }
+
+
+        /// <summary>
+        /// 零件前進命令
+        /// </summary>
+        public System.Windows.Input.ICommand ForwardComponentCommand
+        {
+            get
+            {
+                return MoveComponent(true); ;
+            }
+        }
+
+        /// <summary>
+        /// 零件後退命令
+        /// </summary>
+        public System.Windows.Input.ICommand BackwardComponentCommand
+        {
+            get
+            {
+                return MoveComponent(false); ;
+            }
+        }
+
+
+        /// <summary>
+        /// 前進後退功能，當Direction為false時為後退
+        /// </summary>
+        /// <param name="Direction"></param>
+        private WPFWindowsBase.RelayParameterizedCommand MoveComponent(bool Direction = true)
+        {
+            return new WPFWindowsBase.RelayParameterizedCommand(objArray =>
+            {
+                if (objArrayComponentCorrespond(objArray, out var SelectedCom, out var TabC))
+                {
+                    //找出目標及指向之顯示介面後，顯示零件
+                    if (SelectedCom != null)
+                    {
+                        if (Direction)
+                        {
+                            //前進控制
+                        }
+                        else
+                        {
+                            //後退控制
+                        }
+                    }
+                }
+            });
+        }
 
 
 
-    /// <inheritdoc/>
-    public double StartCut { get; set; }
+
+
+
+        private bool objArrayComponentCorrespond(object objArray, out GD_STD.Data.TypeSettingDataView SelectedComponent , out object TabControl )
+        {
+            SelectedComponent = null;
+            TabControl = null;
+
+            if (objArray.GetType().Equals(typeof(object[])))
+            {
+                foreach (var obj in (object[])objArray)
+                {
+                    //確認為TypeSettingDataView
+
+                    if (obj.GetType().Equals(typeof(GD_STD.Data.TypeSettingDataView)))
+                    {
+                        //取得已選擇的欄位
+                        SelectedComponent = (GD_STD.Data.TypeSettingDataView)obj;
+                        //
+                    }
+                    //連結到圖形顯示
+                    //ex: obj.GetType().Equals(typeof(GD_STD.Data.TypeSettingDataView))
+                    //else if (obj.GetType().Equals(typeof(   )))
+                    else if (false)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+
+
+                    if(SelectedComponent != null)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+
+
+
+
+        /// <inheritdoc/>
+        public double StartCut { get; set; }
         /// <inheritdoc/>
         public double EndCut { get; set; }
         /// <inheritdoc/>
@@ -138,8 +282,9 @@ namespace GD_STD.Data
             }
         }
 
-
-
+        public bool LockMark { get; set; }
+        public bool GearMark { get; set; }
+        public bool ExclamationMark { get; set; }
 
     }
 }

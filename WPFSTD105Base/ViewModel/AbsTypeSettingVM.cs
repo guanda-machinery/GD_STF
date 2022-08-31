@@ -45,7 +45,7 @@ namespace WPFSTD105
             {
 
                 ObservableCollection<SteelPart> buffer = ser.GetPart(profile.GetHashCode().ToString()); //零件列表
-
+            
                 //只將 BH RH L BOX CH 加入到列表內
                 if (buffer != null &&(
                     buffer[0].Type == OBJETC_TYPE.BH ||
@@ -91,6 +91,7 @@ namespace WPFSTD105
                                 Material = item.Material,
                                 SortCount = 0,
                                 Match = item.Match,
+                                Weigth = item.UnitWeight
                             });
                         }
                     }
@@ -100,14 +101,7 @@ namespace WPFSTD105
             ReverseSelectedGridCommand = ReverseSelectedGrid();//反向選取命令
             UnselectSelectedGridCommand = UnselectSelectedGrid();//取消選取命令
             SaveMatchCommand = SaveMatch();
-            AutoCommand = new WPFBase.RelayParameterizedCommand(obj =>
-           {
-               _GridControl = (GridControl)obj;
-               LengthDodageControl = true;
-               //AutoMatchAsync(obj);
-               //GridControl grid = (GridControl)obj;
-               //
-           });
+
         }
         private GridControl _GridControl { get; set; }
         #region 命令
@@ -115,14 +109,7 @@ namespace WPFSTD105
         /// 手動排版命令
         /// </summary>
         public ICommand ManualCommand { get; set; }
-        /// <summary>
-        /// 自動排版命令
-        /// </summary>
-        public WPFBase.RelayParameterizedCommand AutoCommand { get; set; }
-        //private  WPFBase.RelayParameterizedCommand Auto()
-        //{
-        //    return 
-        //}
+
         /// <summary>
         /// 顯示零件圖命令
         /// </summary>
@@ -390,14 +377,39 @@ namespace WPFSTD105
         { 
             get
             {
-                return new WPFBase.RelayParameterizedCommand(obj =>
+                return new WPFBase.RelayParameterizedCommand(objArray => 
                 {
                     AutoMatchAsync();
-                    /*_GridControl = (GridControl)obj;
-                    _GridControl.Dispatcher.Invoke(() =>
+
+                    foreach (var Data in DataViews)
                     {
-                        _GridControl.RefreshData();
-                    });*/
+                        Data.SortCount = 0;
+                    }
+
+                    //確保多重系結objArray為陣列，否則傳出例外
+                    if (objArray.GetType().Equals(typeof(object[])))
+                    {
+                        foreach (var obj in (object[])objArray)
+                        {
+                            //確認type為GridControl才進行重新整理，否則傳出例外
+                            if (obj.GetType().Equals(typeof(DevExpress.Xpf.Grid.GridControl)))
+                            {
+                                var GoCommandGridControl = (DevExpress.Xpf.Grid.GridControl)obj;
+                                GoCommandGridControl.Dispatcher.Invoke(() =>
+                                {
+                                    GoCommandGridControl.RefreshData();
+                                });
+                            }
+                            else
+                            {
+                                throw new Exception("系結只能為GridControl");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("傳入參數須為多重系結");
+                    }
                 });
             }
         }
@@ -412,11 +424,10 @@ namespace WPFSTD105
                 return new WPFBase.RelayParameterizedCommand(obj =>
                 {
                     var PartGirdControl = (DevExpress.Xpf.Grid.GridControl)obj;
-                    var PartGirdControl_SelectedItem = PartGirdControl.SelectedItems;
                     //只在有選擇的狀態下執行命令
-                    if(PartGirdControl_SelectedItem.Count > 0)
+                    if (PartGirdControl.SelectedItems.Count > 0)
                     {
-                        foreach(GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl_SelectedItem)
+                        foreach(GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl.SelectedItems)
                         {                          
                             //數量 -已配對 >= 預排數量
 
@@ -428,15 +439,8 @@ namespace WPFSTD105
 
                             if(PartGridColumn.SortCount < IDCount - alreadyMatchCount)
                                 PartGridColumn.SortCount ++;
-
-
-                            //已配對
-                            //  PartGridColumn.Match.FindAll(x => (x == true)).Count;
-
-                            // DataViews[];
-                            //取得構件編號，將資料寫入datagrid
-
-                        }                    //需要重整才能更新data binding 
+                        }
+                        //需要重整才能更新data binding 
                         PartGirdControl.Dispatcher.Invoke(() =>
                         {
                             PartGirdControl.RefreshData();
@@ -457,11 +461,10 @@ namespace WPFSTD105
                 return new WPFBase.RelayParameterizedCommand(obj =>
                 {
                     var PartGirdControl = (DevExpress.Xpf.Grid.GridControl)obj;
-                    var PartGirdControl_SelectedItem = PartGirdControl.SelectedItems;
                     //只在有選擇的狀態下執行命令
-                    if (PartGirdControl_SelectedItem.Count > 0)
+                    if (PartGirdControl.SelectedItems.Count > 0)
                     {
-                        foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl_SelectedItem)
+                        foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl.SelectedItems)
                         {
                             //只在>=1的時候做加減
                             if(PartGridColumn.SortCount >=1)
@@ -495,11 +498,10 @@ namespace WPFSTD105
                 return new WPFBase.RelayParameterizedCommand(obj =>
                 {
                     var PartGirdControl = (DevExpress.Xpf.Grid.GridControl)obj;
-                    var PartGirdControl_SelectedItem = PartGirdControl.SelectedItems;
                     //只在有選擇的狀態下執行命令
-                    if (PartGirdControl_SelectedItem.Count > 0)
+                    if (PartGirdControl.SelectedItems.Count > 0)
                     {
-                        foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl_SelectedItem)
+                        foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl.SelectedItems)
                         {
                             //數量 -已配對 >= 預排數量
 
@@ -539,11 +541,10 @@ namespace WPFSTD105
                 return new WPFBase.RelayParameterizedCommand(obj =>
                 {
                     var PartGirdControl = (DevExpress.Xpf.Grid.GridControl)obj;
-                    var PartGirdControl_SelectedItem = PartGirdControl.SelectedItems;
                     //只在有選擇的狀態下執行命令
-                    if (PartGirdControl_SelectedItem.Count > 0)
+                    if (PartGirdControl.SelectedItems.Count > 0)
                     {
-                        foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl_SelectedItem)
+                        foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl.SelectedItems)
                         {
                             PartGridColumn.SortCount = 0;
                         }                    

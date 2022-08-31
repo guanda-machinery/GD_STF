@@ -13,24 +13,31 @@ namespace STD_105
     /// </summary>
     public class IListFilterToCountConverter : BaseValueConverter<IListFilterToCountConverter>
     {
+        /// <summary>
+        /// 計算list的內容量
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-           
-            if(parameter is bool)
+            /// 20220830 蘇冠綸改寫 改為可輸入任何list都可計算數量
+           var ValueIList =  (System.Collections.IList)value;
+            if (parameter is bool)
            {
                 IList<bool> ts = (IList<bool>)value;
                 int result = ts.Where(el => el == (bool)parameter).Count();
                 return result;
             }
-            else if(parameter is null)
+            else if(parameter is int)
             {
-              int result = ((IList<int>)value).Count();
-              return result;
+                IList<int> ts = (IList<int>)value;
+                int result = ts.Where(el => el == (int)parameter).Count();
+                return result;
             }
-
-            return null;
-
-
+            return ValueIList.Count;
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -45,12 +52,16 @@ namespace STD_105
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (parameter == null)
+            var ValueIList = (System.Collections.IList)value;
+            if (parameter is bool)
             {
-                return null;
+                IList<bool> ts = (IList<bool>)value;
+                return ts.Where(el => el == (bool)parameter).Count() == ts.Count;
             }
-            IList<bool> ts = (IList<bool>)value;
-            return ts.Where(el => el == (bool)parameter).Count() == ts.Count;
+            else
+            {
+                return ValueIList.Count;
+            }
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

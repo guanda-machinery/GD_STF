@@ -41,7 +41,8 @@ namespace GD_STD.Data
             ShippingNumber = steelAssembly.ShippingNumber[assemblyIndex];
             Phase = steelAssembly.Phase[assemblyIndex];
             ShippingDescription = steelAssembly.ShippingDescription[assemblyIndex];
-
+            PartType = steelPart.Type;
+            Weigth = steelAssembly.UnitWeight;
             Count = ID.Count;
         }
         /// <inheritdoc/>
@@ -146,6 +147,17 @@ namespace GD_STD.Data
         {
             return Match.Count() - Match.Where(e => e == false).Count();
         }
+
+        /// <summary>
+        /// 工件重量
+        /// </summary>
+        public double Weigth { get; set; }
+
+        /// <summary>
+        /// 工件類型
+        /// </summary>
+        public GD_STD.Enum.OBJETC_TYPE PartType { get; set; }
+
         /// <summary>
         ///  物件相同
         /// </summary>
