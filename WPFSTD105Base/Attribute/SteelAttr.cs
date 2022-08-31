@@ -138,7 +138,7 @@ namespace WPFSTD105.Attribute
         /// </summary>
         public double EndAngle { get; set; }
         ///// <inheritdoc/>
-        //public OBJETC_TYPE ProfileType { get; set; }
+        //public OBJECT_TYPE ProfileType { get; set; }
         /// <summary>
         /// 預防破圖
         /// </summary>

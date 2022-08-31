@@ -41,8 +41,7 @@ namespace GD_STD.Data
             ShippingNumber = steelAssembly.ShippingNumber[assemblyIndex];
             Phase = steelAssembly.Phase[assemblyIndex];
             ShippingDescription = steelAssembly.ShippingDescription[assemblyIndex];
-            PartType = steelPart.Type;
-            Weigth = steelAssembly.UnitWeight;
+
             Count = ID.Count;
         }
         /// <inheritdoc/>
@@ -90,6 +89,30 @@ namespace GD_STD.Data
         ///// 物件數量
         ///// </summary>
         public int Count { get => ID.Count; set=> _Count = value; }
+        /// <summary>
+        /// 型鋼型態 20220825 張燕華
+        /// </summary>
+        public int SteelType { get; set; }
+        /// <summary>
+        /// 高度 20220826 張燕華
+        /// </summary>
+        public float H { get; set; }
+        /// <summary>
+        /// 寬度 20220826 張燕華
+        /// </summary>
+        public float W { get; set; }
+        /// <summary>
+        /// s/t1 20220826 張燕華
+        /// </summary>
+        public float t1 { get; set; }
+        /// <summary>
+        /// t/t2 20220826 張燕華
+        /// </summary>
+        public float t2 { get; set; }
+        /// <summary>
+        /// 製品總重量 20220830 張燕華
+        /// </summary>
+        public double TotalWeight { get; set; }
         /// <summary>
         /// 運輸說明
         /// </summary>

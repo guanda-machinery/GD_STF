@@ -386,15 +386,15 @@ namespace WPFSTD105.Model
             int recursiveTime = 0;
             switch (SteelAttr.Type)
             {
-                case OBJETC_TYPE.BH:
-                case OBJETC_TYPE.RH:
+                case OBJECT_TYPE.BH:
+                case OBJECT_TYPE.RH:
                     recursiveTime = 0;
                     topList = ModifyLine(topList, SteelAttr.W / 2 + SteelAttr.t1 / 2,ref recursiveTime);
                     break;
-                case OBJETC_TYPE.TUBE:
-                case OBJETC_TYPE.BOX:
-                case OBJETC_TYPE.L:
-                case OBJETC_TYPE.CH:
+                case OBJECT_TYPE.TUBE:
+                case OBJECT_TYPE.BOX:
+                case OBJECT_TYPE.L:
+                case OBJECT_TYPE.CH:
                     recursiveTime = 0;
                     topList = ModifyLine(topList, SteelAttr.W,ref recursiveTime);
                     break;
@@ -402,7 +402,7 @@ namespace WPFSTD105.Model
                     break;
             }
             double correctionY = 0; //如果是角鐵自動補正 Y座標
-            if (SteelAttr.Type == OBJETC_TYPE.L)
+            if (SteelAttr.Type == OBJECT_TYPE.L)
             {
                 correctionY = SteelAttr.W - SteelAttr.t1 + MoveBack;
             }
@@ -572,8 +572,8 @@ namespace WPFSTD105.Model
 
                 for (int i = 0; i < noSuitable.Count; i++)
                 {
-                    if ((maxY < noSuitable[i].StartPoint.Y || maxY < noSuitable[i].EndPoint.Y && SteelAttr.Type == OBJETC_TYPE.L)
-                        || (noSuitable[i].StartPoint.X < minX || noSuitable[i].EndPoint.X > maxX && SteelAttr.Type != OBJETC_TYPE.L))
+                    if ((maxY < noSuitable[i].StartPoint.Y || maxY < noSuitable[i].EndPoint.Y && SteelAttr.Type == OBJECT_TYPE.L)
+                        || (noSuitable[i].StartPoint.X < minX || noSuitable[i].EndPoint.X > maxX && SteelAttr.Type != OBJECT_TYPE.L))
                     {
                         minZ = noSuitable[i].StartPoint.Z;
                         recursiveTime++;
@@ -608,8 +608,8 @@ namespace WPFSTD105.Model
 
             //for (int i = 0; i < noSuitable.Count; i++)
             //{
-            //    if ((maxY < noSuitable[i].StartPoint.Y || maxY < noSuitable[i].EndPoint.Y && SteelAttr.Type == OBJETC_TYPE.L)
-            //        || (noSuitable[i].StartPoint.X < minX || noSuitable[i].EndPoint.X > maxX && SteelAttr.Type != OBJETC_TYPE.L))
+            //    if ((maxY < noSuitable[i].StartPoint.Y || maxY < noSuitable[i].EndPoint.Y && SteelAttr.Type == OBJECT_TYPE.L)
+            //        || (noSuitable[i].StartPoint.X < minX || noSuitable[i].EndPoint.X > maxX && SteelAttr.Type != OBJECT_TYPE.L))
             //    {
             //        minZ = noSuitable[i].StartPoint.Z;
             //        return ModifyLine(lines, minZ);

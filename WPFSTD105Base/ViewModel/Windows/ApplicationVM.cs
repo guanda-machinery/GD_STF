@@ -632,13 +632,14 @@ namespace WPFSTD105
                 SerializationHelper.GZipSerializeBinary(new NcTempList(), ApplicationVM.FileNcTemp()); //nc 尚未實體化的資料
 
                 // 2022/08/22 呂宗霖 若有缺少斷面規格，自動產生
-                foreach (OBJETC_TYPE format in System.Enum.GetValues(typeof(OBJETC_TYPE)))
+                foreach (OBJECT_TYPE format in System.Enum.GetValues(typeof(OBJECT_TYPE)))
                 {
-                    if (format != OBJETC_TYPE.Unknown && format != OBJETC_TYPE.PLATE)
+                    if (format != OBJECT_TYPE.Unknown && format != OBJECT_TYPE.PLATE)
                     {
                         if (!File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{format.ToString()}.inp"))
                         {
-                            File.Copy(System.AppDomain.CurrentDomain.BaseDirectory + $@"Profile\\{format}.inp", $@"{ApplicationVM.DirectoryPorfile()}\{format.ToString()}.inp");//複製 BH 斷面規格到模型內
+                            //File.Copy(System.AppDomain.CurrentDomain.BaseDirectory + $@"Profile\\{format}.inp", $@"{ApplicationVM.DirectoryPorfile()}\{format.ToString()}.inp");//複製 BH 斷面規格到模型內
+                            File.Copy($@"Profile\{format}.inp", $@"{ApplicationVM.DirectoryPorfile()}\{format}.inp");
                         }
                     }
                 }
