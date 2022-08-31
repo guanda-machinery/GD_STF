@@ -302,7 +302,7 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public ReductionList Reductions { get; set; } = null;
         /// <summary>
-        ///  選擇的斷面規格類型 <see cref="OBJETC_TYPE"/>索引值
+        ///  選擇的斷面規格類型 <see cref="OBJECT_TYPE"/>索引值
         /// </summary>
         public int ProfileType
         {
@@ -313,7 +313,7 @@ namespace WPFSTD105.ViewModel
                 {
                     _ProfileType = value;
                     List<SteelAttr> list = new List<SteelAttr>();
-                    OBJETC_TYPE TYPE = (OBJETC_TYPE)value;
+                    OBJECT_TYPE TYPE = (OBJECT_TYPE)value;
 
                     if (!File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{TYPE}.inp"))
                     {
@@ -324,15 +324,15 @@ namespace WPFSTD105.ViewModel
 #endif
                     switch (TYPE)
                     {
-                        case OBJETC_TYPE.TUBE://20220802 張燕華 新增斷面規格
-                        case OBJETC_TYPE.H: //20220802 張燕華 新增斷面規格
-                        case OBJETC_TYPE.LB: //20220802 張燕華 新增斷面規格
-                        case OBJETC_TYPE.RH:
-                        case OBJETC_TYPE.CH:
-                        //case OBJETC_TYPE.L: //20220805 張燕華 新增斷面規格 - 已不在介面上顯示此規格
-                        case OBJETC_TYPE.BOX:
-                        case OBJETC_TYPE.BH:
-                            ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(TYPE).ToString()}.inp");
+                        case OBJECT_TYPE.TUBE://20220802 張燕華 新增斷面規格
+                        case OBJECT_TYPE.H: //20220802 張燕華 新增斷面規格
+                        case OBJECT_TYPE.LB: //20220802 張燕華 新增斷面規格
+                        case OBJECT_TYPE.RH:
+                        case OBJECT_TYPE.CH:
+                        //case OBJECT_TYPE.L: //20220805 張燕華 新增斷面規格 - 已不在介面上顯示此規格
+                        case OBJECT_TYPE.BOX:
+                        case OBJECT_TYPE.BH:
+                            ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{ (TYPE).ToString()}.inp");
                             break;
                         default:
                             throw new Exception($"找不到{TYPE.ToString()}");
@@ -491,6 +491,115 @@ namespace WPFSTD105.ViewModel
             return result;
         }
 
+
+        /// <summary>
+        /// 切割線打點設定值
+        /// </summary>
+        public GroupBoltsAttr GetHypotenuseBoltsAttr(FACE Face, START_HOLE SHoleType)
+        {
+            Boltsbuffer.GUID = GroupBoltsAttr.GUID;
+            //直徑設定
+            if (CheckDia)
+            {
+                Boltsbuffer.Dia = GroupBoltsAttr.Dia;
+                Boltsbuffer.Mode = (AXIS_MODE)AxisModeType;
+            }
+            //水平螺栓間距
+            if (CheckX)
+            {
+                Boltsbuffer.dX = GroupBoltsAttr.dX;
+
+                Boltsbuffer.xCount = GroupBoltsAttr.xCount;
+            }
+            //垂直螺栓
+            if (CheckY)
+            {
+                Boltsbuffer.dY = GroupBoltsAttr.dY;
+                Boltsbuffer.yCount = GroupBoltsAttr.yCount;
+            }
+            //要產生的面
+            if (CheckFace)
+            {
+                Boltsbuffer.Face = (GD_STD.Enum.FACE)Face;
+            }
+            //double value = 0d;
+            if (CheckStartHole)
+            {
+                //目前座標是2D座標只是需要先判斷 X Y 座標
+                switch (Face)
+                {
+                    case FACE.TOP:
+                        Boltsbuffer.t = Steelbuffer.t1; //孔位高度
+                        //斷面規格類型
+                        switch (Steelbuffer.Type)
+                        {
+                            case OBJECT_TYPE.BH:
+                            case OBJECT_TYPE.RH:
+                                Boltsbuffer.Z = Steelbuffer.W * 0.5 - Steelbuffer.t1 * 0.5;
+                                break;
+                            case OBJECT_TYPE.BOX:
+                            case OBJECT_TYPE.CH:
+                                Boltsbuffer.Z = Steelbuffer.W - Steelbuffer.t1;
+                                break;
+                            case OBJECT_TYPE.L:
+                                Boltsbuffer.Z = 0;
+                                break;
+                            default:
+                                break;
+                        }
+                        //value =
+                        break;
+                    case FACE.FRONT:
+                        Boltsbuffer.t = Steelbuffer.t2;
+                        Boltsbuffer.Z = Steelbuffer.t2;
+                        //value = Steelbuffer.W;
+                        break;
+                    case FACE.BACK:
+                        Boltsbuffer.t = Steelbuffer.t2;
+                        Boltsbuffer.Z = Steelbuffer.H;
+                        //value = Steelbuffer.W;
+                        break;
+                    default:
+                        break;
+                }
+                //改變 Y 座標起始點類型
+                switch (SHoleType)
+                {
+                    case START_HOLE.MIDDLE:
+                        Boltsbuffer.StartHole = START_HOLE.MIDDLE;
+                        //Boltsbuffer.Y = (GetBoltZ() * 0.5) - (Boltsbuffer.SumdY() * 0.5);
+                        break;
+                    case START_HOLE.START:
+                        Boltsbuffer.StartHole = START_HOLE.START;
+                        //Boltsbuffer.Y = this.StartY;
+                        break;
+                    default:
+                        break;
+                }
+                Boltsbuffer.X = GroupBoltsAttr.X;
+            }
+            //判斷 Y 軸起始座標
+            if (Boltsbuffer.StartHole == START_HOLE.MIDDLE)
+            {
+                Boltsbuffer.Y = (GetBoltZ() * 0.5) - (Boltsbuffer.SumdY() * 0.5);
+            }
+            else
+            {
+                Boltsbuffer.Y = this.StartY;
+            }
+#if DEBUG
+            log4net.LogManager.GetLogger("螺栓設定檔").Debug
+                ($"直徑 {Boltsbuffer.Dia} 鑽孔類型 {Boltsbuffer.Mode.ToString()}\n起始孔類型 {((START_HOLE)StartHoleType).ToString()} X {Boltsbuffer.X} Y {Boltsbuffer.Y}\nX數量 {Boltsbuffer.xCount} 間距 {Boltsbuffer.dX}\nY數量 {Boltsbuffer.yCount} 間距{Boltsbuffer.dY}\n方向{Boltsbuffer.Face.ToString()}");
+#endif
+            return (GroupBoltsAttr)Boltsbuffer.DeepClone();
+        }
+
+
+
+
+
+
+
         /// <summary>
         /// 取得設定好的值
         /// </summary>
@@ -532,16 +641,16 @@ namespace WPFSTD105.ViewModel
                         //斷面規格類型
                         switch (Steelbuffer.Type)
                         {
-                            case OBJETC_TYPE.BH:
-                            case OBJETC_TYPE.RH:
+                            case OBJECT_TYPE.BH:
+                            case OBJECT_TYPE.RH:
                                 Boltsbuffer.Z = Steelbuffer.W * 0.5 - Steelbuffer.t1 * 0.5;
                                 break;
-                            case OBJETC_TYPE.TUBE:
-                            case OBJETC_TYPE.BOX:
-                            case OBJETC_TYPE.CH:
+                            case OBJECT_TYPE.TUBE:
+                            case OBJECT_TYPE.BOX:
+                            case OBJECT_TYPE.CH:
                                 Boltsbuffer.Z = Steelbuffer.W - Steelbuffer.t1;
                                 break;
-                            case OBJETC_TYPE.L:
+                            case OBJECT_TYPE.L:
                                 Boltsbuffer.Z = 0;
                                 break;
                             default:
@@ -795,7 +904,7 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         private Dictionary<string, int> level2 = new Dictionary<string, int>();
         /// <summary>
-        /// 選擇的斷面規格類型 <see cref="OBJETC_TYPE"/>索引值
+        /// 選擇的斷面規格類型 <see cref="OBJECT_TYPE"/>索引值
         /// </summary>
         private int _ProfileType { get; set; } = -1;
         /// <summary>
@@ -834,7 +943,7 @@ namespace WPFSTD105.ViewModel
         public void AddNode(DataCorrespond data)
         {
             //20220805 張燕華 新增斷面規格 - 因斷面規格已經在data中有定義, 故略過這層判斷直接執行以下程式
-            //if (data.Type != OBJETC_TYPE.RH)
+            //if (data.Type != OBJECT_TYPE.RH)
             //{
             //    return;
             //}

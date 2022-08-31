@@ -37,10 +37,10 @@ namespace WPFSTD105
             STDSerialization ser = new STDSerialization();
             ObservableCollection<BomProperty> bomProperties = CommonViewModel.ProjectProperty.BomProperties; //報表屬性設定檔
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();//模型構件列表
-            DeleteCommand = Delete();
+
             MaterialDataViews = ser.GetMaterialDataView();
-            SureCommand = Sure();
-            CancelCommand = Cancel();
+
+            //20220824 蘇 新增icommand
             foreach (var profile in ser.GetProfile()) //逐步展開斷面規格
             {
 
@@ -48,14 +48,12 @@ namespace WPFSTD105
 
                 //只將 BH RH L TUBE BOX CH H LB([)加入到列表內
                 if (buffer != null &&(
-                    buffer[0].Type == OBJETC_TYPE.BH ||
-                    buffer[0].Type == OBJETC_TYPE.RH ||
-                    buffer[0].Type == OBJETC_TYPE.L ||
-                    buffer[0].Type == OBJETC_TYPE.TUBE ||
-                    buffer[0].Type == OBJETC_TYPE.BOX ||
-                    buffer[0].Type == OBJETC_TYPE.CH ||
-                    buffer[0].Type == OBJETC_TYPE.H ||
-                    buffer[0].Type == OBJETC_TYPE.LB))
+                    buffer[0].Type == OBJECT_TYPE.BH ||
+                    buffer[0].Type == OBJECT_TYPE.RH ||
+                    buffer[0].Type == OBJECT_TYPE.L ||
+                    buffer[0].Type == OBJECT_TYPE.TUBE ||
+                    buffer[0].Type == OBJECT_TYPE.BOX ||
+                    buffer[0].Type == OBJECT_TYPE.CH))
                 {
                     foreach (var item in buffer) //逐步展開零件
                     {
@@ -222,38 +220,40 @@ namespace WPFSTD105
                 grid.EndSelection();//强制立即更新
             });
         }
-        public ICommand DeleteCommand { get; set; }
 
-        public WPFBase.RelayParameterizedCommand Delete()
+        public ICommand DeleteCommand
         {
-            return new WPFBase.RelayParameterizedCommand((el) =>
+            get
             {
-                ObservableCollection<MaterialDataView> materialDataViews = new ObservableCollection<MaterialDataView>(MaterialDataViews);
-                ObservableCollection<MaterialDataView> select = new ObservableCollection<MaterialDataView>((ObservableCollection<MaterialDataView>)el);
-                STDSerialization ser = new STDSerialization();
-
-                foreach (MaterialDataView view in (System.Collections.IList)select)
+                return new WPFBase.RelayParameterizedCommand((el) =>
                 {
-                    ObservableCollection<SteelPart> steelParts = ser.GetPart(view.Profile.GetHashCode().ToString());
-                    foreach (var part in view.Parts)
+                    ObservableCollection<MaterialDataView> _materialDataViews = new ObservableCollection<MaterialDataView>(MaterialDataViews);
+                    ObservableCollection<MaterialDataView> select = new ObservableCollection<MaterialDataView>((ObservableCollection<MaterialDataView>)el);
+                    STDSerialization ser = new STDSerialization();
+
+                    foreach (MaterialDataView view in (System.Collections.IList)select)
                     {
-                        int index = DataViews.FindIndex(e => e == part);
-                        int m = DataViews[index].Match.FindLastIndex(e => e == false);
-                        if (m != -1)
-                            DataViews[index].Match[m] = true;
-                        int steelIndex = steelParts.FindIndex(e => e.Number == part.PartNumber);
-                        int partMatch = steelParts[steelIndex].Match.FindLastIndex(e => e == false);
-                        if (partMatch != -1)
-                            steelParts[steelIndex].Match[partMatch] = true;
+                        ObservableCollection<SteelPart> steelParts = ser.GetPart(view.Profile.GetHashCode().ToString());
+                        foreach (var part in view.Parts)
+                        {
+                            int index = DataViews.FindIndex(e => e == part);
+                            int m = DataViews[index].Match.FindLastIndex(e => e == false);
+                            if (m != -1)
+                                DataViews[index].Match[m] = true;
+                            int steelIndex = steelParts.FindIndex(e => e.Number == part.PartNumber);
+                            int partMatch = steelParts[steelIndex].Match.FindLastIndex(e => e == false);
+                            if (partMatch != -1)
+                                steelParts[steelIndex].Match[partMatch] = true;
+                        }
+                        ser.SetPart(view.Profile.GetHashCode().ToString(), new ObservableCollection<object>(steelParts));
+                        _materialDataViews.Remove(view);
+                        //DataViews.ForEach(e => e.SortCount = e.GetSortCount());
+                        DataViews = new ObservableCollection<TypeSettingDataView>(DataViews.ToList());
+                        MaterialDataViews = new ObservableCollection<MaterialDataView>(_materialDataViews);
                     }
-                    ser.SetPart(view.Profile.GetHashCode().ToString(), new ObservableCollection<object>(steelParts));
-                    materialDataViews.Remove(view);
-                    //DataViews.ForEach(e => e.SortCount = e.GetSortCount());
-                    DataViews = new ObservableCollection<TypeSettingDataView>(DataViews.ToList());
-                    MaterialDataViews = new ObservableCollection<MaterialDataView>(materialDataViews);
-                }
-                ser.SetMaterialDataView(MaterialDataViews);
-            });
+                    ser.SetMaterialDataView(MaterialDataViews);
+                });
+            }
         }
         #endregion
 
@@ -327,62 +327,111 @@ namespace WPFSTD105
             string result = str.Select(el => el >= 41 && el<= 122).ToString();
             return result;
         }
-        /// <summary>
-        /// 確定配料
-        /// </summary>
-        public ICommand CancelCommand { get; set; }
+
+
 
         /// <summary>
         /// 確定配料
         /// </summary>
         /// <returns></returns>
-        public ICommand Cancel()
+        public ICommand CancelCommand
         {
-            return new WPFBase.RelayCommand(() =>
+            get
             {
-                LengthDodageControl = false;
-            });
-        }
-        /// <summary>
-        /// 確定配料
-        /// </summary>
-        public ICommand SureCommand { get; set; }
-
-        /// <summary>
-        /// 確定配料
-        /// </summary>
-        /// <returns></returns>
-        public ICommand Sure()
-        {
-            return new WPFBase.RelayCommand(() =>
-            {
-                if (LengthDodageControl)
+                return new WPFBase.RelayCommand(() =>
                 {
+                    LengthDodageControl = false;
+                });
+            }
+        }
+
+
+        /// <summary>
+        /// 確定配料
+        /// </summary>
+        /// <returns></returns>
+        public ICommand SureCommand 
+        { 
+            get
+            {
+                return new WPFBase.RelayCommand(() =>
+                {
+                    if (LengthDodageControl)
+                    {
+                        AutoMatchAsync();
+                        _GridControl.Dispatcher.Invoke(() =>
+                        {
+                            _GridControl.RefreshData();
+                        });
+
+                        if (MaterialDataViews != null)
+                        {
+                            ShowTypeResult = true;
+                        }
+                        else
+                        {
+                            ShowTypeResult = false;
+                        }
+                        if (!ShowTypeResult)
+                        {
+                            ShowTypeResult = true; // 開啟辦公室軟體排版結果報表
+                        }
+                    }
+                    LengthDodageControl = false;
+
+                });
+            }
+        }
+
+        /// <summary>
+        /// 確定配料
+        /// </summary>
+        public ICommand GoCommand
+        { 
+            get
+            {
+                return new WPFBase.RelayParameterizedCommand(obj =>
+                {
+                    _GridControl = (GridControl)obj;
                     AutoMatchAsync();
                     _GridControl.Dispatcher.Invoke(() =>
                     {
                         _GridControl.RefreshData();
+
                     });
 
                     if (MaterialDataViews != null)
                     {
-                        ShowTypeResult = true;
-                    }
-                    else
-                    {
-                        ShowTypeResult = false;
-                    }
-                    if (!ShowTypeResult)
-                    {
-                        ShowTypeResult = true; // 開啟辦公室軟體排版結果報表
-                    }
-                }
-                LengthDodageControl =false;
 
-            });
+                    }
+                });
+            }
         }
-        //public bool _Sure { get; set; }
-        //public bool _Sure { get; set; }
+        
+        /// <summary>
+        /// 加入素材(單個)
+        /// </summary>
+        public ICommand AddMaterial
+        {
+            get
+            {
+                return new WPFBase.RelayParameterizedCommand(obj =>
+                {
+                    _GridControl = (GridControl)obj;
+                    AutoMatchAsync();
+               
+                    _GridControl.Dispatcher.Invoke(() =>
+                    {
+                        _GridControl.RefreshData();
+
+                    });
+                });
+            }
+        }
+
+
+
+
 
         public bool LengthDodageControl { get; set; } = false;
         public string MainLength { get; set; } = "9000 10000 12000";

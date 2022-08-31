@@ -58,7 +58,7 @@ namespace 測試IIS.ExternalImport {
         
         private 測試IIS.ExternalImport.DRAWING_STATE Statek__BackingFieldField;
         
-        private 測試IIS.ExternalImport.OBJETC_TYPE Typek__BackingFieldField;
+        private 測試IIS.ExternalImport.OBJECT_TYPE Typek__BackingFieldField;
         
         private double UnitAreak__BackingFieldField;
         
@@ -315,7 +315,7 @@ namespace 測試IIS.ExternalImport {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(Name="<Type>k__BackingField", IsRequired=true)]
-        public 測試IIS.ExternalImport.OBJETC_TYPE Typek__BackingField {
+        public 測試IIS.ExternalImport.OBJECT_TYPE Typek__BackingField {
             get {
                 return this.Typek__BackingFieldField;
             }
@@ -426,8 +426,8 @@ namespace 測試IIS.ExternalImport {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="OBJETC_TYPE", Namespace="http://schemas.datacontract.org/2004/07/GD_STD.Enum")]
-    public enum OBJETC_TYPE : int {
+    [System.Runtime.Serialization.DataContractAttribute(Name="OBJECT_TYPE", Namespace="http://schemas.datacontract.org/2004/07/GD_STD.Enum")]
+    public enum OBJECT_TYPE : int {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
         RH = 0,

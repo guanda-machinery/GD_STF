@@ -19,6 +19,7 @@
                   xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" xmlns:ddes="http://schemas.devdept.com/winfx/2008/xaml/control"
                   xmlns:spa="clr-namespace:WPFSTD105;assembly=WPFSTD105" xmlns:ddgr="http://schemas.devdept.com/winfx/2008/xaml/graphics" 
                   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                  xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
                   Title="排版設定"              
                   x:TypeArguments="WPFSTD105:OfficeTypeSettingVM"
                   mc:Ignorable="d">
@@ -86,6 +87,10 @@
                      Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                 >
+            <DockPanel.DataContext>
+                <spa:OfficeTypeSettingVM/>
+            </DockPanel.DataContext>
+            
             <Grid DockPanel.Dock="Top">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
@@ -93,7 +98,7 @@
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -105,11 +110,12 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
+                        <!--  ItemsSource="{Binding Path = DataViews}"對應為AbsTypeSettingVM OfficeTypeSettingVM--> 
                         <dxg:GridControl  
-                           Name="PieceListGridControl"
+                            Name="PartGridControl"
                                 AutoGenerateColumns="None"
                                 SelectionMode="MultipleRow"
-                                Height="480"              
+                                Height="380"              
                                 ItemsSource="{Binding DataViews}">
                             <dxg:GridControl.Resources>
                                 <Style TargetType="dxg:GridColumn" >
@@ -142,16 +148,20 @@
                             <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="auto" />
                             <dxg:GridColumn FieldName="Profile"  IsSmart="True"  Header="斷面規格"  Width="auto"/>
                             <dxg:GridColumn FieldName="Material"  IsSmart="True"  Header="材質"  Width="auto"/>
-                            <dxg:GridColumn FieldName="PieceLength"  IsSmart="True"  Header="零件長" Width="auto"/>
-                            <dxg:GridColumn FieldName="PieceWeight"  IsSmart="True"  Header="零件重"  Width="auto" >
+                            <dxg:GridColumn FieldName="Length"  IsSmart="True"  Header="零件長" Width="auto">
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
-                            <dxg:GridColumn FieldName=""  IsSmart="True"  Width="auto" Header="數量"  />
-                            <dxg:GridColumn FieldName=""  IsSmart="True"  Width="auto" Header="已配對"  />
+                            <dxg:GridColumn FieldName="Weight"  IsSmart="True"  Header="零件重"  Width="auto" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="Count"  IsSmart="True"  Width="auto" Header="數量"  />
+                            <dxg:GridColumn FieldName="" Binding="{Binding Match, Converter={STD105:IListFilterToCountConverter}, ConverterParameter={WPFBase:SystemType Bool=False}}"  IsSmart="True"  Width="auto" Header="已配對"  />
                             <dxg:GridColumn Name="GridColumnSpace" FieldName=""  IsSmart="True"  Width="100" AllowResizing="false"  AllowMoving="false" />
-                            <dxg:GridColumn FieldName=""  IsSmart="True"  Header="預排數量" Width="100" AllowResizing="false" AllowMoving="false"  />
+                            <dxg:GridColumn FieldName="SortCount"  IsSmart="True"  Header="預排數量" Width="100" AllowResizing="false" AllowMoving="false"  />
                         </dxg:GridControl>
 
                         <StackPanel  HorizontalAlignment="Right"  Background="#D3D3D3"  Width="99">
@@ -175,7 +185,7 @@
                                     <TextBlock Text="加入素材" Margin="0,2,0,2"/>
                                 </StackPanel>
 
-                                <Button Margin="1,0">
+                                <Button Margin="1,0" Command="{Binding AddMaterial}"  CommandParameter="{Binding ElementName=Material_List_GridControl}">
                                     <Button.Content>
 
                                         <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Width="14"/>
@@ -214,9 +224,10 @@
                 <!--長度參數設定-->
 
                 <GroupBox Grid.Column="1"
+
                 Header="排版參數設定" 
                   Margin="5">
-                    <Grid >
+                    <Grid     Name="TypeSettingParameterGrid">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
@@ -410,10 +421,11 @@
 
                         <DockPanel Margin="5" Grid.Row="1" >
                             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom">
-                                <Button Content="GO" Command="" Background="Gold" Foreground="Black" Width="80" Margin="5"/>
+                                <!--ElementName 綁定grid目標-->
+                                <Button Content="GO" Command="{Binding GoCommand}" CommandParameter="{Binding ElementName=Material_List_GridControl}" Background="Gold" Foreground="Black" Width="80" Margin="5"/>
                             </StackPanel >
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-                                <Button Command="" Width="80" Margin="5"  Background="#d8d8d8" >
+                                <Button Command="" Width="80" Margin="5"  Background="#d8d8d8"  Click="Set_TypeSettingParameterGrid_AllCheckboxChecked_Click" Cursor="Hand">
                                     <Button.Content >
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="CheckboxOutline" />
@@ -504,13 +516,10 @@
 
                 <GroupBox Grid.Column="0" Header="素材清單" Margin="5">
 
-                    <GroupBox.DataContext>
-                        <local:TestGridViewDataViewModel/>
-                    </GroupBox.DataContext>
+
                     <GroupBox.Resources>
                         <Style TargetType="Button"
                            BasedOn="{ StaticResource BaseStyle }"/>
-
                         <Style TargetType="ProgressBar" 
                        BasedOn="{StaticResource MaterialDesignLinearProgressBar}">
                             <Setter Property="Foreground" Value="#0078D7"/>
@@ -518,22 +527,27 @@
                             <Setter Property="BorderThickness" Value="0"/>
 
                         </Style>
-                        
                         <Style TargetType="dxg:GridColumn">
                             <Setter Property="HorizontalHeaderContentAlignment"  Value="Center"/>
                         </Style>
 
                     </GroupBox.Resources>
-                    <dxg:GridControl  Grid.Row="2" ItemsSource="{Binding Path =TestData }" MinHeight="200"  MaxHeight="400">
+                    
+                    <dxg:GridControl 
+                        Name="Material_List_GridControl"    
+                        AutoGenerateColumns="None"
+                        Grid.Row="2"                               
+                        ItemsSource="{Binding Path= MaterialDataViews}"
+                                     MinHeight="200"  MaxHeight="400">
                         <dxg:GridControl.View >
                             <dxg:TableView 
 
+                                    VerticalScrollbarVisibility="Visible"
                                     ShowGroupPanel="False"
                                     ShowSearchPanelMode="Always"
                                     SearchPanelNullText="Search Tasks(Ctrl + F)" 
                                     SearchPanelFindMode="Always" 
                                     SearchDelay="0"
-                                 
                                     >
                                 <dxg:TableView.CellStyle>
                                     <Style>
@@ -652,7 +666,7 @@
                         <dxg:GridColumn FieldName="BuildTime" IsSmart="True"  Header="建立日期"  >
 
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="EditTime" IsSmart="True" Header="修改日期"  >
+                        <dxg:GridColumn FieldName="" IsSmart="True" Header="修改日期"  >
                             <dxg:GridColumn.CellStyle>
                                 <Style>
 
@@ -660,21 +674,32 @@
                                 </Style>
                             </dxg:GridColumn.CellStyle>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="TypesettingNumber"  IsSmart="True" Header="排版編號" />
+                        <dxg:GridColumn FieldName="MaterialNumber"  IsSmart="True" Header="排版編號" >
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button 
+                                            Command="{Binding OpenPreview}"
+                                            CommandParameter="{Binding ElementName=view}"
+                                            Content="{Binding Value}"
+                                            Foreground="{StaticResource solidclr_DarkGray}"
+                                            Style="{StaticResource btn_CommonIconKey}"
+                                            ToolTip="預覽圖形" />
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn>
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="鋼材類型"   />
-                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="斷面規格"   />
-                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="材質" Width="auto"   />
+                        <dxg:GridColumn FieldName="Profile"  IsSmart="True" Header="斷面規格"   />
+                        <dxg:GridColumn FieldName="Material"  IsSmart="True" Header="材質" Width="auto"   />
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="數量" Width="auto"  />
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="已完成" Width="auto"  />
-                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="素材長"   />
-                        <dxg:GridColumn FieldName="MaterialPercent"  IsSmart="True" Header="素材使用率"   >
+                        <dxg:GridColumn FieldName="LengthStr"  IsSmart="True" Header="素材長"   />
+                        <dxg:GridColumn IsSmart="True" Header="素材使用率">
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>
-                                        <ProgressBar Value="{Binding Row.MaterialPercent}" Height="auto" Minimum="0" Maximum="100" Background="White" />
+                                        <ProgressBar Value="{c:Binding Row.Loss/Row.LengthStr}" Height="auto" Minimum="0" Maximum="1" Background="White" />
                                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" >
-                                            <TextBlock Text="{Binding Row.MaterialPercent}"  />
-                                            <TextBlock Text="%"/>
+                                            <TextBlock Text="{c:Binding Row.Loss/Row.LengthStr, StringFormat={}{0:P1}}"   />
                                         </StackPanel>
                                     </Grid>
                                 </DataTemplate>
@@ -682,7 +707,10 @@
 
 
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="餘長"    >
+                        <dxg:GridColumn Binding="{c:Binding LengthStr-Loss}"   IsSmart="True" Header="餘長" Width="auto"    >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings DisplayFormat="F2"/>
+                            </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題一"  Width="auto"  />
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題二"   Width="auto" />
@@ -700,63 +728,67 @@
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="*"/>
                                             </Grid.RowDefinitions>
-                                            <StackPanel Grid.Column="0" Grid.Row="0" >
-                                            <dxg:GridControl  ItemsSource="{Binding TestGridViewDataDetailList}"   AutoGenerateColumns="None" MinHeight="50" MaxHeight="110" Height="auto">
-                                                <dxg:GridControl.Resources>
-                                                    <Style TargetType="dxg:GridColumnHeader">
-                                                        <Setter Property="Background" Value="LemonChiffon"/>
+                                            <Border Grid.Column="0" BorderThickness="0,0,1.5,0" BorderBrush="#cfcfcf">
+                                                <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,5,0" >
+                                                    <dxg:GridControl  ItemsSource="{Binding Path=Parts}"   AutoGenerateColumns="None" MinHeight="50" MaxHeight="110" Height="auto">
+                                                        <dxg:GridControl.Resources>
+                                                            <Style TargetType="dxg:GridColumnHeader">
+                                                                <Setter Property="Background" Value="LemonChiffon"/>
 
-                                                    </Style>
-                                                    <Style TargetType="dxg:GridColumn" >
-                                                        <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
-
-                                                    </Style>
-                                                    <Style TargetType="dxe:TextEditSettings">
-                                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-
-                                                    </Style>
-                                                </dxg:GridControl.Resources>
-                                                <dxg:GridControl.View>
-                                                    <dxg:TableView ShowTotalSummary="False" ShowGroupPanel="False" AutoWidth="True" ShowHorizontalLines="True" ShowVerticalLines="True"  VerticalScrollbarVisibility="Auto">
-                                                        <dxg:TableView.CellStyle>
-                                                            <Style>
-                                                                <Setter Property="TextBlock.FontSize" Value="12"/>
                                                             </Style>
-                                                        </dxg:TableView.CellStyle>
-                                                    </dxg:TableView>
-                                                </dxg:GridControl.View>
+                                                            <Style TargetType="dxg:GridColumn" >
+                                                                <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
 
-                                                <dxg:GridColumn FieldName="Order" Header="順序"  Width="auto"  />
-                                                <dxg:GridColumn FieldName="StructNumber"    Header="構件編號"  Width="auto" />
-                                                <dxg:GridColumn FieldName="PieceNumber" Header="零件編號"  Width="auto" />
-                                                <dxg:GridColumn FieldName="PieceLength" Header="零件長"  Width="auto"  >
-                                                    <dxg:GridColumn.EditSettings>
-                                                        <dxe:TextEditSettings DisplayFormat="F2"/>
-                                                    </dxg:GridColumn.EditSettings>
-                                                </dxg:GridColumn>
-                                                <dxg:GridColumn FieldName="PieceCount" Header="數量"  Width="auto" />
-                                                <dxg:GridColumn FieldName="ItemDescription" Header="Phase"  Width="auto"/>
-                                                <dxg:GridColumn FieldName="ItemDescription" Header="拆運"  Width="auto" />
-                                            </dxg:GridControl>
-                                                <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
-                                          
-                                                <Button >
-                                                    <Button.Content>
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="*"/>
-                                                            </Grid.ColumnDefinitions>
+                                                            </Style>
+                                                            <Style TargetType="dxe:TextEditSettings">
+                                                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
 
-                                                            <materialDesign:PackIcon Kind="PlusThick" />
-                                                            <materialDesign:PackIcon Kind="ScrewLag" Grid.Column="1"/>
-                                                        </Grid>
-                                                    </Button.Content>
-                                                    </Button>
-                                                    <TextBlock Text="加入新零件" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                                            </Style>
+                                                        </dxg:GridControl.Resources>
+                                                        <dxg:GridControl.View>
+                                                            <dxg:TableView ShowTotalSummary="False" ShowGroupPanel="False" AutoWidth="True" ShowHorizontalLines="True" ShowVerticalLines="True"  VerticalScrollbarVisibility="Auto">
+                                                                <dxg:TableView.CellStyle>
+                                                                    <Style>
+                                                                        <Setter Property="TextBlock.FontSize" Value="12"/>
+                                                                    </Style>
+                                                                </dxg:TableView.CellStyle>
+                                                            </dxg:TableView>
+                                                        </dxg:GridControl.View>
+
+                                                        <dxg:GridColumn FieldName="Order" Header="順序"  MaxWidth="40"  />
+                                                        <dxg:GridColumn FieldName="AssemblyNumber"   Header="構件編號"  Width="auto" />
+                                                        <dxg:GridColumn FieldName="PartNumber" Header="零件編號"  Width="auto" />
+                                                        <dxg:GridColumn FieldName="Length" Header="零件長"  Width="auto"  >
+                                                            <dxg:GridColumn.EditSettings>
+                                                                <dxe:TextEditSettings DisplayFormat="F2"/>
+                                                            </dxg:GridColumn.EditSettings>
+                                                        </dxg:GridColumn>
+                                                        <dxg:GridColumn FieldName="" Header="數量"  Width="auto" />
+                                                        <dxg:GridColumn FieldName="" Header="Phase"  Width="auto"/>
+                                                        <dxg:GridColumn FieldName="" Header="拆運"  Width="auto" />
+                                                    </dxg:GridControl>
+                                                    <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
+                                                        <Button >
+                                                            <Button.Content>
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                    </Grid.ColumnDefinitions>
+
+                                                                    <materialDesign:PackIcon Kind="PlusThick" />
+                                                                    <materialDesign:PackIcon Kind="ScrewLag" Grid.Column="1"/>
+                                                                </Grid>
+                                                            </Button.Content>
+                                                        </Button>
+                                                        <TextBlock Text="加入新零件" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                                    </StackPanel>
                                                 </StackPanel>
-
-                                            </StackPanel>
+                                            </Border>
+                                            <GridSplitter Background="Transparent" Grid.RowSpan="2" HorizontalAlignment="Right"   VerticalAlignment="Stretch" Width="10" Margin="-5"  />
+                                            <!-- 可調整邊界拉柄(透明)-->
+                                       
+                                          
                                             <Grid Grid.Column="1"  MinHeight="150" Margin="10,0,0,0">
                                                 <Grid.Resources>
                                                     <Style TargetType="TextBlock">
@@ -786,7 +818,7 @@
                                                 </Grid.RowDefinitions>
                                                 <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                                                     <TextBlock Text="零件正轉"  />
-                                                    <Button Grid.Column="1" Grid.Row="0" Height="25" Margin="10,0,0,0"  MinWidth="70" >
+                                                    <Button Grid.Column="1" Grid.Row="0" Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding }" >
                                                         <Button.Content>
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>
@@ -885,8 +917,6 @@
                                                 </StackPanel>
                                             </Grid>
 
-                                            <!-- 可調整邊界拉柄(透明)-->
-                                            <GridSplitter Grid.Row="0" Grid.Column="0" Background="Transparent" Grid.RowSpan="2" HorizontalAlignment="Right"   VerticalAlignment="Stretch" Width="5"  />
 
 
                                         </Grid>
@@ -902,12 +932,11 @@
                 <!--繪圖顯示模型-->
 
 
-                <TabControl Grid.Column="2" Margin="5"
+                <TabControl Grid.Column="1" Margin="5"
                         BorderThickness="0"
                         Background="#303030"
                         x:Name="tabControl"
-                        Style="{StaticResource BaseStyle}"
-                        >
+                        Style="{StaticResource BaseStyle}" >
                     <TabControl.Resources>
                         <Style TargetType="TabItem">
                             <Setter Property="Template">
@@ -966,6 +995,7 @@
 
                     <TabItem Header="3D" >
 
+
                     </TabItem>
                     <TabItem Header="2D">
 
@@ -974,9 +1004,9 @@
 
 
                 </TabControl>
-
+              <!--  <Border BorderThickness="0,0,1.5,0" BorderBrush="gray" Margin="0,5,-1,5" Opacity="0.7"></Border>-->
                 <!-- 可調整邊界拉柄(透明)-->
-                <GridSplitter Grid.Row="0" Grid.Column="0" Background="Transparent" Grid.RowSpan="2" HorizontalAlignment="Right"   VerticalAlignment="Stretch" Width="10"  />
+                <GridSplitter Grid.Row="0" Grid.Column="0" Background="Transparent" Grid.RowSpan="2" HorizontalAlignment="Right"   VerticalAlignment="Stretch" Width="10"  Margin="-5" />
 
 
 

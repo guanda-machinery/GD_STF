@@ -749,7 +749,7 @@
                         </ResourceDictionary>
                     </TabControl.Resources>
 
-                    <TabItem Margin="0,0,0,0" Header="鑽孔" >
+                    <TabItem Margin="0,0,0,0" Header="鑽孔" Name="DrillTabItem">
                         <TabItem.Resources>
                             <Style TargetType="GroupBox" BasedOn="{StaticResource BaseStyle}" >
                                 <Setter Property="Foreground" Value="#3b3b3b"/>
@@ -759,7 +759,6 @@
                         <DockPanel >
                             <Grid DockPanel.Dock="Top">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
@@ -832,6 +831,7 @@
                                     </Grid>
                                 </GroupBox>
 
+                                <DockPanel Grid.Column="0" Grid.Row="1" >
                                 <GroupBox Header="孔群設定" Grid.Column="0" Grid.Row="1">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -876,14 +876,10 @@
                                         <StackPanel Orientation="Horizontal" Visibility="Collapsed">
                                             <CheckBox IsChecked="{Binding CheckFace}" />
                                             <ComboBox ItemsSource="{Binding Source={StaticResource Face},Path=Strings}"
-                                      SelectedIndex="{Binding BoltsFaceType}" Width="90"/>
+                                      SelectedIndex="{Binding BoltsFaceType}" Width="50"/>
                                         </StackPanel>
-
-
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="20"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
                                             <Grid.RowDefinitions>
@@ -892,38 +888,37 @@
                                                 <RowDefinition Height="*"/>
                                             </Grid.RowDefinitions>
 
-                                            <RadioButton Grid.Row="0" GroupName="DrillPosition" Foreground="Black" FontSize="12"  Style="{StaticResource rad_Gray}" >
+                                            <RadioButton Margin="0,3,0,0" Grid.Row="0" VerticalAlignment="Center" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" >
                                                 <RadioButton.Content>
-                                                    <StackPanel Orientation="Horizontal" >
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,-2">
                                                         <Label Content="頂面"/>
                                                         <Label Margin="40,0,0,0" Content="右翼板" />
                                                     </StackPanel>
                                                 </RadioButton.Content>
                                             </RadioButton>
-                                            <RadioButton  Grid.Row="1" GroupName="DrillPosition" Foreground="Black" FontSize="12" Style="{StaticResource rad_Gray}" >
+
+                                            <RadioButton  Margin="0,3,0,0" Grid.Row="1" GroupName="CutLinePosition" Foreground="Black" Style="{StaticResource rad_Gray}" >
                                                 <RadioButton.Content>
-                                                    <StackPanel Orientation="Horizontal" >
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,-2" >
                                                         <Label Content="前面"/>
                                                         <Label Margin="40,0,0,0" Content="腹板" />
                                                     </StackPanel>
                                                 </RadioButton.Content>
                                             </RadioButton>
-                                            <RadioButton Grid.Row="2" GroupName="DrillPosition" Foreground="Black" FontSize="12" Style="{StaticResource rad_Gray}">
+
+                                            <RadioButton  Margin="0,3,0,0" Grid.Row="2" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}">
                                                 <RadioButton.Content>
-                                                    <StackPanel Orientation="Horizontal">
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,-2">
                                                         <Label Content="後面"/>
                                                         <Label Margin="40,0,0,0" Content="左翼板" />
                                                     </StackPanel>
                                                 </RadioButton.Content>
                                             </RadioButton>
 
-
-
-
                                         </Grid>
                                     </StackPanel>
                                 </GroupBox>
-
+                                </DockPanel>
                                 <!-- X軸數量-->
                                 <!--StackPanel Grid.Row="2"
                                     Grid.Column="1"
@@ -958,8 +953,8 @@
 
                                 </StackPanel>
 
-                                <StackPanel  Grid.Row="3"     Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Left">
-                                    <Button Command="" Width="80" Margin="5"  Background="#d8d8d8" >
+                                <StackPanel  Grid.Row="3"     Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button Command="" Width="80" Margin="5"  Background="#d8d8d8" Click="Set_DrillSettingGrid_AllCheckboxChecked_Click" Cursor="Hand" >
                                         <Button.Content >
                                             <StackPanel Orientation="Horizontal">
                                                 <materialDesign:PackIcon Kind="CheckboxOutline" />

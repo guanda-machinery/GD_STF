@@ -2,13 +2,16 @@ using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
-using devDept.Graphics;
 using DevExpress.Data.Extensions;
+using DevExpress.Xpf.Core;
+using DevExpress.Xpf.WindowsUI;
+using GD_STD.Data;
 using GD_STD.Enum;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,20 +25,16 @@ using static devDept.Eyeshot.Entities.Mesh;
 using static devDept.Eyeshot.Environment;
 using BlockReference = devDept.Eyeshot.Entities.BlockReference;
 using MouseButton = devDept.Eyeshot.MouseButton;
-using System.IO;
-using GD_STD.Data;
-using System.Collections.ObjectModel;
-using DevExpress.Xpf.WindowsUI;
-using DevExpress.Xpf.Core;
 
 namespace STD_105.Office
 {
-    public partial class ProductSettingsPage_Office : BasePage<ObSettingVM>
+    //TODO:假
+    /// <summary>
+    /// ObSettingsPage_Office.xaml 的互動邏輯
+    /// </summary>
+    public partial class ObSettingsPage_Office : BasePage<ObSettingVM>
     {
-        /// <summary>
-        /// 20220823 蘇冠綸 製品設定
-        /// </summary>
-        public ProductSettingsPage_Office()
+        public ObSettingsPage_Office()
         {
             InitializeComponent();
             //2022.06.24 呂宗霖 此Class與GraphWin.xaml.cs皆有SteelTriangulation與Add2DHole
@@ -123,7 +122,6 @@ namespace STD_105.Office
                 catch (Exception ex)
                 {
                     log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(ex.Message, ex.StackTrace);
-                    //MessageBox.Show("目前已在編輯模式內，如要離開請按下Esc", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                     WinUIMessageBox.Show(null,
                     $"目前已在編輯模式內，如要離開請按下Esc",
                     "通知",
@@ -163,12 +161,6 @@ namespace STD_105.Office
             //刪除物件
             ViewModel.Delete = new RelayCommand(() =>
             {
-                //模擬鍵盤按下Delete
-                //var c = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Delete)
-                //{
-                //    RoutedEvent = Keyboard.KeyDownEvent
-                //};
-                //InputManager.Current.ProcessInput(c);
                 SimulationDelete();
             });
             //清除標註
@@ -223,8 +215,9 @@ namespace STD_105.Office
 
                 ViewModel.SteelAttr.GUID = Guid.NewGuid();//產生新的 id
                 // 2022/07/14 呂宗霖 guid2區分2d或3d
-                //ViewModel.SteelAttr.GUID2 = ViewModel.SteelAttr.GUID;
-                ViewModel.SteelAttr.PointFront = new CutList();//清除切割線
+                //ViewModel.SteelAttr.GUID2 = ViewModel.SteelAttr.GUID;                
+				ViewModel.SteelAttr.PointBack = new CutList();//清除切割線
+				ViewModel.SteelAttr.PointFront = new CutList();//清除切割線
                 ViewModel.SteelAttr.PointTop = new CutList();//清除切割線
 #if DEBUG
                 log4net.LogManager.GetLogger("加入主件").Debug("產生圖塊");
@@ -255,11 +248,14 @@ namespace STD_105.Office
                     SelectReference = null,
                     User = new List<ACTION_USER>() { ACTION_USER.Add }
                 });
+                fAddPartAndBolt = true;
                 model.ZoomFit();//設置道適合的視口
                 model.Refresh();//刷新模型
-                //drawing.ZoomFit();
-                //drawing.Refresh();
-                SaveModel(true);
+
+
+
+
+                //  SaveModel(true);
                 #endregion
             });
             //修改主零件
@@ -269,7 +265,6 @@ namespace STD_105.Office
                     return;
                 if (model.CurrentBlockReference != null)
                 {
-                    //MessageBox.Show("退出編輯模式，才可修改主件", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                     WinUIMessageBox.Show(null,
                     $"退出編輯模式，才可修改主件",
                     "通知",
@@ -307,13 +302,14 @@ namespace STD_105.Office
                 Mesh modify = Steel3DBlock.GetProfile(steelAttr); //修改的形狀
                 ViewModel.tem3DRecycle.Add(model.Entities[model.Entities.Count - 1]);//加入垃圾桶準備刪除
                 ViewModel.tem2DRecycle.AddRange(drawing.Entities);//加入垃圾桶準備刪除
-
-                //model.Entities[0].Selected = true;//選擇物件
+                model.Entities[0].Selected = true;//選擇物件
                 drawing.Entities.ForEach(el => el.Selected = true);
                 List<Entity> steel2D = new Steel2DBlock(modify, "123").Entities.ToList();
                 Steel2DBlock steel2DBlock = (Steel2DBlock)drawing.Blocks[drawing.CurrentBlockReference.BlockName];
                 steel2DBlock.ChangeMesh(modify);
                 //加入到垃圾桶內
+
+                //加入復原動作至LIST
                 ViewModel.Reductions.Add(new Reduction()
                 {
                     SelectReference = model.CurrentBlockReference,
@@ -342,7 +338,17 @@ namespace STD_105.Office
                 //刷新模型
                 model.Invalidate();
                 drawing.Invalidate();
-                SaveModel(false);//存取檔案
+
+                if (!fAddPartAndBolt)
+                    SaveModel(false);//存取檔案
+
+                // 執行斜邊打點
+                AddHypotenusePoint();
+                //    AddHypotenusePoint(FACE.BACK);
+                //  AddHypotenusePoint(FACE.FRONT);
+
+
+
 
 #if DEBUG
                 log4net.LogManager.GetLogger("修改主件").Debug("結束");
@@ -354,7 +360,6 @@ namespace STD_105.Office
                 //如果是在編輯模式
                 if (model.CurrentBlockReference != null)
                 {
-                    //MessageBox.Show("退出編輯模式，才可讀取主件", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                     WinUIMessageBox.Show(null,
                     $"退出編輯模式，才可讀取主件",
                     "通知",
@@ -367,13 +372,12 @@ namespace STD_105.Office
                 //如果模型裡面有物件
                 else if (model.Entities.Count > 0)
                 {
-                    model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);
-                    ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);
-                    model.SetCurrent(null);
+                    model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);  // 取得主件資訊
+                    ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData); // 寫入主件設定檔 To VM
+                    model.SetCurrent(null);  // 返回最上層
                 }
                 else
                 {
-                    //MessageBox.Show("模型內找不到物件", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                     WinUIMessageBox.Show(null,
                     $"模型內找不到物件",
                     "通知",
@@ -459,6 +463,11 @@ namespace STD_105.Office
                                  FloatingMode.Popup);
                     return;
                 }
+                //刷新模型
+                model.Refresh();
+                drawing.Refresh();
+                if (!fAddPartAndBolt)
+                    SaveModel(false);//存取檔案
 
             });
             //修改孔
@@ -477,7 +486,6 @@ namespace STD_105.Office
                         //如果在編輯模式
                         if (model.CurrentBlockReference != null)
                         {
-                            //MessageBox.Show("退出編輯模式，才可修改孔", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                             WinUIMessageBox.Show(null,
                                 $"出編輯模式，才可修改孔",
                                 "通知",
@@ -534,7 +542,8 @@ namespace STD_105.Office
                     modifyHole = false;
                     ViewModel.GroupBoltsAttr = original;
                     model.Invalidate();//刷新模型
-                    SaveModel(false);//存取檔案
+                    if (!fAddPartAndBolt)
+                        SaveModel(false);//存取檔案
 #if DEBUG
                     log4net.LogManager.GetLogger("修改孔位").Debug("結束");
 #endif
@@ -562,7 +571,6 @@ namespace STD_105.Office
                     //如果在編輯模式
                     if (model.CurrentBlockReference != null)
                     {
-                        //MessageBox.Show("退出編輯模式，才可讀取", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                         WinUIMessageBox.Show(null,
                             $"退出編輯模式，才可讀取",
                             "通知",
@@ -576,7 +584,6 @@ namespace STD_105.Office
                     //如果選擇的物件不是孔位
                     else if (blockReference == null || blockReference.EntityData.Equals(typeof(GroupBoltsAttr)))
                     {
-                        //MessageBox.Show("選擇類型必須是孔，才可讀取", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                         WinUIMessageBox.Show(null,
                             $"選擇類型必須是孔，才可讀取",
                             "通知",
@@ -590,7 +597,6 @@ namespace STD_105.Office
                 }
                 else
                 {
-                    //MessageBox.Show("請選擇孔，才可修讀取", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                     WinUIMessageBox.Show(null,
                         $"請選擇孔，才可修讀取",
                         "通知",
@@ -622,7 +628,6 @@ namespace STD_105.Office
                 //如果是在編輯模式
                 if (model.CurrentBlockReference != null)
                 {
-                    //MessageBox.Show("退出編輯模式，才可讀取切割線", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                     WinUIMessageBox.Show(null,
                     $"退出編輯模式，才可讀取切割線",
                     "通知",
@@ -641,7 +646,6 @@ namespace STD_105.Office
                 }
                 else
                 {
-                    //MessageBox.Show("模型內找不到物件", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                     WinUIMessageBox.Show(null,
                     $"模型內找不到物件",
                     "通知",
@@ -672,7 +676,6 @@ namespace STD_105.Office
                             //如果在編輯模式
                             if (model.CurrentBlockReference != null)
                             {
-                                //MessageBox.Show("退出編輯模式，才可鏡射", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                                 WinUIMessageBox.Show(null,
                                     $"退出編輯模式，才可鏡射",
                                     "通知",
@@ -705,7 +708,7 @@ namespace STD_105.Office
                             //模擬用戶實際選擇編輯
                             ViewModel.Select3DItem.Add(sele3D);
                             ViewModel.Select2DItem.Add(sele2D);
-
+                            
                             model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);//先取得主件資訊
                             SteelAttr steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
 
@@ -728,21 +731,21 @@ namespace STD_105.Office
                                 Point3D p = new Point3D();
                                 p = new Point3D() { X = ba.X, Y = ba.Y, Z = ba.Z };
 
-                                switch (ba.Face)
-                                {
-                                    case FACE.TOP:
-                                        break;
-                                    case FACE.FRONT:
-                                    case FACE.BACK:
-                                        double y = 0, z = 0;
-                                        y = p.Z;
-                                        z = p.Y;
-                                        p.Y = y;
-                                        p.Z = z;
-                                        break;
-                                    default:
-                                        break;
-                                }
+                               switch (ba.Face)
+                               {
+                                   case FACE.TOP:
+                                       break;
+                                   case FACE.FRONT:
+                                   case FACE.BACK:
+                                       double y = 0, z = 0;
+                                       y = p.Z;
+                                       z = p.Y;
+                                       p.Y = y;
+                                       p.Z = z;
+                                       break;
+                                   default:
+                                       break;
+                               }
                                 finalPoint.Add(p);
                             }
 
@@ -883,7 +886,7 @@ namespace STD_105.Office
                             Point3D p2D1 = p21, p2D2 = p22;//鏡射座標
                             Vector3D axis2D = Vector3D.AxisZ;//鏡射軸
                             Vector3D axis3D = new Vector3D();//鏡射軸
-
+                            
                             Bolts2DBlock bolts2DBlock = (Bolts2DBlock)drawing.Blocks[reference2D.BlockName];
                             // 鏡射 X 軸 : 需要三個點
                             // 俯視圖:XY平面.Y軸.中心點
@@ -897,16 +900,16 @@ namespace STD_105.Office
 
                                     p2D1.Y = p2D2.Y = steelAttr.H / 2;
                                     break;
-                                //p3D1 = p31;
-                                //p3D2 = p32;
-                                //p3D3 = p33;
-                                //axis3D = Vector3D.AxisY;
-                                //
-                                ////axis3D = new Vector3D(1, 1, 0);
-                                ////p2D1.Y = p2D2.Y = steelAttr.H / 2;
-                                //p2D1 = new Point3D(center.X, center.Y);
-                                //axis2D = Vector3D.AxisY;
-                                //break;
+                                    //p3D1 = p31;
+                                    //p3D2 = p32;
+                                    //p3D3 = p33;
+                                    //axis3D = Vector3D.AxisY;
+                                    //
+                                    ////axis3D = new Vector3D(1, 1, 0);
+                                    ////p2D1.Y = p2D2.Y = steelAttr.H / 2;
+                                    //p2D1 = new Point3D(center.X, center.Y);
+                                    //axis2D = Vector3D.AxisY;
+                                    //break;
                                 case GD_STD.Enum.FACE.BACK:
                                 case GD_STD.Enum.FACE.FRONT:
                                     p3D1 = new Point3D(0, 0, center.Z); //鏡射第一點
@@ -1052,7 +1055,7 @@ namespace STD_105.Office
 
                             List<Entity> modify3D = new List<Entity>(), modify2D = new List<Entity>();
                             foreach (Entity item in buffer3D)
-                            {
+                            {                               
                                 Entity entity = (Entity)item.Clone();
                                 entity.TransformBy(mirror3D);
                                 modify3D.Add(entity);
@@ -1067,7 +1070,7 @@ namespace STD_105.Office
                                 modify2D.Add(entity);
                             }
 
-
+                          
 
                             drawing.Entities.AddRange(modify2D);
                             model.Entities.AddRange(modify3D);
@@ -1078,7 +1081,7 @@ namespace STD_105.Office
                             foreach (var et in model.Blocks[reference3D.BlockName].Entities)
                             {
                                 BoltAttr ba = (BoltAttr)et.EntityData;
-                                double y = 0, z = 0;
+                                double y=0, z = 0;
                                 Point3D ori = new Point3D() { X = ba.X, Y = ba.Y, Z = ba.Z };
                                 ori.TransformBy(mirror3D);
                                 ba.X = ori.X;
@@ -1113,8 +1116,7 @@ namespace STD_105.Office
                         Esc();
                         model.Refresh();//刷新模型
                         drawing.Refresh();
-
-                        SaveModel(true);//存取檔案
+                        SaveModel(false);//存取檔案
 #if DEBUG
                         log4net.LogManager.GetLogger("鏡射孔位").Debug("結束");
 #endif
@@ -1158,7 +1160,6 @@ namespace STD_105.Office
                             //如果在編輯模式
                             if (model.CurrentBlockReference != null)
                             {
-                                //MessageBox.Show("退出編輯模式，才可鏡射", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                                 WinUIMessageBox.Show(null,
                                     $"退出編輯模式，才可鏡射",
                                     "通知",
@@ -1172,7 +1173,6 @@ namespace STD_105.Office
                             //如果選擇的物件不是孔位
                             else if (reference3D == null || model.Blocks[reference3D.BlockName].Equals(typeof(Bolts3DBlock)))
                             {
-                                //MessageBox.Show("選擇類型必須是孔，才可鏡射", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                                 WinUIMessageBox.Show(null,
                                     $"選擇類型必須是孔，才可鏡射",
                                     "通知",
@@ -1435,7 +1435,8 @@ namespace STD_105.Office
                     drawing.Focus();
                 }
                 SimulationDelete();
-                SaveModel(false);
+                if (!fAddPartAndBolt)
+                    SaveModel(false);
             });
             #endregion
         }
@@ -1480,7 +1481,6 @@ namespace STD_105.Office
                 RoutedEvent = Keyboard.KeyDownEvent
             };
             InputManager.Current.ProcessInput(c);
-            //SaveModel(false);
         }
         /// <summary>
         /// 在模型視圖按下鍵盤
@@ -1526,7 +1526,7 @@ namespace STD_105.Office
             // 2020/08/04 呂宗霖 因按Delete會造成無窮迴圈 跳不出去系統造成當掉 故先停用直接按Delete的動作
             //else if (Keyboard.IsKeyDown(Key.Delete))
             //{
-            //SimulationDelete();
+                //SimulationDelete();
             //}
             model.Invalidate();
             drawing.Invalidate();
@@ -1655,7 +1655,7 @@ namespace STD_105.Office
             double TmpXPos = 0d;
             double TmpYPos = 0d;
             bool bFindSamePos = false;
-            List<(double, double)> AddBoltsList = new List<(double, double)>();
+            List<(double,double)> AddBoltsList =new List<(double,double)>();
 
             TmpXPos = TmpBoltsArr.X;
             TmpYPos = TmpBoltsArr.Y;
@@ -1671,7 +1671,7 @@ namespace STD_105.Office
                         valueY = TmpBoltsArr.dYs[j - 1];
                     else
                         valueY = TmpBoltsArr.dYs[TmpBoltsArr.dYs.Count - 1];
-
+                  
                     TmpYPos = TmpYPos + valueY;
 
                     AddBoltsList.Add((TmpXPos, TmpYPos));
@@ -1686,14 +1686,14 @@ namespace STD_105.Office
 
                 TmpYPos = TmpBoltsArr.Y;
             }
-            TmpXPos = 0d;
-            TmpYPos = 0d;
+             TmpXPos = 0d;
+             TmpYPos = 0d;
 
             // 原3D模組各孔位座標存於各LIST
-            List<(double, double)> AllBoltsAddList = new List<(double, double)>();
-            List<(double, double)> TopBoltsAddList = new List<(double, double)>();
-            List<(double, double)> FRONTBoltsAddList = new List<(double, double)>();
-            List<(double, double)> BACKBoltsAddList = new List<(double, double)>();
+            List<(double, double)> AllBoltsAddList = new List<(double, double)>();  
+            List<(double, double)> TopBoltsAddList = new List<(double, double)>();    
+            List<(double, double)> FRONTBoltsAddList = new List<(double, double)>();    
+            List<(double, double)> BACKBoltsAddList = new List<(double, double)>();    
 
             for (int i = 0; i < model.Entities.Count; i++)//逐步展開孔群資訊
             {
@@ -1704,7 +1704,7 @@ namespace STD_105.Office
                     Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生孔群圖塊
 
                     for (int j = 0; j < bolts3DBlock.Entities.Count; j++)
-                    {
+                    { 
                         TmpXPos = ((BoltAttr)bolts3DBlock.Entities[j].EntityData).X;
                         TmpYPos = ((BoltAttr)bolts3DBlock.Entities[j].EntityData).Y;
 
@@ -1725,7 +1725,7 @@ namespace STD_105.Office
                     }
                 }
             }
-
+            
             // 將原3D各孔群座標存於共用LIST
             switch (TmpBoltsArr.Face)
             {
@@ -1753,8 +1753,740 @@ namespace STD_105.Office
                 else
                     bFindSamePos = false;
             }
-            return bFindSamePos;
+        return bFindSamePos;
         }
+
+
+
+        List<Bolts3DBlock> lstBoltsCutPoint = new List<Bolts3DBlock>();
+
+
+        /// <summary>
+        /// 斜邊打點
+        /// </summary>
+        public void AddHypotenusePoint()
+        {
+            SteelAttr steelAttr = ViewModel.GetSteelAttr();
+            double PosRatio1 = 0.2;     //  1/5
+            double PosRatio2 = 0.8;     //  4/5
+            double a, b;
+            List<(double, double)> DRPoint = new List<(double, double)>();
+            List<(double, double)> HypotenusePoint = new List<(double, double)>();
+
+            if (model.Entities[model.Entities.Count - 1].EntityData is null)
+                return;
+
+            SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+
+
+
+
+            switch ((FACE)ViewModel.CutFaceType)
+            {
+                case FACE.BACK:
+                case FACE.FRONT:
+                    List<Point3D> AKu = new List<Point3D>(TmpSteelAttr.uPoint);
+                    if (AKu.Count == 0) return;
+
+                    var tmplist = AKu.GroupBy(uu => uu.Y).Select(q => new
+                    {
+                        key = q.Key,
+                        max = q.Max(x => x.X),
+                        min = q.Min(f => f.X)
+                    }).ToList();
+
+                    if (tmplist[0].key > tmplist[1].key)
+                    {
+                        var swap = tmplist[0];
+                        tmplist[0] = tmplist[1];
+                        tmplist[1] = swap;
+                    }
+
+                    List<Point3D> tmplist1 = new List<Point3D>();
+
+                    Point3D TmpDL = new Point3D(tmplist[0].min, tmplist[0].key);
+                    Point3D TmpDR = new Point3D(tmplist[0].max, tmplist[0].key);
+                    Point3D TmpUL = new Point3D(tmplist[1].min, tmplist[1].key);
+                    Point3D TmpUR = new Point3D(tmplist[1].max, tmplist[1].key);
+
+                    if (TmpDL.X == TmpUL.X && TmpDR.X == TmpUR.X)
+                        CutLineGrid.Visibility = Visibility.Visible;
+
+                    else
+                        CutLineGrid.Visibility = Visibility.Hidden;
+
+
+                    Point3D PointDL1 = new Point3D((TmpUL.X - TmpDL.X) * PosRatio1, (TmpUL.Y - TmpDL.Y) * PosRatio1) + TmpDL;
+                    Point3D PointDL2 = new Point3D((TmpUL.X - TmpDL.X) * PosRatio2, (TmpUL.Y - TmpDL.Y) * PosRatio2) + TmpDL;
+
+                    Point3D PointDR1 = new Point3D((TmpUR.X - TmpDR.X) * PosRatio1, (TmpUR.Y - TmpDR.Y) * PosRatio1) + TmpDR;
+                    Point3D PointDR2 = new Point3D((TmpUR.X - TmpDR.X) * PosRatio2, (TmpUR.Y - TmpDR.Y) * PosRatio2) + TmpDR;
+
+                    Point3D PointUL1 = new Point3D((TmpDL.X - TmpUL.X) * PosRatio1, (TmpDL.Y - TmpUL.Y) * PosRatio1) + TmpUL;
+                    Point3D PointUL2 = new Point3D((TmpDL.X - TmpUL.X) * PosRatio2, (TmpDL.Y - TmpUL.Y) * PosRatio2) + TmpUL;
+
+                    Point3D PointUR1 = new Point3D((TmpDR.X - TmpUR.X) * PosRatio1, (TmpDR.Y - TmpUR.Y) * PosRatio1) + TmpUR;
+                    Point3D PointUR2 = new Point3D((TmpDR.X - TmpUR.X) * PosRatio2, (TmpDR.Y - TmpUR.Y) * PosRatio2) + TmpUR;
+
+
+                    tmplist1.Add(PointDL1);
+                    tmplist1.Add(PointDL2);
+                    tmplist1.Add(PointDR1);
+                    tmplist1.Add(PointDR2);
+                    tmplist1.Add(PointUL1);
+                    tmplist1.Add(PointUL2);
+                    tmplist1.Add(PointUR1);
+                    tmplist1.Add(PointUR2);
+
+                    for (int z = 0; z < tmplist1.Count; z++)
+                    {
+                        GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr((FACE)ViewModel.CutFaceType, START_HOLE.START);
+                        TmpBoltsArr.dX = "0";
+                        TmpBoltsArr.dY = "0";
+                        TmpBoltsArr.xCount = 1;
+                        TmpBoltsArr.yCount = 1;
+                        TmpBoltsArr.Mode = AXIS_MODE.POINT;
+                        TmpBoltsArr.X = tmplist1[z].X;
+                        TmpBoltsArr.Y = tmplist1[z].Y;
+                        TmpBoltsArr.GUID = Guid.NewGuid();
+                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference);
+                        BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                        lstBoltsCutPoint.Add(bolts);
+                    }
+
+                    break;
+
+
+                case FACE.TOP:
+
+                    List<Point3D> AKv = new List<Point3D>(TmpSteelAttr.vPoint);
+                    if (AKv.Count==0) return;
+ 
+                     tmplist = AKv.GroupBy(uu => uu.Y).Select(q =>new 
+                        {   key = q.Key, 
+                            max = q.Max(x => x.X),
+                            min=q.Min(f=>f.X) 
+                        } ).ToList();
+                   
+                    if (tmplist[0].key > tmplist[1].key)
+                    {
+                        var swap = tmplist[0];
+                        tmplist[0] = tmplist[1];
+                        tmplist[1] = swap;
+                    }
+
+                     tmplist1 = new List<Point3D>();
+                     TmpDL = new Point3D(tmplist[0].min, tmplist[0].key);
+                     TmpDR = new Point3D(tmplist[0].max, tmplist[0].key);
+                     TmpUL = new Point3D(tmplist[1].min, tmplist[1].key);
+                     TmpUR = new Point3D(tmplist[1].max, tmplist[1].key);
+
+                    if (TmpDL.X == TmpUL.X && TmpDR.X == TmpUR.X)
+                        CutLineGrid.Visibility = Visibility.Visible;
+
+                    else
+                        CutLineGrid.Visibility = Visibility.Hidden;
+
+                     PointDL1 = new Point3D((TmpUL.X - TmpDL.X) * PosRatio1, (TmpUL.Y - TmpDL.Y) * PosRatio1) + TmpDL;
+                     PointDL2 = new Point3D((TmpUL.X - TmpDL.X) * PosRatio2, (TmpUL.Y - TmpDL.Y) * PosRatio2) + TmpDL;
+
+                     PointDR1 = new Point3D((TmpUR.X - TmpDR.X) * PosRatio1, (TmpUR.Y - TmpDR.Y) * PosRatio1) + TmpDR;
+                     PointDR2 = new Point3D((TmpUR.X - TmpDR.X) * PosRatio2, (TmpUR.Y - TmpDR.Y) * PosRatio2) + TmpDR;
+
+                     PointUL1 = new Point3D((TmpDL.X - TmpUL.X) * PosRatio1, (TmpDL.Y - TmpUL.Y) * PosRatio1) + TmpUL;
+                     PointUL2 = new Point3D((TmpDL.X - TmpUL.X) * PosRatio2, (TmpDL.Y - TmpUL.Y) * PosRatio2) + TmpUL;
+
+                     PointUR1 = new Point3D((TmpDR.X - TmpUR.X) * PosRatio1, (TmpDR.Y - TmpUR.Y) * PosRatio1) + TmpUR;
+                     PointUR2 = new Point3D((TmpDR.X - TmpUR.X) * PosRatio2, (TmpDR.Y - TmpUR.Y) * PosRatio2) + TmpUR;
+                    
+
+                    tmplist1.Add(PointDL1);
+                    tmplist1.Add(PointDL2);
+                    tmplist1.Add(PointDR1);
+                    tmplist1.Add(PointDR2);
+                    tmplist1.Add(PointUL1);
+                    tmplist1.Add(PointUL2);
+                    tmplist1.Add(PointUR1);
+                    tmplist1.Add(PointUR2);
+
+                    for (int z = 0; z < tmplist1.Count; z++)
+                    {
+                        GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr((FACE)ViewModel.CutFaceType, START_HOLE.START);
+                        TmpBoltsArr.dX = "0";
+                        TmpBoltsArr.dY = "0";
+                        TmpBoltsArr.xCount = 1;
+                        TmpBoltsArr.yCount = 1;
+                        TmpBoltsArr.Mode = AXIS_MODE.POINT;
+                        TmpBoltsArr.X = tmplist1[z].X;
+                        TmpBoltsArr.Y = tmplist1[z].Y;
+                        TmpBoltsArr.GUID = Guid.NewGuid();
+                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference);
+                        BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                        lstBoltsCutPoint.Add(bolts);
+                    }
+
+                    break;
+            }
+                          
+            
+
+            //        switch ((FACE)ViewModel.CutFaceType)
+            //{
+            //    case FACE.BACK:
+            //        if (steelAttr.Back == null)
+            //            return;
+
+
+            //        for (int z = 0; z < lstBoltsCutPoint.Count; z++)
+            //        {
+            //            if (lstBoltsCutPoint[z].Info.Face ==FACE.BACK)
+            //            {
+            //                lstBoltsCutPoint[z].Entities[0].Selected= true;
+            //            }
+            //        }
+            //        model.Entities.DeleteSelected();
+
+            //        //UL
+            //        result = steelAttr.Back.UL;
+            //        if (result.Count > 0)
+            //        {
+            //            DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
+            //            a = DRPoint[DRPoint.Count - 1].Item1;
+            //            b = DRPoint[DRPoint.Count - 1].Item2;
+            //            HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[0].Y));
+            //            HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[0].Y));
+            //        }
+
+            //        //UR
+            //        result = steelAttr.Back.UR;
+            //        if (result.Count > 0)
+            //        {
+            //            DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
+            //            a = DRPoint[DRPoint.Count - 1].Item1;
+            //            b = DRPoint[DRPoint.Count - 1].Item2;
+            //            HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, result[1].Y - (PosRatio1 * b)));
+            //            HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, result[1].Y - (PosRatio2 * b)));
+            //        }
+
+            //        //DL
+            //        result = steelAttr.Back.DL;
+            //        if (result.Count > 0)
+            //        {
+            //            DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
+            //            a = DRPoint[DRPoint.Count - 1].Item1;
+            //            b = DRPoint[DRPoint.Count - 1].Item2;
+            //            HypotenusePoint.Add(((PosRatio1 * a), result[2].Y - (PosRatio1 * b)));
+            //            HypotenusePoint.Add(((PosRatio2 * a), result[2].Y - (PosRatio2 * b)));
+            //        }
+
+            //        //DR
+            //        result = steelAttr.Back.DR;
+            //        if (result.Count > 0)
+            //        {
+            //            DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
+            //            a = DRPoint[DRPoint.Count - 1].Item1;
+            //            b = DRPoint[DRPoint.Count - 1].Item2;
+            //            HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[1].Y));
+            //            HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[1].Y));
+            //        }
+
+
+            //        for (int z = 0; z < HypotenusePoint.Count; z++)
+            //        {
+            //            GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr((FACE)ViewModel.CutFaceType, START_HOLE.START);
+            //            TmpBoltsArr.dX = "0";
+            //            TmpBoltsArr.dY = "0";
+            //            TmpBoltsArr.xCount = 1;
+            //            TmpBoltsArr.yCount = 1;
+            //            TmpBoltsArr.Mode = AXIS_MODE.POINT;
+            //            TmpBoltsArr.X = HypotenusePoint[z].Item1;
+            //            TmpBoltsArr.Y = HypotenusePoint[z].Item2;
+            //            TmpBoltsArr.GUID = Guid.NewGuid();
+            //            Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference);
+            //            BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+            //            lstBoltsCutPoint.Add(bolts);
+            //        }
+
+
+            //        break;
+
+
+
+            //    case FACE.TOP:
+            //        if (steelAttr.Top == null)
+            //            return;
+
+
+            //        //找尋並記錄斜邊打點LIST內,為TOP面的孔群名稱(GUID)
+            //        List<string> qa  = lstBoltsCutPoint.Where(x => x.Info.Face == FACE.TOP).Select(x => (x.Info.GUID.ToString())).ToList();
+
+            //        // 依找出為TOP的GUID，找尋MODEL內所有BLOCK對應GUID並記錄
+            //        var ssss = model.Blocks.Where(x => qa.Contains(x.Name)).ToList();
+
+            //        foreach (var item in ssss)
+            //        {
+            //            item.Entities.ForEach(aaa => aaa.Selected = true);
+            //            model.Entities.DeleteSelected();
+
+            //        }
+
+
+
+            //        //foreach (var item in model.Blocks.Where(x => qa.Contains(x.Name)))
+            //        //{
+
+            //        //}
+
+
+            //        //for (int z = 0; z < lstBoltsCutPoint.Count; z++)
+            //        //{
+            //        //    if (lstBoltsCutPoint[z].Info.Face == FACE.TOP)
+            //        //    {
+            //        //        lstBoltsCutPoint[z].Info.GUID;
+            //        //        model.Entities[z].Selected = true;
+            //        //    }
+            //        //}
+            //      //   model.Entities.DeleteSelected();
+
+
+            //        //int[] array1 = new int[10] {-1, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 };
+            //        //int acount = 0;
+
+            //        //for (int z = 0; z < lstBoltsCutPoint.Count; z++)
+            //        //{
+            //        //    if (lstBoltsCutPoint[z].Info.Face == FACE.TOP)
+            //        //    {
+
+            //        //        int xx=model.Entities[z].FindIndex(el => el.Name == lstBoltsCutPoint[z].Name);
+            //        //        model.Blocks[xx].Entities[0].Selected = true;
+            //        //       // lstBoltsCutPoint[z].Entities[0].Selected = true;
+            //        //        array1[acount] = z;
+            //        //        lstBoltsCutPoint.RemoveAt(z);
+            //        //        acount++;
+
+            //        //    }
+            //        //}
+
+            //        //model.Entities.DeleteSelected();
+
+            //        //for (int z = array1.Length - 1; z >= 0; z--)
+            //        //{
+            //        //    if (array1[z]!=-1)
+            //        //        lstBoltsCutPoint.RemoveAt(array1[z]);
+
+            //        //}
+            //        //if (!fAddPartAndBolt)   //  是否新增零件及孔群 : false 直接存檔
+            //        //    SaveModel(false);//存取檔案 
+
+
+            //        //for (int i = 0; i < model.Entities.Count; i++)//逐步展開孔群資訊
+            //        //{
+            //        //    if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr)
+            //        //    {
+
+            //        //        model.Entities[i].Selected = true;
+
+            //        //    }
+            //        //}
+
+
+            //        //model.Entities.DeleteSelected();
+            //        SaveModel(false);
+            //        model.Refresh();
+            //        drawing.Refresh();
+
+            //        //UL
+            //        result = steelAttr.Top.UL;
+            //        if (result.Count > 0)
+            //        {
+            //            DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
+            //            a = DRPoint[DRPoint.Count - 1].Item1;
+            //            b = DRPoint[DRPoint.Count - 1].Item2;
+            //            HypotenusePoint.Add(((PosRatio1 * a), (PosRatio1 * b) + result[0].Y));
+            //            HypotenusePoint.Add(((PosRatio2 * a), (PosRatio2 * b) + result[0].Y));
+            //        }
+
+            //        //UR
+            //        result = steelAttr.Top.UR;
+            //        if (result.Count > 0)
+            //        {
+            //            DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
+            //            a = DRPoint[DRPoint.Count - 1].Item1;
+            //            b = DRPoint[DRPoint.Count - 1].Item2;
+            //            HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, result[1].Y - (PosRatio1 * b)));
+            //            HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, result[1].Y - (PosRatio2 * b)));
+            //        }
+
+            //        //DL
+            //        result = steelAttr.Top.DL;
+            //        if (result.Count > 0)
+            //        {
+            //            DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
+            //            a = DRPoint[DRPoint.Count - 1].Item1;
+            //            b = DRPoint[DRPoint.Count - 1].Item2;
+            //            HypotenusePoint.Add(((PosRatio1 * a), result[2].Y - (PosRatio1 * b)));
+            //            HypotenusePoint.Add(((PosRatio2 * a), result[2].Y - (PosRatio2 * b)));
+            //        }
+
+            //        //DR
+            //        result = steelAttr.Top.DR;
+            //        if (result.Count > 0)
+            //        {
+            //            DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
+            //            a = DRPoint[DRPoint.Count - 1].Item1;
+            //            b = DRPoint[DRPoint.Count - 1].Item2;
+            //            HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[1].Y));
+            //            HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[1].Y));
+            //        }
+
+            //        for (int z = 0; z < HypotenusePoint.Count; z++)
+            //        {
+            //            GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr((FACE)ViewModel.CutFaceType, START_HOLE.START);
+            //            TmpBoltsArr.dX = "0";
+            //            TmpBoltsArr.dY = "0";
+            //            TmpBoltsArr.xCount = 1;
+            //            TmpBoltsArr.yCount = 1;
+            //            TmpBoltsArr.Mode = AXIS_MODE.POINT;
+            //            TmpBoltsArr.X = HypotenusePoint[z].Item1;
+            //            TmpBoltsArr.Y = HypotenusePoint[z].Item2;
+            //            TmpBoltsArr.GUID = Guid.NewGuid();
+            //            Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference);
+            //            BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+            //            lstBoltsCutPoint.Add(bolts);
+            //        }
+            //        break;
+
+
+            //    case FACE.FRONT:
+            //        if (steelAttr.Front == null)
+            //            return;
+
+
+
+            //        for (int z = 0; z < lstBoltsCutPoint.Count; z++)
+            //        {
+            //            if (lstBoltsCutPoint[z].Info.Face == FACE.FRONT)
+            //            {
+            //                lstBoltsCutPoint[z].Entities[0].Selected = true;
+            //                model.Entities.DeleteSelected();
+            //            }
+            //        }
+
+            //        //UL
+            //        result = steelAttr.Front.UL;
+            //        if (result.Count > 0)
+            //        {
+            //            DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
+            //            a = DRPoint[DRPoint.Count - 1].Item1;
+            //            b = DRPoint[DRPoint.Count - 1].Item2;
+            //            HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[0].Y));
+            //            HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[0].Y));
+            //        }
+
+            //        //UR                    
+            //        result = steelAttr.Front.UR;
+            //        if (result.Count > 0)
+            //        {
+            //            DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
+            //            a = DRPoint[DRPoint.Count - 1].Item1;
+            //            b = DRPoint[DRPoint.Count - 1].Item2;
+            //            HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, result[1].Y - (PosRatio1 * b)));
+            //            HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, result[1].Y - (PosRatio2 * b)));
+            //        }
+
+            //        //DL
+            //        result = steelAttr.Front.DL;
+            //        if (result.Count > 0)
+            //        {
+            //            DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
+            //            a = DRPoint[DRPoint.Count - 1].Item1;
+            //            b = DRPoint[DRPoint.Count - 1].Item2;
+            //            HypotenusePoint.Add(((PosRatio1 * a), result[2].Y - (PosRatio1 * b)));
+            //            HypotenusePoint.Add(((PosRatio2 * a), result[2].Y - (PosRatio2 * b)));
+            //        }
+
+            //        //DR
+            //        result = steelAttr.Front.DR;
+            //        if (result.Count > 0)
+            //        {
+            //            DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
+            //            a = DRPoint[DRPoint.Count - 1].Item1;
+            //            b = DRPoint[DRPoint.Count - 1].Item2;
+            //            HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[1].Y));
+            //            HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[1].Y));
+            //        }
+
+
+            //        for (int z = 0; z < HypotenusePoint.Count; z++)
+            //        {
+            //            GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr((FACE)ViewModel.CutFaceType, START_HOLE.START);
+            //            TmpBoltsArr.dX = "0";
+            //            TmpBoltsArr.dY = "0";
+            //            TmpBoltsArr.xCount = 1;
+            //            TmpBoltsArr.yCount = 1;
+            //            TmpBoltsArr.Mode = AXIS_MODE.POINT;
+            //            TmpBoltsArr.X = HypotenusePoint[z].Item1;
+            //            TmpBoltsArr.Y = HypotenusePoint[z].Item2;
+            //            TmpBoltsArr.GUID = Guid.NewGuid();
+            //            Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference);
+            //            BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+            //            lstBoltsCutPoint.Add(bolts);
+            //        }
+            //        break;
+
+            //}
+
+            //刷新模型
+            model.Refresh();
+            drawing.Refresh();
+
+
+
+
+            if (!fAddPartAndBolt)   //  是否新增零件及孔群 : false 直接存檔
+            {
+                SaveModel(false);//存取檔案 
+
+            }
+            else
+            {
+                fAddHypotenusePoint = true; //  執行斜邊打點功能
+            }
+
+        }
+
+        ///// <summary>
+        ///// 斜邊打點
+        ///// </summary>
+        //public void AddHypotenusePoint(FACE face)
+        //{
+        //    SteelAttr steelAttr = ViewModel.GetSteelAttr();
+        //    double PosRatio1 = 0.2;     //  1/5
+        //    double PosRatio2 = 0.8;     //  4/5
+        //    double a, b;
+        //    List<(double, double)> DRPoint = new List<(double, double)>();
+        //    List<(double, double)> HypotenusePoint = new List<(double, double)>();
+        //    List<Point3D> result = null;
+
+
+
+
+        //    switch (face)
+        //    {
+        //        case FACE.BACK:
+        //            if (steelAttr.Back == null)
+        //                return;
+
+        //            //UL
+        //            result = steelAttr.Back.UL;
+        //            if (result.Count > 0)
+        //            {
+        //                DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
+        //                a = DRPoint[0].Item1;
+        //                b = DRPoint[0].Item2;
+        //                HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[0].Y));
+        //                HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[0].Y));
+        //            }
+
+        //            //UR
+        //            result = steelAttr.Back.UR;
+        //            if (result.Count > 0)
+        //            {
+        //                DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
+        //                a = DRPoint[0].Item1;
+        //                b = DRPoint[0].Item2;
+        //                HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, result[1].Y - (PosRatio1 * b)));
+        //                HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, result[1].Y - (PosRatio2 * b)));
+        //            }
+
+        //            //DL
+        //            result = steelAttr.Back.DL;
+        //            if (result.Count > 0)
+        //            {
+        //                DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
+        //                a = DRPoint[0].Item1;
+        //                b = DRPoint[0].Item2;
+        //                HypotenusePoint.Add(((PosRatio1 * a), result[2].Y - (PosRatio1 * b)));
+        //                HypotenusePoint.Add(((PosRatio2 * a), result[2].Y - (PosRatio2 * b)));
+        //            }
+
+        //            //DR
+        //            result = steelAttr.Back.DR;
+        //            if (result.Count > 0)
+        //            {
+        //                DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
+        //                a = DRPoint[0].Item1;
+        //                b = DRPoint[0].Item2;
+        //                HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[1].Y));
+        //                HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[1].Y));
+        //            }
+
+
+        //            for (int z = 0; z < HypotenusePoint.Count; z++)
+        //            {
+        //                GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(face, START_HOLE.START);
+        //                TmpBoltsArr.dX = "0";
+        //                TmpBoltsArr.dY = "0";
+        //                TmpBoltsArr.xCount = 1;
+        //                TmpBoltsArr.yCount = 1;
+        //                TmpBoltsArr.Mode = AXIS_MODE.POINT;
+        //                TmpBoltsArr.X = HypotenusePoint[z].Item1;
+        //                TmpBoltsArr.Y = HypotenusePoint[z].Item2;
+        //                TmpBoltsArr.GUID = Guid.NewGuid();
+        //                Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference);
+        //                BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+        //            }
+        //            break;
+
+        //        case FACE.TOP:
+        //            if (steelAttr.Top == null)
+        //                return;
+
+        //            //UL
+        //            result = steelAttr.Top.UL;
+        //            if (result.Count > 0)
+        //            {
+        //                DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
+        //                a = DRPoint[0].Item1;
+        //                b = DRPoint[0].Item2;
+        //                HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[0].Y));
+        //                HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[0].Y));
+        //            }
+
+        //            //UR
+        //            result = steelAttr.Top.UR;
+        //            if (result.Count > 0)
+        //            {
+        //                DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
+        //                a = DRPoint[0].Item1;
+        //                b = DRPoint[0].Item2;
+        //                HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, result[1].Y - (PosRatio1 * b)));
+        //                HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, result[1].Y - (PosRatio2 * b)));
+        //            }
+
+        //            //DL
+        //            result = steelAttr.Top.DL;
+        //            if (result.Count > 0)
+        //            {
+        //                DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
+        //                a = DRPoint[0].Item1;
+        //                b = DRPoint[0].Item2;
+        //                HypotenusePoint.Add(((PosRatio1 * a), result[2].Y - (PosRatio1 * b)));
+        //                HypotenusePoint.Add(((PosRatio2 * a), result[2].Y - (PosRatio2 * b)));
+        //            }
+
+        //            //DR
+        //            result = steelAttr.Top.DR;
+        //            if (result.Count > 0)
+        //            {
+        //                DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
+        //                a = DRPoint[0].Item1;
+        //                b = DRPoint[0].Item2;
+        //                HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[1].Y));
+        //                HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[1].Y));
+        //            }
+
+        //            for (int z = 0; z < HypotenusePoint.Count; z++)
+        //            {
+        //                GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(face, START_HOLE.START);
+        //                TmpBoltsArr.dX = "0";
+        //                TmpBoltsArr.dY = "0";
+        //                TmpBoltsArr.xCount = 1;
+        //                TmpBoltsArr.yCount = 1;
+        //                TmpBoltsArr.Mode = AXIS_MODE.POINT;
+        //                TmpBoltsArr.X = HypotenusePoint[z].Item1;
+        //                TmpBoltsArr.Y = HypotenusePoint[z].Item2;
+        //                TmpBoltsArr.GUID = Guid.NewGuid();
+        //                Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference);
+        //                BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+        //            }
+        //            break;
+
+
+        //        case FACE.FRONT:
+        //            if (steelAttr.Front == null)
+        //                return;
+
+        //            //UL
+        //            result = steelAttr.Front.UL;
+        //            if (result.Count > 0)
+        //            {
+        //                DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
+        //                a = DRPoint[0].Item1;
+        //                b = DRPoint[0].Item2;
+        //                HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[0].Y));
+        //                HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[0].Y));
+        //            }
+
+        //            //UR                    
+        //            result = steelAttr.Front.UR;
+        //            if (result.Count > 0)
+        //            {
+        //                DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
+        //                a = DRPoint[0].Item1;
+        //                b = DRPoint[0].Item2;
+        //                HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, result[1].Y - (PosRatio1 * b)));
+        //                HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, result[1].Y - (PosRatio2 * b)));
+        //            }
+
+        //            //DL
+        //            result = steelAttr.Front.DL;
+        //            if (result.Count > 0)
+        //            {
+        //                DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
+        //                a = DRPoint[0].Item1;
+        //                b = DRPoint[0].Item2;
+        //                HypotenusePoint.Add(((PosRatio1 * a), result[2].Y - (PosRatio1 * b)));
+        //                HypotenusePoint.Add(((PosRatio2 * a), result[2].Y - (PosRatio2 * b)));
+        //            }
+
+        //            //DR
+        //            result = steelAttr.Front.DR;
+        //            if (result.Count > 0)
+        //            {
+        //                DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
+        //                a = DRPoint[0].Item1;
+        //                b = DRPoint[0].Item2;
+        //                HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[1].Y));
+        //                HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[1].Y));
+        //            }
+
+
+        //            for (int z = 0; z < HypotenusePoint.Count; z++)
+        //            {
+        //                GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(face, START_HOLE.START);
+        //                TmpBoltsArr.dX = "0";
+        //                TmpBoltsArr.dY = "0";
+        //                TmpBoltsArr.xCount = 1;
+        //                TmpBoltsArr.yCount = 1;
+        //                TmpBoltsArr.Mode = AXIS_MODE.POINT;
+        //                TmpBoltsArr.X = HypotenusePoint[z].Item1;
+        //                TmpBoltsArr.Y = HypotenusePoint[z].Item2;
+        //                TmpBoltsArr.GUID = Guid.NewGuid();
+        //                Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference);
+        //                BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+        //            }
+        //            break;
+
+        //    }
+
+        //    //刷新模型
+        //    model.Refresh();
+        //    drawing.Refresh();
+
+        //    fAddHypotenusePoint = true; //  執行斜邊打點功能
+
+        //     if (!fAddPartAndBolt)   //  是否新增零件及孔群 : false 直接存檔
+        //     SaveModel(false);//存取檔案 
+
+        //}
+
+
+
+
+
+
+
 
 
         /// <summary>
@@ -1762,17 +2494,36 @@ namespace STD_105.Office
         /// </summary>
         private void Esc()
         {
+
+
+
+
+
+            drawing.SetCurrent(null);
+            model.SetCurrent(null);//層級 To 要編輯的 BlockReference
+
             model.ActionMode = actionType.SelectByBox;
             drawing.ActionMode = actionType.SelectByBox;
+
+
             model.Entities.ClearSelection();//清除全部選取的物件
             ViewModel.Select3DItem.Clear();
             ViewModel.tem3DRecycle.Clear();
             ViewModel.Select2DItem.Clear();
             ViewModel.tem2DRecycle.Clear();
+
             model.ClearAllPreviousCommandData();
             drawing.ClearAllPreviousCommandData();
-            drawing.SetCurrent(null);
-            model.SetCurrent(null);//層級 To 要編輯的 BlockReference
+
+
+            drawing.Refresh();
+            model.Refresh();
+
+
+            if (!fAddPartAndBolt)
+                SaveModel(false);//存取檔案
+
+
         }
         /// <summary>
         /// 存取模型
@@ -1781,7 +2532,6 @@ namespace STD_105.Office
         {
             STDSerialization ser = new STDSerialization();
             ser.SetPartModel(ViewModel.SteelAttr.GUID.ToString(), model);
-            //ser.SetPartModel(ViewModel.SteelAttr.GUID.ToString(), drawing);
 
             var ass = new GD_STD.Data.SteelAssembly()
             {
@@ -2035,7 +2785,7 @@ namespace STD_105.Office
         /// <param name="e"></param>
         private void TabControlSelectedIndexChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if (((System.Windows.FrameworkElement)tabControl.SelectedValue).Name == "drawingTab")
+            if (((System.Windows.FrameworkElement)tabControl.SelectedValue).Name== "drawingTab")
             {
                 drawing.CurrentModel = true;
             }
@@ -2147,6 +2897,48 @@ namespace STD_105.Office
         }
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+
+            if (fAddPartAndBolt)  //  新增零件功能
+            {
+                var ResultRtn = WinUIMessageBox.Show(null,
+                     $"新增零件與鑽孔位置未存檔,是否存檔",
+                     "通知",
+                     MessageBoxButton.OKCancel,
+                     MessageBoxImage.Exclamation,
+                     MessageBoxResult.None,
+                     MessageBoxOptions.None,
+                     FloatingMode.Popup);
+
+
+                if (ResultRtn == MessageBoxResult.OK)
+                    SaveModel(true);//存取檔案
+
+                fAddPartAndBolt = false;
+                fAddHypotenusePoint = false;
+            }
+
+            //  執行斜邊打點功能
+            if (fAddHypotenusePoint)
+            {
+                var ResultRtn = WinUIMessageBox.Show(null,
+                     $"切割線打點異動未存檔,是否存檔",
+                     "通知",
+                     MessageBoxButton.OKCancel,
+                     MessageBoxImage.Exclamation,
+                     MessageBoxResult.None,
+                     MessageBoxOptions.None,
+                     FloatingMode.Popup);
+
+
+                if (ResultRtn == MessageBoxResult.OK)
+                    SaveModel(true);//存取檔案
+
+                fAddHypotenusePoint = false;                                                                                                               
+
+            }
+            
+
+
             TreeView treeView = (TreeView)sender; //樹狀列表
             TreeNode data = (TreeNode)e.NewValue;
             if (data.DataName == null)
@@ -2209,6 +3001,9 @@ namespace STD_105.Office
                 model.LoadNcToModel(data.DataName);
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
             }
+
+            AddHypotenusePoint();
+
             model.ZoomFit();//設置道適合的視口
             model.Invalidate();//初始化模型
             model.Refresh();
@@ -2261,11 +3056,11 @@ namespace STD_105.Office
         /// <param name="face"></param>
         /// <param name="p"></param>
         /// <returns></returns>
-        public Point3D XYPlane(FACE face, Point3D p)
+        public Point3D XYPlane(FACE face, Point3D p) 
         {
-            double y, z;
+            double y, z;                 
             switch (face)
-            {
+            {                
                 case FACE.FRONT:
                 case FACE.BACK:
                     y = p.Z;
@@ -2277,6 +3072,63 @@ namespace STD_105.Office
                     break;
             }
             return p;
+
+
+        bool fAddPartAndBolt = false;       //  判斷執行新增零件及孔位
+        bool fAddHypotenusePoint = false;   //  判斷執行斜邊打點
+
+
+
+
+        private void AddPartOK_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (fAddPartAndBolt)
+            {
+                var ResultRtn = WinUIMessageBox.Show(null,
+                         $"新增零件是否存檔 ?",
+                         "通知",
+                         MessageBoxButton.OKCancel,
+                         MessageBoxImage.Exclamation,
+                         MessageBoxResult.None,
+                         MessageBoxOptions.None,
+                         FloatingMode.Popup);
+
+
+                if (ResultRtn == MessageBoxResult.OK)
+                    SaveModel(true);//存取檔案
+
+                fAddPartAndBolt = false;
+            }
+
+        }
+
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //for (int i = 0; i < model.Entities.Count; i++)//逐步展開孔群資訊
+            //{
+            //    if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr)
+            //    {
+                    
+            //        model.Entities[i].Selected = true;
+            
+            //    }
+            //}
+
+
+            model.Entities.DeleteSelected();
+            SaveModel(false);
+            model.Refresh();
+            drawing.Refresh();
+
+  
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            AddHypotenusePoint();
         }
     }
 }

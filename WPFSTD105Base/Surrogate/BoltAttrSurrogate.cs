@@ -36,7 +36,7 @@ namespace WPFSTD105.Surrogate
         /// <inheritdoc/>
         public Guid? GUID { get; set; }
         /// <inheritdoc/>
-        public OBJETC_TYPE Type { get; set; }
+        public OBJECT_TYPE Type { get; set; }
 
 #pragma warning disable CS1591 // 遺漏公用可見類型或成員 'BoltAttrSurrogate.ConvertToObject()' 的 XML 註解
         protected override BoltAttr ConvertToObject()

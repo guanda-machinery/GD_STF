@@ -41,6 +41,7 @@ namespace WPFSTD105
             //ParameterSettingsCommand = ParameterSettings(); //20220711 張燕華 由顯示參數設定頁面改為顯示參數設定功能選單
             ParameterSettingsFuncListCommand = ParameterSettingsFuncList(); //20220711 張燕華 由顯示參數設定頁面改為顯示參數設定功能選單
             AutoTypeSettingsCommand = AutoTypeSettings();
+            old_PartsListCommand = old_PartsList();
             ProcessingMonitorCommand = ProcessingMonitor();
             PageHostMaximizedCommand = PageHostMaximized();
             DragMoveWindowCommand = DragMoveWindow();
@@ -126,6 +127,22 @@ namespace WPFSTD105
                 OfficeViewModel.CurrentPage = OfficePage.AutoTypeSettings;
             });
         }
+
+        /// <summary>
+        /// 舊排版設定(自動)
+        /// </summary>
+        public ICommand old_PartsListCommand { get; set; }
+        private RelayCommand old_PartsList()
+        {
+            return new WPFBase.RelayCommand(() =>
+            {
+                OfficeViewModel.CurrentPage = OfficePage.old_PartsList;
+            });
+        }
+
+        
+
+
 
         /// <summary>
         /// 加工監控
@@ -351,9 +368,9 @@ namespace WPFSTD105
                 CommonViewModel.ImportNCFilesVM = new ImportNCFilesVM();
 
                 // 2022/08/22 呂宗霖 若有缺少斷面規格，自動產生
-                foreach (OBJETC_TYPE format in System.Enum.GetValues(typeof(OBJETC_TYPE)))
+                foreach (OBJECT_TYPE format in System.Enum.GetValues(typeof(OBJECT_TYPE)))
                 {
-                    if (format != OBJETC_TYPE.Unknown && format != OBJETC_TYPE.PLATE)
+                    if (format != OBJECT_TYPE.Unknown && format != OBJECT_TYPE.PLATE)
                     {
                         if (!File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{format.ToString()}.inp"))
                         {

@@ -21,7 +21,7 @@ namespace WPFSTD105.Attribute
         /// 物件類型
         /// </summary>
         [Html("ProfileType")]
-        public virtual OBJETC_TYPE Type { get; set; }
+        public virtual OBJECT_TYPE Type { get; set; }
         /// <summary>
         /// 淺層複製
         /// </summary>

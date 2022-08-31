@@ -29,7 +29,7 @@
       <xs:element name="_x003C_Revise_x003E_k__BackingField" type="xs:dateTime" />
       <xs:element name="_x003C_SortCount_x003E_k__BackingField" type="xs:int" />
       <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/GD_STD.Enum" name="_x003C_State_x003E_k__BackingField" type="q4:DRAWING_STATE" />
-      <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/GD_STD.Enum" name="_x003C_Type_x003E_k__BackingField" type="q5:OBJETC_TYPE" />
+      <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/GD_STD.Enum" name="_x003C_Type_x003E_k__BackingField" type="q5:OBJECT_TYPE" />
       <xs:element name="_x003C_UnitArea_x003E_k__BackingField" type="xs:double" />
       <xs:element name="_x003C_UnitWeight_x003E_k__BackingField" type="xs:double" />
       <xs:element name="_x003C_W_x003E_k__BackingField" type="xs:float" />

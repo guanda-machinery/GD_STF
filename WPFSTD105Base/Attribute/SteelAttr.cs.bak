@@ -91,13 +91,9 @@ namespace WPFSTD105.Attribute
         /// <inheritdoc/>
         public CutList PointFront { get; set; } = new CutList();
         /// <inheritdoc/>
-        public CutList PointBack { get; set; } = new CutList();
-        /// <inheritdoc/>
         public CutContour Top { get => GetCutPoint(PointTop, H); }
         /// <inheritdoc/>
         public CutContour Front { get => GetCutPoint(PointFront, W); }
-        /// <inheritdoc/>
-        public CutContour Back { get => GetCutPoint(PointBack, W); }
         /// <inheritdoc/>
         public bool IsMainPart { get => MainPartNumber == PartNumber; }
         /// <summary>
@@ -138,7 +134,7 @@ namespace WPFSTD105.Attribute
         /// </summary>
         public double EndAngle { get; set; }
         ///// <inheritdoc/>
-        //public OBJECT_TYPE ProfileType { get; set; }
+        //public OBJETC_TYPE ProfileType { get; set; }
         /// <summary>
         /// 預防破圖
         /// </summary>

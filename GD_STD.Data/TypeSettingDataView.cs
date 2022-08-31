@@ -48,7 +48,7 @@ namespace GD_STD.Data
             t2 = steelPart.t2;
             TotalWeight = steelPart.TotalWeight();
 
-            //Count = ID.Count;
+            Count = ID.Count;
         }
         /// <inheritdoc/>
         public override bool Equals(object obj)
@@ -89,11 +89,12 @@ namespace GD_STD.Data
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Profile);
             return hashCode;
         }
-        //private int _Count;
+
+        private int _Count;
         ///// <summary>
         ///// 物件數量
         ///// </summary>
-        //public int Count { get => ID.Count; set=> _Count = value; }
+        public int Count { get => ID.Count; set=> _Count = value; }
         /// <summary>
         /// 型鋼型態 20220825 張燕華
         /// </summary>
