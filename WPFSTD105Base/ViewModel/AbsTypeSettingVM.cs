@@ -46,14 +46,16 @@ namespace WPFSTD105
 
                 ObservableCollection<SteelPart> buffer = ser.GetPart(profile.GetHashCode().ToString()); //零件列表
 
-                //只將 BH RH L BOX CH 加入到列表內
+                //只將 BH RH L TUBE BOX CH H LB([)加入到列表內
                 if (buffer != null &&(
                     buffer[0].Type == OBJETC_TYPE.BH ||
                     buffer[0].Type == OBJETC_TYPE.RH ||
                     buffer[0].Type == OBJETC_TYPE.L ||
                     buffer[0].Type == OBJETC_TYPE.TUBE ||
                     buffer[0].Type == OBJETC_TYPE.BOX ||
-                    buffer[0].Type == OBJETC_TYPE.CH))
+                    buffer[0].Type == OBJETC_TYPE.CH ||
+                    buffer[0].Type == OBJETC_TYPE.H ||
+                    buffer[0].Type == OBJETC_TYPE.LB))
                 {
                     foreach (var item in buffer) //逐步展開零件
                     {
