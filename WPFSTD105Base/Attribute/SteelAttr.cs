@@ -48,6 +48,25 @@ namespace WPFSTD105.Attribute
             Material = profile.Material;
             //GUID = Guid.NewGuid();
         }
+        /// <summary>
+        /// 建立日期
+        /// </summary>
+        public DateTime Creation { get; set; }
+        /// <summary>
+        /// 修改日期
+        /// </summary>
+        public DateTime? Revise { get; set; }
+
+        public String 
+
+
+
+
+
+
+
+
+
         //20220728 張燕華 轉換出inp檔案->新增斷面規格屬性
         //圓角半徑r1(mm)
         public float r1 { get; set; }

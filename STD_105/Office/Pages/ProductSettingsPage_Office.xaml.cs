@@ -298,6 +298,9 @@ namespace STD_105.Office
                 model.Blocks.Clear(); //清除模型圖塊
 
                 ViewModel.SteelAttr.GUID = Guid.NewGuid();//產生新的 id
+                ViewModel.SteelAttr.Creation = DateTime.Now;
+                ViewModel.SteelAttr.Revise = null;
+
                 // 2022/07/14 呂宗霖 guid2區分2d或3d
                 //ViewModel.SteelAttr.GUID2 = ViewModel.SteelAttr.GUID;
                 ViewModel.SteelAttr.PointFront = new CutList();//清除切割線
@@ -336,6 +339,10 @@ namespace STD_105.Office
                 //drawing.ZoomFit();
                 //drawing.Refresh();
                 SaveModel(true);
+
+                ObSettingVM sr = new ObSettingVM();
+                ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
+                ViewModel.DataViews = collection;
                 #endregion
             });
             //修改主零件
@@ -383,6 +390,8 @@ namespace STD_105.Office
                 Mesh modify = Steel3DBlock.GetProfile(steelAttr); //修改的形狀
                 ViewModel.tem3DRecycle.Add(model.Entities[model.Entities.Count - 1]);//加入垃圾桶準備刪除
                 ViewModel.tem2DRecycle.AddRange(drawing.Entities);//加入垃圾桶準備刪除
+                // 調整修改日期
+                ViewModel.SteelAttr.Revise = DateTime.Now;
 
                 //model.Entities[0].Selected = true;//選擇物件
                 drawing.Entities.ForEach(el => el.Selected = true);
@@ -2133,161 +2142,13 @@ namespace STD_105.Office
             model.ZoomFit();
             model.Refresh();
 
-
-
             STDSerialization ser = new STDSerialization();
 
             //// 建立dm檔 for 尚未建立dm檔的零件
             ApplicationVM appVM = new ApplicationVM();
             appVM.CreateDMFile(model);
 
-            //////取得零件資料
-            //ObSettingVM obVM = new ObSettingVM(model);
-            ////obVM.GetPartData(model);
-
-            //// 取得構件資訊
-            //ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();
-
-            ////取得零件資訊
-            //Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
-
-            //// 取得孔群資訊
-            //Dictionary<string, ObservableCollection<SteelBolts>> bolts = ser.GeBolts();
-
-            //var assNumber_ID = assemblies
-            //    .Select(x => new { x.Number, x.ID })
-            //    .ToList()
-            //    .ToDictionary(x => x.Number, y => y.ID );//.SelectMany(x => x.Key, (x, y) =>new { x.Key, x.Value }).Select(x => new {x.Key,x.Value})
-
-            //var partNumber_ID = part.Values
-            //    .SelectMany(x => x)
-            //    .Select(x => new 
-            //    {
-            //        x.Number,
-            //        x.Type,
-            //        x.DrawingName,
-            //        x.Profile,
-            //        x.Material,
-            //        x.Count,
-            //        x.Length,
-            //        x.UnitWeight,
-            //        x.Father,
-            //        x.ID }).ToList();
-
-            //var boltsFather_ID = (bolts.Values).SelectMany(x => x).Select(x => new 
-            //{  Count = (x == null ? x.Count : 0), Father = (x == null ? null : x.Father), Profile = (x == null ? "" : x.Profile), Type = "Bolts", Material = (x == null ? "" : x.Material) });
-
-            //var boltsList = bolts.Values.ToList();
-
-            //List<ProductSettingsPageViewModel> steelAttrList = new List<ProductSettingsPageViewModel>();
-            //ProductSettingsPageViewModel steelAttr = new ProductSettingsPageViewModel();
-            //foreach (KeyValuePair<string,List<int>> assembliesItem in assNumber_ID)
-            //{                
-            //    // 構件編號
-            //    string assem = assembliesItem.Key;
-            //    // 構件ID List
-            //    foreach (int id in assembliesItem.Value)
-            //    {
-            //        // 構件ID
-            //        int assemID = id;
-            //        // 在零件清單中，比對Father找到此構件
-            //        var part_father = partNumber_ID.Where(x => x.Father.Contains(assemID)).ToList();
-            //        // 如果有找到的話
-            //        if (part_father.Any())
-            //        {
-            //            // 比對Father及零件ID之Index
-            //            foreach (var item in part_father)
-            //            {
-            //                while (item.Father.Contains(assemID))
-            //                {
-            //                    steelAttr = new ProductSettingsPageViewModel();
-            //                    steelAttr.steelAttr.TeklaAssemblyID = assemID.ToString();
-            //                    steelAttr.AssemblyNumber = assem;
-            //                    // 零件編號
-            //                    steelAttr.steelAttr.PartNumber = item.Number;
-            //                    // 零件ID List
-            //                    var partList = partNumber_ID.Where(x => x.Number == item.Number).Select(x => x.ID).FirstOrDefault();
-            //                    // 構件ID List
-            //                    var fatherList = partNumber_ID.Where(x => x.Number == item.Number).Select(x => x.Father).FirstOrDefault();
-            //                    // Father的index = Part的index
-            //                    var partIndex = fatherList.IndexOf(assemID);
-            //                    // 取得該筆零件ID
-            //                    int partID = partList[partIndex];
-            //                    //partNumber_ID.Where(x => x.Number == item.Number && x.Father[i] == assemID && x.ID[i] == partID).FirstOrDefault();
-            //                    //var idList = partNumber_ID.Where(x => x.Number == item.Number).Select(x => x.ID).FirstOrDefault();
-            //                    // 移除本次構件ID 避免下次 FirstOrDefault 重複抓到
-            //                    fatherList.Remove(assemID);
-            //                    // 移除本次零件ID 避免下次 FirstOrDefault 重複抓到
-            //                    partList.Remove(partID);
-            //                    // 零件ID
-            //                    steelAttr.steelAttr.TeklaPartID = partID.ToString();
-            //                    // Tekla 圖名稱
-            //                    string partName = item.DrawingName;
-            //                    steelAttr.TeklaName = item.DrawingName;
-            //                    // 鋼材類別
-            //                    var aa = item.Type.GetType().GetMember(item.Type.ToString())[0].GetCustomAttribute<DescriptionAttribute>();
-            //                    string type = aa == null ? "" : aa.Description;
-            //                    steelAttr.TypeDesc = type;
-            //                    // 斷面規格
-            //                    string profile = item.Profile;
-            //                    steelAttr.steelAttr.Profile = profile;
-            //                    // 材質
-            //                    string material = item.Material;
-            //                    steelAttr.steelAttr.Material = material;
-            //                    // 數量
-            //                    int count = item.Count;
-            //                    steelAttr.Count = count;
-            //                    // 零件長
-            //                    double length = item.Length;
-            //                    steelAttr.PieceLength = length;
-            //                    // 零件重
-            //                    double weight = item.UnitWeight;
-            //                    steelAttr.PieceWeight = weight;
-            //                    //partNumber_ID.Remove(delPart);
-            //                    steelAttrList.Add(steelAttr);
-            //                }
-            //            }
-            //        }
-
-            //        if (boltsList[0]!=null)
-            //        {
-            //            var bolt_father = boltsFather_ID.Where(x => x.Father.Contains(assemID)).ToList();
-            //            foreach (var item in bolt_father)
-            //            {
-            //                while (item.Father.Contains(assemID))
-            //                {
-            //                    steelAttr = new ProductSettingsPageViewModel();
-            //                    steelAttr.steelAttr.TeklaAssemblyID = assemID.ToString();
-            //                    steelAttr.AssemblyNumber = assem;
-            //                    steelAttr.steelAttr.Profile = item.Profile;
-            //                    steelAttr.TypeDesc = "Bolts";
-            //                    steelAttr.Count = item.Count;
-            //                    steelAttr.steelAttr.Material = item.Material;
-            //                    var fatherList = boltsFather_ID.Where(x => x.Profile == steelAttr.steelAttr.Profile).Select(x => x.Father).FirstOrDefault();
-            //                    fatherList.Remove(assemID);
-            //                    steelAttrList.Add(steelAttr);
-            //                }
-            //            }
-            //        }
-
-
-
-
-
-
-
-            //        //int index_part_father = partNumber_ID.Where(x=>x.Father.Contains(assemID))
-
-
-            //    }
-            //}
-
-
-            ////foreach (var item in assNumber_ID)
-            ////{
-            ////    string key = item.Key;
-            ////}
-
+            
 
         }
 

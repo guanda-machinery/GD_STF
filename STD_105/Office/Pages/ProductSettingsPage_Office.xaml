@@ -280,14 +280,14 @@
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
 
-                        <dxg:GridColumn FieldName="BuildTime" IsSmart="True"  Header="建立日期"  >
+                        <dxg:GridColumn FieldName="Creation" IsSmart="True"  Header="建立日期"  >
                             <dxg:GridColumn.CellStyle>
                                 <Style>
                                     <Setter Property="TextBlock.Foreground" Value="Gray"/>
                                 </Style>
                             </dxg:GridColumn.CellStyle>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="EditTime" IsSmart="True" Header="修改日期"  >
+                        <dxg:GridColumn FieldName="Revise" IsSmart="True" Header="修改日期"  >
                             <dxg:GridColumn.CellStyle>
                                 <Style>
 
@@ -296,8 +296,8 @@
                             </dxg:GridColumn.CellStyle>
                         </dxg:GridColumn>
 
-                        <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"   Header="構件編號" Width="auto"/>
-                        <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="auto" />
+                        <dxg:GridColumn FieldName="AssemblyNumber" Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="auto"/>
+                        <dxg:GridColumn FieldName="PartNumber" Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="auto" />
                         <dxg:GridColumn FieldName="TeklaName" IsSmart="True"   Header="名稱" Width="auto"/>
 
                         <dxg:GridColumn FieldName="TypeDesc"  IsSmart="True" Header="鋼材類型"/>
@@ -417,22 +417,22 @@
 
                         <Label Grid.Column="0" Grid.Row="7" Content="Phase：" />
                         <StackPanel Grid.Column="1" Grid.Row="7" >
-                            <TextBox  Text="{}" BorderBrush="Black"/>
+                            <TextBox  Text="{Binding SteelAttr.Phrase}" BorderBrush="Black"/>
                         </StackPanel>
 
                         <Label Grid.Column="0" Grid.Row="8" Content="拆運：" />
                         <StackPanel Grid.Column="1" Grid.Row="8" >
-                            <TextBox Text="{}" BorderBrush="Black" />
+                            <TextBox Text="{Binding SteelAttr.Number}" BorderBrush="Black" />
                         </StackPanel>
 
                         <Label Grid.Column="0" Grid.Row="9" Content="標題一：" />
                         <StackPanel Grid.Column="1" Grid.Row="9" >
-                            <TextBox Text="{}" BorderBrush="Black"/>
+                            <TextBox Text="{Binding SteelAttr.Number}" BorderBrush="Black"/>
                         </StackPanel>
 
                         <Label Grid.Column="0" Grid.Row="10" Content="標題二：" />
                         <StackPanel Grid.Column="1" Grid.Row="10" >
-                            <TextBox  Text="{}" BorderBrush="Black"/>
+                            <TextBox  Text="{Binding SteelAttr.Number}" BorderBrush="Black"/>
                         </StackPanel>
 
                         <Label Grid.Column="2" Grid.Row="0"
