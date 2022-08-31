@@ -138,6 +138,14 @@ namespace WPFSTD105.ViewModel
         /// 顯示孔位編輯器
         /// </summary>
         public ICommand DisplayHoleCommand { get; set; }
+        /// <summary>
+        /// 20220825 張燕華 從零件清單所選的型鋼型態
+        /// </summary>
+        public ICommand ShowSteelTypeFromPartListCommand { get; set; }
+        /// <summary>
+        /// 20220829 張燕華 選擇型鋼型態
+        /// </summary>
+        public ICommand ShowSteelTypeCommand { get; set; }
         #endregion
 
         #region 公開屬性
@@ -185,7 +193,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 孔位編輯器顯示控制
         /// </summary>
-        public bool DisplayHoleControl { get; set; } 
+        public bool DisplayHoleControl { get; set; }
         /// <summary>
         /// 儲存的序列化檔案資料
         /// </summary>
@@ -327,7 +335,7 @@ namespace WPFSTD105.ViewModel
                             ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{ (TYPE).ToString()}.inp");
                             break;
                         default:
-                            throw new Exception($"找不到{ TYPE.ToString() }");
+                            throw new Exception($"找不到{TYPE.ToString()}");
                     }
 #if DEBUG
                     log4net.LogManager.GetLogger("載入斷面規格").Debug("完成");
@@ -344,6 +352,10 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 斷面規格列表
         /// </summary>
+        public string SteelSectionProperty { get; set; } = "";
+        /// <summary>
+        /// 斷面規格列表
+        /// </summary>
         public ObservableCollection<SteelAttr> ProfileList { get; set; }
         /// <summary>
         /// 選擇的斷面規格<see cref="ProfileList"/>索引值
@@ -353,7 +365,6 @@ namespace WPFSTD105.ViewModel
             get => _ProfileIndex;
             set
             {
-
                 _ProfileIndex = value;
 
                 SteelAttr steelAttr;
@@ -849,7 +860,7 @@ namespace WPFSTD105.ViewModel
             //如果模型有構件列表
             if (File.Exists(ApplicationVM.FileSteelAssembly()))
             {
-                SteelAssemblies =  ser.GetGZipAssemblies();
+                SteelAssemblies = ser.GetGZipAssemblies();
                 if (SteelAssemblies == null)
                 {
                     SteelAssemblies = new ObservableCollection<SteelAssembly>();
@@ -879,6 +890,9 @@ namespace WPFSTD105.ViewModel
             DisplayCreatedListCommand = DisplayCreatedList();
             DisplayPartsCommand = DisplayParts();
             DisplayHoleCommand = DisplayHole();
+
+            ShowSteelTypeFromPartListCommand = ShowSteelTypeFromPartList(); //20220825 張燕華 從零件清單所選的型鋼型態
+            ShowSteelTypeCommand = ShowSteelType(); //20220829 張燕華 選擇型鋼型態
         }
         #region 私有屬性
         /// <summary>
@@ -1041,6 +1055,32 @@ namespace WPFSTD105.ViewModel
                     DisplayHoleControl = false;
                 else
                     DisplayHoleControl = true;
+            });
+        }
+        /// <summary>
+        /// 從零件清單所選的型鋼型態 20220825 張燕華
+        /// </summary>
+        private WPFBase.RelayParameterizedCommand ShowSteelTypeFromPartList()
+        {
+            return new WPFBase.RelayParameterizedCommand((object cbxSelectedItem) =>
+            {
+                //this weel
+                var propertyInfo = (GD_STD.Data.TypeSettingDataView)cbxSelectedItem;
+                ProfileType = Convert.ToInt32(propertyInfo.SteelType);
+                SteelSectionProperty = propertyInfo.Profile;
+            });
+        }
+        /// <summary>
+        /// 選擇型鋼型態 20220829 張燕華
+        /// </summary>
+        private WPFBase.RelayParameterizedCommand ShowSteelType()
+        {
+            return new WPFBase.RelayParameterizedCommand((object cbxSelectedIndex) =>
+            {
+                if (Convert.ToInt32(cbxSelectedIndex) != -1)
+                {
+                    ProfileType = Convert.ToInt32(cbxSelectedIndex);
+                }
             });
         }
         #endregion
