@@ -20,22 +20,22 @@ namespace STD_105
         /// <inheritdoc/>
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            OBJETC_TYPE num = (OBJETC_TYPE)value;
+            OBJECT_TYPE num = (OBJECT_TYPE)value;
             switch (num)
             {
-                case OBJETC_TYPE.BH:
+                case OBJECT_TYPE.BH:
                     return "BH型鋼";
-                case OBJETC_TYPE.H:
+                case OBJECT_TYPE.H:
                     return "H型鋼";
-                case OBJETC_TYPE.RH:
+                case OBJECT_TYPE.RH:
                     return "RH型鋼";
-                case OBJETC_TYPE.TUBE:
+                case OBJECT_TYPE.TUBE:
                     return "TUBE";
-                case OBJETC_TYPE.BOX:
+                case OBJECT_TYPE.BOX:
                     return "BOX";
-                case OBJETC_TYPE.LB:
+                case OBJECT_TYPE.LB:
                     return "槽鐵";
-                case OBJETC_TYPE.CH:
+                case OBJECT_TYPE.CH:
                     return "CH型鋼";
                 default:
                     return "未知型鋼";

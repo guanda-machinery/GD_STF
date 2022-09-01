@@ -484,6 +484,10 @@ namespace WPFSTD105.Model
             STDSerialization ser = new STDSerialization(); //序列化處理器
             NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
             NcTemp nc = ncTemps.GetData(dataName); //取得nc資訊
+            if (nc == null)
+            {
+                return;
+            }
             model.Clear();//清除模型內物件
             Steel3DBlock.AddSteel(nc.SteelAttr, model, out BlockReference steelBlock); //加入 3d 鋼構參考圖塊
             if (nc.SteelAttr.oPoint.Count != 0)

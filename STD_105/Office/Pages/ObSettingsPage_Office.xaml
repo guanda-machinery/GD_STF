@@ -358,7 +358,7 @@
                            Content="零件數量：" />
                     <TextBox Grid.Row="6"
                              x:Name="number"
-                             Text="{Binding SteelAttr.Number}" />
+                             Text="{Binding SteelAttr.Number}" Cursor="IBeam" />
                     <STD105:DataButtons_Office Grid.Row="8"
                                                Grid.ColumnSpan="2"
                                                Width="450"

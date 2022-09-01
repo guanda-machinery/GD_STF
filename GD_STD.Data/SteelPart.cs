@@ -33,7 +33,12 @@ namespace GD_STD.Data
         /// <param name="number">零件編號</param>
         /// <param name="count">數量</param>
         /// <param name="guid">STD 3D Model ID</param>
-        public SteelPart(ISteelProfile profile, string number, int count, Guid guid)
+        /// <param name="phase">Phase</param>
+        /// <param name="shippingNumber">車次、拆運</param>
+        /// <param name="title1">標題1</param>
+        /// <param name="title2">標題2</param>
+        /// <exception cref="ArgumentException"></exception>
+        public SteelPart(ISteelProfile profile, string number, int count, Guid guid,int phase,int shippingNumber,string title1,string title2)
         {
             if (string.IsNullOrWhiteSpace(number))
             {
@@ -53,7 +58,10 @@ namespace GD_STD.Data
             Number = number;
             Count = count;
             GUID = guid;
-            
+            Phase = phase;
+            ShippingNumber = shippingNumber;
+            Title2 = title2;
+            Title1 = title1;
         }
         #region 公開屬性
         /// <inheritdoc/>
@@ -113,6 +121,22 @@ namespace GD_STD.Data
         /// 修改日期
         /// </summary>
         public DateTime Revise { get; set; }
+        /// <summary>
+        /// Phase
+        /// </summary>
+        public int Phase { get; set; }
+        /// <summary>
+        /// 車次、拆運
+        /// </summary>
+        public int ShippingNumber { get; set; }
+        /// <summary>
+        /// 標題1
+        /// </summary>
+        public String Title1 { get; set; }
+        /// <summary>
+        /// 標題2
+        /// </summary>
+        public String Title2 { get; set; }
         /// <summary>
         /// 圖面狀態
         /// </summary>
