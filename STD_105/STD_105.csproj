@@ -889,6 +889,7 @@
     <Compile Include="ValueConverters\DrawingImageToBitmapSourceConverter.cs" />
     <Compile Include="ValueConverters\FACE_ToStringConverter.cs" />
     <Compile Include="ValueConverters\IListFilterToCountConverter.cs" />
+    <Compile Include="ValueConverters\SteelTypeToStringConverter.cs" />
     <Compile Include="ValueConverters\IListToCountConerter.cs" />
     <Compile Include="ValueConverters\Language_ToStringConverter.cs" />
     <Compile Include="ValueConverters\MaterialToNameConverter.cs" />

@@ -22,6 +22,7 @@
                   xmlns:STD105="clr-namespace:STD_105"
                   xmlns:SofSettings="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
                   xmlns:spa="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+                  xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Title="製品設定">
@@ -37,6 +38,9 @@
     </WPFBase:BasePage.Resources>
     <!--物件設定與設定完成的物件列表-->
     <Grid dx:ThemeManager.ThemeName="Win10Light"    Background="#d3d3d3"     >
+        <Grid.DataContext>
+            <STD105VM:ObSettingVM/>
+        </Grid.DataContext>
         <Grid.Resources>
             <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }" >
                 <Setter Property="BorderThickness" Value="1"/>
@@ -55,8 +59,8 @@
                 </Style.Resources>
 
             </Style>
-            
- 
+
+
             <Style TargetType="Button"  BasedOn="{StaticResource MaterialDesignFlatButton}"   >
                 <Setter Property="Background" Value="White"/>
                 <Setter Property="Foreground" Value="Black"/>
@@ -144,21 +148,15 @@
 
         </Grid.Resources>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="450"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-
-        <Grid>
-            <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" MaxWidth="450" />
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*" MinHeight="530"/>
+            </Grid.RowDefinitions>
             <DockPanel >
-                <GroupBox Header="已建立的清單" Margin="5" DockPanel.Dock="Top">
+                <GroupBox Header="已建立的清單" Margin="5" DockPanel.Dock="Top" Visibility="Collapsed">
                     <TreeView SelectedItemChanged="TreeView_SelectedItemChanged"
                       Style="{ StaticResource treeView_STD }"
                       ItemsSource="{Binding TreeNode}">
@@ -179,10 +177,13 @@
                     <GroupBox.DataContext>
                         <STD105VM:ObSettingVM/>
                     </GroupBox.DataContext>
+                    <GroupBox.DataContext>
+                        <spa:OfficeTypeSettingVM/>
+                    </GroupBox.DataContext>
                     <dxg:GridControl  
                            Name="PieceListGridControl"
                                 AutoGenerateColumns="None"
-                                SelectionMode="MultipleRow"
+                                SelectionMode="None"
                                 MaxHeight="500"              
                                 ItemsSource="{Binding DataViews}">
                         <dxg:GridControl.Resources>
@@ -201,7 +202,8 @@
                                     ShowSearchPanelMode="Always"
                                     SearchPanelNullText="Search Tasks(Ctrl + F)" 
                                     SearchPanelFindMode="Always" 
-                                    SearchDelay="0">
+                                    SearchDelay="0"
+                                    AllowEditing="False">
                                 <dxg:TableView.CellStyle>
                                     <Style>
                                         <Setter Property="TextBlock.FontSize" Value="12"/>
@@ -287,6 +289,7 @@
                                 </Style>
                             </dxg:GridColumn.CellStyle>
                         </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="{Binding Revise, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="修改日期"  >
                         <dxg:GridColumn FieldName="Revise" IsSmart="True" Header="修改日期"  >
                             <dxg:GridColumn.CellStyle>
                                 <Style>
@@ -296,6 +299,14 @@
                             </dxg:GridColumn.CellStyle>
                         </dxg:GridColumn>
 
+                        <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"   Header="構件編號" Width="auto"/>
+                        <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="auto" />
+                        <dxg:GridColumn IsSmart="True" Header="名稱" Width="auto"/><!--資料沒有對應屬性-->
+                        <dxg:GridColumn Binding="{Binding Path=SteelType, Converter={STD105:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類型"/>
+                        <dxg:GridColumn FieldName="Profile" IsSmart="True"  Header="斷面規格"  Width="auto"/>
+                        <dxg:GridColumn FieldName="Material" IsSmart="True"  Header="材質"  Width="auto"/>
+                        <dxg:GridColumn Binding="{Binding Match, Converter={STD105:IListToCountConerter}}" Header="數量"  />
+                        <dxg:GridColumn FieldName="Length"  IsSmart="True"  Header="零件長" Width="auto">
                         <dxg:GridColumn FieldName="AssemblyNumber" Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="auto"/>
                         <dxg:GridColumn FieldName="PartNumber" Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="auto" />
                         <dxg:GridColumn FieldName="TeklaName" IsSmart="True"   Header="名稱" Width="auto"/>
@@ -309,7 +320,7 @@
                                 <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="PieceWeight"  IsSmart="True"  Header="零件重"  Width="auto" >
+                        <dxg:GridColumn FieldName="PieceWeight" IsSmart="True"  Header="零件重"  Width="auto" ><!--資料沒有對應屬性-->
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
                             </dxg:GridColumn.EditSettings>
@@ -318,6 +329,10 @@
                         <dxg:GridColumn FieldName=""  IsSmart="True"  Width="auto" Header="拆運"  />
                         <dxg:GridColumn FieldName=""  IsSmart="True"  Width="auto" Header="標題一"  />
                         <dxg:GridColumn FieldName=""  IsSmart="True"  Width="auto" Header="標題二"  />
+                        <dxg:GridColumn Binding="{Binding Phase}" IsSmart="True"  Width="auto" Header="Phase"  />
+                        <dxg:GridColumn Binding="{Binding ShippingNumber}" IsSmart="True"  Width="auto" Header="拆運"  />
+                        <dxg:GridColumn FieldName="" IsSmart="True"  Width="auto" Header="標題一"  /><!--資料沒有對應屬性-->
+                        <dxg:GridColumn FieldName="" IsSmart="True"  Width="auto" Header="標題二"  /><!--資料沒有對應屬性-->
                     </dxg:GridControl>
                 </GroupBox>
 
@@ -325,7 +340,7 @@
             </DockPanel>
             <!--零件屬性-->
             <GroupBox Header="零件屬性" Grid.Column="1" Margin="5">
-                <DockPanel Margin="20,0,0,0">
+                <DockPanel Margin="5,0,5,0">
                     <Grid  HorizontalAlignment="Left" Margin="5,5,5,5" DockPanel.Dock="Top" >
                         <Grid.Resources>
                             <Style TargetType ="TextBlock">
@@ -374,12 +389,12 @@
                         </Grid.RowDefinitions>
                         <Label Content="零件編號：" />
                         <StackPanel Grid.Column="1">
-                            <TextBox Name="partNumber"  Text="{Binding SteelAttr.PartNumber}" />
+                            <TextBox Name="partNumber" Text="{Binding SelectedItems[0].PartNumber, ElementName=PieceListGridControl}" />
                         </StackPanel>
 
                         <Label Grid.Column="0" Grid.Row="1" Content="構件編號：" />
                         <StackPanel Grid.Column="1" Grid.Row="1" >
-                            <TextBox Text="{Binding SteelAttr.AsseNumber}" />
+                            <TextBox Text="{Binding SelectedItems[0].AssemblyNumber, ElementName=PieceListGridControl}" />
                         </StackPanel>
 
                         <Label Grid.Column="0"  Grid.Row="2"
@@ -387,20 +402,20 @@
                         <StackPanel Grid.Column="1" Grid.Row="2" >
                             <TextBox 
                              Name="length"
-                             Text="{Binding SteelAttr.Length}" />
+                             Text="{Binding SelectedItems[0].Length, ElementName=PieceListGridControl}" />
                         </StackPanel>
 
                         <Label Grid.Column="0" Grid.Row="3" Content="製品重：" />
                         <StackPanel Grid.Column="1" Grid.Row="3" >
                             <DockPanel  VerticalAlignment="Center">
-                                <TextBlock  Text="{Binding SteelAttr.Kg}"  VerticalAlignment="Center" Margin="3,0,0,0"/>
+                            <TextBlock  Text="{Binding SelectedItems[0].TotalWeight, ElementName=PieceListGridControl}"  VerticalAlignment="Center" Margin="3,0,0,0"/>
                                 <TextBlock HorizontalAlignment="Right" Text="KG" VerticalAlignment="Center"/>
                             </DockPanel>
                         </StackPanel>
 
                         <Label Grid.Column="0" Grid.Row="4" Content="製品數量：" />
                         <StackPanel Grid.Column="1" Grid.Row="4" >
-                            <TextBox Name="number" Text="{Binding SteelAttr.Number}" BorderBrush="Black" />
+                        <TextBox Name="number" Text="{Binding SelectedItems[0].Match, ElementName=PieceListGridControl, Converter={STD105:IListToCountConerter}}" BorderBrush="Black" />
                         </StackPanel>
 
                         <Label Grid.Column="0" Grid.Row="5" Content="名稱：" />
@@ -412,16 +427,18 @@
                         <StackPanel Grid.Column="1" Grid.Row="6" >
                             <ComboBox  
                               ItemsSource="{Binding Materials, Converter={STD105:MaterialToNameConverter}}"
-                              SelectedIndex="{Binding MaterialIndex}" />
+                              SelectedValue="{Binding SelectedItems[0].Material, ElementName=PieceListGridControl, Mode=OneWay}" />
                         </StackPanel>
 
                         <Label Grid.Column="0" Grid.Row="7" Content="Phase：" />
                         <StackPanel Grid.Column="1" Grid.Row="7" >
+                        <TextBox Text="{Binding SelectedItems[0].Phase, ElementName=PieceListGridControl}" BorderBrush="Black"/>
                             <TextBox  Text="{Binding SteelAttr.Phrase}" BorderBrush="Black"/>
                         </StackPanel>
 
                         <Label Grid.Column="0" Grid.Row="8" Content="拆運：" />
                         <StackPanel Grid.Column="1" Grid.Row="8" >
+                        <TextBox Text="{Binding SelectedItems[0].ShippingNumber, ElementName=PieceListGridControl}" BorderBrush="Black" />
                             <TextBox Text="{Binding SteelAttr.Number}" BorderBrush="Black" />
                         </StackPanel>
 
@@ -438,41 +455,56 @@
                         <Label Grid.Column="2" Grid.Row="0"
                            Content="型鋼類型：" />
                         <StackPanel Grid.Column="3"  Grid.Row="0" >
-                            <ComboBox 
-                              ItemsSource="{Binding Source={StaticResource obType},Path=Strings}"
-                              SelectedIndex="{Binding ProfileType}" />
+                            <ComboBox x:Name="cbx_SteelType"
+                                      ItemsSource="{Binding Source={StaticResource obType},Path=Strings}"
+                                      SelectedIndex="{Binding SelectedItems[0].SteelType, ElementName=PieceListGridControl, Mode=TwoWay}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonUp" SourceName="PieceListGridControl">
+                                        <i:InvokeCommandAction Command="{ Binding ShowSteelTypeFromPartListCommand }"
+                                                               CommandParameter="{ Binding ElementName=PieceListGridControl, Path=SelectedItem }"/>
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SteelType">
+                                        <i:InvokeCommandAction Command="{ Binding ShowSteelTypeCommand }"
+                                                               CommandParameter="{ Binding ElementName=cbx_SteelType, Path=SelectedIndex }"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
                         </StackPanel>
 
                         <Label Grid.Column="2" Grid.Row="1"
                            Content="斷面規格：" />
                         <StackPanel  Grid.Column="3" Grid.Row="1">
-                            <ComboBox ItemsSource="{Binding ProfileList}" DisplayMemberPath="Profile"  SelectedIndex="{Binding ProfileIndex}" />
+                        <ComboBox x:Name="cbx_SectionType" 
+                                  ItemsSource="{Binding ProfileList}" 
+                                  DisplayMemberPath="Profile" 
+                                  Text="{Binding SteelSectionProperty}">
+                        </ComboBox>
                         </StackPanel>
 
                         <Label Grid.Column="2" Grid.Row="2" Content="高度(H)：" />
                         <StackPanel  Grid.Column="3" Grid.Row="2">
-                            <TextBox Text="{Binding SteelAttr.H}" IsEnabled="False" />
+                        <TextBox Text="{Binding SelectedItems[0].H, ElementName=PieceListGridControl}" IsEnabled="False" />
                         </StackPanel>
 
                         <Label Grid.Column="2" Grid.Row="3" Content="寬度(B)：" />
                         <StackPanel Grid.Column="3" Grid.Row="3">
-                            <TextBox Text="{Binding SteelAttr.W}" IsEnabled="False" />
+                        <TextBox Text="{Binding SelectedItems[0].W, ElementName=PieceListGridControl}" IsEnabled="False" />
                         </StackPanel>
 
                         <Label Grid.Column="2" Grid.Row="4" Content="腹板厚度(s)：" />
                         <StackPanel Grid.Column="3" Grid.Row="4">
-                            <TextBox Text="{Binding SteelAttr.t1}" IsEnabled="False" />
+                        <TextBox Text="{Binding SelectedItems[0].t1, ElementName=PieceListGridControl}" IsEnabled="False" />
                         </StackPanel>
 
                         <Label Grid.Column="2" Grid.Row="5" Content="翼板厚度(t)：" />
                         <StackPanel Grid.Column="3" Grid.Row="5">
-                            <TextBox Text="{Binding SteelAttr.t2}" IsEnabled="False"/>
+                        <TextBox Text="{Binding SelectedItems[0].t2, ElementName=PieceListGridControl}" IsEnabled="False"/>
                         </StackPanel>
 
                     </Grid>
                     <DockPanel  DockPanel.Dock="Bottom" Margin="0" VerticalAlignment="Bottom" >
 
-                        <Button Content="GO" Command="" Background="Gold" Width="60" />
+                        <Button Content="OK" Command="" Background="Gold" Width="60" />
 
                         <STD105:DataButtons_Office 
                              Margin="5,0,0,0"
@@ -485,16 +517,9 @@
                     </DockPanel>
                 </DockPanel>
             </GroupBox>
-        </Grid>
-
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="auto" />
-            </Grid.ColumnDefinitions>
             <!--繪圖顯示模型-->
             <TabControl Margin="5" 
-            Grid.Column="0"
+            Grid.Column="0" Grid.Row="1"
                     Background="#c0c0c0"
                     SelectionChanged="TabControlSelectedIndexChanged"
                                             x:Name="tabControl"
@@ -687,7 +712,7 @@
             </TabItem>
         </TabControl>
         <!--繪圖顯示模型-->
-            <Border Background="White"   Grid.Column="1" >
+            <Border Background="White" Margin="5"   Grid.Column="1" Grid.Row="1" >
                 <TabControl>
                     <TabControl.Resources>
                         <ResourceDictionary>
@@ -750,7 +775,7 @@
                                 <Setter Property="Margin" Value="5"/>
                             </Style>
                         </TabItem.Resources>
-                        <DockPanel Width="450">
+                        <DockPanel >
                             <Grid DockPanel.Dock="Top">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -1036,7 +1061,7 @@
                                                 <Canvas.Resources>
                                                     <Style TargetType="TextBlock" BasedOn="{StaticResource fileNameStyle}"></Style>
                                                 </Canvas.Resources>
-                                                <ComboBox 
+                                                <ComboBox Visibility="Hidden"
                                           Width="94"
                                           Canvas.Left="96"
                                           Canvas.Top="109"
@@ -1136,7 +1161,6 @@
             </Border>
 
 
-        </Grid>
 
         
     </Grid>
