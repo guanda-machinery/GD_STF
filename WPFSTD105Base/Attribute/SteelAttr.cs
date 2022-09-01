@@ -56,16 +56,12 @@ namespace WPFSTD105.Attribute
         /// 修改日期
         /// </summary>
         public DateTime? Revise { get; set; }
+        public int Phrase { get; set; }
+        public int ShippingNumber { get; set; }
+        public string Title1 { get; set; }
+        public string Title2 { get; set; }
 
-        public String 
-
-
-
-
-
-
-
-
+        public string Name { get; set; }
 
         //20220728 張燕華 轉換出inp檔案->新增斷面規格屬性
         //圓角半徑r1(mm)
@@ -85,6 +81,10 @@ namespace WPFSTD105.Attribute
 
         /// <inheritdoc/>
         public double Length { get; set; } = 5000;
+        /// <summary>
+        /// 製品重
+        /// </summary>
+        public double Weight { get; set; }
         /// <inheritdoc/>
         public float H { get; set; }
         /// <inheritdoc/>
@@ -97,8 +97,12 @@ namespace WPFSTD105.Attribute
         public float Kg { get; set; }
         /// <inheritdoc/>
         public string Material { get; set; }
-        /// <inheritdoc/>
-        public string PartNumber { get; set; }
+        /// <summary>
+        /// 製品長度
+        /// </summary>
+        public double pieceLength{ get; set; }
+    /// <inheritdoc/>
+    public string PartNumber { get; set; }
         /// <inheritdoc/>
         public string AsseNumber { get; set; }
         /// <inheritdoc/>

@@ -381,9 +381,17 @@ namespace WPFSTD105.ViewModel
                 steelAttr.Number = SteelAttr.Number;
                 steelAttr.PartNumber = SteelAttr.PartNumber;
                 // 2022/08/31 呂宗霖 新增 新增日期
-                steelAttr.Creation = steelAttr.Creation;
+                steelAttr.Creation = SteelAttr.Creation;
                 // 2022/08/31 呂宗霖 新增 修改日期
-                steelAttr.Revise = steelAttr.Revise;
+                steelAttr.Revise = SteelAttr.Revise;
+                steelAttr.H = SteelAttr.H;
+                steelAttr.W = SteelAttr.W;
+                steelAttr.t1 = SteelAttr.t1;
+                steelAttr.t2 = SteelAttr.t2;
+                steelAttr.Phrase = SteelAttr.Phrase;
+                steelAttr.ShippingNumber = SteelAttr.ShippingNumber;
+                steelAttr.Title1 = SteelAttr.Title1;
+                steelAttr.Title2 = SteelAttr.Title2;
                 SteelAttr = (SteelAttr)steelAttr.DeepClone();
 
             }
@@ -1101,9 +1109,9 @@ namespace WPFSTD105.ViewModel
             return new WPFBase.RelayParameterizedCommand((object cbxSelectedItem) =>
             {
                 //this weel
-                var propertyInfo = (GD_STD.Data.TypeSettingDataView)cbxSelectedItem;
-                ProfileType = Convert.ToInt32(propertyInfo.SteelType);
-                SteelSectionProperty = propertyInfo.Profile;
+                var propertyInfo = (ProductSettingsPageViewModel)cbxSelectedItem;
+                ProfileType = Convert.ToInt32(propertyInfo.Type);
+                SteelSectionProperty = propertyInfo.Profile;                
             });
         }
         /// <summary>
@@ -1120,11 +1128,7 @@ namespace WPFSTD105.ViewModel
             });
         }
         #endregion
-    }
-}
-        }
-        #endregion
-
+            
         /// <summary>
         /// 取得專案內零件資訊
         /// </summary>
@@ -1159,6 +1163,11 @@ namespace WPFSTD105.ViewModel
                 {
                     x.Creation,
                     x.Revise,
+                    x.Phase,
+                    x.ShippingNumber,
+                    x.Title1,
+                    x.Title2,
+                    x.H,x.W,x.t1,x.t2,
                     x.Number,
                     x.Type,
                     x.DrawingName,
@@ -1243,6 +1252,7 @@ namespace WPFSTD105.ViewModel
                                 string type = aa == null ? "" : aa.Description;
                                 steelAttr.TypeDesc = type;
                                 steelAttr.Type = item.Type;
+                                steelAttr.SteelType = Convert.ToInt32(item.Type);
                                 // 斷面規格
                                 string profile = item.Profile;
                                 steelAttr.Profile = profile;
@@ -1254,10 +1264,18 @@ namespace WPFSTD105.ViewModel
                                 steelAttr.Count = count;
                                 // 零件長
                                 double length = item.Length;
-                                steelAttr.PieceLength = length;
+                                steelAttr.Length = length;
                                 // 零件重
                                 double weight = item.UnitWeight;
-                                steelAttr.PieceWeight = weight;
+                                steelAttr.Weight = weight;
+
+                                steelAttr.steelAttr.H = item.H;
+                                steelAttr.steelAttr.W = item.W;
+                                steelAttr.steelAttr.t1 = item.t1;
+                                steelAttr.steelAttr.t2 = item.t2;
+
+
+
                                 //partNumber_ID.Remove(delPart);
                                 steelAttrList.Add(steelAttr);
                                 #endregion

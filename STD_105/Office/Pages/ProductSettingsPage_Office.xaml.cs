@@ -292,6 +292,7 @@ namespace STD_105.Office
             ViewModel.AddPart = new RelayCommand(() =>
             {
                 #region 3D 
+                ViewModel.SteelAttr.PartNumber = this.partNumber.Text;
                 if (!CheckPart()) //檢測用戶輸入的參數是否有完整
                     return;
                 model.Entities.Clear();//清除模型物件
@@ -305,6 +306,20 @@ namespace STD_105.Office
                 //ViewModel.SteelAttr.GUID2 = ViewModel.SteelAttr.GUID;
                 ViewModel.SteelAttr.PointFront = new CutList();//清除切割線
                 ViewModel.SteelAttr.PointTop = new CutList();//清除切割線
+
+                ViewModel.SteelAttr.AsseNumber = this.asseNumber.Text;
+                ViewModel.SteelAttr.Length = Double.Parse(this.Length.Text);
+                ViewModel.SteelAttr.Weight = double.Parse(this.Weight.Text);
+                ViewModel.SteelAttr.Name = this.teklaName.Text;
+                ViewModel.SteelAttr.Material = this.material.Text;
+                ViewModel.SteelAttr.Phrase = int.Parse(this.phase.Text);
+                ViewModel.SteelAttr.ShippingNumber = int.Parse(this.shippingNumber.Text);
+                ViewModel.SteelAttr.Title1 = this.title1.Text;
+                ViewModel.SteelAttr.Title2 = this.title2.Text;
+                ViewModel.SteelAttr.Type = (OBJECT_TYPE)this.cbx_SteelType.SelectedIndex;
+                ViewModel.SteelAttr.Profile = this.cbx_SectionType.Text;
+                ViewModel.SteelAttr.H = float.Parse(this.H.Text);
+                ViewModel.SteelAttr.W = float.Parse(this.W.Text);
 #if DEBUG
                 log4net.LogManager.GetLogger("加入主件").Debug("產生圖塊");
 #endif
@@ -1917,7 +1932,15 @@ namespace STD_105.Office
 
             #region 零件列表
             // 零件列表
-            SteelPart steelPart = new SteelPart(ViewModel.SteelAttr, ViewModel.SteelAttr.PartNumber, ViewModel.SteelAttr.Number, ViewModel.SteelAttr.GUID.Value);
+            SteelPart steelPart = new SteelPart(
+                ViewModel.SteelAttr, 
+                ViewModel.SteelAttr.PartNumber, 
+                ViewModel.SteelAttr.Number, 
+                ViewModel.SteelAttr.GUID.Value,
+                ViewModel.SteelAttr.Phrase,
+                ViewModel.SteelAttr.ShippingNumber,
+                ViewModel.SteelAttr.Title1,
+                ViewModel.SteelAttr.Title2);
             steelPart.ID = new List<int>();
             steelPart.Match = new List<bool>();
             steelPart.Material = ViewModel.SteelAttr.Material;

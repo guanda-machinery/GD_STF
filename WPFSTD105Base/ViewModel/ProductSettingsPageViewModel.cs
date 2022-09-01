@@ -38,6 +38,7 @@ namespace WPFSTD105.ViewModel
         /// 鋼構類型
         /// </summary>
         public OBJECT_TYPE Type { get; set; }
+        public int SteelType { get; set; }
         /// <summary>
         /// 鋼構類型名稱
         /// </summary>
@@ -49,24 +50,41 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 零件重
         /// </summary>
-        public double PieceWeight { get; set; }
+        public double Weight { get; set; }
         /// <summary>
         /// 零件長
         /// </summary>
-        public double PieceLength { get; set; }
+        public double Length { get; set; }
         /// <summary>
         /// Phase
         /// </summary>
-        public string Phase { get; set; }
+        public int Phase { get; set; }
         /// <summary>
         /// 拆運
         /// </summary>
-        string ShippingDescription { get; set; }
+        public int ShippingNumber { get; set; }
+        /// <summary>
+        /// 標題1
+        /// </summary>
+        public string Title1 { get; set; }
+        /// <summary>
+        /// 標題2
+        /// </summary>
+        public string Title2 { get; set; }
+        /// <summary>
+        /// 腹板厚度
+        /// </summary>
+        public double t1 { get; set; }
+        /// <summary>
+        /// 翼板厚度
+        /// </summary>
+        public double t2 { get; set; }
 
         public ProductSettingsPageViewModel()
         {
             steelAttr = new SteelAttr();
         }
+
 
     }
 }
