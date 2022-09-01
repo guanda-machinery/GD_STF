@@ -20,7 +20,6 @@
                   xmlns:ddes="http://schemas.devdept.com/winfx/2008/xaml/control"
                   xmlns:ddgr="http://schemas.devdept.com/winfx/2008/xaml/graphics"
                   xmlns:STD105="clr-namespace:STD_105"
-                  xmlns:SofSettings="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
                   xmlns:spa="clr-namespace:WPFSTD105;assembly=WPFSTD105"
                   xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"

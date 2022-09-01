@@ -12,6 +12,8 @@ using System.Windows.Input;
 using WPFWindowsBase;
 using GD_STD.Data;
 using static WPFSTD105.ViewLocator;
+using System.Collections.Generic;
+
 namespace WPFSTD105
 {
     /// <summary>
@@ -211,5 +213,9 @@ namespace WPFSTD105
             else
                 OfficeViewModel.LengthDodageControl = false;
         });
+
+
     }
+
+
 }

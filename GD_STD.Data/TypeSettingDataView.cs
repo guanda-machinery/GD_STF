@@ -179,7 +179,7 @@ namespace GD_STD.Data
         /// <summary>
         /// 工件類型
         /// </summary>
-        public GD_STD.Enum.OBJETC_TYPE PartType { get; set; }
+        public GD_STD.Enum.OBJECT_TYPE PartType { get; set; }
 
         /// <summary>
         ///  物件相同

@@ -85,6 +85,15 @@ namespace GD_STD.Data
         /// </summary>
         public ObservableCollection<TypeSettingDataView> Parts { get; set; } = new ObservableCollection<TypeSettingDataView>();
 
+
+
+
+        #region Command
+        private enum CRotation
+        {
+            Clockwise,
+            CounterClockwise
+        }
         /// <summary>
         /// 零件正轉命令
         /// </summary>
@@ -92,10 +101,9 @@ namespace GD_STD.Data
         {
             get
             {
-                return RotationComponent(true); ;
+                return RotationComponent(CRotation.Clockwise); ;
             }
         }
-
         /// <summary>
         /// 零件逆轉命令
         /// </summary>
@@ -103,15 +111,14 @@ namespace GD_STD.Data
         {
             get
             {
-                return  RotationComponent(false);
+                return RotationComponent(CRotation.CounterClockwise);
             }
         }
-
         /// <summary>
         /// 正逆轉功能，當ClockwiseRotation為false時為逆時針
         /// </summary>
-        /// <param name="ClockwiseRotation"></param>
-        private WPFWindowsBase.RelayParameterizedCommand RotationComponent(bool ClockwiseRotation = true)
+        /// <param name="_cRotation"></param> 
+        private WPFWindowsBase.RelayParameterizedCommand RotationComponent(CRotation _cRotation = CRotation.Clockwise)
         {
             return new WPFWindowsBase.RelayParameterizedCommand(objArray =>
             {
@@ -120,7 +127,7 @@ namespace GD_STD.Data
                     //找出目標及指向之顯示介面後，顯示零件
                     if (SelectedCom != null)
                     {
-                        if (ClockwiseRotation)
+                        if (_cRotation == CRotation.Clockwise)
                         {
                             //正轉控制
                         }
@@ -133,7 +140,11 @@ namespace GD_STD.Data
             });
         }
 
-
+        private enum CDirection
+        {
+            Forward,
+            Backward
+        }
         /// <summary>
         /// 零件前進命令
         /// </summary>
@@ -141,10 +152,9 @@ namespace GD_STD.Data
         {
             get
             {
-                return MoveComponent(true); ;
+                return MoveComponent(CDirection.Forward); ;
             }
         }
-
         /// <summary>
         /// 零件後退命令
         /// </summary>
@@ -152,16 +162,14 @@ namespace GD_STD.Data
         {
             get
             {
-                return MoveComponent(false); ;
+                return MoveComponent(CDirection.Backward); ;
             }
         }
-
-
         /// <summary>
         /// 前進後退功能，當Direction為false時為後退
         /// </summary>
-        /// <param name="Direction"></param>
-        private WPFWindowsBase.RelayParameterizedCommand MoveComponent(bool Direction = true)
+        /// <param name="_cDirection"></param>
+        private WPFWindowsBase.RelayParameterizedCommand MoveComponent(CDirection _cDirection = CDirection.Forward)
         {
             return new WPFWindowsBase.RelayParameterizedCommand(objArray =>
             {
@@ -170,7 +178,7 @@ namespace GD_STD.Data
                     //找出目標及指向之顯示介面後，顯示零件
                     if (SelectedCom != null)
                     {
-                        if (Direction)
+                        if (_cDirection == CDirection.Forward)
                         {
                             //前進控制
                         }
@@ -182,13 +190,59 @@ namespace GD_STD.Data
                 }
             });
         }
-
-
-
-
-
-
-        private bool objArrayComponentCorrespond(object objArray, out GD_STD.Data.TypeSettingDataView SelectedComponent , out object TabControl )
+        private enum CArithmetic
+        {
+            Carry,
+            Borrow
+        }
+        /// <summary>
+        /// 零件進位命令
+        /// </summary>
+        /// <returns></returns>
+        public System.Windows.Input.ICommand CarryComponentCommand
+        {
+            get
+            {
+                return ArithmeticComponent(CArithmetic.Carry); ;
+            }
+        }
+        /// <summary>
+        /// 零件退位命令
+        /// </summary>
+        /// <returns></returns>
+        public System.Windows.Input.ICommand BorrowComponentCommand
+        {
+            get
+            {
+                return ArithmeticComponent(CArithmetic.Borrow); ;
+            }
+        }
+        /// <summary>
+        /// 進位退位功能，當CarryBorrow為false時為退位
+        /// </summary>
+        /// <param name="_cArithmetic"></param>
+        private WPFWindowsBase.RelayParameterizedCommand ArithmeticComponent(CArithmetic _cArithmetic = CArithmetic.Carry)
+        {
+            return new WPFWindowsBase.RelayParameterizedCommand(objArray =>
+            {
+                if (objArrayComponentCorrespond(objArray, out var SelectedCom, out var TabC))
+                {
+                    //找出目標及指向之顯示介面後，顯示零件
+                    if (SelectedCom != null)
+                    {
+                        if (_cArithmetic == CArithmetic.Carry)
+                        {
+                            //進位控制
+                        }
+                        else
+                        {
+                            //退位控制
+                        }
+                    }
+                }
+            });
+        }
+        private bool objArrayComponentCorrespond(object objArray, out GD_STD.Data.TypeSettingDataView SelectedComponent, out object TabControl)
         {
             SelectedComponent = null;
             TabControl = null;
@@ -218,7 +272,7 @@ namespace GD_STD.Data
                     }
 
 
-                    if(SelectedComponent != null)
+                    if (SelectedComponent != null)
                     {
                         return true;
                     }
@@ -226,6 +280,24 @@ namespace GD_STD.Data
             }
             return false;
         }
+
+        /// <summary>
+        /// 上鎖/解鎖
+        /// </summary>
+        public System.Windows.Input.ICommand LockCommand
+        {
+            get
+            {
+                return new WPFWindowsBase.RelayParameterizedCommand(objArray =>
+                {
+
+                });
+            }
+        }
+
+        #endregion
+
+
 
 
 
