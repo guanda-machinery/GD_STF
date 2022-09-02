@@ -1,5 +1,5 @@
 ﻿<WPFBase:BasePage x:Class="STD_105.Office.ProductSettingsPage_Office"
-                  x:TypeArguments="STD105VM:ObSettingVM"
+                  x:TypeArguments="STD105VM:ProductSettingsPageVM"
                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -38,9 +38,6 @@
     </WPFBase:BasePage.Resources>
     <!--物件設定與設定完成的物件列表-->
     <Grid dx:ThemeManager.ThemeName="Win10Light"    Background="#d3d3d3"     >
-        <Grid.DataContext>
-            <STD105VM:ObSettingVM/>
-        </Grid.DataContext>
         <Grid.Resources>
             <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }" >
                 <Setter Property="BorderThickness" Value="1"/>
@@ -175,14 +172,15 @@
 
                 <GroupBox Header="零件清單" Margin="5">
                     <GroupBox.DataContext>
-                        <spa:OfficeTypeSettingVM/>
+                    <STD105VM:ProductSettingsPageVM/>
                     </GroupBox.DataContext>
                     <dxg:GridControl  
                            Name="PieceListGridControl"
                                 AutoGenerateColumns="None"
                                 SelectionMode="None"
                                 MaxHeight="500"              
-                                ItemsSource="{Binding DataViews}">
+                                ItemsSource="{Binding DataViews}"
+                                SelectedItemChanged="GridControl_SelectedItemChanged">
                         <dxg:GridControl.Resources>
                             <Style TargetType="dxg:GridColumn" >
                                 <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
@@ -297,26 +295,26 @@
 
                         <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"   Header="構件編號" Width="auto"/>
                         <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="auto" />
-                        <dxg:GridColumn IsSmart="True" Header="名稱" Width="auto"/><!--資料沒有對應屬性-->
+                        <dxg:GridColumn FieldName="CustomerMadeName" IsSmart="True" Header="名稱" Width="auto"/>
                         <dxg:GridColumn Binding="{Binding Path=SteelType, Converter={STD105:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類型"/>
                         <dxg:GridColumn FieldName="Profile" IsSmart="True"  Header="斷面規格"  Width="auto"/>
                         <dxg:GridColumn FieldName="Material" IsSmart="True"  Header="材質"  Width="auto"/>
-                        <dxg:GridColumn Binding="{Binding Match, Converter={STD105:IListToCountConerter}}" Header="數量"  />
-                        <dxg:GridColumn FieldName="Length"  IsSmart="True"  Header="零件長" Width="auto">
+                        <dxg:GridColumn Binding="{Binding Match, Converter={STD105:IListToCountConerter}}" Header="總數量"  />
+                        <dxg:GridColumn FieldName="Length" IsSmart="True"  Header="零件長" Width="auto">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="PieceWeight" IsSmart="True"  Header="零件重"  Width="auto" ><!--資料沒有對應屬性-->
+                        <dxg:GridColumn FieldName="PartWeight" IsSmart="True"  Header="零件重"  Width="auto" >
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn Binding="{Binding Phase}" IsSmart="True"  Width="auto" Header="Phase"  />
-                        <dxg:GridColumn Binding="{Binding ShippingNumber}" IsSmart="True"  Width="auto" Header="拆運"  />
-                        <dxg:GridColumn FieldName="" IsSmart="True"  Width="auto" Header="標題一"  /><!--資料沒有對應屬性-->
-                        <dxg:GridColumn FieldName="" IsSmart="True"  Width="auto" Header="標題二"  /><!--資料沒有對應屬性-->
-                    </dxg:GridControl>
+                    <dxg:GridColumn FieldName="Phase" IsSmart="True"  Width="auto" Header="Phase"  />
+                    <dxg:GridColumn FieldName="ShippingNumber" IsSmart="True"  Width="auto" Header="拆運"  />
+                    <dxg:GridColumn FieldName="Title1" IsSmart="True"  Width="auto" Header="標題一"  />
+                    <dxg:GridColumn FieldName="Title2" IsSmart="True"  Width="auto" Header="標題二"  />
+                </dxg:GridControl>
                 </GroupBox>
 
 
@@ -372,12 +370,12 @@
                         </Grid.RowDefinitions>
                         <Label Content="零件編號：" />
                         <StackPanel Grid.Column="1">
-                            <TextBox Name="partNumber" Text="{Binding SelectedItems[0].PartNumber, ElementName=PieceListGridControl}" />
+                            <TextBox Name="partNumber" Text="{Binding SelectedItems[0].PartNumber, ElementName=PieceListGridControl, Mode=OneWay}" />
                         </StackPanel>
 
                         <Label Grid.Column="0" Grid.Row="1" Content="構件編號：" />
                         <StackPanel Grid.Column="1" Grid.Row="1" >
-                            <TextBox Text="{Binding SelectedItems[0].AssemblyNumber, ElementName=PieceListGridControl}" />
+                        <TextBox Text="{Binding SelectedItems[0].AssemblyNumber, ElementName=PieceListGridControl, Mode=OneWay}" />
                         </StackPanel>
 
                         <Label Grid.Column="0"  Grid.Row="2"
@@ -385,20 +383,20 @@
                         <StackPanel Grid.Column="1" Grid.Row="2" >
                             <TextBox 
                              Name="length"
-                             Text="{Binding SelectedItems[0].Length, ElementName=PieceListGridControl}" />
+                             Text="{Binding SelectedItems[0].Length, ElementName=PieceListGridControl, Mode=OneWay}" />
                         </StackPanel>
 
                         <Label Grid.Column="0" Grid.Row="3" Content="製品重：" />
                         <StackPanel Grid.Column="1" Grid.Row="3" >
                             <DockPanel  VerticalAlignment="Center">
-                            <TextBlock  Text="{Binding SelectedItems[0].TotalWeight, ElementName=PieceListGridControl}"  VerticalAlignment="Center" Margin="3,0,0,0"/>
+                            <TextBlock  Text="{Binding SelectedItems[0].PartWeight, ElementName=PieceListGridControl, StringFormat={}{0:F2}, Mode=OneWay}"  VerticalAlignment="Center" Margin="3,0,0,0"/>
                                 <TextBlock HorizontalAlignment="Right" Text="KG" VerticalAlignment="Center"/>
                             </DockPanel>
                         </StackPanel>
 
                         <Label Grid.Column="0" Grid.Row="4" Content="製品數量：" />
                         <StackPanel Grid.Column="1" Grid.Row="4" >
-                        <TextBox Name="number" Text="{Binding SelectedItems[0].Match, ElementName=PieceListGridControl, Converter={STD105:IListToCountConerter}}" BorderBrush="Black" />
+                        <TextBox Name="number" Text="{Binding SelectedItems[0].Match, ElementName=PieceListGridControl, Converter={STD105:IListToCountConerter}, Mode=OneWay}" BorderBrush="Black" />
                         </StackPanel>
 
                         <Label Grid.Column="0" Grid.Row="5" Content="名稱：" />
