@@ -20,7 +20,8 @@
                   xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" xmlns:ddes="http://schemas.devdept.com/winfx/2008/xaml/control"
                   xmlns:ddgr="http://schemas.devdept.com/winfx/2008/xaml/graphics" 
                   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                  xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+                  xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding" 
+                  xmlns:sys1="clr-namespace:System;assembly=mscorlib"
                   Title="排版設定"              
                   x:TypeArguments="WPFSTD105:OfficeTypeSettingVM"
                   mc:Ignorable="d">
@@ -29,6 +30,7 @@
 
     <StackPanel dx:ThemeManager.ThemeName="Win10Light" Background="#D3D3D3" Orientation="Vertical"                  >
         <StackPanel.Resources>
+
             <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }" >
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="Background" Value="#F7F7F7"/>
@@ -64,7 +66,6 @@
                 <Setter Property="FontWeight" Value="DemiBold"/>
                 <Setter Property="FontSize" Value="12"/>
             </Style>
-
             <Style TargetType="TextBox">
                 <Setter Property="Foreground"
                                 Value="{ StaticResource solidclr_DimGray }" />
@@ -88,7 +89,7 @@
                   Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD105:ViewLocator.Instance}}"
                 >
             <DockPanel.DataContext>
-                <WPFSTD105:OfficeTypeSettingVM/>
+                <WPFSTD105:OfficeTypeSettingVM></WPFSTD105:OfficeTypeSettingVM>
             </DockPanel.DataContext>
 
             <Grid DockPanel.Dock="Top">
@@ -145,7 +146,7 @@
                                 </dxg:TableView>
 
                             </dxg:GridControl.View>
-                            <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"    Header="構件編號" Width="auto" />
+                            <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"    Header="構件編號" Width="auto"/>
                             <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="auto" />
                             <dxg:GridColumn FieldName="Profile"  IsSmart="True"  Header="斷面規格"  Width="auto" />
                             <dxg:GridColumn FieldName="Material"  IsSmart="True"  Header="材質"  Width="auto"/>
@@ -154,7 +155,7 @@
                                     <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
-                            <dxg:GridColumn FieldName="Weigth"  IsSmart="True"  Header="零件重"  Width="auto" >
+                            <dxg:GridColumn FieldName="PartWeigth"  IsSmart="True"  Header="零件重"  Width="auto" >
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
                                 </dxg:GridColumn.EditSettings>
@@ -533,7 +534,6 @@
                             <Setter Property="Foreground" Value="#0078D7"/>
                             <Setter Property="BorderBrush" Value="#0078D7"/>
                             <Setter Property="BorderThickness" Value="0"/>
-
                         </Style>
                         <Style TargetType="dxg:GridColumn">
                             <Setter Property="HorizontalHeaderContentAlignment"  Value="Center"/>
@@ -552,8 +552,7 @@
                                     ShowSearchPanelMode="Always"
                                     SearchPanelNullText="Search Tasks(Ctrl + F)" 
                                     SearchPanelFindMode="Always" 
-                                    SearchDelay="0"
-                                    >
+                                    SearchDelay="0">
                                 <dxg:TableView.CellStyle>
                                     <Style>
                                         <Setter Property="TextBlock.FontSize" Value="12"/>
@@ -562,8 +561,6 @@
                                 </dxg:TableView.CellStyle>
                             </dxg:TableView>
                         </dxg:GridControl.View> 
-
-
                         <dxg:GridColumn FieldName="ExclamationMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" Width="40" FixedWidth="True">
                             <dxg:GridColumn.HeaderImageStyle>
                                 <Style TargetType="Image">
@@ -727,16 +724,15 @@
                                     <dxg:DefaultDataTemplate>
                                         <Grid Margin="6">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="auto" MaxWidth="320"/>
+                                                <ColumnDefinition Width="auto" />
+                                                <ColumnDefinition Width="auto"/>
                                             </Grid.ColumnDefinitions>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="*"/>
                                             </Grid.RowDefinitions>
                                             <Border Grid.Column="0" BorderThickness="0,0,1.5,0" BorderBrush="#cfcfcf">
                                                 <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,5,0" >
-                                                    
-                                                    <dxg:GridControl Name="ComponentGridControl"  ItemsSource="{Binding Path =Parts}"   AutoGenerateColumns="None" MinHeight="50" MaxHeight="110" Height="auto">
+                                                    <dxg:GridControl Name="ComponentGridControl" ItemsSource="{Binding Path =Parts}"   AutoGenerateColumns="None" MinHeight="50" MaxHeight="110" Height="auto">
                                                         <dxg:GridControl.Resources>
                                                             <Style TargetType="dxg:GridColumnHeader">
                                                                 <Setter Property="Background" Value="LemonChiffon"/>
@@ -760,8 +756,7 @@
                                                                 </dxg:TableView.CellStyle>
                                                             </dxg:TableView>
                                                         </dxg:GridControl.View>
-
-                                                        <dxg:GridColumn FieldName="Order" Header="順序"  MaxWidth="40"  />
+                                                        <dxg:GridColumn FieldName="Order" Header="順序"  Width="auto"/>
                                                         <dxg:GridColumn FieldName="AssemblyNumber"   Header="構件編號"  Width="auto" />
                                                         <dxg:GridColumn FieldName="PartNumber" Header="零件編號"  Width="auto" />
                                                         <dxg:GridColumn FieldName="Length" Header="零件長"  Width="auto"  >
@@ -793,15 +788,12 @@
                                             </Border>
                                             <GridSplitter Background="Transparent" Grid.RowSpan="2" HorizontalAlignment="Right"   VerticalAlignment="Stretch" Width="10" Margin="-5"  />
                                             <!-- 可調整邊界拉柄(透明)-->
-                                       
-                                          
                                             <Grid Grid.Column="1"  MinHeight="150" Margin="10,0,0,0">
                                                 <Grid.Resources>
                                                     <Style TargetType="TextBlock">
 
                                                         <Setter Property="Margin" Value="3"/>
                                                     </Style>
-
                                                     <DrawingImage x:Key="HBeamImage">
                                                         <DrawingImage.Drawing>
                                                             <DrawingGroup>
@@ -828,7 +820,7 @@
                                                         <Button.CommandParameter>
                                                             <MultiBinding Converter="{StaticResource XComparConverter}">
                                                                 <MultiBinding.Bindings>
-                                                                    <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
+                                                                    <Binding ElementName="ComponentGridControl" Path="SelectedItem"/>
                                                                     <Binding ElementName="DrawTabControl"/>
                                                                 </MultiBinding.Bindings>
                                                             </MultiBinding>

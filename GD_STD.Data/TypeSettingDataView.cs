@@ -13,11 +13,9 @@ namespace GD_STD.Data
     [Serializable]
     public class TypeSettingDataView : WPFWindowsBase.BaseViewModel, ITypeSettingPartView, ITypeSettingAssemblyView, ITypeSettingDataView
     {
-
         public TypeSettingDataView()
-        {
+        { }
 
-        }
         /// <summary>
         /// 標準建構式
         /// </summary>

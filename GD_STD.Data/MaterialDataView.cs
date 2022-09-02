@@ -84,10 +84,6 @@ namespace GD_STD.Data
         /// 零件列表
         /// </summary>
         public ObservableCollection<TypeSettingDataView> Parts { get; set; } = new ObservableCollection<TypeSettingDataView>();
-
-
-
-
         #region Command
         private enum CRotation
         {
@@ -139,7 +135,6 @@ namespace GD_STD.Data
                 }
             });
         }
-
         private enum CDirection
         {
             Forward,
@@ -252,8 +247,12 @@ namespace GD_STD.Data
                 foreach (var obj in (object[])objArray)
                 {
                     //確認為TypeSettingDataView
-
-                    if (obj.GetType().Equals(typeof(GD_STD.Data.TypeSettingDataView)))
+                    if(obj.GetType().Equals(typeof(DevExpress.Xpf.Grid.GridControl)))
+                    {
+                       var GControl = (DevExpress.Xpf.Grid.GridControl)obj;
+                       
+                    }
+                    else if (obj.GetType().Equals(typeof(GD_STD.Data.TypeSettingDataView)))
                     {
                         //取得已選擇的欄位
                         SelectedComponent = (GD_STD.Data.TypeSettingDataView)obj;
@@ -281,6 +280,8 @@ namespace GD_STD.Data
             return false;
         }
 
+
+
         /// <summary>
         /// 上鎖/解鎖
         /// </summary>
@@ -290,7 +291,7 @@ namespace GD_STD.Data
             {
                 return new WPFWindowsBase.RelayParameterizedCommand(objArray =>
                 {
-
+                    
                 });
             }
         }
@@ -341,10 +342,10 @@ namespace GD_STD.Data
         /// 素材消耗
         /// </summary>
         [Excel("消耗", 5)]
-        public double Loss 
+        public double Loss
         {
             //get => Parts.Select(el => el.Length).Aggregate((l1, l2) => l1 + l2)  + Cut * (Parts.Count -1d > 0d ? Parts.Count -1d : 0d); 
-            get 
+            get
             {
                 var AllPartAggregate = Parts.Select(el => el.Length).Aggregate((l1, l2) => l1 + l2); //總零件長
                 var CutLoss = Cut * (Parts.Count - 1d > 0d ? Parts.Count - 1d : 0d); //鋸床切割損耗
@@ -357,6 +358,15 @@ namespace GD_STD.Data
         public bool LockMark { get; set; }
         public bool GearMark { get; set; }
         public bool ExclamationMark { get; set; }
+
+        public GD_STD.Enum.OBJECT_TYPE _objectType
+        {
+            get 
+            {
+                return GD_STD.Enum.OBJECT_TYPE.Unknown;
+            }
+        }
+
 
     }
 }
