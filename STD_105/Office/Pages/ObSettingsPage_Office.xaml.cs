@@ -1117,7 +1117,8 @@ namespace STD_105.Office
                         Esc();
                         model.Refresh();//刷新模型
                         drawing.Refresh();
-                        SaveModel(false);//存取檔案
+
+                        SaveModel(true);//存取檔案
 #if DEBUG
                         log4net.LogManager.GetLogger("鏡射孔位").Debug("結束");
 #endif
@@ -1527,7 +1528,7 @@ namespace STD_105.Office
             // 2020/08/04 呂宗霖 因按Delete會造成無窮迴圈 跳不出去系統造成當掉 故先停用直接按Delete的動作
             //else if (Keyboard.IsKeyDown(Key.Delete))
             //{
-                //SimulationDelete();
+            //SimulationDelete();
             //}
             model.Invalidate();
             drawing.Invalidate();
@@ -1758,7 +1759,6 @@ namespace STD_105.Office
         }
 
 
-
         List<Bolts3DBlock> lstBoltsCutPoint = new List<Bolts3DBlock>();
 
 
@@ -1770,7 +1770,6 @@ namespace STD_105.Office
             SteelAttr steelAttr = ViewModel.GetSteelAttr();
             double PosRatio1 = 0.2;     //  1/5
             double PosRatio2 = 0.8;     //  4/5
-            double a, b;
             List<(double, double)> DRPoint = new List<(double, double)>();
             List<(double, double)> HypotenusePoint = new List<(double, double)>();
 
@@ -1900,6 +1899,9 @@ namespace STD_105.Office
                      PointUR1 = new Point3D((TmpDR.X - TmpUR.X) * PosRatio1, (TmpDR.Y - TmpUR.Y) * PosRatio1) + TmpUR;
                      PointUR2 = new Point3D((TmpDR.X - TmpUR.X) * PosRatio2, (TmpDR.Y - TmpUR.Y) * PosRatio2) + TmpUR;
                     
+
+
+
 
                     tmplist1.Add(PointDL1);
                     tmplist1.Add(PointDL2);
@@ -2516,7 +2518,8 @@ namespace STD_105.Office
             model.ClearAllPreviousCommandData();
             drawing.ClearAllPreviousCommandData();
 
-
+   			drawing.SetCurrent(null);
+            model.SetCurrent(null);//層級 To 要編輯的 BlockReference
             drawing.Refresh();
             model.Refresh();
 
@@ -3131,5 +3134,6 @@ namespace STD_105.Office
         {
             AddHypotenusePoint();
         }
+
     }
 }

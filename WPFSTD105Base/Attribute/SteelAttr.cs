@@ -46,6 +46,8 @@ namespace WPFSTD105.Attribute
             Profile = profile.Profile;
             Type = profile.Type;
             Material = profile.Material;
+
+
             //GUID = Guid.NewGuid();
         }
         //20220728 張燕華 轉換出inp檔案->新增斷面規格屬性
@@ -100,6 +102,9 @@ namespace WPFSTD105.Attribute
         public CutContour Back { get => GetCutPoint(PointBack, W); }
         /// <inheritdoc/>
         public bool IsMainPart { get => MainPartNumber == PartNumber; }
+
+
+
         /// <summary>
         /// NC 頂面形狀
         /// </summary>

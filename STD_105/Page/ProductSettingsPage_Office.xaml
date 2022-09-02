@@ -32,7 +32,7 @@
             <!--<local:MATERIAL_ToStringConverter x:Key="Material"/>-->
             <STD105:FACE_ToStringConverter x:Key="Face" />
             <STD105:START_HOLE_ToStringConverter x:Key="StartHole" />
-            
+
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
     <!--物件設定與設定完成的物件列表-->
@@ -55,8 +55,8 @@
                 </Style.Resources>
 
             </Style>
-            
- 
+
+
             <Style TargetType="Button"  BasedOn="{StaticResource MaterialDesignFlatButton}"   >
                 <Setter Property="Background" Value="White"/>
                 <Setter Property="Foreground" Value="Black"/>
@@ -465,6 +465,7 @@
                         <StackPanel Grid.Column="3" Grid.Row="5">
                             <TextBox Text="{Binding SteelAttr.t2}" IsEnabled="False"/>
                         </StackPanel>
+                        <Button Grid.Column="3" Content="Button" HorizontalAlignment="Left" Margin="47,13,0,0" Grid.Row="10" VerticalAlignment="Top" Click="Button_Click"/>
 
                     </Grid>
                     <DockPanel  DockPanel.Dock="Bottom" Margin="0" VerticalAlignment="Bottom" >
@@ -498,9 +499,9 @@
                   
                     SelectedIndex="0">
                 <TabItem Header="3D視圖" Margin="0,0,0,0"  Style="{StaticResource DrawTabItem}">
-                <Grid>
-                    <!--新增3D模型處-->
-                    <spa:ModelExt x:Name="model"
+                    <Grid>
+                        <!--新增3D模型處-->
+                        <spa:ModelExt x:Name="model"
                                   SelectionChanged="model_SelectionChanged"
                                   Loaded="Model3D_Loaded"
                                   AutoRefresh="True"
@@ -514,97 +515,99 @@
                                   Renderer="NativeExperimental"
                                   
                                   ShowFps="True">
-                        <spa:ModelExt.ContextMenu>
-                            <ContextMenu Style="{StaticResource BaseStyle}"
+                            <spa:ModelExt.ContextMenu>
+                                <ContextMenu Style="{StaticResource BaseStyle}"
                                          FontSize="12">
-                                <MenuItem Name="esc"
+                                    <MenuItem Name="esc"
                                           Header="取消"
                                           Style="{StaticResource BaseStyle}"
                                           Command="{Binding Esc}" />
-                                <MenuItem Header="放大選取範圍"
+                                    <MenuItem Header="放大選取範圍"
                                           Style="{StaticResource BaseStyle}"
                                           Command="{Binding ZoomWindow}" />
-                                <MenuItem Header="縮放"
+                                    <MenuItem Header="縮放"
                                           Style="{StaticResource BaseStyle}"
                                           Command="{Binding Zoom}" />
-                                <MenuItem Header="旋轉"
+                                    <MenuItem Header="旋轉"
                                           Style="{StaticResource BaseStyle}"
                                           Command="{Binding Rotate}" />
-                                <MenuItem Header="平移"
+                                    <MenuItem Header="平移"
                                           Style="{StaticResource BaseStyle}"
                                           Command="{Binding Pan}" />
-                                <MenuItem Name="edit"
+                                    <MenuItem Name="edit"
                                           Header="編輯已選擇"
                                           Style="{StaticResource BaseStyle}"
                                           Command="{Binding EditObject}"
                                           Visibility="Collapsed" />
-                                <MenuItem x:Name="delete"
+                                    <MenuItem x:Name="delete"
                                           Header="刪除已選擇"
                                           Style="{StaticResource BaseStyle}"
                                           Command="{Binding Delete}"
                                           Visibility="Collapsed" />
-                                <MenuItem Header="清除標註"
+                                    <MenuItem Header="清除標註"
                                           Command="{Binding ClearDim}"
                                           CommandParameter="{Binding ElementName=model}"
                                           Style="{StaticResource BaseStyle}" />
-                                <MenuItem Header="恢復上一個動作"
+                                    <MenuItem Header="恢復上一個動作"
                                           Command="{Binding Recovery}"
                                           Style="{StaticResource BaseStyle}" />
-                                <MenuItem Header="恢復下一個動作"
+                                    <MenuItem Header="恢復下一個動作"
                                           Command="{Binding Recovery}"
                                           Style="{StaticResource BaseStyle}" />
-                            </ContextMenu>
-                        </spa:ModelExt.ContextMenu>
-                        <ddes:Model.ProgressBar>
-                            <ddes:ProgressBar Lighting="False" />
-                        </ddes:Model.ProgressBar>
-                        <ddes:Model.Viewports>
-                            <ddes:Viewport DisplayMode="Flat"
+                                </ContextMenu>
+                            </spa:ModelExt.ContextMenu>
+                            <ddes:Model.ProgressBar>
+                                <ddes:ProgressBar Lighting="False" />
+                            </ddes:Model.ProgressBar>
+                            <ddes:Model.Viewports>
+                                <ddes:Viewport DisplayMode="Flat"
                                            InitialView="vcFrontFaceTopLeft"
                                            OriginSymbols="{Binding OriginSymbols}"
                                            SmallSizeRatio="0.001">
-                                <ddes:Viewport.Background>
-                                    <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#c0c0c0"/>
-                                </ddes:Viewport.Background>
-                                <ddes:Viewport.CoordinateSystemIcon>
-                                    <ddes:CoordinateSystemIcon Lighting="True"
+                                    <ddes:Viewport.Background>
+                                        <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#c0c0c0"/>
+                                    </ddes:Viewport.Background>
+                                    <ddes:Viewport.CoordinateSystemIcon>
+                                        <ddes:CoordinateSystemIcon Lighting="True"
                                                                ArrowColorX="{Binding Setting.ArrowColorX, Converter={WPFBase:StringRGBToBrushConverter}}"
                                                                ArrowColorY="{Binding Setting.ArrowColorY, Converter={WPFBase:StringRGBToBrushConverter}}"
                                                                ArrowColorZ="{Binding Setting.ArrowColorZ, Converter={WPFBase:StringRGBToBrushConverter}}" />
-                                </ddes:Viewport.CoordinateSystemIcon>
-                                <ddes:Viewport.Camera>
-                                    <ddes:Camera Distance="380"
+                                    </ddes:Viewport.CoordinateSystemIcon>
+                                    <ddes:Viewport.Camera>
+                                        <ddes:Camera Distance="380"
                                                  ProjectionMode="Orthographic"
                                                  Target="0, 0, 45"
                                                  ZoomFactor="2" />
-                                </ddes:Viewport.Camera>
-                                <ddes:Viewport.Rotate>
-                                    <ddes:RotateSettings RotationCenter="CursorLocation" />
-                                </ddes:Viewport.Rotate>
-                                <ddes:Viewport.ToolBars>
-                                    <ddes:ToolBar>
-                                        <ddes:ToolBar.Buttons>
-                                            <ddes:HomeToolBarButton />
-                                            <ddes:ZoomWindowToolBarButton />
-                                            <ddes:ZoomToolBarButton />
-                                            <ddes:PanToolBarButton />
-                                            <ddes:RotateToolBarButton />
-                                            <ddes:ZoomFitToolBarButton />
-                                            <ddes:ToolBarButton ToolTipText="線性標註"
-                                                                Click="LinearDim"
-                                                                StyleMode="PushButton"
-                                                                Image="{Binding Source={StaticResource LinearDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
-                                            <ddes:ToolBarButton ToolTipText="角度標註"
-                                                                StyleMode="PushButton"
-                                                                Image="{Binding Source={StaticResource AngleDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
-                                            <ddes:ToolBarButton ToolTipText="絕對座標"
-                                                                StyleMode="PushButton"
-                                                                Image="{Binding Source={StaticResource AbsDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
-                                        </ddes:ToolBar.Buttons>
-                                    </ddes:ToolBar>
-                                </ddes:Viewport.ToolBars>
-                                <ddes:Viewport.ViewCubeIcon>
-                                    <ddes:ViewCubeIcon Lighting="True"
+                                    </ddes:Viewport.Camera>
+                                    <ddes:Viewport.Rotate>
+                                        <ddes:RotateSettings RotationCenter="CursorLocation" />
+                                    </ddes:Viewport.Rotate>
+                                    <ddes:Viewport.ToolBars>
+                                        <ddes:ToolBar >
+                                             <ddes:ToolBar.Buttons>
+                                                <ddes:HomeToolBarButton />
+                                                <ddes:ZoomWindowToolBarButton />
+                                                <ddes:ZoomToolBarButton />
+                                                <ddes:PanToolBarButton />
+                                                <ddes:RotateToolBarButton />
+                                                <ddes:ZoomFitToolBarButton />
+                                                <!--
+                                                <ddes:ToolBarButton ToolTipText="線性標註" Visibility="Collapsed" 
+                                                        Click="LinearDim"
+                                                        StyleMode="PushButton"
+                                                        Image="{Binding Source={StaticResource LinearDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
+                                                <ddes:ToolBarButton ToolTipText="角度標註" Visibility="Collapsed"
+                                                        StyleMode="PushButton"
+                                                        Image="{Binding Source={StaticResource AngleDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
+                                                <ddes:ToolBarButton ToolTipText="絕對座標" Visibility="Collapsed"
+                                                        StyleMode="PushButton"
+                                                        Image="{Binding Source={StaticResource AbsDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
+                                                -->
+                                           </ddes:ToolBar.Buttons>
+                                        </ddes:ToolBar>
+                                    </ddes:Viewport.ToolBars>
+                                    <ddes:Viewport.ViewCubeIcon>
+                                        <ddes:ViewCubeIcon Lighting="True"
                                                        FrontColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
                                                        BackColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
                                                        TopColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
@@ -618,72 +621,73 @@
                                                        LeftRingColor="White"
                                                        RightRingColor="White"
                                                        FrontRingColor="White"
-                                                       BackRingColor="White" />
-                                </ddes:Viewport.ViewCubeIcon>
-                            </ddes:Viewport>
-                        </ddes:Model.Viewports>
-                    </spa:ModelExt>
-                </Grid>
-            </TabItem>
-                <TabItem Header="2D視圖"  Margin="-1,0,0,0"   Style="{StaticResource DrawTabItem}">
-                <Grid>
-                    <spa:ModelExt x:Name="drawing" SelectionChanged="model_SelectionChanged" Loaded="drawing_Loaded"
+                                                       BackRingColor="White">
+                                        </ddes:ViewCubeIcon>
+                                    </ddes:Viewport.ViewCubeIcon>
+                                </ddes:Viewport>
+                            </ddes:Model.Viewports>
+                        </spa:ModelExt>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="2D視圖"  Margin="-1,0,0,0"   Style="{StaticResource DrawTabItem}" Height="40" VerticalAlignment="Top">
+                    <Grid>
+                        <spa:ModelExt x:Name="drawing" SelectionChanged="model_SelectionChanged" Loaded="drawing_Loaded"
                         SelectionColor="{Binding Setting.SelectionColor, Converter={STD105:StringToDrawingColoConverter}}"
                         ActionMode="{Binding ActionMode}" DefaultColor="Beige" AutoRefresh ="True" KeyDown="model_KeyDown"
                         
                         PreviewMouseRightButtonDown="model_PreviewMouseRightButtonDown"
                         Focusable="True" AntiAliasingSamples="x16" Renderer="NativeExperimental" ShowFps="True" Margin="0,0,0,0">
-                        <spa:ModelExt.ContextMenu>
-                            <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
-                                <MenuItem Name="esc2D" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
-                                <MenuItem Header="放大選取範圍" Style="{StaticResource BaseStyle}" Command="{Binding ZoomWindow}"/>
-                                <MenuItem Header="縮放" Style="{StaticResource BaseStyle}" Command="{Binding Zoom}"/>
-                                <MenuItem Header="平移" Style="{StaticResource BaseStyle}" Command="{Binding Pan}"/>
-                                <MenuItem Name="edit2D" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}" Visibility="Collapsed"/>
-                                <MenuItem x:Name="delete2D" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}" Visibility="Collapsed"/>
-                                <MenuItem Header="清除標註" Command="{Binding ClearDim}" Style="{StaticResource BaseStyle}"/>
-                                <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
-                                <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
-                            </ContextMenu>
-                        </spa:ModelExt.ContextMenu>
-                        <ddes:Model.ProgressBar>
-                            <ddes:ProgressBar Lighting="False"/>
-                        </ddes:Model.ProgressBar>
-                        <ddes:Model.Viewports>
-                            <ddes:Viewport DisplayMode="Flat" InitialView="Top"  OriginSymbols="{Binding OriginSymbols}">
-                                <ddes:Viewport.Background>
-                                    <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#c0c0c0"/>
-                                </ddes:Viewport.Background>
-                                <ddes:Viewport.Camera>
-                                    <ddes:Camera Distance="380" ProjectionMode="Orthographic" Target="0, 0, 45" ZoomFactor="2"/>
-                                </ddes:Viewport.Camera>
-                                <ddes:Viewport.Rotate>
-                                    <ddes:RotateSettings RotationCenter="CursorLocation" Enabled="False"/>
-                                </ddes:Viewport.Rotate>
-                                <ddes:Viewport.ToolBars>
-                                    <ddes:ToolBar>
-                                        <ddes:ToolBar.Buttons>
-                                            <ddes:HomeToolBarButton/>
-                                            <ddes:ZoomWindowToolBarButton/>
-                                            <ddes:ZoomToolBarButton/>
-                                            <ddes:PanToolBarButton/>
-                                            <ddes:ZoomFitToolBarButton/>
-                                            <ddes:ToolBarButton ToolTipText="線性標註" Click="LinearDim" StyleMode="PushButton"
+                            <spa:ModelExt.ContextMenu>
+                                <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
+                                    <MenuItem Name="esc2D" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
+                                    <MenuItem Header="放大選取範圍" Style="{StaticResource BaseStyle}" Command="{Binding ZoomWindow}"/>
+                                    <MenuItem Header="縮放" Style="{StaticResource BaseStyle}" Command="{Binding Zoom}"/>
+                                    <MenuItem Header="平移" Style="{StaticResource BaseStyle}" Command="{Binding Pan}"/>
+                                    <MenuItem Name="edit2D" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}" Visibility="Collapsed"/>
+                                    <MenuItem x:Name="delete2D" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}" Visibility="Collapsed"/>
+                                    <MenuItem Header="清除標註" Command="{Binding ClearDim}" Style="{StaticResource BaseStyle}"/>
+                                    <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
+                                    <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
+                                </ContextMenu>
+                            </spa:ModelExt.ContextMenu>
+                            <ddes:Model.ProgressBar>
+                                <ddes:ProgressBar Lighting="False"/>
+                            </ddes:Model.ProgressBar>
+                            <ddes:Model.Viewports>
+                                <ddes:Viewport DisplayMode="Flat" InitialView="Top"  OriginSymbols="{Binding OriginSymbols}">
+                                    <ddes:Viewport.Background>
+                                        <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#c0c0c0"/>
+                                    </ddes:Viewport.Background>
+                                    <ddes:Viewport.Camera>
+                                        <ddes:Camera Distance="380" ProjectionMode="Orthographic" Target="0, 0, 45" ZoomFactor="2"/>
+                                    </ddes:Viewport.Camera>
+                                    <ddes:Viewport.Rotate>
+                                        <ddes:RotateSettings RotationCenter="CursorLocation" Enabled="False"/>
+                                    </ddes:Viewport.Rotate>
+                                    <ddes:Viewport.ToolBars>
+                                        <ddes:ToolBar>
+                                            <ddes:ToolBar.Buttons>
+                                                <ddes:HomeToolBarButton/>
+                                                <ddes:ZoomWindowToolBarButton/>
+                                                <ddes:ZoomToolBarButton/>
+                                                <ddes:PanToolBarButton/>
+                                                <ddes:ZoomFitToolBarButton/>
+                                                <ddes:ToolBarButton ToolTipText="線性標註" Click="LinearDim" StyleMode="PushButton"
                                                 Image="{Binding Source={StaticResource LinearDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}"/>
-                                            <ddes:ToolBarButton ToolTipText="角度標註" Click="AngleDim" StyleMode="PushButton"
+                                                <ddes:ToolBarButton ToolTipText="角度標註" Click="AngleDim" StyleMode="PushButton"
                                                 Image="{Binding Source={StaticResource AngleDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}"/>
-                                            <ddes:ToolBarButton ToolTipText="絕對座標" StyleMode="PushButton"
+                                                <ddes:ToolBarButton ToolTipText="絕對座標" StyleMode="PushButton"
                                                 Image="{Binding Source={StaticResource AbsDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}"/>
-                                        </ddes:ToolBar.Buttons>
-                                    </ddes:ToolBar>
-                                </ddes:Viewport.ToolBars>
-                            </ddes:Viewport>
-                        </ddes:Model.Viewports>
-                    </spa:ModelExt>
-                </Grid>
-            </TabItem>
-        </TabControl>
-        <!--繪圖顯示模型-->
+                                            </ddes:ToolBar.Buttons>
+                                        </ddes:ToolBar>
+                                    </ddes:Viewport.ToolBars>
+                                </ddes:Viewport>
+                            </ddes:Model.Viewports>
+                        </spa:ModelExt>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            <!--繪圖顯示模型-->
             <Border Background="White"   Grid.Column="1" >
                 <TabControl>
                     <TabControl.Resources>
@@ -747,7 +751,7 @@
                                 <Setter Property="Margin" Value="5"/>
                             </Style>
                         </TabItem.Resources>
-                        <DockPanel Width="450">
+                        <DockPanel Width="438">
                             <Grid DockPanel.Dock="Top">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -980,8 +984,8 @@
                                     Value="{ StaticResource solidclr_DimGray }" />
                             </Style>
                         </TabItem.Resources>
-                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <Grid >
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Name="Viewbox">
+                            <Grid Width="438">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
@@ -1004,7 +1008,7 @@
                                                 <RadioButton.Content>
                                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,0" >
                                                         <Label Content="頂面"/>
-                                                        <Label Margin="40,0,0,0" Content="右翼板" />
+                                                        <Label Margin="40,0,0,0" Content="腹板" />
                                                     </StackPanel>
                                                 </RadioButton.Content>
                                             </RadioButton>
@@ -1013,7 +1017,7 @@
                                                 <RadioButton.Content>
                                                     <StackPanel Orientation="Horizontal" Margin="0,6,0,0" >
                                                         <Label Content="前面"/>
-                                                        <Label Margin="40,0,0,0" Content="腹板" />
+                                                        <Label Margin="40,0,0,0" Content="右翼板" />
                                                     </StackPanel>
                                                 </RadioButton.Content>
                                             </RadioButton>
@@ -1038,88 +1042,88 @@
                                                 <Canvas.Resources>
                                                     <Style TargetType="TextBlock" BasedOn="{StaticResource fileNameStyle}"></Style>
                                                 </Canvas.Resources>
-                                                <ComboBox 
-                                          Width="94"
-                                          Canvas.Left="96"
-                                          Canvas.Top="109"
-                                          ItemsSource="{Binding Source={StaticResource Face},Path=Strings}"
-                                          SelectedIndex="{Binding CutFaceType}" />
+                                                <ComboBox Visibility="Collapsed"
+                                                  Width="94"
+                                                  Canvas.Left="96"
+                                                  Canvas.Top="109"
+                                                  ItemsSource="{Binding Source={StaticResource Face},Path=Strings}"
+                                                  SelectedIndex="{Binding CutFaceType}" />
                                                 <Path x:Name="pa"
-                                      VerticalAlignment="Center"
-                                      HorizontalAlignment="Center"
-                                      Canvas.Left="65"
-                                      Canvas.Top="40"
-                                      Data="M147.57261,23.44316 L236.3045,23.44316 236.3045,58.513851 z M140.147,6.3996129 L243.72928,6.3996129 M147.57261,0.49999999 L147.57261,20.166036 
-                                    M236.67491,0.49999999 L236.67491,20.166036 M260.08409,17.756814 L260.08409,64.987999 M267.4995,23.363259 L242.7798,23.363259 M267.5,58.994403
-                                    L242.78027,58.994403 M120.4274,23.44316 L31.695509,23.44316 31.695509,58.513851 z M127.853,6.3996129 L24.27073,6.3996129 M120.4274,0.49999999 L120.4274,20.166036
-                                    M31.325098,0.49999999 L31.325098,20.166036 M7.9159134,17.756814 L7.9159134,64.987999 M0.50050692,23.363259 L25.220208,23.363259 M0.50000144,58.994403 
-                                    L25.219735,58.994403 M147.57261,127.04484 L236.3045,127.04484 236.3045,91.974149 z M140.147,144.08839 L243.72928,144.08839 M147.57261,149.988 L147.57261,130.32196 
-                                    M236.67491,149.988 L236.67491,130.32196 M260.08409,132.73119 L260.08409,85.500001 M267.4995,127.12474 L242.7798,127.12474 M267.5,91.493597 L242.78027,91.493597
-                                    M120.4274,127.04484 L31.695509,127.04484 31.695509,91.974149 z M127.853,144.08839 L24.27073,144.08839 M120.4274,149.988 L120.4274,130.32196 M31.325098,149.988 
-                                    L31.325098,130.32196 M7.9159134,132.73119 L7.9159134,85.500001 M0.50050692,127.12474 L25.220208,127.12474 M0.50000144,91.493597 L25.219735,91.493597"
-                                      Fill="{ StaticResource solidclr_DimGray }"
-                                      Height="160"
-                                      Width="160"
-                                      Stretch="Fill"
-                                      Stroke="{ StaticResource solidclr_DimGray }" />
+                                                      VerticalAlignment="Center"
+                                                      HorizontalAlignment="Center"
+                                                      Canvas.Left="65"
+                                                      Canvas.Top="40"
+                                                      Data="M147.57261,23.44316 L236.3045,23.44316 236.3045,58.513851 z M140.147,6.3996129 L243.72928,6.3996129 M147.57261,0.49999999 L147.57261,20.166036 
+                                                    M236.67491,0.49999999 L236.67491,20.166036 M260.08409,17.756814 L260.08409,64.987999 M267.4995,23.363259 L242.7798,23.363259 M267.5,58.994403
+                                                    L242.78027,58.994403 M120.4274,23.44316 L31.695509,23.44316 31.695509,58.513851 z M127.853,6.3996129 L24.27073,6.3996129 M120.4274,0.49999999 L120.4274,20.166036
+                                                    M31.325098,0.49999999 L31.325098,20.166036 M7.9159134,17.756814 L7.9159134,64.987999 M0.50050692,23.363259 L25.220208,23.363259 M0.50000144,58.994403 
+                                                    L25.219735,58.994403 M147.57261,127.04484 L236.3045,127.04484 236.3045,91.974149 z M140.147,144.08839 L243.72928,144.08839 M147.57261,149.988 L147.57261,130.32196 
+                                                    M236.67491,149.988 L236.67491,130.32196 M260.08409,132.73119 L260.08409,85.500001 M267.4995,127.12474 L242.7798,127.12474 M267.5,91.493597 L242.78027,91.493597
+                                                    M120.4274,127.04484 L31.695509,127.04484 31.695509,91.974149 z M127.853,144.08839 L24.27073,144.08839 M120.4274,149.988 L120.4274,130.32196 M31.325098,149.988 
+                                                    L31.325098,130.32196 M7.9159134,132.73119 L7.9159134,85.500001 M0.50050692,127.12474 L25.220208,127.12474 M0.50000144,91.493597 L25.219735,91.493597"
+                                                      Fill="{ StaticResource solidclr_DimGray }"
+                                                      Height="160"
+                                                      Width="160"
+                                                      Stretch="Fill"
+                                                      Stroke="{ StaticResource solidclr_DimGray }" />
                                                 <TextBox Grid.Row="3"
-                                         Text="{Binding ULPoint.X}"
-                                         Width="50"
-                                         Canvas.Left="86"
-                                         Canvas.Top="10" />
+                                                     Text="{Binding ULPoint.X}"
+                                                     Width="50"
+                                                     Canvas.Left="86"
+                                                     Canvas.Top="10" />
                                                 <TextBox Text="{Binding URPoint.X}"
-                                         Grid.Row="3"
-                                         Width="50"
-                                         Canvas.Left="154"
-                                         Canvas.Top="10" />
+                                                     Grid.Row="3"
+                                                     Width="50"
+                                                     Canvas.Left="154"
+                                                     Canvas.Top="10" />
                                                 <TextBox Text="{Binding ULPoint.Y}"
-                                         Width="50"
-                                         Canvas.Left="10"
-                                         Canvas.Top="70" />
+                                                     Width="50"
+                                                     Canvas.Left="10"
+                                                     Canvas.Top="70" />
                                                 <TextBox Text="{Binding DLPoint.Y}"
-                                         Width="50"
-                                         Canvas.Left="10"
-                                         Canvas.Top="143" />
+                                                     Width="50"
+                                                     Canvas.Left="10"
+                                                     Canvas.Top="143" />
                                                 <TextBox Text="{Binding URPoint.Y}"
-                                         Width="50"
-                                         Canvas.Left="230"
-                                         Canvas.Top="70" />
+                                                     Width="50"
+                                                     Canvas.Left="230"
+                                                     Canvas.Top="70" />
                                                 <TextBox Text="{Binding DRPoint.Y}"
-                                         Width="50"
-                                         Canvas.Left="230"
-                                         Canvas.Top="143" />
+                                                     Width="50"
+                                                     Canvas.Left="230"
+                                                     Canvas.Top="143" />
                                                 <TextBox Text="{Binding DLPoint.X}"
-                                         Width="50"
-                                         Canvas.Left="86"
-                                         Canvas.Top="205" />
+                                                     Width="50"
+                                                     Canvas.Left="86"
+                                                     Canvas.Top="205" />
                                                 <TextBox Text="{Binding DRPoint.X}"
-                                         Width="50"
-                                         Canvas.Left="154"
-                                         Canvas.Top="205" />
+                                                     Width="50"
+                                                     Canvas.Left="154"
+                                                     Canvas.Top="205" />
                                                 <CheckBox IsChecked="{Binding ULCheck}"
-                                          Width="16"
-                                          Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
-                                          Style="{StaticResource CheckedStyle}"
-                                          Canvas.Left="86"
-                                          Canvas.Top="70" />
+                                                      Width="16"
+                                                      Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
+                                                      Style="{StaticResource CheckedStyle}"
+                                                      Canvas.Left="86"
+                                                      Canvas.Top="70" />
                                                 <CheckBox IsChecked="{Binding DLCheck}"
-                                          Width="16"
-                                          Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
-                                          Style="{StaticResource CheckedStyle}"
-                                          Canvas.Left="86"
-                                          Canvas.Top="152" />
+                                                      Width="16"
+                                                      Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
+                                                      Style="{StaticResource CheckedStyle}"
+                                                      Canvas.Left="86"
+                                                      Canvas.Top="152" />
                                                 <CheckBox IsChecked="{Binding URCheck}"
-                                          Width="16"
-                                          Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
-                                          Style="{StaticResource CheckedStyle}"
-                                          Canvas.Left="188"
-                                          Canvas.Top="70" />
+                                                      Width="16"
+                                                      Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
+                                                      Style="{StaticResource CheckedStyle}"
+                                                      Canvas.Left="188"
+                                                      Canvas.Top="70" />
                                                 <CheckBox IsChecked="{Binding DRCheck}"
-                                          Width="16"
-                                          Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
-                                          Style="{StaticResource CheckedStyle}"
-                                          Canvas.Left="188"
-                                          Canvas.Top="152" />
+                                                      Width="16"
+                                                      Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
+                                                      Style="{StaticResource CheckedStyle}"
+                                                      Canvas.Left="188"
+                                                      Canvas.Top="152" />
                                             </Canvas>
                                         </Grid>
                                     </StackPanel>
@@ -1140,6 +1144,6 @@
 
         </Grid>
 
-        
+
     </Grid>
 </WPFBase:BasePage>
