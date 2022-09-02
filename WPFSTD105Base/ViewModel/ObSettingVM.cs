@@ -1174,6 +1174,7 @@ namespace WPFSTD105.ViewModel
                 .SelectMany(x => x)
                 .Select(x => new
                 {
+                    x.Lock,
                     x.Creation,
                     x.Revise,
                     x.Phase,
@@ -1287,6 +1288,8 @@ namespace WPFSTD105.ViewModel
                                 steelAttr.steelAttr.t1 = item.t1;
                                 steelAttr.steelAttr.t2 = item.t2;
 
+                                // 上鎖
+                                steelAttr.steelAttr.Lock = item.Lock;
 
                                 // GUID (Data Name)
                                 DataCorrespond single = DataCorrespond.FirstOrDefault(x =>
