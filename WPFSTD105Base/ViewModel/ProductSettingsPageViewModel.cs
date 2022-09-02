@@ -14,6 +14,10 @@ namespace WPFSTD105.ViewModel
     {
         public SteelAttr steelAttr { get; set; }
         /// <summary>
+        /// DataName dm檔
+        /// </summary>
+        public String DataName { get; set; }
+        /// <summary>
         /// 建立日期
         /// </summary>
         public DateTime Creation { get; set; }

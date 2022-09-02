@@ -23,9 +23,13 @@
                   xmlns:SofSettings="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
                   xmlns:spa="clr-namespace:WPFSTD105;assembly=WPFSTD105"
                   xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                  xmlns:System="clr-namespace:System;assembly=mscorlib"
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Title="製品設定">
+
+
+
     <!--頁面框架-->
     <WPFBase:BasePage.Resources>
         <ResourceDictionary>
@@ -34,10 +38,11 @@
             <STD105:FACE_ToStringConverter x:Key="Face" />
             <STD105:START_HOLE_ToStringConverter x:Key="StartHole" />
 
+            <System:Boolean x:Key="visible">False</System:Boolean>
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
     <!--物件設定與設定完成的物件列表-->
-    <Grid dx:ThemeManager.ThemeName="Win10Light"    Background="#d3d3d3"     >
+    <Grid x:Name="DataGrid" dx:ThemeManager.ThemeName="Win10Light"    Background="#d3d3d3"     >
         <Grid.Resources>
             <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }" >
                 <Setter Property="BorderThickness" Value="1"/>
@@ -182,7 +187,7 @@
                                 AutoGenerateColumns="None"
                                 SelectionMode="None"
                                 MaxHeight="500"              
-                                ItemsSource="{Binding DataViews}">
+                                ItemsSource="{Binding DataViews}" SelectedItemChanged="Grid_SelectedChange">
                     <dxg:GridControl.Resources>
                         <Style TargetType="dxg:GridColumn" >
                             <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
@@ -295,11 +300,12 @@
                         </dxg:GridColumn.CellStyle>
                     </dxg:GridColumn>
 
+                    <dxg:GridColumn FieldName="DataName" IsSmart="True"   Header="dm檔名" Width="auto" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="AssemblyNumber" Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="auto"/>
                     <dxg:GridColumn FieldName="PartNumber" Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="auto" />
                     <dxg:GridColumn FieldName="TeklaName" IsSmart="True"   Header="名稱" Width="auto"/>
                     <dxg:GridColumn FieldName="TypeDesc"  IsSmart="True" Header="鋼材類型"/>
-                    <dxg:GridColumn FieldName="SteelType"  IsSmart="True" Header="鋼材類型(Index)" Visible="True"/>
+                    <dxg:GridColumn FieldName="SteelType"  IsSmart="True" Header="鋼材類型(Index)" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="Profile" IsSmart="True"  Header="斷面規格"  Width="auto"/>
                     <dxg:GridColumn FieldName="Material" IsSmart="True"  Header="材質"  Width="auto"/>
                     <dxg:GridColumn FieldName="Count"  IsSmart="True"  Width="auto" Header="數量"  />
@@ -553,8 +559,7 @@
                                   PreviewMouseRightButtonDown="model_PreviewMouseRightButtonDown"
                                   Focusable="True"
                                   AntiAliasingSamples="x16"
-                                  Renderer="NativeExperimental"
-                                  
+                                  Renderer="NativeExperimental"                                  
                                   ShowFps="True">
                         <spa:ModelExt.ContextMenu>
                             <ContextMenu Style="{StaticResource BaseStyle}"
@@ -597,10 +602,10 @@
                                           Style="{StaticResource BaseStyle}" />
                             </ContextMenu>
                         </spa:ModelExt.ContextMenu>
-                        <ddes:Model.ProgressBar>
+                        <spa:ModelExt.ProgressBar>
                             <ddes:ProgressBar Lighting="False" />
-                        </ddes:Model.ProgressBar>
-                        <ddes:Model.Viewports>
+                        </spa:ModelExt.ProgressBar>
+                        <spa:ModelExt.Viewports>
                             <ddes:Viewport DisplayMode="Flat"
                                            InitialView="vcFrontFaceTopLeft"
                                            OriginSymbols="{Binding OriginSymbols}"
@@ -634,13 +639,13 @@
                                             <ddes:ZoomFitToolBarButton />
                                             <ddes:ToolBarButton ToolTipText="線性標註"
                                                                 Click="LinearDim"
-                                                                StyleMode="PushButton"
+                                                                StyleMode="PushButton" Visible="False"
                                                                 Image="{Binding Source={StaticResource LinearDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
                                             <ddes:ToolBarButton ToolTipText="角度標註"
-                                                                StyleMode="PushButton"
+                                                                StyleMode="PushButton" Visible="False"
                                                                 Image="{Binding Source={StaticResource AngleDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
                                             <ddes:ToolBarButton ToolTipText="絕對座標"
-                                                                StyleMode="PushButton"
+                                                                StyleMode="PushButton" Visible="False"
                                                                 Image="{Binding Source={StaticResource AbsDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
                                         </ddes:ToolBar.Buttons>
                                     </ddes:ToolBar>
@@ -663,10 +668,11 @@
                                                        BackRingColor="White" />
                                 </ddes:Viewport.ViewCubeIcon>
                             </ddes:Viewport>
-                        </ddes:Model.Viewports>
+                        </spa:ModelExt.Viewports>
                     </spa:ModelExt>
                 </Grid>
             </TabItem>
+            
             <TabItem Header="2D視圖"  Margin="-1,0,0,0"   Style="{StaticResource DrawTabItem}">
                 <Grid>
                     <spa:ModelExt x:Name="drawing" SelectionChanged="model_SelectionChanged" Loaded="drawing_Loaded"
