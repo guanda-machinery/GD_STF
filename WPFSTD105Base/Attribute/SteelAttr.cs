@@ -48,24 +48,71 @@ namespace WPFSTD105.Attribute
             Material = profile.Material;
             //GUID = Guid.NewGuid();
         }
+        /// <summary>
+        /// 建立日期
+        /// </summary>
+        public DateTime Creation { get; set; }
+        /// <summary>
+        /// 修改日期
+        /// </summary>
+        public DateTime? Revise { get; set; }
+        /// <summary>
+        /// Phase
+        /// </summary>
+        public int Phase { get; set; }
+        /// <summary>
+        /// 拆運 車次
+        /// </summary>
+        public int ShippingNumber { get; set; }
+        /// <summary>
+        /// 標題1
+        /// </summary>
+        public string Title1 { get; set; }
+        /// <summary>
+        /// 標題2
+        /// </summary>
+        public string Title2 { get; set; }
+        /// <summary>
+        /// 名稱
+        /// </summary>
+        public string Name { get; set; }
+
         //20220728 張燕華 轉換出inp檔案->新增斷面規格屬性
-        //圓角半徑r1(mm)
+        /// <summary>
+        /// 圓角半徑r1(mm)
+        /// </summary>
         public float r1 { get; set; }
-        //圓角半徑r2(mm)
+        /// <summary>
+        /// 圓角半徑r2(mm)
+        /// </summary>
         public float r2 { get; set; }
-        //表面積(m2/m)
+        /// <summary>
+        /// 表面積(m2/m)
+        /// </summary>
         public float surface_area { get; set; }
-        //斷面積(m2)
+        /// <summary>
+        /// 斷面積(m2)
+        /// </summary>
         public float section_area { get; set; }
-        //密度(kg/m3)
+        /// <summary>
+        /// 密度(kg/m3)
+        /// </summary>
         public float density { get; set; }
-        //突出肢長度e(mm)
+        /// <summary>
+        /// 突出肢長度e(mm)
+        /// </summary>
         public float e { get; set; }
-        //直徑d(mm)
+        /// <summary>
+        /// 直徑d(mm)
+        /// </summary>
         public float diameter { get; set; }
 
         /// <inheritdoc/>
         public double Length { get; set; } = 5000;
+        /// <summary>
+        /// 製品重
+        /// </summary>
+        public double Weight { get; set; }
         /// <inheritdoc/>
         public float H { get; set; }
         /// <inheritdoc/>
@@ -78,8 +125,12 @@ namespace WPFSTD105.Attribute
         public float Kg { get; set; }
         /// <inheritdoc/>
         public string Material { get; set; }
-        /// <inheritdoc/>
-        public string PartNumber { get; set; }
+        /// <summary>
+        /// 製品長度
+        /// </summary>
+        public double pieceLength{ get; set; }
+    /// <inheritdoc/>
+    public string PartNumber { get; set; }
         /// <inheritdoc/>
         public string AsseNumber { get; set; }
         /// <inheritdoc/>

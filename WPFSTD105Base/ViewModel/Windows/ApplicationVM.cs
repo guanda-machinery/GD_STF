@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using GD_STD.Data;
 using System.Windows.Input;
 using DevExpress.Xpf.WindowsUI;
+using WPFSTD105.Model;
 
 namespace WPFSTD105
 {
@@ -414,6 +415,47 @@ namespace WPFSTD105
                 return $@"{DirectoryModel()}\{ModelPath.Dev_Part}";
 
             throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
+        }
+        /// <summary>
+        /// 取得所有dm檔
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetAllDevPart() 
+        {
+            List<string> dmlist = new List<string>();
+            foreach (string d in Directory.GetFileSystemEntries(ApplicationVM.DirectoryDevPart()))
+            {
+                if (File.Exists(d))
+                {
+                    string dataName = Path.GetFileName(d);//檔案名稱
+                    string ext = Path.GetExtension(d);//副檔名
+                    if (ext == ".dm") //如果是 dm 檔案
+                    {
+                        dmlist.Add(dataName.Replace(ext,""));
+                    }
+                }
+            }
+            return dmlist;
+        }
+        /// <summary>
+        /// 建立dm檔
+        /// </summary>
+        /// <param name="model"></param>
+        public void CreateDMFile( ModelExt model)
+        {
+            STDSerialization ser = new STDSerialization();
+            ApplicationVM appVM = new ApplicationVM();
+            List<string> dmList = appVM.GetAllDevPart();
+            NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
+            // 跑已存在dm檔，產生未有dm檔之NC檔
+            foreach (var nc in ncTemps)
+            {
+                if (!dmList.Contains(nc.SteelAttr.GUID.Value.ToString()))
+                {
+                    model.Clear(); //清除目前模型
+                    model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString());
+                }
+            }
         }
         /// <summary>
         /// 目前模型存放構件資料序列化的路徑
