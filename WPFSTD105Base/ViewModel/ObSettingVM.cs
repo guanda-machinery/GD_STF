@@ -84,6 +84,14 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public ICommand ReadPart { get; set; }
         /// <summary>
+        /// 另存加入零件 20220902 張燕華
+        /// </summary>
+        public ICommand AddNewOne { get; set; }
+        /// <summary>
+        /// OK鈕 20220902 張燕華
+        /// </summary>
+        public ICommand OKtoConfirmChanges { get; set; }
+        /// <summary>
         /// 刪除孔位
         /// </summary>
         public ICommand DeleteHole { get; set; }

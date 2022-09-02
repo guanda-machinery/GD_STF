@@ -289,6 +289,7 @@ namespace STD_105.Office
             #endregion
 
             #region VM Command
+            
             //加入主零件
             ViewModel.AddPart = new RelayCommand(() =>
             {
@@ -484,6 +485,16 @@ namespace STD_105.Office
                     MessageBoxOptions.None,
                     FloatingMode.Popup);
                 }
+            });
+            //另存加入零件 20220902 張燕華
+            ViewModel.AddNewOne = new RelayCommand(() =>
+            {
+                //在此撰寫程式碼..
+            }); 
+            //OK鈕 20220902 張燕華
+            ViewModel.OKtoConfirmChanges = new RelayCommand(() =>
+            {
+                //在此撰寫程式碼..
             });
             //加入孔
             ViewModel.AddHole = new RelayCommand(() =>
