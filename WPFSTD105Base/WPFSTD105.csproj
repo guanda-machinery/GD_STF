@@ -488,6 +488,7 @@
     <Compile Include="ViewModel\LoginVM.cs" />
     <Compile Include="ViewModel\MiddleAxisVM.cs" />
     <Compile Include="ViewModel\ModeSelectedVM.cs" />
+    <Compile Include="ViewModel\ProductSettingsPageVM.cs" />
     <Compile Include="ViewModel\ObSettingVM.cs" />
     <Compile Include="ViewModel\OfficeTypeSettingVM.cs" />
     <Compile Include="ViewModel\ProcessingMonitorVM.cs" />
