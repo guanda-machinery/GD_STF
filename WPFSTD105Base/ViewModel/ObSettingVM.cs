@@ -388,7 +388,7 @@ namespace WPFSTD105.ViewModel
                 steelAttr.W = SteelAttr.W;
                 steelAttr.t1 = SteelAttr.t1;
                 steelAttr.t2 = SteelAttr.t2;
-                steelAttr.Phrase = SteelAttr.Phrase;
+                steelAttr.Phase = SteelAttr.Phase;
                 steelAttr.ShippingNumber = SteelAttr.ShippingNumber;
                 steelAttr.Title1 = SteelAttr.Title1;
                 steelAttr.Title2 = SteelAttr.Title2;
@@ -1136,6 +1136,11 @@ namespace WPFSTD105.ViewModel
         public List<ProductSettingsPageViewModel> GetData()
         {
             STDSerialization ser = new STDSerialization();
+            // 限制Grid出現之內容
+            List<OBJECT_TYPE> allowType = new List<OBJECT_TYPE> { OBJECT_TYPE.RH, OBJECT_TYPE.BH, OBJECT_TYPE.H, OBJECT_TYPE.BOX, OBJECT_TYPE.TUBE, OBJECT_TYPE.LB, OBJECT_TYPE.CH };
+
+            // 取得dm檔與零件之對應
+            ObservableCollection<DataCorrespond> DataCorrespond = ser.GetDataCorrespond();
 
             // 取得構件資訊
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();
@@ -1275,7 +1280,13 @@ namespace WPFSTD105.ViewModel
                                 steelAttr.steelAttr.t2 = item.t2;
 
 
-
+                                // GUID (Data Name)
+                                DataCorrespond single = DataCorrespond.FirstOrDefault(x =>
+                                x.Profile == steelAttr.Profile &&
+                                x.Number == steelAttr.steelAttr.PartNumber &&
+                                allowType.Contains(x.Type));
+                                if (single != null)
+                                steelAttr.DataName = single.DataName.ToString();
                                 //partNumber_ID.Remove(delPart);
                                 steelAttrList.Add(steelAttr);
                                 #endregion
@@ -1315,8 +1326,6 @@ namespace WPFSTD105.ViewModel
                     #endregion
                 }
             }
-            // 限制Grid出現之內容
-            List<OBJECT_TYPE> allowType = new List<OBJECT_TYPE> { OBJECT_TYPE.RH, OBJECT_TYPE.BH, OBJECT_TYPE.H, OBJECT_TYPE.BOX, OBJECT_TYPE.TUBE, OBJECT_TYPE.LB, OBJECT_TYPE.CH };
             return steelAttrList.Where(x => allowType.Contains(x.Type)).ToList();
             
         }

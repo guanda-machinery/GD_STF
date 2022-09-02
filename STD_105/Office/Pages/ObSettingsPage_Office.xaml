@@ -146,8 +146,7 @@
                                            OriginSymbols="{Binding OriginSymbols}"
                                            SmallSizeRatio="0.001">
                                 <ddes:Viewport.Background>
-                                    <ddgr:BackgroundSettings StyleMode="Solid"
-                                                             TopColor="{StaticResource solidclr_SilverGray}" />
+                                    <ddgr:BackgroundSettings StyleMode="Solid" TopColor="{StaticResource solidclr_SilverGray}" />
                                 </ddes:Viewport.Background>
                                 <ddes:Viewport.CoordinateSystemIcon>
                                     <ddes:CoordinateSystemIcon Lighting="True"
