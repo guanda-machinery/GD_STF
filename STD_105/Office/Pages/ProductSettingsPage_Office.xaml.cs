@@ -33,7 +33,7 @@ using DevExpress.Xpf.Grid;
 
 namespace STD_105.Office
 {
-    public partial class ProductSettingsPage_Office : BasePage<ProductSettingsPageVM>
+    public partial class ProductSettingsPage_Office : BasePage<ObSettingVM>
     {
         /// <summary>
         /// 20220823 蘇冠綸 製品設定
