@@ -146,8 +146,7 @@
                                            OriginSymbols="{Binding OriginSymbols}"
                                            SmallSizeRatio="0.001">
                                 <ddes:Viewport.Background>
-                                    <ddgr:BackgroundSettings StyleMode="Solid"
-                                                             TopColor="{StaticResource solidclr_SilverGray}" />
+                                    <ddgr:BackgroundSettings StyleMode="Solid" TopColor="{StaticResource solidclr_SilverGray}" />
                                 </ddes:Viewport.Background>
                                 <ddes:Viewport.CoordinateSystemIcon>
                                     <ddes:CoordinateSystemIcon Lighting="True"
@@ -334,7 +333,7 @@
                              Text="{Binding SteelAttr.PartNumber}" />
                     <Label Grid.Row="1" Content="構件編號：" />
                     <TextBox Grid.Row="1"
-                             Text="" />
+                             Text="{Binding SteelAttr.AsseNumber}" />
                     <Label Grid.Row="2"
                            Content="零件材質：" />
                     <ComboBox Grid.Row="2"
@@ -358,7 +357,7 @@
                            Content="零件數量：" />
                     <TextBox Grid.Row="6"
                              x:Name="number"
-                             Text="{Binding SteelAttr.Number}" />
+                             Text="{Binding SteelAttr.Number}" Cursor="IBeam" />
                     <STD105:DataButtons_Office Grid.Row="8"
                                                Grid.ColumnSpan="2"
                                                Width="450"

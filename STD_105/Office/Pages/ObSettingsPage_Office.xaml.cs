@@ -256,7 +256,7 @@ namespace STD_105.Office
 
 
 
-                //  SaveModel(true);
+                //SaveModel(true);
                 #endregion
             });
             //修改主零件
@@ -2586,7 +2586,7 @@ namespace STD_105.Office
 
             #region 零件列表
             // 零件列表
-            SteelPart steelPart = new SteelPart(ViewModel.SteelAttr, ViewModel.SteelAttr.PartNumber, ViewModel.SteelAttr.Number, ViewModel.SteelAttr.GUID.Value);
+            SteelPart steelPart = new SteelPart(ViewModel.SteelAttr, ViewModel.SteelAttr.PartNumber, ViewModel.SteelAttr.Number, ViewModel.SteelAttr.GUID.Value,ViewModel.SteelAttr.Phase,ViewModel.SteelAttr.ShippingNumber,ViewModel.SteelAttr.Title1,ViewModel.SteelAttr.Title2);
             steelPart.ID = new List<int>();
             steelPart.Match = new List<bool>();
             steelPart.Material = ViewModel.SteelAttr.Material;

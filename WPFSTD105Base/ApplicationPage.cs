@@ -139,9 +139,13 @@ namespace WPFSTD105
         /// </summary>
         ObSettings,
         /// <summary>
-        /// 排版設定(自動)
+        /// 排版設定
         /// </summary>
         AutoTypeSettings,
+        /// <summary>
+        ///(舊) 排版設定
+        /// </summary>
+        old_PartsList,
         /// <summary>
         /// 加工監控
         /// </summary>

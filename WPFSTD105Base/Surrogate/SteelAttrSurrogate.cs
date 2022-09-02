@@ -25,7 +25,7 @@ namespace WPFSTD105.Surrogate
         /// <inheritdoc/>
         public Guid? GUID { get; set; }
         /// <inheritdoc/>
-        public OBJETC_TYPE Type { get; set; }
+        public OBJECT_TYPE Type { get; set; }
         /// <inheritdoc/>
         public string AsseNumber { get; set; }
         /// <inheritdoc/>
@@ -54,7 +54,7 @@ namespace WPFSTD105.Surrogate
         public float t1 { get; set; }
         /// <inheritdoc/>
         public float t2 { get; set; }
-        //public GD_STD.Enum.OBJETC_TYPE Type { get; set; }
+        //public GD_STD.Enum.OBJECT_TYPE Type { get; set; }
         /// <inheritdoc/>
         public string TeklaPartID { get; set; }
         /// <inheritdoc/>

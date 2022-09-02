@@ -69,7 +69,7 @@
     <Compile Include="MAGNIFICATION.cs" />
     <Compile Include="MATERIAL.cs" />
     <Compile Include="MOBILE_RACK.cs" />
-    <Compile Include="OBJETC_TYPE.cs" />
+    <Compile Include="OBJECT_TYPE.cs" />
     <Compile Include="OPERATOR.cs" />
     <Compile Include="ORIGIN.cs" />
     <Compile Include="PHONE_SATUS.cs" />

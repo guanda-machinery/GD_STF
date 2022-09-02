@@ -16,7 +16,7 @@ namespace GD_STD.Data
         /// <summary>
         /// 物件 type
         /// </summary>
-        public OBJETC_TYPE Type { get; set; }
+        public OBJECT_TYPE Type { get; set; }
         /// <summary>
         /// 設定檔案名稱
         /// </summary>

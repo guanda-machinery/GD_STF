@@ -11,7 +11,7 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="DRAWING_STATE" nillable="true" type="tns:DRAWING_STATE" />
-  <xs:simpleType name="OBJETC_TYPE">
+  <xs:simpleType name="OBJECT_TYPE">
     <xs:restriction base="xs:string">
       <xs:enumeration value="RH" />
       <xs:enumeration value="CH" />
@@ -40,5 +40,5 @@
       <xs:enumeration value="NUT" />
     </xs:restriction>
   </xs:simpleType>
-  <xs:element name="OBJETC_TYPE" nillable="true" type="tns:OBJETC_TYPE" />
+  <xs:element name="OBJECT_TYPE" nillable="true" type="tns:OBJECT_TYPE" />
 </xs:schema>

@@ -27,6 +27,6 @@ namespace GD_STD.Base
         /// 斷面規格 type
         /// </summary>
         [DataMember]
-        OBJETC_TYPE Type { get; set; }
+        OBJECT_TYPE Type { get; set; }
     }
 }

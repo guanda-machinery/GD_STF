@@ -24,8 +24,9 @@ namespace STD_105.Office
                 // 空白遮蔽頁面
                 case OfficePage.Home:
                     basePage = new FirstPage();
-                    break;
-                // 2022/08/24 張彥華 開啟舊排版
+                    break; 
+                //20220824 張燕華 舊排版
+                // 製品設定
                 case OfficePage.old_ObSettings:
                     basePage = new ObSettingsPage_Office();//舊版頁面
                     break;
@@ -48,6 +49,12 @@ namespace STD_105.Office
                 case OfficePage.AutoTypeSettings:
                     //   basePage = new PartsList_Office();//舊版頁面
                     basePage = new TypesettingsSetting();//新版頁面
+                    break;
+                //舊排版設定
+                //20220816 蘇冠綸 排版設定
+                case OfficePage.old_PartsList:
+                    basePage = new PartsList_Office();//舊版頁面
+
                     break;
 
                 // 加工監控

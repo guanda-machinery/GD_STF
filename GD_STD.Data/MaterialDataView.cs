@@ -83,8 +83,19 @@ namespace GD_STD.Data
         /// 零件列表
         /// </summary>
         public ObservableCollection<TypeSettingDataView> Parts { get; set; } = new ObservableCollection<TypeSettingDataView>();
-        /// <inheritdoc/>
-        public double StartCut { get; set; }
+        /// <summary>
+        /// 零件數量
+        /// </summary>
+        public int PartsCount
+        {
+            get { return Parts.Count; }
+        }
+    
+
+
+
+    /// <inheritdoc/>
+    public double StartCut { get; set; }
         /// <inheritdoc/>
         public double EndCut { get; set; }
         /// <inheritdoc/>
@@ -118,9 +129,24 @@ namespace GD_STD.Data
             }
         }
         /// <summary>
-        /// 使用長度
+        /// 素材消耗
         /// </summary>
         [Excel("損耗", 5)]
-        public double Loss { get => Parts.Select(el => el.Length).Aggregate((l1, l2) => l1 + l2)  + Cut * (Parts.Count -1d > 0d ? Parts.Count -1d : 0d); }
+        public double Loss 
+        {
+            //get => Parts.Select(el => el.Length).Aggregate((l1, l2) => l1 + l2)  + Cut * (Parts.Count -1d > 0d ? Parts.Count -1d : 0d); 
+            get 
+            {
+                var A = Parts.Select(el => el.Length).Aggregate((l1, l2) => l1 + l2); //總零件長
+                var B = Cut * (Parts.Count - 1d > 0d ? Parts.Count - 1d : 0d); //鋸床切割損耗
+                var C = StartCut + EndCut;
+                //材料前後端切除
+                return A + B +C;
+            }
+        }
+
+
+
+
     }
 }

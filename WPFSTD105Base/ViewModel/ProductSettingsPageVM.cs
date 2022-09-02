@@ -24,14 +24,13 @@ using DevExpress.Xpf.CodeView;
 using GD_STD.Data;
 using DevExpress.Xpf.WindowsUI;
 using DevExpress.Xpf.Core;
-using devDept.Eyeshot.Translators;
 
 namespace WPFSTD105.ViewModel
 {
     /// <summary>
     /// 物件設定
     /// </summary>
-    public class ObSettingVM : WPFBase.BaseViewModel
+    public class ProductSettingsPageVM : AbsTypeSettingVM
     {
         #region 命令
         /// <summary>
@@ -162,6 +161,11 @@ namespace WPFSTD105.ViewModel
         /// 變更直徑參數
         /// </summary>
         public bool CheckDia { get; set; } = true;
+
+        /// <summary>
+        /// 零件編號 20220901 張燕華
+        /// </summary>
+        public bool PartNumber { get; set; } = true;
 
         /// <summary>
         /// 變更起始孔參數
@@ -380,18 +384,6 @@ namespace WPFSTD105.ViewModel
                 steelAttr.Material = SteelAttr.Material;
                 steelAttr.Number = SteelAttr.Number;
                 steelAttr.PartNumber = SteelAttr.PartNumber;
-                // 2022/08/31 呂宗霖 新增 新增日期
-                steelAttr.Creation = SteelAttr.Creation;
-                // 2022/08/31 呂宗霖 新增 修改日期
-                steelAttr.Revise = SteelAttr.Revise;
-                steelAttr.H = SteelAttr.H;
-                steelAttr.W = SteelAttr.W;
-                steelAttr.t1 = SteelAttr.t1;
-                steelAttr.t2 = SteelAttr.t2;
-                steelAttr.Phase = SteelAttr.Phase;
-                steelAttr.ShippingNumber = SteelAttr.ShippingNumber;
-                steelAttr.Title1 = SteelAttr.Title1;
-                steelAttr.Title2 = SteelAttr.Title2;
                 SteelAttr = (SteelAttr)steelAttr.DeepClone();
 
             }
@@ -855,20 +847,12 @@ namespace WPFSTD105.ViewModel
         }
         #endregion
 
-        #region 新版屬性
-        /// <summary>
-        /// 零件資訊
-        /// </summary>
-        public ObservableCollection<ProductSettingsPageViewModel> DataViews { get; set; } = new ObservableCollection<ProductSettingsPageViewModel>();
-        #endregion
-
-
         /// <summary>
         /// 初始化
         /// </summary>
-        public ObSettingVM()
+        public ProductSettingsPageVM()
         {
-            //Reductions = new ReductionList(c);
+            //Reductions = new ReductionList(Model);
             //TODO:可以設定 X Y Z 軸向顏色
             //初始化數據綁定的坐標系圖標。
             CoordinateSystemIcon = new CoordinateSystemIcon();
@@ -911,10 +895,6 @@ namespace WPFSTD105.ViewModel
             DisplayCreatedListCommand = DisplayCreatedList();
             DisplayPartsCommand = DisplayParts();
             DisplayHoleCommand = DisplayHole();
-
-            // 取得專案Grid資訊
-            DataViews = new ObservableCollection<ProductSettingsPageViewModel>(GetData());
-
 
             ShowSteelTypeFromPartListCommand = ShowSteelTypeFromPartList(); //20220825 張燕華 從零件清單所選的型鋼型態
             ShowSteelTypeCommand = ShowSteelType(); //20220829 張燕華 選擇型鋼型態
@@ -961,26 +941,7 @@ namespace WPFSTD105.ViewModel
         private SteelAttr Steelbuffer { get; set; } = new SteelAttr();
         #endregion
 
-        #region 私有方法       
-        public ObservableCollection<ProductSettingsPageViewModel> GetPartData(ModelExt model)
-        {
-            // get all dm file
-            ApplicationVM appVM = new ApplicationVM();
-            List<string> dmList = appVM.GetAllDevPart();
-
-            // foreach dm file
-            foreach (var dataName in dmList)
-            {
-                // 讀取dm檔
-                ReadFile readFile = new ReadFile($@"{ApplicationVM.DirectoryDevPart()}\{dataName}.dm", devDept.Serialization.contentType.GeometryAndTessellation);
-                readFile.DoWork();
-                readFile.AddToScene(model);//將讀取完的檔案放入到模型
-                                           // 加入VM
-                DataViews.Add(new ProductSettingsPageViewModel() { steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData });
-            }
-            return DataViews;    
-        }
-        
+        #region 私有方法
         /// <summary>
         /// 加入節點
         /// </summary>
@@ -1109,9 +1070,9 @@ namespace WPFSTD105.ViewModel
             return new WPFBase.RelayParameterizedCommand((object cbxSelectedItem) =>
             {
                 //this weel
-                var propertyInfo = (ProductSettingsPageViewModel)cbxSelectedItem;
-                ProfileType = Convert.ToInt32(propertyInfo.Type);
-                SteelSectionProperty = propertyInfo.Profile;                
+                var propertyInfo = (GD_STD.Data.TypeSettingDataView)cbxSelectedItem;
+                ProfileType = Convert.ToInt32(propertyInfo.SteelType);
+                SteelSectionProperty = propertyInfo.Profile;
             });
         }
         /// <summary>
@@ -1127,210 +1088,11 @@ namespace WPFSTD105.ViewModel
                 }
             });
         }
-        #endregion
-            
-        /// <summary>
-        /// 取得專案內零件資訊
-        /// </summary>
-        /// <returns></returns>
-        public List<ProductSettingsPageViewModel> GetData()
+
+        protected override RelayCommand Manual()
         {
-            STDSerialization ser = new STDSerialization();
-            // 限制Grid出現之內容
-            List<OBJECT_TYPE> allowType = new List<OBJECT_TYPE> { OBJECT_TYPE.RH, OBJECT_TYPE.BH, OBJECT_TYPE.H, OBJECT_TYPE.BOX, OBJECT_TYPE.TUBE, OBJECT_TYPE.LB, OBJECT_TYPE.CH };
-
-            // 取得dm檔與零件之對應
-            ObservableCollection<DataCorrespond> DataCorrespond = ser.GetDataCorrespond();
-
-            // 取得構件資訊
-            ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();
-            if (assemblies==null)
-            {
-                return new List<ProductSettingsPageViewModel>(); 
-            }
-            //取得零件資訊
-            Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
-
-            // 取得孔群資訊
-            Dictionary<string, ObservableCollection<SteelBolts>> bolts = ser.GeBolts();
-
-            // 構件 vs 該節點
-            var assNumber_ID = assemblies
-                .Select(x => new { x.Number, x.ID })
-                .ToList()
-                .ToDictionary(x => x.Number, y => y.ID);//.SelectMany(x => x.Key, (x, y) =>new { x.Key, x.Value }).Select(x => new {x.Key,x.Value})
-
-            // 零件 vs 父節點
-            // SelectMany 把資料攤平
-            var partNumber_ID = part.Values
-                .SelectMany(x => x)
-                .Select(x => new
-                {
-                    x.Lock,
-                    x.Creation,
-                    x.Revise,
-                    x.Phase,
-                    x.ShippingNumber,
-                    x.Title1,
-                    x.Title2,
-                    x.H,x.W,x.t1,x.t2,
-                    x.Number,
-                    x.Type,
-                    x.DrawingName,
-                    x.Profile,
-                    x.Material,
-                    x.Count,
-                    x.Length,
-                    x.UnitWeight,
-                    x.Father,
-                    x.ID
-                }).ToList();
-
-            // 孔 vs 父節點
-            var boltsFather_ID = (bolts.Values).SelectMany(x => x).Select(x => new
-            {
-                Creation = x.Creation,
-                Revise = x.Revise,
-                Count = (x == null ? x.Count : 0),
-                Father = (x == null ? null : x.Father),
-                Profile = (x == null ? "" : x.Profile),
-                Type = "Bolts",
-                Material = (x == null ? "" : x.Material)
-            });
-
-            var boltsList = bolts.Values.ToList();
-
-            List<ProductSettingsPageViewModel> steelAttrList = new List<ProductSettingsPageViewModel>();
-            ProductSettingsPageViewModel steelAttr = new ProductSettingsPageViewModel();
-            foreach (KeyValuePair<string, List<int>> assembliesItem in assNumber_ID)
-            {
-                // 構件編號
-                string assem = assembliesItem.Key;
-                // 構件ID List
-                foreach (int id in assembliesItem.Value)
-                {
-                    // 構件ID
-                    int assemID = id;
-                    #region 零件資訊
-                    // 在零件清單中，比對Father找到此構件
-                    var part_father = partNumber_ID.Where(x => x.Father.Contains(assemID)).ToList();
-                    // 如果有找到的話
-                    if (part_father.Any())
-                    {
-                        // 比對Father及零件ID之Index
-                        foreach (var item in part_father)
-                        {
-                            // 當父節點中還找的到父節點ID時，代表該零件尚存在其他構件中
-                            while (item.Father.Contains(assemID))
-                            {
-                                #region Grid零件內容
-                                steelAttr = new ProductSettingsPageViewModel();
-                                // 建立日期
-                                steelAttr.Creation = item.Creation;
-                                // 修改日期
-                                steelAttr.Revise = item.Revise;
-                                // Tekla構件ID
-                                steelAttr.TeklaAssemblyID = assemID.ToString();
-                                // 構件編號
-                                steelAttr.steelAttr.AsseNumber = assem;
-                                // 零件編號
-                                steelAttr.steelAttr.PartNumber = item.Number;
-                                // 零件ID List
-                                var partList = partNumber_ID.Where(x => x.Number == item.Number).Select(x => x.ID).FirstOrDefault();
-                                // 構件ID List
-                                var fatherList = partNumber_ID.Where(x => x.Number == item.Number).Select(x => x.Father).FirstOrDefault();
-                                // Father的index = Part的index
-                                var partIndex = fatherList.IndexOf(assemID);
-                                // 取得該筆零件ID
-                                int partID = partList[partIndex];
-                                //partNumber_ID.Where(x => x.Number == item.Number && x.Father[i] == assemID && x.ID[i] == partID).FirstOrDefault();
-                                //var idList = partNumber_ID.Where(x => x.Number == item.Number).Select(x => x.ID).FirstOrDefault();
-                                // 移除本次構件ID 避免下次 FirstOrDefault 重複抓到
-                                fatherList.Remove(assemID);
-                                // 移除本次零件ID 避免下次 FirstOrDefault 重複抓到
-                                partList.Remove(partID);
-                                // 零件ID
-                                steelAttr.steelAttr.TeklaPartID = partID.ToString();
-                                // Tekla 圖名稱
-                                steelAttr.TeklaName = item.DrawingName == "null" ? "" : item.DrawingName;
-                                // 鋼材類別
-                                var aa = item.Type.GetType().GetMember(item.Type.ToString())[0].GetCustomAttribute<DescriptionAttribute>();
-                                string type = aa == null ? "" : aa.Description;
-                                steelAttr.TypeDesc = type;
-                                steelAttr.Type = item.Type;
-                                steelAttr.SteelType = Convert.ToInt32(item.Type);
-                                // 斷面規格
-                                string profile = item.Profile;
-                                steelAttr.Profile = profile;
-                                // 材質
-                                string material = item.Material;
-                                steelAttr.Material = material;
-                                // 數量
-                                int count = item.Count;
-                                steelAttr.Count = count;
-                                // 零件長
-                                double length = item.Length;
-                                steelAttr.Length = length;
-                                // 零件重
-                                double weight = item.UnitWeight;
-                                steelAttr.Weight = weight;
-
-                                steelAttr.steelAttr.H = item.H;
-                                steelAttr.steelAttr.W = item.W;
-                                steelAttr.steelAttr.t1 = item.t1;
-                                steelAttr.steelAttr.t2 = item.t2;
-
-                                // 上鎖
-                                steelAttr.steelAttr.Lock = item.Lock;
-
-                                // GUID (Data Name)
-                                DataCorrespond single = DataCorrespond.FirstOrDefault(x =>
-                                x.Profile == steelAttr.Profile &&
-                                x.Number == steelAttr.steelAttr.PartNumber &&
-                                allowType.Contains(x.Type));
-                                if (single != null)
-                                steelAttr.DataName = single.DataName.ToString();
-                                //partNumber_ID.Remove(delPart);
-                                steelAttrList.Add(steelAttr);
-                                #endregion
-                            }
-                        }
-                    }
-                    #endregion
-
-                    #region 孔資訊
-                    if (boltsList.Count() > 0 && boltsList[0] != null)
-                    {
-                        // 取得孔的父節點ID
-                        var bolt_father = boltsFather_ID.Where(x => x.Father.Contains(assemID)).ToList();
-                        foreach (var item in bolt_father)
-                        {
-                            // // 當父節點中還找的到父節點ID時，代表該零件尚存在其他構件中
-                            while (item.Father.Contains(assemID))
-                            {
-                                #region Grid零件內容
-                                steelAttr = new ProductSettingsPageViewModel();
-                                steelAttr.Creation = item.Creation;
-                                steelAttr.Revise = item.Revise;
-                                steelAttr.TeklaAssemblyID = assemID.ToString();
-                                steelAttr.AssemblyNumber = assem;
-                                steelAttr.Profile = item.Profile;
-                                steelAttr.Type = OBJECT_TYPE.Unknown;
-                                steelAttr.TypeDesc = "Bolts";
-                                steelAttr.Count = item.Count;
-                                steelAttr.Material = item.Material;
-                                var fatherList = boltsFather_ID.Where(x => x.Profile == steelAttr.Profile).Select(x => x.Father).FirstOrDefault();
-                                fatherList.Remove(assemID);
-                                steelAttrList.Add(steelAttr);
-                                #endregion
-                            }
-                        }
-                    }
-                    #endregion
-                }
-            }
-            return steelAttrList.Where(x => allowType.Contains(x.Type)).ToList();
-            
+            throw new NotImplementedException();
         }
+        #endregion
     }
 }

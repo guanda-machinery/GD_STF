@@ -3,6 +3,7 @@ using GD_STD.Base.Additional;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -10,6 +11,8 @@ using System.Threading.Tasks;
 using WPFSTD105.Attribute;
 using WPFSTD105.Model;
 using WPFWindowsBase;
+using GD_STD.Enum;
+
 namespace WPFSTD105
 {
     /// <summary>
@@ -166,6 +169,7 @@ namespace WPFSTD105
             }
             return false;
         }
+
         ///// <summary>
         ///// 轉換 NC 座標
         ///// </summary>
