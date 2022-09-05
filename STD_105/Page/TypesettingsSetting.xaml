@@ -21,7 +21,7 @@
                   xmlns:ddgr="http://schemas.devdept.com/winfx/2008/xaml/graphics" 
                   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                   xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding" 
-                  xmlns:sys1="clr-namespace:System;assembly=mscorlib"
+                  xmlns:System="clr-namespace:System;assembly=mscorlib"
                   Title="排版設定"              
                   x:TypeArguments="WPFSTD105:OfficeTypeSettingVM"
                   mc:Ignorable="d">
@@ -538,6 +538,7 @@
                         <Style TargetType="dxg:GridColumn">
                             <Setter Property="HorizontalHeaderContentAlignment"  Value="Center"/>
                         </Style>
+
                     </GroupBox.Resources>
                     <dxg:GridControl 
                         Name="Material_List_GridControl"    
@@ -545,6 +546,7 @@
                         Grid.Row="2"                               
                         ItemsSource="{Binding MaterialDataViews}"
                         MinHeight="200"  MaxHeight="400">
+
                         <dxg:GridControl.View >
                             <dxg:TableView 
                                     VerticalScrollbarVisibility="Visible"
@@ -606,7 +608,7 @@
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel VerticalAlignment="Center">
-                                        <CheckBox IsChecked="{Binding LockMark}" Command="{Binding LockCommand}" Name="LockCheckBox">
+                                        <CheckBox  Name="LockCheckBox">
                                             <CheckBox.Template>
                                                 <ControlTemplate>
                                                     <dx:DXImage  Width="25" Height="25">
@@ -664,7 +666,6 @@
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
-
                         <dxg:GridColumn FieldName="BuildTime" IsSmart="True"  Header="建立日期"  >
 
                         </dxg:GridColumn>
@@ -690,7 +691,7 @@
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="鋼材類型"   />
-                        <dxg:GridColumn FieldName="Profile"  IsSmart="True" Header="斷面規格" />
+                        <dxg:GridColumn FieldName="Profile"  IsSmart="True" Header="斷面規格" AllowEditing="{Binding LockMark}" />
                         <dxg:GridColumn FieldName="Material"  IsSmart="True" Header="材質" Width="auto"   />
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="數量" Width="auto"  />
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="已完成" Width="auto"  />

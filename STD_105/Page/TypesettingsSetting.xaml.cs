@@ -43,7 +43,8 @@ namespace STD_105.Office
             InitializeComponent();
 
         }
-
+   
+        public bool LockMark { get; set; }
 
 
     }

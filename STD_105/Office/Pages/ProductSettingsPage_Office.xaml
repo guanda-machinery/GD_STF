@@ -8,9 +8,7 @@
                   xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
                   xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
                   xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
-                  xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
-                  xmlns:local="clr-namespace:STD_105.Office"
-                  xmlns:STD="clr-namespace:STD_105"               
+                  xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"   
                   xmlns:GD_STDEnum="clr-namespace:GD_STD.Enum;assembly=GD_STD.Enum"
                   mc:Ignorable="d"
                   xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
@@ -20,7 +18,6 @@
                   xmlns:ddes="http://schemas.devdept.com/winfx/2008/xaml/control"
                   xmlns:ddgr="http://schemas.devdept.com/winfx/2008/xaml/graphics"
                   xmlns:STD105="clr-namespace:STD_105"
-                  xmlns:spa="clr-namespace:WPFSTD105;assembly=WPFSTD105"
                   xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                   xmlns:System="clr-namespace:System;assembly=mscorlib"
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
@@ -176,7 +173,7 @@
 
             <GroupBox Header="零件清單" Margin="5">
                 <GroupBox.DataContext>
-                    <STD105VM:ObSettingVM/>
+                    <STD105:ObSettingPage/>
                 </GroupBox.DataContext>
                 <!--<GroupBox.DataContext>          -->
                 <!--    <spa:OfficeTypeSettingVM/>  -->
@@ -547,7 +544,7 @@
             <TabItem Header="3D視圖" Margin="0,0,0,0"  Style="{StaticResource DrawTabItem}">
                 <Grid>
                     <!--新增3D模型處-->
-                    <spa:ModelExt x:Name="model"
+                    <WPFSTD:ModelExt x:Name="model"
                                   SelectionChanged="model_SelectionChanged"
                                   Loaded="Model3D_Loaded"
                                   AutoRefresh="True"
@@ -560,7 +557,7 @@
                                   AntiAliasingSamples="x16"
                                   Renderer="NativeExperimental"                                  
                                   ShowFps="True">
-                        <spa:ModelExt.ContextMenu>
+                        <WPFSTD:ModelExt.ContextMenu>
                             <ContextMenu Style="{StaticResource BaseStyle}"
                                          FontSize="12">
                                 <MenuItem Name="esc"
@@ -600,11 +597,11 @@
                                           Command="{Binding Recovery}"
                                           Style="{StaticResource BaseStyle}" />
                             </ContextMenu>
-                        </spa:ModelExt.ContextMenu>
-                        <spa:ModelExt.ProgressBar>
+                        </WPFSTD:ModelExt.ContextMenu>
+                        <WPFSTD:ModelExt.ProgressBar>
                             <ddes:ProgressBar Lighting="False" />
-                        </spa:ModelExt.ProgressBar>
-                        <spa:ModelExt.Viewports>
+                        </WPFSTD:ModelExt.ProgressBar>
+                        <WPFSTD:ModelExt.Viewports>
                             <ddes:Viewport DisplayMode="Flat"
                                            InitialView="vcFrontFaceTopLeft"
                                            OriginSymbols="{Binding OriginSymbols}"
@@ -639,7 +636,7 @@
                                             <ddes:ToolBarButton ToolTipText="線性標註"
                                                                 Click="LinearDim"
                                                                 StyleMode="PushButton" Visible="False"
-                                                                Image="{Binding Source={StaticResource LinearDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
+                                                                Image="{Binding Source={StaticResource AngleDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
                                             <ddes:ToolBarButton ToolTipText="角度標註"
                                                                 StyleMode="PushButton" Visible="False"
                                                                 Image="{Binding Source={StaticResource AngleDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
@@ -667,20 +664,20 @@
                                                        BackRingColor="White" />
                                 </ddes:Viewport.ViewCubeIcon>
                             </ddes:Viewport>
-                        </spa:ModelExt.Viewports>
-                    </spa:ModelExt>
+                        </WPFSTD:ModelExt.Viewports>
+                    </WPFSTD:ModelExt>
                 </Grid>
             </TabItem>
             
             <TabItem Header="2D視圖"  Margin="-1,0,0,0"   Style="{StaticResource DrawTabItem}">
                 <Grid>
-                    <spa:ModelExt x:Name="drawing" SelectionChanged="model_SelectionChanged" Loaded="drawing_Loaded"
+                    <WPFSTD:ModelExt x:Name="drawing" SelectionChanged="model_SelectionChanged" Loaded="drawing_Loaded"
                         SelectionColor="{Binding Setting.SelectionColor, Converter={STD105:StringToDrawingColoConverter}}"
                         ActionMode="{Binding ActionMode}" DefaultColor="Beige" AutoRefresh ="True" KeyDown="model_KeyDown"
                         
                         PreviewMouseRightButtonDown="model_PreviewMouseRightButtonDown"
                         Focusable="True" AntiAliasingSamples="x16" Renderer="NativeExperimental" ShowFps="True" Margin="0,0,0,0">
-                        <spa:ModelExt.ContextMenu>
+                        <WPFSTD:ModelExt.ContextMenu>
                             <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
                                 <MenuItem Name="esc2D" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
                                 <MenuItem Header="放大選取範圍" Style="{StaticResource BaseStyle}" Command="{Binding ZoomWindow}"/>
@@ -692,7 +689,7 @@
                                 <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
                                 <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
                             </ContextMenu>
-                        </spa:ModelExt.ContextMenu>
+                        </WPFSTD:ModelExt.ContextMenu>
                         <ddes:Model.ProgressBar>
                             <ddes:ProgressBar Lighting="False"/>
                         </ddes:Model.ProgressBar>
@@ -709,24 +706,26 @@
                                 </ddes:Viewport.Rotate>
                                 <ddes:Viewport.ToolBars>
                                     <ddes:ToolBar>
+
                                         <ddes:ToolBar.Buttons>
                                             <ddes:HomeToolBarButton/>
                                             <ddes:ZoomWindowToolBarButton/>
                                             <ddes:ZoomToolBarButton/>
-                                            <ddes:PanToolBarButton/>
+                                            <ddes:PanToolBarButton/> 
                                             <ddes:ZoomFitToolBarButton/>
-                                            <ddes:ToolBarButton ToolTipText="線性標註" Click="LinearDim" StyleMode="PushButton"
-                                                Image="{Binding Source={StaticResource LinearDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}"/>
+                                            <ddes:ToolBarButton ToolTipText="線性標註" Click="LinearDim" StyleMode="PushButton"  Width="40" Height="40"
+                                           Image="{Binding Source={materialDesign:PackIcon Kind=Ruler},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"/>
+
                                             <ddes:ToolBarButton ToolTipText="角度標註" Click="AngleDim" StyleMode="PushButton"
-                                                Image="{Binding Source={StaticResource AngleDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}"/>
+                                                Image="{Binding Source={materialDesign:PackIcon Kind=AngleAcute},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"/>
                                             <ddes:ToolBarButton ToolTipText="絕對座標" StyleMode="PushButton"
-                                                Image="{Binding Source={StaticResource AbsDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}"/>
+                                                Image="{Binding Source={materialDesign:PackIcon Kind=AxisArrow},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"/>
                                         </ddes:ToolBar.Buttons>
                                     </ddes:ToolBar>
                                 </ddes:Viewport.ToolBars>
                             </ddes:Viewport>
                         </ddes:Model.Viewports>
-                    </spa:ModelExt>
+                    </WPFSTD:ModelExt>
                 </Grid>
             </TabItem>
         </TabControl>

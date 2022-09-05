@@ -573,7 +573,17 @@ namespace WPFSTD105
             }
         }
 
-
+        private bool _lockMark = false;
+        public bool LockMark {
+            get 
+            {
+                return _lockMark; 
+            }
+            set 
+            { 
+                _lockMark = value; return;
+            }
+        }
 
 
 

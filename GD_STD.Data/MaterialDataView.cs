@@ -281,21 +281,6 @@ namespace GD_STD.Data
         }
 
 
-
-        /// <summary>
-        /// 上鎖/解鎖
-        /// </summary>
-        public System.Windows.Input.ICommand LockCommand
-        {
-            get
-            {
-                return new WPFWindowsBase.RelayParameterizedCommand(objArray =>
-                {
-                    
-                });
-            }
-        }
-
         #endregion
 
 
@@ -355,9 +340,6 @@ namespace GD_STD.Data
             }
         }
 
-        public bool LockMark { get; set; }
-        public bool GearMark { get; set; }
-        public bool ExclamationMark { get; set; }
 
         public GD_STD.Enum.OBJECT_TYPE _objectType
         {
