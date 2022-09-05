@@ -2488,58 +2488,62 @@ namespace STD_105.Office
 
         private void Grid_SelectedChange(object sender, SelectedItemChangedEventArgs e)
         {
-        //    //#region 3D
-        //    ////model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
-        //    //model.Unlock("UF20-HN12H-22P6C-71M1-FXP4");
-        //    //this.PageUnloadAnimation = PageAnimation.SlideAndFadeOutToRight;
-        //    //model.Secondary = drawing;
-        //    //#endregion
-        //    //#region 2D
-        //    ////drawing.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
-        //    //drawing.Unlock("UF20-HN12H-22P6C-71M1-FXP4");
-        //    //drawing.LineTypes.Add(Steel2DBlock.LineTypeName, new float[] { 35, -35, 35, -35 });
-        //    //drawing.Secondary = model;
-        //    //#endregion
+            //    //#region 3D
+            //    ////model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
+            //    //model.Unlock("UF20-HN12H-22P6C-71M1-FXP4");
+            //    //this.PageUnloadAnimation = PageAnimation.SlideAndFadeOutToRight;
+            //    //model.Secondary = drawing;
+            //    //#endregion
+            //    //#region 2D
+            //    ////drawing.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
+            //    //drawing.Unlock("UF20-HN12H-22P6C-71M1-FXP4");
+            //    //drawing.LineTypes.Add(Steel2DBlock.LineTypeName, new float[] { 35, -35, 35, -35 });
+            //    //drawing.Secondary = model;
+            //    //#endregion
 
-        //    ProductSettingsPageViewModel item = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
-        //    //MessageBox.Show("hi", "尼豪", MessageBoxButton.OK);
-            
-        //    STDSerialization ser = new STDSerialization();
+            if (model != null)
+            {
 
-        //    ReadFile readFile = ser.ReadPartModel(item.DataName); //讀取檔案內容
-        //    if (readFile == null)
-        //    {
-        //        WinUIMessageBox.Show(null,
-        //            $"專案Dev_Part資料夾讀取失敗",
-        //            "通知",
-        //            MessageBoxButton.OK,
-        //            MessageBoxImage.Exclamation,
-        //            MessageBoxResult.None,
-        //            MessageBoxOptions.None,
-        //            FloatingMode.Popup);
-        //        return;
-        //    }
-        //    readFile.DoWork();//開始工作
-        //    readFile.AddToScene(model);//將讀取完的檔案放入到模型
-        //    ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
-        //    ViewModel.GetSteelAttr();
-        //    model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
-        //    SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
-        //    for (int i = 0; i < model.Entities.Count; i++)//逐步展開 3d 模型實體
-        //    {
-        //        if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
-        //        {
-        //            BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
-        //            Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
-        //            Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生螺栓圖塊
-        //            Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
-        //        }
-        //    }
+                ProductSettingsPageViewModel item = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
+                //MessageBox.Show("hi", "尼豪", MessageBoxButton.OK);
 
-        //    model.ZoomFit();//設置道適合的視口
-        //    model.Invalidate();//初始化模型
-        //    drawing.ZoomFit();//設置道適合的視口
-        //    drawing.Invalidate();
+                STDSerialization ser = new STDSerialization();
+
+                ReadFile readFile = ser.ReadPartModel(item.DataName); //讀取檔案內容
+                if (readFile == null)
+                {
+                    WinUIMessageBox.Show(null,
+                        $"專案Dev_Part資料夾讀取失敗",
+                        "通知",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                        FloatingMode.Popup);
+                    return;
+                }
+                readFile.DoWork();//開始工作
+                readFile.AddToScene(model);//將讀取完的檔案放入到模型
+                ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
+                ViewModel.GetSteelAttr();
+                model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
+                SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
+                for (int i = 0; i < model.Entities.Count; i++)//逐步展開 3d 模型實體
+                {
+                    if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
+                    {
+                        BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
+                        Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
+                        Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生螺栓圖塊
+                        Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
+                    }
+                }
+
+                model.ZoomFit();//設置道適合的視口
+                model.Invalidate();//初始化模型
+                drawing.ZoomFit();//設置道適合的視口
+                drawing.Invalidate();
+            }
         } 
     }
 }
