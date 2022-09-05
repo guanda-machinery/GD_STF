@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+//using WPFSTD105;
+//using WPFSTD105.Attribute;
+using GD_STD;
+using DevExpress.Xpf.Grid;
 
 namespace GD_STD.Data
 {
@@ -39,6 +44,12 @@ namespace GD_STD.Data
             ShippingNumber = steelAssembly.ShippingNumber[assemblyIndex];
             Phase = steelAssembly.Phase[assemblyIndex];
             ShippingDescription = steelAssembly.ShippingDescription[assemblyIndex];
+            SteelType = Convert.ToInt32(steelPart.Type); //型鋼型態 20220831 張燕華
+            H = steelPart.H;
+            W = steelPart.W;
+            t1 = steelPart.t1;
+            t2 = steelPart.t2;
+            PartWeight = steelPart.UnitWeight * Length; //零件重 20220901 張燕華
 
             Count = ID.Count;
         }
@@ -108,9 +119,21 @@ namespace GD_STD.Data
         /// </summary>
         public float t2 { get; set; }
         /// <summary>
-        /// 製品總重量 20220830 張燕華
+        /// 名稱 20220901 張燕華
         /// </summary>
-        public double TotalWeight { get; set; }
+        public string CustomerMadeName { get; set; }
+        /// <summary>
+        /// 零件重量 20220901 張燕華
+        /// </summary>
+        public double PartWeight { get; set; }
+        /// <summary>
+        /// 標題一 20220901 張燕華
+        /// </summary>
+        public string Title1 { get; set; }
+        /// <summary>
+        /// 標題二 20220901 張燕華
+        /// </summary>
+        public string Title2 { get; set; }
         /// <summary>
         /// 運輸說明
         /// </summary>
@@ -199,5 +222,10 @@ namespace GD_STD.Data
         {
             return !(left == right);
         }
+
+        //public static explicit operator TypeSettingDataView(SelectedItemChangedEventArgs v)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
