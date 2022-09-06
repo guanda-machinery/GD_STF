@@ -51,7 +51,7 @@ namespace WPFWindowsBase
             }
             else
             {
-                return null;
+                return "";
             }
         }
         /// <summary>

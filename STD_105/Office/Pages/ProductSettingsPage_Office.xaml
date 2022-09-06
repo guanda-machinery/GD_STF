@@ -38,7 +38,7 @@
             <STD105:FACE_ToStringConverter x:Key="Face" />
             <STD105:START_HOLE_ToStringConverter x:Key="StartHole" />
 
-            <System:Boolean x:Key="visible">False</System:Boolean>
+            <System:Boolean x:Key="visible">True</System:Boolean>
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
     <!--物件設定與設定完成的物件列表-->
@@ -186,7 +186,8 @@
                            Name="PieceListGridControl"
                                 AutoGenerateColumns="None"
                                 SelectionMode="None"
-                                MaxHeight="500"              
+                                MaxHeight="500"
+                    AllowLiveDataShaping="True"                    
                                 ItemsSource="{Binding DataViews}" SelectedItemChanged="Grid_SelectedChange">
                     <dxg:GridControl.Resources>
                         <Style TargetType="dxg:GridColumn" >
@@ -199,6 +200,7 @@
                     </dxg:GridControl.Resources>
                     <dxg:GridControl.View >
                         <dxg:TableView  
+                       
                                     VerticalScrollbarVisibility="Visible"
                                     ShowGroupPanel="False"
                                     ShowSearchPanelMode="Always"
@@ -300,7 +302,7 @@
                         </dxg:GridColumn.CellStyle>
                     </dxg:GridColumn>
 
-                    <dxg:GridColumn FieldName="DataName" IsSmart="True"   Header="dm檔名" Width="auto" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn FieldName="GUID" Binding="{Binding steelAttr.GUID}" IsSmart="True"   Header="dm檔名" Width="auto" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="AssemblyNumber" Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="auto"/>
                     <dxg:GridColumn FieldName="PartNumber" Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="auto" />
                     <dxg:GridColumn FieldName="TeklaName" IsSmart="True"   Header="名稱" Width="auto"/>
@@ -309,8 +311,8 @@
                     <dxg:GridColumn FieldName="Profile" IsSmart="True"  Header="斷面規格"  Width="auto"/>
                     <dxg:GridColumn FieldName="Material" IsSmart="True"  Header="材質"  Width="auto"/>
                     <dxg:GridColumn FieldName="Count"  IsSmart="True"  Width="auto" Header="數量"  />
-                    <dxg:GridColumn FieldName="PieceLength" IsSmart="True"  Header="零件長" Width="auto" />
-                    <dxg:GridColumn FieldName="PieceWeight" IsSmart="True"  Header="零件重" Width="auto" />
+                    <dxg:GridColumn FieldName="PieceLength" Binding="{Binding Length}" IsSmart="True"  Header="零件長" Width="auto" />
+                    <dxg:GridColumn FieldName="PieceWeight" Binding="{Binding Weight}" IsSmart="True"  Header="零件重" Width="auto" />
                     <dxg:GridColumn FieldName="Height" Binding="{Binding steelAttr.H}" IsSmart="True"  Header="高度" Width="auto" />
                     <dxg:GridColumn FieldName="Weight" Binding="{Binding steelAttr.W}" IsSmart="True"  Header="寬度" Width="auto" />
                     <dxg:GridColumn FieldName="t1" Binding="{Binding steelAttr.t1}" IsSmart="True"  Header="腹板厚度" Width="auto" />
@@ -404,37 +406,37 @@
                     </Grid.RowDefinitions>
                     <Label Content="零件編號：" />
                     <StackPanel Grid.Column="1">
-                        <TextBox Name="partNumber" Text="{Binding SelectedItems[0].steelAttr.PartNumber, ElementName=PieceListGridControl}" />
+                        <TextBox Name="partNumber" Text="{Binding SelectedItems[0].steelAttr.PartNumber, ElementName=PieceListGridControl,Mode=OneWay}" />
                     </StackPanel>
 
                     <Label Grid.Column="0" Grid.Row="1" Content="構件編號：" />
                     <StackPanel Grid.Column="1" Grid.Row="1" >
-                        <TextBox Name="asseNumber" Text="{Binding SelectedItems[0].steelAttr.AsseNumber, ElementName=PieceListGridControl}" />
+                        <TextBox Name="asseNumber" Text="{Binding SelectedItems[0].steelAttr.AsseNumber, ElementName=PieceListGridControl,Mode=OneWay}" />
                     </StackPanel>
 
                     <Label Grid.Column="0"  Grid.Row="2"
                            Content="製品長度：" />
                     <StackPanel Grid.Column="1" Grid.Row="2" >
-                        <TextBox Name="Length" Text="{Binding SelectedItems[0].Length, ElementName=PieceListGridControl}" />
+                        <TextBox Name="Length" Text="{Binding SelectedItems[0].Length, ElementName=PieceListGridControl,Mode=OneWay}" />
                     </StackPanel>
 
                     <Label Grid.Column="0" Grid.Row="3" Content="製品重：" />
                     <StackPanel Grid.Column="1" Grid.Row="3" >
                         <DockPanel  VerticalAlignment="Center">
                             <TextBlock  Text=""  VerticalAlignment="Center" Margin="3,0,0,0"/>
-                            <TextBlock Name="Weight"  Text="{Binding SelectedItems[0].Weight, ElementName=PieceListGridControl}"  VerticalAlignment="Center" Margin="3,0,0,0"/>
+                            <TextBlock Name="Weight"  Text="{Binding SelectedItems[0].Weight, ElementName=PieceListGridControl,Mode=OneWay}"  VerticalAlignment="Center" Margin="3,0,0,0"/>
                         </DockPanel>
                     </StackPanel>
 
                     <Label Grid.Column="0" Grid.Row="4" Content="製品數量：" />
                     <StackPanel Grid.Column="1" Grid.Row="4" >
                         <!--<TextBox Name="number" Text="{Binding SelectedItems[0].Match, ElementName=PieceListGridControl, Converter={STD105:IListToCountConerter}}" BorderBrush="Black" />-->
-                        <TextBox Text="{Binding SelectedItems[0].Count, ElementName=PieceListGridControl}" />
+                        <TextBox Name="PartCount" Text="{Binding SelectedItems[0].Count, ElementName=PieceListGridControl,Mode=OneWay}" />
                     </StackPanel>
 
                     <Label Grid.Column="0" Grid.Row="5" Content="名稱：" />
                     <StackPanel Grid.Column="1" Grid.Row="5" >
-                        <TextBox Name ="teklaName"  Text="{Binding SelectedItems[0].TeklaName}"  BorderBrush="Black"/>
+                        <TextBox Name ="teklaName"  Text="{Binding SelectedItems[0].TeklaName,Mode=OneWay}"  BorderBrush="Black"/>
                     </StackPanel>
 
                     <Label Grid.Column="0"  Grid.Row="6" Content="材質：" />
@@ -444,22 +446,22 @@
 
                     <Label Grid.Column="0" Grid.Row="7" Content="Phase：" />
                     <StackPanel Grid.Column="1" Grid.Row="7" >
-                        <TextBox x:Name="phase" Text="{Binding SelectedItems[0].Phase, ElementName=PieceListGridControl}" BorderBrush="Black"/>
+                        <TextBox x:Name="phase" Text="{Binding SelectedItems[0].Phase, ElementName=PieceListGridControl,Mode=OneWay}" BorderBrush="Black"/>
                     </StackPanel>
 
                     <Label Grid.Column="0" Grid.Row="8" Content="拆運：" />
                     <StackPanel Grid.Column="1" Grid.Row="8" >
-                        <TextBox x:Name="shippingNumber" Text="{Binding SelectedItems[0].ShippingNumber, ElementName=PieceListGridControl}" BorderBrush="Black" />
+                        <TextBox x:Name="shippingNumber" Text="{Binding SelectedItems[0].ShippingNumber, ElementName=PieceListGridControl,Mode=OneWay}" BorderBrush="Black" />
                     </StackPanel>
 
                     <Label Grid.Column="0" Grid.Row="9" Content="標題一：" />
                     <StackPanel Grid.Column="1" Grid.Row="9" >
-                        <TextBox Name="title1" Text="{Binding SelectedItems[0].Title1, ElementName=PieceListGridControl}" BorderBrush="Black"/>
+                        <TextBox Name="title1" Text="{Binding SelectedItems[0].Title1, ElementName=PieceListGridControl,Mode=OneWay}" BorderBrush="Black"/>
                     </StackPanel>
 
                     <Label Grid.Column="0" Grid.Row="10" Content="標題二：" />
                     <StackPanel Grid.Column="1" Grid.Row="10" >
-                        <TextBox Name="title2" Text="{Binding SelectedItems[0].Title2, ElementName=PieceListGridControl}" BorderBrush="Black"/>
+                        <TextBox Name="title2" Text="{Binding SelectedItems[0].Title2, ElementName=PieceListGridControl,Mode=OneWay}" BorderBrush="Black"/>
                     </StackPanel>
                     
                     
