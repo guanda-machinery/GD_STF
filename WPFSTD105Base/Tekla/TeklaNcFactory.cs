@@ -32,7 +32,7 @@ namespace WPFSTD105.Tekla
         /// nc 轉 STD 3D Model 
         /// </summary>
         public TeklaNcFactory()
-        {
+        {                                                                                                                               
 
         }
         /// <summary>

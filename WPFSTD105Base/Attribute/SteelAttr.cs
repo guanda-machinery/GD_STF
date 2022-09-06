@@ -135,8 +135,8 @@ namespace WPFSTD105.Attribute
         /// 製品長度
         /// </summary>
         public double pieceLength{ get; set; }
-    /// <inheritdoc/>
-    public string PartNumber { get; set; }
+        /// <inheritdoc/>
+        public string PartNumber { get; set; }
         /// <inheritdoc/>
         public string AsseNumber { get; set; }
         /// <inheritdoc/>

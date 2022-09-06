@@ -99,9 +99,9 @@ namespace WPFSTD105.Surrogate
             Face = obj.Face;
             StartAngle = obj.StartAngle;
             EndAngle = obj.EndAngle;
-            //oPoint=obj.oPoint;
+            //oPoint = obj.oPoint;
             //vPoint = obj.vPoint;
-            //uPoint = obj.uPoint;    
+            //uPoint = obj.uPoint;
 
         }
 
