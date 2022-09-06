@@ -195,7 +195,7 @@ namespace WPFSTD105.Tekla
             //平行運算
             Parallel.For(1, data.Length, i =>
             {
-                string strValue = data[i].Trim();
+                string strValue = data[i].Trim();    
                 IEnumerable<PropertyInfo> propertyInfos = obj.GetType().GetProperties().Where(el =>
                         el.GetCustomAttribute<TeklaBomAttribute>() != null && el.GetCustomAttribute<TeklaBomAttribute>().Index == i);//收尋對應欄位
                 object setValue = null;
@@ -304,11 +304,20 @@ namespace WPFSTD105.Tekla
                     //讀取資料行
                     while ((line = reader.ReadLine()) != null)
                     {
+                        line = line.Replace(",,","").Trim(); 
+                        log4net.LogManager.GetLogger("檢查").Debug(line);
+                        // 有遇到資料為xxxx(?)就掛掉了
+                        if (line.IndexOf("(?)")>0 || string.IsNullOrEmpty(line.Replace(",","")))
+                        {
+                            number++;
+                            continue;
+                        }
                         //標頭 0~2 是模型資訊
                         if (number > 2 && line != "")
                         {
                             string[] data = line.Split(','); //資料表欄位陣列
                             string strTtype = data[0].Replace("\f", "");//反射類型在報表逗點第一次出現前的欄位
+                            data[0] = strTtype;
                             Type type = assembly.GetType($"GD_STD.Data.{strTtype}"); //找尋報表指定 type
 
                             if (type == null) //反射不到 type 結束處理

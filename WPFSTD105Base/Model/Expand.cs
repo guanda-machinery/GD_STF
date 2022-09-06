@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows;
+using WPFSTD105.ViewModel;
 using WPFSTD105.Attribute;
 using WPFSTD105.Tekla;
 using WPFWindowsBase;
@@ -320,13 +321,14 @@ namespace WPFSTD105.Model
         }
         /// <summary>
         /// 將 AK v 輪廓轉實體
+        /// 2022/09/05 呂宗霖 因GetNcPoint要新增參數 且 此Function無參考 故註解
         /// </summary>
         /// <param name="aK"></param>
         /// <returns></returns>
-        public static Mesh ConvertAKvToMesh(AK aK)
-        {
-            return ConvertNcPointToMesh(aK.GetNcPoint(), aK.t);
-        }
+        //public static Mesh ConvertAKvToMesh(AK aK)
+        //{
+        //    return ConvertNcPointToMesh(aK.GetNcPoint(), aK.t);
+        //}
 
         /// <summary>
         /// 取得切割物件
@@ -484,8 +486,13 @@ namespace WPFSTD105.Model
             STDSerialization ser = new STDSerialization(); //序列化處理器
             NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
             NcTemp nc = ncTemps.GetData(dataName); //取得nc資訊
+            ObSettingVM cbVM = new ObSettingVM();
             if (nc == null)
             {
+                if (!cbVM.allowType.Contains( nc.SteelAttr.Type))
+                {
+                    return;
+                }
                 return;
             }
             model.Clear();//清除模型內物件

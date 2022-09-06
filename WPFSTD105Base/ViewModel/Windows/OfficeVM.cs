@@ -10,6 +10,7 @@ using static WPFSTD105.ViewLocator;
 using WPFBase = WPFWindowsBase;
 using GD_STD.Enum;
 using System.IO;
+using System.Collections.Generic;
 
 namespace WPFSTD105
 {
@@ -17,7 +18,7 @@ namespace WPFSTD105
     /// OfficeBasePage ViewModelz
     /// </summary>
     public class OfficeVM : AbsBaseWindowView
-    {
+    {        
         /// <summary>
         /// 新建路徑
         /// </summary>
