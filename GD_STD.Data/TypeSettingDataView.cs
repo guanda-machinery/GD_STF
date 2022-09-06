@@ -119,10 +119,6 @@ namespace GD_STD.Data
         /// </summary>
         public float t2 { get; set; }
         /// <summary>
-        /// 名稱 20220901 張燕華
-        /// </summary>
-        public string CustomerMadeName { get; set; }
-        /// <summary>
         /// 零件重量 20220901 張燕華
         /// </summary>
         public double PartWeight { get; set; }

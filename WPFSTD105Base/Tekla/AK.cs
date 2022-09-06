@@ -1,5 +1,6 @@
 ﻿using devDept.Eyeshot;
 using devDept.Geometry;
+using GD_STD.Enum;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -36,15 +37,16 @@ namespace WPFSTD105.Tekla
         /// <inheritdoc/>
         public List<string> Parameter { get; set; }
         /// <inheritdoc/>
-        public List<NcPoint3D> GetNcPoint()
+        public List<NcPoint3D> GetNcPoint(OBJECT_TYPE type = OBJECT_TYPE.RB)
         {
             //if (Z == -1)
             //{
             //    throw new Exception("Z 不可以是 -1。");
             //}
             /*else*/
-            if (t <=0)
-            {
+            //圓棒以外再比較
+            if (t <=0 && type != OBJECT_TYPE.RB && type != OBJECT_TYPE.Unknown && type != OBJECT_TYPE.L && type != OBJECT_TYPE.C)
+            { 
                 throw new Exception("t 不可以是 0。");
             }
             List<NcPoint3D> result = new List<NcPoint3D>();

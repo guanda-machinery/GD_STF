@@ -46,6 +46,8 @@ namespace WPFSTD105.Attribute
             Profile = profile.Profile;
             Type = profile.Type;
             Material = profile.Material;
+
+
             //GUID = Guid.NewGuid();
         }
         /// <summary>
@@ -71,11 +73,15 @@ namespace WPFSTD105.Attribute
         /// <summary>
         /// 標題2
         /// </summary>
-        public string Title2 { get; set; } 
+        public string Title2 { get; set; }
         /// <summary>
         /// 上鎖
         /// </summary>
         public bool Lock { get; set; }
+        /// <summary>
+        /// 驚嘆號
+        /// </summary>
+        public bool? ExclamationMark { get; set; }
         /// <summary>
         /// 名稱
         /// </summary>
@@ -133,8 +139,8 @@ namespace WPFSTD105.Attribute
         /// 製品長度
         /// </summary>
         public double pieceLength{ get; set; }
-    /// <inheritdoc/>
-    public string PartNumber { get; set; }
+        /// <inheritdoc/>
+        public string PartNumber { get; set; }
         /// <inheritdoc/>
         public string AsseNumber { get; set; }
         /// <inheritdoc/>
@@ -155,6 +161,9 @@ namespace WPFSTD105.Attribute
         public CutContour Back { get => GetCutPoint(PointBack, W); }
         /// <inheritdoc/>
         public bool IsMainPart { get => MainPartNumber == PartNumber; }
+
+
+
         /// <summary>
         /// NC 頂面形狀
         /// </summary>

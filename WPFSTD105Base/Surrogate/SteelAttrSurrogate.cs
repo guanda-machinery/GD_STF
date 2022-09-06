@@ -34,6 +34,8 @@ namespace WPFSTD105.Surrogate
         public int Number { get; set; }
         /// <inheritdoc/>
         public string PartNumber { get; set; }
+        /// <inheritdoc/>                                                                                1
+        public CutListSurrogate PointBack { get; set; }
         /// <inheritdoc/>
         public CutListSurrogate PointFront { get; set; }
         /// <inheritdoc/>
@@ -60,9 +62,12 @@ namespace WPFSTD105.Surrogate
         public FACE Face { get; set; }
         public double StartAngle { get; set; }
         public double EndAngle { get; set; }
-#pragma warning disable CS1591 // 遺漏公用可見類型或成員 'SteelAttrSurrogate.ConvertToObject()' 的 XML 註解
+        //public List<NcPoint3D> oPoint { get; set; }
+        //public List<NcPoint3D> vPoint { get; set; }
+        //public List<NcPoint3D> uPoint { get; set; }
+
         protected override SteelAttr ConvertToObject()
-#pragma warning restore CS1591 // 遺漏公用可見類型或成員 'SteelAttrSurrogate.ConvertToObject()' 的 XML 註解
+
         {
             SteelAttr result = new SteelAttr();
             CopyDataToObject(result);
@@ -83,6 +88,7 @@ namespace WPFSTD105.Surrogate
             Material = obj.Material;
             Number = obj.Number;
             PartNumber = obj.PartNumber;
+            PointBack = obj.PointBack.ConvertToSurrogate();
             PointFront = obj.PointFront.ConvertToSurrogate();
             PointTop = obj.PointTop.ConvertToSurrogate();
             Profile = obj.Profile;
@@ -93,6 +99,10 @@ namespace WPFSTD105.Surrogate
             Face = obj.Face;
             StartAngle = obj.StartAngle;
             EndAngle = obj.EndAngle;
+            //oPoint = obj.oPoint;
+            //vPoint = obj.vPoint;
+            //uPoint = obj.uPoint;
+
         }
 
 #pragma warning disable CS1591 // 遺漏公用可見類型或成員 'SteelAttrSurrogate.CopyDataToObject(SteelAttr)' 的 XML 註解
@@ -110,6 +120,7 @@ namespace WPFSTD105.Surrogate
             obj.Number = Number;
             obj.PartNumber = PartNumber;
             obj.PointFront = PointFront ?? new CutList();
+            obj.PointBack = PointBack ?? new CutList();
             obj.PointTop = PointTop ?? new CutList();
             obj.Profile = Profile;
             obj.t1 = t1;
@@ -119,6 +130,9 @@ namespace WPFSTD105.Surrogate
             obj.Face = Face;
             obj.EndAngle = EndAngle;
             obj.StartAngle = StartAngle;
+            //obj.oPoint = oPoint ?? new List<NcPoint3D>();
+            //obj.vPoint = vPoint ?? new List<NcPoint3D>();
+            //obj.uPoint = uPoint ?? new List<NcPoint3D>();
 
         }
         /// <summary>
