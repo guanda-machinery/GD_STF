@@ -116,6 +116,13 @@ namespace STD_105.Office
             //}
 
 
+            /// <summary>
+            /// 鑽孔radio button測試 20220906 張燕華
+            /// </summary>
+            ViewModel.CmdShowMessage = new RelayCommand(() =>
+            {
+                System.Windows.MessageBox.Show("You Select " + ViewModel.rbtn_DrillingFace.ToString());
+            });
 
             #region 3D
             //model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
@@ -289,6 +296,7 @@ namespace STD_105.Office
             #endregion
 
             #region VM Command
+            
             //加入主零件
             ViewModel.AddPart = new RelayCommand(() =>
             {
@@ -484,6 +492,16 @@ namespace STD_105.Office
                     MessageBoxOptions.None,
                     FloatingMode.Popup);
                 }
+            });
+            //另存加入零件 20220902 張燕華
+            ViewModel.AddNewOne = new RelayCommand(() =>
+            {
+                //在此撰寫程式碼..
+            }); 
+            //OK鈕 20220902 張燕華
+            ViewModel.OKtoConfirmChanges = new RelayCommand(() =>
+            {
+                //在此撰寫程式碼..
             });
             //加入孔
             ViewModel.AddHole = new RelayCommand(() =>
@@ -2339,89 +2357,6 @@ namespace STD_105.Office
 
         }
         /// <summary>
-        /// 零件清單SelectedItemChanged事件 20220901 張燕華
-        /// </summary>
-        private void GridControl_SelectedItemChanged(object sender, DevExpress.Xpf.Grid.SelectedItemChangedEventArgs e)
-        {
-            //TypeSettingDataView propertyInfo = (TypeSettingDataView)e.NewItem;
-            ////var propertyInfo = (GD_STD.Data.TypeSettingDataView)cbxSelectedItem;
-            //ProfileType = Convert.ToInt32(propertyInfo.SteelType);
-            //SteelSectionProperty = propertyInfo.Profile;
-            //
-            ////TypeSettingDataView treeView = (TypeSettingDataView)sender;
-            //
-            //int a = 0;
-            //======原程式=======
-            ////TreeView treeView = (TreeView)sender; //樹狀列表
-            //TypeSettingDataView data = (TypeSettingDataView)e;
-            //if (data.DataName == null)
-            //    return;
-            //STDSerialization ser = new STDSerialization();
-            //NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
-            //NcTemp ncTemp = ncTemps.GetData(data.DataName);//需要實體化的nc物件
-            //model.Clear(); //清除目前模型
-            //if (ncTemp == null) //NC 檔案是空值
-            //{
-            //    ReadFile readFile = ser.ReadPartModel(data.DataName); //讀取檔案內容
-            //    if (readFile == null)
-            //    {
-            //        WinUIMessageBox.Show(null,
-            //            $"專案Dev_Part資料夾讀取失敗",
-            //            "通知",
-            //            MessageBoxButton.OK,
-            //            MessageBoxImage.Exclamation,
-            //            MessageBoxResult.None,
-            //            MessageBoxOptions.None,
-            //            FloatingMode.Popup);
-            //        return;
-            //    }
-            //    readFile.DoWork();//開始工作
-            //    readFile.AddToScene(model);//將讀取完的檔案放入到模型
-            //    if (model.Entities[model.Entities.Count - 1].EntityData is null)
-            //    {
-            //        return;
-            //    }
-            //    ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
-            //    ViewModel.GetSteelAttr();
-            //    model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式(零件)
-#if DEBUG   //
-            //    log4net.LogManager.GetLogger($"GUID:{data.DataName}").Debug($"零件: {model.Blocks[1].Name}");
-#endif      //
-            //    //產生零件2D對應圖塊、座標及相關參數
-            //    SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
-            //    for (int i = 0; i < model.Entities.Count; i++)//逐步展開 3d 模型實體
-            //    {
-            //        if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
-            //        {
-            //            BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
-            //            Block block = model.Blocks[blockReference.BlockName]; //取得圖塊
-#if DEBUG   //
-            //            log4net.LogManager.GetLogger($"").Debug($"取得 {blockReference.BlockName} 圖塊");
-#endif      //
-            //            Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生螺栓圖塊//將孔位資料+孔位屬性填入bolts3DBlock中
-#if DEBUG   //
-            //            log4net.LogManager.GetLogger($"產生3D螺栓圖塊").Debug($"產生 {blockReference.BlockName} 圖塊內部3D螺栓圖塊");
-#endif      //
-            //            Add2DHole(bolts3DBlock, true);//加入孔位不刷新 2d 視圖
-            //
-            //
-            //
-            //        }
-            //    }
-            //}
-            //else //如果需要載入 nc 設定檔
-            //{
-            //    model.LoadNcToModel(data.DataName);
-            //    SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
-            //}
-            //model.ZoomFit();//設置道適合的視口
-            //model.Invalidate();//初始化模型
-            //model.Refresh();
-            //drawing.ZoomFit();//設置道適合的視口
-            //drawing.Invalidate();
-            //drawing.Refresh();
-        }
-        /// <summary>
         /// 轉換世界座標
         /// </summary>
         /// <param name="face"></param>
@@ -2485,7 +2420,6 @@ namespace STD_105.Office
         {
             GetWpfLogicalChildClass.SetAllCheckBoxTrueOrFalse(DrillTabItem);
         }
-
         private void Grid_SelectedChange(object sender, SelectedItemChangedEventArgs e)
         {
             //    //#region 3D
