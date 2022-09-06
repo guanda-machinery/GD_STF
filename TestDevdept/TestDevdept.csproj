@@ -103,6 +103,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GD_STD.Enum\GD_STD.Enum.csproj">
+      <Project>{9DFD02BD-8E10-4518-8C06-D8A369183F14}</Project>
+      <Name>GD_STD.Enum</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFSTD105Base\WPFSTD105.csproj">
       <Project>{993757f9-1671-4583-acf6-10e02a50fd51}</Project>
       <Name>WPFSTD105</Name>
