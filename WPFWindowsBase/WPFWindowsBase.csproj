@@ -361,6 +361,7 @@
     <Compile Include="UIControl\KnobAddControl.cs" />
     <Compile Include="UIControl\Marquee.cs" />
     <Compile Include="UIDispatcher.cs" />
+    <Compile Include="ValueConverters\BooleanToStringConverter.cs" />
     <Compile Include="ValueConverters\BoolToColorCodeConverter.cs" />
     <Compile Include="ValueConverters\DateTimeToStringConverter.cs" />
     <Compile Include="ValueConverters\DoubleToString.cs" />
