@@ -561,6 +561,7 @@ namespace WPFSTD105.Model
                 uMesh.ColorMethod = colorMethodType.byEntity;
 
                 vMesh.MergeWith(oMesh);
+                
                 vMesh.MergeWith(uMesh);
                 vMesh.EntityData = nc.SteelAttr;
                 model.Blocks[steelBlock.BlockName].Entities.Add(vMesh);
