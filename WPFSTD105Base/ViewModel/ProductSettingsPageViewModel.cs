@@ -12,6 +12,20 @@ namespace WPFSTD105.ViewModel
 {
     public class ProductSettingsPageViewModel : BaseViewModel
     {
+        /// <summary>
+        /// 驚嘆號
+        /// </summary>
+        public bool? ExclamationMark { 
+            get
+            {
+                return steelAttr.ExclamationMark;
+
+            } set
+            {
+
+                steelAttr.ExclamationMark = value;
+            }
+        } 
         public SteelAttr steelAttr { get; set; }
         /// <summary>
         /// DataName dm檔
@@ -30,8 +44,6 @@ namespace WPFSTD105.ViewModel
         //public String TeklaPartID { get; set; }
         public String Profile { get; set; }
         public String Material { get; set; }
-
-
 
         public String TeklaName { get; set; }
         /// <summary>
