@@ -71,11 +71,15 @@ namespace WPFSTD105.Attribute
         /// <summary>
         /// 標題2
         /// </summary>
-        public string Title2 { get; set; } 
+        public string Title2 { get; set; }
         /// <summary>
         /// 上鎖
         /// </summary>
         public bool Lock { get; set; }
+        /// <summary>
+        /// 驚嘆號
+        /// </summary>
+        public bool? ExclamationMark { get; set; }
         /// <summary>
         /// 名稱
         /// </summary>
