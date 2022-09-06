@@ -581,7 +581,7 @@ namespace WPFSTD105
             }
             set 
             { 
-                _lockMark = value; return;
+                _lockMark = value; 
             }
         }
 

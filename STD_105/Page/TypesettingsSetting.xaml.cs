@@ -41,15 +41,8 @@ namespace STD_105.Office
         public TypesettingsSetting()
         {
             InitializeComponent();
-
         }
-   
-        public bool LockMark { get; set; }
-
-
     }
-
-
 }
 
 

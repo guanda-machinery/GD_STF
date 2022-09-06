@@ -173,7 +173,8 @@
 
             <GroupBox Header="零件清單" Margin="5">
                 <GroupBox.DataContext>
-                    <STD105:ObSettingPage/>
+                    <!--<STD105:ObSettingPage/>-->
+                    <WPFSTD:OfficeTypeSettingVM/>
                 </GroupBox.DataContext>
                 <!--<GroupBox.DataContext>          -->
                 <!--    <spa:OfficeTypeSettingVM/>  -->
@@ -254,31 +255,30 @@
                         </dxg:GridColumn.HeaderImageStyle>
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel VerticalAlignment="Center">
-                                    <CheckBox IsChecked="{Binding Row.LockMark}">
-                                        <CheckBox.Template>
-                                            <ControlTemplate>
-                                                <dx:DXImage  Width="25" Height="25">
-                                                    <dx:DXImage.Style>
-                                                        <Style TargetType="{x:Type Image}">
-                                                            <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Icon Builder/Security_Unlock.svg'}" />
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=CheckBox}}" Value="true">
-                                                                    <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" />
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </dx:DXImage.Style>
-                                                </dx:DXImage>
+                                <dxe:CheckEdit x:Name="PART_Editor" IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                    <dxe:CheckEdit.Template>
+                                        <ControlTemplate>
+                                            <dx:DXImage  Width="25" Height="25">
+                                                <dx:DXImage.Style>
+                                                    <Style TargetType="{x:Type Image}">
+                                                        <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Icon Builder/Security_Unlock.svg'}" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=dxe:CheckEdit}}" Value="true">
+                                                                <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </dx:DXImage.Style>
+                                            </dx:DXImage>
+                                        </ControlTemplate>
+                                    </dxe:CheckEdit.Template>
+                                </dxe:CheckEdit>
 
-                                            </ControlTemplate>
-
-                                        </CheckBox.Template>
-                                    </CheckBox>
-                                </StackPanel>
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
+
+
                     <!--<dxg:GridColumn FieldName="{Binding Creation, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="建立日期"  >-->
                         <dxg:GridColumn FieldName="Creation" IsSmart="True"  Header="建立日期"  >
                         <dxg:GridColumn.CellStyle>
@@ -706,15 +706,15 @@
                                 </ddes:Viewport.Rotate>
                                 <ddes:Viewport.ToolBars>
                                     <ddes:ToolBar>
-
                                         <ddes:ToolBar.Buttons>
                                             <ddes:HomeToolBarButton/>
                                             <ddes:ZoomWindowToolBarButton/>
                                             <ddes:ZoomToolBarButton/>
                                             <ddes:PanToolBarButton/> 
                                             <ddes:ZoomFitToolBarButton/>
-                                            <ddes:ToolBarButton ToolTipText="線性標註" Click="LinearDim" StyleMode="PushButton"  Width="40" Height="40"
-                                           Image="{Binding Source={materialDesign:PackIcon Kind=Ruler},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"/>
+                                            <ddes:ToolBarButton ToolTipText="線性標註" Click="LinearDim" StyleMode="PushButton"   
+                                                                Image="{Binding Source={materialDesign:PackIcon Kind=Ruler},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"
+                                                                     />
 
                                             <ddes:ToolBarButton ToolTipText="角度標註" Click="AngleDim" StyleMode="PushButton"
                                                 Image="{Binding Source={materialDesign:PackIcon Kind=AngleAcute},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"/>

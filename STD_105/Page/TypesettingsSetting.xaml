@@ -82,16 +82,14 @@
             </Style>
 
             <STD105:ComParConverter x:Key="XComparConverter"/>
+
         </StackPanel.Resources>
+        <StackPanel.DataContext>
+            <WPFSTD105:OfficeTypeSettingVM></WPFSTD105:OfficeTypeSettingVM>
+        </StackPanel.DataContext>
 
-        <DockPanel
-                     Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD105:ViewLocator.Instance}}"
-                  Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD105:ViewLocator.Instance}}"
-                >
-            <DockPanel.DataContext>
-                <WPFSTD105:OfficeTypeSettingVM></WPFSTD105:OfficeTypeSettingVM>
-            </DockPanel.DataContext>
-
+        <DockPanel Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD105:ViewLocator.Instance}}"
+                   Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD105:ViewLocator.Instance}}">
             <Grid DockPanel.Dock="Top">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
@@ -562,7 +560,7 @@
                                     </Style>
                                 </dxg:TableView.CellStyle>
                             </dxg:TableView>
-                        </dxg:GridControl.View> 
+                        </dxg:GridControl.View>
                         <dxg:GridColumn FieldName="ExclamationMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" Width="40" FixedWidth="True">
                             <dxg:GridColumn.HeaderImageStyle>
                                 <Style TargetType="Image">
@@ -573,66 +571,30 @@
                             </dxg:GridColumn.HeaderImageStyle>
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel VerticalAlignment="Center">
-                                        <CheckBox IsChecked="{Binding ExclamationMark}">
-                                            <CheckBox.Template>
-                                                <ControlTemplate>
-                                                    <dx:DXImage  Width="16" Height="16">
-                                                        <dx:DXImage.Style>
-                                                            <Style TargetType="{x:Type Image}">
-                                                                <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Outlook Inspired/HighImportance.svg'}" />
-                                                                <Setter Property="Opacity" Value="0" />
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=CheckBox}}" Value="true">
-                                                                        <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Outlook Inspired/HighImportance.svg'}" />
-                                                                        <Setter Property="Opacity" Value="100" />
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </dx:DXImage.Style>
-                                                    </dx:DXImage>
-                                                </ControlTemplate>
-                                            </CheckBox.Template>
-                                        </CheckBox>
-                                    </StackPanel>
+                                    <dxe:CheckEdit IsChecked="{Binding Row.LockMark , Mode=TwoWay}" IsThreeState="false">
+                                        <dxe:CheckEdit.Style>
+                                            <Style TargetType="{x:Type dxe:CheckEdit}">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
+                                                            <dx:DXImage x:Name="EMarkDX" Height="20" Width="20" Source="{dx:DXImage 'SvgImages/Outlook Inspired/HighImportance.svg'}" Opacity="1" />
+                                                            <ControlTemplate.Triggers>
+                                                                <Trigger Property="IsChecked" Value="False">
+                                                                        <Setter Property="Opacity" Value="0" TargetName="EMarkDX"  />
+                                                                </Trigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </dxe:CheckEdit.Style>
+                                    </dxe:CheckEdit>
+
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
-                        <dxg:GridColumn IsSmart="True" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" Width="40" FixedWidth="True">
-                            <dxg:GridColumn.HeaderImageStyle>
-                                <Style TargetType="Image">
-                                    <Setter Property="Width" Value="20"></Setter>
-                                    <Setter Property="Margin" Value="0"></Setter>
-                                </Style>
-                            </dxg:GridColumn.HeaderImageStyle>
-                            <dxg:GridColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel VerticalAlignment="Center">
-                                        <CheckBox  Name="LockCheckBox">
-                                            <CheckBox.Template>
-                                                <ControlTemplate>
-                                                    <dx:DXImage  Width="25" Height="25">
-                                                        <dx:DXImage.Style>
-                                                            <Style TargetType="{x:Type Image}">
-                                                                <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Icon Builder/Security_Unlock.svg'}" />
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=CheckBox}}" Value="true">
-                                                                        <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" />
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </dx:DXImage.Style>
-                                                    </dx:DXImage>
 
-                                                </ControlTemplate>
-
-                                            </CheckBox.Template>
-                                        </CheckBox>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </dxg:GridColumn.CellTemplate>
-                        </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="GearMark"  IsSmart="True"  Image="{dx:DXImage 'SvgImages/Dashboards/ScatterChartLabelOptions.svg'}" ImageAlignment="Center" Width="40" FixedWidth="True">
+                        <dxg:GridColumn FieldName="Lock" IsSmart="True" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                             <dxg:GridColumn.HeaderImageStyle>
                                 <Style TargetType="Image">
                                     <Setter Property="Width" Value="16"></Setter>
@@ -641,31 +603,61 @@
                             </dxg:GridColumn.HeaderImageStyle>
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel VerticalAlignment="Center">
-                                        <CheckBox IsChecked="{Binding GearMark}">
-                                            <CheckBox.Template>
-                                                <ControlTemplate>
-                                                    <dx:DXImage  Width="20" Height="20">
-                                                        <dx:DXImage.Style>
-                                                            <Style TargetType="{x:Type Image}">
-                                                                <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Dashboards/ScatterChartLabelOptions.svg'}" />
-                                                                <Setter Property="Opacity" Value="0" />
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=CheckBox}}" Value="true">
-                                                                        <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Dashboards/ScatterChartLabelOptions.svg'}" />
-                                                                        <Setter Property="Opacity" Value="100" />
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </dx:DXImage.Style>
-                                                    </dx:DXImage>
-                                                </ControlTemplate>
-                                            </CheckBox.Template>
-                                        </CheckBox>
-                                    </StackPanel>
+                                    <dxe:CheckEdit IsChecked="{Binding Row.LockMark , Mode=TwoWay}" IsThreeState="false">
+                                        <dxe:CheckEdit.Style>
+                                            <Style TargetType="{x:Type dxe:CheckEdit}">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
+                                                            <dx:DXImage x:Name="LockDX" Height="20" Width="20" Source="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" Opacity="1" />
+                                                            <ControlTemplate.Triggers>
+                                                                <Trigger Property="IsChecked" Value="False">
+                                                                    <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Icon Builder/Security_Unlock.svg'}" TargetName="LockDX"  />
+                                                                </Trigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </dxe:CheckEdit.Style>
+                                    </dxe:CheckEdit>
+
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
+
+                        <dxg:GridColumn FieldName="GearMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Dashboards/ScatterChartLabelOptions.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
+                            <dxg:GridColumn.HeaderImageStyle>
+                                <Style TargetType="Image">
+                                    <Setter Property="Width" Value="16"></Setter>
+                                    <Setter Property="Margin" Value="0"></Setter>
+                                </Style>
+                            </dxg:GridColumn.HeaderImageStyle>
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <dxe:CheckEdit IsChecked="{Binding Row.LockMark , Mode=TwoWay}" IsThreeState="false">
+                                        <dxe:CheckEdit.Style>
+                                            <Style TargetType="{x:Type dxe:CheckEdit}">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
+                                                            <dx:DXImage x:Name="GearDX" Height="20" Width="20" Source="{dx:DXImage 'SvgImages/Dashboards/ScatterChartLabelOptions.svg'}" Opacity="1" />
+                                                            <ControlTemplate.Triggers>
+                                                                <Trigger Property="IsChecked" Value="False">
+                                                                    <Setter Property="Opacity" Value="0" TargetName="GearDX" />
+                                                                </Trigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </dxe:CheckEdit.Style>
+                                    </dxe:CheckEdit>
+
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn>
+
                         <dxg:GridColumn FieldName="BuildTime" IsSmart="True"  Header="建立日期"  >
 
                         </dxg:GridColumn>
