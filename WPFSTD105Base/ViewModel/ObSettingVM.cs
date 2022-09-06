@@ -1268,13 +1268,12 @@ namespace WPFSTD105.ViewModel
                                 steelAttrVM.steelAttr.AsseNumber = assem;
                                 // 零件編號
                                 steelAttrVM.steelAttr.PartNumber = item.Number;
-                                steelAttr.steelAttr.PartNumber = item.Number;
                                 // 斷面規格
                                 string profile = item.Profile;
-                                steelAttr.Profile = profile;
+                                steelAttrVM.Profile = profile;
                                 // 零件長
                                 double length = item.Length;
-                                steelAttr.Length = length;
+                                steelAttrVM.Length = length;
                                 // 零件ID List
                                 var partList = partNumber_ID.Where(x => x.Number == item.Number && x.Profile == profile && x.Length == length).Select(x => x.ID).FirstOrDefault();
                                 // 構件ID List
@@ -1299,19 +1298,12 @@ namespace WPFSTD105.ViewModel
                                 steelAttrVM.TypeDesc = type;
                                 steelAttrVM.Type = item.Type;
                                 steelAttrVM.SteelType = Convert.ToInt32(item.Type);
-                                // 斷面規格
-                                string profile = item.Profile;
-                                steelAttrVM.Profile = profile;
                                 // 材質
                                 string material = item.Material;
                                 steelAttrVM.Material = material;
                                 // 數量
                                 int count = item.Count;
                                 steelAttrVM.Count = count;
-                                // 零件長
-                                double length = item.Length;
-                                steelAttrVM.Length = length;
-                                steelAttr.Count = count;
                                 // 零件重
                                 double weight = item.UnitWeight;
                                 steelAttrVM.Weight = weight;
@@ -1332,7 +1324,7 @@ namespace WPFSTD105.ViewModel
                                 x.Number == steelAttrVM.steelAttr.PartNumber &&
                                 allowType.Contains(x.Type));
                                 //if (single != null)
-                                    steelAttr.steelAttr.GUID = item.GUID;
+                                    steelAttrVM.steelAttr.GUID = item.GUID;
                                 //partNumber_ID.Remove(delPart);
                                 steelAttrList.Add(steelAttrVM);
                                 #endregion
