@@ -18,11 +18,9 @@ namespace GD_STD.Data
     [Serializable]
     public class TypeSettingDataView : WPFWindowsBase.BaseViewModel, ITypeSettingPartView, ITypeSettingAssemblyView, ITypeSettingDataView
     {
-
         public TypeSettingDataView()
-        {
+        { }
 
-        }
         /// <summary>
         /// 標準建構式
         /// </summary>
@@ -189,6 +187,17 @@ namespace GD_STD.Data
         {
             return Match.Count() - Match.Where(e => e == false).Count();
         }
+
+        /// <summary>
+        /// 工件重量
+        /// </summary>
+        public double Weigth { get; set; }
+
+        /// <summary>
+        /// 工件類型
+        /// </summary>
+        public GD_STD.Enum.OBJECT_TYPE PartType { get; set; }
+
         /// <summary>
         ///  物件相同
         /// </summary>

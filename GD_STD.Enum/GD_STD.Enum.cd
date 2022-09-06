@@ -165,7 +165,8 @@
     <Position X="8.5" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAQAAAAAAIIAAAAgAEAAQAAAAAAAAAAAAAAgEQAABQ=</HashCode>
-      <FileName>OBJECT_TYPE.cs</FileName>
+      <FileName>
+	  cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="GD_STD.Enum.OPERATOR" Collapsed="true">
