@@ -33,7 +33,7 @@ using DevExpress.Xpf.Grid;
 
 namespace STD_105.Office
 {
-    public partial class ProductSettingsPage_Office : BasePage<ObSettingVM>
+    public partial class ProductSettingsPage_Office : BasePage<ObSettingVM>  
     {
         /// <summary>
         /// 20220823 蘇冠綸 製品設定
@@ -329,6 +329,9 @@ namespace STD_105.Office
                 ViewModel.SteelAttr.Profile = this.cbx_SectionType.Text;
                 ViewModel.SteelAttr.H = float.Parse(this.H.Text);
                 ViewModel.SteelAttr.W = float.Parse(this.W.Text);
+                ViewModel.SteelAttr.Number = int.Parse(this.PartCount.Text);
+                ViewModel.SteelAttr.t1 = float.Parse(this.t1.Text);
+                ViewModel.SteelAttr.t2 = float.Parse(this.t2.Text);
 #if DEBUG
                 log4net.LogManager.GetLogger("加入主件").Debug("產生圖塊");
 #endif
@@ -366,7 +369,17 @@ namespace STD_105.Office
 
                 ObSettingVM sr = new ObSettingVM();
                 ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
+
                 ViewModel.DataViews = collection;
+                // var A = PieceListGridControl.ItemsSource;
+                PieceListGridControl.ItemsSource = collection;
+                //PieceListGridControl.EndSelection();    
+                //PieceListGridControl.Dispatcher.Invoke(() =>
+                //{
+
+                //    PieceListGridControl.RefreshData();
+                //    PieceListGridControl.EndDataUpdate();
+                //});
                 #endregion
             });
             //修改主零件
@@ -1992,10 +2005,10 @@ namespace STD_105.Office
             ser.SetPart($@"{steelPart.Profile.GetHashCode()}", new ObservableCollection<object>(collection));
             #endregion
 
-            //if (add)
-            //{
-            ser.SetSteelAssemblies(ViewModel.SteelAssemblies);
-            //}
+            if (add)
+            {
+                ser.SetSteelAssemblies(ViewModel.SteelAssemblies);
+            }
             ViewModel.SaveDataCorrespond();
         }
         /// <summary>
@@ -2443,7 +2456,7 @@ namespace STD_105.Office
 
                 STDSerialization ser = new STDSerialization();
 
-                ReadFile readFile = ser.ReadPartModel(item.DataName); //讀取檔案內容
+                ReadFile readFile = ser.ReadPartModel(item.steelAttr.GUID.ToString()); //讀取檔案內容
                 if (readFile == null)
                 {
                     WinUIMessageBox.Show(null,
