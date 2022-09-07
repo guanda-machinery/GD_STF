@@ -194,7 +194,8 @@
                                        SearchPanelFindMode="Always" 
                                        SearchDelay="0"
                                        AllowEditing="False"
-                                       EnableImmediatePosting="True">
+                                       EnableImmediatePosting="True"
+                                       FocusedRow="">
                             <dxg:TableView.RowStyle>
                                 <Style TargetType="dxg:RowControl">
                                     <Setter Property="Height" Value="20"/>
