@@ -112,6 +112,10 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public ICommand AddCut { get; set; }
         /// <summary>
+        /// 修改切割線
+        /// </summary>
+        public ICommand ModifyCut { get; set; }
+        /// <summary>
         /// 清除標註
         /// </summary>
         public ICommand ClearDim { get; set; }
@@ -195,6 +199,10 @@ namespace WPFSTD105.ViewModel
         /// 鑽孔radio button 頂面,前面,後面
         /// </summary>
         public int rbtn_DrillingFace { get; set; }
+        /// <summary>
+        /// 切割線radio button 頂面,前面,後面
+        /// </summary>
+        public int rbtn_CutFace { get; set; }
         /// <summary>
         /// 選擇物件的面的功能開啟
         /// </summary>
@@ -665,8 +673,17 @@ namespace WPFSTD105.ViewModel
             //要產生的面
             if (CheckFace)
             {
-                BoltsFaceType = rbtn_DrillingFace; //由新控件給定鑽孔位置(面) 20220906 張燕華
-                Boltsbuffer.Face = (GD_STD.Enum.FACE)BoltsFaceType;
+                int temp_BoltsFace;
+                if (OfficeViewModel.CurrentPage == OfficePage.ObSettings)//若為新版製品設定頁面
+                {
+                    temp_BoltsFace = rbtn_DrillingFace;
+                }
+                else
+                {
+                    temp_BoltsFace = BoltsFaceType;
+                }
+
+                Boltsbuffer.Face = (GD_STD.Enum.FACE)temp_BoltsFace;
             }
             //double value = 0d;
             if (CheckStartHole)
@@ -798,7 +815,17 @@ namespace WPFSTD105.ViewModel
         /// <param name="steelAttr">主件設定檔</param>
         public void WriteCutAttr(SteelAttr steelAttr)
         {
-            switch ((GD_STD.Enum.FACE)CutFaceType)
+            int temp_CutFace;
+            if (OfficeViewModel.CurrentPage == OfficePage.ObSettings)//若為新版製品設定頁面
+            {
+                temp_CutFace = rbtn_CutFace;
+            }
+            else
+            {
+                temp_CutFace = CutFaceType;
+            }
+            
+            switch ((GD_STD.Enum.FACE)temp_CutFace)
             {
                 case GD_STD.Enum.FACE.TOP:
                     WriteCutAttr(steelAttr.PointTop);
@@ -839,8 +866,18 @@ namespace WPFSTD105.ViewModel
         {
             try
             {
+                int temp_CutFace;
+                if (OfficeViewModel.CurrentPage == OfficePage.ObSettings)//若為新版製品設定頁面
+                {
+                    temp_CutFace = rbtn_CutFace;
+                }
+                else
+                {
+                    temp_CutFace = CutFaceType;
+                }
+
                 CutList bufferCutList = null;
-                switch ((GD_STD.Enum.FACE)CutFaceType)
+                switch ((GD_STD.Enum.FACE)temp_CutFace)
                 {
                     case GD_STD.Enum.FACE.BACK:
                     case GD_STD.Enum.FACE.FRONT:

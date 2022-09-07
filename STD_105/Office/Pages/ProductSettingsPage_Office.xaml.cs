@@ -757,6 +757,16 @@ namespace STD_105.Office
                 log4net.LogManager.GetLogger("加入切割線").Debug("結束");
 #endif
             });
+            //修改切割線設定
+            ViewModel.ModifyCut = new RelayCommand(() =>
+            {
+                //在這裡撰寫程式碼..
+            });
+            //刪除切割線設定
+            ViewModel.DeleteCut = new RelayCommand(() =>
+            {
+                //在這裡撰寫程式碼..
+            }); 
             //讀取切割線設定
             ViewModel.ReadCut = new RelayCommand(() =>
             {
