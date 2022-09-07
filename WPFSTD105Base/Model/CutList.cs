@@ -47,6 +47,7 @@ namespace WPFSTD105.Model
         /// </summary>
         public CutPoint DL { get; set; } = new CutPoint();
 
+
         /// <summary>
         /// <see cref="CutList"/> 轉換 <see cref="CutListSurrogate"/>
         /// </summary>

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace GD_STD.Data
 {
     [AttributeUsageAttribute(AttributeTargets.All, Inherited = true, AllowMultiple = false)]
@@ -83,19 +84,213 @@ namespace GD_STD.Data
         /// 零件列表
         /// </summary>
         public ObservableCollection<TypeSettingDataView> Parts { get; set; } = new ObservableCollection<TypeSettingDataView>();
-        /// <summary>
-        /// 零件數量
-        /// </summary>
-        public int PartsCount
+        #region Command
+        private enum CRotation
         {
-            get { return Parts.Count; }
+            Clockwise,
+            CounterClockwise
         }
-    
+        /// <summary>
+        /// 零件正轉命令
+        /// </summary>
+        public System.Windows.Input.ICommand ClockwiseRotationComponentCommand
+        {
+            get
+            {
+                return RotationComponent(CRotation.Clockwise); ;
+            }
+        }
+        /// <summary>
+        /// 零件逆轉命令
+        /// </summary>
+        public System.Windows.Input.ICommand CounterClockwiseRotationComponentCommand
+        {
+            get
+            {
+                return RotationComponent(CRotation.CounterClockwise);
+            }
+        }
+        /// <summary>
+        /// 正逆轉功能，當ClockwiseRotation為false時為逆時針
+        /// </summary>
+        /// <param name="_cRotation"></param> 
+        private WPFWindowsBase.RelayParameterizedCommand RotationComponent(CRotation _cRotation = CRotation.Clockwise)
+        {
+            return new WPFWindowsBase.RelayParameterizedCommand(objArray =>
+            {
+                if (objArrayComponentCorrespond(objArray, out var SelectedCom, out var TabC))
+                {
+                    //找出目標及指向之顯示介面後，顯示零件
+                    if (SelectedCom != null)
+                    {
+                        if (_cRotation == CRotation.Clockwise)
+                        {
+                            //正轉控制
+                        }
+                        else
+                        {
+                            //逆轉控制
+                        }
+                    }
+                }
+            });
+        }
+        private enum CDirection
+        {
+            Forward,
+            Backward
+        }
+        /// <summary>
+        /// 零件前進命令
+        /// </summary>
+        public System.Windows.Input.ICommand ForwardComponentCommand
+        {
+            get
+            {
+                return MoveComponent(CDirection.Forward); ;
+            }
+        }
+        /// <summary>
+        /// 零件後退命令
+        /// </summary>
+        public System.Windows.Input.ICommand BackwardComponentCommand
+        {
+            get
+            {
+                return MoveComponent(CDirection.Backward); ;
+            }
+        }
+        /// <summary>
+        /// 前進後退功能，當Direction為false時為後退
+        /// </summary>
+        /// <param name="_cDirection"></param>
+        private WPFWindowsBase.RelayParameterizedCommand MoveComponent(CDirection _cDirection = CDirection.Forward)
+        {
+            return new WPFWindowsBase.RelayParameterizedCommand(objArray =>
+            {
+                if (objArrayComponentCorrespond(objArray, out var SelectedCom, out var TabC))
+                {
+                    //找出目標及指向之顯示介面後，顯示零件
+                    if (SelectedCom != null)
+                    {
+                        if (_cDirection == CDirection.Forward)
+                        {
+                            //前進控制
+                        }
+                        else
+                        {
+                            //後退控制
+                        }
+                    }
+                }
+            });
+        }
+        private enum CArithmetic
+        {
+            Carry,
+            Borrow
+        }
+        /// <summary>
+        /// 零件進位命令
+        /// </summary>
+        /// <returns></returns>
+        public System.Windows.Input.ICommand CarryComponentCommand
+        {
+            get
+            {
+                return ArithmeticComponent(CArithmetic.Carry); ;
+            }
+        }
+        /// <summary>
+        /// 零件退位命令
+        /// </summary>
+        /// <returns></returns>
+        public System.Windows.Input.ICommand BorrowComponentCommand
+        {
+            get
+            {
+                return ArithmeticComponent(CArithmetic.Borrow); ;
+            }
+        }
+        /// <summary>
+        /// 進位退位功能，當CarryBorrow為false時為退位
+        /// </summary>
+        /// <param name="_cArithmetic"></param>
+        private WPFWindowsBase.RelayParameterizedCommand ArithmeticComponent(CArithmetic _cArithmetic = CArithmetic.Carry)
+        {
+            return new WPFWindowsBase.RelayParameterizedCommand(objArray =>
+            {
+                if (objArrayComponentCorrespond(objArray, out var SelectedCom, out var TabC))
+                {
+                    //找出目標及指向之顯示介面後，顯示零件
+                    if (SelectedCom != null)
+                    {
+                        if (_cArithmetic == CArithmetic.Carry)
+                        {
+                            //進位控制
+                        }
+                        else
+                        {
+                            //退位控制
+                        }
+                    }
+                }
+            });
+        }
+        private bool objArrayComponentCorrespond(object objArray, out GD_STD.Data.TypeSettingDataView SelectedComponent, out object TabControl)
+        {
+            SelectedComponent = null;
+            TabControl = null;
+
+            if (objArray.GetType().Equals(typeof(object[])))
+            {
+                foreach (var obj in (object[])objArray)
+                {
+                    //確認為TypeSettingDataView
+                    if(obj.GetType().Equals(typeof(DevExpress.Xpf.Grid.GridControl)))
+                    {
+                       var GControl = (DevExpress.Xpf.Grid.GridControl)obj;
+                       
+                    }
+                    else if (obj.GetType().Equals(typeof(GD_STD.Data.TypeSettingDataView)))
+                    {
+                        //取得已選擇的欄位
+                        SelectedComponent = (GD_STD.Data.TypeSettingDataView)obj;
+                        //
+                    }
+                    //連結到圖形顯示
+                    //ex: obj.GetType().Equals(typeof(GD_STD.Data.TypeSettingDataView))
+                    //else if (obj.GetType().Equals(typeof(   )))
+                    else if (false)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+
+
+                    if (SelectedComponent != null)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+
+        #endregion
 
 
 
-    /// <inheritdoc/>
-    public double StartCut { get; set; }
+
+
+
+
+        /// <inheritdoc/>
+        public double StartCut { get; set; }
         /// <inheritdoc/>
         public double EndCut { get; set; }
         /// <inheritdoc/>
@@ -131,18 +326,31 @@ namespace GD_STD.Data
         /// <summary>
         /// 素材消耗
         /// </summary>
-        [Excel("損耗", 5)]
-        public double Loss 
+        [Excel("消耗", 5)]
+        public double Loss
         {
             //get => Parts.Select(el => el.Length).Aggregate((l1, l2) => l1 + l2)  + Cut * (Parts.Count -1d > 0d ? Parts.Count -1d : 0d); 
+            get
+            {
+                var AllPartAggregate = Parts.Select(el => el.Length).Aggregate((l1, l2) => l1 + l2); //總零件長
+                var CutLoss = Cut * (Parts.Count - 1d > 0d ? Parts.Count - 1d : 0d); //鋸床切割損耗
+                var SE_Cut = StartCut + EndCut; //素材前後切割
+                //材料前後端切除
+                return AllPartAggregate + CutLoss + SE_Cut;
+            }
+        }
+
+        public GD_STD.Enum.OBJECT_TYPE _objectType
+        {
             get 
             {
-                var A = Parts.Select(el => el.Length).Aggregate((l1, l2) => l1 + l2); //總零件長
-                var B = Cut * (Parts.Count - 1d > 0d ? Parts.Count - 1d : 0d); //鋸床切割損耗
-                var C = StartCut + EndCut;
-                //材料前後端切除
-                return A + B +C;
+                return GD_STD.Enum.OBJECT_TYPE.Unknown;
             }
+        }
+
+        public bool LockMark
+        {
+            get;set;
         }
 
 

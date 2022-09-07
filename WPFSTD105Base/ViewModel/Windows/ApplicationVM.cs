@@ -445,12 +445,13 @@ namespace WPFSTD105
         {
             STDSerialization ser = new STDSerialization();
             ApplicationVM appVM = new ApplicationVM();
+            ObSettingVM obVM = new ObSettingVM();
             List<string> dmList = appVM.GetAllDevPart();
             NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
             // 跑已存在dm檔，產生未有dm檔之NC檔
             foreach (var nc in ncTemps)
             {
-                if (!dmList.Contains(nc.SteelAttr.GUID.Value.ToString()))
+                if (!dmList.Contains(nc.SteelAttr.GUID.Value.ToString()) && obVM.allowType.Contains(nc.SteelAttr.Type))
                 {
                     model.Clear(); //清除目前模型
                     model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString());

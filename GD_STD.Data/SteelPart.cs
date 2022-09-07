@@ -62,6 +62,8 @@ namespace GD_STD.Data
             ShippingNumber = shippingNumber;
             Title2 = title2;
             Title1 = title1;
+            Creation = DateTime.Now;
+            Revise = DateTime.Now;
         }
         #region 公開屬性
         /// <inheritdoc/>

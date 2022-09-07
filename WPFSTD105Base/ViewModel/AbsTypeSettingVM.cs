@@ -91,6 +91,7 @@ namespace WPFSTD105
                                 Material = item.Material,
                                 SortCount = 0,
                                 Match = item.Match,
+                                Weigth = item.UnitWeight
                             });
                         }
                     }
@@ -100,14 +101,7 @@ namespace WPFSTD105
             ReverseSelectedGridCommand = ReverseSelectedGrid();//反向選取命令
             UnselectSelectedGridCommand = UnselectSelectedGrid();//取消選取命令
             SaveMatchCommand = SaveMatch();
-            AutoCommand = new WPFBase.RelayParameterizedCommand(obj =>
-           {
-               _GridControl = (GridControl)obj;
-               LengthDodageControl = true;
-               //AutoMatchAsync(obj);
-               //GridControl grid = (GridControl)obj;
-               //
-           });
+
         }
         private GridControl _GridControl { get; set; }
         #region 命令
@@ -115,14 +109,7 @@ namespace WPFSTD105
         /// 手動排版命令
         /// </summary>
         public ICommand ManualCommand { get; set; }
-        /// <summary>
-        /// 自動排版命令
-        /// </summary>
-        public WPFBase.RelayParameterizedCommand AutoCommand { get; set; }
-        //private  WPFBase.RelayParameterizedCommand Auto()
-        //{
-        //    return 
-        //}
+
         /// <summary>
         /// 顯示零件圖命令
         /// </summary>
@@ -390,19 +377,38 @@ namespace WPFSTD105
         { 
             get
             {
-                return new WPFBase.RelayParameterizedCommand(obj =>
+                return new WPFBase.RelayParameterizedCommand(objArray => 
                 {
-                    _GridControl = (GridControl)obj;
                     AutoMatchAsync();
-                    _GridControl.Dispatcher.Invoke(() =>
+
+                    foreach (var Data in DataViews)
                     {
-                        _GridControl.RefreshData();
+                        Data.SortCount = 0;
+                    }
 
-                    });
-
-                    if (MaterialDataViews != null)
+                    //確保多重系結objArray為陣列，否則傳出例外
+                    if (objArray.GetType().Equals(typeof(object[])))
                     {
-
+                        foreach (var obj in (object[])objArray)
+                        {
+                            //確認type為GridControl才進行重新整理，否則傳出例外
+                            if (obj.GetType().Equals(typeof(DevExpress.Xpf.Grid.GridControl)))
+                            {
+                                var GoCommandGridControl = (DevExpress.Xpf.Grid.GridControl)obj;
+                                GoCommandGridControl.Dispatcher.Invoke(() =>
+                                {
+                                    GoCommandGridControl.RefreshData();
+                                });
+                            }
+                            else
+                            {
+                                throw new Exception("系結只能為GridControl");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("傳入參數須為多重系結");
                     }
                 });
             }
@@ -417,19 +423,167 @@ namespace WPFSTD105
             {
                 return new WPFBase.RelayParameterizedCommand(obj =>
                 {
-                    _GridControl = (GridControl)obj;
-                    AutoMatchAsync();
-               
-                    _GridControl.Dispatcher.Invoke(() =>
+                    var PartGirdControl = (DevExpress.Xpf.Grid.GridControl)obj;
+                    //只在有選擇的狀態下執行命令
+                    if (PartGirdControl.SelectedItems.Count > 0)
                     {
-                        _GridControl.RefreshData();
+                        foreach(GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl.SelectedItems)
+                        {                          
+                            //數量 -已配對 >= 預排數量
 
-                    });
-                });
+                            //數量
+                            var IDCount = PartGridColumn.ID.Count;
+                            //已配對
+                            //var MatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
+                            var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
+
+                            if(PartGridColumn.SortCount < IDCount - alreadyMatchCount)
+                                PartGridColumn.SortCount ++;
+                        }
+                        //需要重整才能更新data binding 
+                        PartGirdControl.Dispatcher.Invoke(() =>
+                        {
+                            PartGirdControl.RefreshData();
+                        });
+                    }
+                }
+                );
+            }
+        }
+
+        /// <summary>
+        /// 減少素材(單個)
+        /// </summary>
+        public ICommand DeductMaterial
+        {
+            get
+            {
+                return new WPFBase.RelayParameterizedCommand(obj =>
+                {
+                    var PartGirdControl = (DevExpress.Xpf.Grid.GridControl)obj;
+                    //只在有選擇的狀態下執行命令
+                    if (PartGirdControl.SelectedItems.Count > 0)
+                    {
+                        foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl.SelectedItems)
+                        {
+                            //只在>=1的時候做加減
+                            if(PartGridColumn.SortCount >=1)
+                                PartGridColumn.SortCount--;
+
+                            //保險：避免出現負數的情況
+                            if (PartGridColumn.SortCount < 0)
+                                PartGridColumn.SortCount =0;
+
+                        }                    
+                        
+                        //需要重整才能更新data binding 
+                        PartGirdControl.Dispatcher.Invoke(() =>
+                        {
+                            PartGirdControl.RefreshData();
+                        });
+                    }
+                }
+                );
             }
         }
 
 
+        /// <summary>
+        /// 加入素材(全部)
+        /// </summary>
+        public ICommand AddAllMaterial
+        {
+            get
+            {
+                return new WPFBase.RelayParameterizedCommand(obj =>
+                {
+                    var PartGirdControl = (DevExpress.Xpf.Grid.GridControl)obj;
+                    //只在有選擇的狀態下執行命令
+                    if (PartGirdControl.SelectedItems.Count > 0)
+                    {
+                        foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl.SelectedItems)
+                        {
+                            //數量 -已配對 >= 預排數量
+
+                            //數量
+                            var IDCount = PartGridColumn.ID.Count;
+                            //已配對
+                            var alreadyMatchCount = PartGridColumn.Match.FindAll(x=>(x == false)).Count;
+                            //var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
+
+                            PartGridColumn.SortCount = IDCount - alreadyMatchCount;
+
+
+                            //已配對
+                            //  PartGridColumn.Match.FindAll(x => (x == true)).Count;
+
+                            // DataViews[];
+                            //取得構件編號，將資料寫入datagrid
+
+                        }                    //需要重整才能更新data binding 
+                        PartGirdControl.Dispatcher.Invoke(() =>
+                        {
+                            PartGirdControl.RefreshData();
+                        });
+                    }
+                }
+                );
+            }
+        }
+
+        /// <summary>
+        /// 減少素材(全部)
+        /// </summary>
+        public ICommand DeductAllMaterial
+        {
+            get
+            {
+                return new WPFBase.RelayParameterizedCommand(obj =>
+                {
+                    var PartGirdControl = (DevExpress.Xpf.Grid.GridControl)obj;
+                    //只在有選擇的狀態下執行命令
+                    if (PartGirdControl.SelectedItems.Count > 0)
+                    {
+                        foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl.SelectedItems)
+                        {
+                            PartGridColumn.SortCount = 0;
+                        }                    
+                        //需要重整才能更新data binding 
+                        PartGirdControl.Dispatcher.Invoke(() =>
+                        {
+                            PartGirdControl.RefreshData();
+                        });
+                    }
+                }
+                );
+            }
+        }
+
+        /// <summary>
+        /// 20220901 checkbox 全選-全不選command
+        /// </summary>
+        public ICommand SetAllCheckboxCheckedCommand
+        {
+            get
+            {
+                return new WPFWindowsBase.RelayParameterizedCommand(obj =>
+                {
+                    GetWpfLogicalChildClass.SetAllCheckBoxTrueOrFalse(obj);
+                });
+            }
+        }
+
+        private bool _lockMark = false;
+        public bool LockMark {
+            get 
+            {
+                return _lockMark; 
+            }
+            set 
+            { 
+                _lockMark = value; 
+            }
+        }
 
 
 
@@ -579,5 +733,89 @@ namespace WPFSTD105
                 return 0;
         }
         #endregion
+
+
+
+
+
+
+
+
     }
+
+
+    #region 尋找所有子控制項
+    /// <summary>
+    /// 20220831 尋找在控制元件中找尋所有符合條件的控制項
+    /// </summary>
+    public class GetWpfLogicalChildClass
+    {
+        /// <summary>
+        /// 設定控制元件內所有子控制元件checkBox全勾選/全取消 , parent為母控制元件
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <returns></returns>
+        public static bool SetAllCheckBoxTrueOrFalse(object parent)
+        {
+            try
+            {
+                //勾選邏輯->checkbox中存在任意未勾選時，按鈕為全勾選
+                //當checkbox為全勾選時，才執行全部取消勾選
+
+                var AllCheckBoxList = GetWpfLogicalChildClass.GetLogicalChildCollection<System.Windows.Controls.CheckBox>(parent);
+                var AllCheckboxBoolen = AllCheckBoxList.Exists(x => (x.IsChecked == false));
+
+                foreach (var CBox in AllCheckBoxList)
+                {
+                    CBox.IsChecked = AllCheckboxBoolen;
+                }
+                return true;
+            }
+            catch (Exception EX)
+            {
+                return false;
+            }
+
+        }
+
+
+
+        /// <summary>
+        /// 尋找控制項 T = 子控制元件的類型 , parent = 搜尋之母控制元件
+        /// </summary>
+        /// <typeparam name="T">子控制元件的類型</typeparam>
+        /// <param name="parent">目標搜尋的控制元件名稱</param>
+        /// <returns></returns>
+        public static List<T> GetLogicalChildCollection<T>(object parent) where T : DependencyObject
+        {
+            List<T> logicalCollection = new List<T>();
+            GetLogicalChildCollection(parent as DependencyObject, logicalCollection);
+            return logicalCollection;
+        }
+
+        private static void GetLogicalChildCollection<T>(DependencyObject parent, List<T> logicalCollection) where T : DependencyObject
+        {
+            System.Collections.IEnumerable children = LogicalTreeHelper.GetChildren(parent);
+            foreach (object child in children)
+            {
+                if (child is DependencyObject)
+                {
+                    DependencyObject depChild = child as DependencyObject;
+                    if (child is T)
+                    {
+                        logicalCollection.Add(child as T);
+                    }
+                    GetLogicalChildCollection(depChild, logicalCollection);
+                }
+            }
+        }
+
+    }
+    #endregion
+
+
+
+
+
+
 }

@@ -167,6 +167,11 @@ namespace WPFSTD105.ViewModel
 
         #region 公開屬性
         /// <summary>
+        /// 限制Grid出現之內容
+        /// </summary>
+        public List<OBJECT_TYPE> allowType = new List<OBJECT_TYPE> { OBJECT_TYPE.RH, OBJECT_TYPE.BH, OBJECT_TYPE.H, OBJECT_TYPE.BOX, OBJECT_TYPE.TUBE, OBJECT_TYPE.LB, OBJECT_TYPE.CH };
+
+        /// <summary>
         /// 構件資訊列表
         /// </summary>
         public ObservableCollection<SteelAssembly> SteelAssemblies { get; private set; } = new ObservableCollection<SteelAssembly>();
@@ -498,6 +503,10 @@ namespace WPFSTD105.ViewModel
                 //SerializationHelper.SerializeBinary(DataCorrespond, ApplicationVM.FilePartList());
                 STDSerialization ser = new STDSerialization();
                 ser.SetDataCorrespond(DataCorrespond);
+                if (data.Type== OBJECT_TYPE.BH)
+                {
+
+                }
                 AddNode(data);
             }
         }
@@ -909,10 +918,16 @@ namespace WPFSTD105.ViewModel
         #endregion
 
         #region 新版屬性
+        private ObservableCollection<ProductSettingsPageViewModel> _dataviews = new ObservableCollection<ProductSettingsPageViewModel>();
+
         /// <summary>
         /// 零件資訊
         /// </summary>
-        public ObservableCollection<ProductSettingsPageViewModel> DataViews { get; set; } = new ObservableCollection<ProductSettingsPageViewModel>();
+        public ObservableCollection<ProductSettingsPageViewModel> DataViews
+        {
+            get { return _dataviews; }
+            set { _dataviews = value; }
+        }
         #endregion
 
 
@@ -1044,8 +1059,8 @@ namespace WPFSTD105.ViewModel
             //{
             //    return;
             //}
-
-            string level1Key = data.Type.GetType().GetMember(data.Type.ToString())[0].GetCustomAttribute<DescriptionAttribute>().Description; //第一層要設置的 key 值
+            string level1Key = WPFWindowsBase.BaseEnumValueConverter<OBJECT_TYPE>.GetDescription(data.Type);
+            //string level1Key = data.Type.GetType().GetMember(data.Type.ToString())[0].GetCustomAttribute<DescriptionAttribute>().Description; //第一層要設置的 key 值
             string level2Key = data.Profile; //第二層要設置的 key 值
             if (!level1.ContainsKey(level1Key))
             {
@@ -1190,7 +1205,7 @@ namespace WPFSTD105.ViewModel
         {
             STDSerialization ser = new STDSerialization();
             // 限制Grid出現之內容
-            List<OBJECT_TYPE> allowType = new List<OBJECT_TYPE> { OBJECT_TYPE.RH, OBJECT_TYPE.BH, OBJECT_TYPE.H, OBJECT_TYPE.BOX, OBJECT_TYPE.TUBE, OBJECT_TYPE.LB, OBJECT_TYPE.CH };
+            //List<OBJECT_TYPE> allowType = new List<OBJECT_TYPE> { OBJECT_TYPE.RH, OBJECT_TYPE.BH, OBJECT_TYPE.H, OBJECT_TYPE.BOX, OBJECT_TYPE.TUBE, OBJECT_TYPE.LB, OBJECT_TYPE.CH };
 
             // 取得dm檔與零件之對應
             ObservableCollection<DataCorrespond> DataCorrespond = ser.GetDataCorrespond();
@@ -1219,6 +1234,7 @@ namespace WPFSTD105.ViewModel
                 .SelectMany(x => x)
                 .Select(x => new
                 {
+                    x.GUID,
                     x.Lock,
                     x.Creation,
                     x.Revise,
@@ -1289,10 +1305,16 @@ namespace WPFSTD105.ViewModel
                                 steelAttrVM.steelAttr.AsseNumber = assem;
                                 // 零件編號
                                 steelAttrVM.steelAttr.PartNumber = item.Number;
+                                // 斷面規格
+                                string profile = item.Profile;
+                                steelAttrVM.Profile = profile;
+                                // 零件長
+                                double length = item.Length;
+                                steelAttrVM.Length = length;
                                 // 零件ID List
-                                var partList = partNumber_ID.Where(x => x.Number == item.Number).Select(x => x.ID).FirstOrDefault();
+                                var partList = partNumber_ID.Where(x => x.Number == item.Number && x.Profile == profile && x.Length == length).Select(x => x.ID).FirstOrDefault();
                                 // 構件ID List
-                                var fatherList = partNumber_ID.Where(x => x.Number == item.Number).Select(x => x.Father).FirstOrDefault();
+                                var fatherList = partNumber_ID.Where(x => x.Number == item.Number && x.Profile== profile && x.Length== length).Select(x => x.Father).FirstOrDefault();
                                 // Father的index = Part的index
                                 var partIndex = fatherList.IndexOf(assemID);
                                 // 取得該筆零件ID
@@ -1313,18 +1335,12 @@ namespace WPFSTD105.ViewModel
                                 steelAttrVM.TypeDesc = type;
                                 steelAttrVM.Type = item.Type;
                                 steelAttrVM.SteelType = Convert.ToInt32(item.Type);
-                                // 斷面規格
-                                string profile = item.Profile;
-                                steelAttrVM.Profile = profile;
                                 // 材質
                                 string material = item.Material;
                                 steelAttrVM.Material = material;
                                 // 數量
                                 int count = item.Count;
                                 steelAttrVM.Count = count;
-                                // 零件長
-                                double length = item.Length;
-                                steelAttrVM.Length = length;
                                 // 零件重
                                 double weight = item.UnitWeight;
                                 steelAttrVM.Weight = weight;
@@ -1344,8 +1360,8 @@ namespace WPFSTD105.ViewModel
                                 x.Profile == steelAttrVM.Profile &&
                                 x.Number == steelAttrVM.steelAttr.PartNumber &&
                                 allowType.Contains(x.Type));
-                                if (single != null)
-                                    steelAttrVM.DataName = single.DataName.ToString();
+                                //if (single != null)
+                                    steelAttrVM.steelAttr.GUID = item.GUID;
                                 //partNumber_ID.Remove(delPart);
                                 steelAttrList.Add(steelAttrVM);
                                 #endregion

@@ -890,6 +890,7 @@
     <Compile Include="ValueConverters\DrawingImageToBitmapSourceConverter.cs" />
     <Compile Include="ValueConverters\FACE_ToStringConverter.cs" />
     <Compile Include="ValueConverters\IListFilterToCountConverter.cs" />
+    <Compile Include="ValueConverters\MaterialDesignPackIconToBitmapSourceConverter.cs" />
     <Compile Include="ValueConverters\SteelPartWeightConverter.cs" />
     <Compile Include="ValueConverters\DrillingFaceConverter.cs" />
     <Compile Include="ValueConverters\SteelTypeToStringConverter.cs" />

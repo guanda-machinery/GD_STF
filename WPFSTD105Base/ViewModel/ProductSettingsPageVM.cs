@@ -149,6 +149,7 @@ namespace WPFSTD105.ViewModel
         #endregion
 
         #region 公開屬性
+
         /// <summary>
         /// 構件資訊列表
         /// </summary>
@@ -952,8 +953,8 @@ namespace WPFSTD105.ViewModel
             //{
             //    return;
             //}
-
-            string level1Key = data.Type.GetType().GetMember(data.Type.ToString())[0].GetCustomAttribute<DescriptionAttribute>().Description; //第一層要設置的 key 值
+            string level1Key = WPFWindowsBase.BaseEnumValueConverter<OBJECT_TYPE>.GetDescription(data.Type);
+            //string level1Key = data.Type.GetType().GetMember(data.Type.ToString())[0].GetCustomAttribute<DescriptionAttribute>().Description; //第一層要設置的 key 值
             string level2Key = data.Profile; //第二層要設置的 key 值
             if (!level1.ContainsKey(level1Key))
             {
