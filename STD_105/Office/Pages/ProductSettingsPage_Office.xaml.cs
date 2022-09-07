@@ -110,7 +110,7 @@ namespace STD_105.Office
             //    {
             //        return;
             //    }            }
-            //else //如果需要載入 nc 設定檔
+            //else //如果需要載入 nc 設定檔 
             //{
             //    model.LoadNcToModel(data.DataName);
             //}

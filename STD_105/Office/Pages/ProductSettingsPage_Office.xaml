@@ -173,8 +173,8 @@
 
             <GroupBox Header="零件清單" Margin="5">
                 <GroupBox.DataContext>
-                    <!--<STD105:ObSettingPage/>-->
-                    <WPFSTD:OfficeTypeSettingVM/>
+                    <STD105VM:ObSettingVM/>
+                    <!--<WPFSTD:OfficeTypeSettingVM/>-->
                 </GroupBox.DataContext>
                 <!--<GroupBox.DataContext>          -->
                 <!--    <spa:OfficeTypeSettingVM/>  -->
