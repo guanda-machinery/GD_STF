@@ -22,7 +22,7 @@
         </Style>
     </UserControl.Resources>
     <StackPanel dx:ThemeManager.ThemeName="Win10Light"
-        Orientation="Horizontal" 
+                Orientation="Horizontal" 
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
         <Button Name="add"
