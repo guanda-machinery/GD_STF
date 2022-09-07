@@ -14,6 +14,7 @@ using GD_STD.Data;
 using System.Windows.Input;
 using DevExpress.Xpf.WindowsUI;
 using WPFSTD105.Model;
+using System.Threading;
 
 namespace WPFSTD105
 {
@@ -34,6 +35,10 @@ namespace WPFSTD105
             });
         }
         #region 公開屬性
+        /// <summary>
+        /// 啟動畫面管理器
+        /// </summary>
+        public SplashScreenManager ScreenManager { get; set; } = SplashScreenManager.CreateWaitIndicator();
         ///// <summary>
         ///// 接續專案
         ///// </summary>
@@ -443,6 +448,9 @@ namespace WPFSTD105
         /// <param name="model"></param>
         public void CreateDMFile( ModelExt model)
         {
+            //ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
+            //Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
+            
             STDSerialization ser = new STDSerialization();
             ApplicationVM appVM = new ApplicationVM();
             ObSettingVM obVM = new ObSettingVM();
@@ -453,6 +461,7 @@ namespace WPFSTD105
             {
                 if (!dmList.Contains(nc.SteelAttr.GUID.Value.ToString()) && obVM.allowType.Contains(nc.SteelAttr.Type))
                 {
+                    //ScreenManager.ViewModel.Status =$"建立3D/2D圖檔中"{ };
                     model.Clear(); //清除目前模型
                     model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString());
                 }
