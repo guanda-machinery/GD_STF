@@ -8,9 +8,7 @@
                   xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
                   xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
                   xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
-                  xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
-                  xmlns:local="clr-namespace:STD_105.Office"
-                  xmlns:STD="clr-namespace:STD_105"               
+                  xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"   
                   xmlns:GD_STDEnum="clr-namespace:GD_STD.Enum;assembly=GD_STD.Enum"
                   mc:Ignorable="d"
                   xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
@@ -20,8 +18,6 @@
                   xmlns:ddes="http://schemas.devdept.com/winfx/2008/xaml/control"
                   xmlns:ddgr="http://schemas.devdept.com/winfx/2008/xaml/graphics"
                   xmlns:STD105="clr-namespace:STD_105"
-                  xmlns:SofSettings="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
-                  xmlns:spa="clr-namespace:WPFSTD105;assembly=WPFSTD105"
                   xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                   xmlns:System="clr-namespace:System;assembly=mscorlib"
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
@@ -177,7 +173,8 @@
 
             <GroupBox Header="零件清單" Margin="5">
                 <GroupBox.DataContext>
-                    <STD105VM:ObSettingVM/>
+                    <!--<STD105:ObSettingPage/>-->
+                    <WPFSTD:OfficeTypeSettingVM/>
                 </GroupBox.DataContext>
                 <!--<GroupBox.DataContext>          -->
                 <!--    <spa:OfficeTypeSettingVM/>  -->
@@ -256,31 +253,29 @@
                         </dxg:GridColumn.HeaderImageStyle>
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel VerticalAlignment="Center">
-                                    <CheckBox IsChecked="{Binding steelAttr.Lock}">
-                                        <CheckBox.Template>
-                                            <ControlTemplate>
-                                                <dx:DXImage  Width="25" Height="25">
-                                                    <dx:DXImage.Style>
-                                                        <Style TargetType="{x:Type Image}">
-                                                            <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Icon Builder/Security_Unlock.svg'}" />
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=CheckBox}}" Value="true">
-                                                                    <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" />
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </dx:DXImage.Style>
-                                                </dx:DXImage>
-                                            </ControlTemplate>
-                                        </CheckBox.Template>
-                                    </CheckBox>
-                                </StackPanel>
+                                <dxe:CheckEdit x:Name="PART_Editor" IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                    <dxe:CheckEdit.Template>
+                                        <ControlTemplate>
+                                            <dx:DXImage  Width="25" Height="25">
+                                                <dx:DXImage.Style>
+                                                    <Style TargetType="{x:Type Image}">
+                                                        <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Icon Builder/Security_Unlock.svg'}" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=dxe:CheckEdit}}" Value="true">
+                                                                <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </dx:DXImage.Style>
+                                            </dx:DXImage>
+                                        </ControlTemplate>
+                                    </dxe:CheckEdit.Template>
+                                </dxe:CheckEdit>
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
-
-                    <dxg:GridColumn FieldName="Creation" IsSmart="True"  Header="建立日期"  >
+                    <!--<dxg:GridColumn FieldName="{Binding Creation, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="建立日期"  >-->
+                   <dxg:GridColumn FieldName="Creation" IsSmart="True"  Header="建立日期"  >
                         <dxg:GridColumn.CellStyle>
                             <Style>
                                 <Setter Property="TextBlock.Foreground" Value="Gray"/>
@@ -539,13 +534,11 @@
             Grid.Column="0" Grid.Row="1"
                     Background="#c0c0c0"
                     SelectionChanged="TabControlSelectedIndexChanged"
-                                            x:Name="tabControl"
-                  
-                    SelectedIndex="0">
+                                            x:Name="tabControl"                              SelectedIndex="0">
             <TabItem Header="3D視圖" Margin="0,0,0,0"  Style="{StaticResource DrawTabItem}">
                 <Grid>
                     <!--新增3D模型處-->
-                    <spa:ModelExt x:Name="model"
+                    <WPFSTD:ModelExt x:Name="model"
                                   SelectionChanged="model_SelectionChanged"
                                   Loaded="Model3D_Loaded"
                                   AutoRefresh="True"
@@ -558,7 +551,7 @@
                                   AntiAliasingSamples="x16"
                                   Renderer="NativeExperimental"                                  
                                   ShowFps="True">
-                        <spa:ModelExt.ContextMenu>
+                        <WPFSTD:ModelExt.ContextMenu>
                             <ContextMenu Style="{StaticResource BaseStyle}"
                                          FontSize="12">
                                 <MenuItem Name="esc"
@@ -598,11 +591,11 @@
                                           Command="{Binding Recovery}"
                                           Style="{StaticResource BaseStyle}" />
                             </ContextMenu>
-                        </spa:ModelExt.ContextMenu>
-                        <spa:ModelExt.ProgressBar>
+                        </WPFSTD:ModelExt.ContextMenu>
+                        <WPFSTD:ModelExt.ProgressBar>
                             <ddes:ProgressBar Lighting="False" />
-                        </spa:ModelExt.ProgressBar>
-                        <spa:ModelExt.Viewports>
+                        </WPFSTD:ModelExt.ProgressBar>
+                        <WPFSTD:ModelExt.Viewports>
                             <ddes:Viewport DisplayMode="Flat"
                                            InitialView="vcFrontFaceTopLeft"
                                            OriginSymbols="{Binding OriginSymbols}"
@@ -637,7 +630,7 @@
                                             <ddes:ToolBarButton ToolTipText="線性標註"
                                                                 Click="LinearDim"
                                                                 StyleMode="PushButton" Visible="False"
-                                                                Image="{Binding Source={StaticResource LinearDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
+                                                                Image="{Binding Source={StaticResource AngleDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
                                             <ddes:ToolBarButton ToolTipText="角度標註"
                                                                 StyleMode="PushButton" Visible="False"
                                                                 Image="{Binding Source={StaticResource AngleDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}" />
@@ -665,20 +658,20 @@
                                                        BackRingColor="White" />
                                 </ddes:Viewport.ViewCubeIcon>
                             </ddes:Viewport>
-                        </spa:ModelExt.Viewports>
-                    </spa:ModelExt>
+                        </WPFSTD:ModelExt.Viewports>
+                    </WPFSTD:ModelExt>
                 </Grid>
             </TabItem>
             
             <TabItem Header="2D視圖"  Margin="-1,0,0,0"   Style="{StaticResource DrawTabItem}">
                 <Grid>
-                    <spa:ModelExt x:Name="drawing" SelectionChanged="model_SelectionChanged" Loaded="drawing_Loaded"
+                    <WPFSTD:ModelExt x:Name="drawing" SelectionChanged="model_SelectionChanged" Loaded="drawing_Loaded"
                         SelectionColor="{Binding Setting.SelectionColor, Converter={STD105:StringToDrawingColoConverter}}"
                         ActionMode="{Binding ActionMode}" DefaultColor="Beige" AutoRefresh ="True" KeyDown="model_KeyDown"
                         
                         PreviewMouseRightButtonDown="model_PreviewMouseRightButtonDown"
                         Focusable="True" AntiAliasingSamples="x16" Renderer="NativeExperimental" ShowFps="True" Margin="0,0,0,0">
-                        <spa:ModelExt.ContextMenu>
+                        <WPFSTD:ModelExt.ContextMenu>
                             <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
                                 <MenuItem Name="esc2D" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
                                 <MenuItem Header="放大選取範圍" Style="{StaticResource BaseStyle}" Command="{Binding ZoomWindow}"/>
@@ -690,7 +683,7 @@
                                 <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
                                 <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
                             </ContextMenu>
-                        </spa:ModelExt.ContextMenu>
+                        </WPFSTD:ModelExt.ContextMenu>
                         <ddes:Model.ProgressBar>
                             <ddes:ProgressBar Lighting="False"/>
                         </ddes:Model.ProgressBar>
@@ -711,20 +704,22 @@
                                             <ddes:HomeToolBarButton/>
                                             <ddes:ZoomWindowToolBarButton/>
                                             <ddes:ZoomToolBarButton/>
-                                            <ddes:PanToolBarButton/>
+                                            <ddes:PanToolBarButton/> 
                                             <ddes:ZoomFitToolBarButton/>
-                                            <ddes:ToolBarButton ToolTipText="線性標註" Click="LinearDim" StyleMode="PushButton"
-                                                Image="{Binding Source={StaticResource LinearDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}"/>
+                                            <ddes:ToolBarButton ToolTipText="線性標註" Click="LinearDim" StyleMode="PushButton"   
+                                                                Image="{Binding Source={materialDesign:PackIcon Kind=Ruler},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"
+                                                                     />
+
                                             <ddes:ToolBarButton ToolTipText="角度標註" Click="AngleDim" StyleMode="PushButton"
-                                                Image="{Binding Source={StaticResource AngleDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}"/>
+                                                Image="{Binding Source={materialDesign:PackIcon Kind=AngleAcute},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"/>
                                             <ddes:ToolBarButton ToolTipText="絕對座標" StyleMode="PushButton"
-                                                Image="{Binding Source={StaticResource AbsDim},Converter={STD105:DrawingImageToBitmapSourceConverter}}"/>
+                                                Image="{Binding Source={materialDesign:PackIcon Kind=AxisArrow},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"/>
                                         </ddes:ToolBar.Buttons>
                                     </ddes:ToolBar>
                                 </ddes:Viewport.ToolBars>
                             </ddes:Viewport>
                         </ddes:Model.Viewports>
-                    </spa:ModelExt>
+                    </WPFSTD:ModelExt>
                 </Grid>
             </TabItem>
         </TabControl>
@@ -923,7 +918,7 @@
                                                 <RowDefinition Height="*"/>
                                             </Grid.RowDefinitions>
 
-                                            <RadioButton Margin="0,3,0,0" Grid.Row="0" VerticalAlignment="Center" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD:DrillingFaceConverter}, ConverterParameter=0}">
+                                            <RadioButton Margin="0,3,0,0" Grid.Row="0" VerticalAlignment="Center" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=0}">
                                                 <RadioButton.Content>
                                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,-2">
                                                         <Label Content="頂面"/>
@@ -932,7 +927,7 @@
                                                 </RadioButton.Content>
                                             </RadioButton>
 
-                                            <RadioButton  Margin="0,3,0,0" Grid.Row="1" GroupName="CutLinePosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD:DrillingFaceConverter}, ConverterParameter=1}">
+                                            <RadioButton  Margin="0,3,0,0" Grid.Row="1" GroupName="CutLinePosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=1}">
                                                 <RadioButton.Content>
                                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,-2" >
                                                         <Label Content="前面"/>
@@ -941,7 +936,7 @@
                                                 </RadioButton.Content>
                                             </RadioButton>
 
-                                            <RadioButton  Margin="0,3,0,0" Grid.Row="2" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD:DrillingFaceConverter}, ConverterParameter=2}">
+                                            <RadioButton  Margin="0,3,0,0" Grid.Row="2" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=2}">
                                                 <RadioButton.Content>
                                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,-2">
                                                         <Label Content="後面"/>

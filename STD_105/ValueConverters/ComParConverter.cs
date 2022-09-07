@@ -11,7 +11,7 @@ namespace STD_105
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            return values;
+            return values.Clone();
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
