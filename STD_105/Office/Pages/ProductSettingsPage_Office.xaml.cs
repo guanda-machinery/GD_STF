@@ -304,28 +304,27 @@ namespace STD_105.Office
                 ViewModel.SteelAttr.GUID = Guid.NewGuid();//產生新的 id
                 ViewModel.SteelAttr.Creation = DateTime.Now;
                 ViewModel.SteelAttr.Revise = null;
-
+                Double a = 0;
                 // 2022/07/14 呂宗霖 guid2區分2d或3d
                 //ViewModel.SteelAttr.GUID2 = ViewModel.SteelAttr.GUID;
                 ViewModel.SteelAttr.PointFront = new CutList();//清除切割線
                 ViewModel.SteelAttr.PointTop = new CutList();//清除切割線
-
                 ViewModel.SteelAttr.AsseNumber = this.asseNumber.Text;
-                ViewModel.SteelAttr.Length = Double.Parse(this.Length.Text);
-                ViewModel.SteelAttr.Weight = double.Parse(this.Weight.Text);
+                ViewModel.SteelAttr.Length = string.IsNullOrEmpty(this.Length.Text) ? 0 : Double.Parse(this.Length.Text);
+                ViewModel.SteelAttr.Weight = string.IsNullOrEmpty(this.Weight.Text) ? 0 : double.Parse(this.Weight.Text);
                 ViewModel.SteelAttr.Name = this.teklaName.Text;
                 ViewModel.SteelAttr.Material = this.material.Text;
-                ViewModel.SteelAttr.Phase = int.Parse(this.phase.Text);
-                ViewModel.SteelAttr.ShippingNumber = int.Parse(this.shippingNumber.Text);
+                ViewModel.SteelAttr.Phase = string.IsNullOrEmpty(this.phase.Text) ? 0 : int.Parse(this.phase.Text);
+                ViewModel.SteelAttr.ShippingNumber = string.IsNullOrEmpty(this.shippingNumber.Text) ? 0 : int.Parse(this.shippingNumber.Text);
                 ViewModel.SteelAttr.Title1 = this.title1.Text;
                 ViewModel.SteelAttr.Title2 = this.title2.Text;
                 ViewModel.SteelAttr.Type = (OBJECT_TYPE)this.cbx_SteelType.SelectedIndex;
                 ViewModel.SteelAttr.Profile = this.cbx_SectionType.Text;
-                ViewModel.SteelAttr.H = float.Parse(this.H.Text);
-                ViewModel.SteelAttr.W = float.Parse(this.W.Text);
-                ViewModel.SteelAttr.Number = int.Parse(this.PartCount.Text);
-                ViewModel.SteelAttr.t1 = float.Parse(this.t1.Text);
-                ViewModel.SteelAttr.t2 = float.Parse(this.t2.Text);
+                ViewModel.SteelAttr.H = string.IsNullOrEmpty(this.H.Text) ? 0 : float.Parse(this.H.Text);
+                ViewModel.SteelAttr.W = string.IsNullOrEmpty(this.W.Text) ? 0 : float.Parse(this.W.Text);
+                ViewModel.SteelAttr.Number = string.IsNullOrEmpty(this.PartCount.Text) ? 0 : int.Parse(this.PartCount.Text);
+                ViewModel.SteelAttr.t1 = string.IsNullOrEmpty(this.t1.Text) ? 0 : float.Parse(this.t1.Text);
+                ViewModel.SteelAttr.t2 = string.IsNullOrEmpty(this.t2.Text) ? 0 : float.Parse(this.t2.Text);
                 ViewModel.SteelAttr.ExclamationMark = false;
 #if DEBUG
                 log4net.LogManager.GetLogger("加入主件").Debug("產生圖塊");
