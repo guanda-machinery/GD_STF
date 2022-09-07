@@ -146,7 +146,7 @@
             <RowDefinition Height="*" MinHeight="530"/>
         </Grid.RowDefinitions>
         <DockPanel >
-            <GroupBox Header="已建立的清單" Margin="5" DockPanel.Dock="Top" Visibility="Visible">
+            <GroupBox Header="已建立的清單" Margin="5" DockPanel.Dock="Top" Visibility="Collapsed">
                 <TreeView SelectedItemChanged="TreeView_SelectedItemChanged"
                           Style="{ StaticResource treeView_STD }"
                           ItemsSource="{Binding TreeNode}">
@@ -175,7 +175,7 @@
                                 AutoGenerateColumns="None"
                                 SelectionMode="None"
                                 MaxHeight="500"
-                    AllowLiveDataShaping="True"                    
+                                AllowLiveDataShaping="True"                    
                                 ItemsSource="{Binding DataViews}" SelectedItemChanged="Grid_SelectedChange">
                     <dxg:GridControl.Resources>
                         <Style TargetType="dxg:GridColumn" >
@@ -187,16 +187,19 @@
                         </Style>
                     </dxg:GridControl.Resources>
                     <dxg:GridControl.View >
-                        <dxg:TableView  
-                       
-                                    VerticalScrollbarVisibility="Visible"
-                                    ShowGroupPanel="False"
-                                    ShowSearchPanelMode="Always"
-                                    SearchPanelNullText="Search Tasks(Ctrl + F)" 
-                                    SearchPanelFindMode="Always" 
-                                    SearchDelay="0"
-                                    AllowEditing="False"
-                                    EnableImmediatePosting="True">
+                        <dxg:TableView VerticalScrollbarVisibility="Visible"
+                                       ShowGroupPanel="False"
+                                       ShowSearchPanelMode="Always"
+                                       SearchPanelNullText="Search Tasks(Ctrl + F)" 
+                                       SearchPanelFindMode="Always" 
+                                       SearchDelay="0"
+                                       AllowEditing="False"
+                                       EnableImmediatePosting="True">
+                            <dxg:TableView.RowStyle>
+                                <Style TargetType="dxg:RowControl">
+                                    <Setter Property="Height" Value="20"/>
+                                </Style>
+                            </dxg:TableView.RowStyle>
                             <dxg:TableView.CellStyle>
                                 <Style>
                                     <Setter Property="TextBlock.FontSize" Value="12"/>
@@ -209,7 +212,7 @@
                         <dxg:GridColumn.HeaderImageStyle>
                             <Style TargetType="Image">
                                 <Setter Property="Width" Value="20"></Setter>
-                                <Setter Property="Margin" Value="0"></Setter>
+                                <Setter Property="Margin" Value="-3"></Setter>
                             </Style>
                         </dxg:GridColumn.HeaderImageStyle>
                         <dxg:GridColumn.CellTemplate>
@@ -281,7 +284,7 @@
                         </dxg:GridColumn.CellStyle>
                     </dxg:GridColumn>
 
-                    <dxg:GridColumn FieldName="GUID" Binding="{Binding steelAttr.GUID}" IsSmart="True"   Header="dm檔名" Width="auto" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn FieldName="GUID" Binding="{Binding steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="AssemblyNumber" Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="auto"/>
                     <dxg:GridColumn FieldName="PartNumber" Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="auto" />
                     <dxg:GridColumn FieldName="TeklaName" IsSmart="True"   Header="名稱" Width="auto"/>
@@ -299,7 +302,7 @@
                     <dxg:GridColumn FieldName="t1" Binding="{Binding steelAttr.t1}" IsSmart="True"  Header="腹板厚度" Width="auto" />
                     <dxg:GridColumn FieldName="t2" Binding="{Binding steelAttr.t2}" IsSmart="True"  Header="翼板厚度" Width="auto" />
                     
-                    <dxg:GridColumn FieldName="Phase"  IsSmart="True"  Width="auto" Header="Phase"  />
+                    <dxg:GridColumn FieldName="Phase"  IsSmart="True"  Width="auto" Header="Phase" />
                     <dxg:GridColumn FieldName="ShippingNumber"  IsSmart="True"  Width="auto" Header="拆運"  />
                     <dxg:GridColumn FieldName="Title1" IsSmart="True"  Width="auto" Header="標題一"  />
                     <dxg:GridColumn FieldName="Title2" IsSmart="True"  Width="auto" Header="標題二"  />
@@ -364,9 +367,9 @@
                     </Grid.Resources>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto" MinWidth="120" />
+                        <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto" MinWidth="150" />
+                        <ColumnDefinition Width="150"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -1016,7 +1019,7 @@
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
 
-                                        <RadioButton Margin="0,0,0,0" Grid.Row="0" VerticalAlignment="Center" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD:CutFaceConverter}, ConverterParameter=0}">
+                                        <RadioButton Margin="0,0,0,0" Grid.Row="0" VerticalAlignment="Center" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=0}">
                                             <RadioButton.Content>
                                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0" >
                                                     <Label Content="頂面"/>
@@ -1025,7 +1028,7 @@
                                             </RadioButton.Content>
                                         </RadioButton>
 
-                                        <RadioButton  Margin="0,-10,0,0" Grid.Row="1" GroupName="CutLinePosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD:CutFaceConverter}, ConverterParameter=1}">
+                                        <RadioButton  Margin="0,-10,0,0" Grid.Row="1" GroupName="CutLinePosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=1}">
                                             <RadioButton.Content>
                                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0" >
                                                     <Label Content="前面"/>
@@ -1034,7 +1037,7 @@
                                             </RadioButton.Content>
                                         </RadioButton>
 
-                                        <RadioButton  Margin="0,-10,0,0" Grid.Row="2" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD:CutFaceConverter}, ConverterParameter=2}">
+                                        <RadioButton  Margin="0,-10,0,0" Grid.Row="2" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=2}">
                                             <RadioButton.Content>
                                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                                     <Label Content="後面"/>

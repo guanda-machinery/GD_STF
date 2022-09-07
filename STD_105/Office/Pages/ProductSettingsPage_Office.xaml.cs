@@ -761,26 +761,11 @@ namespace STD_105.Office
             ViewModel.ModifyCut = new RelayCommand(() =>
             {
                 //在這裡撰寫程式碼..
-                WinUIMessageBox.Show(null,
-                    $"修改切割線設定",
-                    "通知",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Exclamation,
-                    MessageBoxResult.None,
-                    MessageBoxOptions.None,
-                    FloatingMode.Popup);
             });
             //刪除切割線設定
             ViewModel.DeleteCut = new RelayCommand(() =>
             {
-                WinUIMessageBox.Show(null,
-                    $"刪除切割線設定",
-                    "通知",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Exclamation,
-                    MessageBoxResult.None,
-                    MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                //在這裡撰寫程式碼..
             }); 
             //讀取切割線設定
             ViewModel.ReadCut = new RelayCommand(() =>

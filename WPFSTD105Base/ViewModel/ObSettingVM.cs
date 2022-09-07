@@ -1027,6 +1027,10 @@ namespace WPFSTD105.ViewModel
         /// 鋼構物件設定檔緩衝區
         /// </summary>
         private SteelAttr Steelbuffer { get; set; } = new SteelAttr();
+        /// <summary>
+        /// 加入螺栓選擇的面CYH
+        /// </summary>
+        private object selectedItem { get; set; }
         #endregion
 
         #region 私有方法     
