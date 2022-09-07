@@ -270,7 +270,7 @@
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
                     <!--<dxg:GridColumn FieldName="{Binding Creation, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="建立日期"  >-->
-                   <dxg:GridColumn FieldName="Creation" IsSmart="True"  Header="建立日期"  >
+                    <dxg:GridColumn FieldName="Creation" IsSmart="True"  Header="建立日期"  >
                         <dxg:GridColumn.CellStyle>
                             <Style>
                                 <Setter Property="TextBlock.Foreground" Value="Gray"/>
@@ -302,7 +302,7 @@
                     <dxg:GridColumn FieldName="Weight" Binding="{Binding steelAttr.W}" IsSmart="True"  Header="寬度" Width="auto" />
                     <dxg:GridColumn FieldName="t1" Binding="{Binding steelAttr.t1}" IsSmart="True"  Header="腹板厚度" Width="auto" />
                     <dxg:GridColumn FieldName="t2" Binding="{Binding steelAttr.t2}" IsSmart="True"  Header="翼板厚度" Width="auto" />
-                    
+
                     <dxg:GridColumn FieldName="Phase"  IsSmart="True"  Width="auto" Header="Phase" />
                     <dxg:GridColumn FieldName="ShippingNumber"  IsSmart="True"  Width="auto" Header="拆運"  />
                     <dxg:GridColumn FieldName="Title1" IsSmart="True"  Width="auto" Header="標題一"  />
@@ -310,7 +310,8 @@
 
                     <!--<dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"   Header="構件編號" Width="auto"/>
                         <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="auto" />
-                    <dxg:GridColumn IsSmart="True" Header="名稱" Width="auto"/>--> <!--資料沒有對應屬性--> 
+                    <dxg:GridColumn IsSmart="True" Header="名稱" Width="auto"/>-->
+                    <!--資料沒有對應屬性-->
                     <!--<dxg:GridColumn Binding="{Binding Path=SteelType, Converter={STD105:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類型"/>                          
                         <dxg:GridColumn FieldName="Profile" IsSmart="True"  Header="斷面規格"  Width="auto"/>
                         <dxg:GridColumn FieldName="Material"  IsSmart="True"  Header="材質"  Width="auto"/>
@@ -340,7 +341,7 @@
         </DockPanel>
         <!--零件屬性-->
         <GroupBox Header="零件屬性" Grid.Column="1" Margin="5">
-           <DockPanel Margin="5,0,5,0">
+            <DockPanel Margin="5,0,5,0">
                 <Grid  HorizontalAlignment="Left" Margin="5,5,5,5" DockPanel.Dock="Top" >
                     <Grid.Resources>
                         <Style TargetType ="TextBlock">
@@ -445,13 +446,13 @@
                     <StackPanel Grid.Column="1" Grid.Row="10" >
                         <TextBox Name="title2" Text="{Binding SelectedItems[0].Title2, ElementName=PieceListGridControl,Mode=OneWay}" BorderBrush="Black"/>
                     </StackPanel>
-                    
+
                     <!--<StackPanel Grid.Column="2"  Grid.Row="7" Grid.RowSpan="3" >
                         <TextBox Text="{Binding SelectedItems[0].Type, ElementName=PieceListGridControl}" BorderBrush="Black"/>
                         <TextBox Text="{Binding SelectedItems[0].TypeDesc, ElementName=PieceListGridControl}" BorderBrush="Black"/>
                         <TextBox Text="{Binding SelectedItems[0].SteelType, ElementName=PieceListGridControl}" BorderBrush="Black"/>
                     </StackPanel>-->
-                    
+
                     <Label Grid.Column="2" Grid.Row="0"
                            Content="型鋼類型：" />
                     <StackPanel Grid.Column="3"  Grid.Row="0" >
@@ -649,7 +650,7 @@
                     </WPFSTD:ModelExt>
                 </Grid>
             </TabItem>
-            
+
             <TabItem Header="2D視圖"  Margin="-1,0,0,0"   Style="{StaticResource DrawTabItem}">
                 <Grid>
                     <WPFSTD:ModelExt x:Name="drawing" SelectionChanged="model_SelectionChanged" Loaded="drawing_Loaded"
@@ -690,7 +691,7 @@
                                             <ddes:HomeToolBarButton/>
                                             <ddes:ZoomWindowToolBarButton/>
                                             <ddes:ZoomToolBarButton/>
-                                            <ddes:PanToolBarButton/> 
+                                            <ddes:PanToolBarButton/>
                                             <ddes:ZoomFitToolBarButton/>
                                             <ddes:ToolBarButton ToolTipText="線性標註" Click="LinearDim" StyleMode="PushButton"   
                                                                 Image="{Binding Source={materialDesign:PackIcon Kind=Ruler},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"
@@ -904,25 +905,25 @@
                                                 <RowDefinition Height="*"/>
                                             </Grid.RowDefinitions>
 
-                                            <RadioButton Margin="0,3,0,0" Grid.Row="0" VerticalAlignment="Center" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=0}">
+                                            <RadioButton Margin="0,3,0,0" Grid.Row="0" VerticalAlignment="Center" GroupName="DrillingPosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=0}">
                                                 <RadioButton.Content>
                                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,-2">
                                                         <Label Content="頂面"/>
-                                                        <Label Margin="40,0,0,0" Content="右翼板" />
-                                                    </StackPanel>
-                                                </RadioButton.Content>
-                                            </RadioButton>
-
-                                            <RadioButton  Margin="0,3,0,0" Grid.Row="1" GroupName="CutLinePosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=1}">
-                                                <RadioButton.Content>
-                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,-2" >
-                                                        <Label Content="前面"/>
                                                         <Label Margin="40,0,0,0" Content="腹板" />
                                                     </StackPanel>
                                                 </RadioButton.Content>
                                             </RadioButton>
 
-                                            <RadioButton  Margin="0,3,0,0" Grid.Row="2" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=2}">
+                                            <RadioButton  Margin="0,3,0,0" Grid.Row="1" GroupName="DrillingPosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=1}">
+                                                <RadioButton.Content>
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,-2" >
+                                                        <Label Content="前面"/>
+                                                        <Label Margin="40,0,0,0" Content="右翼板" />
+                                                    </StackPanel>
+                                                </RadioButton.Content>
+                                            </RadioButton>
+
+                                            <RadioButton  Margin="0,3,0,0" Grid.Row="2" GroupName="DrillingPosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=2}">
                                                 <RadioButton.Content>
                                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,-2">
                                                         <Label Content="後面"/>
@@ -931,7 +932,7 @@
                                                 </RadioButton.Content>
                                             </RadioButton>
 
-                                            
+
                                         </Grid>
                                     </StackPanel>
                                 </GroupBox>
@@ -992,7 +993,7 @@
                     </DockPanel>
 
                 </TabItem>
-                <TabItem Header="切割線">
+                <TabItem Header="切割線" Name="CutTabItem">
                     <TabItem.Resources>
                         <Style TargetType="TextBox"
                                BasedOn="{ StaticResource BaseStyle }">
@@ -1024,16 +1025,16 @@
                                             <RadioButton.Content>
                                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0" >
                                                     <Label Content="頂面"/>
-                                                    <Label Margin="40,0,0,0" Content="右翼板" />
+                                                    <Label Margin="40,0,0,0" Content="腹板" />
                                                 </StackPanel>
                                             </RadioButton.Content>
                                         </RadioButton>
-
+                                        
                                         <RadioButton  Margin="0,-10,0,0" Grid.Row="1" GroupName="CutLinePosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=1}">
                                             <RadioButton.Content>
                                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0" >
                                                     <Label Content="前面"/>
-                                                    <Label Margin="40,0,0,0" Content="腹板" />
+                                                    <Label Margin="40,0,0,0" Content="右翼板" />
                                                 </StackPanel>
                                             </RadioButton.Content>
                                         </RadioButton>
@@ -1144,16 +1145,25 @@
                                     </Grid>
                                 </StackPanel>
                             </GroupBox>
-                            
-                            <STD105:DataButtons_Office  Grid.Row="3" 
-                                                        Style="{StaticResource BaseStyle}"
-                                                        Modify="{Binding ModifyCut}"
-                                                        Add="{Binding AddCut}"
-                                                        Delete="{Binding DeleteCut}"
-                                                        ReadVisibility="Collapsed"
-                                                        HorizontalAlignment="Center" 
-                                                        VerticalAlignment="Bottom"
-                                                        Margin="12,0,0,0"/>
+
+                            <StackPanel  Grid.Row="3" Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Command="" Width="80" Margin="-20,0,-15,0"  Background="#d8d8d8" Click="Set_CutSettingGrid_AllCheckboxChecked_Click" Cursor="Hand" >
+                                    <Button.Content >
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="CheckboxOutline" />
+                                            <TextBlock Text="／"/>
+                                            <materialDesign:PackIcon Kind="CheckboxBlankOutline" />
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                                <STD105:DataButtons_Office Style="{StaticResource BaseStyle}"
+                                                           Modify="{Binding ModifyCut}"
+                                                           Add="{Binding AddCut}"
+                                                           Delete="{Binding DeleteCut}"
+                                                           ReadVisibility="Collapsed" 
+                                                           VerticalAlignment="Bottom"
+                                                           Margin="0,0,0,0" Width="315"/>
+                            </StackPanel>
                         </Grid>
                     </ScrollViewer>
                 </TabItem>

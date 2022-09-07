@@ -3399,6 +3399,10 @@ namespace STD_105.Office
         {
             GetWpfLogicalChildClass.SetAllCheckBoxTrueOrFalse(DrillTabItem);
         }
+        private void Set_CutSettingGrid_AllCheckboxChecked_Click(object sender, RoutedEventArgs e)
+        {
+            GetWpfLogicalChildClass.SetAllCheckBoxTrueOrFalse(CutTabItem);
+        }
         private void Grid_SelectedChange(object sender, SelectedItemChangedEventArgs e)
         {
             //    //#region 3D
