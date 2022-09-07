@@ -47,6 +47,7 @@ namespace STD_105.Office
 
 
             STDSerialization ser = new STDSerialization();
+            //var a = ser.GetDataCorrespond();
             //List<string> dataname = new List<string>();
             //// 取得所有零件檔
             //Dictionary<string, ObservableCollection<SteelPart>> DicSteelPart = ser.GetPart();
@@ -325,6 +326,7 @@ namespace STD_105.Office
                 ViewModel.SteelAttr.Number = int.Parse(this.PartCount.Text);
                 ViewModel.SteelAttr.t1 = float.Parse(this.t1.Text);
                 ViewModel.SteelAttr.t2 = float.Parse(this.t2.Text);
+                ViewModel.SteelAttr.ExclamationMark = false;
 #if DEBUG
                 log4net.LogManager.GetLogger("加入主件").Debug("產生圖塊");
 #endif
