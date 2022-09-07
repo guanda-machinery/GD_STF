@@ -154,7 +154,7 @@
             <RowDefinition Height="*" MinHeight="530"/>
         </Grid.RowDefinitions>
         <DockPanel >
-            <GroupBox Header="已建立的清單" Margin="5" DockPanel.Dock="Top" Visibility="Visible">
+            <GroupBox Header="已建立的清單" Margin="5" DockPanel.Dock="Top" Visibility="Collapsed">
                 <TreeView SelectedItemChanged="TreeView_SelectedItemChanged"
                       Style="{ StaticResource treeView_STD }"
                       ItemsSource="{Binding TreeNode}">
