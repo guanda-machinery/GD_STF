@@ -198,7 +198,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 鑽孔radio button 頂面,前面,後面
         /// </summary>
-        public int rbtn_DrillingFace { get; set; }
+        public int rbtn_DrillingFace { get; set; } = 0;
         /// <summary>
         /// 切割線radio button 頂面,前面,後面
         /// </summary>
