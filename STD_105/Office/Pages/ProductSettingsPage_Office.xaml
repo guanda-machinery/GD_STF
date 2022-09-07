@@ -29,7 +29,6 @@
                   Title="製品設定">
 
 
-
     <!--頁面框架-->
     <WPFBase:BasePage.Resources>
         <ResourceDictionary>
@@ -37,7 +36,6 @@
             <!--<local:MATERIAL_ToStringConverter x:Key="Material"/>-->
             <STD105:FACE_ToStringConverter x:Key="Face" />
             <STD105:START_HOLE_ToStringConverter x:Key="StartHole" />
-
             <!--System:Boolean x:Key="visible">false</System:Boolean-->
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
@@ -59,7 +57,6 @@
                         <Setter Property="BorderThickness" Value="5"/>
                     </Style>
                 </Style.Resources>
-
             </Style>
 
 
@@ -69,23 +66,22 @@
                 <Setter Property="BorderBrush" Value="#CFCFCF"/>
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="FontSize" Value="12"/>
-
                 <Setter Property="Width" Value="80"/>
                 <Setter Property="Height" Value="24"/>
             </Style>
             <Style TargetType="CheckBox"
-                                   BasedOn="{ StaticResource BaseStyle }">
+                   BasedOn="{ StaticResource BaseStyle }">
             </Style>
             <Style TargetType="TextBox"
-                                   BasedOn="{ StaticResource BaseStyle }">
+                   BasedOn="{ StaticResource BaseStyle }">
                 <Setter Property="FontSize" Value="12"/>
             </Style>
             <Style TargetType="ComboBox"
-                                   BasedOn="{ StaticResource BaseStyle }">
+                   BasedOn="{ StaticResource BaseStyle }">
                 <Setter Property="FontSize" Value="12"/>
             </Style>
             <Style TargetType="Label"
-                                   BasedOn="{ StaticResource lab_SubTitle }">
+                   BasedOn="{ StaticResource lab_SubTitle }">
                 <Setter Property="FontSize" Value="12"/>
                 <Setter Property="Foreground" Value="Black"/>
             </Style>
@@ -95,13 +91,13 @@
                         <ControlTemplate TargetType="{x:Type TabItem}">
                             <Grid x:Name="Root">
                                 <Border x:Name="Border"
-                                Width="{Binding ElementName=ContentSite, Path=Width}"
-                                Height="{Binding ElementName=ContentSite, Path=Height}"
-                                VerticalAlignment="Center"
-                                Background="#d3d3d3"
-                                BorderBrush="#ABABAB"
+                                        Width="{Binding ElementName=ContentSite, Path=Width}"
+                                        Height="{Binding ElementName=ContentSite, Path=Height}"
+                                        VerticalAlignment="Center"
+                                        Background="#d3d3d3"
+                                        BorderBrush="#ABABAB"
                                         BorderThickness="1,1,1,0"
-                                CornerRadius="5,5,0,0">
+                                        CornerRadius="5,5,0,0">
                                     <ContentPresenter x:Name="ContentSite"
                                               Margin="40,10"
                                               HorizontalAlignment="Center"
@@ -113,7 +109,6 @@
                                 </Border>
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup x:Name="CommonStates">
-
                                         <VisualState x:Name="Normal" />
                                         <VisualState x:Name="Selected">
                                             <Storyboard>
@@ -125,7 +120,6 @@
                                                         Storyboard.TargetProperty="(TextBlock.Foreground).Color"
                                                         To="#000000"
                                                         Duration="0" />
-
                                                 <ThicknessAnimation Storyboard.TargetName="Border"
                                                             Storyboard.TargetProperty="BorderThickness"
                                                             To="1,1,1,0"
@@ -145,9 +139,6 @@
                 <Setter Property="FontSize" Value="12"/>
             </Style>
 
-
-
-
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -160,18 +151,17 @@
         <DockPanel >
             <GroupBox Header="已建立的清單" Margin="5" DockPanel.Dock="Top" Visibility="Collapsed">
                 <TreeView SelectedItemChanged="TreeView_SelectedItemChanged"
-                      Style="{ StaticResource treeView_STD }"
-                      ItemsSource="{Binding TreeNode}">
+                          Style="{ StaticResource treeView_STD }"
+                          ItemsSource="{Binding TreeNode}">
                     <TreeView.Resources>
                         <Style TargetType="TreeViewItem"
-                           BasedOn="{ StaticResource treeViewItem_STD }" />
+                               BasedOn="{ StaticResource treeViewItem_STD }" />
                     </TreeView.Resources>
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate  ItemsSource="{Binding Children}">
                             <TextBlock Text="{Binding ItemName}" />
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
-
                 </TreeView>
             </GroupBox>
 
@@ -179,15 +169,11 @@
                 <GroupBox.DataContext>
                     <STD105VM:ObSettingVM/>
                 </GroupBox.DataContext>
-                <!--<GroupBox.DataContext>          -->
-                <!--    <spa:OfficeTypeSettingVM/>  -->
-                <!--</GroupBox.DataContext>         -->
-                <dxg:GridControl  
-                           Name="PieceListGridControl"
-                                AutoGenerateColumns="None"
-                                SelectionMode="None"
-                                MaxHeight="500"              
-                                ItemsSource="{Binding DataViews}">
+                <dxg:GridControl Name="PieceListGridControl"
+                                 AutoGenerateColumns="None"
+                                 SelectionMode="None"
+                                 MaxHeight="500"              
+                                 ItemsSource="{Binding DataViews}">
                     <dxg:GridControl.Resources>
                         <Style TargetType="dxg:GridColumn" >
                             <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
@@ -198,15 +184,14 @@
                         </Style>
                     </dxg:GridControl.Resources>
                     <dxg:GridControl.View >
-                        <dxg:TableView  
-                                    VerticalScrollbarVisibility="Visible"
-                                    ShowGroupPanel="False"
-                                    ShowSearchPanelMode="Always"
-                                    SearchPanelNullText="Search Tasks(Ctrl + F)" 
-                                    SearchPanelFindMode="Always" 
-                                    SearchDelay="0"
-                                    AllowEditing="False"
-                                    EnableImmediatePosting="True">
+                        <dxg:TableView VerticalScrollbarVisibility="Visible"
+                                       ShowGroupPanel="False"
+                                       ShowSearchPanelMode="Always"
+                                       SearchPanelNullText="Search Tasks(Ctrl + F)" 
+                                       SearchPanelFindMode="Always" 
+                                       SearchDelay="0"
+                                       AllowEditing="False"
+                                       EnableImmediatePosting="True">
                             <dxg:TableView.CellStyle>
                                 <Style>
                                     <Setter Property="TextBlock.FontSize" Value="12"/>
@@ -288,7 +273,6 @@
                     <dxg:GridColumn FieldName="{Binding Revise, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="修改日期"  >
                         <dxg:GridColumn.CellStyle>
                             <Style>
-
                                 <Setter Property="TextBlock.Foreground" Value="Gray"/>
                             </Style>
                         </dxg:GridColumn.CellStyle>
@@ -317,8 +301,6 @@
                     <dxg:GridColumn FieldName="Title2" IsSmart="True"  Width="auto" Header="標題二"  />
                 </dxg:GridControl>
             </GroupBox>
-
-
         </DockPanel>
         <!--零件屬性-->
         <GroupBox Header="零件屬性" Grid.Column="1" Margin="5">
@@ -333,7 +315,6 @@
                                BasedOn="{ StaticResource BaseStyle }">
                             <Setter Property="FontSize" Value="12"/>
                             <Setter Property="Foreground" Value="Black" />
-
                         </Style>
 
                         <Style TargetType="Label"
@@ -429,30 +410,26 @@
                         <TextBox Name="title2" Text="{Binding SelectedItems[0].Title2, ElementName=PieceListGridControl, Mode=OneWay}" BorderBrush="Black"/>
                     </StackPanel>
                     
-                    
                     <!--<StackPanel Grid.Column="2"  Grid.Row="7" Grid.RowSpan="3" >
                         <TextBox Text="{Binding SelectedItems[0].Type, ElementName=PieceListGridControl}" BorderBrush="Black"/>
                         <TextBox Text="{Binding SelectedItems[0].TypeDesc, ElementName=PieceListGridControl}" BorderBrush="Black"/>
                         <TextBox Text="{Binding SelectedItems[0].SteelType, ElementName=PieceListGridControl}" BorderBrush="Black"/>
                     </StackPanel>-->
                     
-                    
                     <Label Grid.Column="2" Grid.Row="0"
                            Content="型鋼類型：" />
                     <StackPanel Grid.Column="3"  Grid.Row="0" >
                         <ComboBox x:Name="cbx_SteelType"
-                                      ItemsSource="{Binding Source={StaticResource obType},Path=Strings}"
-                                      SelectedIndex="{Binding SelectedItems[0].SteelType, ElementName=PieceListGridControl}">
-
-                            <!--SelectedValue="H"  SelectedItem="CH"  SelectedIndex="0"-->
+                                  ItemsSource="{Binding Source={StaticResource obType},Path=Strings}"
+                                  SelectedIndex="{Binding SelectedItems[0].SteelType, ElementName=PieceListGridControl}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="MouseLeftButtonUp" SourceName="PieceListGridControl">
                                     <i:InvokeCommandAction Command="{ Binding ShowSteelTypeFromPartListCommand }"
-                                                               CommandParameter="{ Binding ElementName=PieceListGridControl, Path=SelectedItem }"/>
+                                                           CommandParameter="{ Binding ElementName=PieceListGridControl, Path=SelectedItem }"/>
                                 </i:EventTrigger>
                                 <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SteelType">
                                     <i:InvokeCommandAction Command="{ Binding ShowSteelTypeCommand }"
-                                                               CommandParameter="{ Binding ElementName=cbx_SteelType, Path=SelectedIndex }"/>
+                                                           CommandParameter="{ Binding ElementName=cbx_SteelType, Path=SelectedIndex }"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </ComboBox>
@@ -492,12 +469,12 @@
                 <DockPanel  DockPanel.Dock="Bottom" Margin="0" VerticalAlignment="Bottom" >
                     <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Background="Gold" Width="60" Margin="0,0,6,0"/>
 
-                    <STD105:DataButtons_Office Margin="0,0,0,0"
+                    <STD105:DataButtons_Office Margin="12,0,0,0"
                                                Modify="{Binding ModifyPart}"
                                                Add="{Binding AddPart}"
                                                ReadVisibility="Collapsed"
                                                DeleteVisibility="Collapsed"/>
-                    <Button x:Name="btn_AddNewOne" Content="另存" Command="{Binding AddNewOne}" DockPanel.Dock="Left" Width="76" Margin="-78,0,0,0" Visibility="Visible"/>
+                    <Button x:Name="btn_AddNewOne" Content="另存" Command="{Binding AddNewOne}" DockPanel.Dock="Left" Width="76" Margin="-66,0,0,0" Visibility="Visible"/>
 
                     <!--鎖頭的行為要與按鈕的開啟關閉binding 0902-->
                 </DockPanel>
@@ -505,11 +482,10 @@
         </GroupBox>
         <!--繪圖顯示模型-->
         <TabControl Margin="5" 
-            Grid.Column="0" Grid.Row="1"
+                    Grid.Column="0" Grid.Row="1"
                     Background="#c0c0c0"
                     SelectionChanged="TabControlSelectedIndexChanged"
-                                            x:Name="tabControl"
-                  
+                    x:Name="tabControl"
                     SelectedIndex="0">
             <TabItem Header="3D視圖" Margin="0,0,0,0"  Style="{StaticResource DrawTabItem}">
                 <Grid>
@@ -644,7 +620,6 @@
                     <spa:ModelExt x:Name="drawing" SelectionChanged="model_SelectionChanged" Loaded="drawing_Loaded"
                         SelectionColor="{Binding Setting.SelectionColor, Converter={STD105:StringToDrawingColoConverter}}"
                         ActionMode="{Binding ActionMode}" DefaultColor="Beige" AutoRefresh ="True" KeyDown="model_KeyDown"
-                        
                         PreviewMouseRightButtonDown="model_PreviewMouseRightButtonDown"
                         Focusable="True" AntiAliasingSamples="x16" Renderer="NativeExperimental" ShowFps="True" Margin="0,0,0,0">
                         <spa:ModelExt.ContextMenu>
@@ -708,20 +683,20 @@
                                     <ControlTemplate TargetType="{x:Type TabItem}">
                                         <Grid x:Name="Root">
                                             <Border x:Name="Border" Margin="10"
-                                Width="{Binding ElementName=ContentSite, Path=Width}"
-                                Height="{Binding ElementName=ContentSite, Path=Height}"
-                                VerticalAlignment="Center"
-                                Background="Transparent"
-                                BorderBrush="Transparent"
-                                BorderThickness="0,0,0,2">
+                                                    Width="{Binding ElementName=ContentSite, Path=Width}"
+                                                    Height="{Binding ElementName=ContentSite, Path=Height}"
+                                                    VerticalAlignment="Center"
+                                                    Background="Transparent"
+                                                    BorderBrush="Transparent"
+                                                    BorderThickness="0,0,0,2">
                                                 <ContentPresenter x:Name="ContentSite"
-                                              Margin="0,2"
-                                              HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"
-                                              ContentSource="Header"
-                                              RecognizesAccessKey="True"
-                                              TextBlock.FontSize="16"
-                                              TextBlock.Foreground="black" />
+                                                                  Margin="0,2"
+                                                                  HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center"
+                                                                  ContentSource="Header"
+                                                                  RecognizesAccessKey="True"
+                                                                  TextBlock.FontSize="16"
+                                                                  TextBlock.Foreground="black" />
                                             </Border>
                                             <VisualStateManager.VisualStateGroups>
                                                 <VisualStateGroup x:Name="CommonStates">
@@ -730,14 +705,14 @@
                                                     <VisualState x:Name="Selected">
                                                         <Storyboard>
                                                             <ColorAnimation Storyboard.TargetName="ContentSite"
-                                                        Storyboard.TargetProperty="(TextBlock.Foreground).Color"
-                                                        To="#000000"
-                                                        Duration="0" />
+                                                                            Storyboard.TargetProperty="(TextBlock.Foreground).Color"
+                                                                            To="#000000"
+                                                                            Duration="0" />
 
                                                             <ColorAnimation Storyboard.TargetName="Border"
-                                                        Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
-                                                        To="#5c93a7"
-                                                        Duration="0" />
+                                                                            Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                                                            To="#5c93a7"
+                                                                            Duration="0" />
                                                             <!--          <ThicknessAnimation Storyboard.TargetName="Border"
                                                             Storyboard.TargetProperty="BorderThickness"
                                                             To="0,0,0,2"
@@ -798,7 +773,7 @@
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="5,5,10,5">
                                         <ComboBox SelectedIndex="{Binding StartHoleType}" 
-                                      ItemsSource="{Binding Source={StaticResource StartHole}, Path=Strings}" />
+                                                  ItemsSource="{Binding Source={StaticResource StartHole}, Path=Strings}" />
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" Orientation="Horizontal" Margin="5" Visibility="Collapsed">
@@ -807,7 +782,7 @@
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,10,5" Visibility="Collapsed">
                                         <ComboBox Grid.Column="2" 
-                                      SelectedIndex="{Binding AxisModeType}" >
+                                                  SelectedIndex="{Binding AxisModeType}" >
                                             <ComboBoxItem Content="鑽孔" />
                                             <ComboBoxItem Content="打點" />
                                         </ComboBox>
@@ -815,7 +790,7 @@
 
 
                                     <StackPanel Grid.Column="2" Grid.Row="0"
-                                    Orientation="Horizontal">
+                                                Orientation="Horizontal">
                                         <CheckBox VerticalAlignment="Center" IsChecked="False"  />
                                         <Label Content="孔X向起步點：" />
 
@@ -825,7 +800,7 @@
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="2" Grid.Row="1"
-                                    Orientation="Horizontal">
+                                                Orientation="Horizontal">
                                         <CheckBox VerticalAlignment="Center" IsChecked="False"  />
                                         <Label Content="孔Y向起步點：" />
                                     </StackPanel>
@@ -868,7 +843,7 @@
                                         <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal" Margin="5">
                                             <CheckBox     IsChecked="{Binding CheckY}"/>
                                             <Label Content="孔Y向間距：" 
-                                   HorizontalAlignment="Left" />
+                                                   HorizontalAlignment="Left" />
                                         </StackPanel>
                                         <TextBox  Grid.Column="1" Grid.Row="2" Text="{Binding GroupBoltsAttr.dY}" Margin="5"  MinWidth="100" VerticalAlignment="Center"/>
 
@@ -951,8 +926,8 @@
 
                         <StackPanel  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" DockPanel.Dock="Bottom"  VerticalAlignment="Bottom">
                             <StackPanel  Orientation="Horizontal"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Bottom">
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Bottom">
                                 <Button Content ="X軸鏡射" Command="{Binding MirrorX}" Margin="5" Width="80" Height="24"  />
                                 <Button Content="Y軸鏡射" Command="{Binding MirrorY}" Margin="5" Width="80" Height="24"  />
                                 <Button Content="rbtn choice" Command="{Binding Path=CmdShowMessage}" Margin="5" Width="80" Height="24" Visibility="Collapsed"/>
@@ -977,11 +952,7 @@
                                         Modify="{Binding ModifyHole}"/>
                             </StackPanel>
                         </StackPanel>
-
                     </DockPanel>
-
-
-
 
                 </TabItem>
                 <TabItem Header="切割線">
@@ -1012,7 +983,7 @@
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
 
-                                        <RadioButton Margin="0,0,0,0" Grid.Row="0" VerticalAlignment="Center" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" >
+                                        <RadioButton Margin="0,0,0,0" Grid.Row="0" VerticalAlignment="Center" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD:CutFaceConverter}, ConverterParameter=0}">
                                             <RadioButton.Content>
                                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0" >
                                                     <Label Content="頂面"/>
@@ -1021,7 +992,7 @@
                                             </RadioButton.Content>
                                         </RadioButton>
 
-                                        <RadioButton  Margin="0,-10,0,0" Grid.Row="1" GroupName="CutLinePosition" Foreground="Black" Style="{StaticResource rad_Gray}" >
+                                        <RadioButton  Margin="0,-10,0,0" Grid.Row="1" GroupName="CutLinePosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD:CutFaceConverter}, ConverterParameter=1}">
                                             <RadioButton.Content>
                                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0" >
                                                     <Label Content="前面"/>
@@ -1030,7 +1001,7 @@
                                             </RadioButton.Content>
                                         </RadioButton>
 
-                                        <RadioButton  Margin="0,-10,0,0" Grid.Row="2" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}">
+                                        <RadioButton  Margin="0,-10,0,0" Grid.Row="2" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD:CutFaceConverter}, ConverterParameter=2}">
                                             <RadioButton.Content>
                                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                                     <Label Content="後面"/>
@@ -1051,98 +1022,101 @@
                                                 <Style TargetType="TextBlock" BasedOn="{StaticResource fileNameStyle}"></Style>
                                             </Canvas.Resources>
                                             <ComboBox Visibility="Hidden"
-                                          Width="94"
-                                          Canvas.Left="96"
-                                          Canvas.Top="109"
-                                          ItemsSource="{Binding Source={StaticResource Face},Path=Strings}"
-                                          SelectedIndex="{Binding CutFaceType}" />
+                                                      Width="94"
+                                                      Canvas.Left="96"
+                                                      Canvas.Top="109"
+                                                      ItemsSource="{Binding Source={StaticResource Face},Path=Strings}"
+                                                      SelectedIndex="{Binding CutFaceType}" />
                                             <Path x:Name="pa"
-                                      VerticalAlignment="Center"
-                                      HorizontalAlignment="Center"
-                                      Canvas.Left="65"
-                                      Canvas.Top="40"
-                                      Data="M147.57261,23.44316 L236.3045,23.44316 236.3045,58.513851 z M140.147,6.3996129 L243.72928,6.3996129 M147.57261,0.49999999 L147.57261,20.166036 
-                                    M236.67491,0.49999999 L236.67491,20.166036 M260.08409,17.756814 L260.08409,64.987999 M267.4995,23.363259 L242.7798,23.363259 M267.5,58.994403
-                                    L242.78027,58.994403 M120.4274,23.44316 L31.695509,23.44316 31.695509,58.513851 z M127.853,6.3996129 L24.27073,6.3996129 M120.4274,0.49999999 L120.4274,20.166036
-                                    M31.325098,0.49999999 L31.325098,20.166036 M7.9159134,17.756814 L7.9159134,64.987999 M0.50050692,23.363259 L25.220208,23.363259 M0.50000144,58.994403 
-                                    L25.219735,58.994403 M147.57261,127.04484 L236.3045,127.04484 236.3045,91.974149 z M140.147,144.08839 L243.72928,144.08839 M147.57261,149.988 L147.57261,130.32196 
-                                    M236.67491,149.988 L236.67491,130.32196 M260.08409,132.73119 L260.08409,85.500001 M267.4995,127.12474 L242.7798,127.12474 M267.5,91.493597 L242.78027,91.493597
-                                    M120.4274,127.04484 L31.695509,127.04484 31.695509,91.974149 z M127.853,144.08839 L24.27073,144.08839 M120.4274,149.988 L120.4274,130.32196 M31.325098,149.988 
-                                    L31.325098,130.32196 M7.9159134,132.73119 L7.9159134,85.500001 M0.50050692,127.12474 L25.220208,127.12474 M0.50000144,91.493597 L25.219735,91.493597"
-                                      Fill="{ StaticResource solidclr_DimGray }"
-                                      Height="160"
-                                      Width="160"
-                                      Stretch="Fill"
-                                      Stroke="{ StaticResource solidclr_DimGray }" />
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  Canvas.Left="65"
+                                                  Canvas.Top="40"
+                                                  Data="M147.57261,23.44316 L236.3045,23.44316 236.3045,58.513851 z M140.147,6.3996129 L243.72928,6.3996129 M147.57261,0.49999999 L147.57261,20.166036 
+                                                        M236.67491,0.49999999 L236.67491,20.166036 M260.08409,17.756814 L260.08409,64.987999 M267.4995,23.363259 L242.7798,23.363259 M267.5,58.994403
+                                                        L242.78027,58.994403 M120.4274,23.44316 L31.695509,23.44316 31.695509,58.513851 z M127.853,6.3996129 L24.27073,6.3996129 M120.4274,0.49999999 L120.4274,20.166036
+                                                        M31.325098,0.49999999 L31.325098,20.166036 M7.9159134,17.756814 L7.9159134,64.987999 M0.50050692,23.363259 L25.220208,23.363259 M0.50000144,58.994403 
+                                                        L25.219735,58.994403 M147.57261,127.04484 L236.3045,127.04484 236.3045,91.974149 z M140.147,144.08839 L243.72928,144.08839 M147.57261,149.988 L147.57261,130.32196 
+                                                        M236.67491,149.988 L236.67491,130.32196 M260.08409,132.73119 L260.08409,85.500001 M267.4995,127.12474 L242.7798,127.12474 M267.5,91.493597 L242.78027,91.493597
+                                                        M120.4274,127.04484 L31.695509,127.04484 31.695509,91.974149 z M127.853,144.08839 L24.27073,144.08839 M120.4274,149.988 L120.4274,130.32196 M31.325098,149.988 
+                                                        L31.325098,130.32196 M7.9159134,132.73119 L7.9159134,85.500001 M0.50050692,127.12474 L25.220208,127.12474 M0.50000144,91.493597 L25.219735,91.493597"
+                                                  Fill="{ StaticResource solidclr_DimGray }"
+                                                  Height="160"
+                                                  Width="160"
+                                                  Stretch="Fill"
+                                                  Stroke="{ StaticResource solidclr_DimGray }" />
                                             <TextBox Grid.Row="3"
-                                         Text="{Binding ULPoint.X}"
-                                         Width="50"
-                                         Canvas.Left="86"
-                                         Canvas.Top="10" />
+                                                     Text="{Binding ULPoint.X}"
+                                                     Width="50"
+                                                     Canvas.Left="86"
+                                                     Canvas.Top="10" />
                                             <TextBox Text="{Binding URPoint.X}"
-                                         Grid.Row="3"
-                                         Width="50"
-                                         Canvas.Left="154"
-                                         Canvas.Top="10" />
+                                                     Grid.Row="3"
+                                                     Width="50"
+                                                     Canvas.Left="154"
+                                                     Canvas.Top="10" />
                                             <TextBox Text="{Binding ULPoint.Y}"
-                                         Width="50"
-                                         Canvas.Left="10"
-                                         Canvas.Top="70" />
+                                                     Width="50"
+                                                     Canvas.Left="10"
+                                                     Canvas.Top="70" />
                                             <TextBox Text="{Binding DLPoint.Y}"
-                                         Width="50"
-                                         Canvas.Left="10"
-                                         Canvas.Top="143" />
+                                                     Width="50"
+                                                     Canvas.Left="10"
+                                                     Canvas.Top="143" />
                                             <TextBox Text="{Binding URPoint.Y}"
-                                         Width="50"
-                                         Canvas.Left="230"
-                                         Canvas.Top="70" />
+                                                     Width="50"
+                                                     Canvas.Left="230"
+                                                     Canvas.Top="70" />
                                             <TextBox Text="{Binding DRPoint.Y}"
-                                         Width="50"
-                                         Canvas.Left="230"
-                                         Canvas.Top="143" />
+                                                     Width="50"
+                                                     Canvas.Left="230"
+                                                     Canvas.Top="143" />
                                             <TextBox Text="{Binding DLPoint.X}"
-                                         Width="50"
-                                         Canvas.Left="86"
-                                         Canvas.Top="205" />
+                                                     Width="50"
+                                                     Canvas.Left="86"
+                                                     Canvas.Top="205" />
                                             <TextBox Text="{Binding DRPoint.X}"
-                                         Width="50"
-                                         Canvas.Left="154"
-                                         Canvas.Top="205" />
+                                                     Width="50"
+                                                     Canvas.Left="154"
+                                                     Canvas.Top="205" />
                                             <CheckBox IsChecked="{Binding ULCheck}"
-                                          Width="16"
-                                          Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
-                                          Style="{StaticResource CheckedStyle}"
-                                          Canvas.Left="86"
-                                          Canvas.Top="70" />
+                                                      Width="16"
+                                                      Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
+                                                      Style="{StaticResource CheckedStyle}"
+                                                      Canvas.Left="86"
+                                                      Canvas.Top="70" />
                                             <CheckBox IsChecked="{Binding DLCheck}"
-                                          Width="16"
-                                          Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
-                                          Style="{StaticResource CheckedStyle}"
-                                          Canvas.Left="86"
-                                          Canvas.Top="152" />
+                                                      Width="16"
+                                                      Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
+                                                      Style="{StaticResource CheckedStyle}"
+                                                      Canvas.Left="86"
+                                                      Canvas.Top="152" />
                                             <CheckBox IsChecked="{Binding URCheck}"
-                                          Width="16"
-                                          Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
-                                          Style="{StaticResource CheckedStyle}"
-                                          Canvas.Left="188"
-                                          Canvas.Top="70" />
+                                                      Width="16"
+                                                      Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
+                                                      Style="{StaticResource CheckedStyle}"
+                                                      Canvas.Left="188"
+                                                      Canvas.Top="70" />
                                             <CheckBox IsChecked="{Binding DRCheck}"
-                                          Width="16"
-                                          Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
-                                          Style="{StaticResource CheckedStyle}"
-                                          Canvas.Left="188"
-                                          Canvas.Top="152" />
+                                                      Width="16"
+                                                      Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
+                                                      Style="{StaticResource CheckedStyle}"
+                                                      Canvas.Left="188"
+                                                      Canvas.Top="152" />
                                         </Canvas>
                                     </Grid>
                                 </StackPanel>
                             </GroupBox>
+                            
                             <STD105:DataButtons_Office  Grid.Row="3" 
-                                                    Style="{StaticResource BaseStyle}"
-                                                   Modify="{Binding ModifyCut}"
-                                                   Add="{Binding AddCut}"
-                                                   Read="{Binding ReadCut}"
-                                                   HorizontalAlignment="Center" 
-                                                   VerticalAlignment="Bottom"/>
+                                                        Style="{StaticResource BaseStyle}"
+                                                        Modify="{Binding ModifyCut}"
+                                                        Add="{Binding AddCut}"
+                                                        Delete="{Binding DeleteCut}"
+                                                        ReadVisibility="Collapsed"
+                                                        HorizontalAlignment="Center" 
+                                                        VerticalAlignment="Bottom"
+                                                        Margin="12,0,0,0"/>
                         </Grid>
                     </ScrollViewer>
                 </TabItem>

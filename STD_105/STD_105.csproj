@@ -881,6 +881,7 @@
     <Compile Include="ValueConverters\DoubleConditionToIsEnabledConerter.cs" />
     <Compile Include="ValueConverters\DrillBrandGetPropertyConverter.cs" />
     <Compile Include="ValueConverters\DrillBrandToDataNameConverter.cs" />
+    <Compile Include="ValueConverters\CutFaceConverter.cs" />
     <Compile Include="ValueConverters\ErrorCodeInfoConverter.cs" />
     <Compile Include="ValueConverters\ErrorCodeNumberConverter.cs" />
     <Compile Include="ValueConverters\ErrorCodeSolutonConverter.cs" />
