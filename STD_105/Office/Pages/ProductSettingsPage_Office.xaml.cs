@@ -3426,6 +3426,10 @@ namespace STD_105.Office
                     return;
                 }
                 readFile.DoWork();//開始工作
+                model.Blocks.Clear();
+                model.Entities.Clear();
+                drawing.Blocks.Clear();
+                drawing.Entities.Clear();
                 readFile.AddToScene(model);//將讀取完的檔案放入到模型
                 ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
                 ViewModel.GetSteelAttr();
