@@ -307,6 +307,13 @@ namespace WPFSTD105
             StartNumber = "RH",
             Price = 29.3f
         };
+
+
+
+
+
+
+
         #endregion
         #region 私有方法
         private string GetString(string str)
@@ -573,23 +580,196 @@ namespace WPFSTD105
             }
         }
 
-        private bool _lockMark = false;
-        public bool LockMark {
-            get 
-            {
-                return _lockMark; 
-            }
-            set 
-            { 
-                _lockMark = value; 
-            }
-        }
-
 
 
         public bool LengthDodageControl { get; set; } = false;
-        public string MainLength { get; set; } = "9000 10000 12000";
-        public string SecondaryLength { get; set; } = "11000 13000 14000 15000";
+
+
+
+
+
+
+
+        #region 排版參數設定
+
+        /// <summary>
+        /// 排版編號checkbox
+        /// </summary>
+        public bool? StartNumberCheckboxBoolen { get; set; } = true;
+        private string _startNumber;
+        /// <summary>
+        /// 排版編號
+        /// </summary>
+        public string StartNumber
+        {
+            get
+            {
+                const string StartNumberDefault = "RH";
+                if (string.IsNullOrEmpty(_startNumber))
+                {
+                    _startNumber = StartNumberDefault;
+                    return _startNumber;
+                }
+                if (MainLengthCheckboxBoolen is true)
+                {
+                    MatchSetting.StartNumber = _startNumber;
+                }
+                else
+                {
+
+                    MatchSetting.StartNumber = StartNumberDefault;
+                }
+
+                return MatchSetting.StartNumber;
+            }
+            set
+            {
+                _startNumber = value;
+            }
+        }
+
+        /// <summary>
+        /// 預設長度checkbox
+        /// </summary>
+        public bool? MainLengthCheckboxBoolen { get; set; } = true;
+        private string _mainLength;
+        /// <summary>
+        /// 預設長度
+        /// </summary>
+        public string MainLength 
+        {
+            get
+            {
+                const string MainLengthDefault = "9000 10000 12000";
+                if (string.IsNullOrEmpty(_mainLength ))
+                {
+                    _mainLength = MainLengthDefault;
+                    return _mainLength;
+                }
+
+                if (MainLengthCheckboxBoolen is true)
+                {
+                    return _mainLength;
+                }
+                else
+                {
+                    return MainLengthDefault;
+                }
+            }
+            set
+            {
+                _mainLength = value;
+            }
+        }
+
+        /// <summary>
+        /// 次要條件checkbox
+        /// </summary>
+        public bool? SecondaryLengthCheckboxBoolen { get; set; } = true;
+        private string _secondaryLength;
+        /// <summary>
+        /// 次要條件
+        /// </summary>
+        public string SecondaryLength
+        {
+            get
+            {
+                const string SecondaryLengthDefault = "11000 13000 14000 15000";
+                if (string.IsNullOrEmpty(_secondaryLength))
+                {
+                    _secondaryLength = SecondaryLengthDefault;
+                    return _secondaryLength;
+                }
+
+                if (SecondaryLengthCheckboxBoolen is true)
+                {
+                    return _secondaryLength;
+                }
+                else
+                {
+                    return SecondaryLengthDefault;
+                }
+            }
+            set
+            {
+                _secondaryLength = value;
+            }
+        }
+
+        /// <summary>
+        /// 前端切除Checkbox
+        /// </summary>
+        public bool? StartCutCheckboxBoolen { get; set; } = true;
+        private double _matchSettingStartCut = 10;
+        /// <summary>
+        /// 前端切除Binding
+        /// </summary>
+        public double MatchSettingStartCut
+        {
+            get
+            {
+                const double StartCutDefault = 10;
+                if (StartCutCheckboxBoolen is true)
+                {
+                    MatchSetting.StartCut = _matchSettingStartCut;
+                }
+                else
+                {
+                    MatchSetting.StartCut = StartCutDefault;
+                }
+
+                return MatchSetting.StartCut;
+            }
+            set
+            {
+                _matchSettingStartCut = value;
+            }
+        }
+
+        /// <summary>
+        /// 後端切除Checkbox
+        /// </summary>
+        public bool? EndCutCheckboxBoolen { get; set; } = true;
+        private double _matchSettingEndCut = 10;
+        /// <summary>
+        /// 後端切除Binding
+        /// </summary>
+        public double MatchSettingEndCut
+        {
+            get
+            {
+                const double EndCutDefault = 10;
+                if (EndCutCheckboxBoolen is true)
+                {
+                    MatchSetting.EndCut = _matchSettingEndCut;
+                }
+                else
+                {
+                    MatchSetting.EndCut = EndCutDefault;
+                }
+
+                return MatchSetting.EndCut;
+            }
+            set
+            {
+                _matchSettingEndCut = value;
+            }
+        }
+
+        #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
         private void AutoMatchAsync()
         {
             // 2020.06.22  呂宗霖 新增IsNullOrEmpty條件
@@ -733,13 +913,6 @@ namespace WPFSTD105
                 return 0;
         }
         #endregion
-
-
-
-
-
-
-
 
     }
 
