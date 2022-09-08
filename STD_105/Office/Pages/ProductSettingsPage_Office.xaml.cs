@@ -304,7 +304,7 @@ namespace STD_105.Office
                 ViewModel.SteelAttr.GUID = Guid.NewGuid();//產生新的 id
                 ViewModel.SteelAttr.Creation = DateTime.Now;
                 ViewModel.SteelAttr.Revise = null;
-                Double a = 0;
+                
                 // 2022/07/14 呂宗霖 guid2區分2d或3d
                 //ViewModel.SteelAttr.GUID2 = ViewModel.SteelAttr.GUID;
                 ViewModel.SteelAttr.PointFront = new CutList();//清除切割線
