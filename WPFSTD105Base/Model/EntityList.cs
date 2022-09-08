@@ -39,7 +39,8 @@
 //            }
 //            Model.Entities.AddRange(entities);
 //            Model.Entities.Regen();
-//            Model.Refresh();
+//            Model.
+//            ;
 //            //啟動更新
 //            ((IdevDeptModel)this).stopInvalidate = false;
 //        }

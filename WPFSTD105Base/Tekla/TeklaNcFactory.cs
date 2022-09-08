@@ -232,6 +232,10 @@ namespace WPFSTD105.Tekla
                 ncPath = ncPath ?? ApplicationVM.DirectoryNc();
                 STDSerialization ser = new STDSerialization();
                 ObservableCollection<DataCorrespond> DataCorrespond = ser.GetDataCorrespond();// 3d model 零件
+                if (DataCorrespond==null)
+                {
+                    DataCorrespond = new ObservableCollection<DataCorrespond>();
+                }
                 NcTempList ncTemps = ser.GetNcTempList();//NC設定檔
                 double number = GetAllNcPath(ncPath).Count(); //檔案數量
                 if (vm != null)

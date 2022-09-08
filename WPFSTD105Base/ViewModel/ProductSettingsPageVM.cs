@@ -146,6 +146,7 @@ namespace WPFSTD105.ViewModel
         /// 20220829 張燕華 選擇型鋼型態
         /// </summary>
         public ICommand ShowSteelTypeCommand { get; set; }
+
         #endregion
 
         #region 公開屬性
@@ -1071,7 +1072,7 @@ namespace WPFSTD105.ViewModel
             return new WPFBase.RelayParameterizedCommand((object cbxSelectedItem) =>
             {
                 //this weel
-                var propertyInfo = (GD_STD.Data.TypeSettingDataView)cbxSelectedItem;
+                var propertyInfo = (ProductSettingsPageViewModel)cbxSelectedItem;
                 ProfileType = Convert.ToInt32(propertyInfo.SteelType);
                 SteelSectionProperty = propertyInfo.Profile;
             });
