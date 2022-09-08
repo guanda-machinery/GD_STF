@@ -35,6 +35,9 @@ namespace STD_105.Office
 {
     public partial class ProductSettingsPage_Office : BasePage<ObSettingVM>  
     {
+
+        public ObservableCollection<DataCorrespond> DataCorrespond { get; set; } = new ObservableCollection<DataCorrespond>();
+
         /// <summary>
         /// 20220823 蘇冠綸 製品設定
         /// </summary>
@@ -45,75 +48,11 @@ namespace STD_105.Office
             //                  先使用本Class 若有問題再修改
             //GraphWin service = new GraphWin();
 
-
-            STDSerialization ser = new STDSerialization();
-            //List<string> dataname = new List<string>();
-            //// 取得所有零件檔
-            //Dictionary<string, ObservableCollection<SteelPart>> DicSteelPart = ser.GetPart();
-
-            //var a = (from d in DicSteelPart.Values
-            //         select d
-            //         .Where(x => x.Type == OBJECT_TYPE.RH || x.Type == OBJECT_TYPE.BH)
-            //         .Select(x => new
-            //         {
-            //             x.Father,
-            //             x.ID,
-            //             x.Profile,
-            //             x.Type,
-            //             x.Number,
-            //             x.DrawingName
-            //         })).ToList();
-            //a.RemoveAll(x => x.Count() == 0);
+        
+            
+         
 
 
-
-            //ReadFile readFile = new ReadFile($@"{ApplicationVM.DirectoryDevPart()}\6df04fb4-4a90-4f15-abf1-d23dd764ba9d.dm", devDept.Serialization.contentType.GeometryAndTessellation);
-            ////ReadFile readFile = ser.ReadPartModel("6df04fb4-4a90-4f15-abf1-d23dd764ba9d", devDept.Serialization.contentType.GeometryAndTessellation); //讀取檔案內容
-            //readFile.DoWork();//開始工作
-            ////ModelExt model = new ModelExt();
-            //readFile.AddToScene(model);//將讀取完的檔案放入到模型
-
-            //foreach (KeyValuePair<string, ObservableCollection<SteelPart>> dataCorrespond in DicSteelPart)
-            //{
-            //    foreach (TreeNode children in dataCorrespond)
-            //    {
-            //        foreach (var c in children)
-            //        {
-            //            dataname.Add(children2.);
-            //        }
-            //    }
-            //}
-
-
-
-            //NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
-            //NcTemp ncTemp = ncTemps.GetData(data.DataName);//需要實體化的nc物件
-            //model.Clear(); //清除目前模型
-            //if (ncTemp == null) //NC 檔案是空值
-            //{
-            //    ReadFile readFile = ser.ReadPartModel(data.DataName); //讀取檔案內容
-            //    if (readFile == null)
-            //    {
-            //        WinUIMessageBox.Show(null,
-            //            $"專案Dev_Part資料夾讀取失敗",
-            //            "通知",
-            //            MessageBoxButton.OK,
-            //            MessageBoxImage.Exclamation,
-            //            MessageBoxResult.None,
-            //            MessageBoxOptions.None,
-            //            FloatingMode.Popup);
-            //        return;
-            //    }
-            //    readFile.DoWork();//開始工作
-            //    readFile.AddToScene(model);//將讀取完的檔案放入到模型
-            //    if (model.Entities[model.Entities.Count - 1].EntityData is null)
-            //    {
-            //        return;
-            //    }            }
-            //else //如果需要載入 nc 設定檔
-            //{
-            //    model.LoadNcToModel(data.DataName);
-            //}
 
 
             /// <summary>
@@ -414,8 +353,8 @@ namespace STD_105.Office
                 //層級 To 要編輯的BlockReference
                 model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);
 
-
-                drawing.SetCurrent((BlockReference)drawing.Entities[0]);
+                //0→     drawing.Entities.Count - 1
+                drawing.SetCurrent((BlockReference)drawing.Entities[drawing.Entities.Count - 1]);
 
                 SteelAttr steelAttr = ViewModel.GetSteelAttr();
                 steelAttr.GUID = ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).GUID;//修改唯一識別ID
@@ -425,7 +364,7 @@ namespace STD_105.Office
                 // 調整修改日期
                 ViewModel.SteelAttr.Revise = DateTime.Now;
 
-                //model.Entities[0].Selected = true;//選擇物件
+                model.Entities[0].Selected = true;//選擇物件
                 drawing.Entities.ForEach(el => el.Selected = true);
                 List<Entity> steel2D = new Steel2DBlock(modify, "123").Entities.ToList();
                 Steel2DBlock steel2DBlock = (Steel2DBlock)drawing.Blocks[drawing.CurrentBlockReference.BlockName];
@@ -2162,14 +2101,14 @@ namespace STD_105.Office
                     //    Viewbox.Visibility = Visibility.Hidden;
 
 
-                    TmpSteelAttr.PointTop.DL.X = tmp3[0].min;
-                    TmpSteelAttr.PointTop.DL.Y = tmp3[0].key;
-                    TmpSteelAttr.PointTop.DR.X = tmp3[0].max;
-                    TmpSteelAttr.PointTop.DR.Y = tmp3[0].key;
-                    TmpSteelAttr.PointTop.UL.X = tmp3[1].min;
-                    TmpSteelAttr.PointTop.UL.Y = tmp3[1].key;
-                    TmpSteelAttr.PointTop.UR.X = tmp3[1].max;
-                    TmpSteelAttr.PointTop.UR.Y = tmp3[1].key;
+                    //TmpSteelAttr.PointTop.DL.X = tmp3[0].min;
+                    //TmpSteelAttr.PointTop.DL.Y = tmp3[0].key;
+                    //TmpSteelAttr.PointTop.DR.X = tmp3[0].max;
+                    //TmpSteelAttr.PointTop.DR.Y = tmp3[0].key;
+                    //TmpSteelAttr.PointTop.UL.X = tmp3[1].min;
+                    //TmpSteelAttr.PointTop.UL.Y = tmp3[1].key;
+                    //TmpSteelAttr.PointTop.UR.X = tmp3[1].max;
+                    //TmpSteelAttr.PointTop.UR.Y = tmp3[1].key;
 
                     PointDL1 = new Point3D((TmpUL.X - TmpDL.X) * PosRatio1, (TmpUL.Y - TmpDL.Y) * PosRatio1) + TmpDL;
                     PointDL2 = new Point3D((TmpUL.X - TmpDL.X) * PosRatio2, (TmpUL.Y - TmpDL.Y) * PosRatio2) + TmpDL;
@@ -3098,21 +3037,21 @@ namespace STD_105.Office
 
         private void drawing_Loaded(object sender, RoutedEventArgs e)
         {
-            ////平移滑鼠中鍵
-            //drawing.Pan.MouseButton = new MouseButton(mouseButtonsZPR.Middle, modifierKeys.None);
-            //drawing.ActionMode = actionType.SelectByBox;
+            //平移滑鼠中鍵
+            drawing.Pan.MouseButton = new MouseButton(mouseButtonsZPR.Middle, modifierKeys.None);
+            drawing.ActionMode = actionType.SelectByBox;
 
-            //drawing.ZoomFit();//設置道適合的視口
-            //drawing.Refresh();//刷新模型
+            drawing.ZoomFit();//設置道適合的視口
+            drawing.Refresh();//刷新模型
 
-            //model.ZoomFit();
-            //model.Refresh();
+            model.ZoomFit();
+            model.Refresh();
 
-            //STDSerialization ser = new STDSerialization();
+            STDSerialization ser = new STDSerialization();
 
-            ////// 建立dm檔 for 尚未建立dm檔的零件
-            //ApplicationVM appVM = new ApplicationVM();
-            //appVM.CreateDMFile(model);
+            //// 建立dm檔 for 尚未建立dm檔的零件
+            ApplicationVM appVM = new ApplicationVM();
+            appVM.CreateDMFile(model);
 
 
 
@@ -3391,28 +3330,17 @@ namespace STD_105.Office
         }
         private void Grid_SelectedChange(object sender, SelectedItemChangedEventArgs e)
         {
-            //    //#region 3D
-            //    ////model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
-            //    //model.Unlock("UF20-HN12H-22P6C-71M1-FXP4");
-            //    //this.PageUnloadAnimation = PageAnimation.SlideAndFadeOutToRight;
-            //    //model.Secondary = drawing;
-            //    //#endregion
-            //    //#region 2D
-            //    ////drawing.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
-            //    //drawing.Unlock("UF20-HN12H-22P6C-71M1-FXP4");
-            //    //drawing.LineTypes.Add(Steel2DBlock.LineTypeName, new float[] { 35, -35, 35, -35 });
-            //    //drawing.Secondary = model;
-            //    //#endregion
 
             if (model != null)
             {
-
                 ProductSettingsPageViewModel item = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
-                //MessageBox.Show("hi", "尼豪", MessageBoxButton.OK);
 
                 STDSerialization ser = new STDSerialization();
+                DataCorrespond = ser.GetDataCorrespond();
 
-                ReadFile readFile = ser.ReadPartModel(item.steelAttr.GUID.ToString()); //讀取檔案內容
+
+
+                    ReadFile readFile = ser.ReadPartModel(item.steelAttr.GUID.ToString()); //讀取檔案內容
                 if (readFile == null)
                 {
                     WinUIMessageBox.Show(null,
@@ -3429,9 +3357,31 @@ namespace STD_105.Office
                 readFile.AddToScene(model);//將讀取完的檔案放入到模型
                 ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
                 ViewModel.GetSteelAttr();
+
+
+
+
+
+                var aaa = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+                var bbb = DataCorrespond.Where(p => p.Number == aaa.PartNumber).ToList();
+                {
+
+                    var ccc = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+                    ccc.oPoint = bbb[0].oPoint.ToList();
+                    ccc.vPoint = bbb[0].vPoint.ToList();
+                    ccc.uPoint = bbb[0].uPoint.ToList();
+                    ViewModel.WriteSteelAttr(ccc);
+                    ViewModel.GetSteelAttr();
+                }
+
+
+
+
                 model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
-                for (int i = 0; i < model.Entities.Count; i++)//逐步展開 3d 模型實體
+                
+                
+                for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
                 {
                     if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
                     {
@@ -3446,6 +3396,8 @@ namespace STD_105.Office
                 model.Invalidate();//初始化模型
                 drawing.ZoomFit();//設置道適合的視口
                 drawing.Invalidate();
+                HypotenusePoint(FACE.TOP);
+                //AddHypotenusePoint(FACE.TOP);
             }
         } 
     }
