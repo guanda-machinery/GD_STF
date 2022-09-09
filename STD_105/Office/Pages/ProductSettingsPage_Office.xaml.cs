@@ -35,6 +35,9 @@ namespace STD_105.Office
 {
     public partial class ProductSettingsPage_Office : BasePage<ObSettingVM>  
     {
+        public ObSettingVM sr = new ObSettingVM();
+
+        public ObservableCollection<DataCorrespond> DataCorrespond { get; set; } = new ObservableCollection<DataCorrespond>();
         /// <summary>
         /// 20220823 蘇冠綸 製品設定
         /// </summary>
@@ -364,7 +367,7 @@ namespace STD_105.Office
                 //drawing.Refresh();
                 SaveModel(true);
 
-                ObSettingVM sr = new ObSettingVM();
+                //ObSettingVM sr = new ObSettingVM();
                 ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
 
                 ViewModel.DataViews = collection;
@@ -419,7 +422,29 @@ namespace STD_105.Office
                 drawing.SetCurrent((BlockReference)drawing.Entities[0]);
 
                 SteelAttr steelAttr = ViewModel.GetSteelAttr();
+
+                steelAttr.Length = string.IsNullOrEmpty(this.Length.Text) ? 0 : double.Parse(this.Length.Text);
+                steelAttr.Phase = string.IsNullOrEmpty(this.phase.Text) ? 0 : int.Parse(this.phase.Text);
+                steelAttr.Name = this.teklaName.Text;
+                steelAttr.ShippingNumber = string.IsNullOrEmpty(this.shippingNumber.Text) ? 0 : int.Parse(this.shippingNumber.Text);
+                steelAttr.Title1 = this.title1.Text;
+                steelAttr.Title2 = this.title2.Text;
+                steelAttr.Type = (OBJECT_TYPE)this.cbx_SteelType.SelectedIndex;
+                steelAttr.Profile=this.cbx_SectionType.Text;
+
                 steelAttr.GUID = ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).GUID;//修改唯一識別ID
+
+
+
+
+
+
+                ViewModel.SteelAttr.Length = steelAttr.Length;
+                ViewModel.SteelAttr.Phase = steelAttr.Phase;
+
+
+
+
                 Mesh modify = Steel3DBlock.GetProfile(steelAttr); //修改的形狀
                 ViewModel.tem3DRecycle.Add(model.Entities[model.Entities.Count - 1]);//加入垃圾桶準備刪除
                 ViewModel.tem2DRecycle.AddRange(drawing.Entities);//加入垃圾桶準備刪除
@@ -429,7 +454,7 @@ namespace STD_105.Office
                 //model.Entities[0].Selected = true;//選擇物件
                 drawing.Entities.ForEach(el => el.Selected = true);
                 List<Entity> steel2D = new Steel2DBlock(modify, "123").Entities.ToList();
-                Steel2DBlock steel2DBlock = (Steel2DBlock)drawing.Blocks[drawing.CurrentBlockReference.BlockName];
+                Steel2DBlock steel2DBlock = (Steel2DBlock)drawing.Blocks[reference2D.BlockName];//drawing.CurrentBlockReference.BlockName→1
                 steel2DBlock.ChangeMesh(modify);
                 //加入到垃圾桶內
 
@@ -467,15 +492,16 @@ namespace STD_105.Office
                     SaveModel(false);//存取檔案
 
                 // 執行斜邊打點
-                HypotenusePoint(FACE.TOP);
+                //HypotenusePoint(FACE.TOP);
                 //HypotenusePoint(FACE.BACK);
                 //HypotenusePoint(FACE.FRONT);
 
                 //AddHypotenusePoint(FACE.TOP);
 
+                ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
 
-
-
+                ViewModel.DataViews = collection;
+                PieceListGridControl.ItemsSource = collection;
 #if DEBUG
                 log4net.LogManager.GetLogger("修改主件").Debug("結束");
 #endif
@@ -1991,7 +2017,8 @@ namespace STD_105.Office
                 return;
 
             SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
-          //  TmpSteelAttr.TopHypotenuse = new Hypotenuse();
+
+            //  TmpSteelAttr.TopHypotenuse = new Hypotenuse();
 
             switch (face)
             {
@@ -2173,14 +2200,14 @@ namespace STD_105.Office
                     //    Viewbox.Visibility = Visibility.Hidden;
 
 
-                    TmpSteelAttr.PointTop.DL.X = tmp3[0].min;
-                    TmpSteelAttr.PointTop.DL.Y = tmp3[0].key;
-                    TmpSteelAttr.PointTop.DR.X = tmp3[0].max;
-                    TmpSteelAttr.PointTop.DR.Y = tmp3[0].key;
-                    TmpSteelAttr.PointTop.UL.X = tmp3[1].min;
-                    TmpSteelAttr.PointTop.UL.Y = tmp3[1].key;
-                    TmpSteelAttr.PointTop.UR.X = tmp3[1].max;
-                    TmpSteelAttr.PointTop.UR.Y = tmp3[1].key;
+                    //TmpSteelAttr.PointTop.DL.X = tmp3[0].min;
+                    //TmpSteelAttr.PointTop.DL.Y = tmp3[0].key;
+                    //TmpSteelAttr.PointTop.DR.X = tmp3[0].max;
+                    //TmpSteelAttr.PointTop.DR.Y = tmp3[0].key;
+                    //TmpSteelAttr.PointTop.UL.X = tmp3[1].min;
+                    //TmpSteelAttr.PointTop.UL.Y = tmp3[1].key;
+                    //TmpSteelAttr.PointTop.UR.X = tmp3[1].max;
+                    //TmpSteelAttr.PointTop.UR.Y = tmp3[1].key;
 
                     PointDL1 = new Point3D((TmpUL.X - TmpDL.X) * PosRatio1, (TmpUL.Y - TmpDL.Y) * PosRatio1) + TmpDL;
                     PointDL2 = new Point3D((TmpUL.X - TmpDL.X) * PosRatio2, (TmpUL.Y - TmpDL.Y) * PosRatio2) + TmpDL;
@@ -3426,6 +3453,7 @@ namespace STD_105.Office
                 //MessageBox.Show("hi", "尼豪", MessageBoxButton.OK);
 
                 STDSerialization ser = new STDSerialization();
+                DataCorrespond = ser.GetDataCorrespond();
 
                 ReadFile readFile = ser.ReadPartModel(item.steelAttr.GUID.ToString()); //讀取檔案內容
                 if (readFile == null)
@@ -3448,6 +3476,29 @@ namespace STD_105.Office
                 readFile.AddToScene(model);//將讀取完的檔案放入到模型
                 ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
                 ViewModel.GetSteelAttr();
+
+                /***************************************/  
+                var aaa = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+                var bbb = DataCorrespond.Where(p => p.Number == aaa.PartNumber).ToList();
+                {
+
+                    var ccc = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+                    ccc.oPoint = bbb[0].oPoint.ToList();
+                    ccc.vPoint = bbb[0].vPoint.ToList();
+                    ccc.uPoint = bbb[0].uPoint.ToList();
+                    ViewModel.WriteSteelAttr(ccc);
+                    ViewModel.GetSteelAttr();
+                }
+
+
+
+
+
+
+                /***************************************/
+
+
+
                 model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
                 for (int i = 0; i < model.Entities.Count; i++)//逐步展開 3d 模型實體
@@ -3465,7 +3516,32 @@ namespace STD_105.Office
                 model.Invalidate();//初始化模型
                 drawing.ZoomFit();//設置道適合的視口
                 drawing.Invalidate();
+
+                HypotenusePoint(FACE.TOP);
             }
-        } 
+        }
+
+        private void AddPartOK_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (fAddPartAndBolt)
+            {
+                var ResultRtn = WinUIMessageBox.Show(null,
+                         $"新增零件是否存檔 ?",
+                         "通知",
+                         MessageBoxButton.OKCancel,
+                         MessageBoxImage.Exclamation,
+                         MessageBoxResult.None,
+                         MessageBoxOptions.None,
+                         FloatingMode.Popup);
+
+
+                if (ResultRtn == MessageBoxResult.OK)
+                    SaveModel(true);//存取檔案
+
+                fAddPartAndBolt = false;
+            }
+
+        }
     }
 }

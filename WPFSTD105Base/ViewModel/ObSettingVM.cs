@@ -438,7 +438,14 @@ namespace WPFSTD105.ViewModel
             set
             {
                 _MaterialIndex = value;
-                SteelAttr.Material = Materials[value].Name;
+                if (value == -1)
+                {
+                    SteelAttr.Material = "";
+                }
+                else
+                {
+                    SteelAttr.Material = Materials[value].Name;
+                }
 #if DEBUG
                 log4net.LogManager.GetLogger("變換材質").Debug(value.ToString());
 #endif
@@ -494,7 +501,11 @@ namespace WPFSTD105.ViewModel
                 DataName = SteelAttr.GUID.ToString(),
                 Number = SteelAttr.PartNumber,
                 Type = SteelAttr.Type,
-                Profile = SteelAttr.Profile
+                Profile = SteelAttr.Profile,
+                // 2022/09/08 彥谷
+                oPoint = SteelAttr.oPoint.ToArray(),
+                vPoint = SteelAttr.vPoint.ToArray(),
+                uPoint = SteelAttr.uPoint.ToArray(),
             };
             bool save = (from el in new List<DataCorrespond>(DataCorrespond) where el.DataName == data.DataName select el).ToList().Count == 0;
             if (save)
@@ -1312,9 +1323,9 @@ namespace WPFSTD105.ViewModel
                                 double length = item.Length;
                                 steelAttrVM.Length = length;
                                 // 零件ID List
-                                var partList = partNumber_ID.Where(x => x.Number == item.Number && x.Profile == profile && x.Length == length).Select(x => x.ID).FirstOrDefault();
+                                var partList = partNumber_ID.Where(x => x.Number == item.Number && x.Profile == profile && x.Length == length && x.Father.Contains(assemID)).Select(x => x.ID).FirstOrDefault();
                                 // 構件ID List
-                                var fatherList = partNumber_ID.Where(x => x.Number == item.Number && x.Profile== profile && x.Length== length).Select(x => x.Father).FirstOrDefault();
+                                var fatherList = partNumber_ID.Where(x => x.Number == item.Number && x.Profile== profile && x.Length== length && x.Father.Contains(assemID)).Select(x => x.Father).FirstOrDefault();
                                 // Father的index = Part的index
                                 var partIndex = fatherList.IndexOf(assemID);
                                 // 取得該筆零件ID

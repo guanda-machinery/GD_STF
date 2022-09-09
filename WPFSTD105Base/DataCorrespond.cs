@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WPFSTD105.Attribute;
+using WPFSTD105.Model;
 
 namespace WPFSTD105
 {
@@ -34,5 +35,12 @@ namespace WPFSTD105
         /// NC 分析出來的佔存檔
         /// </summary>
         public bool TP { get; set; }
+
+        public NcPoint3D[] oPoint { get; set; } = new NcPoint3D[0];
+
+        public NcPoint3D[] vPoint { get; set; } = new NcPoint3D[0];
+
+        public NcPoint3D[] uPoint { get; set; } = new NcPoint3D[0];
+
     }
 }
