@@ -82,7 +82,6 @@
             </Style>
 
             <STD105:ComParConverter x:Key="XComparConverter"/>
-
         </StackPanel.Resources>
         <StackPanel.DataContext>
             <WPFSTD105:OfficeTypeSettingVM></WPFSTD105:OfficeTypeSettingVM>
@@ -256,30 +255,24 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="13"/>
-                                        <RowDefinition Height="30"/>
-                                        <RowDefinition Height="13"/>
-                                        <RowDefinition Height="30"/>
-                                    </Grid.RowDefinitions>
-                                    <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center">
-                                        <StackPanel  Orientation="Horizontal" >
-                                            <CheckBox/>
-                                            <Label Content="排版編號" />
-                                        </StackPanel>
-                                    </StackPanel>
-
-                                    <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Center">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="25"/>
+                                            <RowDefinition Height="25"/>
+                                            <RowDefinition Height="5"/>
+                                            <RowDefinition Height="25"/>
+                                        </Grid.RowDefinitions>
+                                        <CheckBox Grid.Column="0" Grid.Row="0"  Content="排版編號" IsChecked="{Binding StartNumberCheckboxBoolen}" />
+                                        <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Center">
                                         <Label Content="前置字串："/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
-                                        <TextBox Text="{ Binding MatchSetting.StartNumber }"  />
+                                        <TextBox Text="{ Binding StartNumber}"   />
                                     </StackPanel>
                                     <StackPanel Grid.Column="0" Grid.Row="3" VerticalAlignment="Center">
                                         <Label Content="起始號碼：" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Grid.Row="3" VerticalAlignment="Center">
-                                        <TextBox Text="{ Binding MatchSetting.StartNumber }" />
+                                            <TextBox Text="{ Binding StartNumber }" />
                                     </StackPanel>
                                 </Grid>
 
@@ -291,31 +284,30 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="13"/>
-                                        <RowDefinition Height="30"/>
-                                        <RowDefinition Height="13"/>
-                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="15"/>
+                                        <RowDefinition Height="25"/>
+                                        <RowDefinition Height="15"/>
+                                        <RowDefinition Height="25"/>
                                     </Grid.RowDefinitions>
                                     <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0">
                                         <Label Content="單位：m/m" />
                                     </StackPanel>
-                                    <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">
-                                        <StackPanel  Orientation="Horizontal" >
-                                            <CheckBox/>
-                                            <Label Content="預設長度：" />
+
+                                       <CheckBox Content="預設長度："  Grid.Row="1" Grid.Column="0" IsChecked="{Binding MainLengthCheckboxBoolen}"/>
+
+                                        <StackPanel Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center">
+                                            <TextBox>
+                                            <TextBox.Text>
+                                                <Binding Path="MainLength"  UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules >
+                                                        <STD105:CheckNumberArrayRule/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </StackPanel>
-                                    </StackPanel>
-                                    <StackPanel Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center">
-                                        <TextBox Text="{Binding MainLength}"
-                                     Name="MainLength" />
-                                    </StackPanel>
-                                    <StackPanel Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">
-                                        <StackPanel  Orientation="Horizontal" >
-                                            <CheckBox/>
-                                            <Label Content="次要條件：" />
-                                        </StackPanel>
-                                    </StackPanel>
-                                    <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0">
+                                        <CheckBox Grid.Row="3" Grid.Column="0"  Content="次要條件：" IsChecked="{Binding SecondaryLengthCheckboxBoolen}"/>
+                                            <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0">
                                         <Label Content="單位：m/m"/>
                                     </StackPanel>
                                     <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">
@@ -331,10 +323,10 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="13"/>
-                                        <RowDefinition Height="30"/>
-                                        <RowDefinition Height="13"/>
-                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="15"/>
+                                            <RowDefinition Height="25"/>
+                                        <RowDefinition Height="15"/>
+                                            <RowDefinition Height="25"/>
                                     </Grid.RowDefinitions>
 
                                     <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Width="auto">
@@ -365,6 +357,7 @@
                         </Grid>
                         <GroupBox  Header="切割預留設定" Margin="5" HorizontalAlignment="Left">
                                 <Grid>
+
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="auto"/>
@@ -377,43 +370,44 @@
                                         <RowDefinition Height="13"/>
                                         <RowDefinition Height="30"/>
                                     </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
+                                    <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
                                         <Label Content="單位：m/m"  />
                                     </StackPanel>
-                                    <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">
-                                        <StackPanel  Orientation="Horizontal" >
-                                            <CheckBox/>
-                                            <Label Content="素材前端切除：" />
-                                        </StackPanel>
-                                    </StackPanel>
+                                    <CheckBox Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="素材前端切除："  IsChecked="{Binding StartCutCheckboxBoolen}"/>
                                     <StackPanel Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center">
-                                        <TextBox Text="{Binding MatchSetting.StartCut , StringFormat={}{0:N2} }"
-                                   MinWidth="100" />
+                                        <TextBox  InputMethod.IsInputMethodEnabled="False"
+                                   MinWidth="100" >
+                                            <TextBox.Text>
+                                                <Binding Path="MatchSettingStartCut" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules >
+                                                        <STD105:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
                                     </StackPanel>
-                                    <StackPanel Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">
-                                        <StackPanel  Orientation="Horizontal" >
-                                            <CheckBox/>
-                                            <Label Content="素材後端切除：" />
-                                        </StackPanel>
-                                    </StackPanel>
-                                <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
+                                    <CheckBox Grid.Row="3" Grid.Column="0" Content="素材後端切除：" IsChecked="{Binding EndCutCheckboxBoolen}" />
+                                    <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
                                         <Label Content="單位：m/m" />
                                     </StackPanel>
                                     <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">
-                                        <TextBox Text="{Binding MatchSetting.EndCut , StringFormat={}{0:N2} }"
-                                      MinWidth="100" />
+                                        <TextBox MinWidth="100">
+                                            <TextBox.Text>
+                                                <Binding Path="MatchSettingEndCut" StringFormat="{}{0:N2}"  UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding.ValidationRules>
+                                                        <STD105:CheckNumberRule  NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
                                     </StackPanel>
 
                                     <StackPanel Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="20,0">
-                                        <StackPanel  Orientation="Horizontal" >
-                                            <Label Content="鋸床切割損耗：" />
-                                        </StackPanel>
+                                        <Label Content="鋸床切割損耗：" />
                                     </StackPanel>
-                                    <StackPanel Grid.Row="1" Grid.Column="3" VerticalAlignment="Center">
-                                        <StackPanel  Orientation="Horizontal" >
-                                            <Label Content="{ Binding MatchSetting.Cut }" />
-                                            <Label Content="mm" />
-                                        </StackPanel>
+                                    <StackPanel Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
+                                        <Label Content="{ Binding MatchSetting.Cut }" />
+                                        <Label Content="mm" />
                                     </StackPanel>
                                 </Grid>
                             </GroupBox>
@@ -571,7 +565,7 @@
                             </dxg:GridColumn.HeaderImageStyle>
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
-                                    <dxe:CheckEdit IsChecked="{Binding Row.LockMark , Mode=TwoWay}" IsThreeState="false">
+                                    <dxe:CheckEdit  IsThreeState="false">
                                         <dxe:CheckEdit.Style>
                                             <Style TargetType="{x:Type dxe:CheckEdit}">
                                                 <Setter Property="Template">
@@ -594,7 +588,7 @@
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
 
-                        <dxg:GridColumn FieldName="Lock" IsSmart="True" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
+                        <dxg:GridColumn IsSmart="True" Name="LockGridCol" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                             <dxg:GridColumn.HeaderImageStyle>
                                 <Style TargetType="Image">
                                     <Setter Property="Width" Value="16"></Setter>
@@ -603,7 +597,7 @@
                             </dxg:GridColumn.HeaderImageStyle>
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
-                                    <dxe:CheckEdit IsChecked="{Binding Row.LockMark , Mode=TwoWay}" IsThreeState="false">
+                                    <dxe:CheckEdit IsThreeState="false" IsChecked="{Binding Row.LockMark}" x:Name="LockEdit">
                                         <dxe:CheckEdit.Style>
                                             <Style TargetType="{x:Type dxe:CheckEdit}">
                                                 <Setter Property="Template">
@@ -635,7 +629,7 @@
                             </dxg:GridColumn.HeaderImageStyle>
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
-                                    <dxe:CheckEdit IsChecked="{Binding Row.LockMark , Mode=TwoWay}" IsThreeState="false">
+                                    <dxe:CheckEdit IsThreeState="false">
                                         <dxe:CheckEdit.Style>
                                             <Style TargetType="{x:Type dxe:CheckEdit}">
                                                 <Setter Property="Template">
@@ -682,8 +676,8 @@
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="鋼材類型"   />
-                        <dxg:GridColumn FieldName="Profile"  IsSmart="True" Header="斷面規格" AllowEditing="{Binding LockMark}" />
+                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="鋼材類型"  />
+                        <dxg:GridColumn FieldName="Profile"  IsSmart="True" Header="斷面規格"   />
                         <dxg:GridColumn FieldName="Material"  IsSmart="True" Header="材質" Width="auto"   />
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="數量" Width="auto"  />
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="已完成" Width="auto"  />

@@ -340,13 +340,6 @@ namespace GD_STD.Data
             }
         }
 
-        public GD_STD.Enum.OBJECT_TYPE _objectType
-        {
-            get 
-            {
-                return GD_STD.Enum.OBJECT_TYPE.Unknown;
-            }
-        }
 
         public bool LockMark
         {
