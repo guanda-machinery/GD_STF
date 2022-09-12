@@ -10,8 +10,10 @@ namespace STD_105
 {
     public class CheckNumberRule : ValidationRule
     {
-        public int? NumberMax { get; set; }
-        public int? NumberMin { get; set; }
+        public double? NumberMax { get; set; }
+        public double? NumberMin { get; set; }
+
+        public bool IsINT { get; set; } = false;
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
@@ -34,9 +36,23 @@ namespace STD_105
                             return new ValidationResult(false, $"數字不可大於小於{NumberMin}!");
                         }
                     }
+
+                    if(IsINT)
+                    {
+                        if( int.TryParse((string)value, out var IntValue))
+                        {
+
+                        }
+                        else
+                        {
+                            return new ValidationResult(false, $"須為int!");
+                        }
+                    }
                 }
                 else
+                {
                     return new ValidationResult(false, $"請輸入數字!");
+                }
             }
 
             return ValidationResult.ValidResult;
