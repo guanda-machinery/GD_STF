@@ -377,7 +377,11 @@ namespace STD_105.Office
                 ViewModel.SteelAttr.Profile = steelAttr.Profile;
                 ViewModel.SteelAttr.Material = steelAttr.Material;
                 ViewModel.SteelAttr.Name = steelAttr.Name;
-                
+                ViewModel.SteelAttr.Weight = steelAttr.Weight;
+                ViewModel.SteelAttr.H = steelAttr.H;
+                ViewModel.SteelAttr.W = steelAttr.W;
+                ViewModel.SteelAttr.t1 = steelAttr.t1;
+                ViewModel.SteelAttr.t2 = steelAttr.t2;
 
 
                 Mesh modify = Steel3DBlock.GetProfile(steelAttr); //修改的形狀
