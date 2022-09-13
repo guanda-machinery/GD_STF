@@ -36,9 +36,9 @@ namespace STD_105.Office
 {
     public partial class ProductSettingsPage_Office : BasePage<ObSettingVM>  
     {
+        public ObSettingVM sr = new ObSettingVM();
 
         public ObservableCollection<DataCorrespond> DataCorrespond { get; set; } = new ObservableCollection<DataCorrespond>();
-
         /// <summary>
         /// 20220823 蘇冠綸 製品設定
         /// </summary>
@@ -240,31 +240,33 @@ namespace STD_105.Office
                 model.Entities.Clear();//清除模型物件
                 model.Blocks.Clear(); //清除模型圖塊
 
-                ViewModel.SteelAttr.GUID = Guid.NewGuid();//產生新的 id
-                ViewModel.SteelAttr.Creation = DateTime.Now;
-                ViewModel.SteelAttr.Revise = null;
-                
-                // 2022/07/14 呂宗霖 guid2區分2d或3d
-                //ViewModel.SteelAttr.GUID2 = ViewModel.SteelAttr.GUID;
-                ViewModel.SteelAttr.PointFront = new CutList();//清除切割線
-                ViewModel.SteelAttr.PointTop = new CutList();//清除切割線
-                ViewModel.SteelAttr.AsseNumber = this.asseNumber.Text;
-                ViewModel.SteelAttr.Length = string.IsNullOrEmpty(this.Length.Text) ? 0 : Double.Parse(this.Length.Text);
-                ViewModel.SteelAttr.Weight = string.IsNullOrEmpty(this.Weight.Text) ? 0 : double.Parse(this.Weight.Text);
-                ViewModel.SteelAttr.Name = this.teklaName.Text;
-                ViewModel.SteelAttr.Material = this.material.Text;
-                ViewModel.SteelAttr.Phase = string.IsNullOrEmpty(this.phase.Text) ? 0 : int.Parse(this.phase.Text);
-                ViewModel.SteelAttr.ShippingNumber = string.IsNullOrEmpty(this.shippingNumber.Text) ? 0 : int.Parse(this.shippingNumber.Text);
-                ViewModel.SteelAttr.Title1 = this.title1.Text;
-                ViewModel.SteelAttr.Title2 = this.title2.Text;
-                ViewModel.SteelAttr.Type = (OBJECT_TYPE)this.cbx_SteelType.SelectedIndex;
-                ViewModel.SteelAttr.Profile = this.cbx_SectionType.Text;
-                ViewModel.SteelAttr.H = string.IsNullOrEmpty(this.H.Text) ? 0 : float.Parse(this.H.Text);
-                ViewModel.SteelAttr.W = string.IsNullOrEmpty(this.W.Text) ? 0 : float.Parse(this.W.Text);
-                ViewModel.SteelAttr.Number = string.IsNullOrEmpty(this.PartCount.Text) ? 0 : int.Parse(this.PartCount.Text);
-                ViewModel.SteelAttr.t1 = string.IsNullOrEmpty(this.t1.Text) ? 0 : float.Parse(this.t1.Text);
-                ViewModel.SteelAttr.t2 = string.IsNullOrEmpty(this.t2.Text) ? 0 : float.Parse(this.t2.Text);
-                ViewModel.SteelAttr.ExclamationMark = false;
+                GetViewToVM();
+
+                //ViewModel.SteelAttr.GUID = Guid.NewGuid();//產生新的 id
+                //ViewModel.SteelAttr.Creation = DateTime.Now;
+                //ViewModel.SteelAttr.Revise = null;
+
+                //// 2022/07/14 呂宗霖 guid2區分2d或3d
+                ////ViewModel.SteelAttr.GUID2 = ViewModel.SteelAttr.GUID;
+                //ViewModel.SteelAttr.PointFront = new CutList();//清除切割線
+                //ViewModel.SteelAttr.PointTop = new CutList();//清除切割線
+                //ViewModel.SteelAttr.AsseNumber = this.asseNumber.Text;
+                //ViewModel.SteelAttr.Length = string.IsNullOrEmpty(this.Length.Text) ? 0 : Double.Parse(this.Length.Text);
+                //ViewModel.SteelAttr.Weight = string.IsNullOrEmpty(this.Weight.Text) ? 0 : double.Parse(this.Weight.Text);
+                //ViewModel.SteelAttr.Name = this.teklaName.Text;
+                //ViewModel.SteelAttr.Material = this.material.Text;
+                //ViewModel.SteelAttr.Phase = string.IsNullOrEmpty(this.phase.Text) ? 0 : int.Parse(this.phase.Text);
+                //ViewModel.SteelAttr.ShippingNumber = string.IsNullOrEmpty(this.shippingNumber.Text) ? 0 : int.Parse(this.shippingNumber.Text);
+                //ViewModel.SteelAttr.Title1 = this.title1.Text;
+                //ViewModel.SteelAttr.Title2 = this.title2.Text;
+                //ViewModel.SteelAttr.Type = (OBJECT_TYPE)this.cbx_SteelType.SelectedIndex;
+                //ViewModel.SteelAttr.Profile = this.cbx_SectionType.Text;
+                //ViewModel.SteelAttr.H = string.IsNullOrEmpty(this.H.Text) ? 0 : float.Parse(this.H.Text);
+                //ViewModel.SteelAttr.W = string.IsNullOrEmpty(this.W.Text) ? 0 : float.Parse(this.W.Text);
+                //ViewModel.SteelAttr.Number = string.IsNullOrEmpty(this.PartCount.Text) ? 0 : int.Parse(this.PartCount.Text);
+                //ViewModel.SteelAttr.t1 = string.IsNullOrEmpty(this.t1.Text) ? 0 : float.Parse(this.t1.Text);
+                //ViewModel.SteelAttr.t2 = string.IsNullOrEmpty(this.t2.Text) ? 0 : float.Parse(this.t2.Text);
+                //ViewModel.SteelAttr.ExclamationMark = false;
 #if DEBUG
                 log4net.LogManager.GetLogger("加入主件").Debug("產生圖塊");
 #endif
@@ -305,7 +307,7 @@ namespace STD_105.Office
                 //drawing.Refresh();
                 // SaveModel(true);
 
-                ObSettingVM sr = new ObSettingVM();
+                //ObSettingVM sr = new ObSettingVM();
                 ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
 
                 ViewModel.DataViews = collection;
@@ -344,36 +346,52 @@ namespace STD_105.Office
                 SelectedItem sele3D = new SelectedItem(model.Entities[model.Entities.Count - 1]);
                 SelectedItem sele2D = new SelectedItem(drawing.Entities[drawing.Entities.Count - 1]);
 
-
                 BlockReference reference3D = (BlockReference)sele3D.Item;
                 BlockReference reference2D = (BlockReference)sele2D.Item;
-
-
 
                 //模擬用戶實際選擇編輯
                 ViewModel.Select3DItem.Add(sele3D);
                 ViewModel.Select2DItem.Add(sele2D);
+
                 //層級 To 要編輯的BlockReference
                 model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);
-
-                //0→     drawing.Entities.Count - 1
-                drawing.SetCurrent((BlockReference)drawing.Entities[drawing.Entities.Count - 1]);
-
+                drawing.SetCurrent((BlockReference)drawing.Entities[0]);
+                ////0→     drawing.Entities.Count - 1
+                //drawing.SetCurrent((BlockReference)drawing.Entities[drawing.Entities.Count - 1]);
+                
                 SteelAttr steelAttr = ViewModel.GetSteelAttr();
-                steelAttr.GUID = ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).GUID;//修改唯一識別ID
+                steelAttr = GetViewToAttr(steelAttr, model);
+                //steelAttr.Length = string.IsNullOrEmpty(this.Length.Text) ? 0 : double.Parse(this.Length.Text);
+                //steelAttr.Phase = string.IsNullOrEmpty(this.phase.Text) ? 0 : int.Parse(this.phase.Text);
+                //steelAttr.Name = this.teklaName.Text;
+                //steelAttr.ShippingNumber = string.IsNullOrEmpty(this.shippingNumber.Text) ? 0 : int.Parse(this.shippingNumber.Text);
+                //steelAttr.Title1 = this.title1.Text;
+                //steelAttr.Title2 = this.title2.Text;
+                //steelAttr.Type = (OBJECT_TYPE)this.cbx_SteelType.SelectedIndex;
+                //steelAttr.Profile=this.cbx_SectionType.Text;
+
+                //steelAttr.GUID = ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).GUID;//修改唯一識別ID
+                ViewModel.SteelAttr.Length = steelAttr.Length;
+                ViewModel.SteelAttr.Phase = steelAttr.Phase;
+                ViewModel.SteelAttr.Number = steelAttr.Number;
+                ViewModel.SteelAttr.Profile = steelAttr.Profile;
+                ViewModel.SteelAttr.Material = steelAttr.Material;
+                ViewModel.SteelAttr.Name = steelAttr.Name;
+                
+
+
                 Mesh modify = Steel3DBlock.GetProfile(steelAttr); //修改的形狀
                 ViewModel.tem3DRecycle.Add(model.Entities[model.Entities.Count - 1]);//加入垃圾桶準備刪除
                 ViewModel.tem2DRecycle.AddRange(drawing.Entities);//加入垃圾桶準備刪除
-                // 調整修改日期
-                ViewModel.SteelAttr.Revise = DateTime.Now;
 
-                model.Entities[0].Selected = true;//選擇物件
+
+                //model.Entities[0].Selected = true;//選擇物件
                 drawing.Entities.ForEach(el => el.Selected = true);
                 List<Entity> steel2D = new Steel2DBlock(modify, "123").Entities.ToList();
-                Steel2DBlock steel2DBlock = (Steel2DBlock)drawing.Blocks[drawing.CurrentBlockReference.BlockName];
+                Steel2DBlock steel2DBlock = (Steel2DBlock)drawing.Blocks[reference2D.BlockName];//drawing.CurrentBlockReference.BlockName→1
                 steel2DBlock.ChangeMesh(modify);
                 //加入到垃圾桶內
-
+                
                 //加入復原動作至LIST
                 ViewModel.Reductions.Add(new Reduction()
                 {
@@ -397,6 +415,7 @@ namespace STD_105.Office
                 ViewModel.tem2DRecycle.Clear();
 
                 ViewModel.Reductions.AddContinuous(new List<Entity>() { modify }, steel2D);
+
                 model.Entities.Insert(0, modify);//加入參考圖塊到模型
                 drawing.Entities.AddRange(steel2D);
                 Esc();
@@ -1545,6 +1564,70 @@ namespace STD_105.Office
             drawing.Invalidate();
         }
 
+        public void GetViewToVM() 
+        {
+            ViewModel.SteelAttr.GUID = Guid.NewGuid();//產生新的 id
+            ViewModel.SteelAttr.Creation = DateTime.Now;
+            ViewModel.SteelAttr.Revise = null;
+
+            // 2022/07/14 呂宗霖 guid2區分2d或3d
+            //ViewModel.SteelAttr.GUID2 = ViewModel.SteelAttr.GUID;
+            ViewModel.SteelAttr.PointFront = new CutList();//清除切割線
+            ViewModel.SteelAttr.PointTop = new CutList();//清除切割線
+            ViewModel.SteelAttr.AsseNumber = this.asseNumber.Text;
+            ViewModel.SteelAttr.Length = string.IsNullOrEmpty(this.Length.Text) ? 0 : Double.Parse(this.Length.Text);
+            ViewModel.SteelAttr.Weight = string.IsNullOrEmpty(this.Weight.Text) ? 0 : double.Parse(this.Weight.Text);
+            ViewModel.SteelAttr.Name = this.teklaName.Text;
+            ViewModel.SteelAttr.Material = this.material.Text;
+            ViewModel.SteelAttr.Phase = string.IsNullOrEmpty(this.phase.Text) ? 0 : int.Parse(this.phase.Text);
+            ViewModel.SteelAttr.ShippingNumber = string.IsNullOrEmpty(this.shippingNumber.Text) ? 0 : int.Parse(this.shippingNumber.Text);
+            ViewModel.SteelAttr.Title1 = this.title1.Text;
+            ViewModel.SteelAttr.Title2 = this.title2.Text;
+            ViewModel.SteelAttr.Type = (OBJECT_TYPE)this.cbx_SteelType.SelectedIndex;
+            ViewModel.SteelAttr.Profile = this.cbx_SectionType.Text;
+            ViewModel.SteelAttr.H = string.IsNullOrEmpty(this.H.Text) ? 0 : float.Parse(this.H.Text);
+            ViewModel.SteelAttr.W = string.IsNullOrEmpty(this.W.Text) ? 0 : float.Parse(this.W.Text);
+            ViewModel.SteelAttr.Number = string.IsNullOrEmpty(this.PartCount.Text) ? 0 : int.Parse(this.PartCount.Text);
+            ViewModel.SteelAttr.t1 = string.IsNullOrEmpty(this.t1.Text) ? 0 : float.Parse(this.t1.Text);
+            ViewModel.SteelAttr.t2 = string.IsNullOrEmpty(this.t2.Text) ? 0 : float.Parse(this.t2.Text);
+            ViewModel.SteelAttr.ExclamationMark = false;
+        }
+
+        /// <summary>
+        /// 編輯塞值用
+        /// </summary>
+        /// <param name="steelAttr"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public SteelAttr GetViewToAttr(SteelAttr steelAttr, ModelExt model)
+        {
+            steelAttr.Creation = DateTime.Now;
+            steelAttr.Revise = null;
+            steelAttr.PointFront = new CutList();//清除切割線
+            steelAttr.PointTop = new CutList();//清除切割線
+            steelAttr.AsseNumber = this.asseNumber.Text;
+            steelAttr.Length = string.IsNullOrEmpty(this.Length.Text) ? 0 : Double.Parse(this.Length.Text);
+            steelAttr.Weight = string.IsNullOrEmpty(this.Weight.Text) ? 0 : double.Parse(this.Weight.Text);
+            steelAttr.Name = this.teklaName.Text;
+            steelAttr.Material = this.material.Text;
+            steelAttr.Phase = string.IsNullOrEmpty(this.phase.Text) ? 0 : int.Parse(this.phase.Text);
+            steelAttr.ShippingNumber = string.IsNullOrEmpty(this.shippingNumber.Text) ? 0 : int.Parse(this.shippingNumber.Text);
+            steelAttr.Title1 = this.title1.Text;
+            steelAttr.Title2 = this.title2.Text;
+            steelAttr.Type = (OBJECT_TYPE)this.cbx_SteelType.SelectedIndex;
+            steelAttr.Profile = this.cbx_SectionType.Text;
+            steelAttr.H = (string.IsNullOrEmpty(this.H.Text) || float.Parse(this.H.Text) == 0) ? steelAttr.H : float.Parse(this.H.Text);
+            steelAttr.W = (string.IsNullOrEmpty(this.W.Text) || float.Parse(this.W.Text) == 0) ? steelAttr.W : float.Parse(this.W.Text);
+            steelAttr.Number = string.IsNullOrEmpty(this.PartCount.Text) ? 0 : int.Parse(this.PartCount.Text);
+            steelAttr.t1 = (string.IsNullOrEmpty(this.t1.Text) || float.Parse(this.t1.Text) == 0) ? steelAttr.t1 : float.Parse(this.t1.Text);
+            steelAttr.t2 = (string.IsNullOrEmpty(this.t2.Text) || float.Parse(this.t2.Text) == 0) ? steelAttr.t2 : float.Parse(this.t2.Text);
+            steelAttr.ExclamationMark = false;
+            steelAttr.GUID = ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).GUID;
+            // 調整修改日期
+            steelAttr.Revise = DateTime.Now;
+            return steelAttr;
+        }
+
         /// <summary>
         /// 修改螺栓狀態
         /// </summary>
@@ -2561,13 +2644,16 @@ namespace STD_105.Office
         /// <summary>
         /// 存取模型
         /// </summary>
-        public void SaveModel(bool add)
+        /// <param name="add"></param>
+        /// <param name="reflesh">是否更新Grid</param>
+        public void SaveModel(bool add,bool reflesh=true)
         {
             STDSerialization ser = new STDSerialization();
             ser.SetPartModel(ViewModel.SteelAttr.GUID.ToString(), model);
 
             var ass = new GD_STD.Data.SteelAssembly()
             {
+                //GUID = ViewModel.SteelAttr.GUID,
                 Count = ViewModel.SteelAttr.Number,
                 IsTekla = false,
                 Length = ViewModel.SteelAttr.Length,
@@ -2583,6 +2669,17 @@ namespace STD_105.Office
             // 若無構件資訊，新增資訊
             if (ViewModel.SteelAssemblies.IndexOf(ass) == -1 && add)
             {
+                //ass = new SteelAssembly()
+                //{
+                //    GUID = ViewModel.SteelAttr.GUID,
+                //    Count = ViewModel.SteelAttr.Number,
+                //    IsTekla = false,
+                //    Length = ViewModel.SteelAttr.Length,
+                //    ShippingDescription = new List<string>(new string[ViewModel.SteelAttr.Number]),
+                //    ShippingNumber = new List<int>(new int[ViewModel.SteelAttr.Number]),
+                //    Phase = new List<int>(new int[ViewModel.SteelAttr.Number]),
+                //    Number = ViewModel.SteelAttr.PartNumber,
+                //};
                 ass.ID = new List<int>();
                 for (int i = 0; i < ViewModel.SteelAssemblies.Count; i++)
                 {
@@ -2601,6 +2698,24 @@ namespace STD_105.Office
                 ass.ID.AddRange(buffer.ToArray());
                 ViewModel.SteelAssemblies.Add(ass);
             }
+            //else 
+            //{
+            //    if (ViewModel.SteelAssemblies.Where(x => x.GUID == ViewModel.SteelAttr.GUID).FirstOrDefault().Count!= ViewModel.SteelAttr.Number)
+            //    {
+            //        buffer.Clear();
+            //        while (buffer.Count != ViewModel.SteelAttr.Number)
+            //        {
+            //            int id = random.Next(1000000, 90000000);
+            //            if (!buffer.Contains(id))
+            //            {
+            //                buffer.Add(id);
+            //            }
+            //        }
+            //    }
+            //    ViewModel.SteelAssemblies.Where(x => x.GUID == ViewModel.SteelAttr.GUID).FirstOrDefault().ID.Clear();
+            //    ViewModel.SteelAssemblies.Where(x => x.GUID == ViewModel.SteelAttr.GUID).FirstOrDefault().ID.AddRange(buffer.ToArray());
+            //    ass.ID = buffer.ToList();
+            //}
             #endregion
 
             #region 斷面規格
@@ -2614,21 +2729,24 @@ namespace STD_105.Office
             #endregion
 
             #region 零件列表
+            // 2022/09/08 呂宗霖 與架構師討論後，零件編輯單純做編輯動作            
             // 零件列表
             SteelPart steelPart = new SteelPart(
                 ViewModel.SteelAttr,
+                ViewModel.SteelAttr.Name,
                 ViewModel.SteelAttr.PartNumber,
+                ViewModel.SteelAttr.Length,
                 ViewModel.SteelAttr.Number,
                 ViewModel.SteelAttr.GUID.Value,
                 ViewModel.SteelAttr.Phase,
                 ViewModel.SteelAttr.ShippingNumber,
                 ViewModel.SteelAttr.Title1,
-                ViewModel.SteelAttr.Title2);
+                ViewModel.SteelAttr.Title2,ViewModel.SteelAttr.Lock);
             steelPart.ID = new List<int>();
             steelPart.Match = new List<bool>();
             steelPart.Material = ViewModel.SteelAttr.Material;
             steelPart.Father = ass.ID;
-            steelPart.Length = ViewModel.SteelAttr.Length;
+            //steelPart.Length = ViewModel.SteelAttr.Length;
 
             for (int i = 0; i < steelPart.Count; i++)
             {
@@ -2649,7 +2767,29 @@ namespace STD_105.Office
             {
                 collection = ser.GetPart($@"{steelPart.Profile.GetHashCode()}");
             }
-            collection.Add(steelPart);
+            //if (!collection.Any(x => x.Number == steelPart.Number && x.Profile == steelPart.Profile && x.Type == x.Type && x.GUID == steelPart.GUID))
+            //{
+                // 不存在則新增
+                collection.Add(steelPart);
+            //}
+            //else {
+            //    // 存在則編輯
+            //    SteelPart sp = collection.Where(x => x.Number == steelPart.Number && x.Profile == steelPart.Profile && x.Type == x.Type && x.GUID == steelPart.GUID).FirstOrDefault();
+            //    sp.Length = steelPart.Length;
+            //    sp.W = steelPart.W;
+            //    sp.t1 = steelPart.t1;
+            //    sp.t2 = steelPart.t2;
+            //    sp.H = steelPart.H;  
+            //    sp.Material = steelPart.Material;                
+            //    sp.Phase = steelPart.Phase;
+            //    sp.ShippingNumber = steelPart.ShippingNumber;
+            //    sp.Title1 = steelPart.Title1;
+            //    sp.Title2 = steelPart.Title2;
+            //    sp.Revise = steelPart.Revise;
+            //    sp.Father = steelPart.Father;
+            //    sp.ID = steelPart.ID;
+            //}
+
             ser.SetPart($@"{steelPart.Profile.GetHashCode()}", new ObservableCollection<object>(collection));
             #endregion
 
@@ -2658,6 +2798,14 @@ namespace STD_105.Office
                 ser.SetSteelAssemblies(ViewModel.SteelAssemblies);
             }
             ViewModel.SaveDataCorrespond();
+            if (reflesh)
+            {
+                ObservableCollection<ProductSettingsPageViewModel> data = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
+                ViewModel.DataViews = data;
+                PieceListGridControl.ItemsSource = data;
+
+            }
+
         }
         /// <summary>
         /// 載入模型
@@ -3143,8 +3291,7 @@ namespace STD_105.Office
                 STDSerialization ser = new STDSerialization();
                 DataCorrespond = ser.GetDataCorrespond();
 
-                ReadFile readFile = ser.ReadPartModel(item.steelAttr.GUID.ToString()); //讀取檔案內容
-
+                    ReadFile readFile = ser.ReadPartModel(item.DataName.ToString()); //讀取檔案內容
                 if (readFile == null)
                 {
                     WinUIMessageBox.Show(null,
@@ -3229,6 +3376,28 @@ namespace STD_105.Office
                 RunHypotenusePoint();
    
             }
-        } 
+
+        }
+
+        private void OKtoConfirmChanges(object sender, RoutedEventArgs e)
+        {
+            if (fAddPartAndBolt)
+            {
+                var ResultRtn = WinUIMessageBox.Show(null,
+                         $"新增零件是否存檔 ?",
+                         "通知",
+                         MessageBoxButton.OKCancel,
+                         MessageBoxImage.Exclamation,
+                         MessageBoxResult.None,
+                         MessageBoxOptions.None,
+                         FloatingMode.Popup);
+
+
+                if (ResultRtn == MessageBoxResult.OK)
+                    SaveModel(true);//存取檔案
+
+                fAddPartAndBolt = false;
+            }
+        }
     }
 }

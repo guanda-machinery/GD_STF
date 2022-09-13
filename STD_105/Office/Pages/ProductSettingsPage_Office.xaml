@@ -34,7 +34,7 @@
             <STD105:FACE_ToStringConverter x:Key="Face" />
             <STD105:START_HOLE_ToStringConverter x:Key="StartHole" />
 
-            <System:Boolean x:Key="visible">false</System:Boolean>
+            <System:Boolean x:Key="visible">true</System:Boolean>
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
     <!--物件設定與設定完成的物件列表-->
@@ -296,8 +296,8 @@
                     <dxg:GridColumn FieldName="SteelType"  IsSmart="True" Header="鋼材類型(Index)" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="Material" IsSmart="True"  Header="材質"  Width="auto"/>
                     <dxg:GridColumn FieldName="Count"  IsSmart="True"  Width="auto" Header="數量"  />
-                    <dxg:GridColumn FieldName="PieceLength" Binding="{Binding Length}" IsSmart="True"  Header="零件長" Width="auto" />
-                    <dxg:GridColumn FieldName="PieceWeight" Binding="{Binding Weight}" IsSmart="True"  Header="零件重" Width="auto" />
+                    <dxg:GridColumn FieldName="Length" Binding="{Binding Length}" IsSmart="True"  Header="零件長" Width="auto" />
+                    <dxg:GridColumn FieldName="Weight" Binding="{Binding Weight}" IsSmart="True"  Header="零件重" Width="auto" />
                     <dxg:GridColumn FieldName="Height" Binding="{Binding steelAttr.H}" IsSmart="True"  Header="高度" Width="auto" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="Weight" Binding="{Binding steelAttr.W}" IsSmart="True"  Header="寬度" Width="auto" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="t1" Binding="{Binding steelAttr.t1}" IsSmart="True"  Header="腹板厚度" Width="auto" Visible="{StaticResource visible}"/>
@@ -526,7 +526,7 @@
 
                 </Grid>
                 <DockPanel  DockPanel.Dock="Bottom" Margin="0" VerticalAlignment="Bottom" >
-                    <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Background="Gold" Width="60" Margin="0,0,6,0"/>
+                    <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Background="Gold" Width="60" Margin="0,0,6,0" Click="OKtoConfirmChanges"/>
 
                     <STD105:DataButtons_Office Margin="105,0,-17,0"
                                                Modify="{Binding ModifyPart}"
