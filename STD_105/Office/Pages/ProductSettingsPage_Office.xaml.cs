@@ -381,6 +381,9 @@ namespace STD_105.Office
 
 
                 Mesh modify = Steel3DBlock.GetProfile(steelAttr); //修改的形狀
+
+                ManHypotenusePoint((FACE)ViewModel.CutFaceType); // 手動斜邊
+
                 ViewModel.tem3DRecycle.Add(model.Entities[model.Entities.Count - 1]);//加入垃圾桶準備刪除
                 ViewModel.tem2DRecycle.AddRange(drawing.Entities);//加入垃圾桶準備刪除
 
@@ -421,8 +424,6 @@ namespace STD_105.Office
                 Esc();
 
 
-                fAddSteelPart = true;   //新增零件
-
                 if (!fAddSteelPart)
                     SaveModel(false);//存取檔案
 
@@ -431,6 +432,8 @@ namespace STD_105.Office
                 //刷新模型
                 model.Invalidate();
                 drawing.Invalidate();
+                model.Refresh();
+                drawing.Refresh();
 
 
 
@@ -2253,6 +2256,9 @@ namespace STD_105.Office
                     break;
             }
 
+            if (!fAddSteelPart)   //  新建孔群是否於新增零件  : false 直接存檔
+                SaveModel(false, false);//存取檔案 
+
             //刷新模型
             model.Refresh();
             drawing.Refresh();
@@ -2487,7 +2493,7 @@ namespace STD_105.Office
             }
 
             if (!fAddSteelPart)   //  新建孔群是否於新增零件  : false 直接存檔
-                SaveModel(false);//存取檔案 
+                SaveModel(false, false);//存取檔案 
 
 
             //刷新模型
@@ -3310,7 +3316,7 @@ namespace STD_105.Office
                 if (fAddSteelPart)  //  新增零件功能
                 {
                     var ResultRtn = WinUIMessageBox.Show(null,
-                         $"新增零件未存檔,是否存檔",
+                         $"新增零件未存檔,是否存檔",       
                          "通知",
                          MessageBoxButton.OKCancel,
                          MessageBoxImage.Exclamation,
@@ -3381,7 +3387,7 @@ namespace STD_105.Office
 
         private void OKtoConfirmChanges(object sender, RoutedEventArgs e)
         {
-            if (fAddPartAndBolt)
+            if (fAddSteelPart)
             {
                 var ResultRtn = WinUIMessageBox.Show(null,
                          $"新增零件是否存檔 ?",
@@ -3396,7 +3402,7 @@ namespace STD_105.Office
                 if (ResultRtn == MessageBoxResult.OK)
                     SaveModel(true);//存取檔案
 
-                fAddPartAndBolt = false;
+                fAddSteelPart = false;
             }
         }
     }
