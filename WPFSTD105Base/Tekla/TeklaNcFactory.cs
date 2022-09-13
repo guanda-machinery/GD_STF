@@ -389,7 +389,11 @@ namespace WPFSTD105.Tekla
                                         Number = steelAttr.PartNumber,
                                         Type = steelAttr.Type,
                                         Profile = steelAttr.Profile,
-                                        TP = true,};
+                                        TP = true,
+                                        oPoint=steelAttr.oPoint.ToArray(), 
+                                        vPoint=steelAttr.vPoint.ToArray(), 
+                                        uPoint=steelAttr.uPoint.ToArray(),
+                                };
                                     if (data.DataName != nc.SteelAttr.GUID.ToString())
                                     {
                                         throw new Exception();
