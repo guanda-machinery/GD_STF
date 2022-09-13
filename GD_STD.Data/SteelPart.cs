@@ -26,19 +26,25 @@ namespace GD_STD.Data
             Count++;
             State = DRAWING_STATE.NEW;
         }
+
         /// <summary>
         /// 手動操作訊息
         /// </summary>
         /// <param name="profile">鋼構輪廓資訊</param>
+        /// <param name="teklaName">圖名稱</param>
         /// <param name="number">零件編號</param>
+        /// <param name="length">長度</param>
         /// <param name="count">數量</param>
-        /// <param name="guid">STD 3D Model ID</param>
+        /// <param name="guid">GUID</param>
         /// <param name="phase">Phase</param>
-        /// <param name="shippingNumber">車次、拆運</param>
+        /// <param name="shippingNumber">拆運</param>
         /// <param name="title1">標題1</param>
         /// <param name="title2">標題2</param>
+        /// <param name="lockMark">鎖</param>
         /// <exception cref="ArgumentException"></exception>
-        public SteelPart(ISteelProfile profile, string number, int count, Guid guid,int phase,int shippingNumber,string title1,string title2)
+        public SteelPart(ISteelProfile profile, string teklaName,
+            string number,double length, int count, Guid guid,int phase,int shippingNumber,
+            string title1,string title2 ,bool lockMark)
         {
             if (string.IsNullOrWhiteSpace(number))
             {
@@ -62,6 +68,8 @@ namespace GD_STD.Data
             ShippingNumber = shippingNumber;
             Title2 = title2;
             Title1 = title1;
+            Length= length;
+            Lock = lockMark; 
             Creation = DateTime.Now;
             Revise = DateTime.Now;
         }

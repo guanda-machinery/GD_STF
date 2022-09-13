@@ -169,7 +169,10 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 限制Grid出現之內容
         /// </summary>
-        public List<OBJECT_TYPE> allowType = new List<OBJECT_TYPE> { OBJECT_TYPE.RH, OBJECT_TYPE.BH, OBJECT_TYPE.H, OBJECT_TYPE.BOX, OBJECT_TYPE.TUBE, OBJECT_TYPE.LB, OBJECT_TYPE.CH };
+        public List<OBJECT_TYPE> allowType = new List<OBJECT_TYPE> { 
+            OBJECT_TYPE.RH, OBJECT_TYPE.BH, OBJECT_TYPE.H, 
+            OBJECT_TYPE.BOX, OBJECT_TYPE.TUBE, 
+            OBJECT_TYPE.LB, OBJECT_TYPE.CH };
 
         /// <summary>
         /// 構件資訊列表
@@ -1223,9 +1226,9 @@ namespace WPFSTD105.ViewModel
 
             // 取得構件資訊
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();
-            if (assemblies==null)
+            if (assemblies == null)
             {
-                return new List<ProductSettingsPageViewModel>(); 
+                return new List<ProductSettingsPageViewModel>();
             }
             //取得零件資訊
             Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
