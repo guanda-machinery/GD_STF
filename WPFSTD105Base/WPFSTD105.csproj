@@ -381,6 +381,7 @@
     <Compile Include="FluentAPI\Traverse.cs" />
     <Compile Include="Listening\PhoneListening.cs" />
     <Compile Include="Model\NcPoint3D.cs" />
+    <Compile Include="MyCs.cs" />
     <Compile Include="PhoneCallbackHandler.cs" />
     <Compile Include="Connected Services\Memor\Reference.cs">
       <AutoGen>True</AutoGen>
