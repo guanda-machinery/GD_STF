@@ -404,12 +404,19 @@
                         <DockPanel  VerticalAlignment="Center">
                             <TextBox Name="Length" Width="70" HorizontalAlignment="Left">
                                 <TextBox.Text>
-                                    <Binding Path="SelectedItems[0].Length" ElementName="PieceListGridControl" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" >
+                                    <!--Binding Path="SelectedItems[0].Length" ElementName="PieceListGridControl" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" -->
+                                    <Binding Path="ProductLengthProperty" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" >
                                         <Binding.ValidationRules>
-                                            <STD105:CheckNumberRule NumberMin="5"/>
-                                        </Binding.ValidationRules>
-                                    </Binding>
+                                                <STD105:CheckNumberRule NumberMin="5"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
                                 </TextBox.Text>
+
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="TextChanged" SourceName="Length">
+                                        <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                             </TextBox>
                             <TextBlock Text="mm" HorizontalAlignment="Right"/>
                         </DockPanel>
@@ -418,7 +425,15 @@
                     <Label Grid.Column="0" Grid.Row="3" Content="製品重：" />
                     <StackPanel Grid.Column="1" Grid.Row="3" >
                         <DockPanel  VerticalAlignment="Center">
-                            <TextBlock Name="Weight"  Text="{Binding SelectedItems[0], ElementName=PieceListGridControl,Mode=OneWay, Converter={STD105:SteelPartWeightConverter}}"  VerticalAlignment="Center" Margin="3,0,0,0"/>
+                            <!--TextBlock Name="Weight"  Text="{Binding SelectedItems[0], ElementName=PieceListGridControl,Mode=OneWay, Converter={STD105:SteelPartWeightConverter}}"  VerticalAlignment="Center" Margin="3,0,0,0"/-->
+                            <TextBlock Name="Weight" Text="{Binding ProductWeightProperty, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}" VerticalAlignment="Center" Margin="3,0,0,0">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionType">
+                                        <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"
+                                                               CommandParameter="{ Binding ElementName=PieceListGridControl, Path=SelectedItem }"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </TextBlock>
                             <TextBlock  Text="Kg/per"  HorizontalAlignment="Right" Margin="3,0,0,0"/>
                         </DockPanel>
                     </StackPanel>
@@ -494,7 +509,7 @@
                                   Padding="5,1,0,0"
                                   ItemsSource="{Binding ProfileList}" 
                                   DisplayMemberPath="Profile" 
-                                  Text="{Binding SteelSectionProperty}">
+                                  Text="{Binding SteelSectionProperty}" SelectionChanged="CBOX_SectionTypeChanged">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionType">
                                     <i:InvokeCommandAction Command="{ Binding ShowSteelSectionCommand }"
@@ -506,22 +521,34 @@
 
                     <Label Grid.Column="3" Grid.Row="2" Content="高度(H)：" />
                     <StackPanel  Grid.Column="4" Grid.Row="2">
-                        <TextBox Name="H" Text="{Binding SteelAttr.H}" IsEnabled="False" />
+                        <DockPanel  VerticalAlignment="Center">
+                            <TextBox Name="H" Text="{Binding SteelAttr.H, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
+                            <TextBlock Text="mm" HorizontalAlignment="Right" />
+                        </DockPanel>
                     </StackPanel>
 
                     <Label Grid.Column="3" Grid.Row="3" Content="寬度(B)：" />
                     <StackPanel Grid.Column="4" Grid.Row="3">
-                        <TextBox Name="W" Text="{Binding SteelAttr.W}" IsEnabled="False" />
+                        <DockPanel  VerticalAlignment="Center">
+                            <TextBox Name="W" Text="{Binding SteelAttr.W, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
+                            <TextBlock Text="mm" HorizontalAlignment="Right" />
+                        </DockPanel>
                     </StackPanel>
 
                     <Label Grid.Column="3" Grid.Row="4" Content="腹板厚度(s)：" />
                     <StackPanel Grid.Column="4" Grid.Row="4">
-                        <TextBox Name="t1" Text="{Binding SteelAttr.t1}" IsEnabled="False" />
+                        <DockPanel  VerticalAlignment="Center">
+                            <TextBox Name="t1" Text="{Binding SteelAttr.t1, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
+                            <TextBlock Text="mm" HorizontalAlignment="Right" />
+                        </DockPanel>
                     </StackPanel>
 
                     <Label Grid.Column="3" Grid.Row="5" Content="翼板厚度(t)：" />
                     <StackPanel Grid.Column="4" Grid.Row="5">
-                        <TextBox Name="t2" Text="{Binding SteelAttr.t2}" IsEnabled="False"/>
+                        <DockPanel  VerticalAlignment="Center">
+                            <TextBox Name="t2" Text="{Binding SteelAttr.t2, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
+                            <TextBlock Text="mm" HorizontalAlignment="Right" />
+                        </DockPanel>
                     </StackPanel>
 
                 </Grid>

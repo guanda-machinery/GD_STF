@@ -164,6 +164,10 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public ICommand ShowSteelTypeSectionManualCommand { get; set; }
         /// <summary>
+        /// 20220913 張燕華 計算製品重量
+        /// </summary>
+        public ICommand CalculateWeightCommand { get; set; }
+        /// <summary>
         /// 20220906 張燕華 鑽孔rbtn測試
         /// </summary>
         public ICommand CmdShowMessage { get; set; }
@@ -383,7 +387,15 @@ namespace WPFSTD105.ViewModel
             }
         }
         /// <summary>
-        /// 斷面規格列表
+        /// 製品長度
+        /// </summary>
+        public double ProductLengthProperty { get; set; }
+        /// <summary>
+        /// 製品重
+        /// </summary>
+        public double ProductWeightProperty { get; set; }
+        /// <summary>
+        /// 當前斷面規格
         /// </summary>
         public string SteelSectionProperty { get; set; } = "";
         /// <summary>
@@ -979,6 +991,7 @@ namespace WPFSTD105.ViewModel
             ShowSteelTypeCommand = ShowSteelType(); //20220829 張燕華 選擇型鋼型態
             ShowSteelSectionCommand = ShowSteelSection();
             ShowSteelTypeSectionManualCommand = ShowSteelTypeSectionManual();
+            CalculateWeightCommand = CalculateWeight();
 
             InitializeSteelAttr();
         }
@@ -1179,7 +1192,6 @@ namespace WPFSTD105.ViewModel
                     DisplayHoleControl = true;
             });
         }
-        
         /// <summary>
         /// 選擇型鋼斷面規格 20220907 張燕華
         /// </summary>
@@ -1187,8 +1199,10 @@ namespace WPFSTD105.ViewModel
         {
             return new WPFBase.RelayParameterizedCommand((object cbxSelectedIndex) =>
             {
-                if(((int)cbxSelectedIndex) !=-1)
-                ProfileType = Convert.ToInt32(cbxSelectedIndex);
+                if (((int)cbxSelectedIndex) != -1)
+                {
+                    ProfileType = Convert.ToInt32(cbxSelectedIndex);
+                }
             });
         }
         /// <summary>
@@ -1229,6 +1243,31 @@ namespace WPFSTD105.ViewModel
                     }
 
                     SteelSectionProperty = propertyInfo.Profile;
+                }
+            });
+        }
+        /// <summary>
+        /// 計算製品重量 20220913 張燕華
+        /// </summary>
+        private WPFBase.RelayParameterizedCommand CalculateWeight()
+        {
+            return new WPFBase.RelayParameterizedCommand((object cbxSelectedItem) =>
+            {
+                if (cbxSelectedItem != null)
+                {
+                    var propertyInfo = (ProductSettingsPageViewModel)cbxSelectedItem;
+                    if (propertyInfo.Weight != 0)
+                    {
+                        ProductWeightProperty = propertyInfo.Weight;
+                    }
+                    else
+                    {
+                        ProductWeightProperty = (ProductLengthProperty / 1000) * SteelAttr.Kg;
+                    }
+                }
+                else
+                {
+                    ProductWeightProperty = (ProductLengthProperty / 1000) * SteelAttr.Kg;
                 }
             });
         }

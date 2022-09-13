@@ -3404,6 +3404,23 @@ namespace STD_105.Office
         {
             GetWpfLogicalChildClass.SetAllCheckBoxTrueOrFalse(CutTabItem);
         }
+        private void CBOX_SectionTypeChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            //MessageBox.Show("hi", "尼豪", MessageBoxButton.OK);
+            var a = cbx_SectionType.SelectedIndex;
+        }
+        private void ConfirmCurrentSteelSection(ProductSettingsPageViewModel CuurentSelectedPart)
+        {
+            ViewModel.ProfileType = (int)CuurentSelectedPart.Type;
+
+            foreach(SteelAttr sa in ViewModel.ProfileList)
+            {
+                if(CuurentSelectedPart.Profile == sa.Profile)
+                {
+                    ViewModel.SteelAttr = sa;
+                }
+            }
+        }
         private void Grid_SelectedChange(object sender, SelectedItemChangedEventArgs e)
         {
             //    //#region 3D
@@ -3424,6 +3441,9 @@ namespace STD_105.Office
 
                 ProductSettingsPageViewModel item = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
                 //MessageBox.Show("hi", "尼豪", MessageBoxButton.OK);
+
+                ConfirmCurrentSteelSection(item);
+                ViewModel.ProductLengthProperty = item.Length;
 
                 STDSerialization ser = new STDSerialization();
 
