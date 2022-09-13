@@ -260,6 +260,8 @@ namespace STD_105.Office
                 #endregion
             });
             //修改主零件
+            // 2022/09/09 呂宗霖 跟架構師討論後 原修改主零件會新增一筆新的零件
+            //                   調整為
             ViewModel.ModifyPart = new RelayCommand(() =>
             {
                 if (!CheckPart()) //檢測用戶輸入的參數是否有完整
@@ -2585,8 +2587,12 @@ namespace STD_105.Office
             #endregion
 
             #region 零件列表
+            ISteelProfile pf = ViewModel.ProfileList.Where(x => x.Profile == ViewModel.SteelAttr.Profile).FirstOrDefault();
             // 零件列表
-            SteelPart steelPart = new SteelPart(ViewModel.SteelAttr, ViewModel.SteelAttr.PartNumber, ViewModel.SteelAttr.Number, ViewModel.SteelAttr.GUID.Value,ViewModel.SteelAttr.Phase,ViewModel.SteelAttr.ShippingNumber,ViewModel.SteelAttr.Title1,ViewModel.SteelAttr.Title2);
+            SteelPart steelPart = new SteelPart(
+                pf, ViewModel.SteelAttr.Name, ViewModel.SteelAttr.PartNumber, ViewModel.SteelAttr.Length, ViewModel.SteelAttr.Number,ViewModel.SteelAttr.GUID.Value,
+                ViewModel.SteelAttr.Phase, ViewModel.SteelAttr.ShippingNumber,
+                ViewModel.SteelAttr.Title1, ViewModel.SteelAttr.Title2,ViewModel.SteelAttr.Lock);
             steelPart.ID = new List<int>();
             steelPart.Match = new List<bool>();
             steelPart.Material = ViewModel.SteelAttr.Material;

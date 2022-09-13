@@ -2,9 +2,11 @@
 using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
+using GD_STD;
 using GD_STD.Enum;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using WPFSTD105.Attribute;
 using static WPFSTD105.Properties.SofSetting;
@@ -233,6 +235,25 @@ namespace WPFSTD105.Model
         public static Steel3DBlock AddSteel(SteelAttr steelAttr, devDept.Eyeshot.Model model, out BlockReference blockReference, string dic = "Steel")
         {
             Steel3DBlock result;
+            // 尚未連動 重新代值進Steel
+            STDSerialization ser = new STDSerialization();
+            if (steelAttr.H == 0 || steelAttr.W == 0 || steelAttr.t1 == 0 || steelAttr.t2 == 0)
+            {
+                ObservableCollection<SteelAttr> Type_inp = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryModel()}\{ModelPath.Profile}\{steelAttr.Type}.inp");
+
+                foreach (var item in Type_inp)
+                {
+                    if (item.Profile == steelAttr.Profile)
+                    {
+                        steelAttr.H = item.H;
+                        steelAttr.W = item.W;
+                        steelAttr.t1 = item.t1;
+                        steelAttr.t2 = item.t2;
+                        break;
+                    }
+                }
+            }
+
             result = new Steel3DBlock(GetProfile(steelAttr));
             model.Blocks.Add(result);//加入鋼構圖塊到模型
             blockReference = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);

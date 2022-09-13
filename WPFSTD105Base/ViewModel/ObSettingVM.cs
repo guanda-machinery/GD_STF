@@ -173,7 +173,10 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 限制Grid出現之內容
         /// </summary>
-        public List<OBJECT_TYPE> allowType = new List<OBJECT_TYPE> { OBJECT_TYPE.RH, OBJECT_TYPE.BH, OBJECT_TYPE.H, OBJECT_TYPE.BOX, OBJECT_TYPE.TUBE, OBJECT_TYPE.LB, OBJECT_TYPE.CH };
+        public List<OBJECT_TYPE> allowType = new List<OBJECT_TYPE> { 
+            OBJECT_TYPE.RH, OBJECT_TYPE.BH, OBJECT_TYPE.H, 
+            OBJECT_TYPE.BOX, OBJECT_TYPE.TUBE, 
+            OBJECT_TYPE.LB, OBJECT_TYPE.CH };
 
         /// <summary>
         /// 構件資訊列表
@@ -423,7 +426,14 @@ namespace WPFSTD105.ViewModel
             set
             {
                 _MaterialIndex = value;
-                SteelAttr.Material = Materials[value].Name;
+                if (value == -1)
+                {
+                    SteelAttr.Material = "";
+                }
+                else
+                {
+                    SteelAttr.Material = Materials[value].Name;
+                }
 #if DEBUG
                 log4net.LogManager.GetLogger("變換材質").Debug(value.ToString());
 #endif
@@ -479,7 +489,11 @@ namespace WPFSTD105.ViewModel
                 DataName = SteelAttr.GUID.ToString(),
                 Number = SteelAttr.PartNumber,
                 Type = SteelAttr.Type,
-                Profile = SteelAttr.Profile
+                Profile = SteelAttr.Profile,
+                // 2022/09/08 彥谷
+                oPoint = SteelAttr.oPoint.ToArray(),
+                vPoint = SteelAttr.vPoint.ToArray(),
+                uPoint = SteelAttr.uPoint.ToArray(),
             };
             bool save = (from el in new List<DataCorrespond>(DataCorrespond) where el.DataName == data.DataName select el).ToList().Count == 0;
             if (save)
@@ -1249,9 +1263,9 @@ namespace WPFSTD105.ViewModel
 
             // 取得構件資訊
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();
-            if (assemblies==null)
+            if (assemblies == null)
             {
-                return new List<ProductSettingsPageViewModel>(); 
+                return new List<ProductSettingsPageViewModel>();
             }
             //取得零件資訊
             Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
@@ -1349,9 +1363,9 @@ namespace WPFSTD105.ViewModel
                                 double length = item.Length;
                                 steelAttrVM.Length = length;
                                 // 零件ID List
-                                var partList = partNumber_ID.Where(x => x.Number == item.Number && x.Profile == profile && x.Length == length).Select(x => x.ID).FirstOrDefault();
+                                var partList = partNumber_ID.Where(x => x.Number == item.Number && x.Profile == profile && x.Length == length && x.Father.Contains(assemID)).Select(x => x.ID).FirstOrDefault();
                                 // 構件ID List
-                                var fatherList = partNumber_ID.Where(x => x.Number == item.Number && x.Profile== profile && x.Length== length).Select(x => x.Father).FirstOrDefault();
+                                var fatherList = partNumber_ID.Where(x => x.Number == item.Number && x.Profile== profile && x.Length== length && x.Father.Contains(assemID)).Select(x => x.Father).FirstOrDefault();
                                 // Father的index = Part的index
                                 var partIndex = fatherList.IndexOf(assemID);
                                 // 取得該筆零件ID
@@ -1440,7 +1454,60 @@ namespace WPFSTD105.ViewModel
                     #endregion
                 }
             }
-            return steelAttrList.Where(x => allowType.Contains(x.Type)).ToList();
+            List<ProductSettingsPageViewModel> source = steelAttrList.Where(x => allowType.Contains(x.Type)).ToList();
+            var group = (from a in source
+                         group a by new { AsseNumber= a.steelAttr.AsseNumber, a.steelAttr.PartNumber, a.TeklaName, a.Type, a.Length, a.Weight } into g
+                         select new
+                         {
+                             Creation = g.FirstOrDefault().Creation,
+                             Revise = g.FirstOrDefault().Revise,
+                             DataName = g.FirstOrDefault().steelAttr.GUID,
+                             AssemblyNumber = g.Key.AsseNumber,
+                             PartNumber = g.Key.PartNumber,
+                             TeklaName = g.FirstOrDefault().TeklaName,
+                             TypeDesc = g.FirstOrDefault().TypeDesc,
+                             SteelType = g.FirstOrDefault().SteelType,
+                             Profile = g.FirstOrDefault().Profile,
+                             Material = g.FirstOrDefault().Material,
+                             Count = g.Count(),
+                             Length = g.Key.Length,
+                             Weight = g.Key.Weight,
+                             Phase = g.FirstOrDefault().Phase,
+                             ShippingNumber = g.FirstOrDefault().ShippingNumber,
+                             Title1 = g.FirstOrDefault().Title1,
+                             Title2 = g.FirstOrDefault().Title2,
+                             ExclamationMark = g.FirstOrDefault().ExclamationMark,
+                         }).ToList();
+            List<ProductSettingsPageViewModel> list = new List<ProductSettingsPageViewModel>();
+            SteelAttr attr = new SteelAttr();
+            foreach (var item in group)
+            {
+                ProductSettingsPageViewModel aa = new ProductSettingsPageViewModel()
+                {
+                    Creation = item.Creation,
+                    Revise = item.Revise,
+                    DataName = item.DataName == null ? "" : item.DataName.ToString(),
+                    AssemblyNumber = item.AssemblyNumber,
+                    //SteelAttr.PartNumber = item.PartNumber,
+                    TeklaName = item.TeklaName,
+                    TypeDesc = item.TypeDesc,
+                    SteelType = item.SteelType,
+                    Profile = item.Profile,
+                    Material = item.Material,
+                    Count = item.Count,
+                    Length = item.Length,
+                    Weight = item.Weight,
+                    Phase = item.Phase,
+                    ShippingNumber = item.ShippingNumber,
+                    Title1 = item.Title1,
+                    Title2 = item.Title2,
+                };
+                aa.steelAttr.PartNumber = item.PartNumber;
+                aa.steelAttr.AsseNumber = item.AssemblyNumber;
+                list.Add(aa);
+            }
+
+            return list;
             
         }
     }

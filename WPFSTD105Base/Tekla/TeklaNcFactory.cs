@@ -390,10 +390,11 @@ namespace WPFSTD105.Tekla
                                         Type = steelAttr.Type,
                                         Profile = steelAttr.Profile,
                                         TP = true,
-                                        oPoint=steelAttr.oPoint.ToArray(), 
-                                        vPoint=steelAttr.vPoint.ToArray(), 
-                                        uPoint=steelAttr.uPoint.ToArray(),
-                                };
+                                        // 2022/09/08 彥谷
+                                        oPoint = steelAttr.oPoint.ToArray(),
+                                        vPoint = steelAttr.vPoint.ToArray(),
+                                        uPoint = steelAttr.uPoint.ToArray(),
+                                    };
                                     if (data.DataName != nc.SteelAttr.GUID.ToString())
                                     {
                                         throw new Exception();
