@@ -868,6 +868,8 @@
     <Compile Include="UserControl\ZoomButton.xaml.cs">
       <DependentUpon>ZoomButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ValidationRules\CheckNumberArrayRule.cs" />
+    <Compile Include="ValidationRules\CheckNumberRule.cs" />
     <Compile Include="ValueConverters\AntiLogicConverter.cs" />
     <Compile Include="ValueConverters\ApplicationPageConverter.cs" />
     <Compile Include="UserControl\PageHost.xaml.cs">

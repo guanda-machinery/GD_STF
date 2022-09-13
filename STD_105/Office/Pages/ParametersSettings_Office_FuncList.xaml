@@ -100,7 +100,7 @@
                             </Button.Content>
                         </Button-->
                         <!--斷面規格轉inp-->
-                        <Button Command="{ Binding Path=SectionSpecExcel2InpCommand }" Visibility="Visible" Margin="5,8,0,0" Background="WhiteSmoke">
+                        <Button Command="{ Binding Path=SectionSpecExcel2InpCommand }" Visibility="Collapsed" Margin="5,8,0,0" Background="WhiteSmoke">
                             <Button.Content>
                                 <TextBlock Text="斷面規格excel轉inp" />
                             </Button.Content>

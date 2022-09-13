@@ -13,6 +13,7 @@ using WPFSTD105.Attribute;
 using System.Collections.ObjectModel;
 using GD_STD;
 using WPFSTD105;
+using WPFSTD105.ViewModel;
 
 namespace STD_105
 {
@@ -24,11 +25,10 @@ namespace STD_105
         /// <inheritdoc/>
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            //try { TypeSettingDataView part_tekla = (TypeSettingDataView)value; }
-            //catch { }
-            TypeSettingDataView part_tekla = (TypeSettingDataView)value;
 
-            if (part_tekla.PartWeight == 0.0)
+            ProductSettingsPageViewModel part_tekla = (ProductSettingsPageViewModel)value;
+
+            if (part_tekla.Weight == 0.0)
             {
                 ObservableCollection<SteelAttr> SectionSPec = new ObservableCollection<SteelAttr>();
 
@@ -69,7 +69,7 @@ namespace STD_105
 
                 //part_tekla.PartWeight = steelPart.UnitWeight * part_tekla.Length; 
             }
-            return part_tekla.PartWeight;
+            return part_tekla.Weight;
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

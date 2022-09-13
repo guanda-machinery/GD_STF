@@ -74,11 +74,11 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// Phase
         /// </summary>
-        public int Phase { get; set; }
+        public int? Phase { get; set; } = null;
         /// <summary>
         /// 拆運
         /// </summary>
-        public int ShippingNumber { get; set; }
+        public int? ShippingNumber { get; set; } = null;
         /// <summary>
         /// 標題1
         /// </summary>
