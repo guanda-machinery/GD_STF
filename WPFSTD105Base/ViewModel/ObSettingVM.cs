@@ -150,15 +150,19 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 顯示孔位編輯器
         /// </summary>
-        public ICommand DisplayHoleCommand { get; set; }
-        /// <summary>
-        /// 20220825 張燕華 從零件清單所選的型鋼型態
-        /// </summary>
-        public ICommand ShowSteelTypeFromPartListCommand { get; set; }        
+        public ICommand DisplayHoleCommand { get; set; }      
         /// <summary>
         /// 20220829 張燕華 選擇型鋼型態
         /// </summary>
         public ICommand ShowSteelTypeCommand { get; set; }
+        /// <summary>
+        /// 20220907 張燕華 選擇型鋼斷面規格
+        /// </summary>
+        public ICommand ShowSteelSectionCommand { get; set; }
+        /// <summary>
+        /// 20220907 張燕華 手動選擇型鋼斷面規格
+        /// </summary>
+        public ICommand ShowSteelTypeSectionManualCommand { get; set; }
         /// <summary>
         /// 20220906 張燕華 鑽孔rbtn測試
         /// </summary>
@@ -405,26 +409,7 @@ namespace WPFSTD105.ViewModel
                 else
                     steelAttr = ProfileList[value];
 
-                steelAttr.GUID = SteelAttr.GUID;
-                steelAttr.AsseNumber = SteelAttr.AsseNumber;
-                steelAttr.Length = SteelAttr.Length;
-                steelAttr.Material = SteelAttr.Material;
-                steelAttr.Number = SteelAttr.Number;
-                steelAttr.PartNumber = SteelAttr.PartNumber;
-                // 2022/08/31 呂宗霖 新增 新增日期
-                steelAttr.Creation = SteelAttr.Creation;
-                // 2022/08/31 呂宗霖 新增 修改日期
-                steelAttr.Revise = SteelAttr.Revise;
-                steelAttr.H = SteelAttr.H;
-                steelAttr.W = SteelAttr.W;
-                steelAttr.t1 = SteelAttr.t1;
-                steelAttr.t2 = SteelAttr.t2;
-                steelAttr.Phase = SteelAttr.Phase;
-                steelAttr.ShippingNumber = SteelAttr.ShippingNumber;
-                steelAttr.Title1 = SteelAttr.Title1;
-                steelAttr.Title2 = SteelAttr.Title2;
                 SteelAttr = (SteelAttr)steelAttr.DeepClone();
-
             }
         }
 
@@ -942,6 +927,14 @@ namespace WPFSTD105.ViewModel
             get { return _dataviews; }
             set { _dataviews = value; }
         }
+        /// <summary>
+        /// 所選到斷面規格在其斷面規格list中的index
+        /// </summary>
+        private int CurrentSection_ListIndex;
+        /// <summary>
+        /// true:所選到斷面規格來源是零件清單，false:所選到斷面規格來源是手動選擇
+        /// </summary>
+        private bool fCurrentSectionSource = false;
         #endregion
 
 
@@ -997,9 +990,11 @@ namespace WPFSTD105.ViewModel
             // 取得專案Grid資訊
             DataViews = new ObservableCollection<ProductSettingsPageViewModel>(GetData());
 
-
-            ShowSteelTypeFromPartListCommand = ShowSteelTypeFromPartList(); //20220825 張燕華 從零件清單所選的型鋼型態
             ShowSteelTypeCommand = ShowSteelType(); //20220829 張燕華 選擇型鋼型態
+            ShowSteelSectionCommand = ShowSteelSection();
+            ShowSteelTypeSectionManualCommand = ShowSteelTypeSectionManual();
+
+            InitializeSteelAttr();
         }
         #region 私有屬性
         /// <summary>
@@ -1043,7 +1038,14 @@ namespace WPFSTD105.ViewModel
         private SteelAttr Steelbuffer { get; set; } = new SteelAttr();
         #endregion
 
-        #region 私有方法     
+        #region 私有方法  
+        private void InitializeSteelAttr()
+        {
+            SteelAttr.H = 0;
+            SteelAttr.W = 0;
+            SteelAttr.t1 = 0;
+            SteelAttr.t2 = 0;
+        }
         public ObservableCollection<ProductSettingsPageViewModel> GetPartData(ModelExt model)
         {
             // get all dm file
@@ -1062,7 +1064,7 @@ namespace WPFSTD105.ViewModel
             }
             return DataViews;    
         }
-        
+
         /// <summary>
         /// 加入節點
         /// </summary>
@@ -1074,8 +1076,14 @@ namespace WPFSTD105.ViewModel
             //    return;
             //}
             string level1Key = WPFWindowsBase.BaseEnumValueConverter<OBJECT_TYPE>.GetDescription(data.Type);
+            if (string.IsNullOrEmpty(level1Key))
+            {
+                return;
+            }
+
             //string level1Key = data.Type.GetType().GetMember(data.Type.ToString())[0].GetCustomAttribute<DescriptionAttribute>().Description; //第一層要設置的 key 值
             string level2Key = data.Profile; //第二層要設置的 key 值
+
             if (!level1.ContainsKey(level1Key))
             {
                 TreeNode.Add(new TreeNode() { ItemName = level1Key, Children = new ObservableCollection<TreeNode>() });
@@ -1086,6 +1094,8 @@ namespace WPFSTD105.ViewModel
                 TreeNode[level1[level1Key]].Children.Add(new TreeNode() { ItemName = level2Key, Children = new ObservableCollection<TreeNode>() });
                 level2.Add(level2Key, TreeNode[level1[level1Key]].Children.Count - 1);
             }
+
+
             TreeNode[level1[level1Key]].Children[level2[level2Key]].Children.Add(new TreeNode() { ItemName = data.Number, DataName = data.DataName });
         }
         /// <summary>
@@ -1183,17 +1193,32 @@ namespace WPFSTD105.ViewModel
                     DisplayHoleControl = true;
             });
         }
+        
         /// <summary>
-        /// 從零件清單所選的型鋼型態 20220825 張燕華
+        /// 選擇型鋼斷面規格 20220907 張燕華
         /// </summary>
-        private WPFBase.RelayParameterizedCommand ShowSteelTypeFromPartList()
+        private WPFBase.RelayParameterizedCommand ShowSteelTypeSectionManual()
         {
-            return new WPFBase.RelayParameterizedCommand((object cbxSelectedItem) =>
+            return new WPFBase.RelayParameterizedCommand((object cbxSelectedIndex) =>
             {
-                //this weel
-                var propertyInfo = (ProductSettingsPageViewModel)cbxSelectedItem;
-                ProfileType = Convert.ToInt32(propertyInfo.Type);
-                SteelSectionProperty = propertyInfo.Profile;                
+                if(((int)cbxSelectedIndex) !=-1)
+                ProfileType = Convert.ToInt32(cbxSelectedIndex);
+            });
+        }
+        /// <summary>
+        /// 選擇型鋼斷面規格 20220907 張燕華
+        /// </summary>
+        private WPFBase.RelayParameterizedCommand ShowSteelSection()
+        {
+            return new WPFBase.RelayParameterizedCommand((object cbxSelectedIndex) =>
+            {
+                if (((int)cbxSelectedIndex) != -1)
+                {
+                    ProfileType = _ProfileType;
+                    if (fCurrentSectionSource == false) CurrentSection_ListIndex = Convert.ToInt32(cbxSelectedIndex);
+                    ProfileIndex = CurrentSection_ListIndex;
+                    fCurrentSectionSource = false;
+                }
             });
         }
         /// <summary>
@@ -1201,11 +1226,23 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         private WPFBase.RelayParameterizedCommand ShowSteelType()
         {
-            return new WPFBase.RelayParameterizedCommand((object cbxSelectedIndex) =>
+            return new WPFBase.RelayParameterizedCommand((object cbxSelectedItem) =>
             {
-                if (Convert.ToInt32(cbxSelectedIndex) != -1)
+                if (cbxSelectedItem != null)
                 {
-                    ProfileType = Convert.ToInt32(cbxSelectedIndex);
+                    var propertyInfo = (ProductSettingsPageViewModel)cbxSelectedItem;
+                    ProfileType = Convert.ToInt32(propertyInfo.Type);
+
+                    foreach(SteelAttr sa in ProfileList)
+                    {
+                        if (sa.Profile == propertyInfo.Profile)
+                        { 
+                            CurrentSection_ListIndex = ProfileList.IndexOf(sa);
+                            fCurrentSectionSource = true;
+                        }
+                    }
+
+                    SteelSectionProperty = propertyInfo.Profile;
                 }
             });
         }
@@ -1346,7 +1383,9 @@ namespace WPFSTD105.ViewModel
                                 // 鋼材類別
                                 var aa = item.Type.GetType().GetMember(item.Type.ToString())[0].GetCustomAttribute<DescriptionAttribute>();
                                 string type = aa == null ? "" : aa.Description;
+
                                 steelAttrVM.TypeDesc = type;
+
                                 steelAttrVM.Type = item.Type;
                                 steelAttrVM.SteelType = Convert.ToInt32(item.Type);
                                 // 材質

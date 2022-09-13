@@ -1594,7 +1594,7 @@ namespace STD_105.Office
                     throw;
                 }
             });
-            //刪除孔位
+            //刪除孔位(孔群)
             ViewModel.DeleteHole = new RelayCommand(() =>
             {
                 //開啟Model焦點
