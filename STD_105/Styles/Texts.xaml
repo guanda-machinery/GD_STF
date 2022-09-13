@@ -48,7 +48,6 @@
         BasedOn="{StaticResource BaseStyle}"
         TargetType="{x:Type TextBox}">
         <Setter Property="FontFamily" Value="{Binding FontFamily, Source={x:Static SofSetting:SofSetting.Default}}" />
-        <Setter Property="BorderBrush" Value="{StaticResource WordBlueBrush}" />
         <Setter Property="Padding" Value="10" />
         <Setter Property="Margin" Value="0,5,0,5" />
         <Setter Property="BorderBrush" Value="{StaticResource WordBlueBrush}" />

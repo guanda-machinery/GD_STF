@@ -396,31 +396,31 @@ namespace WPFSTD105.ViewModel
             {
                 _ProfileIndex = value;
 
-                SteelAttr steelAttr;
+                SteelAttr _steelAttr;
                 if (value == -1)
-                    steelAttr = ProfileList[0];
+                    _steelAttr = ProfileList[0];
                 else
-                    steelAttr = ProfileList[value];
+                    _steelAttr = ProfileList[value];
 
-                steelAttr.GUID = SteelAttr.GUID;
-                steelAttr.AsseNumber = SteelAttr.AsseNumber;
-                steelAttr.Length = SteelAttr.Length;
-                steelAttr.Material = SteelAttr.Material;
-                steelAttr.Number = SteelAttr.Number;
-                steelAttr.PartNumber = SteelAttr.PartNumber;
+                _steelAttr.GUID = SteelAttr.GUID;
+                _steelAttr.AsseNumber = SteelAttr.AsseNumber;
+                _steelAttr.Length = SteelAttr.Length;
+                _steelAttr.Material = SteelAttr.Material;
+                _steelAttr.Number = SteelAttr.Number;
+                _steelAttr.PartNumber = SteelAttr.PartNumber;
                 // 2022/08/31 呂宗霖 新增 新增日期
-                steelAttr.Creation = SteelAttr.Creation;
+                _steelAttr.Creation = SteelAttr.Creation;
                 // 2022/08/31 呂宗霖 新增 修改日期
-                steelAttr.Revise = SteelAttr.Revise;
-                steelAttr.H = SteelAttr.H;
-                steelAttr.W = SteelAttr.W;
-                steelAttr.t1 = SteelAttr.t1;
-                steelAttr.t2 = SteelAttr.t2;
-                steelAttr.Phase = SteelAttr.Phase;
-                steelAttr.ShippingNumber = SteelAttr.ShippingNumber;
-                steelAttr.Title1 = SteelAttr.Title1;
-                steelAttr.Title2 = SteelAttr.Title2;
-                SteelAttr = (SteelAttr)steelAttr.DeepClone();
+                _steelAttr.Revise = SteelAttr.Revise;
+                _steelAttr.H = SteelAttr.H;
+                _steelAttr.W = SteelAttr.W;
+                _steelAttr.t1 = SteelAttr.t1;
+                _steelAttr.t2 = SteelAttr.t2;
+                _steelAttr.Phase = SteelAttr.Phase;
+                _steelAttr.ShippingNumber = SteelAttr.ShippingNumber;
+                _steelAttr.Title1 = SteelAttr.Title1;
+                _steelAttr.Title2 = SteelAttr.Title2;
+                SteelAttr = (SteelAttr)_steelAttr.DeepClone();
 
             }
         }

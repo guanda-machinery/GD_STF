@@ -26,10 +26,19 @@
                   x:TypeArguments="WPFSTD105:OfficeTypeSettingVM"
                   mc:Ignorable="d">
 
-
-
-    <StackPanel dx:ThemeManager.ThemeName="Win10Light" Background="#D3D3D3" Orientation="Vertical"                  >
+    <StackPanel dx:ThemeManager.ThemeName="Win10Light" Background="#D3D3D3" Orientation="Vertical">
         <StackPanel.Resources>
+            <ResourceDictionary>
+                <!-- primary -->
+                <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="White"/>
+                <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="#FFFFFF"/>
+                <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource WordBlue}"/>
+                <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="#FFFFFF"/>
+                <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="Green"/>
+                <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="#FFFFFF"/>
+                <!-- accent -->
+                <SolidColorBrush x:Key="SecondaryHueMidBrush" Color="#5C5B5E"/>
+                <SolidColorBrush x:Key="SecondaryHueMidForegroundBrush" Color="#FFFFFF"/>
 
             <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }" >
                 <Setter Property="BorderThickness" Value="1"/>
@@ -66,22 +75,25 @@
                 <Setter Property="FontWeight" Value="DemiBold"/>
                 <Setter Property="FontSize" Value="12"/>
             </Style>
-            <Style TargetType="TextBox">
-                <Setter Property="Foreground"
-                                Value="{ StaticResource solidclr_DimGray }" />
-                <Setter Property="FontSize"
-                                Value="12" />
-                <Setter Property="Margin"
-                                Value="5" />
-                <Setter Property="FontFamily" Value="Microsoft JhengHei"/>
-            </Style>
+                <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBoxBase}">
+                    <Setter Property="Foreground" Value="{ StaticResource solidclr_DimGray }" />
+                    <Setter Property="FontSize" Value="12" />
+                    <Setter Property="Margin" Value="5" />
+                    <Setter Property="FontFamily" Value="Microsoft JhengHei"/>
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="BorderBrush" Value="Gray"/>
+                </Style>
 
             <Style TargetType="CheckBox" BasedOn="{StaticResource BaseStyle}">
 
 
             </Style>
 
-            <STD105:ComParConverter x:Key="XComparConverter"/>
+            <!--<STD105:ComParConverter x:Key="XComparConverter"/>-->
+            </ResourceDictionary>
+
+
         </StackPanel.Resources>
         <StackPanel.DataContext>
             <WPFSTD105:OfficeTypeSettingVM></WPFSTD105:OfficeTypeSettingVM>
@@ -152,13 +164,13 @@
                                     <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
-                            <dxg:GridColumn FieldName="PartWeigth"  IsSmart="True"  Header="零件重"  Width="auto" >
+                            <dxg:GridColumn FieldName="PartWeight"  IsSmart="True"  Header="零件重"  Width="auto" >
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
                             <dxg:GridColumn FieldName="" Binding="{Binding ID , Converter={STD105:IListFilterToCountConverter} }"  IsSmart="True"  Width="auto" Header="數量"  />
-                            <dxg:GridColumn FieldName="" Binding="{Binding Match, Converter={STD105:IListFilterToCountConverter}, ConverterParameter={WPFBase:SystemType Bool=False}}"  IsSmart="True"  Width="auto" Header="已配對"  />
+                            <dxg:GridColumn FieldName="AlreadyMatedMaterialCounts" IsSmart="True"  Width="auto" Header="已配對"  />
                             <dxg:GridColumn Name="GridColumnSpace" FieldName=""  IsSmart="True"  Width="100" AllowResizing="false"  AllowMoving="false" />
                             <dxg:GridColumn FieldName="SortCount"  IsSmart="True"  Header="預排數量" Width="100" AllowResizing="false" AllowMoving="false"  />
                         </dxg:GridControl>
@@ -256,24 +268,41 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="25"/>
-                                            <RowDefinition Height="25"/>
-                                            <RowDefinition Height="5"/>
-                                            <RowDefinition Height="25"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="10"/>
+                                            <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
                                         <CheckBox Grid.Column="0" Grid.Row="0"  Content="排版編號" IsChecked="{Binding StartNumberCheckboxBoolen}" />
                                         <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Center">
                                         <Label Content="前置字串："/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
-                                        <TextBox Text="{ Binding StartNumber}"   />
-                                    </StackPanel>
+                                            <TextBox>
+                                                <TextBox.Text>
+                                                    <Binding Path="StartNumber"  UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules >
+                                                            <STD105:CheckStringEmptyRule/>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
+                                            </TextBox>
+
+                                        </StackPanel>
                                     <StackPanel Grid.Column="0" Grid.Row="3" VerticalAlignment="Center">
                                         <Label Content="起始號碼：" />
                                     </StackPanel>
-                                    <StackPanel Grid.Column="1" Grid.Row="3" VerticalAlignment="Center">
-                                            <TextBox Text="{ Binding StartNumber }" />
-                                    </StackPanel>
+                                        <StackPanel Grid.Column="1" Grid.Row="3" VerticalAlignment="Center">
+                                            <TextBox>
+                                                <TextBox.Text>
+                                                    <Binding Path="StartNumber"  UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules >
+                                                            <STD105:CheckStringEmptyRule/>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
+                                            </TextBox>
+                                        </StackPanel>
                                 </Grid>
 
                             </GroupBox>
@@ -284,12 +313,12 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="15"/>
-                                        <RowDefinition Height="25"/>
-                                        <RowDefinition Height="15"/>
-                                        <RowDefinition Height="25"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
-                                    <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0">
+                                    <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0">
                                         <Label Content="單位：m/m" />
                                     </StackPanel>
 
@@ -307,13 +336,20 @@
                                             </TextBox>
                                         </StackPanel>
                                         <CheckBox Grid.Row="3" Grid.Column="0"  Content="次要條件：" IsChecked="{Binding SecondaryLengthCheckboxBoolen}"/>
-                                            <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0">
+                                        <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0">
                                         <Label Content="單位：m/m"/>
                                     </StackPanel>
                                     <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">
-                                        <TextBox Text="{Binding SecondaryLength}"
-                                     Name="SecLength" />
-                                    </StackPanel>
+                                            <TextBox>
+                                                <TextBox.Text>
+                                                    <Binding Path="SecondaryLength"  UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules >
+                                                            <STD105:CheckNumberArrayRule/>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
+                                            </TextBox>
+                                        </StackPanel>
                                 </Grid>
                             </GroupBox>
                             <GroupBox Grid.Row="0" Grid.Column="3"  Header="特殊條件設定"  Margin="5">
@@ -323,29 +359,23 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="15"/>
-                                            <RowDefinition Height="25"/>
-                                        <RowDefinition Height="15"/>
-                                            <RowDefinition Height="25"/>
+                                            <RowDefinition Height="18"/>
+                                            <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="24"/>
+                                            <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
 
-                                    <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Width="auto">
-                                        <StackPanel  Orientation="Horizontal" >
-                                            <CheckBox/>
-                                            <Label Content="Phase：" />
+                                        <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Width="auto">
+                                            <CheckBox  Content="Phase："  IsChecked="{Binding PhaseCheckboxBoolen}"/>
                                         </StackPanel>
-                                    </StackPanel>
 
                                     <StackPanel Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center">
                                         <Label  Content="加入" />
                                     </StackPanel>
 
-                                    <StackPanel Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">
-                                        <StackPanel  Orientation="Horizontal" >
-                                            <CheckBox/>
-                                            <Label Content="拆運：" />
+                                        <StackPanel Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">
+                                            <CheckBox Content="拆運："  IsChecked="{Binding DismanteCheckboxBoolen}"/>
                                         </StackPanel>
-                                    </StackPanel>
                                     <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center">
 
                                     </StackPanel>
@@ -365,12 +395,12 @@
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="13"/>
-                                        <RowDefinition Height="30"/>
-                                        <RowDefinition Height="13"/>
-                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
-                                    <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
+                                    <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5,0,0,0">
                                         <Label Content="單位：m/m"  />
                                     </StackPanel>
                                     <CheckBox Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="素材前端切除："  IsChecked="{Binding StartCutCheckboxBoolen}"/>
@@ -387,7 +417,7 @@
                                         </TextBox>
                                     </StackPanel>
                                     <CheckBox Grid.Row="3" Grid.Column="0" Content="素材後端切除：" IsChecked="{Binding EndCutCheckboxBoolen}" />
-                                    <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
+                                    <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="5,0,0,0">
                                         <Label Content="單位：m/m" />
                                     </StackPanel>
                                     <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">
@@ -419,7 +449,7 @@
                                 <!--ElementName 綁定grid目標-->
                                 <Button Content="GO" Command="{Binding GoCommand}"   Background="Gold" Foreground="Black" Width="80" Margin="5" Cursor="Hand">
                                     <Button.CommandParameter>
-                                        <MultiBinding Converter="{StaticResource XComparConverter}">
+                                        <MultiBinding Converter="{STD105:ComParConverter}">
                                             <MultiBinding.Bindings>
                                                 <Binding ElementName="Material_List_GridControl"  />
                                                 <Binding ElementName="PartGridControl"/>
@@ -538,7 +568,6 @@
                         Grid.Row="2"                               
                         ItemsSource="{Binding MaterialDataViews}"
                         MinHeight="200"  MaxHeight="400">
-
                         <dxg:GridControl.View >
                             <dxg:TableView 
                                     VerticalScrollbarVisibility="Visible"
@@ -574,7 +603,7 @@
                                                             <dx:DXImage x:Name="EMarkDX" Height="20" Width="20" Source="{dx:DXImage 'SvgImages/Outlook Inspired/HighImportance.svg'}" Opacity="1" />
                                                             <ControlTemplate.Triggers>
                                                                 <Trigger Property="IsChecked" Value="False">
-                                                                        <Setter Property="Opacity" Value="0" TargetName="EMarkDX"  />
+                                                                    <Setter Property="Opacity" Value="0" TargetName="EMarkDX"  />
                                                                 </Trigger>
                                                             </ControlTemplate.Triggers>
                                                         </ControlTemplate>
@@ -587,7 +616,6 @@
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
-
                         <dxg:GridColumn IsSmart="True" Name="LockGridCol" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                             <dxg:GridColumn.HeaderImageStyle>
                                 <Style TargetType="Image">
@@ -619,7 +647,6 @@
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
-
                         <dxg:GridColumn FieldName="GearMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Dashboards/ScatterChartLabelOptions.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                             <dxg:GridColumn.HeaderImageStyle>
                                 <Style TargetType="Image">
@@ -651,7 +678,6 @@
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
-
                         <dxg:GridColumn FieldName="BuildTime" IsSmart="True"  Header="建立日期"  >
 
                         </dxg:GridColumn>
@@ -778,7 +804,6 @@
                                             <Grid Grid.Column="1"  MinHeight="150" Margin="10,0,0,0">
                                                 <Grid.Resources>
                                                     <Style TargetType="TextBlock">
-
                                                         <Setter Property="Margin" Value="3"/>
                                                     </Style>
                                                     <DrawingImage x:Key="HBeamImage">
@@ -788,7 +813,6 @@
                                                             </DrawingGroup>
                                                         </DrawingImage.Drawing>
                                                     </DrawingImage>
-
                                                 </Grid.Resources>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="auto"/>
@@ -803,9 +827,9 @@
                                                 </Grid.RowDefinitions>
                                                 <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                                                     <TextBlock Text="零件正轉"  />
-                                                    <Button Grid.Column="1" Grid.Row="0" Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding ClockwiseRotationComponentCommand }">
+                                                    <Button Grid.Column="1" Grid.Row="0" Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding ClockwiseRotationComponentCommand }" IsEnabled= "{Binding}" >
                                                         <Button.CommandParameter>
-                                                            <MultiBinding Converter="{StaticResource XComparConverter}">
+                                                            <MultiBinding Converter="{STD105:ComParConverter}">
                                                                 <MultiBinding.Bindings>
                                                                     <Binding ElementName="ComponentGridControl" Path="SelectedItem"/>
                                                                     <Binding ElementName="DrawTabControl"/>
@@ -828,7 +852,7 @@
                                                     <TextBlock Text="零件逆轉"  />
                                                     <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding CounterClockwiseRotationComponentCommand }">
                                                         <Button.CommandParameter>
-                                                            <MultiBinding Converter="{StaticResource XComparConverter}">
+                                                            <MultiBinding Converter="{STD105:ComParConverter}">
                                                                 <MultiBinding.Bindings>
                                                                     <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
                                                                     <Binding ElementName="DrawTabControl"/>
@@ -856,7 +880,7 @@
                                                     <TextBlock Text="零件前進"  />
                                                     <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding ForwardComponentCommand }">
                                                         <Button.CommandParameter>
-                                                            <MultiBinding Converter="{StaticResource XComparConverter}">
+                                                            <MultiBinding Converter="{STD105:ComParConverter}">
                                                                 <MultiBinding.Bindings>
                                                                     <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
                                                                     <Binding ElementName="DrawTabControl"/>
@@ -880,7 +904,7 @@
                                                     <TextBlock Text="零件後退"  />
                                                     <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding BackwardComponentCommand }">
                                                         <Button.CommandParameter>
-                                                            <MultiBinding Converter="{StaticResource XComparConverter}">
+                                                            <MultiBinding Converter="{STD105:ComParConverter}">
                                                                 <MultiBinding.Bindings>
                                                                     <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
                                                                     <Binding ElementName="DrawTabControl"/>
@@ -905,7 +929,7 @@
                                                     <TextBlock Text="零件退位"  />
                                                     <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding BorrowComponentCommand}">
                                                         <Button.CommandParameter>
-                                                            <MultiBinding Converter="{StaticResource XComparConverter}">
+                                                            <MultiBinding Converter="{STD105:ComParConverter}">
                                                                 <MultiBinding.Bindings>
                                                                     <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
                                                                     <Binding ElementName="DrawTabControl"/>
@@ -932,7 +956,7 @@
                                                     <TextBlock Text="零件進位"  />
                                                     <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding CarryComponentCommand}">
                                                         <Button.CommandParameter>
-                                                            <MultiBinding Converter="{StaticResource XComparConverter}">
+                                                            <MultiBinding Converter="{STD105:ComParConverter}">
                                                                 <MultiBinding.Bindings>
                                                                     <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
                                                                     <Binding ElementName="DrawTabControl"/>

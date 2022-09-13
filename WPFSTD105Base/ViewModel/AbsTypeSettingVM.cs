@@ -756,6 +756,10 @@ namespace WPFSTD105
             }
         }
 
+
+        public bool? PhaseCheckboxBoolen { get; set; } = true;
+        public bool? DismanteCheckboxBoolen { get; set; } = true;
+
         #endregion
 
 
@@ -934,10 +938,8 @@ namespace WPFSTD105
             {
                 //勾選邏輯->checkbox中存在任意未勾選時，按鈕為全勾選
                 //當checkbox為全勾選時，才執行全部取消勾選
-
                 var AllCheckBoxList = GetWpfLogicalChildClass.GetLogicalChildCollection<System.Windows.Controls.CheckBox>(parent);
                 var AllCheckboxBoolen = AllCheckBoxList.Exists(x => (x.IsChecked == false));
-
                 foreach (var CBox in AllCheckBoxList)
                 {
                     CBox.IsChecked = AllCheckboxBoolen;
@@ -948,10 +950,26 @@ namespace WPFSTD105
             {
                 return false;
             }
-
         }
 
-
+        public static bool SetAllButtonEnabledTrueOrFalse(object parent , bool SetBoolen)
+        {
+            try
+            {
+                //勾選邏輯->checkbox中存在任意未勾選時，按鈕為全勾選
+                //當checkbox為全勾選時，才執行全部取消勾選
+                var AllCheckBoxList = GetWpfLogicalChildClass.GetLogicalChildCollection<System.Windows.Controls.Button>(parent);
+                foreach (var CBox in AllCheckBoxList)
+                {
+                    CBox.IsEnabled = SetBoolen;
+                }
+                return true;
+            }
+            catch (Exception EX)
+            {
+                return false;
+            }
+        }
 
         /// <summary>
         /// 尋找控制項 T = 子控制元件的類型 , parent = 搜尋之母控制元件

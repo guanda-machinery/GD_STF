@@ -19,11 +19,22 @@ namespace STD_105
 
                 foreach(var SpiltedValue in ValueArray)
                 {
-                    if (int.TryParse(SpiltedValue, out var IntValue))
+                    if (double.TryParse(SpiltedValue, out var DoubleValue))
                     {
-                        if(IntValue <0)
+                        if(DoubleValue > 0)
                         {
-                            return new ValidationResult(false, $"不可<0!");
+                            if (int.TryParse(SpiltedValue, out var IntValue))
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                return new ValidationResult(false, $"數值形式須為整數型!");
+                            }
+                        }
+                        else
+                        {
+                            return new ValidationResult(false, $"數值需大於零!");
                         }
                     }
                     else
@@ -35,6 +46,5 @@ namespace STD_105
 
             return ValidationResult.ValidResult;
         }
-
     }
 }

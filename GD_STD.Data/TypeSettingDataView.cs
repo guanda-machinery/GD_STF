@@ -175,6 +175,22 @@ namespace GD_STD.Data
         public DateTime Revise { get; set; }
         /// <inheritdoc/>
         public DRAWING_STATE State { get; set; }
+
+        private int _alreadyMatedMaterialCounts;
+        public int AlreadyMatedMaterialCounts
+        {
+            get 
+            {
+                _alreadyMatedMaterialCounts = Match.FindAll(x => x is false).Count;
+                return _alreadyMatedMaterialCounts;
+            }
+            set
+            {
+                _alreadyMatedMaterialCounts = value;
+            }
+        }
+
+
         /// <summary>
         /// 排版數量
         /// </summary>
