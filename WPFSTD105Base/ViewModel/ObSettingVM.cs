@@ -1503,10 +1503,11 @@ namespace WPFSTD105.ViewModel
                     Title2 = item.Title2,
                 };
                 aa.steelAttr.PartNumber = item.PartNumber;
+                aa.steelAttr.AsseNumber = item.AssemblyNumber;
                 list.Add(aa);
             }
 
-            return steelAttrList.Where(x => allowType.Contains(x.Type)).ToList();
+            return list;
             
         }
     }

@@ -3494,7 +3494,7 @@ namespace STD_105.Office
                 STDSerialization ser = new STDSerialization();
                 DataCorrespond = ser.GetDataCorrespond();
 
-                    ReadFile readFile = ser.ReadPartModel(item.steelAttr.GUID.ToString()); //讀取檔案內容
+                    ReadFile readFile = ser.ReadPartModel(item.DataName.ToString()); //讀取檔案內容
                 if (readFile == null)
                 {
                     WinUIMessageBox.Show(null,
@@ -3559,6 +3559,27 @@ namespace STD_105.Office
    
             }
 
+        }
+
+        private void OKtoConfirmChanges(object sender, RoutedEventArgs e)
+        {
+            if (fAddPartAndBolt)
+            {
+                var ResultRtn = WinUIMessageBox.Show(null,
+                         $"新增零件是否存檔 ?",
+                         "通知",
+                         MessageBoxButton.OKCancel,
+                         MessageBoxImage.Exclamation,
+                         MessageBoxResult.None,
+                         MessageBoxOptions.None,
+                         FloatingMode.Popup);
+
+
+                if (ResultRtn == MessageBoxResult.OK)
+                    SaveModel(true);//存取檔案
+
+                fAddPartAndBolt = false;
+            }
         }
     }
 }
