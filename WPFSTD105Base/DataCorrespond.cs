@@ -36,11 +36,11 @@ namespace WPFSTD105
         /// </summary>
         public bool TP { get; set; }
 
-        public NcPoint3D[] oPoint { get; set; } = new NcPoint3D[0];
+
+        public NcPoint3D[] oPoint { get; set; } = new NcPoint3D[0]; 
 
         public NcPoint3D[] vPoint { get; set; } = new NcPoint3D[0];
 
         public NcPoint3D[] uPoint { get; set; } = new NcPoint3D[0];
-
     }
 }
