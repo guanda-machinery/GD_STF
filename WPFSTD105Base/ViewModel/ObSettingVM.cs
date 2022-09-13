@@ -1454,6 +1454,58 @@ namespace WPFSTD105.ViewModel
                     #endregion
                 }
             }
+            List<ProductSettingsPageViewModel> source = steelAttrList.Where(x => allowType.Contains(x.Type)).ToList();
+            var group = (from a in source
+                         group a by new { AsseNumber= a.steelAttr.AsseNumber, a.steelAttr.PartNumber, a.TeklaName, a.Type, a.Length, a.Weight } into g
+                         select new
+                         {
+                             Creation = g.FirstOrDefault().Creation,
+                             Revise = g.FirstOrDefault().Revise,
+                             DataName = g.FirstOrDefault().steelAttr.GUID,
+                             AssemblyNumber = g.Key.AsseNumber,
+                             PartNumber = g.Key.PartNumber,
+                             TeklaName = g.FirstOrDefault().TeklaName,
+                             TypeDesc = g.FirstOrDefault().TypeDesc,
+                             SteelType = g.FirstOrDefault().SteelType,
+                             Profile = g.FirstOrDefault().Profile,
+                             Material = g.FirstOrDefault().Material,
+                             Count = g.Count(),
+                             Length = g.Key.Length,
+                             Weight = g.Key.Weight,
+                             Phase = g.FirstOrDefault().Phase,
+                             ShippingNumber = g.FirstOrDefault().ShippingNumber,
+                             Title1 = g.FirstOrDefault().Title1,
+                             Title2 = g.FirstOrDefault().Title2,
+                             ExclamationMark = g.FirstOrDefault().ExclamationMark,
+                         }).ToList();
+            List<ProductSettingsPageViewModel> list = new List<ProductSettingsPageViewModel>();
+            SteelAttr attr = new SteelAttr();
+            foreach (var item in group)
+            {
+                ProductSettingsPageViewModel aa = new ProductSettingsPageViewModel()
+                {
+                    Creation = item.Creation,
+                    Revise = item.Revise,
+                    DataName = item.DataName == null ? "" : item.DataName.ToString(),
+                    AssemblyNumber = item.AssemblyNumber,
+                    //SteelAttr.PartNumber = item.PartNumber,
+                    TeklaName = item.TeklaName,
+                    TypeDesc = item.TypeDesc,
+                    SteelType = item.SteelType,
+                    Profile = item.Profile,
+                    Material = item.Material,
+                    Count = item.Count,
+                    Length = item.Length,
+                    Weight = item.Weight,
+                    Phase = item.Phase,
+                    ShippingNumber = item.ShippingNumber,
+                    Title1 = item.Title1,
+                    Title2 = item.Title2,
+                };
+                aa.steelAttr.PartNumber = item.PartNumber;
+                list.Add(aa);
+            }
+
             return steelAttrList.Where(x => allowType.Contains(x.Type)).ToList();
             
         }

@@ -10,6 +10,9 @@ using WPFWindowsBase;
 
 namespace WPFSTD105.ViewModel
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ProductSettingsPageViewModel : BaseViewModel
     {
         /// <summary>

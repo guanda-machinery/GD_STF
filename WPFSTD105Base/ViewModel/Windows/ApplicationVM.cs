@@ -691,7 +691,7 @@ namespace WPFSTD105
                         if (!File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{format.ToString()}.inp"))
                         {
                             //File.Copy(System.AppDomain.CurrentDomain.BaseDirectory + $@"Profile\\{format}.inp", $@"{ApplicationVM.DirectoryPorfile()}\{format.ToString()}.inp");//複製 BH 斷面規格到模型內
-                            File.Copy($@"Profile\{format}.inp", $@"{ApplicationVM.DirectoryPorfile()}\{format}.inp");
+                            File.Copy(System.AppDomain.CurrentDomain.BaseDirectory+$@"Profile\{format}.inp", $@"{ApplicationVM.DirectoryPorfile()}\{format}.inp");
                         }
                     }
                 }

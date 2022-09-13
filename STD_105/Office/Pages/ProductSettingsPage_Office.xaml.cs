@@ -408,19 +408,15 @@ namespace STD_105.Office
                 SelectedItem sele3D = new SelectedItem(model.Entities[model.Entities.Count - 1]);
                 SelectedItem sele2D = new SelectedItem(drawing.Entities[drawing.Entities.Count - 1]);
 
-
                 BlockReference reference3D = (BlockReference)sele3D.Item;
                 BlockReference reference2D = (BlockReference)sele2D.Item;
-
-
 
                 //模擬用戶實際選擇編輯
                 ViewModel.Select3DItem.Add(sele3D);
                 ViewModel.Select2DItem.Add(sele2D);
+
                 //層級 To 要編輯的BlockReference
                 model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);
-
-
                 drawing.SetCurrent((BlockReference)drawing.Entities[0]);
 
                 SteelAttr steelAttr = ViewModel.GetSteelAttr();
@@ -478,6 +474,7 @@ namespace STD_105.Office
                 ViewModel.tem2DRecycle.Clear();
 
                 ViewModel.Reductions.AddContinuous(new List<Entity>() { modify }, steel2D);
+
                 model.Entities.Insert(0, modify);//加入參考圖塊到模型
                 drawing.Entities.AddRange(steel2D);
                 Esc();
@@ -2328,7 +2325,7 @@ namespace STD_105.Office
 
             if (!fAddPartAndBolt)   //  是否新增零件及孔群 : false 直接存檔
             {
-                SaveModel(true);//存取檔案 
+                SaveModel(true,false);//存取檔案 
 
             }
             else
@@ -2919,7 +2916,9 @@ namespace STD_105.Office
         /// <summary>
         /// 存取模型
         /// </summary>
-        public void SaveModel(bool add)
+        /// <param name="add"></param>
+        /// <param name="reflesh">是否更新Grid</param>
+        public void SaveModel(bool add,bool reflesh=true)
         {
             STDSerialization ser = new STDSerialization();
             ser.SetPartModel(ViewModel.SteelAttr.GUID.ToString(), model);
@@ -3071,9 +3070,13 @@ namespace STD_105.Office
                 ser.SetSteelAssemblies(ViewModel.SteelAssemblies);
             }
             ViewModel.SaveDataCorrespond();
-            ObservableCollection<ProductSettingsPageViewModel> data = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
-            ViewModel.DataViews = data;
-            PieceListGridControl.ItemsSource = data;
+            if (reflesh)
+            {
+                ObservableCollection<ProductSettingsPageViewModel> data = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
+                ViewModel.DataViews = data;
+                PieceListGridControl.ItemsSource = data;
+
+            }
 
         }
         /// <summary>
