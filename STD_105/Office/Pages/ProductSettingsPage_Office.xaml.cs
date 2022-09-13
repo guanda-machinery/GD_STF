@@ -30,6 +30,7 @@ using DevExpress.Xpf.Core;
 using System.Reflection;
 using System.ComponentModel;
 using DevExpress.Xpf.Grid;
+using SplitLineSettingData;
 
 namespace STD_105.Office
 {
@@ -405,7 +406,7 @@ namespace STD_105.Office
                     SaveModel(false);//存取檔案
 
                 // 執行斜邊打點
-                HypotenusePoint(FACE.TOP);
+                //HypotenusePoint(FACE.TOP);
                 //HypotenusePoint(FACE.BACK);
                 //HypotenusePoint(FACE.FRONT);
 
@@ -1848,67 +1849,54 @@ namespace STD_105.Office
         bool fAddPartAndBolt = false;       //  判斷執行新增零件及孔位
         bool fAddHypotenusePoint = false;   //  判斷執行斜邊打點
         List<Bolts3DBlock> lstBoltsCutPoint = new List<Bolts3DBlock>();
-
+        
+        /// <summary>
+        /// 
+        /// </summary>
         public void RunHypotenusePoint()
         {
 
+            Viewbox.IsEnabled = true;
+
             // 由選取零件判斷三面是否為斜邊
-
-
-
-
-            // 斜邊執行程式
-
-
-
-            // 非斜邊執行程式
-          
             if (model.Entities[model.Entities.Count - 1].EntityData is null)
                 return;
 
-            FACE face = (FACE)ViewModel.CutFaceType;
 
+            // 斜邊自動執行程式
             SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
 
-            switch (face)
+
+            if (TmpSteelAttr.vPoint.Count != 0)         //  頂麵斜邊
             {
-                case FACE.BACK:
-                case FACE.FRONT:
-                    List<Point3D> AKu = new List<Point3D>(TmpSteelAttr.uPoint);
-                    if (AKu.Count == 0) return;
-
-                    var tmplist = AKu.GroupBy(uu => uu.Y).Select(q => new
-                    {
-                        key = q.Key,
-                        max = q.Max(x => x.X),
-                        min = q.Min(f => f.X)
-                    }).ToList();
-
-                    if (tmplist[0].key > tmplist[1].key)
-                    {
-                        var swap = tmplist[0];
-                        tmplist[0] = tmplist[1];
-                        tmplist[1] = swap;
-                    }
-
-                    break;
-
-
+                AutoHypotenusePoint(FACE.TOP);
             }
-
+            if(TmpSteelAttr.uPoint.Count != 0)     //  前面斜邊
+            {
+                AutoHypotenusePoint(FACE.FRONT);
+            }
+            if (TmpSteelAttr.oPoint.Count != 0)    //  後面斜邊
+            {
+                AutoHypotenusePoint(FACE.BACK);
+            }
 
         }
 
 
         /// <summary>
-        /// 斜邊打點
+        /// 自動斜邊打點
         /// </summary>
-        public void HypotenusePoint(FACE face)
+        public void AutoHypotenusePoint(FACE face)
         {
-            face = (FACE)ViewModel.CutFaceType;
-            SteelAttr steelAttr = ViewModel.GetSteelAttr();
-            double PosRatio1 = 0.2;     //  1/5
-            double PosRatio2 = 0.8;     //  4/5
+            MyCs myCs=new MyCs();
+
+            STDSerialization ser = new STDSerialization();
+            ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();//備份當前加工區域數值
+
+            double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData[0].A);     //  腹板斜邊打點比列(短)
+            double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData[0].B);     //  腹板斜邊打點比列(長)
+            double PosRatioC = myCs.DivSymbolConvert(ReadSplitLineSettingData[0].C);     //  翼板斜邊打點比列(短)
+            double PosRatioD = myCs.DivSymbolConvert(ReadSplitLineSettingData[0].D);     //  翼板斜邊打點比列(長)
 
             List<Point3D> tmplist1 = new List<Point3D>() { };
             Point3D PointUL1 = new Point3D() ;
@@ -1923,22 +1911,20 @@ namespace STD_105.Office
             Point3D TmpDR = new Point3D() ;
             Point3D TmpUL = new Point3D() ;
             Point3D TmpUR = new Point3D() ;
-            
 
             if (model.Entities[model.Entities.Count - 1].EntityData is null)
                 return;
 
             SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
-          //  TmpSteelAttr.TopHypotenuse = new Hypotenuse();
 
             switch (face)
             {
 
                 case FACE.BACK:
-                    List<Point3D> AKo = new List<Point3D>(TmpSteelAttr.oPoint);
-                    if (AKo.Count == 0) return;
 
-                    var tmp1 = AKo.GroupBy(uu => uu.Y).Select(q => new
+                    if (TmpSteelAttr.oPoint.Count == 0) return;
+
+                    var tmp1 = TmpSteelAttr.oPoint.GroupBy(uu => uu.Y).Select(q => new
                     {
                         key = q.Key,
                         max = q.Max(x => x.X),
@@ -1951,46 +1937,49 @@ namespace STD_105.Office
                         tmp1[0] = tmp1[1];
                         tmp1[1] = swap;
                     }
-
                    
+                    TmpDL = new Point3D(tmp1[0].min, tmp1[0].key);
+                    TmpDR = new Point3D(tmp1[0].max, tmp1[0].key);
+                    TmpUL = new Point3D(tmp1[1].min, tmp1[1].key);
+                    TmpUR = new Point3D(tmp1[1].max, tmp1[1].key);
 
-                     TmpDL = new Point3D(tmp1[0].min, tmp1[0].key);
-                     TmpDR = new Point3D(tmp1[0].max, tmp1[0].key);
-                     TmpUL = new Point3D(tmp1[1].min, tmp1[1].key);
-                     TmpUR = new Point3D(tmp1[1].max, tmp1[1].key);
-
-                   // if (TmpDL.X == TmpUL.X && TmpDR.X == TmpUR.X)
-                      //  Viewbox.Visibility = Visibility.Visible;
-
-                   // else
-                      //  Viewbox.Visibility = Visibility.Hidden;
+                    if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
+                    return;
 
 
-                     PointDL1 = new Point3D((TmpUL.X - TmpDL.X) * PosRatio1, (TmpUL.Y - TmpDL.Y) * PosRatio1) + TmpDL;
-                     PointDL2 = new Point3D((TmpUL.X - TmpDL.X) * PosRatio2, (TmpUL.Y - TmpDL.Y) * PosRatio2) + TmpDL;
+                    if (TmpUL.X > TmpDL.X)
+                    {
+                        PointDL1 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioC, (TmpUL.Y - TmpDL.Y) * PosRatioC) + TmpDL;
+                        PointDL2 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioD, (TmpUL.Y - TmpDL.Y) * PosRatioD) + TmpDL;
+                        tmplist1.Add(PointDL1);
+                        tmplist1.Add(PointDL2);
+                    }
+                    else if (TmpUL.X < TmpDL.X)
+                    {
+                        PointDR1 = new Point3D((TmpUR.X - TmpDR.X) * PosRatioC, (TmpUR.Y - TmpDR.Y) * PosRatioC) + TmpDR;
+                        PointDR2 = new Point3D((TmpUR.X - TmpDR.X) * PosRatioD, (TmpUR.Y - TmpDR.Y) * PosRatioD) + TmpDR;
+                        tmplist1.Add(PointDR1);
+                        tmplist1.Add(PointDR2);
+                    }
 
-                     PointDR1 = new Point3D((TmpUR.X - TmpDR.X) * PosRatio1, (TmpUR.Y - TmpDR.Y) * PosRatio1) + TmpDR;
-                     PointDR2 = new Point3D((TmpUR.X - TmpDR.X) * PosRatio2, (TmpUR.Y - TmpDR.Y) * PosRatio2) + TmpDR;
-
-                     PointUL1 = new Point3D((TmpDL.X - TmpUL.X) * PosRatio1, (TmpDL.Y - TmpUL.Y) * PosRatio1) + TmpUL;
-                     PointUL2 = new Point3D((TmpDL.X - TmpUL.X) * PosRatio2, (TmpDL.Y - TmpUL.Y) * PosRatio2) + TmpUL;
-
-                     PointUR1 = new Point3D((TmpDR.X - TmpUR.X) * PosRatio1, (TmpDR.Y - TmpUR.Y) * PosRatio1) + TmpUR;
-                     PointUR2 = new Point3D((TmpDR.X - TmpUR.X) * PosRatio2, (TmpDR.Y - TmpUR.Y) * PosRatio2) + TmpUR;
-
-
-                    tmplist1.Add(PointDL1);
-                    tmplist1.Add(PointDL2);
-                    tmplist1.Add(PointDR1);
-                    tmplist1.Add(PointDR2);
-                    tmplist1.Add(PointUL1);
-                    tmplist1.Add(PointUL2);
-                    tmplist1.Add(PointUR1);
-                    tmplist1.Add(PointUR2);
+                    if (TmpUR.X > TmpDR.X)
+                    {
+                        PointUL1 = new Point3D((TmpDL.X - TmpUL.X) * PosRatioC, (TmpDL.Y - TmpUL.Y) * PosRatioC) + TmpUL;
+                        PointUL2 = new Point3D((TmpDL.X - TmpUL.X) * PosRatioD, (TmpDL.Y - TmpUL.Y) * PosRatioD) + TmpUL;
+                        tmplist1.Add(PointUL1);
+                        tmplist1.Add(PointUL2);
+                    }
+                    else if (TmpUR.X < TmpDR.X)
+                    {
+                        PointUR1 = new Point3D((TmpDR.X - TmpUR.X) * PosRatioC, (TmpDR.Y - TmpUR.Y) * PosRatioC) + TmpUR;
+                        PointUR2 = new Point3D((TmpDR.X - TmpUR.X) * PosRatioD, (TmpDR.Y - TmpUR.Y) * PosRatioD) + TmpUR;
+                        tmplist1.Add(PointUR1);
+                        tmplist1.Add(PointUR2);
+                    }
 
                     for (int z = 0; z < tmplist1.Count; z++)
                     {
-                        GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr((FACE)ViewModel.CutFaceType, START_HOLE.START);
+                        GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(FACE.BACK, START_HOLE.START);
                         TmpBoltsArr.dX = "0";
                         TmpBoltsArr.dY = "0";
                         TmpBoltsArr.xCount = 1;
@@ -2004,14 +1993,14 @@ namespace STD_105.Office
                         lstBoltsCutPoint.Add(bolts);
                     }
 
-
+                    Viewbox.IsEnabled = false;
                     break;
 
                 case FACE.FRONT:
-                    List<Point3D> AKu = new List<Point3D>(TmpSteelAttr.uPoint);
-                    if (AKu.Count == 0) return;
 
-                    var tmp2 = AKu.GroupBy(uu => uu.Y).Select(q => new
+                    if (TmpSteelAttr.uPoint.Count == 0) return;
+
+                    var tmp2 = TmpSteelAttr.uPoint.GroupBy(uu => uu.Y).Select(q => new
                     {
                         key = q.Key,
                         max = q.Max(x => x.X),
@@ -2025,45 +2014,48 @@ namespace STD_105.Office
                         tmp2[1] = swap;
                     }
 
-                    List<Point3D> tmplist2 = new List<Point3D>();
+                    TmpDL = new Point3D(tmp2[0].min, tmp2[0].key);
+                    TmpDR = new Point3D(tmp2[0].max, tmp2[0].key);
+                    TmpUL = new Point3D(tmp2[1].min, tmp2[1].key);
+                    TmpUR = new Point3D(tmp2[1].max, tmp2[1].key);
 
-                     TmpDL = new Point3D(tmp2[0].min, tmp2[0].key);
-                     TmpDR = new Point3D(tmp2[0].max, tmp2[0].key);
-                     TmpUL = new Point3D(tmp2[1].min, tmp2[1].key);
-                     TmpUR = new Point3D(tmp2[1].max, tmp2[1].key);
-
-                    //if (TmpDL.X == TmpUL.X && TmpDR.X == TmpUR.X)
-                    //    Viewbox.Visibility = Visibility.Visible;
-
-                    //else
-                    //    Viewbox.Visibility = Visibility.Hidden;
+                    if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
+                        return;
 
 
-                     PointDL1 = new Point3D((TmpUL.X - TmpDL.X) * PosRatio1, (TmpUL.Y - TmpDL.Y) * PosRatio1) + TmpDL;
-                     PointDL2 = new Point3D((TmpUL.X - TmpDL.X) * PosRatio2, (TmpUL.Y - TmpDL.Y) * PosRatio2) + TmpDL;
+                    if (TmpUL.X > TmpDL.X)
+                    {
+                        PointDL1 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioC, (TmpUL.Y - TmpDL.Y) * PosRatioC) + TmpDL;
+                        PointDL2 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioD, (TmpUL.Y - TmpDL.Y) * PosRatioD) + TmpDL;
+                        tmplist1.Add(PointDL1);
+                        tmplist1.Add(PointDL2);
+                    }
+                    else if (TmpUL.X < TmpDL.X)
+                    {
+                        PointDR1 = new Point3D((TmpUR.X - TmpDR.X) * PosRatioC, (TmpUR.Y - TmpDR.Y) * PosRatioC) + TmpDR;
+                        PointDR2 = new Point3D((TmpUR.X - TmpDR.X) * PosRatioD, (TmpUR.Y - TmpDR.Y) * PosRatioD) + TmpDR;
+                        tmplist1.Add(PointDR1);
+                        tmplist1.Add(PointDR2);
+                    }
 
-                     PointDR1 = new Point3D((TmpUR.X - TmpDR.X) * PosRatio1, (TmpUR.Y - TmpDR.Y) * PosRatio1) + TmpDR;
-                     PointDR2 = new Point3D((TmpUR.X - TmpDR.X) * PosRatio2, (TmpUR.Y - TmpDR.Y) * PosRatio2) + TmpDR;
-
-                     PointUL1 = new Point3D((TmpDL.X - TmpUL.X) * PosRatio1, (TmpDL.Y - TmpUL.Y) * PosRatio1) + TmpUL;
-                     PointUL2 = new Point3D((TmpDL.X - TmpUL.X) * PosRatio2, (TmpDL.Y - TmpUL.Y) * PosRatio2) + TmpUL;
-
-                     PointUR1 = new Point3D((TmpDR.X - TmpUR.X) * PosRatio1, (TmpDR.Y - TmpUR.Y) * PosRatio1) + TmpUR;
-                     PointUR2 = new Point3D((TmpDR.X - TmpUR.X) * PosRatio2, (TmpDR.Y - TmpUR.Y) * PosRatio2) + TmpUR;
-
-
-                    tmplist1.Add(PointDL1);
-                    tmplist1.Add(PointDL2);
-                    tmplist1.Add(PointDR1);
-                    tmplist1.Add(PointDR2);
-                    tmplist1.Add(PointUL1);
-                    tmplist1.Add(PointUL2);
-                    tmplist1.Add(PointUR1);
-                    tmplist1.Add(PointUR2);
+                    if (TmpUR.X > TmpDR.X)
+                    {
+                        PointUL1 = new Point3D((TmpDL.X - TmpUL.X) * PosRatioC, (TmpDL.Y - TmpUL.Y) * PosRatioC) + TmpUL;
+                        PointUL2 = new Point3D((TmpDL.X - TmpUL.X) * PosRatioD, (TmpDL.Y - TmpUL.Y) * PosRatioD) + TmpUL;
+                        tmplist1.Add(PointUL1);
+                        tmplist1.Add(PointUL2);
+                    }
+                    else if (TmpUR.X < TmpDR.X)
+                    {
+                        PointUR1 = new Point3D((TmpDR.X - TmpUR.X) * PosRatioC, (TmpDR.Y - TmpUR.Y) * PosRatioC) + TmpUR;
+                        PointUR2 = new Point3D((TmpDR.X - TmpUR.X) * PosRatioD, (TmpDR.Y - TmpUR.Y) * PosRatioD) + TmpUR;
+                        tmplist1.Add(PointUR1);
+                        tmplist1.Add(PointUR2);
+                    }
 
                     for (int z = 0; z < tmplist1.Count; z++)
                     {
-                        GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr((FACE)ViewModel.CutFaceType, START_HOLE.START);
+                        GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(FACE.FRONT, START_HOLE.START);
                         TmpBoltsArr.dX = "0";
                         TmpBoltsArr.dY = "0";
                         TmpBoltsArr.xCount = 1;
@@ -2076,16 +2068,15 @@ namespace STD_105.Office
                         BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                         lstBoltsCutPoint.Add(bolts);
                     }
-
+                    Viewbox.IsEnabled = false;
                     break;
 
 
                 case FACE.TOP:
 
-                    List<Point3D> AKv = new List<Point3D>(TmpSteelAttr.vPoint);
-                    if (AKv.Count == 0) return;
+                    if (TmpSteelAttr.vPoint.Count == 0) return;
 
-                    var tmp3 = AKv.GroupBy(uu => uu.Y).Select(q => new
+                    var tmp3 = TmpSteelAttr.vPoint.GroupBy(uu => uu.Y).Select(q => new
                     {
                         key = q.Key,
                         max = q.Max(x => x.X),
@@ -2094,6 +2085,7 @@ namespace STD_105.Office
 
                     if (tmp3[0].key > tmp3[1].key)
                     {
+                        
                         var swap = tmp3[0];
                         tmp3[0] = tmp3[1];
                         tmp3[1] = swap;
@@ -2104,46 +2096,44 @@ namespace STD_105.Office
                     TmpUL = new Point3D(tmp3[1].min, tmp3[1].key);
                     TmpUR = new Point3D(tmp3[1].max, tmp3[1].key);
 
-                    //if (TmpDL.X == TmpUL.X && TmpDR.X == TmpUR.X)
-                    //    Viewbox.Visibility = Visibility.Visible;
-
-                    //else
-                    //    Viewbox.Visibility = Visibility.Hidden;
+                    if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
+                        return;
 
 
-                    //TmpSteelAttr.PointTop.DL.X = tmp3[0].min;
-                    //TmpSteelAttr.PointTop.DL.Y = tmp3[0].key;
-                    //TmpSteelAttr.PointTop.DR.X = tmp3[0].max;
-                    //TmpSteelAttr.PointTop.DR.Y = tmp3[0].key;
-                    //TmpSteelAttr.PointTop.UL.X = tmp3[1].min;
-                    //TmpSteelAttr.PointTop.UL.Y = tmp3[1].key;
-                    //TmpSteelAttr.PointTop.UR.X = tmp3[1].max;
-                    //TmpSteelAttr.PointTop.UR.Y = tmp3[1].key;
+                    if (TmpUL.X > TmpDL.X)
+                    {
+                        PointDL1 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioA, (TmpUL.Y - TmpDL.Y) * PosRatioA) + TmpDL;
+                        PointDL2 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioB, (TmpUL.Y - TmpDL.Y) * PosRatioB) + TmpDL;
+                        tmplist1.Add(PointDL1);
+                        tmplist1.Add(PointDL2);
+                    }
+                    else if(TmpUL.X < TmpDL.X)
+                    {
+                        PointUL1 = new Point3D((TmpDL.X - TmpUL.X) * PosRatioA, (TmpDL.Y - TmpUL.Y) * PosRatioA) + TmpUL;
+                        PointUL2 = new Point3D((TmpDL.X - TmpUL.X) * PosRatioB, (TmpDL.Y - TmpUL.Y) * PosRatioB) + TmpUL;
+                        tmplist1.Add(PointUL1);
+                        tmplist1.Add(PointUL2);
+                    }
 
-                    PointDL1 = new Point3D((TmpUL.X - TmpDL.X) * PosRatio1, (TmpUL.Y - TmpDL.Y) * PosRatio1) + TmpDL;
-                    PointDL2 = new Point3D((TmpUL.X - TmpDL.X) * PosRatio2, (TmpUL.Y - TmpDL.Y) * PosRatio2) + TmpDL;
+                    if (TmpUR.X > TmpDR.X)
+                    {
+                        PointDR1 = new Point3D((TmpUR.X - TmpDR.X) * PosRatioA, (TmpUR.Y - TmpDR.Y) * PosRatioA) + TmpDR;
+                        PointDR2 = new Point3D((TmpUR.X - TmpDR.X) * PosRatioB, (TmpUR.Y - TmpDR.Y) * PosRatioB) + TmpDR;
+                        tmplist1.Add(PointDR1);
+                        tmplist1.Add(PointDR2);
+                    }
+                    else if(TmpUR.X < TmpDR.X)
+                    {
+                        PointUR1 = new Point3D((TmpDR.X - TmpUR.X) * PosRatioA, (TmpDR.Y - TmpUR.Y) * PosRatioA) + TmpUR;
+                        PointUR2 = new Point3D((TmpDR.X - TmpUR.X) * PosRatioB, (TmpDR.Y - TmpUR.Y) * PosRatioB) + TmpUR;
+                        tmplist1.Add(PointUR1);
+                        tmplist1.Add(PointUR2);
+                    }
 
-                    PointDR1 = new Point3D((TmpUR.X - TmpDR.X) * PosRatio1, (TmpUR.Y - TmpDR.Y) * PosRatio1) + TmpDR;
-                    PointDR2 = new Point3D((TmpUR.X - TmpDR.X) * PosRatio2, (TmpUR.Y - TmpDR.Y) * PosRatio2) + TmpDR;
-
-                    PointUL1 = new Point3D((TmpDL.X - TmpUL.X) * PosRatio1, (TmpDL.Y - TmpUL.Y) * PosRatio1) + TmpUL;
-                    PointUL2 = new Point3D((TmpDL.X - TmpUL.X) * PosRatio2, (TmpDL.Y - TmpUL.Y) * PosRatio2) + TmpUL;
-
-                    PointUR1 = new Point3D((TmpDR.X - TmpUR.X) * PosRatio1, (TmpDR.Y - TmpUR.Y) * PosRatio1) + TmpUR;
-                    PointUR2 = new Point3D((TmpDR.X - TmpUR.X) * PosRatio2, (TmpDR.Y - TmpUR.Y) * PosRatio2) + TmpUR;
-
-                    tmplist1.Add(PointDL1);
-                    tmplist1.Add(PointDL2);
-                    tmplist1.Add(PointDR1);
-                    tmplist1.Add(PointDR2);
-                    tmplist1.Add(PointUL1);
-                    tmplist1.Add(PointUL2);
-                    tmplist1.Add(PointUR1);
-                    tmplist1.Add(PointUR2);
 
                     for (int z = 0; z < tmplist1.Count; z++)
                     {
-                        GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr((FACE)ViewModel.CutFaceType, START_HOLE.START);
+                        GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(FACE.TOP, START_HOLE.START);
                         TmpBoltsArr.dX = "0";
                         TmpBoltsArr.dY = "0";
                         TmpBoltsArr.xCount = 1;
@@ -2157,18 +2147,11 @@ namespace STD_105.Office
                         lstBoltsCutPoint.Add(bolts);
                     }
 
-
-                    
                     ViewModel.SteelAttr = TmpSteelAttr;
                     model.Entities[model.Entities.Count - 1].EntityData= TmpSteelAttr;
-
-
-
-
+                    Viewbox.IsEnabled = false;
                     break;
             }
-
-        
 
             //刷新模型
             model.Refresh();
@@ -2179,98 +2162,109 @@ namespace STD_105.Office
 
             if (!fAddPartAndBolt)   //  是否新增零件及孔群 : false 直接存檔
             {
-                SaveModel(true);//存取檔案 
+                SaveModel(false);//存取檔案 
 
             }
-            else
-            {
-                fAddHypotenusePoint = true; //  執行斜邊打點功能
-            }
+
+
+
 
         }
 
         /// <summary>
-        /// 斜邊打點
+        /// 手動斜邊打點
         /// </summary>
-        public void AddHypotenusePoint(FACE face)
+        public void ManHypotenusePoint(FACE face)
         {
-            SteelAttr steelAttr = ViewModel.GetSteelAttr();
-            double PosRatio1 = 0.2;     //  1/5
-            double PosRatio2 = 0.8;     //  4/5
+
             double a, b;
             List<(double, double)> DRPoint = new List<(double, double)>();
             List<(double, double)> HypotenusePoint = new List<(double, double)>();
             List<Point3D> result = null;
+
+            MyCs myCs = new MyCs();
+
+            STDSerialization ser = new STDSerialization();
+            ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();//備份當前加工區域數值
+
+            double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData[0].A);     //  腹板斜邊打點比列(短)
+            double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData[0].B);     //  腹板斜邊打點比列(長)
+            double PosRatioC = myCs.DivSymbolConvert(ReadSplitLineSettingData[0].C);     //  翼板斜邊打點比列(短)
+            double PosRatioD = myCs.DivSymbolConvert(ReadSplitLineSettingData[0].D);     //  翼板斜邊打點比列(長)
+
+            SteelAttr steelAttr = ViewModel.GetSteelAttr();
+ 
+
 
 
 
 
             switch (face)
             {
-                //case FACE.BACK:
-                //    if (steelAttr.Back == null)
-                //        return;
+                case FACE.BACK:
+                    if (steelAttr.Back == null)
+                        return;
 
-                //    //UL
-                //    result = steelAttr.Back.UL;
-                //    if (result.Count > 0)
-                //    {
-                //        DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
-                //        a = DRPoint[0].Item1;
-                //        b = DRPoint[0].Item2;
-                //        HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[0].Y));
-                //        HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[0].Y));
-                //    }
+                    //UL
+                    result = steelAttr.Back.UL;
+                    if (result.Count > 0)
+                    {
+                        DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
+                        a = DRPoint[0].Item1;
+                        b = DRPoint[0].Item2;
+                        HypotenusePoint.Add(((PosRatioC * a) + result[0].X, (PosRatioC * b) + result[0].Y));
+                        HypotenusePoint.Add(((PosRatioD * a) + result[0].X, (PosRatioD * b) + result[0].Y));
+                    }
 
-                //    //UR
-                //    result = steelAttr.Back.UR;
-                //    if (result.Count > 0)
-                //    {
-                //        DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
-                //        a = DRPoint[0].Item1;
-                //        b = DRPoint[0].Item2;
-                //        HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, result[1].Y - (PosRatio1 * b)));
-                //        HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, result[1].Y - (PosRatio2 * b)));
-                //    }
+                    //UR
+                    result = steelAttr.Back.UR;
+                    if (result.Count > 0)
+                    {
+                        DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
+                        a = DRPoint[0].Item1;
+                        b = DRPoint[0].Item2;
+                        HypotenusePoint.Add(((PosRatioC * a) + result[0].X, result[1].Y - (PosRatioC * b)));
+                        HypotenusePoint.Add(((PosRatioD * a) + result[0].X, result[1].Y - (PosRatioD * b)));
+                    }
 
-                //    //DL
-                //    result = steelAttr.Back.DL;
-                //    if (result.Count > 0)
-                //    {
-                //        DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
-                //        a = DRPoint[0].Item1;
-                //        b = DRPoint[0].Item2;
-                //        HypotenusePoint.Add(((PosRatio1 * a), result[2].Y - (PosRatio1 * b)));
-                //        HypotenusePoint.Add(((PosRatio2 * a), result[2].Y - (PosRatio2 * b)));
-                //    }
+                    //DL
+                    result = steelAttr.Back.DL;
+                    if (result.Count > 0)
+                    {
+                        DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
+                        a = DRPoint[0].Item1;
+                        b = DRPoint[0].Item2;
+                        HypotenusePoint.Add(((PosRatioC * a), result[2].Y - (PosRatioC * b)));
+                        HypotenusePoint.Add(((PosRatioD * a), result[2].Y - (PosRatioD * b)));
+                    }
 
-                //    //DR
-                //    result = steelAttr.Back.DR;
-                //    if (result.Count > 0)
-                //    {
-                //        DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
-                //        a = DRPoint[0].Item1;
-                //        b = DRPoint[0].Item2;
-                //        HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[1].Y));
-                //        HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[1].Y));
-                //    }
+                    //DR
+                    result = steelAttr.Back.DR;
+                    if (result.Count > 0)
+                    {
+                        DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
+                        a = DRPoint[0].Item1;
+                        b = DRPoint[0].Item2;
+                        HypotenusePoint.Add(((PosRatioC * a) + result[0].X, (PosRatioC * b) + result[1].Y));
+                        HypotenusePoint.Add(((PosRatioD * a) + result[0].X, (PosRatioD * b) + result[1].Y));
+                    }
 
 
-                //    for (int z = 0; z < HypotenusePoint.Count; z++)
-                //    {
-                //        GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(face, START_HOLE.START);
-                //        TmpBoltsArr.dX = "0";
-                //        TmpBoltsArr.dY = "0";
-                //        TmpBoltsArr.xCount = 1;
-                //        TmpBoltsArr.yCount = 1;
-                //        TmpBoltsArr.Mode = AXIS_MODE.POINT;
-                //        TmpBoltsArr.X = HypotenusePoint[z].Item1;
-                //        TmpBoltsArr.Y = HypotenusePoint[z].Item2;
-                //        TmpBoltsArr.GUID = Guid.NewGuid();
-                //        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference);
-                //        BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
-                //    }
-                //    break;
+                    for (int z = 0; z < HypotenusePoint.Count; z++)
+                    {
+                        GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(face, START_HOLE.START);
+                        TmpBoltsArr.dX = "0";
+                        TmpBoltsArr.dY = "0";
+                        TmpBoltsArr.xCount = 1;
+                        TmpBoltsArr.yCount = 1;
+                        TmpBoltsArr.Mode = AXIS_MODE.POINT;
+                        TmpBoltsArr.X = HypotenusePoint[z].Item1;
+                        TmpBoltsArr.Y = HypotenusePoint[z].Item2;
+                        TmpBoltsArr.GUID = Guid.NewGuid();
+                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+                        BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                    }
+                    break;
 
                 case FACE.TOP:
                     if (steelAttr.Top == null)
@@ -2283,8 +2277,8 @@ namespace STD_105.Office
                         DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
                         a = DRPoint[0].Item1;
                         b = DRPoint[0].Item2;
-                        HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[0].Y));
-                        HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[0].Y));
+                        HypotenusePoint.Add(((PosRatioA * a) + result[0].X, (PosRatioA * b) + result[0].Y));
+                        HypotenusePoint.Add(((PosRatioB * a) + result[0].X, (PosRatioB * b) + result[0].Y));
                     }
 
                     //UR
@@ -2294,8 +2288,8 @@ namespace STD_105.Office
                         DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
                         a = DRPoint[0].Item1;
                         b = DRPoint[0].Item2;
-                        HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, result[1].Y - (PosRatio1 * b)));
-                        HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, result[1].Y - (PosRatio2 * b)));
+                        HypotenusePoint.Add(((PosRatioA * a) + result[0].X, result[1].Y - (PosRatioA * b)));
+                        HypotenusePoint.Add(((PosRatioB * a) + result[0].X, result[1].Y - (PosRatioB * b)));
                     }
 
                     //DL
@@ -2305,8 +2299,8 @@ namespace STD_105.Office
                         DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
                         a = DRPoint[0].Item1;
                         b = DRPoint[0].Item2;
-                        HypotenusePoint.Add(((PosRatio1 * a), result[2].Y - (PosRatio1 * b)));
-                        HypotenusePoint.Add(((PosRatio2 * a), result[2].Y - (PosRatio2 * b)));
+                        HypotenusePoint.Add(((PosRatioA * a), result[2].Y - (PosRatioA * b)));
+                        HypotenusePoint.Add(((PosRatioB * a), result[2].Y - (PosRatioB * b)));
                     }
 
                     //DR
@@ -2316,8 +2310,8 @@ namespace STD_105.Office
                         DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
                         a = DRPoint[0].Item1;
                         b = DRPoint[0].Item2;
-                        HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[1].Y));
-                        HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[1].Y));
+                        HypotenusePoint.Add(((PosRatioA * a) + result[0].X, (PosRatioA * b) + result[1].Y));
+                        HypotenusePoint.Add(((PosRatioB * a) + result[0].X, (PosRatioB * b) + result[1].Y));
                     }
 
                     for (int z = 0; z < HypotenusePoint.Count; z++)
@@ -2337,70 +2331,70 @@ namespace STD_105.Office
                     break;
 
 
-                //case FACE.FRONT:
-                //    if (steelAttr.Front == null)
-                //        return;
+                case FACE.FRONT:
+                    if (steelAttr.Front == null)
+                        return;
 
-                //    //UL
-                //    result = steelAttr.Front.UL;
-                //    if (result.Count > 0)
-                //    {
-                //        DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
-                //        a = DRPoint[0].Item1;
-                //        b = DRPoint[0].Item2;
-                //        HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[0].Y));
-                //        HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[0].Y));
-                //    }
+                    //UL
+                    result = steelAttr.Front.UL;
+                    if (result.Count > 0)
+                    {
+                        DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
+                        a = DRPoint[0].Item1;
+                        b = DRPoint[0].Item2;
+                        HypotenusePoint.Add(((PosRatioC * a) + result[0].X, (PosRatioC * b) + result[0].Y));
+                        HypotenusePoint.Add(((PosRatioD * a) + result[0].X, (PosRatioD * b) + result[0].Y));
+                    }
 
-                //    //UR                    
-                //    result = steelAttr.Front.UR;
-                //    if (result.Count > 0)
-                //    {
-                //        DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
-                //        a = DRPoint[0].Item1;
-                //        b = DRPoint[0].Item2;
-                //        HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, result[1].Y - (PosRatio1 * b)));
-                //        HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, result[1].Y - (PosRatio2 * b)));
-                //    }
+                    //UR                    
+                    result = steelAttr.Front.UR;
+                    if (result.Count > 0)
+                    {
+                        DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
+                        a = DRPoint[0].Item1;
+                        b = DRPoint[0].Item2;
+                        HypotenusePoint.Add(((PosRatioC * a) + result[0].X, result[1].Y - (PosRatioC * b)));
+                        HypotenusePoint.Add(((PosRatioD * a) + result[0].X, result[1].Y - (PosRatioD * b)));
+                    }
 
-                //    //DL
-                //    result = steelAttr.Front.DL;
-                //    if (result.Count > 0)
-                //    {
-                //        DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
-                //        a = DRPoint[0].Item1;
-                //        b = DRPoint[0].Item2;
-                //        HypotenusePoint.Add(((PosRatio1 * a), result[2].Y - (PosRatio1 * b)));
-                //        HypotenusePoint.Add(((PosRatio2 * a), result[2].Y - (PosRatio2 * b)));
-                //    }
+                    //DL
+                    result = steelAttr.Front.DL;
+                    if (result.Count > 0)
+                    {
+                        DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
+                        a = DRPoint[0].Item1;
+                        b = DRPoint[0].Item2;
+                        HypotenusePoint.Add(((PosRatioC * a), result[2].Y - (PosRatioC * b)));
+                        HypotenusePoint.Add(((PosRatioD * a), result[2].Y - (PosRatioD * b)));
+                    }
 
-                //    //DR
-                //    result = steelAttr.Front.DR;
-                //    if (result.Count > 0)
-                //    {
-                //        DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
-                //        a = DRPoint[0].Item1;
-                //        b = DRPoint[0].Item2;
-                //        HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[1].Y));
-                //        HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[1].Y));
-                //    }
+                    //DR
+                    result = steelAttr.Front.DR;
+                    if (result.Count > 0)
+                    {
+                        DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
+                        a = DRPoint[0].Item1;
+                        b = DRPoint[0].Item2;
+                        HypotenusePoint.Add(((PosRatioC * a) + result[0].X, (PosRatioC * b) + result[1].Y));
+                        HypotenusePoint.Add(((PosRatioD * a) + result[0].X, (PosRatioD * b) + result[1].Y));
+                    }
 
 
-                //    for (int z = 0; z < HypotenusePoint.Count; z++)
-                //    {
-                //        GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(face, START_HOLE.START);
-                //        TmpBoltsArr.dX = "0";
-                //        TmpBoltsArr.dY = "0";
-                //        TmpBoltsArr.xCount = 1;
-                //        TmpBoltsArr.yCount = 1;
-                //        TmpBoltsArr.Mode = AXIS_MODE.POINT;
-                //        TmpBoltsArr.X = HypotenusePoint[z].Item1;
-                //        TmpBoltsArr.Y = HypotenusePoint[z].Item2;
-                //        TmpBoltsArr.GUID = Guid.NewGuid();
-                //        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference);
-                //        BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
-                //    }
-                //    break;
+                    for (int z = 0; z < HypotenusePoint.Count; z++)
+                    {
+                        GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(face, START_HOLE.START);
+                        TmpBoltsArr.dX = "0";
+                        TmpBoltsArr.dY = "0";
+                        TmpBoltsArr.xCount = 1;
+                        TmpBoltsArr.yCount = 1;
+                        TmpBoltsArr.Mode = AXIS_MODE.POINT;
+                        TmpBoltsArr.X = HypotenusePoint[z].Item1;
+                        TmpBoltsArr.Y = HypotenusePoint[z].Item2;
+                        TmpBoltsArr.GUID = Guid.NewGuid();
+                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+                        BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                    }
+                    break;
 
             }
 
@@ -3261,7 +3255,7 @@ namespace STD_105.Office
             }
 
             // 執行斜邊打點
-            HypotenusePoint(FACE.TOP);
+           // AutoHypotenusePoint(FACE.TOP);
       //      HypotenusePoint(FACE.BACK);
        //     HypotenusePoint(FACE.FRONT);
 
@@ -3383,12 +3377,11 @@ namespace STD_105.Office
                 var aaa = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
                 var bbb = DataCorrespond.Where(p => p.Number == aaa.PartNumber).ToList();
                 {
-
-                    var ccc = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
-                    ccc.oPoint = bbb[0].oPoint.ToList();
-                    ccc.vPoint = bbb[0].vPoint.ToList();
-                    ccc.uPoint = bbb[0].uPoint.ToList();
-                    ViewModel.WriteSteelAttr(ccc);
+                 
+                    aaa.oPoint = bbb[0].oPoint.ToList();
+                    aaa.vPoint = bbb[0].vPoint.ToList();
+                    aaa.uPoint = bbb[0].uPoint.ToList();
+                    ViewModel.WriteSteelAttr(aaa);
                     ViewModel.GetSteelAttr();
                 }
 
@@ -3414,8 +3407,10 @@ namespace STD_105.Office
                 model.Invalidate();//初始化模型
                 drawing.ZoomFit();//設置道適合的視口
                 drawing.Invalidate();
-                HypotenusePoint(FACE.TOP);
-                //AddHypotenusePoint(FACE.TOP);
+
+                // 執行斜邊打點
+                RunHypotenusePoint();
+   
             }
         } 
     }

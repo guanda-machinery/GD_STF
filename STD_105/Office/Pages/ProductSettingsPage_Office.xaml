@@ -1001,7 +1001,7 @@
                                     Value="{ StaticResource solidclr_DimGray }" />
                         </Style>
                     </TabItem.Resources>
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Name="Viewbox">
                         <Grid >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
