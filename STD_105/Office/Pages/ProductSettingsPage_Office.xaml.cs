@@ -382,6 +382,8 @@ namespace STD_105.Office
                 ViewModel.SteelAttr.W = steelAttr.W;
                 ViewModel.SteelAttr.t1 = steelAttr.t1;
                 ViewModel.SteelAttr.t2 = steelAttr.t2;
+                ViewModel.SteelAttr.Title1 = steelAttr.Title1;
+                ViewModel.SteelAttr.Title2 = steelAttr.Title2;
 
 
                 Mesh modify = Steel3DBlock.GetProfile(steelAttr); //修改的形狀
@@ -425,6 +427,7 @@ namespace STD_105.Office
 
                 model.Entities.Insert(0, modify);//加入參考圖塊到模型
                 drawing.Entities.AddRange(steel2D);
+
                 Esc();
 
 
@@ -1592,8 +1595,8 @@ namespace STD_105.Office
             ViewModel.SteelAttr.Material = this.material.Text;
             ViewModel.SteelAttr.Phase = string.IsNullOrEmpty(this.phase.Text) ? 0 : int.Parse(this.phase.Text);
             ViewModel.SteelAttr.ShippingNumber = string.IsNullOrEmpty(this.shippingNumber.Text) ? 0 : int.Parse(this.shippingNumber.Text);
-            ViewModel.SteelAttr.Title1 = this.title1.Text;
-            ViewModel.SteelAttr.Title2 = this.title2.Text;
+            ViewModel.SteelAttr.Title1 = this.Title1.Text;
+            ViewModel.SteelAttr.Title2 = this.Title2.Text;
             ViewModel.SteelAttr.Type = (OBJECT_TYPE)this.cbx_SteelType.SelectedIndex;
             ViewModel.SteelAttr.Profile = this.cbx_SectionType.Text;
             ViewModel.SteelAttr.H = string.IsNullOrEmpty(this.H.Text) ? 0 : float.Parse(this.H.Text);
@@ -1623,8 +1626,8 @@ namespace STD_105.Office
             steelAttr.Material = this.material.Text;
             steelAttr.Phase = string.IsNullOrEmpty(this.phase.Text) ? 0 : int.Parse(this.phase.Text);
             steelAttr.ShippingNumber = string.IsNullOrEmpty(this.shippingNumber.Text) ? 0 : int.Parse(this.shippingNumber.Text);
-            steelAttr.Title1 = this.title1.Text;
-            steelAttr.Title2 = this.title2.Text;
+            steelAttr.Title1 = this.Title1.Text;
+            steelAttr.Title2 = this.Title2.Text;
             steelAttr.Type = (OBJECT_TYPE)this.cbx_SteelType.SelectedIndex;
             steelAttr.Profile = this.cbx_SectionType.Text;
             steelAttr.H = (string.IsNullOrEmpty(this.H.Text) || float.Parse(this.H.Text) == 0) ? steelAttr.H : float.Parse(this.H.Text);
@@ -2670,7 +2673,7 @@ namespace STD_105.Office
                 //GUID = ViewModel.SteelAttr.GUID,
                 Count = ViewModel.SteelAttr.Number,
                 IsTekla = false,
-                Length = ViewModel.SteelAttr.Length,
+                //Length = ViewModel.SteelAttr.Length,
                 ShippingDescription = new List<string>(new string[ViewModel.SteelAttr.Number]),
                 ShippingNumber = new List<int>(new int[ViewModel.SteelAttr.Number]),
                 Phase = new List<int>(new int[ViewModel.SteelAttr.Number]),
@@ -2681,7 +2684,8 @@ namespace STD_105.Office
 
             #region 構件資訊
             // 若無構件資訊，新增資訊
-            if (ViewModel.SteelAssemblies.IndexOf(ass) == -1 && add)
+            //if (ViewModel.SteelAssemblies.IndexOf(ass) == -1 && add)
+            if(!ViewModel.SteelAssemblies.Where(x=>x.Number==ass.Number && x.Count==ViewModel.SteelAttr.Number).Any() && add)   
             {
                 //ass = new SteelAssembly()
                 //{
@@ -2712,24 +2716,17 @@ namespace STD_105.Office
                 ass.ID.AddRange(buffer.ToArray());
                 ViewModel.SteelAssemblies.Add(ass);
             }
-            //else 
-            //{
-            //    if (ViewModel.SteelAssemblies.Where(x => x.GUID == ViewModel.SteelAttr.GUID).FirstOrDefault().Count!= ViewModel.SteelAttr.Number)
-            //    {
-            //        buffer.Clear();
-            //        while (buffer.Count != ViewModel.SteelAttr.Number)
-            //        {
-            //            int id = random.Next(1000000, 90000000);
-            //            if (!buffer.Contains(id))
-            //            {
-            //                buffer.Add(id);
-            //            }
-            //        }
-            //    }
-            //    ViewModel.SteelAssemblies.Where(x => x.GUID == ViewModel.SteelAttr.GUID).FirstOrDefault().ID.Clear();
-            //    ViewModel.SteelAssemblies.Where(x => x.GUID == ViewModel.SteelAttr.GUID).FirstOrDefault().ID.AddRange(buffer.ToArray());
-            //    ass.ID = buffer.ToList();
-            //}
+            else 
+            {
+                // 若此構件已存在(同數量 同編號)，取得ID
+                if (ViewModel.SteelAssemblies.Where(x => x.Number == ass.Number && x.Count == ViewModel.SteelAttr.Number).Any())
+                {
+                    ass.ID = ViewModel.SteelAssemblies.FirstOrDefault(x => x.Number == ass.Number && x.Count == ViewModel.SteelAttr.Number).ID;
+                }
+                //ViewModel.SteelAssemblies.Where(x => x.GUID == ViewModel.SteelAttr.GUID).FirstOrDefault().ID.Clear();
+                //ViewModel.SteelAssemblies.Where(x => x.GUID == ViewModel.SteelAttr.GUID).FirstOrDefault().ID.AddRange(buffer.ToArray());
+                //ass.ID = buffer.ToList();
+            }
             #endregion
 
             #region 斷面規格
@@ -2745,6 +2742,7 @@ namespace STD_105.Office
             #region 零件列表
             // 2022/09/08 呂宗霖 與架構師討論後，零件編輯單純做編輯動作            
             // 零件列表
+            ISteelProfile pf = ViewModel.ProfileList.Where(x => x.Profile == ViewModel.SteelAttr.Profile).FirstOrDefault();
             SteelPart steelPart = new SteelPart(
                 ViewModel.SteelAttr,
                 ViewModel.SteelAttr.Name,
@@ -2758,8 +2756,9 @@ namespace STD_105.Office
                 ViewModel.SteelAttr.Title2,ViewModel.SteelAttr.Lock);
             steelPart.ID = new List<int>();
             steelPart.Match = new List<bool>();
-            steelPart.Material = ViewModel.SteelAttr.Material;
+            steelPart.Material = ViewModel.SteelAttr.Material;            
             steelPart.Father = ass.ID;
+            steelPart.Profile = ViewModel.SteelAttr.Profile;
             //steelPart.Length = ViewModel.SteelAttr.Length;
 
             for (int i = 0; i < steelPart.Count; i++)
@@ -2781,28 +2780,38 @@ namespace STD_105.Office
             {
                 collection = ser.GetPart($@"{steelPart.Profile.GetHashCode()}");
             }
-            //if (!collection.Any(x => x.Number == steelPart.Number && x.Profile == steelPart.Profile && x.Type == x.Type && x.GUID == steelPart.GUID))
-            //{
+            if (!collection.Any(x => 
+            x.Number == steelPart.Number && 
+            x.Profile == steelPart.Profile && 
+            x.Type == steelPart.Type && 
+            x.GUID == steelPart.GUID))
+            {
                 // 不存在則新增
                 collection.Add(steelPart);
-            //}
-            //else {
-            //    // 存在則編輯
-            //    SteelPart sp = collection.Where(x => x.Number == steelPart.Number && x.Profile == steelPart.Profile && x.Type == x.Type && x.GUID == steelPart.GUID).FirstOrDefault();
-            //    sp.Length = steelPart.Length;
-            //    sp.W = steelPart.W;
-            //    sp.t1 = steelPart.t1;
-            //    sp.t2 = steelPart.t2;
-            //    sp.H = steelPart.H;  
-            //    sp.Material = steelPart.Material;                
-            //    sp.Phase = steelPart.Phase;
-            //    sp.ShippingNumber = steelPart.ShippingNumber;
-            //    sp.Title1 = steelPart.Title1;
-            //    sp.Title2 = steelPart.Title2;
-            //    sp.Revise = steelPart.Revise;
-            //    sp.Father = steelPart.Father;
-            //    sp.ID = steelPart.ID;
-            //}
+            }
+            else
+            {
+                // 存在則編輯
+                SteelPart sp = collection.Where(x =>
+                x.Number == steelPart.Number &&
+                x.Profile == steelPart.Profile &&
+                x.Type == steelPart.Type &&
+                x.GUID == steelPart.GUID).FirstOrDefault();
+                sp.DrawingName = steelPart.DrawingName;
+                sp.Length = steelPart.Length;
+                sp.W = steelPart.W;
+                sp.t1 = steelPart.t1;
+                sp.t2 = steelPart.t2;
+                sp.H = steelPart.H;
+                sp.Material = steelPart.Material;
+                sp.Phase = steelPart.Phase;
+                sp.ShippingNumber = steelPart.ShippingNumber;
+                sp.Title1 = steelPart.Title1;
+                sp.Title2 = steelPart.Title2;
+                sp.Revise = steelPart.Revise;
+                sp.Father = steelPart.Father;
+                sp.ID = steelPart.ID;
+            }
 
             ser.SetPart($@"{steelPart.Profile.GetHashCode()}", new ObservableCollection<object>(collection));
             #endregion
@@ -3320,6 +3329,10 @@ namespace STD_105.Office
             if (model != null)
             {
                 ProductSettingsPageViewModel item = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
+                if (item == null)
+                {
+                    return;
+                }
 
                 ConfirmCurrentSteelSection(item);
 

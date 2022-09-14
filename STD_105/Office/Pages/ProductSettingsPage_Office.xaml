@@ -289,7 +289,7 @@
                     <dxg:GridColumn FieldName="GUID" Binding="{Binding steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="true"/> <!--Visible="{StaticResource visible}"/>-->
                     <dxg:GridColumn FieldName="AssemblyNumber" Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="auto"/>
                     <dxg:GridColumn FieldName="PartNumber" Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="auto" />
-                    <dxg:GridColumn FieldName="TeklaName" IsSmart="True"   Header="名稱" Width="auto"/>
+                    <dxg:GridColumn FieldName="TeklaName" Binding="{Binding steelAttr.Name}" IsSmart="True"   Header="名稱" Width="auto"/>
                     <dxg:GridColumn FieldName="TypeDesc"  IsSmart="True" Header="鋼材類型" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn Binding="{Binding Path=SteelType, Converter={STD105:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類型"/>
                     <dxg:GridColumn FieldName="Profile" IsSmart="True"  Header="斷面規格"  Width="auto"/>
@@ -463,12 +463,12 @@
 
                     <Label Grid.Column="0" Grid.Row="9" Content="標題一：" />
                     <StackPanel Grid.Column="1" Grid.Row="9" >
-                        <TextBox Name="title1" Text="{Binding SelectedItems[0].Title1, ElementName=PieceListGridControl,Mode=OneWay}"/>
+                        <TextBox Name="Title1" Text="{Binding SelectedItems[0].Title1, ElementName=PieceListGridControl,Mode=OneWay}"/>
                     </StackPanel>
 
                     <Label Grid.Column="0" Grid.Row="10" Content="標題二：" />
                     <StackPanel Grid.Column="1" Grid.Row="10" >
-                        <TextBox Name="title2" Text="{Binding SelectedItems[0].Title2, ElementName=PieceListGridControl,Mode=OneWay}"/>
+                        <TextBox Name="Title2" Text="{Binding SelectedItems[0].Title2, ElementName=PieceListGridControl,Mode=OneWay}"/>
                     </StackPanel>
 
                     <!--<StackPanel Grid.Column="2"  Grid.Row="7" Grid.RowSpan="3" >

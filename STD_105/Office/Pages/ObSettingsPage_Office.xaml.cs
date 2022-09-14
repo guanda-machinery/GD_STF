@@ -294,10 +294,9 @@ namespace STD_105.Office
                 //模擬用戶實際選擇編輯
                 ViewModel.Select3DItem.Add(sele3D);
                 ViewModel.Select2DItem.Add(sele2D);
+
                 //層級 To 要編輯的BlockReference
                 model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);
-
-
                 drawing.SetCurrent((BlockReference)drawing.Entities[0]);
 
                 SteelAttr steelAttr = ViewModel.GetSteelAttr();
@@ -310,8 +309,8 @@ namespace STD_105.Office
                 List<Entity> steel2D = new Steel2DBlock(modify, "123").Entities.ToList();
                 Steel2DBlock steel2DBlock = (Steel2DBlock)drawing.Blocks[drawing.CurrentBlockReference.BlockName];
                 steel2DBlock.ChangeMesh(modify);
+                
                 //加入到垃圾桶內
-
                 //加入復原動作至LIST
                 ViewModel.Reductions.Add(new Reduction()
                 {
@@ -2590,7 +2589,8 @@ namespace STD_105.Office
             ISteelProfile pf = ViewModel.ProfileList.Where(x => x.Profile == ViewModel.SteelAttr.Profile).FirstOrDefault();
             // 零件列表
             SteelPart steelPart = new SteelPart(
-                pf, ViewModel.SteelAttr.Name, ViewModel.SteelAttr.PartNumber, ViewModel.SteelAttr.Length, ViewModel.SteelAttr.Number,ViewModel.SteelAttr.GUID.Value,
+                pf, ViewModel.SteelAttr.Name, ViewModel.SteelAttr.PartNumber, 
+                ViewModel.SteelAttr.Length, ViewModel.SteelAttr.Number,ViewModel.SteelAttr.GUID.Value,
                 ViewModel.SteelAttr.Phase, ViewModel.SteelAttr.ShippingNumber,
                 ViewModel.SteelAttr.Title1, ViewModel.SteelAttr.Title2,ViewModel.SteelAttr.Lock);
             steelPart.ID = new List<int>();
