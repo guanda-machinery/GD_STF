@@ -3495,6 +3495,25 @@ namespace STD_105.Office
         {
             GetWpfLogicalChildClass.SetAllCheckBoxTrueOrFalse(CutTabItem);
         }
+        private void CBOX_SectionTypeChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (cbx_SectionType.SelectedIndex != -1)
+            {
+                ViewModel.SteelAttr = ViewModel.ProfileList[cbx_SectionType.SelectedIndex];
+                ViewModel.CurrentPartSteelAttr = ViewModel.SteelAttr;
+            }
+        }
+        private void ConfirmCurrentSteelSection(ProductSettingsPageViewModel CuurentSelectedPart)
+        {
+            ViewModel.fPartListOrManuall = true;
+            ViewModel.ProfileType = (int)CuurentSelectedPart.SteelType;
+            ViewModel.SteelSectionProperty = CuurentSelectedPart.Profile;
+            ViewModel.ProductLengthProperty = CuurentSelectedPart.Length;
+            ViewModel.ProductWeightProperty = CuurentSelectedPart.Weight;
+            if (CuurentSelectedPart.Weight == 0) ViewModel.ProductWeightProperty = ViewModel.SteelAttr.Kg;//單一支重量
+            //if (CuurentSelectedPart.Weight == 0) ViewModel.ProductWeightProperty = (ViewModel.ProductLengthProperty / 1000) * ViewModel.SteelAttr.Kg;//總重量
+            ViewModel.fPartListOrManuall = false;
+        }
         private void Grid_SelectedChange(object sender, SelectedItemChangedEventArgs e)
         {
 
@@ -3505,6 +3524,9 @@ namespace STD_105.Office
                 {
                     return;
                 }
+
+                ConfirmCurrentSteelSection(item);
+
                 STDSerialization ser = new STDSerialization();
                 DataCorrespond = ser.GetDataCorrespond();
 
