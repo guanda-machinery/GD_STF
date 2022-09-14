@@ -2357,7 +2357,7 @@ namespace STD_105.Office
 
                     for (int z = 0; z < HypotenusePoint.Count; z++)
                     {
-                        GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(face, START_HOLE.START);
+                        GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(FACE.BACK, START_HOLE.START);
                         TmpBoltsArr.dX = "0";
                         TmpBoltsArr.dY = "0";
                         TmpBoltsArr.xCount = 1;
@@ -2421,7 +2421,7 @@ namespace STD_105.Office
 
                     for (int z = 0; z < HypotenusePoint.Count; z++)
                     {
-                        GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(face, START_HOLE.START);
+                        GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(FACE.TOP, START_HOLE.START);
                         TmpBoltsArr.dX = "0";
                         TmpBoltsArr.dY = "0";
                         TmpBoltsArr.xCount = 1;
@@ -2487,7 +2487,7 @@ namespace STD_105.Office
 
                     for (int z = 0; z < HypotenusePoint.Count; z++)
                     {
-                        GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(face, START_HOLE.START);
+                        GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(FACE.FRONT, START_HOLE.START);
                         TmpBoltsArr.dX = "0";
                         TmpBoltsArr.dY = "0";
                         TmpBoltsArr.xCount = 1;

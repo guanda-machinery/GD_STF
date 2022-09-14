@@ -146,7 +146,7 @@ namespace WPFSTD105.Model
                 BoltAttr boltAttr = (BoltAttr)resultY[0].EntityData;
 
                 // 加工區域計算
-                List<double> list = WorkingRange(Info.Type, boltAttr);
+                List<double> list = WorkingRange(steelAttr.Type, boltAttr);
 
                 double y, z;
 
