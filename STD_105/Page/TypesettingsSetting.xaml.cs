@@ -43,25 +43,22 @@ namespace STD_105.Office
             InitializeComponent();
         }
 
-       /* private void Material_List_GridControl_SelectedItemChanged(object sender, DevExpress.Xpf.Grid.SelectedItemChangedEventArgs e)
+        private void Material_List_GridControl_SelectedItemChanged(object sender, DevExpress.Xpf.Grid.SelectedItemChangedEventArgs e)
         {
+            if (e.NewItem != null)
+            {
+                var a = (GD_STD.Data.MaterialDataView)e.NewItem;
+                a.ButtonEnable = true;
+            }
             if (e.OldItem != null)
             {
-                ((GD_STD.Data.MaterialDataView)e.OldItem).DetailDescriptorButtonEnabled = false; 
+                var b = (GD_STD.Data.MaterialDataView)e.OldItem; 
+                b.ButtonEnable =false;
             }
-            if(e.NewItem != null)
-            {
-                ((GD_STD.Data.MaterialDataView)e.NewItem).DetailDescriptorButtonEnabled = true;
-            }
+            var SenderC = sender as DevExpress.Xpf.Grid.GridControl;
 
-        }*/
-
+        }
     }
-
-
-
-
-
 }
 
 

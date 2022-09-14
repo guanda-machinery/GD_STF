@@ -58,6 +58,7 @@
             </Style>
 
             <System:Boolean x:Key="visible">false</System:Boolean>
+            <System:Boolean x:Key="TextBoxEnabled">false</System:Boolean> 
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
     <!--物件設定與設定完成的物件列表-->
@@ -367,13 +368,11 @@
         <GroupBox Header="零件屬性" Grid.Column="1" Margin="5">
             <DockPanel Margin="5,0,5,0">
                 <Grid  HorizontalAlignment="Left" Margin="5,5,5,5" DockPanel.Dock="Top" >
-                    <Grid.Resources>                        
+                    <Grid.Resources>
                         <Style TargetType ="TextBlock">
                             <Setter Property="FontSize" Value="12"/>
                             <Setter  Property="Foreground" Value="Black" />
                         </Style>
-
-
                         <Style TargetType="Label"
                                BasedOn="{ StaticResource lab_SubTitle }">
                             <Setter Property="Foreground"
@@ -381,6 +380,9 @@
                             <Setter Property="FontSize" Value="12"/>
                             <Setter Property="Margin" Value="5"/>
                         </Style>
+                    <!--  <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignStyleCustomTextBox}">
+                            <Setter Property="IsEnabled" Value="{Binding ElementName=PieceListGridControl, Converter={STD105:GridControlIsSelectedItemToBoolen} , UpdateSourceTrigger=PropertyChanged}"/>
+                        </Style>-->
                     </Grid.Resources>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -426,63 +428,62 @@
                         </TextBox>
                         <Label Grid.Column="0"  Grid.Row="2"
                            Content="製品長度：" />
-                        <Grid  Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" >
+                    <Grid  Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                            <TextBox Grid.Column="0" Name="Length"  >
-                                <TextBox.Text>
-                                    <Binding Path="ProductLengthProperty" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" >
-                                        <Binding.ValidationRules>
-                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox.Text>
+                        <TextBox Grid.Column="0" Name="Length"  >
+                            <TextBox.Text>
+                                <Binding Path="ProductLengthProperty" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" >
+                                    <Binding.ValidationRules>
+                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
 
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="TextChanged" SourceName="Length">
-                                        <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </TextBox>
-                            <TextBlock Text="mm" HorizontalAlignment="Right"/>
-                        </DockPanel>
-                    </StackPanel>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="TextChanged" SourceName="Length">
+                                    <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+                        <TextBlock Grid.Column="1" Text="mm" Margin="3,0,0,0"/>
+                    </Grid>
+
 
                     <Label Grid.Column="0" Grid.Row="3" Content="製品重：" />
-                    <StackPanel Grid.Column="1" Grid.Row="3" >
-                        <DockPanel  VerticalAlignment="Center">
-                            <TextBlock Name="Weight" Text="{Binding ProductWeightProperty, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}" VerticalAlignment="Center" Margin="3,0,0,0">
-                                <!--i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionType">
-                                        <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"
-                                                               CommandParameter="{ Binding ElementName=PieceListGridControl, Path=SelectedItem }"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers-->
-                            </TextBlock>
-                            <TextBlock  Text="Kg/per"  HorizontalAlignment="Right" Margin="3,0,0,0"/>
-                        </DockPanel>
-                    </StackPanel>
+                    <Grid Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Name="Weight" Text="{Binding ProductWeightProperty, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}" Margin="3,0,0,0"/>
+                        <TextBlock Grid.Column="1"  Text="Kg/Piece"   Margin="3,0,0,0"/>
+
+                    </Grid>
 
                     <Label Grid.Column="0" Grid.Row="4" Content="製品數量：" />
-                    <StackPanel Grid.Column="1" Grid.Row="4" >
-                        <TextBox Name="PartCount" Text="{Binding SelectedItems[0].Count, ElementName=PieceListGridControl,Mode=OneWay}" />
-                    </StackPanel>
-
+                    <TextBox Grid.Column="1" Grid.Row="4" Name="PartCount">
+                        <TextBox.Text>
+                            <Binding Path="SelectedItems[0].Count" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >
+                                <Binding.ValidationRules>
+                                    <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
                     <Label Grid.Column="0" Grid.Row="5" Content="名稱：" />
-                    <StackPanel Grid.Column="1" Grid.Row="5" >
-                        <TextBox Name ="teklaName"  Text="{Binding SelectedItems[0].TeklaName, ElementName=PieceListGridControl, Mode=OneWay}"/>
-                    </StackPanel>
 
-                        <TextBox Name ="teklaName" Grid.Column="1" Grid.Row="5">
-                            <TextBox.Text>
+                    <TextBox Name ="teklaName" Grid.Column="1" Grid.Row="5" Text="{Binding Path=SelectedItems[0].TeklaName , ElementName=PieceListGridControl , Mode=OneWay , UpdateSourceTrigger=PropertyChanged}" >
+                       <!--     <TextBox.Text>
                                 <Binding Path="SelectedItems[0].TeklaName" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >
                                     <Binding.ValidationRules>
                                     <STD105ValidRule:CheckStringEmptyRule></STD105ValidRule:CheckStringEmptyRule>
                                     </Binding.ValidationRules>
                                 </Binding>
-                            </TextBox.Text>
+                            </TextBox.Text>-->
                         </TextBox>
 
                         <Label Grid.Column="0"  Grid.Row="6" Content="材質：" />
@@ -495,8 +496,8 @@
                             <TextBox.Text>
                                 <Binding Path="SelectedItems[0].Phase" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >
                                     <Binding.ValidationRules>
-                                    <STD105ValidRule:CheckStringEmptyRule></STD105ValidRule:CheckStringEmptyRule>
-                                    </Binding.ValidationRules>
+                                    <STD105ValidRule:CheckStringEmptyRule/>
+                                </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>
                         </TextBox>
@@ -515,10 +516,18 @@
 
                     <Label Grid.Column="0" Grid.Row="9" Content="標題一：" />
 
-                     <TextBox Grid.Column="1" Grid.Row="9" Name="title1" Text="{Binding SelectedItems[0].Title1, ElementName=PieceListGridControl,Mode=OneWay}"/>
-
+                    <TextBox Grid.Column="1" Grid.Row="9" Name="Title1">
+                        <TextBox.Text>
+                            <Binding Path="SelectedItems[0].Title1" ElementName="PieceListGridControl" StringFormat="{}{0:N2}" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding.ValidationRules>
+                                <STD105ValidRule:CheckStringEmptyRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    
                     <Label Grid.Column="0" Grid.Row="10" Content="標題二：" />
-                    <TextBox Grid.Column="1" Grid.Row="10" Name="title2" Text="{Binding SelectedItems[0].Title2, ElementName=PieceListGridControl,Mode=OneWay}"/>
+                    <TextBox Grid.Column="1" Grid.Row="10" Name="Title2" Text="{Binding SelectedItems[0].Title2, ElementName=PieceListGridControl,Mode=OneWay}"/>
 
                     <!--<StackPanel Grid.Column="2"  Grid.Row="7" Grid.RowSpan="3" >
                         <TextBox Text="{Binding SelectedItems[0].Type, ElementName=PieceListGridControl}" BorderBrush="Black"/>
@@ -1099,7 +1108,7 @@
 
                 </TabItem>
                 <TabItem Header="切割線" Name="CutTabItem">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Name="ScrollViewbox">
                         <Grid >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>

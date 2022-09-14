@@ -84,7 +84,10 @@ namespace GD_STD.Data
         /// 零件列表
         /// </summary>
         public ObservableCollection<TypeSettingDataView> Parts { get; set; } = new ObservableCollection<TypeSettingDataView>();
-        #region Command
+        #region ButtonCommand
+
+        public bool ButtonEnable { get; set; } = false;
+
         private enum CRotation
         {
             Clockwise,
@@ -337,6 +340,9 @@ namespace GD_STD.Data
         {
             get;set;
         }
+
+
+
 
 
 

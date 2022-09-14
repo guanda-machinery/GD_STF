@@ -564,7 +564,8 @@
                         Name="Material_List_GridControl"    
                         AutoGenerateColumns="None" 
                         Grid.Row="2"        
-                        ItemsSource="{Binding MaterialDataViews}"
+                        SelectedItemChanged="Material_List_GridControl_SelectedItemChanged"
+                        ItemsSource="{Binding MaterialDataViews , UpdateSourceTrigger=PropertyChanged}"
                         MinHeight="200"  MaxHeight="400">
                         <dxg:GridControl.View >
                             <dxg:TableView 
@@ -825,7 +826,8 @@
                                                 </Grid.RowDefinitions>
                                                 <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                                                     <TextBlock Text="零件正轉"  />
-                                                    <Button Grid.Column="1" Grid.Row="0" Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding ClockwiseRotationComponentCommand }"  IsEnabled="{Binding DetailDescriptorButtonEnabled,UpdateSourceTrigger=PropertyChanged}" >
+                                                    <Button Grid.Column="1" Grid.Row="0" Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding ClockwiseRotationComponentCommand }" 
+                                                            IsEnabled="{Binding Row.ButtonEnable, Mode=OneWay}">
                                                         <Button.CommandParameter>
                                                             <MultiBinding Converter="{STD105:ComParConverter}">
                                                                 <MultiBinding.Bindings>
@@ -834,6 +836,7 @@
                                                                 </MultiBinding.Bindings>
                                                             </MultiBinding>
                                                         </Button.CommandParameter>
+    
                                                         <Button.Content>
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>
@@ -848,7 +851,7 @@
                                                 </StackPanel>
                                                 <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                                                     <TextBlock Text="零件逆轉"  />
-                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding CounterClockwiseRotationComponentCommand}">
+                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding CounterClockwiseRotationComponentCommand}" IsEnabled="{Binding ButtonEnable}">
                                                         <Button.CommandParameter>
                                                             <MultiBinding Converter="{STD105:ComParConverter}">
                                                                 <MultiBinding.Bindings>

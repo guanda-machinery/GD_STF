@@ -1970,7 +1970,7 @@ namespace STD_105.Office
         public void RunHypotenusePoint()
         {
 
-            Viewbox.IsEnabled = true;
+            ScrollViewbox.IsEnabled = true;
 
             // 由選取零件判斷三面是否為斜邊
             if (model.Entities[model.Entities.Count - 1].EntityData is null)
@@ -2107,7 +2107,7 @@ namespace STD_105.Office
                         lstBoltsCutPoint.Add(bolts);
                     }
 
-                    Viewbox.IsEnabled = false;
+                    ScrollViewbox.IsEnabled = false;
                     break;
 
                 case FACE.FRONT:
@@ -2182,7 +2182,7 @@ namespace STD_105.Office
                         BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                         lstBoltsCutPoint.Add(bolts);
                     }
-                    Viewbox.IsEnabled = false;
+                    ScrollViewbox.IsEnabled = false;
                     break;
 
 
@@ -2263,7 +2263,7 @@ namespace STD_105.Office
 
                     ViewModel.SteelAttr = TmpSteelAttr;
                     model.Entities[model.Entities.Count - 1].EntityData= TmpSteelAttr;
-                    Viewbox.IsEnabled = false;
+                    ScrollViewbox.IsEnabled = false;
                     break;
             }
 
