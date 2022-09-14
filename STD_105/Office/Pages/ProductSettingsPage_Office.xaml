@@ -320,8 +320,8 @@
                     <dxg:GridColumn FieldName="SteelType"  IsSmart="True" Header="鋼材類型(Index)" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="Material" IsSmart="True"  Header="材質"  Width="auto"/>
                     <dxg:GridColumn FieldName="Count"  IsSmart="True"  Width="auto" Header="數量"  />
-                    <dxg:GridColumn FieldName="PieceLength" Binding="{Binding Length}" IsSmart="True"  Header="零件長" Width="auto" />
-                    <dxg:GridColumn FieldName="PieceWeight" Binding="{Binding Weight}" IsSmart="True"  Header="零件重" Width="auto" />
+                    <dxg:GridColumn FieldName="Length" Binding="{Binding Length}" IsSmart="True"  Header="零件長" Width="auto" />
+                    <dxg:GridColumn FieldName="Weight" Binding="{Binding Weight}" IsSmart="True"  Header="零件重" Width="auto" />
                     <dxg:GridColumn FieldName="Height" Binding="{Binding steelAttr.H}" IsSmart="True"  Header="高度" Width="auto" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="Weight" Binding="{Binding steelAttr.W}" IsSmart="True"  Header="寬度" Width="auto" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="t1" Binding="{Binding steelAttr.t1}" IsSmart="True"  Header="腹板厚度" Width="auto" Visible="{StaticResource visible}"/>
@@ -433,40 +433,47 @@
                         </Grid.ColumnDefinitions>
                             <TextBox Grid.Column="0" Name="Length"  >
                                 <TextBox.Text>
-                                    <Binding Path="SelectedItems[0].Length" ElementName="PieceListGridControl" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" >
+                                    <Binding Path="ProductLengthProperty" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" >
                                         <Binding.ValidationRules>
                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
+
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="TextChanged" SourceName="Length">
+                                        <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                             </TextBox>
-                            <TextBlock Grid.Column="1" Text="mm"  VerticalAlignment="Center" Margin="5,0,0,0"/>
-                        </Grid>
-                        <Label Grid.Column="0" Grid.Row="3" Content="製品重：" />
+                            <TextBlock Text="mm" HorizontalAlignment="Right"/>
+                        </DockPanel>
+                    </StackPanel>
 
-                        <Grid  VerticalAlignment="Center" Grid.Column="1" Grid.Row="3" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Name="Weight"  Text="{Binding SelectedItems[0], ElementName=PieceListGridControl,Mode=OneWay, Converter={STD105:SteelPartWeightConverter}}"/>
-                            <TextBlock  Grid.Column="1" Text="Kg/per"  Margin="3,0,0,0"/>
-                        </Grid>
+                    <Label Grid.Column="0" Grid.Row="3" Content="製品重：" />
+                    <StackPanel Grid.Column="1" Grid.Row="3" >
+                        <DockPanel  VerticalAlignment="Center">
+                            <TextBlock Name="Weight" Text="{Binding ProductWeightProperty, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}" VerticalAlignment="Center" Margin="3,0,0,0">
+                                <!--i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionType">
+                                        <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"
+                                                               CommandParameter="{ Binding ElementName=PieceListGridControl, Path=SelectedItem }"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers-->
+                            </TextBlock>
+                            <TextBlock  Text="Kg/per"  HorizontalAlignment="Right" Margin="3,0,0,0"/>
+                        </DockPanel>
+                    </StackPanel>
 
-                        <Label Grid.Column="0" Grid.Row="4" Content="製品數量：" />
+                    <Label Grid.Column="0" Grid.Row="4" Content="製品數量：" />
+                    <StackPanel Grid.Column="1" Grid.Row="4" >
+                        <TextBox Name="PartCount" Text="{Binding SelectedItems[0].Count, ElementName=PieceListGridControl,Mode=OneWay}" />
+                    </StackPanel>
 
-                        <!--<TextBox Name="number" Text="{Binding SelectedItems[0].Match, ElementName=PieceListGridControl, Converter={STD105:IListToCountConerter}}" BorderBrush="Black" />-->
-                        <TextBox Name="PartCount" Grid.Column="1" Grid.Row="4" >
-                            <TextBox.Text>
-                                <Binding Path="SelectedItems[0].Count" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >
-                                    <Binding.ValidationRules>
-                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </TextBox.Text>
-                        </TextBox>
-
-                        <Label Grid.Column="0" Grid.Row="5" Content="名稱：" />
+                    <Label Grid.Column="0" Grid.Row="5" Content="名稱：" />
+                    <StackPanel Grid.Column="1" Grid.Row="5" >
+                        <TextBox Name ="teklaName"  Text="{Binding SelectedItems[0].TeklaName, ElementName=PieceListGridControl, Mode=OneWay}"/>
+                    </StackPanel>
 
                         <TextBox Name ="teklaName" Grid.Column="1" Grid.Row="5">
                             <TextBox.Text>
@@ -526,13 +533,9 @@
                                   Grid.Column="4"  Grid.Row="0" 
                                   ItemsSource="{Binding Source={StaticResource obType},Path=Strings}"
                                   SelectedIndex="{Binding SelectedItems[0].SteelType, ElementName=PieceListGridControl, Mode=OneWay}">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseLeftButtonUp" SourceName="PieceListGridControl">
-                                <i:InvokeCommandAction Command="{ Binding ShowSteelTypeCommand }"
-                                                           CommandParameter="{ Binding ElementName=PieceListGridControl, Path=SelectedItem }"/>
-                            </i:EventTrigger>
-                            <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SteelType">
-                                <i:InvokeCommandAction Command="{ Binding ShowSteelTypeSectionManualCommand }"
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SteelType">
+                                    <i:InvokeCommandAction Command="{ Binding ShowSteelTypeCommand }"
                                                            CommandParameter="{ Binding ElementName=cbx_SteelType, Path=SelectedIndex }"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
@@ -545,27 +548,49 @@
                                   Padding="5,1,0,0"
                                   ItemsSource="{Binding ProfileList}" 
                                   DisplayMemberPath="Profile" 
-                                  Text="{Binding SteelSectionProperty}">
+                                  Text="{Binding SteelSectionProperty}" SelectionChanged="CBOX_SectionTypeChanged">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionType">
-                                    <i:InvokeCommandAction Command="{ Binding ShowSteelSectionCommand }"
-                                                           CommandParameter="{ Binding ElementName=cbx_SectionType, Path=SelectedIndex }"/>
+                                    <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </ComboBox>
 
                     <Label Grid.Column="3" Grid.Row="2" Content="高度(H)：" />
-                    <TextBox Grid.Column="4" Grid.Row="2" Name="H" Text="{Binding SteelAttr.H}" IsEnabled="False" />
+                    <StackPanel  Grid.Column="4" Grid.Row="2">
+                        <DockPanel  VerticalAlignment="Center">
+                            <TextBox Name="H" Text="{Binding SteelAttr.H, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
+                            <TextBlock Text="mm" HorizontalAlignment="Right" />
+                        </DockPanel>
+                    </StackPanel>
+
                     <Label Grid.Column="3" Grid.Row="3" Content="寬度(B)：" />
-                    <TextBox  Grid.Column="4" Grid.Row="3" Name="W" Text="{Binding SteelAttr.W}" IsEnabled="False" />
+                    <StackPanel Grid.Column="4" Grid.Row="3">
+                        <DockPanel  VerticalAlignment="Center">
+                            <TextBox Name="W" Text="{Binding SteelAttr.W, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
+                            <TextBlock Text="mm" HorizontalAlignment="Right" />
+                        </DockPanel>
+                    </StackPanel>
+
                     <Label Grid.Column="3" Grid.Row="4" Content="腹板厚度(s)：" />
-                    <TextBox Grid.Column="4" Grid.Row="4" Name="t1" Text="{Binding SteelAttr.t1}" IsEnabled="False" />
+                    <StackPanel Grid.Column="4" Grid.Row="4">
+                        <DockPanel  VerticalAlignment="Center">
+                            <TextBox Name="t1" Text="{Binding SteelAttr.t1, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
+                            <TextBlock Text="mm" HorizontalAlignment="Right" />
+                        </DockPanel>
+                    </StackPanel>
+
                     <Label Grid.Column="3" Grid.Row="5" Content="翼板厚度(t)：" />
-                    <TextBox Grid.Column="4" Grid.Row="5" Name="t2" Text="{Binding SteelAttr.t2}" IsEnabled="False"/>
+                    <StackPanel Grid.Column="4" Grid.Row="5">
+                        <DockPanel  VerticalAlignment="Center">
+                            <TextBox Name="t2" Text="{Binding SteelAttr.t2, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
+                            <TextBlock Text="mm" HorizontalAlignment="Right" />
+                        </DockPanel>
+                    </StackPanel>
 
                 </Grid>
                 <DockPanel  DockPanel.Dock="Bottom" Margin="0" VerticalAlignment="Bottom" >
-                    <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Background="Gold" Width="60" Margin="0,0,6,0"/>
+                    <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Background="Gold" Width="60" Margin="0,0,6,0" Click="OKtoConfirmChanges"/>
 
                     <STD105:DataButtons_Office Margin="105,0,-17,0"
                                                Modify="{Binding ModifyPart}"

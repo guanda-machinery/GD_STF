@@ -256,7 +256,6 @@ namespace GD_STD.Data
                     {
                         //取得已選擇的欄位
                         SelectedComponent = (GD_STD.Data.TypeSettingDataView)obj;
-                        //
                     }
                     //連結到圖形顯示
                     //ex: obj.GetType().Equals(typeof(GD_STD.Data.TypeSettingDataView))

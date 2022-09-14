@@ -225,7 +225,12 @@ namespace WPFSTD105.Model
                             DataName = steelAttr.GUID.ToString(),
                             Profile = steelAttr.Profile,
                             Type = steelAttr.Type,
-                            TP = false
+                            TP = false,
+
+                            // 2022/09/08 彥谷
+                            oPoint = steelAttr.oPoint.ToArray(),
+                            vPoint = steelAttr.vPoint.ToArray(),
+                            uPoint = steelAttr.uPoint.ToArray(),
                         });
                         ser.SetDataCorrespond(dataCorrespond);//加入到製品零件清單
                     }

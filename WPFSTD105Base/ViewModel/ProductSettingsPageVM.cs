@@ -460,7 +460,12 @@ namespace WPFSTD105.ViewModel
                 DataName = SteelAttr.GUID.ToString(),
                 Number = SteelAttr.PartNumber,
                 Type = SteelAttr.Type,
-                Profile = SteelAttr.Profile
+                Profile = SteelAttr.Profile,
+
+                // 2022/09/08 彥谷
+                oPoint = SteelAttr.oPoint.ToArray(),
+                vPoint = SteelAttr.vPoint.ToArray(),
+                uPoint = SteelAttr.uPoint.ToArray(),
             };
             bool save = (from el in new List<DataCorrespond>(DataCorrespond) where el.DataName == data.DataName select el).ToList().Count == 0;
             if (save)
