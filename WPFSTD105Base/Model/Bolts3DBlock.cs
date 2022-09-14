@@ -487,6 +487,7 @@ namespace WPFSTD105.Model
                 case OBJECT_TYPE.RH:
                 case OBJECT_TYPE.BH:
                 case OBJECT_TYPE.H:
+                    if (sectionTypeProcessingData_H == null) break;
                     if (sectionTypeProcessingData_H.Count > 0)
                     {
                         a = sectionTypeProcessingData_H[0].A;
@@ -496,6 +497,7 @@ namespace WPFSTD105.Model
                     break;
                 case OBJECT_TYPE.C:
                 case OBJECT_TYPE.CH:
+                    if (sectionTypeProcessingData_CH == null) break;
                     if (sectionTypeProcessingData_CH.Count > 0)
                     {
                         a = sectionTypeProcessingData_CH[0].A;
@@ -504,6 +506,7 @@ namespace WPFSTD105.Model
                     break;
                 case OBJECT_TYPE.BOX:
                 case OBJECT_TYPE.TUBE:
+                    if (sectionTypeProcessingData_BOX == null) break;
                     if (sectionTypeProcessingData_BOX.Count > 0)
                     {
                         a = sectionTypeProcessingData_BOX[0].A;
