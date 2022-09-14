@@ -414,7 +414,7 @@
 
                     <Label Grid.Column="0"  Grid.Row="2"
                            Content="製品長度：" />
-                    <StackPanel Grid.Column="1" Grid.Row="2" >
+                    <StackPanel Grid.Column="1" Grid.Row="2" > 
                         <TextBox Name="Length" Text="{Binding SelectedItems[0].Length, ElementName=PieceListGridControl}" />
                     </StackPanel>
 
