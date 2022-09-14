@@ -402,6 +402,14 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public string SteelSectionProperty { get; set; } = "";
         /// <summary>
+        /// 標示資料來源的flag：true表示由零件清單, false表示由手動選擇
+        /// </summary>
+        public bool fPartListOrManuall { get; set; } = false;
+        /// <summary>
+        /// 紀錄前端當前所選的零件資訊
+        /// </summary>
+        public SteelAttr CurrentPartSteelAttr { get; set; } = new SteelAttr();
+        /// <summary>
         /// 斷面規格列表
         /// </summary>
         public ObservableCollection<SteelAttr> ProfileList { get; set; }
@@ -1003,8 +1011,6 @@ namespace WPFSTD105.ViewModel
             DataViews = new ObservableCollection<ProductSettingsPageViewModel>(GetData());
 
             ShowSteelTypeCommand = ShowSteelType(); //20220829 張燕華 選擇型鋼型態
-            ShowSteelSectionCommand = ShowSteelSection();
-            ShowSteelTypeSectionManualCommand = ShowSteelTypeSectionManual();
             CalculateWeightCommand = CalculateWeight();
 
             InitializeSteelAttr();
@@ -1207,81 +1213,26 @@ namespace WPFSTD105.ViewModel
             });
         }
         /// <summary>
-        /// 選擇型鋼斷面規格 20220907 張燕華
-        /// </summary>
-        private WPFBase.RelayParameterizedCommand ShowSteelTypeSectionManual()
-        {
-            return new WPFBase.RelayParameterizedCommand((object cbxSelectedIndex) =>
-            {
-                if (((int)cbxSelectedIndex) != -1)
-                {
-                    ProfileType = Convert.ToInt32(cbxSelectedIndex);
-                }
-            });
-        }
-        /// <summary>
-        /// 選擇型鋼斷面規格 20220907 張燕華
-        /// </summary>
-        private WPFBase.RelayParameterizedCommand ShowSteelSection()
-        {
-            return new WPFBase.RelayParameterizedCommand((object cbxSelectedIndex) =>
-            {
-                if (((int)cbxSelectedIndex) != -1)
-                {
-                    ProfileType = _ProfileType;
-                    if (fCurrentSectionSource == false) CurrentSection_ListIndex = Convert.ToInt32(cbxSelectedIndex);
-                    ProfileIndex = CurrentSection_ListIndex;
-                    fCurrentSectionSource = false;
-                }
-            });
-        }
-        /// <summary>
         /// 選擇型鋼型態 20220829 張燕華
         /// </summary>
         private WPFBase.RelayParameterizedCommand ShowSteelType()
         {
-            return new WPFBase.RelayParameterizedCommand((object cbxSelectedItem) =>
+            return new WPFBase.RelayParameterizedCommand((object SelectedIndex) =>
             {
-                if (cbxSelectedItem != null)
-                {
-                    var propertyInfo = (ProductSettingsPageViewModel)cbxSelectedItem;
-                    ProfileType = Convert.ToInt32(propertyInfo.Type);
-
-                    foreach(SteelAttr sa in ProfileList)
-                    {
-                        if (sa.Profile == propertyInfo.Profile)
-                        { 
-                            CurrentSection_ListIndex = ProfileList.IndexOf(sa);
-                            fCurrentSectionSource = true;
-                        }
-                    }
-
-                    SteelSectionProperty = propertyInfo.Profile;
-                }
+                if ((int)SelectedIndex != -1) ProfileType = Convert.ToInt32(SelectedIndex);
             });
         }
         /// <summary>
         /// 計算製品重量 20220913 張燕華
         /// </summary>
-        private WPFBase.RelayParameterizedCommand CalculateWeight()
+        private WPFBase.RelayCommand CalculateWeight()
         {
-            return new WPFBase.RelayParameterizedCommand((object cbxSelectedItem) =>
+            return new WPFBase.RelayCommand(() =>
             {
-                if (cbxSelectedItem != null)
+                if (fPartListOrManuall == false)
                 {
-                    var propertyInfo = (ProductSettingsPageViewModel)cbxSelectedItem;
-                    if (propertyInfo.Weight != 0)
-                    {
-                        ProductWeightProperty = propertyInfo.Weight;
-                    }
-                    else
-                    {
-                        ProductWeightProperty = (ProductLengthProperty / 1000) * SteelAttr.Kg;
-                    }
-                }
-                else
-                {
-                    ProductWeightProperty = (ProductLengthProperty / 1000) * SteelAttr.Kg;
+                    ProductWeightProperty = CurrentPartSteelAttr.Kg; //只有一支的重量
+                    //ProductWeightProperty = (ProductLengthProperty / 1000) * CurrentPartSteelAttr.Kg; //總重量
                 }
             });
         }

@@ -3486,20 +3486,22 @@ namespace STD_105.Office
         }
         private void CBOX_SectionTypeChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            //MessageBox.Show("hi", "尼豪", MessageBoxButton.OK);
-            var a = cbx_SectionType.SelectedIndex;
+            if (cbx_SectionType.SelectedIndex != -1)
+            {
+                ViewModel.SteelAttr = ViewModel.ProfileList[cbx_SectionType.SelectedIndex];
+                ViewModel.CurrentPartSteelAttr = ViewModel.SteelAttr;
+            }
         }
         private void ConfirmCurrentSteelSection(ProductSettingsPageViewModel CuurentSelectedPart)
         {
-            ViewModel.ProfileType = (int)CuurentSelectedPart.Type;
-
-            foreach(SteelAttr sa in ViewModel.ProfileList)
-            {
-                if(CuurentSelectedPart.Profile == sa.Profile)
-                {
-                    ViewModel.SteelAttr = sa;
-                }
-            }
+            ViewModel.fPartListOrManuall = true;
+            ViewModel.ProfileType = (int)CuurentSelectedPart.SteelType;
+            ViewModel.SteelSectionProperty = CuurentSelectedPart.Profile;
+            ViewModel.ProductLengthProperty = CuurentSelectedPart.Length;
+            ViewModel.ProductWeightProperty = CuurentSelectedPart.Weight;
+            if (CuurentSelectedPart.Weight == 0) ViewModel.ProductWeightProperty = ViewModel.SteelAttr.Kg;//單一支重量
+            //if (CuurentSelectedPart.Weight == 0) ViewModel.ProductWeightProperty = (ViewModel.ProductLengthProperty / 1000) * ViewModel.SteelAttr.Kg;//總重量
+            ViewModel.fPartListOrManuall = false;
         }
         private void Grid_SelectedChange(object sender, SelectedItemChangedEventArgs e)
         {
@@ -3509,7 +3511,6 @@ namespace STD_105.Office
                 ProductSettingsPageViewModel item = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
 
                 ConfirmCurrentSteelSection(item);
-                ViewModel.ProductLengthProperty = item.Length;
 
                 STDSerialization ser = new STDSerialization();
                 DataCorrespond = ser.GetDataCorrespond();
