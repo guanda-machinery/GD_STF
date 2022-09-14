@@ -422,6 +422,7 @@ namespace STD_105.Office
 
                 model.Entities.Insert(0, modify);//加入參考圖塊到模型
                 drawing.Entities.AddRange(steel2D);
+
                 Esc();
                 //刷新模型
                 model.Invalidate();
@@ -429,6 +430,7 @@ namespace STD_105.Office
 
                 if (!fAddPartAndBolt)
                     SaveModel(false);//存取檔案
+
 
                 // 執行斜邊打點
                 //HypotenusePoint(FACE.TOP);
@@ -2989,6 +2991,7 @@ namespace STD_105.Office
                 x.Profile == steelPart.Profile &&
                 x.Type == steelPart.Type &&
                 x.GUID == steelPart.GUID).FirstOrDefault();
+                sp.DrawingName = steelPart.DrawingName;
                 sp.Length = steelPart.Length;
                 sp.W = steelPart.W;
                 sp.t1 = steelPart.t1;

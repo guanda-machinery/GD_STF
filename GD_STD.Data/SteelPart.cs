@@ -62,6 +62,7 @@ namespace GD_STD.Data
             Type = profile.Type;
             IsTekla = false;
             Number = number;
+            DrawingName = teklaName;
             Count = count;
             GUID = guid;
             Phase = phase;

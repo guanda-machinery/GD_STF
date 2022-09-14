@@ -1370,8 +1370,9 @@ namespace WPFSTD105.ViewModel
                                 partList.Remove(partID);
                                 // 零件ID
                                 steelAttrVM.steelAttr.TeklaPartID = partID.ToString();
-                                // Tekla 圖名稱
-                                steelAttrVM.TeklaName = item.DrawingName == "null" ? "" : item.DrawingName;
+                                // Tekla 圖名稱 // 匯入時 請檢查是匯入"NuLL還是空白"
+                                steelAttrVM.TeklaName = (string.IsNullOrEmpty(item.DrawingName) || item.DrawingName == "null") ? "" : item.DrawingName;
+                                steelAttrVM.steelAttr.Name = (string.IsNullOrEmpty(item.DrawingName) || item.DrawingName == "null") ? "" : item.DrawingName;
                                 // 鋼材類別
                                 var aa = item.Type.GetType().GetMember(item.Type.ToString())[0].GetCustomAttribute<DescriptionAttribute>();
                                 string type = aa == null ? "" : aa.Description;
@@ -1513,6 +1514,7 @@ namespace WPFSTD105.ViewModel
                 aa.Weight = PartWeight(aa, saFile); //item.Weight,
                 aa.steelAttr.GUID = item.DataName;
                 aa.steelAttr.PartNumber = item.PartNumber;
+                aa.steelAttr.Name = item.TeklaName;
                 aa.steelAttr.AsseNumber = item.AssemblyNumber;
                 aa.steelAttr.t1 = float.Parse(item.t1.ToString());
                 aa.steelAttr.t2 = float.Parse(item.t2.ToString());
