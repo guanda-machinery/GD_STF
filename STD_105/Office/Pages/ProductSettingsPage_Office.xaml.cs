@@ -38,6 +38,7 @@ namespace STD_105.Office
     {
         public ObSettingVM sr = new ObSettingVM();
 
+        public String PreGUID { get; set; } 
         public ObservableCollection<DataCorrespond> DataCorrespond { get; set; } = new ObservableCollection<DataCorrespond>();
         /// <summary>
         /// 20220823 蘇冠綸 製品設定
@@ -373,6 +374,7 @@ namespace STD_105.Office
                 //steelAttr.GUID = ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).GUID;//修改唯一識別ID
                 ViewModel.SteelAttr.Length = steelAttr.Length;
                 ViewModel.SteelAttr.Phase = steelAttr.Phase;
+                ViewModel.SteelAttr.ShippingNumber = steelAttr.ShippingNumber;
                 ViewModel.SteelAttr.Number = steelAttr.Number;
                 ViewModel.SteelAttr.Profile = steelAttr.Profile;
                 ViewModel.SteelAttr.Material = steelAttr.Material;
@@ -431,8 +433,8 @@ namespace STD_105.Office
                 Esc();
 
 
-                if (!fAddSteelPart)
-                    SaveModel(false);//存取檔案
+                //if (!fAddSteelPart)
+                //    SaveModel(false);//存取檔案
 
 
 
@@ -1615,7 +1617,7 @@ namespace STD_105.Office
         /// <returns></returns>
         public SteelAttr GetViewToAttr(SteelAttr steelAttr, ModelExt model)
         {
-            steelAttr.Creation = DateTime.Now;
+            //steelAttr.Creation = DateTime.Now;
             steelAttr.Revise = null;
             //steelAttr.PointFront = new CutList();//清除切割線
             //steelAttr.PointTop = new CutList();//清除切割線
@@ -2007,10 +2009,10 @@ namespace STD_105.Office
             STDSerialization ser = new STDSerialization();
             ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();//備份當前加工區域數值
 
-            double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData[0].A);     //  腹板斜邊打點比列(短)
-            double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData[0].B);     //  腹板斜邊打點比列(長)
-            double PosRatioC = myCs.DivSymbolConvert(ReadSplitLineSettingData[0].C);     //  翼板斜邊打點比列(短)
-            double PosRatioD = myCs.DivSymbolConvert(ReadSplitLineSettingData[0].D);     //  翼板斜邊打點比列(長)
+            double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData==null ? "0" : ReadSplitLineSettingData[0].A);     //  腹板斜邊打點比列(短)
+            double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData==null ? "0" : ReadSplitLineSettingData[0].B);     //  腹板斜邊打點比列(長)
+            double PosRatioC = myCs.DivSymbolConvert(ReadSplitLineSettingData==null ? "0" : ReadSplitLineSettingData[0].C);     //  翼板斜邊打點比列(短)
+            double PosRatioD = myCs.DivSymbolConvert(ReadSplitLineSettingData==null ? "0" : ReadSplitLineSettingData[0].D);     //  翼板斜邊打點比列(長)
 
             List<Point3D> tmplist1 = new List<Point3D>() { };
             Point3D PointUL1 = new Point3D() ;
@@ -3311,8 +3313,12 @@ namespace STD_105.Office
         {
             if (cbx_SectionType.SelectedIndex != -1)
             {
-                ViewModel.SteelAttr = ViewModel.ProfileList[cbx_SectionType.SelectedIndex];
-                ViewModel.CurrentPartSteelAttr = ViewModel.SteelAttr;
+                var pf = ViewModel.ProfileList[cbx_SectionType.SelectedIndex];
+                ViewModel.SteelAttr.H = pf.H;
+                ViewModel.SteelAttr.W = pf.W;
+                ViewModel.SteelAttr.t1 = pf.t1;
+                ViewModel.SteelAttr.t2 = pf.t2;
+                ViewModel.CurrentPartSteelAttr = ViewModel.ProfileList[cbx_SectionType.SelectedIndex]; //ViewModel.SteelAttr;
             }
         }
         /// <summary>
@@ -3393,15 +3399,15 @@ namespace STD_105.Office
 
 
                 var aaa = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+                
                 var bbb = DataCorrespond.Where(p => p.Number == aaa.PartNumber).ToList();
-                {
-                 
-                    aaa.oPoint = bbb[0].oPoint.ToList();
-                    aaa.vPoint = bbb[0].vPoint.ToList();
-                    aaa.uPoint = bbb[0].uPoint.ToList();
-                    ViewModel.WriteSteelAttr(aaa);
-                    ViewModel.GetSteelAttr();
-                }
+
+                aaa.oPoint = bbb[0].oPoint== null ? new List<NcPoint3D>() : bbb[0].oPoint.ToList();
+                aaa.vPoint = bbb[0].vPoint== null ? new List<NcPoint3D>() : bbb[0].vPoint.ToList();
+                aaa.uPoint = bbb[0].uPoint == null ? new List<NcPoint3D>() : bbb[0].uPoint.ToList();
+                ViewModel.WriteSteelAttr(aaa);
+                ViewModel.GetSteelAttr();
+
 
 
 
