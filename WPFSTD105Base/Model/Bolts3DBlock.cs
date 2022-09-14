@@ -486,6 +486,7 @@ namespace WPFSTD105.Model
             {
                 case OBJECT_TYPE.RH:
                 case OBJECT_TYPE.BH:
+                case OBJECT_TYPE.H:
                     if (sectionTypeProcessingData_H.Count > 0)
                     {
                         a = sectionTypeProcessingData_H[0].A;
@@ -502,6 +503,7 @@ namespace WPFSTD105.Model
                     }
                     break;
                 case OBJECT_TYPE.BOX:
+                case OBJECT_TYPE.TUBE:
                     if (sectionTypeProcessingData_BOX.Count > 0)
                     {
                         a = sectionTypeProcessingData_BOX[0].A;
@@ -524,6 +526,7 @@ namespace WPFSTD105.Model
             {
                 case OBJECT_TYPE.RH:
                 case OBJECT_TYPE.BH:
+                case OBJECT_TYPE.H:
                     a = a + steelAttr.t2;
                     b = b + 0;
                     c = c + steelAttr.t1;
@@ -534,6 +537,7 @@ namespace WPFSTD105.Model
                     b = b + 0;
                     break;
                 case OBJECT_TYPE.BOX:
+                case OBJECT_TYPE.TUBE:
                     a = a + steelAttr.t2;
                     b = b + steelAttr.t1;
                     break;
@@ -568,6 +572,7 @@ namespace WPFSTD105.Model
                 case OBJECT_TYPE.RH:
                 case OBJECT_TYPE.CH:
                 case OBJECT_TYPE.BH:
+                case OBJECT_TYPE.H:
                     switch (boltAttr.Face)
                     {
                         // 腹板
@@ -639,6 +644,7 @@ namespace WPFSTD105.Model
                 #endregion
                 #region 方管
                 case OBJECT_TYPE.BOX:
+                case OBJECT_TYPE.TUBE:
                     switch (boltAttr.Face)
                     {
                         // 腹板

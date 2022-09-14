@@ -70,6 +70,25 @@ namespace WPFSTD105
             GZipSerializeBinary(steels, path);//壓縮序列化檔案
         }
         /// <summary>
+        /// 取得所有斷面規格
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, ObservableCollection<SteelAttr>> GetSteelAttr()
+        {            
+            Dictionary<string, ObservableCollection<SteelAttr>> result = new Dictionary<string, ObservableCollection<SteelAttr>>();
+            string dirPath = ApplicationVM.DirectoryPorfile(); //斷面規格
+            DirectoryInfo info = new DirectoryInfo(dirPath);//零件資料夾
+            foreach (var item in info.GetFiles("*.inp")) //逐步尋找有關 .lis 檔案
+            {
+                ObservableCollection<SteelAttr> _ = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>(item.FullName);
+                //ObservableCollection<object> _ = Deserialize<ObservableCollection<object>>(item.FullName);//解壓縮反序列化只定路徑物件
+                ObservableCollection<SteelAttr> add = new ObservableCollection<SteelAttr>(_.Select(el => (SteelAttr)el));
+                result.Add(item.Name.Replace(".inp",""), add);
+            }
+            return result;
+        }
+
+        /// <summary>
         /// 取得目前模型所有零件列表 (壓縮)
         /// </summary>
         /// <returns>回傳目前模型 <see cref="ApplicationVM.DirectorySteelPart"/> 所有序列化檔案物件</returns>
