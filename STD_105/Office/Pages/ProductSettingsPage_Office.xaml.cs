@@ -298,12 +298,14 @@ namespace STD_105.Office
                     SelectReference = null,
                     User = new List<ACTION_USER>() { ACTION_USER.Add }
                 });
-                fAddPartAndBolt = true;
+                
+                fAddSteelPart = true; // hank 新設 新增零件旗號,暫不儲存
+                
                 model.ZoomFit();//設置道適合的視口
                 model.Refresh();//刷新模型
                 //drawing.ZoomFit();
                 //drawing.Refresh();
-                SaveModel(true);
+                // SaveModel(true);
 
                 //ObSettingVM sr = new ObSettingVM();
                 ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
@@ -383,6 +385,9 @@ namespace STD_105.Office
 
 
                 Mesh modify = Steel3DBlock.GetProfile(steelAttr); //修改的形狀
+
+                ManHypotenusePoint((FACE)ViewModel.rbtn_CutFace); // 手動斜邊
+
                 ViewModel.tem3DRecycle.Add(model.Entities[model.Entities.Count - 1]);//加入垃圾桶準備刪除
                 ViewModel.tem2DRecycle.AddRange(drawing.Entities);//加入垃圾桶準備刪除
 
@@ -421,23 +426,22 @@ namespace STD_105.Office
                 model.Entities.Insert(0, modify);//加入參考圖塊到模型
                 drawing.Entities.AddRange(steel2D);
                 Esc();
+
+
+                if (!fAddSteelPart)
+                    SaveModel(false);//存取檔案
+
+
+
                 //刷新模型
                 model.Invalidate();
                 drawing.Invalidate();
+                model.Refresh();
+                drawing.Refresh();
 
-                if (!fAddPartAndBolt)
-                    SaveModel(false);//存取檔案
 
-                // 執行斜邊打點
-                //HypotenusePoint(FACE.TOP);
-                //HypotenusePoint(FACE.BACK);
-                //HypotenusePoint(FACE.FRONT);
 
-                //AddHypotenusePoint(FACE.TOP);
 
-                
-
-                
 #if DEBUG
                 log4net.LogManager.GetLogger("修改主件").Debug("結束");
 #endif
@@ -484,7 +488,21 @@ namespace STD_105.Office
             //OK鈕 20220902 張燕華
             ViewModel.OKtoConfirmChanges = new RelayCommand(() =>
             {
-                //在此撰寫程式碼..
+                if (fAddSteelPart)
+                {
+                    WinUIMessageBox.Show(null,
+                    $"新增零件已存檔",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Popup);
+
+                    SaveModel(true);//存取檔案
+                    fAddSteelPart=false;
+                }
+
             });
             //加入孔
             ViewModel.AddHole = new RelayCommand(() =>
@@ -527,7 +545,8 @@ namespace STD_105.Office
                 BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                 if (check)
                 {
-                    SaveModel(false);//存取檔案
+                    if (!fAddSteelPart)
+                        SaveModel(false);//存取檔案
 
                     //不是修改孔位狀態
                     if (!modifyHole)
@@ -544,10 +563,10 @@ namespace STD_105.Office
                             User = new List<ACTION_USER>() { ACTION_USER.Add }
                         });
                     }
-                    //刷新模型
-                    model.Refresh();
-                    drawing.Refresh();
-                    SaveModel(false);//存取檔案
+                    ////刷新模型
+                    //model.Refresh();
+                    //drawing.Refresh();
+                    //SaveModel(false);//存取檔案
                 }
                 else
                 {
@@ -564,8 +583,9 @@ namespace STD_105.Office
                 //刷新模型
                 model.Refresh();
                 drawing.Refresh();
-                if (!fAddPartAndBolt)
-                    SaveModel(false);//存取檔案
+
+                //if (!fAddSteelPart)
+                //    SaveModel(false);//存取檔案
 
             });
             //修改孔
@@ -640,7 +660,7 @@ namespace STD_105.Office
                     modifyHole = false;
                     ViewModel.GroupBoltsAttr = original;
                     model.Invalidate();//刷新模型
-                    if (!fAddPartAndBolt)
+                    if (!fAddSteelPart)
                         SaveModel(false);//存取檔案
 #if DEBUG
                     log4net.LogManager.GetLogger("修改孔位").Debug("結束");
@@ -1539,12 +1559,14 @@ namespace STD_105.Office
             {
                 //開啟Model焦點
                 bool mFocus = model.Focus();
+               
                 if (!mFocus)
                 {
                     drawing.Focus();
                 }
                 SimulationDelete();
-                if (!fAddPartAndBolt)
+
+                if (!fAddSteelPart)
                     SaveModel(false);
             });
             #endregion
@@ -1592,8 +1614,8 @@ namespace STD_105.Office
         {
             steelAttr.Creation = DateTime.Now;
             steelAttr.Revise = null;
-            steelAttr.PointFront = new CutList();//清除切割線
-            steelAttr.PointTop = new CutList();//清除切割線
+            //steelAttr.PointFront = new CutList();//清除切割線
+            //steelAttr.PointTop = new CutList();//清除切割線
             steelAttr.AsseNumber = this.asseNumber.Text;
             steelAttr.Length = string.IsNullOrEmpty(this.Length.Text) ? 0 : Double.Parse(this.Length.Text);
             steelAttr.Weight = string.IsNullOrEmpty(this.Weight.Text) ? 0 : double.Parse(this.Weight.Text);
@@ -1933,7 +1955,9 @@ namespace STD_105.Office
         }
 
 
-        bool fAddPartAndBolt = false;       //  判斷執行新增零件及孔位
+         
+
+        bool fAddSteelPart = false;       //  判斷執行新增零件及孔位
         bool fAddHypotenusePoint = false;   //  判斷執行斜邊打點
         List<Bolts3DBlock> lstBoltsCutPoint = new List<Bolts3DBlock>();
         
@@ -2240,21 +2264,12 @@ namespace STD_105.Office
                     break;
             }
 
+            if (!fAddSteelPart)   //  新建孔群是否於新增零件  : false 直接存檔
+                SaveModel(false, false);//存取檔案 
+
             //刷新模型
             model.Refresh();
             drawing.Refresh();
-
-
-
-
-            if (!fAddPartAndBolt)   //  是否新增零件及孔群 : false 直接存檔
-            {
-                SaveModel(true,false);//存取檔案 
-
-            }
-
-
-
 
         }
 
@@ -2485,26 +2500,19 @@ namespace STD_105.Office
 
             }
 
+            if (!fAddSteelPart)   //  新建孔群是否於新增零件  : false 直接存檔
+                SaveModel(false, false);//存取檔案 
+
+
             //刷新模型
             model.Refresh();
             drawing.Refresh();
 
             fAddHypotenusePoint = true; //  執行斜邊打點功能
 
-            if (!fAddPartAndBolt)   //  是否新增零件及孔群 : false 直接存檔
-                SaveModel(false);//存取檔案 
 
         }
 
-
-
-        //************************************************************
-
-        //        switch ((FACE)ViewModel.CutFaceType)
-        //{
-        //    case FACE.BACK:
-        //        if (steelAttr.Back == null)
-        //            return;
 
 
         //        for (int z = 0; z < lstBoltsCutPoint.Count; z++)
@@ -2516,75 +2524,7 @@ namespace STD_105.Office
         //        }
         //        model.Entities.DeleteSelected();
 
-        //        //UL
-        //        result = steelAttr.Back.UL;
-        //        if (result.Count > 0)
-        //        {
-        //            DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
-        //            a = DRPoint[DRPoint.Count - 1].Item1;
-        //            b = DRPoint[DRPoint.Count - 1].Item2;
-        //            HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[0].Y));
-        //            HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[0].Y));
-        //        }
 
-        //        //UR
-        //        result = steelAttr.Back.UR;
-        //        if (result.Count > 0)
-        //        {
-        //            DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
-        //            a = DRPoint[DRPoint.Count - 1].Item1;
-        //            b = DRPoint[DRPoint.Count - 1].Item2;
-        //            HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, result[1].Y - (PosRatio1 * b)));
-        //            HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, result[1].Y - (PosRatio2 * b)));
-        //        }
-
-        //        //DL
-        //        result = steelAttr.Back.DL;
-        //        if (result.Count > 0)
-        //        {
-        //            DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
-        //            a = DRPoint[DRPoint.Count - 1].Item1;
-        //            b = DRPoint[DRPoint.Count - 1].Item2;
-        //            HypotenusePoint.Add(((PosRatio1 * a), result[2].Y - (PosRatio1 * b)));
-        //            HypotenusePoint.Add(((PosRatio2 * a), result[2].Y - (PosRatio2 * b)));
-        //        }
-
-        //        //DR
-        //        result = steelAttr.Back.DR;
-        //        if (result.Count > 0)
-        //        {
-        //            DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
-        //            a = DRPoint[DRPoint.Count - 1].Item1;
-        //            b = DRPoint[DRPoint.Count - 1].Item2;
-        //            HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[1].Y));
-        //            HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[1].Y));
-        //        }
-
-
-        //        for (int z = 0; z < HypotenusePoint.Count; z++)
-        //        {
-        //            GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr((FACE)ViewModel.CutFaceType, START_HOLE.START);
-        //            TmpBoltsArr.dX = "0";
-        //            TmpBoltsArr.dY = "0";
-        //            TmpBoltsArr.xCount = 1;
-        //            TmpBoltsArr.yCount = 1;
-        //            TmpBoltsArr.Mode = AXIS_MODE.POINT;
-        //            TmpBoltsArr.X = HypotenusePoint[z].Item1;
-        //            TmpBoltsArr.Y = HypotenusePoint[z].Item2;
-        //            TmpBoltsArr.GUID = Guid.NewGuid();
-        //            Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference);
-        //            BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
-        //            lstBoltsCutPoint.Add(bolts);
-        //        }
-
-
-        //        break;
-
-
-
-        //    case FACE.TOP:
-        //        if (steelAttr.Top == null)
-        //            return;
 
 
         //        //找尋並記錄斜邊打點LIST內,為TOP面的孔群名稱(GUID)
@@ -2644,9 +2584,7 @@ namespace STD_105.Office
         //        //    if (array1[z]!=-1)
         //        //        lstBoltsCutPoint.RemoveAt(array1[z]);
 
-        //        //}
-        //        //if (!fAddPartAndBolt)   //  是否新增零件及孔群 : false 直接存檔
-        //        //    SaveModel(false);//存取檔案 
+
 
 
         //        //for (int i = 0; i < model.Entities.Count; i++)//逐步展開孔群資訊
@@ -2665,72 +2603,6 @@ namespace STD_105.Office
         //        model.Refresh();
         //        drawing.Refresh();
 
-        //        //UL
-        //        result = steelAttr.Top.UL;
-        //        if (result.Count > 0)
-        //        {
-        //            DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
-        //            a = DRPoint[DRPoint.Count - 1].Item1;
-        //            b = DRPoint[DRPoint.Count - 1].Item2;
-        //            HypotenusePoint.Add(((PosRatio1 * a), (PosRatio1 * b) + result[0].Y));
-        //            HypotenusePoint.Add(((PosRatio2 * a), (PosRatio2 * b) + result[0].Y));
-        //        }
-
-        //        //UR
-        //        result = steelAttr.Top.UR;
-        //        if (result.Count > 0)
-        //        {
-        //            DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
-        //            a = DRPoint[DRPoint.Count - 1].Item1;
-        //            b = DRPoint[DRPoint.Count - 1].Item2;
-        //            HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, result[1].Y - (PosRatio1 * b)));
-        //            HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, result[1].Y - (PosRatio2 * b)));
-        //        }
-
-        //        //DL
-        //        result = steelAttr.Top.DL;
-        //        if (result.Count > 0)
-        //        {
-        //            DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
-        //            a = DRPoint[DRPoint.Count - 1].Item1;
-        //            b = DRPoint[DRPoint.Count - 1].Item2;
-        //            HypotenusePoint.Add(((PosRatio1 * a), result[2].Y - (PosRatio1 * b)));
-        //            HypotenusePoint.Add(((PosRatio2 * a), result[2].Y - (PosRatio2 * b)));
-        //        }
-
-        //        //DR
-        //        result = steelAttr.Top.DR;
-        //        if (result.Count > 0)
-        //        {
-        //            DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
-        //            a = DRPoint[DRPoint.Count - 1].Item1;
-        //            b = DRPoint[DRPoint.Count - 1].Item2;
-        //            HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[1].Y));
-        //            HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[1].Y));
-        //        }
-
-        //        for (int z = 0; z < HypotenusePoint.Count; z++)
-        //        {
-        //            GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr((FACE)ViewModel.CutFaceType, START_HOLE.START);
-        //            TmpBoltsArr.dX = "0";
-        //            TmpBoltsArr.dY = "0";
-        //            TmpBoltsArr.xCount = 1;
-        //            TmpBoltsArr.yCount = 1;
-        //            TmpBoltsArr.Mode = AXIS_MODE.POINT;
-        //            TmpBoltsArr.X = HypotenusePoint[z].Item1;
-        //            TmpBoltsArr.Y = HypotenusePoint[z].Item2;
-        //            TmpBoltsArr.GUID = Guid.NewGuid();
-        //            Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference);
-        //            BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
-        //            lstBoltsCutPoint.Add(bolts);
-        //        }
-        //        break;
-
-
-        //    case FACE.FRONT:
-        //        if (steelAttr.Front == null)
-        //            return;
-
 
 
         //        for (int z = 0; z < lstBoltsCutPoint.Count; z++)
@@ -2741,71 +2613,6 @@ namespace STD_105.Office
         //                model.Entities.DeleteSelected();
         //            }
         //        }
-
-        //        //UL
-        //        result = steelAttr.Front.UL;
-        //        if (result.Count > 0)
-        //        {
-        //            DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
-        //            a = DRPoint[DRPoint.Count - 1].Item1;
-        //            b = DRPoint[DRPoint.Count - 1].Item2;
-        //            HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[0].Y));
-        //            HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[0].Y));
-        //        }
-
-        //        //UR                    
-        //        result = steelAttr.Front.UR;
-        //        if (result.Count > 0)
-        //        {
-        //            DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
-        //            a = DRPoint[DRPoint.Count - 1].Item1;
-        //            b = DRPoint[DRPoint.Count - 1].Item2;
-        //            HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, result[1].Y - (PosRatio1 * b)));
-        //            HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, result[1].Y - (PosRatio2 * b)));
-        //        }
-
-        //        //DL
-        //        result = steelAttr.Front.DL;
-        //        if (result.Count > 0)
-        //        {
-        //            DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
-        //            a = DRPoint[DRPoint.Count - 1].Item1;
-        //            b = DRPoint[DRPoint.Count - 1].Item2;
-        //            HypotenusePoint.Add(((PosRatio1 * a), result[2].Y - (PosRatio1 * b)));
-        //            HypotenusePoint.Add(((PosRatio2 * a), result[2].Y - (PosRatio2 * b)));
-        //        }
-
-        //        //DR
-        //        result = steelAttr.Front.DR;
-        //        if (result.Count > 0)
-        //        {
-        //            DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
-        //            a = DRPoint[DRPoint.Count - 1].Item1;
-        //            b = DRPoint[DRPoint.Count - 1].Item2;
-        //            HypotenusePoint.Add(((PosRatio1 * a) + result[0].X, (PosRatio1 * b) + result[1].Y));
-        //            HypotenusePoint.Add(((PosRatio2 * a) + result[0].X, (PosRatio2 * b) + result[1].Y));
-        //        }
-
-
-        //        for (int z = 0; z < HypotenusePoint.Count; z++)
-        //        {
-        //            GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr((FACE)ViewModel.CutFaceType, START_HOLE.START);
-        //            TmpBoltsArr.dX = "0";
-        //            TmpBoltsArr.dY = "0";
-        //            TmpBoltsArr.xCount = 1;
-        //            TmpBoltsArr.yCount = 1;
-        //            TmpBoltsArr.Mode = AXIS_MODE.POINT;
-        //            TmpBoltsArr.X = HypotenusePoint[z].Item1;
-        //            TmpBoltsArr.Y = HypotenusePoint[z].Item2;
-        //            TmpBoltsArr.GUID = Guid.NewGuid();
-        //            Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference);
-        //            BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
-        //            lstBoltsCutPoint.Add(bolts);
-        //        }
-        //        break;
-
-        //}
-
 
 
 
@@ -2843,7 +2650,7 @@ namespace STD_105.Office
             model.Refresh();
 
 
-            if (!fAddPartAndBolt)
+            if (!fAddSteelPart)
                 SaveModel(false);//存取檔案
 
 
@@ -3302,10 +3109,10 @@ namespace STD_105.Office
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
 
-            if (fAddPartAndBolt)  //  新增零件功能
+            if (fAddSteelPart)  //  新增零件功能
             {
                 var ResultRtn = WinUIMessageBox.Show(null,
-                     $"新增零件與鑽孔位置未存檔,是否存檔",
+                     $"新增零件未存檔,是否存檔",
                      "通知",
                      MessageBoxButton.OKCancel,
                      MessageBoxImage.Exclamation,
@@ -3317,29 +3124,29 @@ namespace STD_105.Office
                 if (ResultRtn == MessageBoxResult.OK)
                     SaveModel(true);//存取檔案
 
-                fAddPartAndBolt = false;
+                fAddSteelPart = false;
                 fAddHypotenusePoint = false;
             }
 
-            //  執行斜邊打點功能
-            if (fAddHypotenusePoint)
-            {
-                var ResultRtn = WinUIMessageBox.Show(null,
-                     $"切割線打點異動未存檔,是否存檔",
-                     "通知",
-                     MessageBoxButton.OKCancel,
-                     MessageBoxImage.Exclamation,
-                     MessageBoxResult.None,
-                     MessageBoxOptions.None,
-                     FloatingMode.Popup);
+            ////  執行斜邊打點功能
+            //if (fAddHypotenusePoint)
+            //{
+            //    var ResultRtn = WinUIMessageBox.Show(null,
+            //         $"切割線打點異動未存檔,是否存檔",
+            //         "通知",
+            //         MessageBoxButton.OKCancel,
+            //         MessageBoxImage.Exclamation,
+            //         MessageBoxResult.None,
+            //         MessageBoxOptions.None,
+            //         FloatingMode.Popup);
 
 
-                if (ResultRtn == MessageBoxResult.OK)
-                    SaveModel(true);//存取檔案
+            //    if (ResultRtn == MessageBoxResult.OK)
+            //        SaveModel(true);//存取檔案
 
-                fAddHypotenusePoint = false;                                                                                                               
+            //    fAddHypotenusePoint = false;                                                                                                               
 
-            }
+            //}
             
 
 
@@ -3532,6 +3339,27 @@ namespace STD_105.Office
                         FloatingMode.Popup);
                     return;
                 }
+
+
+
+                if (fAddSteelPart)  //  新增零件功能
+                {
+                    var ResultRtn = WinUIMessageBox.Show(null,
+                         $"新增零件未存檔,是否存檔",       
+                         "通知",
+                         MessageBoxButton.OKCancel,
+                         MessageBoxImage.Exclamation,
+                         MessageBoxResult.None,
+                         MessageBoxOptions.None,
+                         FloatingMode.Popup);
+
+
+                    if (ResultRtn == MessageBoxResult.OK)
+                        SaveModel(true);//存取檔案
+
+                    fAddSteelPart = false;
+                }
+
                 readFile.DoWork();//開始工作
                 model.Blocks.Clear();
                 model.Entities.Clear();
@@ -3588,7 +3416,7 @@ namespace STD_105.Office
 
         private void OKtoConfirmChanges(object sender, RoutedEventArgs e)
         {
-            if (fAddPartAndBolt)
+            if (fAddSteelPart)
             {
                 var ResultRtn = WinUIMessageBox.Show(null,
                          $"新增零件是否存檔 ?",
@@ -3603,7 +3431,7 @@ namespace STD_105.Office
                 if (ResultRtn == MessageBoxResult.OK)
                     SaveModel(true);//存取檔案
 
-                fAddPartAndBolt = false;
+                fAddSteelPart = false;
             }
         }
     }
