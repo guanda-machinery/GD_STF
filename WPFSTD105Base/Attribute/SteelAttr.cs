@@ -61,11 +61,11 @@ namespace WPFSTD105.Attribute
         /// <summary>
         /// Phase
         /// </summary>
-        public int Phase { get; set; }
+        public int? Phase { get; set; }
         /// <summary>
         /// 拆運 車次
         /// </summary>
-        public int ShippingNumber { get; set; }
+        public int? ShippingNumber { get; set; }
         /// <summary>
         /// 標題1
         /// </summary>

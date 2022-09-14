@@ -75,6 +75,7 @@ namespace WPFSTD105.Tekla
         /// </summary>
         private bool _LackMaterial { get; set; }
         #endregion
+        
         /// <summary>
         /// 處理 Tekla CSV 表格
         /// </summary>
