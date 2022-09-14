@@ -25,6 +25,7 @@ using GD_STD.Data;
 using DevExpress.Xpf.WindowsUI;
 using DevExpress.Xpf.Core;
 using devDept.Eyeshot.Translators;
+using WPFSTD105.Tekla;
 
 namespace WPFSTD105.ViewModel
 {
@@ -1404,6 +1405,15 @@ namespace WPFSTD105.ViewModel
                                 steelAttrVM.steelAttr.t1 = item.t1;
                                 steelAttrVM.steelAttr.t2 = item.t2;
 
+                                steelAttrVM.Title2 = item.Title2;
+                                steelAttrVM.Title1 = item.Title1;
+                                steelAttrVM.Phase = item.Phase;
+                                steelAttrVM.ShippingNumber = item.ShippingNumber;
+                                steelAttrVM.steelAttr.Title1 = item.Title1;
+                                steelAttrVM.steelAttr.Title2 = item.Title2;
+                                steelAttrVM.steelAttr.Phase = item.Phase;
+                                steelAttrVM.steelAttr.ShippingNumber = item.ShippingNumber;
+
                                 // 上鎖
                                 steelAttrVM.steelAttr.Lock = item.Lock;
                                 // 驚嘆號
@@ -1484,6 +1494,9 @@ namespace WPFSTD105.ViewModel
                          }).ToList();
             List<ProductSettingsPageViewModel> list = new List<ProductSettingsPageViewModel>();
             SteelAttr attr = new SteelAttr();
+
+            Dictionary<string, ObservableCollection<SteelAttr>> saFile = ser.GetSteelAttr();
+
             foreach (var item in group)
             {
                 ProductSettingsPageViewModel aa = new ProductSettingsPageViewModel()
@@ -1499,8 +1512,7 @@ namespace WPFSTD105.ViewModel
                     Profile = item.Profile,
                     Material = item.Material,
                     Count = item.Count,
-                    Length = item.Length,
-                    Weight = item.Weight,
+                    Length = item.Length,                    
                     Phase = item.Phase,
                     ShippingNumber = item.ShippingNumber,
                     Title1 = item.Title1,
@@ -1508,16 +1520,37 @@ namespace WPFSTD105.ViewModel
                     t1 = item.t1,
                     t2 = item.t2,
                 };
+                aa.Weight = PartWeight(aa, saFile); //item.Weight,
                 aa.steelAttr.GUID = item.DataName;
                 aa.steelAttr.PartNumber = item.PartNumber;
                 aa.steelAttr.AsseNumber = item.AssemblyNumber;
                 aa.steelAttr.t1 = float.Parse(item.t1.ToString());
                 aa.steelAttr.t2 = float.Parse(item.t2.ToString());
+                aa.steelAttr.Title1 = item.Title1;
+                aa.steelAttr.Title2 = item.Title2;
+                aa.steelAttr.Phase = item.Phase;
+                aa.steelAttr.ShippingNumber = item.ShippingNumber;
                 list.Add(aa);
             }
-
             return list;
-            
+        }
+        /// <summary>
+        /// 計算單位重
+        /// </summary>
+        /// <param name="part_tekla"></param>
+        /// <param name="saFile"></param>
+        /// <returns></returns>
+        public double PartWeight(ProductSettingsPageViewModel part_tekla, Dictionary<string, ObservableCollection<SteelAttr>> saFile) 
+        {
+            var profile = saFile[((OBJECT_TYPE)part_tekla.SteelType).ToString()]
+                .Where(x => x.Profile == part_tekla.Profile)
+                .FirstOrDefault();
+
+            if (profile != null)
+            {
+                return 1000 * profile.Kg;
+            }            
+            return part_tekla.Weight;
         }
     }
 }

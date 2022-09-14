@@ -43,7 +43,7 @@ namespace GD_STD.Data
         /// <param name="lockMark">鎖</param>
         /// <exception cref="ArgumentException"></exception>
         public SteelPart(ISteelProfile profile, string teklaName,
-            string number,double length, int count, Guid guid,int phase,int shippingNumber,
+            string number,double length, int count, Guid guid,int? phase,int? shippingNumber,
             string title1,string title2 ,bool lockMark)
         {
             if (string.IsNullOrWhiteSpace(number))
@@ -134,11 +134,11 @@ namespace GD_STD.Data
         /// <summary>
         /// Phase
         /// </summary>
-        public int Phase { get; set; }
+        public int? Phase { get; set; }
         /// <summary>
         /// 車次、拆運
         /// </summary>
-        public int ShippingNumber { get; set; }
+        public int? ShippingNumber { get; set; }
         /// <summary>
         /// 標題1
         /// </summary>
