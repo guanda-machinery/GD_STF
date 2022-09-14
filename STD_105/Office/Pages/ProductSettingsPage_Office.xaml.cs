@@ -386,7 +386,7 @@ namespace STD_105.Office
 
                 Mesh modify = Steel3DBlock.GetProfile(steelAttr); //修改的形狀
 
-                ManHypotenusePoint((FACE)ViewModel.CutFaceType); // 手動斜邊
+                ManHypotenusePoint((FACE)ViewModel.rbtn_CutFace); // 手動斜邊
 
                 ViewModel.tem3DRecycle.Add(model.Entities[model.Entities.Count - 1]);//加入垃圾桶準備刪除
                 ViewModel.tem2DRecycle.AddRange(drawing.Entities);//加入垃圾桶準備刪除
@@ -1614,8 +1614,8 @@ namespace STD_105.Office
         {
             steelAttr.Creation = DateTime.Now;
             steelAttr.Revise = null;
-            steelAttr.PointFront = new CutList();//清除切割線
-            steelAttr.PointTop = new CutList();//清除切割線
+            //steelAttr.PointFront = new CutList();//清除切割線
+            //steelAttr.PointTop = new CutList();//清除切割線
             steelAttr.AsseNumber = this.asseNumber.Text;
             steelAttr.Length = string.IsNullOrEmpty(this.Length.Text) ? 0 : Double.Parse(this.Length.Text);
             steelAttr.Weight = string.IsNullOrEmpty(this.Weight.Text) ? 0 : double.Parse(this.Weight.Text);
@@ -3112,7 +3112,7 @@ namespace STD_105.Office
             if (fAddSteelPart)  //  新增零件功能
             {
                 var ResultRtn = WinUIMessageBox.Show(null,
-                     $"新增零件與鑽孔位置未存檔,是否存檔",
+                     $"新增零件未存檔,是否存檔",
                      "通知",
                      MessageBoxButton.OKCancel,
                      MessageBoxImage.Exclamation,
