@@ -3306,6 +3306,9 @@ namespace STD_105.Office
         {
             GetWpfLogicalChildClass.SetAllCheckBoxTrueOrFalse(CutTabItem);
         }
+        /// <summary>
+        /// 斷面規格改變時的事件 - 給予VM中SteelAttr, CurrentPartSteelAttr當前的零件資料
+        /// </summary>
         private void CBOX_SectionTypeChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             if (cbx_SectionType.SelectedIndex != -1)
@@ -3318,15 +3321,18 @@ namespace STD_105.Office
                 ViewModel.CurrentPartSteelAttr = ViewModel.ProfileList[cbx_SectionType.SelectedIndex]; //ViewModel.SteelAttr;
             }
         }
+        /// <summary>
+        /// 由所選零件給予VM中所需零件資料
+        /// </summary>
         private void ConfirmCurrentSteelSection(ProductSettingsPageViewModel CuurentSelectedPart)
         {
             ViewModel.fPartListOrManuall = true;
             ViewModel.ProfileType = (int)CuurentSelectedPart.SteelType;
             ViewModel.SteelSectionProperty = CuurentSelectedPart.Profile;
             ViewModel.ProductLengthProperty = CuurentSelectedPart.Length;
-            ViewModel.ProductWeightProperty = CuurentSelectedPart.Weight;
-            if (CuurentSelectedPart.Weight == 0) ViewModel.ProductWeightProperty = ViewModel.SteelAttr.Kg;//單一支重量
-            //if (CuurentSelectedPart.Weight == 0) ViewModel.ProductWeightProperty = (ViewModel.ProductLengthProperty / 1000) * ViewModel.SteelAttr.Kg;//總重量
+            ViewModel.ProductWeightProperty = (CuurentSelectedPart.Length/1000) * CuurentSelectedPart.Weight;
+            //if (CuurentSelectedPart.Weight == 0) ViewModel.ProductWeightProperty = ViewModel.SteelAttr.Kg;//單位重
+            if (CuurentSelectedPart.Weight == 0) ViewModel.ProductWeightProperty = (ViewModel.ProductLengthProperty / 1000) * ViewModel.SteelAttr.Kg;//單一支重量
             ViewModel.fPartListOrManuall = false;
         }
         private void Grid_SelectedChange(object sender, SelectedItemChangedEventArgs e)
