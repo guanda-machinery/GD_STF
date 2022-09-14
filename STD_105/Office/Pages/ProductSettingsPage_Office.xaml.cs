@@ -490,14 +490,18 @@ namespace STD_105.Office
             {
                 if (fAddSteelPart)
                 {
+                    WinUIMessageBox.Show(null,
+                    $"新增零件已存檔",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Popup);
 
                     SaveModel(true);//存取檔案
                     fAddSteelPart=false;
-
                 }
-
-
-
 
             });
             //加入孔
