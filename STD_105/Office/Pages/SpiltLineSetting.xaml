@@ -12,6 +12,7 @@
                   xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
                   xmlns:STD="clr-namespace:STD_105"
                   xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+                  xmlns:STD105="clr-namespace:STD_105"
                   xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
                   xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
                   xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
@@ -157,7 +158,15 @@
 
                             <CheckBox  Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" IsChecked="{Binding chb_Thickness_SplitLineSetting}" Margin="0,-52,0,0"/>
                             <Label Content="切割厚度："  Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Margin="0,-52,0,0"/>
-                            <TextBox Grid.Row="5" Grid.Column="2" VerticalAlignment="Center" Text="{Binding CutThickness, UpdateSourceTrigger=PropertyChanged}" Margin="0,-52,0,0"/>
+                            <TextBox Grid.Row="5" Grid.Column="2" VerticalAlignment="Center" Margin="0,-52,0,0">
+                                <TextBox.Text>
+                                    <Binding Path="CutThickness" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                        <Binding.ValidationRules>
+                                            <STD105:CheckNumberRule NumberMin="0"/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
                             <Label Grid.Row="5" Grid.Column="3" Content="(單位：mm)" VerticalAlignment="Center" Margin="0,-52,0,0"/>
 
                             <CheckBox  Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" IsChecked="{Binding chb_RemainingLength_SplitLineSetting}" Margin="0,-65,0,0"/>
@@ -170,7 +179,15 @@
                                 <StackPanel Grid.Column="0"  VerticalAlignment="Center">
                                     <Label Content ="大於"   />
                                 </StackPanel>
-                                <TextBox  Grid.Column="1" Text="{Binding SplitRemainingLength, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />
+                                <TextBox  Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBox.Text>
+                                        <Binding Path="SplitRemainingLength" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                            <Binding.ValidationRules>
+                                                <STD105:CheckNumberRule NumberMin="0"/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
                             </Grid>
                             <Label Grid.Row="6" Grid.Column="3" Content="(單位：mm)" VerticalAlignment="Center" Margin="0,-65,0,0"/>
                             <Label Content=" (小於餘料：廢料"  Grid.Row="7" Grid.Column="1" VerticalAlignment="Center" Margin="0,-65,0,0"/>

@@ -1231,8 +1231,8 @@ namespace WPFSTD105.ViewModel
             {
                 if (fPartListOrManuall == false)
                 {
-                    ProductWeightProperty = CurrentPartSteelAttr.Kg; //只有一支的重量
-                    //ProductWeightProperty = (ProductLengthProperty / 1000) * CurrentPartSteelAttr.Kg; //總重量
+                    //ProductWeightProperty = CurrentPartSteelAttr.Kg; //單位重
+                    ProductWeightProperty = (ProductLengthProperty / 1000) * CurrentPartSteelAttr.Kg; //單一支重量
                 }
             });
         }
