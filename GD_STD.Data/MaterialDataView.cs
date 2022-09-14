@@ -279,14 +279,7 @@ namespace GD_STD.Data
             }
             return false;
         }
-
-
         #endregion
-
-
-
-
-
 
 
         /// <inheritdoc/>

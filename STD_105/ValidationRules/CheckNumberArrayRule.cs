@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace STD_105
+namespace STD_105.ValidationRules
 {
     internal class CheckNumberArrayRule : ValidationRule
     {

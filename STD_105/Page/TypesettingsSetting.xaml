@@ -5,7 +5,8 @@
                   xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
                   xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
                   xmlns:GDSTD_Data="clr-namespace:GD_STD.Data;assembly=GD_STD.Data"
-                  xmlns:WPFSTD105="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+                  xmlns:WPFSTD105="clr-namespace:WPFSTD105;assembly=WPFSTD105"             
+                  xmlns:STD105ValidRule="clr-namespace:STD_105.ValidationRules"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                   xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
@@ -13,7 +14,6 @@
                   xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
                   xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
                   xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-
                   xmlns:local="clr-namespace:STD_105.Office"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:sys="clr-namespace:System;assembly=System.ServiceModel"
@@ -21,7 +21,7 @@
                   xmlns:ddgr="http://schemas.devdept.com/winfx/2008/xaml/graphics" 
                   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                   xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding" 
-                  xmlns:System="clr-namespace:System;assembly=mscorlib"
+                  xmlns:System="clr-namespace:System;assembly=mscorlib" 
                   Title="排版設定"              
                   x:TypeArguments="WPFSTD105:OfficeTypeSettingVM"
                   mc:Ignorable="d">
@@ -96,7 +96,7 @@
 
         </StackPanel.Resources>
         <StackPanel.DataContext>
-            <WPFSTD105:OfficeTypeSettingVM></WPFSTD105:OfficeTypeSettingVM>
+            <WPFSTD105:OfficeTypeSettingVM/>
         </StackPanel.DataContext>
 
         <DockPanel Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD105:ViewLocator.Instance}}"
@@ -282,12 +282,11 @@
                                                 <TextBox.Text>
                                                     <Binding Path="StartNumber"  UpdateSourceTrigger="PropertyChanged" >
                                                         <Binding.ValidationRules >
-                                                            <STD105:CheckStringEmptyRule/>
+                                                            <STD105ValidRule:CheckStringEmptyRule/>
                                                         </Binding.ValidationRules>
                                                     </Binding>
                                                 </TextBox.Text>
                                             </TextBox>
-
                                         </StackPanel>
                                     <StackPanel Grid.Column="0" Grid.Row="3" VerticalAlignment="Center">
                                         <Label Content="起始號碼：" />
@@ -297,7 +296,7 @@
                                                 <TextBox.Text>
                                                     <Binding Path="StartNumber"  UpdateSourceTrigger="PropertyChanged" >
                                                         <Binding.ValidationRules >
-                                                            <STD105:CheckStringEmptyRule/>
+                                                            <STD105ValidRule:CheckStringEmptyRule/>
                                                         </Binding.ValidationRules>
                                                     </Binding>
                                                 </TextBox.Text>
@@ -329,7 +328,7 @@
                                             <TextBox.Text>
                                                 <Binding Path="MainLength"  UpdateSourceTrigger="PropertyChanged" >
                                                     <Binding.ValidationRules >
-                                                        <STD105:CheckNumberArrayRule/>
+                                                            <STD105ValidRule:CheckNumberArrayRule/>
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                                 </TextBox.Text>
@@ -344,7 +343,7 @@
                                                 <TextBox.Text>
                                                     <Binding Path="SecondaryLength"  UpdateSourceTrigger="PropertyChanged" >
                                                         <Binding.ValidationRules >
-                                                            <STD105:CheckNumberArrayRule/>
+                                                            <STD105ValidRule:CheckNumberArrayRule/>
                                                         </Binding.ValidationRules>
                                                     </Binding>
                                                 </TextBox.Text>
@@ -410,7 +409,7 @@
                                             <TextBox.Text>
                                                 <Binding Path="MatchSettingStartCut" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" >
                                                     <Binding.ValidationRules >
-                                                        <STD105:CheckNumberRule NumberMin="0"/>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </TextBox.Text>
@@ -425,7 +424,7 @@
                                             <TextBox.Text>
                                                 <Binding Path="MatchSettingEndCut" StringFormat="{}{0:N2}"  UpdateSourceTrigger="PropertyChanged">
                                                     <Binding.ValidationRules>
-                                                        <STD105:CheckNumberRule  NumberMin="0"/>
+                                                        <STD105ValidRule:CheckNumberRule  NumberMin="0"/>
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </TextBox.Text>
@@ -560,12 +559,11 @@
                         <Style TargetType="dxg:GridColumn">
                             <Setter Property="HorizontalHeaderContentAlignment"  Value="Center"/>
                         </Style>
-
                     </GroupBox.Resources>
                     <dxg:GridControl 
                         Name="Material_List_GridControl"    
-                        AutoGenerateColumns="None"
-                        Grid.Row="2"                               
+                        AutoGenerateColumns="None" 
+                        Grid.Row="2"        
                         ItemsSource="{Binding MaterialDataViews}"
                         MinHeight="200"  MaxHeight="400">
                         <dxg:GridControl.View >
@@ -799,7 +797,7 @@
                                                     </StackPanel>
                                                 </StackPanel>
                                             </Border>
-                                            <GridSplitter Background="Transparent" Grid.RowSpan="2" HorizontalAlignment="Right"   VerticalAlignment="Stretch" Width="10" Margin="-5"  />
+                                            <GridSplitter Background="Transparent" Grid.RowSpan="2" HorizontalAlignment="Right"  VerticalAlignment="Stretch" Width="10" Margin="-5"  />
                                             <!-- 可調整邊界拉柄(透明)-->
                                             <Grid Grid.Column="1"  MinHeight="150" Margin="10,0,0,0">
                                                 <Grid.Resources>
@@ -827,7 +825,7 @@
                                                 </Grid.RowDefinitions>
                                                 <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                                                     <TextBlock Text="零件正轉"  />
-                                                    <Button Grid.Column="1" Grid.Row="0" Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding ClockwiseRotationComponentCommand }" IsEnabled= "{Binding}" >
+                                                    <Button Grid.Column="1" Grid.Row="0" Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding ClockwiseRotationComponentCommand }"  IsEnabled="{Binding DetailDescriptorButtonEnabled,UpdateSourceTrigger=PropertyChanged}" >
                                                         <Button.CommandParameter>
                                                             <MultiBinding Converter="{STD105:ComParConverter}">
                                                                 <MultiBinding.Bindings>
@@ -850,7 +848,7 @@
                                                 </StackPanel>
                                                 <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                                                     <TextBlock Text="零件逆轉"  />
-                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding CounterClockwiseRotationComponentCommand }">
+                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding CounterClockwiseRotationComponentCommand}">
                                                         <Button.CommandParameter>
                                                             <MultiBinding Converter="{STD105:ComParConverter}">
                                                                 <MultiBinding.Bindings>

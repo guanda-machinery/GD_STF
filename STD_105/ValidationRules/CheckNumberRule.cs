@@ -6,17 +6,41 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace STD_105
+namespace STD_105.ValidationRules
 {
+    /// <summary>
+    /// 驗證是否為數字
+    /// </summary>
     public class CheckNumberRule : ValidationRule
     {
+        /// <summary>
+        /// 設定最大值
+        /// </summary>
         public double? NumberMax { get; set; }
+        /// <summary>
+        /// 設定最小值
+        /// </summary>
         public double? NumberMin { get; set; }
+        /// <summary>
+        /// 是否為整數型
+        /// </summary>
+        public bool IsINTValidate { get; set; } = false;
 
-        public bool IsINT { get; set; } = false;
-
+        /// <summary>
+        /// 驗證<paramref name="value"/>值
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="cultureInfo"></param>
+        /// <returns></returns>
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
+            //先檢查參數
+            if(NumberMax is double && NumberMin is double)
+            {
+                if (NumberMax < NumberMin)
+                    throw new Exception("驗證值設定錯誤，最大值不可小於最小值");
+            }
+
             if (((string)value).Length > 0)
             {
                 if (double.TryParse((string)value, out var DoubleValue))
@@ -37,7 +61,7 @@ namespace STD_105
                         }
                     }
 
-                    if(IsINT)
+                    if(IsINTValidate)
                     {
                         if( int.TryParse((string)value, out var IntValue))
                         {

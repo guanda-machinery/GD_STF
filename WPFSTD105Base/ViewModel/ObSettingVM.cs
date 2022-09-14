@@ -406,7 +406,7 @@ namespace WPFSTD105.ViewModel
                 else
                     _steelAttr = ProfileList[value];
 
-                SteelAttr = (SteelAttr)steelAttr.DeepClone();
+                SteelAttr = (SteelAttr)_steelAttr.DeepClone();
             }
         }
 
