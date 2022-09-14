@@ -406,9 +406,9 @@
                                 <TextBox.Text>
                                     <Binding Path="ProductLengthProperty" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" >
                                         <Binding.ValidationRules>
-                                                <STD105:CheckNumberRule NumberMin="5"/>
-                                            </Binding.ValidationRules>
-                                        </Binding>
+                                            <STD105:CheckNumberRule NumberMin="0"/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
                                 </TextBox.Text>
 
                                 <i:Interaction.Triggers>

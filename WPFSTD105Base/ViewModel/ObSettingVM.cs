@@ -1312,6 +1312,7 @@ namespace WPFSTD105.ViewModel
 
             List<ProductSettingsPageViewModel> steelAttrList = new List<ProductSettingsPageViewModel>();
             ProductSettingsPageViewModel steelAttrVM = new ProductSettingsPageViewModel();
+            #region 構件開始
             foreach (KeyValuePair<string, List<int>> assembliesItem in assNumber_ID)
             {
                 // 構件編號
@@ -1355,7 +1356,7 @@ namespace WPFSTD105.ViewModel
                                 // 零件ID List
                                 var partList = partNumber_ID.Where(x => x.Number == item.Number && x.Profile == profile && x.Length == length && x.Father.Contains(assemID)).Select(x => x.ID).FirstOrDefault();
                                 // 構件ID List
-                                var fatherList = partNumber_ID.Where(x => x.Number == item.Number && x.Profile== profile && x.Length== length && x.Father.Contains(assemID)).Select(x => x.Father).FirstOrDefault();
+                                var fatherList = partNumber_ID.Where(x => x.Number == item.Number && x.Profile == profile && x.Length == length && x.Father.Contains(assemID)).Select(x => x.Father).FirstOrDefault();
                                 // Father的index = Part的index
                                 var partIndex = fatherList.IndexOf(assemID);
                                 // 取得該筆零件ID
@@ -1404,7 +1405,7 @@ namespace WPFSTD105.ViewModel
                                 x.Number == steelAttrVM.steelAttr.PartNumber &&
                                 allowType.Contains(x.Type));
                                 //if (single != null)
-                                    steelAttrVM.steelAttr.GUID = item.GUID;
+                                steelAttrVM.steelAttr.GUID = item.GUID;
                                 //partNumber_ID.Remove(delPart);
                                 steelAttrList.Add(steelAttrVM);
                                 #endregion
@@ -1444,6 +1445,7 @@ namespace WPFSTD105.ViewModel
                     #endregion
                 }
             }
+            #endregion
             List<ProductSettingsPageViewModel> source = steelAttrList.Where(x => allowType.Contains(x.Type)).ToList();
             var group = (from a in source
                          group a by new { AsseNumber= a.steelAttr.AsseNumber, a.steelAttr.PartNumber, a.TeklaName, a.Type, a.Length, a.Weight } into g
@@ -1467,6 +1469,8 @@ namespace WPFSTD105.ViewModel
                              Title1 = g.FirstOrDefault().Title1,
                              Title2 = g.FirstOrDefault().Title2,
                              ExclamationMark = g.FirstOrDefault().ExclamationMark,
+                             t1 = g.FirstOrDefault().steelAttr.t1,
+                             t2 = g.FirstOrDefault().steelAttr.t2,                             
                          }).ToList();
             List<ProductSettingsPageViewModel> list = new List<ProductSettingsPageViewModel>();
             SteelAttr attr = new SteelAttr();
@@ -1491,9 +1495,14 @@ namespace WPFSTD105.ViewModel
                     ShippingNumber = item.ShippingNumber,
                     Title1 = item.Title1,
                     Title2 = item.Title2,
+                    t1 = item.t1,
+                    t2 = item.t2,
                 };
+                aa.steelAttr.GUID = item.DataName;
                 aa.steelAttr.PartNumber = item.PartNumber;
                 aa.steelAttr.AsseNumber = item.AssemblyNumber;
+                aa.steelAttr.t1 = float.Parse(item.t1.ToString());
+                aa.steelAttr.t2 = float.Parse(item.t2.ToString());
                 list.Add(aa);
             }
 
