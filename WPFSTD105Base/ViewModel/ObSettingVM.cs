@@ -151,7 +151,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 顯示孔位編輯器
         /// </summary>
-        public ICommand DisplayHoleCommand { get; set; }      
+        public ICommand DisplayHoleCommand { get; set; }
         /// <summary>
         /// 20220829 張燕華 選擇型鋼型態
         /// </summary>
@@ -178,9 +178,9 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 限制Grid出現之內容
         /// </summary>
-        public List<OBJECT_TYPE> allowType = new List<OBJECT_TYPE> { 
-            OBJECT_TYPE.RH, OBJECT_TYPE.BH, OBJECT_TYPE.H, 
-            OBJECT_TYPE.BOX, OBJECT_TYPE.TUBE, 
+        public List<OBJECT_TYPE> allowType = new List<OBJECT_TYPE> {
+            OBJECT_TYPE.RH, OBJECT_TYPE.BH, OBJECT_TYPE.H,
+            OBJECT_TYPE.BOX, OBJECT_TYPE.TUBE,
             OBJECT_TYPE.LB, OBJECT_TYPE.CH };
 
         /// <summary>
@@ -373,7 +373,7 @@ namespace WPFSTD105.ViewModel
                         //case OBJECT_TYPE.L: //20220805 張燕華 新增斷面規格 - 已不在介面上顯示此規格
                         case OBJECT_TYPE.BOX:
                         case OBJECT_TYPE.BH:
-                            ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{ (TYPE).ToString()}.inp");
+                            ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(TYPE).ToString()}.inp");
                             break;
                         default:
                             throw new Exception($"找不到{TYPE.ToString()}");
@@ -523,7 +523,7 @@ namespace WPFSTD105.ViewModel
                 //SerializationHelper.SerializeBinary(DataCorrespond, ApplicationVM.FilePartList());
                 STDSerialization ser = new STDSerialization();
                 ser.SetDataCorrespond(DataCorrespond);
-                if (data.Type== OBJECT_TYPE.BH)
+                if (data.Type == OBJECT_TYPE.BH)
                 {
 
                 }
@@ -573,7 +573,6 @@ namespace WPFSTD105.ViewModel
             if (CheckX)
             {
                 Boltsbuffer.dX = GroupBoltsAttr.dX;
-
                 Boltsbuffer.xCount = GroupBoltsAttr.xCount;
             }
             //垂直螺栓
@@ -681,14 +680,15 @@ namespace WPFSTD105.ViewModel
             if (CheckX)
             {
                 Boltsbuffer.dX = GroupBoltsAttr.dX;
-
-                Boltsbuffer.xCount = GroupBoltsAttr.xCount;
+                Boltsbuffer.xCount = CalBoltNumber(GroupBoltsAttr.dX);
+                //Boltsbuffer.xCount = GroupBoltsAttr.xCount;
             }
             //垂直螺栓
             if (CheckY)
             {
                 Boltsbuffer.dY = GroupBoltsAttr.dY;
-                Boltsbuffer.yCount = GroupBoltsAttr.yCount;
+                Boltsbuffer.xCount = CalBoltNumber(GroupBoltsAttr.dY);
+                //Boltsbuffer.yCount = GroupBoltsAttr.yCount;
             }
             //要產生的面
             if (CheckFace)
@@ -844,7 +844,7 @@ namespace WPFSTD105.ViewModel
             {
                 temp_CutFace = CutFaceType;
             }
-            
+
             switch ((GD_STD.Enum.FACE)temp_CutFace)
             {
                 case GD_STD.Enum.FACE.TOP:
@@ -1082,7 +1082,7 @@ namespace WPFSTD105.ViewModel
                                            // 加入VM
                 DataViews.Add(new ProductSettingsPageViewModel() { steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData });
             }
-            return DataViews;    
+            return DataViews;
         }
 
         /// <summary>
@@ -1284,7 +1284,10 @@ namespace WPFSTD105.ViewModel
                     x.ShippingNumber,
                     x.Title1,
                     x.Title2,
-                    x.H,x.W,x.t1,x.t2,
+                    x.H,
+                    x.W,
+                    x.t1,
+                    x.t2,
                     x.Number,
                     x.Type,
                     x.DrawingName,
@@ -1459,7 +1462,7 @@ namespace WPFSTD105.ViewModel
             #endregion
             List<ProductSettingsPageViewModel> source = steelAttrList.Where(x => allowType.Contains(x.Type)).ToList();
             var group = (from a in source
-                         group a by new { AsseNumber= a.steelAttr.AsseNumber, a.steelAttr.PartNumber, a.TeklaName, a.Type, a.Length, a.Weight } into g
+                         group a by new { AsseNumber = a.steelAttr.AsseNumber, a.steelAttr.PartNumber, a.TeklaName, a.Type, a.Length, a.Weight } into g
                          select new
                          {
                              Creation = g.FirstOrDefault().Creation,
@@ -1481,7 +1484,7 @@ namespace WPFSTD105.ViewModel
                              Title2 = g.FirstOrDefault().Title2,
                              ExclamationMark = g.FirstOrDefault().ExclamationMark,
                              t1 = g.FirstOrDefault().steelAttr.t1,
-                             t2 = g.FirstOrDefault().steelAttr.t2,                             
+                             t2 = g.FirstOrDefault().steelAttr.t2,
                          }).ToList();
             List<ProductSettingsPageViewModel> list = new List<ProductSettingsPageViewModel>();
             SteelAttr attr = new SteelAttr();
@@ -1503,7 +1506,7 @@ namespace WPFSTD105.ViewModel
                     Profile = item.Profile,
                     Material = item.Material,
                     Count = item.Count,
-                    Length = item.Length,                    
+                    Length = item.Length,
                     Phase = item.Phase,
                     ShippingNumber = item.ShippingNumber,
                     Title1 = item.Title1,
@@ -1532,7 +1535,7 @@ namespace WPFSTD105.ViewModel
         /// <param name="part_tekla"></param>
         /// <param name="saFile"></param>
         /// <returns></returns>
-        public double PartWeight(ProductSettingsPageViewModel part_tekla, Dictionary<string, ObservableCollection<SteelAttr>> saFile) 
+        public double PartWeight(ProductSettingsPageViewModel part_tekla, Dictionary<string, ObservableCollection<SteelAttr>> saFile)
         {
             var profile = saFile[((OBJECT_TYPE)part_tekla.SteelType).ToString()]
                 .Where(x => x.Profile == part_tekla.Profile)
@@ -1540,9 +1543,30 @@ namespace WPFSTD105.ViewModel
 
             if (profile != null)
             {
-                return 1000 * profile.Kg;
-            }            
+                return (part_tekla.Length/ 1000) * profile.Kg;
+            }
             return part_tekla.Weight;
+        }
+        /// <summary>
+        /// 由使用者提供之孔距計算數量
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public int CalBoltNumber(string str = "60 2*70 60")
+        {
+            int count = 0;
+            // 依照空格拆解
+            var space = str.Split(' ').ToList();
+            foreach (var item in space)
+            {
+                if (item.IndexOf('*') == -1) { count++; }
+                else
+                {
+                    var start = item.Split('*');
+                    count = count + int.Parse(start[0]);
+                }
+            }
+            return count + 1;
         }
     }
 }
