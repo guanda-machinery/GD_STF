@@ -514,7 +514,7 @@
                     <Label Grid.Column="3" Grid.Row="2" Content="高度(H)：" />
                     <StackPanel  Grid.Column="4" Grid.Row="2">
                         <DockPanel  VerticalAlignment="Center">
-                            <TextBox Name="H" Text="{Binding SteelAttr.H, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
+                            <TextBox Name="H" Text="{Binding CurrentPartSteelAttr.H, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
                             <TextBlock Text="mm" HorizontalAlignment="Right" />
                         </DockPanel>
                     </StackPanel>
@@ -522,7 +522,7 @@
                     <Label Grid.Column="3" Grid.Row="3" Content="寬度(B)：" />
                     <StackPanel Grid.Column="4" Grid.Row="3">
                         <DockPanel  VerticalAlignment="Center">
-                            <TextBox Name="W" Text="{Binding SteelAttr.W, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
+                            <TextBox Name="W" Text="{Binding CurrentPartSteelAttr.W, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
                             <TextBlock Text="mm" HorizontalAlignment="Right" />
                         </DockPanel>
                     </StackPanel>
@@ -530,7 +530,7 @@
                     <Label Grid.Column="3" Grid.Row="4" Content="腹板厚度(s)：" />
                     <StackPanel Grid.Column="4" Grid.Row="4">
                         <DockPanel  VerticalAlignment="Center">
-                            <TextBox Name="t1" Text="{Binding SteelAttr.t1, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
+                            <TextBox Name="t1" Text="{Binding CurrentPartSteelAttr.t1, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
                             <TextBlock Text="mm" HorizontalAlignment="Right" />
                         </DockPanel>
                     </StackPanel>
@@ -538,7 +538,7 @@
                     <Label Grid.Column="3" Grid.Row="5" Content="翼板厚度(t)：" />
                     <StackPanel Grid.Column="4" Grid.Row="5">
                         <DockPanel  VerticalAlignment="Center">
-                            <TextBox Name="t2" Text="{Binding SteelAttr.t2, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
+                            <TextBox Name="t2" Text="{Binding CurrentPartSteelAttr.t2, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
                             <TextBlock Text="mm" HorizontalAlignment="Right" />
                         </DockPanel>
                     </StackPanel>
