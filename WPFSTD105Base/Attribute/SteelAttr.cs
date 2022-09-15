@@ -46,7 +46,7 @@ namespace WPFSTD105.Attribute
             Profile = profile.Profile;
             Type = profile.Type;
             Material = profile.Material;
-
+            
 
             //GUID = Guid.NewGuid();
         }

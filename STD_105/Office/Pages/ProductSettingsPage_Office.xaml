@@ -177,7 +177,7 @@
                                 SelectionMode="None"
                                 MaxHeight="500"
                                 AllowLiveDataShaping="True"                    
-                                ItemsSource="{Binding DataViews}" SelectedItemChanged="Grid_SelectedChange">
+                                ItemsSource="{Binding DataViews}" SelectedItemChanged="Grid_SelectedChange" >
                     <dxg:GridControl.Resources>
                         <Style TargetType="dxg:GridColumn" >
                             <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
