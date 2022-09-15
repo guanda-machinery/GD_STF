@@ -171,13 +171,12 @@
                 <!--<GroupBox.DataContext>          -->
                 <!--    <spa:OfficeTypeSettingVM/>  -->
                 <!--</GroupBox.DataContext>         -->
-                <dxg:GridControl  
-                           Name="PieceListGridControl"
-                                AutoGenerateColumns="None"
-                                SelectionMode="None"
-                                MaxHeight="500"
-                                AllowLiveDataShaping="True"                    
-                                ItemsSource="{Binding DataViews}" SelectedItemChanged="Grid_SelectedChange" >
+                <dxg:GridControl Name="PieceListGridControl"
+                                 AutoGenerateColumns="None"
+                                 SelectionMode="None"
+                                 MaxHeight="500"
+                                 AllowLiveDataShaping="True" 
+                                 ItemsSource="{Binding DataViews, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange">
                     <dxg:GridControl.Resources>
                         <Style TargetType="dxg:GridColumn" >
                             <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
@@ -219,7 +218,7 @@
                         </dxg:GridColumn.HeaderImageStyle>
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <dxe:CheckEdit x:Name="dxg_ExclamationMark" IsChecked="{Binding Row.steelAttr.ExclamationMark, Mode=TwoWay}" IsThreeState="false">
+                                <dxe:CheckEdit x:Name="dxg_ExclamationMark" IsChecked="{Binding Row.steelAttr.ExclamationMark, Mode=TwoWay}">
                                     <dxe:CheckEdit.Style>
                                         <Style TargetType="{x:Type dxe:CheckEdit}">
                                             <Setter Property="Template">
@@ -228,6 +227,9 @@
                                                         <dx:DXImage x:Name="HighImportanceDX" Height="20" Width="20" Source="{dx:DXImage 'SvgImages/Outlook Inspired/HighImportance.svg'}" Opacity="1" />
                                                         <ControlTemplate.Triggers>
                                                             <Trigger Property="IsChecked" Value="False">
+                                                                <Setter Property="Opacity" Value="0" TargetName="HighImportanceDX" />
+                                                            </Trigger>
+                                                            <Trigger Property="IsChecked"  Value="{x:Null}">
                                                                 <Setter Property="Opacity" Value="0" TargetName="HighImportanceDX" />
                                                             </Trigger>
                                                         </ControlTemplate.Triggers>
@@ -547,7 +549,7 @@
                 </Grid>
                 <DockPanel  DockPanel.Dock="Bottom" Margin="0" VerticalAlignment="Bottom" >
                     <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Background="Gold" Width="60" Margin="0,0,6,0" Click="OKtoConfirmChanges"/>
-
+                    
                     <STD105:DataButtons_Office Margin="105,0,-17,0"
                                                Modify="{Binding ModifyPart}"
                                                Add="{Binding AddPart}"

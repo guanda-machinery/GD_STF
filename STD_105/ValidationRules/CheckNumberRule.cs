@@ -25,7 +25,7 @@ namespace STD_105
                     {
                         if (DoubleValue > NumberMin)
                         {
-                            return new ValidationResult(false, $"數字不可大於小於{NumberMax}!");
+                            return new ValidationResult(false, $"數字不可大於{NumberMax}!");
                         }
                     }
 
@@ -33,7 +33,7 @@ namespace STD_105
                     {
                         if (DoubleValue < NumberMin)
                         {
-                            return new ValidationResult(false, $"數字不可大於小於{NumberMin}!");
+                            return new ValidationResult(false, $"數字不可小於{NumberMin}!");
                         }
                     }
 
