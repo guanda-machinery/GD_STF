@@ -126,7 +126,8 @@ namespace WPFSTD105.Model
                 X = Info.X,
                 Y = Info.Y,
                 Z = Info.Z,
-                GUID = Guid.NewGuid()
+                GUID = Guid.NewGuid(),
+                BlackName=Info.BlackName,
             };
 
             // 若起始座標小於半徑，不可加入

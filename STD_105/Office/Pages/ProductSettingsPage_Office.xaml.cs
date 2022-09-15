@@ -2258,6 +2258,7 @@ namespace STD_105.Office
                         TmpBoltsArr.X = tmplist1[z].X;
                         TmpBoltsArr.Y = tmplist1[z].Y;
                         TmpBoltsArr.GUID = Guid.NewGuid();
+                        TmpBoltsArr.BlackName = "TopHypotenuse";
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
                         BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                         lstBoltsCutPoint.Add(bolts);
