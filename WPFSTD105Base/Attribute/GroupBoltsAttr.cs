@@ -2,6 +2,7 @@
 using devDept.Geometry;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using WPFSTD105.Model;
 using WPFSTD105.Surrogate;
 
@@ -66,11 +67,11 @@ namespace WPFSTD105.Attribute
         /// <summary>
         /// X 向螺栓數量
         /// </summary>
-        public int xCount { get; set; } = 5;
+        public int xCount { get => CalBoltNumber(dX); set => CalBoltNumber(dX); } 
         /// <summary>
         /// Y 向螺栓數量
         /// </summary>
-        public int yCount { get; set; } = 5;
+        public int yCount { get => CalBoltNumber(dY); set => CalBoltNumber(dY); }
         /// <summary>
         /// 起始孔位置
         /// </summary>
@@ -179,6 +180,28 @@ namespace WPFSTD105.Attribute
 #pragma warning restore CS0114 // 'GroupBoltsAttr.ConvertToSurrogate()' 會隱藏繼承的成員 'BoltAttr.ConvertToSurrogate()'。若要讓目前的成員覆寫該實作，請加入 override 關鍵字; 否則請加入 new 關鍵字。
         {
             return new GroupBoltsAttrSurrogate(this);
+        }
+
+        /// <summary>
+        /// 由使用者提供之孔距計算數量
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public int CalBoltNumber(string str = "60 2*70 60")
+        {
+            int count = 0;
+            // 依照空格拆解
+            var space = str.Split(' ').ToList();
+            foreach (var item in space)
+            {
+                if (item.IndexOf('*') == -1) { count++; }
+                else
+                {
+                    var start = item.Split('*');
+                    count = count + int.Parse(start[0]);
+                }
+            }
+            return count + 1;
         }
     }
 }

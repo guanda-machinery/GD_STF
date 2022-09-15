@@ -38,7 +38,10 @@ namespace STD_105.Office
     {
         public ObSettingVM sr = new ObSettingVM();
 
-        public String PreGUID { get; set; } 
+        public String PreGUID { get; set; }
+
+        public int PreIndex { get; set; }
+
         public ObservableCollection<DataCorrespond> DataCorrespond { get; set; } = new ObservableCollection<DataCorrespond>();
         /// <summary>
         /// 20220823 蘇冠綸 製品設定
@@ -240,7 +243,7 @@ namespace STD_105.Office
                     return;
                 model.Entities.Clear();//清除模型物件
                 model.Blocks.Clear(); //清除模型圖塊
-
+               
                 GetViewToVM();
 
                 //ViewModel.SteelAttr.GUID = Guid.NewGuid();//產生新的 id
@@ -308,12 +311,14 @@ namespace STD_105.Office
                 //drawing.Refresh();
                 // SaveModel(true);
 
-                //ObSettingVM sr = new ObSettingVM();
-                ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
-
-                ViewModel.DataViews = collection;
-                // var A = PieceListGridControl.ItemsSource;
-                PieceListGridControl.ItemsSource = collection;
+                // Reload
+                GridReload();
+                ////ObSettingVM sr = new ObSettingVM();
+                //ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
+                //
+                //ViewModel.DataViews = collection;
+                //// var A = PieceListGridControl.ItemsSource;
+                //PieceListGridControl.ItemsSource = collection;
                 //PieceListGridControl.EndSelection();    
                 //PieceListGridControl.Dispatcher.Invoke(() =>
                 //{
@@ -436,8 +441,6 @@ namespace STD_105.Office
                 //if (!fAddSteelPart)
                 //    SaveModel(false);//存取檔案
 
-
-
                 //刷新模型
                 model.Invalidate();
                 drawing.Invalidate();
@@ -544,7 +547,11 @@ namespace STD_105.Office
 
                 /*3D螺栓*/
                 ViewModel.GroupBoltsAttr.GUID = Guid.NewGuid();
-
+                ViewModel.SteelAttr.Name = this.teklaName.Text;
+                ViewModel.SteelAttr.Phase = string.IsNullOrEmpty(this.phase.Text) ? 0 : int.Parse(this.phase.Text);
+                ViewModel.SteelAttr.ShippingNumber = string.IsNullOrEmpty(this.shippingNumber.Text) ? 0 : int.Parse(this.shippingNumber.Text);
+                ViewModel.SteelAttr.Title1 = this.Title1.Text;
+                ViewModel.SteelAttr.Title2 = this.Title2.Text;
 
                 Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference, out bool check);
                 BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
@@ -2295,10 +2302,10 @@ namespace STD_105.Office
             STDSerialization ser = new STDSerialization();
             ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();//備份當前加工區域數值
 
-            double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData[0].A);     //  腹板斜邊打點比列(短)
-            double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData[0].B);     //  腹板斜邊打點比列(長)
-            double PosRatioC = myCs.DivSymbolConvert(ReadSplitLineSettingData[0].C);     //  翼板斜邊打點比列(短)
-            double PosRatioD = myCs.DivSymbolConvert(ReadSplitLineSettingData[0].D);     //  翼板斜邊打點比列(長)
+            double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].A);   //  腹板斜邊打點比列(短)
+            double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].B);    //  腹板斜邊打點比列(長)
+            double PosRatioC = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].C);    //  翼板斜邊打點比列(短)
+            double PosRatioD = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].D);     //  翼板斜邊打點比列(長)
 
             SteelAttr steelAttr = ViewModel.GetSteelAttr();
  
@@ -2812,7 +2819,7 @@ namespace STD_105.Office
                 sp.Title1 = steelPart.Title1;
                 sp.Title2 = steelPart.Title2;
                 sp.Revise = steelPart.Revise;
-                sp.Father = steelPart.Father;
+                //sp.Father = steelPart.Father;
                 sp.ID = steelPart.ID;
             }
 
@@ -2826,9 +2833,10 @@ namespace STD_105.Office
             ViewModel.SaveDataCorrespond();
             if (reflesh)
             {
-                ObservableCollection<ProductSettingsPageViewModel> data = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
-                ViewModel.DataViews = data;
-                PieceListGridControl.ItemsSource = data;
+                GridReload();
+                //ObservableCollection<ProductSettingsPageViewModel> data = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
+                //ViewModel.DataViews = data;
+                //PieceListGridControl.ItemsSource = data;
 
             }
 
@@ -3438,6 +3446,26 @@ namespace STD_105.Office
    
             }
 
+        }
+        public void GridReload()
+        {
+            //List<ProductSettingsPageViewModel> old_source = new List<ProductSettingsPageViewModel>();
+            //var old_source_list = (from item in old_source
+            //                       select new ProductSettingsPageViewModel()
+            //                       ).ToList();
+
+            //ObservableCollection<ProductSettingsPageViewModel> new_source = new ObservableCollection<ProductSettingsPageViewModel>(old_source_list);
+            //new_source.Add(new ProductSettingsPageViewModel());
+
+            ProductSettingsPageViewModel aa = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
+            ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
+            ViewModel.DataViews = collection;
+            PreIndex = collection.FindIndex(x => x.DataName == aa.DataName);
+            PieceListGridControl.ItemsSource = collection;
+
+            var rowHandle = PieceListGridControl.GetRowHandleByVisibleIndex(PreIndex);
+            PieceListGridControl.View.FocusedRowHandle = rowHandle;
+            PieceListGridControl.SelectItem(rowHandle);
         }
 
         private void OKtoConfirmChanges(object sender, RoutedEventArgs e)
