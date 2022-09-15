@@ -12,6 +12,7 @@
                   xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
                   xmlns:STD="clr-namespace:STD_105"
                   xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+                  xmlns:STD105="clr-namespace:STD_105"
                   xmlns:ST="clr-namespace:SectionData;assembly=WPFSTD105"
                   xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
                   xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
@@ -168,19 +169,43 @@
                                     <CheckBox IsChecked="{Binding chb_H_Avalue}" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"/>
                                     <Label Content="A值："  Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,10,0,0"/>
                                     <Label Content="翼板厚度+"  Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="0,10,0,0"/>
-                                        <TextBox  Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" Margin="5,10,0,0" Text="{Binding ProcessingZone_A, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <TextBox  Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" Margin="5,10,0,0">
+                                            <TextBox.Text>
+                                                <Binding Path="ProcessingZone_A" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
                                         <Label Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於25mm)" Foreground="DarkRed" Margin="0,10,0,0"/>
 
                                     <CheckBox IsChecked="{Binding chb_H_Bvalue}" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" />
                                     <Label Content="B值："  Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" />
-                                        <TextBox  Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" Margin="5,0,0,0" Text="{Binding ProcessingZone_B, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <Label Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於15mm)" Foreground="DarkRed" />
+                                        <TextBox  Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" Margin="5,0,0,0">
+                                            <TextBox.Text>
+                                                <Binding Path="ProcessingZone_B" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <Label Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於15mm)" Foreground="DarkRed" />
 
                                     <CheckBox IsChecked="{Binding chb_H_Cvalue}" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" />
                                     <Label Content="C值："  Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" />
                                     <Label Content="翼板厚度+"  Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" />
-                                        <TextBox  Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" Margin="5,0,0,0" Text="{Binding ProcessingZone_C, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <Label Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於3mm)" Foreground="DarkRed" />
+                                        <TextBox  Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" Margin="5,0,0,0">
+                                            <TextBox.Text>
+                                                <Binding Path="ProcessingZone_C" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <Label Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於3mm)" Foreground="DarkRed" />
                                 
                                 </Grid>
                                     <StackPanel Margin="10,10,50,0" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" >
@@ -247,13 +272,29 @@
                                         <CheckBox IsChecked="{Binding chb_BOX_Avalue}" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"/>
                                         <Label Content="A值："  Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,10,0,0"/>
                                         <Label Content="翼板厚度+"  Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="0,10,0,0"/>
-                                        <TextBox  Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" Margin="5,10,0,0" Text="{Binding ProcessingZone_A, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <TextBox  Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" Margin="5,10,0,0">
+                                            <TextBox.Text>
+                                                <Binding Path="ProcessingZone_A" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
                                         <Label Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於15mm)" Foreground="DarkRed" Margin="0,10,0,0"/>
 
                                         <CheckBox IsChecked="{Binding chb_BOX_Bvalue}" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" />
                                         <Label Content="B值："  Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" />
                                         <Label Content="腹板厚度+"  Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" />
-                                        <TextBox  Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" Margin="5" Text="{Binding ProcessingZone_B, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <TextBox  Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" Margin="5">
+                                            <TextBox.Text>
+                                                <Binding Path="ProcessingZone_B" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
                                         <Label Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於15mm)" Foreground="DarkRed" />
                                 
                                     </Grid>
@@ -320,12 +361,28 @@
                                         <CheckBox IsChecked="{Binding chb_CH_Avalue}" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,0,0"/>
                                         <Label Content="A值："  Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="0,10,0,0"/>
                                         <Label Content="翼板厚度+"  Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="0,10,0,0"/>
-                                        <TextBox  Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" Margin="5,10,0,0" Text="{Binding ProcessingZone_A, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <TextBox  Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" Margin="5,10,0,0">
+                                            <TextBox.Text>
+                                                <Binding Path="ProcessingZone_A" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
                                         <Label Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於15mm)" Foreground="DarkRed" Margin="0,10,0,0"/>
 
                                         <CheckBox IsChecked="{Binding chb_CH_Bvalue}" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" />
                                         <Label Content="B值："  Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" />
-                                        <TextBox  Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" Margin="5" Text="{Binding ProcessingZone_B, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <TextBox  Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" Margin="5">
+                                            <TextBox.Text>
+                                                <Binding Path="ProcessingZone_B" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
                                         <Label Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於15mm)" Foreground="DarkRed" />
                                                                 
                                     </Grid>
