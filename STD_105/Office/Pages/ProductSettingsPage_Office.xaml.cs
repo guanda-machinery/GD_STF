@@ -3325,8 +3325,7 @@ namespace STD_105.Office
             ViewModel.SteelSectionProperty = CuurentSelectedPart.Profile;
             ViewModel.ProductLengthProperty = CuurentSelectedPart.Length;
             ViewModel.ProductWeightProperty = (CuurentSelectedPart.Length/1000) * CuurentSelectedPart.Weight;
-            //if (CuurentSelectedPart.Weight == 0) ViewModel.ProductWeightProperty = ViewModel.SteelAttr.Kg;//單位重
-            if (CuurentSelectedPart.Weight == 0) ViewModel.ProductWeightProperty = (ViewModel.ProductLengthProperty / 1000) * ViewModel.SteelAttr.Kg;//單一支重量
+            if (CuurentSelectedPart.Weight == 0) ViewModel.ProductWeightProperty = ViewModel.CalculateSinglePartWeight();
             ViewModel.fPartListOrManuall = false;
         }
         private void Grid_SelectedChange(object sender, SelectedItemChangedEventArgs e)
