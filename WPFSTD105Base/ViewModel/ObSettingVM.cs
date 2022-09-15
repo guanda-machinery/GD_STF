@@ -935,6 +935,22 @@ namespace WPFSTD105.ViewModel
             }
 
         }
+        /// <summary>
+        /// 計算單一支型鋼重量
+        /// </summary>
+        public double CalculateSinglePartWeight()
+        {
+            double weight;
+            if(SteelAttr.Kg == 0)
+            {
+                weight = (ProductLengthProperty / 1000) * CurrentPartSteelAttr.Kg;
+            }
+            else
+            {
+                weight = (ProductLengthProperty / 1000) * SteelAttr.Kg;
+            }
+            return weight;
+        }
         #endregion
 
         #region 新版屬性
@@ -1232,8 +1248,7 @@ namespace WPFSTD105.ViewModel
             {
                 if (fPartListOrManuall == false)
                 {
-                    //ProductWeightProperty = CurrentPartSteelAttr.Kg; //單位重
-                    ProductWeightProperty = (ProductLengthProperty / 1000) * CurrentPartSteelAttr.Kg; //單一支重量
+                    ProductWeightProperty = CalculateSinglePartWeight();
                 }
             });
         }

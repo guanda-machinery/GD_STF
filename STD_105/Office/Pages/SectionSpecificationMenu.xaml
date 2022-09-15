@@ -294,7 +294,8 @@
                                      FontSize="14"
                                      Foreground="{StaticResource solidclr_DimGray}"
                                      BorderThickness="0,0,0,0"
-                                     Margin="5,0,0,0"/>
+                                     Margin="5,0,0,0"
+                                     />
                         </GroupBox>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -470,12 +471,15 @@
 
                                 <dxg:GridControl.View>
                                     <!--20220805 張燕華 隱藏TableView的ScrollBar, 同時使用GroupBox的Padding將ScrollBar遮住-->
-                                    <dxg:TableView ShowFixedTotalSummary="False" 
+                                    <dxg:TableView x:Name="TableView1"
+                                                   ShowFixedTotalSummary="False" 
                                                    AllowEditing="True" 
                                                    VerticalScrollbarVisibility="Hidden"
                                                    HorizontalScrollbarVisibility="Hidden"
                                                    ShowGroupPanel="False"
-                                                   Margin="-17,0,-100,-1">
+                                                   Margin="-17,0,-100,-1"
+                                                   ValidateCell="ValidateCurrentValue"
+                                                   EnableImmediatePosting="True">
                                         <dxg:TableView.CellStyle>
                                             <Style>
                                                 <Setter Property="TextBlock.FontSize" Value="14"/>
@@ -492,7 +496,7 @@
                                                     Header="符號" 
                                                     Width="70"
                                                     ReadOnly="True"/>
-                                    <dxg:GridColumn FieldName="Value"
+                                    <dxg:GridColumn FieldName ="Value" 
                                                     Header="數值" 
                                                     Width="240"
                                                     HorizontalHeaderContentAlignment="Right"/>
