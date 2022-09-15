@@ -458,34 +458,24 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-
-                    <Label Grid.Column="0" Grid.Row="4" Content="製品數量：" />
-                    <StackPanel Grid.Column="1" Grid.Row="4" >
-                        <TextBox Name="PartCount">
-                            <TextBox.Text>
-                                <Binding Path="SteelAttr.Number" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                    <Binding.ValidationRules>
-                                        <STD105:CheckNumberRule NumberMin="0"/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </TextBox.Text>
-                        </TextBox>
-                    </StackPanel>
                         <TextBlock Grid.Column="0" Name="Weight" Text="{Binding ProductWeightProperty, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}" Margin="3,0,0,0"/>
                         <TextBlock Grid.Column="1"  Text="Kg/Piece"   Margin="3,0,0,0"/>
 
                     </Grid>
 
+
                     <Label Grid.Column="0" Grid.Row="4" Content="製品數量：" />
+
                     <TextBox Grid.Column="1" Grid.Row="4" Name="PartCount">
                         <TextBox.Text>
-                            <Binding Path="SelectedItems[0].Count" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding Path="SteelAttr.Number" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                 <Binding.ValidationRules>
                                     <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
                     </TextBox>
+
                     <Label Grid.Column="0" Grid.Row="5" Content="名稱：" />
 
                     <TextBox Name ="teklaName" Grid.Column="1" Grid.Row="5" Text="{Binding Path=SelectedItems[0].TeklaName , ElementName=PieceListGridControl , Mode=OneWay , UpdateSourceTrigger=PropertyChanged}" >
@@ -578,36 +568,47 @@
                         </ComboBox>
 
                     <Label Grid.Column="3" Grid.Row="2" Content="高度(H)：" />
-                    <StackPanel  Grid.Column="4" Grid.Row="2">
-                        <DockPanel  VerticalAlignment="Center">
-                            <TextBox Name="H" Text="{Binding CurrentPartSteelAttr.H, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
-                            <TextBlock Text="mm" HorizontalAlignment="Right" />
-                        </DockPanel>
-                    </StackPanel>
+                    <Grid Grid.Column="4" Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Name="H" Text="{Binding CurrentPartSteelAttr.H, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" />
+                        <TextBlock Grid.Column="1" Text="mm" VerticalAlignment="Center"/>
+                    
+                    </Grid>
 
                     <Label Grid.Column="3" Grid.Row="3" Content="寬度(B)：" />
-                    <StackPanel Grid.Column="4" Grid.Row="3">
-                        <DockPanel  VerticalAlignment="Center">
-                            <TextBox Name="W" Text="{Binding CurrentPartSteelAttr.W, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
-                            <TextBlock Text="mm" HorizontalAlignment="Right" />
-                        </DockPanel>
-                    </StackPanel>
+                    <Grid Grid.Column="4" Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Name="W" Text="{Binding CurrentPartSteelAttr.W, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" />
+                        <TextBlock Grid.Column="1" Text="mm" VerticalAlignment="Center"/>
+                        </Grid>
 
                     <Label Grid.Column="3" Grid.Row="4" Content="腹板厚度(s)：" />
-                    <StackPanel Grid.Column="4" Grid.Row="4">
-                        <DockPanel  VerticalAlignment="Center">
-                            <TextBox Name="t1" Text="{Binding CurrentPartSteelAttr.t1, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
-                            <TextBlock Text="mm" HorizontalAlignment="Right" />
-                        </DockPanel>
-                    </StackPanel>
+
+                    <Grid  VerticalAlignment="Center" Grid.Column="4" Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Name="t1" Text="{Binding CurrentPartSteelAttr.t1, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
+                        <TextBlock Grid.Column="1" Text="mm"  />
+                    </Grid>
 
                     <Label Grid.Column="3" Grid.Row="5" Content="翼板厚度(t)：" />
-                    <StackPanel Grid.Column="4" Grid.Row="5">
-                        <DockPanel  VerticalAlignment="Center">
-                            <TextBox Name="t2" Text="{Binding CurrentPartSteelAttr.t2, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" Width="130"/>
-                            <TextBlock Text="mm" HorizontalAlignment="Right" />
-                        </DockPanel>
-                    </StackPanel>
+                    <Grid Grid.Column="4" Grid.Row="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Name="t2" Text="{Binding CurrentPartSteelAttr.t2, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
+                            <TextBlock Grid.Column="1" Text="mm" VerticalAlignment="Center" />
+
+                    </Grid>
 
                 </Grid>
                 <DockPanel  DockPanel.Dock="Bottom" Margin="0" VerticalAlignment="Bottom" >
@@ -908,23 +909,18 @@
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
-                                    <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
-                                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding CheckDia}"  />
-                                        <Label Content="孔直徑"/>
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="5,5,10,5">
-                                        <TextBox>
-                                            <TextBox.Text>
-                                                <Binding Path="GroupBoltsAttr.Dia" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                    <Binding.ValidationRules>
-                                                        <STD105:CheckNumberRule NumberMin="0"/>
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </TextBox.Text>
-                                        </TextBox>
-                                    </StackPanel>
+                                    <CheckBox Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" IsChecked="{Binding CheckDia}" Content="孔直徑" />
+                                    <TextBox Grid.Column="1" Grid.Row="0" VerticalAlignment="Center">
+                                        <TextBox.Text>
+                                            <Binding Path="GroupBoltsAttr.Dia" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                <Binding.ValidationRules>
+                                                    <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
                                     <!--孔的起始位置-->
-                                        <CheckBox  Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"  IsChecked="{Binding CheckStartHole}" Content="位置"/>
+                                    <CheckBox  Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"  IsChecked="{Binding CheckStartHole}" Content="位置"/>
 
                                     <ComboBox SelectedIndex="{Binding StartHoleType}"  Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="10,0" 
                                                   ItemsSource="{Binding Source={StaticResource StartHole}, Path=Strings}"
@@ -940,11 +936,21 @@
                                     </ComboBox>
 
 
-                                   <CheckBox  Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" IsChecked="False"  Content="孔X向起步點：" />
+                                    <CheckBox  Grid.Column="2" Grid.Row="0" IsChecked="False"  Content="孔X向起步點：" />
+
+                                    <TextBox Grid.Column="3" Grid.Row="0" VerticalAlignment="Center">
+                                        <TextBox.Text>
+                                            <Binding Path="GroupBoltsAttr.X" UpdateSourceTrigger="PropertyChanged" >
+                                                <Binding.ValidationRules>
+                                                    <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
 
                                     <TextBox Grid.Column="3" Grid.Row="0" VerticalAlignment="Center">
                                             <TextBox.Text>
-                                                <Binding Path="GroupBoltsAttr.X" UpdateSourceTrigger="PropertyChanged" >
+                                                <Binding Path="GroupBoltsAttr.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                     <Binding.ValidationRules>
                                                         <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                     </Binding.ValidationRules>
@@ -952,36 +958,17 @@
                                             </TextBox.Text>
                                         </TextBox>
 
+                                     <CheckBox Grid.Column="2" Grid.Row="1" IsChecked="False" Content="孔Y向起步點：" />
 
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" Margin="5"  >
-                                        <TextBox>
-                                            <TextBox.Text>
-                                                <Binding Path="GroupBoltsAttr.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                    <Binding.ValidationRules>
-                                                        <STD105:CheckNumberRule NumberMin="0"/>
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </TextBox.Text>
-                                        </TextBox>
-                                    </StackPanel>
-
-                                    <StackPanel Grid.Column="2" Grid.Row="1"
-                                                Orientation="Horizontal">
-                                        <CheckBox VerticalAlignment="Center" IsChecked="False"  />
-                                        <Label Content="孔Y向起步點：" />
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" Margin="5">
-                                        <TextBox>
+                                        <TextBox Grid.Column="3" Grid.Row="1" VerticalAlignment="Center">
                                             <TextBox.Text>
                                                 <Binding Path="StartY" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                     <Binding.ValidationRules>
-                                                        <STD105:CheckNumberRule NumberMin="0"/>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </TextBox.Text>
                                         </TextBox>
-                                    </StackPanel>
 
                                 </Grid>
                             </GroupBox>
@@ -999,7 +986,7 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
 
-                                         <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding CheckX}" VerticalAlignment="Center" Content="形狀："/>
+                                         <CheckBox Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Content="形狀："/>
 
                                         <ComboBox Grid.Column="2" Grid.Row="0" Margin="5" VerticalAlignment="Center" SelectedIndex="0" Padding="5,1,0,0">
                                             <ComboBoxItem Content="陣列"/>
@@ -1229,7 +1216,7 @@
                                                      <TextBox.Text>
                                                          <Binding Path="ULPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                              <Binding.ValidationRules>
-                                                                 <STD105:CheckNumberRule NumberMin="0"/>
+                                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                              </Binding.ValidationRules>
                                                          </Binding>
                                                      </TextBox.Text>
@@ -1241,7 +1228,7 @@
                                                      <TextBox.Text>
                                                          <Binding Path="URPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                              <Binding.ValidationRules>
-                                                                 <STD105:CheckNumberRule NumberMin="0"/>
+                                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                              </Binding.ValidationRules>
                                                          </Binding>
                                                      </TextBox.Text>
@@ -1252,7 +1239,7 @@
                                                      <TextBox.Text>
                                                          <Binding Path="ULPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                              <Binding.ValidationRules>
-                                                                 <STD105:CheckNumberRule NumberMin="0"/>
+                                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                              </Binding.ValidationRules>
                                                          </Binding>
                                                      </TextBox.Text>
@@ -1263,7 +1250,7 @@
                                                      <TextBox.Text>
                                                          <Binding Path="DLPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                              <Binding.ValidationRules>
-                                                                 <STD105:CheckNumberRule NumberMin="0"/>
+                                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                              </Binding.ValidationRules>
                                                          </Binding>
                                                      </TextBox.Text>
@@ -1274,7 +1261,7 @@
                                                      <TextBox.Text>
                                                          <Binding Path="URPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                              <Binding.ValidationRules>
-                                                                 <STD105:CheckNumberRule NumberMin="0"/>
+                                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                              </Binding.ValidationRules>
                                                          </Binding>
                                                      </TextBox.Text>
@@ -1285,7 +1272,7 @@
                                                      <TextBox.Text>
                                                          <Binding Path="DRPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                              <Binding.ValidationRules>
-                                                                 <STD105:CheckNumberRule NumberMin="0"/>
+                                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                              </Binding.ValidationRules>
                                                          </Binding>
                                                      </TextBox.Text>
@@ -1296,7 +1283,7 @@
                                                      <TextBox.Text>
                                                          <Binding Path="DLPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                              <Binding.ValidationRules>
-                                                                 <STD105:CheckNumberRule NumberMin="0"/>
+                                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                              </Binding.ValidationRules>
                                                          </Binding>
                                                      </TextBox.Text>
@@ -1307,7 +1294,7 @@
                                                      <TextBox.Text>
                                                          <Binding Path="DRPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                              <Binding.ValidationRules>
-                                                                 <STD105:CheckNumberRule NumberMin="0"/>
+                                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                              </Binding.ValidationRules>
                                                          </Binding>
                                                      </TextBox.Text>

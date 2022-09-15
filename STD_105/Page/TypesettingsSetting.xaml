@@ -708,6 +708,7 @@
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="已完成" Width="auto"  />
                         <dxg:GridColumn FieldName="LengthStr"  IsSmart="True" Header="素材長"   />
                         <dxg:GridColumn IsSmart="True" Header="素材使用率">
+                     
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>

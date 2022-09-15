@@ -12,6 +12,7 @@
                   xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
                   xmlns:STD="clr-namespace:STD_105"
                   xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+                  xmlns:STD105ValidRule="clr-namespace:STD_105.ValidationRules"
                   xmlns:STD105="clr-namespace:STD_105"
                   xmlns:ST="clr-namespace:SectionData;assembly=WPFSTD105"
                   xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
@@ -173,7 +174,7 @@
                                             <TextBox.Text>
                                                 <Binding Path="ProcessingZone_A" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                     <Binding.ValidationRules>
-                                                        <STD105:CheckNumberRule NumberMin="0"/>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </TextBox.Text>
@@ -186,7 +187,7 @@
                                             <TextBox.Text>
                                                 <Binding Path="ProcessingZone_B" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                     <Binding.ValidationRules>
-                                                        <STD105:CheckNumberRule NumberMin="0"/>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </TextBox.Text>
@@ -200,7 +201,7 @@
                                             <TextBox.Text>
                                                 <Binding Path="ProcessingZone_C" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                     <Binding.ValidationRules>
-                                                        <STD105:CheckNumberRule NumberMin="0"/>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </TextBox.Text>
@@ -276,7 +277,7 @@
                                             <TextBox.Text>
                                                 <Binding Path="ProcessingZone_A" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                     <Binding.ValidationRules>
-                                                        <STD105:CheckNumberRule NumberMin="0"/>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </TextBox.Text>
@@ -290,7 +291,7 @@
                                             <TextBox.Text>
                                                 <Binding Path="ProcessingZone_B" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                     <Binding.ValidationRules>
-                                                        <STD105:CheckNumberRule NumberMin="0"/>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </TextBox.Text>
@@ -365,7 +366,7 @@
                                             <TextBox.Text>
                                                 <Binding Path="ProcessingZone_A" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                     <Binding.ValidationRules>
-                                                        <STD105:CheckNumberRule NumberMin="0"/>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </TextBox.Text>
@@ -378,7 +379,7 @@
                                             <TextBox.Text>
                                                 <Binding Path="ProcessingZone_B" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                     <Binding.ValidationRules>
-                                                        <STD105:CheckNumberRule NumberMin="0"/>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </TextBox.Text>
