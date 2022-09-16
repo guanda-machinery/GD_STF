@@ -218,7 +218,7 @@
                         </dxg:GridColumn.HeaderImageStyle>
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <dxe:CheckEdit x:Name="dxg_ExclamationMark" IsChecked="{Binding Row.steelAttr.ExclamationMark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <dxe:CheckEdit x:Name="PART_Editor" IsChecked="{Binding Row.steelAttr.ExclamationMark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <dxe:CheckEdit.Style>
                                         <Style TargetType="{x:Type dxe:CheckEdit}">
                                             <Setter Property="Template">
