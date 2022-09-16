@@ -669,6 +669,7 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public GroupBoltsAttr GetGroupBoltsAttr()
         {
+            Boltsbuffer.BlackName = GroupBoltsAttr.BlackName;
             Boltsbuffer.GUID = GroupBoltsAttr.GUID;
             //直徑設定
             if (CheckDia == true)

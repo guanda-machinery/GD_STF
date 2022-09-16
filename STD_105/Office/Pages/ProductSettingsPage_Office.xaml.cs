@@ -2272,7 +2272,6 @@ namespace STD_105.Office
                     }
 
                     ViewModel.SteelAttr = TmpSteelAttr;
-                    model.Entities[model.Entities.Count - 1].EntityData= TmpSteelAttr;
                     Viewbox.IsEnabled = false;
                     break;
             }
@@ -2637,10 +2636,6 @@ namespace STD_105.Office
         private void Esc()
         {
 
-
-
-
-
             drawing.SetCurrent(null);
             model.SetCurrent(null);//層級 To 要編輯的 BlockReference
 
@@ -2657,7 +2652,7 @@ namespace STD_105.Office
             model.ClearAllPreviousCommandData();
             drawing.ClearAllPreviousCommandData();
 
-   			drawing.SetCurrent(null);
+   		    drawing.SetCurrent(null);
             model.SetCurrent(null);//層級 To 要編輯的 BlockReference
             drawing.Refresh();
             model.Refresh();
