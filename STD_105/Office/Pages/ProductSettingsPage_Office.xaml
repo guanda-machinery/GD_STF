@@ -243,7 +243,7 @@
                         </dxg:GridColumn.HeaderImageStyle>
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <dxe:CheckEdit x:Name="dxg_ExclamationMark" IsChecked="{Binding Row.steelAttr.ExclamationMark, Mode=TwoWay}" IsThreeState="false">
+                                <dxe:CheckEdit x:Name="dxg_ExclamationMark" IsChecked="{Binding Row.steelAttr.ExclamationMark, Mode=TwoWay}">
                                     <dxe:CheckEdit.Style>
                                         <Style TargetType="{x:Type dxe:CheckEdit}">
                                             <Setter Property="Template">
@@ -252,6 +252,9 @@
                                                         <dx:DXImage x:Name="HighImportanceDX" Height="20" Width="20" Source="{dx:DXImage 'SvgImages/Outlook Inspired/HighImportance.svg'}" Opacity="1" />
                                                         <ControlTemplate.Triggers>
                                                             <Trigger Property="IsChecked" Value="False">
+                                                                <Setter Property="Opacity" Value="0" TargetName="HighImportanceDX" />
+                                                            </Trigger>
+                                                            <Trigger Property="IsChecked"  Value="{x:Null}">
                                                                 <Setter Property="Opacity" Value="0" TargetName="HighImportanceDX" />
                                                             </Trigger>
                                                         </ControlTemplate.Triggers>

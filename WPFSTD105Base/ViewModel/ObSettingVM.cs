@@ -1029,7 +1029,7 @@ namespace WPFSTD105.ViewModel
 
             ShowSteelTypeCommand = ShowSteelType(); //20220829 張燕華 選擇型鋼型態
             CalculateWeightCommand = CalculateWeight();
-
+            
             InitializeSteelAttr();
         }
         #region 私有屬性
