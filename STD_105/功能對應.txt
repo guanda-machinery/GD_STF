@@ -1,0 +1,14 @@
+﻿[辦公室模式]
+專案管理		- STD_105\UserControl\OfficeProjectManager.xaml
+					- OfficeProjectManager
+製品設定(舊)	- STD_105/Office/Pages/ObSettingsPage_Office
+					- ObSettingVM
+製品設定		- STD_105/Office/Pages/ProductSettingsPage_Office
+					- ObSettingVM
+排版設定(舊)	- STD_105/Page/TypeSettingPage
+排版設定		- STD_105/Page/TypesettingsSetting
+
+
+[工廠模式]
+參數設定			- STD_105/Page/SettingParPage
+參數設定-軟體設定	- STD_105/Page/SofSettingsPage

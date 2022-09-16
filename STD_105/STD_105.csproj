@@ -1541,6 +1541,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Content Include="Logo\Joystick.svg" />
+    <Resource Include="功能對應.txt" />
     <None Include="Profile\BT.inp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
