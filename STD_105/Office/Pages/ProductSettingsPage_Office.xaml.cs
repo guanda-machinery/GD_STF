@@ -38,10 +38,11 @@ namespace STD_105.Office
     {
         public ObSettingVM sr = new ObSettingVM();
 
-        public String PreGUID { get; set; }
-
+        /// <summary>
+        /// Grid Reload前的Index
+        /// </summary>
         public int PreIndex { get; set; }
-
+             
         public ObservableCollection<DataCorrespond> DataCorrespond { get; set; } = new ObservableCollection<DataCorrespond>();
         /// <summary>
         /// 20220823 蘇冠綸 製品設定
@@ -2269,7 +2270,8 @@ namespace STD_105.Office
                         BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                         lstBoltsCutPoint.Add(bolts);
                     }
-
+                    // 2022/09/16 呂宗霖 暫時給true 待前端可即時顯示調整後再拿掉
+                    ((ProductSettingsPageViewModel)PieceListGridControl.SelectedItem).steelAttr.ExclamationMark = true;
                     ViewModel.SteelAttr = TmpSteelAttr;
                     model.Entities[model.Entities.Count - 1].EntityData= TmpSteelAttr;
                     Viewbox.IsEnabled = false;
@@ -3047,7 +3049,7 @@ namespace STD_105.Office
 #endif
             drawing.Blocks.Clear();
             drawing.Entities.Clear();
-
+            
             Steel2DBlock steel2DBlock = new Steel2DBlock(mesh, model.Blocks[1].Name);
             drawing.Blocks.Add(steel2DBlock);
             BlockReference block2D = new BlockReference(0, 0, 0, steel2DBlock.Name, 1, 1, 1, 0);//產生鋼構參考圖塊
@@ -3091,6 +3093,7 @@ namespace STD_105.Office
 #endif
                 bolts2DBlock.Entities.Regen();
                 drawing.Blocks.Add(bolts2DBlock); //加入螺栓圖塊
+                  
                 foreach (var block in drawing.Blocks)
                 {
                     block.Entities.Regen();
@@ -3103,6 +3106,7 @@ namespace STD_105.Office
                 log4net.LogManager.GetLogger($"2D畫布加入TOP FRONT BACK圖塊").Debug($"");
                 log4net.LogManager.GetLogger($"產生 {bolts.Name} 2D螺栓圖塊").Debug($"結束");
 #endif
+                
                 if (refresh)
                 {
                     drawing.Entities.Regen();
