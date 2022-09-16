@@ -99,7 +99,7 @@ namespace WPFSTD105.Model
         /// <summary>
         /// 創建螺栓群組
         /// </summary>
-        public void CreateBolts(ref bool check)
+        public void CreateBolts(devDept.Eyeshot.Model model, ref bool check)
         {
             check = true;
             List<Mesh> resultY = new List<Mesh>();//Y向螺栓結果(3D實體)，要給X向複製用
@@ -151,6 +151,7 @@ namespace WPFSTD105.Model
 
                 double y, z;
 
+                #region 依Face處理
                 //查看要附加的面在哪
                 switch (Info.Face)
                 {
@@ -182,7 +183,8 @@ namespace WPFSTD105.Model
                         break;
                     default:
                         break;
-                }
+                } 
+                #endregion
                 resultY[0].Color = ColorTranslator.FromHtml(Default.Hole);
                 resultY[0].ColorMethod = colorMethodType.byEntity;
 
@@ -337,10 +339,33 @@ namespace WPFSTD105.Model
                         this.Entities.AddRange(resultY);
                     }
                 }
-                else {
+                else
+                {
                     this.Entities.AddRange(originalEntities);
                 }
 
+            }
+
+            if (check)
+            {
+                bool inSteel = true;
+                foreach (var item in this.Entities)
+                {
+                    if (!(inSteel || ((Mesh)model.Entities[model.Entities.Count - 1].EntityData).IsPointInside(
+                        new Point3D()
+                        {
+                            X = ((BoltAttr)item.EntityData).X,
+                            Y = ((BoltAttr)item.EntityData).Y,
+                            Z = ((BoltAttr)item.EntityData).Z
+                        })))//鋼構外
+                    {
+                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                    }
+                }
+            }
+            else
+            {
+                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
             }
         }
 
@@ -436,7 +461,7 @@ namespace WPFSTD105.Model
 
             Bolts3DBlock result = new Bolts3DBlock(attr); //產生孔位圖塊
             result.steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
-            result.CreateBolts(ref check);//創建孔位群組
+            result.CreateBolts(model,ref check);//創建孔位群組
             // 符合加工區域
             if (check)
             {
@@ -447,6 +472,13 @@ namespace WPFSTD105.Model
                 model.Entities.Insert(0, block);//加入參考圖塊到模型
             }
             return result;
+
+
+            
+
+
+
+
         }
         ///// <summary>
         ///// 轉換 Codesys Memory 可用資料 
@@ -467,9 +499,8 @@ namespace WPFSTD105.Model
         /// <summary>
         /// 計算可加工範圍(Y軸)
         /// </summary>
-        /// <param name="attr">孔群參數</param>
-        /// <param name="boltAttr">孔洞參數</param>
-        /// <param name="steelAttr">鋼材參數</param>
+        /// <param name="type">型鋼類別</param>
+        /// <param name="boltAttr">孔資訊</param>
         /// <returns></returns>
         public List<double> WorkingRange(OBJECT_TYPE type, BoltAttr boltAttr)
         {
