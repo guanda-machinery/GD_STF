@@ -424,13 +424,13 @@ namespace WPFSTD105.ViewModel
             {
                 _ProfileIndex = value;
 
-                SteelAttr steelAttr;
+                SteelAttr _steelAttr;
                 if (value == -1)
-                    steelAttr = ProfileList[0];
+                    _steelAttr = ProfileList[0];
                 else
-                    steelAttr = ProfileList[value];
+                    _steelAttr = ProfileList[value];
 
-                SteelAttr = (SteelAttr)steelAttr.DeepClone();
+                SteelAttr = (SteelAttr)_steelAttr.DeepClone();
             }
         }
 

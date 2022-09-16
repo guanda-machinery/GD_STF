@@ -15,7 +15,7 @@ namespace WPFSTD105.Attribute
     /// 主要鋼構物件自定義資訊
     /// </summary>
     [Serializable]
-    public class SteelAttr : AbsAttr, ISteelAttr, ISteelProfile
+    public class SteelAttr: AbsAttr, ISteelAttr, ISteelProfile
     {
         /// <summary>
         /// 轉換器
