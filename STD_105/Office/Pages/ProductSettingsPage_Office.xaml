@@ -176,7 +176,7 @@
                                  SelectionMode="None"
                                  MaxHeight="500"
                                  AllowLiveDataShaping="True" 
-                                 ItemsSource="{Binding DataViews, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange">
+                                 ItemsSource="{Binding DataViews,NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange">
                     <dxg:GridControl.Resources>
                         <Style TargetType="dxg:GridColumn" >
                             <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
@@ -209,6 +209,8 @@
 
                         </dxg:TableView>
                     </dxg:GridControl.View>
+
+
                     <dxg:GridColumn FieldName="ExclamationMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                         <dxg:GridColumn.HeaderImageStyle>
                             <Style TargetType="Image">
@@ -218,7 +220,7 @@
                         </dxg:GridColumn.HeaderImageStyle>
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <dxe:CheckEdit x:Name="dxg_ExclamationMark" IsChecked="{Binding Row.steelAttr.ExclamationMark, Mode=TwoWay}">
+                                <dxe:CheckEdit x:Name="dxg_ExclamationMark" IsChecked="{Binding Row.steelAttr.ExclamationMark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <dxe:CheckEdit.Style>
                                         <Style TargetType="{x:Type dxe:CheckEdit}">
                                             <Setter Property="Template">
@@ -242,6 +244,9 @@
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
+
+                    <dxg:GridColumn FieldName="ExclamationMark" Binding="{Binding Row.steelAttr.ExclamationMark}" IsSmart="True"   Header="構件編號" Width="auto"/>
+
                     <dxg:GridColumn FieldName="LockMark"  IsSmart="True" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True" Visible="false">
                         <dxg:GridColumn.HeaderImageStyle>
                             <Style TargetType="Image">

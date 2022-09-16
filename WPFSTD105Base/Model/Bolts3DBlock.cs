@@ -150,6 +150,7 @@ namespace WPFSTD105.Model
 
                 double y, z;
 
+                #region 依Face處理
                 //查看要附加的面在哪
                 switch (Info.Face)
                 {
@@ -181,7 +182,8 @@ namespace WPFSTD105.Model
                         break;
                     default:
                         break;
-                }
+                } 
+                #endregion
                 resultY[0].Color = ColorTranslator.FromHtml(Default.Hole);
                 resultY[0].ColorMethod = colorMethodType.byEntity;
 
@@ -496,9 +498,8 @@ namespace WPFSTD105.Model
         /// <summary>
         /// 計算可加工範圍(Y軸)
         /// </summary>
-        /// <param name="attr">孔群參數</param>
-        /// <param name="boltAttr">孔洞參數</param>
-        /// <param name="steelAttr">鋼材參數</param>
+        /// <param name="type">型鋼類別</param>
+        /// <param name="boltAttr">孔資訊</param>
         /// <returns></returns>
         public List<double> WorkingRange(OBJECT_TYPE type, BoltAttr boltAttr)
         {

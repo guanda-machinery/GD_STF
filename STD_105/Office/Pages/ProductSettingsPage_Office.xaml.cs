@@ -2270,7 +2270,8 @@ namespace STD_105.Office
                         BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                         lstBoltsCutPoint.Add(bolts);
                     }
-
+                    // 2022/09/16 呂宗霖 暫時給true 待前端可即時顯示調整後再拿掉
+                    ((ProductSettingsPageViewModel)PieceListGridControl.SelectedItem).steelAttr.ExclamationMark = true;
                     ViewModel.SteelAttr = TmpSteelAttr;
                     model.Entities[model.Entities.Count - 1].EntityData= TmpSteelAttr;
                     Viewbox.IsEnabled = false;
