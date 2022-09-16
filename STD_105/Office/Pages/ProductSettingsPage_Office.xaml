@@ -175,7 +175,7 @@
                                  AutoGenerateColumns="None"
                                  SelectionMode="None"
                                  MaxHeight="500"
-                                 AllowLiveDataShaping="True" 
+                                 AllowLiveDataShaping="True"
                                  ItemsSource="{Binding DataViews, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange">
                     <dxg:GridControl.Resources>
                         <Style TargetType="dxg:GridColumn" >
@@ -209,7 +209,7 @@
 
                         </dxg:TableView>
                     </dxg:GridControl.View>
-                    <dxg:GridColumn FieldName="ExclamationMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
+                    <dxg:GridColumn Name="Exc_GridColumn" FieldName="ExclamationMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                         <dxg:GridColumn.HeaderImageStyle>
                             <Style TargetType="Image">
                                 <Setter Property="Width" Value="20"></Setter>
@@ -218,7 +218,7 @@
                         </dxg:GridColumn.HeaderImageStyle>
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <dxe:CheckEdit x:Name="dxg_ExclamationMark" IsChecked="{Binding Row.steelAttr.ExclamationMark, Mode=TwoWay}">
+                                <dxe:CheckEdit Name="PART_Editor" IsChecked="{Binding Row.steelAttr.ExclamationMark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <dxe:CheckEdit.Style>
                                         <Style TargetType="{x:Type dxe:CheckEdit}">
                                             <Setter Property="Template">
@@ -251,7 +251,7 @@
                         </dxg:GridColumn.HeaderImageStyle>
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <dxe:CheckEdit x:Name="PART_Editor" IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                <dxe:CheckEdit x:Name="PART_Edit" IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                                     <dxe:CheckEdit.Template>
                                         <ControlTemplate>
                                             <dx:DXImage  Width="25" Height="25">
@@ -288,7 +288,8 @@
                         </dxg:GridColumn.CellStyle>
                     </dxg:GridColumn>
 
-                    <dxg:GridColumn FieldName="GUID" Binding="{Binding steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="true"/> <!--Visible="{StaticResource visible}"/>-->
+                    <dxg:GridColumn FieldName="GUID" Binding="{Binding steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="true"/>
+                    <!--Visible="{StaticResource visible}"/>-->
                     <dxg:GridColumn FieldName="AssemblyNumber" Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="auto"/>
                     <dxg:GridColumn FieldName="PartNumber" Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="auto" />
                     <dxg:GridColumn FieldName="TeklaName" Binding="{Binding steelAttr.Name}" IsSmart="True"   Header="名稱" Width="auto"/>
@@ -345,7 +346,7 @@
         <GroupBox Header="零件屬性" Grid.Column="1" Margin="5">
             <DockPanel Margin="5,0,5,0">
                 <Grid  HorizontalAlignment="Left" Margin="5,5,5,5" DockPanel.Dock="Top" >
-                    <Grid.Resources>                        
+                    <Grid.Resources>
                         <Style TargetType ="TextBlock">
                             <Setter Property="FontSize" Value="12"/>
                             <Setter  Property="Foreground" Value="Black" />
@@ -549,7 +550,7 @@
                 </Grid>
                 <DockPanel  DockPanel.Dock="Bottom" Margin="0" VerticalAlignment="Bottom" >
                     <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Background="Gold" Width="60" Margin="0,0,6,0" Click="OKtoConfirmChanges"/>
-                    
+
                     <STD105:DataButtons_Office Margin="105,0,-17,0"
                                                Modify="{Binding ModifyPart}"
                                                Add="{Binding AddPart}"
@@ -983,7 +984,7 @@
                                                     </StackPanel>
                                                 </RadioButton.Content>
                                             </RadioButton>
-                                            
+
                                             <RadioButton Margin="0,3,0,0" Grid.Row="1" VerticalAlignment="Center" GroupName="DrillingPosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=0}">
                                                 <RadioButton.Content>
                                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,-2">
@@ -1101,7 +1102,7 @@
                                                 </StackPanel>
                                             </RadioButton.Content>
                                         </RadioButton>
-                                        
+
                                         <RadioButton Margin="0,-10,0,0" Grid.Row="1" VerticalAlignment="Center" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=0}">
                                             <RadioButton.Content>
                                                 <StackPanel Orientation="Horizontal" Margin="0,6,0,0" >
@@ -1159,91 +1160,91 @@
                                                      Width="50"
                                                      Canvas.Left="86"
                                                      Canvas.Top="10">
-                                                     <TextBox.Text>
-                                                         <Binding Path="ULPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                             <Binding.ValidationRules>
-                                                                 <STD105:CheckNumberRule NumberMin="0"/>
-                                                             </Binding.ValidationRules>
-                                                         </Binding>
-                                                     </TextBox.Text>
+                                                <TextBox.Text>
+                                                    <Binding Path="ULPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules>
+                                                            <STD105:CheckNumberRule NumberMin="0"/>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
                                             </TextBox>
                                             <TextBox Grid.Row="3"
                                                      Width="50"
                                                      Canvas.Left="154"
                                                      Canvas.Top="10">
-                                                     <TextBox.Text>
-                                                         <Binding Path="URPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                             <Binding.ValidationRules>
-                                                                 <STD105:CheckNumberRule NumberMin="0"/>
-                                                             </Binding.ValidationRules>
-                                                         </Binding>
-                                                     </TextBox.Text>
+                                                <TextBox.Text>
+                                                    <Binding Path="URPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules>
+                                                            <STD105:CheckNumberRule NumberMin="0"/>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
                                             </TextBox>
                                             <TextBox Width="50"
                                                      Canvas.Left="10"
                                                      Canvas.Top="70">
-                                                     <TextBox.Text>
-                                                         <Binding Path="ULPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                             <Binding.ValidationRules>
-                                                                 <STD105:CheckNumberRule NumberMin="0"/>
-                                                             </Binding.ValidationRules>
-                                                         </Binding>
-                                                     </TextBox.Text>
+                                                <TextBox.Text>
+                                                    <Binding Path="ULPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules>
+                                                            <STD105:CheckNumberRule NumberMin="0"/>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
                                             </TextBox>
                                             <TextBox Width="50"
                                                      Canvas.Left="10"
                                                      Canvas.Top="143">
-                                                     <TextBox.Text>
-                                                         <Binding Path="DLPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                             <Binding.ValidationRules>
-                                                                 <STD105:CheckNumberRule NumberMin="0"/>
-                                                             </Binding.ValidationRules>
-                                                         </Binding>
-                                                     </TextBox.Text>
+                                                <TextBox.Text>
+                                                    <Binding Path="DLPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules>
+                                                            <STD105:CheckNumberRule NumberMin="0"/>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
                                             </TextBox>
                                             <TextBox Width="50"
                                                      Canvas.Left="230"
                                                      Canvas.Top="70">
-                                                     <TextBox.Text>
-                                                         <Binding Path="URPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                             <Binding.ValidationRules>
-                                                                 <STD105:CheckNumberRule NumberMin="0"/>
-                                                             </Binding.ValidationRules>
-                                                         </Binding>
-                                                     </TextBox.Text>
+                                                <TextBox.Text>
+                                                    <Binding Path="URPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules>
+                                                            <STD105:CheckNumberRule NumberMin="0"/>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
                                             </TextBox>
                                             <TextBox Width="50"
                                                      Canvas.Left="230"
                                                      Canvas.Top="143">
-                                                     <TextBox.Text>
-                                                         <Binding Path="DRPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                             <Binding.ValidationRules>
-                                                                 <STD105:CheckNumberRule NumberMin="0"/>
-                                                             </Binding.ValidationRules>
-                                                         </Binding>
-                                                     </TextBox.Text>
+                                                <TextBox.Text>
+                                                    <Binding Path="DRPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules>
+                                                            <STD105:CheckNumberRule NumberMin="0"/>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
                                             </TextBox>
                                             <TextBox Width="50"
                                                      Canvas.Left="86"
                                                      Canvas.Top="205">
-                                                     <TextBox.Text>
-                                                         <Binding Path="DLPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                             <Binding.ValidationRules>
-                                                                 <STD105:CheckNumberRule NumberMin="0"/>
-                                                             </Binding.ValidationRules>
-                                                         </Binding>
-                                                     </TextBox.Text>
+                                                <TextBox.Text>
+                                                    <Binding Path="DLPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules>
+                                                            <STD105:CheckNumberRule NumberMin="0"/>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
                                             </TextBox>
                                             <TextBox Width="50"
                                                      Canvas.Left="154"
                                                      Canvas.Top="205">
-                                                     <TextBox.Text>
-                                                         <Binding Path="DRPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                             <Binding.ValidationRules>
-                                                                 <STD105:CheckNumberRule NumberMin="0"/>
-                                                             </Binding.ValidationRules>
-                                                         </Binding>
-                                                     </TextBox.Text>
+                                                <TextBox.Text>
+                                                    <Binding Path="DRPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules>
+                                                            <STD105:CheckNumberRule NumberMin="0"/>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
                                             </TextBox>
                                             <CheckBox IsChecked="{Binding ULCheck}"
                                                       Width="16"

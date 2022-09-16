@@ -3441,9 +3441,12 @@ namespace STD_105.Office
 
                 // 執行斜邊打點
                 RunHypotenusePoint();
-   
-            }
 
+                item.steelAttr.ExclamationMark = true;//設定零件清單的VM中的binding數值
+                int frh = PieceListGridControl.View.FocusedView.FocusedRowHandle;//取得零件清單目前被選取列的RowHandle
+                PieceListGridControl.SetCellValue(frh, Exc_GridColumn, true);//設定零件清單中被選取列的column的checkbox的值
+                PieceListGridControl.RefreshRow(frh);//畫面裡刷新上面該列的設定值
+            }
         }
         public void GridReload()
         {
