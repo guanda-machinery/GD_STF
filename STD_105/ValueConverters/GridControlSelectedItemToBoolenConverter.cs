@@ -12,20 +12,11 @@ namespace STD_105
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is GD_STD.Data.TypeSettingDataView)
-            {
 
-                var GridSelectedItem = ((GD_STD.Data.TypeSettingDataView)value);
-                if (GridSelectedItem is null)
-                {  
-                    //未選擇
-                    return false;
-                }
-                else
-                {
-                    //有選擇
-                    return true;
-                }
+
+            if (value is DevExpress.Xpf.Editors.CheckEdit)
+            {
+                return (value as DevExpress.Xpf.Editors.CheckEdit).IsChecked;
             }
             else
             {

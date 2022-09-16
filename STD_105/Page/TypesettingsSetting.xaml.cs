@@ -45,37 +45,37 @@ namespace STD_105.Office
 
         private void Material_List_GridControl_SelectedItemChanged(object sender, DevExpress.Xpf.Grid.SelectedItemChangedEventArgs e)
         {
-            if (e.NewItem != null)
-            {
-                var a = (GD_STD.Data.MaterialDataView)e.NewItem;
-                a.ButtonEnable = true;
-            }
-            if (e.OldItem != null)
-            {
-                var b = (GD_STD.Data.MaterialDataView)e.OldItem; 
-                b.ButtonEnable =false;
-            }
+            /* if (e.NewItem is GD_STD.Data.MaterialDataView)
+             {
+                 var a = (GD_STD.Data.MaterialDataView)e.NewItem;
+                 a.ButtonEnable = true;
+             }
+             if (e.OldItem is GD_STD.Data.MaterialDataView)
+             {
+                 var b = (GD_STD.Data.MaterialDataView)e.OldItem; 
+                 b.ButtonEnable =false;
+             }*/
             
-            /*var SenderC = sender as DevExpress.Xpf.Grid.GridControl;
-            var c = (IEnumerable<GD_STD.Data.MaterialDataView>)SenderC.ItemsSource;
-            
-            if (c != null)
-            {
-                foreach (var cItem in c)
-                {
-                    if (cItem == (GD_STD.Data.MaterialDataView)e.NewItem)
-                        cItem.ButtonEnable = true;
-                    else
-                        cItem.ButtonEnable = false;
+            var SenderC = sender as DevExpress.Xpf.Grid.GridControl;
 
-                }*/
-                //var CopyList = c.ToList();
-                //c.
-                //SenderC.ItemsSource = null;
-                //SenderC.ItemsSource = CopyList;
+            if (SenderC.View != null)
+            {
+                if (e.NewItem is GD_STD.Data.MaterialDataView)
+                {
+                    var a = (GD_STD.Data.MaterialDataView)e.NewItem;
+                    a.ButtonEnable = true;
+
+                    var NewHandle = SenderC.FindRow(e.NewItem);
+                    SenderC.RefreshRow(NewHandle);//畫面裡刷新上面該列的設定值
+                }
+                if (e.OldItem is GD_STD.Data.MaterialDataView)
+                {
+                    var b = (GD_STD.Data.MaterialDataView)e.OldItem;
+                    b.ButtonEnable = false; 
+                    var OldHandle = SenderC.FindRow(e.OldItem);
+                    SenderC.RefreshRow(OldHandle);//畫面裡刷新上面該列的設定值
+                }
             }
-           
-           
         }
 
     }

@@ -265,10 +265,14 @@ namespace WPFSTD105
         /// 報表視圖
         /// </summary>
         public ObservableCollection<TypeSettingDataView> DataViews { get; set; } = new ObservableCollection<TypeSettingDataView>();
+
+
         /// <summary>
         /// 素材組合列表
         /// </summary>
-        public ObservableCollection<MaterialDataView> MaterialDataViews { get; set; } = new ObservableCollection<MaterialDataView>();
+        public ObservableCollection<MaterialDataView> MaterialDataViews {get;set;}= new ObservableCollection<MaterialDataView>();
+
+
         /// <summary>
         /// 加工完成進度百分比
         /// </summary>

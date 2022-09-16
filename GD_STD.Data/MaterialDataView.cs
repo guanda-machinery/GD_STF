@@ -86,7 +86,27 @@ namespace GD_STD.Data
         public ObservableCollection<TypeSettingDataView> Parts { get; set; } = new ObservableCollection<TypeSettingDataView>();
         #region ButtonCommand
 
-        public bool ButtonEnable { get; set; } = false;
+        private bool _buttoneable = false;
+        public bool ButtonEnable
+        {
+            get
+            {
+                return _buttoneable;
+            }
+            set
+            {
+                if (_buttoneable != value)
+                {
+                    _buttoneable = value;
+                    //↓使isenable可即時反應
+                    OnPropertyChanged("ButtonEnable");
+                }
+            }
+        }
+
+
+
+
 
         private enum CRotation
         {

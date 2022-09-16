@@ -563,8 +563,8 @@
                     <dxg:GridControl 
                         Name="Material_List_GridControl"    
                         AutoGenerateColumns="None" 
-                        Grid.Row="2"     
                         SelectedItemChanged="Material_List_GridControl_SelectedItemChanged"
+                        Grid.Row="2"    
                         ItemsSource="{Binding MaterialDataViews}"
                         MinHeight="200"  MaxHeight="400">
                         <dxg:GridControl.View >
@@ -583,6 +583,8 @@
                                 </dxg:TableView.CellStyle>
                             </dxg:TableView>
                         </dxg:GridControl.View>
+
+
                         <dxg:GridColumn FieldName="ExclamationMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" Width="40" FixedWidth="True">
                             <dxg:GridColumn.HeaderImageStyle>
                                 <Style TargetType="Image">
@@ -729,6 +731,7 @@
                         </dxg:GridColumn>
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題一"  Width="auto"  />
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題二"   Width="auto" />
+
                         <dxg:GridControl.DetailDescriptor>
                             <dxg:ContentDetailDescriptor>
                                 <dxg:ContentDetailDescriptor.ContentTemplate >
@@ -743,7 +746,12 @@
                                 </Grid.RowDefinitions>
                                             <Border Grid.Column="0" BorderThickness="0,0,1.5,0" BorderBrush="#cfcfcf">
                                                 <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,5,0" >
-                                        <dxg:GridControl Name="ComponentGridControl" ItemsSource="{Binding Path =Parts}"   AutoGenerateColumns="None" MinHeight="50" MaxHeight="110" Height="auto">
+                                        <dxg:GridControl Name="ComponentGridControl" ItemsSource="{Binding Path =Parts}" 
+                                                         AutoGenerateColumns="None" 
+                                                         IsEnabled="{Binding ButtonEnable}"
+                                                         MinHeight="50" 
+                                                         MaxHeight="110" 
+                                                         Height="auto">
                                             <dxg:GridControl.Resources>
                                                 <Style TargetType="dxg:GridColumnHeader">
                                                     <Setter Property="Background" Value="LemonChiffon"/>
@@ -826,8 +834,8 @@
                                     <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                                         <TextBlock Text="零件正轉"  />
                                                     <Button Grid.Column="1" Grid.Row="0" Height="25" Margin="10,0,0,0"  MinWidth="70" 
-                                                            Command="{Binding ClockwiseRotationComponentCommand }" 
-                                                            IsEnabled="{Binding ButtonEnable , UpdateSourceTrigger=PropertyChanged , NotifyOnSourceUpdated=True}"
+                                                            IsEnabled="{Binding ButtonEnable}"
+                                                            Command="{Binding ClockwiseRotationComponentCommand }"
                                                             >
 
                                                         <Button.CommandParameter>
@@ -853,7 +861,9 @@
                                     </StackPanel>
                                     <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                                         <TextBlock Text="零件逆轉"  />
-                                        <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding CounterClockwiseRotationComponentCommand}" IsEnabled="{Binding ButtonEnable}">
+                                                    <Button x:Name="CounterClockwiseRotationButton" Height="25" Margin="10,0,0,0"  MinWidth="70"
+                                                            IsEnabled="{Binding ButtonEnable}"
+                                                            Command="{Binding CounterClockwiseRotationComponentCommand}" >
                                             <Button.CommandParameter>
                                                 <MultiBinding Converter="{STD105:ComParConverter}">
                                                     <MultiBinding.Bindings>
@@ -881,7 +891,9 @@
                                     </StackPanel>
                                     <StackPanel Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                                         <TextBlock Text="零件前進"  />
-                                        <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding ForwardComponentCommand }">
+                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" 
+                                                            IsEnabled="{Binding ButtonEnable}"
+                                                           Command="{Binding ForwardComponentCommand }">
                                             <Button.CommandParameter>
                                                 <MultiBinding Converter="{STD105:ComParConverter}">
                                                     <MultiBinding.Bindings>
@@ -905,7 +917,9 @@
                                     </StackPanel>
                                     <StackPanel Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                                         <TextBlock Text="零件後退"  />
-                                        <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding BackwardComponentCommand }">
+                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70"
+                                                            IsEnabled="{Binding ButtonEnable}"
+                                                            Command="{Binding BackwardComponentCommand }">
                                             <Button.CommandParameter>
                                                 <MultiBinding Converter="{STD105:ComParConverter}">
                                                     <MultiBinding.Bindings>
@@ -930,7 +944,9 @@
 
                                     <StackPanel Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                                         <TextBlock Text="零件退位"  />
-                                        <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding BorrowComponentCommand}">
+                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" 
+                                                            IsEnabled="{Binding ButtonEnable}"
+                                                           Command="{Binding BorrowComponentCommand}">
                                             <Button.CommandParameter>
                                                 <MultiBinding Converter="{STD105:ComParConverter}">
                                                     <MultiBinding.Bindings>
@@ -957,7 +973,9 @@
 
                                     <StackPanel Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
                                         <TextBlock Text="零件進位"  />
-                                        <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding CarryComponentCommand}">
+                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" 
+                                                            IsEnabled="{Binding ButtonEnable}"
+                                                           Command="{Binding CarryComponentCommand}">
                                             <Button.CommandParameter>
                                                 <MultiBinding Converter="{STD105:ComParConverter}">
                                                     <MultiBinding.Bindings>
