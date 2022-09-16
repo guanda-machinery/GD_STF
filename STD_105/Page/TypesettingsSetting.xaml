@@ -563,9 +563,9 @@
                     <dxg:GridControl 
                         Name="Material_List_GridControl"    
                         AutoGenerateColumns="None" 
-                        Grid.Row="2"        
+                        Grid.Row="2"     
                         SelectedItemChanged="Material_List_GridControl_SelectedItemChanged"
-                        ItemsSource="{Binding MaterialDataViews , UpdateSourceTrigger=PropertyChanged}"
+                        ItemsSource="{Binding MaterialDataViews}"
                         MinHeight="200"  MaxHeight="400">
                         <dxg:GridControl.View >
                             <dxg:TableView 
@@ -729,106 +729,107 @@
                         </dxg:GridColumn>
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題一"  Width="auto"  />
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題二"   Width="auto" />
-
-
                         <dxg:GridControl.DetailDescriptor>
                             <dxg:ContentDetailDescriptor>
-                                <dxg:ContentDetailDescriptor.ContentTemplate>
-                                    <dxg:DefaultDataTemplate>
+                                <dxg:ContentDetailDescriptor.ContentTemplate >
+                                    <DataTemplate>
                                         <Grid Margin="6">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="auto" />
-                                                <ColumnDefinition Width="auto"/>
-                                            </Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
                                             <Border Grid.Column="0" BorderThickness="0,0,1.5,0" BorderBrush="#cfcfcf">
                                                 <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,5,0" >
-                                                    <dxg:GridControl Name="ComponentGridControl" ItemsSource="{Binding Path =Parts}"   AutoGenerateColumns="None" MinHeight="50" MaxHeight="110" Height="auto">
-                                                        <dxg:GridControl.Resources>
-                                                            <Style TargetType="dxg:GridColumnHeader">
-                                                                <Setter Property="Background" Value="LemonChiffon"/>
+                                        <dxg:GridControl Name="ComponentGridControl" ItemsSource="{Binding Path =Parts}"   AutoGenerateColumns="None" MinHeight="50" MaxHeight="110" Height="auto">
+                                            <dxg:GridControl.Resources>
+                                                <Style TargetType="dxg:GridColumnHeader">
+                                                    <Setter Property="Background" Value="LemonChiffon"/>
 
-                                                            </Style>
-                                                            <Style TargetType="dxg:GridColumn" >
-                                                                <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
+                                                </Style>
+                                                <Style TargetType="dxg:GridColumn" >
+                                                    <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
 
-                                                            </Style>
-                                                            <Style TargetType="dxe:TextEditSettings">
-                                                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                                </Style>
+                                                <Style TargetType="dxe:TextEditSettings">
+                                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
 
-                                                            </Style>
-                                                        </dxg:GridControl.Resources>
-                                                        <dxg:GridControl.View>
-                                                            <dxg:TableView ShowTotalSummary="False" ShowGroupPanel="False" AutoWidth="True" ShowHorizontalLines="True" ShowVerticalLines="True"  VerticalScrollbarVisibility="Auto">
-                                                                <dxg:TableView.CellStyle>
-                                                                    <Style>
-                                                                        <Setter Property="TextBlock.FontSize" Value="12"/>
-                                                                    </Style>
-                                                                </dxg:TableView.CellStyle>
-                                                            </dxg:TableView>
-                                                        </dxg:GridControl.View>
-                                                        <dxg:GridColumn FieldName="Order" Header="順序"  Width="auto"/>
-                                                        <dxg:GridColumn FieldName="AssemblyNumber"   Header="構件編號"  Width="auto" />
-                                                        <dxg:GridColumn FieldName="PartNumber" Header="零件編號"  Width="auto" />
-                                                        <dxg:GridColumn FieldName="Length" Header="零件長"  Width="auto"  >
-                                                            <dxg:GridColumn.EditSettings>
-                                                                <dxe:TextEditSettings DisplayFormat="F2"/>
-                                                            </dxg:GridColumn.EditSettings>
-                                                        </dxg:GridColumn>
-                                                        <dxg:GridColumn FieldName="" Header="數量"  Width="auto" />
-                                                        <dxg:GridColumn FieldName="" Header="Phase"  Width="auto"/>
-                                                        <dxg:GridColumn FieldName="" Header="拆運"  Width="auto" />
-                                                    </dxg:GridControl>
-                                                    <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
-                                                        <Button >
-                                                            <Button.Content>
-                                                                <Grid>
-                                                                    <Grid.ColumnDefinitions>
-                                                                        <ColumnDefinition Width="*"/>
-                                                                        <ColumnDefinition Width="*"/>
-                                                                    </Grid.ColumnDefinitions>
+                                                </Style>
+                                            </dxg:GridControl.Resources>
+                                            <dxg:GridControl.View>
+                                                <dxg:TableView ShowTotalSummary="False" ShowGroupPanel="False" AutoWidth="True" ShowHorizontalLines="True" ShowVerticalLines="True"  VerticalScrollbarVisibility="Auto">
+                                                    <dxg:TableView.CellStyle>
+                                                        <Style>
+                                                            <Setter Property="TextBlock.FontSize" Value="12"/>
+                                                        </Style>
+                                                    </dxg:TableView.CellStyle>
+                                                </dxg:TableView>
+                                            </dxg:GridControl.View>
+                                            <dxg:GridColumn FieldName="Order" Header="順序"  Width="auto"/>
+                                            <dxg:GridColumn FieldName="AssemblyNumber"   Header="構件編號"  Width="auto" />
+                                            <dxg:GridColumn FieldName="PartNumber" Header="零件編號"  Width="auto" />
+                                            <dxg:GridColumn FieldName="Length" Header="零件長"  Width="auto"  >
+                                                <dxg:GridColumn.EditSettings>
+                                                    <dxe:TextEditSettings DisplayFormat="F2"/>
+                                                </dxg:GridColumn.EditSettings>
+                                            </dxg:GridColumn>
+                                            <dxg:GridColumn FieldName="" Header="數量"  Width="auto" />
+                                            <dxg:GridColumn FieldName="" Header="Phase"  Width="auto"/>
+                                            <dxg:GridColumn FieldName="" Header="拆運"  Width="auto" />
+                                        </dxg:GridControl>
+                                        <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
+                                            <Button >
+                                                <Button.Content>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
 
-                                                                    <materialDesign:PackIcon Kind="PlusThick" />
-                                                                    <materialDesign:PackIcon Kind="ScrewLag" Grid.Column="1"/>
-                                                                </Grid>
-                                                            </Button.Content>
-                                                        </Button>
-                                                        <TextBlock Text="加入新零件" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                                                    </StackPanel>
-                                                </StackPanel>
-                                            </Border>
-                                            <GridSplitter Background="Transparent" Grid.RowSpan="2" HorizontalAlignment="Right"  VerticalAlignment="Stretch" Width="10" Margin="-5"  />
-                                            <!-- 可調整邊界拉柄(透明)-->
-                                            <Grid Grid.Column="1"  MinHeight="150" Margin="10,0,0,0">
-                                                <Grid.Resources>
-                                                    <Style TargetType="TextBlock">
-                                                        <Setter Property="Margin" Value="3"/>
-                                                    </Style>
-                                                    <DrawingImage x:Key="HBeamImage">
-                                                        <DrawingImage.Drawing>
-                                                            <DrawingGroup>
-                                                                <GeometryDrawing Brush ="#63686c"   Geometry="M0.5,0.5 L8,0.5 12,0.5 19.5,0.5 19.5,4.5 12,4.5 12,15.5 19.5,15.5 19.5,19.5 12,19.5 8,19.5 0.5,19.5 0.5,15.5 8,15.5 8,4.5 0.5,4.5 z" />
-                                                            </DrawingGroup>
-                                                        </DrawingImage.Drawing>
-                                                    </DrawingImage>
-                                                </Grid.Resources>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="auto"/>
-                                                    <ColumnDefinition Width="5"/>
-                                                    <ColumnDefinition Width="auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="35"/>
-                                                    <RowDefinition Height="35"/>
-                                                    <RowDefinition Height="35"/>
-                                                    <RowDefinition Height="35"/>
-                                                </Grid.RowDefinitions>
-                                                <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                                                    <TextBlock Text="零件正轉"  />
-                                                    <Button Grid.Column="1" Grid.Row="0" Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding ClockwiseRotationComponentCommand }" 
-                                                            IsEnabled="{Binding Row.ButtonEnable, Mode=OneWay}">
+                                                        <materialDesign:PackIcon Kind="PlusThick" />
+                                                        <materialDesign:PackIcon Kind="ScrewLag" Grid.Column="1"/>
+                                                    </Grid>
+                                                </Button.Content>
+                                            </Button>
+                                            <TextBlock Text="加入新零件" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                                <GridSplitter Background="Transparent" Grid.RowSpan="2" HorizontalAlignment="Right"  VerticalAlignment="Stretch" Width="10" Margin="-5"  />
+                                <!-- 可調整邊界拉柄(透明)-->
+                                <Grid Grid.Column="1"  MinHeight="150" Margin="10,0,0,0">
+                                    <Grid.Resources>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Margin" Value="3"/>
+                                        </Style>
+                                        <DrawingImage x:Key="HBeamImage">
+                                            <DrawingImage.Drawing>
+                                                <DrawingGroup>
+                                                    <GeometryDrawing Brush ="#63686c"   Geometry="M0.5,0.5 L8,0.5 12,0.5 19.5,0.5 19.5,4.5 12,4.5 12,15.5 19.5,15.5 19.5,19.5 12,19.5 8,19.5 0.5,19.5 0.5,15.5 8,15.5 8,4.5 0.5,4.5 z" />
+                                                </DrawingGroup>
+                                            </DrawingImage.Drawing>
+                                        </DrawingImage>
+                                    </Grid.Resources>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="5"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition Height="35"/>
+                                        <RowDefinition Height="35"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <TextBlock Text="零件正轉"  />
+                                                    <Button Grid.Column="1" Grid.Row="0" Height="25" Margin="10,0,0,0"  MinWidth="70" 
+                                                            Command="{Binding ClockwiseRotationComponentCommand }" 
+                                                            IsEnabled="{Binding ButtonEnable , UpdateSourceTrigger=PropertyChanged , NotifyOnSourceUpdated=True}"
+                                                            >
+
                                                         <Button.CommandParameter>
                                                             <MultiBinding Converter="{STD105:ComParConverter}">
                                                                 <MultiBinding.Bindings>
@@ -837,152 +838,152 @@
                                                                 </MultiBinding.Bindings>
                                                             </MultiBinding>
                                                         </Button.CommandParameter>
-    
-                                                        <Button.Content>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <Image  Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
-                                                                <Image  Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Rollback.svg'}" Margin="5,0,0,0"/>
-                                                            </Grid>
-                                                        </Button.Content>
-                                                    </Button>
-                                                </StackPanel>
-                                                <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                                                    <TextBlock Text="零件逆轉"  />
-                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding CounterClockwiseRotationComponentCommand}" IsEnabled="{Binding ButtonEnable}">
-                                                        <Button.CommandParameter>
-                                                            <MultiBinding Converter="{STD105:ComParConverter}">
-                                                                <MultiBinding.Bindings>
-                                                                    <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
-                                                                    <Binding ElementName="DrawTabControl"/>
-                                                                </MultiBinding.Bindings>
-                                                            </MultiBinding>
-                                                        </Button.CommandParameter>
 
                                                         <Button.Content>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <Image  Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
-                                                                <Image  Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Rollback.svg'}" Margin="5,0,0,0" RenderTransformOrigin="0.5,0.5">
-                                                                    <Image.RenderTransform>
-                                                                        <ScaleTransform ScaleX="-1" />
-                                                                    </Image.RenderTransform>
-                                                                </Image>
-                                                            </Grid>
-                                                        </Button.Content>
-                                                    </Button>
-                                                </StackPanel>
-                                                <StackPanel Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                                                    <TextBlock Text="零件前進"  />
-                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding ForwardComponentCommand }">
-                                                        <Button.CommandParameter>
-                                                            <MultiBinding Converter="{STD105:ComParConverter}">
-                                                                <MultiBinding.Bindings>
-                                                                    <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
-                                                                    <Binding ElementName="DrawTabControl"/>
-                                                                </MultiBinding.Bindings>
-                                                            </MultiBinding>
-                                                        </Button.CommandParameter>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image  Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
+                                                    <Image  Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Rollback.svg'}" Margin="5,0,0,0"/>
+                                                </Grid>
+                                            </Button.Content>
+                                        </Button>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <TextBlock Text="零件逆轉"  />
+                                        <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding CounterClockwiseRotationComponentCommand}" IsEnabled="{Binding ButtonEnable}">
+                                            <Button.CommandParameter>
+                                                <MultiBinding Converter="{STD105:ComParConverter}">
+                                                    <MultiBinding.Bindings>
+                                                        <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
+                                                        <Binding ElementName="DrawTabControl"/>
+                                                    </MultiBinding.Bindings>
+                                                </MultiBinding>
+                                            </Button.CommandParameter>
 
-                                                        <Button.Content>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <Image Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
-                                                                <Image Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Margin="5,0,0,0"/>
-                                                            </Grid>
-                                                        </Button.Content>
-                                                    </Button>
-                                                </StackPanel>
-                                                <StackPanel Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                                                    <TextBlock Text="零件後退"  />
-                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding BackwardComponentCommand }">
-                                                        <Button.CommandParameter>
-                                                            <MultiBinding Converter="{STD105:ComParConverter}">
-                                                                <MultiBinding.Bindings>
-                                                                    <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
-                                                                    <Binding ElementName="DrawTabControl"/>
-                                                                </MultiBinding.Bindings>
-                                                            </MultiBinding>
-                                                        </Button.CommandParameter>
+                                            <Button.Content>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image  Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
+                                                    <Image  Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Rollback.svg'}" Margin="5,0,0,0" RenderTransformOrigin="0.5,0.5">
+                                                        <Image.RenderTransform>
+                                                            <ScaleTransform ScaleX="-1" />
+                                                        </Image.RenderTransform>
+                                                    </Image>
+                                                </Grid>
+                                            </Button.Content>
+                                        </Button>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <TextBlock Text="零件前進"  />
+                                        <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding ForwardComponentCommand }">
+                                            <Button.CommandParameter>
+                                                <MultiBinding Converter="{STD105:ComParConverter}">
+                                                    <MultiBinding.Bindings>
+                                                        <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
+                                                        <Binding ElementName="DrawTabControl"/>
+                                                    </MultiBinding.Bindings>
+                                                </MultiBinding>
+                                            </Button.CommandParameter>
 
-                                                        <Button.Content>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <Image Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
-                                                                <Image Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Left.svg'}" Margin="5,0,0,0"/>
-                                                            </Grid>
-                                                        </Button.Content>
-                                                    </Button>
-                                                </StackPanel>
+                                            <Button.Content>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
+                                                    <Image Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Margin="5,0,0,0"/>
+                                                </Grid>
+                                            </Button.Content>
+                                        </Button>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <TextBlock Text="零件後退"  />
+                                        <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding BackwardComponentCommand }">
+                                            <Button.CommandParameter>
+                                                <MultiBinding Converter="{STD105:ComParConverter}">
+                                                    <MultiBinding.Bindings>
+                                                        <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
+                                                        <Binding ElementName="DrawTabControl"/>
+                                                    </MultiBinding.Bindings>
+                                                </MultiBinding>
+                                            </Button.CommandParameter>
 
-                                                <StackPanel Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                                                    <TextBlock Text="零件退位"  />
-                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding BorrowComponentCommand}">
-                                                        <Button.CommandParameter>
-                                                            <MultiBinding Converter="{STD105:ComParConverter}">
-                                                                <MultiBinding.Bindings>
-                                                                    <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
-                                                                    <Binding ElementName="DrawTabControl"/>
-                                                                </MultiBinding.Bindings>
-                                                            </MultiBinding>
-                                                        </Button.CommandParameter>
+                                            <Button.Content>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
+                                                    <Image Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Left.svg'}" Margin="5,0,0,0"/>
+                                                </Grid>
+                                            </Button.Content>
+                                        </Button>
+                                    </StackPanel>
 
-                                                        <Button.Content>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <Image Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
-                                                                    <Image Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Up.svg'}" Margin="5,0,0,0"/>
-                                                                </StackPanel>
-                                                            </Grid>
-                                                        </Button.Content>
-                                                    </Button>
-                                                </StackPanel>
+                                    <StackPanel Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <TextBlock Text="零件退位"  />
+                                        <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding BorrowComponentCommand}">
+                                            <Button.CommandParameter>
+                                                <MultiBinding Converter="{STD105:ComParConverter}">
+                                                    <MultiBinding.Bindings>
+                                                        <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
+                                                        <Binding ElementName="DrawTabControl"/>
+                                                    </MultiBinding.Bindings>
+                                                </MultiBinding>
+                                            </Button.CommandParameter>
 
-                                                <StackPanel Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                                                    <TextBlock Text="零件進位"  />
-                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding CarryComponentCommand}">
-                                                        <Button.CommandParameter>
-                                                            <MultiBinding Converter="{STD105:ComParConverter}">
-                                                                <MultiBinding.Bindings>
-                                                                    <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
-                                                                    <Binding ElementName="DrawTabControl"/>
-                                                                </MultiBinding.Bindings>
-                                                            </MultiBinding>
-                                                        </Button.CommandParameter>
-                                                        <Button.Content>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <Image Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
-                                                                <Image Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Down.svg'}" Margin="5,0,0,0"/>
-                                                            </Grid>
-                                                        </Button.Content>
-                                                    </Button>
-                                                </StackPanel>
-                                            </Grid>
+                                            <Button.Content>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
+                                                        <Image Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Up.svg'}" Margin="5,0,0,0"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Button.Content>
+                                        </Button>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <TextBlock Text="零件進位"  />
+                                        <Button Height="25" Margin="10,0,0,0"  MinWidth="70" Command="{Binding CarryComponentCommand}">
+                                            <Button.CommandParameter>
+                                                <MultiBinding Converter="{STD105:ComParConverter}">
+                                                    <MultiBinding.Bindings>
+                                                        <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
+                                                        <Binding ElementName="DrawTabControl"/>
+                                                    </MultiBinding.Bindings>
+                                                </MultiBinding>
+                                            </Button.CommandParameter>
+                                            <Button.Content>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
+                                                    <Image Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Down.svg'}" Margin="5,0,0,0"/>
+                                                </Grid>
+                                            </Button.Content>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
 
 
 
                                         </Grid>
-                                    </dxg:DefaultDataTemplate>
+                                    </DataTemplate>
                                 </dxg:ContentDetailDescriptor.ContentTemplate>
                             </dxg:ContentDetailDescriptor>
                         </dxg:GridControl.DetailDescriptor>

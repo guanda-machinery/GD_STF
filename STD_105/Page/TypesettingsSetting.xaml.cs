@@ -55,9 +55,29 @@ namespace STD_105.Office
                 var b = (GD_STD.Data.MaterialDataView)e.OldItem; 
                 b.ButtonEnable =false;
             }
-            var SenderC = sender as DevExpress.Xpf.Grid.GridControl;
+            
+            /*var SenderC = sender as DevExpress.Xpf.Grid.GridControl;
+            var c = (IEnumerable<GD_STD.Data.MaterialDataView>)SenderC.ItemsSource;
+            
+            if (c != null)
+            {
+                foreach (var cItem in c)
+                {
+                    if (cItem == (GD_STD.Data.MaterialDataView)e.NewItem)
+                        cItem.ButtonEnable = true;
+                    else
+                        cItem.ButtonEnable = false;
 
+                }*/
+                //var CopyList = c.ToList();
+                //c.
+                //SenderC.ItemsSource = null;
+                //SenderC.ItemsSource = CopyList;
+            }
+           
+           
         }
+
     }
 }
 
