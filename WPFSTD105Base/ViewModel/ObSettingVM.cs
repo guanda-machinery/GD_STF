@@ -1528,7 +1528,7 @@ namespace WPFSTD105.ViewModel
                     Title2 = item.Title2,
                     t1 = item.t1,
                     t2 = item.t2,
-                    ExclamationMark = item.ExclamationMark,
+                    ExclamationMark = item.ExclamationMark == null ? false: item.ExclamationMark,
                 };
                 aa.Weight = PartWeight(aa, saFile); //item.Weight,
                 aa.steelAttr.GUID = item.DataName;
