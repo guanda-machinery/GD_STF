@@ -120,7 +120,8 @@
                                         Background="#d3d3d3"
                                         BorderBrush="#ABABAB"
                                         BorderThickness="1,1,1,0"
-                                        CornerRadius="5,5,0,0">
+                                        CornerRadius="5,5,0,0"
+                                        Margin="0,0,0,-1">
                                     <ContentPresenter x:Name="ContentSite"
                                               Margin="40,10"
                                               HorizontalAlignment="Center"
@@ -141,7 +142,7 @@
                                                         Duration="0" />
                                                 <ColorAnimation Storyboard.TargetName="ContentSite"
                                                         Storyboard.TargetProperty="(TextBlock.Foreground).Color"
-                                                        To="#000000"
+                                                        To="#eeeeee"
                                                         Duration="0" />
                                                 <ThicknessAnimation Storyboard.TargetName="Border"
                                                             Storyboard.TargetProperty="BorderThickness"
@@ -301,14 +302,14 @@
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
                     <!--<dxg:GridColumn FieldName="{Binding Creation, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="建立日期"  >-->
-                    <dxg:GridColumn FieldName="Creation" IsSmart="True"  Header="建立日期"  >
+                    <dxg:GridColumn FieldName="Creation" IsSmart="True" Header="建立日期"  Width="80">
                         <dxg:GridColumn.CellStyle>
                             <Style>
                                 <Setter Property="TextBlock.Foreground" Value="Gray"/>
                             </Style>
                         </dxg:GridColumn.CellStyle>
                     </dxg:GridColumn>
-                    <dxg:GridColumn FieldName="{Binding Revise, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="修改日期"  >
+                    <dxg:GridColumn FieldName="{Binding Revise, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="修改日期" Width="80">
                         <dxg:GridColumn.CellStyle>
                             <Style>
                                 <Setter Property="TextBlock.Foreground" Value="Gray"/>
@@ -318,26 +319,34 @@
 
                     <dxg:GridColumn FieldName="GUID" Binding="{Binding steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="true"/>
                     <!--Visible="{StaticResource visible}"/>-->
-                    <dxg:GridColumn FieldName="AssemblyNumber" Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="auto"/>
-                    <dxg:GridColumn FieldName="PartNumber" Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="auto" />
-                    <dxg:GridColumn FieldName="TeklaName" Binding="{Binding steelAttr.Name}" IsSmart="True"   Header="名稱" Width="auto"/>
+                    <dxg:GridColumn FieldName="AssemblyNumber" Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="60"/>
+                    <dxg:GridColumn FieldName="PartNumber" Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="60" />
+                    <dxg:GridColumn FieldName="TeklaName" Binding="{Binding steelAttr.Name}" IsSmart="True" Header="名稱" Width="80"/>
                     <dxg:GridColumn FieldName="TypeDesc"  IsSmart="True" Header="鋼材類型" Visible="{StaticResource visible}"/>
-                    <dxg:GridColumn Binding="{Binding Path=SteelType, Converter={STD105:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類型"/>
-                    <dxg:GridColumn FieldName="Profile" IsSmart="True"  Header="斷面規格"  Width="auto"/>
+                    <dxg:GridColumn Binding="{Binding Path=SteelType, Converter={STD105:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類型" Width="60"/>
+                    <dxg:GridColumn FieldName="Profile" IsSmart="True" Header="斷面規格"  Width="140"/>
                     <dxg:GridColumn FieldName="SteelType"  IsSmart="True" Header="鋼材類型(Index)" Visible="{StaticResource visible}"/>
-                    <dxg:GridColumn FieldName="Material" IsSmart="True"  Header="材質"  Width="auto"/>
-                    <dxg:GridColumn FieldName="Count"  IsSmart="True"  Width="auto" Header="數量"  />
-                    <dxg:GridColumn FieldName="Length" Binding="{Binding Length}" IsSmart="True"  Header="零件長" Width="auto" />
-                    <dxg:GridColumn FieldName="Weight" Binding="{Binding Weight}" IsSmart="True"  Header="零件重" Width="auto" />
+                    <dxg:GridColumn FieldName="Material" IsSmart="True"  Header="材質"  Width="80"/>
+                    <dxg:GridColumn FieldName="Count"  IsSmart="True"  Width="40" Header="數量"  />
+                    <dxg:GridColumn FieldName="Length" Binding="{Binding Length}" IsSmart="True" Header="零件長" Width="70">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings Mask="f0" MaskType="Numeric" MaskUseAsDisplayFormat="true"/>
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="Weight" Binding="{Binding Weight}" IsSmart="True" Header="零件重" Width="70">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings Mask="f1" MaskType="Numeric" MaskUseAsDisplayFormat="true"/>
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
                     <dxg:GridColumn FieldName="Height" Binding="{Binding steelAttr.H}" IsSmart="True"  Header="高度" Width="auto" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="Weight" Binding="{Binding steelAttr.W}" IsSmart="True"  Header="寬度" Width="auto" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="t1" Binding="{Binding steelAttr.t1}" IsSmart="True"  Header="腹板厚度" Width="auto" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="t2" Binding="{Binding steelAttr.t2}" IsSmart="True"  Header="翼板厚度" Width="auto" Visible="{StaticResource visible}"/>
 
-                    <dxg:GridColumn FieldName="Phase"  IsSmart="True"  Width="auto" Header="Phase" />
-                    <dxg:GridColumn FieldName="ShippingNumber"  IsSmart="True"  Width="auto" Header="拆運"  />
-                    <dxg:GridColumn FieldName="Title1" IsSmart="True"  Width="auto" Header="標題一"  />
-                    <dxg:GridColumn FieldName="Title2" IsSmart="True"  Width="auto" Header="標題二"  />
+                    <dxg:GridColumn FieldName="Phase"  IsSmart="True"  Width="40" Header="Phase" />
+                    <dxg:GridColumn FieldName="ShippingNumber"  IsSmart="True"  Width="40" Header="拆運"  />
+                    <dxg:GridColumn FieldName="Title1" IsSmart="True"  Width="45" Header="標題一"  />
+                    <dxg:GridColumn FieldName="Title2" IsSmart="True"  Width="45" Header="標題二"  />
 
                     <!--<dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"   Header="構件編號" Width="auto"/>
                         <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="auto" />
@@ -441,7 +450,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBox Grid.Column="0" Name="Length"  >
                             <TextBox.Text>
-                                <Binding Path="ProductLengthProperty" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" >
+                                <Binding Path="ProductLengthProperty" StringFormat="{}{0:N0}" UpdateSourceTrigger="PropertyChanged" >
                                     <Binding.ValidationRules>
                                         <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                     </Binding.ValidationRules>
@@ -464,7 +473,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Name="Weight" Text="{Binding ProductWeightProperty, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}" Margin="3,0,0,0"/>
+                        <TextBlock Grid.Column="0" Name="Weight" Text="{Binding ProductWeightProperty, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N1}}" Margin="3,0,0,0"/>
                         <TextBlock Grid.Column="1"  Text="Kg"   Margin="3,0,0,0"/>
 
                     </Grid>
@@ -1337,7 +1346,7 @@
                             </GroupBox>
 
                             <StackPanel  Grid.Row="3" Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Command="" Width="80" Margin="-20,0,-15,0"  Background="#d8d8d8" Click="Set_CutSettingGrid_AllCheckboxChecked_Click" Cursor="Hand" >
+                                <Button Command="" Width="80" Margin="-20,0,-28,0"  Background="#d8d8d8" Click="Set_CutSettingGrid_AllCheckboxChecked_Click" Cursor="Hand" >
                                     <Button.Content >
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="CheckboxOutline" />
