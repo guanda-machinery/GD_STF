@@ -113,5 +113,10 @@ namespace STD_105
         {
 
         }
+
+        private void BrowserGraph(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

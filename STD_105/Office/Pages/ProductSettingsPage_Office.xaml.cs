@@ -3339,6 +3339,8 @@ namespace STD_105.Office
         private void ConfirmCurrentSteelSection(ProductSettingsPageViewModel CuurentSelectedPart)
         {
             ViewModel.fPartListOrManuall = true;
+            ViewModel.PartNumberProperty = CuurentSelectedPart.steelAttr.PartNumber.ToString();
+            ViewModel.AssemblyNumberProperty = CuurentSelectedPart.steelAttr.AsseNumber.ToString();
             ViewModel.ProfileType = (int)CuurentSelectedPart.SteelType;
             ViewModel.SteelSectionProperty = CuurentSelectedPart.Profile;
             ViewModel.ProductLengthProperty = CuurentSelectedPart.Length;
@@ -3413,9 +3415,6 @@ namespace STD_105.Office
                 ViewModel.GetSteelAttr();
 
 
-
-
-
                 var aaa = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
                 
                 var bbb = DataCorrespond.Where(p => p.Number == aaa.PartNumber).ToList();
@@ -3481,6 +3480,8 @@ namespace STD_105.Office
                 int frh = PieceListGridControl.View.FocusedView.FocusedRowHandle;//取得零件清單目前被選取列的RowHandle
                 PieceListGridControl.SetCellValue(frh, Exc_GridColumn, item.steelAttr.ExclamationMark);//設定零件清單中被選取列的column的checkbox的值
                 PieceListGridControl.RefreshRow(frh);//畫面裡刷新上面該列的設定值
+
+                
             }
         }
         public void GridReload()
@@ -3516,7 +3517,6 @@ namespace STD_105.Office
                          MessageBoxResult.None,
                          MessageBoxOptions.None,
                          FloatingMode.Popup);
-
 
                 if (ResultRtn == MessageBoxResult.OK)
                     SaveModel(true);//存取檔案
