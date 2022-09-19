@@ -6,6 +6,7 @@
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:STD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
+                  xmlns:STD105ValidRule="clr-namespace:STD_105.ValidationRules"
                   xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                   d:DataContext="{d:DesignInstance Type=STD105VM:SettingParVM}"
                   xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -162,7 +163,7 @@
                                 <TextBox.Text>
                                     <Binding Path="CutThickness" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                         <Binding.ValidationRules>
-                                            <STD105:CheckNumberRule NumberMin="0"/>
+                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
@@ -183,7 +184,7 @@
                                     <TextBox.Text>
                                         <Binding Path="SplitRemainingLength" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                             <Binding.ValidationRules>
-                                                <STD105:CheckNumberRule NumberMin="0"/>
+                                                <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                             </Binding.ValidationRules>
                                         </Binding>
                                     </TextBox.Text>

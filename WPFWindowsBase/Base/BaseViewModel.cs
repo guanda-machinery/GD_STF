@@ -25,11 +25,10 @@ namespace WPFWindowsBase
         /// <summary>
         /// 屬性變更事件
         /// </summary>
-        /// <param name="name">屬性名稱</param>
-        public void OnPropertyChanged(string name)
+        /// <param name="propertyName">屬性名稱</param>
+        public void OnPropertyChanged(string propertyName)
         {
-            if (name != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         /// <summary>
         /// 如果未設置更新標誌，則運行命令。

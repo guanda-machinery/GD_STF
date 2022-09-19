@@ -84,7 +84,30 @@ namespace GD_STD.Data
         /// 零件列表
         /// </summary>
         public ObservableCollection<TypeSettingDataView> Parts { get; set; } = new ObservableCollection<TypeSettingDataView>();
-        #region Command
+        #region ButtonCommand
+
+        private bool _buttoneable = false;
+        public bool ButtonEnable
+        {
+            get
+            {
+                return _buttoneable;
+            }
+            set
+            {
+                if (_buttoneable != value)
+                {
+                    _buttoneable = value;
+                    //↓使isenable可即時反應
+                    OnPropertyChanged("ButtonEnable");
+                }
+            }
+        }
+
+
+
+
+
         private enum CRotation
         {
             Clockwise,
@@ -278,14 +301,7 @@ namespace GD_STD.Data
             }
             return false;
         }
-
-
         #endregion
-
-
-
-
-
 
 
         /// <inheritdoc/>
@@ -344,6 +360,9 @@ namespace GD_STD.Data
         {
             get;set;
         }
+
+
+
 
 
 

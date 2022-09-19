@@ -369,6 +369,7 @@
     <Compile Include="FluentAPI\MecSettingBehavior.cs" />
     <Compile Include="FluentAPI\MetadataFluentAPI.cs" />
     <Compile Include="FluentAPI\OptionSettings.cs" />
+    <Compile Include="GetWpfLogicalChildClass.cs" />
     <Compile Include="Listening\MainAxisListening.cs" />
     <Compile Include="FluentAPI\Axis3D.cs" />
     <Compile Include="FluentAPI\AxisSetting.cs" />
