@@ -2271,7 +2271,7 @@ namespace STD_105.Office
                         lstBoltsCutPoint.Add(bolts);
                     }
                     // 2022/09/16 呂宗霖 暫時給true 待前端可即時顯示調整後再拿掉
-                    ((ProductSettingsPageViewModel)PieceListGridControl.SelectedItem).steelAttr.ExclamationMark = true;
+                    //((ProductSettingsPageViewModel)PieceListGridControl.SelectedItem).steelAttr.ExclamationMark = true;
                     ViewModel.SteelAttr = TmpSteelAttr;
                     model.Entities[model.Entities.Count - 1].EntityData= TmpSteelAttr;
                     ScrollViewbox.IsEnabled = false;
@@ -3404,6 +3404,13 @@ namespace STD_105.Office
                 drawing.Blocks.Clear();
                 drawing.Entities.Clear();
                 readFile.AddToScene(model);//將讀取完的檔案放入到模型
+
+
+             
+
+
+
+
                 ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
                 ViewModel.GetSteelAttr();
 
@@ -3418,22 +3425,34 @@ namespace STD_105.Office
                 ViewModel.WriteSteelAttr(aaa);
                 ViewModel.GetSteelAttr();
 
-
                 model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
-                
-                
+
+               
+
+                bool hasOutSteel=false;
                 for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
                 {
                     if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
                     {
                         BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
                         Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
-                        Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生螺栓圖塊
+
+
+
+                        Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts((GroupBoltsAttr)model.Entities[i].EntityData, model, out BlockReference blockRef, out bool checkRef);
+
+
+
+                        //Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生螺栓圖塊
+                        if (bolts3DBlock.hasOutSteel)
+                        {
+                            hasOutSteel = true;
+                        }
                         Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
                     }
                 }
-
+                
                 model.ZoomFit();//設置道適合的視口
                 model.Invalidate();//初始化模型
                 drawing.ZoomFit();//設置道適合的視口
@@ -3442,9 +3461,24 @@ namespace STD_105.Office
                 // 執行斜邊打點
                 RunHypotenusePoint();
 
-                item.steelAttr.ExclamationMark = true;//設定零件清單的VM中的binding數值
+
+                if (((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark == null)
+                {
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+                    item.steelAttr.ExclamationMark = false;
+                }
+
+                if (hasOutSteel)
+                {
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                    item.steelAttr.ExclamationMark = true;
+                }
+                if (!fAddSteelPart)
+                    SaveModel(false,false);//存取檔案
+
+                //item.steelAttr.ExclamationMark = true;//設定零件清單的VM中的binding數值
                 int frh = PieceListGridControl.View.FocusedView.FocusedRowHandle;//取得零件清單目前被選取列的RowHandle
-                PieceListGridControl.SetCellValue(frh, Exc_GridColumn, true);//設定零件清單中被選取列的column的checkbox的值
+                PieceListGridControl.SetCellValue(frh, Exc_GridColumn, item.steelAttr.ExclamationMark);//設定零件清單中被選取列的column的checkbox的值
                 PieceListGridControl.RefreshRow(frh);//畫面裡刷新上面該列的設定值
 
                 
