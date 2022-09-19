@@ -54,7 +54,31 @@ namespace STD_105
                     return new ValidationResult(false, $"請輸入數字!");
                 }
             }
+            else
+            {
+                return new ValidationResult(false, $"欄位不可為空!");
+            }
 
+            return ValidationResult.ValidResult;
+        }
+
+    }
+
+    public class CheckEmptyRule : ValidationRule
+    {
+        /// <inheritdoc/>
+        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        {
+            if (((string)value).Length == 0)
+                return new ValidationResult(false, $"欄位不可為空!");
+            else
+            {
+                //不可以是空白
+                if(string.IsNullOrWhiteSpace((string)value))
+                {
+                    return new ValidationResult(false, $"欄位不可為空白!");
+                }
+            }
             return ValidationResult.ValidResult;
         }
 
