@@ -29,6 +29,10 @@ namespace WPFSTD105.Model
         /// </summary>
         public SteelAttr steelAttr { get; set; }
         /// <summary>
+        /// 若檢查時，孔群已不在鋼上，變為true
+        /// </summary>
+        public bool hasOutSteel { get; set; } = false;  
+        /// <summary>
         /// 以實體創建螺
         /// </summary>
         /// <param name="meshes"></param>
@@ -37,6 +41,7 @@ namespace WPFSTD105.Model
         {
             this.Entities.AddRange(meshes);
             this.Info = groupBoltsAttr;
+            this.hasOutSteel = false;   
         }
 
         /// <summary>
@@ -46,6 +51,7 @@ namespace WPFSTD105.Model
         public Bolts3DBlock(GroupBoltsAttr groupBoltsAttr) : base(groupBoltsAttr.GUID.ToString())
         {
             this.Info = groupBoltsAttr;
+            this.hasOutSteel = false;
         }
         #region 私有屬性
 
@@ -130,7 +136,7 @@ namespace WPFSTD105.Model
             };
 
             // 若起始座標小於半徑，不可加入
-            if (Info.X < this.Info.Dia / 2)
+            if (Info.X < this.Info.Dia / 2 && Info.dX!="0" && this.Info.Mode == AXIS_MODE.POINT)
             {
                 check = false;
             }
@@ -350,20 +356,43 @@ namespace WPFSTD105.Model
                 bool inSteel = true;
                 foreach (var item in this.Entities)
                 {
-                    if (!(inSteel || ((Mesh)model.Entities[model.Entities.Count - 1].EntityData).IsPointInside(
-                        new Point3D()
-                        {
-                            X = ((BoltAttr)item.EntityData).X,
-                            Y = ((BoltAttr)item.EntityData).Y,
-                            Z = ((BoltAttr)item.EntityData).Z
-                        })))//鋼構外
-                    {
-                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
-                    }
+                    // 檢查產生之孔位是否在鋼體內
+                    //if (((Mesh)model.Entities[model.Entities.Count - 1].EntityData).IsPointInside(
+                    
+                    //if (((Mesh)model.Entities[model.Entities.Count - 1].EntityData).IsPointInside(
+                    //    new Point3D()
+                    //    {
+                    //        X = ((BoltAttr)item.EntityData).X,
+                    //        Y = ((BoltAttr)item.EntityData).Y,
+                    //        Z = ((BoltAttr)item.EntityData).Z
+                    //    }))
+                    //{
+                    //    inSteel = true;
+                    //}
+                    //else { 
+                    //    inSteel = false;
+                    //    // 驚嘆號
+                    //    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                    //    break;
+                    //}
+
+                    //if (!(inSteel || ((Mesh)model.Entities[model.Entities.Count - 1].EntityData).IsPointInside(
+                    //    new Point3D()
+                    //    {
+                    //        X = ((BoltAttr)item.EntityData).X,
+                    //        Y = ((BoltAttr)item.EntityData).Y,
+                    //        Z = ((BoltAttr)item.EntityData).Z
+                    //    })))//鋼構外
+                    //{
+                    //    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                    //}
                 }
+
+                if (inSteel) { ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;  }
             }
             else
             {
+               // 不在加工區域內
                 ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
             }
         }
@@ -379,8 +408,8 @@ namespace WPFSTD105.Model
         public bool CheckWorkingRange(FACE face,OBJECT_TYPE type, double checkValue, List<double> workingRange) 
         {
             bool check = true;
-            // 無加工範圍設定
-            if (workingRange.Count == 0)
+            // 無加工範圍設定或打點 不判斷
+            if (workingRange.Count == 0 || this.Info.Mode == AXIS_MODE.POINT)
             {
                 return check;
             }
@@ -459,16 +488,74 @@ namespace WPFSTD105.Model
             block = null;
 
             Bolts3DBlock result = new Bolts3DBlock(attr); //產生孔位圖塊
-            result.steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
-            result.CreateBolts(model,ref check);//創建孔位群組
+                result.steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+            if (!model.Blocks.Contains(result.Name))
+            {
+                result.CreateBolts(model, ref check);//創建孔位群組
+            }
             // 符合加工區域
             if (check)
             {
-                model.Blocks.Add(result);//加入孔位群組圖塊到模型
-                block = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
-                block.EntityData = result.Info;
-                block.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-                model.Entities.Insert(0, block);//加入參考圖塊到模型
+                if (!model.Blocks.Contains(result.Name))
+                {
+                    model.Blocks.Add(result);//加入孔位群組圖塊到模型
+                    block = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+                    block.EntityData = result.Info;
+                    block.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
+                    model.Entities.Insert(0, block);//加入參考圖塊到模型
+                }
+                else
+                {
+                    result.Entities.AddRange(model.Blocks[result.Name].Entities);
+                }
+                
+                if (attr.Mode != AXIS_MODE.POINT)
+                {
+                    bool inSteel = true;
+                    foreach (var item in result.Entities)
+                    {
+                        // 檢查產生之孔位是否在鋼體內
+                        //if (((Mesh)model.Entities[model.Entities.Count - 1].EntityData).IsPointInside(
+
+                        if (((Mesh)model.Blocks[1].Entities[0]).IsPointInside(
+                            new Point3D()
+                            {
+                                X = ((BoltAttr)item.EntityData).X,
+                                Y = ((BoltAttr)item.EntityData).Y,
+                                Z = ((BoltAttr)item.EntityData).Z
+                            }))
+                        {
+                            inSteel = true;
+                        }
+                        else
+                        {
+                            result.hasOutSteel = true;  
+                            inSteel = false;
+                            // 驚嘆號
+                            //((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                            break;
+                        }
+
+                        //if (!(inSteel || ((Mesh)model.Entities[model.Entities.Count - 1].EntityData).IsPointInside(
+                        //    new Point3D()
+                        //    {
+                        //        X = ((BoltAttr)item.EntityData).X,
+                        //        Y = ((BoltAttr)item.EntityData).Y,
+                        //        Z = ((BoltAttr)item.EntityData).Z
+                        //    })))//鋼構外
+                        //{
+                        //    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                        //}
+                    }
+                    // 在鋼體中
+                    //if (inSteel) { ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false; }
+                }
+            }
+            else
+            {
+                // 不在工作區域中
+                result.hasOutSteel = true;
+                //((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
             }
             return result;
 
