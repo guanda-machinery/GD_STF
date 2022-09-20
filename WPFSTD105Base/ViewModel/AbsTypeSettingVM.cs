@@ -614,13 +614,12 @@ namespace WPFSTD105
                     _startNumber = StartNumberDefault;
                     return _startNumber;
                 }
-                if (MainLengthCheckboxBoolen is true)
+                if (StartNumberCheckboxBoolen is true)
                 {
                     MatchSetting.StartNumber = _startNumber;
                 }
                 else
                 {
-
                     MatchSetting.StartNumber = StartNumberDefault;
                 }
 

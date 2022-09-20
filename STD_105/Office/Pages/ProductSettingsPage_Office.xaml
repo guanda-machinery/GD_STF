@@ -21,9 +21,9 @@
                   xmlns:STD105ValidRule="clr-namespace:STD_105.ValidationRules"
                   xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                   xmlns:System="clr-namespace:System;assembly=mscorlib"
+                  xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"                 
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
-                  xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
                   Title="製品設定">
 
 
@@ -62,7 +62,7 @@
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
     <!--物件設定與設定完成的物件列表-->
-    <Grid x:Name="DataGrid" dx:ThemeManager.ThemeName="Win10Light"    Background="#d3d3d3"     >
+    <Grid x:Name="DataGrid" dx:ThemeManager.ThemeName="Win10Light"    Background="#d3d3d3"    >
         <Grid.Resources>
             <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }" >
                 <Setter Property="BorderThickness" Value="1"/>
@@ -301,7 +301,7 @@
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
                     <!--<dxg:GridColumn FieldName="{Binding Creation, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="建立日期"  >-->
-                    <dxg:GridColumn FieldName="Creation" IsSmart="True"  Header="建立日期"  >
+                    <dxg:GridColumn FieldName="Creation" IsSmart="True"  Header="建立日期" Width="70"  >
                         <dxg:GridColumn.CellStyle>
                             <Style>
                                 <Setter Property="TextBlock.Foreground" Value="Gray"/>
@@ -825,8 +825,8 @@
             </TabItem>
         </TabControl>
         <!--繪圖顯示模型-->
-        <Border Background="White" Margin="5"   Grid.Column="1" Grid.Row="1" >
-            <TabControl>
+        <Border Background="#F0F0F0" Margin="5"   Grid.Column="1" Grid.Row="1" >
+            <TabControl Margin="0.5,0">
                 <TabControl.Resources>
                     <ResourceDictionary>
                         <Style TargetType="TabItem">
@@ -865,10 +865,6 @@
                                                                             Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
                                                                             To="#5c93a7"
                                                                             Duration="0" />
-                                                            <!--          <ThicknessAnimation Storyboard.TargetName="Border"
-                                                            Storyboard.TargetProperty="BorderThickness"
-                                                            To="0,0,0,2"
-                                                            Duration="0" />-->
                                                         </Storyboard>
                                                     </VisualState>
                                                 </VisualStateGroup>

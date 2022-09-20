@@ -894,6 +894,7 @@
     <Compile Include="ValueConverters\DrawingImageToBitmapSourceConverter.cs" />
     <Compile Include="ValueConverters\FACE_ToStringConverter.cs" />
     <Compile Include="ValueConverters\GridControlSelectedItemToBoolenConverter.cs" />
+    <Compile Include="ValueConverters\GridControlWidthConvert.cs" />
     <Compile Include="ValueConverters\IListFilterToCountConverter.cs" />
     <Compile Include="ValueConverters\MaterialDesignPackIconToBitmapSourceConverter.cs" />
     <Compile Include="ValueConverters\SteelPartWeightConverter.cs" />

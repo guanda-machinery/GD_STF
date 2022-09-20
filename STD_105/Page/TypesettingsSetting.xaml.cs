@@ -43,39 +43,41 @@ namespace STD_105.Office
             InitializeComponent();
         }
 
+        bool TableViewLoadedBoolen = false;
+        private void Material_List_TableView_Loaded(object sender, RoutedEventArgs e)
+        {
+            ((DevExpress.Xpf.Grid.TableView)sender).FocusedRowHandle = DevExpress.Xpf.Grid.GridControl.InvalidRowHandle;
+            TableViewLoadedBoolen = true;
+        }
         private void Material_List_GridControl_SelectedItemChanged(object sender, DevExpress.Xpf.Grid.SelectedItemChangedEventArgs e)
         {
-            /* if (e.NewItem is GD_STD.Data.MaterialDataView)
-             {
-                 var a = (GD_STD.Data.MaterialDataView)e.NewItem;
-                 a.ButtonEnable = true;
-             }
-             if (e.OldItem is GD_STD.Data.MaterialDataView)
-             {
-                 var b = (GD_STD.Data.MaterialDataView)e.OldItem; 
-                 b.ButtonEnable =false;
-             }*/
-            
-            var SenderC = sender as DevExpress.Xpf.Grid.GridControl;
+            if (TableViewLoadedBoolen == false)
+                return;
 
+            var SenderC = sender as DevExpress.Xpf.Grid.GridControl;
             if (SenderC.View != null)
             {
                 if (e.NewItem is GD_STD.Data.MaterialDataView)
                 {
-                    var a = (GD_STD.Data.MaterialDataView)e.NewItem;
-                    a.ButtonEnable = true;
+                    var ENewItem = (GD_STD.Data.MaterialDataView)e.NewItem;
+                    ENewItem.ButtonEnable = true;
 
                     var NewHandle = SenderC.FindRow(e.NewItem);
                     SenderC.RefreshRow(NewHandle);//畫面裡刷新上面該列的設定值
                 }
                 if (e.OldItem is GD_STD.Data.MaterialDataView)
                 {
-                    var b = (GD_STD.Data.MaterialDataView)e.OldItem;
-                    b.ButtonEnable = false; 
+                    var EOldItem = (GD_STD.Data.MaterialDataView)e.OldItem;
+                    EOldItem.ButtonEnable = false; 
                     var OldHandle = SenderC.FindRow(e.OldItem);
                     SenderC.RefreshRow(OldHandle);//畫面裡刷新上面該列的設定值
                 }
             }
+        }
+
+        private void TableView_Loaded(object sender, RoutedEventArgs e)
+        {
+            ((DevExpress.Xpf.Grid.TableView)sender).FocusedRowHandle = DevExpress.Xpf.Grid.GridControl.InvalidRowHandle;
         }
 
     }
