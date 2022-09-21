@@ -818,11 +818,14 @@ namespace WPFSTD105
                         continue;
                     }
                     List<SinglePart> listPart = new List<SinglePart>();//配料列表
+
                     foreach (var item in steels)//將物件全部變成單一個體
                     {
-                        var _where = DataViews.Where(el => el.Profile == item.Profile && el.PartNumber == item.Number).Select(el => el.SortCount);
-                        var agger = _where.Aggregate((part1, part2) => part1 + part2);
-                        int count = agger;
+                        //where->將符合搜尋條件的DataViews取出
+                        //Select->將上述的資料的每一個SortCount取出後建立另一個IEnumerable陣列
+                        IEnumerable<int> _where = DataViews.Where(el => el.Profile == item.Profile && el.PartNumber == item.Number).Select(el => el.SortCount);
+
+                        var count = _where.Aggregate((part1, part2) => part1 + part2);
                         if (count > 0)
                         {
                             listPart.AddRange(SinglePart.UnfoldPart(item, out List<bool> match, count));//展開物件並加入配料列表內

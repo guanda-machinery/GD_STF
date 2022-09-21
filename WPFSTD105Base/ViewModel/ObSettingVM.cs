@@ -403,6 +403,14 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public string SteelSectionProperty { get; set; } = "";
         /// <summary>
+        /// 零件編號
+        /// </summary>
+        public string PartNumberProperty { get; set; } = "";
+        /// <summary>
+        /// 構件編號
+        /// </summary>
+        public string AssemblyNumberProperty { get; set; } = "";
+        /// <summary>
         /// 標示資料來源的flag：true表示由零件清單, false表示由手動選擇
         /// </summary>
         public bool fPartListOrManuall { get; set; } = false;
@@ -1528,7 +1536,7 @@ namespace WPFSTD105.ViewModel
                     Title2 = item.Title2,
                     t1 = item.t1,
                     t2 = item.t2,
-                    ExclamationMark = item.ExclamationMark,
+                    ExclamationMark = item.ExclamationMark == null ? false: item.ExclamationMark,
                 };
                 aa.Weight = PartWeight(aa, saFile); //item.Weight,
                 aa.steelAttr.GUID = item.DataName;

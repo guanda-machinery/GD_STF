@@ -1446,6 +1446,7 @@ namespace STD_105.Office
             NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
             NcTemp ncTemp = ncTemps.GetData(data.DataName);//需要實體化的nc物件
             model.Clear(); //清除目前模型
+            bool hasOutSteel = false;
             if (ncTemp == null) //NC 檔案是空值
             {
                 ReadFile readFile = new ReadFile($@"{ApplicationVM.DirectoryDevPart()}\{data.DataName}.dm", new FileSerializerExt(devDept.Serialization.contentType.GeometryAndTessellation)); //讀取檔案內容
@@ -1472,9 +1473,18 @@ namespace STD_105.Office
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
                 for (int i = 0; i < ncTemp.GroupBoltsAttrs.Count; i++) //逐步展開 nc 檔案的螺栓
                 {
-                    Bolts3DBlock.AddBolts(ncTemp.GroupBoltsAttrs[i], model, out BlockReference botsBlock, out bool check); //加入到 3d 視圖
+                    var bolts3DBlock = Bolts3DBlock.AddBolts(ncTemp.GroupBoltsAttrs[i], model, out BlockReference botsBlock, out bool check); //加入到 3d 視圖
+                    if (bolts3DBlock.hasOutSteel)
+                    {
+                        hasOutSteel = true;
+                    }
+
                     Add2DHole((Bolts3DBlock)model.Blocks[botsBlock.BlockName], false);//加入孔位不刷新 2d 視圖
                 }
+                if (hasOutSteel) { 
+                 ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                }
+
                 ser.SetNcTempList(ncTemps);//儲存檔案
                 ser.SetPartModel(ncTemp.SteelAttr.GUID.ToString(), model);//儲存 3d 視圖
 
