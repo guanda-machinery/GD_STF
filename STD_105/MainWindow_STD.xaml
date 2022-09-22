@@ -172,6 +172,10 @@
                                           ButtonImageSource="{StaticResource Management}"
                                           TitleText="{ DynamicResource LANGUAGE_ProjectManagement }"
                                           FontColor="{ StaticResource solidclr_DimGray }" />
+                
+                
+                
+                
             </StackPanel>
             <Grid.Triggers>
                 <EventTrigger RoutedEvent="Mouse.MouseEnter">
@@ -437,7 +441,7 @@
                     CornerRadius="10"
                     Margin="20,315,0,0"
                     Panel.ZIndex="10000"
-                    Visibility="{ Binding MachineFuctionControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }">
+                    Visibility="{ Binding MachineFuctionControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter } }">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -633,7 +637,6 @@
             <Border x:Name="bor_ProjectManager"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Height="300"
                     Width="150"
                     Background="{ StaticResource solidclr_DarkGray }"
                     CornerRadius="10"
@@ -646,9 +649,10 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
                     <!--  新建專案  -->
                     <local:MainFunctionButton ButtonCommand="{Binding NewProjectShowCommand}"
@@ -668,14 +672,14 @@
                                               IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
                                               TitleText="{DynamicResource LANGUAGE_ImportFiles}"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
-                    <!--  製品設定  -->
+                    <!--  製品設定(舊)  -->
                     <local:MainFunctionButton Grid.Column="1"
                                               ButtonCommand="{Binding ProductSettingCommand}"
                                               ButtonImageSource="{StaticResource NewProductSettings}"
                                               IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
                                               TitleText="{DynamicResource LANGUAGE_ProductsSettings}"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
-                    <!--  排版設定  -->
+                    <!--  排版設定(舊)  -->
                     <local:MainFunctionButton Grid.Row="1"
                                               Grid.Column="1"
                                               ButtonCommand="{Binding TypeSettingCommand}"
@@ -691,6 +695,29 @@
                                               IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
                                               TitleText="{DynamicResource LANGUAGE_ProcessingSettings}"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
+                    <!--排版設定(新)-->
+
+                        <local:MainFunctionButton Grid.Row="3"
+                                              Grid.Column="0"
+                                              ButtonCommand="{Binding MachineTypeSettingCommand}"
+                                              ButtonImageSource="{StaticResource Layout}"
+                                              IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
+                                              TitleText="{DynamicResource LANGUAGE_TypesettingSettings}"
+                                              FontColor="{ StaticResource solidclr_CreamyGray }" />
+                    <!--製品設定(新)-->
+                    <local:MainFunctionButton Grid.Row="3"
+                                              Grid.Column="1"
+                                              ButtonCommand="{Binding MachineProductSettingCommand}"            
+                                              ButtonImageSource="{StaticResource NewProductSettings}"
+                                              IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
+                                              TitleText="{DynamicResource LANGUAGE_ProductsSettings}"
+                                              FontColor="{ StaticResource solidclr_CreamyGray }" />
+
+
+
+
+
+
                     <!--關閉區域-->
                     <Button Grid.Column="1"
                             Style="{ StaticResource btn_CloseIcon_STD }"

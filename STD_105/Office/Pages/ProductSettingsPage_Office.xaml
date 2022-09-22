@@ -21,7 +21,6 @@
                   xmlns:STD105ValidRule="clr-namespace:STD_105.ValidationRules"
                   xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                   xmlns:System="clr-namespace:System;assembly=mscorlib"
-                  xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"                 
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Title="製品設定">
@@ -61,8 +60,12 @@
             <System:Boolean x:Key="TextBoxEnabled">false</System:Boolean>
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
+
     <!--物件設定與設定完成的物件列表-->
     <Grid x:Name="DataGrid" dx:ThemeManager.ThemeName="Win10Light"    Background="#d3d3d3"    >
+        <Grid.DataContext>
+            <STD105VM:ObSettingVM/>
+        </Grid.DataContext>
         <Grid.Resources>
             <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }" >
                 <Setter Property="BorderThickness" Value="1"/>
@@ -1113,11 +1116,13 @@
                                          Margin="5">
                                 <Button Content ="X軸鏡射" Command="{Binding MirrorX}" Margin="0,0,0,0" Width="80" Height="24"  />
                                 <Button Content="Y軸鏡射" Command="{Binding MirrorY}" Margin="5,0,0,0" Width="80" Height="24"  />
+
                                 <Button Content="rbtn choice" Command="{Binding Path=CmdShowMessage}" Margin="5" Width="80" Height="24" Visibility="Collapsed"/>
                             </StackPanel>
 
                             <StackPanel  Grid.Row="3"     Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Command="" Width="80" Margin="0,0,-7,0"  Background="#d8d8d8" Click="Set_DrillSettingGrid_AllCheckboxChecked_Click" Cursor="Hand" >
+
+                                <Button Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=DrillTabItem}"  Width="80" Margin="0,0,-7,0"  Background="#d8d8d8" Cursor="Hand" >
                                     <Button.Content >
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="CheckboxOutline" />
@@ -1342,7 +1347,7 @@
                             </GroupBox>
 
                             <StackPanel  Grid.Row="3" Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Command="" Width="80" Margin="-20,0,-28,0"  Background="#d8d8d8" Click="Set_CutSettingGrid_AllCheckboxChecked_Click" Cursor="Hand" >
+                                <Button Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=CutTabItem}" Width="80" Margin="-20,0,-28,0"  Background="#d8d8d8" Cursor="Hand" >
                                     <Button.Content >
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="CheckboxOutline" />

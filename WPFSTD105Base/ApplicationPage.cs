@@ -119,7 +119,16 @@ namespace WPFSTD105
         /// <summary>
         /// 排版設定
         /// </summary>
-        TypeSetting,
+        TypeSetting,//待刪除
+
+        /// <summary>
+        /// 新排版設定
+        /// </summary>
+        MachineTypeSetting,
+        /// <summary>
+        /// 新製品設定
+        /// </summary>
+        MachineProductSetting
     }
     /// <summary>
     /// 辦公室頁面，由左而右依序排列

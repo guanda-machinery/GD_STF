@@ -701,6 +701,12 @@
     <Compile Include="Page\ChangeDrillPage.xaml.cs">
       <DependentUpon>ChangeDrillPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Page\Machine\TypeSettingsSettingPage_Machine.xaml.cs">
+      <DependentUpon>TypeSettingsSettingPage_Machine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\Machine\ProductSettingsPage_Machine.xaml.cs">
+      <DependentUpon>ProductSettingsPage_Machine.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Page\MiddleAxisPage.xaml.cs">
       <DependentUpon>MiddleAxisPage.xaml</DependentUpon>
     </Compile>
@@ -1180,6 +1186,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Page\ChangeDrillPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\Machine\TypeSettingsSettingPage_Machine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\Machine\ProductSettingsPage_Machine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

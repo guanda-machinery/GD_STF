@@ -172,6 +172,25 @@ namespace WPFSTD105.ViewModel
         /// 20220906 張燕華 鑽孔rbtn測試
         /// </summary>
         public ICommand CmdShowMessage { get; set; }
+
+        /// <summary>
+        /// 20220922 蘇冠綸 全選/全不選checkbox
+        /// </summary>
+        public ICommand SetAllCheckboxCheckedCommand
+        {
+            get
+            {
+                return new WPFWindowsBase.RelayParameterizedCommand(obj =>
+                {
+                    GetWpfLogicalChildClass.SetAllCheckBoxTrueOrFalse(obj);
+                });
+            }
+        }
+
+
+
+
+
         #endregion
 
         #region 公開屬性
