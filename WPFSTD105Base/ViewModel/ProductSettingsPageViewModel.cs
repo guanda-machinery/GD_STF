@@ -21,16 +21,28 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public ObservableCollection<ProductSettingsPageViewModel> DataViews { get; set; }   
         /// <summary>
+        /// 鎖頭
+        /// </summary>
+        public bool Lock
+        {
+            get
+            {
+                return steelAttr.Lock;
+            }
+            set
+            {
+                steelAttr.Lock = value;
+            }
+        }
+        /// <summary>
         /// 驚嘆號
         /// </summary>
         public bool? ExclamationMark { 
             get
             {
                 return steelAttr.ExclamationMark;
-
             } set
             {
-
                 steelAttr.ExclamationMark = value;
             }
         } 

@@ -355,7 +355,7 @@ namespace WPFSTD105.ViewModel
                     throw;
                 }
             }
-        }
+        }        
         /// <summary>
         /// 斷面規格列表
         /// </summary>

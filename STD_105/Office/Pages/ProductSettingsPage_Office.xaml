@@ -58,7 +58,7 @@
             </Style>
 
             <System:Boolean x:Key="visible">false</System:Boolean>
-            <System:Boolean x:Key="TextBoxEnabled">false</System:Boolean> 
+            <System:Boolean x:Key="TextBoxEnabled">false</System:Boolean>
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
     <!--物件設定與設定完成的物件列表-->
@@ -120,7 +120,8 @@
                                         Background="#d3d3d3"
                                         BorderBrush="#ABABAB"
                                         BorderThickness="1,1,1,0"
-                                        CornerRadius="5,5,0,0">
+                                        CornerRadius="5,5,0,0"
+                                        Margin="0,0,0,-1">
                                     <ContentPresenter x:Name="ContentSite"
                                               Margin="40,10"
                                               HorizontalAlignment="Center"
@@ -137,11 +138,11 @@
                                             <Storyboard>
                                                 <ColorAnimation Storyboard.TargetName="Border"
                                                         Storyboard.TargetProperty="(Border.Background).Color"
-                                                        To="#c0c0c0"
+                                                        To="#303030"
                                                         Duration="0" />
                                                 <ColorAnimation Storyboard.TargetName="ContentSite"
                                                         Storyboard.TargetProperty="(TextBlock.Foreground).Color"
-                                                        To="#000000"
+                                                        To="#eeeeee"
                                                         Duration="0" />
                                                 <ThicknessAnimation Storyboard.TargetName="Border"
                                                             Storyboard.TargetProperty="BorderThickness"
@@ -301,14 +302,14 @@
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
                     <!--<dxg:GridColumn FieldName="{Binding Creation, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="建立日期"  >-->
-                    <dxg:GridColumn FieldName="Creation" IsSmart="True"  Header="建立日期"  >
+                    <dxg:GridColumn FieldName="Creation" IsSmart="True" Header="建立日期"  Width="80">
                         <dxg:GridColumn.CellStyle>
                             <Style>
                                 <Setter Property="TextBlock.Foreground" Value="Gray"/>
                             </Style>
                         </dxg:GridColumn.CellStyle>
                     </dxg:GridColumn>
-                    <dxg:GridColumn FieldName="{Binding Revise, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="修改日期"  >
+                    <dxg:GridColumn FieldName="{Binding Revise, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="修改日期" Width="80">
                         <dxg:GridColumn.CellStyle>
                             <Style>
                                 <Setter Property="TextBlock.Foreground" Value="Gray"/>
@@ -318,26 +319,34 @@
 
                     <dxg:GridColumn FieldName="GUID" Binding="{Binding  steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="true"/>
                     <!--Visible="{StaticResource visible}"/>-->
-                    <dxg:GridColumn FieldName="AssemblyNumber" Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="auto"/>
-                    <dxg:GridColumn FieldName="PartNumber" Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="auto" />
-                    <dxg:GridColumn FieldName="TeklaName" Binding="{Binding steelAttr.Name}" IsSmart="True"   Header="名稱" Width="auto"/>
+                    <dxg:GridColumn FieldName="AssemblyNumber" Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="60"/>
+                    <dxg:GridColumn FieldName="PartNumber" Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="60" />
+                    <dxg:GridColumn FieldName="TeklaName" Binding="{Binding steelAttr.Name}" IsSmart="True" Header="名稱" Width="80"/>
                     <dxg:GridColumn FieldName="TypeDesc"  IsSmart="True" Header="鋼材類型" Visible="{StaticResource visible}"/>
-                    <dxg:GridColumn Binding="{Binding Path=SteelType, Converter={STD105:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類型"/>
-                    <dxg:GridColumn FieldName="Profile" IsSmart="True"  Header="斷面規格"  Width="auto"/>
+                    <dxg:GridColumn Binding="{Binding Path=SteelType, Converter={STD105:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類型" Width="60"/>
+                    <dxg:GridColumn FieldName="Profile" IsSmart="True" Header="斷面規格"  Width="140"/>
                     <dxg:GridColumn FieldName="SteelType"  IsSmart="True" Header="鋼材類型(Index)" Visible="{StaticResource visible}"/>
-                    <dxg:GridColumn FieldName="Material" IsSmart="True"  Header="材質"  Width="auto"/>
-                    <dxg:GridColumn FieldName="Count"  IsSmart="True"  Width="auto" Header="數量"  />
-                    <dxg:GridColumn FieldName="Length" Binding="{Binding Length}" IsSmart="True"  Header="零件長" Width="auto" />
-                    <dxg:GridColumn FieldName="Weight" Binding="{Binding Weight}" IsSmart="True"  Header="零件重" Width="auto" />
+                    <dxg:GridColumn FieldName="Material" IsSmart="True"  Header="材質"  Width="80"/>
+                    <dxg:GridColumn FieldName="Count"  IsSmart="True"  Width="40" Header="數量"  />
+                    <dxg:GridColumn FieldName="Length" Binding="{Binding Length}" IsSmart="True" Header="零件長" Width="70">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings Mask="f0" MaskType="Numeric" MaskUseAsDisplayFormat="true"/>
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="Weight" Binding="{Binding Weight}" IsSmart="True" Header="零件重" Width="70">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings Mask="f1" MaskType="Numeric" MaskUseAsDisplayFormat="true"/>
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
                     <dxg:GridColumn FieldName="Height" Binding="{Binding steelAttr.H}" IsSmart="True"  Header="高度" Width="auto" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="Weight" Binding="{Binding steelAttr.W}" IsSmart="True"  Header="寬度" Width="auto" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="t1" Binding="{Binding steelAttr.t1}" IsSmart="True"  Header="腹板厚度" Width="auto" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="t2" Binding="{Binding steelAttr.t2}" IsSmart="True"  Header="翼板厚度" Width="auto" Visible="{StaticResource visible}"/>
 
-                    <dxg:GridColumn FieldName="Phase"  IsSmart="True"  Width="auto" Header="Phase" />
-                    <dxg:GridColumn FieldName="ShippingNumber"  IsSmart="True"  Width="auto" Header="拆運"  />
-                    <dxg:GridColumn FieldName="Title1" IsSmart="True"  Width="auto" Header="標題一"  />
-                    <dxg:GridColumn FieldName="Title2" IsSmart="True"  Width="auto" Header="標題二"  />
+                    <dxg:GridColumn FieldName="Phase"  IsSmart="True"  Width="40" Header="Phase" />
+                    <dxg:GridColumn FieldName="ShippingNumber"  IsSmart="True"  Width="40" Header="拆運"  />
+                    <dxg:GridColumn FieldName="Title1" IsSmart="True"  Width="45" Header="標題一"  />
+                    <dxg:GridColumn FieldName="Title2" IsSmart="True"  Width="45" Header="標題二"  />
 
                     <!--<dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"   Header="構件編號" Width="auto"/>
                         <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="auto" />
@@ -373,7 +382,7 @@
         <!--零件屬性-->
         <GroupBox Header="零件屬性" Grid.Column="1" Margin="5">
             <DockPanel Margin="5,0,5,0">
-                <Grid  HorizontalAlignment="Left" Margin="5,5,5,5" DockPanel.Dock="Top" >
+                <Grid  HorizontalAlignment="Left" Margin="-2,5,5,5" DockPanel.Dock="Top" >
                     <Grid.Resources>
                         <Style TargetType ="TextBlock">
                             <Setter Property="FontSize" Value="12"/>
@@ -386,7 +395,7 @@
                             <Setter Property="FontSize" Value="12"/>
                             <Setter Property="Margin" Value="5"/>
                         </Style>
-                    <!--  <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignStyleCustomTextBox}">
+                        <!--  <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignStyleCustomTextBox}">
                             <Setter Property="IsEnabled" Value="{Binding ElementName=PieceListGridControl, Converter={STD105:GridControlIsSelectedItemToBoolen} , UpdateSourceTrigger=PropertyChanged}"/>
                         </Style>-->
                     </Grid.Resources>
@@ -394,8 +403,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="105"/>
                         <ColumnDefinition Width="15"/>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="146"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -413,26 +422,26 @@
                     </Grid.RowDefinitions>
                     <Label Content="零件編號："  />
                     <TextBox  Grid.Column="1" Name="partNumber" InputMethod.IsInputMethodEnabled="False">
-                            <TextBox.Text>
-                            <Binding Path="SelectedItems[0].steelAttr.PartNumber" ElementName="PieceListGridControl" StringFormat="{}{0:N2}" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >
+                        <TextBox.Text>
+                            <Binding Path="PartNumberProperty" UpdateSourceTrigger="PropertyChanged" >
                                 <Binding.ValidationRules>
                                     <STD105ValidRule:CheckStringEmptyRule/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
-                        </TextBox>
-                        <Label Grid.Column="0" Grid.Row="1" Content="構件編號：" />
-                    
-                        <TextBox Name="asseNumber" Grid.Column="1" Grid.Row="1">
-                            <TextBox.Text>
-                                <Binding Path="SelectedItems[0].steelAttr.AsseNumber" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >
-                                    <Binding.ValidationRules>
-                                        <STD105ValidRule:CheckStringEmptyRule/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </TextBox.Text>
-                        </TextBox>
-                        <Label Grid.Column="0"  Grid.Row="2"
+                    </TextBox>
+                    <Label Grid.Column="0" Grid.Row="1" Content="構件編號：" />
+
+                    <TextBox Name="asseNumber" Grid.Column="1" Grid.Row="1">
+                        <TextBox.Text>
+                            <Binding Path="AssemblyNumberProperty" UpdateSourceTrigger="PropertyChanged" >
+                                <Binding.ValidationRules>
+                                    <STD105ValidRule:CheckStringEmptyRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <Label Grid.Column="0"  Grid.Row="2"
                            Content="製品長度：" />
                     <Grid  Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" >
                         <Grid.ColumnDefinitions>
@@ -441,7 +450,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBox Grid.Column="0" Name="Length"  >
                             <TextBox.Text>
-                                <Binding Path="ProductLengthProperty" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" >
+                                <Binding Path="ProductLengthProperty" StringFormat="{}{0:N0}" UpdateSourceTrigger="PropertyChanged" >
                                     <Binding.ValidationRules>
                                         <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                     </Binding.ValidationRules>
@@ -464,8 +473,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Name="Weight" Text="{Binding ProductWeightProperty, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}" Margin="3,0,0,0"/>
-                        <TextBlock Grid.Column="1"  Text="Kg/Piece"   Margin="3,0,0,0"/>
+                        <TextBlock Grid.Column="0" Name="Weight" Text="{Binding ProductWeightProperty, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N1}}" Margin="3,0,0,0"/>
+                        <TextBlock Grid.Column="1"  Text="Kg"   Margin="3,0,0,0"/>
 
                     </Grid>
 
@@ -485,32 +494,32 @@
                     <Label Grid.Column="0" Grid.Row="5" Content="名稱：" />
 
                     <TextBox Name ="teklaName" Grid.Column="1" Grid.Row="5" Text="{Binding Path=SelectedItems[0].TeklaName , ElementName=PieceListGridControl , Mode=OneWay , UpdateSourceTrigger=PropertyChanged}" >
-                       <!--     <TextBox.Text>
+                        <!--     <TextBox.Text>
                                 <Binding Path="SelectedItems[0].TeklaName" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >
                                     <Binding.ValidationRules>
                                     <STD105ValidRule:CheckStringEmptyRule></STD105ValidRule:CheckStringEmptyRule>
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>-->
-                        </TextBox>
+                    </TextBox>
 
-                        <Label Grid.Column="0"  Grid.Row="6" Content="材質：" />
+                    <Label Grid.Column="0"  Grid.Row="6" Content="材質：" />
 
                     <ComboBox Grid.Column="1" Grid.Row="6" Name="material" ItemsSource="{Binding Materials, Converter={STD105:MaterialToNameConverter}}" SelectedValue="{Binding SelectedItems[0].Material, ElementName=PieceListGridControl, Mode=OneWay}" Padding="5,1,0,0" />
 
                     <Label Grid.Column="0" Grid.Row="7" Content="Phase：" />
 
-                        <TextBox x:Name="phase" Grid.Column="1" Grid.Row="7" >
-                            <TextBox.Text>
-                                <Binding Path="SelectedItems[0].Phase" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >
-                                    <Binding.ValidationRules>
+                    <TextBox x:Name="phase" Grid.Column="1" Grid.Row="7" >
+                        <TextBox.Text>
+                            <Binding Path="SelectedItems[0].Phase" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >
+                                <Binding.ValidationRules>
                                     <STD105ValidRule:CheckStringEmptyRule/>
                                 </Binding.ValidationRules>
-                                </Binding>
-                            </TextBox.Text>
-                        </TextBox>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
 
-                        <Label Grid.Column="0" Grid.Row="8" Content="拆運：" />
+                    <Label Grid.Column="0" Grid.Row="8" Content="拆運：" />
 
                     <TextBox x:Name="shippingNumber" Grid.Column="1" Grid.Row="8">
                         <TextBox.Text>
@@ -527,13 +536,13 @@
                     <TextBox Grid.Column="1" Grid.Row="9" Name="Title1">
                         <TextBox.Text>
                             <Binding Path="SelectedItems[0].Title1" ElementName="PieceListGridControl" StringFormat="{}{0:N2}" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >
-                            <Binding.ValidationRules>
-                                <STD105ValidRule:CheckStringEmptyRule/>
-                            </Binding.ValidationRules>
-                        </Binding>
+                                <Binding.ValidationRules>
+                                    <STD105ValidRule:CheckStringEmptyRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
                         </TextBox.Text>
                     </TextBox>
-                    
+
                     <Label Grid.Column="0" Grid.Row="10" Content="標題二：" />
                     <TextBox Grid.Column="1" Grid.Row="10" Name="Title2" Text="{Binding SelectedItems[0].Title2, ElementName=PieceListGridControl,Mode=OneWay}"/>
 
@@ -547,12 +556,13 @@
                            Content="型鋼類型：" />
 
                     <ComboBox x:Name="cbx_SteelType"
-                                  Grid.Column="4"  Grid.Row="0" 
-                                  ItemsSource="{Binding Source={StaticResource obType},Path=Strings}"
-                                  SelectedIndex="{Binding SelectedItems[0].SteelType, ElementName=PieceListGridControl, Mode=OneWay}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SteelType">
-                                    <i:InvokeCommandAction Command="{ Binding ShowSteelTypeCommand }"
+                              Grid.Column="4"  Grid.Row="0" 
+                              ItemsSource="{Binding Source={StaticResource obType},Path=Strings}"
+                              SelectedIndex="{Binding SelectedItems[0].SteelType, ElementName=PieceListGridControl, Mode=OneWay}"
+                              Padding="5,1,0,0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SteelType">
+                                <i:InvokeCommandAction Command="{ Binding ShowSteelTypeCommand }"
                                                            CommandParameter="{ Binding ElementName=cbx_SteelType, Path=SelectedIndex }"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
@@ -560,18 +570,18 @@
                     <Label Grid.Column="3" Grid.Row="1"
                            Content="斷面規格：" />
 
-                        <ComboBox x:Name="cbx_SectionType"
+                    <ComboBox x:Name="cbx_SectionType"
                                   Grid.Column="4" Grid.Row="1"
                                   Padding="5,1,0,0"
                                   ItemsSource="{Binding ProfileList}" 
                                   DisplayMemberPath="Profile" 
                                   Text="{Binding SteelSectionProperty}" SelectionChanged="CBOX_SectionTypeChanged">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionType">
-                                    <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </ComboBox>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionType">
+                                <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ComboBox>
 
                     <Label Grid.Column="3" Grid.Row="2" Content="高度(H)：" />
                     <Grid Grid.Column="4" Grid.Row="2">
@@ -581,7 +591,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBox Grid.Column="0" Name="H" Text="{Binding CurrentPartSteelAttr.H, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" />
                         <TextBlock Grid.Column="1" Text="mm" VerticalAlignment="Center"/>
-                    
+
                     </Grid>
 
                     <Label Grid.Column="3" Grid.Row="3" Content="寬度(B)：" />
@@ -592,7 +602,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBox Grid.Column="0" Name="W" Text="{Binding CurrentPartSteelAttr.W, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" />
                         <TextBlock Grid.Column="1" Text="mm" VerticalAlignment="Center"/>
-                        </Grid>
+                    </Grid>
 
                     <Label Grid.Column="3" Grid.Row="4" Content="腹板厚度(s)：" />
 
@@ -612,7 +622,7 @@
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBox Grid.Column="0" Name="t2" Text="{Binding CurrentPartSteelAttr.t2, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
-                            <TextBlock Grid.Column="1" Text="mm" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="1" Text="mm" VerticalAlignment="Center" />
 
                     </Grid>
 
@@ -625,7 +635,7 @@
                                                Add="{Binding AddPart}"
                                                ReadVisibility="Collapsed"
                                                DeleteVisibility="Collapsed"/>
-                    <Button x:Name="btn_AddNewOne" Content="另存" Command="{Binding AddNewOne}" DockPanel.Dock="Left" Width="76" Margin="9,0,0,0" Visibility="Visible"/>
+                    <Button x:Name="btn_AddNewOne" Content="另存" Command="{Binding AddNewOne}" DockPanel.Dock="Left" Width="76" Margin="15,0,0,0" Visibility="Visible"/>
 
                     <!--鎖頭的行為要與按鈕的開啟關閉binding 0902-->
                 </DockPanel>
@@ -634,10 +644,11 @@
         <!--繪圖顯示模型-->
         <TabControl Margin="5" 
                     Grid.Column="0" Grid.Row="1"
-                    Background="#c0c0c0"
+                    Background="#303030"
                     SelectionChanged="TabControlSelectedIndexChanged"
-                                            x:Name="tabControl"                              SelectedIndex="0">
-            <TabItem Header="3D視圖" Margin="0,0,0,0"  Style="{StaticResource DrawTabItem}">
+                    x:Name="tabControl"                              
+                    SelectedIndex="0">
+            <TabItem Header="3D視圖" Margin="0,0,0,0" Style="{StaticResource DrawTabItem}">
                 <Grid>
                     <!--新增3D模型處-->
                     <WPFSTD:ModelExt x:Name="model"
@@ -703,7 +714,7 @@
                                            OriginSymbols="{Binding OriginSymbols}"
                                            SmallSizeRatio="0.001">
                                 <ddes:Viewport.Background>
-                                    <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#c0c0c0"/>
+                                    <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#303030"/>
                                 </ddes:Viewport.Background>
                                 <ddes:Viewport.CoordinateSystemIcon>
                                     <ddes:CoordinateSystemIcon Lighting="True"
@@ -791,7 +802,7 @@
                         <ddes:Model.Viewports>
                             <ddes:Viewport DisplayMode="Flat" InitialView="Top"  OriginSymbols="{Binding OriginSymbols}">
                                 <ddes:Viewport.Background>
-                                    <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#c0c0c0"/>
+                                    <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#303030"/>
                                 </ddes:Viewport.Background>
                                 <ddes:Viewport.Camera>
                                     <ddes:Camera Distance="380" ProjectionMode="Orthographic" Target="0, 0, 45" ZoomFactor="2"/>
@@ -955,26 +966,26 @@
                                     </TextBox>
 
                                     <TextBox Grid.Column="3" Grid.Row="0" VerticalAlignment="Center">
-                                            <TextBox.Text>
-                                                <Binding Path="GroupBoltsAttr.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                    <Binding.ValidationRules>
-                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </TextBox.Text>
-                                        </TextBox>
+                                        <TextBox.Text>
+                                            <Binding Path="GroupBoltsAttr.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                <Binding.ValidationRules>
+                                                    <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
 
-                                     <CheckBox Grid.Column="2" Grid.Row="1" IsChecked="False" Content="孔Y向起步點：" />
+                                    <CheckBox Grid.Column="2" Grid.Row="1" IsChecked="False" Content="孔Y向起步點：" />
 
-                                        <TextBox Grid.Column="3" Grid.Row="1" VerticalAlignment="Center">
-                                            <TextBox.Text>
-                                                <Binding Path="StartY" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                    <Binding.ValidationRules>
-                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </TextBox.Text>
-                                        </TextBox>
+                                    <TextBox Grid.Column="3" Grid.Row="1" VerticalAlignment="Center">
+                                        <TextBox.Text>
+                                            <Binding Path="StartY" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                <Binding.ValidationRules>
+                                                    <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
 
                                 </Grid>
                             </GroupBox>
@@ -992,7 +1003,7 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
 
-                                         <CheckBox Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Content="形狀："/>
+                                        <CheckBox Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Content="形狀："/>
 
                                         <ComboBox Grid.Column="2" Grid.Row="0" Margin="5" VerticalAlignment="Center" SelectedIndex="0" Padding="5,1,0,0">
                                             <ComboBoxItem Content="陣列"/>
@@ -1133,7 +1144,7 @@
 
                 </TabItem>
                 <TabItem Header="切割線" Name="CutTabItem">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Name="ScrollViewbox">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Name="ScrollViewbox">
                         <Grid >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
@@ -1219,91 +1230,91 @@
                                                      Width="50"
                                                      Canvas.Left="86"
                                                      Canvas.Top="10">
-                                                     <TextBox.Text>
-                                                         <Binding Path="ULPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                             <Binding.ValidationRules>
+                                                <TextBox.Text>
+                                                    <Binding Path="ULPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                             </Binding.ValidationRules>
-                                                         </Binding>
-                                                     </TextBox.Text>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
                                             </TextBox>
                                             <TextBox Grid.Row="3"
                                                      Width="50"
                                                      Canvas.Left="154"
                                                      Canvas.Top="10">
-                                                     <TextBox.Text>
-                                                         <Binding Path="URPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                             <Binding.ValidationRules>
+                                                <TextBox.Text>
+                                                    <Binding Path="URPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                             </Binding.ValidationRules>
-                                                         </Binding>
-                                                     </TextBox.Text>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
                                             </TextBox>
                                             <TextBox Width="50"
                                                      Canvas.Left="10"
                                                      Canvas.Top="70">
-                                                     <TextBox.Text>
-                                                         <Binding Path="ULPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                             <Binding.ValidationRules>
+                                                <TextBox.Text>
+                                                    <Binding Path="ULPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                             </Binding.ValidationRules>
-                                                         </Binding>
-                                                     </TextBox.Text>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
                                             </TextBox>
                                             <TextBox Width="50"
                                                      Canvas.Left="10"
                                                      Canvas.Top="143">
-                                                     <TextBox.Text>
-                                                         <Binding Path="DLPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                             <Binding.ValidationRules>
+                                                <TextBox.Text>
+                                                    <Binding Path="DLPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                             </Binding.ValidationRules>
-                                                         </Binding>
-                                                     </TextBox.Text>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
                                             </TextBox>
                                             <TextBox Width="50"
                                                      Canvas.Left="230"
                                                      Canvas.Top="70">
-                                                     <TextBox.Text>
-                                                         <Binding Path="URPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                             <Binding.ValidationRules>
+                                                <TextBox.Text>
+                                                    <Binding Path="URPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                             </Binding.ValidationRules>
-                                                         </Binding>
-                                                     </TextBox.Text>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
                                             </TextBox>
                                             <TextBox Width="50"
                                                      Canvas.Left="230"
                                                      Canvas.Top="143">
-                                                     <TextBox.Text>
-                                                         <Binding Path="DRPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                             <Binding.ValidationRules>
+                                                <TextBox.Text>
+                                                    <Binding Path="DRPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                             </Binding.ValidationRules>
-                                                         </Binding>
-                                                     </TextBox.Text>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
                                             </TextBox>
                                             <TextBox Width="50"
                                                      Canvas.Left="86"
                                                      Canvas.Top="205">
-                                                     <TextBox.Text>
-                                                         <Binding Path="DLPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                             <Binding.ValidationRules>
+                                                <TextBox.Text>
+                                                    <Binding Path="DLPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                             </Binding.ValidationRules>
-                                                         </Binding>
-                                                     </TextBox.Text>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
                                             </TextBox>
                                             <TextBox Width="50"
                                                      Canvas.Left="154"
                                                      Canvas.Top="205">
-                                                     <TextBox.Text>
-                                                         <Binding Path="DRPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                             <Binding.ValidationRules>
+                                                <TextBox.Text>
+                                                    <Binding Path="DRPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                             </Binding.ValidationRules>
-                                                         </Binding>
-                                                     </TextBox.Text>
+                                                        </Binding.ValidationRules>
+                                                    </Binding>
+                                                </TextBox.Text>
                                             </TextBox>
                                             <CheckBox IsChecked="{Binding ULCheck}"
                                                       Width="16"
@@ -1335,7 +1346,7 @@
                             </GroupBox>
 
                             <StackPanel  Grid.Row="3" Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Command="" Width="80" Margin="-20,0,-15,0"  Background="#d8d8d8" Click="Set_CutSettingGrid_AllCheckboxChecked_Click" Cursor="Hand" >
+                                <Button Command="" Width="80" Margin="-20,0,-28,0"  Background="#d8d8d8" Click="Set_CutSettingGrid_AllCheckboxChecked_Click" Cursor="Hand" >
                                     <Button.Content >
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="CheckboxOutline" />

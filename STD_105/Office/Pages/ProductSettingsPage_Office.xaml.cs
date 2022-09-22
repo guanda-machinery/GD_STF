@@ -3582,6 +3582,8 @@ namespace STD_105.Office
         private void ConfirmCurrentSteelSection(ProductSettingsPageViewModel CuurentSelectedPart)
         {
             ViewModel.fPartListOrManuall = true;
+            ViewModel.PartNumberProperty = CuurentSelectedPart.steelAttr.PartNumber.ToString();
+            ViewModel.AssemblyNumberProperty = CuurentSelectedPart.steelAttr.AsseNumber.ToString();
             ViewModel.ProfileType = (int)CuurentSelectedPart.SteelType;
             ViewModel.SteelSectionProperty = CuurentSelectedPart.Profile;
             ViewModel.ProductLengthProperty = CuurentSelectedPart.Length;
