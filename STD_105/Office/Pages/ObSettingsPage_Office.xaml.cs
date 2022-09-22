@@ -1784,7 +1784,7 @@ namespace STD_105.Office
             SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
             ViewModel.SteelAttr = TmpSteelAttr;
 
-
+            bool hasOutSteel = false;
 
             switch ((FACE)ViewModel.CutFaceType)
             {
@@ -1855,6 +1855,10 @@ namespace STD_105.Office
                         TmpBoltsArr.Y = tmplist1[z].Y;
                         TmpBoltsArr.GUID = Guid.NewGuid();
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+                        if (bolts.hasOutSteel)
+                        {
+                            hasOutSteel = true;
+                        }
                         BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                         lstBoltsCutPoint.Add(bolts);
                     }
@@ -1929,6 +1933,10 @@ namespace STD_105.Office
                         TmpBoltsArr.Y = tmplist1[z].Y;
                         TmpBoltsArr.GUID = Guid.NewGuid();
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference ,out bool CheckArea);
+                        if (bolts.hasOutSteel)
+                        {
+                            hasOutSteel = true;
+                        }
                         BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                         lstBoltsCutPoint.Add(bolts);
                     }
@@ -2248,7 +2256,10 @@ namespace STD_105.Office
             model.Refresh();
             drawing.Refresh();
 
-
+            if (hasOutSteel)
+            {
+                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+            }
 
 
             if (!fAddPartAndBolt)   //  是否新增零件及孔群 : false 直接存檔

@@ -1,6 +1,7 @@
 ﻿using GD_STD.Enum;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,10 @@ namespace WPFSTD105.ViewModel
     /// </summary>
     public class ProductSettingsPageViewModel : BaseViewModel
     {
+        /// <summary>
+        /// 零件資訊
+        /// </summary>
+        public ObservableCollection<ProductSettingsPageViewModel> DataViews { get; set; }   
         /// <summary>
         /// 驚嘆號
         /// </summary>

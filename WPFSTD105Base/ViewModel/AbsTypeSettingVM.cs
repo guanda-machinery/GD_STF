@@ -17,6 +17,7 @@ using System.Threading;
 using System.Windows;
 using GD_STD.Data.MatchDI;
 using System.Text.RegularExpressions;
+using WPFSTD105.ViewModel;
 
 namespace WPFSTD105
 {
@@ -37,25 +38,34 @@ namespace WPFSTD105
             STDSerialization ser = new STDSerialization();
             ObservableCollection<BomProperty> bomProperties = CommonViewModel.ProjectProperty.BomProperties; //報表屬性設定檔
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();//模型構件列表
+            Dictionary<string,ObservableCollection<SteelPart>> part = ser.GetPart();//模型構件列表
+
+            ObSettingVM obvm = new ObSettingVM();
 
             MaterialDataViews = ser.GetMaterialDataView();
 
-            //20220824 蘇 新增icommand
-            foreach (var profile in ser.GetProfile()) //逐步展開斷面規格
-            {
 
-                ObservableCollection<SteelPart> buffer = ser.GetPart(profile.GetHashCode().ToString()); //零件列表
+
+            //20220824 蘇 新增icommand
+            //foreach (var profile in ser.GetProfile()) //逐步展開斷面規格
+            //{
+            foreach (KeyValuePair<string, ObservableCollection<SteelPart>> eachPart in part)
+            {
+                ObservableCollection<SteelPart> buffer = eachPart.Value;
+
+                // ObservableCollection<SteelPart> buffer = ser.GetPart(profile.GetHashCode().ToString()); //零件列表
 
                 //只將 BH RH L TUBE BOX CH H LB([)加入到列表內
-                if (buffer != null &&(
-                    buffer[0].Type == OBJECT_TYPE.BH ||
-                    buffer[0].Type == OBJECT_TYPE.RH ||
-                    buffer[0].Type == OBJECT_TYPE.L ||
-                    buffer[0].Type == OBJECT_TYPE.TUBE ||
-                    buffer[0].Type == OBJECT_TYPE.BOX ||
-                    buffer[0].Type == OBJECT_TYPE.CH))
+                if (buffer != null && obvm.allowType.Contains(buffer[0].Type))
+                //if (buffer != null &&(
+                //buffer[0].Type == OBJECT_TYPE.BH ||
+                //buffer[0].Type == OBJECT_TYPE.RH ||
+                //buffer[0].Type == OBJECT_TYPE.L ||
+                //buffer[0].Type == OBJECT_TYPE.TUBE ||
+                //buffer[0].Type == OBJECT_TYPE.BOX ||
+                //buffer[0].Type == OBJECT_TYPE.CH))
                 {
-                    foreach (var item in buffer) //逐步展開零件
+                    foreach (var item in buffer.Where(x => x.ExclamationMark == false || x.ExclamationMark is null)) //逐步展開零件
                     {
                         if (item.Father != null)
                         {
@@ -68,7 +78,7 @@ namespace WPFSTD105
                                 }
                                 int idIndex = assemblies[index].ID.IndexOf(item.Father[i]); //找出構件 id 所在的陣列位置
                                 TypeSettingDataView view = new TypeSettingDataView(item, assemblies[index], idIndex, i);
-                                view.SortCount =0;
+                                view.SortCount = 0;
                                 int dataIndex = DataViews.IndexOf(view); //搜尋指定的物件
                                 if (dataIndex == -1) //如果找不到物件
                                 {
@@ -96,6 +106,7 @@ namespace WPFSTD105
                         }
                     }
                 }
+                //}
             }
             AllSelectedGridCommand = AllSelectedGrid();// 選擇報表全部物件命令
             ReverseSelectedGridCommand = ReverseSelectedGrid();//反向選取命令

@@ -188,6 +188,10 @@ namespace WPFSTD105.Attribute
         /// <returns></returns>
         public int CalBoltNumber(string str = "60 2*70 60")
         {
+            if (str == "0")
+            {
+                return 1;
+            }
             int count = 0;
             // 依照空格拆解
             var space = str.Split(' ').ToList();
