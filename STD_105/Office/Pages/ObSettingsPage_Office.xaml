@@ -210,7 +210,6 @@
 
             <TabItem Header="2D視圖">
                 <Grid>
-                    <Border />
                     <spa:ModelExt x:Name="drawing" 
                                   SelectionChanged="model_SelectionChanged"
                                   Loaded="drawing_Loaded"

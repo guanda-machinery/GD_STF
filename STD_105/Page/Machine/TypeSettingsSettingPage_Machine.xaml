@@ -118,15 +118,16 @@
                                 </Grid.Resources>
                                 <!--  ItemsSource="{Binding Path = DataViews}"對應為AbsTypeSettingVM OfficeTypeSettingVM-->
                                 <dxg:GridControl  
+                                    Margin="0,-1"
                                     Name="PartGridControl"                                  
                                 AutoGenerateColumns="None"
                                 SelectionMode="MultipleRow"
                                 Height="380"              
                                 ItemsSource="{Binding DataViews}">
                                     <dxg:GridControl.Resources>
-                                        <Style TargetType="{x:Type dxg:GridSearchControl}">
+                                    <!-- 標題列控制   <Style TargetType="{x:Type dxg:GridSearchControl}">
                                             <Setter Property="Padding" Value="0,0,0,-1"/>
-                                        </Style>
+                                        </Style>-->
                                         <Style TargetType="dxg:GridColumn" >
                                             <Setter Property="MinWidth" Value="30"/>
                                             <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
@@ -144,7 +145,7 @@
                                     ShowGroupPanel="False"
                                     ShowSearchPanelMode="Always"
                                     SearchPanelNullText="Search Tasks(Ctrl + F)" 
-                                    SearchPanelFindMode="Always" 
+                                    SearchPanelFindMode="Always"
                                     SearchDelay="0">
                                             <dxg:TableView.CellStyle>
                                                 <Style>

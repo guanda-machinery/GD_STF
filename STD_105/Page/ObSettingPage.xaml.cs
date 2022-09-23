@@ -45,6 +45,7 @@ namespace STD_105
             model.Secondary = drawing;
             drawing.Secondary = model;
 
+            
             #region 定義 MenuItem 綁定的命令
             //放大縮小
             ViewModel.Zoom = new RelayCommand(() =>
@@ -794,6 +795,7 @@ namespace STD_105
                 }
             });
             //鏡射 Y 軸
+
             ViewModel.MirrorY = new RelayCommand(() =>
             {
                 try

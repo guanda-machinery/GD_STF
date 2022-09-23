@@ -751,127 +751,127 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\ArcGauge.xaml.cs">
+    <Compile Include="UserControls\ArcGauge.xaml.cs">
       <DependentUpon>ArcGauge.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\AssembledControl3.xaml.cs">
+    <Compile Include="UserControls\AssembledControl3.xaml.cs">
       <DependentUpon>AssembledControl3.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\AssembledControl4.xaml.cs">
+    <Compile Include="UserControls\AssembledControl4.xaml.cs">
       <DependentUpon>AssembledControl4.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\BaseButton.xaml.cs">
+    <Compile Include="UserControls\BaseButton.xaml.cs">
       <DependentUpon>BaseButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Page\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\CircleProgressBarWithChecked.xaml.cs">
+    <Compile Include="UserControls\CircleProgressBarWithChecked.xaml.cs">
       <DependentUpon>CircleProgressBarWithChecked.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\CircularSectorControl.xaml.cs">
+    <Compile Include="UserControls\CircularSectorControl.xaml.cs">
       <DependentUpon>CircularSectorControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\CloseButton.xaml.cs">
+    <Compile Include="UserControls\CloseButton.xaml.cs">
       <DependentUpon>CloseButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\ColorPicker.xaml.cs">
+    <Compile Include="UserControls\ColorPicker.xaml.cs">
       <DependentUpon>ColorPicker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\DataButton.xaml.cs">
+    <Compile Include="UserControls\DataButton.xaml.cs">
       <DependentUpon>DataButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\DataButtons_Office.xaml.cs">
+    <Compile Include="UserControls\DataButtons_Office.xaml.cs">
       <DependentUpon>DataButtons_Office.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\DigitialClock.xaml.cs">
+    <Compile Include="UserControls\DigitialClock.xaml.cs">
       <DependentUpon>DigitialClock.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\DirectionKeys.xaml.cs">
+    <Compile Include="UserControls\DirectionKeys.xaml.cs">
       <DependentUpon>DirectionKeys.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\DrillLevelTitleControl.xaml.cs">
+    <Compile Include="UserControls\DrillLevelTitleControl.xaml.cs">
       <DependentUpon>DrillLevelTitleControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\DrillListControl.xaml.cs">
+    <Compile Include="UserControls\DrillListControl.xaml.cs">
       <DependentUpon>DrillListControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\FunctionLockControl.xaml.cs">
+    <Compile Include="UserControls\FunctionLockControl.xaml.cs">
       <DependentUpon>FunctionLockControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\InputTitleControl.xaml.cs">
+    <Compile Include="UserControls\InputTitleControl.xaml.cs">
       <DependentUpon>InputTitleControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\Joystick.xaml.cs">
+    <Compile Include="UserControls\Joystick.xaml.cs">
       <DependentUpon>Joystick.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\LoginInformationFlip.xaml.cs">
+    <Compile Include="UserControls\LoginInformationFlip.xaml.cs">
       <DependentUpon>LoginInformationFlip.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\MainFunctionButton.xaml.cs">
+    <Compile Include="UserControls\MainFunctionButton.xaml.cs">
       <DependentUpon>MainFunctionButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\OfficeAssembledControl.xaml.cs">
+    <Compile Include="UserControls\OfficeAssembledControl.xaml.cs">
       <DependentUpon>OfficeAssembledControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\OfficeCompanySettings.xaml.cs">
+    <Compile Include="UserControls\OfficeCompanySettings.xaml.cs">
       <DependentUpon>OfficeCompanySettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\OfficePageHost.xaml.cs">
+    <Compile Include="UserControls\OfficePageHost.xaml.cs">
       <DependentUpon>OfficePageHost.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\OfficeProjectManager.xaml.cs">
+    <Compile Include="UserControls\OfficeProjectManager.xaml.cs">
       <DependentUpon>OfficeProjectManager.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\PMListControl.xaml.cs">
+    <Compile Include="UserControls\PMListControl.xaml.cs">
       <DependentUpon>PMListControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\PopupPageHost.xaml.cs">
+    <Compile Include="UserControls\PopupPageHost.xaml.cs">
       <DependentUpon>PopupPageHost.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\PowerButton1.xaml.cs">
+    <Compile Include="UserControls\PowerButton1.xaml.cs">
       <DependentUpon>PowerButton1.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\RackControlButton.xaml.cs">
+    <Compile Include="UserControls\RackControlButton.xaml.cs">
       <DependentUpon>RackControlButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\RackControlSlider.xaml.cs">
+    <Compile Include="UserControls\RackControlSlider.xaml.cs">
       <DependentUpon>RackControlSlider.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\Reports\MachiningCuttingDetailsReport.xaml.cs">
+    <Compile Include="UserControls\Reports\MachiningCuttingDetailsReport.xaml.cs">
       <DependentUpon>MachiningCuttingDetailsReport.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\Reports\ProcurementBudgetReport.xaml.cs">
+    <Compile Include="UserControls\Reports\ProcurementBudgetReport.xaml.cs">
       <DependentUpon>ProcurementBudgetReport.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\Reports\PurchasmentDetailsReport.xaml.cs">
+    <Compile Include="UserControls\Reports\PurchasmentDetailsReport.xaml.cs">
       <DependentUpon>PurchasmentDetailsReport.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\SaveAs.xaml.cs">
+    <Compile Include="UserControls\SaveAs.xaml.cs">
       <DependentUpon>SaveAs.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\SaveReduction.xaml.cs">
+    <Compile Include="UserControls\SaveReduction.xaml.cs">
       <DependentUpon>SaveReduction.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\AssembledControl1.xaml.cs">
+    <Compile Include="UserControls\AssembledControl1.xaml.cs">
       <DependentUpon>AssembledControl1.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\AssembledControl2.xaml.cs">
+    <Compile Include="UserControls\AssembledControl2.xaml.cs">
       <DependentUpon>AssembledControl2.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\SelectObjectWindows.xaml.cs">
+    <Compile Include="UserControls\SelectObjectWindows.xaml.cs">
       <DependentUpon>SelectObjectWindows.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\Synchronization.xaml.cs">
+    <Compile Include="UserControls\Synchronization.xaml.cs">
       <DependentUpon>Synchronization.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\ToolMagazineButton.xaml.cs">
+    <Compile Include="UserControls\ToolMagazineButton.xaml.cs">
       <DependentUpon>ToolMagazineButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\WaitIndicator.xaml.cs">
+    <Compile Include="UserControls\WaitIndicator.xaml.cs">
       <DependentUpon>WaitIndicator.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl\ZoomButton.xaml.cs">
+    <Compile Include="UserControls\ZoomButton.xaml.cs">
       <DependentUpon>ZoomButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValidationRules\CheckHoleGroupArrayStringRule.cs" />
@@ -880,7 +880,7 @@
     <Compile Include="ValidationRules\CheckStringEmptyRule.cs" />
     <Compile Include="ValueConverters\AntiLogicConverter.cs" />
     <Compile Include="ValueConverters\ApplicationPageConverter.cs" />
-    <Compile Include="UserControl\PageHost.xaml.cs">
+    <Compile Include="UserControls\PageHost.xaml.cs">
       <DependentUpon>PageHost.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValueConverters\BAVTConverter.cs" />
@@ -1380,19 +1380,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\ArcGauge.xaml">
+    <Page Include="UserControls\ArcGauge.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\AssembledControl3.xaml">
+    <Page Include="UserControls\AssembledControl3.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\AssembledControl4.xaml">
+    <Page Include="UserControls\AssembledControl4.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\BaseButton.xaml">
+    <Page Include="UserControls\BaseButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1400,151 +1400,151 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\CircleProgressBarWithChecked.xaml">
+    <Page Include="UserControls\CircleProgressBarWithChecked.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\CircularSectorControl.xaml">
+    <Page Include="UserControls\CircularSectorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\CloseButton.xaml">
+    <Page Include="UserControls\CloseButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\ColorPicker.xaml">
+    <Page Include="UserControls\ColorPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\DataButton.xaml">
+    <Page Include="UserControls\DataButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\DataButtons_Office.xaml">
+    <Page Include="UserControls\DataButtons_Office.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\DigitialClock.xaml">
+    <Page Include="UserControls\DigitialClock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\DirectionKeys.xaml">
+    <Page Include="UserControls\DirectionKeys.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\DrillLevelTitleControl.xaml">
+    <Page Include="UserControls\DrillLevelTitleControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\DrillListControl.xaml">
+    <Page Include="UserControls\DrillListControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\FunctionLockControl.xaml">
+    <Page Include="UserControls\FunctionLockControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\InputTitleControl.xaml">
+    <Page Include="UserControls\InputTitleControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\Joystick.xaml">
+    <Page Include="UserControls\Joystick.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\LoginInformationFlip.xaml">
+    <Page Include="UserControls\LoginInformationFlip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\MainFunctionButton.xaml">
+    <Page Include="UserControls\MainFunctionButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\OfficeAssembledControl.xaml">
+    <Page Include="UserControls\OfficeAssembledControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\OfficeCompanySettings.xaml">
+    <Page Include="UserControls\OfficeCompanySettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\OfficePageHost.xaml">
+    <Page Include="UserControls\OfficePageHost.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\OfficeProjectManager.xaml">
+    <Page Include="UserControls\OfficeProjectManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\PageHost.xaml">
+    <Page Include="UserControls\PageHost.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\PMListControl.xaml">
+    <Page Include="UserControls\PMListControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\PopupPageHost.xaml">
+    <Page Include="UserControls\PopupPageHost.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\PowerButton1.xaml">
+    <Page Include="UserControls\PowerButton1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\RackControlButton.xaml">
+    <Page Include="UserControls\RackControlButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\RackControlSlider.xaml">
+    <Page Include="UserControls\RackControlSlider.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\Reports\MachiningCuttingDetailsReport.xaml">
+    <Page Include="UserControls\Reports\MachiningCuttingDetailsReport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\Reports\ProcurementBudgetReport.xaml">
+    <Page Include="UserControls\Reports\ProcurementBudgetReport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\Reports\PurchasmentDetailsReport.xaml">
+    <Page Include="UserControls\Reports\PurchasmentDetailsReport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\SaveAs.xaml">
+    <Page Include="UserControls\SaveAs.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\SaveReduction.xaml">
+    <Page Include="UserControls\SaveReduction.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\AssembledControl1.xaml">
+    <Page Include="UserControls\AssembledControl1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\AssembledControl2.xaml">
+    <Page Include="UserControls\AssembledControl2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\SelectObjectWindows.xaml">
+    <Page Include="UserControls\SelectObjectWindows.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\Synchronization.xaml">
+    <Page Include="UserControls\Synchronization.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\ToolMagazineButton.xaml">
+    <Page Include="UserControls\ToolMagazineButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\WaitIndicator.xaml">
+    <Page Include="UserControls\WaitIndicator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl\ZoomButton.xaml">
+    <Page Include="UserControls\ZoomButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
