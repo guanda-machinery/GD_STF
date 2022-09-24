@@ -280,7 +280,7 @@
                                     <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
                                             <TextBox>
                                                 <TextBox.Text>
-                                                    <Binding Path="StartNumber"  UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding Path="PreCode"  UpdateSourceTrigger="PropertyChanged" >
                                                         <Binding.ValidationRules >
                                                             <STD105ValidRule:CheckStringEmptyRule/>
                                                         </Binding.ValidationRules>

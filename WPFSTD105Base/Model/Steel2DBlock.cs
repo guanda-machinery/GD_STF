@@ -53,6 +53,10 @@ namespace WPFSTD105.Model
         /// <param name="mesh"></param>
         public void ChangeMesh(Mesh mesh)
         {
+
+#if DEBUG
+            log4net.LogManager.GetLogger("ChangeMesh").Debug("");
+#endif
             //檢查自定義屬性檔是不是空值
             log4net.LogManager.GetLogger("檢查").Debug("屬性檔是不是空值");
             if (mesh.EntityData == null)
@@ -355,7 +359,7 @@ namespace WPFSTD105.Model
                 foreach (var item in solidPortion.Edges)
                 {
                     //產生線段 0826依需求更換顏色(彥谷)
-                    Line top = new Line(solidPortion.Vertices[item.V1], solidPortion.Vertices[item.V2]) { Color = Color.White, ColorMethod = colorMethodType.byEntity };
+                    Line top =   new Line(solidPortion.Vertices[item.V1], solidPortion.Vertices[item.V2]) { Color = Color.White, ColorMethod = colorMethodType.byEntity };
                     //Line top = new Line(solidPortion.Vertices[item.V1], solidPortion.Vertices[item.V2]) { Color = Color.Yellow, ColorMethod = colorMethodType.byEntity };
                     //複製線段
                     Line from = (Line)top.Clone();
