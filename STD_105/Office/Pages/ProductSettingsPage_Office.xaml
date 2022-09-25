@@ -328,7 +328,7 @@
                     <dxg:GridColumn FieldName="SteelType"  IsSmart="True" Header="鋼材類型(Index)" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="Material" IsSmart="True"  Header="材質"  Width="80"/>
                     <dxg:GridColumn FieldName="Count"  IsSmart="True"  Width="40" Header="數量"  />
-                    <dxg:GridColumn FieldName="Length" Binding="{Binding Length}" IsSmart="True" Header="零件長" Width="70">
+                    <dxg:GridColumn FieldName="Length" Binding="{Binding steelAttr.Length}" IsSmart="True" Header="零件長" Width="70">
                         <dxg:GridColumn.EditSettings>
                             <dxe:TextEditSettings Mask="f0" MaskType="Numeric" MaskUseAsDisplayFormat="true"/>
                         </dxg:GridColumn.EditSettings>
