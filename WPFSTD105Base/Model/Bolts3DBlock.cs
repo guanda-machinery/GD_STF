@@ -136,7 +136,7 @@ namespace WPFSTD105.Model
             };
 
             // 若起始座標小於半徑，不可加入
-            if (Info.X < this.Info.Dia / 2 && Info.dX!="0" && this.Info.Mode == AXIS_MODE.POINT)
+            if (Info.X < this.Info.Dia / 2 && Info.dX!="0" && this.Info.Mode != AXIS_MODE.POINT)
             {
                 check = false;
             }
@@ -388,12 +388,12 @@ namespace WPFSTD105.Model
                     //}
                 }
 
-                if (inSteel) { ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;  }
+                if (inSteel) { ((SteelAttr)model.Blocks[1].Entities[model.Blocks[1].Entities.Count-1].EntityData).ExclamationMark = false;  }
             }
             else
             {
                // 不在加工區域內
-                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                ((SteelAttr)model.Blocks[1].Entities[model.Blocks[1].Entities.Count - 1].EntityData).ExclamationMark = true;
             }
         }
 
@@ -517,7 +517,7 @@ namespace WPFSTD105.Model
                         // 檢查產生之孔位是否在鋼體內
                         //if (((Mesh)model.Entities[model.Entities.Count - 1].EntityData).IsPointInside(
 
-                        if (((Mesh)model.Blocks[1].Entities[0]).IsPointInside(
+                        if (((Mesh)model.Blocks[1].Entities[model.Blocks[1].Entities.Count - 1]).IsPointInside(
                             new Point3D()
                             {
                                 X = ((BoltAttr)item.EntityData).X,

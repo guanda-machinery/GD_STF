@@ -448,9 +448,13 @@ namespace WPFSTD105
         /// <param name="model"></param>
         public void CreateDMFile( ModelExt model)
         {
+
+#if DEBUG
+            log4net.LogManager.GetLogger("CreateDMFile").Debug("");
+#endif
             //ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
             //Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
-            
+
             STDSerialization ser = new STDSerialization();
             ApplicationVM appVM = new ApplicationVM();
             ObSettingVM obVM = new ObSettingVM();

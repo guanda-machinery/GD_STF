@@ -115,6 +115,7 @@ namespace STD_105
         }
         public void Draw()
         {
+            bool hasOutSteel = false;
             if (NcTemp != null)
             {
                 STDSerialization ser = new STDSerialization(); //序列化處理器
@@ -122,8 +123,16 @@ namespace STD_105
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
                 for (int i = 0; i < NcTemp.GroupBoltsAttrs.Count; i++) //逐步展開 nc 檔案的螺栓
                 {
-                    Bolts3DBlock.AddBolts(NcTemp.GroupBoltsAttrs[i], model, out BlockReference botsBlock,out bool check); //加入到 3d 視圖
+                    Bolts3DBlock bolts = Bolts3DBlock.AddBolts(NcTemp.GroupBoltsAttrs[i], model, out BlockReference botsBlock,out bool check); //加入到 3d 視圖
+                    if (bolts.hasOutSteel)
+                    {
+                        hasOutSteel = true;
+                    }
                     Add2DHole((Bolts3DBlock)model.Blocks[botsBlock.BlockName], false);//加入孔位不刷新 2d 視圖
+                }
+                if (hasOutSteel)
+                {
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
                 }
                 ser.SetPartModel(NcTemp.SteelAttr.GUID.ToString(), model);//儲存 3d 視圖
             }

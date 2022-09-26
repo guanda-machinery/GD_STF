@@ -259,6 +259,12 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public ObservableCollection<DataCorrespond> DataCorrespond { get; set; } = new ObservableCollection<DataCorrespond>();
         /// <summary>
+        /// 導回原本的ViewModel
+        /// </summary>
+        public ProductSettingsPageViewModel ProductSettingsPageViewModel = new ProductSettingsPageViewModel();
+
+        public string PartNumber { get; set; }  
+        /// <summary>
         /// 樹狀邏輯
         /// </summary>
         public ObservableCollection<TreeNode> TreeNode { get; set; } = new ObservableCollection<TreeNode>();
@@ -300,7 +306,11 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 主要零件設定檔
         /// </summary>
-        public SteelAttr SteelAttr { get; set; } = new SteelAttr();
+        public SteelAttr SteelAttr { get; set; } //= new SteelAttr();
+        /// <summary>
+        /// 鋼構名稱
+        /// </summary>
+        public String TypeDesc { get; set; }
         /// <summary>
         /// 螺栓群組設定檔
         /// </summary>
@@ -891,6 +901,10 @@ namespace WPFSTD105.ViewModel
         /// <returns>因為 WPF VM的關係所以需要使用複製並存在緩衝區</returns>
         public SteelAttr GetSteelAttr()
         {
+
+#if DEBUG
+            log4net.LogManager.GetLogger("GetSteelAttr").Debug("");
+#endif
             try
             {
                 Steelbuffer = (SteelAttr)SteelAttr.DeepClone();
@@ -1053,6 +1067,7 @@ namespace WPFSTD105.ViewModel
 
             // 取得專案Grid資訊
             DataViews = new ObservableCollection<ProductSettingsPageViewModel>(GetData());
+            SteelAttr = new SteelAttr();
 
             ShowSteelTypeCommand = ShowSteelType(); //20220829 張燕華 選擇型鋼型態
             CalculateWeightCommand = CalculateWeight();
@@ -1318,6 +1333,7 @@ namespace WPFSTD105.ViewModel
                 .SelectMany(x => x)
                 .Select(x => new
                 {
+                    x.ExclamationMark,
                     x.GUID,
                     x.Lock,
                     x.Creation,
@@ -1453,7 +1469,7 @@ namespace WPFSTD105.ViewModel
                                 // 上鎖
                                 steelAttrVM.steelAttr.Lock = item.Lock;
                                 // 驚嘆號
-                                //steelAttrVM.steelAttr.ExclamationMark = true;
+                                steelAttrVM.steelAttr.ExclamationMark = item.ExclamationMark;
 
                                 // GUID (Data Name)
                                 DataCorrespond single = DataCorrespond.FirstOrDefault(x =>
@@ -1502,7 +1518,8 @@ namespace WPFSTD105.ViewModel
                 }
             }
             #endregion
-            List<ProductSettingsPageViewModel> source = steelAttrList.Where(x => allowType.Contains(x.Type)).ToList();
+            List<ProductSettingsPageViewModel> source = new List<ProductSettingsPageViewModel>();
+            source = steelAttrList.Where(x => allowType.Contains(x.Type)).ToList();
             var group = (from a in source
                          group a by new { AsseNumber = a.steelAttr.AsseNumber, a.steelAttr.PartNumber, a.TeklaName, a.Type, a.Length, a.Weight } into g
                          select new
@@ -1529,7 +1546,6 @@ namespace WPFSTD105.ViewModel
                              t2 = g.FirstOrDefault().steelAttr.t2,
                          }).ToList();
             List<ProductSettingsPageViewModel> list = new List<ProductSettingsPageViewModel>();
-            SteelAttr attr = new SteelAttr();
 
             Dictionary<string, ObservableCollection<SteelAttr>> saFile = ser.GetSteelAttr();
 
