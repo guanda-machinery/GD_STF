@@ -1733,7 +1733,7 @@ namespace STD_105.Office
             ViewModel.SteelAttr.Title1 = this.Title1.Text;
             ViewModel.SteelAttr.Title2 = this.Title2.Text;
             ViewModel.SteelAttr.Type = (OBJECT_TYPE)this.cbx_SteelTypeComboBox.SelectedIndex;
-            ViewModel.SteelAttr.Profile = this.cbx_SectionType.Text;
+            ViewModel.SteelAttr.Profile = this.cbx_SectionTypeComboBox.Text;
             ViewModel.SteelAttr.H = string.IsNullOrEmpty(this.H.Text) ? 0 : float.Parse(this.H.Text);
             ViewModel.SteelAttr.W = string.IsNullOrEmpty(this.W.Text) ? 0 : float.Parse(this.W.Text);
             ViewModel.SteelAttr.Number = string.IsNullOrEmpty(this.PartCount.Text) ? 0 : int.Parse(this.PartCount.Text);
@@ -1768,7 +1768,7 @@ namespace STD_105.Office
             steelAttr.Title1 = this.Title1.Text;
             steelAttr.Title2 = this.Title2.Text;
             steelAttr.Type = (OBJECT_TYPE)this.cbx_SteelTypeComboBox.SelectedIndex;
-            steelAttr.Profile = this.cbx_SectionType.Text;
+            steelAttr.Profile = this.cbx_SectionTypeComboBox.Text;
             steelAttr.H = (string.IsNullOrEmpty(this.H.Text) || float.Parse(this.H.Text) == 0) ? steelAttr.H : float.Parse(this.H.Text);
             steelAttr.W = (string.IsNullOrEmpty(this.W.Text) || float.Parse(this.W.Text) == 0) ? steelAttr.W : float.Parse(this.W.Text);
             steelAttr.Number = string.IsNullOrEmpty(this.PartCount.Text) ? 0 : int.Parse(this.PartCount.Text);
@@ -3559,14 +3559,14 @@ namespace STD_105.Office
         /// </summary>
         private void CBOX_SectionTypeChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if (cbx_SectionType.SelectedIndex != -1)
+            if (cbx_SectionTypeComboBox.SelectedIndex != -1)
             {
-                var pf = ViewModel.ProfileList[cbx_SectionType.SelectedIndex];
+                var pf = ViewModel.ProfileList[cbx_SectionTypeComboBox.SelectedIndex];
                 ViewModel.SteelAttr.H = pf.H;
                 ViewModel.SteelAttr.W = pf.W;
                 ViewModel.SteelAttr.t1 = pf.t1;
                 ViewModel.SteelAttr.t2 = pf.t2;
-                ViewModel.CurrentPartSteelAttr = ViewModel.ProfileList[cbx_SectionType.SelectedIndex]; //ViewModel.SteelAttr;
+                ViewModel.CurrentPartSteelAttr = ViewModel.ProfileList[cbx_SectionTypeComboBox.SelectedIndex]; //ViewModel.SteelAttr;
             }
         }
         /// <summary>
@@ -3647,8 +3647,8 @@ namespace STD_105.Office
                             this.shippingNumber.Clear();
                             this.Title1.Clear();
                             this.Title2.Clear();
-                            this.cbx_SteelType.SelectedIndex = 0;
-                            this.cbx_SectionType.SelectedIndex = 0;
+                            this.cbx_SteelTypeComboBox.SelectedIndex = 0;
+                            this.cbx_SectionTypeComboBox.SelectedIndex = 0;
                         }
                     }
                     else
@@ -3850,8 +3850,8 @@ namespace STD_105.Office
                 this.shippingNumber.Clear();
                 this.Title1.Clear();
                 this.Title2.Clear();
-                this.cbx_SteelType.SelectedIndex = 0;
-                this.cbx_SectionType.SelectedIndex = 0;
+                this.cbx_SteelTypeComboBox.SelectedIndex = 0;
+                this.cbx_SectionTypeComboBox.SelectedIndex = 0;
                 GridReload();
             }
 

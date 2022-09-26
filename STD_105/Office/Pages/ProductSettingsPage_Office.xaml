@@ -573,7 +573,7 @@
                     <Label Grid.Column="3" Grid.Row="1"
                            Content="斷面規格：" />
 
-                    <ComboBox x:Name="cbx_SectionType"
+                    <ComboBox x:Name="cbx_SectionTypeComboBox"
                                   Grid.Column="4" Grid.Row="1"
                                   Padding="5,1,0,0"
                                   ItemsSource="{Binding ProfileList}" 
