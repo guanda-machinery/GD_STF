@@ -854,7 +854,7 @@
             </TabControl>
             <!--繪圖顯示模型-->
             <Border Background="#F0F0F0" Margin="5"   Grid.Column="1" Grid.Row="1" >
-                <TabControl Margin="0.5,0" >
+                <TabControl Margin="0.5,0">
                     <TabControl.Resources>
                         <ResourceDictionary>
                             <Style TargetType="TabItem">
@@ -916,7 +916,7 @@
 
                             </Style>
                         </TabItem.Resources>
-                        <DockPanel >
+                        <DockPanel   Width="255">
                             <Grid DockPanel.Dock="Top">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -1028,50 +1028,50 @@
                                     </StackPanel>
                                 </GroupBox>
                                 <GroupBox Header="孔群設定" Grid.Column="0" Grid.Row="2">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="auto"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
 
-                                            <CheckBox Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Content="形狀："/>
+                                        <CheckBox Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Content="形狀："/>
 
-                                            <ComboBox Grid.Column="2" Grid.Row="0" Margin="5" VerticalAlignment="Center" SelectedIndex="0" Padding="5,1,0,0">
-                                                <ComboBoxItem Content="陣列"/>
-                                            </ComboBox>
+                                        <ComboBox Grid.Column="2" Grid.Row="0" Margin="5" VerticalAlignment="Center" SelectedIndex="0" Padding="5,1,0,0">
+                                            <ComboBoxItem Content="陣列"/>
+                                        </ComboBox>
 
-                                            <CheckBox  Grid.Column="0" Grid.Row="1"  IsChecked="{Binding CheckX}" Content="孔X向間距："/>
+                                        <CheckBox  Grid.Column="0" Grid.Row="1"  IsChecked="{Binding CheckX}" Content="孔X向間距："/>
 
-                                            <TextBox  Grid.Column="1" Grid.Row="1" MinWidth="100" VerticalAlignment="Center" >
-                                                <TextBox.Text>
-                                                    <Binding Path="GroupBoltsAttr.dX" UpdateSourceTrigger="PropertyChanged" >
-                                                        <Binding.ValidationRules>
-                                                            <STD105ValidRule:CheckHoleGroupArrayStringRule/>
-                                                        </Binding.ValidationRules>
-                                                    </Binding>
-                                                </TextBox.Text>
+                                        <TextBox  Grid.Column="1" Grid.Row="1" MinWidth="40" VerticalAlignment="Center" >
+                                            <TextBox.Text>
+                                                <Binding Path="GroupBoltsAttr.dX" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105ValidRule:CheckHoleGroupArrayStringRule/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
 
-                                            </TextBox>
+                                        </TextBox>
 
-                                            <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding CheckY}" Content="孔Y向間距：" />
-                                            <TextBox  Grid.Column="1" Grid.Row="2"  MinWidth="100" VerticalAlignment="Center">
-                                                <TextBox.Text>
-                                                    <Binding Path="GroupBoltsAttr.dY" UpdateSourceTrigger="PropertyChanged" >
-                                                        <Binding.ValidationRules>
-                                                            <STD105ValidRule:CheckHoleGroupArrayStringRule/>
-                                                        </Binding.ValidationRules>
-                                                    </Binding>
-                                                </TextBox.Text>
-                                            </TextBox>
+                                        <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding CheckY}" Content="孔Y向間距：" />
+                                        <TextBox  Grid.Column="1" Grid.Row="2"  MinWidth="40" VerticalAlignment="Center">
+                                            <TextBox.Text>
+                                                <Binding Path="GroupBoltsAttr.dY" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105ValidRule:CheckHoleGroupArrayStringRule/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
 
-                                        </Grid>
-                                    </GroupBox>
-    
+                                    </Grid>
+                                </GroupBox>
+
                                 <!-- X軸數量-->
                                 <!--StackPanel Grid.Row="2"
                                     Grid.Column="1"
@@ -1096,8 +1096,7 @@
 
 
                             </Grid>
-
-                            <StackPanel  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" DockPanel.Dock="Bottom"  VerticalAlignment="Bottom">
+                            <StackPanel DockPanel.Dock="Bottom"  VerticalAlignment="Bottom" >
                                 <StackPanel  Orientation="Horizontal"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Bottom"
@@ -1133,61 +1132,102 @@
                         </DockPanel>
 
                     </TabItem>
-                    <TabItem Header="切割線" Name="CutTabItem">
-                        <ScrollViewer VerticalScrollBarVisibility="Auto" Name="ScrollViewbox">
-                            <Grid >
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-                                <GroupBox Header="位置" Style="{StaticResource BaseStyle}" Margin="5">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-                                            <RadioButton Content="頂面" Grid.Column="1" VerticalAlignment="Center" 
+                    <TabItem Header="切割線" Name="CutTabItem"  >
+                        <DockPanel Width="255">
+                        <Grid  DockPanel.Dock="Top">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <GroupBox Header="位置" Style="{StaticResource BaseStyle}" Margin="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <RadioButton Content="頂面" Grid.Column="1" VerticalAlignment="Center" 
                                                          GroupName="CutLinePosition" Foreground="Black"  
                                                          Style="{StaticResource rad_Gray}"
                                                          IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={local:CutFaceConverter}, ConverterParameter=0}"/>
-                                            <RadioButton Content="前面" Grid.Column="0" 
+                                    <RadioButton Content="前面" Grid.Column="0" 
                                                          GroupName="CutLinePosition" Foreground="Black" 
                                                          Style="{StaticResource rad_Gray}"
                                                          IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={local:CutFaceConverter}, ConverterParameter=1}"/>
 
-                                            <RadioButton Content="後面"  Grid.Column="2" 
+                                    <RadioButton Content="後面"  Grid.Column="2" 
                                                          GroupName="CutLinePosition" Foreground="Black"  
                                                          Style="{StaticResource rad_Gray}"
                                                          IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={local:CutFaceConverter}, ConverterParameter=2}"/>
 
-                                        </Grid>
-                                    </GroupBox>
+                                </Grid>
+                            </GroupBox>
 
-                                <StackPanel Grid.Row="1" Background="#303030" Height="0.5" Margin="0,15,0,10"/>
-                                <GroupBox Header="切割位置" Style="{StaticResource BaseStyle}" Grid.Row="2" Margin="5">
-                                    <StackPanel Background="#c0c0c0">
+                            <StackPanel Grid.Row="1" Background="#303030" Height="0.5" Margin="0,15,0,10" />
+                            <GroupBox Header="切割位置" Style="{StaticResource BaseStyle}" Grid.Row="2" Margin="5" Name="CuttingGroupBox" >
+                                <Grid  Background="#c0c0c0">
                                         <Grid>
-                                            <Canvas Width="280">
-                                                <Canvas.Resources>
-                                                    <Style TargetType="TextBlock" BasedOn="{StaticResource fileNameStyle}"></Style>
-                                                </Canvas.Resources>
-                                                <ComboBox Visibility="Hidden"
+                                            <Grid.Resources>
+                                                
+                                                <Style TargetType="Line">
+                                                    <Setter Property="Stroke" Value="#666666"/>
+                                                    <Setter Property="StrokeThickness" Value="1.1"/>
+                                                </Style>
+                                            </Grid.Resources>
+                                            <Line X1="20" X2="60" Y1="30" Y2="30"/>
+                                            <Line X1="20" X2="20" Y1="29.5" Y2="110.5"/>
+                                            <Line X1="20" X2="35" Y1="110" Y2="110" />
+
+                                            <Line X1="-20" X2="-60" Y1="30" Y2="30" Stroke="#888888" HorizontalAlignment="Right" />
+                                            <Line X1="-20" X2="-20" Y1="29.5" Y2="110.5" Stroke="#888888" HorizontalAlignment="Right" />
+                                            <Line X1="-20" X2="-35" Y1="110" Y2="110" Stroke="#888888" HorizontalAlignment="Right" />
+
+                                            <Line X1="20" X2="60" Y1="-30" Y2="-30" Stroke="#888888" VerticalAlignment="Bottom" />
+                                            <Line X1="20" X2="20" Y1="-29.5" Y2="-110.5" Stroke="#888888" VerticalAlignment="Bottom"  />
+                                            <Line X1="20" X2="35" Y1="-110" Y2="-110" Stroke="#888888" VerticalAlignment="Bottom" />
+
+                                            <Line X1="-20" X2="-60" Y1="-30" Y2="-30" Stroke="#888888" VerticalAlignment="Bottom"  HorizontalAlignment="Right" />
+                                            <Line X1="-20" X2="-20" Y1="-29.5" Y2="-110.5" Stroke="#888888" VerticalAlignment="Bottom"  HorizontalAlignment="Right" />
+                                            <Line X1="-20" X2="-35" Y1="-110" Y2="-110" Stroke="#888888" VerticalAlignment="Bottom"  HorizontalAlignment="Right" />
+
+
+                                        </Grid>
+                                        <Grid HorizontalAlignment="Center" Margin="0,20">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Grid.Resources>
+                                            <Style TargetType="TextBlock" BasedOn="{StaticResource fileNameStyle}"></Style>
+                                        </Grid.Resources>
+                                        <ComboBox Visibility="Hidden"
                                                       Width="94"
-                                                      Canvas.Left="96"
-                                                      Canvas.Top="109"
+                                                          Grid.Row="2"  Grid.ColumnSpan="2"
                                                       ItemsSource="{Binding Source={StaticResource Face},Path=Strings}"
                                                       SelectedIndex="{Binding CutFaceType}" />
-                                                <Path x:Name="pa"
+                                        <Path x:Name="pa"
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Center"
-                                                  Canvas.Left="65"
-                                                  Canvas.Top="40"
+                                                      Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"
+                                                      Grid.Row="2"
                                                   Data="M147.57261,23.44316 L236.3045,23.44316 236.3045,58.513851 z M140.147,6.3996129 L243.72928,6.3996129 M147.57261,0.49999999 L147.57261,20.166036 
                                                         M236.67491,0.49999999 L236.67491,20.166036 M260.08409,17.756814 L260.08409,64.987999 M267.4995,23.363259 L242.7798,23.363259 M267.5,58.994403
                                                         L242.78027,58.994403 M120.4274,23.44316 L31.695509,23.44316 31.695509,58.513851 z M127.853,6.3996129 L24.27073,6.3996129 M120.4274,0.49999999 L120.4274,20.166036
@@ -1201,145 +1241,133 @@
                                                   Width="160"
                                                   Stretch="Fill"
                                                   Stroke="{ StaticResource solidclr_DimGray }" />
-                                                <TextBox Grid.Row="3"
-                                                     Width="50"
-                                                     Canvas.Left="86"
-                                                     Canvas.Top="10">
-                                                    <TextBox.Text>
-                                                        <Binding Path="ULPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                            <Binding.ValidationRules>
-                                                                <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                            </Binding.ValidationRules>
-                                                        </Binding>
-                                                    </TextBox.Text>
-                                                </TextBox>
-                                                <TextBox Grid.Row="3"
-                                                     Width="50"
-                                                     Canvas.Left="154"
-                                                     Canvas.Top="10">
-                                                    <TextBox.Text>
-                                                        <Binding Path="URPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                            <Binding.ValidationRules>
-                                                                <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                            </Binding.ValidationRules>
-                                                        </Binding>
-                                                    </TextBox.Text>
-                                                </TextBox>
-                                                <TextBox Width="50"
-                                                     Canvas.Left="10"
-                                                     Canvas.Top="70">
-                                                    <TextBox.Text>
-                                                        <Binding Path="ULPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                            <Binding.ValidationRules>
-                                                                <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                            </Binding.ValidationRules>
-                                                        </Binding>
-                                                    </TextBox.Text>
-                                                </TextBox>
-                                                <TextBox Width="50"
-                                                     Canvas.Left="10"
-                                                     Canvas.Top="143">
-                                                    <TextBox.Text>
-                                                        <Binding Path="DLPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                            <Binding.ValidationRules>
-                                                                <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                            </Binding.ValidationRules>
-                                                        </Binding>
-                                                    </TextBox.Text>
-                                                </TextBox>
-                                                <TextBox Width="50"
-                                                     Canvas.Left="230"
-                                                     Canvas.Top="70">
-                                                    <TextBox.Text>
-                                                        <Binding Path="URPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                            <Binding.ValidationRules>
-                                                                <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                            </Binding.ValidationRules>
-                                                        </Binding>
-                                                    </TextBox.Text>
-                                                </TextBox>
-                                                <TextBox Width="50"
-                                                     Canvas.Left="230"
-                                                     Canvas.Top="143">
-                                                    <TextBox.Text>
-                                                        <Binding Path="DRPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                            <Binding.ValidationRules>
-                                                                <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                            </Binding.ValidationRules>
-                                                        </Binding>
-                                                    </TextBox.Text>
-                                                </TextBox>
-                                                <TextBox Width="50"
-                                                     Canvas.Left="86"
-                                                     Canvas.Top="205">
-                                                    <TextBox.Text>
-                                                        <Binding Path="DLPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                            <Binding.ValidationRules>
-                                                                <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                            </Binding.ValidationRules>
-                                                        </Binding>
-                                                    </TextBox.Text>
-                                                </TextBox>
-                                                <TextBox Width="50"
-                                                     Canvas.Left="154"
-                                                     Canvas.Top="205">
-                                                    <TextBox.Text>
-                                                        <Binding Path="DRPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                            <Binding.ValidationRules>
-                                                                <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                            </Binding.ValidationRules>
-                                                        </Binding>
-                                                    </TextBox.Text>
-                                                </TextBox>
-                                                <CheckBox IsChecked="{Binding ULCheck}"
+                                        <TextBox Grid.Row="1" HorizontalAlignment="Right" Margin="0,5,10,5"
+                                                     Width="50">
+                                            <TextBox.Text>
+                                                <Binding Path="ULPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="10,5,0,5"
+                                                     Width="50">
+                                            <TextBox.Text>
+                                                <Binding Path="URPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <TextBox Width="50" Grid.Column="0" Grid.Row="0" Cursor="IBeam" HorizontalAlignment="Right" Margin="0,0,10,0">
+                                            <TextBox.Text>
+                                                <Binding Path="ULPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <TextBox Width="50"  Grid.Column="0" Grid.Row="5" HorizontalAlignment="Right" Margin="0,0,10,0">
+                                            <TextBox.Text>
+                                                <Binding Path="DLPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <TextBox Width="50" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="10,0,00,0">
+                                            <TextBox.Text>
+                                                <Binding Path="URPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <TextBox Width="50" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" Margin="10,0,00,0">
+                                            <TextBox.Text>
+                                                <Binding Path="DRPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <TextBox Width="50" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Right" Margin="0,5,10,5">
+                                            <TextBox.Text>
+                                                <Binding Path="DLPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <TextBox Width="50" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Margin="10,5,00,5">
+                                            <TextBox.Text>
+                                                <Binding Path="DRPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <CheckBox IsChecked="{Binding ULCheck}"  Grid.Column="0" Grid.Row="2"  Margin="23.5,29.5,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"
                                                       Width="16"
                                                       Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
                                                       Style="{StaticResource CheckedStyle}"
                                                       Canvas.Left="86"
-                                                      Canvas.Top="70" />
-                                                <CheckBox IsChecked="{Binding DLCheck}"
+                                                      Canvas.Top="90" />
+                                        <CheckBox IsChecked="{Binding DLCheck}" Grid.Column="0" Grid.Row="3"  Margin="23.5,0,0,29.5" VerticalAlignment="Bottom" HorizontalAlignment="Left"
                                                       Width="16"
                                                       Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
                                                       Style="{StaticResource CheckedStyle}"
                                                       Canvas.Left="86"
-                                                      Canvas.Top="152" />
-                                                <CheckBox IsChecked="{Binding URCheck}"
+                                                      Canvas.Top="172" Cursor="Hand" />
+                                        <CheckBox IsChecked="{Binding URCheck}" Grid.Column="1" Grid.Row="2"  Margin="0,29.5,23.5,0" VerticalAlignment="Top" HorizontalAlignment="Right"
                                                       Width="16"
                                                       Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
                                                       Style="{StaticResource CheckedStyle}"
                                                       Canvas.Left="188"
-                                                      Canvas.Top="70" />
-                                                <CheckBox IsChecked="{Binding DRCheck}"
+                                                      Canvas.Top="90" />
+                                        <CheckBox IsChecked="{Binding DRCheck}" Grid.Column="1" Grid.Row="3" Margin="0,0,23.5,29.5" VerticalAlignment="Bottom" HorizontalAlignment="Right"
                                                       Width="16"
                                                       Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
                                                       Style="{StaticResource CheckedStyle}"
                                                       Canvas.Left="188"
-                                                      Canvas.Top="152" />
-                                            </Canvas>
-                                        </Grid>
-                                    </StackPanel>
-                                </GroupBox>
-
-                                <StackPanel  Grid.Row="3" Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <Button Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=CutTabItem}" Width="80" Margin="-20,0,-28,0"  Background="#d8d8d8" Cursor="Hand" >
-                                        <Button.Content >
-                                            <StackPanel Orientation="Horizontal">
-                                                <materialDesign:PackIcon Kind="CheckboxOutline" />
-                                                <TextBlock Text="／"/>
-                                                <materialDesign:PackIcon Kind="CheckboxBlankOutline" />
-                                            </StackPanel>
-                                        </Button.Content>
-                                    </Button>
-                                    <local:DataButtons_Office Style="{StaticResource BaseStyle}"
+                                                      Canvas.Top="172" />
+                                    </Grid>
+                                   
+                                    </Grid>
+                            </GroupBox>
+                   </Grid>
+                            <StackPanel  DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                <Button Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=CutTabItem}" Width="60"   Background="#d8d8d8" Cursor="Hand" >
+                                    <Button.Content >
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="CheckboxOutline" />
+                                            <TextBlock Text="／"/>
+                                            <materialDesign:PackIcon Kind="CheckboxBlankOutline" />
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                                <local:DataButtons_Office Style="{StaticResource BaseStyle}"
                                                            Modify="{Binding ModifyCut}"
                                                            Add="{Binding AddCut}"
                                                            Delete="{Binding DeleteCut}"
+                                                        ModifyButtonWidth="60"
+                                                          AddButtonWidth="60"
+                                                          DeleteButtonWidth="60"
                                                            ReadVisibility="Collapsed" 
                                                            VerticalAlignment="Bottom"
-                                                           Margin="0,0,0,0" Width="315"/>
-                                </StackPanel>
-                            </Grid>
-                        </ScrollViewer>
+                                                           Margin="0,0,0,0" />
+                            </StackPanel>
+     
+                        
+                        </DockPanel>
                     </TabItem>
                 </TabControl>
             </Border>

@@ -25,13 +25,13 @@
                 Orientation="Horizontal" 
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
-        <Button Name="add" Padding="-20"
+        <Button Name="add" 
                 Content="新增" Cursor="Hand" />
-        <Button Name="ModifyButton"
+        <Button Name="ModifyButton" 
                 Content="修改" />
         <Button Name="ReadButton"
                 Content="讀取" />
-        <Button Name="DeleteButton"
+        <Button Name="DeleteButton" 
                 Content="刪除" />
     </StackPanel>
 </UserControl>
