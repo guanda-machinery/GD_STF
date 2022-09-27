@@ -5,7 +5,7 @@
                   xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
                   xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
                   xmlns:GDSTD_Data="clr-namespace:GD_STD.Data;assembly=GD_STD.Data"
-                  xmlns:WPFSTD105="clr-namespace:WPFSTD105;assembly=WPFSTD105"             
+                  xmlns:WPFSTD105="clr-namespace:WPFSTD105;assembly=WPFSTD105"      
                   xmlns:STD105ValidRule="clr-namespace:STD_105.ValidationRules"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
@@ -23,6 +23,8 @@
                   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                   xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding" 
                   xmlns:System="clr-namespace:System;assembly=mscorlib" 
+                        xmlns:STD_105Office="clr-namespace:STD_105.Office" 
+                  xmlns:WPFSTD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
                   Title="排版設定"              
                   x:TypeArguments="WPFSTD105:OfficeTypeSettingVM"
                   mc:Ignorable="d">
@@ -564,6 +566,7 @@
                     <dxg:GridControl 
                         Name="Material_List_GridControl"    
                         AutoGenerateColumns="None" 
+                        MouseDown="TableView_MouseDown"
                         SelectedItemChanged="Material_List_GridControl_SelectedItemChanged"
                         Grid.Row="2"    
                         ItemsSource="{Binding MaterialDataViews}"
@@ -576,7 +579,7 @@
                                     ShowSearchPanelMode="Always"
                                     SearchPanelNullText="Search Tasks(Ctrl + F)" 
                                     SearchPanelFindMode="Always" 
-                                    SearchDelay="0" MouseDown="TableView_MouseDown">
+                                    SearchDelay="0">
                                 <dxg:TableView.CellStyle>
                                     <Style>
                                         <Setter Property="TextBlock.FontSize" Value="12"/>
@@ -681,10 +684,10 @@
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="BuildTime" IsSmart="True"  Header="建立日期"  >
+                        <dxg:GridColumn FieldName="BuildTime" IsSmart="True"  Header="建立日期" AllowEditing="false" >
 
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="" IsSmart="True" Header="修改日期"  >
+                        <dxg:GridColumn FieldName="" IsSmart="True" Header="修改日期" AllowEditing="false" >
                             <dxg:GridColumn.CellStyle>
                                 <Style>
 
@@ -692,7 +695,7 @@
                                 </Style>
                             </dxg:GridColumn.CellStyle>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="MaterialNumber"  IsSmart="True" Header="排版編號" >
+                        <dxg:GridColumn FieldName="MaterialNumber"  IsSmart="True" Header="排版編號" AllowEditing="false" >
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button 
@@ -705,13 +708,13 @@
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="鋼材類型"  />
-                        <dxg:GridColumn FieldName="Profile"  IsSmart="True" Header="斷面規格"   />
-                        <dxg:GridColumn FieldName="Material"  IsSmart="True" Header="材質" Width="auto"   />
-                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="數量" Width="auto"  />
-                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="已完成" Width="auto"  />
-                        <dxg:GridColumn FieldName="LengthStr"  IsSmart="True" Header="素材長"   />
-                        <dxg:GridColumn IsSmart="True" Header="素材使用率">
+                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="鋼材類型" AllowEditing="false" />
+                        <dxg:GridColumn FieldName="Profile"  IsSmart="True" Header="斷面規格" AllowEditing="false"  />
+                        <dxg:GridColumn FieldName="Material"  IsSmart="True" Header="材質" Width="auto"  AllowEditing="false" />
+                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="數量" Width="auto" AllowEditing="false" />
+                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="已完成" Width="auto" AllowEditing="false" />
+                        <dxg:GridColumn FieldName="LengthStr"  IsSmart="True" Header="素材長" AllowEditing="false"  />
+                        <dxg:GridColumn IsSmart="True" Header="素材使用率" AllowEditing="false">
                      
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
@@ -1081,7 +1084,8 @@
 
                         <Grid>
                             <!--新增3D模型處-->
-                            <spa:ModelExt
+                            <spa:ModelExt 
+                                
                             SelectionChanged="model_SelectionChanged"
                             Loaded="Model3D_Loaded"
                             Margin="0,-5,0,0"
@@ -1103,11 +1107,11 @@
                                         <MenuItem Header="縮放" Style="{StaticResource BaseStyle}" Command="{Binding Zoom}"/>
                                         <MenuItem Header="旋轉" Style="{StaticResource BaseStyle}" Command="{Binding Rotate}"/>
                                         <MenuItem Header="平移" Style="{StaticResource BaseStyle}" Command="{Binding Pan}"/>
-                                        <MenuItem Name="edit" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}" Visibility="Collapsed"/>
-                                        <MenuItem x:Name="delete" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}" Visibility="Collapsed"/>
-                                        <MenuItem Header="清除標註" Command="{Binding ClearDim}" CommandParameter="{Binding ElementName=model}" Style="{StaticResource BaseStyle}"/>
-                                        <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
-                                        <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
+                                        <!--<MenuItem Name="edit" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}" Visibility="Collapsed"/>
+                                        <MenuItem x:Name="delete" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}" Visibility="Collapsed"/>-->
+                                        <!--<MenuItem Header="清除標註" Command="{Binding ClearDim}" CommandParameter="{Binding ElementName=model}" Style="{StaticResource BaseStyle}"/>-->
+                                        <!--<MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
+                                        <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>-->
                                     </ContextMenu>
                                 </spa:ModelExt.ContextMenu>
                                 <ddes:Model.ProgressBar>
@@ -1124,9 +1128,9 @@
                                             ArrowColorY="{Binding Setting.ArrowColorY, Converter={WPFBase:StringRGBToBrushConverter}}"
                                             ArrowColorZ="{Binding Setting.ArrowColorZ, Converter={WPFBase:StringRGBToBrushConverter}}"/>
                                         </ddes:Viewport.CoordinateSystemIcon>
-                                        <!--<ddes:Viewport.Camera>
+                                        <ddes:Viewport.Camera>
                                             <ddes:Camera Distance="380" ProjectionMode="Orthographic" Target="0, 0, 45" ZoomFactor="2"/>
-                                        </ddes:Viewport.Camera>-->
+                                        </ddes:Viewport.Camera>
                                         <ddes:Viewport.Rotate>
                                             <ddes:RotateSettings RotationCenter="CursorLocation"/>
                                         </ddes:Viewport.Rotate>
@@ -1139,12 +1143,6 @@
                                                     <ddes:PanToolBarButton/>
                                                     <ddes:RotateToolBarButton/>
                                                     <ddes:ZoomFitToolBarButton/>
-                                                    <!--<ddes:ToolBarButton ToolTipText="線性標註" Click="LinearDim" StyleMode="PushButton"
-                                                        Image="{Binding Source={StaticResource Measuring},Converter={local:DrawingImageToBitmapSourceConverter}}"/>
-                                                    <ddes:ToolBarButton ToolTipText="角度標註" StyleMode="PushButton"
-                                                        Image="{Binding Source={StaticResource Protractor},Converter={local:DrawingImageToBitmapSourceConverter}}"/>
-                                                    <ddes:ToolBarButton ToolTipText="絕對座標" StyleMode="PushButton"
-                                                        Image="{Binding Source={StaticResource AbsDim},Converter={local:DrawingImageToBitmapSourceConverter}}"/>-->
                                                 </ddes:ToolBar.Buttons>
                                             </ddes:ToolBar>
                                         </ddes:Viewport.ToolBars>
@@ -1194,8 +1192,8 @@
                                         <MenuItem Header="放大選取範圍" Style="{StaticResource BaseStyle}" Command="{Binding ZoomWindow}"/>
                                         <MenuItem Header="縮放" Style="{StaticResource BaseStyle}" Command="{Binding Zoom}"/>
                                         <MenuItem Header="平移" Style="{StaticResource BaseStyle}" Command="{Binding Pan}"/>
-                                        <MenuItem Name="edit2D" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}" Visibility="Collapsed"/>
-                                        <MenuItem x:Name="delete2D" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}" Visibility="Collapsed"/>
+                                        <MenuItem Name="edit2D" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}"/>
+                                        <MenuItem x:Name="delete2D" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}"/>
                                         <MenuItem Header="清除標註" Command="{Binding ClearDim}" Style="{StaticResource BaseStyle}"/>
                                         <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
                                         <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
@@ -1244,7 +1242,7 @@
                 </TabControl>
               <!--  <Border BorderThickness="0,0,1.5,0" BorderBrush="gray" Margin="0,5,-1,5" Opacity="0.7"></Border>-->
                 <!-- 可調整邊界拉柄(透明)-->
-                <GridSplitter Grid.Row="0" Grid.Column="0" Background="Transparent" Grid.RowSpan="2" HorizontalAlignment="Right"   VerticalAlignment="Stretch" Width="10"  Margin="-5" />
+                <GridSplitter Grid.Row="0" Grid.Column="0" Background="Transparent" Grid.RowSpan="2" HorizontalAlignment="Right"   VerticalAlignment="Stretch" Width="10"  Margin="-5" MouseMove="GridSplitter_MouseMove" />
 
 
 

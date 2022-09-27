@@ -19,6 +19,8 @@ using WPFSTD105.Attribute;
 using WPFSTD105.Tekla;
 using WPFWindowsBase;
 using Region = devDept.Eyeshot.Entities.Region;
+using devDept.Graphics;
+using devDept.Serialization;
 
 namespace WPFSTD105.Model
 {
@@ -212,7 +214,7 @@ namespace WPFSTD105.Model
                     {
                         SteelAttr steelAttr = new SteelAttr(parts[partIndex]); //產生物件設定檔
                         steelAttr.GUID = parts[partIndex].GUID = Guid.NewGuid(); //賦予新的guid
-                        Steel3DBlock.AddSteel(steelAttr, model, out BlockReference blockReference); //加入鋼構物件到 Model
+                        Steel3DBlock steel = Steel3DBlock.AddSteel(steelAttr, model, out BlockReference blockReference); //加入鋼構物件到 Model
                         blockReference.Translate(place[i].Start, 0);//移動目標
                         blockReference.Selectable = true;
                         entities.Add(blockReference); //加入到暫存列表

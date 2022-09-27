@@ -40,6 +40,11 @@ namespace WPFSTD105
         {
             this.SelectionChanged += Model_SelectionChanged;
         }
+
+
+
+        private List<Entity> selectionEntities = new List<Entity>();
+
         /// <summary>
         /// 模型物件選擇變更時觸發
         /// </summary>
@@ -57,57 +62,75 @@ namespace WPFSTD105
             {
                 if (Name == "model")
                 {
-                    log4net.LogManager.GetLogger("選擇變更").Debug("開始");
-                    //如果尚未開始編輯模式
-                    if (this.CurrentBlockReference == null)
-                    {
-#if DEBUG
-                        log4net.LogManager.GetLogger("選擇變更").Debug("選擇圖塊");
-#endif
-                        foreach (var rem in e.RemovedItems)
-                        {
-                            vm.Select3DItem.Remove(rem);//選擇移除 3D
-                            vm.Select2DItem.Remove(new SelectedItem() { Item = Selected(Secondary, (BlockReference)rem.Item, false) });//選擇移除 2D
-                        }
-                        foreach (var selected in e.AddedItems)
-                        {
-                            vm.Select3DItem.Add(selected);//加入到 3D 選擇物件
-                            vm.Select2DItem.Add(new SelectedItem() { Item = Selected(Secondary, (BlockReference)selected.Item, true) });//加入到 2D 選擇物件
 
-                        }
-                        //foreach (var rem in e.RemovedItems)
-                        //{
-                        //    vm.Select3DItem.Remove(rem);//選擇移除 3D
-                        //    vm.Select2DItem.Remove(new SelectedItem() { Item = Selected(Secondary, (BlockReference)rem.Item, false) });//選擇移除 2D
-                        //}
-                    }
-                    else
-                    {
-                        log4net.LogManager.GetLogger("選擇變更").Debug("選擇圖塊內物件");
-                        try
-                        {
-                            foreach (var selected in e.AddedItems)
-                            {
-                                vm.tem3DRecycle.Add((Entity)selected.Item); //加入到 3D 以選擇的物件內
-                                vm.tem2DRecycle.AddRange(Selected(Secondary, (Entity)selected.Item, true));//加入到 2D 選擇物件
 
-                            }
-                            foreach (var rem in e.RemovedItems)
-                            {
-                                vm.tem3DRecycle.Remove((Entity)rem.Item); //選擇移除 3D
-                                Selected(Secondary, (Entity)rem.Item, false).ForEach(el => vm.tem2DRecycle.Remove(el)); //選擇移除 2D
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(ex.Message, ex.StackTrace);
-                            throw;
-                        }
-#if DEBUG
-                        log4net.LogManager.GetLogger("選擇變更").Debug("結束");
-#endif
 
-                    }
+                    //foreach (var selectedItem in e.AddedItems)
+                    //{
+                    //    if (selectedItem.Item is Entity entity)
+                    //        selectionEntities.Add(entity);
+                    //}
+
+
+                    //foreach (var removedItem in e.RemovedItems)
+                    //{
+                    //    if (removedItem.Item is Entity entity)
+                    //        selectionEntities.Remove(entity);
+                    //}
+
+
+
+                                        log4net.LogManager.GetLogger("選擇變更").Debug("開始");
+                                        //如果尚未開始編輯模式
+                                        if (this.CurrentBlockReference == null)
+                                        {
+                    #if DEBUG
+                                            log4net.LogManager.GetLogger("選擇變更").Debug("選擇圖塊");
+                    #endif
+                                            foreach (var rem in e.RemovedItems)
+                                            {
+                                                vm.Select3DItem.Remove(rem);//選擇移除 3D
+                                                vm.Select2DItem.Remove(new SelectedItem() { Item = Selected(Secondary, (BlockReference)rem.Item, false) });//選擇移除 2D
+                                            }
+                                            foreach (var selected in e.AddedItems)
+                                            {
+                                                vm.Select3DItem.Add(selected);//加入到 3D 選擇物件
+                                                vm.Select2DItem.Add(new SelectedItem() { Item = Selected(Secondary, (BlockReference)selected.Item, true) });//加入到 2D 選擇物件
+
+                                            }
+                                            //foreach (var rem in e.RemovedItems)
+                                            //{
+                                            //    vm.Select3DItem.Remove(rem);//選擇移除 3D
+                                            //    vm.Select2DItem.Remove(new SelectedItem() { Item = Selected(Secondary, (BlockReference)rem.Item, false) });//選擇移除 2D
+                                            //}
+                                        }
+                                        else
+                                        {
+                                            log4net.LogManager.GetLogger("選擇變更").Debug("選擇圖塊內物件");
+                                            try
+                                            {
+                                                foreach (var selected in e.AddedItems)
+                                                {
+                                                    vm.tem3DRecycle.Add((Entity)selected.Item); //加入到 3D 以選擇的物件內
+                                                    vm.tem2DRecycle.AddRange(Selected(Secondary, (Entity)selected.Item, true));//加入到 2D 選擇物件
+
+                                                }
+                                                foreach (var rem in e.RemovedItems)
+                                                {
+                                                    vm.tem3DRecycle.Remove((Entity)rem.Item); //選擇移除 3D
+                                                    Selected(Secondary, (Entity)rem.Item, false).ForEach(el => vm.tem2DRecycle.Remove(el)); //選擇移除 2D
+                                                }
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(ex.Message, ex.StackTrace);
+                                                throw;
+                                            }
+                    #if DEBUG
+                                            log4net.LogManager.GetLogger("選擇變更").Debug("結束");
+                    #endif
+
+                                        }
                 }
                 else
                 {

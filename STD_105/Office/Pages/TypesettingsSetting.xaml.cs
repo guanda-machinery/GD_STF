@@ -27,7 +27,6 @@ using GD_STD.Data;
 using System.Collections.ObjectModel;
 using DevExpress.Xpf.WindowsUI;
 using DevExpress.Xpf.Core;
-using STD_105.Office;
 
 namespace STD_105.Office
 {
@@ -52,7 +51,8 @@ namespace STD_105.Office
         public TypesettingsSetting()
         {
             InitializeComponent();
-            DataContext = ViewModel;
+            model.DataContext = ViewModel;
+            drawing.DataContext = ViewModel;
             model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             drawing.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             model.ActionMode = actionType.None;
@@ -60,6 +60,8 @@ namespace STD_105.Office
             drawing.LineTypes.Add(Steel2DBlock.LineTypeName, new float[] { 35, -35, 35, -35 });
             model.Secondary = drawing;
             drawing.Secondary = model;
+            //ControlDraw3D();
+
         }
 
         private void Model3D_Loaded(object sender, RoutedEventArgs e)
@@ -102,8 +104,7 @@ namespace STD_105.Office
             }
             else if (DataList != null)
             {
-                dr.Visibility = Visibility.Collapsed;
-                ReadFile readFile = new ReadFile($@"31c18603-88cc-47ce-8654-2a2bf0400e7e.dm", new FileSerializerExt(devDept.Serialization.contentType.GeometryAndTessellation)); //讀取檔案內容
+                ReadFile readFile = new ReadFile($@"1d8abbc8-4ade-4c0e-ad0b-95cd0d130a3d.dm", new FileSerializerExt(devDept.Serialization.contentType.GeometryAndTessellation)); //讀取檔案內容
                 readFile.DoWork();//開始工作
                 readFile.AddToScene(model);//將讀取完的檔案放入到模型
                 SteelAttr steel = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
@@ -125,7 +126,7 @@ namespace STD_105.Office
             }
             else if (DataPath != null)
             {
-                ReadFile readFile = new ReadFile($@"{ApplicationVM.DirectoryDevPart()}\{DataPath}.dm", new FileSerializerExt(devDept.Serialization.contentType.GeometryAndTessellation)); //讀取檔案內容
+                ReadFile readFile = new ReadFile($@"{ApplicationVM.DirectoryDevPart()}\1d8abbc8-4ade-4c0e-ad0b-95cd0d130a3d.dm", new FileSerializerExt(devDept.Serialization.contentType.GeometryAndTessellation)); //讀取檔案內容
                 readFile.DoWork();//開始工作
                 readFile.AddToScene(model);//將讀取完的檔案放入到模型
                 ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
@@ -143,6 +144,7 @@ namespace STD_105.Office
                     }
                 }
             }
+            SaveModel();
             model.Refresh();
             model.ZoomFit();//設置道適合的視口
             model.Invalidate();//初始化模型
@@ -291,7 +293,6 @@ namespace STD_105.Office
                 log4net.LogManager.GetLogger("啟用").Debug("刪除功能");
 #endif
                 //開啟取消功能
-                delete.Visibility = Visibility.Visible;
                 esc.Visibility = Visibility.Visible;
                 delete2D.Visibility = Visibility.Visible;
                 esc2D.Visibility = Visibility.Visible;
@@ -302,7 +303,6 @@ namespace STD_105.Office
 #if DEBUG
                 log4net.LogManager.GetLogger("啟用").Debug("編輯功能");
 #endif
-                edit.Visibility = Visibility.Visible;
                 edit2D.Visibility = Visibility.Visible;
             }
             //關閉刪除功能與編輯功能
@@ -311,8 +311,6 @@ namespace STD_105.Office
 #if DEBUG
                 log4net.LogManager.GetLogger("關閉").Debug("編輯功能、刪除功能、取消功能");
 #endif
-                edit.Visibility = Visibility.Collapsed;
-                delete.Visibility = Visibility.Collapsed;
                 edit2D.Visibility = Visibility.Collapsed;
                 delete2D.Visibility = Visibility.Collapsed;
             }
@@ -641,21 +639,7 @@ namespace STD_105.Office
             //drawing.Invalidate();
         }
 
-        private void TableView_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var SelectedData = (GD_STD.Data.MaterialDataView)Material_List_GridControl.SelectedItem;
-            
-            string content = SelectedData.MaterialNumber; //素材編號
-            sender.GetType();
-            model.AssemblyPart(content);
-            model.Entities.Regen();
-            model.Refresh();
-            model.Invalidate();
-            model.ZoomFit();//設置道適合的視口
-            model.Invalidate();//初始化模型
-           // model.SelectionChanged -= graphWin.model.Model_SelectionChanged;
-           // graphWin.model.SelectionChanged += Model_SelectionChanged; ;
-        }
+
         private void Material_List_GridControl_SelectedItemChanged(object sender, DevExpress.Xpf.Grid.SelectedItemChangedEventArgs e)
         {
             /* if (e.NewItem is GD_STD.Data.MaterialDataView)
@@ -675,22 +659,56 @@ namespace STD_105.Office
             {
                 if (e.NewItem is GD_STD.Data.MaterialDataView)
                 {
-                    var a = (GD_STD.Data.MaterialDataView)e.NewItem;
-                    a.ButtonEnable = true;
+                    var ENewItem = (GD_STD.Data.MaterialDataView)e.NewItem;
+                    ENewItem.ButtonEnable = true;
 
                     var NewHandle = SenderC.FindRow(e.NewItem);
                     SenderC.RefreshRow(NewHandle);//畫面裡刷新上面該列的設定值
+
+                    /*if(e.OldItem != null)
+                    {
+                        ControlDraw3D();
+                    }  */
                 }
                 if (e.OldItem is GD_STD.Data.MaterialDataView)
                 {
-                    var b = (GD_STD.Data.MaterialDataView)e.OldItem;
-                    b.ButtonEnable = false; 
+                    var EOldItem = (GD_STD.Data.MaterialDataView)e.OldItem;
+                    EOldItem.ButtonEnable = false; 
                     var OldHandle = SenderC.FindRow(e.OldItem);
                     SenderC.RefreshRow(OldHandle);//畫面裡刷新上面該列的設定值
                 }
             }
         }
 
+
+
+        private void TableView_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ControlDraw3D();
+        }
+
+
+        private void ControlDraw3D()
+        {
+            var SelectedData = (GD_STD.Data.MaterialDataView)Material_List_GridControl.SelectedItem;
+
+            model.ActionMode = actionType.SelectByBox;
+            string content = SelectedData.MaterialNumber; //素材編號
+            model.AssemblyPart(content);
+            model.Entities.Regen();
+            model.Refresh();
+            model.Invalidate();
+            model.ZoomFit();//設置道適合的視口
+            model.Invalidate();//初始化模型
+            //Draw();
+           // model.SelectionChanged -= model.Model_SelectionChanged;
+           // model.SelectionChanged += model.Model_SelectionChanged; 
+        }
+
+        private void GridSplitter_MouseMove(object sender, MouseEventArgs e)
+        {
+            model.ZoomFit();//設置道適合的視口
+        }
     }
 }
 
