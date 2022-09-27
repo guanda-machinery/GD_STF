@@ -119,6 +119,10 @@ namespace WPFSTD105.Model
         /// <returns></returns>
         public static Mesh GetProfile(SteelAttr steelAttr)
         {
+
+#if DEBUG
+            log4net.LogManager.GetLogger("GetProfile").Debug("");
+#endif
             List<ICurve> curves = new List<ICurve>() { BaseProfile(steelAttr.H, steelAttr.W, 0, 0) };
             try
             {
@@ -234,6 +238,10 @@ namespace WPFSTD105.Model
         /// <returns></returns>
         public static Steel3DBlock AddSteel(SteelAttr steelAttr, devDept.Eyeshot.Model model, out BlockReference blockReference, string dic = "Steel")
         {
+
+#if DEBUG
+            log4net.LogManager.GetLogger("AddSteel").Debug("");
+#endif
             Steel3DBlock result;
             // 尚未連動 重新代值進Steel
             STDSerialization ser = new STDSerialization();

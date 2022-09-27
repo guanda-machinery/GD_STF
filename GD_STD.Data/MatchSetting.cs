@@ -22,6 +22,10 @@ namespace GD_STD.Data
         /// </summary>
         public string Name { get; set; }
         /// <summary>
+        /// 前置字串
+        /// </summary>
+        public string PreCode { get; set; }
+        /// <summary>
         /// 起始編號
         /// </summary>
         public string StartNumber { get; set; }

@@ -43,13 +43,13 @@ namespace GD_STD.Data
         /// <param name="lockMark">鎖</param>
         /// <exception cref="ArgumentException"></exception>
         public SteelPart(ISteelProfile profile, string teklaName,
-            string number,double length, int count, Guid guid,int? phase,int? shippingNumber,
+            string partnumber,double length, int count, Guid guid,int? phase,int? shippingNumber,
             string title1,string title2 ,bool lockMark)
         {
-            if (string.IsNullOrWhiteSpace(number))
-            {
-                throw new ArgumentException($"'{nameof(number)}' 不得為 Null 或空白字元。", nameof(number));
-            }
+            //if (string.IsNullOrWhiteSpace(number))
+            //{
+            //    throw new ArgumentException($"'{nameof(number)}' 不得為 Null 或空白字元。", nameof(number));
+            //}
             if (count <= 0)
             {
                 throw new ArgumentException($"'{nameof(count)}' 不得小於等於 0", nameof(count));
@@ -61,7 +61,7 @@ namespace GD_STD.Data
             Profile = profile.Profile;
             Type = profile.Type;
             IsTekla = false;
-            Number = number;
+            Number = partnumber;
             DrawingName = teklaName;
             Count = count;
             GUID = guid;
@@ -84,6 +84,10 @@ namespace GD_STD.Data
         /// <inheritdoc/>
         [TeklaBom(3)]
         public string Profile { get; set; }
+        /// <summary>
+        /// 驚嘆號
+        /// </summary>
+        public bool? ExclamationMark { get; set; }
         /// <summary>
         /// 斷面規格類型
         /// </summary>

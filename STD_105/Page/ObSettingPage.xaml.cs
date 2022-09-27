@@ -385,7 +385,10 @@ namespace STD_105
                 //model.Entities.Add(blockReference);//加入參考圖塊到模型
 
                 Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference, out bool check);
-
+                if (bolts.hasOutSteel)
+                {
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                }
                 BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
 
 
