@@ -391,6 +391,9 @@ namespace STD_105.Office
                 //    }
                 //}
 
+
+
+
                 model.Entities.Clear();//清除模型物件
                 model.Blocks.Clear(); //清除模型圖塊
 
@@ -552,8 +555,20 @@ namespace STD_105.Office
                     FloatingMode.Popup);
                     return;
                 }
+
+                if (this.PieceListGridControl.VisibleRowCount > 0)
+                {
+                    ProductSettingsPageViewModel row = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
+                    ProductSettingsPageViewModel temp = RowToEntity(row);
+                    if (File.Exists($@"{ApplicationVM.DirectoryDevPart()}\{temp.steelAttr.GUID}.dm"))
+                    {
+                        // 非新零件
+                        fNewPart = false;
+                    }
+                }
+
 #if DEBUG
-                log4net.LogManager.GetLogger("ModifyPart").Debug("");
+                    log4net.LogManager.GetLogger("ModifyPart").Debug("");
                 log4net.LogManager.GetLogger("修改主件").Debug("開始");
 #endif
 
@@ -733,7 +748,18 @@ namespace STD_105.Office
                 //    SaveModel(true);//存取檔案
                 //    fAddSteelPart=false;
                 //}
-                if (fNewPart.Value ||                     // 新零件
+
+                if (this.PieceListGridControl.VisibleRowCount > 0)
+                {
+                    ProductSettingsPageViewModel row = (ProductSettingsPageViewModel)PieceListGridControl.GetRow(PieceListGridControl.VisibleRowCount - 1);
+                    ProductSettingsPageViewModel temp = RowToEntity(row);
+                    if (!File.Exists($@"{ApplicationVM.DirectoryDevPart()}\{temp.steelAttr.GUID}.dm"))
+                    {
+                        fNewPart = true;
+                    }
+                }
+
+                    if (fNewPart.Value ||                     // 新零件
                 (fFirstAdd.Value && !fNewPart.Value)  // 尚未按新增 & 非新零件(新增零件OK後或Grid切換再按OK)
                 )
                 {
@@ -2187,7 +2213,7 @@ namespace STD_105.Office
                         this.Length.Text = temp.steelAttr.Length.ToString();
                         this.Weight.Text = temp.steelAttr.Weight.ToString();
                         this.PartCount.Text = temp.Count.ToString();
-                        this.cbx_SteelType.SelectedValue = temp.steelAttr.Type;
+                        this.cbx_SteelType.SelectedValue = temp.SteelType;
                         #endregion
                         SaveModel(true, true);
                         return false;

@@ -19,6 +19,7 @@ using WPFSTD105.Attribute;
 using WPFSTD105.Tekla;
 using WPFWindowsBase;
 using Region = devDept.Eyeshot.Entities.Region;
+using GD_STD.Enum;
 
 namespace WPFSTD105.Model
 {
@@ -27,7 +28,6 @@ namespace WPFSTD105.Model
     /// </summary>
     public static class Expand
     {
-
         /// <summary>
         /// 組合零件變成素材
         /// </summary>
@@ -491,10 +491,10 @@ namespace WPFSTD105.Model
             STDSerialization ser = new STDSerialization(); //序列化處理器
             NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
             NcTemp nc = ncTemps.GetData(dataName); //取得nc資訊
-            ObSettingVM cbVM = new ObSettingVM();
+            ObSettingVM obVM = new ObSettingVM();
             if (nc == null)
             {
-                if (!cbVM.allowType.Contains( nc.SteelAttr.Type))
+                if (!obVM.allowType.Contains( nc.SteelAttr.Type))
                 {
                     return;
                 }
