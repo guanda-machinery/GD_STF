@@ -1411,9 +1411,11 @@ namespace WPFSTD105.ViewModel
                                 steelAttrVM.steelAttr.PartNumber = item.Number;
                                 // 斷面規格
                                 string profile = item.Profile;
+                                steelAttrVM.steelAttr.Profile = profile;
                                 steelAttrVM.Profile = profile;
                                 // 零件長
                                 double length = item.Length;
+                                steelAttrVM.steelAttr.Length = length;
                                 steelAttrVM.Length = length;
                                 // 零件ID List
                                 var partList = partNumber_ID.Where(x => x.Number == item.Number && x.Profile == profile && x.Length == length && x.Father.Contains(assemID)).Select(x => x.ID).FirstOrDefault();
@@ -1441,35 +1443,43 @@ namespace WPFSTD105.ViewModel
                                 steelAttrVM.TypeDesc = type;
 
                                 steelAttrVM.Type = item.Type;
+                                steelAttrVM.steelAttr.Type = item.Type;
                                 steelAttrVM.SteelType = Convert.ToInt32(item.Type);
                                 // 材質
                                 string material = item.Material;
+                                steelAttrVM.steelAttr.Material = material;
                                 steelAttrVM.Material = material;
                                 // 數量
                                 int count = item.Count;
+                                steelAttrVM.steelAttr.Number = count;
                                 steelAttrVM.Count = count;
                                 // 零件重
                                 double weight = item.UnitWeight;
+                                steelAttrVM.steelAttr.Weight = weight;
                                 steelAttrVM.Weight = weight;
 
                                 steelAttrVM.steelAttr.H = item.H;
                                 steelAttrVM.steelAttr.W = item.W;
                                 steelAttrVM.steelAttr.t1 = item.t1;
+                                steelAttrVM.t1 = item.t1;
                                 steelAttrVM.steelAttr.t2 = item.t2;
+                                steelAttrVM.t2 = item.t2;
 
-                                steelAttrVM.Title2 = item.Title2;
                                 steelAttrVM.Title1 = item.Title1;
-                                steelAttrVM.Phase = item.Phase;
-                                steelAttrVM.ShippingNumber = item.ShippingNumber;
                                 steelAttrVM.steelAttr.Title1 = item.Title1;
+                                steelAttrVM.Title2 = item.Title2;
                                 steelAttrVM.steelAttr.Title2 = item.Title2;
+                                steelAttrVM.Phase = item.Phase;
                                 steelAttrVM.steelAttr.Phase = item.Phase;
+                                steelAttrVM.ShippingNumber = item.ShippingNumber;
                                 steelAttrVM.steelAttr.ShippingNumber = item.ShippingNumber;
 
                                 // 上鎖
                                 steelAttrVM.steelAttr.Lock = item.Lock;
+                                steelAttrVM.Lock = item.Lock;
                                 // 驚嘆號
                                 steelAttrVM.steelAttr.ExclamationMark = item.ExclamationMark;
+                                steelAttrVM.ExclamationMark = item.ExclamationMark;
 
                                 // GUID (Data Name)
                                 DataCorrespond single = DataCorrespond.FirstOrDefault(x =>
@@ -1548,7 +1558,7 @@ namespace WPFSTD105.ViewModel
             List<ProductSettingsPageViewModel> list = new List<ProductSettingsPageViewModel>();
 
             Dictionary<string, ObservableCollection<SteelAttr>> saFile = ser.GetSteelAttr();
-
+            SteelAttr temp = new SteelAttr();
             foreach (var item in group)
             {
                 ProductSettingsPageViewModel aa = new ProductSettingsPageViewModel()
@@ -1557,7 +1567,6 @@ namespace WPFSTD105.ViewModel
                     Revise = item.Revise,
                     DataName = item.DataName == null ? "" : item.DataName.ToString(),
                     AssemblyNumber = item.AssemblyNumber,
-                    //SteelAttr.PartNumber = item.PartNumber,
                     TeklaName = item.TeklaName,
                     TypeDesc = item.TypeDesc,
                     SteelType = item.SteelType,
@@ -1571,19 +1580,25 @@ namespace WPFSTD105.ViewModel
                     Title2 = item.Title2,
                     t1 = item.t1,
                     t2 = item.t2,
-                    ExclamationMark = item.ExclamationMark == null ? false: item.ExclamationMark,
+                    ExclamationMark = item.ExclamationMark == null ? false : item.ExclamationMark,
                 };
-                aa.Weight = PartWeight(aa, saFile); //item.Weight,
                 aa.steelAttr.GUID = item.DataName;
-                aa.steelAttr.PartNumber = item.PartNumber;
-                aa.steelAttr.Name = item.TeklaName;
                 aa.steelAttr.AsseNumber = item.AssemblyNumber;
+                aa.steelAttr.PartNumber = item.PartNumber;
+                aa.steelAttr.Type = (OBJECT_TYPE)item.SteelType;
+                aa.steelAttr.Profile = item.Profile;
+                aa.steelAttr.Material = item.Material;
+                aa.steelAttr.Length = item.Length;
+                aa.Weight = PartWeight(aa, saFile); //item.Weight,
+                aa.steelAttr.Weight = aa.Weight;
+                aa.steelAttr.Name = item.TeklaName;
                 aa.steelAttr.t1 = float.Parse(item.t1.ToString());
                 aa.steelAttr.t2 = float.Parse(item.t2.ToString());
                 aa.steelAttr.Title1 = item.Title1;
                 aa.steelAttr.Title2 = item.Title2;
                 aa.steelAttr.Phase = item.Phase;
                 aa.steelAttr.ShippingNumber = item.ShippingNumber;
+                aa.steelAttr.ExclamationMark = item.ExclamationMark;
                 list.Add(aa);
             }
             return list;
