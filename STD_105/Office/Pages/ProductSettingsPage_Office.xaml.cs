@@ -58,7 +58,7 @@ namespace STD_105.Office
             //                  先使用本Class 若有問題再修改
             //GraphWin service = new GraphWin();
 
-        
+
 
             /// <summary>
             /// 鑽孔radio button測試 20220906 張燕華
@@ -81,12 +81,6 @@ namespace STD_105.Office
             drawing.LineTypes.Add(Steel2DBlock.LineTypeName, new float[] { 35, -35, 35, -35 });
             drawing.Secondary = model;
             #endregion
-
-
-            ApplicationVM appVM = new ApplicationVM();
-            appVM.CreateDMFile(model);
-
-            GridReload();
 
             tabControl.SelectedIndex = 1;
 
@@ -142,217 +136,101 @@ namespace STD_105.Office
             });
             //編輯物件
             ViewModel.EditObject = new RelayCommand(() =>
-{
-
-
-
-
-
-
-
-
+            {
 #if DEBUG
-    log4net.LogManager.GetLogger("按下選單命令").Debug("編輯");
-    log4net.LogManager.GetLogger("EditObject").Debug("");
-
-
-
-
-
-
-
-
+                log4net.LogManager.GetLogger("按下選單命令").Debug("編輯");
+                log4net.LogManager.GetLogger("EditObject").Debug("");
 #endif
-    try
-    {
-        //層級 To 要編輯的BlockReference
-        model.SetCurrent((BlockReference)ViewModel.Select3DItem[0].Item);
-        drawing.SetCurrent((BlockReference)drawing.Entities.Find(el => ((BlockReference)el).BlockName == model.CurrentBlockReference.BlockName));
-        model.Refresh();//更新模型
-        drawing.Refresh();
-    }
-    catch (Exception ex)
-    {
-        log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(ex.Message, ex.StackTrace);
-        WinUIMessageBox.Show(null,
-        $"目前已在編輯模式內，如要離開請按下Esc",
-        "通知",
-        MessageBoxButton.OK,
-        MessageBoxImage.Exclamation,
-        MessageBoxResult.None,
-        MessageBoxOptions.None,
-        FloatingMode.Popup);
-    }
-});
+                try
+                {
+                    //層級 To 要編輯的BlockReference
+                    model.SetCurrent((BlockReference)ViewModel.Select3DItem[0].Item);
+                    drawing.SetCurrent((BlockReference)drawing.Entities.Find(el => ((BlockReference)el).BlockName == model.CurrentBlockReference.BlockName));
+                    model.Refresh();//更新模型
+                    drawing.Refresh();
+                }
+                catch (Exception ex)
+                {
+                    log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(ex.Message, ex.StackTrace);
+                    WinUIMessageBox.Show(null,
+                    $"目前已在編輯模式內，如要離開請按下Esc",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Popup);
+                }
+            });
             //還原上一個動作
             ViewModel.Recovery = new RelayCommand(() =>
-{
-
-
-
-
-
-
-
-
+            {
 #if DEBUG
-    log4net.LogManager.GetLogger("按下選單命令").Debug("恢復上一個動作");
-
-
-
-
-
-
-
-
+                log4net.LogManager.GetLogger("按下選單命令").Debug("恢復上一個動作");
 #endif
-    ViewModel.Reductions.Previous();//回到上一個動作
-    model.Refresh();//更新模型
-    drawing.Refresh();//更新模型
+                ViewModel.Reductions.Previous();//回到上一個動作
+                model.Refresh();//更新模型
+                drawing.Refresh();//更新模型
 #if DEBUG
-
-
-
-
-
-
-
-
-    log4net.LogManager.GetLogger("按下選單命令").Debug("完成上一個動作");
-
-
-
-
-
-
-
-
+                log4net.LogManager.GetLogger("按下選單命令").Debug("完成上一個動作");
 #endif
-});
+            });
             //還原下一個動作
             ViewModel.Next = new RelayCommand(() =>
-{
-
-
-
-
-
-
-
-
+            {
 #if DEBUG
-    log4net.LogManager.GetLogger("按下選單命令").Debug("恢復下一個動作");
-
-
-
-
-
-
-
-
+                log4net.LogManager.GetLogger("按下選單命令").Debug("恢復下一個動作");
 #endif
-    ViewModel.Reductions.Next();//回到上一個動作
-    model.Refresh();//更新模型
-    drawing.Refresh();//更新模型
+                ViewModel.Reductions.Next();//回到上一個動作
+                model.Refresh();//更新模型
+                drawing.Refresh();//更新模型
 #if DEBUG
-
-
-
-
-
-
-
-
-    log4net.LogManager.GetLogger("按下選單命令").Debug("完成下一個動作");
-
-
-
-
-
-
-
-
+                log4net.LogManager.GetLogger("按下選單命令").Debug("完成下一個動作");
 #endif
-});
+            });
             //刪除物件
             ViewModel.Delete = new RelayCommand(() =>
-{
-    SimulationDelete();
-});
+            {
+                SimulationDelete();
+            });
             //清除標註
             ViewModel.ClearDim = new RelayCommand(() =>
-{
-    try
-    {
-        ModelExt modelExt = null;
-        if (tabControl.SelectedIndex == 0)
-        {
-            modelExt = model;
-        }
-        else
-        {
-            // 2022.06.24 呂宗霖 還原註解
-            modelExt = drawing;
-        }
-        List<Entity> dimensions = new List<Entity>();//標註物件
-        modelExt.Entities.ForEach(el =>
-                     {
-
-
-
-
-
-
-
-
+            {
+                try
+                {
+                    ModelExt modelExt = null;
+                    if (tabControl.SelectedIndex == 0)
+                    {
+                        modelExt = model;
+                    }
+                    else
+                    {
+                        // 2022.06.24 呂宗霖 還原註解
+                        modelExt = drawing;
+                    }
+                    List<Entity> dimensions = new List<Entity>();//標註物件
+                    modelExt.Entities.ForEach(el =>
+                    {
 #if DEBUG
-                         log4net.LogManager.GetLogger("清除標註").Debug("開始");
-
-
-
-
-
-
-
-
+                        log4net.LogManager.GetLogger("清除標註").Debug("開始");
 #endif
-                         if (el is Dimension dim)
-                         {
-                             dimensions.Add(dim);
-                         }
-
-
-
-
-
-
-
-
+                        if (el is Dimension dim)
+                        {
+                            dimensions.Add(dim);
+                        }
 #if DEBUG
-                         log4net.LogManager.GetLogger("清除標註").Debug("結束");
-
-
-
-
-
-
-
-
+                        log4net.LogManager.GetLogger("清除標註").Debug("結束");
 #endif
-                     });
-        modelExt.Entities.Remove(dimensions);
-        modelExt.Invalidate();//刷新模型
-    }
-    catch (Exception ex)
-    {
-        log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(ex.Message, ex.StackTrace);
-        Debugger.Break();
-    }
-});
-
-
-
-
+                    });
+                    modelExt.Entities.Remove(dimensions);
+                    modelExt.Invalidate();//刷新模型
+                }
+                catch (Exception ex)
+                {
+                    log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(ex.Message, ex.StackTrace);
+                    Debugger.Break();
+                }
+            });
             #endregion
 
             #region VM Command
@@ -390,9 +268,6 @@ namespace STD_105.Office
                 //        return;
                 //    }
                 //}
-
-
-
 
                 model.Entities.Clear();//清除模型物件
                 model.Blocks.Clear(); //清除模型圖塊
@@ -817,8 +692,8 @@ namespace STD_105.Office
                         this.shippingNumber.Clear();
                         this.Title1.Clear();
                         this.Title2.Clear();
-                        this.cbx_SteelType.SelectedIndex = 0;
-                        this.cbx_SectionType.SelectedIndex = 0;
+                        this.cbx_SteelTypeComboBox.SelectedIndex = 0;
+                        this.cbx_SectionTypeComboBox.SelectedIndex = 0;
                         #endregion
                         this.PieceListGridControl.SelectItem(0);
 
@@ -1945,6 +1820,11 @@ namespace STD_105.Office
 
             model.Invalidate();
             drawing.Invalidate();
+
+            //ApplicationVM appVM = new ApplicationVM();
+            //appVM.CreateDMFile(model);
+
+            GridReload();
         }
 
         /// <summary>
@@ -2205,7 +2085,6 @@ namespace STD_105.Office
                         this.shippingNumber.Text = temp.steelAttr.ShippingNumber.ToString();
                         this.Title1.Text = temp.steelAttr.Title1;
                         this.Title2.Text = temp.steelAttr.Title2;
-                        this.cbx_SectionType.SelectedValue = temp.steelAttr.Profile;
                         this.H.Text = temp.steelAttr.H.ToString();
                         this.W.Text = temp.steelAttr.W.ToString();
                         this.t1.Text = temp.steelAttr.t1.ToString();
@@ -2213,7 +2092,8 @@ namespace STD_105.Office
                         this.Length.Text = temp.steelAttr.Length.ToString();
                         this.Weight.Text = temp.steelAttr.Weight.ToString();
                         this.PartCount.Text = temp.Count.ToString();
-                        this.cbx_SteelType.SelectedValue = temp.SteelType;
+                        this.cbx_SectionTypeComboBox.SelectedValue = temp.steelAttr.Profile;
+                        this.cbx_SteelTypeComboBox.SelectedValue = temp.SteelType;
                         #endregion
                         SaveModel(true, true);
                         return false;
@@ -3610,8 +3490,8 @@ namespace STD_105.Office
             STDSerialization ser = new STDSerialization();
 
             //// 建立dm檔 for 尚未建立dm檔的零件
-            //ApplicationVM appVM = new ApplicationVM();
-            //appVM.CreateDMFile(model);
+            ApplicationVM appVM = new ApplicationVM();
+            appVM.CreateDMFile(model);
         }
 
         public BlockReference SteelTriangulation(Mesh mesh)
@@ -4045,8 +3925,8 @@ namespace STD_105.Office
                                 this.shippingNumber.Clear();
                                 this.Title1.Clear();
                                 this.Title2.Clear();
-                                this.cbx_SteelType.SelectedIndex = 0;
-                                this.cbx_SectionType.SelectedIndex = 0;                                
+                                this.cbx_SteelTypeComboBox.SelectedIndex = 0;
+                                this.cbx_SectionTypeComboBox.SelectedIndex = 0;                                
                                 #endregion
                             }
 
@@ -4269,7 +4149,7 @@ namespace STD_105.Office
         private void OKtoConfirmChanges(object sender, RoutedEventArgs e)
         {
 
-            if (fNewPart)
+            if (fNewPart.Value)
             {
                 var ResultRtn = WinUIMessageBox.Show(null,
                          $"新增零件是否存檔 ?",
@@ -4281,48 +4161,49 @@ namespace STD_105.Office
                          FloatingMode.Popup);
                 if (ResultRtn == MessageBoxResult.Yes)
                 { SaveModel(true, true); }
-            else
-            {
-                // 清空零件屬性
-                this.asseNumber.Clear();
-                this.partNumber.Clear();
-                this.PartCount.Clear();
-                this.Length.Clear();
-                this.Weight.Text = "";
-                this.PartCount.Clear();
-                this.teklaName.Clear();
-                this.phase.Clear();
-                this.shippingNumber.Clear();
-                this.Title1.Clear();
-                this.Title2.Clear();
-                this.cbx_SteelTypeComboBox.SelectedIndex = 0;
-                this.cbx_SectionTypeComboBox.SelectedIndex = 0;
-                GridReload();
+                else
+                {
+                    // 清空零件屬性
+                    this.asseNumber.Clear();
+                    this.partNumber.Clear();
+                    this.PartCount.Clear();
+                    this.Length.Clear();
+                    this.Weight.Text = "";
+                    this.PartCount.Clear();
+                    this.teklaName.Clear();
+                    this.phase.Clear();
+                    this.shippingNumber.Clear();
+                    this.Title1.Clear();
+                    this.Title2.Clear();
+                    this.cbx_SteelTypeComboBox.SelectedIndex = 0;
+                    this.cbx_SectionTypeComboBox.SelectedIndex = 0;
+                    GridReload();
+                }
+
+
+
+
+                //if (fAddSteelPart)
+                //{
+                //    var ResultRtn = WinUIMessageBox.Show(null,
+                //             $"新增零件是否存檔 ?",
+                //             "通知",
+                //             MessageBoxButton.OKCancel,
+                //             MessageBoxImage.Exclamation,
+                //             MessageBoxResult.None,
+                //             MessageBoxOptions.None,
+                //             FloatingMode.Popup);
+
+
+                //    if (ResultRtn == MessageBoxResult.OK)
+                //        SaveModel(true);//存取檔案
+
+                //    GridReload();
+
+
+                //    fAddSteelPart = false;
+                //}
             }
-
-
-
-
-            //if (fAddSteelPart)
-            //{
-            //    var ResultRtn = WinUIMessageBox.Show(null,
-            //             $"新增零件是否存檔 ?",
-            //             "通知",
-            //             MessageBoxButton.OKCancel,
-            //             MessageBoxImage.Exclamation,
-            //             MessageBoxResult.None,
-            //             MessageBoxOptions.None,
-            //             FloatingMode.Popup);
-
-
-            //    if (ResultRtn == MessageBoxResult.OK)
-            //        SaveModel(true);//存取檔案
-
-            //    GridReload();
-
-
-            //    fAddSteelPart = false;
-            //}
         }
     }
 }
