@@ -56,7 +56,7 @@
                 <Setter Property="Padding" Value="5,-5,5,0"/>
             </Style>
 
-            <System:Boolean x:Key="visible">false</System:Boolean>
+            <System:Boolean x:Key="visible">true</System:Boolean>
             <System:Boolean x:Key="TextBoxEnabled">false</System:Boolean>
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
@@ -320,8 +320,7 @@
                         </dxg:GridColumn.CellStyle>
                     </dxg:GridColumn>
 
-                    <dxg:GridColumn FieldName="GUID" Binding="{Binding  steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="true"/>
-                    <!--Visible="{StaticResource visible}"/>-->
+                    <dxg:GridColumn FieldName="GUID" Binding="{Binding  steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="AssemblyNumber" Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="60"/>
                     <dxg:GridColumn FieldName="PartNumber" Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="60" />
                     <dxg:GridColumn FieldName="TeklaName" Binding="{Binding steelAttr.Name}" IsSmart="True" Header="名稱" Width="80"/>
@@ -424,7 +423,7 @@
 
                     </Grid.RowDefinitions>
                     <Label Content="零件編號："  />
-                    <TextBox  Grid.Column="1" Name="partNumber" InputMethod.IsInputMethodEnabled="False">
+                    <TextBox  Grid.Column="1" Name="PartNumber" InputMethod.IsInputMethodEnabled="False">
                         <TextBox.Text>
                             <Binding Path="PartNumberProperty" UpdateSourceTrigger="PropertyChanged" >
                                 <Binding.ValidationRules>
