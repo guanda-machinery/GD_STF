@@ -141,5 +141,15 @@ namespace STD_105.Office
             popup.Height = 768;
             popup.ShowDialog();
         }
+
+        private void BrowserGraph(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void Button_Click(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

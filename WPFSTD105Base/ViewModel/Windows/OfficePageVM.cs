@@ -64,11 +64,11 @@ namespace WPFSTD105
         /// <summary>
         /// 頁面切換區域高度
         /// </summary>
-        public int PageHostHeight { get; set; } = 970;
+        public int PageHostHeight { get; set; } = 1005;
         /// <summary>
         /// 頁面切換寬度
         /// </summary>
-        public int PageHostWidth { get; set; } = 1660;
+        public int PageHostWidth { get; set; } = 1685; 
         /// <summary>
         /// 工作區域寬度
         /// </summary>

@@ -958,7 +958,6 @@ namespace WPFSTD105
                 // 在素材中，屬於前置碼PreCode的有幾筆
                 string strNumber = MatchSetting.PreCode;
                 var strings = MaterialDataViews.Where(el => el.MaterialNumber.Contains(strNumber));
-
                 int startNumber = 1;
                 if (strings.Count() != 0)
                 {
