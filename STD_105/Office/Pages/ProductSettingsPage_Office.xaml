@@ -23,7 +23,6 @@
                   xmlns:System="clr-namespace:System;assembly=mscorlib"
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
-                  xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
                   Title="製品設定">
 
 
@@ -61,8 +60,12 @@
             <System:Boolean x:Key="TextBoxEnabled">false</System:Boolean>
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
+
     <!--物件設定與設定完成的物件列表-->
-    <Grid x:Name="DataGrid" dx:ThemeManager.ThemeName="Win10Light"    Background="#d3d3d3"     >
+    <Grid x:Name="DataGrid" dx:ThemeManager.ThemeName="Win10Light"    Background="#d3d3d3"    >
+        <Grid.DataContext>
+            <STD105VM:ObSettingVM/>
+        </Grid.DataContext>
         <Grid.Resources>
             <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }" >
                 <Setter Property="BorderThickness" Value="1"/>
@@ -555,7 +558,7 @@
                     <Label Grid.Column="3" Grid.Row="0"
                            Content="型鋼類型：" />
 
-                    <ComboBox x:Name="cbx_SteelType"
+                    <ComboBox x:Name="cbx_SteelTypeComboBox"
                               Grid.Column="4"  Grid.Row="0" 
                               ItemsSource="{Binding Source={StaticResource obType},Path=Strings}"
                               SelectedIndex="{Binding SelectedItems[0].SteelType, ElementName=PieceListGridControl, Mode=OneWay}"
@@ -570,7 +573,7 @@
                     <Label Grid.Column="3" Grid.Row="1"
                            Content="斷面規格：" />
 
-                    <ComboBox x:Name="cbx_SectionType"
+                    <ComboBox x:Name="cbx_SectionTypeComboBox"
                                   Grid.Column="4" Grid.Row="1"
                                   Padding="5,1,0,0"
                                   ItemsSource="{Binding ProfileList}" 
@@ -836,8 +839,8 @@
             </TabItem>
         </TabControl>
         <!--繪圖顯示模型-->
-        <Border Background="White" Margin="5"   Grid.Column="1" Grid.Row="1" >
-            <TabControl>
+        <Border Background="#F0F0F0" Margin="5"   Grid.Column="1" Grid.Row="1" >
+            <TabControl Margin="0.5,0">
                 <TabControl.Resources>
                     <ResourceDictionary>
                         <Style TargetType="TabItem">
@@ -876,10 +879,6 @@
                                                                             Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
                                                                             To="#5c93a7"
                                                                             Duration="0" />
-                                                            <!--          <ThicknessAnimation Storyboard.TargetName="Border"
-                                                            Storyboard.TargetProperty="BorderThickness"
-                                                            To="0,0,0,2"
-                                                            Duration="0" />-->
                                                         </Storyboard>
                                                     </VisualState>
                                                 </VisualStateGroup>
@@ -958,16 +957,6 @@
                                     <TextBox Grid.Column="3" Grid.Row="0" VerticalAlignment="Center">
                                         <TextBox.Text>
                                             <Binding Path="GroupBoltsAttr.X" UpdateSourceTrigger="PropertyChanged" >
-                                                <Binding.ValidationRules>
-                                                    <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                </Binding.ValidationRules>
-                                            </Binding>
-                                        </TextBox.Text>
-                                    </TextBox>
-
-                                    <TextBox Grid.Column="3" Grid.Row="0" VerticalAlignment="Center">
-                                        <TextBox.Text>
-                                            <Binding Path="GroupBoltsAttr.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                 <Binding.ValidationRules>
                                                     <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                 </Binding.ValidationRules>
@@ -1117,11 +1106,13 @@
                                          Margin="5">
                                 <Button Content ="X軸鏡射" Command="{Binding MirrorX}" Margin="0,0,0,0" Width="80" Height="24"  />
                                 <Button Content="Y軸鏡射" Command="{Binding MirrorY}" Margin="5,0,0,0" Width="80" Height="24"  />
+
                                 <Button Content="rbtn choice" Command="{Binding Path=CmdShowMessage}" Margin="5" Width="80" Height="24" Visibility="Collapsed"/>
                             </StackPanel>
 
                             <StackPanel  Grid.Row="3"     Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Command="" Width="80" Margin="0,0,-7,0"  Background="#d8d8d8" Click="Set_DrillSettingGrid_AllCheckboxChecked_Click" Cursor="Hand" >
+
+                                <Button Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=DrillTabItem}"  Width="80" Margin="0,0,-7,0"  Background="#d8d8d8" Cursor="Hand" >
                                     <Button.Content >
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="CheckboxOutline" />
@@ -1346,7 +1337,7 @@
                             </GroupBox>
 
                             <StackPanel  Grid.Row="3" Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Command="" Width="80" Margin="-20,0,-28,0"  Background="#d8d8d8" Click="Set_CutSettingGrid_AllCheckboxChecked_Click" Cursor="Hand" >
+                                <Button Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=CutTabItem}" Width="80" Margin="-20,0,-28,0"  Background="#d8d8d8" Cursor="Hand" >
                                     <Button.Content >
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="CheckboxOutline" />

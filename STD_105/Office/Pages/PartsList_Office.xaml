@@ -429,9 +429,9 @@
         <Border
             Width="800"
                 Height="600"
-                Background="{ StaticResource solidclr_CreamyGray }"
+                Background="{StaticResource solidclr_CreamyGray }"
                 CornerRadius="15"
-                Visibility="{ Binding LengthDodageControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter }}">
+                Visibility="{Binding LengthDodageControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter}}">
             <Grid>
                 <Grid.Resources>
                     <Style TargetType="Label"

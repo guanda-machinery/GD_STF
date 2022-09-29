@@ -21,6 +21,8 @@
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   mc:Ignorable="d"
                   Title="參數設定 - 選單功能">
+
+
     <Grid>
         <Grid.Resources>
             <Style TargetType="Button">
@@ -114,8 +116,7 @@
                     Background="White"
                     Margin="5,0,0,0">
                 <Grid>
-                    <dxlc:ScrollBox Height="{Binding ElementName=workArea, Path=Height}"
-                                    Width="{Binding ElementName=workArea, Path=Width}">
+                    <dxlc:ScrollBox >
                         <!--頁面切換區域-->
                         <std:OfficePageHost x:Name="pageHost1"
                                             ParaSettingCurrentPage="{ Binding }"

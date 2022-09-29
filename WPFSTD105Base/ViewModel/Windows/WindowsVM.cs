@@ -731,7 +731,7 @@ namespace WPFSTD105
         /// </summary>
         public ICommand TypeSettingCommand { get; set; }
         /// <summary>
-        /// 排版設定功能
+        /// 排版設定功能(舊)
         /// </summary>
         /// <returns></returns>
         private WPFBase.RelayCommand TypeSetting()
@@ -741,6 +741,36 @@ namespace WPFSTD105
                 ApplicationViewModel.CurrentPage = ApplicationPage.TypeSetting;
             });
         }
+
+        /// <summary>
+        /// 排版設定命令(新)
+        /// </summary>
+        public ICommand MachineTypeSettingCommand 
+        {
+            get
+            {
+                return new WPFBase.RelayCommand(() =>
+                {
+                    ApplicationViewModel.CurrentPage = ApplicationPage.MachineTypeSetting;
+                });
+            } 
+        }
+
+        /// <summary>
+        /// 製品設定命令(新)
+        /// </summary>
+        public ICommand MachineProductSettingCommand
+        {
+            get
+            {
+                return new WPFBase.RelayCommand(() =>
+                {
+                    ApplicationViewModel.CurrentPage = ApplicationPage.MachineProductSetting;
+                });
+            }
+        }
+
+
 
         /// <summary>
         /// 加工監控命令

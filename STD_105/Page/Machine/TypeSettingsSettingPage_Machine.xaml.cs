@@ -1,47 +1,31 @@
-﻿using devDept.Eyeshot;
-using devDept.Eyeshot.Entities;
-using devDept.Eyeshot.Translators;
-using devDept.Geometry;
-using devDept.Graphics;
-using DevExpress.Data.Extensions;
-using GD_STD.Enum;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
-using WPFSTD105;
-using WPFSTD105.Attribute;
-using WPFSTD105.Model;
-using WPFSTD105.ViewModel;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using WPFWindowsBase;
-using static devDept.Eyeshot.Entities.Mesh;
-using static devDept.Eyeshot.Environment;
-using BlockReference = devDept.Eyeshot.Entities.BlockReference;
-using MouseButton = devDept.Eyeshot.MouseButton;
-using System.IO;
-using GD_STD.Data;
-using System.Collections.ObjectModel;
-using DevExpress.Xpf.WindowsUI;
-using DevExpress.Xpf.Core;
 
-namespace STD_105.Office
+namespace STD_105
 {
     /// <summary>
-    /// TypesettingsSetting.xaml 的互動邏輯
+    /// MachineTypeSettingsSetting.xaml 的互動邏輯
     /// </summary>
-    public partial class TypesettingsSetting : BasePage<OfficeTypeSettingVM>
+    public partial class TypeSettingsSettingPage_Machine : BasePage<WPFSTD105.ViewModel.TypeSettingVM>
     {
-        /// <summary>
-        /// 220818 蘇冠綸 排版設定版面完成
-        /// </summary>
-        public TypesettingsSetting()
+        public TypeSettingsSettingPage_Machine()
         {
             InitializeComponent();
         }
+
+
 
         bool TableViewLoadedBoolen = false;
         private void Material_List_TableView_Loaded(object sender, RoutedEventArgs e)
@@ -68,7 +52,7 @@ namespace STD_105.Office
                 if (e.OldItem is GD_STD.Data.MaterialDataView)
                 {
                     var EOldItem = (GD_STD.Data.MaterialDataView)e.OldItem;
-                    EOldItem.ButtonEnable = false; 
+                    EOldItem.ButtonEnable = false;
                     var OldHandle = SenderC.FindRow(e.OldItem);
                     SenderC.RefreshRow(OldHandle);//畫面裡刷新上面該列的設定值
                 }
@@ -80,13 +64,8 @@ namespace STD_105.Office
             ((DevExpress.Xpf.Grid.TableView)sender).FocusedRowHandle = DevExpress.Xpf.Grid.GridControl.InvalidRowHandle;
         }
 
+
+
+
     }
 }
-
-
-
-
-
-
-
-

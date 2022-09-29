@@ -26,6 +26,9 @@ namespace STD_105
         }
 
 
+
+
+
         /// <summary>
         /// 刪除命令
         /// </summary>
@@ -46,9 +49,12 @@ namespace STD_105
         /// <param name="e"></param>
         private static void DeletePropertyChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            DataButtons_Office _ = (DataButtons_Office)d;
-            _.delete.Command = (ICommand)e.NewValue;
+            ((DataButtons_Office)d).DeleteButton.Command = (ICommand)e.NewValue;   
         }
+
+
+
+
 
 
         /// <summary>
@@ -75,6 +81,40 @@ namespace STD_105
             DataButtons_Office _ = (DataButtons_Office)d;
             _.add.Command = (ICommand)e.NewValue;
         }
+  
+        
+        
+        
+        /// <summary>
+        /// 20220923新增按鈕寬度
+        /// </summary>
+        public double AddButtonWidth
+        {
+            get { return (double)GetValue(AddButtonWidthProperty); }
+            set
+            {
+                SetValue(AddButtonWidthProperty, value);
+            }
+        }
+        /// <summary>
+        /// <see cref="AddButtonWidth"/> 註冊相依屬性
+        /// </summary>
+        public static readonly DependencyProperty AddButtonWidthProperty =
+            DependencyProperty.Register(nameof(AddButtonWidth), typeof(double), typeof(DataButtons_Office), new PropertyMetadata(AddButtonWidthPropertyChange));
+        /// <summary>
+        /// <see cref="AddButtonWidth"/> 變更時觸發
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
+        private static void AddButtonWidthPropertyChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((DataButtons_Office)d).add.Width = (double)e.NewValue;
+        }
+
+
+
+
+
 
         /// <summary>
         /// 修改命令
@@ -96,9 +136,43 @@ namespace STD_105
         /// <param name="e"></param>
         private static void ModifyPropertyChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            DataButtons_Office _ = (DataButtons_Office)d;
-            _.modify.Command = (ICommand)e.NewValue;
+            ((DataButtons_Office)d).ModifyButton.Command = (ICommand)e.NewValue;
         }
+
+
+
+        /// <summary>
+        /// 20220923編輯按鈕寬度
+        /// </summary>
+        public double ModifyButtonWidth
+        {
+            get { return (double)GetValue(ModifyButtonWidthProperty); }
+            set
+            {
+                SetValue(ModifyButtonWidthProperty, value);
+            }
+        }
+        /// <summary>
+        /// <see cref="ModifyButtonWidth"/> 註冊相依屬性
+        /// </summary>
+        public static readonly DependencyProperty ModifyButtonWidthProperty =
+            DependencyProperty.Register(nameof(ModifyButtonWidth), typeof(double), typeof(DataButtons_Office), new PropertyMetadata(ModifyButtonWidthPropertyChange));
+        /// <summary>
+        /// <see cref="ModifyButtonWidth"/> 變更時觸發
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
+        private static void ModifyButtonWidthPropertyChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((DataButtons_Office)d).ModifyButton.Width = (double)e.NewValue;
+        }
+
+
+
+
+
+
+
 
         /// <summary>
         /// 刪除按鈕顯示狀態
@@ -120,9 +194,38 @@ namespace STD_105
         /// <param name="e"></param>
         private static void DeleteVisibilityPropertyChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            DataButtons_Office _ = (DataButtons_Office)d;
-            _.delete.Visibility = (Visibility)e.NewValue;
+            ( (DataButtons_Office)d).DeleteButton.Visibility = (Visibility)e.NewValue;
         }
+
+        /// <summary>
+        /// 20220923刪除按鈕寬度
+        /// </summary>
+        public double DeleteButtonWidth
+        {
+            get { return (double)GetValue(DeleteButtonWidthProperty); }
+            set
+            {
+                SetValue(DeleteButtonWidthProperty, value);
+            }
+        }
+        /// <summary>
+        /// <see cref="WidthType"/> 註冊相依屬性
+        /// </summary>
+        public static readonly DependencyProperty DeleteButtonWidthProperty =
+            DependencyProperty.Register(nameof(DeleteButtonWidth), typeof(double), typeof(DataButtons_Office), new PropertyMetadata(DeleteButtonWidthPropertyChange));
+        /// <summary>
+        /// <see cref="WidthType"/> 變更時觸發
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
+        private static void DeleteButtonWidthPropertyChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((DataButtons_Office)d).DeleteButton.Width = (double)e.NewValue;
+        }
+
+
+
+
 
 
         /// <summary>
@@ -146,9 +249,12 @@ namespace STD_105
         /// <param name="e"></param>
         private static void ReadVisibilityPropertyChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            DataButtons_Office _ = (DataButtons_Office)d;
-            _.read.Visibility = (Visibility)e.NewValue;
+            ((DataButtons_Office)d).ReadButton.Visibility = (Visibility)e.NewValue;
         }
+
+
+
+
 
         /// <summary>
         /// 讀取按鈕命令
@@ -171,8 +277,35 @@ namespace STD_105
         /// <param name="e"></param>
         private static void ReadPropertyChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            DataButtons_Office _ = (DataButtons_Office)d;
-            _.read.Command = (ICommand)e.NewValue;
+             ((DataButtons_Office)d).ReadButton.Command = (ICommand)e.NewValue;
         }
+
+        /// <summary>
+        /// 20220923讀取按鈕寬度
+        /// </summary>
+        public double ReadButtonWidth
+        {
+            get { return (double)GetValue(ReadButtonWidthProperty); }
+            set
+            {
+                SetValue(ReadButtonWidthProperty, value);
+            }
+        }
+        /// <summary>
+        /// <see cref="WidthType"/> 註冊相依屬性
+        /// </summary>
+        public static readonly DependencyProperty ReadButtonWidthProperty =
+            DependencyProperty.Register(nameof(ReadButtonWidth), typeof(double), typeof(DataButtons_Office), new PropertyMetadata(ReadButtonWidthPropertyChange));
+        /// <summary>
+        /// <see cref="WidthType"/> 變更時觸發
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
+        private static void ReadButtonWidthPropertyChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((DataButtons_Office)d).ReadButton.Width = (double)e.NewValue;
+        }
+
+
     }
 }

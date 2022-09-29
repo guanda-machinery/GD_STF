@@ -120,7 +120,7 @@ namespace GD_STD.Data
         {
             get
             {
-                return RotationComponent(CRotation.Clockwise); ;
+                return RotationComponent(CRotation.Clockwise); 
             }
         }
         /// <summary>
