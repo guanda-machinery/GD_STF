@@ -4270,7 +4270,7 @@ namespace STD_105.Office
         private void OKtoConfirmChanges(object sender, RoutedEventArgs e)
         {
 
-            if (fNewPart)
+            if (fNewPart.Value)
             {
                 var ResultRtn = WinUIMessageBox.Show(null,
                          $"新增零件是否存檔 ?",
@@ -4282,48 +4282,49 @@ namespace STD_105.Office
                          FloatingMode.Popup);
                 if (ResultRtn == MessageBoxResult.Yes)
                 { SaveModel(true, true); }
-            else
-            {
-                // 清空零件屬性
-                this.asseNumber.Clear();
-                this.partNumber.Clear();
-                this.PartCount.Clear();
-                this.Length.Clear();
-                this.Weight.Text = "";
-                this.PartCount.Clear();
-                this.teklaName.Clear();
-                this.phase.Clear();
-                this.shippingNumber.Clear();
-                this.Title1.Clear();
-                this.Title2.Clear();
-                this.cbx_SteelTypeComboBox.SelectedIndex = 0;
-                this.cbx_SectionTypeComboBox.SelectedIndex = 0;
-                GridReload();
+                else
+                {
+                    // 清空零件屬性
+                    this.asseNumber.Clear();
+                    this.partNumber.Clear();
+                    this.PartCount.Clear();
+                    this.Length.Clear();
+                    this.Weight.Text = "";
+                    this.PartCount.Clear();
+                    this.teklaName.Clear();
+                    this.phase.Clear();
+                    this.shippingNumber.Clear();
+                    this.Title1.Clear();
+                    this.Title2.Clear();
+                    this.cbx_SteelTypeComboBox.SelectedIndex = 0;
+                    this.cbx_SectionTypeComboBox.SelectedIndex = 0;
+                    GridReload();
+                }
+
+
+
+
+                //if (fAddSteelPart)
+                //{
+                //    var ResultRtn = WinUIMessageBox.Show(null,
+                //             $"新增零件是否存檔 ?",
+                //             "通知",
+                //             MessageBoxButton.OKCancel,
+                //             MessageBoxImage.Exclamation,
+                //             MessageBoxResult.None,
+                //             MessageBoxOptions.None,
+                //             FloatingMode.Popup);
+
+
+                //    if (ResultRtn == MessageBoxResult.OK)
+                //        SaveModel(true);//存取檔案
+
+                //    GridReload();
+
+
+                //    fAddSteelPart = false;
+                //}
             }
-
-
-
-
-            //if (fAddSteelPart)
-            //{
-            //    var ResultRtn = WinUIMessageBox.Show(null,
-            //             $"新增零件是否存檔 ?",
-            //             "通知",
-            //             MessageBoxButton.OKCancel,
-            //             MessageBoxImage.Exclamation,
-            //             MessageBoxResult.None,
-            //             MessageBoxOptions.None,
-            //             FloatingMode.Popup);
-
-
-            //    if (ResultRtn == MessageBoxResult.OK)
-            //        SaveModel(true);//存取檔案
-
-            //    GridReload();
-
-
-            //    fAddSteelPart = false;
-            //}
         }
     }
 }

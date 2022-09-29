@@ -733,7 +733,7 @@ namespace STD_105.Office
             model.ZoomFit();//設置道適合的視口
             model.Invalidate();//初始化模型
             //SaveModel();
-            Draw();
+            //Draw();
            // model.SelectionChanged -= model.Model_SelectionChanged;
            // model.SelectionChanged += model.Model_SelectionChanged; 
         }
