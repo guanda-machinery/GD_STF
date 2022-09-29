@@ -104,7 +104,8 @@ namespace STD_105.Office
             }
             else if (DataList != null)
             {
-                ReadFile readFile = new ReadFile($@"1d8abbc8-4ade-4c0e-ad0b-95cd0d130a3d.dm", new FileSerializerExt(devDept.Serialization.contentType.GeometryAndTessellation)); //讀取檔案內容
+                model.Entities.Clear();
+                ReadFile readFile = new ReadFile($@"31c18603-88cc-47ce-8654-2a2bf0400e7e.dm", new FileSerializerExt(devDept.Serialization.contentType.GeometryAndTessellation)); //讀取檔案內容
                 readFile.DoWork();//開始工作
                 readFile.AddToScene(model);//將讀取完的檔案放入到模型
                 SteelAttr steel = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
@@ -126,7 +127,8 @@ namespace STD_105.Office
             }
             else if (DataPath != null)
             {
-                ReadFile readFile = new ReadFile($@"{ApplicationVM.DirectoryDevPart()}\1d8abbc8-4ade-4c0e-ad0b-95cd0d130a3d.dm", new FileSerializerExt(devDept.Serialization.contentType.GeometryAndTessellation)); //讀取檔案內容
+                model.Entities.Clear();
+                ReadFile readFile = new ReadFile($@"{ApplicationVM.DirectoryDevPart()}\{DataPath}.dm", new FileSerializerExt(devDept.Serialization.contentType.GeometryAndTessellation)); //讀取檔案內容
                 readFile.DoWork();//開始工作
                 readFile.AddToScene(model);//將讀取完的檔案放入到模型
                 ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
@@ -144,7 +146,6 @@ namespace STD_105.Office
                     }
                 }
             }
-            SaveModel();
             model.Refresh();
             model.ZoomFit();//設置道適合的視口
             model.Invalidate();//初始化模型
@@ -573,22 +574,53 @@ namespace STD_105.Office
         /// <returns></returns>
         public BlockReference Add2DHole(Bolts3DBlock bolts, bool refresh = true)
         {
-            /*2D螺栓*/
-            BlockReference referenceMain = (BlockReference)drawing.Entities[drawing.Entities.Count - 1]; //主件圖形
-            Steel2DBlock steel2DBlock = (Steel2DBlock)drawing.Blocks[referenceMain.BlockName]; //取得鋼構圖塊
-
-            string blockName = string.Empty; //圖塊名稱
-            Bolts2DBlock bolts2DBlock = new Bolts2DBlock(bolts, steel2DBlock); //產生螺栓圖塊
-            drawing.Blocks.Add(bolts2DBlock); //加入螺栓圖塊
-            blockName = bolts2DBlock.Name;
-            BlockReference result = new BlockReference(0, 0, 0, bolts2DBlock.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
-            drawing.Entities.Insert(0, result);
-            if (refresh)
+            try
             {
-                drawing.Refresh();//刷新模型
+                /*2D螺栓*/
+                BlockReference referenceMain = (BlockReference)drawing.Entities[drawing.Entities.Count - 1]; //主件圖形
+                //BlockReference referenceMain = (BlockReference)drawing.Entities.Where(x=>x is BlockReference).LastOrDefault(); //主件圖形
+                Steel2DBlock steel2DBlock = (Steel2DBlock)drawing.Blocks[referenceMain.BlockName]; //取得鋼構圖塊
+#if DEBUG
+                log4net.LogManager.GetLogger($"產生 {bolts.Name} 2D螺栓圖塊").Debug($"開始");
+#endif
+                string blockName = string.Empty; //圖塊名稱
+#if DEBUG
+                //log4net.LogManager.GetLogger($"產生2D螺栓圖塊").Debug($"開始");
+#endif
+                Bolts2DBlock bolts2DBlock = new Bolts2DBlock(bolts, steel2DBlock); //產生螺栓圖塊
+#if DEBUG
+                log4net.LogManager.GetLogger($"產生2D螺栓圖塊").Debug($"結束");
+                log4net.LogManager.GetLogger($"2D畫布加入螺栓圖塊").Debug($"");
+#endif
+                bolts2DBlock.Entities.Regen();
+                drawing.Blocks.Add(bolts2DBlock); //加入螺栓圖塊
+
+                foreach (var block in drawing.Blocks)
+                {
+                    block.Entities.Regen();
+                }
+                blockName = bolts2DBlock.Name;
+                BlockReference result = new BlockReference(0, 0, 0, bolts2DBlock.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+                // 將孔位加入到TOP FRONT BACK圖塊中
+                drawing.Entities.Insert(0, result);
+#if DEBUG
+                log4net.LogManager.GetLogger($"2D畫布加入TOP FRONT BACK圖塊").Debug($"");
+                log4net.LogManager.GetLogger($"產生 {bolts.Name} 2D螺栓圖塊").Debug($"結束");
+#endif
+
+                if (refresh)
+                {
+                    drawing.Entities.Regen();
+                    drawing.Refresh();//刷新模型
+                }
+
+                return result;
+            }
+            catch (Exception)
+            {
+                return null;
             }
 
-            return result;
         }
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
@@ -700,7 +732,8 @@ namespace STD_105.Office
             model.Invalidate();
             model.ZoomFit();//設置道適合的視口
             model.Invalidate();//初始化模型
-            //Draw();
+            //SaveModel();
+            Draw();
            // model.SelectionChanged -= model.Model_SelectionChanged;
            // model.SelectionChanged += model.Model_SelectionChanged; 
         }
@@ -708,6 +741,18 @@ namespace STD_105.Office
         private void GridSplitter_MouseMove(object sender, MouseEventArgs e)
         {
             model.ZoomFit();//設置道適合的視口
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {                                         
+            model.ActionMode = actionType.SelectByBox;
+
+            for (int i = 0; i < model.Entities.Count; i++)
+            {
+                model.Entities[i].Selectable = true;
+            }
+
+            //  SaveModel();
         }
     }
 }

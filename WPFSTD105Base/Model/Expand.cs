@@ -80,7 +80,7 @@ namespace WPFSTD105.Model
                     }
                     else //下一次迴圈尚未結束
                     {
-                        endCut = startCut +material.Cut;//當前切割物件放置結束點的座標
+                        endCut = startCut + material.Cut;//當前切割物件放置結束點的座標
                     }
                     place.Add((Start: startCut, End: endCut, IsCut: true, Number: "")); //素材零件位置
                     Debug.WriteLine($"Start = {place[place.Count -1].Start}, End : {place[place.Count-1].End}, IsCut : {place[place.Count-1].IsCut}");//除錯工具
