@@ -840,9 +840,12 @@ namespace WPFSTD105
 
             throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }
-        ///// <summary>
-        ///// 型鋼加工區域設定 - 設定數值儲存的檔案位置 20220811 張燕華
-        ///// </summary>
+        /// <summary>
+        /// 型鋼加工區域設定 - 設定數值儲存的檔案位置 20220811 張燕華
+        /// </summary>
+        /// <param name="SectionType"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public static string FileProcessingZone(string SectionType)
         {
             string projectName = CommonViewModel.ProjectName; //專案名稱
@@ -852,9 +855,11 @@ namespace WPFSTD105
 
             throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }
-        ///// <summary>
-        ///// 切割線設定 - 設定數值儲存的檔案位置 20220816 張燕華
-        ///// </summary>
+        /// <summary>
+        /// 切割線設定 - 設定數值儲存的檔案位置 20220816 張燕華
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public static string FileSplitLine()
         {
             string projectName = CommonViewModel.ProjectName; //專案名稱
@@ -864,9 +869,11 @@ namespace WPFSTD105
 
             throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }
-        ///// <summary>
-        ///// 切割線設定 - 檢查設定值檔案是否存在 20220818 張燕華
-        ///// </summary>
+        /// <summary>
+        /// 切割線設定 - 檢查設定值檔案是否存在 20220818 張燕華
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public static bool CheckFileSplitLine()
         {
             string projectName = CommonViewModel.ProjectName; //專案名稱
@@ -888,9 +895,11 @@ namespace WPFSTD105
                 throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
             }
         }
-        ///// <summary>
-        ///// 型鋼加工區域設定 - 檢查設定值檔案是否存在 20220818 張燕華
-        ///// </summary>
+        /// <summary>
+        /// 型鋼加工區域設定 - 檢查設定值檔案是否存在 20220818 張燕華
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public static bool[] CheckFileSectionTypeProcessingData()
         {
             bool[] CheckFiles = new bool[] { false, false, false };
@@ -914,9 +923,11 @@ namespace WPFSTD105
                 throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
             }
         }
-        ///// <summary>
-        ///// 型鋼加工區域設定 - 檢查設定值檔案是否存在 20220818 張燕華
-        ///// </summary>
+        /// <summary>
+        /// 型鋼加工區域設定 - 檢查設定值檔案是否存在 20220818 張燕華
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public bool CheckParameterSettingDirectoryPath()
         {
             bool CheckDir = false;

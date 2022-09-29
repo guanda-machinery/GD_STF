@@ -19,8 +19,6 @@
                   xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                   xmlns:local="clr-namespace:STD_105.Office"
                   xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
-                  Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
-                  Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   mc:Ignorable="d"
                   Title="SpiltLineSetting">
 

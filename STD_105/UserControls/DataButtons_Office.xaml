@@ -17,21 +17,21 @@
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Width"  Value="80" />
             <Setter Property="Height"  Value="24"/>
-            <Setter Property="Margin"
-                    Value="2,0" />
+            <Setter Property="Margin" Value="2,0" />
+            <Setter Property="Padding" Value="0" />
         </Style>
     </UserControl.Resources>
     <StackPanel dx:ThemeManager.ThemeName="Win10Light"
                 Orientation="Horizontal" 
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
-        <Button Name="add"
+        <Button Name="add" 
                 Content="新增" Cursor="Hand" />
-        <Button Name="modify"
+        <Button Name="ModifyButton" 
                 Content="修改" />
-        <Button Name="read"
+        <Button Name="ReadButton"
                 Content="讀取" />
-        <Button Name="delete"
+        <Button Name="DeleteButton" 
                 Content="刪除" />
     </StackPanel>
 </UserControl>
