@@ -50,7 +50,7 @@ namespace WPFSTD105.Attribute
         /// <summary>
         /// 第一顆螺栓的絕對座標 X 向
         /// </summary>
-        public string BlackName { get; set; } = "";
+        public string BlockName { get; set; } = "";
         public override double X { get; set; } = 35;
         /// <summary>
         /// 第一顆螺栓的絕對座標 Y 向

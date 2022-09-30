@@ -423,7 +423,7 @@
 
                     </Grid.RowDefinitions>
                     <Label Content="零件編號："  />
-                    <TextBox  Grid.Column="1" Name="partNumber"  InputMethod.IsInputMethodEnabled="False">
+                    <TextBox  Grid.Column="1" Name="partNumber" InputMethod.IsInputMethodEnabled="False">
                         <TextBox.Text>
                             <Binding Path="PartNumberProperty" UpdateSourceTrigger="PropertyChanged" >
                                 <Binding.ValidationRules>
