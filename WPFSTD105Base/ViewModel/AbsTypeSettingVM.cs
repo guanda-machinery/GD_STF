@@ -28,7 +28,7 @@ namespace WPFSTD105
     {
 
         ObSettingVM obvm = new ObSettingVM();
-        /// <summary>
+        /// <summary>                             
         /// 控制排版結果是否顯示
         /// </summary>
         public bool ShowTypeResult { get; set; }

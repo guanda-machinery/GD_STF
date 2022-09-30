@@ -132,7 +132,8 @@ namespace WPFSTD105.Model
                 X = Info.X,
                 Y = Info.Y,
                 Z = Info.Z,
-                GUID = Guid.NewGuid()
+                GUID = Guid.NewGuid(),
+                BlackName=Info.BlackName,
             };
 
             // 若起始座標小於半徑，不可加入
@@ -152,7 +153,7 @@ namespace WPFSTD105.Model
                 BoltAttr boltAttr = (BoltAttr)resultY[0].EntityData;
 
                 // 加工區域計算
-                List<double> list = WorkingRange(steelAttr.Type, boltAttr);
+               // List<double> list = WorkingRange(steelAttr.Type, boltAttr);
 
                 double y, z;
 
@@ -218,7 +219,7 @@ namespace WPFSTD105.Model
                         case GD_STD.Enum.FACE.TOP:
                             bolt.Translate(0, valueY, 0);//使用相對移動到指定位置。
                             boltAttrEach.Y = boltAttrEach.Y + valueY;
-                            check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttrEach.Y, list);
+                         //   check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttrEach.Y, list);
                             //if (boltAttrEach.Y < list[0] || boltAttrEach.Y > list[1])
                             //{
                             //    // 不能加入
@@ -238,7 +239,7 @@ namespace WPFSTD105.Model
                             // boltAttrEach.Y = y;
                             // boltAttrEach.Z = z;
                             boltAttrEach.Y = boltAttrEach.Y + valueY;
-                            check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttrEach.Y, list);
+                            //check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttrEach.Y, list);
                             //switch (steelAttr.Type)
                             //{
                             //    case OBJECT_TYPE.RH:
@@ -305,7 +306,7 @@ namespace WPFSTD105.Model
                             case GD_STD.Enum.FACE.TOP:
                                 bolt.EntityData = boltAttr;
                                 //boltList.Add(bolt);
-                                check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttr.Y, list);
+                              //  check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttr.Y, list);
                                 break;
                             case GD_STD.Enum.FACE.BACK:
                             case GD_STD.Enum.FACE.FRONT:
@@ -316,7 +317,7 @@ namespace WPFSTD105.Model
                                 //boltAttr.Z = z;
                                 bolt.EntityData = boltAttr;
                                 //boltList.Add(bolt);
-                                check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttr.Y, list);
+                               // check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttr.Y, list);
                                 //double a = 3 / 4;
                                 //bolt.Rotate(Math.PI*a, Vector3D.AxisX);
                                 break;

@@ -48,6 +48,11 @@ namespace WPFSTD105.Attribute
         public double t { get; set; }
 
         /// <summary>
+        /// 圖塊名稱
+        /// </summary>
+        public string BlackName { get; set; }   
+
+        /// <summary>
         /// <see cref="BoltAttr"/> 轉換 <see cref="BoltAttrSurrogate"/>
         /// </summary>
         /// <returns></returns>
