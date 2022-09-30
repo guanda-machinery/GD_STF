@@ -740,7 +740,7 @@
     <Compile Include="Page\TypeSettingPage.xaml.cs">
       <DependentUpon>TypeSettingPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Page\TypesettingsSetting.xaml.cs">
+    <Compile Include="Office\Pages\TypesettingsSetting.xaml.cs">
       <DependentUpon>TypesettingsSetting.xaml</DependentUpon>
     </Compile>
     <Compile Include="Page\VolumePage.xaml.cs">
@@ -1244,7 +1244,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Page\TypesettingsSetting.xaml">
+    <Page Include="Office\Pages\TypesettingsSetting.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
