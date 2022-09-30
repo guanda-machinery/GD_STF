@@ -583,10 +583,10 @@
     <Compile Include="Office\Pages\ObSettingsPage_Office.xaml.cs">
       <DependentUpon>ObSettingsPage_Office.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Office\Pages\ParametersSettings_Office_Sticker.xaml.cs">
+    <Compile Include="UserControls\ParametersSettings\ParametersSettings_Office_Sticker.xaml.cs">
       <DependentUpon>ParametersSettings_Office_Sticker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Office\Pages\ParametersSettings_Office_StickerVM.xaml.cs">
+    <Compile Include="UserControls\ParametersSettings\ParametersSettings_Office_StickerVM.xaml.cs">
       <DependentUpon>ParametersSettings_Office_StickerVM.xaml</DependentUpon>
     </Compile>
     <Compile Include="Office\Pages\SectionSpecExcel2Inp.xaml.cs">
@@ -595,17 +595,14 @@
     <Compile Include="Office\Pages\SectionSpecificationMenu.xaml.cs">
       <DependentUpon>SectionSpecificationMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Office\Pages\ParametersSettings_Office_LanguageVM.xaml.cs">
+    <Compile Include="UserControls\ParametersSettings\ParametersSettings_Office_LanguageVM.xaml.cs">
       <DependentUpon>ParametersSettings_Office_LanguageVM.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Office\Pages\ParametersSettings_Office_Language.xaml.cs">
+    <Compile Include="UserControls\ParametersSettings\ParametersSettings_Office_Language.xaml.cs">
       <DependentUpon>ParametersSettings_Office_Language.xaml</DependentUpon>
     </Compile>
     <Compile Include="Office\Pages\ParametersSettings_Office_FuncList.xaml.cs">
       <DependentUpon>ParametersSettings_Office_FuncList.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Office\Pages\ParametersSettings_Office.xaml.cs">
-      <DependentUpon>ParametersSettings_Office.xaml</DependentUpon>
     </Compile>
     <Compile Include="Office\Pages\PartsList_Office.xaml.cs">
       <DependentUpon>PartsList_Office.xaml</DependentUpon>
@@ -700,6 +697,9 @@
     </Compile>
     <Compile Include="Page\ChangeDrillPage.xaml.cs">
       <DependentUpon>ChangeDrillPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\Machine\ProcessingMonitorPage_Machine.xaml.cs">
+      <DependentUpon>ProcessingMonitorPage_Machine.xaml</DependentUpon>
     </Compile>
     <Compile Include="Page\Machine\TypeSettingsSettingPage_Machine.xaml.cs">
       <DependentUpon>TypeSettingsSettingPage_Machine.xaml</DependentUpon>
@@ -822,6 +822,9 @@
     </Compile>
     <Compile Include="UserControls\OfficeProjectManager.xaml.cs">
       <DependentUpon>OfficeProjectManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ParametersSettings\SectionSpecificationMenu_UserControl.xaml.cs">
+      <DependentUpon>SectionSpecificationMenu_UserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\PMListControl.xaml.cs">
       <DependentUpon>PMListControl.xaml</DependentUpon>
@@ -1029,11 +1032,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Office\Pages\ParametersSettings_Office_Sticker.xaml">
+    <Page Include="UserControls\ParametersSettings\ParametersSettings_Office_Sticker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Office\Pages\ParametersSettings_Office_StickerVM.xaml">
+    <Page Include="UserControls\ParametersSettings\ParametersSettings_Office_StickerVM.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1045,21 +1048,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Office\Pages\ParametersSettings_Office_LanguageVM.xaml">
+    <Page Include="UserControls\ParametersSettings\ParametersSettings_Office_LanguageVM.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Office\Pages\ParametersSettings_Office_Language.xaml">
+    <Page Include="UserControls\ParametersSettings\ParametersSettings_Office_Language.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Office\Pages\ParametersSettings_Office_FuncList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Office\Pages\ParametersSettings_Office.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Office\Pages\PartsList_Office.xaml">
       <SubType>Designer</SubType>
@@ -1186,6 +1185,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Page\ChangeDrillPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\Machine\ProcessingMonitorPage_Machine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1477,6 +1480,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\PageHost.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ParametersSettings\SectionSpecificationMenu_UserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

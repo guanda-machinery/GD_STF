@@ -26,6 +26,8 @@ namespace STD_105
             InitializeComponent();
         }
 
+       
+
         public BasePage CurrentPage
         {
             get => (BasePage)GetValue(CurrentPageProperty);

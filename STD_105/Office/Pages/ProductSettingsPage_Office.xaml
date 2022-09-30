@@ -192,11 +192,11 @@
                 </TreeView>
             </GroupBox>
 
-            <GroupBox Header="零件清單" Margin="5">
-                <GroupBox.DataContext>
+            <Grid Margin="5">
+                <Grid.DataContext>
                     <STD105VM:ObSettingVM/>
                     <!--<WPFSTD:OfficeTypeSettingVM/>-->
-                </GroupBox.DataContext>
+                </Grid.DataContext>
                 <!--<GroupBox.DataContext>          -->
                 <!--    <spa:OfficeTypeSettingVM/>  -->
                 <!--</GroupBox.DataContext>         -->
@@ -214,6 +214,7 @@
                         <Style TargetType="dxe:TextEditSettings">
                             <Setter Property="HorizontalContentAlignment" Value="Center"/>
                         </Style>
+                        <SolidColorBrush x:Key="{dxgt:TableViewThemeKey ResourceKey=SearchPanelBackground, IsThemeIndependent=True}" Color="#f0f0f0" />
                     </dxg:GridControl.Resources>
                     <dxg:GridControl.View >
                         <dxg:TableView VerticalScrollbarVisibility="Visible"
@@ -221,6 +222,7 @@
                                        ShowSearchPanelMode="Always"
                                        SearchPanelNullText="Search Tasks(Ctrl + F)" 
                                        SearchPanelFindMode="Always" 
+                                       HeaderPosition="SearchPanel"
                                        SearchDelay="0"
                                        AllowEditing="False"
                                        EnableImmediatePosting="True"
@@ -235,7 +237,9 @@
                                     <Setter Property="TextBlock.FontSize" Value="12"/>
                                 </Style>
                             </dxg:TableView.CellStyle>
-
+                            <dxg:TableView.Header>
+                                <TextBlock Text="零件清單" FontSize="16" Foreground="Black"/>
+                            </dxg:TableView.Header>
                         </dxg:TableView>
                     </dxg:GridControl.View>
                     <dxg:GridColumn Name="Exc_GridColumn" FieldName="ExclamationMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
@@ -380,7 +384,7 @@
                     <!--資料沒有對應屬性-->
 
                 </dxg:GridControl>
-            </GroupBox>
+            </Grid>
         </DockPanel>
         <!--零件屬性-->
         <GroupBox Header="零件屬性" Grid.Column="1" Margin="5">

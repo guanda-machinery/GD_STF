@@ -3881,5 +3881,10 @@ namespace STD_105.Office
             //    fAddSteelPart = false;
             //}
         }
+
+        private void TableView_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+
+        }
     }
 }

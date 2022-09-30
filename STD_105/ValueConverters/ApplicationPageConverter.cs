@@ -117,8 +117,9 @@ namespace STD_105
                 case ApplicationPage.MachineProductSetting:
                     basePage = new ProductSettingsPage_Machine();
                     break;
-
-
+                case ApplicationPage.MachineMonitor:
+                    basePage = new ProcessingMonitorPage_Machine();
+                    break;
 
                 default:
                     return null;
@@ -230,6 +231,10 @@ namespace STD_105
                 {
                     { LangEnum.ZH, "加工監控" },{ LangEnum.EN, "Processing Monitor" },{ LangEnum.VN, "Giám sát xử lý" },{ LangEnum.TH, "การตรวจสอบการประมวลผล" }
                 };
+                LangDict[ApplicationPage.MachineMonitor] = new Dictionary<LangEnum, string>
+                {  
+                    { LangEnum.ZH, "加工監控" },{ LangEnum.EN, "Processing Monitor" },{ LangEnum.VN, "Giám sát xử lý" },{ LangEnum.TH, "การตรวจสอบการประมวลผล" }
+                };
                 LangDict[ApplicationPage.TypeSetting] = new Dictionary<LangEnum, string>
                 {
                     { LangEnum.ZH, "排版設定" },{ LangEnum.EN, "Typesetting" },{ LangEnum.VN, "Sắp chữ" },{ LangEnum.TH, "การเรียงพิมพ์" }
@@ -242,6 +247,7 @@ namespace STD_105
                 {
                     { LangEnum.ZH, "警報" },{ LangEnum.EN, "Alert" },{ LangEnum.VN, "báo động" },{ LangEnum.TH, "เตือน" }
                 };
+
                 return LangDict;
             }
         }
@@ -252,6 +258,7 @@ namespace STD_105
             //找到合適的頁面
             if (value is ApplicationPage)
             {
+        
                 var pageL = Page_LanguageDict[(ApplicationPage)value];
                 //找語言
                 LangEnum _Lang = LangEnum.ZH;

@@ -281,6 +281,11 @@ namespace WPFSTD105
         public ObservableCollection<TypeSettingDataView> DataViews { get; set; } = new ObservableCollection<TypeSettingDataView>();
 
 
+        public ObservableCollection<TypeSettingDataView> SelectedParts { get; set; } = new ObservableCollection<TypeSettingDataView>();
+
+
+
+
         /// <summary>
         /// 素材組合列表
         /// </summary>
@@ -327,9 +332,16 @@ namespace WPFSTD105
             Price = 29.3f
         };
 
+        /// <summary>
+        /// GridControl之搜尋字串
+        /// </summary>
+        public string PartsSearchString { get; set; }
 
 
-
+        /// <summary>
+        /// 素材GridControl之搜尋字串
+        /// </summary>
+        public string MaterialGridSearchString { get; set; }
 
 
 
@@ -462,7 +474,6 @@ namespace WPFSTD105
                             //已配對
                             //var MatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
                             var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
-
                             if (PartGridColumn.SortCount < IDCount - alreadyMatchCount)
                                 PartGridColumn.SortCount++;
                         }
@@ -471,6 +482,7 @@ namespace WPFSTD105
                         {
                             PartGirdControl.RefreshData();
                         });
+                     
                     }
                 }
                 );

@@ -38,6 +38,7 @@
         ///// <summary>
         ///// 應用程序視圖模型 for Popup
         ///// </summary>
+        ///
         //public static PopupWindowsVM PopupViewModel => IoC.Get<PopupWindowsVM>();
     }
 }
