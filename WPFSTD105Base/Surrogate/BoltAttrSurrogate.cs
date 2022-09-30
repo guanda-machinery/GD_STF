@@ -38,7 +38,7 @@ namespace WPFSTD105.Surrogate
         /// <inheritdoc/>
         public OBJECT_TYPE Type { get; set; }
         /// <inheritdoc/>
-        public string BlackName { get; set; }
+        public string BlockName { get; set; }
 
 #pragma warning disable CS1591 // 遺漏公用可見類型或成員 'BoltAttrSurrogate.ConvertToObject()' 的 XML 註解
         protected override BoltAttr ConvertToObject()
@@ -62,7 +62,7 @@ namespace WPFSTD105.Surrogate
             X = obj.X;
             Y = obj.Y;
             Z = obj.Z;
-            BlackName= obj.BlackName;   
+            BlockName= obj.BlockName;   
         }
 
 #pragma warning disable CS1591 // 遺漏公用可見類型或成員 'BoltAttrSurrogate.CopyDataToObject(BoltAttr)' 的 XML 註解
@@ -78,7 +78,7 @@ namespace WPFSTD105.Surrogate
             obj.X = X;
             obj.Y = Y;
             obj.Z = Z;
-            obj.BlackName = BlackName;
+            obj.BlockName = BlockName;
         }
         /// <summary>
         /// 在反序列化過程中將代理轉換為相關對象。
