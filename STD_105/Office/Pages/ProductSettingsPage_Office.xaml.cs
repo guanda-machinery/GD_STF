@@ -443,7 +443,7 @@ namespace STD_105.Office
                 }
 
 #if DEBUG
-                    log4net.LogManager.GetLogger("ModifyPart").Debug("");
+                log4net.LogManager.GetLogger("ModifyPart").Debug("");
                 log4net.LogManager.GetLogger("修改主件").Debug("開始");
 #endif
 
@@ -4027,6 +4027,7 @@ namespace STD_105.Office
                     {
                         ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
                         item.steelAttr.ExclamationMark = true;
+                        item.ExclamationMark = true;
                     }
 
 
