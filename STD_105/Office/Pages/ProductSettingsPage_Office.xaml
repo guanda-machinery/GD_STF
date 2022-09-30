@@ -63,9 +63,9 @@
 
     <!--物件設定與設定完成的物件列表-->
     <Grid x:Name="DataGrid" dx:ThemeManager.ThemeName="Win10Light"    Background="#d3d3d3"    >
-        <Grid.DataContext>
+        <!--<Grid.DataContext>
             <STD105VM:ObSettingVM/>
-        </Grid.DataContext>
+        </Grid.DataContext>-->
         <Grid.Resources>
             <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }" >
                 <Setter Property="BorderThickness" Value="1"/>
@@ -321,7 +321,7 @@
                     </dxg:GridColumn>
 
                     <dxg:GridColumn FieldName="GUID" Binding="{Binding  steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="{StaticResource visible}"/>
-                    <dxg:GridColumn FieldName="AssemblyNumber" Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="60"/>
+                    <dxg:GridColumn FieldName="asseNumber" Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="60"/>
                     <dxg:GridColumn FieldName="PartNumber" Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="60" />
                     <dxg:GridColumn FieldName="TeklaName" Binding="{Binding steelAttr.Name}" IsSmart="True" Header="名稱" Width="80"/>
                     <dxg:GridColumn FieldName="TypeDesc"  IsSmart="True" Header="鋼材類型" Visible="{StaticResource visible}"/>
@@ -563,9 +563,9 @@
                               SelectedIndex="{Binding SelectedItems[0].SteelType, ElementName=PieceListGridControl, Mode=OneWay}"
                               Padding="5,1,0,0">
                         <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SteelType">
+                            <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SteelTypeComboBox">
                                 <i:InvokeCommandAction Command="{ Binding ShowSteelTypeCommand }"
-                                                           CommandParameter="{ Binding ElementName=cbx_SteelType, Path=SelectedIndex }"/>
+                                                           CommandParameter="{ Binding ElementName=cbx_SteelTypeComboBox, Path=SelectedIndex }"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </ComboBox>
@@ -579,7 +579,7 @@
                                   DisplayMemberPath="Profile" 
                                   Text="{Binding SteelSectionProperty}" SelectionChanged="CBOX_SectionTypeChanged">
                         <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionType">
+                            <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionTypeComboBox">
                                 <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>

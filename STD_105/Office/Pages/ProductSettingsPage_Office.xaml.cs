@@ -443,7 +443,7 @@ namespace STD_105.Office
                 }
 
 #if DEBUG
-                    log4net.LogManager.GetLogger("ModifyPart").Debug("");
+                log4net.LogManager.GetLogger("ModifyPart").Debug("");
                 log4net.LogManager.GetLogger("修改主件").Debug("開始");
 #endif
 
@@ -660,14 +660,14 @@ namespace STD_105.Office
                             else
                             {
                                 // 有資料且有dm檔，新增再存
-                                ViewModel.AddPart.Execute(null);
+                                //ViewModel.AddPart.Execute(null);
                                 SaveModel(true, true);
                             }
                         }
                         else
                         {
                             // 無資料，新增再儲存
-                            ViewModel.AddPart.Execute(null);
+                            //ViewModel.AddPart.Execute(null);
                             SaveModel(true, true);
                         }
                         //fFirstAdd = true;
@@ -3855,6 +3855,13 @@ namespace STD_105.Office
             ViewModel.ProductWeightProperty = (CuurentSelectedPart.Length / 1000) * CuurentSelectedPart.Weight;
             if (CuurentSelectedPart.Weight == 0) ViewModel.ProductWeightProperty = ViewModel.CalculateSinglePartWeight();
             ViewModel.fPartListOrManuall = false;
+
+            //this.partNumber.Text = ViewModel.PartNumberProperty;
+            //this.asseNumber.Text = ViewModel.AssemblyNumberProperty;
+            //this.cbx_SteelTypeComboBox.SelectedIndex = ViewModel.ProfileType;  
+            //this.cbx_SectionTypeComboBox.Text = ViewModel.SteelSectionProperty;
+            //this.Length.Text = CuurentSelectedPart.Length.ToString();
+            //this.Weight.Text = ViewModel.ProductWeightProperty.ToString();
         }
         /// <summary>
         /// Grid Select Change
@@ -4001,18 +4008,47 @@ namespace STD_105.Office
                     model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
                     SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
 
-                    Dictionary<string, ObservableCollection<SteelAttr>> saFile = ser.GetSteelAttr();
-                    double length = ((SteelAttr)model.Entities[0].EntityData).Length;
-                    int steelType = (int)(((SteelAttr)model.Entities[0].EntityData).Type);
-                    string profile = ((SteelAttr)model.Entities[0].EntityData).Profile;
+                    bool hasOutSteel = false;
+                    for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
+                    {
+                        if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
+                        {
+                            BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
+                            Block block = model.Blocks[blockReference.BlockName]; //取得圖塊
+                            Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts((GroupBoltsAttr)model.Entities[i].EntityData, model, out BlockReference blockRef, out bool checkRef);
+                            //Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生螺栓圖塊
+                            if (bolts3DBlock.hasOutSteel)
+                            {
+                                hasOutSteel = true;
+                            }
+                            Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
+                        }
+                    }
+                    if (hasOutSteel)
+                    {
+                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                        item.steelAttr.ExclamationMark = true;
+                        item.ExclamationMark = true;
+                    }
 
-                    ((SteelAttr)model.Entities[0].EntityData).Weight = sr.PartWeight(new ProductSettingsPageViewModel()
+
+
+
+
+
+
+                    Dictionary<string, ObservableCollection<SteelAttr>> saFile = ser.GetSteelAttr();
+                    double length = ((SteelAttr)model.Entities[model.Entities.Count-1].EntityData).Length;
+                    int steelType = (int)(((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).Type);
+                    string profile = ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).Profile;
+
+                    ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).Weight = sr.PartWeight(new ProductSettingsPageViewModel()
                     {
                         Length = length,
                         SteelType = steelType,
                         Profile = profile,
                     }, saFile);
-                    ViewModel.ProductWeightProperty = ((SteelAttr)model.Entities[0].EntityData).Weight;
+                    ViewModel.ProductWeightProperty = ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).Weight;
                     // 執行斜邊打點
                     RunHypotenusePoint();
 

@@ -1555,6 +1555,8 @@ namespace WPFSTD105.ViewModel
                              ExclamationMark = g.FirstOrDefault().ExclamationMark,
                              t1 = g.FirstOrDefault().steelAttr.t1,
                              t2 = g.FirstOrDefault().steelAttr.t2,
+                             H = g.FirstOrDefault().steelAttr.H,
+                             W = g.FirstOrDefault().steelAttr.W
                          }).ToList();
             List<ProductSettingsPageViewModel> list = new List<ProductSettingsPageViewModel>();
 
@@ -1581,7 +1583,7 @@ namespace WPFSTD105.ViewModel
                     Title2 = item.Title2,
                     t1 = item.t1,
                     t2 = item.t2,
-                    ExclamationMark = item.ExclamationMark == null ? false : item.ExclamationMark,
+                    ExclamationMark = item.ExclamationMark == null ? false : item.ExclamationMark,                    
                 };
                 aa.steelAttr.GUID = item.DataName;
                 aa.steelAttr.AsseNumber = item.AssemblyNumber;
@@ -1600,6 +1602,8 @@ namespace WPFSTD105.ViewModel
                 aa.steelAttr.Phase = item.Phase;
                 aa.steelAttr.ShippingNumber = item.ShippingNumber;
                 aa.steelAttr.ExclamationMark = item.ExclamationMark;
+                aa.steelAttr.H = item.H;
+                aa.steelAttr.W = item.W;
                 list.Add(aa);
             }
             return list;
