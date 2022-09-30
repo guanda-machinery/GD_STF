@@ -145,7 +145,7 @@
                             </dxg:GridControl.Resources>
                             <dxg:GridControl.View >
                                 <dxg:TableView  
-                                    Loaded="TableView_Loaded"
+                                    
                                     VerticalScrollbarVisibility="Visible"
                                     ShowGroupPanel="False"
                                     ShowSearchPanelMode="Always"
@@ -575,7 +575,7 @@
                         MinHeight="200"  MaxHeight="500">
                         <dxg:GridControl.View >
                             <dxg:TableView 
-                                Loaded="Material_List_TableView_Loaded"
+                                
                                     VerticalScrollbarVisibility="Visible"
                                 HorizontalScrollbarVisibility="Auto"
                                     ShowGroupPanel="False"
