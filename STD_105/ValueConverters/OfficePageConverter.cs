@@ -37,9 +37,9 @@ namespace STD_105.Office
                     basePage = new ProductSettingsPage_Office();//新版頁面
                     break;
                 // 參數設定
-                case OfficePage.ParameterSettings:
+               /* case OfficePage.ParameterSettings:
                     basePage = new ParametersSettings_Office();
-                    break;
+                    break;*/
                 // 20220711 張燕華 參數設定 - 選單功能
                 case OfficePage.ParameterSettings_FuncList:
                     basePage = new ParametersSettings_Office_FuncList();
@@ -101,9 +101,9 @@ namespace STD_105.Office
                     basePage = new FirstPage();
                     break;
                 // 原斷面規格頁面
-                case ParameterSettingPage.SectionSpecificationSetting:
+              /*  case ParameterSettingPage.SectionSpecificationSetting:
                     basePage = new ParametersSettings_Office();
-                    break;
+                    break;*/
                 // 斷面規格目錄
                 case ParameterSettingPage.SectionSpecificationMenu:
                     basePage = new SectionSpecificationMenu();

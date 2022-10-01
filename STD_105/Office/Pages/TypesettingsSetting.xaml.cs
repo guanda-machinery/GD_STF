@@ -27,6 +27,7 @@ using GD_STD.Data;
 using System.Collections.ObjectModel;
 using DevExpress.Xpf.WindowsUI;
 using DevExpress.Xpf.Core;
+using System.Windows.Controls.Primitives;
 
 namespace STD_105.Office
 {
@@ -51,7 +52,7 @@ namespace STD_105.Office
         public TypesettingsSetting()
         {
             InitializeComponent();
-            model.DataContext = ViewModel;
+             model.DataContext = ViewModel;
             drawing.DataContext = ViewModel;
             model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             drawing.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
@@ -672,19 +673,19 @@ namespace STD_105.Office
         }
 
 
+        bool TableViewLoadedBoolen = false;
+        private void Material_List_TableView_Loaded(object sender, RoutedEventArgs e)
+        {
+            ((DevExpress.Xpf.Grid.TableView)sender).FocusedRowHandle = DevExpress.Xpf.Grid.GridControl.InvalidRowHandle;
+            TableViewLoadedBoolen = true;
+        }
+
+
         private void Material_List_GridControl_SelectedItemChanged(object sender, DevExpress.Xpf.Grid.SelectedItemChangedEventArgs e)
         {
-            /* if (e.NewItem is GD_STD.Data.MaterialDataView)
-             {
-                 var a = (GD_STD.Data.MaterialDataView)e.NewItem;
-                 a.ButtonEnable = true;
-             }
-             if (e.OldItem is GD_STD.Data.MaterialDataView)
-             {
-                 var b = (GD_STD.Data.MaterialDataView)e.OldItem; 
-                 b.ButtonEnable =false;
-             }*/
-            
+            if (TableViewLoadedBoolen == false)
+                return;
+
             var SenderC = sender as DevExpress.Xpf.Grid.GridControl;
 
             if (SenderC.View != null)
@@ -697,10 +698,7 @@ namespace STD_105.Office
                     var NewHandle = SenderC.FindRow(e.NewItem);
                     SenderC.RefreshRow(NewHandle);//畫面裡刷新上面該列的設定值
 
-                    /*if(e.OldItem != null)
-                    {
-                        ControlDraw3D();
-                    }  */
+
                 }
                 if (e.OldItem is GD_STD.Data.MaterialDataView)
                 {
@@ -711,8 +709,6 @@ namespace STD_105.Office
                 }
             }
         }
-
-
 
         private void TableView_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -754,6 +750,55 @@ namespace STD_105.Office
 
             //  SaveModel();
         }
+
+
+
+
+
+
+
+
+
+        private void PartListTableView_Loaded(object sender, RoutedEventArgs e)
+        {
+            ((DevExpress.Xpf.Grid.TableView)sender).FocusedRowHandle = DevExpress.Xpf.Grid.GridControl.InvalidRowHandle;
+
+        }
+        private void SoftCountTableView_Loaded(object sender, RoutedEventArgs e)
+        {
+            ((DevExpress.Xpf.Grid.TableView)sender).FocusedRowHandle = DevExpress.Xpf.Grid.GridControl.InvalidRowHandle;
+        }
+
+
+
+        private void ScrollOwner_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if ((sender as DevExpress.Xpf.Grid.TableView).Name == PartListTableView.Name)
+            {
+                IScrollInfo SoftCountTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(SoftCountTableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
+                if (SoftCountTableView_ScrollElement != null)
+                    SoftCountTableView_ScrollElement.SetVerticalOffset(e.VerticalOffset);
+            }
+            if ((sender as DevExpress.Xpf.Grid.TableView).Name == SoftCountTableView.Name)
+            {
+                IScrollInfo PartsTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(PartListTableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
+                if (PartsTableView_ScrollElement != null)
+                    PartsTableView_ScrollElement.SetVerticalOffset(e.VerticalOffset);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }
 

@@ -770,6 +770,19 @@ namespace WPFSTD105
             }
         }
 
+        /// <summary>
+        /// 製品設定命令(新)
+        /// </summary>
+        public ICommand MachineMonitorCommand
+        {
+            get
+            {
+                return new WPFBase.RelayCommand(() =>
+                {
+                    ApplicationViewModel.CurrentPage = ApplicationPage.MachineMonitor;
+                });
+            }
+        }
 
 
         /// <summary>
