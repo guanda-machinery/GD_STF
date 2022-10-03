@@ -575,9 +575,8 @@
                         MinHeight="200"  MaxHeight="500">
                         <dxg:GridControl.View >
                             <dxg:TableView 
-                                
                                     VerticalScrollbarVisibility="Visible"
-                                HorizontalScrollbarVisibility="Auto"
+                                    HorizontalScrollbarVisibility="Auto"
                                     ShowGroupPanel="False"
                                     ShowSearchPanelMode="Always"
                                     SearchPanelNullText="Search Tasks(Ctrl + F)" 
