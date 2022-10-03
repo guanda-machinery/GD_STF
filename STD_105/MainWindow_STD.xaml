@@ -653,6 +653,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
                     <!--  新建專案  -->
                     <local:MainFunctionButton ButtonCommand="{Binding NewProjectShowCommand}"
@@ -712,8 +713,14 @@
                                               IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
                                               TitleText="{DynamicResource LANGUAGE_ProductsSettings}"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
-
-
+                    <!--  加工監控(新)  -->
+                    <local:MainFunctionButton Grid.Row="4"
+                                              Grid.Column="1"
+                                              ButtonCommand="{Binding MachineMonitorCommand}"
+                                              ButtonImageSource="{StaticResource Monitor_New}"
+                                              IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
+                                              TitleText="{DynamicResource LANGUAGE_ProcessingSettings}"
+                                              FontColor="{ StaticResource solidclr_CreamyGray }" />
 
 
 

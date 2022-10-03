@@ -8,16 +8,12 @@ namespace WPFWindowsBase
     /// <summary>
     /// 所有頁面的基本功能
     /// </summary>
-    public class BaseUserControl : Page
+    public class BaseUserControl : UserControl
     {
-        /// <inheritdoc/>
-        public BaseUserControl()
-        {
-        }
 
     }
     /// <summary>
-    /// 具有添加的ViewModel支持的<see cref="Page"/>
+    /// 具有添加的ViewModel支持的<see cref="UserControl"/>
     /// </summary>
     /// <typeparam name="VM"></typeparam>
     public class BaseUserControl<VM> : BaseUserControl where VM : BaseViewModel, new()
