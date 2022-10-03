@@ -497,19 +497,6 @@ namespace WPFSTD105.Model
             // 符合加工區域
             if (check)
             {
-                if (!model.Blocks.Contains(result.Name))
-                {
-                    model.Blocks.Add(result);//加入孔位群組圖塊到模型
-                    block = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
-                    block.EntityData = result.Info;
-                    block.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-                    model.Entities.Insert(0, block);//加入參考圖塊到模型
-                }
-                else
-                {
-                    result.Entities.AddRange(model.Blocks[result.Name].Entities);
-                }
-                
                 if (attr.Mode != AXIS_MODE.POINT)
                 {
                     bool inSteel = true;
@@ -558,6 +545,23 @@ namespace WPFSTD105.Model
                 result.hasOutSteel = true;
                 //((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
             }
+
+            if (!result.hasOutSteel)
+            {
+                if (!model.Blocks.Contains(result.Name))
+                {
+                    model.Blocks.Add(result);//加入孔位群組圖塊到模型
+                    block = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+                    block.EntityData = result.Info;
+                    block.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
+                    model.Entities.Insert(0, block);//加入參考圖塊到模型
+                }
+                else
+                {
+                    result.Entities.AddRange(model.Blocks[result.Name].Entities);
+                }
+            }
+
             return result;
 
 

@@ -241,7 +241,7 @@ namespace STD_105.Office
 #if DEBUG
                 log4net.LogManager.GetLogger("AddPart").Debug("");
 #endif
-
+                //ViewModel = (ObSettingVM)DataContext;
                 #region 3D 
                 //model.Clear(); //清除目前模型
                 //drawing.Clear();
@@ -542,7 +542,7 @@ namespace STD_105.Office
 
                 if (!fNewPart.Value)
                 {
-                    SaveModel(false);//存取檔案
+                    SaveModel(true);//存取檔案
                 }
 
                 Esc();
@@ -554,11 +554,14 @@ namespace STD_105.Office
                 //刷新模型
                 model.Invalidate();
                 drawing.Invalidate();
+                model.SetCurrent(null);
+                drawing.SetCurrent(null);
                 model.Refresh();
                 drawing.Refresh();
 #if DEBUG
                 log4net.LogManager.GetLogger("ModifyPart").Debug("");
                 log4net.LogManager.GetLogger("修改主件").Debug("結束");
+
 #endif
             });
             //讀取主零件
@@ -670,6 +673,15 @@ namespace STD_105.Office
                             //ViewModel.AddPart.Execute(null);
                             SaveModel(true, true);
                         }
+
+                        WinUIMessageBox.Show(null,
+                        $"零件已存檔",
+                        "通知",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                        FloatingMode.Popup);
                         //fFirstAdd = true;
                         //fNewPart = false;
                         //fGrid = false;
@@ -3133,7 +3145,7 @@ namespace STD_105.Office
 
             var ass = new GD_STD.Data.SteelAssembly()
             {
-                GUID = ViewModel.SteelAttr.GUID,
+                //GUID = ViewModel.SteelAttr.GUID,
                 Count = ViewModel.SteelAttr.Number,
                 IsTekla = false,
                 //Length = ViewModel.SteelAttr.Length,
@@ -3149,17 +3161,17 @@ namespace STD_105.Office
             //if (ViewModel.SteelAssemblies.IndexOf(ass) == -1 && add)
             if (!ViewModel.SteelAssemblies.Where(x => x.Number == ass.Number && x.Count == ViewModel.SteelAttr.Number).Any() && add)
             {
-                //ass = new SteelAssembly()
-                //{
-                //    GUID = ViewModel.SteelAttr.GUID,
-                //    Count = ViewModel.SteelAttr.Number,
-                //    IsTekla = false,
-                //    Length = ViewModel.SteelAttr.Length,
-                //    ShippingDescription = new List<string>(new string[ViewModel.SteelAttr.Number]),
-                //    ShippingNumber = new List<int>(new int[ViewModel.SteelAttr.Number]),
-                //    Phase = new List<int>(new int[ViewModel.SteelAttr.Number]),
-                //    Number = ViewModel.SteelAttr.PartNumber,
-                //};
+                ass = new SteelAssembly()
+                {
+                    //GUID = ViewModel.SteelAttr.GUID,
+                    Count = ViewModel.SteelAttr.Number,
+                    IsTekla = false,
+                    Length = ViewModel.SteelAttr.Length,
+                    ShippingDescription = new List<string>(new string[ViewModel.SteelAttr.Number]),
+                    ShippingNumber = new List<int>(new int[ViewModel.SteelAttr.Number]),
+                    Phase = new List<int>(new int[ViewModel.SteelAttr.Number]),
+                    Number = ViewModel.SteelAttr.AsseNumber,
+                };
                 ass.ID = new List<int>();
                 for (int i = 0; i < ViewModel.SteelAssemblies.Count; i++)
                 {
@@ -3172,7 +3184,7 @@ namespace STD_105.Office
                     if (!buffer.Contains(id))
                     {
                         buffer.Add(id);
-
+  
                     }
                 }
                 ass.ID.AddRange(buffer.ToArray());
@@ -3216,7 +3228,7 @@ namespace STD_105.Office
                 ViewModel.SteelAttr.ShippingNumber,
                 ViewModel.SteelAttr.Title1,
                 ViewModel.SteelAttr.Title2, ViewModel.SteelAttr.Lock);
-            steelPart.ID = new List<int>();
+            steelPart.ID = new List<int>();            
             steelPart.Match = new List<bool>();
             steelPart.Material = ViewModel.SteelAttr.Material;
             steelPart.Father = ass.ID;
@@ -3992,7 +4004,19 @@ namespace STD_105.Office
                     model.Entities.Clear();
                     drawing.Blocks.Clear();
                     drawing.Entities.Clear();
-                    readFile.AddToScene(model);//將讀取完的檔案放入到模型
+                    try
+                    {
+                        readFile.AddToScene(model);//將讀取完的檔案放入到模型
+                    }
+                    catch (Exception)
+                    {
+                        ViewModel = (ObSettingVM)DataContext;
+                        Steel3DBlock steel = Steel3DBlock.AddSteel(ViewModel.GetSteelAttr(), model, out BlockReference blockReference);
+                        ((SteelAttr)model.Entities[0].EntityData).GUID = Guid.Parse( item.DataName);
+                        //BlockReference steel2D = SteelTriangulation((Mesh)steel.Entities[0]);
+                        BlockReference steel2D = SteelTriangulation((Mesh)steel.Entities.Where(x => x.GetType().Name == "Mesh").FirstOrDefault());
+                    }
+                    
                                                //ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
                     ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
                     ViewModel.GetSteelAttr();

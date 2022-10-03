@@ -234,6 +234,7 @@
 
 
                 </GroupBox>
+                
                 <!--長度參數設定-->
                 <GroupBox Grid.Column="1"
                 Header="排版參數設定" 
@@ -546,7 +547,7 @@
                 </StackPanel>
 
             </Grid>
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1" Height="500">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" MinWidth="700"/>
                     <ColumnDefinition Width="350" MinWidth="200"/>
@@ -1256,20 +1257,20 @@
                                         </ddes:Viewport.ToolBars>
                                     </ddes:Viewport>
                                 </ddes:Model.Viewports>
-                            </spa:ModelExt>
+                            </spa:ModelExt>                           
                         </Grid>
-
+                       
                     </TabItem>
 
+                    
 
-
-                </TabControl>
+                </TabControl>                
                 <!--  <Border BorderThickness="0,0,1.5,0" BorderBrush="gray" Margin="0,5,-1,5" Opacity="0.7"></Border>-->
                 <!-- 可調整邊界拉柄(透明)-->
                 <GridSplitter Grid.Row="0" Grid.Column="0" Background="Transparent" Grid.RowSpan="2" HorizontalAlignment="Right"   VerticalAlignment="Stretch" Width="10"  Margin="-5" MouseMove="GridSplitter_MouseMove" />
 
-
-
+                
+                
             </Grid>
         </Grid>
 

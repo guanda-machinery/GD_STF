@@ -1325,6 +1325,7 @@ namespace WPFSTD105.ViewModel
             // 構件 vs 該節點
             var assNumber_ID = assemblies
                 .Select(x => new { x.Number, x.ID })
+                .Distinct()
                 .ToList()
                 .ToDictionary(x => x.Number, y => y.ID);//.SelectMany(x => x.Key, (x, y) =>new { x.Key, x.Value }).Select(x => new {x.Key,x.Value})
 
