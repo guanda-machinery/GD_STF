@@ -1,10 +1,13 @@
-﻿using System;
+﻿using DevExpress.Xpf.Core.Native;
+using DevExpress.Xpf.Grid;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -59,12 +62,33 @@ namespace STD_105
             }
         }
 
-        private void TableView_Loaded(object sender, RoutedEventArgs e)
+
+
+        private void PartListTableView_Loaded(object sender, RoutedEventArgs e)
+        {
+            ((DevExpress.Xpf.Grid.TableView)sender).FocusedRowHandle = DevExpress.Xpf.Grid.GridControl.InvalidRowHandle;
+
+        }
+        private void SoftCountTableView_Loaded(object sender, RoutedEventArgs e)
         {
             ((DevExpress.Xpf.Grid.TableView)sender).FocusedRowHandle = DevExpress.Xpf.Grid.GridControl.InvalidRowHandle;
         }
 
-
+        private void ScrollOwner_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if ((sender as DevExpress.Xpf.Grid.TableView).Name == PartListTableView.Name)
+            {
+                IScrollInfo SoftCountTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(SoftCountTableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
+                if (SoftCountTableView_ScrollElement != null)
+                    SoftCountTableView_ScrollElement.SetVerticalOffset(e.VerticalOffset);
+            }
+            if ((sender as DevExpress.Xpf.Grid.TableView).Name == SoftCountTableView.Name)
+            {
+                IScrollInfo PartsTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(PartListTableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
+                if (PartsTableView_ScrollElement != null)
+                    PartsTableView_ScrollElement.SetVerticalOffset(e.VerticalOffset);
+            }
+        }
 
 
     }

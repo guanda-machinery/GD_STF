@@ -22,6 +22,7 @@
                   xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
                   xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
                   xmlns:System="clr-namespace:System;assembly=mscorlib"
+                  xmlns:STD105_office="clr-namespace:STD_105.Office"
                   d:DesignHeight="1049"
                   d:DesignWidth="755"
                   Name="control"
@@ -53,10 +54,65 @@
                             Value="100" />
                 </Style.Setters>
             </Style>
+            <!--
             <Style TargetType="TabControl"
                    BasedOn="{ StaticResource tabcontrol_STD }"></Style>
             <Style TargetType="TabItem"
-                   BasedOn="{ StaticResource tabitem_STD }"></Style>
+                   BasedOn="{ StaticResource tabitem_STD }"></Style>-->
+            <Style TargetType="TabControl" BasedOn="{StaticResource BaseStyle}">
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Background" Value="#303030"/>
+                <Style.Resources>
+                    <Style TargetType="TabItem"  BasedOn="{StaticResource BaseStyle}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type TabItem}">
+                                    <Grid x:Name="Root">
+                                        <Border x:Name="Border"
+                                                    Width="{Binding ElementName=ContentSite, Path=Width}"
+                                                    Height="{Binding ElementName=ContentSite, Path=Height}"
+                                                    VerticalAlignment="Center"
+                                                    Background="#eeeeee"
+                                                    BorderBrush="{StaticResource solidclr_SilverGray}"
+                                                    CornerRadius="5,5,0,0">
+                                            <ContentPresenter x:Name="ContentSite"
+                                                               Margin="40,8"
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"
+                                                               ContentSource="Header"
+                                                               RecognizesAccessKey="True"
+                                                               TextBlock.FontSize="16"
+                                                               TextBlock.Foreground="#303030" />
+                                        </Border>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal" />
+                                                <VisualState x:Name="Selected">
+                                                    <Storyboard>
+                                                        <ColorAnimation Storyboard.TargetName="Border"
+                                                        Storyboard.TargetProperty="(Border.Background).Color"
+                                                        To="#303030"
+                                                        Duration="0" />
+                                                        <ColorAnimation Storyboard.TargetName="ContentSite"
+                                                        Storyboard.TargetProperty="(TextBlock.Foreground).Color"
+                                                        To="White"
+                                                        Duration="0" />
+                                                        <ThicknessAnimation Storyboard.TargetName="Border"
+                                                            Storyboard.TargetProperty="BorderThickness"
+                                                            To="0"
+                                                            Duration="0" />
+                                                    </Storyboard>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Style.Resources>
+            </Style>
+
             <Style TargetType="GroupBox"
                    BasedOn="{ StaticResource gbx_WithBorder }"></Style>
             <local:DRILL_TYPE_ToStringConverter x:Key="DrillType" />
@@ -67,8 +123,11 @@
           Margin="5">
         <TabControl x:Name="Main"
                     SelectedIndex="2">
-            <!-- 斷面設定-->
-            <TabItem Header="{ DynamicResource LANGUAGE_SectionSettings }"
+            <TabItem Header="{ DynamicResource LANGUAGE_SectionSettings }" >
+                <local:ParametersSettings_UserControl/>
+            </TabItem>
+            <!-- 斷面設定(舊)-->
+            <TabItem Header="{ DynamicResource LANGUAGE_SectionSettings }" Visibility="Collapsed"
                      Style="{ StaticResource tabitem_STD }"
                      IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance},Converter={local:NullToEnabledConverter}}">
                 <Grid>
@@ -1505,8 +1564,8 @@
                 </Grid>
             </TabItem>
             <!--校機參數-->
-            <TabItem Header="校機參數"
-                     Style="{StaticResource tabitem_STD}">
+            <!--Style="{StaticResource tabitem_STD}"-->
+            <TabItem Header="校機參數">
                 <TabItem.DataContext>
                     <STD105VM:SofSettingVM />
                 </TabItem.DataContext>
@@ -1551,8 +1610,8 @@
                 </Grid>
             </TabItem>
             <!--選配設定-->
-            <TabItem Header="選配設定"
-                     Style="{StaticResource tabitem_STD}">
+            <!--   Style="{StaticResource tabitem_STD}"-->
+            <TabItem Header="選配設定">
                 <TabItem.DataContext>
                     <STD105VM:SofSettingVM />
                 </TabItem.DataContext>

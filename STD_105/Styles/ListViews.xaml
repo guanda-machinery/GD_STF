@@ -475,7 +475,7 @@
                         BorderBrush="{Binding BorderBrushColor, Source={x:Static SofSettings:SofSetting.Default}}"
                         BorderThickness="1"
                         CornerRadius="5">
-                        <dxlc:ScrollBox>
+                        <dxlc:ScrollBox MaxHeight="500">
                             <dxlc:ScrollBox.HorizontalScrollBarStyle>
                                 <Style BasedOn="{StaticResource HorizontalScrollBar_STD}" TargetType="ScrollBar" />
                             </dxlc:ScrollBox.HorizontalScrollBarStyle>

@@ -1,27 +1,40 @@
 ﻿using DevExpress.Xpf.Grid;
 using System;
-using System.Web.Configuration;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 using WPFSTD105.ViewModel;
 using WPFWindowsBase;
 
-namespace STD_105.Office
+namespace STD_105
 {
     /// <summary>
-    /// ParametersSettings_Office.xaml 的互動邏輯
+    /// ParametersSettings_UserControl.xaml 的互動邏輯
     /// </summary>
-    public partial class SectionSpecificationMenu : BasePage<SettingParVM>
+    public partial class ParametersSettings_UserControl : BaseUserControl
     {
-        public SectionSpecificationMenu()
+        public ParametersSettings_UserControl()
         {
             InitializeComponent();
         }
 
-        /*void ValidateCurrentValue(object sender, GridCellValidationEventArgs e)
+        void ValidateCurrentValue(object sender, GridCellValidationEventArgs e)
         {
-            DataGridData temp = ViewModel.InsertionData[0];
+  
+            DataGridData temp = (this.DataContext as SettingParVM).InsertionData[0];
             if (e.Column.FieldName != nameof(temp.Value))
                 return;
-            
+
             var NumberMin = 0;
             if (double.TryParse((string)e.Value, out var DoubleValue))
             {
@@ -42,6 +55,6 @@ namespace STD_105.Office
                 e.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical;
                 e.ErrorContent = $"請輸入數字!";
             }
-        }*/
+        }
     }
 }
