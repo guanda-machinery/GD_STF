@@ -21,6 +21,6 @@
                   mc:Ignorable="d"
                   Title="參數設定">
     <Grid>
-    <STD:ParametersSettings_UserControl/>
+        <STD:SectionSpecificationMenu_UserControl Style="{StaticResource SectionSpecificationMenuWhiteStyle}"/>
     </Grid>
 </WPFBase:BasePage>

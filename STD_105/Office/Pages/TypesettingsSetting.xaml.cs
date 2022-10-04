@@ -28,6 +28,8 @@ using System.Collections.ObjectModel;
 using DevExpress.Xpf.WindowsUI;
 using DevExpress.Xpf.Core;
 using System.Windows.Controls.Primitives;
+using DevExpress.Xpf.Grid;
+using DevExpress.Xpf.Core.Native;
 
 namespace STD_105.Office
 {
@@ -52,7 +54,7 @@ namespace STD_105.Office
         public TypesettingsSetting()
         {
             InitializeComponent();
-             model.DataContext = ViewModel;
+            model.DataContext = ViewModel;
             drawing.DataContext = ViewModel;
             model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             drawing.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");

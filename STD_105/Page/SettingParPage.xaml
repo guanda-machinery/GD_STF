@@ -109,6 +109,7 @@
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
+
                     </Style>
                 </Style.Resources>
             </Style>
@@ -123,8 +124,8 @@
           Margin="5">
         <TabControl x:Name="Main"
                     SelectedIndex="2">
-            <TabItem Header="{ DynamicResource LANGUAGE_SectionSettings }" >
-                <local:ParametersSettings_UserControl/>
+            <TabItem Header="{ DynamicResource LANGUAGE_SectionSettings }" Margin="-5,0,0,0" >
+                <local:SectionSpecificationMenu_UserControl Margin="5" Style="{StaticResource SectionSpecificationMenuDarkStyle }"/>
             </TabItem>
             <!-- 斷面設定(舊)-->
             <TabItem Header="{ DynamicResource LANGUAGE_SectionSettings }" Visibility="Collapsed"

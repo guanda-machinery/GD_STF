@@ -21,11 +21,16 @@ namespace STD_105
     /// <summary>
     /// ParametersSettings_UserControl.xaml 的互動邏輯
     /// </summary>
-    public partial class ParametersSettings_UserControl : BaseUserControl
+    public partial class  SectionSpecificationMenu_UserControl: UserControl
     {
-        public ParametersSettings_UserControl()
+        public SectionSpecificationMenu_UserControl()
         {
             InitializeComponent();
+            /*if(this.Style == null)
+            {
+                this.Style = (Style)Application.Current.Resources["SectionSpecificationMenuWhiteStyle"];
+
+            }*/
         }
 
         void ValidateCurrentValue(object sender, GridCellValidationEventArgs e)
