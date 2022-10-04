@@ -939,6 +939,7 @@
     <Compile Include="ValueConverters\OillBoolToImageSourceConverter.cs" />
     <Compile Include="ValueConverters\PageEnumToBoolConverter.cs" />
     <Compile Include="ValueConverters\PerformanceToConverter.cs" />
+    <Compile Include="ValueConverters\TabItemIsSelectedToVisibilityConverter.cs" />
     <Compile Include="ZoomControls.cs" />
     <Page Include="GraphWin.xaml">
       <SubType>Designer</SubType>
@@ -1029,6 +1030,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Office\Pages\ObSettingsPage_Office.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Drawings_MachineButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\SectionSpecificationMenuStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

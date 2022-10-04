@@ -18,8 +18,8 @@
         Closing="AppWindows_Closing"
         mc:Ignorable="d"
         Title="頁面框架"
-        Height="1840"
-        Width="1080">
+        Height="1024"
+        Width="1280">
     <Grid Background="{ StaticResource solidclr_LightGray }">
         <Grid.Resources>
             <!--  遮蔽背景  -->

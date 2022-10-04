@@ -241,7 +241,7 @@
                                         Grid.Column="1"
                                         Background="#292929"  >
 
-                        <!--{Binding ElementName= PartGridControl , Converter={STD105:GridControlWidthConvert} ,ConverterParameter='SortCountGridColumnSpace' , UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True , NotifyOnTargetUpdated=True}"-->
+                        <!--{Binding ElementName= PartsGridControl , Converter={STD105:GridControlWidthConvert} ,ConverterParameter='SortCountGridColumnSpace' , UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True , NotifyOnTargetUpdated=True}"-->
                         <StackPanel.Resources>
                             <Style TargetType="TextBlock">
                                 <Setter Property="Foreground" Value="#727272"/>
@@ -420,7 +420,7 @@
                                     <MultiBinding Converter="{local:ComParConverter}">
                                         <MultiBinding.Bindings>
                                             <Binding ElementName="Material_List_GridControl"  />
-                                            <Binding ElementName="PartGridControl"/>
+                                            <Binding ElementName="PartsGridControl"/>
                                         </MultiBinding.Bindings>
                                     </MultiBinding>
                                 </Button.CommandParameter>

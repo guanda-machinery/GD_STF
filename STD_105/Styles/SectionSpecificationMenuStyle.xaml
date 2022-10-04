@@ -1,0 +1,104 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"         
+                    xmlns:SofSettings="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
+                    xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    >
+
+    
+    
+    
+    <Style TargetType="{x:Type UserControl}" x:Key="SectionSpecificationMenuWhiteStyle">
+        <Style.Resources>
+            <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Background" Value="#f8f8f8"/>
+        <Style.Resources>
+            <Style TargetType="materialDesign:ColorZone" >
+                <Setter Property="TextBlock.Foreground" Value="Gray"/>
+                <Setter Property="TextBlock.FontSize" Value="14"/>
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="BorderBrush" Value="#cfcfcf"/>
+                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            </Style>
+        </Style.Resources>
+
+    </Style>
+
+            <Style TargetType="StackPanel">
+                <Style.Resources>
+                    <Style TargetType="GroupBox">
+                        <Setter Property="Background" Value="White" />
+                        <Setter Property="Margin" Value="5" />
+                        <Setter Property="BorderThickness" Value="2"/>
+                        <Setter Property="BorderBrush" Value="#666666"/>
+                    </Style>
+                </Style.Resources>
+            </Style>
+
+            <Style TargetType="Button"  BasedOn="{ StaticResource BaseStyle }" >
+                <Setter Property="Background" Value="#f8f8f8"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="BorderBrush" Value="Black"/>
+                <Setter Property="FontSize" Value="{ Binding SubTitleFontSize, Source={ x:Static SofSettings:SofSetting.Default } }"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+            </Style>
+            
+    <Style TargetType="TextBox"
+                   BasedOn="{ StaticResource tbx_BlueUnderline }">
+                <Setter Property="Foreground"
+                        Value="{ StaticResource solidclr_Gray }" />
+                <Setter Property="FontSize"
+                        Value="{ Binding SubTitleFontSize, Source={ x:Static SofSettings:SofSetting.Default } }" />
+            </Style>
+    <Style TargetType="Border">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#ddddd8"/>
+        <Setter Property="CornerRadius" Value="2" />
+    </Style>
+        </Style.Resources>
+    </Style>
+    
+
+    <Style TargetType="{x:Type UserControl}" x:Key="SectionSpecificationMenuDarkStyle" BasedOn="{StaticResource SectionSpecificationMenuWhiteStyle}">
+        <Style.Resources>
+            <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }">
+                <Setter Property="Background" Value="LightGray" />
+                <Style.Resources>
+                    <Style TargetType="materialDesign:ColorZone" >
+                        <Setter Property="TextBlock.Foreground" Value="White"/>
+                        <Setter Property="TextBlock.FontSize" Value="14"/>
+                        <Setter Property="Background" Value="DimGray"/>
+                        <Setter Property="BorderBrush" Value="SlateGray"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    </Style>
+
+                </Style.Resources>
+
+            </Style>
+
+            <Style TargetType="StackPanel">
+                <Style.Resources>
+                    <Style TargetType="GroupBox" BasedOn="{StaticResource gbxParameter}">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Margin" Value="5" />
+                        <Setter Property="BorderThickness" Value="2"/>
+                        <Setter Property="BorderBrush" Value="#666666"/>
+                    </Style>
+                </Style.Resources>
+            </Style>
+
+            <Style TargetType="TextBox"
+                   BasedOn="{ StaticResource tbx_BlueUnderline }">
+                <Setter Property="Foreground"
+                        Value="{ StaticResource solidclr_Gray }" />
+                <Setter Property="FontSize"
+                        Value="{ Binding SubTitleFontSize, Source={ x:Static SofSettings:SofSetting.Default } }" />
+                <Setter Property="CaretBrush" Value="{StaticResource ColorBrushDarkGray}" />
+                <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="{StaticResource ColorBrushDarkGray  }" />
+                <Setter Property="materialDesign:HintAssist.Foreground" Value="{StaticResource ColorBrushDarkGray}" />
+            </Style>
+            
+        </Style.Resources>
+    </Style>
+</ResourceDictionary>
