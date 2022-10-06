@@ -1037,7 +1037,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\SectionSpecificationMenuStyle.xaml">
+    <Page Include="Styles\ParameterMenuStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

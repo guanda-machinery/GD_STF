@@ -15,14 +15,14 @@
                   xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                   xmlns:local="clr-namespace:STD_105.Office"
                   xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
-                  mc:Ignorable="d">
+                  mc:Ignorable="d" Style="{StaticResource SectionSpecificationMenuWhiteStyle}">
     <!--
                   Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"-->
     <UserControl.DataContext>
         <STD105VM:SettingParVM/>
     </UserControl.DataContext>
-    
+
     <!--斷面規格目錄-->
     <GroupBox Header="斷面規格目錄" FontSize="14">
         <Grid>
@@ -71,7 +71,7 @@
                              wpf:HintAssist.Hint="關鍵字過濾"
                              wpf:TextFieldAssist.HasClearButton="True"
                              wpf:TextFieldAssist.TextFieldCornerRadius="1"/>
-                            <Button Grid.Column="2" Style="{StaticResource BaseStyle}" Content="過濾(F)" Margin="5" Padding="20,2"
+                            <Button Grid.Column="2"  Content="過濾(F)" Margin="5" Padding="20,0" FontSize="14"
                                     Command="{Binding FilterCommand}"  
                                     CommandParameter="{ Binding ElementName=tbxFilter, Path=Text }"/>
                         </Grid>
