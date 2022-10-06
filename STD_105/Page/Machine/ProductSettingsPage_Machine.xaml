@@ -844,7 +844,7 @@
             </TabControl>
             <!--繪圖顯示模型-->
             <Border Background="#F0F0F0" Margin="5"   Grid.Column="1" Grid.Row="1" >
-                <TabControl Margin="0.5,0" >
+                <TabControl Margin="0.5,0" BorderThickness="0,1,0,0">
                     <TabControl.Resources>
                         <ResourceDictionary>
                             <Style TargetType="TabItem">
@@ -895,7 +895,7 @@
                         </ResourceDictionary>
                     </TabControl.Resources>
 
-                <TabItem Margin="0,0,0,0" Header="鑽孔" Name="DrillTabItem" >
+                <TabItem Margin="0,0,0,0" Header="鑽孔" Name="DrillTabItem"  >
                         <TabItem.Resources>
                             <Style TargetType="GroupBox" BasedOn="{StaticResource BaseStyle}" >
                                 <Setter Property="Foreground" Value="#3b3b3b"/>
@@ -1121,7 +1121,7 @@
                         </DockPanel>
 
                     </TabItem>
-                    <TabItem Header="切割線" Name="CutTabItem"  >
+                 <TabItem Header="切割線" Name="CutTabItem"  >
                         <DockPanel Width="245" >
                             <Grid  DockPanel.Dock="Top">
                                 <Grid.RowDefinitions>

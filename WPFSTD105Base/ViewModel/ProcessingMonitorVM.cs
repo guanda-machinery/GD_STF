@@ -80,6 +80,8 @@ namespace WPFSTD105.ViewModel
         public MaterialDataView Finish_UndoneDataViews_Selected { get; set; }
 
 
+
+
         /// <summary>
         /// 未加工的控制項
         /// </summary>
@@ -112,6 +114,33 @@ namespace WPFSTD105.ViewModel
         /// 搜尋字串
         /// </summary>
         public string MaterialGridControlSearchString {get;set;}
+
+        private bool _MachiningCombinationl_List_GridControl_IsSelected = false;
+        /// <summary>
+        /// 已選擇MachiningCombinationl_List_GridControl
+        /// </summary>
+        public bool MachiningCombinationl_List_GridControl_IsSelected 
+        {
+            get
+            {
+                return _MachiningCombinationl_List_GridControl_IsSelected;
+            }
+            set
+            {
+                if (_MachiningCombinationl_List_GridControl_IsSelected != value)
+                {
+                    _MachiningCombinationl_List_GridControl_IsSelected = value;
+                    //↓使isenable可即時反應
+                    OnPropertyChanged("MachiningCombinationl_List_GridControl_IsSelected");
+                }
+            }
+        }
+
+
+
+
+
+
 
         #endregion
 
