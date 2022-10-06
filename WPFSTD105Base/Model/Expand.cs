@@ -54,7 +54,7 @@ namespace WPFSTD105.Model
                 model.LoadNcToModel(guid[i]);
             }
 
-            EntityList entitys = new EntityList();
+             
             var place = new List<(double Start, double End, bool IsCut, string Number)>();//放置位置參數
             place.Add((Start: 0, End: material.StartCut, IsCut: true, Number: "")); //素材起始切割物件
             Debug.WriteLine($"Start = {place[place.Count -1].Start}, End : {place[place.Count-1].End}, IsCut : {place[place.Count-1].IsCut}");//除錯工具
@@ -269,7 +269,10 @@ namespace WPFSTD105.Model
             //EntityList result =  entities.Where(el => !((BlockReference)el).Attributes.ContainsKey("Cut")).ToList();
             model.Entities.AddRange(entities);
             model.Entities.AddRange(resultSolid);
+            ser.SetMaterialModel(materialNumber, model); //儲存素材
+
         }
+
         private static void Rotate(IEnumerable<Entity> entities, Point3D origin)
         {
             entities.ForEach(el =>

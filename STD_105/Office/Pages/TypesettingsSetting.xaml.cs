@@ -28,6 +28,8 @@ using System.Collections.ObjectModel;
 using DevExpress.Xpf.WindowsUI;
 using DevExpress.Xpf.Core;
 using System.Windows.Controls.Primitives;
+using DevExpress.Xpf.Core.Native;
+using DevExpress.Xpf.Grid;
 
 namespace STD_105.Office
 {
@@ -94,6 +96,7 @@ namespace STD_105.Office
             if (NcTemp != null)
             {
                 STDSerialization ser = new STDSerialization(); //序列化處理器
+                
                 Steel3DBlock.AddSteel(NcTemp.SteelAttr, model, out BlockReference steelBlock); //加入 3d 鋼構參考圖塊
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
                 for (int i = 0; i < NcTemp.GroupBoltsAttrs.Count; i++) //逐步展開 nc 檔案的螺栓
@@ -723,16 +726,36 @@ namespace STD_105.Office
             model.ActionMode = actionType.SelectByBox;
             string content = SelectedData.MaterialNumber; //素材編號
             model.AssemblyPart(content);
+          
+      //      AssemblyPart2D(model, content); 
             model.Entities.Regen();
             model.Refresh();
             model.Invalidate();
             model.ZoomFit();//設置道適合的視口
             model.Invalidate();//初始化模型
             //SaveModel();
-            //Draw();
+           // Draw();
            // model.SelectionChanged -= model.Model_SelectionChanged;
            // model.SelectionChanged += model.Model_SelectionChanged; 
         }
+
+        public void AssemblyPart2D(devDept.Eyeshot.Model model,string materialNumber)
+        {
+            if (model.Entities.Count>0)
+            {
+                for (int i = 0; i < model.Blocks.Count; i++)
+                    if (model.Blocks[0].Entities[i].EntityData is SteelAttr)
+                    {
+                        SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
+                    }
+            }
+
+
+
+
+        }
+
+
 
         private void GridSplitter_MouseMove(object sender, MouseEventArgs e)
         {
