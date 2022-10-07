@@ -6,7 +6,7 @@
     <!--  Type converters  -->
     <local:ImageOffsetConverter x:Key="imageOffsetConverter" />
     <local:RadiusToDiameterConverter x:Key="radiusToDiameterConverter" />
-    <local:PointerCenterConverter x:Key="pointerCenterConverter" />
+    <local:PointerCenterConverter x:Key="pointerCenterConverter" /> 
     <local:RangeIndicatorLightPositionConverter x:Key="rangeIndicatorLightPositionConverter" />
     <local:SizeConverter x:Key="sizeConverter" />
     <local:BackgroundColorConverter x:Key="backgroundColorConverter" />
@@ -148,7 +148,6 @@
                             RenderTransform="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DialTextOffset, Converter={StaticResource rangeIndicatorLightPositionConverter}}"
                             Text="{TemplateBinding DialText}" />
                         <ed:Arc
-                            x:Name="Arc"
                             Width="{TemplateBinding ArcRadius}"
                             Height="{TemplateBinding ArcRadius}"
                             ArcThickness="15"

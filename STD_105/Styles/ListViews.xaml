@@ -425,7 +425,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource solidclr_SilverGray}" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="GridViewColumnHeader">
+                <ControlTemplate>
                     <Grid>
                         <Border
                             x:Name="HeaderBorder"

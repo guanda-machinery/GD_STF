@@ -15,13 +15,11 @@
                   xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                   xmlns:local="clr-namespace:STD_105.Office"
                   xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
-                  mc:Ignorable="d" Style="{StaticResource SectionSpecificationMenuWhiteStyle}">
+                  mc:Ignorable="d" 
+             Style="{StaticResource SectionSpecificationMenuWhiteStyle}">
     <!--
                   Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"-->
-    <UserControl.DataContext>
-        <STD105VM:SettingParVM/>
-    </UserControl.DataContext>
 
     <!--斷面規格目錄-->
     <GroupBox Header="斷面規格目錄" FontSize="14">
