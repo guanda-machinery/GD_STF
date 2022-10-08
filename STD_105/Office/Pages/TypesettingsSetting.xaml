@@ -817,6 +817,7 @@
                                             </Grid.RowDefinitions>
                                             <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,5,0" >
                                                 <dxg:GridControl Name="ComponentGridControl" ItemsSource="{Binding Path =Parts}" 
+                                                                 
                                                          AutoGenerateColumns="None" 
                                                          IsEnabled="{Binding ButtonEnable}"
                                                          MinHeight="40" 
@@ -838,6 +839,7 @@
                                                     </dxg:GridControl.Resources>
                                                     <dxg:GridControl.View>
                                                         <dxg:TableView 
+                                                            AllowEditing="False"
                                                             ShowTotalSummary="False" 
                                                             ShowGroupPanel="False"
                                                             AutoWidth="True" 
