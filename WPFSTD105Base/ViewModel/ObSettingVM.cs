@@ -28,7 +28,7 @@ using devDept.Eyeshot.Translators;
 using WPFSTD105.Tekla;
 
 namespace WPFSTD105.ViewModel
-{
+{    
     /// <summary>
     /// 物件設定
     /// </summary>
@@ -88,6 +88,10 @@ namespace WPFSTD105.ViewModel
         /// 另存加入零件 20220902 張燕華
         /// </summary>
         public ICommand AddNewOne { get; set; }
+        /// <summary>
+        /// 檔案總覽 20221005 呂宗霖
+        /// </summary>
+        public ICommand FileOverView { get; set; }
         /// <summary>
         /// OK鈕 20220902 張燕華
         /// </summary>
@@ -263,7 +267,7 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public ProductSettingsPageViewModel ProductSettingsPageViewModel = new ProductSettingsPageViewModel();
 
-        public string PartNumber { get; set; }  
+        public string PartNumber { get; set; }
         /// <summary>
         /// 樹狀邏輯
         /// </summary>
@@ -721,12 +725,20 @@ namespace WPFSTD105.ViewModel
                 Boltsbuffer.xCount = CalBoltNumber(GroupBoltsAttr.dX);
                 //Boltsbuffer.xCount = GroupBoltsAttr.xCount;
             }
+            else {
+                Boltsbuffer.dX = "0";
+                Boltsbuffer.xCount = CalBoltNumber(Boltsbuffer.dX);
+            }
             //垂直螺栓
             if (CheckY)
             {
                 Boltsbuffer.dY = GroupBoltsAttr.dY;
                 Boltsbuffer.xCount = CalBoltNumber(GroupBoltsAttr.dY);
                 //Boltsbuffer.yCount = GroupBoltsAttr.yCount;
+            }
+            else {
+                Boltsbuffer.dY = "0";
+                Boltsbuffer.yCount = CalBoltNumber(Boltsbuffer.dY);
             }
             //要產生的面
             if (CheckFace)
@@ -983,7 +995,7 @@ namespace WPFSTD105.ViewModel
         public double CalculateSinglePartWeight()
         {
             double weight;
-            if(SteelAttr.Kg == 0)
+            if (SteelAttr.Kg == 0)
             {
                 weight = (ProductLengthProperty / 1000) * CurrentPartSteelAttr.Kg;
             }
@@ -1072,7 +1084,7 @@ namespace WPFSTD105.ViewModel
 
             ShowSteelTypeCommand = ShowSteelType(); //20220829 張燕華 選擇型鋼型態
             CalculateWeightCommand = CalculateWeight();
-            
+
             InitializeSteelAttr();
         }
         #region 私有屬性
@@ -1322,12 +1334,20 @@ namespace WPFSTD105.ViewModel
             // 取得孔群資訊
             Dictionary<string, ObservableCollection<SteelBolts>> bolts = ser.GeBolts();
 
+            List<Tuple<string, int, List<int>>> assNumber_ID = new List<Tuple<string, int, List<int>>>();
+
             // 構件 vs 該節點
-            var assNumber_ID = assemblies
-                .Select(x => new { x.Number, x.ID })
-                .Distinct()
-                .ToList()
-                .ToDictionary(x => x.Number, y => y.ID);//.SelectMany(x => x.Key, (x, y) =>new { x.Key, x.Value }).Select(x => new {x.Key,x.Value})
+            foreach (var item in assemblies)
+            {
+                assNumber_ID.Add(Tuple.Create(item.Number,item.Count,item.ID));
+            }
+            //var assNumber_ID = assemblies
+            //    .Select(x => new Tuple() { 
+            //        Number = x.Number,
+            //        Count = x.Count,
+            //        ID= x.ID })
+            //    .ToList()
+            //    .ToDictionary(x => new Tuple() { x.Number, x.Count }, y => y.ID);//.SelectMany(x => x.Key, (x, y) =>new { x.Key, x.Value }).Select(x => new {x.Key,x.Value})
 
             // 零件 vs 父節點
             // SelectMany 把資料攤平
@@ -1377,18 +1397,21 @@ namespace WPFSTD105.ViewModel
             List<ProductSettingsPageViewModel> steelAttrList = new List<ProductSettingsPageViewModel>();
             ProductSettingsPageViewModel steelAttrVM = new ProductSettingsPageViewModel();
             #region 構件開始
-            foreach (KeyValuePair<string, List<int>> assembliesItem in assNumber_ID)
+            //foreach (KeyValuePair<object, List<int>> assembliesItem in assNumber_ID)
+            foreach (Tuple<string,int, List<int>> assembliesItem in assNumber_ID)
             {
                 // 構件編號
-                string assem = assembliesItem.Key;
+                string assem = assembliesItem.Item1;
+                // 構件數量
+                int AssCount = assembliesItem.Item2;
                 // 構件ID List
-                foreach (int id in assembliesItem.Value)
+                foreach (int id in assembliesItem.Item3)
                 {
                     // 構件ID
                     int assemID = id;
                     #region 零件資訊
                     // 在零件清單中，比對Father找到此構件
-                    var part_father = partNumber_ID.Where(x => x.Father.Contains(assemID)).ToList();
+                    var part_father = partNumber_ID.Where(x => x.Father.Contains(assemID) && x.Count == AssCount).ToList();
                     // 如果有找到的話
                     if (part_father.Any())
                     {
@@ -1533,22 +1556,22 @@ namespace WPFSTD105.ViewModel
             List<ProductSettingsPageViewModel> source = new List<ProductSettingsPageViewModel>();
             source = steelAttrList.Where(x => allowType.Contains(x.Type)).ToList();
             var group = (from a in source
-                         group a by new { AsseNumber = a.steelAttr.AsseNumber, a.steelAttr.PartNumber, a.TeklaName, a.Type, a.Length, a.Weight } into g
+                         group a by new { AsseNumber = a.steelAttr.AsseNumber, a.steelAttr.PartNumber, a.TeklaName, a.Type, a.Length,a.Profile, a.Weight } into g
                          select new
                          {
+                             AssemblyNumber = g.Key.AsseNumber,
+                             PartNumber = g.Key.PartNumber,
+                             Profile = g.Key.Profile,
+                             Length = g.Key.Length,
+                             Weight = g.Key.Weight,
                              Creation = g.FirstOrDefault().Creation,
                              Revise = g.FirstOrDefault().Revise,
                              DataName = g.FirstOrDefault().steelAttr.GUID,
-                             AssemblyNumber = g.Key.AsseNumber,
-                             PartNumber = g.Key.PartNumber,
                              TeklaName = g.FirstOrDefault().TeklaName,
                              TypeDesc = g.FirstOrDefault().TypeDesc,
                              SteelType = g.FirstOrDefault().SteelType,
-                             Profile = g.FirstOrDefault().Profile,
                              Material = g.FirstOrDefault().Material,
                              Count = g.Count(),
-                             Length = g.Key.Length,
-                             Weight = g.Key.Weight,
                              Phase = g.FirstOrDefault().Phase,
                              ShippingNumber = g.FirstOrDefault().ShippingNumber,
                              Title1 = g.FirstOrDefault().Title1,
@@ -1565,8 +1588,10 @@ namespace WPFSTD105.ViewModel
             SteelAttr temp = new SteelAttr();
             foreach (var item in group)
             {
+                ProfileType = item.SteelType;
                 ProductSettingsPageViewModel aa = new ProductSettingsPageViewModel()
                 {
+                    Type = (OBJECT_TYPE)item.SteelType,
                     Creation = item.Creation,
                     Revise = item.Revise,
                     DataName = item.DataName == null ? "" : item.DataName.ToString(),

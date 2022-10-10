@@ -324,10 +324,10 @@
                         </dxg:GridColumn.CellStyle>
                     </dxg:GridColumn>
 
-                    <dxg:GridColumn FieldName="GUID" Binding="{Binding  steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="{StaticResource visible}"/>
-                    <dxg:GridColumn FieldName="asseNumber" Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="60"/>
-                    <dxg:GridColumn FieldName="PartNumber" Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="60" />
-                    <dxg:GridColumn FieldName="TeklaName" Binding="{Binding steelAttr.Name}" IsSmart="True" Header="名稱" Width="80"/>
+                    <dxg:GridColumn Binding="{Binding  steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="60"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="60" />
+                    <dxg:GridColumn Binding="{Binding steelAttr.Name,UpdateSourceTrigger=PropertyChanged}" IsSmart="True" Header="名稱" Width="80"/>
                     <dxg:GridColumn FieldName="TypeDesc"  IsSmart="True" Header="鋼材類型" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn Binding="{Binding Path=SteelType, Converter={STD105:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類型" Width="60"/>
                     <dxg:GridColumn FieldName="Profile" IsSmart="True" Header="斷面規格"  Width="140"/>
@@ -427,7 +427,7 @@
 
                     </Grid.RowDefinitions>
                     <Label Content="零件編號："  />
-                    <TextBox  Grid.Column="1" Name="partNumber" InputMethod.IsInputMethodEnabled="False">
+                    <TextBox  Grid.Column="1" Name="partNumber" >
                         <TextBox.Text>
                             <Binding Path="PartNumberProperty" UpdateSourceTrigger="PropertyChanged" >
                                 <Binding.ValidationRules>
@@ -579,9 +579,9 @@
                     <ComboBox x:Name="cbx_SectionTypeComboBox"
                                   Grid.Column="4" Grid.Row="1"
                                   Padding="5,1,0,0"
-                                  ItemsSource="{Binding ProfileList}" 
+                                  ItemsSource="{Binding ProfileList, UpdateSourceTrigger=PropertyChanged}" 
                                   DisplayMemberPath="Profile" 
-                                  Text="{Binding SteelSectionProperty}" SelectionChanged="CBOX_SectionTypeChanged">
+                                  Text="{Binding SteelSectionProperty, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="CBOX_SectionTypeChanged">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionTypeComboBox">
                                 <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
@@ -635,6 +635,7 @@
                 </Grid>
                 <DockPanel  DockPanel.Dock="Bottom" Margin="0" VerticalAlignment="Bottom" >
                     <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Background="Gold" Width="60" Margin="0,0,6,0" Click="OKtoConfirmChanges"/>
+                    <Button x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}" Background="Gold" Width="110" Margin="0,0,0,0" />
 
                     <STD105:DataButtons_Office Margin="105,0,-17,0"
                                                Modify="{Binding ModifyPart}"

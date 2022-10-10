@@ -202,7 +202,7 @@ namespace WPFSTD105.Attribute
                 else
                 {
                     var start = item.Split('*');
-                    count = count + int.Parse(start[0]);
+                    count += int.Parse(start[0]);
                 }
             }
             return count + 1;
