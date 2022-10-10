@@ -54,7 +54,7 @@ namespace STD_105.Office
         public TypesettingsSetting()
         {
             InitializeComponent();
-             model.DataContext = ViewModel;
+            model.DataContext = ViewModel;
             drawing.DataContext = ViewModel;
             model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             drawing.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");

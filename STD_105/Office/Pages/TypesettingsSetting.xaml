@@ -33,71 +33,68 @@
                    Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD105:ViewLocator.Instance}}"
                    Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD105:ViewLocator.Instance}}">
     <WPFBase:BasePage.Resources>
-                    <ResourceDictionary>
-                <!-- primary -->
-                <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="White"/>
-                <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="#FFFFFF"/>
-                <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource WordBlue}"/>
-                <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="#FFFFFF"/>
-                <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="Green"/>
-                <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="#FFFFFF"/>
-                <!-- accent -->
-                <SolidColorBrush x:Key="SecondaryHueMidBrush" Color="#5C5B5E"/>
-                <SolidColorBrush x:Key="SecondaryHueMidForegroundBrush" Color="#FFFFFF"/>
-                <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }" >
-                    <Setter Property="BorderThickness" Value="1"/>
-                    <Setter Property="Background" Value="#F7F7F7"/>
-                    <Style.Resources>
-                        <Style TargetType="materialDesign:ColorZone" >
-                            <Setter Property="TextBlock.Foreground" Value="Black"/>
-                            <Setter Property="TextBlock.FontSize" Value="16"/>
-                            <Setter Property="Background" Value="#f0f0f0"/>
-                            <Setter Property="BorderBrush" Value="#cfcfcf"/>
-                            <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                        </Style>
-                        <Style TargetType="Border">
-                            <Setter Property="BorderThickness" Value="5"/>
-                        </Style>
-                    </Style.Resources>
+        <ResourceDictionary>
+            <!-- primary -->
+            <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="White"/>
+            <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource WordBlue}"/>
+            <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="Green"/>
+            <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="#FFFFFF"/>
+            <!-- accent -->
+            <SolidColorBrush x:Key="SecondaryHueMidBrush" Color="#5C5B5E"/>
+            <SolidColorBrush x:Key="SecondaryHueMidForegroundBrush" Color="#FFFFFF"/>
+            <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }" >
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Background" Value="#F7F7F7"/>
+                <Style.Resources>
+                    <Style TargetType="materialDesign:ColorZone" >
+                        <Setter Property="TextBlock.Foreground" Value="Black"/>
+                        <Setter Property="TextBlock.FontSize" Value="16"/>
+                        <Setter Property="Background" Value="#f0f0f0"/>
+                        <Setter Property="BorderBrush" Value="#cfcfcf"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    </Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderThickness" Value="5"/>
+                    </Style>
+                </Style.Resources>
 
-                </Style>
-                <Style TargetType="Button"  BasedOn="{StaticResource MaterialDesignFlatButton}"   >
-                    <Setter Property="Background" Value="White"/>
-                    <Setter Property="Foreground" Value="Black"/>
-                    <Setter Property="BorderBrush" Value="#CFCFCF"/>
-                    <Setter Property="BorderThickness" Value="1"/>
-                    <Setter Property="FontSize" Value="12"/>
-                </Style>
+            </Style>
+            <Style TargetType="Button"  BasedOn="{StaticResource MaterialDesignFlatButton}"   >
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="BorderBrush" Value="#CFCFCF"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="FontSize" Value="12"/>
+            </Style>
 
-                <Style TargetType="Label">
-                    <Setter Property="FontSize" Value="12"/>
-                </Style>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="12"/>
+            </Style>
 
-                <Style TargetType="dxg:GridColumnHeader">
-                    <Setter Property="FontWeight" Value="DemiBold"/>
-                    <Setter Property="FontSize" Value="12"/>
-                </Style>
-                <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBoxBase}">
-                    <Setter Property="Foreground" Value="{ StaticResource solidclr_DimGray }" />
-                    <Setter Property="FontSize" Value="12" />
-                    <Setter Property="Margin" Value="5" />
-                    <Setter Property="FontFamily" Value="Microsoft JhengHei"/>
-                    <Setter Property="Background" Value="White"/>
-                    <Setter Property="BorderThickness" Value="1"/>
-                    <Setter Property="BorderBrush" Value="Gray"/>
-                </Style>
+            <Style TargetType="dxg:GridColumnHeader">
+                <Setter Property="FontWeight" Value="DemiBold"/>
+                <Setter Property="FontSize" Value="12"/>
+            </Style>
+            <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBoxBase}">
+                <Setter Property="Foreground" Value="{ StaticResource solidclr_DimGray }" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="FontFamily" Value="Microsoft JhengHei"/>
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderBrush" Value="Gray"/>
+            </Style>
 
-                <Style TargetType="CheckBox" BasedOn="{StaticResource BaseStyle}"/>
+            <Style TargetType="CheckBox" BasedOn="{StaticResource BaseStyle}"/>
 
-            </ResourceDictionary>
+        </ResourceDictionary>
     </WPFBase:BasePage.Resources>
-
-    <StackPanel dx:ThemeManager.ThemeName="Win10Light" Background="#D3D3D3" Orientation="Vertical">
-
-        <Grid>
+    <Grid dx:ThemeManager.ThemeName="Win10Light" Background="#D3D3D3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
@@ -176,12 +173,12 @@
                                 <dxg:GridColumn FieldName="Material"  IsSmart="True"  Header="材質"  Width="80"/>
                                 <dxg:GridColumn FieldName="Length"  IsSmart="True"  Header="零件長" Width="70">
                                     <dxg:GridColumn.EditSettings>
-                                        <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
+                                        <dxe:TextEditSettings DisplayFormat="F0" HorizontalContentAlignment="Center"/>
                                     </dxg:GridColumn.EditSettings>
                                 </dxg:GridColumn>
-                                <dxg:GridColumn FieldName="PartWeight"  IsSmart="True"  Header="零件重"  Width="50" >
+                        <dxg:GridColumn FieldName="PartWeight" Binding="{c:Binding PartWeight/1000}"  IsSmart="True"  Header="零件重"  Width="50" >
                                     <dxg:GridColumn.EditSettings>
-                                        <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
+                                        <dxe:TextEditSettings DisplayFormat="F1" HorizontalContentAlignment="Center"/>
                                     </dxg:GridColumn.EditSettings>
                                 </dxg:GridColumn>
                                 <dxg:GridColumn FieldName="" Binding="{Binding ID,Converter={STD105:IListFilterToCountConverter} }"  IsSmart="True"  Width="45" Header="數量"  />
@@ -508,7 +505,7 @@
                                         <MultiBinding Converter="{STD105:ComParConverter}">
                                             <MultiBinding.Bindings>
                                                 <Binding ElementName="Material_List_GridControl"  />
-                                                <Binding ElementName="PartGridControl"/>
+                                            <Binding ElementName="PartsGridControl"/>
                                             </MultiBinding.Bindings>
                                         </MultiBinding>
                                     </Button.CommandParameter>
@@ -638,7 +635,7 @@
                         SelectedItemChanged="Material_List_GridControl_SelectedItemChanged"
                         Grid.Row="2"    
                         ItemsSource="{Binding MaterialDataViews}"
-                        MinHeight="200"  MaxHeight="500">
+                        MinHeight="200"  MaxHeight="1000">
                         <dxg:GridControl.View >
                             <dxg:TableView 
                                 SearchString="{Binding MaterialGridSearchString , Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}" 
@@ -821,6 +818,7 @@
                                             </Grid.RowDefinitions>
                                             <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,5,0" >
                                                 <dxg:GridControl Name="ComponentGridControl" ItemsSource="{Binding Path =Parts}" 
+                                                                 
                                                          AutoGenerateColumns="None" 
                                                          IsEnabled="{Binding ButtonEnable}"
                                                          MinHeight="40" 
@@ -842,6 +840,7 @@
                                                     </dxg:GridControl.Resources>
                                                     <dxg:GridControl.View>
                                                         <dxg:TableView 
+                                                            AllowEditing="False"
                                                             ShowTotalSummary="False" 
                                                             ShowGroupPanel="False"
                                                             AutoWidth="True" 
@@ -887,24 +886,42 @@
                                                     <dxg:GridColumn FieldName="" Header="數量"  MinWidth="40" Width="40" />
                                                     <dxg:GridColumn FieldName="" Header="Phase"   MinWidth="40" Width="40"/>
                                                     <dxg:GridColumn FieldName="" Header="拆運"   MinWidth="40" Width="40" />
-                                                </dxg:GridControl>
-                                                <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
-                                                    <Button >
-                                                        <Button.Content>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                </Grid.ColumnDefinitions>
+                                            </dxg:GridControl>
+                                            <StackPanel Orientation="Horizontal">
+                                            <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
+                                                <Button >
+                                                    <Button.Content>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
 
-                                                                <materialDesign:PackIcon Kind="PlusThick" />
-                                                                <materialDesign:PackIcon Kind="ScrewLag" Grid.Column="1"/>
-                                                            </Grid>
-                                                        </Button.Content>
-                                                    </Button>
-                                                    <TextBlock Text="加入新零件" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                                                </StackPanel>
+                                                            <materialDesign:PackIcon Kind="PlusThick" />
+                                                            <materialDesign:PackIcon Kind="ScrewLag" Grid.Column="1"/>
+                                                        </Grid>
+                                                    </Button.Content>
+                                                </Button>
+                                                <TextBlock Text="加入新零件" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                             </StackPanel>
+                                            <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
+                                                <Button >
+                                                    <Button.Content>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <materialDesign:PackIcon Kind="MinusThick" />
+                                                            <materialDesign:PackIcon Kind="ScrewLag" Grid.Column="1"/>
+                                                        </Grid>
+                                                    </Button.Content>
+                                                </Button>
+                                                <TextBlock Text="刪除零件" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                            </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
 
                                             <GridSplitter Style="{StaticResource MaterialDesignGridSplitter}" Background="LightGray" Grid.RowSpan="2" HorizontalAlignment="Right"  VerticalAlignment="Stretch" Width="4" Margin="0,0,-5,0"   />
                                             <!-- 可調整邊界拉柄(透明)-->
@@ -1181,7 +1198,7 @@
                             <spa:ModelExt
                             Loaded="Model3D_Loaded"
                             Margin="0,-5,0,0"
-                            x:Name="model"
+                            Name="model"
                             AutoRefresh ="True"
                             SelectionColor="{Binding Setting.SelectionColor, Converter={local:StringToDrawingColoConverter}}"
                             ActionMode="{Binding ActionMode}" 
@@ -1311,14 +1328,15 @@
                                                     <ddes:ZoomWindowToolBarButton/>
                                                     <ddes:ZoomToolBarButton/>
                                                     <ddes:PanToolBarButton/>
-                                                    <ddes:ZoomFitToolBarButton/>
-                                                    <ddes:ToolBarButton ToolTipText="線性標註" Click="LinearDim" StyleMode="PushButton"
-                                                        Image="{Binding Source={StaticResource LinearDim},Converter={local:DrawingImageToBitmapSourceConverter}}"/>
-                                                    <ddes:ToolBarButton ToolTipText="角度標註" Click="AngleDim" StyleMode="PushButton"
-                                                        Image="{Binding Source={StaticResource AngleDim},Converter={local:DrawingImageToBitmapSourceConverter}}"/>
-                                                    <ddes:ToolBarButton ToolTipText="絕對座標" StyleMode="PushButton"
-                                                        Image="{Binding Source={StaticResource AbsDim},Converter={local:DrawingImageToBitmapSourceConverter}}"/>
-                                                </ddes:ToolBar.Buttons>
+                                                <ddes:ZoomFitToolBarButton/>
+                                                <ddes:ToolBarButton ToolTipText="線性標註" Click="LinearDim" StyleMode="PushButton"   
+                                                                Image="{Binding Source={materialDesign:PackIcon Kind=Ruler},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"
+                                                                     />
+                                                <ddes:ToolBarButton ToolTipText="角度標註" Click="AngleDim" StyleMode="PushButton"
+                                                Image="{Binding Source={materialDesign:PackIcon Kind=AngleAcute},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"/>
+                                                <ddes:ToolBarButton ToolTipText="絕對座標" StyleMode="PushButton"
+                                                Image="{Binding Source={materialDesign:PackIcon Kind=AxisArrow},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"/>
+                                            </ddes:ToolBar.Buttons>
                                             </ddes:ToolBar>
                                         </ddes:Viewport.ToolBars>
                                     </ddes:Viewport>
@@ -1340,6 +1358,5 @@
             </Grid>
         </Grid>
 
-    </StackPanel>
 
 </WPFBase:BasePage>

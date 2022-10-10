@@ -60,78 +60,78 @@
                             </Trigger>
                             <Trigger Property="dxg:GridViewBase.IsFocusedRow"
                                      Value="True">
-                        <Setter Property="Background"
+                                <Setter Property="Background"
                                 Value="{Binding Row.Position, Converter={local:RowValueToBackgroundConverter}}" />
-                        <Setter Property="Foreground"
+                                <Setter Property="Foreground"
                                 Value="{ StaticResource solidclr_DarkGray }" />
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
                 </Style.Resources>
             </Style>
 
-            
+
 
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
     <Grid>
         <Grid dx:ThemeManager.ThemeName="Win10Light" Background="#292929">
-                <Grid.DataContext>
-                    <STD105VM:ProcessingMonitorVM/>
-                </Grid.DataContext>
-                <Grid.Resources>
-                    <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }" >
-                        <Setter Property="BorderThickness" Value="1"/>
-                        <Setter Property="Background" Value="#F7F7F7"/>
-                        <Style.Resources>
-                            <Style TargetType="materialDesign:ColorZone" >
-                                <Setter Property="TextBlock.Foreground" Value="Black"/>
-                                <Setter Property="TextBlock.FontSize" Value="16"/>
-                                <Setter Property="Background" Value="#f0f0f0"/>
-                                <Setter Property="BorderBrush" Value="#cfcfcf"/>
-                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                            </Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderThickness" Value="5"/>
-                            </Style>
+            <Grid.DataContext>
+                <STD105VM:ProcessingMonitorVM/>
+            </Grid.DataContext>
+            <Grid.Resources>
+                <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }" >
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="Background" Value="#F7F7F7"/>
+                    <Style.Resources>
+                        <Style TargetType="materialDesign:ColorZone" >
+                            <Setter Property="TextBlock.Foreground" Value="Black"/>
+                            <Setter Property="TextBlock.FontSize" Value="16"/>
+                            <Setter Property="Background" Value="#f0f0f0"/>
+                            <Setter Property="BorderBrush" Value="#cfcfcf"/>
+                            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                        </Style>
+                        <Style TargetType="Border">
+                            <Setter Property="BorderThickness" Value="5"/>
+                        </Style>
 
-                        </Style.Resources>
+                    </Style.Resources>
 
-                    </Style>
-                    <Style TargetType="Button"  BasedOn="{StaticResource MaterialDesignFlatButton}"   >
-                        <Setter Property="Background" Value="White"/>
-                        <Setter Property="Foreground" Value="Black"/>
-                        <Setter Property="BorderBrush" Value="#CFCFCF"/>
-                        <Setter Property="BorderThickness" Value="1"/>
-                        <Setter Property="FontSize" Value="12"/>
-                        <Setter Property="Width" Value="40"/>
-                        <Setter Property="Height" Value="24"/>
-                        <Setter Property="Padding" Value="0"/>
-                        <Setter Property="Margin" Value="2,0"/>
-                    </Style>
-                    <Style TargetType="dxg:GridColumnHeader">
-                        <Setter Property="FontWeight" Value="DemiBold"/>
-                        <Setter Property="FontSize" Value="12"/>
-                    </Style>
-                    <Style TargetType="CheckBox" BasedOn="{StaticResource BaseStyle}"/>
-                    <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignStyleCustomTextBox}"/>
-                    <Style TargetType="ComboBox"
+                </Style>
+                <Style TargetType="Button"  BasedOn="{StaticResource MaterialDesignFlatButton}"   >
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="BorderBrush" Value="#CFCFCF"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="FontSize" Value="12"/>
+                    <Setter Property="Width" Value="40"/>
+                    <Setter Property="Height" Value="24"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="2,0"/>
+                </Style>
+                <Style TargetType="dxg:GridColumnHeader">
+                    <Setter Property="FontWeight" Value="DemiBold"/>
+                    <Setter Property="FontSize" Value="12"/>
+                </Style>
+                <Style TargetType="CheckBox" BasedOn="{StaticResource BaseStyle}"/>
+                <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignStyleCustomTextBox}"/>
+                <Style TargetType="ComboBox"
                    BasedOn="{ StaticResource BaseStyle }">
-                        <Setter Property="FontSize" Value="12"/>
-                        <Setter Property="Margin" Value="0"/>
-                        <Setter Property="Height" Value="17"/>
-                    </Style>
-                    <Style TargetType="Label"
+                    <Setter Property="FontSize" Value="12"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="Height" Value="17"/>
+                </Style>
+                <Style TargetType="Label"
                    BasedOn="{ StaticResource lab_SubTitle }">
-                        <Setter Property="FontSize" Value="12"/>
-                        <Setter Property="Foreground" Value="Black"/>
-                    </Style>
-                    <Style TargetType="TabItem" x:Key="DrawTabItem">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type TabItem}">
-                                    <Grid x:Name="Root">
-                                        <Border x:Name="Border"
+                    <Setter Property="FontSize" Value="12"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Style>
+                <Style TargetType="TabItem" x:Key="DrawTabItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type TabItem}">
+                                <Grid x:Name="Root">
+                                    <Border x:Name="Border"
                                         Width="{Binding ElementName=ContentSite, Path=Width}"
                                         Height="{Binding ElementName=ContentSite, Path=Height}"
                                         VerticalAlignment="Center"
@@ -140,7 +140,7 @@
                                         BorderThickness="1,1,1,0"
                                         CornerRadius="5,5,0,0"
                                         Margin="0,0,0,-1">
-                                            <ContentPresenter x:Name="ContentSite"
+                                        <ContentPresenter x:Name="ContentSite"
                                               Margin="40,10"
                                               HorizontalAlignment="Center"
                                               VerticalAlignment="Center"
@@ -148,83 +148,121 @@
                                               RecognizesAccessKey="True"
                                               TextBlock.FontSize="16"
                                               TextBlock.Foreground="#555555" />
-                                        </Border>
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup x:Name="CommonStates">
-                                                <VisualState x:Name="Normal" />
-                                                <VisualState x:Name="Selected">
-                                                    <Storyboard>
-                                                        <ColorAnimation Storyboard.TargetName="Border"
+                                    </Border>
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal" />
+                                            <VisualState x:Name="Selected">
+                                                <Storyboard>
+                                                    <ColorAnimation Storyboard.TargetName="Border"
                                                         Storyboard.TargetProperty="(Border.Background).Color"
                                                         To="#303030"
                                                         Duration="0" />
-                                                        <ColorAnimation Storyboard.TargetName="ContentSite"
+                                                    <ColorAnimation Storyboard.TargetName="ContentSite"
                                                         Storyboard.TargetProperty="(TextBlock.Foreground).Color"
                                                         To="#eeeeee"
                                                         Duration="0" />
-                                                        <ThicknessAnimation Storyboard.TargetName="Border"
+                                                    <ThicknessAnimation Storyboard.TargetName="Border"
                                                             Storyboard.TargetProperty="BorderThickness"
                                                             To="1,1,1,0"
                                                             Duration="0" />
-                                                    </Storyboard>
-                                                </VisualState>
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
-                                    </Grid>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                    <Style TargetType="ProgressBar" 
+                                                </Storyboard>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="ProgressBar" 
                        BasedOn="{StaticResource MaterialDesignLinearProgressBar}">
-                        <Setter Property="Foreground" Value="#0078D7"/>
-                        <Setter Property="BorderBrush" Value="#0078D7"/>
-                        <Setter Property="BorderThickness" Value="0"/>
-                    </Style>
-                    <Style TargetType="dxg:GridColumn">
-                        <Setter Property="HorizontalHeaderContentAlignment"  Value="Center"/>
-                    </Style>
-                    <Style TargetType="dxe:TextEditSettings">
-                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                    </Style>
-                </Grid.Resources>
+                    <Setter Property="Foreground" Value="#0078D7"/>
+                    <Setter Property="BorderBrush" Value="#0078D7"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                </Style>
+                <Style TargetType="dxg:GridColumn">
+                    <Setter Property="HorizontalHeaderContentAlignment"  Value="Center"/>
+                </Style>
+                <Style TargetType="dxe:TextEditSettings">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-                    <GroupBox Grid.Column="0" Grid.Row="0"  Margin="5" Padding="0">
-                        <GroupBox.Header>
-                            <Grid Margin="9" Height="18">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="auto"/>
-                                </Grid.ColumnDefinitions>
-                                <!--{StaticResource LANGUAGE_ProcessingAssemblyList}-->
-                                <TextBlock Text="加工組合清單"  FontSize="16"></TextBlock>
-                                <TextBox Grid.Column="1" materialDesign:HintAssist.Hint="Search Tasks(Ctrl + F)" BorderBrush="#cfcfcf"
-                                 Text="{Binding MaterialGridControlSearchString,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"
-                                 FontSize="12" 
-                                 MaxWidth="250" Width="150" HorizontalAlignment="Right" Margin="0" Padding="0" />
-                            </Grid>
-                        </GroupBox.Header>
-                        <dxg:GridControl 
+
+                <Border  Margin="5" Background="#f0f0f0">
+                <TabControl BorderThickness="0,2,0,0" Margin="0,0,0,0">
+                    <TabControl.Resources>
+                        <ResourceDictionary>
+                            <Style TargetType="TabItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type TabItem}">
+                                            <Grid x:Name="Root">
+                                                <Border x:Name="Border" Margin="10"
+                                                    Width="{Binding ElementName=ContentSite, Path=Width}"
+                                                    Height="{Binding ElementName=ContentSite, Path=Height}"
+                                                    VerticalAlignment="Center"
+                                                    Background="Transparent"
+                                                    BorderBrush="Transparent"
+                                                    BorderThickness="0,0,0,2">
+                                                    <ContentPresenter x:Name="ContentSite"
+                                                                  Margin="0,2"
+                                                                  HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center"
+                                                                  ContentSource="Header"
+                                                                  RecognizesAccessKey="True"
+                                                                  TextBlock.FontSize="16"
+                                                                  TextBlock.Foreground="black" />
+                                                </Border>
+                                                <VisualStateManager.VisualStateGroups>
+                                                    <VisualStateGroup x:Name="CommonStates">
+
+                                                        <VisualState x:Name="Normal" />
+                                                        <VisualState x:Name="Selected">
+                                                            <Storyboard>
+                                                                <ColorAnimation Storyboard.TargetName="ContentSite"
+                                                                            Storyboard.TargetProperty="(TextBlock.Foreground).Color"
+                                                                            To="#000000"
+                                                                            Duration="0" />
+
+                                                                <ColorAnimation Storyboard.TargetName="Border"
+                                                                            Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                                                            To="#5c93a7"
+                                                                            Duration="0" />
+                                                            </Storyboard>
+                                                        </VisualState>
+                                                    </VisualStateGroup>
+                                                </VisualStateManager.VisualStateGroups>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ResourceDictionary>
+                    </TabControl.Resources>
+                        <TabItem Header="加工組合清單" IsSelected="{Binding MachiningCombinationl_List_GridControl_IsSelected}"  >
+                            <dxg:GridControl Margin="-11"
                         Name="MachiningCombinationl_List_GridControl"    
                         AutoGenerateColumns="None" 
                        SelectionMode="Row"
                          SelectedItem="{Binding Finish_UndoneDataViews_Selected ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                         ItemsSource="{Binding Finish_UndoneDataViews}"
                         MinHeight="200"  MaxHeight="300">
-                            <dxg:GridControl.View >
-                                <dxg:TableView 
+                        <dxg:GridControl.View >
+                            <dxg:TableView
                         Name="MachiningCombinationl_List_TableView"
                             ScrollViewer.ScrollChanged="ScrollOwner_ScrollChanged"
                             SearchString="{Binding MaterialGridControlSearchString,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -238,79 +276,82 @@
                                     SearchPanelFindMode="Always"         
 
                                     SearchDelay="0">
-                                    <dxg:TableView.CellStyle>
-                                        <Style>
-                                            <Setter Property="TextBlock.FontSize" Value="12"/>
-                                            <Setter Property="TextBlock.Foreground" Value="Black"/>
-                                        </Style>
-                                    </dxg:TableView.CellStyle>
-                                    <dxg:TableView.Header>
-                                        <TextBlock Text="零件清單" FontSize="16" Foreground="Black"/>
-                                    </dxg:TableView.Header>
-                                </dxg:TableView>
-                            </dxg:GridControl.View>
-
-                            <dxg:GridColumn IsSmart="True" Name="LockGridCol" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
-                                <dxg:GridColumn.HeaderImageStyle>
-                                    <Style TargetType="Image">
-                                        <Setter Property="Width" Value="16"></Setter>
-                                        <Setter Property="Margin" Value="0"></Setter>
+                                <dxg:TableView.CellStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.FontSize" Value="12"/>
+                                        <Setter Property="TextBlock.Foreground" Value="Black"/>
                                     </Style>
-                                </dxg:GridColumn.HeaderImageStyle>
-                                <dxg:GridColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <dxe:CheckEdit IsThreeState="false" IsChecked="{Binding Row.LockMark}" x:Name="LockEdit">
-                                            <dxe:CheckEdit.Style>
-                                                <Style TargetType="{x:Type dxe:CheckEdit}">
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
-                                                                <dx:DXImage x:Name="LockDX" Height="20" Width="20" Source="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" Opacity="1" />
-                                                                <ControlTemplate.Triggers>
-                                                                    <Trigger Property="IsChecked" Value="False">
-                                                                        <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Icon Builder/Security_Unlock.svg'}" TargetName="LockDX"  />
-                                                                    </Trigger>
-                                                                </ControlTemplate.Triggers>
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Style>
-                                            </dxe:CheckEdit.Style>
-                                        </dxe:CheckEdit>
+                                </dxg:TableView.CellStyle>
+                                <dxg:TableView.Header>
+                                    <TextBlock Text="零件清單" FontSize="16" Foreground="Black"/>
+                                </dxg:TableView.Header>
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
 
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellTemplate>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn FieldName="MaterialNumber"  IsSmart="True" Header="排版編號" />
-                            <dxg:GridColumn FieldName="Profile"  IsSmart="True" Header="斷面規格"   />
-                            <dxg:GridColumn FieldName="Material"  IsSmart="True" Header="材質" Width="auto"   />
-                            <dxg:GridColumn FieldName=""  IsSmart="True" Header="數量" Width="auto"  />
-                            <dxg:GridColumn FieldName=""  IsSmart="True" Header="已完成" Width="auto"  />
-                            <dxg:GridColumn FieldName="LengthStr"  IsSmart="True" Header="素材長"   />
-                            <dxg:GridColumn Binding="{c:Binding LengthStr-Loss}"   IsSmart="True" Header="餘長" Width="auto"    >
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings DisplayFormat="F2"/>
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題一"  Width="auto"  />
-                            <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題二"   Width="auto" />
+                        <dxg:GridColumn IsSmart="True" Name="LockGridCol" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
+                            <dxg:GridColumn.HeaderImageStyle>
+                                <Style TargetType="Image">
+                                    <Setter Property="Width" Value="16"></Setter>
+                                    <Setter Property="Margin" Value="0"></Setter>
+                                </Style>
+                            </dxg:GridColumn.HeaderImageStyle>
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <dxe:CheckEdit IsThreeState="false" IsChecked="{Binding Row.LockMark}" x:Name="LockEdit">
+                                        <dxe:CheckEdit.Style>
+                                            <Style TargetType="{x:Type dxe:CheckEdit}">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
+                                                            <dx:DXImage x:Name="LockDX" Height="20" Width="20" Source="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" Opacity="1" />
+                                                            <ControlTemplate.Triggers>
+                                                                <Trigger Property="IsChecked" Value="False">
+                                                                    <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Icon Builder/Security_Unlock.svg'}" TargetName="LockDX"  />
+                                                                </Trigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </dxe:CheckEdit.Style>
+                                    </dxe:CheckEdit>
 
-                            <dxg:GridColumn FieldName="Position"
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="MaterialNumber"  IsSmart="True" Header="排版編號" />
+                        <dxg:GridColumn FieldName="Profile"  IsSmart="True" Header="斷面規格"   />
+                        <dxg:GridColumn FieldName="Material"  IsSmart="True" Header="材質" Width="auto"   />
+                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="數量" Width="auto"  />
+                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="已完成" Width="auto"  />
+                        <dxg:GridColumn FieldName="LengthStr"  IsSmart="True" Header="素材長"   />
+                        <dxg:GridColumn Binding="{c:Binding LengthStr-Loss}"   IsSmart="True" Header="餘長" Width="auto"    >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings DisplayFormat="F2"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題一"  Width="auto"  />
+                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題二"   Width="auto" />
+
+                        <dxg:GridColumn FieldName="Position"
                                                 Width="100"
                                                 Header="位置" />
-                        </dxg:GridControl>
-                    </GroupBox>
-                    <GroupBox Grid.Column="1" Margin="5" Padding="0">
-                        <GroupBox.Header>
-                            <Grid Margin="9" Height="18">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="加工進度表"  FontSize="16"></TextBlock>
-                            </Grid>
-                        </GroupBox.Header>
-                        <dxg:GridControl 
+                    </dxg:GridControl>
+             </TabItem>
+                        <TabItem Header="加工細項"/>
+                    </TabControl>
+                </Border>
+
+                <GroupBox Grid.Column="1" Margin="5" Padding="0" Visibility="{Binding MachiningCombinationl_List_GridControl_IsSelected, Converter={local:TabItemIsSelectedToVisibilityConverter}}">
+                    <GroupBox.Header>
+                        <Grid Margin="5" Height="35">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="加工進度表"  FontSize="16" VerticalAlignment="Center"></TextBlock>
+                        </Grid>
+                    </GroupBox.Header>
+                    <dxg:GridControl 
                         Name="MachiningSchedule_List_GridControl"    
                         AutoGenerateColumns="None" 
                         Grid.Row="2"  Width="198"
@@ -318,8 +359,8 @@
                 SelectionMode="Row"
                        SelectedItem="{Binding Finish_UndoneDataViews_Selected ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                         MinHeight="200"  MaxHeight="300">
-                            <dxg:GridControl.View >
-                                <dxg:TableView 
+                        <dxg:GridControl.View >
+                            <dxg:TableView 
                         Name="MachiningSchedule_List_TableView"
                             ScrollViewer.ScrollChanged="ScrollOwner_ScrollChanged"
                             SearchString="{Binding MaterialGridControlSearchString,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged }"
@@ -332,76 +373,76 @@
                                     SearchPanelFindMode="Always"    
                         ShowIndicator="False" 
                                     SearchDelay="0">
-                                    <dxg:TableView.CellStyle>
-                                        <Style>
-                                            <Setter Property="TextBlock.FontSize" Value="12"/>
-                                            <Setter Property="TextBlock.Foreground" Value="Black"/>
-                                        </Style>
-                                    </dxg:TableView.CellStyle>
-                                    <dxg:TableView.Header>
-                                        <TextBlock Text="加工進度表" FontSize="16" Foreground="Black"/>
-                                    </dxg:TableView.Header>
-                                </dxg:TableView>
-                            </dxg:GridControl.View>
-                            <dxg:GridColumn FieldName=""  MaxWidth="40" MinWidth="40"  FixedWidth="True" Header="狀態" />
-                            <dxg:GridColumn FieldName="Position" MaxWidth="70" MinWidth="70"  FixedWidth="True" Header="位置" Style="{StaticResource ColorRow}"  />
+                                <dxg:TableView.CellStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.FontSize" Value="12"/>
+                                        <Setter Property="TextBlock.Foreground" Value="Black"/>
+                                    </Style>
+                                </dxg:TableView.CellStyle>
+                                <dxg:TableView.Header>
+                                    <TextBlock Text="加工進度表" FontSize="16" Foreground="Black"/>
+                                </dxg:TableView.Header>
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+                        <dxg:GridColumn FieldName=""  MaxWidth="40" MinWidth="40"  FixedWidth="True" Header="狀態" />
+                        <dxg:GridColumn FieldName="Position" MaxWidth="70" MinWidth="70"  FixedWidth="True" Header="位置" Style="{StaticResource ColorRow}"  />
 
 
-                            <dxg:GridColumn Binding="{Binding Schedule}"
+                        <dxg:GridColumn Binding="{Binding Schedule}"
                                                MaxWidth="70" MinWidth="70"
                                                 Header="進度(%)" >
-                                <dxg:GridColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <ProgressBar Value="{c:Binding Value*0.01}" Height="auto" Minimum="0" Maximum="100" Background="White" />
-                                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" >
-                                                <TextBlock Text="{c:Binding Value*0.01, StringFormat={}{0:P1}}"   />
-                                            </StackPanel>
-                                        </Grid>
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellTemplate>
-                            </dxg:GridColumn>
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <ProgressBar Value="{c:Binding Value*0.01}" Height="auto" Minimum="0" Maximum="100" Background="White" />
+                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" >
+                                            <TextBlock Text="{c:Binding Value*0.01, StringFormat={}{0:P1}}"   />
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn>
 
-                            <dxg:GridColumn FieldName="MaterialNumber" FixedWidth="True" Width="0"  IsSmart="True" Header="排版編號" />
-                            <dxg:GridColumn FieldName="Profile"  FixedWidth="True" Width="0"   IsSmart="True" Header="斷面規格"   />
-                            <dxg:GridColumn FieldName="Material"  FixedWidth="True" Width="0"   IsSmart="True" Header="材質"    />
-                            <dxg:GridColumn FieldName=""  IsSmart="True"  FixedWidth="True" Width="0"  Header="數量"  />
-                            <dxg:GridColumn FieldName=""  IsSmart="True"  FixedWidth="True" Width="0"  Header="已完成"  />
-                            <dxg:GridColumn FieldName="LengthStr"  FixedWidth="True" Width="0"   IsSmart="True" Header="素材長"   />
-                            <dxg:GridColumn  FixedWidth="True" Width="0"  Binding="{c:Binding LengthStr-Loss}"   IsSmart="True" Header="餘長"    >
-                                <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings DisplayFormat="F2"/>
-                                </dxg:GridColumn.EditSettings>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn FieldName=""  FixedWidth="True" Width="0"  IsSmart="True" Header="標題一"   />
-                            <dxg:GridColumn FieldName=""   FixedWidth="True" Width="0"  IsSmart="True" Header="標題二"   />
+                        <dxg:GridColumn FieldName="MaterialNumber" FixedWidth="True" Width="0"  IsSmart="True" Header="排版編號" />
+                        <dxg:GridColumn FieldName="Profile"  FixedWidth="True" Width="0"   IsSmart="True" Header="斷面規格"   />
+                        <dxg:GridColumn FieldName="Material"  FixedWidth="True" Width="0"   IsSmart="True" Header="材質"    />
+                        <dxg:GridColumn FieldName=""  IsSmart="True"  FixedWidth="True" Width="0"  Header="數量"  />
+                        <dxg:GridColumn FieldName=""  IsSmart="True"  FixedWidth="True" Width="0"  Header="已完成"  />
+                        <dxg:GridColumn FieldName="LengthStr"  FixedWidth="True" Width="0"   IsSmart="True" Header="素材長"   />
+                        <dxg:GridColumn  FixedWidth="True" Width="0"  Binding="{c:Binding LengthStr-Loss}"   IsSmart="True" Header="餘長"    >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings DisplayFormat="F2"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName=""  FixedWidth="True" Width="0"  IsSmart="True" Header="標題一"   />
+                        <dxg:GridColumn FieldName=""   FixedWidth="True" Width="0"  IsSmart="True" Header="標題二"   />
 
 
 
-                        </dxg:GridControl>
+                    </dxg:GridControl>
 
-                    </GroupBox>
-                </Grid>
-                <TabControl Grid.Row="1" Margin="5"  Height="300"
+                </GroupBox>
+            </Grid>
+            <TabControl Grid.Row="1" Margin="5"  Height="300"
 
                         BorderThickness="0"
                         Background="#303030"
                         x:Name="DrawTabControl"
                         Style="{StaticResource BaseStyle}" >
-                    <TabControl.Resources>
-                        <Style TargetType="TabItem">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type TabItem}">
-                                        <Grid x:Name="Root">
-                                            <Border x:Name="Border"
+                <TabControl.Resources>
+                    <Style TargetType="TabItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type TabItem}">
+                                    <Grid x:Name="Root">
+                                        <Border x:Name="Border"
                                                     Width="{Binding ElementName=ContentSite, Path=Width}"
                                                     Height="{Binding ElementName=ContentSite, Path=Height}"
                                                     VerticalAlignment="Center"
                                                     Background="#eeeeee"
                                                     BorderBrush="{StaticResource solidclr_SilverGray}"
                                                     CornerRadius="5,5,0,0">
-                                                <ContentPresenter x:Name="ContentSite"
+                                            <ContentPresenter x:Name="ContentSite"
                                                                Margin="40,8"
                                                                HorizontalAlignment="Center"
                                                                VerticalAlignment="Center"
@@ -409,97 +450,61 @@
                                                                RecognizesAccessKey="True"
                                                                TextBlock.FontSize="16"
                                                                TextBlock.Foreground="#303030" />
-                                            </Border>
-                                            <VisualStateManager.VisualStateGroups>
-                                                <VisualStateGroup x:Name="CommonStates">
-                                                    <VisualState x:Name="Normal" />
-                                                    <VisualState x:Name="Selected">
-                                                        <Storyboard>
-                                                            <ColorAnimation Storyboard.TargetName="Border"
+                                        </Border>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal" />
+                                                <VisualState x:Name="Selected">
+                                                    <Storyboard>
+                                                        <ColorAnimation Storyboard.TargetName="Border"
                                                         Storyboard.TargetProperty="(Border.Background).Color"
                                                         To="#303030"
                                                         Duration="0" />
-                                                            <ColorAnimation Storyboard.TargetName="ContentSite"
+                                                        <ColorAnimation Storyboard.TargetName="ContentSite"
                                                         Storyboard.TargetProperty="(TextBlock.Foreground).Color"
                                                         To="White"
                                                         Duration="0" />
-                                                            <ThicknessAnimation Storyboard.TargetName="Border"
+                                                        <ThicknessAnimation Storyboard.TargetName="Border"
                                                             Storyboard.TargetProperty="BorderThickness"
                                                             To="0"
                                                             Duration="0" />
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                </VisualStateGroup>
-                                            </VisualStateManager.VisualStateGroups>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </TabControl.Resources>
-                    <TabItem Header="3D">
-                    </TabItem>
-                    <TabItem Header="2D">
-                    </TabItem>
-                </TabControl>
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"></ColumnDefinition>
-                        <ColumnDefinition Width="auto"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
+                                                    </Storyboard>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Resources>
+                <TabItem Header="3D">
+                </TabItem>
+                <TabItem Header="2D">
+                </TabItem>
+            </TabControl>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
 
-                    <Border  Grid.Column="0" Margin="5" 
-                 Background="#292929" 
-                 BorderThickness="2" 
-                 BorderBrush="#595E60" >
-                        <dxg:GridControl 
-                    AutoGenerateColumns="None"
-                    SelectionMode="MultipleRow"
-                    MaxHeight="365"    
-                    ItemsSource="{Binding DataViews}">
-                            <dxg:GridControl.View >
-                                <dxg:TableView  
-                          
-                            HeaderHorizontalAlignment="Center"
-                                    VerticalScrollbarVisibility="Visible"
-                                    HorizontalScrollbarVisibility="Disabled"
-                                    ShowGroupPanel="False"
-                                    ShowSearchPanelMode="Never"
-                                    SearchPanelNullText="Search Tasks(Ctrl + F)" 
-                                    SearchPanelFindMode="Always" ShowIndicator="False"
-                                    SearchDelay="0">
-                                    <dxg:TableView.CellStyle>
-                                        <Style>
-                                            <Setter Property="TextBlock.FontSize" Value="12"/>
-                                        </Style>
-                                    </dxg:TableView.CellStyle>
-                                </dxg:TableView>
-                            </dxg:GridControl.View>
-
-                            <dxg:GridColumn Header="加工" Width="auto" AllowMoving="false"  IsSmart="True"/>
-                            <dxg:GridColumn Header="直徑" Width="auto" AllowMoving="false"  IsSmart="True"/>
-                            <dxg:GridColumn Header="數量" Width="*" AllowMoving="false"  IsSmart="True"/>
-
-
-                        </dxg:GridControl>
-
-                    </Border>
-                    <Border Grid.Column="1"  Margin="5"
+                <Border Grid.Column="0"  Margin="5"
                  Background="#ffffff" 
                  BorderThickness="2" 
                  BorderBrush="#595E60">
 
-                        <dxg:GridControl 
+                    <dxg:GridControl 
                     AutoGenerateColumns="None"
                     SelectionMode="MultipleRow"
                     MaxHeight="365"    
                     ItemsSource="{Binding DataViews}">
-                            <dxg:GridControl.Resources>
+                        <dxg:GridControl.Resources>
 
-                            </dxg:GridControl.Resources>
-                            <dxg:GridControl.View >
-                                <dxg:TableView  
+                        </dxg:GridControl.Resources>
+                        <dxg:GridControl.View >
+                            <dxg:TableView  
                             Header="已選擇素材資訊" HeaderHorizontalAlignment="Center"
                                     VerticalScrollbarVisibility="Visible"
                                     HorizontalScrollbarVisibility="Disabled"
@@ -508,88 +513,183 @@
                                     SearchPanelNullText="Search Tasks(Ctrl + F)" 
                                     SearchPanelFindMode="Always" ShowIndicator="False"
                                     SearchDelay="0">
-                                    <dxg:TableView.CellStyle>
-                                        <Style>
-                                            <Setter Property="TextBlock.FontSize" Value="12"/>
-                                        </Style>
-                                    </dxg:TableView.CellStyle>
-                                </dxg:TableView>
-                            </dxg:GridControl.View>
-                            <dxg:GridControl.Bands>
-                                <dxg:GridControlBand Header="前面(右翼板)" HorizontalHeaderContentAlignment="Center" AllowResizing="false"  AllowMoving="false" AllowDrop="False" >
-                                    <dxg:GridColumn Header="加工" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                    <dxg:GridColumn Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                    <dxg:GridColumn Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                </dxg:GridControlBand>
-                                <dxg:GridControlBand Header="頂面(腹板)" HorizontalHeaderContentAlignment="Center"  AllowResizing="false" AllowMoving="false" AllowDrop="False"  >
-                                    <dxg:GridColumn Header="加工" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
-                                    <dxg:GridColumn Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
-                                    <dxg:GridColumn Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
-                                </dxg:GridControlBand>
-                                <dxg:GridControlBand Header="後面(左翼板)" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false" AllowDrop="False"  >
+                                <dxg:TableView.CellStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.FontSize" Value="12"/>
+                                    </Style>
+                                </dxg:TableView.CellStyle>
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+                        <dxg:GridControl.Bands>
+                            <dxg:GridControlBand Header="前面(右翼板)" HorizontalHeaderContentAlignment="Center" AllowResizing="false"  AllowMoving="false" AllowDrop="False" >
+                                <dxg:GridColumn Header="加工" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                <dxg:GridColumn Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                <dxg:GridColumn Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                            </dxg:GridControlBand>
+                            <dxg:GridControlBand Header="頂面(腹板)" HorizontalHeaderContentAlignment="Center"  AllowResizing="false" AllowMoving="false" AllowDrop="False"  >
+                                <dxg:GridColumn Header="加工" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
+                                <dxg:GridColumn Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
+                                <dxg:GridColumn Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
+                            </dxg:GridControlBand>
+                            <dxg:GridControlBand Header="後面(左翼板)" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false" AllowDrop="False"  >
 
-                                    <dxg:GridColumn Header="加工" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
-                                    <dxg:GridColumn Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
-                                    <dxg:GridColumn Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
-                                </dxg:GridControlBand>
-                            </dxg:GridControl.Bands>
-                        </dxg:GridControl>
-
-
+                                <dxg:GridColumn Header="加工" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
+                                <dxg:GridColumn Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
+                                <dxg:GridColumn Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
+                            </dxg:GridControlBand>
+                        </dxg:GridControl.Bands>
+                    </dxg:GridControl>
 
 
 
-                    </Border>
 
-                    <Border Background="White" Grid.Column="2" Grid.Row="2" Margin="5">
-                        <GroupBox    FontSize="20">
-                            <GroupBox.Header>
-                                <TextBlock Margin="5" Text="Ready Go" FontSize="16" Foreground="White"/>
-                            </GroupBox.Header>
-                            <GroupBox.Style>
-                                <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignHeaderedContentControl }">
-                                    <Setter Property="Background" Value="White"/>
-                                    <Style.Resources>
-                                        <Style TargetType="materialDesign:ColorZone">
-                                            <Setter Property="TextBlock.Foreground" Value="White"/>
-                                            <Setter Property="TextBlock.FontWeight" Value="UltraBlack"/>
-                                            <Setter Property="Background" Value="#67b32c"/>
-                                            <Setter Property="BorderBrush" Value="#cfcfcf"/>
-                                            <Setter Property="TextBlock.Padding" Value="10"/>
-                                        </Style>
-                                    </Style.Resources>
+
+                </Border>
+
+                <Border  Grid.Column="1" Margin="5" 
+                 Background="#292929" 
+                 BorderThickness="2" 
+                 BorderBrush="#595E60" >
+                    <dxg:GridControl 
+                    AutoGenerateColumns="None"
+                    SelectionMode="MultipleRow"
+                    MaxHeight="365"    
+                    ItemsSource="{Binding DataViews}">
+                        <dxg:GridControl.View >
+                            <dxg:TableView  
+                          
+                            HeaderHorizontalAlignment="Center"
+                                    VerticalScrollbarVisibility="Visible"
+                                    HorizontalScrollbarVisibility="Disabled"
+                                ShowHorizontalLines="False"
+                                ShowVerticalLines="False"
+                                    ShowGroupPanel="False"
+                                    ShowSearchPanelMode="Never"
+                                    SearchPanelNullText="Search Tasks(Ctrl + F)" 
+                                    SearchPanelFindMode="Always" ShowIndicator="False"
+                                    SearchDelay="0">
+                                <dxg:TableView.CellStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.FontSize" Value="12"/>
+                                    </Style>
+                                </dxg:TableView.CellStyle>
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+
+                        <dxg:GridColumn Header="時間" Width="auto" AllowMoving="false"  IsSmart="True"/>
+                        <dxg:GridColumn Header="系統訊息" Width="auto" AllowMoving="false"  IsSmart="True"/>
+                        <dxg:GridColumn Header="零件編號" Width="*" AllowMoving="false"  IsSmart="True" HorizontalHeaderContentAlignment="Left"/>
+
+
+                    </dxg:GridControl>
+
+                </Border>
+                
+                <Border Background="White" Grid.Column="2" Grid.Row="2" Margin="5">
+                    <GroupBox    FontSize="20">
+                        <GroupBox.Header>
+                            <TextBlock Margin="5" Text="Ready Go" FontSize="16" Foreground="White"/>
+                        </GroupBox.Header>
+                        <GroupBox.Style>
+                            <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignHeaderedContentControl }">
+                                <Setter Property="Background" Value="White"/>
+                                <Style.Resources>
+                                    <Style TargetType="materialDesign:ColorZone">
+                                        <Setter Property="TextBlock.Foreground" Value="White"/>
+                                        <Setter Property="TextBlock.FontWeight" Value="UltraBlack"/>
+                                        <Setter Property="Background" Value="#67b32c"/>
+                                        <Setter Property="BorderBrush" Value="#cfcfcf"/>
+                                        <Setter Property="TextBlock.Padding" Value="10"/>
+                                    </Style>
+                                </Style.Resources>
+                            </Style>
+                        </GroupBox.Style>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                                    <Setter Property="Margin" Value="2"/>
                                 </Style>
-                            </GroupBox.Style>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
+                            </Grid.Resources>
+                            <Border Grid.Row="0" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
+                            <Button Grid.Column="0" Grid.Row="0" Width="auto"  Height="70" Cursor="Hand">
+                                <Button.Content>
+                                    <Grid Width="60" Height="60">
+                                        <Image Source="{StaticResource TransportDrawingImage}" />
+                                        <Border  BorderThickness="0,0,0,2" BorderBrush="#67b32c" />
+                                    </Grid>
+                                </Button.Content>
+                            </Button>
+                            <!--dx:SimpleButton Grid.Column="1" Width="auto" Height="60" Glyph="{StaticResource Transport_by_ConveyorDrawingImage}"/-->
+                            <Button Grid.Column="1" Grid.Row="0" Width="auto"  Height="70" Cursor="Hand">
+                                <Button.Content>
+                                    <Grid Width="60" Height="60">
+                                        <Image Source="{StaticResource Transport_by_ConveyorDrawingImage}"  />
+                                        <Border  BorderThickness="0,0,0,2" BorderBrush="#67b32c" />
+                                    </Grid>
+                                </Button.Content>
+                            </Button>
+                            <Button Grid.Column="2" Grid.Row="0" Width="auto"  Height="70">
+                                <Button.Content>
+                                    <Grid Width="60" Height="60">
+                                        <Image Source="{StaticResource Transport_by_RobotDrawingImage}"  />
+                                        <Border  BorderThickness="0,0,0,2" BorderBrush="#67b32c" />
+                                    </Grid>
+                                </Button.Content>
+                            </Button>
 
-                                <Button Grid.Column="0" Grid.Row="0"  Content="按鈕區" Width="auto" Height="60"/>
-                                <Button Grid.Column="1" Grid.Row="0"  Content="按鈕區" Width="auto" Height="60"/>
-                                <Button Grid.Column="2" Grid.Row="0"  Content="按鈕區" Width="auto" Height="60"/>
+                            
+                            <Button Grid.Column="0" Grid.Row="1" Width="auto"  Height="70">
+                                <Button.Content>
+                                    <Grid Width="60" Height="60">
+                                        <Image Source="{StaticResource Input_by_SmartPhoneDrawingImage}" Margin="5" />
+                                        <Border  BorderThickness="0,0,0,2" BorderBrush="#67b32c" />
+                                    </Grid>
+                                </Button.Content>
+                            </Button>
+                            <Button Grid.Column="1" Grid.Row="1" Width="auto"  Height="70">
+                                <Button.Content>
+                                    <Grid Width="60" Height="60">
+                                        <Image Source="{StaticResource Input_by_ComputerDrawingImage}" Margin="2" />
+                                        <Border  BorderThickness="0,0,0,2" BorderBrush="#67b32c" />
+                                    </Grid>
+                                </Button.Content>
+                            </Button>
+                            <Border Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
 
-                                <Button Grid.Column="0" Grid.Row="1"  Content="按鈕區" Width="auto" Height="60"/>
-                                <Button Grid.Column="1" Grid.Row="1"  Content="按鈕區" Width="auto" Height="60"/>
-                                <Button Grid.Column="2" Grid.Row="1"  Content="按鈕區" Width="auto" Height="60"/>
+                            <Button Grid.Column="0" Grid.Row="2"  Width="auto"  Height="70">
+                                <Button.Content>
+                                    <Grid Width="60" Height="60">
+                                        <Image Source="{StaticResource DrillPinDrawingImage}"  />
+                                        <Border  BorderThickness="0,0,0,2" BorderBrush="#67b32c" />
+                                    </Grid>
+                                </Button.Content>
+                            </Button>
+                            <Button Grid.Column="1" Grid.Row="2" Width="auto"  Height="70">
+                                <Button.Content>
+                                    <Grid Width="60" Height="60">
+                                        <Image Source="{StaticResource DrillHoleDrawingImage}"  />
+                                        <Border  BorderThickness="0,0,0,2" BorderBrush="#67b32c" />
+                                    </Grid>
+                                </Button.Content>
+                            </Button>
+                            <Border Grid.Row="2" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
+                        </Grid>
 
-                                <Button Grid.Column="0" Grid.Row="2"  Content="按鈕區" Width="auto" Height="60"/>
-                                <Button Grid.Column="1" Grid.Row="2"  Content="按鈕區" Width="auto" Height="60"/>
-                                <Button Grid.Column="2" Grid.Row="2"  Content="按鈕區" Width="auto" Height="60"/>
-                            </Grid>
+                    </GroupBox>
+                </Border>
 
-                        </GroupBox>
-                    </Border>
-
-                </Grid>
             </Grid>
+        </Grid>
 
     </Grid>
 </WPFBase:BasePage>

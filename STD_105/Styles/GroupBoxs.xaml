@@ -180,7 +180,7 @@
                             </Border>
                             <Border Grid.Row="1" Background="{TemplateBinding Background}">
                                 <Grid>
-                                    <Border Margin="5" Background="{StaticResource solidclr_SilverGray}" />
+                                    <Border Margin="0" Background="{StaticResource solidclr_SilverGray}" />
                                     <ContentPresenter Margin="10" />
                                 </Grid>
                             </Border>

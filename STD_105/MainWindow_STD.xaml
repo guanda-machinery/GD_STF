@@ -18,8 +18,8 @@
         Closing="AppWindows_Closing"
         mc:Ignorable="d"
         Title="頁面框架"
-        Height="1840"
-        Width="1080">
+        Height="1024"
+        Width="1280">
     <Grid Background="{ StaticResource solidclr_LightGray }">
         <Grid.Resources>
             <!--  遮蔽背景  -->
@@ -196,8 +196,9 @@
             <!--當前頁面名稱-->
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Left">
-                <TextBlock Text="{ Binding ApplicationViewModel.CurrentPage, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={ local:ApplicationPageNameConverter } }"
-                           HorizontalAlignment="Left"
+                <TextBlock   
+                    Text="{Binding ApplicationViewModel.CurrentPage, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={ local:ApplicationPageNameConverter }}"
+                    HorizontalAlignment="Left"
                            Foreground="{ StaticResource solidclr_DimGray }"
                            FontWeight="Bold"
                            Style="{ StaticResource tbk_Title }"
@@ -369,7 +370,7 @@
                     Margin="20,85,0,0"
                     Panel.ZIndex="10000"
                     Opacity="0.1"
-                    Visibility="{ Binding ElementName=mainSpindle, Path=StartState, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }">
+                    Visibility="{ Binding ElementName=mainSpindle, Path=StartState, Converter={WPFBase:OppositeBooleanToVisibilityConverter } }">
                 <Border.Triggers>
                     <EventTrigger RoutedEvent="Mouse.MouseEnter">
                         <BeginStoryboard Storyboard="{ StaticResource distinctMainSpindleFunctionArea }" />
@@ -606,7 +607,7 @@
                     CornerRadius="10"
                     Margin="20,390,0,0"
                     Panel.ZIndex="10000"
-                    Visibility="{ Binding SettingsFuctionControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }">
+                    Visibility="{Binding SettingsFuctionControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter}}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition />
@@ -642,7 +643,7 @@
                     CornerRadius="10"
                     Margin="20,540,0,0"
                     Panel.ZIndex="10000"
-                    Visibility="{ Binding ProjectManagerControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }">
+                    Visibility="{ Binding ProjectManagerControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter } }">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -746,7 +747,7 @@
                     CornerRadius="10"
                     Margin="20,465,0,0"
                     Panel.ZIndex="10000"
-                    Visibility="{ Binding LanguageSwitchControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }">
+                    Visibility="{ Binding LanguageSwitchControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter } }">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
