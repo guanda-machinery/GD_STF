@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using WPFSTD105;
 using WPFSTD105.Attribute;
+using WPFSTD105.ViewModel;
 
 namespace WPFSTD105.Tekla
 {
@@ -28,6 +29,7 @@ namespace WPFSTD105.Tekla
     public class TeklaBomFactory
     {
         #region 公開屬性
+        public ObSettingVM obvm = new ObSettingVM();
         /// <summary>
         /// 有使用過的斷面規格
         /// </summary>
@@ -385,10 +387,11 @@ namespace WPFSTD105.Tekla
                                         SteelPart part = (SteelPart)obj; //轉換單零件
 
                                         //判斷需要加入的斷面規格類型
-                                        if (part.Type == OBJECT_TYPE.BH ||
-                                            part.Type == OBJECT_TYPE.RH ||
-                                            part.Type == OBJECT_TYPE.CH ||
-                                            part.Type == OBJECT_TYPE.BOX
+                                        if (obvm.allowType.Contains(part.Type)
+                                            //part.Type == OBJECT_TYPE.BH ||
+                                            //part.Type == OBJECT_TYPE.RH ||
+                                            //part.Type == OBJECT_TYPE.CH ||
+                                            //part.Type == OBJECT_TYPE.BOX
                                             //|| part.Type == OBJECT_TYPE.L
                                             )
                                         {

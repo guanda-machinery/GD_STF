@@ -589,6 +589,9 @@
     <Compile Include="Page\Machine\MainSpnidleMode.xaml.cs">
       <DependentUpon>MainSpnidleMode.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\JoystickUserControl.xaml.cs">
+      <DependentUpon>JoystickUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\DPadUserControl.xaml.cs">
       <DependentUpon>DPadUserControl.xaml</DependentUpon>
     </Compile>
@@ -1060,6 +1063,10 @@
     <Page Include="Styles\ParameterMenuStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\JoystickUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\DPadUserControl.xaml">
       <SubType>Designer</SubType>
