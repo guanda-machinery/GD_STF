@@ -18,6 +18,8 @@ using System.Windows;
 using GD_STD.Data.MatchDI;
 using System.Text.RegularExpressions;
 using WPFSTD105.ViewModel;
+using DevExpress.Xpf.WindowsUI;
+using DevExpress.Xpf.Core;
 
 namespace WPFSTD105
 {
@@ -419,6 +421,18 @@ namespace WPFSTD105
                 {
                     AutoMatchAsyncV2();
 
+                    // 需排版之斷面規格
+                    List<string> sortProfile = DataViews.Where(x => x.SortCount > 0).Select(x => x.Profile).Distinct().ToList();
+                    // 需排版之零件
+                    List<string> sortPartNumber = DataViews.Where(x => x.SortCount > 0).Select(x => x.PartNumber).Distinct().ToList();
+                    if (sortPartNumber.Count == 0 || sortProfile.Count == 0)
+                    {
+                        GridControl grid = (GridControl)((object[])objArray)[0];
+                        grid.SelectAll();//全部資料行
+                        grid.EndSelection();//强制立即更新
+                    }
+
+
                     foreach (var Data in DataViews)
                     {
                         Data.SortCount = 0;
@@ -438,10 +452,10 @@ namespace WPFSTD105
                                     GoCommandGridControl.RefreshData();
                                 });
                             }
-                            else
-                            {
-                                throw new Exception("系結只能為GridControl");
-                            }
+                            //else
+                            //{
+                            //    throw new Exception("系結只能為GridControl");
+                            //}
                         }
                     }
                     else
@@ -822,8 +836,13 @@ namespace WPFSTD105
             //OfficeViewModel.LengthDodageControl = true;
             unsafe
             {
+                List<string> allowTypeStr = obvm.allowType.Select(x=>x.ToString()).ToList();
+                string allowTypString = String.Join(",", allowTypeStr);
                 STDSerialization ser = new STDSerialization();//序列化處理器
-                List<string> profiles = ser.GetProfile().Where(el => el.Contains("RH", "BH")).ToList();//模型有使用到的斷面規格
+                List<string> profiles = ser.GetProfile().Where(el => 
+                el.Contains(obvm.allowType.Select(x=>x.ToString())
+                .ToArray()
+                )).ToList();//模型有使用到的斷面規格
                 string strNumber = "RH";
                 var strings = MaterialDataViews.Where(el => el.MaterialNumber.Contains(strNumber));
 
@@ -957,15 +976,27 @@ namespace WPFSTD105
                 List<string> sortProfile = DataViews.Where(x => x.SortCount > 0).Select(x => x.Profile).Distinct().ToList();
                 // 需排版之零件
                 List<string> sortPartNumber = DataViews.Where(x => x.SortCount > 0).Select(x => x.PartNumber).Distinct().ToList();
-
+                if (sortPartNumber.Count <= 0 || sortProfile.Count <= 0)
+                {
+                    WinUIMessageBox.Show(null,
+                    $"請選擇欲排版數量",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Popup);
+                    return;
+                }
 
                 STDSerialization ser = new STDSerialization();//序列化處理器
                 // obvm.allowType.Contains((OBJECT_TYPE)System.Enum.Parse(typeof(OBJECT_TYPE), el.ToString()))
                 // 取得有開放且排版數>0之排版規格
+                var a = ser.GetProfile();
                 List<string> profiles = ser.GetProfile()
-                    .Where(el => el.Contains(
+                    .Where(el =>!string.IsNullOrEmpty(el) && el.Contains(
                         obvm.allowType.Select(x => x.ToString()).ToArray()) &&
-                        sortProfile.Contains(el)
+                        sortProfile.Contains(el) 
                     ).ToList();//模型有使用到的斷面規格
                 // 在素材中，屬於前置碼PreCode的有幾筆
                 string strNumber = MatchSetting.PreCode;
