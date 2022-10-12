@@ -24,7 +24,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
@@ -250,17 +250,20 @@
         <Grid Grid.Column="1"
               Grid.RowSpan="4">
             <Border Name="workArea"
+                    Margin="0"
                     CornerRadius="0"
-                    Background="{ StaticResource solidclr_LightGray }"
-                    Margin="10">
+                    Background="{ StaticResource solidclr_LightGray }">
                 <Grid>
                     <dxlc:ScrollBox Height="{Binding ElementName=workArea, Path=Height}"
-                                    Width="{Binding ElementName=workArea, Path=Width}"
-                                    Style="{ StaticResource sbx_Office }">
+                                    Width="{Binding ElementName=workArea, Path=Width}" 
+                                    Style="{ StaticResource sbx_Office }"
+                                                        Margin="0">
                         <!--頁面切換區域-->
+
                         <std:OfficePageHost x:Name="pageHost"
-                                            CurrentPage="{ Binding }"
-                                            DataContext="{ Binding OfficeViewModel.CurrentPage, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={ local:OfficePageConverter } }" />
+                                            CurrentPage="{Binding }"    
+                                            DataContext="{Binding OfficeViewModel.CurrentPage, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={local:OfficePageConverter } }" 
+                                           />
                     </dxlc:ScrollBox>
                     <!--專案管理-->
                     <std:OfficeProjectManager HorizontalAlignment="Left"

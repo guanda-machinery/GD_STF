@@ -2535,7 +2535,7 @@ namespace WPFSTD105.ViewModel
                 {
                     if (el.ToString() != "*")
                     {
-                        Materials = new ObservableCollection<SteelMaterial>(_Materials.Where(e => e.Name.Contains(el.ToString())).ToList());
+                        Materials = new ObservableCollection<SteelMaterial>(_Materials.Where(e => e.Name.ToLower().Contains(el.ToString().ToLower())).ToList());
                     }
                     else if (el.ToString() != "*" || el.ToString() != "")
                     {
@@ -2556,15 +2556,15 @@ namespace WPFSTD105.ViewModel
                 {
                     if (e.ToString() != "*")
                     {
-                        RH = new ObservableCollection<SteelAttr>(_RH.Where(el => el.Profile.Contains(e.ToString())).ToList());
-                        BH = new ObservableCollection<SteelAttr>(_BH.Where(el => el.Profile.Contains(e.ToString())).ToList());
-                        CH = new ObservableCollection<SteelAttr>(_CH.Where(el => el.Profile.Contains(e.ToString())).ToList());
-                        BOX = new ObservableCollection<SteelAttr>(_BOX.Where(el => el.Profile.Contains(e.ToString())).ToList());
-                        L = new ObservableCollection<SteelAttr>(_L.Where(el => el.Profile.Contains(e.ToString())).ToList());
+                        RH = new ObservableCollection<SteelAttr>(_RH.Where(el => el.Profile.ToLower().Contains(e.ToString().ToLower())).ToList());
+                        BH = new ObservableCollection<SteelAttr>(_BH.Where(el => el.Profile.ToLower().Contains(e.ToString().ToLower())).ToList());
+                        CH = new ObservableCollection<SteelAttr>(_CH.Where(el => el.Profile.ToLower().Contains(e.ToString().ToLower())).ToList());
+                        BOX = new ObservableCollection<SteelAttr>(_BOX.Where(el => el.Profile.ToLower().Contains(e.ToString().ToLower())).ToList());
+                        L = new ObservableCollection<SteelAttr>(_L.Where(el => el.Profile.ToLower().Contains(e.ToString().ToLower())).ToList());
                         //20220804 張燕華 新增斷面規格目錄
-                        H = new ObservableCollection<SteelAttr>(_H.Where(el => el.Profile.Contains(e.ToString())).ToList());
-                        TUBE = new ObservableCollection<SteelAttr>(_TUBE.Where(el => el.Profile.Contains(e.ToString())).ToList());
-                        LB = new ObservableCollection<SteelAttr>(_LB.Where(el => el.Profile.Contains(e.ToString())).ToList());
+                        H = new ObservableCollection<SteelAttr>(_H.Where(el => el.Profile.ToLower().Contains(e.ToString().ToLower())).ToList());
+                        TUBE = new ObservableCollection<SteelAttr>(_TUBE.Where(el => el.Profile.ToLower().Contains(e.ToString().ToLower())).ToList());
+                        LB = new ObservableCollection<SteelAttr>(_LB.Where(el => el.Profile.ToLower().Contains(e.ToString().ToLower())).ToList());
                     }
                     else if (e.ToString() != "*" || e.ToString() != "")
                     {

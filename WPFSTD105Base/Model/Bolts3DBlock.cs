@@ -132,11 +132,12 @@ namespace WPFSTD105.Model
                 X = Info.X,
                 Y = Info.Y,
                 Z = Info.Z,
-                GUID = Guid.NewGuid()
+                GUID = Guid.NewGuid(),
+                BlockName=Info.BlockName,
             };
 
             // 若起始座標小於半徑，不可加入
-            if (Info.X < this.Info.Dia / 2 && Info.dX!="0" && this.Info.Mode == AXIS_MODE.POINT)
+            if (Info.X < this.Info.Dia / 2 && Info.dX!="0" && this.Info.Mode != AXIS_MODE.POINT)
             {
                 check = false;
             }
@@ -152,7 +153,7 @@ namespace WPFSTD105.Model
                 BoltAttr boltAttr = (BoltAttr)resultY[0].EntityData;
 
                 // 加工區域計算
-                List<double> list = WorkingRange(steelAttr.Type, boltAttr);
+               // List<double> list = WorkingRange(steelAttr.Type, boltAttr);
 
                 double y, z;
 
@@ -218,7 +219,7 @@ namespace WPFSTD105.Model
                         case GD_STD.Enum.FACE.TOP:
                             bolt.Translate(0, valueY, 0);//使用相對移動到指定位置。
                             boltAttrEach.Y = boltAttrEach.Y + valueY;
-                            check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttrEach.Y, list);
+                         //   check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttrEach.Y, list);
                             //if (boltAttrEach.Y < list[0] || boltAttrEach.Y > list[1])
                             //{
                             //    // 不能加入
@@ -238,7 +239,7 @@ namespace WPFSTD105.Model
                             // boltAttrEach.Y = y;
                             // boltAttrEach.Z = z;
                             boltAttrEach.Y = boltAttrEach.Y + valueY;
-                            check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttrEach.Y, list);
+                            //check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttrEach.Y, list);
                             //switch (steelAttr.Type)
                             //{
                             //    case OBJECT_TYPE.RH:
@@ -305,7 +306,7 @@ namespace WPFSTD105.Model
                             case GD_STD.Enum.FACE.TOP:
                                 bolt.EntityData = boltAttr;
                                 //boltList.Add(bolt);
-                                check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttr.Y, list);
+                              //  check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttr.Y, list);
                                 break;
                             case GD_STD.Enum.FACE.BACK:
                             case GD_STD.Enum.FACE.FRONT:
@@ -316,7 +317,7 @@ namespace WPFSTD105.Model
                                 //boltAttr.Z = z;
                                 bolt.EntityData = boltAttr;
                                 //boltList.Add(bolt);
-                                check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttr.Y, list);
+                               // check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttr.Y, list);
                                 //double a = 3 / 4;
                                 //bolt.Rotate(Math.PI*a, Vector3D.AxisX);
                                 break;
@@ -388,12 +389,12 @@ namespace WPFSTD105.Model
                     //}
                 }
 
-                if (inSteel) { ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;  }
+                if (inSteel) { ((SteelAttr)model.Blocks[1].Entities[model.Blocks[1].Entities.Count-1].EntityData).ExclamationMark = false;  }
             }
             else
             {
                // 不在加工區域內
-                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                ((SteelAttr)model.Blocks[1].Entities[model.Blocks[1].Entities.Count - 1].EntityData).ExclamationMark = true;
             }
         }
 
@@ -517,7 +518,7 @@ namespace WPFSTD105.Model
                         // 檢查產生之孔位是否在鋼體內
                         //if (((Mesh)model.Entities[model.Entities.Count - 1].EntityData).IsPointInside(
 
-                        if (((Mesh)model.Blocks[1].Entities[0]).IsPointInside(
+                        if (((Mesh)model.Blocks[1].Entities[model.Blocks[1].Entities.Count - 1]).IsPointInside(
                             new Point3D()
                             {
                                 X = ((BoltAttr)item.EntityData).X,

@@ -50,6 +50,7 @@ namespace WPFSTD105.Attribute
         /// <summary>
         /// 第一顆螺栓的絕對座標 X 向
         /// </summary>
+        public string BlockName { get; set; } = "";
         public override double X { get; set; } = 35;
         /// <summary>
         /// 第一顆螺栓的絕對座標 Y 向
@@ -188,6 +189,10 @@ namespace WPFSTD105.Attribute
         /// <returns></returns>
         public int CalBoltNumber(string str = "60 2*70 60")
         {
+            if (str == "0")
+            {
+                return 1;
+            }
             int count = 0;
             // 依照空格拆解
             var space = str.Split(' ').ToList();

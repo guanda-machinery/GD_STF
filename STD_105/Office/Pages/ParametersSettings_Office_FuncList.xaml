@@ -21,6 +21,9 @@
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   mc:Ignorable="d"
                   Title="參數設定 - 選單功能">
+    <WPFBase:BasePage.DataContext>
+        <STD105VM:OfficeVM_ParaSettingFuncListViewModel/>
+    </WPFBase:BasePage.DataContext>
     <Grid>
         <Grid.Resources>
             <Style TargetType="Button">
@@ -53,13 +56,7 @@
                     Margin="0,0,5,0">
                 <Grid>
                 <StackPanel>
-                    <TextBlock/>
-                        <!--斷面規格設定-->
-                        <Button Command="{ Binding Path=ParameterSettingsCommand }" Visibility="Collapsed">
-                            <Button.Content>
-                                <TextBlock Text="原參數設定" />
-                            </Button.Content>
-                        </Button>
+                        <TextBlock/>
                         <!--斷面規格目錄-->
                         <Button Command="{ Binding Path=SectionSpecMenuCommand }" Background="WhiteSmoke">
                             <Button.Content>
@@ -119,14 +116,12 @@
             <Border CornerRadius="0"
                     Background="White"
                     Margin="5,0,0,0">
-                <Grid>
-                    <dxlc:ScrollBox Height="{Binding ElementName=workArea, Path=Height}"
-                                    Width="{Binding ElementName=workArea, Path=Width}">
-                        <!--頁面切換區域-->
-                        <std:OfficePageHost x:Name="pageHost1"
+                <Grid Margin="0">
+                    <!--頁面切換區域-->
+                        <std:OfficePageHost x:Name="pageHost1" Margin="0"
                                             ParaSettingCurrentPage="{ Binding }"
                                             DataContext="{ Binding OfficeViewModel.ParaSettingCurrentPage, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={ local:ParaSettingFuncPageConverter } }" />
-                    </dxlc:ScrollBox>
+
                 </Grid>
             </Border>
         </Grid>

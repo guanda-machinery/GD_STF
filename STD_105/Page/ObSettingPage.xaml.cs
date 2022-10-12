@@ -45,6 +45,7 @@ namespace STD_105
             model.Secondary = drawing;
             drawing.Secondary = model;
 
+            
             #region 定義 MenuItem 綁定的命令
             //放大縮小
             ViewModel.Zoom = new RelayCommand(() =>
@@ -385,7 +386,10 @@ namespace STD_105
                 //model.Entities.Add(blockReference);//加入參考圖塊到模型
 
                 Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference, out bool check);
-
+                if (bolts.hasOutSteel)
+                {
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                }
                 BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
 
 
@@ -794,6 +798,7 @@ namespace STD_105
                 }
             });
             //鏡射 Y 軸
+
             ViewModel.MirrorY = new RelayCommand(() =>
             {
                 try

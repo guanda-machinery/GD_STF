@@ -16,7 +16,7 @@ namespace STD_105.Office
             InitializeComponent();
         }
 
-        void ValidateCurrentValue(object sender, GridCellValidationEventArgs e)
+        /*void ValidateCurrentValue(object sender, GridCellValidationEventArgs e)
         {
             DataGridData temp = ViewModel.InsertionData[0];
             if (e.Column.FieldName != nameof(temp.Value))
@@ -42,6 +42,6 @@ namespace STD_105.Office
                 e.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Critical;
                 e.ErrorContent = $"請輸入數字!";
             }
-        }
+        }*/
     }
 }

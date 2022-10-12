@@ -62,6 +62,26 @@ namespace WPFSTD105.ViewModel
         /// 已完成的清單
         /// </summary>
         public ObservableCollection<MaterialDataView> FinishDataViews { get; set; } = new ObservableCollection<MaterialDataView>();
+
+        /// <summary>
+        /// 未加工-已完成合併清單
+        /// </summary>
+        public ObservableCollection<MaterialDataView> Finish_UndoneDataViews { 
+            get 
+            {
+                var DViews = new List<MaterialDataView>();
+                DViews.AddRange(FinishDataViews);
+                DViews.AddRange(UndoneDataView);
+
+                return new ObservableCollection<MaterialDataView>(DViews); ;
+            }
+        } 
+
+        public MaterialDataView Finish_UndoneDataViews_Selected { get; set; }
+
+
+
+
         /// <summary>
         /// 未加工的控制項
         /// </summary>
@@ -89,11 +109,46 @@ namespace WPFSTD105.ViewModel
                 _Model.Invalidate();
             }
         }
+
         /// <summary>
-        /// 選擇的資料行
+        /// 搜尋字串
         /// </summary>
-        public MaterialDataView __SelectedItem { get; set; }
+        public string MaterialGridControlSearchString {get;set;}
+
+        private bool _MachiningCombinationl_List_GridControl_IsSelected = false;
+        /// <summary>
+        /// 已選擇MachiningCombinationl_List_GridControl
+        /// </summary>
+        public bool MachiningCombinationl_List_GridControl_IsSelected 
+        {
+            get
+            {
+                return _MachiningCombinationl_List_GridControl_IsSelected;
+            }
+            set
+            {
+                if (_MachiningCombinationl_List_GridControl_IsSelected != value)
+                {
+                    _MachiningCombinationl_List_GridControl_IsSelected = value;
+                    //↓使isenable可即時反應
+                    OnPropertyChanged("MachiningCombinationl_List_GridControl_IsSelected");
+                }
+            }
+        }
+
+
+
+
+
+
+
         #endregion
+
+
+
+
+
+
 
         #region 私有屬性
         /// <summary>
@@ -349,6 +404,63 @@ namespace WPFSTD105.ViewModel
             InsertCommand = Insert();
             FinishCommand = Finish();
             ContinueCommand = Continue();
+
+
+            int synIndex = 0;
+            if (ApplicationViewModel.PanelButton.Key != KEY_HOLE.AUTO) //如果沒有在自動狀況下
+            {
+
+                //如有備份檔就寫回給 Codesys
+
+                for (int i = synIndex; i < DataViews.Count; i++)
+                {
+                    //葉:需要比對衝突
+                    WorkMaterial? work = _Ser.GetWorkMaterialBackup(DataViews[i].MaterialNumber);
+                    if (work != null)
+                    {
+                        long workOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.WorkMaterial)).ToInt64();
+                        int workSize = Marshal.SizeOf(typeof(WorkMaterial));
+                        if (work.Value.AssemblyNumber != null && work.Value.MaterialNumber != null)
+                        {
+                            WriteCodesysMemor.SetMonitorWorkOffset(work.Value.ToByteArray(), workOffset + (workSize * i)); //發送加工陣列
+                            _SendIndex.Add(Convert.ToInt16(i));
+                            if (work.Value.Position == -2) //如果是完成的狀態
+                            {
+                                FinishDataViews.Add(DataViews[i]);
+                                FinishDataViews[FinishDataViews.Count - 1].Position = "完成";
+                                UndoneDataView.Remove(DataViews[i]);
+                                _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
+                            }
+                            synIndex = i;
+                        }
+                    }
+                }
+                UndoneDataView.ForEach(el => el.Position = "等待配對");
+
+            }   //如果是在自動狀況下
+            else //如果有在自動狀況下
+            {
+                using (Memor.ReadMemorClient client = new Memor.ReadMemorClient())
+                {
+                    //同步列表
+                    for (int i = synIndex; i < DataViews.Count; i++)
+                    {
+                        _WorkMaterials[i] = client.GetWorkMaterial(Convert.ToUInt16(i));
+                        if (_WorkMaterials[i].BoltsCountL != 0 || _WorkMaterials[i].BoltsCountR != 0 || _WorkMaterials[i].IndexBoltsM != 0)
+                        {
+                            _SendIndex.Add(Convert.ToInt16(i));
+                        }
+                        synIndex = i;
+                    }
+                }
+            }
+
+            using (Memor.WriteMemorClient Write = new Memor.WriteMemorClient())
+            {
+                long ImportProjectOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.ImportProject)).ToInt64();
+                Write.SetMonitorWorkOffset(new byte[1] { 1 }, ImportProjectOffset);//寫入匯入專案完成
+            }
+
         }
 
         /// <summary>
@@ -668,14 +780,12 @@ namespace WPFSTD105.ViewModel
                     _Model = mdoel;
                     _Cts = new CancellationTokenSource();
                     _Token = _Cts.Token;
+
                     NewSerializationThread();
                     NewHostThread();
                 }
-                await Task.Yield();
-                //using ( )
-                //{
 
-                //}
+                await Task.Yield();
                 if (ApplicationViewModel.PanelButton.Key != KEY_HOLE.AUTO) //如果沒有在自動狀況下
                 {
                     if (errorCount == 0) //如果沒有發送失敗
@@ -726,6 +836,7 @@ namespace WPFSTD105.ViewModel
                         }
                     }
                 }
+
                 using (Memor.WriteMemorClient Write = new Memor.WriteMemorClient())
                 {
                     long ImportProjectOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.ImportProject)).ToInt64();
@@ -1113,6 +1224,8 @@ namespace WPFSTD105.ViewModel
         /// 要序列化的值
         /// </summary>
         private List<short> SerializationValue { get; set; }
+
+
     }
 
     /// <summary>

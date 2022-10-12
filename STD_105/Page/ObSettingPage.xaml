@@ -353,7 +353,7 @@
                         <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="25"
-                                       Source="{ Binding ItemName, Converter={ local:SectionTreeImageConverter } }"
+                                       Source="{Binding ItemName , Converter={ local:SectionTreeImageConverter }}"
                                        Style="{ StaticResource imageNullValue }"
                                        Margin="0,0,10,0" />
                                 <TextBlock Text="{Binding ItemName}" />

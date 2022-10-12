@@ -17,6 +17,7 @@ using System.Threading;
 using System.Windows;
 using GD_STD.Data.MatchDI;
 using System.Text.RegularExpressions;
+using WPFSTD105.ViewModel;
 
 namespace WPFSTD105
 {
@@ -25,7 +26,9 @@ namespace WPFSTD105
     /// </summary>
     public abstract class AbsTypeSettingVM : WPFBase.BaseViewModel
     {
-        /// <summary>
+
+        ObSettingVM obvm = new ObSettingVM();
+        /// <summary>                             
         /// 控制排版結果是否顯示
         /// </summary>
         public bool ShowTypeResult { get; set; }
@@ -37,25 +40,34 @@ namespace WPFSTD105
             STDSerialization ser = new STDSerialization();
             ObservableCollection<BomProperty> bomProperties = CommonViewModel.ProjectProperty.BomProperties; //報表屬性設定檔
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();//模型構件列表
+            Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();//模型構件列表
+
+            obvm = new ObSettingVM();
 
             MaterialDataViews = ser.GetMaterialDataView();
 
-            //20220824 蘇 新增icommand
-            foreach (var profile in ser.GetProfile()) //逐步展開斷面規格
-            {
 
-                ObservableCollection<SteelPart> buffer = ser.GetPart(profile.GetHashCode().ToString()); //零件列表
+
+            //20220824 蘇 新增icommand
+            //foreach (var profile in ser.GetProfile()) //逐步展開斷面規格
+            //{
+            foreach (KeyValuePair<string, ObservableCollection<SteelPart>> eachPart in part)
+            {
+                ObservableCollection<SteelPart> buffer = eachPart.Value;
+
+                // ObservableCollection<SteelPart> buffer = ser.GetPart(profile.GetHashCode().ToString()); //零件列表
 
                 //只將 BH RH L TUBE BOX CH H LB([)加入到列表內
-                if (buffer != null &&(
-                    buffer[0].Type == OBJECT_TYPE.BH ||
-                    buffer[0].Type == OBJECT_TYPE.RH ||
-                    buffer[0].Type == OBJECT_TYPE.L ||
-                    buffer[0].Type == OBJECT_TYPE.TUBE ||
-                    buffer[0].Type == OBJECT_TYPE.BOX ||
-                    buffer[0].Type == OBJECT_TYPE.CH))
+                if (buffer != null && obvm.allowType.Contains(buffer[0].Type))
+                //if (buffer != null &&(
+                //buffer[0].Type == OBJECT_TYPE.BH ||
+                //buffer[0].Type == OBJECT_TYPE.RH ||
+                //buffer[0].Type == OBJECT_TYPE.L ||
+                //buffer[0].Type == OBJECT_TYPE.TUBE ||
+                //buffer[0].Type == OBJECT_TYPE.BOX ||
+                //buffer[0].Type == OBJECT_TYPE.CH))
                 {
-                    foreach (var item in buffer) //逐步展開零件
+                    foreach (var item in buffer.Where(x => x.ExclamationMark == false || x.ExclamationMark is null)) //逐步展開零件
                     {
                         if (item.Father != null)
                         {
@@ -68,7 +80,7 @@ namespace WPFSTD105
                                 }
                                 int idIndex = assemblies[index].ID.IndexOf(item.Father[i]); //找出構件 id 所在的陣列位置
                                 TypeSettingDataView view = new TypeSettingDataView(item, assemblies[index], idIndex, i);
-                                view.SortCount =0;
+                                view.SortCount = 0;
                                 int dataIndex = DataViews.IndexOf(view); //搜尋指定的物件
                                 if (dataIndex == -1) //如果找不到物件
                                 {
@@ -96,11 +108,13 @@ namespace WPFSTD105
                         }
                     }
                 }
+                //}
             }
             AllSelectedGridCommand = AllSelectedGrid();// 選擇報表全部物件命令
             ReverseSelectedGridCommand = ReverseSelectedGrid();//反向選取命令
             UnselectSelectedGridCommand = UnselectSelectedGrid();//取消選取命令
             SaveMatchCommand = SaveMatch();
+            //ManualCommand = Manual();
 
         }
         private GridControl _GridControl { get; set; }
@@ -267,10 +281,15 @@ namespace WPFSTD105
         public ObservableCollection<TypeSettingDataView> DataViews { get; set; } = new ObservableCollection<TypeSettingDataView>();
 
 
+        public ObservableCollection<TypeSettingDataView> SelectedParts { get; set; } = new ObservableCollection<TypeSettingDataView>();
+
+
+
+
         /// <summary>
         /// 素材組合列表
         /// </summary>
-        public ObservableCollection<MaterialDataView> MaterialDataViews {get;set;}= new ObservableCollection<MaterialDataView>();
+        public ObservableCollection<MaterialDataView> MaterialDataViews { get; set; } = new ObservableCollection<MaterialDataView>();
 
 
         /// <summary>
@@ -295,7 +314,8 @@ namespace WPFSTD105
         public int PartTotal { get => PurchaseCount + WorkCount + WorkPurchaseCount; set { } }
         public MatchSetting MatchSetting { get; set; } = new MatchSetting()//配料設定檔
         {
-            MainLengths = new List<double>()
+            MainLengths =
+            new List<double>()
                 {
                      9000,
                      10000,
@@ -312,9 +332,16 @@ namespace WPFSTD105
             Price = 29.3f
         };
 
+        /// <summary>
+        /// GridControl之搜尋字串
+        /// </summary>
+        public string PartsSearchString { get; set; }
 
 
-
+        /// <summary>
+        /// 素材GridControl之搜尋字串
+        /// </summary>
+        public string MaterialGridSearchString { get; set; }
 
 
 
@@ -322,7 +349,7 @@ namespace WPFSTD105
         #region 私有方法
         private string GetString(string str)
         {
-            string result = str.Select(el => el >= 41 && el<= 122).ToString();
+            string result = str.Select(el => el >= 41 && el <= 122).ToString();
             return result;
         }
 
@@ -348,8 +375,8 @@ namespace WPFSTD105
         /// 確定配料
         /// </summary>
         /// <returns></returns>
-        public ICommand SureCommand 
-        { 
+        public ICommand SureCommand
+        {
             get
             {
                 return new WPFBase.RelayCommand(() =>
@@ -385,12 +412,12 @@ namespace WPFSTD105
         /// 確定配料
         /// </summary>
         public ICommand GoCommand
-        { 
+        {
             get
             {
-                return new WPFBase.RelayParameterizedCommand(objArray => 
+                return new WPFBase.RelayParameterizedCommand(objArray =>
                 {
-                    AutoMatchAsync();
+                    AutoMatchAsyncV2();
 
                     foreach (var Data in DataViews)
                     {
@@ -424,7 +451,7 @@ namespace WPFSTD105
                 });
             }
         }
-        
+
         /// <summary>
         /// 加入素材(單個)
         /// </summary>
@@ -438,8 +465,8 @@ namespace WPFSTD105
                     //只在有選擇的狀態下執行命令
                     if (PartGirdControl.SelectedItems.Count > 0)
                     {
-                        foreach(GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl.SelectedItems)
-                        {                          
+                        foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl.SelectedItems)
+                        {
                             //數量 -已配對 >= 預排數量
 
                             //數量
@@ -447,15 +474,15 @@ namespace WPFSTD105
                             //已配對
                             //var MatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
                             var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
-
-                            if(PartGridColumn.SortCount < IDCount - alreadyMatchCount)
-                                PartGridColumn.SortCount ++;
+                            if (PartGridColumn.SortCount < IDCount - alreadyMatchCount)
+                                PartGridColumn.SortCount++;
                         }
                         //需要重整才能更新data binding 
                         PartGirdControl.Dispatcher.Invoke(() =>
                         {
                             PartGirdControl.RefreshData();
                         });
+                     
                     }
                 }
                 );
@@ -478,15 +505,15 @@ namespace WPFSTD105
                         foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl.SelectedItems)
                         {
                             //只在>=1的時候做加減
-                            if(PartGridColumn.SortCount >=1)
+                            if (PartGridColumn.SortCount >= 1)
                                 PartGridColumn.SortCount--;
 
                             //保險：避免出現負數的情況
                             if (PartGridColumn.SortCount < 0)
-                                PartGridColumn.SortCount =0;
+                                PartGridColumn.SortCount = 0;
 
-                        }                    
-                        
+                        }
+
                         //需要重整才能更新data binding 
                         PartGirdControl.Dispatcher.Invoke(() =>
                         {
@@ -519,7 +546,7 @@ namespace WPFSTD105
                             //數量
                             var IDCount = PartGridColumn.ID.Count;
                             //已配對
-                            var alreadyMatchCount = PartGridColumn.Match.FindAll(x=>(x == false)).Count;
+                            var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
                             //var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
 
                             PartGridColumn.SortCount = IDCount - alreadyMatchCount;
@@ -558,7 +585,7 @@ namespace WPFSTD105
                         foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl.SelectedItems)
                         {
                             PartGridColumn.SortCount = 0;
-                        }                    
+                        }
                         //需要重整才能更新data binding 
                         PartGirdControl.Dispatcher.Invoke(() =>
                         {
@@ -595,7 +622,10 @@ namespace WPFSTD105
 
 
         #region 排版參數設定
-
+        /// <summary>
+        /// 前置字串
+        /// </summary>
+        public string PreCode { get; set; } = "";
         /// <summary>
         /// 排版編號checkbox
         /// </summary>
@@ -608,23 +638,26 @@ namespace WPFSTD105
         {
             get
             {
-                const string StartNumberDefault = "RH";
+                string StartNumberDefault = PreCode;
+                //  若起始號碼為空，前置字串為排版起始號碼
                 if (string.IsNullOrEmpty(_startNumber))
                 {
-                    _startNumber = StartNumberDefault;
+                    //_startNumber = StartNumberDefault;
+                    MatchSetting.StartNumber = PreCode + "001";
                     return _startNumber;
                 }
-                if (MainLengthCheckboxBoolen is true)
+                // 若排版編號有打勾，起始號碼 = 起始號碼
+                if (StartNumberCheckboxBoolen is true)
                 {
-                    MatchSetting.StartNumber = _startNumber;
+                    MatchSetting.StartNumber = PreCode + _startNumber;
                 }
                 else
                 {
-
-                    MatchSetting.StartNumber = StartNumberDefault;
+                    // 若無打勾，起始號碼 = 前置字串+001
+                    MatchSetting.StartNumber = StartNumberDefault+"001";
                 }
 
-                return MatchSetting.StartNumber;
+                return _startNumber;
             }
             set
             {
@@ -860,6 +893,182 @@ namespace WPFSTD105
                         aPopulation.Run();
                         Population umPopulation = new Population(MatchSetting, pmUse, multipleusePart.Length, new MultipleUsageRate());//分裂使用率配料
                         umPopulation.Run();
+                        List<Population> _ = new List<Population>() { uPopulation, wPopulation, aPopulation, umPopulation }; //存入到列表內
+
+                        //尋找最優化
+                        double minValue = _[0].TotalSurplus(); //最少的於料
+                        int minIndex = 0; //最小值索引
+                        for (int c = 1; c < _.Count; c++) //逐步展開配料結果的於料
+                        {
+                            double value = _[c].TotalSurplus(); //於料
+                            if (minValue > value) //目前最小值大於於料
+                            {
+                                minValue = value; //修改最小值
+                                minIndex = c;//紀錄最小於列的索引位置
+                            }
+                        }
+                        for (int q = 0; q < _[minIndex].Count; q++)
+                        {
+                            MaterialDataViews.Add(new MaterialDataView
+                            {
+                                MaterialNumber = strNumber + startNumber.ToString().PadLeft(4, '0'), // 不足補0
+                                Profile = profiles[i],
+                            });
+                            MaterialDataViews[MaterialDataViews.Count - 1].LengthList.AddRange(MatchSetting.MainLengths); //加入長度列表
+                            MaterialDataViews[MaterialDataViews.Count - 1].LengthList.AddRange(MatchSetting.SecondaryLengths); //加入長度列表
+                            MaterialDataViews[MaterialDataViews.Count - 1].LengthIndex = MaterialDataViews[MaterialDataViews.Count - 1].LengthList.FindIndex(el => _[minIndex][q].Length - MatchSetting.EndCut - MatchSetting.StartCut == el); //長度索引
+                            int index = MaterialDataViews[MaterialDataViews.Count - 1].LengthIndex;
+                            MaterialDataViews[MaterialDataViews.Count - 1].LengthStr = MaterialDataViews[MaterialDataViews.Count - 1].LengthList[index];
+                            MaterialDataViews[MaterialDataViews.Count - 1].StartCut = MatchSetting.StartCut;
+                            MaterialDataViews[MaterialDataViews.Count - 1].EndCut = MatchSetting.EndCut;
+                            MaterialDataViews[MaterialDataViews.Count - 1].Cut = MatchSetting.Cut;
+                            for (int c = 0; c < _[minIndex][q].PartNumber.Length; c++)
+                            {
+                                int dataViewIndex = DataViews.FindIndex(el => el.PartNumber == _[minIndex][q].PartNumber[c] && el.Match.FindIndex(el2 => el2 == true) != -1);
+                                MaterialDataViews[MaterialDataViews.Count - 1].Parts.Add(DataViews[dataViewIndex]);
+                                MaterialDataViews[MaterialDataViews.Count - 1].Material = DataViews[dataViewIndex].Material;
+                                int matchIndex = DataViews[dataViewIndex].Match.IndexOf(el => el == true);
+                                //bool aa = DataViews[dataViewIndex].Match[matchIndex];
+                                DataViews[dataViewIndex].Match[matchIndex] = false;
+                            }
+                            //DataViews.Where(el => el.).ForEach(el => el.SortCount  = el.GetSortCount());
+                            startNumber++;
+                        }
+                    }
+                }
+                ser.SetMaterialDataView(MaterialDataViews);
+            }
+        }
+
+        private void AutoMatchAsyncV2()
+        {
+            // 2020.06.22  呂宗霖 新增IsNullOrEmpty條件
+            MatchSetting.MainLengths = MainLength.Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(el => Convert.ToDouble(el)).ToList();
+            MatchSetting.SecondaryLengths = SecondaryLength.Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(el => Convert.ToDouble(el)).ToList();
+            MatchSetting.PreCode = PreCode;
+            //MatchSetting.StartNumber = StartNumber;
+
+
+
+
+            unsafe
+            {
+                // 需排版之斷面規格
+                List<string> sortProfile = DataViews.Where(x => x.SortCount > 0).Select(x => x.Profile).Distinct().ToList();
+                // 需排版之零件
+                List<string> sortPartNumber = DataViews.Where(x => x.SortCount > 0).Select(x => x.PartNumber).Distinct().ToList();
+
+
+                STDSerialization ser = new STDSerialization();//序列化處理器
+                // obvm.allowType.Contains((OBJECT_TYPE)System.Enum.Parse(typeof(OBJECT_TYPE), el.ToString()))
+                // 取得有開放且排版數>0之排版規格
+                List<string> profiles = ser.GetProfile()
+                    .Where(el => el.Contains(
+                        obvm.allowType.Select(x => x.ToString()).ToArray()) &&
+                        sortProfile.Contains(el)
+                    ).ToList();//模型有使用到的斷面規格
+                // 在素材中，屬於前置碼PreCode的有幾筆
+                string strNumber = MatchSetting.PreCode;
+                var strings = MaterialDataViews.Where(el => el.MaterialNumber.Contains(strNumber));
+                int startNumber = 1;
+                if (strings.Count() != 0)
+                {
+                    List<int> value = new List<int>();
+                    // 在素材中，屬於前置碼PreCode的資料
+                    MatchCollection matches = Regex.Matches(strings.ElementAt(strings.Count() - 1).MaterialNumber, @"[0-9]+");
+                    string result = string.Empty;
+
+                    for (int i = 0; i < matches.Count; i++)
+                    {
+                        startNumber = Convert.ToInt32(matches[i].Value) + 1;
+                    }
+                }
+
+                //startNumber = strings.Max(el => Convert.ToInt32(el));
+
+                for (int i = 0; i < profiles.Count; i++)
+                {
+                    string partData = profiles[i].GetHashCode().ToString(); //資料名稱
+
+                    ObservableCollection<SteelPart> steels = ser.GetPart(partData); //零件序列化檔案
+                    if (steels == null)
+                    {
+                        continue;
+                    }
+                    List<SinglePart> listPart = new List<SinglePart>();//配料列表
+
+
+
+                    foreach (var item in DataViews.Where(x => x.SortCount > 0))
+                    {
+                        foreach (var steel in steels.Where(x => x.Number == item.PartNumber))
+                        {
+                            IEnumerable<int> _where = DataViews
+                           .Where(el =>
+                           el.Profile == steel.Profile &&
+                           el.PartNumber == steel.Number &&
+                           el.Length == steel.Length &&         // 2022/09/23 呂宗霖 新增
+                           el.SortCount > 0)                   // 2022/09/23 呂宗霖 新增
+                           .Select(el => el.SortCount);
+
+                            var count = _where.Aggregate((part1, part2) => part1 + part2);
+                            if (count > 0)
+                            {
+                                listPart.AddRange(SinglePart.UnfoldPart(steel, out List<bool> match, count));//展開物件並加入配料列表內
+                                steel.Match = match;
+                                //DataViews.
+                            }
+                        }
+                    }
+
+                    // 若數量5 排版2 以下寫法 若DataViews中有兩個相同的PartNumber 且 選定的零件數量有2個但排版數量為1 會兩個都排入
+                    //foreach (var item in steels.Where(x => sortPartNumber.Contains(x.Number)))//將物件全部變成單一個體
+                    //{
+                    //    //where->將符合搜尋條件的DataViews取出
+                    //    //Select->將上述的資料的每一個SortCount取出後建立另一個IEnumerable陣列
+                    //    IEnumerable<int> _where = DataViews
+                    //        .Where(el =>
+                    //        el.Profile == item.Profile &&
+                    //        el.PartNumber == item.Number &&
+                    //        el.Length == item.Length &&         // 2022/09/23 呂宗霖 新增
+                    //        el.SortCount > 0)                   // 2022/09/23 呂宗霖 新增
+                    //        .Select(el => el.SortCount);
+
+                    //    var count = _where.Aggregate((part1, part2) => part1 + part2);
+                    //    if (count > 0)
+                    //    {
+                    //        listPart.AddRange(SinglePart.UnfoldPart(item, out List<bool> match, count));//展開物件並加入配料列表內
+                    //        item.Match = match;
+                    //        //DataViews.
+                    //    }
+                    //}
+                    ser.SetPart(profiles[i].GetHashCode().ToString(), new ObservableCollection<object>(steels));
+                    listPart.Sort(Compare);//由大排到小
+                    SinglePart[] weightsPatr = listPart.ToArray(); //權重比較的零件列表
+                    for (int c = 0; c < weightsPatr.Length; c++)//寫入 index
+                    {
+                        weightsPatr[c].ChangeIndex(c);
+                    }
+
+                    SinglePart[] usePart = new SinglePart[weightsPatr.Length];//使用率的零件列表
+                    SinglePart[] averagePart = new SinglePart[weightsPatr.Length];//數量評分的零件列表
+                    SinglePart[] multipleusePart = new SinglePart[weightsPatr.Length];//使用率的分裂零件列表
+
+                    Array.Copy(weightsPatr, usePart, weightsPatr.Length);//複製到使用率
+                    Array.Copy(weightsPatr, averagePart, weightsPatr.Length);//複製到平均評分
+                    Array.Copy(weightsPatr, multipleusePart, weightsPatr.Length);//複製到使用率
+
+                    fixed (SinglePart* pUse = usePart, pWeights = weightsPatr, pAverage = averagePart, pmUse = multipleusePart)//指標
+                    {
+                        Population uPopulation = new Population(MatchSetting, pUse, usePart.Length, new UsageRate());//使用率配料
+                        uPopulation.Run();
+                        Population wPopulation = new Population(MatchSetting, pWeights, weightsPatr.Length, new Weights());//權重配料
+                        wPopulation.Run();
+                        Population aPopulation = new Population(MatchSetting, pAverage, averagePart.Length, new Average());//平均配置
+                        aPopulation.Run();
+                        Population umPopulation = new Population(MatchSetting, pmUse, multipleusePart.Length, new MultipleUsageRate());//分裂使用率配料
+                        umPopulation.Run();
+                        // 將四種方法算出來的結果存入List中進行比較
                         List<Population> _ = new List<Population>() { uPopulation, wPopulation, aPopulation, umPopulation }; //存入到列表內
 
                         //尋找最優化

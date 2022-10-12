@@ -297,7 +297,13 @@ namespace WPFSTD105
         /// <returns>確定換頁回傳true，取消則回傳false</returns>
         public bool IsReplacePage(ApplicationPage current)
         {
-            if (current == ApplicationPage.SettingPar || current == ApplicationPage.SofSettings || current == ApplicationPage.ObSetting || current == ApplicationPage.TypeSetting)
+            if (current == ApplicationPage.SettingPar ||
+                current == ApplicationPage.SofSettings || 
+                current == ApplicationPage.ObSetting || 
+                current == ApplicationPage.TypeSetting ||
+                current == ApplicationPage.MachineTypeSetting ||
+                current == ApplicationPage.MachineProductSetting
+                )
             {
                 MessageBoxResult messageBoxResult = MessageBox.Show($"是否確定離開此頁面，離開後將不儲存相關設定。", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
 

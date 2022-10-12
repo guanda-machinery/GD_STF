@@ -19,6 +19,9 @@ using WPFSTD105.Attribute;
 using WPFSTD105.Tekla;
 using WPFWindowsBase;
 using Region = devDept.Eyeshot.Entities.Region;
+using devDept.Graphics;
+using devDept.Serialization;
+using GD_STD.Enum;
 
 namespace WPFSTD105.Model
 {
@@ -27,7 +30,6 @@ namespace WPFSTD105.Model
     /// </summary>
     public static class Expand
     {
-
         /// <summary>
         /// 組合零件變成素材
         /// </summary>
@@ -78,7 +80,7 @@ namespace WPFSTD105.Model
                     }
                     else //下一次迴圈尚未結束
                     {
-                        endCut = startCut +material.Cut;//當前切割物件放置結束點的座標
+                        endCut = startCut + material.Cut;//當前切割物件放置結束點的座標
                     }
                     place.Add((Start: startCut, End: endCut, IsCut: true, Number: "")); //素材零件位置
                     Debug.WriteLine($"Start = {place[place.Count -1].Start}, End : {place[place.Count-1].End}, IsCut : {place[place.Count-1].IsCut}");//除錯工具
@@ -212,7 +214,7 @@ namespace WPFSTD105.Model
                     {
                         SteelAttr steelAttr = new SteelAttr(parts[partIndex]); //產生物件設定檔
                         steelAttr.GUID = parts[partIndex].GUID = Guid.NewGuid(); //賦予新的guid
-                        Steel3DBlock.AddSteel(steelAttr, model, out BlockReference blockReference); //加入鋼構物件到 Model
+                        Steel3DBlock steel = Steel3DBlock.AddSteel(steelAttr, model, out BlockReference blockReference); //加入鋼構物件到 Model
                         blockReference.Translate(place[i].Start, 0);//移動目標
                         blockReference.Selectable = true;
                         entities.Add(blockReference); //加入到暫存列表
@@ -491,10 +493,10 @@ namespace WPFSTD105.Model
             STDSerialization ser = new STDSerialization(); //序列化處理器
             NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
             NcTemp nc = ncTemps.GetData(dataName); //取得nc資訊
-            ObSettingVM cbVM = new ObSettingVM();
+            ObSettingVM obVM = new ObSettingVM();
             if (nc == null)
             {
-                if (!cbVM.allowType.Contains( nc.SteelAttr.Type))
+                if (!obVM.allowType.Contains( nc.SteelAttr.Type))
                 {
                     return;
                 }

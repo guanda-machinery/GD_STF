@@ -1,18 +1,34 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace WPFWindowsBase
 {
     /// <summary>
+    /// 所有頁面的基本功能
+    /// </summary>
+    public class BaseUserControl : UserControl
+    {
+
+    }
+    /// <summary>
     /// 具有添加的ViewModel支持的<see cref="UserControl"/>
     /// </summary>
-    /// <typeparam name="VM">類型</typeparam>
-    public class BaseUserControl<VM> : UserControl where VM : BaseViewModel, new()
+    /// <typeparam name="VM"></typeparam>
+    public class BaseUserControl<VM> : BaseUserControl where VM : BaseViewModel, new()
     {
+        #region 私用方法
+        /// <summary>
+        /// 與此頁面關聯的視圖模型
+        /// </summary>
         private VM _ViewModel { get; set; }
-        #region 公用屬性
-#pragma warning disable CS1591 // 遺漏公用可見類型或成員 'BaseUserControl<VM>.ViewModel' 的 XML 註解
+        #endregion
+        #region 公共屬性
+        /// <summary>
+        /// 與此頁面關聯的視圖模型
+        /// </summary>
         public VM ViewModel
-#pragma warning restore CS1591 // 遺漏公用可見類型或成員 'BaseUserControl<VM>.ViewModel' 的 XML 註解
         {
             get
             {
@@ -20,19 +36,22 @@ namespace WPFWindowsBase
             }
             set
             {
+                //如果沒有任何變化，則返回
                 if (_ViewModel == value)
                     return;
                 //更新值
                 _ViewModel = value;
-                //自動更新資料繫結
+                //設置此頁面的數據上下文
                 this.DataContext = _ViewModel;
             }
         }
         #endregion
+
         #region 建構式
-#pragma warning disable CS1591 // 遺漏公用可見類型或成員 'BaseUserControl<VM>.BaseUserControl()' 的 XML 註解
-        public BaseUserControl()
-#pragma warning restore CS1591 // 遺漏公用可見類型或成員 'BaseUserControl<VM>.BaseUserControl()' 的 XML 註解
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public BaseUserControl() : base()
         {
             this.ViewModel = new VM();
         }

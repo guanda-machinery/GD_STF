@@ -134,7 +134,7 @@
                     <TextBlock x:Name="LeftButton"
                                Text="台車左移"
                                RenderTransformOrigin="0.5,0.5"
-                               Visibility="{ Binding DescriptionDisplayControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }">
+                               Visibility="{Binding DescriptionDisplayControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }">
                         <TextBlock.RenderTransform>
                             <RotateTransform Angle="-270" />
                         </TextBlock.RenderTransform></TextBlock>

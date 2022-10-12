@@ -120,7 +120,7 @@ namespace GD_STD.Data
         {
             get
             {
-                return RotationComponent(CRotation.Clockwise); ;
+                return RotationComponent(CRotation.Clockwise); 
             }
         }
         /// <summary>
@@ -322,6 +322,9 @@ namespace GD_STD.Data
         /// 物件座標
         /// </summary>
         public float CurrentCoordinate { get; set; }
+
+
+
         private string _position;
         /// <summary>
         /// 目前位置

@@ -18,8 +18,8 @@
         Closing="AppWindows_Closing"
         mc:Ignorable="d"
         Title="頁面框架"
-        Height="1840"
-        Width="1080">
+        Height="1024"
+        Width="1280">
     <Grid Background="{ StaticResource solidclr_LightGray }">
         <Grid.Resources>
             <!--  遮蔽背景  -->
@@ -172,6 +172,10 @@
                                           ButtonImageSource="{StaticResource Management}"
                                           TitleText="{ DynamicResource LANGUAGE_ProjectManagement }"
                                           FontColor="{ StaticResource solidclr_DimGray }" />
+                
+                
+                
+                
             </StackPanel>
             <Grid.Triggers>
                 <EventTrigger RoutedEvent="Mouse.MouseEnter">
@@ -192,8 +196,9 @@
             <!--當前頁面名稱-->
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Left">
-                <TextBlock Text="{ Binding ApplicationViewModel.CurrentPage, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={ local:ApplicationPageNameConverter } }"
-                           HorizontalAlignment="Left"
+                <TextBlock   
+                    Text="{Binding ApplicationViewModel.CurrentPage, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={ local:ApplicationPageNameConverter }}"
+                    HorizontalAlignment="Left"
                            Foreground="{ StaticResource solidclr_DimGray }"
                            FontWeight="Bold"
                            Style="{ StaticResource tbk_Title }"
@@ -365,7 +370,7 @@
                     Margin="20,85,0,0"
                     Panel.ZIndex="10000"
                     Opacity="0.1"
-                    Visibility="{ Binding ElementName=mainSpindle, Path=StartState, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }">
+                    Visibility="{ Binding ElementName=mainSpindle, Path=StartState, Converter={WPFBase:OppositeBooleanToVisibilityConverter } }">
                 <Border.Triggers>
                     <EventTrigger RoutedEvent="Mouse.MouseEnter">
                         <BeginStoryboard Storyboard="{ StaticResource distinctMainSpindleFunctionArea }" />
@@ -437,7 +442,7 @@
                     CornerRadius="10"
                     Margin="20,315,0,0"
                     Panel.ZIndex="10000"
-                    Visibility="{ Binding MachineFuctionControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }">
+                    Visibility="{ Binding MachineFuctionControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter } }">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -602,7 +607,7 @@
                     CornerRadius="10"
                     Margin="20,390,0,0"
                     Panel.ZIndex="10000"
-                    Visibility="{ Binding SettingsFuctionControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }">
+                    Visibility="{Binding SettingsFuctionControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter}}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition />
@@ -633,22 +638,23 @@
             <Border x:Name="bor_ProjectManager"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Height="300"
                     Width="150"
                     Background="{ StaticResource solidclr_DarkGray }"
                     CornerRadius="10"
                     Margin="20,540,0,0"
                     Panel.ZIndex="10000"
-                    Visibility="{ Binding ProjectManagerControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }">
+                    Visibility="{ Binding ProjectManagerControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter } }">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
                     <!--  新建專案  -->
                     <local:MainFunctionButton ButtonCommand="{Binding NewProjectShowCommand}"
@@ -668,14 +674,14 @@
                                               IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
                                               TitleText="{DynamicResource LANGUAGE_ImportFiles}"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
-                    <!--  製品設定  -->
+                    <!--  製品設定(舊)  -->
                     <local:MainFunctionButton Grid.Column="1"
                                               ButtonCommand="{Binding ProductSettingCommand}"
                                               ButtonImageSource="{StaticResource NewProductSettings}"
                                               IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
                                               TitleText="{DynamicResource LANGUAGE_ProductsSettings}"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
-                    <!--  排版設定  -->
+                    <!--  排版設定(舊)  -->
                     <local:MainFunctionButton Grid.Row="1"
                                               Grid.Column="1"
                                               ButtonCommand="{Binding TypeSettingCommand}"
@@ -691,6 +697,35 @@
                                               IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
                                               TitleText="{DynamicResource LANGUAGE_ProcessingSettings}"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
+                    <!--排版設定(新)-->
+
+                        <local:MainFunctionButton Grid.Row="3"
+                                              Grid.Column="0"
+                                              ButtonCommand="{Binding MachineTypeSettingCommand}"
+                                              ButtonImageSource="{StaticResource Layout}"
+                                              IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
+                                              TitleText="{DynamicResource LANGUAGE_TypesettingSettings}"
+                                              FontColor="{ StaticResource solidclr_CreamyGray }" />
+                    <!--製品設定(新)-->
+                    <local:MainFunctionButton Grid.Row="3"
+                                              Grid.Column="1"
+                                              ButtonCommand="{Binding MachineProductSettingCommand}"            
+                                              ButtonImageSource="{StaticResource NewProductSettings}"
+                                              IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
+                                              TitleText="{DynamicResource LANGUAGE_ProductsSettings}"
+                                              FontColor="{ StaticResource solidclr_CreamyGray }" />
+                    <!--  加工監控(新)  -->
+                    <local:MainFunctionButton Grid.Row="4"
+                                              Grid.Column="1"
+                                              ButtonCommand="{Binding MachineMonitorCommand}"
+                                              ButtonImageSource="{StaticResource Monitor_New}"
+                                              IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
+                                              TitleText="{DynamicResource LANGUAGE_ProcessingSettings}"
+                                              FontColor="{ StaticResource solidclr_CreamyGray }" />
+
+
+
+
                     <!--關閉區域-->
                     <Button Grid.Column="1"
                             Style="{ StaticResource btn_CloseIcon_STD }"
@@ -712,7 +747,7 @@
                     CornerRadius="10"
                     Margin="20,465,0,0"
                     Panel.ZIndex="10000"
-                    Visibility="{ Binding LanguageSwitchControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }">
+                    Visibility="{ Binding LanguageSwitchControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter } }">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />

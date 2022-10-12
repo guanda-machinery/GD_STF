@@ -30,7 +30,7 @@ namespace WPFSTD105
         /// <summary>
         /// 加工監控
         /// </summary>
-        Monitor,
+        Monitor,//待刪除
         /// <summary>
         /// 參數設定
         /// </summary>
@@ -38,7 +38,7 @@ namespace WPFSTD105
         /// <summary>
         /// 製品設定
         /// </summary>
-        ObSetting,
+        ObSetting,//待刪除
         /// <summary>
         /// 左軸主軸模式
         /// </summary>
@@ -119,7 +119,20 @@ namespace WPFSTD105
         /// <summary>
         /// 排版設定
         /// </summary>
-        TypeSetting,
+        TypeSetting,//待刪除
+
+        /// <summary>
+        /// 新排版設定
+        /// </summary>
+        MachineTypeSetting,
+        /// <summary>
+        /// 新製品設定
+        /// </summary>
+        MachineProductSetting,
+        /// <summary>
+        /// 新加工監控
+        /// </summary>
+        MachineMonitor
     }
     /// <summary>
     /// 辦公室頁面，由左而右依序排列
@@ -157,7 +170,7 @@ namespace WPFSTD105
         /// <summary>
         /// 參數設定
         /// </summary>
-        ParameterSettings,
+        //ParameterSettings,
         /// <summary>
         /// 20220711 張燕華 參數設定 - 選單功能
         /// </summary>
@@ -175,7 +188,7 @@ namespace WPFSTD105
         /// <summary>
         /// 原斷面規格頁面
         /// </summary>
-        SectionSpecificationSetting,
+        //SectionSpecificationSetting,
         /// <summary>
         /// 斷面規格目錄
         /// </summary>

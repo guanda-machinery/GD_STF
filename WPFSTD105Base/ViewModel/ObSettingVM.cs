@@ -172,6 +172,25 @@ namespace WPFSTD105.ViewModel
         /// 20220906 張燕華 鑽孔rbtn測試
         /// </summary>
         public ICommand CmdShowMessage { get; set; }
+
+        /// <summary>
+        /// 20220922 蘇冠綸 全選/全不選checkbox
+        /// </summary>
+        public ICommand SetAllCheckboxCheckedCommand
+        {
+            get
+            {
+                return new WPFWindowsBase.RelayParameterizedCommand(obj =>
+                {
+                    GetWpfLogicalChildClass.SetAllCheckBoxTrueOrFalse(obj);
+                });
+            }
+        }
+
+
+
+
+
         #endregion
 
         #region 公開屬性
@@ -240,6 +259,12 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public ObservableCollection<DataCorrespond> DataCorrespond { get; set; } = new ObservableCollection<DataCorrespond>();
         /// <summary>
+        /// 導回原本的ViewModel
+        /// </summary>
+        public ProductSettingsPageViewModel ProductSettingsPageViewModel = new ProductSettingsPageViewModel();
+
+        public string PartNumber { get; set; }  
+        /// <summary>
         /// 樹狀邏輯
         /// </summary>
         public ObservableCollection<TreeNode> TreeNode { get; set; } = new ObservableCollection<TreeNode>();
@@ -281,7 +306,11 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 主要零件設定檔
         /// </summary>
-        public SteelAttr SteelAttr { get; set; } = new SteelAttr();
+        public SteelAttr SteelAttr { get; set; } //= new SteelAttr();
+        /// <summary>
+        /// 鋼構名稱
+        /// </summary>
+        public String TypeDesc { get; set; }
         /// <summary>
         /// 螺栓群組設定檔
         /// </summary>
@@ -677,6 +706,7 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public GroupBoltsAttr GetGroupBoltsAttr()
         {
+            Boltsbuffer.BlockName = GroupBoltsAttr.BlockName;
             Boltsbuffer.GUID = GroupBoltsAttr.GUID;
             //直徑設定
             if (CheckDia == true)
@@ -872,6 +902,10 @@ namespace WPFSTD105.ViewModel
         /// <returns>因為 WPF VM的關係所以需要使用複製並存在緩衝區</returns>
         public SteelAttr GetSteelAttr()
         {
+
+#if DEBUG
+            log4net.LogManager.GetLogger("GetSteelAttr").Debug("");
+#endif
             try
             {
                 Steelbuffer = (SteelAttr)SteelAttr.DeepClone();
@@ -1034,6 +1068,7 @@ namespace WPFSTD105.ViewModel
 
             // 取得專案Grid資訊
             DataViews = new ObservableCollection<ProductSettingsPageViewModel>(GetData());
+            SteelAttr = new SteelAttr();
 
             ShowSteelTypeCommand = ShowSteelType(); //20220829 張燕華 選擇型鋼型態
             CalculateWeightCommand = CalculateWeight();
@@ -1299,6 +1334,7 @@ namespace WPFSTD105.ViewModel
                 .SelectMany(x => x)
                 .Select(x => new
                 {
+                    x.ExclamationMark,
                     x.GUID,
                     x.Lock,
                     x.Creation,
@@ -1376,9 +1412,11 @@ namespace WPFSTD105.ViewModel
                                 steelAttrVM.steelAttr.PartNumber = item.Number;
                                 // 斷面規格
                                 string profile = item.Profile;
+                                steelAttrVM.steelAttr.Profile = profile;
                                 steelAttrVM.Profile = profile;
                                 // 零件長
                                 double length = item.Length;
+                                steelAttrVM.steelAttr.Length = length;
                                 steelAttrVM.Length = length;
                                 // 零件ID List
                                 var partList = partNumber_ID.Where(x => x.Number == item.Number && x.Profile == profile && x.Length == length && x.Father.Contains(assemID)).Select(x => x.ID).FirstOrDefault();
@@ -1406,35 +1444,43 @@ namespace WPFSTD105.ViewModel
                                 steelAttrVM.TypeDesc = type;
 
                                 steelAttrVM.Type = item.Type;
+                                steelAttrVM.steelAttr.Type = item.Type;
                                 steelAttrVM.SteelType = Convert.ToInt32(item.Type);
                                 // 材質
                                 string material = item.Material;
+                                steelAttrVM.steelAttr.Material = material;
                                 steelAttrVM.Material = material;
                                 // 數量
                                 int count = item.Count;
+                                steelAttrVM.steelAttr.Number = count;
                                 steelAttrVM.Count = count;
                                 // 零件重
                                 double weight = item.UnitWeight;
+                                steelAttrVM.steelAttr.Weight = weight;
                                 steelAttrVM.Weight = weight;
 
                                 steelAttrVM.steelAttr.H = item.H;
                                 steelAttrVM.steelAttr.W = item.W;
                                 steelAttrVM.steelAttr.t1 = item.t1;
+                                steelAttrVM.t1 = item.t1;
                                 steelAttrVM.steelAttr.t2 = item.t2;
+                                steelAttrVM.t2 = item.t2;
 
-                                steelAttrVM.Title2 = item.Title2;
                                 steelAttrVM.Title1 = item.Title1;
-                                steelAttrVM.Phase = item.Phase;
-                                steelAttrVM.ShippingNumber = item.ShippingNumber;
                                 steelAttrVM.steelAttr.Title1 = item.Title1;
+                                steelAttrVM.Title2 = item.Title2;
                                 steelAttrVM.steelAttr.Title2 = item.Title2;
+                                steelAttrVM.Phase = item.Phase;
                                 steelAttrVM.steelAttr.Phase = item.Phase;
+                                steelAttrVM.ShippingNumber = item.ShippingNumber;
                                 steelAttrVM.steelAttr.ShippingNumber = item.ShippingNumber;
 
                                 // 上鎖
                                 steelAttrVM.steelAttr.Lock = item.Lock;
+                                steelAttrVM.Lock = item.Lock;
                                 // 驚嘆號
-                                //steelAttrVM.steelAttr.ExclamationMark = true;
+                                steelAttrVM.steelAttr.ExclamationMark = item.ExclamationMark;
+                                steelAttrVM.ExclamationMark = item.ExclamationMark;
 
                                 // GUID (Data Name)
                                 DataCorrespond single = DataCorrespond.FirstOrDefault(x =>
@@ -1483,7 +1529,8 @@ namespace WPFSTD105.ViewModel
                 }
             }
             #endregion
-            List<ProductSettingsPageViewModel> source = steelAttrList.Where(x => allowType.Contains(x.Type)).ToList();
+            List<ProductSettingsPageViewModel> source = new List<ProductSettingsPageViewModel>();
+            source = steelAttrList.Where(x => allowType.Contains(x.Type)).ToList();
             var group = (from a in source
                          group a by new { AsseNumber = a.steelAttr.AsseNumber, a.steelAttr.PartNumber, a.TeklaName, a.Type, a.Length, a.Weight } into g
                          select new
@@ -1508,12 +1555,13 @@ namespace WPFSTD105.ViewModel
                              ExclamationMark = g.FirstOrDefault().ExclamationMark,
                              t1 = g.FirstOrDefault().steelAttr.t1,
                              t2 = g.FirstOrDefault().steelAttr.t2,
+                             H = g.FirstOrDefault().steelAttr.H,
+                             W = g.FirstOrDefault().steelAttr.W
                          }).ToList();
             List<ProductSettingsPageViewModel> list = new List<ProductSettingsPageViewModel>();
-            SteelAttr attr = new SteelAttr();
 
             Dictionary<string, ObservableCollection<SteelAttr>> saFile = ser.GetSteelAttr();
-
+            SteelAttr temp = new SteelAttr();
             foreach (var item in group)
             {
                 ProductSettingsPageViewModel aa = new ProductSettingsPageViewModel()
@@ -1522,7 +1570,6 @@ namespace WPFSTD105.ViewModel
                     Revise = item.Revise,
                     DataName = item.DataName == null ? "" : item.DataName.ToString(),
                     AssemblyNumber = item.AssemblyNumber,
-                    //SteelAttr.PartNumber = item.PartNumber,
                     TeklaName = item.TeklaName,
                     TypeDesc = item.TypeDesc,
                     SteelType = item.SteelType,
@@ -1536,19 +1583,27 @@ namespace WPFSTD105.ViewModel
                     Title2 = item.Title2,
                     t1 = item.t1,
                     t2 = item.t2,
-                    ExclamationMark = item.ExclamationMark == null ? false: item.ExclamationMark,
+                    ExclamationMark = item.ExclamationMark == null ? false : item.ExclamationMark,                    
                 };
-                aa.Weight = PartWeight(aa, saFile); //item.Weight,
                 aa.steelAttr.GUID = item.DataName;
-                aa.steelAttr.PartNumber = item.PartNumber;
-                aa.steelAttr.Name = item.TeklaName;
                 aa.steelAttr.AsseNumber = item.AssemblyNumber;
+                aa.steelAttr.PartNumber = item.PartNumber;
+                aa.steelAttr.Type = (OBJECT_TYPE)item.SteelType;
+                aa.steelAttr.Profile = item.Profile;
+                aa.steelAttr.Material = item.Material;
+                aa.steelAttr.Length = item.Length;
+                aa.Weight = PartWeight(aa, saFile); //item.Weight,
+                aa.steelAttr.Weight = aa.Weight;
+                aa.steelAttr.Name = item.TeklaName;
                 aa.steelAttr.t1 = float.Parse(item.t1.ToString());
                 aa.steelAttr.t2 = float.Parse(item.t2.ToString());
                 aa.steelAttr.Title1 = item.Title1;
                 aa.steelAttr.Title2 = item.Title2;
                 aa.steelAttr.Phase = item.Phase;
                 aa.steelAttr.ShippingNumber = item.ShippingNumber;
+                aa.steelAttr.ExclamationMark = item.ExclamationMark;
+                aa.steelAttr.H = item.H;
+                aa.steelAttr.W = item.W;
                 list.Add(aa);
             }
             return list;

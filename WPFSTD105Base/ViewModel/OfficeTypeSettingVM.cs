@@ -47,8 +47,13 @@ namespace WPFSTD105
         /// <inheritdoc/>
         protected override RelayCommand Manual()
         {
-            throw new NotImplementedException();
+            return new RelayCommand(() =>
+            {
+
+            });
         }
+
+       
         /// <summary>
         /// 呼叫列印預覽視窗
         /// </summary>
