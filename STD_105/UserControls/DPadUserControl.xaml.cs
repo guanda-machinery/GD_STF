@@ -27,7 +27,166 @@ namespace STD_105
         }
 
 
-        
+        #region 十字鍵路由
+        /// <summary>
+        /// 滑鼠指標在十字鍵向上元素上方且按下滑鼠左按鈕時發生。
+        /// </summary>
+        public static readonly RoutedEvent JoystickUpPreviewMouseLeftButtonDownEvent;
+        /// <summary>
+        /// 滑鼠指標在此十字鍵向上元素上方且放開滑鼠左按鈕時發生。
+        /// </summary>
+        public static readonly RoutedEvent JoystickUpPreviewMouseLeftButtonUpEvent;
+        /// <summary>
+        /// 發生於十字鍵向上按兩下或更多下滑鼠按鈕時。
+        /// </summary>
+        public static readonly RoutedEvent JoystickUpMouseDoubleClickEvent;
+        /// <summary>
+        /// 滑鼠指標在十字鍵向下元素上方且按下滑鼠左按鈕時發生。
+        /// </summary>
+        public static readonly RoutedEvent JoystickDownPreviewMouseLeftButtonDownEvent;
+        /// <summary>
+        /// 滑鼠指標在此十字鍵向下元素上方且放開滑鼠左按鈕時發生。
+        /// </summary>
+        public static readonly RoutedEvent JoystickDownPreviewMouseLeftButtonUpEvent;
+        /// <summary>
+        /// 發生於十字鍵向下按兩下或更多下滑鼠按鈕時。
+        /// </summary>
+        public static readonly RoutedEvent JoystickDownMouseDoubleClickEvent;
+        /// <summary>
+        /// 滑鼠指標在十字鍵向左元素上方且按下滑鼠左按鈕時發生。
+        /// </summary>
+        public static readonly RoutedEvent JoystickLeftPreviewMouseLeftButtonDownEvent;
+        /// <summary>
+        /// 滑鼠指標在此十字鍵向左元素上方且放開滑鼠左按鈕時發生。
+        /// </summary>
+        public static readonly RoutedEvent JoystickLeftPreviewMouseLeftButtonUpEvent;
+        /// <summary>
+        /// 發生於十字鍵向下按兩下或更多下滑鼠按鈕時。
+        /// </summary>
+        public static readonly RoutedEvent JoystickLeftMouseDoubleClickEvent;
+        /// <summary>
+        /// 滑鼠指標在十字鍵向右元素上方且按下滑鼠左按鈕時發生。
+        /// </summary>
+        public static readonly RoutedEvent JoystickRightPreviewMouseLeftButtonDownEvent;
+        /// <summary>
+        /// 滑鼠指標在此十字鍵向右元素上方且放開滑鼠左按鈕時發生。
+        /// </summary>
+        public static readonly RoutedEvent JoystickRightPreviewMouseLeftButtonUpEvent;
+        /// <summary>
+        /// 發生於十字鍵向下按兩下或更多下滑鼠按鈕時。
+        /// </summary>
+        public static readonly RoutedEvent JoystickRightMouseDoubleClickEvent;
+        #endregion
+
+        #region 十字鍵向上按鈕路由事件註冊
+        /// <summary>
+        /// <see cref="JoystickUpPreviewMouseLeftButtonDownEvent"/> 註冊路由事件
+        /// </summary>
+        public event RoutedEventHandler JoystickUpMouseDoubleClick
+        {
+            add => btn_JoystickUp.AddHandler(MouseDoubleClickEvent, value);
+            remove => btn_JoystickUp.RemoveHandler(MouseDoubleClickEvent, value);
+        }
+        /// <summary>
+        /// <see cref="JoystickUpPreviewMouseLeftButtonDownEvent"/> 註冊路由事件
+        /// </summary>
+        public event RoutedEventHandler JoystickUpPreviewMouseLeftButtonDown
+        {
+            add => btn_JoystickUp.AddHandler(PreviewMouseLeftButtonDownEvent, value);
+            remove => btn_JoystickUp.RemoveHandler(PreviewMouseLeftButtonDownEvent, value);
+        }
+        /// <summary>
+        /// <see cref="JoystickUpPreviewMouseLeftButtonUpEvent"/> 註冊路由事件
+        /// </summary>
+        public event RoutedEventHandler JoystickUpPreviewMouseLeftButtonUp
+        {
+            add => btn_JoystickUp.AddHandler(PreviewMouseLeftButtonUpEvent, value);
+            remove { btn_JoystickUp.RemoveHandler(PreviewMouseLeftButtonUpEvent, value); }
+        }
+        #endregion
+
+        #region 十字鍵向下按鈕路由事件註冊
+        /// <summary>
+        /// <see cref="JoystickDownPreviewMouseLeftButtonDownEvent"/> 註冊路由事件
+        /// </summary>
+        public event RoutedEventHandler JoystickDownMouseDoubleClick
+        {
+            add => btn_JoystickDown.AddHandler(MouseDoubleClickEvent, value);
+            remove => btn_JoystickDown.RemoveHandler(MouseDoubleClickEvent, value);
+        }
+        /// <summary>
+        /// <see cref="JoystickDownPreviewMouseLeftButtonDownEvent"/> 註冊路由事件
+        /// </summary>
+        public event RoutedEventHandler JoystickDownPreviewMouseLeftButtonDown
+        {
+            add => btn_JoystickDown.AddHandler(PreviewMouseLeftButtonDownEvent, value);
+            remove { btn_JoystickDown.RemoveHandler(PreviewMouseLeftButtonDownEvent, value); }
+        }
+        /// <summary>
+        /// <see cref="JoystickDownPreviewMouseLeftButtonUpEvent"/> 註冊路由事件
+        /// </summary>
+        public event RoutedEventHandler JoystickDownPreviewMouseLeftButtonUp
+        {
+            add => btn_JoystickDown.AddHandler(PreviewMouseLeftButtonUpEvent, value);
+            remove { btn_JoystickDown.RemoveHandler(PreviewMouseLeftButtonUpEvent, value); }
+        }
+        #endregion
+
+        #region 十字鍵向左按鈕路由事件註冊
+        /// <summary>
+        /// <see cref="JoystickLeftPreviewMouseLeftButtonDownEvent"/> 註冊路由事件
+        /// </summary>
+        public event RoutedEventHandler JoystickLeftMouseDoubleClick
+        {
+            add => btn_JoystickLeft.AddHandler(MouseDoubleClickEvent, value);
+            remove => btn_JoystickLeft.RemoveHandler(MouseDoubleClickEvent, value);
+        }
+        /// <summary>
+        /// <see cref="JoystickLeftPreviewMouseLeftButtonDownEvent"/> 註冊路由事件
+        /// </summary>
+        public event RoutedEventHandler JoystickLeftPreviewMouseLeftButtonDown
+        {
+            add => btn_JoystickLeft.AddHandler(PreviewMouseLeftButtonDownEvent, value);
+            remove { btn_JoystickLeft.RemoveHandler(PreviewMouseLeftButtonDownEvent, value); }
+        }
+        /// <summary>
+        /// <see cref="JoystickLeftPreviewMouseLeftButtonUpEvent"/> 註冊路由事件
+        /// </summary>
+        public event RoutedEventHandler JoystickLeftPreviewMouseLeftButtonUp
+        {
+            add => btn_JoystickLeft.AddHandler(PreviewMouseLeftButtonUpEvent, value);
+            remove { btn_JoystickLeft.RemoveHandler(PreviewMouseLeftButtonUpEvent, value); }
+        }
+        #endregion
+
+        #region 十字鍵向右路由事件註冊
+        /// <summary>
+        /// <see cref="JoystickRightPreviewMouseLeftButtonDownEvent"/> 註冊路由事件
+        /// </summary>
+        public event RoutedEventHandler JoystickRightMouseDoubleClick
+        {
+            add => btn_JoystickRight.AddHandler(MouseDoubleClickEvent, value);
+            remove => btn_JoystickRight.RemoveHandler(MouseDoubleClickEvent, value);
+        }
+        /// <summary>
+        /// <see cref="JoystickRightPreviewMouseLeftButtonDownEvent"/> 註冊路由事件
+        /// </summary>
+        public event RoutedEventHandler JoystickRightPreviewMouseLeftButtonDown
+        {
+            add => btn_JoystickRight.AddHandler(PreviewMouseLeftButtonDownEvent, value);
+            remove { btn_JoystickRight.RemoveHandler(PreviewMouseLeftButtonDownEvent, value); }
+        }
+        /// <summary>
+        /// <see cref="JoystickRightPreviewMouseLeftButtonUpEvent"/> 註冊路由事件
+        /// </summary>
+        public event RoutedEventHandler JoystickRightPreviewMouseLeftButtonUp
+        {
+            add => btn_JoystickRight.AddHandler(PreviewMouseLeftButtonUpEvent, value);
+            remove { btn_JoystickRight.RemoveHandler(PreviewMouseLeftButtonUpEvent, value); }
+        }
+        #endregion
+
+
         /// <summary>
         /// 圖片樣式
         /// </summary>
@@ -40,7 +199,7 @@ namespace STD_105
         /// <see cref=""/> 註冊為依賴屬性
         /// </summary>
         public static readonly DependencyProperty BorderChild_1_Property =
-            DependencyProperty.Register(nameof(Border1), typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(BorderChild_1_PropertyChanged));
+            DependencyProperty.Register(nameof(DPad_Border1), typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(BorderChild_1_PropertyChanged));
         /// <summary>
         /// <see cref=""/>變更時觸發
         /// </summary>
@@ -48,7 +207,7 @@ namespace STD_105
         /// <param name="e"></param>
         private static void BorderChild_1_PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as DPadUserControl).Border1.Child = (UIElement)e.NewValue;
+            (d as DPadUserControl).DPad_Border1.Child = (UIElement)e.NewValue;
         }
 
 
@@ -64,7 +223,7 @@ namespace STD_105
         /// <see cref=""/> 註冊為依賴屬性
         /// </summary>
         public static readonly DependencyProperty BorderChild_2_Property =
-            DependencyProperty.Register(nameof(Border2), typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(BorderChild_2_PropertyChanged));
+            DependencyProperty.Register(nameof(DPad_Border2), typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(BorderChild_2_PropertyChanged));
         /// <summary>
         /// <see cref=""/>變更時觸發
         /// </summary>
@@ -72,7 +231,7 @@ namespace STD_105
         /// <param name="e"></param>
         private static void BorderChild_2_PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as DPadUserControl).Border2.Child = (UIElement)e.NewValue;
+            (d as DPadUserControl).DPad_Border2.Child = (UIElement)e.NewValue;
         }
 
         /// <summary>
@@ -87,7 +246,7 @@ namespace STD_105
         /// <see cref=""/> 註冊為依賴屬性
         /// </summary>
         public static readonly DependencyProperty BorderChild_3_Property =
-            DependencyProperty.Register(nameof(Border3), typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(BorderChild_3_PropertyChanged));
+            DependencyProperty.Register(nameof(DPad_Border3), typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(BorderChild_3_PropertyChanged));
         /// <summary>
         /// <see cref=""/>變更時觸發
         /// </summary>
@@ -95,7 +254,7 @@ namespace STD_105
         /// <param name="e"></param>
         private static void BorderChild_3_PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as DPadUserControl).Border3.Child = (UIElement)e.NewValue;
+            (d as DPadUserControl).DPad_Border3.Child = (UIElement)e.NewValue;
         }
 
         /// <summary>
@@ -110,7 +269,7 @@ namespace STD_105
         /// <see cref=""/> 註冊為依賴屬性
         /// </summary>
         public static readonly DependencyProperty BorderChild_4_Property =
-            DependencyProperty.Register(nameof(Border4), typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(BorderChild_4_PropertyChanged));
+            DependencyProperty.Register(nameof(DPad_Border4), typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(BorderChild_4_PropertyChanged));
         /// <summary>
         /// <see cref=""/>變更時觸發
         /// </summary>
@@ -118,7 +277,7 @@ namespace STD_105
         /// <param name="e"></param>
         private static void BorderChild_4_PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as DPadUserControl).Border4.Child = (UIElement)e.NewValue;
+            (d as DPadUserControl).DPad_Border4.Child = (UIElement)e.NewValue;
         }
 
 
