@@ -583,6 +583,15 @@
     <Compile Include="Office\Pages\ObSettingsPage_Office.xaml.cs">
       <DependentUpon>ObSettingsPage_Office.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Page\Machine\MachineFunction.xaml.cs">
+      <DependentUpon>MachineFunction.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\Machine\MainSpnidleMode.xaml.cs">
+      <DependentUpon>MainSpnidleMode.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DPadUserControl.xaml.cs">
+      <DependentUpon>DPadUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ParametersSettings\ParametersSettings_Office_Sticker.xaml.cs">
       <DependentUpon>ParametersSettings_Office_Sticker.xaml</DependentUpon>
     </Compile>
@@ -1033,11 +1042,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Page\Machine\MachineFunction.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Page\Machine\MainSpnidleMode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\Drawings_MachineButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\SectionSpecificationMenuStyle.xaml">
+    <Page Include="Styles\ParameterMenuStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DPadUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

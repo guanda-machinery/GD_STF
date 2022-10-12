@@ -845,21 +845,21 @@
             <!--繪圖顯示模型-->
             <Border Background="#F0F0F0" Margin="5"   Grid.Column="1" Grid.Row="1" >
                 <TabControl Margin="0.5,0" BorderThickness="0,1,0,0">
-                    <TabControl.Resources>
-                        <ResourceDictionary>
-                            <Style TargetType="TabItem">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type TabItem}">
-                                            <Grid x:Name="Root">
-                                                <Border x:Name="Border" Margin="10"
+                <TabControl.Resources>
+                    <ResourceDictionary>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type TabItem}">
+                                        <Grid x:Name="Root">
+                                            <Border x:Name="Border" Margin="10"
                                                     Width="{Binding ElementName=ContentSite, Path=Width}"
                                                     Height="{Binding ElementName=ContentSite, Path=Height}"
                                                     VerticalAlignment="Center"
                                                     Background="Transparent"
                                                     BorderBrush="Transparent"
                                                     BorderThickness="0,0,0,2">
-                                                    <ContentPresenter x:Name="ContentSite"
+                                                <ContentPresenter x:Name="ContentSite"
                                                                   Margin="0,2"
                                                                   HorizontalAlignment="Center"
                                                                   VerticalAlignment="Center"
@@ -867,33 +867,33 @@
                                                                   RecognizesAccessKey="True"
                                                                   TextBlock.FontSize="16"
                                                                   TextBlock.Foreground="black" />
-                                                </Border>
-                                                <VisualStateManager.VisualStateGroups>
-                                                    <VisualStateGroup x:Name="CommonStates">
+                                            </Border>
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup x:Name="CommonStates">
 
-                                                        <VisualState x:Name="Normal" />
-                                                        <VisualState x:Name="Selected">
-                                                            <Storyboard>
-                                                                <ColorAnimation Storyboard.TargetName="ContentSite"
+                                                    <VisualState x:Name="Normal" />
+                                                    <VisualState x:Name="Selected">
+                                                        <Storyboard>
+                                                            <ColorAnimation Storyboard.TargetName="ContentSite"
                                                                             Storyboard.TargetProperty="(TextBlock.Foreground).Color"
                                                                             To="#000000"
                                                                             Duration="0" />
 
-                                                                <ColorAnimation Storyboard.TargetName="Border"
+                                                            <ColorAnimation Storyboard.TargetName="Border"
                                                                             Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
                                                                             To="#5c93a7"
                                                                             Duration="0" />
-                                                            </Storyboard>
-                                                        </VisualState>
-                                                    </VisualStateGroup>
-                                                </VisualStateManager.VisualStateGroups>
-                                            </Grid>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ResourceDictionary>
-                    </TabControl.Resources>
+                                                        </Storyboard>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ResourceDictionary>
+                </TabControl.Resources>
 
                 <TabItem Margin="0,0,0,0" Header="鑽孔" Name="DrillTabItem"  >
                         <TabItem.Resources>

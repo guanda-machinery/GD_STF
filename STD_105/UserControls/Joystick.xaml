@@ -6,6 +6,7 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:STDEnum="clr-namespace:GD_STD.Enum;assembly=GD_STD.Enum"
              xmlns:local="clr-namespace:STD_105"
+             xmlns:WPFSTD105_VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
              xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"             
              mc:Ignorable="d">
     <UserControl.Resources>
@@ -141,6 +142,10 @@
                     Value="180" />
         </Style>
     </UserControl.Resources>
+    <UserControl.DataContext>
+        <WPFSTD105_VM:JoystickVM/>
+    </UserControl.DataContext>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -862,7 +867,8 @@
         <!--文字顯示區-->
         <Canvas Grid.ColumnSpan="3"
                 Grid.RowSpan="3"
-                Visibility="{ Binding DescriptionDisplayControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }">
+                Visibility="{Binding DescriptionDisplayControl , Converter={WPFBase:OppositeBooleanToVisibilityConverter}}"
+                >
             <TextBlock x:Name="tbk_JoystickUp"
                        Canvas.Top="125"
                        Canvas.Left="600"

@@ -26,11 +26,8 @@ namespace STD_105
         public SectionSpecificationMenu_UserControl()
         {
             InitializeComponent();
-            /*if(this.Style == null)
-            {
-                this.Style = (Style)Application.Current.Resources["SectionSpecificationMenuWhiteStyle"];
+            this.DataContext = new SettingParVM();
 
-            }*/
         }
 
         void ValidateCurrentValue(object sender, GridCellValidationEventArgs e)

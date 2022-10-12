@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 using WPFBase = WPFWindowsBase;
 using static WPFSTD105.ViewLocator;
 using static WPFSTD105.CodesysIIS;
+
 namespace WPFSTD105.ViewModel
 {
     /// <summary>
     /// 虛擬搖桿的VM
     /// </summary>
-    public abstract class JoystickVM : WPFBase.BaseViewModel
+    public class JoystickVM : WPFBase.BaseViewModel 
     {        
         /// <summary>
         /// 標準建構式

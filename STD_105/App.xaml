@@ -34,7 +34,7 @@
                 <ResourceDictionary Source="Styles/WinUIMessageBoxTemplate.xaml" />
                 <ResourceDictionary Source="Styles/CustomizedDescriptionTemplate.xaml" />
                 <ResourceDictionary Source="Styles/DevExpressCustomStyles.xaml" />
-                <ResourceDictionary Source="Styles/SectionSpecificationMenuStyle.xaml" />
+                <ResourceDictionary Source="Styles/ParameterMenuStyle.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/WPFWindowsBase;component/Styles/Knobstyle.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Calendar.xaml" />

@@ -549,17 +549,8 @@
             <!--材質設定-->
             <TabItem Header="材質設定"
                      IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance},Converter={local:NullToEnabledConverter}}">
-                <StackPanel Width="400"
-                            VerticalAlignment="Top">
-                    <StackPanel.Resources>
-                        <Style TargetType="TextBox"
-                               BasedOn="{ StaticResource tbx_BlueUnderline }">
-                            <Setter Property="Foreground"
-                                    Value="{ StaticResource solidclr_DimGray }" />
-                            <Setter Property="FontSize"
-                                    Value="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" />
-                        </Style>
-                    </StackPanel.Resources>
+                <StackPanel Width="500"  Style="{StaticResource PrameterStackPanelDarkStyle}" Margin="5"
+                            VerticalAlignment="Top" HorizontalAlignment="Left">
                     <StackPanel>
                         <GroupBox Header="材質列表"
                                   Height="600">
@@ -650,18 +641,18 @@
                     <StackPanel Orientation="Horizontal"
                                 Margin="5"
                                 VerticalAlignment="Bottom">
-                        <StackPanel.Resources>
-                            <Style TargetType="Button"
-                                   BasedOn="{ StaticResource btn_CommonFunctionKey_STD }" />
-                        </StackPanel.Resources>
+
                         <Button Name="profile"
+                                Width="80" Height="30" Margin="10"
                                 Content="新增"
                                 Command="{Binding NewCommand}"
                                 CommandParameter="{ Binding RelativeSource={ x:Static RelativeSource.Self }, Path=Name}" />
                         <Button Content="刪除"
+                                Width="80" Height="30" Margin="10"
                                 Command="{Binding DeleteMaterialCommand}"
                                 CommandParameter="{Binding SelectedItem, ElementName=Materials}" />
                         <Button Content="更新"
+                                Width="80" Height="30" Margin="10"
                                 Command="{ Binding UpdateMaterialCommand }"
                                 CommandParameter="{Binding SelectedItem, ElementName=Materials}" />
                     </StackPanel>
@@ -676,8 +667,7 @@
                         <RowDefinition />
                         <RowDefinition Height="100" />
                     </Grid.RowDefinitions>
-                    <dxlc:ScrollBox Style="{ StaticResource sbx_STD }">
-                        <dxg:GridControl x:Name="gridControl"
+                    <dxg:GridControl x:Name="gridControl" 
                                          MaxHeight="750"
                                          dx:ThemeManager.ThemeName="Office2019DarkGray"
                                          ItemsSource="{Binding DrillBrands}">
@@ -687,46 +677,50 @@
                                                ColumnHeaderContentStyle="{ StaticResource HeaderStyle }" />
                             </dxg:GridControl.View>
                             <dxg:GridControl.Columns>
-                                <dxg:GridColumn Header="設定檔名稱"
+                            <dxg:GridColumn Header="設定檔名稱" Width="auto" HorizontalHeaderContentAlignment="Center"
                                                 FieldName="DataName" />
-                                <dxg:GridColumn Header="品牌"
+                            <dxg:GridColumn Header="品牌" Width="auto" HorizontalHeaderContentAlignment="Center"
                                                 FieldName="Name" />
-                                <dxg:GridColumn Header="刀徑&#x0a;(mm)"
+                            <dxg:GridColumn Header="刀徑&#x0a;(mm)" Width="auto" HorizontalHeaderContentAlignment="Center"
                                                 FieldName="Dia" />
-                                <dxg:GridColumn Header="刀具類型"
+                                <dxg:GridColumn Header="刀具類型" Width="90" HorizontalHeaderContentAlignment="Center"
                                                 FieldName="DrilTypeStr">
                                     <dxg:GridColumn.EditSettings>
                                         <dxe:ComboBoxEditSettings ItemsSource="{Binding Source={StaticResource DrillType}, Path=Strings}" />
                                     </dxg:GridColumn.EditSettings>
                                 </dxg:GridColumn>
-                                <dxg:GridColumn Header="主軸轉速&#x0a;(RPM)"
+                            <dxg:GridColumn Header="主軸轉速&#x0a;(RPM)" Width="90" HorizontalHeaderContentAlignment="Center"
                                                 FieldName="Rpm" />
-                                <dxg:GridColumn Header="切削速度&#x0a;(mm/min)"
+                            <dxg:GridColumn Header="切削速度&#x0a;(mm/min)" Width="90" HorizontalHeaderContentAlignment="Center"
                                                 FieldName="Vc" />
-                                <dxg:GridColumn Header="f&#x0a;(mm/rev)"
+                            <dxg:GridColumn Header="f&#x0a;(mm/rev)" Width="90" HorizontalHeaderContentAlignment="Center"
                                                 FieldName="f" />
-                                <dxg:GridColumn Header="F&#x0a;(mm/min)"
+                            <dxg:GridColumn Header="F&#x0a;(mm/min)" Width="90" HorizontalHeaderContentAlignment="Center"
                                                 FieldName="F" />
-                                <dxg:GridColumn Header="刀具長度&#x0a;(mm)"
+                            <dxg:GridColumn Header="刀具長度&#x0a;(mm)" Width="90" HorizontalHeaderContentAlignment="Center"
                                                 FieldName="DrillLength" />
-                                <dxg:GridColumn Header="刀柄長度&#x0a;(mm)"
+                            <dxg:GridColumn Header="刀柄長度&#x0a;(mm)" Width="90" HorizontalHeaderContentAlignment="Center"
                                                 FieldName="HolderLength" />
-                                <dxg:GridColumn Header="L4長度&#x0a;(mm)"
+                            <dxg:GridColumn Header="L4長度&#x0a;(mm)" Width="75" HorizontalHeaderContentAlignment="Center"
                                                 FieldName="L4Length" />
-                                <dxg:GridColumn Header="刀具總長&#x0a;(mm)"
+                            <dxg:GridColumn Header="刀具總長&#x0a;(mm)" Width="90" HorizontalHeaderContentAlignment="Center"
                                                 FieldName="SumLength" />
                             </dxg:GridControl.Columns>
                         </dxg:GridControl>
-                    </dxlc:ScrollBox>
+
                     <StackPanel Grid.Row="1"
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center">
                         <StackPanel.Resources>
                             <Style TargetType="Button"
-                                   BasedOn="{ StaticResource btn_CommonFunctionKey_STD }" />
+                                   BasedOn="{ StaticResource ParameterButton }" >
+                                <Setter Property="Width" Value="80"/>
+                                <Setter Property="Height" Value="30"/>
+
+                            </Style>
                         </StackPanel.Resources>
-                        <Button Content="新增"
+                        <Button Content="新增" 
                                 Command="{Binding NewDrillBrandsCommand}" />
                         <Button Content="刪除"
                                 Command="{Binding DeleteDrillBrandsCommand}"
@@ -1255,11 +1249,10 @@
                             <Setter Property="Margin"
                                     Value="3" />
                         </Style>
-                        <Style BasedOn="{StaticResource gbx_WithBorder}"
-                               TargetType="GroupBox">
-                            <Setter Property="Margin"
-                                    Value="5" />
-                        </Style>
+                        <Style BasedOn="{StaticResource ParameterDarkGroupBox}"
+                               TargetType="GroupBox"/>
+
+
                     </Grid.Resources>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -1332,7 +1325,7 @@
                                                              TextBoxText="{Binding Point, Source={x:Static SofSetting:SofSetting.Default}}" />
                                     <local:AssembledControl3 IsChecked="{Binding OsVisible, Source={x:Static SofSetting:SofSetting.Default}}"
                                                              LabelText="{DynamicResource LANGUAGE_VisibilitySettings}" />
-                                    <local:SaveReduction HorizontalAlignment="Right"
+                                    <local:SaveReduction HorizontalAlignment="Right" 
                                                          VerticalAlignment="Bottom"
                                                          Reduction="{Binding ReductionSofCommand}"
                                                          Save="{Binding SaveSofCommand}" />
@@ -1582,9 +1575,13 @@
                                         StretchContentVertically="False">
                         <dxlc:LayoutControl.Resources>
                             <Style TargetType="{ x:Type dxlc:DataLayoutItem }"
-                                   BasedOn="{ StaticResource lab_LayoutControl_STD }"></Style>
+                                   BasedOn="{ StaticResource lab_LayoutControl_STD }">
+                                <Setter Property="Foreground" Value="#666666"/>
+                            </Style>
                             <Style TargetType="{x:Type dxlc:GroupBox}"
-                                   BasedOn="{ StaticResource gbx_LayoutControl_STD }"></Style>
+                                   BasedOn="{ StaticResource gbx_LayoutControl_STD }">
+                                <Setter Property="Background" Value="#c0c0c0"/>
+                            </Style>
                             <Style TargetType="{ x:Type ScrollBar }"
                                    BasedOn="{ StaticResource VerticalScrollBar }" />
                         </dxlc:LayoutControl.Resources>
@@ -1629,9 +1626,14 @@
                                         dx:ScrollBarExtensions.ScrollBarMode="Standard">
                         <dxlc:LayoutControl.Resources>
                             <Style TargetType="{ x:Type dxlc:DataLayoutItem }"
-                                   BasedOn="{ StaticResource lab_LayoutControl_STD }"></Style>
+                                   BasedOn="{ StaticResource lab_LayoutControl_STD }">
+                                <Setter Property="Foreground" Value="#666666"/>
+                            </Style>
                             <Style TargetType="{x:Type dxlc:GroupBox}"
-                                   BasedOn="{ StaticResource gbx_LayoutControl_STD }"></Style>
+                                   BasedOn="{ StaticResource gbx_LayoutControl_STD }">
+                                <Setter Property="Background" Value="#c0c0c0"/>
+                            </Style>
+                            
                             <Style TargetType="{ x:Type dxe:CheckEdit }">
                                 <Setter Property="CheckedGlyph"
                                         Value="{ StaticResource CheckBox_Hook }" />
