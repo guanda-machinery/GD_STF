@@ -30,6 +30,7 @@ using DevExpress.Xpf.Core;
 using System.Windows.Controls.Primitives;
 using DevExpress.Xpf.Grid;
 using DevExpress.Xpf.Core.Native;
+//using TriangleNet;
 
 namespace STD_105.Office
 {
@@ -725,30 +726,54 @@ namespace STD_105.Office
 
             model.ActionMode = actionType.SelectByBox;
             string content = SelectedData.MaterialNumber; //素材編號
-            model.AssemblyPart(content);
-          
-      //      AssemblyPart2D(model, content); 
+          //  model.AssemblyPart(content);
+            drawing.AssemblyPart2D(content);
+
+
+            //AssemblyPart2D(model, content); 
             model.Entities.Regen();
+       
+            drawing.Refresh();
             model.Refresh();
-            model.Invalidate();
-            model.ZoomFit();//設置道適合的視口
-            model.Invalidate();//初始化模型
+
+            model.Invalidate();     //初始化模型
+            drawing.Invalidate();   //初始化模型
+
+            model.ZoomFit();        //設置道適合的視口
+            drawing.ZoomFit();      //設置道適合的視口
+
+            //model.Invalidate();//初始化模型
+            //drawing.Invalidate();//初始化模型
+
             //SaveModel();
-           // Draw();
-           // model.SelectionChanged -= model.Model_SelectionChanged;
-           // model.SelectionChanged += model.Model_SelectionChanged; 
+            // Draw();
+            // model.SelectionChanged -= model.Model_SelectionChanged;
+            // model.SelectionChanged += model.Model_SelectionChanged; 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="materialNumber"></param>
         public void AssemblyPart2D(devDept.Eyeshot.Model model,string materialNumber)
         {
-            if (model.Entities.Count>0)
-            {
-                for (int i = 0; i < model.Blocks.Count; i++)
-                    if (model.Blocks[0].Entities[i].EntityData is SteelAttr)
-                    {
-                        SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
-                    }
-            }
+            //if (model.Entities.Count > 0)
+            //{
+            //    drawing.Blocks.Clear();
+            //    drawing.Entities.Clear();
+            //    for (int i = 0; i < model.Entities.Count; i++)
+            //    {
+            //        if (model.Entities[i].EntityData is SteelAttr)
+            //        {
+
+            //            SteelTriangulation((Mesh)model.Blocks[6].Entities[0]);
+
+
+            //        }
+
+            //    }
+            //}
 
 
 
@@ -760,6 +785,7 @@ namespace STD_105.Office
         private void GridSplitter_MouseMove(object sender, MouseEventArgs e)
         {
             model.ZoomFit();//設置道適合的視口
+            drawing.ZoomFit();//設置道適合的視口
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -773,14 +799,6 @@ namespace STD_105.Office
 
             //  SaveModel();
         }
-
-
-
-
-
-
-
-
 
         private void PartListTableView_Loaded(object sender, RoutedEventArgs e)
         {
