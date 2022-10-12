@@ -41,6 +41,7 @@ namespace STD_105.Office
         public TypesettingsSetting()
         {
             InitializeComponent();
+            CheckReportLogoExist();
         }
 
         private void Material_List_GridControl_SelectedItemChanged(object sender, DevExpress.Xpf.Grid.SelectedItemChangedEventArgs e)
@@ -55,7 +56,7 @@ namespace STD_105.Office
                  var b = (GD_STD.Data.MaterialDataView)e.OldItem; 
                  b.ButtonEnable =false;
              }*/
-            
+
             var SenderC = sender as DevExpress.Xpf.Grid.GridControl;
 
             if (SenderC.View != null)
@@ -71,13 +72,40 @@ namespace STD_105.Office
                 if (e.OldItem is GD_STD.Data.MaterialDataView)
                 {
                     var b = (GD_STD.Data.MaterialDataView)e.OldItem;
-                    b.ButtonEnable = false; 
+                    b.ButtonEnable = false;
                     var OldHandle = SenderC.FindRow(e.OldItem);
                     SenderC.RefreshRow(OldHandle);//畫面裡刷新上面該列的設定值
                 }
             }
         }
 
+        private void CheckReportLogoExist()
+        {
+            string dirPath = ApplicationVM.FileReportLogo();
+            string FilePath = ApplicationVM.FileReportLogo() + @"\ReportLogo.png";
+            string GDLOGOPath = "Logo/GD_ReportLogo.png";
+            if (Directory.Exists(dirPath))
+            {
+                Console.WriteLine("The directory {0} exists.", dirPath);                
+            }
+            else
+            {
+                Directory.CreateDirectory(dirPath);
+                Console.WriteLine("The directory {0} was created.", dirPath);
+            }
+
+            try
+            {
+                if (!System.IO.File.Exists(FilePath))
+                {
+                    File.Copy(GDLOGOPath, FilePath, true);
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
     }
 }
 

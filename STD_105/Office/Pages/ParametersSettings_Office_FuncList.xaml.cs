@@ -25,6 +25,7 @@ namespace STD_105.Office
             ShapedSteelMachiningAreaSettingCommand = ShapedSteelMachiningAreaSetting();
             ToolManagerSettingCommand = ToolManagerSetting();
             SoftwareVersionCommand = SoftwareVersion();
+            ReportLogoCommand = ReportLogo();
         }
 
         /// <summary>
@@ -98,6 +99,18 @@ namespace STD_105.Office
             return new WPFBase.RelayCommand(() =>
             {
                 OfficeViewModel.ParaSettingCurrentPage = ParameterSettingPage.ToolManagerSetting;
+            });
+        }
+
+        /// <summary>
+        /// 20221006 張燕華 報表LOGO
+        /// </summary>
+        public ICommand ReportLogoCommand { get; set; }
+        public WPFBase.RelayCommand ReportLogo()
+        {
+            return new WPFBase.RelayCommand(() =>
+            {
+                OfficeViewModel.ParaSettingCurrentPage = ParameterSettingPage.ReportLogo;
             });
         }
 

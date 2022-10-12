@@ -210,7 +210,7 @@ namespace WPFSTD105
                 sheet.Cells.AutoFitColumns();
                 sheet.Rows.AutoOutline();
                 book.BeginUpdate();
-                book.SaveDocument(path, DocumentFormat.Xlsx);
+                book.SaveDocument(path, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
 
             }
             catch (Exception)

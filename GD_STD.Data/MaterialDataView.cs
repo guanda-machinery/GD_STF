@@ -361,7 +361,10 @@ namespace GD_STD.Data
             get;set;
         }
 
-
+        /// <summary>
+        /// 素材數量
+        /// </summary>
+        public double MeterialCount { get; set; }
 
 
 

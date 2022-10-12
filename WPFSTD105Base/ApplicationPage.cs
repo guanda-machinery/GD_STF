@@ -204,6 +204,10 @@ namespace WPFSTD105
         /// 軟體版本
         /// </summary>
         SoftwareVersion,
+        /// <summary>
+        /// 報表LOGO
+        /// </summary>
+        ReportLogo,
     }
     /// <summary>
     /// 彈跳視窗

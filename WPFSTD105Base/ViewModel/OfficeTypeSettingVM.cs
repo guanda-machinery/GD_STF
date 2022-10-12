@@ -13,6 +13,9 @@ using WPFWindowsBase;
 using GD_STD.Data;
 using static WPFSTD105.ViewLocator;
 using System.Collections.Generic;
+using System.Diagnostics;
+using WordToPdfService;
+using System.IO;
 
 namespace WPFSTD105
 {
@@ -134,12 +137,24 @@ namespace WPFSTD105
             {
                 return new RelayParameterizedCommand(el =>
                 {
-                    ExcelCutService execl = new ExcelCutService();
-                //execl.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.xls", MaterialDataViews);
+                    //ExcelCutService execl = new ExcelCutService();
+                    //execl.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.xls", MaterialDataViews);
 
-                //20220624 張燕華 新增檔案儲存完成提示
-                    var stringFilePath = $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.xls";
-                    execl.CreateFile(stringFilePath, MaterialDataViews);
+                    //20220624 張燕華 新增excel檔案儲存完成提示
+                    //ExcelCutService execl = new ExcelCutService();
+                    //var stringFilePath = $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.xls";
+                    //execl.CreateFile(stringFilePath, MaterialDataViews);
+
+                    //20220930 張燕華 改為word輸出報表
+                    WordCutService word = new WordCutService();
+                    word.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", MaterialDataViews);
+                    //word to pdf
+                    using (var cvtr = new PdfConverter())
+                    {
+                        var buff = cvtr.GetPdf(Path.Combine($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx"));
+                        string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
+                        File.WriteAllBytes($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf", buff);
+                    }
 
                     WinUIMessageBox.Show(null,
                         $"檔案已下載",
@@ -174,12 +189,24 @@ namespace WPFSTD105
             {
                 return new RelayParameterizedCommand(el =>
                 {
-                    ExcelBuyService execl = new ExcelBuyService();
-                //execl.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.xls", MaterialDataViews);
+                    //ExcelBuyService execl = new ExcelBuyService();
+                    //execl.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.xls", MaterialDataViews);
 
-                //20220627 張燕華 新增檔案儲存完成提示
-                    var stringFilePath = $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.xls";
-                    execl.CreateFile(stringFilePath, MaterialDataViews);
+                    //20220627 張燕華 新增excel檔案儲存完成提示
+                    //ExcelBuyService execl = new ExcelBuyService();
+                    //var stringFilePath = $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.xls";
+                    //execl.CreateFile(stringFilePath, MaterialDataViews);
+
+                    //20220928 張燕華 改為word輸出報表
+                    WordBuyService word = new WordBuyService();
+                    word.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", MaterialDataViews);
+                    //word to pdf
+                    using (var cvtr = new PdfConverter())
+                    {
+                        var buff = cvtr.GetPdf(Path.Combine($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx"));
+                        string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
+                        File.WriteAllBytes($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf", buff);
+                    }
 
                     WinUIMessageBox.Show(null,
                         $"檔案已下載",
@@ -189,6 +216,9 @@ namespace WPFSTD105
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
                         FloatingMode.Popup);
+
+                    //以Libreoffice把WORD轉換為PDF
+                    //convertDocToPdf(@"C:\Program Files\LibreOffice\program", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}", "採購明細單.docx");
                 });
             }
         }
@@ -232,6 +262,38 @@ namespace WPFSTD105
         });
 
 
+        /// <summary>
+        /// 利用LibraOffice將Doc轉成PDF
+        /// </summary>
+        /// <param name=”openOfficePath”>soffice.exe的路徑</param>
+        /// <param name=”workDir”>要被轉換檔案的資料夾位置</param>
+        /// <param name=”docFileName”>要被轉換檔案的名稱</param>
+        /// <returns></returns>
+        private bool convertDocToPdf(String openOfficePath, String workDir, String docFileName)
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.CreateNoWindow = false;
+            startInfo.UseShellExecute = false;
+            startInfo.FileName = openOfficePath;
+            startInfo.WorkingDirectory = workDir;
+            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startInfo.Arguments = "–headless –convert - to pdf " + docFileName;
+
+            try
+            {
+                using (Process exeProcess = Process.Start(startInfo))
+                {
+                    exeProcess.WaitForExit();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+        }
     }
 
 

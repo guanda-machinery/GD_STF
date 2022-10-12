@@ -33,6 +33,8 @@ using System.Collections;
 using SectionData;
 using SplitLineSettingData;
 
+using DevExpress.Xpf.Dialogs;
+
 namespace WPFSTD105.ViewModel
 {
     /// <summary>
@@ -119,6 +121,8 @@ namespace WPFSTD105.ViewModel
             GoBackSplitLineCommand = GoBackSplitLine();//20220816 張燕華 切割線設定 - 復原按鈕
 
             SoftwareVersionInstallCommand = SoftwareVersionInstall();//20220819 張燕華 軟體版本-安裝按鈕
+            ImportLogoCommand = ImportLogo();//20221006 張燕華 報表LOGO
+            CopyAndSaveLogoCommand = CopyAndSaveLogo();
         }
 
         #region 公開方法
@@ -1401,6 +1405,52 @@ namespace WPFSTD105.ViewModel
                                      MessageBoxResult.None,
                                      MessageBoxOptions.None,
                                      FloatingMode.Popup);
+            });
+        }
+        /// <summary>
+        /// 報表LOGO 20221006 張燕華
+        /// </summary>
+        public ICommand ImportLogoCommand { get; set; }
+        private WPFWindowsBase.RelayCommand ImportLogo()
+        {
+            return new WPFWindowsBase.RelayCommand(() =>
+            {
+                DXOpenFileDialog dX = new DXOpenFileDialog();
+                dX.Filter = "Image Files|*.PNG;*.JPG;*.BMP";
+                dX.ShowDialog();//Show 視窗
+                LogoPath = dX.FileName;
+                if (LogoPath != String.Empty) IsLogoPathSelected = true;
+            });
+        }
+        /// <summary>
+        /// 複製儲存已選擇的報表LOGO 20221006 張燕華
+        /// </summary>
+        public ICommand CopyAndSaveLogoCommand { get; set; }
+        private WPFWindowsBase.RelayCommand CopyAndSaveLogo()
+        {
+            return new WPFWindowsBase.RelayCommand(() =>
+            {
+                string dirPath = ApplicationVM.FileReportLogo();
+                if (Directory.Exists(dirPath))
+                {
+                    Console.WriteLine("The directory {0} already exists.", dirPath);
+                }
+                else
+                {
+                    Directory.CreateDirectory(dirPath);
+                    Console.WriteLine("The directory {0} was created.", dirPath);
+                }
+
+                File.Copy(LogoPath, ApplicationVM.FileReportLogo()+@"\ReportLogo.png", true);//複製報表LOG到專案資料夾
+
+                WinUIMessageBox.Show(null,
+                    $"選擇完成",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Popup);
             });
         }
         /// <summary>
@@ -3154,6 +3204,14 @@ namespace WPFSTD105.ViewModel
         /// 材質要顯示的集合
         /// </summary>
         public ObservableCollection<SteelMaterial> Materials { get; set; } = new ObservableCollection<SteelMaterial>();
+        /// <summary>
+        /// 報表路徑
+        /// </summary>
+        public string LogoPath { get; set; } = string.Empty; 
+        /// <summary>
+        /// 報表路徑是否已選擇
+        /// </summary>
+        public bool IsLogoPathSelected { get; set; } = false; 
         /// <summary>
         /// 綁定儲存位置視窗顯示
         /// </summary>

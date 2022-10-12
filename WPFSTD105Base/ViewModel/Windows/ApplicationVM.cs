@@ -604,6 +604,20 @@ namespace WPFSTD105
         /// Tekla 報表文件
         /// </summary>
         /// <returns></returns>
+        public static string FileReportLogo()
+        {
+            string projectName = CommonViewModel.ProjectName; //專案名稱
+
+            if (projectName != null)
+                return $@"{DirectoryModel()}\{ModelPath.ReportLogo}";
+
+            throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
+        }
+
+        /// <summary>
+        /// Tekla 報表文件
+        /// </summary>
+        /// <returns></returns>
         public static string FileTeklaBom()
         {
             string projectName = CommonViewModel.ProjectName; //專案名稱
