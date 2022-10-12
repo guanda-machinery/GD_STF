@@ -80,7 +80,6 @@ namespace WPFSTD105
                         pool.Skip(1).ToList().ForEach(o => o.Remove());
                     }
                 }
-
             }
         }
 

@@ -14,8 +14,12 @@ using GD_STD.Data;
 using static WPFSTD105.ViewLocator;
 using System.Collections.Generic;
 using System.Diagnostics;
-using WordToPdfService;
-using System.IO;
+//using WordToPdfService; //WORD to PDF by Office
+//using System.IO;
+//using GrapeCity.Documents.Word;
+//using System.Drawing;
+//using GrapeCity.Documents.Word.Layout;
+//using System.IO.Compression;
 
 namespace WPFSTD105
 {
@@ -153,13 +157,14 @@ namespace WPFSTD105
                     //20220930 張燕華 改為word輸出報表
                     WordCutService word = new WordCutService();
                     word.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", MaterialDataViews);
-                    //word to pdf
-                    using (var cvtr = new PdfConverter())
-                    {
-                        var buff = cvtr.GetPdf(Path.Combine($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx"));
-                        string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
-                        File.WriteAllBytes($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf", buff);
-                    }
+                    
+                    ////word to pdf by Office
+                    //using (var cvtr = new PdfConverter())
+                    //{
+                    //    var buff = cvtr.GetPdf(Path.Combine($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx"));
+                    //    string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
+                    //    File.WriteAllBytes($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf", buff);
+                    //}
 
                     WinUIMessageBox.Show(null,
                         $"檔案已下載",
@@ -205,22 +210,60 @@ namespace WPFSTD105
                     //20220928 張燕華 改為word輸出報表
                     WordBuyService word = new WordBuyService();
                     word.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", MaterialDataViews);
-                    //word to pdf
-                    using (var cvtr = new PdfConverter())
-                    {
-                        var buff = cvtr.GetPdf(Path.Combine($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx"));
-                        string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
-                        File.WriteAllBytes($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf", buff);
-                    }
 
                     WinUIMessageBox.Show(null,
-                        $"檔案已下載",
+                        $"WORD已下載",
                         "通知",
                         MessageBoxButton.OK,
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
                         FloatingMode.Popup);
+
+                    ////WORD to PDF
+                    //var wordDoc = new GcWordDocument();
+                    //var path = Path.Combine($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx");
+                    //wordDoc.Load(path);
+                    //using (var layout = new GcWordLayout(wordDoc))
+                    //{
+                    //    PdfOutputSettings pdfOutputSettings = new PdfOutputSettings();
+                    //
+                    //    pdfOutputSettings.CompressionLevel = CompressionLevel.Fastest;
+                    //
+                    //    pdfOutputSettings.ConformanceLevel = GrapeCity.Documents.Pdf.PdfAConformanceLevel.PdfA1a;
+                    //
+                    //    pdfOutputSettings.BackColor = Color.LightGray;
+                    //
+                    //    pdfOutputSettings.DocumentInfo = new GrapeCity.Documents.Pdf.DocumentInfo()
+                    //
+                    //    {
+                    //        Author = "John",
+                    //
+                    //        Title = "Deforestation",
+                    //
+                    //        CreationDate = new GrapeCity.Documents.Pdf.PdfDateTime(DateTime.Now)
+                    //
+                    //    };
+                    //
+                    //    layout.SaveAsPdf($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.pdf", null, pdfOutputSettings);
+                    //}
+
+                    ////word to pdf by Office
+                    //using (var cvtr = new PdfConverter())
+                    //{
+                    //    var buff = cvtr.GetPdf(Path.Combine($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx"));
+                    //    string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
+                    //    File.WriteAllBytes($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf", buff);
+                    //}
+
+                    //WinUIMessageBox.Show(null,
+                    //    $"PDF已下載",
+                    //    "通知",
+                    //    MessageBoxButton.OK,
+                    //    MessageBoxImage.Exclamation,
+                    //    MessageBoxResult.None,
+                    //    MessageBoxOptions.None,
+                    //    FloatingMode.Popup);
 
                     //以Libreoffice把WORD轉換為PDF
                     //convertDocToPdf(@"C:\Program Files\LibreOffice\program", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}", "採購明細單.docx");

@@ -107,6 +107,18 @@ namespace WPFSTD105.ViewModel
                 });
             }
         }
-
+        /// <summary>
+        /// 20221006 張燕華 報表LOGO
+        /// </summary>
+        public ICommand ReportLogoCommand
+        {
+            get
+            {
+                return new WPFWindowsBase.RelayCommand(() =>
+                {
+                    OfficeViewModel.ParaSettingCurrentPage = ParameterSettingPage.ReportLogo;
+                });
+            }
+        }
     }
 }
