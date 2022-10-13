@@ -159,7 +159,7 @@
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" MinWidth="50"/>
-            <ColumnDefinition Width="280"/>
+            <ColumnDefinition Width="350"/>
             <ColumnDefinition Width="*" MinWidth="50"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -169,33 +169,32 @@
         <Grid  Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" >
             <Grid.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource btn_3D_DirectionKey}">
-                    <Setter Property="Width" Value="70"/>
-                    <Setter Property="Height" Value="70"/>
+                    <Setter Property="Width" Value="90"/>
+                    <Setter Property="Height" Value="auto"/>
                 </Style>
                 <Style TargetType="Line">
                     <Setter Property="StrokeThickness" Value="2"/>
                     <Setter Property="Stroke" Value="#4CFF00"/>
                 </Style>
 
-
             </Grid.Resources>
-            <Grid Visibility="{Binding DescriptionDisplayVisibility}">
-                <Line X1="0" X2="80" Y1="70" Y2="70"  />
-                <Line X1="80" X2="80" Y1="70" Y2="120" />
+            <Grid Visibility="{Binding DescriptionDisplayVisibility,UpdateSourceTrigger=PropertyChanged}">
+                <Line X1="0" X2="110" Y1="70" Y2="70"  />
+                <Line X1="110" X2="110" Y1="70" Y2="120" />
 
-                <Line X1="280" X2="150" Y1="70" Y2="70" />
+                <Line X1="350" X2="150" Y1="70" Y2="70" />
 
 
-                <Line X1="0" X2="75" Y1="185" Y2="185"/>
-                <Line X1="75" X2="125" Y1="185" Y2="140"/>
-                <Line X1="125" X2="200" Y1="140" Y2="140"/>
+                <Line X1="0" X2="115" Y1="185" Y2="185"/>
+                <Line X1="115" X2="165" Y1="185" Y2="140"/>
+                <Line X1="165" X2="200" Y1="140" Y2="140"/>
 
-                <Line X1="280" X2="150" Y1="185" Y2="185" />
+                <Line X1="350" X2="150" Y1="185" Y2="185" />
             </Grid>
 
 
-            <Grid  Width="180" Height="180" >
-                <Button Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center"   Width="70" Height="70" Name="btn_JoystickUp">
+            <Grid  Width="210" Height="210" >
+                <Button Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center"   Name="btn_JoystickUp">
                     <Button.Effect>
                         <DropShadowEffect Opacity="0.5"
                                   ShadowDepth="3"
@@ -234,7 +233,7 @@
                 </Button.Content>-->
                 </Button>
                 <!--向左按鈕-->
-                <Button Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center "  Width="70" Height="70" Name="btn_JoystickLeft">
+                <Button Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Name="btn_JoystickLeft">
                     <Button.LayoutTransform>
                         <RotateTransform Angle="270" />
                     </Button.LayoutTransform>
@@ -277,7 +276,7 @@
                     </Button.Content>
                 </Button>
                 <!--向右按鈕-->
-                <Button  HorizontalAlignment="Right" VerticalAlignment="Center"  Width="70" Height="70" Name="btn_JoystickRight">
+                <Button  HorizontalAlignment="Right" VerticalAlignment="Center"  Name="btn_JoystickRight">
                     <Button.LayoutTransform>
                         <RotateTransform Angle="90" />
                     </Button.LayoutTransform>
@@ -320,7 +319,7 @@
 
                 </Button>
                 <!--向下按鈕-->
-                <Button HorizontalAlignment="Center" VerticalAlignment="Bottom"  Width="70" Height="70" Name="btn_JoystickDown">
+                <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Name="btn_JoystickDown">
                     <Button.LayoutTransform>
                         <RotateTransform Angle="180" />
                     </Button.LayoutTransform>
@@ -357,26 +356,22 @@
 
             </Grid>
         </Grid>
-        <Border Name="DPad_Border1"    Margin="5,5,0,5"    >
-            <Border.Child>
-                <Border/>
-            </Border.Child>
-        </Border>
-        <Border    Name="DPad_Border2" Margin="5,5,0,5"
-                            Grid.Column="0"
-                            Grid.Row="1">
-            <Border/>
+        <Border Name="DPad_Border1"    Margin="5,5,0,5"  />
 
-        </Border>
+        <Border  Name="DPad_Border2" Margin="5,5,0,5"
+                            Grid.Column="0"
+                            Grid.Row="1"/>
+
+
         <Border  Name="DPad_Border3" Margin="0,5,5,5"
                             Grid.Column="2"
-                            Grid.Row="0">
-        </Border>
-        <Border         Name="DPad_Border4" Margin="0,5,5,5"
-                            Grid.Column="2"
-                            Grid.Row="2">
+                            Grid.Row="0"/>
 
-        </Border>
+        <Border    Name="DPad_Border4" Margin="0,5,5,5"
+                            Grid.Column="2"
+                            Grid.Row="2"/>
+
+
 
 
 

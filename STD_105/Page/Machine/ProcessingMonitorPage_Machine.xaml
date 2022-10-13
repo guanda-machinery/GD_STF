@@ -641,7 +641,7 @@
                             <Button Grid.Column="2" Grid.Row="0" Width="auto"  Height="70">
                                 <Button.Content>
                                     <Grid Width="60" Height="60">
-                                        <Image Source="{StaticResource Transport_by_RobotDrawingImage}"  />
+                                        <Image Source="{StaticResource Transport_by_Robot_checkedDrawingImage}"  />
                                         <Border  BorderThickness="0,0,0,2" BorderBrush="#67b32c" />
                                     </Grid>
                                 </Button.Content>

@@ -877,6 +877,47 @@ namespace WPFSTD105
                 }
             });
         }
+
+        /// <summary>
+        /// 新參數設定命令
+        /// </summary>
+        public ICommand MachineFunctionCommand
+        {
+            get
+            {
+                return new WPFBase.RelayCommand(() =>
+                {
+                    PanelButton panelButton = new PanelButton();
+                    panelButton = StateClear(ApplicationViewModel.PanelButton);
+                    WriteCodesysMemor.SetPanel(panelButton);
+                    ApplicationViewModel.CurrentPage = ApplicationPage.MachineFunction;
+                });
+            }
+        }
+
+
+
+        /// <summary>
+        /// 新參數設定命令
+        /// </summary>
+        public ICommand MainSpindleCommand
+        {
+            get
+            {
+                return new WPFBase.RelayCommand(() =>
+                {
+                    PanelButton panelButton = new PanelButton();
+                    panelButton = StateClear(ApplicationViewModel.PanelButton);
+                    WriteCodesysMemor.SetPanel(panelButton);
+                    ApplicationViewModel.CurrentPage = ApplicationPage.MainSpindleMode;
+                });
+            }
+        }
+
+
+
+
+
         /// <summary>
         /// 顯示軟體設定
         /// </summary>
