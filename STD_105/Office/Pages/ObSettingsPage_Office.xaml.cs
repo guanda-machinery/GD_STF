@@ -2604,10 +2604,11 @@ namespace STD_105.Office
             ISteelProfile pf = ViewModel.ProfileList.Where(x => x.Profile == ViewModel.SteelAttr.Profile).FirstOrDefault();
             // 零件列表
             SteelPart steelPart = new SteelPart(
-                pf, ViewModel.SteelAttr.Name, ViewModel.SteelAttr.PartNumber, 
-                ViewModel.SteelAttr.Length, ViewModel.SteelAttr.Number,ViewModel.SteelAttr.GUID.Value,
-                ViewModel.SteelAttr.Phase, ViewModel.SteelAttr.ShippingNumber,
-                ViewModel.SteelAttr.Title1, ViewModel.SteelAttr.Title2,ViewModel.SteelAttr.Lock);
+                pf,
+                ViewModel.SteelAttr.Name, ViewModel.SteelAttr.PartNumber,
+                ViewModel.SteelAttr.Length, ViewModel.SteelAttr.Number,
+                ViewModel.SteelAttr.GUID.Value, ViewModel.SteelAttr.Phase, ViewModel.SteelAttr.ShippingNumber,
+                ViewModel.SteelAttr.Title1, ViewModel.SteelAttr.Title2, ViewModel.SteelAttr.Lock);
             steelPart.ID = new List<int>();
             steelPart.Match = new List<bool>();
             steelPart.Material = ViewModel.SteelAttr.Material;

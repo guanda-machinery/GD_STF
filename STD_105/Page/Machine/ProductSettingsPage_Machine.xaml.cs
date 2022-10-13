@@ -56,7 +56,7 @@ namespace STD_105
             //2022.06.24 呂宗霖 此Class與GraphWin.xaml.cs皆有SteelTriangulation與Add2DHole
             //                  先使用本Class 若有問題再修改
             //GraphWin service = new GraphWin();
-         
+
             /// <summary>
             /// 鑽孔radio button測試 20220906 張燕華
             /// </summary>
@@ -363,7 +363,7 @@ namespace STD_105
                 //drawing.SetCurrent((BlockReference)drawing.Entities[drawing.Entities.Count - 1]);
 
                 SteelAttr steelAttr = ViewModel.GetSteelAttr();
-                steelAttr = GetViewToAttr(steelAttr, model);
+                steelAttr = GetViewToSteelAttr(steelAttr, model);
                 //steelAttr.Length = string.IsNullOrEmpty(this.Length.Text) ? 0 : double.Parse(this.Length.Text);
                 //steelAttr.Phase = string.IsNullOrEmpty(this.phase.Text) ? 0 : int.Parse(this.phase.Text);
                 //steelAttr.Name = this.teklaName.Text;
@@ -1619,7 +1619,7 @@ namespace STD_105
         /// <param name="steelAttr"></param>
         /// <param name="model"></param>
         /// <returns></returns>
-        public SteelAttr GetViewToAttr(SteelAttr steelAttr, ModelExt model)
+        public SteelAttr GetViewToSteelAttr(SteelAttr steelAttr, ModelExt model)
         {
             //steelAttr.Creation = DateTime.Now;
             steelAttr.Revise = null;
@@ -2751,16 +2751,11 @@ namespace STD_105
             // 零件列表
             ISteelProfile pf = ViewModel.ProfileList.Where(x => x.Profile == ViewModel.SteelAttr.Profile).FirstOrDefault();
             SteelPart steelPart = new SteelPart(
-                ViewModel.SteelAttr,
-                ViewModel.SteelAttr.Name,
-                ViewModel.SteelAttr.PartNumber,
-                ViewModel.SteelAttr.Length,
-                ViewModel.SteelAttr.Number,
-                ViewModel.SteelAttr.GUID.Value,
-                ViewModel.SteelAttr.Phase,
-                ViewModel.SteelAttr.ShippingNumber,
-                ViewModel.SteelAttr.Title1,
-                ViewModel.SteelAttr.Title2, ViewModel.SteelAttr.Lock);
+                pf,
+                ViewModel.SteelAttr.Name, ViewModel.SteelAttr.PartNumber,
+                ViewModel.SteelAttr.Length, ViewModel.SteelAttr.Number,
+                ViewModel.SteelAttr.GUID.Value, ViewModel.SteelAttr.Phase, ViewModel.SteelAttr.ShippingNumber,
+                ViewModel.SteelAttr.Title1, ViewModel.SteelAttr.Title2, ViewModel.SteelAttr.Lock);
             steelPart.ID = new List<int>();
             steelPart.Match = new List<bool>();
             steelPart.Material = ViewModel.SteelAttr.Material;
@@ -2788,9 +2783,9 @@ namespace STD_105
                 collection = ser.GetPart($@"{steelPart.Profile.GetHashCode()}");
             }
             if (!collection.Any(x =>
-            x.Number == steelPart.Number &&
-            x.Profile == steelPart.Profile &&
-            x.Type == steelPart.Type &&
+            //x.Number == steelPart.Number &&
+            //x.Profile == steelPart.Profile &&
+            //x.Type == steelPart.Type &&
             x.GUID == steelPart.GUID))
             {
                 // 不存在則新增
@@ -2800,9 +2795,9 @@ namespace STD_105
             {
                 // 存在則編輯
                 SteelPart sp = collection.Where(x =>
-                x.Number == steelPart.Number &&
-                x.Profile == steelPart.Profile &&
-                x.Type == steelPart.Type &&
+                //x.Number == steelPart.Number &&
+                //x.Profile == steelPart.Profile &&
+                //x.Type == steelPart.Type &&
                 x.GUID == steelPart.GUID).FirstOrDefault();
                 sp.DrawingName = steelPart.DrawingName;
                 sp.Length = steelPart.Length;
