@@ -153,7 +153,7 @@ namespace WPFSTD105.Model
                 BoltAttr boltAttr = (BoltAttr)resultY[0].EntityData;
 
                 // 加工區域計算
-               // List<double> list = WorkingRange(steelAttr.Type, boltAttr);
+                List<double> list = WorkingRange(steelAttr.Type, boltAttr);
 
                 double y, z;
 
@@ -216,10 +216,14 @@ namespace WPFSTD105.Model
 
                     switch (Info.Face)
                     {
+                        // this.Info.yCoun = 1 為斜邊打點
                         case GD_STD.Enum.FACE.TOP:
                             bolt.Translate(0, valueY, 0);//使用相對移動到指定位置。
                             boltAttrEach.Y = boltAttrEach.Y + valueY;
-                         //   check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttrEach.Y, list);
+                            if (this.Info.yCount != 1)
+                            {
+                                check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttrEach.Y, list);
+                            }
                             //if (boltAttrEach.Y < list[0] || boltAttrEach.Y > list[1])
                             //{
                             //    // 不能加入
@@ -239,7 +243,10 @@ namespace WPFSTD105.Model
                             // boltAttrEach.Y = y;
                             // boltAttrEach.Z = z;
                             boltAttrEach.Y = boltAttrEach.Y + valueY;
-                            //check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttrEach.Y, list);
+                            if (this.Info.yCount != 1)
+                            {
+                                check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttrEach.Y, list);
+                            }
                             //switch (steelAttr.Type)
                             //{
                             //    case OBJECT_TYPE.RH:
@@ -297,37 +304,37 @@ namespace WPFSTD105.Model
                 }
                 if (check)
                 {
-                    if (resultY.Count == 1)
-                    {
-                        Mesh bolt = (Mesh)resultY[0].Clone();
-                        boltAttr = (BoltAttr)((BoltAttr)resultY[0].EntityData).DeepClone();
-                        switch (Info.Face)
-                        {
-                            case GD_STD.Enum.FACE.TOP:
-                                bolt.EntityData = boltAttr;
-                                //boltList.Add(bolt);
-                              //  check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttr.Y, list);
-                                break;
-                            case GD_STD.Enum.FACE.BACK:
-                            case GD_STD.Enum.FACE.FRONT:
-                                //// 將螺栓資訊寫回XYZ平面
-                                //z = boltAttr.Y;
-                                //y = boltAttr.Z;
-                                //boltAttr.Y = y;
-                                //boltAttr.Z = z;
-                                bolt.EntityData = boltAttr;
-                                //boltList.Add(bolt);
-                               // check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttr.Y, list);
-                                //double a = 3 / 4;
-                                //bolt.Rotate(Math.PI*a, Vector3D.AxisX);
-                                break;
-                        }
-                        if (check)
-                        {
-                            //resultY.Clear();
-                            resultY.Add(bolt);
-                        }
-                    }
+                    //if (resultY.Count != 1)//Count=1為斜邊打點
+                    //{
+                    //    Mesh bolt = (Mesh)resultY[0].Clone();
+                    //    boltAttr = (BoltAttr)((BoltAttr)resultY[0].EntityData).DeepClone();
+                    //    switch (Info.Face)
+                    //    {
+                    //        case GD_STD.Enum.FACE.TOP:
+                    //            bolt.EntityData = boltAttr;
+                    //            //boltList.Add(bolt);
+                    //            check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttr.Y, list);
+                    //            break;
+                    //        case GD_STD.Enum.FACE.BACK:
+                    //        case GD_STD.Enum.FACE.FRONT:
+                    //            //// 將螺栓資訊寫回XYZ平面
+                    //            //z = boltAttr.Y;
+                    //            //y = boltAttr.Z;
+                    //            //boltAttr.Y = y;
+                    //            //boltAttr.Z = z;
+                    //            bolt.EntityData = boltAttr;
+                    //            //boltList.Add(bolt);
+                    //            check = CheckWorkingRange(Info.Face, steelAttr.Type, boltAttr.Y, list);
+                    //            //double a = 3 / 4;
+                    //            //bolt.Rotate(Math.PI*a, Vector3D.AxisX);
+                    //            break;
+                    //    }
+                    //    if (check)
+                    //    {
+                    //        //resultY.Clear();
+                    //        resultY.Add(bolt);
+                    //    }
+                    //}
                     this.Entities.AddRange(resultY);//存到列表內
 
 
@@ -352,50 +359,60 @@ namespace WPFSTD105.Model
 
             }
 
-            if (check)
-            {
-                bool inSteel = true;
-                foreach (var item in this.Entities)
-                {
-                    // 檢查產生之孔位是否在鋼體內
-                    //if (((Mesh)model.Entities[model.Entities.Count - 1].EntityData).IsPointInside(
+            //if (check)
+            //{
+            //    Mesh mesh = (Mesh)model.Blocks[1].Entities[0];
+            //    bool inSteel = true;
+            //    foreach (var item in this.Entities)
+            //    {
+            //        // 檢查產生之孔位是否在鋼體內
+            //        //if (((Mesh)model.Entities[model.Entities.Count - 1].EntityData).IsPointInside(
+            //        //if (model.Entities[model.Entities.Count - 1].EntityData is Mesh)
+            //        //{
+            //        if ((mesh.IsPointInside(
+            //        new Point3D()
+            //        {
+            //            X = ((BoltAttr)item.EntityData).X,
+            //            Y = ((BoltAttr)item.EntityData).Y,
+            //            Z = ((BoltAttr)item.EntityData).Z
+            //        })))
+            //        {
+            //            inSteel = true;
+            //        }
+            //        else
+            //        {
+            //            inSteel = false;
+            //            // 驚嘆號
+            //            ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+            //            ((SteelAttr)(model.Entities[model.Entities.Count - 1].EntityData)).ExclamationMark = true;
+            //            break;
+            //        }
+            //        //}
                     
-                    //if (((Mesh)model.Entities[model.Entities.Count - 1].EntityData).IsPointInside(
-                    //    new Point3D()
-                    //    {
-                    //        X = ((BoltAttr)item.EntityData).X,
-                    //        Y = ((BoltAttr)item.EntityData).Y,
-                    //        Z = ((BoltAttr)item.EntityData).Z
-                    //    }))
-                    //{
-                    //    inSteel = true;
-                    //}
-                    //else { 
-                    //    inSteel = false;
-                    //    // 驚嘆號
-                    //    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
-                    //    break;
-                    //}
 
-                    //if (!(inSteel || ((Mesh)model.Entities[model.Entities.Count - 1].EntityData).IsPointInside(
-                    //    new Point3D()
-                    //    {
-                    //        X = ((BoltAttr)item.EntityData).X,
-                    //        Y = ((BoltAttr)item.EntityData).Y,
-                    //        Z = ((BoltAttr)item.EntityData).Z
-                    //    })))//鋼構外
-                    //{
-                    //    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
-                    //}
-                }
+            //        //if (!(inSteel || ((Mesh)model.Entities[model.Entities.Count - 1].EntityData).IsPointInside(
+            //        //    new Point3D()
+            //        //    {
+            //        //        X = ((BoltAttr)item.EntityData).X,
+            //        //        Y = ((BoltAttr)item.EntityData).Y,
+            //        //        Z = ((BoltAttr)item.EntityData).Z
+            //        //    })))//鋼構外
+            //        //{
+            //        //    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+            //        //}
+            //    }
 
-                if (inSteel) { ((SteelAttr)model.Blocks[1].Entities[model.Blocks[1].Entities.Count-1].EntityData).ExclamationMark = false;  }
-            }
-            else
-            {
-               // 不在加工區域內
-                ((SteelAttr)model.Blocks[1].Entities[model.Blocks[1].Entities.Count - 1].EntityData).ExclamationMark = true;
-            }
+            //    if (inSteel) {
+            //        ((SteelAttr)model.Blocks[1].Entities[model.Blocks[1].Entities.Count-1].EntityData).ExclamationMark = false;
+            //        ((SteelAttr)(model.Entities[model.Entities.Count - 1].EntityData)).ExclamationMark = false;
+            //    }
+            //}
+            //else
+            //{
+            //   // 不在加工區域內
+            //    ((SteelAttr)model.Blocks[1].Entities[model.Blocks[1].Entities.Count - 1].EntityData).ExclamationMark = true;
+            //    ((SteelAttr)(model.Entities[model.Entities.Count - 1].EntityData)).ExclamationMark = true;
+            //}
         }
 
         /// <summary>
@@ -696,7 +713,6 @@ namespace WPFSTD105.Model
             {
                 #region H型鋼
                 case OBJECT_TYPE.RH:
-                case OBJECT_TYPE.CH:
                 case OBJECT_TYPE.BH:
                 case OBJECT_TYPE.H:
                     switch (boltAttr.Face)
@@ -737,6 +753,7 @@ namespace WPFSTD105.Model
                 #endregion
                 #region C型鋼
                 case OBJECT_TYPE.C:
+                case OBJECT_TYPE.CH:
                     switch (boltAttr.Face)
                     {
                         // 腹板
