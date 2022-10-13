@@ -394,14 +394,14 @@ namespace WPFSTD105.Model
                 case OBJECT_TYPE.BH:
                 case OBJECT_TYPE.RH:
                     recursiveTime = 0;
-                    topList = ModifyLine(topList, SteelAttr.W / 2 + SteelAttr.t1 / 2,ref recursiveTime);
+                    topList = ModifyLine(topList, SteelAttr.W / 2 + SteelAttr.t1 / 2, ref recursiveTime);
                     break;
                 case OBJECT_TYPE.TUBE:
                 case OBJECT_TYPE.BOX:
                 case OBJECT_TYPE.L:
                 case OBJECT_TYPE.CH:
                     recursiveTime = 0;
-                    topList = ModifyLine(topList, SteelAttr.W,ref recursiveTime);
+                    topList = ModifyLine(topList, SteelAttr.W, ref recursiveTime);
                     break;
                 default:
                     break;
@@ -412,9 +412,9 @@ namespace WPFSTD105.Model
                 correctionY = SteelAttr.W - SteelAttr.t1 + MoveBack;
             }
             recursiveTime = 0;
-            backList = ModifyLine(backList, SteelAttr.H,ref recursiveTime, correctionY);
+            backList = ModifyLine(backList, SteelAttr.H, ref recursiveTime, correctionY);
             recursiveTime = 0;
-            fromList = ModifyLine(fromList, 0,ref recursiveTime);
+            fromList = ModifyLine(fromList, 0, ref recursiveTime);
             //加入到圖塊內
             this.Entities.AddRange(topList);
             this.Entities.AddRange(backList);
@@ -586,7 +586,7 @@ namespace WPFSTD105.Model
                     }
                     else
                     {
-                        noSuitable[i].LineTypeName = LineTypeName;
+                       // noSuitable[i].LineTypeName = LineTypeName;
                         noSuitable[i].LineTypeMethod = colorMethodType.byEntity;
                     }
                     result.Add(noSuitable[i]);

@@ -30,6 +30,8 @@ using DevExpress.Xpf.Core;
 using System.Windows.Controls.Primitives;
 using DevExpress.Xpf.Grid;
 using DevExpress.Xpf.Core.Native;
+using static DevExpress.XtraEditors.Mask.MaskSettings;
+using System.Web.UI.WebControls;
 //using TriangleNet;
 
 namespace STD_105.Office
@@ -64,8 +66,6 @@ namespace STD_105.Office
             drawing.LineTypes.Add(Steel2DBlock.LineTypeName, new float[] { 35, -35, 35, -35 });
             model.Secondary = drawing;
             drawing.Secondary = model;
-            //ControlDraw3D();
-
         }
 
         private void Model3D_Loaded(object sender, RoutedEventArgs e)
@@ -504,7 +504,7 @@ namespace STD_105.Office
             {
                 var item = e.AddedItems[index];
 
-                if (item is SelectedFace)
+                if (item is SelectedFace)                                                                           
                 {
                     var faceItem = (SelectedFace)item;
                     var ent = faceItem.Item;
@@ -563,12 +563,14 @@ namespace STD_105.Office
             //關閉三視圖用戶選擇
             block2D.Selectable = false;
 
+            // 將TOP FRONT BACK圖塊加入drawing
             drawing.Entities.Add(block2D);
+
 #if DEBUG
             log4net.LogManager.GetLogger("產生2D").Debug("結束");
 #endif
-            //drawing.ZoomFit();//設置道適合的視口
-            //drawing.Refresh();//刷新模型
+            drawing.ZoomFit();//設置道適合的視口
+            drawing.Refresh();//刷新模型
             return block2D;
         }
         /// <summary>
@@ -726,24 +728,31 @@ namespace STD_105.Office
 
             model.ActionMode = actionType.SelectByBox;
             string content = SelectedData.MaterialNumber; //素材編號
-          //  model.AssemblyPart(content);
-            drawing.AssemblyPart2D(content);
+          
+            model.AssemblyPart(content);
+        
+            //drawing.AssemblyPart2D(content);
 
 
-            //AssemblyPart2D(model, content); 
+           AssemblyPart2D(model, content);
+            drawing.Entities.Regen();
             model.Entities.Regen();
-       
+
             drawing.Refresh();
             model.Refresh();
 
-            model.Invalidate();     //初始化模型
-            drawing.Invalidate();   //初始化模型
 
             model.ZoomFit();        //設置道適合的視口
             drawing.ZoomFit();      //設置道適合的視口
 
-            //model.Invalidate();//初始化模型
-            //drawing.Invalidate();//初始化模型
+
+            model.Invalidate();     //初始化模型
+            drawing.Invalidate();   //初始化模型
+
+
+
+            model.Invalidate();//初始化模型
+            drawing.Invalidate();//初始化模型
 
             //SaveModel();
             // Draw();
@@ -758,24 +767,126 @@ namespace STD_105.Office
         /// <param name="materialNumber"></param>
         public void AssemblyPart2D(devDept.Eyeshot.Model model,string materialNumber)
         {
-            //if (model.Entities.Count > 0)
-            //{
-            //    drawing.Blocks.Clear();
-            //    drawing.Entities.Clear();
-            //    for (int i = 0; i < model.Entities.Count; i++)
-            //    {
-            //        if (model.Entities[i].EntityData is SteelAttr)
-            //        {
 
-            //            SteelTriangulation((Mesh)model.Blocks[6].Entities[0]);
+            model.Clear();
+            drawing.Clear();
+            STDSerialization ser = new STDSerialization(); //序列化處理器
+            ObservableCollection<MaterialDataView> materialDataViews = ser.GetMaterialDataView(); //序列化列表
+            int index = materialDataViews.FindIndex(el => el.MaterialNumber == materialNumber);//序列化的列表索引
+            MaterialDataView material = materialDataViews[index];
+            ObservableCollection<SteelPart> parts = ser.GetPart(material.Profile.GetHashCode().ToString());//零件列表
+            NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
+            var _ = material.Parts.Select(x => x.PartNumber); //選擇要使用的零件編號
+            var guid = (from el in ncTemps
+                        where _.ToList().Contains(el.SteelAttr.PartNumber)
+                        select el.SteelAttr.GUID.ToString()).ToList();//選擇使用的NC文件
+            //產生nc檔案圖檔
+            for (int i = 0; i < guid.Count; i++)
+            {
+                model.LoadNcToModel(guid[i]);
+            }
 
 
-            //        }
+            var place = new List<(double Start, double End, bool IsCut, string Number)>();//放置位置參數
+            place.Add((Start: 0, End: material.StartCut, IsCut: true, Number: "")); //素材起始切割物件
+            Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
+            for (int i = 0; i < material.Parts.Count; i++)
+            {
+                int partIndex = parts.FindIndex(el => el.Number == material.Parts[i].PartNumber); //回傳要使用的陣列位置
+                if (partIndex == -1)
+                {
+                    throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
+                }
+                else
+                {
+                    double startCurrent = place[place.Count - 1].End,//當前物件放置起始點的座標
+                                  endCurrent = startCurrent + parts[partIndex].Length;//當前物件放置結束點的座標
+                    place.Add((Start: startCurrent, End: endCurrent, IsCut: false, Number: parts[partIndex].Number));
+                    Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
+                    //計算切割物件
+                    double startCut = place[place.Count - 1].End, //當前切割物件放置起始點的座標
+                                  endCut;//當前切割物件放置結束點的座標
+                    if (i + 1 >= material.Parts.Count) //下一次迴圈結束
+                    {
+                        endCut = material.LengthStr + material.StartCut + material.EndCut;//當前切割物件放置結束點的座標
+                    }
+                    else //下一次迴圈尚未結束
+                    {
+                        endCut = startCut + material.Cut;//當前切割物件放置結束點的座標
+                    }
+                    place.Add((Start: startCut, End: endCut, IsCut: true, Number: "")); //素材零件位置
+                    Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
+                }
+            }
+            EntityList entities = new EntityList();
 
-            //    }
-            //}
 
 
+            for (int i = 0; i < place.Count; i++)
+            {
+                if (place[i].IsCut) //如果是切割物件
+                {
+                    //Entity cut = DrawCutMesh(parts[0], model, place[i].Start, place[i].End, "Cut");
+                    //if (cut != null)
+                    //{
+                    //    entities.Add(cut);
+                    //}
+
+                    continue;
+                }
+
+
+                int placeIndex = place.FindIndex(el => el.Number == place[i].Number); //如果有重複的編號只會回傳第一個，以這個下去做比較。
+
+                if (placeIndex != i) //如果 i != 第一次出現的 index 代表需要使用複製
+                {
+                    EntityList ent = new EntityList();
+                    entities.
+                        Where(el => el.GroupIndex == placeIndex).
+                        ForEach(el =>
+                        {
+                            Entity copy = (Entity)el.Clone(); //複製物件
+                            copy.GroupIndex = i;
+                            copy.Translate(place[i].Start - place[placeIndex].Start, 0);
+                            ent.Add(copy);
+                        });
+                    entities.AddRange(ent);
+                }
+
+                else
+                {
+                    int partIndex = parts.FindIndex(el => el.Number == place[i].Number);
+                    if (parts[partIndex].GUID.ToString() != "") //如果圖面檔案
+                    {
+                        ReadFile file = ser.ReadPartModel(parts[partIndex].GUID.ToString()); //讀取檔案內容
+                        if (file == null)
+                        {
+                            WinUIMessageBox.Show(null,
+                                $"專案Dev_Part資料夾讀取失敗",
+                                "通知",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Exclamation,
+                                MessageBoxResult.None,
+                                MessageBoxOptions.None,
+                                FloatingMode.Popup);
+                            return;
+                        }
+                        file.DoWork();
+                        file.AddToScene(model);
+                        Point3D center = new Point3D();
+                        model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
+                        BlockReference block2D = SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
+
+
+                        block2D.GroupIndex = i;
+                        block2D.Translate(place[i].Start, 0);
+                        block2D.Selectable = true;
+                        entities.Add(block2D);//加入到暫存列表
+                    }
+                }
+            }
+            drawing.Entities.AddRange(entities);
+            ser.SetMaterialModel(materialNumber + "2D", drawing); //儲存素材
 
 
         }

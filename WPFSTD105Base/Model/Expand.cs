@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows;
+
 using WPFSTD105.ViewModel;
 using WPFSTD105.Attribute;
 using WPFSTD105.Tekla;
@@ -22,6 +23,9 @@ using Region = devDept.Eyeshot.Entities.Region;
 using devDept.Graphics;
 using devDept.Serialization;
 using GD_STD.Enum;
+using System.Windows.Media;
+using static DevExpress.Utils.Menu.DXMenuItemPainter;
+//using TriangleNet;
 
 namespace WPFSTD105.Model
 {
@@ -37,6 +41,7 @@ namespace WPFSTD105.Model
         /// <param name="materialNumber">素材編號</param>
         public static void AssemblyPart2D(this devDept.Eyeshot.Model model, string materialNumber)
         {
+            
             model.Clear();
             STDSerialization ser = new STDSerialization(); //序列化處理器
             ObservableCollection<MaterialDataView> materialDataViews = ser.GetMaterialDataView(); //序列化列表
@@ -53,7 +58,6 @@ namespace WPFSTD105.Model
             {
                 model.LoadNcToModel(guid[i]);
             }
-
 
             var place = new List<(double Start, double End, bool IsCut, string Number)>();//放置位置參數
             place.Add((Start: 0, End: material.StartCut, IsCut: true, Number: "")); //素材起始切割物件
@@ -141,24 +145,23 @@ namespace WPFSTD105.Model
                         Point3D center = new Point3D();
                         Entity _entity = null;
                         SteelAttr _steelAttr = null;
-                        model.Entities.ForEach(el =>
-                        {
-                            if (el.GetType() != typeof(LinearDim))
-                            {
-                                model.Blocks[((BlockReference)el).BlockName].Entities.ForEach(entity =>
-                                {
-                                    if (entity.EntityData is SteelAttr steelAttr)
-                                    {
-                                        _entity = entity;
-                                        _steelAttr = steelAttr;
-                                    }
-                                });
-                                el.GroupIndex = i;
-                                el.Translate(place[i].Start, 0);
-                                el.Selectable = false;
-                                entities.Add(el);//加入到暫存列表
-                            }
-                        });
+                        
+                        Steel2DBlock steel2DBlock = new Steel2DBlock(((Mesh)model.Blocks[1].Entities[0]), model.Blocks[1].Name);
+                        model.Blocks.Add(steel2DBlock);
+                        BlockReference block2D = new BlockReference(0, 0, 0, steel2DBlock.Name, 1, 1, 1, 0);//產生鋼構參考圖塊
+                        block2D.Selectable = true;
+
+                        //      model.Entities.Add(block2D);
+
+                        //_entity = entity;
+                        //_steelAttr = steelAttr;
+
+                        block2D.GroupIndex = i;
+                        block2D.Translate(place[i].Start, 0);
+                        block2D.Selectable = true;
+                        entities.Add(block2D);//加入到暫存列表
+                          
+                
 
 
 
@@ -293,7 +296,7 @@ namespace WPFSTD105.Model
         /// </summary>
         /// <param name="model"></param>
         /// <param name="materialNumber">素材編號</param>
-        public static void AssemblyPart(this devDept.Eyeshot.Model model, string materialNumber)
+        public static void AssemblyPart(this devDept.Eyeshot.Model model, string materialNumber )
         {
 
             model.Clear();
@@ -699,7 +702,7 @@ namespace WPFSTD105.Model
             LinearPath profile = new LinearPath(point3Ds);
             devDept.Eyeshot.Entities.Region region1 = new devDept.Eyeshot.Entities.Region(profile, Plane.XY, false);
             Mesh result = region1.ExtrudeAsMesh<Mesh>(new Vector3D(0, 0, t), 0.25, Mesh.natureType.Plain);// 拉伸輪廓以創建新的devDept.Eyeshot.Entities.Mesh。
-            result.Color = Color.Gray;
+            result.Color = System.Drawing.Color.Gray;
             return result;
         }
 
