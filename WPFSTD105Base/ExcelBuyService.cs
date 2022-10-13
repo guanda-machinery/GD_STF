@@ -47,7 +47,7 @@ namespace WPFSTD105
         public void CreateFileOverView(string path,
             List<object> modelBlockList,
             List<object> modelEntityList,
-            string errorGUID)
+            List<string> errorGUID)
         {
             //List<Block> blockList = (List<Block>)modelBlockList;
             //List<Entity> entityList = (List<Entity>)modelEntityList;
@@ -240,36 +240,40 @@ namespace WPFSTD105
                 foreach (KeyValuePair<string, ObservableCollection<SteelPart>> item in steelPart)
                 {
                     column = 0;
-                    sheet.Cells[row, column++].Value = item.Value[0].GUID.ToString();
-                    sheet.Cells[row, column++].Value = item.Value[0].Number;
-                    sheet.Cells[row, column++].Value = item.Value[0].DrawingName;
-                    sheet.Cells[row, column++].Value = item.Value[0].Profile;
-                    sheet.Cells[row, column++].Value = item.Value[0].Count.ToString();
-                    sheet.Cells[row, column++].Value = item.Value[0].Material;
-                    sheet.Cells[row, column++].Value = item.Value[0].Length;
-                    sheet.Cells[row, column++].Value = item.Value[0].Phase;
-                    sheet.Cells[row, column++].Value = item.Value[0].ShippingNumber;
-                    sheet.Cells[row, column++].Value = item.Value[0].Title1;
-                    sheet.Cells[row, column++].Value = item.Value[0].Title2;
-                    sheet.Cells[row, column++].Value = item.Value[0].H;
-                    sheet.Cells[row, column++].Value = item.Value[0].W;
-                    sheet.Cells[row, column++].Value = item.Value[0].t1;
-                    sheet.Cells[row, column++].Value = item.Value[0].t2;
-                    sheet.Cells[row, column++].Value = item.Value[0].Type.ToString();
-                    int tempRow = row;
-                    foreach (int id in item.Value[0].ID)
+                    foreach (SteelPart part in item.Value)
                     {
-                        sheet.Cells[row++, column].Value = id;
-                    }
-                    rowList.Add(row);
-                    row = tempRow;
-                    column++;
-                    foreach (int father in item.Value[0].Father)
-                    {
-                        sheet.Cells[row++, column].Value = father;
-                    }
-                    rowList.Add(row);
-                    row = rowList.Max() + 1;
+                        column = 0;
+                        sheet.Cells[row, column++].Value = part.GUID.ToString();
+                        sheet.Cells[row, column++].Value = part.Number;
+                        sheet.Cells[row, column++].Value = part.DrawingName;
+                        sheet.Cells[row, column++].Value = part.Profile;
+                        sheet.Cells[row, column++].Value = part.Count.ToString();
+                        sheet.Cells[row, column++].Value = part.Material;
+                        sheet.Cells[row, column++].Value = part.Length;
+                        sheet.Cells[row, column++].Value = part.Phase;
+                        sheet.Cells[row, column++].Value = part.ShippingNumber;
+                        sheet.Cells[row, column++].Value = part.Title1;
+                        sheet.Cells[row, column++].Value = part.Title2;
+                        sheet.Cells[row, column++].Value = part.H;
+                        sheet.Cells[row, column++].Value = part.W;
+                        sheet.Cells[row, column++].Value = part.t1;
+                        sheet.Cells[row, column++].Value = part.t2;
+                        sheet.Cells[row, column++].Value = part.Type.ToString();
+                        int tempRow = row;
+                        foreach (int id in part.ID)
+                        {
+                            sheet.Cells[row++, column].Value = id;
+                        }
+                        rowList.Add(row);
+                        row = tempRow;
+                        column++;
+                        foreach (int father in part.Father)
+                        {
+                            sheet.Cells[row++, column].Value = father;
+                        }
+                        rowList.Add(row);
+                        row = rowList.Max() + 1;
+                    }                    
                 }
                 #endregion
                 sheet.Cells.AutoFitColumns();
@@ -318,11 +322,15 @@ namespace WPFSTD105
                 #endregion
 
                 #region ErrorDataName
-                sheet = book.Worksheets.Add("wrong dm file"); //創建一個新工作表並將其附加到集合的末尾
+                sheet = book.Worksheets.Add("Wrong DM File"); //創建一個新工作表並將其附加到集合的末尾
                 book.Worksheets.ActiveWorksheet = sheet;
                 row = 0;
                 column = 0;
-                sheet.Cells[row, column++].Value = $"{errorGUID}]";
+                foreach (var item in errorGUID)
+                {
+                    sheet.Cells[row++, column].Value = $"{item}]";
+                }
+                
                 sheet.Cells.AutoFitColumns();
                 sheet.Rows.AutoOutline();
                 #endregion
@@ -399,9 +407,10 @@ namespace WPFSTD105
                                     column = 0;
                                     break;
                                 case "Mesh":
-                                    Mesh mesh = (Mesh)entities; 
+                                    Mesh mesh = (Mesh)entities;
                                     sheet.Cells[row, column++].Value = $"1-2model.Blocks[{firstIndex}].Entities[{secondIndex}]";
                                     sheet.Cells[row, column++].Value = $"{entities.GetType().Name}";
+                                    sheet.Cells[row, column++].Value = (mesh.Vertices.Count() > 0 ? "有Vertices" : "無Vertices");
                                     sheet.Cells[row, column++].Value = $"{mesh.MaterialName}";
                                     sheet.Cells[row, column++].Value = $"{mesh.Faces}";
                                     sheet.Cells[row++, column++].Value = $"{mesh.LineTypeName}";
@@ -425,15 +434,15 @@ namespace WPFSTD105
                                     case "SteelAttr":
                                     case "BoltAttr":
                                     case "BlockReference":
-                                        sheet.Cells[row, column++].Value = $"*1-3model.Blocks[{firstIndex}].Entities[{secondIndex}.EntityData = null";
+                                        sheet.Cells[row, column++].Value = $"1-3model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData = null";
                                         sheet.Cells[row, column++].Value = $"{block.GetType().Name}";
-                                        sheet.Cells[row++, column++].Value = $"{entities.GetType().Name}";
+                                        sheet.Cells[row += 2, column++].Value = $"{entities.GetType().Name}";
                                         column = 0;
                                         break;
                                     default:
-                                        sheet.Cells[row, column++].Value = $"*1-3model.Blocks[{firstIndex}].Entities[{secondIndex}.EntityData = null";
+                                        sheet.Cells[row, column++].Value = $"*1-3model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData = null";
                                         sheet.Cells[row, column++].Value = $"{block.GetType().Name}";
-                                        sheet.Cells[row++, column++].Value = $"{entities.GetType().Name}";
+                                        sheet.Cells[row += 2, column++].Value = $"{entities.GetType().Name}";
                                         column = 0;
                                         break;
                                 }
@@ -446,9 +455,9 @@ namespace WPFSTD105
                                 {
                                     case "BoltAttr":
                                         BoltAttr ba = (BoltAttr)entities.EntityData;//Dia Model Type Face
-                                        sheet.Cells[row, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}.EntityData]";
+                                        sheet.Cells[row, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData]";
                                         sheet.Cells[row, column++].Value = entities.EntityData.GetType().Name;
-                                        sheet.Cells[row, column++].Value = ba.GUID.ToString();//.
+                                        sheet.Cells[row, column++].Value = ba.GUID.ToString();
                                         sheet.Cells[row, column++].Value = ba.BlockName;
                                         sheet.Cells[row, column++].Value = ba.X;
                                         sheet.Cells[row, column++].Value = ba.Y;
@@ -456,12 +465,12 @@ namespace WPFSTD105
                                         sheet.Cells[row, column++].Value = ba.Dia;
                                         sheet.Cells[row, column++].Value = $"{ba.Mode}";
 
-                                        sheet.Cells[row++, column++].Value = ba.Type.ToString();
+                                        sheet.Cells[row += 2, column++].Value = ba.Type.ToString();
                                         column = 0;
                                         break;
                                     case "SteelAttr":
                                         SteelAttr sa = (SteelAttr)entities.EntityData;
-                                        sheet.Cells[row, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}.EntityData]";
+                                        sheet.Cells[row, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData]";
                                         sheet.Cells[row, column++].Value = sa.GetType().Name;
                                         sheet.Cells[row, column++].Value = sa.GUID.ToString();
                                         sheet.Cells[row, column++].Value = sa.AsseNumber;
@@ -484,7 +493,7 @@ namespace WPFSTD105
                                         sheet.Cells[row, column++].Value = sa.Phase;
                                         sheet.Cells[row, column++].Value = sa.ShippingNumber;
                                         sheet.Cells[row, column++].Value = sa.Title1;
-                                        sheet.Cells[row++, column++].Value = sa.Title2;
+                                        sheet.Cells[row += 2, column++].Value = sa.Title2;
                                         column = 0;
                                         break;
                                     case "Mesh":
@@ -492,7 +501,7 @@ namespace WPFSTD105
                                         break;
                                     case "GroupBoltsAttr":
                                         GroupBoltsAttr gba = (GroupBoltsAttr)entities.EntityData;
-                                        sheet.Cells[row, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}.EntityData]";
+                                        sheet.Cells[row, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData";
                                         sheet.Cells[row, column++].Value = $"{gba.GetType().Name}";
                                         sheet.Cells[row, column++].Value = gba.GUID.ToString();
                                         sheet.Cells[row, column++].Value = gba.X.ToString();
@@ -501,26 +510,26 @@ namespace WPFSTD105
                                         sheet.Cells[row, column++].Value = gba.Dia.ToString();
                                         sheet.Cells[row, column++].Value = gba.StartHole.ToString();
                                         sheet.Cells[row, column++].Value = ((AXIS_MODE)gba.Mode).ToString();
-                                        sheet.Cells[row++, column++].Value = gba.Count.ToString();
+                                        sheet.Cells[row += 2, column++].Value = gba.Count.ToString();
                                         column = 0;
                                         break;
                                     default:
-                                        sheet.Cells[row, column++].Value = $"*1-4model.Blocks[{firstIndex}].Entities[{secondIndex}.EntityData]";
+                                        sheet.Cells[row, column++].Value = $"*1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData";
                                         sheet.Cells[row, column++].Value = $"{block.GetType().Name}+";
                                         sheet.Cells[row, column++].Value = $"{entities.GetType().Name}+";
-                                        sheet.Cells[row++, column++].Value = $"{entities.EntityData.GetType().Name}";
+                                        sheet.Cells[row += 2, column++].Value = $"{entities.EntityData.GetType().Name}";
                                         column = 0;
                                         break;
                                 }
                             }
-                            #endregion
                             thirdIndex++;
+                            #endregion
+                            secondIndex++;
                         }
                         #endregion
-                        secondIndex++;
+                    firstIndex++;
                     }
                     #endregion
-                    firstIndex++;
                 }
                 #endregion
                 #region Entities
@@ -555,12 +564,12 @@ namespace WPFSTD105
                             switch (entity.GetType().Name)
                             {
                                 case "BlockReference":
-                                    sheet.Cells[row, column++].Value = $"*2-2-0model.Entities[{firstIndex}.EntityData = null";
+                                    sheet.Cells[row, column++].Value = $"2-2-0model.Entities[{firstIndex}].EntityData = null";
                                     sheet.Cells[row++, column++].Value = $"{entity.GetType().Name}";
                                     column = 0;
                                     break;
                                 default:
-                                    sheet.Cells[row, column++].Value = $"*2-2-0model.Entities[{firstIndex}.EntityData = null";
+                                    sheet.Cells[row, column++].Value = $"*2-2-0model.Entities[{firstIndex}].EntityData = null";
                                     sheet.Cells[row++, column++].Value = $"{entity.GetType().Name}";
                                     column = 0;
                                     break;
@@ -574,22 +583,29 @@ namespace WPFSTD105
                             {
                                 case "GroupBoltsAttr":
                                     GroupBoltsAttr gba = (GroupBoltsAttr)entity.EntityData;
-                                    sheet.Cells[row, column++].Value = $"2-2-0model.Entities[{firstIndex}]"; 
+                                    sheet.Cells[row, column++].Value = $"2-2-0model.Entities[{firstIndex}].EntityData"; 
                                     sheet.Cells[row, column++].Value = $"{gba.GetType().Name}";
                                     sheet.Cells[row, column++].Value = gba.GUID.ToString();
+                                    sheet.Cells[row, column++].Value = $"{gba.Face}";
+                                    sheet.Cells[row, column++].Value = $"{gba.Type}";
                                     sheet.Cells[row, column++].Value = gba.X.ToString();
                                     sheet.Cells[row, column++].Value = gba.Y.ToString();
                                     sheet.Cells[row, column++].Value = gba.Z.ToString();
+                                    sheet.Cells[row, column++].Value = gba.dX;
+                                    sheet.Cells[row, column++].Value = String.Join(" ", gba.dXs.ToArray());
+                                    sheet.Cells[row, column++].Value = gba.dY;
+                                    sheet.Cells[row, column++].Value = String.Join(" ", gba.dYs.ToArray());
+                                    sheet.Cells[row, column++].Value = $"{gba.Count}";
                                     sheet.Cells[row, column++].Value = gba.Dia.ToString();
                                     sheet.Cells[row, column++].Value = gba.StartHole.ToString();
-                                    sheet.Cells[row++, column++].Value = ((AXIS_MODE)gba.Mode).ToString();//Count
+                                    sheet.Cells[row += 2, column++].Value = ((AXIS_MODE)gba.Mode).ToString();//Count
                                     column = 0;
                                     break;
                                 case "BlockReference":
                                     break;
                                 case "SteelAttr":
                                     SteelAttr sa = (SteelAttr)entity.EntityData;
-                                    sheet.Cells[row, column++].Value = $"2-2-0model.Entities[{firstIndex}]";
+                                    sheet.Cells[row, column++].Value = $"2-2-0model.Entities[{firstIndex}].EntityData";
                                     sheet.Cells[row, column++].Value = sa.GetType().Name;
                                     sheet.Cells[row, column++].Value = sa.GUID.ToString();
                                     sheet.Cells[row, column++].Value = sa.AsseNumber;
@@ -612,13 +628,13 @@ namespace WPFSTD105
                                     sheet.Cells[row, column++].Value = sa.Phase;
                                     sheet.Cells[row, column++].Value = sa.ShippingNumber;
                                     sheet.Cells[row, column++].Value = sa.Title1;
-                                    sheet.Cells[row++, column++].Value = sa.Title2;
+                                    sheet.Cells[row += 2, column++].Value = sa.Title2;
                                     column = 0;
                                     break;
                                 default://BlockReference
-                                    sheet.Cells[row, column++].Value = $"*2-2-0model.Entities[{firstIndex}]";
+                                    sheet.Cells[row, column++].Value = $"*2-2-0model.Entities[{firstIndex}].EntityData";
                                     sheet.Cells[row, column++].Value = entity.GetType().Name;
-                                    sheet.Cells[row++, column++].Value = entity.EntityData.GetType().Name;
+                                    sheet.Cells[row += 2, column++].Value = entity.EntityData.GetType().Name;
                                     column = 0;
                                     break;
                             }

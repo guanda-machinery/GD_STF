@@ -334,7 +334,7 @@
                     <dxg:GridColumn FieldName="SteelType"  IsSmart="True" Header="鋼材類型(Index)" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="Material" IsSmart="True"  Header="材質"  Width="80"/>
                     <dxg:GridColumn FieldName="Count"  IsSmart="True"  Width="40" Header="數量"  />
-                    <dxg:GridColumn FieldName="Length" Binding="{Binding steelAttr.Length}" IsSmart="True" Header="零件長" Width="70">
+                    <dxg:GridColumn Binding="{Binding steelAttr.Length}" IsSmart="True" Header="零件長" Width="70">
                         <dxg:GridColumn.EditSettings>
                             <dxe:TextEditSettings Mask="f0" MaskType="Numeric" MaskUseAsDisplayFormat="true"/>
                         </dxg:GridColumn.EditSettings>
@@ -344,10 +344,10 @@
                             <dxe:TextEditSettings Mask="f1" MaskType="Numeric" MaskUseAsDisplayFormat="true"/>
                         </dxg:GridColumn.EditSettings>
                     </dxg:GridColumn>
-                    <dxg:GridColumn FieldName="Height" Binding="{Binding steelAttr.H}" IsSmart="True"  Header="高度" Width="auto" Visible="{StaticResource visible}"/>
-                    <dxg:GridColumn FieldName="Weight" Binding="{Binding steelAttr.W}" IsSmart="True"  Header="寬度" Width="auto" Visible="{StaticResource visible}"/>
-                    <dxg:GridColumn FieldName="t1" Binding="{Binding steelAttr.t1}" IsSmart="True"  Header="腹板厚度" Width="auto" Visible="{StaticResource visible}"/>
-                    <dxg:GridColumn FieldName="t2" Binding="{Binding steelAttr.t2}" IsSmart="True"  Header="翼板厚度" Width="auto" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.H}" IsSmart="True"  Header="高度" Width="auto" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.W}" IsSmart="True"  Header="寬度" Width="auto" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.t1}" IsSmart="True"  Header="腹板厚度" Width="auto" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.t2}" IsSmart="True"  Header="翼板厚度" Width="auto" Visible="{StaticResource visible}"/>
 
                     <dxg:GridColumn FieldName="Phase"  IsSmart="True"  Width="40" Header="Phase" />
                     <dxg:GridColumn FieldName="ShippingNumber"  IsSmart="True"  Width="40" Header="拆運"  />
