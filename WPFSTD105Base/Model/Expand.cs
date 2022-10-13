@@ -907,6 +907,9 @@ namespace WPFSTD105.Model
                 Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out bool check); //加入到 3d 視圖
             });
 
+            // 寫入oPoint,vPoint,uPoint
+
+
             ser.SetPartModel(dataName, model);//儲存 3d 視圖
             ser.SetNcTempList(ncTemps);//儲存檔案
         }

@@ -42,9 +42,11 @@ namespace GD_STD.Data
         /// <param name="title2">標題2</param>
         /// <param name="lockMark">鎖</param>
         /// <exception cref="ArgumentException"></exception>
-        public SteelPart(ISteelProfile profile, string teklaName,
-            string partnumber,double length, int count, Guid guid,int? phase,int? shippingNumber,
-            string title1,string title2 ,bool lockMark)
+        public SteelPart(ISteelProfile profile,
+            string teklaName, string partnumber,
+            double length, int count,
+            Guid guid, int? phase, int? shippingNumber,
+            string title1, string title2, bool lockMark)
         {
             //if (string.IsNullOrWhiteSpace(number))
             //{
@@ -69,8 +71,8 @@ namespace GD_STD.Data
             ShippingNumber = shippingNumber;
             Title2 = title2;
             Title1 = title1;
-            Length= length;
-            Lock = lockMark; 
+            Length = length;
+            Lock = lockMark;
             Creation = DateTime.Now;
             Revise = DateTime.Now;
         }

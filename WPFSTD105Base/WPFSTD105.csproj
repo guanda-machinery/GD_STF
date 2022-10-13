@@ -488,6 +488,7 @@
     <Compile Include="ViewModel\JoystickVM.cs" />
     <Compile Include="ViewModel\LeftAxisVM.cs" />
     <Compile Include="ViewModel\LoginVM.cs" />
+    <Compile Include="ViewModel\Machine\Dpad_JoystickViewModel.cs" />
     <Compile Include="ViewModel\MiddleAxisVM.cs" />
     <Compile Include="ViewModel\ModeSelectedVM.cs" />
     <Compile Include="ViewModel\OfficeVM_ParaSettingFuncListViewModel.cs" />
