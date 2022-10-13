@@ -29,7 +29,7 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="6" />
                         </Grid.RowDefinitions>
-                        <Border
+                        <Border MinHeight="100"
                             Grid.Row="1"
                             Grid.RowSpan="3"
                             Grid.Column="0"

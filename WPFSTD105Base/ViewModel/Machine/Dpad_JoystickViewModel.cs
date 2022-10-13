@@ -26,29 +26,25 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 控制顯示說明文字
         /// </summary>
-        private bool? _descriptionDisplayBoolen = null;
+        private bool? _descriptionDisplayBoolen =true;
         public bool? DescriptionDisplayBoolen
         {
             get
             {
+                if (_descriptionDisplayBoolen is false)
+                {
+                    DescriptionDisplayVisibility = System.Windows.Visibility.Collapsed;
+                }
+                else
+                {
+                    DescriptionDisplayVisibility = System.Windows.Visibility.Visible;
+                }
                 return _descriptionDisplayBoolen;
             }
             set
             {
-                if (_descriptionDisplayBoolen != value)
-                {
-                    _descriptionDisplayBoolen = value;
-                    OnPropertyChanged("DescriptionDisplayBoolen");
-                }
-
-                if(_descriptionDisplayBoolen is true)
-                {
-                    _descriptionDisplayVisibility = System.Windows.Visibility.Visible;
-                }
-                else
-                {
-                    _descriptionDisplayVisibility = System.Windows.Visibility.Collapsed;
-                }
+                _descriptionDisplayBoolen = value;
+                OnPropertyChanged("DescriptionDisplayBoolen");
             }
         }
 

@@ -261,15 +261,7 @@ namespace WPFWindowsBase
         /// </summary>
         public BasePage() : base()
         {
-            try
-            {
-                this.ViewModel = new VM();
-            }
-            catch(Exception Ex)
-            {
-
-            }
-
+            this.ViewModel = new VM();
         }
         #endregion
     }

@@ -24,38 +24,55 @@
                   Title="ShapedSteelMachiningAreaSetting">
 
 
-    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="940">
+    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="940"  dx:ThemeManager.ThemeName="Win10Light">
         <Grid.Resources>
             <Style TargetType="GroupBox"
+                   BasedOn="{ StaticResource ParameterBaseStyleGroupBox }">
+            </Style>
+
+            <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource WordBlue}"/>
+                <Style TargetType="Button"  BasedOn="{StaticResource MaterialDesignFlatButton}"   >
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="BorderBrush" Value="#CFCFCF"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="FontSize" Value="14"/>
+                </Style>
+
+                <Style TargetType="Label">
+                    <Setter Property="FontSize" Value="14"/>
+                </Style>
+
+
+                <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBoxBase}">
+                    <Setter Property="Foreground" Value="{ StaticResource solidclr_DimGray }" />
+                    <Setter Property="FontSize" Value="14" />
+                    <Setter Property="Padding" Value="1" />
+                    <Setter Property="FontFamily" Value="Microsoft JhengHei"/>
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="BorderBrush" Value="Gray"/>
+                </Style>
+
+                <Style TargetType="CheckBox" BasedOn="{StaticResource BaseStyle}">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+                <Style TargetType="ComboBox"
                    BasedOn="{ StaticResource BaseStyle }">
-                <Setter Property="Background" Value="WhiteSmoke"/>
-                <Setter Property="FontSize" Value="14"/>
-            </Style>
-            <Style TargetType="Button"
-                   BasedOn="{ StaticResource btn_CommonFunctionKey_STD }">
-                <Setter Property="Width"
-                        Value="100" />
-            </Style>
-            <Style TargetType="TextBox"
-                   BasedOn="{ StaticResource tbx_BlueUnderline }">
-                <Setter Property="Foreground"
-                        Value="{ StaticResource solidclr_Gray }" />
-                <Setter Property="FontSize"
-                        Value="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" />
-            </Style>
-            <Style TargetType="Label">
-                <Setter Property="FontSize" Value="14"/>
-            </Style>
+                    <Setter Property="Height" Value="24"/>
+                    <Setter Property="FontSize" Value="16"/>
+                </Style>
+
+
+
+
+
         </Grid.Resources>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="800" />
-            <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="250" />
-            <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="350" />
+            <ColumnDefinition Width="600" />
         </Grid.ColumnDefinitions>
         <!--型鋼加工區域設定-->
-        <GroupBox Header="型鋼加工區域設定">
+        <GroupBox Header="型鋼加工區域設定" Style="{StaticResource ParameterGroupBox}">
             <Grid>
                 <Grid.Resources>
                     <STD:OBJECT_TYPE_ToStringConverter x:Key="obType" />
@@ -150,7 +167,7 @@
                                         <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
                                     
-                                <Grid Margin="15,0,100,0" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" >
+                                <Grid  Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" >
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto" />
                                         <RowDefinition Height="auto" />
@@ -207,7 +224,7 @@
                                         <Label Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於3mm)" Foreground="DarkRed" />
                                 
                                 </Grid>
-                                    <StackPanel Margin="10,10,50,0" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" >
+                                    <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" >
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition/>
@@ -221,7 +238,7 @@
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock Text="A" Margin="25,0,0,0"/>
                                                     <TextBlock Text="可加工區域" Margin="32,0,0,0"/>
-                                                    <TextBlock Text="A" Margin="36,0,0,0"/>
+                                                    <TextBlock Text="A" Margin="3,0,0,0"/>
                                                 </StackPanel>
                                                 <Image Grid.Row="1" Source="{ StaticResource H_PROCESS_ZONE }" Height="220" Width="220"/>
                                             </Grid>
@@ -253,7 +270,7 @@
                                         <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
 
-                                    <Grid Margin="15,0,100,0" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" >
+                                    <Grid  Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" >
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto" />
                                             <RowDefinition Height="auto" />
@@ -342,7 +359,7 @@
                                         <RowDefinition Height="auto"/>
                                     </Grid.RowDefinitions>
 
-                                    <Grid Margin="15,0,100,0" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" >
+                                    <Grid  Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" >
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto" />
                                             <RowDefinition Height="auto" />
@@ -385,7 +402,7 @@
                                         <Label Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於15mm)" Foreground="DarkRed" />
                                                                 
                                     </Grid>
-                                    <StackPanel Margin="10,10,50,0" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" >
+                                    <StackPanel  Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" >
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition/>
@@ -424,47 +441,40 @@
                             Orientation="Horizontal"
                             HorizontalAlignment="Right">
 
-                        <RepeatButton Name="btn_profile"
+                        <Button Name="btn_profile"
                             Content="新增"
                             Command="{Binding NewProcessingZoneCommand}"
                             CommandParameter="{ Binding ElementName=cbx_SteelType, Path=SelectedIndex }" 
                             IsEnabled="{Binding NewProcessingZoneButtonEnabled}"
                             FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
                             VerticalContentAlignment="Center"
-                            Background="RoyalBlue"
-                            Foreground="Azure"
-                            BorderBrush="RoyalBlue"
+
                             Height="30"
                             Width="80"
                             Margin="10"/>
-                        <RepeatButton 
+                        <Button 
                             Command="{Binding AllSelectedToggleCommand}"
                             CommandParameter="{ Binding ElementName=cbx_SteelType, Path=SelectedIndex }" 
                             IsEnabled="{Binding AllSelectedToggleButtonEnabled}"
                             FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
                             VerticalContentAlignment="Center"
-                            Background="RoyalBlue"
-                            Foreground="Azure"
-                            BorderBrush="RoyalBlue"
+                            Background="LightGray"
                             Height="30"
                             Width="80"
                             Margin="10">
-                            <RepeatButton.Content>
+                            <Button.Content>
                                 <StackPanel Orientation="Horizontal">
                                 <wpf:PackIcon Kind="CheckBoxOutline"/>
                                     <TextBlock Text="／" Margin="0,-2,0,0"/>
                                 <wpf:PackIcon Kind="CheckboxBlankOutline"/>
                                 </StackPanel>
-                            </RepeatButton.Content>
-                        </RepeatButton>
-                        <RepeatButton Content="修改"
+                            </Button.Content>
+                        </Button>
+                        <Button Content="修改"
                             Command="{Binding ModifyProcessingZoneCommand}"
                             IsEnabled="{Binding ModifyButtonEnabled}"
                             FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
                             VerticalContentAlignment="Center"
-                            Background="RoyalBlue"
-                            Foreground="Azure"
-                            BorderBrush="RoyalBlue"
                             Height="30"
                             Width="80"
                             Margin="10"/>

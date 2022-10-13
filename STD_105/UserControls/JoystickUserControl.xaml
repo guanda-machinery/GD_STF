@@ -161,7 +161,7 @@
         </Grid.Resources>
     <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" MinWidth="50"/>
-            <ColumnDefinition Width="280"/>
+            <ColumnDefinition Width="350"/>
             <ColumnDefinition Width="*" MinWidth="50"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -182,26 +182,25 @@
 
 
             </Grid.Resources>
-            <Grid Visibility="{Binding DescriptionDisplayVisibility}" Panel.ZIndex="1" >
-                <Line X1="0" X2="103" Y1="70" Y2="70"  />
-                <Line X1="102" X2="102" Y1="70" Y2="140" />
+            <Grid Visibility="{Binding DescriptionDisplayVisibility,UpdateSourceTrigger=PropertyChanged}" Panel.ZIndex="1" >
+                <Line X1="0" X2="127" Y1="70" Y2="70"  />
+                <Line X1="126" X2="126" Y1="70" Y2="125" />
 
-                <Line X1="0" X2="103" Y1="300" Y2="300"/>
-                <Line X1="102" X2="102" Y1="300" Y2="230"/>
+                <Line X1="0" X2="127" Y1="320" Y2="320"/>
+                <Line X1="126" X2="126" Y1="320" Y2="240"/>
 
-                <Line X1="280" X2="166" Y1="70" Y2="70" />
-                <Line X1="167" X2="167" Y1="70" Y2="111" />
+                <Line X1="350" X2="208" Y1="70" Y2="70" />
+                <Line X1="209" X2="209" Y1="70" Y2="88" />
 
-                <Line X1="280" X2="220" Y1="185" Y2="185" />
+                <Line X1="350" X2="278" Y1="190" Y2="190" />
 
-                <Line X1="280" X2="166" Y1="300" Y2="300" />
-                <Line X1="167" X2="167" Y1="300" Y2="260" />
+                <Line X1="350" X2="201" Y1="320" Y2="320" />
+                <Line X1="202" X2="202" Y1="320" Y2="280" />
 
             </Grid>
             
-            <Grid  Width="180" Height="180" Panel.ZIndex="0">
-                <Viewbox Grid.Row="1" 
-                         Visibility="{ Binding DescriptionDisplayVisibility}" 
+            <Grid  Width="230" Height="230" Panel.ZIndex="0">
+                <Viewbox Grid.Row="1"  
                  Grid.Column="1"
                  Height="Auto"
                  Width="Auto">
@@ -740,17 +739,18 @@
                   HorizontalAlignment="Center"
                   VerticalAlignment="Top"
                   Margin="5"
-                  Width="50"
-                  IsChecked="{ Binding DescriptionDisplayBoolen }"
+                  Width="75"
+                  IsChecked="{Binding DescriptionDisplayBoolen}"
                   Style="{ StaticResource GreenSwitch }" />
 
         <Border Name="Joystick_Border1"    Margin="5,5,0,5"    />
-        <Border    Name="Joystick_Border2" Margin="5,5,0,5" Visibility="Hidden"
+        <Border    Name="Joystick_Border2" Margin="5,5,0,5"  Visibility="Collapsed"
                             Grid.Column="0"
                             Grid.Row="1"/>
         <Border    Name="Joystick_Border3" Margin="5,5,0,5"
                             Grid.Column="0"
                             Grid.Row="2"/>
+
         <Border  Name="Joystick_Border4" Margin="0,5,5,5"
                             Grid.Column="2"
                             Grid.Row="0"/>

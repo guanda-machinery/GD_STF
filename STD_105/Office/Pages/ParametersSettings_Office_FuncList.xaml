@@ -47,77 +47,65 @@
             </Style>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="190" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0" Background="{ StaticResource solidclr_LightGray }">
-            <Border CornerRadius="0"
-                    Background="WhiteSmoke"
-                    Margin="0,0,5,0">
-                <Grid>
-                <StackPanel>
-                        <TextBlock/>
-                        <!--斷面規格目錄-->
-                        <Button Command="{ Binding Path=SectionSpecMenuCommand }" Background="WhiteSmoke">
-                            <Button.Content>
-                                <TextBlock Text="斷面規格目錄" Margin="5,-4,0,0"/>
-                            </Button.Content>
-                        </Button>
-                        <!--切割線設定-->
-                        <Button  Command="{ Binding Path=SpiltLineSettingCommand }" Margin="5,8,0,0" Background="WhiteSmoke">
-                            <Button.Content>
-                                <TextBlock Text="切割線設定" />
-                            </Button.Content>
-                        </Button>
-                        <!--型鋼加工區域設定-->
-                        <Button Command="{Binding Path =ShapedSteelMachiningAreaSettingCommand}" Margin="5,8,0,0" Background="WhiteSmoke">
-                            <Button.Content>
-                                <TextBlock Text="型鋼加工區域設定" />
-                            </Button.Content>
-                        </Button>
-                        <!--刀具資料庫-->
-                        <Button Command="{Binding Path =ToolManagerSettingCommand}" Visibility="Collapsed">
-                            <Button.Content>
-                                <TextBlock Text="刀具資料庫" />
-                            </Button.Content>
-                        </Button>
-                        <!--語言設定-->
-                        <uc_language:MainView Margin="5,8,0,0"/>
-                        <!--軟體版本-->
-                        <Button Command="{Binding Path =SoftwareVersionCommand}" Margin="5,8,0,0" Background="WhiteSmoke">
-                            <Button.Content>
-                                <TextBlock Text="軟體版本" />
-                            </Button.Content>
-                        </Button>
-                        <!--貼紙機設定-->
-                        <uc_sticker:MainView Margin="5,8,0,0"/>
-                        <!--Button Margin="5,8,0,0" Background="WhiteSmoke">
+        <Grid Grid.Column="0" Background="WhiteSmoke">
+            <StackPanel>
+                <!--斷面規格目錄-->
+                <Button Command="{ Binding Path=SectionSpecMenuCommand }"  Background="WhiteSmoke" Padding="5">
+                    <Button.Content>
+                        <TextBlock Text="斷面規格目錄" />
+                    </Button.Content>
+                </Button>
+                <!--切割線設定-->
+                <Button  Command="{ Binding Path=SpiltLineSettingCommand }"  Background="WhiteSmoke"  Padding="5">
+                    <Button.Content>
+                        <TextBlock Text="切割線設定" />
+                    </Button.Content>
+                </Button>
+                <!--型鋼加工區域設定-->
+                <Button Command="{Binding Path =ShapedSteelMachiningAreaSettingCommand}"  Background="WhiteSmoke"  Padding="5">
+                    <Button.Content>
+                        <TextBlock Text="型鋼加工區域設定" />
+                    </Button.Content>
+                </Button>
+                <!--刀具資料庫-->
+                <Button Command="{Binding Path =ToolManagerSettingCommand}" Visibility="Collapsed"  Padding="5">
+                    <Button.Content>
+                        <TextBlock Text="刀具資料庫" />
+                    </Button.Content>
+                </Button>
+                <!--語言設定-->
+
+                <uc_language:MainView Padding="5" Background="WhiteSmoke" />
+
+                <!--軟體版本-->
+                <Button Command="{Binding Path =SoftwareVersionCommand}"  Background="WhiteSmoke"  Padding="5">
+                    <Button.Content>
+                        <TextBlock Text="軟體版本" />
+                    </Button.Content>
+                </Button>
+                <!--貼紙機設定-->
+                <uc_sticker:MainView Padding="5" Background="WhiteSmoke"/>
+                <!--Button  Background="WhiteSmoke">
                             <Button.Content>
                                 <TextBlock Text="貼紙機設定" />
                             </Button.Content>
                         </Button-->
-                        <!--斷面規格轉inp-->
-                        <Button Command="{ Binding Path=SectionSpecExcel2InpCommand }" Visibility="Collapsed" Margin="5,8,0,0" Background="WhiteSmoke">
-                            <Button.Content>
-                                <TextBlock Text="斷面規格excel轉inp" />
-                            </Button.Content>
-                        </Button>
-                    </StackPanel>
-                </Grid>
-            </Border>
+                <!--斷面規格轉inp-->
+                <Button Command="{ Binding Path=SectionSpecExcel2InpCommand }" Visibility="Collapsed"  Background="WhiteSmoke"  Padding="5">
+                    <Button.Content>
+                        <TextBlock Text="斷面規格excel轉inp" />
+                    </Button.Content>
+                </Button>
+            </StackPanel>
         </Grid>
-        <Grid Grid.Column="1">
-            <Border CornerRadius="0"
-                    Background="White"
-                    Margin="5,0,0,0">
-                <Grid Margin="0">
-                    <!--頁面切換區域-->
-                        <std:OfficePageHost x:Name="pageHost1" Margin="0"
+        <Grid Grid.Column="1" Margin="10,0">
+            <!--頁面切換區域-->
+            <std:OfficePageHost x:Name="pageHost1" 
                                             ParaSettingCurrentPage="{ Binding }"
                                             DataContext="{ Binding OfficeViewModel.ParaSettingCurrentPage, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={ local:ParaSettingFuncPageConverter } }" />
-
-                </Grid>
-            </Border>
         </Grid>
 
     </Grid>
