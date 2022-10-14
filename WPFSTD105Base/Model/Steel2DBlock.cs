@@ -359,8 +359,8 @@ namespace WPFSTD105.Model
                 foreach (var item in solidPortion.Edges)
                 {
                     //產生線段 0826依需求更換顏色(彥谷)
-                    Line top =   new Line(solidPortion.Vertices[item.V1], solidPortion.Vertices[item.V2]) { Color = Color.White, ColorMethod = colorMethodType.byEntity };
-                    //Line top = new Line(solidPortion.Vertices[item.V1], solidPortion.Vertices[item.V2]) { Color = Color.Yellow, ColorMethod = colorMethodType.byEntity };
+                    //Line top =   new Line(solidPortion.Vertices[item.V1], solidPortion.Vertices[item.V2]) { Color = Color.White, ColorMethod = colorMethodType.byEntity };
+                    Line top = new Line(solidPortion.Vertices[item.V1], solidPortion.Vertices[item.V2]) { Color = Color.Yellow, ColorMethod = colorMethodType.byEntity };
                     //複製線段
                     Line from = (Line)top.Clone();
                     //from.Color = System.Drawing.Color.Blue;
