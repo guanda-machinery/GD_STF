@@ -89,10 +89,16 @@
                 <!--貼紙機設定-->
                 <uc_sticker:MainView Padding="5" Background="WhiteSmoke"/>
                 <!--Button  Background="WhiteSmoke">
-                            <Button.Content>
-                                <TextBlock Text="貼紙機設定" />
-                            </Button.Content>
-                        </Button-->
+                    <Button.Content>
+                        <TextBlock Text="貼紙機設定" />
+                    </Button.Content>
+                </Button-->
+                <!--報表LOGO設定-->
+                <Button Command="{Binding Path =ReportLogoCommand}" Margin="5,8,0,0" Background="WhiteSmoke">
+                    <Button.Content>
+                        <TextBlock Text="選擇報表LOGO" />
+                    </Button.Content>
+                </Button>
                 <!--斷面規格轉inp-->
                 <Button Command="{ Binding Path=SectionSpecExcel2InpCommand }" Visibility="Collapsed"  Background="WhiteSmoke"  Padding="5">
                     <Button.Content>

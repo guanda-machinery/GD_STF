@@ -134,6 +134,10 @@ namespace STD_105.Office
                 case ParameterSettingPage.SoftwareVersion:
                     basePage = new SoftwareVersion();
                     break;
+                //20221006 張燕華 報表LOGO
+                case ParameterSettingPage.ReportLogo:
+                    basePage = new ReportLogo();
+                    break;
                 default:
                     break;
             }

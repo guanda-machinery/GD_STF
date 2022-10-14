@@ -693,14 +693,14 @@ namespace WPFSTD105
                 #endregion
 
                 book.BeginUpdate();
-                book.SaveDocument(path, DocumentFormat.Xlsx);
+                book.SaveDocument(path, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
             }
             catch (Exception ex)
             {
                 string subPath1 = path.Substring(0, path.LastIndexOf('.'));
                 string subPath2 = path.Substring(path.LastIndexOf('.') + 1);
                 book.BeginUpdate();
-                book.SaveDocument(subPath1+"Error."+subPath2, DocumentFormat.Xlsx);
+                book.SaveDocument(subPath1+"Error."+subPath2, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
             }
         }
 
@@ -889,7 +889,7 @@ namespace WPFSTD105
                 sheet.Cells.AutoFitColumns();
                 sheet.Rows.AutoOutline();
                 book.BeginUpdate();
-                book.SaveDocument(path, DocumentFormat.Xlsx);
+                book.SaveDocument(path, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
 
             }
             catch (Exception)
