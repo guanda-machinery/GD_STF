@@ -13,6 +13,9 @@ using WPFWindowsBase;
 using GD_STD.Data;
 using static WPFSTD105.ViewLocator;
 using System.Collections.Generic;
+using System.Diagnostics;
+//using WordToPdfService; //WORD to PDF by Office
+using System.IO;
 
 namespace WPFSTD105
 {
@@ -139,21 +142,48 @@ namespace WPFSTD105
             {
                 return new RelayParameterizedCommand(el =>
                 {
-                    ExcelCutService execl = new ExcelCutService();
-                //execl.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.xls", MaterialDataViews);
+                    //ExcelCutService execl = new ExcelCutService();
+                    //execl.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.xls", MaterialDataViews);
 
-                //20220624 張燕華 新增檔案儲存完成提示
-                    var stringFilePath = $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.xls";
-                    execl.CreateFile(stringFilePath, MaterialDataViews);
+                    //20220624 張燕華 新增excel檔案儲存完成提示
+                    //ExcelCutService execl = new ExcelCutService();
+                    //var stringFilePath = $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.xls";
+                    //execl.CreateFile(stringFilePath, MaterialDataViews);
+
+                    //20220930 張燕華 改為word輸出報表
+                    WordCutService word = new WordCutService();
+                    double TotalLoss_BothSide = MatchSettingStartCut + MatchSettingEndCut;//素材前後端切割損耗
+                    word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", MaterialDataViews, TotalLoss_BothSide);
+
+                    string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
+                    try
+                    {
+                        var a = Process.Start(@"Word2Pdf\exe\word2pdf_test.exe", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx {Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.ToString());
+                    }
+
+                    DeleteWordFileAfterDelay(5000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf");
 
                     WinUIMessageBox.Show(null,
-                        $"檔案已下載",
+                        $"切割明細表已下載",
                         "通知",
                         MessageBoxButton.OK,
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
                         FloatingMode.Popup);
+
+                    ////word to pdf by Office
+                    //using (var cvtr = new PdfConverter())
+                    //{
+                    //    var buff = cvtr.GetPdf(Path.Combine($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx"));
+                    //    string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
+                    //    File.WriteAllBytes($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf", buff);
+                    //}
+
                 });
             }
         }
@@ -179,21 +209,47 @@ namespace WPFSTD105
             {
                 return new RelayParameterizedCommand(el =>
                 {
-                    ExcelBuyService execl = new ExcelBuyService();
-                //execl.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.xls", MaterialDataViews);
+                    //ExcelBuyService execl = new ExcelBuyService();
+                    //execl.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.xls", MaterialDataViews);
 
-                //20220627 張燕華 新增檔案儲存完成提示
-                    var stringFilePath = $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.xls";
-                    execl.CreateFile(stringFilePath, MaterialDataViews);
+                    //20220627 張燕華 新增excel檔案儲存完成提示
+                    //ExcelBuyService execl = new ExcelBuyService();
+                    //var stringFilePath = $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.xls";
+                    //execl.CreateFile(stringFilePath, MaterialDataViews);
+
+                    //20220928 張燕華 改為word輸出報表
+                    WordBuyService word = new WordBuyService();
+                    double TotalLoss_BothSide = MatchSettingStartCut + MatchSettingEndCut;//素材前後端切割損耗
+                    word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", MaterialDataViews, TotalLoss_BothSide);
+                    
+                    string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
+                    try
+                    {                        
+                        var a = Process.Start(@"Word2Pdf\exe\word2pdf_test.exe", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx {Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf");
+                    }
+                    catch (Exception ex)
+                    { 
+                        Console.WriteLine(ex.ToString()); 
+                    }
+
+                    DeleteWordFileAfterDelay(5000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf");
 
                     WinUIMessageBox.Show(null,
-                        $"檔案已下載",
+                        $"採購明細單已下載",
                         "通知",
                         MessageBoxButton.OK,
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
                         FloatingMode.Popup);
+
+                    ////word to pdf by Office
+                    //using (var cvtr = new PdfConverter())
+                    //{
+                    //    var buff = cvtr.GetPdf(Path.Combine($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx"));
+                    //    string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
+                    //    File.WriteAllBytes($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf", buff);
+                    //}
                 });
             }
         }
@@ -236,7 +292,21 @@ namespace WPFSTD105
                 OfficeViewModel.LengthDodageControl = false;
         });
 
-
+        /// <summary>
+        /// 背景執行緒等待設定時間後，檢查PDF已存在的話，則刪除原本的WORD檔
+        /// </summary>
+        private void DeleteWordFileAfterDelay(int Delay_ms, string WordFilePath, string PdfFilePath)
+        {
+            //底線的寫法代表使用lambda時，如果不使用到傳入參數，就要打一個底線。
+            System.Threading.Tasks.Task.Delay(Delay_ms).ContinueWith(_ => 
+            {
+                if (File.Exists(PdfFilePath))
+                {
+                    try { File.Delete(WordFilePath); }
+                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+                }
+            });  
+        }
     }
 
 

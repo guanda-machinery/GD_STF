@@ -57,6 +57,7 @@ namespace WPFSTD105
                     sheet.Cells[row, att.Index].Value = att.ColumnName;
                     sheet.Cells[row, att.Index].Font.Size = 14;
                 });
+                //============以上是填入excel第一欄標題==============
                 row++;
                 Type partType = typeof(TypeSettingDataView);
                 var pPart = partType.GetProperties().Where(el => el.GetCustomAttribute<ExcelAttribute>() != null).ToList();
@@ -66,7 +67,7 @@ namespace WPFSTD105
                     {
                         ExcelAttribute att = el.GetCustomAttribute<ExcelAttribute>();
 
-                        sheet.Cells[row, att.Index].Value = el.GetValue(view)?.ToString();
+                        sheet.Cells[row, att.Index].Value = el.GetValue(view)?.ToString();//所有 RH0003	RH200X100X5.5X8	SN400B	12000	0	11429
                         sheet.Cells[row, att.Index].Font.Size = 14;
 
                         sheet.Cells[row, att.Index].Borders.TopBorder.LineStyle =  BorderLineStyle.Thin;
@@ -134,7 +135,7 @@ namespace WPFSTD105
                 //var binding = sheet.DataBindings.BindTableToDataSource(table, 1, 1);
                 //object _ = binding.DataSource;
                 book.BeginUpdate();
-                book.SaveDocument(path, DocumentFormat.Xlsx);
+                book.SaveDocument(path, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
             }
             catch (Exception)
             {

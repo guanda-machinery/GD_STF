@@ -393,6 +393,7 @@ namespace WPFSTD105.Model
             {
                 case OBJECT_TYPE.BH:
                 case OBJECT_TYPE.RH:
+                case OBJECT_TYPE.H:
                     recursiveTime = 0;
                     topList = ModifyLine(topList, SteelAttr.W / 2 + SteelAttr.t1 / 2, ref recursiveTime);
                     break;

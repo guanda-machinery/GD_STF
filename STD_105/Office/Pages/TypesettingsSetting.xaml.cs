@@ -68,6 +68,8 @@ namespace STD_105.Office
             drawing.LineTypes.Add(Steel2DBlock.LineTypeName, new float[] { 35, -35, 35, -35 });
             model.Secondary = drawing;
             drawing.Secondary = model;
+            //ControlDraw3D();
+            CheckReportLogoExist();
         }
 
         private void Model3D_Loaded(object sender, RoutedEventArgs e)
@@ -1087,7 +1089,33 @@ namespace STD_105.Office
             }
         }
 
+        private void CheckReportLogoExist()
+        {
+            string dirPath = ApplicationVM.FileReportLogo();
+            string FilePath = ApplicationVM.FileReportLogo() + @"\ReportLogo.png";
+            string GDLOGOPath = "Logo/GD_ReportLogo.png";
+            if (Directory.Exists(dirPath))
+            {
+                Console.WriteLine("The directory {0} exists.", dirPath);
+            }
+            else
+            {
+                Directory.CreateDirectory(dirPath);
+                Console.WriteLine("The directory {0} was created.", dirPath);
+            }
 
+            try
+            {
+                if (!System.IO.File.Exists(FilePath))
+                {
+                    File.Copy(GDLOGOPath, FilePath, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
 
 
 

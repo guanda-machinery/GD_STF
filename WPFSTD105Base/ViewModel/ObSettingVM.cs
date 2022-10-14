@@ -310,7 +310,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 主要零件設定檔
         /// </summary>
-        public SteelAttr SteelAttr { get; set; } //= new SteelAttr();
+        public SteelAttr SteelAttr { get; set; } = new SteelAttr();
         /// <summary>
         /// 鋼構名稱
         /// </summary>
@@ -773,6 +773,7 @@ namespace WPFSTD105.ViewModel
                             case OBJECT_TYPE.TUBE:
                             case OBJECT_TYPE.BOX:
                             case OBJECT_TYPE.CH:
+                            case OBJECT_TYPE.H:
                                 Boltsbuffer.Z = Steelbuffer.W - Steelbuffer.t1;
                                 break;
                             case OBJECT_TYPE.L:

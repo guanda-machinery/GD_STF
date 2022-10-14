@@ -111,55 +111,7 @@
                 <Setter Property="FontSize" Value="12"/>
                 <Setter Property="Foreground" Value="Black"/>
             </Style>
-            <Style TargetType="TabItem" x:Key="DrawTabItem">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type TabItem}">
-                            <Grid x:Name="Root">
-                                <Border x:Name="Border"
-                                        Width="{Binding ElementName=ContentSite, Path=Width}"
-                                        Height="{Binding ElementName=ContentSite, Path=Height}"
-                                        VerticalAlignment="Center"
-                                        Background="#d3d3d3"
-                                        BorderBrush="#ABABAB"
-                                        BorderThickness="1,1,1,0"
-                                        CornerRadius="5,5,0,0"
-                                        Margin="0,0,0,-1">
-                                    <ContentPresenter x:Name="ContentSite"
-                                              Margin="40,10"
-                                              HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"
-                                              ContentSource="Header"
-                                              RecognizesAccessKey="True"
-                                              TextBlock.FontSize="16"
-                                              TextBlock.Foreground="#555555" />
-                                </Border>
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup x:Name="CommonStates">
-                                        <VisualState x:Name="Normal" />
-                                        <VisualState x:Name="Selected">
-                                            <Storyboard>
-                                                <ColorAnimation Storyboard.TargetName="Border"
-                                                        Storyboard.TargetProperty="(Border.Background).Color"
-                                                        To="#303030"
-                                                        Duration="0" />
-                                                <ColorAnimation Storyboard.TargetName="ContentSite"
-                                                        Storyboard.TargetProperty="(TextBlock.Foreground).Color"
-                                                        To="#eeeeee"
-                                                        Duration="0" />
-                                                <ThicknessAnimation Storyboard.TargetName="Border"
-                                                            Storyboard.TargetProperty="BorderThickness"
-                                                            To="1,1,1,0"
-                                                            Duration="0" />
-                                            </Storyboard>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
+
 
             <Style TargetType="dxg:GridColumnHeader">
                 <Setter Property="FontWeight" Value="DemiBold"/>
@@ -334,7 +286,7 @@
                     <dxg:GridColumn FieldName="SteelType"  IsSmart="True" Header="鋼材類型(Index)" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn FieldName="Material" IsSmart="True"  Header="材質"  Width="80"/>
                     <dxg:GridColumn FieldName="Count"  IsSmart="True"  Width="40" Header="數量"  />
-                    <dxg:GridColumn FieldName="Length" Binding="{Binding steelAttr.Length}" IsSmart="True" Header="零件長" Width="70">
+                    <dxg:GridColumn Binding="{Binding steelAttr.Length}" IsSmart="True" Header="零件長" Width="70">
                         <dxg:GridColumn.EditSettings>
                             <dxe:TextEditSettings Mask="f0" MaskType="Numeric" MaskUseAsDisplayFormat="true"/>
                         </dxg:GridColumn.EditSettings>
@@ -344,10 +296,10 @@
                             <dxe:TextEditSettings Mask="f1" MaskType="Numeric" MaskUseAsDisplayFormat="true"/>
                         </dxg:GridColumn.EditSettings>
                     </dxg:GridColumn>
-                    <dxg:GridColumn FieldName="Height" Binding="{Binding steelAttr.H}" IsSmart="True"  Header="高度" Width="auto" Visible="{StaticResource visible}"/>
-                    <dxg:GridColumn FieldName="Weight" Binding="{Binding steelAttr.W}" IsSmart="True"  Header="寬度" Width="auto" Visible="{StaticResource visible}"/>
-                    <dxg:GridColumn FieldName="t1" Binding="{Binding steelAttr.t1}" IsSmart="True"  Header="腹板厚度" Width="auto" Visible="{StaticResource visible}"/>
-                    <dxg:GridColumn FieldName="t2" Binding="{Binding steelAttr.t2}" IsSmart="True"  Header="翼板厚度" Width="auto" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.H}" IsSmart="True"  Header="高度" Width="auto" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.W}" IsSmart="True"  Header="寬度" Width="auto" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.t1}" IsSmart="True"  Header="腹板厚度" Width="auto" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.t2}" IsSmart="True"  Header="翼板厚度" Width="auto" Visible="{StaticResource visible}"/>
 
                     <dxg:GridColumn FieldName="Phase"  IsSmart="True"  Width="40" Header="Phase" />
                     <dxg:GridColumn FieldName="ShippingNumber"  IsSmart="True"  Width="40" Header="拆運"  />

@@ -181,7 +181,7 @@ namespace STD_105
         /// <see cref=""/> 註冊為依賴屬性
         /// </summary>
         public static readonly DependencyProperty BorderChild_1_Property =
-            DependencyProperty.Register(nameof(Joystick_Border1), typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(BorderChild_1_PropertyChanged));
+            DependencyProperty.Register(nameof(Joystick_Border1), typeof(UIElement), typeof(JoystickUserControl), new PropertyMetadata(BorderChild_1_PropertyChanged));
         /// <summary>
         /// <see cref=""/>變更時觸發
         /// </summary>
@@ -189,10 +189,7 @@ namespace STD_105
         /// <param name="e"></param>
         private static void BorderChild_1_PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (e.NewValue is UIElement)
-            {
-                (d as JoystickUserControl).Joystick_Border1.Child = e.NewValue as UIElement;
-            }
+            (d as JoystickUserControl).Joystick_Border1.Child = e.NewValue as UIElement;
         }
 
 
@@ -211,7 +208,7 @@ namespace STD_105
         /// <see cref=""/> 註冊為依賴屬性
         /// </summary>
         public static readonly DependencyProperty BorderChild_2_Property =
-            DependencyProperty.Register(nameof(Joystick_Border2), typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(BorderChild_2_PropertyChanged));
+            DependencyProperty.Register(nameof(Joystick_Border2), typeof(UIElement), typeof(JoystickUserControl), new PropertyMetadata(BorderChild_2_PropertyChanged));
 
 
         /// <summary>
@@ -231,6 +228,9 @@ namespace STD_105
 
 
 
+
+
+
         /// <summary>
         /// 圖片樣式
         /// </summary>
@@ -243,7 +243,7 @@ namespace STD_105
         /// <see cref=""/> 註冊為依賴屬性
         /// </summary>
         public static readonly DependencyProperty BorderChild_3_Property =
-            DependencyProperty.Register(nameof(Joystick_Border3), typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(BorderChild_3_PropertyChanged));
+            DependencyProperty.Register(nameof(Joystick_Border3), typeof(UIElement), typeof(JoystickUserControl), new PropertyMetadata(BorderChild_3_PropertyChanged));
         /// <summary>
         /// <see cref=""/>變更時觸發
         /// </summary>
@@ -266,7 +266,7 @@ namespace STD_105
         /// <see cref=""/> 註冊為依賴屬性
         /// </summary>
         public static readonly DependencyProperty BorderChild_4_Property =
-            DependencyProperty.Register(nameof(Joystick_Border4), typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(BorderChild_4_PropertyChanged));
+            DependencyProperty.Register(nameof(Joystick_Border4), typeof(UIElement), typeof(JoystickUserControl), new PropertyMetadata(BorderChild_4_PropertyChanged));
         /// <summary>
         /// <see cref=""/>變更時觸發
         /// </summary>
@@ -275,6 +275,30 @@ namespace STD_105
         private static void BorderChild_4_PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             (d as JoystickUserControl).Joystick_Border4.Child = (UIElement)e.NewValue;
+        }
+
+
+        /// <summary>
+        /// 圖片樣式
+        /// </summary>
+        public UIElement BorderChild_5_Source
+        {
+            get { return (UIElement)GetValue(BorderChild_5_Property); }
+            set { SetValue(BorderChild_5_Property, value); }
+        }
+        /// <summary>
+        /// <see cref=""/> 註冊為依賴屬性
+        /// </summary>
+        public static readonly DependencyProperty BorderChild_5_Property =
+            DependencyProperty.Register(nameof(Joystick_Border5), typeof(UIElement), typeof(JoystickUserControl), new PropertyMetadata(BorderChild_5_PropertyChanged));
+        /// <summary>
+        /// <see cref=""/>變更時觸發
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
+        private static void BorderChild_5_PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as JoystickUserControl).Joystick_Border5.Child = (UIElement)e.NewValue;
         }
 
 
@@ -287,14 +311,28 @@ namespace STD_105
 
 
 
-
-
-
-
-
-
-
-
+        /// <summary>
+        /// 圖片樣式
+        /// </summary>
+        public UIElement BorderChild_6_Source
+        {
+            get { return (UIElement)GetValue(BorderChild_6_Property); }
+            set { SetValue(BorderChild_6_Property, value); }
+        }
+        /// <summary>
+        /// <see cref=""/> 註冊為依賴屬性
+        /// </summary>
+        public static readonly DependencyProperty BorderChild_6_Property =
+            DependencyProperty.Register(nameof(Joystick_Border6), typeof(UIElement), typeof(JoystickUserControl), new PropertyMetadata(BorderChild_6_PropertyChanged));
+        /// <summary>
+        /// <see cref=""/>變更時觸發
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
+        private static void BorderChild_6_PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as JoystickUserControl).Joystick_Border6.Child = (UIElement)e.NewValue;
+        }
 
 
 

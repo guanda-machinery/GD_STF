@@ -28,8 +28,6 @@
                 <ColumnDefinition Width="350" />
                 <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="560" />
-                <ColumnDefinition Width="5" />
-                <ColumnDefinition Width="350" />
             </Grid.ColumnDefinitions>
             <Grid>
                 <Grid.RowDefinitions>

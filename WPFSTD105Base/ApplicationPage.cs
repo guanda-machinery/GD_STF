@@ -132,7 +132,16 @@ namespace WPFSTD105
         /// <summary>
         /// 新加工監控
         /// </summary>
-        MachineMonitor
+        MachineMonitor,
+        /// <summary>
+        /// 機台功能
+        /// </summary>
+       MachineFunction,
+        /// <summary>
+        /// 主軸模式
+        /// </summary>
+        MainSpindleMode
+
     }
     /// <summary>
     /// 辦公室頁面，由左而右依序排列
@@ -217,6 +226,10 @@ namespace WPFSTD105
         /// 軟體版本
         /// </summary>
         SoftwareVersion,
+        /// <summary>
+        /// 報表LOGO
+        /// </summary>
+        ReportLogo,
     }
     /// <summary>
     /// 彈跳視窗

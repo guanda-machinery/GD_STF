@@ -86,7 +86,18 @@ namespace WPFSTD105 {
                 return ResourceManager.GetString("Bom", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   查詢類似 TeklaBom.csv 的當地語系化字串。
+        /// </summary>
+        public static string ReportLogo
+        {
+            get
+            {
+                return "ReportLogo";
+            }
+        }
+
         /// <summary>
         ///   查詢類似 Dev_Part 的當地語系化字串。
         /// </summary>

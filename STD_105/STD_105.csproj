@@ -640,6 +640,9 @@
     <Compile Include="Office\Pages\ShapedSteelMachiningAreaSetting.xaml.cs">
       <DependentUpon>ShapedSteelMachiningAreaSetting.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Office\Pages\ReportLogo.xaml.cs">
+      <DependentUpon>ReportLogo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Office\Pages\SoftwareVersion.xaml.cs">
       <DependentUpon>SoftwareVersion.xaml</DependentUpon>
     </Compile>
@@ -1129,6 +1132,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Office\Pages\ReportLogo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Office\Pages\SoftwareVersion.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1602,8 +1609,50 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="Word2Pdf\exe\word2pdf_test.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Logo\GD_ReportLogo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Logo\Joystick.svg" />
+    <None Include="AllFileTemplate\CutDocTemp.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SteelSectionPng\BH.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SteelSectionPng\BOX.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SteelSectionPng\C.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SteelSectionPng\L.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SteelSectionPng\RH.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SteelSectionPng\Space.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SteelSectionPng\實心圓棒.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SteelSectionPng\橫1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SteelSectionPng\直1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SteelSectionPng\空心圓棒.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Resource Include="功能對應.txt" />
+    <None Include="AllFileTemplate\BuyDocTemp.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Profile\BT.inp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
