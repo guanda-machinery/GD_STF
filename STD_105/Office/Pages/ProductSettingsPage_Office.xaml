@@ -607,7 +607,7 @@
                     SelectionChanged="TabControlSelectedIndexChanged"
                     x:Name="tabControl"                              
                     SelectedIndex="0">
-            <TabItem Header="3D視圖" Margin="0,0,0,0" Style="{StaticResource DrawTabItem}">
+            <TabItem Header="3D視圖" Style="{StaticResource DrawTabItem}">
                 <Grid>
                     <!--新增3D模型處-->
                     <WPFSTD:ModelExt x:Name="model"
@@ -734,8 +734,7 @@
                     </WPFSTD:ModelExt>
                 </Grid>
             </TabItem>
-
-            <TabItem Header="2D視圖"  Margin="-1,0,0,0"   Style="{StaticResource DrawTabItem}">
+            <TabItem Header="2D視圖"    Style="{StaticResource DrawTabItem}">
                 <Grid>
                     <WPFSTD:ModelExt x:Name="drawing" SelectionChanged="model_SelectionChanged" Loaded="drawing_Loaded"
                         SelectionColor="{Binding Setting.SelectionColor, Converter={STD105:StringToDrawingColoConverter}}"
