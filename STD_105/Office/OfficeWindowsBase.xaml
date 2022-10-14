@@ -28,16 +28,25 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
-            <RowDefinition Height="200" />
+            <RowDefinition Height="auto" />
             <RowDefinition />
             <RowDefinition Height="60" />
         </Grid.RowDefinitions>
         <Border Grid.ColumnSpan="2"
                 Grid.RowSpan="4"
-                Background="{ StaticResource solidclr_CreamyWhite }"
+                Background="#f3f3f3"
                 BorderThickness="0"
                 CornerRadius="0" />
         <!--拖曳視窗區域-->
+        <Grid Grid.ColumnSpan="2"
+              Background="Transparent">
+            <Grid.InputBindings>
+                <MouseBinding MouseAction="LeftClick"
+                              Command="{ Binding DragMoveWindowCommand }"
+                              CommandParameter="{ Binding ElementName=OfficeMainWindows}" />
+            </Grid.InputBindings>
+        </Grid>
+        
         <Grid Grid.RowSpan="4"
               Background="Transparent">
             <Grid.InputBindings>
@@ -46,44 +55,99 @@
                               CommandParameter="{ Binding ElementName=OfficeMainWindows}" />
             </Grid.InputBindings>
         </Grid>
+
+
         <!--視窗功能-->
-        <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top">
-            <!--關閉視窗-->
-            <Button Command="{ Binding CloseCommand }"
-                    Style="{ StaticResource OfficeCloseButton }">
-                <Image Source="{ StaticResource Window_Close }"
-                       Width="10" />
-            </Button>
-            <!--放大視窗-->
-            <Button Command="{ Binding MaximizeCommand }"
-                    Style="{ StaticResource OfficeControlButton }">
-                <Image Source="{ StaticResource Window_Maximize }"
-                       Width="12" />
-            </Button>
-            <!--縮小視窗-->
-            <Button Command="{ Binding MinimizeCommand }"
-                    Style="{ StaticResource OfficeZoomInButton }">
-                <Image Source="{ StaticResource Window_Minimize }"
-                       Width="12" />
-            </Button>
+        <Grid  Grid.ColumnSpan="2" Width="184"
+                    HorizontalAlignment="Right">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
             <!--查看警告-->
-            <Button Style="{ StaticResource OfficeWarningButton }"
-                    Padding="5">
+            <Button Grid.Column="0" 
+                    Margin="0">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="LightGray" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
                 <Image Source="{ StaticResource Warning }"
                        Width="18" />
+            </Button>      
+            <!--縮小視窗-->
+            <Button  Grid.Column="1" Command="{ Binding MinimizeCommand }" Width="auto" Height="auto">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="LightGray" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Image Source="{ StaticResource Window_Minimize }"
+                       Width="14" />
             </Button>
-        </StackPanel>
+            <!--放大視窗-->
+            <Button  Grid.Column="2" Command="{ Binding MaximizeCommand }" Width="auto" Height="auto"
+                    Margin="0">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="LightGray" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Image Source="{ StaticResource Window_Maximize }"
+                       Width="14" />
+            </Button>
+
+
+            <!--關閉視窗-->
+            <Button  Grid.Column="3" Command="{ Binding CloseCommand }" Width="auto" Height="auto"
+                    Margin="0">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="#e81123" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Image Source="{ StaticResource Window_Close }"
+                       Width="14" />
+            </Button>
+            
+        </Grid>
         <Grid Grid.Row="1">
             <!--專案頭像-->
+            <!--Height="{ Binding RelativeSource={ x:Static RelativeSource.Self }, Path=Width}"-->
             <StackPanel VerticalAlignment="Bottom">
-                <Border Width="140"
-                        Height="{ Binding RelativeSource={ x:Static RelativeSource.Self }, Path=Width}"
-                        CornerRadius="100"
-                        Background="MediumPurple"
+                <Border Width="auto" 
+                        Height="80"
+                        CornerRadius="5"
+                        Background="#6dcdf7"
                         Style="{ StaticResource bor_LightThinLine }"
-                        Margin="10">
+                        Margin="20,10,30,10">
                     <Button Style="{ StaticResource btn_TransparentCircleButton }"
                             ToolTip="開啟專案"
                             Command="{ Binding ProjectManagerCommand }">
@@ -96,10 +160,11 @@
                         </Button.Content>
                     </Button>
                 </Border>
+                <!--使用者名稱
                 <TextBlock Text="{ Binding ApplicationViewModel.AccountNumber.CodeName, Source={x:Static WPFSTD:ViewLocator.Instance}, TargetNullValue=本機使用者 }"
                            Foreground="{ StaticResource solidclr_Gray }"
                            HorizontalAlignment="Center"
-                           Style="{ StaticResource tbk_SubTitle }" />
+                           Style="{ StaticResource tbk_SubTitle }" />-->
             </StackPanel>
         </Grid>
         <Grid Grid.Row="3">
@@ -150,7 +215,7 @@
             </Grid.Resources>
             <dxlc:ScrollBox Width="200"
                             Style="{ StaticResource sbx_STD }">
-                <StackPanel Margin="0,40">
+                <StackPanel Margin="0,0">
                     <!--專案管理-->
                     <Button Command="{ Binding ProjectManagerCommand }">
                         <Button.Content>
@@ -247,8 +312,9 @@
                 </StackPanel>
             </dxlc:ScrollBox>
         </Grid>
-        <Grid Grid.Column="1" Background="#e2e2e2"
-              Grid.RowSpan="4">
+        <Grid Grid.Column="1" Background="#d3d3d3"
+              Grid.Row="1"
+              Grid.RowSpan="3">
             <Border Name="workArea"
                     Margin="0"
                     CornerRadius="0">
@@ -258,6 +324,7 @@
                                     Style="{ StaticResource sbx_Office }"
                                                         Margin="0">
                         <!--頁面切換區域-->
+
                         <std:OfficePageHost x:Name="pageHost"
                                             CurrentPage="{Binding }"    
                                             DataContext="{Binding OfficeViewModel.CurrentPage, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={local:OfficePageConverter } }" 

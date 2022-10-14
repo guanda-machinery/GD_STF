@@ -601,9 +601,8 @@
             </DockPanel>
         </GroupBox>
         <!--繪圖顯示模型-->
-        <TabControl Margin="5" 
+        <TabControl Margin="5"  Style="{StaticResource DrawTabControl}"
                     Grid.Column="0" Grid.Row="1"
-                    Background="#303030"
                     SelectionChanged="TabControlSelectedIndexChanged"
                     x:Name="tabControl"                              
                     SelectedIndex="0">

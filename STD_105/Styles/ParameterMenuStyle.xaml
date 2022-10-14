@@ -68,11 +68,7 @@
     </Style>
 
 
-    <Style TargetType="TabControl" x:Key="DrawTabControl">
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Background" Value="#303030"/>
-        <Style.Resources>
-            <Style TargetType="TabItem" x:Key="DrawTabItem">
+    <Style TargetType="{x:Type TabItem}" x:Key="DrawTabItem">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TabItem}">
@@ -122,10 +118,16 @@
         </Setter>
     </Style>
 
+
+    <Style TargetType="TabControl" x:Key="DrawTabControl">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="#303030"/>
+        <Style.Resources>
+            <Style TargetType="TabItem" BasedOn="{StaticResource DrawTabItem}"/>
         </Style.Resources>
     </Style>
 
-    
+
     <Style TargetType="{x:Type UserControl}" x:Key="SectionSpecificationMenuWhiteStyle">
         <Style.Resources>
             <Style TargetType="GroupBox" BasedOn="{ StaticResource ParameterGroupBox }"/>

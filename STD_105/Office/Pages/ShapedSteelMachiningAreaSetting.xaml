@@ -31,32 +31,32 @@
             </Style>
 
             <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource WordBlue}"/>
-                <Style TargetType="Button"  BasedOn="{StaticResource MaterialDesignFlatButton}"   >
-                    <Setter Property="Background" Value="White"/>
-                    <Setter Property="Foreground" Value="Black"/>
-                    <Setter Property="BorderBrush" Value="#CFCFCF"/>
-                    <Setter Property="BorderThickness" Value="1"/>
-                    <Setter Property="FontSize" Value="14"/>
-                </Style>
+            <Style TargetType="Button"  BasedOn="{StaticResource MaterialDesignFlatButton}"   >
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="BorderBrush" Value="#CFCFCF"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
 
-                <Style TargetType="Label">
-                    <Setter Property="FontSize" Value="14"/>
-                </Style>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
 
 
-                <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBoxBase}">
-                    <Setter Property="Foreground" Value="{ StaticResource solidclr_DimGray }" />
-                    <Setter Property="FontSize" Value="14" />
-                    <Setter Property="Padding" Value="1" />
-                    <Setter Property="FontFamily" Value="Microsoft JhengHei"/>
-                    <Setter Property="Background" Value="White"/>
-                    <Setter Property="BorderThickness" Value="1"/>
-                    <Setter Property="BorderBrush" Value="Gray"/>
-                </Style>
+            <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBoxBase}">
+                <Setter Property="Foreground" Value="{ StaticResource solidclr_DimGray }" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Padding" Value="1" />
+                <Setter Property="FontFamily" Value="Microsoft JhengHei"/>
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderBrush" Value="Gray"/>
+            </Style>
 
-                <Style TargetType="CheckBox" BasedOn="{StaticResource BaseStyle}">
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                </Style>
+            <Style TargetType="CheckBox" BasedOn="{StaticResource BaseStyle}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
             <Style TargetType="ComboBox"
                    BasedOn="{ StaticResource BaseStyle }">
                 <Setter Property="Height" Value="24"/>
@@ -67,7 +67,7 @@
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <!--型鋼加工區域設定-->
-        <Border BorderThickness="1" BorderBrush="Gray">
+        <Border BorderThickness="1" BorderBrush="Gray" Width="750" >
             <GroupBox Header="型鋼加工區域設定" Style="{StaticResource ParameterGroupBox}">
                 <Grid>
                     <Grid.Resources>
@@ -150,6 +150,13 @@
 
                         <!--加工區域設定-->
                         <GroupBox Grid.Row="1" Header="加工區域設定"  Margin="5" Background="White">
+                            <GroupBox.Resources>
+                                <Style TargetType="Line">
+                                    <Setter Property="Stroke" Value="Black"/>
+                                    <Setter Property="StrokeThickness" Value="1"/>
+                                </Style>
+                            </GroupBox.Resources>
+
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
@@ -160,9 +167,9 @@
                                 <Grid Visibility="{Binding VisibleH_Process, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
 
                                     <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="350"/>
-                                            <ColumnDefinition Width="250"/>
-                                        </Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="350"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
@@ -223,60 +230,76 @@
 
                                     </Grid>
                                     <Grid Grid.Column="1" Margin="10,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                                <RowDefinition Height="auto"/>
-                                            </Grid.RowDefinitions>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="52"/>
                                                 <ColumnDefinition Width="91"/>
-                                                    <ColumnDefinition Width="46"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="A" Grid.Column="0" HorizontalAlignment="Center"/>
+                                                <ColumnDefinition Width="46"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="A" Grid.Column="0" HorizontalAlignment="Center" FontWeight="Bold"/>
                                             <TextBlock Text="可加工區域" Grid.Column="1" HorizontalAlignment="Center" />
-                                                <TextBlock Text="A" Grid.Column="2" HorizontalAlignment="Center"/>
-                                            </Grid>
-                                            <Image Grid.Row="1"  Source="{ StaticResource H_PROCESS_ZONE }"  Height="auto" Width="220"/>  
-                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  Grid.Row="2" Margin="0,10,25,0">
-                                                <Label Content="■" VerticalAlignment="Bottom" Foreground="DodgerBlue"/>
-                                                <Label Content="可加工區域" />
-                                            </StackPanel>
-                                            <Grid Grid.Column="1" Grid.Row="1">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition></ColumnDefinition>
-                                                </Grid.ColumnDefinitions>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="36"/>
-                                                    <RowDefinition Height="20"/>
-                                                    <RowDefinition Height="54"/>
-                                                    <RowDefinition Height="37"/>
-                                                    <RowDefinition Height="54"/>
-                                                    <RowDefinition/>
-                                                </Grid.RowDefinitions>
-                                                <TextBlock Text="B" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
-                                                <TextBlock Text="C" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
-                                                <TextBlock Text="B" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Grid>
+                                            <TextBlock Text="A" Grid.Column="2" HorizontalAlignment="Center" FontWeight="Bold"/>
                                         </Grid>
+                                        <Image Grid.Row="1"  Source="{ StaticResource H_PROCESS_ZONE }"  Height="auto" Width="220"/>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  Grid.Row="2" Margin="0,10,25,0">
+                                            <Label Content="■" VerticalAlignment="Bottom" Foreground="DodgerBlue"/>
+                                            <Label Content="可加工區域" />
+                                        </StackPanel>
+                                        <Grid Grid.Column="1" Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="39"/>
+                                                <RowDefinition Height="19"/>
+                                                <RowDefinition Height="58"/>
+                                                <RowDefinition Height="38"/>
+                                                <RowDefinition Height="58"/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+
+                                            <Grid Grid.Column="0" Grid.Row="1">
+                                                <Line X1="0" X2="10" Y1="10" Y2="10"/>
+                                                <Line X1="10" X2="20" Y1="10" Y2="0"/>
+                                                <Line X1="20" X2="30" Y1="0" Y2="0"/>
+                                            </Grid>
+
+                                            <Grid Grid.Column="0" Grid.Row="3">
+                                                <Line X1="0" X2="10" Y1="20" Y2="20"/>
+                                                <Line X1="10" X2="20" Y1="20" Y2="0"/>
+                                                <Line X1="20" X2="30" Y1="0" Y2="0"/>
+                                            </Grid>
+                                            <Grid Grid.Column="0" Grid.Row="5">
+                                                <Line X1="0" X2="10" Y1="10" Y2="10"/>
+                                                <Line X1="10" X2="20" Y1="10" Y2="0"/>
+                                                <Line X1="20" X2="30" Y1="0" Y2="0"/>
+                                            </Grid>
+                                            <TextBlock Text="B" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontWeight="Bold" Height="16"/>
+                                            <TextBlock Text="C" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontWeight="Bold" Height="16"/>
+                                            <TextBlock Text="B" Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontWeight="Bold" Height="16"/>
+                                        </Grid>
+
+                                    </Grid>
 
                                 </Grid>
                                 <!--方管-->
                                 <Grid Grid.Row="1" Visibility="{Binding VisibleBOX_Process, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}" >
 
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="350"/>
-                                            <ColumnDefinition Width="250"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="350"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
 
@@ -284,6 +307,7 @@
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="30" />
                                             <RowDefinition Height="30" />
+                                            <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="auto"/>
@@ -307,10 +331,10 @@
                                         </TextBox>
                                         <Label Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於15mm)" Foreground="DarkRed" Margin="5,0"/>
 
-                                        <CheckBox IsChecked="{Binding chb_BOX_Bvalue}" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" />
-                                        <Label Content="B值："  Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" />
-                                        <Label Content="腹板厚度+"  Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" />
-                                        <TextBox  Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" Margin="5,0">
+                                        <CheckBox IsChecked="{Binding chb_BOX_Bvalue}" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" />
+                                        <Label Content="B值："  Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" />
+                                        <Label Content="腹板厚度+"  Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" />
+                                        <TextBox  Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" Margin="5,0">
                                             <TextBox.Text>
                                                 <Binding Path="ProcessingZone_B" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                     <Binding.ValidationRules>
@@ -319,59 +343,68 @@
                                                 </Binding>
                                             </TextBox.Text>
                                         </TextBox>
-                                        <Label Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於15mm)" Foreground="DarkRed" Margin="5,0"/>
+                                        <Label Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於15mm)" Foreground="DarkRed" Margin="5,0"/>
 
                                     </Grid>
 
                                     <Grid  Grid.Row="0" Grid.Column="1" Margin="10,0">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="auto"/>
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
-                                                    <RowDefinition Height="auto"/>
-                                                    <RowDefinition/>
-                                                    <RowDefinition/>
-                                                </Grid.RowDefinitions>
-                                       <Grid>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="43"/>
                                                 <ColumnDefinition Width="109"/>
                                                 <ColumnDefinition Width="37"/>
                                                 <ColumnDefinition/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Text="A" HorizontalAlignment="Center"/>
+                                            <TextBlock Grid.Column="0" Text="A" HorizontalAlignment="Center" FontWeight="Bold"/>
                                             <TextBlock  Grid.Column="1" Text="可加工區域" HorizontalAlignment="Center"/>
-                                            <TextBlock  Grid.Column="2" Text="A" HorizontalAlignment="Center"/>
-                                                    </Grid>
-                                                    <Image Grid.Row="1" Source="{ StaticResource BOX_PROCESS_ZONE }" Height="auto" Width="220"/>
+                                            <TextBlock  Grid.Column="2" Text="A" HorizontalAlignment="Center" FontWeight="Bold"/>
+                                        </Grid>
+                                        <Image Grid.Row="1" Source="{ StaticResource BOX_PROCESS_ZONE }" Height="auto" Width="220"/>
 
-                                                <Grid Grid.Column="1" Grid.Row="1">
+                                        <Grid Grid.Column="1" Grid.Row="1">
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="37"/>
-                                                <RowDefinition Height="37"/>
+                                                <RowDefinition Height="39"/>
+                                                <RowDefinition Height="38"/>
                                                 <RowDefinition/>
-                                                <RowDefinition Height="37"/>
+                                                <RowDefinition Height="40.5"/>
                                             </Grid.RowDefinitions>
-
-                                                        <TextBlock Text="B" Grid.Row="1" VerticalAlignment="Center"/>
-                                                        <TextBlock Text="B" Grid.Row="3" VerticalAlignment="Center"/>
-   
-                                                </Grid>
-                                                <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center"   Margin="0,10,30,0">
-                                                    <Label Content="■" VerticalAlignment="Bottom" Foreground="DodgerBlue"/>
-                                                    <Label Content="可加工區域" VerticalAlignment="Bottom" />
-                                                </StackPanel>
+                                            <Grid Grid.Column="0" Grid.Row="1">
+                                                <Line X1="0" X2="10" Y1="20" Y2="20"/>
+                                                <Line X1="10" X2="20" Y1="20" Y2="0"/>
+                                                <Line X1="20" X2="30" Y1="0" Y2="0"/>
                                             </Grid>
+                                            <Grid Grid.Column="0" Grid.Row="5">
+                                                <Line X1="0" X2="10" Y1="20" Y2="20"/>
+                                                <Line X1="10" X2="20" Y1="20" Y2="40"/>
+                                                <Line X1="20" X2="30" Y1="40" Y2="40"/>
+                                            </Grid>
+                                            <TextBlock Text="B" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontWeight="Bold" Height="16"/>
+                                            <TextBlock Text="B" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontWeight="Bold" Height="16"/>
 
+                                        </Grid>
+                                        <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center"   Margin="0,10,30,0">
+                                            <Label Content="■" VerticalAlignment="Bottom" Foreground="DodgerBlue"/>
+                                            <Label Content="可加工區域" VerticalAlignment="Bottom" />
+                                        </StackPanel>
                                     </Grid>
+
+                                </Grid>
 
                                 <!--槽鐵-->
                                 <Grid Grid.Row="2" Visibility="{Binding VisibleCH_Process, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
 
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="350"/>
-                                        <ColumnDefinition Width="250"/>
+                                        <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
@@ -403,7 +436,7 @@
                                                 </Binding>
                                             </TextBox.Text>
                                         </TextBox>
-                                        <Label Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於15mm)" Foreground="DarkRed" Margin="0,10,0,0"/>
+                                        <Label Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於15mm)" Foreground="DarkRed"/>
 
                                         <CheckBox IsChecked="{Binding chb_CH_Bvalue}" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" />
                                         <Label Content="B值："  Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" />
@@ -421,7 +454,7 @@
                                     </Grid>
                                     <Grid  Grid.Row="0" Grid.Column="1" Margin="10,0">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="auto"/>
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
@@ -437,26 +470,40 @@
                                                 <ColumnDefinition Width="39"/>
                                                 <ColumnDefinition/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Text="A" Grid.Column="0" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="A" Grid.Column="0" HorizontalAlignment="Center" FontWeight="Bold"/>
                                             <TextBlock Text="可加工區域"  Grid.Column="1" HorizontalAlignment="Center"/>
-                                            <TextBlock Text="A"  Grid.Column="2" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="A"  Grid.Column="2" HorizontalAlignment="Center" FontWeight="Bold"/>
                                         </Grid>
                                         <Image Grid.Row="1" Source="{ StaticResource CH_PROCESS_ZONE }" Height="auto" Width="220"/>
 
-                                    <Grid Grid.Column="1" Grid.Row="1">
-                                        <StackPanel>
-                                            <TextBlock Text="B" />
-                                            <TextBlock Text="B"/>
+                                        <Grid Grid.Column="1" Grid.Row="1">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="39"/>
+                                                <RowDefinition Height="39"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="20.5"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid Grid.Column="0" Grid.Row="1">
+                                                <Line X1="0" X2="10" Y1="20" Y2="20"/>
+                                                <Line X1="10" X2="20" Y1="20" Y2="0"/>
+                                                <Line X1="20" X2="30" Y1="0" Y2="0"/>
+                                            </Grid>
+                                            <Grid Grid.Column="0" Grid.Row="3">
+                                                <Line X1="0" X2="10" Y1="10" Y2="10"/>
+                                                <Line X1="10" X2="20" Y1="10" Y2="20"/>
+                                                <Line X1="20" X2="30" Y1="20" Y2="20"/>
+                                            </Grid>
+                                            <TextBlock Text="B" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="16" FontWeight="Bold"/>
+                                            <TextBlock Text="B" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="16" FontWeight="Bold"/>
+                                        </Grid>
+
+
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  Grid.Row="2" Grid.Column="0" Margin="0,10,30,0">
+                                            <Label Content="■" VerticalAlignment="Bottom" Foreground="DodgerBlue"/>
+                                            <Label Content="可加工區域" VerticalAlignment="Bottom" />
                                         </StackPanel>
                                     </Grid>
-
-
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  Grid.Row="2" Grid.Column="0" Margin="0,10,30,0">
-                                        <Label Content="■" VerticalAlignment="Bottom" Foreground="DodgerBlue"/>
-                                        <Label Content="可加工區域" VerticalAlignment="Bottom" />
-                                    </StackPanel>
-                                    </Grid>
-                            </Grid>
+                                </Grid>
 
                             </Grid>
                         </GroupBox>
@@ -465,7 +512,8 @@
                             HorizontalAlignment="Right">
 
                             <Button Name="btn_profile"
-                            Content="新增"
+                            Content="確定"
+                                    Background="#7ac7ee"
                             Command="{Binding NewProcessingZoneCommand}"
                             CommandParameter="{ Binding ElementName=cbx_SteelType, Path=SelectedIndex }" 
                             IsEnabled="{Binding NewProcessingZoneButtonEnabled}"
@@ -527,14 +575,14 @@
                   Header="打點設定" 
                   Visibility="Collapsed"/>
         <Grid Grid.ColumnSpan="5">-->
-            <!--另存視窗-->
+        <!--另存視窗-->
         <!--<Grid Visibility="{ Binding SaveAsWindowsControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
                 <STD:SaveAs SubmitButtonCommand="{Binding SaveModelRoSystemCommand}"
                             CancelButtonCommand="{ Binding CloseSaveAsWindowsCommand }" />
             </Grid>
         </Grid>-->
-        
-        
+
+
     </Grid>
 
 
