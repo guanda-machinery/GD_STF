@@ -22,8 +22,8 @@
                   mc:Ignorable="d" 
                   Title="SpiltLineSetting" >
 
-    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="940"  dx:ThemeManager.ThemeName="Win10Light" >
-        <StackPanel.Resources>
+    <Grid dx:ThemeManager.ThemeName="Win10Light">
+        <Grid.Resources>
             <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource WordBlue}"/>
             <Style TargetType="Button"  BasedOn="{StaticResource MaterialDesignFlatButton}"   >
                 <Setter Property="Background" Value="White"/>
@@ -58,141 +58,141 @@
             </Style>
 
 
-        </StackPanel.Resources>
+        </Grid.Resources>
             <!--切割線設定-->
-        <GroupBox Header="切割線設定" FontSize="16" Style="{StaticResource ParameterGroupBox}">
-            <Grid MinWidth="500">
-                        <Grid.RowDefinitions>
-                         <RowDefinition Height="auto"/>
+        <Border BorderBrush="Gray" BorderThickness="1">
+            <GroupBox Header="切割線設定" FontSize="16" Style="{StaticResource ParameterGroupBox}">
+                <Grid MinWidth="500">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                        <!--關鍵字過濾-->
+                    <!--關鍵字過濾-->
 
-                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Label VerticalAlignment="Center" HorizontalContentAlignment="Center" Content=" 腹板切割記號位置" FontSize="16" />
-                    <Grid>
-                        <Image Source="{ StaticResource WEB_CUT_MARK }" Height="170" Width="170"/>
-                        <Canvas>
-                            <Grid Canvas.Left="29" Canvas.Top="112" Height="25" Width="156">
-                                <TextBlock Text="A" FontFamily="Times New Roman" FontWeight="UltraBold"/>
-                            </Grid>
-                        </Canvas>
-                        <Canvas>
-                            <Grid Canvas.Left="106" Canvas.Top="90" Height="25" Width="156">
-                                <TextBlock Text="B" FontFamily="Times New Roman" FontWeight="UltraBold"/>
-                            </Grid>
-                        </Canvas>
-                    </Grid>
-                </StackPanel>
-                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" >
-                                <Label VerticalAlignment="Center" HorizontalContentAlignment="Center" Content=" 翼板切割記號位置" FontSize="16" />
-                                <Grid>
-                                    <Image Source="{ StaticResource WING_CUT_MARK }" Height="170" Width="170"/>
-                                    <Canvas>
-                                        <Grid Canvas.Left="29" Canvas.Top="115" Height="25" Width="156">
-                                            <TextBlock Text="C" FontFamily="Times New Roman" FontWeight="UltraBold"/>
-                                        </Grid>
-                                    </Canvas>
-                                    <Canvas>
-                                        <Grid Canvas.Left="106" Canvas.Top="90" Height="25" Width="156">
-                                            <TextBlock Text="D" FontFamily="Times New Roman" FontWeight="UltraBold"/>
-                                        </Grid>
-                                    </Canvas>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label VerticalAlignment="Center" HorizontalContentAlignment="Center" Content=" 腹板切割記號位置" FontSize="16" />
+                        <Grid>
+                            <Image Source="{ StaticResource WEB_CUT_MARK }" Height="170" Width="170"/>
+                            <Canvas>
+                                <Grid Canvas.Left="29" Canvas.Top="112" Height="25" Width="156">
+                                    <TextBlock Text="A" FontFamily="Times New Roman" FontWeight="UltraBold"/>
                                 </Grid>
-                            </StackPanel>
+                            </Canvas>
+                            <Canvas>
+                                <Grid Canvas.Left="106" Canvas.Top="90" Height="25" Width="156">
+                                    <TextBlock Text="B" FontFamily="Times New Roman" FontWeight="UltraBold"/>
+                                </Grid>
+                            </Canvas>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" >
+                        <Label VerticalAlignment="Center" HorizontalContentAlignment="Center" Content=" 翼板切割記號位置" FontSize="16" />
+                        <Grid>
+                            <Image Source="{ StaticResource WING_CUT_MARK }" Height="170" Width="170"/>
+                            <Canvas>
+                                <Grid Canvas.Left="29" Canvas.Top="115" Height="25" Width="156">
+                                    <TextBlock Text="C" FontFamily="Times New Roman" FontWeight="UltraBold"/>
+                                </Grid>
+                            </Canvas>
+                            <Canvas>
+                                <Grid Canvas.Left="106" Canvas.Top="90" Height="25" Width="156">
+                                    <TextBlock Text="D" FontFamily="Times New Roman" FontWeight="UltraBold"/>
+                                </Grid>
+                            </Canvas>
+                        </Grid>
+                    </StackPanel>
 
-                        <!--切割線設定-->
-                <GroupBox Grid.Row="2" Header="切割線設定" Background="White" Style="{StaticResource ParameterBaseStyleGroupBox}">
-                    <Grid Margin="10,0" Height="275">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="auto" />
-                                </Grid.RowDefinitions>
+                    <!--切割線設定-->
+                    <GroupBox Grid.Row="2" Header="切割線設定" Background="White" Style="{StaticResource ParameterBaseStyleGroupBox}">
+                        <Grid Margin="10,0" Height="275">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition MaxWidth="200" />
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <CheckBox Grid.Row="0" Grid.Column="0" Visibility="Hidden" />
+                            <Label Content="選擇記號比例"  Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" />
+                            <ComboBox Grid.Row="0" Grid.Column="2" x:Name="cbx_HowManyParts" SelectedValue="{Binding HowManyParts_Value}" ItemsSource="{Binding cbb_HowManyParts}" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_HowManyParts">
+                                        <i:InvokeCommandAction Command="{ Binding ShowHowManyPartsRelatedComboboxCommand }"
+                                                               CommandParameter="{ Binding ElementName=cbx_HowManyParts, Path=SelectedValue }" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
+                            <Label Content="等分" Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" Margin="3,0"/>
+
+                            <CheckBox Grid.Row="1" Grid.Column="0" IsChecked="{Binding chb_PointA_SplitLineSetting}"/>
+                            <Label Content="A值(打點位置)"  Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"/>
+                            <ComboBox Grid.Row="1" Grid.Column="2" SelectedValue="{Binding PointA_Value}" ItemsSource="{Binding cbb_A_ItemSource}"/>
+
+                            <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding chb_PointB_SplitLineSetting}" />
+                            <Label Content="B值(打點位置)"  Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" />
+                            <ComboBox Grid.Row="2" Grid.Column="2" SelectedValue="{Binding PointB_Value}" ItemsSource="{Binding cbb_B_ItemSource}" />
+
+                            <CheckBox Grid.Row="3" Grid.Column="0" IsChecked="{Binding chb_PointC_SplitLineSetting}" />
+                            <Label Content="C值(打點位置)"  Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" />
+                            <ComboBox Grid.Row="3" Grid.Column="2" SelectedValue="{Binding PointC_Value}" ItemsSource="{Binding cbb_C_ItemSource}" />
+
+                            <CheckBox  Grid.Row="4" Grid.Column="0" IsChecked="{Binding chb_PointD_SplitLineSetting}" />
+                            <Label Content="D值(打點位置)"  Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" />
+                            <ComboBox Grid.Row="4" Grid.Column="2" SelectedValue="{Binding PointD_Value}" ItemsSource="{Binding cbb_D_ItemSource}" />
+
+                            <CheckBox  Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" IsChecked="{Binding chb_Thickness_SplitLineSetting}" />
+                            <Label Content="切割厚度："  Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" />
+                            <TextBox Grid.Row="5" Grid.Column="2" VerticalAlignment="Center" >
+                                <TextBox.Text>
+                                    <Binding Path="CutThickness" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                        <Binding.ValidationRules>
+                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                            <Label Grid.Row="5" Grid.Column="3" Content="(單位：mm)" VerticalAlignment="Center" Margin="3,0"/>
+
+                            <CheckBox  Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" IsChecked="{Binding chb_RemainingLength_SplitLineSetting}" />
+                            <Label Content="餘料長度設定"  Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" />
+                            <Grid Grid.Row="6" Grid.Column="2" >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition MaxWidth="200" />
-                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
+                                <Label Content ="大於"   Grid.Column="0"  VerticalAlignment="Center" Margin="0,0,5,0" />
 
-                                <CheckBox Grid.Row="0" Grid.Column="0" Visibility="Hidden" />
-                                <Label Content="選擇記號比例"  Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" />
-                                <ComboBox Grid.Row="0" Grid.Column="2" x:Name="cbx_HowManyParts" SelectedValue="{Binding HowManyParts_Value}" ItemsSource="{Binding cbb_HowManyParts}" >
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_HowManyParts">
-                                            <i:InvokeCommandAction Command="{ Binding ShowHowManyPartsRelatedComboboxCommand }"
-                                                               CommandParameter="{ Binding ElementName=cbx_HowManyParts, Path=SelectedValue }" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                </ComboBox>
-                                <Label Content="等分" Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" />
-
-                                <CheckBox Grid.Row="1" Grid.Column="0" IsChecked="{Binding chb_PointA_SplitLineSetting}"/>
-                                <Label Content="A值(打點位置)"  Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"/>
-                                <ComboBox Grid.Row="1" Grid.Column="2" SelectedValue="{Binding PointA_Value}" ItemsSource="{Binding cbb_A_ItemSource}"/>
-
-                                <CheckBox Grid.Row="2" Grid.Column="0" IsChecked="{Binding chb_PointB_SplitLineSetting}" />
-                                <Label Content="B值(打點位置)"  Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" />
-                                <ComboBox Grid.Row="2" Grid.Column="2" SelectedValue="{Binding PointB_Value}" ItemsSource="{Binding cbb_B_ItemSource}" />
-
-                                <CheckBox Grid.Row="3" Grid.Column="0" IsChecked="{Binding chb_PointC_SplitLineSetting}" />
-                                <Label Content="C值(打點位置)"  Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" />
-                                <ComboBox Grid.Row="3" Grid.Column="2" SelectedValue="{Binding PointC_Value}" ItemsSource="{Binding cbb_C_ItemSource}" />
-
-                                <CheckBox  Grid.Row="4" Grid.Column="0" IsChecked="{Binding chb_PointD_SplitLineSetting}" />
-                                <Label Content="D值(打點位置)"  Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" />
-                                <ComboBox Grid.Row="4" Grid.Column="2" SelectedValue="{Binding PointD_Value}" ItemsSource="{Binding cbb_D_ItemSource}" />
-
-                                <CheckBox  Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" IsChecked="{Binding chb_Thickness_SplitLineSetting}" />
-                                <Label Content="切割厚度："  Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" />
-                                <TextBox Grid.Row="5" Grid.Column="2" VerticalAlignment="Center" >
+                                <TextBox  Grid.Column="1" VerticalAlignment="Center">
                                     <TextBox.Text>
-                                        <Binding Path="CutThickness" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                        <Binding Path="SplitRemainingLength" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                             <Binding.ValidationRules>
                                                 <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                             </Binding.ValidationRules>
                                         </Binding>
                                     </TextBox.Text>
                                 </TextBox>
-                                <Label Grid.Row="5" Grid.Column="3" Content="(單位：mm)" VerticalAlignment="Center" />
-
-                                <CheckBox  Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" IsChecked="{Binding chb_RemainingLength_SplitLineSetting}" />
-                                <Label Content="餘料長度設定"  Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" />
-                                <Grid Grid.Row="6" Grid.Column="2" >
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel Grid.Column="0"  VerticalAlignment="Center">
-                                        <Label Content ="大於"   />
-                                    </StackPanel>
-                                    <TextBox  Grid.Column="1" VerticalAlignment="Center" Margin="10,0">
-                                        <TextBox.Text>
-                                            <Binding Path="SplitRemainingLength" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                <Binding.ValidationRules>
-                                                    <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                </Binding.ValidationRules>
-                                            </Binding>
-                                        </TextBox.Text>
-                                    </TextBox>
-                                </Grid>
-                                <Label Grid.Row="6" Grid.Column="3" Content="(單位：mm)" VerticalAlignment="Center" />
-                                <Label Content=" (小於餘料：廢料"  Grid.Row="7" Grid.Column="1" VerticalAlignment="Center" />
                             </Grid>
-                        </GroupBox>
+                            <Label Grid.Row="6" Grid.Column="3" Content="(單位：mm)" VerticalAlignment="Center" Margin="3,0" />
+                            <Label Content=" (小於餘料：廢料"  Grid.Row="7" Grid.Column="1" VerticalAlignment="Center" />
+                        </Grid>
+                    </GroupBox>
 
-                        <StackPanel Grid.Row="3"
+                    <StackPanel Grid.Row="3"
                             Orientation="Horizontal"
                             HorizontalAlignment="Right">
-                            <Button 
+                        <Button 
                             Content="新增"
                             Command="{Binding NewSplitLineCommand}"
                             FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
@@ -200,7 +200,7 @@
                             Height="30"
                             Width="80"
                             Margin="10"/>
-                            <Button 
+                        <Button 
                             Command="{Binding ToggleAllSplitLineCheckboxCommand}"
                             FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
                             VerticalContentAlignment="Center"
@@ -208,15 +208,15 @@
                             Height="30"
                             Width="80"
                             Margin="10">
-                        <Button.Content>
-                                    <StackPanel Orientation="Horizontal">
-                                        <wpf:PackIcon Kind="CheckBoxOutline"/>
-                                        <TextBlock Text="／" Margin="0,-2,0,0"/>
-                                        <wpf:PackIcon Kind="CheckboxBlankOutline"/>
-                                    </StackPanel>
-                                </Button.Content>
-                            </Button>
-                            <Button 
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <wpf:PackIcon Kind="CheckBoxOutline"/>
+                                    <TextBlock Text="／" Margin="0,-2,0,0"/>
+                                    <wpf:PackIcon Kind="CheckboxBlankOutline"/>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                        <Button 
                             Content="復原"
                             Command="{Binding GoBackSplitLineCommand}"
                             FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
@@ -224,13 +224,14 @@
                             Height="30"
                             Width="80"
                             Margin="10"/>
-                        </StackPanel>
+                    </StackPanel>
 
 
-                    </Grid>
+                </Grid>
 
             </GroupBox>
-        </StackPanel>
+        </Border>
+    </Grid>
 
 
 
