@@ -252,7 +252,7 @@ namespace WPFSTD105
         /// 建立採購明細單
         /// </summary>
         /// <param name="path">儲存路徑</param>
-        public void CreateFile(string path, ObservableCollection<MaterialDataView> dataViews, ObservableCollection<SteelAttr> steelAttrs = null)
+        public void CreateFile(string ProjectName, string ProjectNumber, string DocPath, ObservableCollection<MaterialDataView> dataViews, double TotalLossBothSide, ObservableCollection<SteelAttr> steelAttrs = null)
         {
             try
             {
@@ -293,9 +293,9 @@ namespace WPFSTD105
                 //string aa = System.Environment.CurrentDirectory;
                 //string destPath = "../TestDoc_Output.docx"; //模板DOC路徑
                 //string destPath = @"D:\\0527-666瑞迪曼斯丙棟(斜角)\TestDoc_Output.docx"; //目標DOC路徑
-                string destPath = path; //模板DOC路徑
+                string destPath = DocPath; //模板DOC路徑
 
-                WordTmplRendering(tmplPath, destPath);//替換模板DOC字串
+                WordTmplRendering(ProjectName, ProjectNumber, tmplPath, destPath, TotalLossBothSide);//替換模板DOC字串
 
                 string[] ReportLogoList = { "ReportLogo" };
                 ReplaceStringToSteelTypePicToWordDocument(destPath, "ReportLogo", ReportLogoList, 0.6m, 0.6m, 47000L);//以型鋼圖示群替換指定字串
@@ -523,21 +523,21 @@ namespace WPFSTD105
             }
         }
 
-        static void WordTmplRendering(string TmpDocPath, string DesDocPath)
+        static void WordTmplRendering(string ProjectName, string ProjectNumber, string TmpDocPath, string DesDocPath, double TotalLossBothSide)
         {
+            //取得報表上方資訊
+            string current_date = DateTime.Now.ToString("yyyy-MM-dd");
+
             var docxBytes = WordRender.GenerateDocx(File.ReadAllBytes(TmpDocPath),
                 new Dictionary<string, string>()
                 {
                     ["ReportLogo"] = "ReportLogo",
-                    ["PrintDate"] = "2022-09-22",
-                    ["ProjectNo"] = "1100722-A",
-                    ["ProjectName"] = "卜蜂斗六廠",
-                    ["TwoSideCut"] = "20",
+                    ["PrintDate"] = current_date,
+                    ["ProjectNo"] = ProjectNumber,
+                    ["ProjectName"] = ProjectName,
+                    ["TwoSideCut"] = TotalLossBothSide.ToString(),
                     ["CutLoss"] = "3",
-                    ["SeelContentType"] = "SteelTypePicture",
-                    ["ThisTableSteelType"] = "RH350X175X7X11 + Steel Type",
-                    ["SteelTotalCount"] = "9",
-                    ["TotalSteelWeight"] = "5389.2(kg)"
+                    ["SteelContentType"] = "SteelTypePicture"
                 });
             File.WriteAllBytes(
                 //Path.Combine(ResultFolder, $"套表測試-{DateTime.Now:HHmmss}.docx"),

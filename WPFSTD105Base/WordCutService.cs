@@ -216,8 +216,8 @@ namespace WPFSTD105
         /// <summary>
         /// 建立切割明細表
         /// </summary>
-        /// <param name="path">儲存路徑</param>
-        public void CreateFile(string path, ObservableCollection<MaterialDataView> dataViews)
+        /// <param name="DocPath">儲存路徑</param>
+        public void CreateFile(string ProjectName, string ProjectNumber, string DocPath, ObservableCollection<MaterialDataView> dataViews, double TotalLossBothSide)
         {
             try
             {
@@ -254,9 +254,9 @@ namespace WPFSTD105
 
                 //產生word
                 string tmplPath = "AllFileTemplate/CutDocTemp.docx"; //模板DOC路徑
-                string destPath = path; //模板DOC路徑
+                string destPath = DocPath; //模板DOC路徑
 
-                WordTmplRendering(tmplPath, destPath);//替換模板DOC字串
+                WordTmplRendering(ProjectName, ProjectNumber, tmplPath, destPath, TotalLossBothSide);//替換模板DOC字串
 
                 string[] ReportLogoList = { "ReportLogo" };
                 var document_ReportLogo = WordprocessingDocument.Open(destPath, true);
@@ -572,21 +572,22 @@ namespace WPFSTD105
             //}
         }
 
-        static void WordTmplRendering(string TmpDocPath, string DesDocPath)
+        static void WordTmplRendering(string ProjectName, string ProjectNumber, string TmpDocPath, string DesDocPath, double TotalLossBothSide)
         {
+            //取得報表上方資訊
+            string current_date = DateTime.Now.ToString("yyyy-MM-dd");
+
+            //替換報表上方資訊
             var docxBytes = WordRender.GenerateDocx(File.ReadAllBytes(TmpDocPath),
                 new Dictionary<string, string>()
                 {
                     ["ReportLogo"] = "ReportLogo",
-                    ["PrintDate"] = "2022-09-22",
-                    ["ProjectNo"] = "1100722-A",
-                    ["ProjectName"] = "卜蜂斗六廠",
-                    ["TwoSideCut"] = "20",
+                    ["PrintDate"] = current_date,
+                    ["ProjectNo"] = ProjectNumber,
+                    ["ProjectName"] = ProjectName,
+                    ["TwoSideCut"] = TotalLossBothSide.ToString(),
                     ["CutLoss"] = "3",
-                    ["SeelContentType"] = "SteelTypePicture",
-                    ["ThisTableSteelType"] = "RH350X175X7X11 + Steel Type",
-                    ["SteelTotalCount"] = "9",
-                    ["TotalSteelWeight"] = "5389.2(kg)"
+                    ["SteelContentType"] = "SteelTypePicture"
                 });
             File.WriteAllBytes(
                 //Path.Combine(ResultFolder, $"套表測試-{DateTime.Now:HHmmss}.docx"),
@@ -668,6 +669,7 @@ namespace WPFSTD105
                 else 
                 {
                     TableProperties props = new TableProperties(
+                        new TableCellSpacing() { Width = "20" },
                         new TableBorders(
                         new TopBorder
                         {
@@ -723,7 +725,6 @@ namespace WPFSTD105
                                 break;
                             case 2:
                                 cell_width = "2000"; //斷面規格
-                                //flag_JustificationValues = JustificationValues.Left;
                                 break;
                             case 3:
                                 cell_width = "1050"; //材質
@@ -792,6 +793,7 @@ namespace WPFSTD105
                             }
                         }
                         tc.Append(new TableCellProperties(
+                                      new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = cell_width },
                                       new TableCellVerticalAlignment() { Val = TableVerticalAlignmentValues.Center }),
                                       new Paragraph(new ParagraphProperties(
                                                     new Justification() { Val = flag_JustificationValues },
@@ -801,13 +803,7 @@ namespace WPFSTD105
                                                             new RunFonts() { Ascii = "Calibri Light" },
                                                             new FontSizeComplexScript { Val = CellFontSize }),
                                                             new Text(data[i][j]))));
-
-                        tc.Append(new TableCellProperties(
-                                  new TableCellWidth { Type = TableWidthUnitValues.Dxa, Width = cell_width }));
-
                         tr.Append(tc);
-
-                        flag_JustificationValues = JustificationValues.Center;
                     }
                     table.Append(tr);
                 }

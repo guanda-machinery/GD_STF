@@ -17,18 +17,6 @@ using System.Diagnostics;
 //using WordToPdfService; //WORD to PDF by Office
 using System.IO;
 
-//using GrapeCity.Documents.Word; //by GrapeCity
-//using System.Drawing;
-//using GrapeCity.Documents.Word.Layout;
-//using System.IO.Compression;
-
-//using Syncfusion.DocIO; //Syncfusion
-//using Syncfusion.DocIO.DLS;
-//using Syncfusion.OfficeChart;
-//using Syncfusion.DocToPDFConverter;
-//using Syncfusion.OfficeChartToImageConverter;
-//using Syncfusion.Pdf;
-
 namespace WPFSTD105
 {
     /// <summary>
@@ -164,7 +152,8 @@ namespace WPFSTD105
 
                     //20220930 張燕華 改為word輸出報表
                     WordCutService word = new WordCutService();
-                    word.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", MaterialDataViews);
+                    double TotalLoss_BothSide = MatchSettingStartCut + MatchSettingEndCut;//素材前後端切割損耗
+                    word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", MaterialDataViews, TotalLoss_BothSide);
 
                     string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
                     try
@@ -176,7 +165,7 @@ namespace WPFSTD105
                         Console.WriteLine(ex.ToString());
                     }
 
-                    DeleteWordFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf");
+                    DeleteWordFileAfterDelay(5000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf");
 
                     WinUIMessageBox.Show(null,
                         $"切割明細表已下載",
@@ -187,24 +176,6 @@ namespace WPFSTD105
                         MessageBoxOptions.None,
                         FloatingMode.Popup);
 
-                    //try { File.Delete($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx"); }
-                    //catch(Exception ex) { Console.WriteLine(ex.ToString()); }
-
-                    ////WORD to PDF by Syncfusion
-                    ////Loads an existing Word document
-                    //WordDocument wordDocument = new WordDocument($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", FormatType.Docx);
-                    ////Initializes the ChartToImageConverter for converting charts during Word to pdf conversion
-                    //wordDocument.ChartToImageConverter = new ChartToImageConverter();
-                    ////Creates an instance of the DocToPDFConverter
-                    //DocToPDFConverter converter = new DocToPDFConverter();
-                    ////Converts Word document into PDF document
-                    //PdfDocument pdfDocument = converter.ConvertToPDF(wordDocument);
-                    ////Saves the PDF file 
-                    //pdfDocument.Save($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.pdf");
-                    ////Closes the instance of document objects
-                    //pdfDocument.Close(true);
-                    //wordDocument.Close();
-
                     ////word to pdf by Office
                     //using (var cvtr = new PdfConverter())
                     //{
@@ -212,9 +183,6 @@ namespace WPFSTD105
                     //    string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
                     //    File.WriteAllBytes($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf", buff);
                     //}
-
-
-
 
                 });
             }
@@ -251,7 +219,8 @@ namespace WPFSTD105
 
                     //20220928 張燕華 改為word輸出報表
                     WordBuyService word = new WordBuyService();
-                    word.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", MaterialDataViews);
+                    double TotalLoss_BothSide = MatchSettingStartCut + MatchSettingEndCut;//素材前後端切割損耗
+                    word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", MaterialDataViews, TotalLoss_BothSide);
                     
                     string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
                     try
@@ -263,7 +232,7 @@ namespace WPFSTD105
                         Console.WriteLine(ex.ToString()); 
                     }
 
-                    DeleteWordFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf");
+                    DeleteWordFileAfterDelay(5000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf");
 
                     WinUIMessageBox.Show(null,
                         $"採購明細單已下載",
@@ -274,50 +243,6 @@ namespace WPFSTD105
                         MessageBoxOptions.None,
                         FloatingMode.Popup);
 
-
-                    ////WORD to PDF by Syncfusion
-                    ////Loads an existing Word document
-                    //WordDocument wordDocument = new WordDocument($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", FormatType.Docx);
-                    ////Initializes the ChartToImageConverter for converting charts during Word to pdf conversion
-                    //wordDocument.ChartToImageConverter = new ChartToImageConverter();
-                    ////Creates an instance of the DocToPDFConverter
-                    //DocToPDFConverter converter = new DocToPDFConverter();
-                    ////Converts Word document into PDF document
-                    //PdfDocument pdfDocument = converter.ConvertToPDF(wordDocument);
-                    ////Saves the PDF file 
-                    //pdfDocument.Save($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.pdf");
-                    ////Closes the instance of document objects
-                    //pdfDocument.Close(true);
-                    //wordDocument.Close();
-
-                    ////WORD to PDF by GrapeCity
-                    //var wordDoc = new GcWordDocument();
-                    //var path = Path.Combine($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx");
-                    //wordDoc.Load(path);
-                    //using (var layout = new GcWordLayout(wordDoc))
-                    //{
-                    //    PdfOutputSettings pdfOutputSettings = new PdfOutputSettings();
-                    //
-                    //    pdfOutputSettings.CompressionLevel = CompressionLevel.Fastest;
-                    //
-                    //    pdfOutputSettings.ConformanceLevel = GrapeCity.Documents.Pdf.PdfAConformanceLevel.PdfA1a;
-                    //
-                    //    pdfOutputSettings.BackColor = Color.LightGray;
-                    //
-                    //    pdfOutputSettings.DocumentInfo = new GrapeCity.Documents.Pdf.DocumentInfo()
-                    //
-                    //    {
-                    //        Author = "John",
-                    //
-                    //        Title = "Deforestation",
-                    //
-                    //        CreationDate = new GrapeCity.Documents.Pdf.PdfDateTime(DateTime.Now)
-                    //
-                    //    };
-                    //
-                    //    layout.SaveAsPdf($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.pdf", null, pdfOutputSettings);
-                    //}
-
                     ////word to pdf by Office
                     //using (var cvtr = new PdfConverter())
                     //{
@@ -325,18 +250,6 @@ namespace WPFSTD105
                     //    string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
                     //    File.WriteAllBytes($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf", buff);
                     //}
-
-                    //WinUIMessageBox.Show(null,
-                    //    $"PDF已下載",
-                    //    "通知",
-                    //    MessageBoxButton.OK,
-                    //    MessageBoxImage.Exclamation,
-                    //    MessageBoxResult.None,
-                    //    MessageBoxOptions.None,
-                    //    FloatingMode.Popup);
-
-                    //以Libreoffice把WORD轉換為PDF
-                    //convertDocToPdf(@"C:\Program Files\LibreOffice\program", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}", "採購明細單.docx");
                 });
             }
         }
@@ -379,14 +292,13 @@ namespace WPFSTD105
                 OfficeViewModel.LengthDodageControl = false;
         });
 
-
         /// <summary>
-        /// 利用LibraOffice將Doc轉成PDF
+        /// 背景執行緒等待設定時間後，檢查PDF已存在的話，則刪除原本的WORD檔
         /// </summary>
-        private void DeleteWordFile(string WordFilePath, string PdfFilePath)
+        private void DeleteWordFileAfterDelay(int Delay_ms, string WordFilePath, string PdfFilePath)
         {
             //底線的寫法代表使用lambda時，如果不使用到傳入參數，就要打一個底線。
-            System.Threading.Tasks.Task.Delay(4000).ContinueWith(_ => 
+            System.Threading.Tasks.Task.Delay(Delay_ms).ContinueWith(_ => 
             {
                 if (File.Exists(PdfFilePath))
                 {
