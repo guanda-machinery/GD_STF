@@ -247,19 +247,17 @@
                 </StackPanel>
             </dxlc:ScrollBox>
         </Grid>
-        <Grid Grid.Column="1"
+        <Grid Grid.Column="1" Background="#e2e2e2"
               Grid.RowSpan="4">
             <Border Name="workArea"
                     Margin="0"
-                    CornerRadius="0"
-                    Background="{ StaticResource solidclr_LightGray }">
+                    CornerRadius="0">
                 <Grid>
                     <dxlc:ScrollBox Height="{Binding ElementName=workArea, Path=Height}"
                                     Width="{Binding ElementName=workArea, Path=Width}" 
                                     Style="{ StaticResource sbx_Office }"
                                                         Margin="0">
                         <!--頁面切換區域-->
-
                         <std:OfficePageHost x:Name="pageHost"
                                             CurrentPage="{Binding }"    
                                             DataContext="{Binding OfficeViewModel.CurrentPage, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={local:OfficePageConverter } }" 

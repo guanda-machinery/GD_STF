@@ -120,6 +120,13 @@ namespace STD_105
                 case ApplicationPage.MachineMonitor:
                     basePage = new ProcessingMonitorPage_Machine();
                     break;
+                case ApplicationPage.MachineFunction:
+                    basePage = new MachineFunction();
+                        break;
+
+                case ApplicationPage.MainSpindleMode:
+                    basePage = new MainSpnidleMode();
+                    break;
 
                 default:
                     return null;
@@ -246,8 +253,17 @@ namespace STD_105
                 LangDict[ApplicationPage.Alarm] = new Dictionary<LangEnum, string>
                 {
                     { LangEnum.ZH, "警報" },{ LangEnum.EN, "Alert" },{ LangEnum.VN, "báo động" },{ LangEnum.TH, "เตือน" }
+                }; 
+
+                LangDict[ApplicationPage.MachineFunction] = new Dictionary<LangEnum, string>
+                {
+                    { LangEnum.ZH, "機台功能" },{ LangEnum.EN, "MachineFunction" },{ LangEnum.VN, "MachineFunction" },{ LangEnum.TH, "MachineFunction" }
                 };
 
+                LangDict[ApplicationPage.MainSpindleMode] = new Dictionary<LangEnum, string>
+                {
+                    { LangEnum.ZH, "主軸模式" },{ LangEnum.EN, "MainSpindleMode" },{ LangEnum.VN, "MainSpindleMode" },{ LangEnum.TH, "MainSpindleMode" }
+                };
                 return LangDict;
             }
         }
@@ -258,7 +274,6 @@ namespace STD_105
             //找到合適的頁面
             if (value is ApplicationPage)
             {
-        
                 var pageL = Page_LanguageDict[(ApplicationPage)value];
                 //找語言
                 LangEnum _Lang = LangEnum.ZH;

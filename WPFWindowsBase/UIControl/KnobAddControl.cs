@@ -1254,9 +1254,12 @@ namespace WPFWindowsBase
 
             //將指針和指針帽的Z軸設置為一個非常高的數字，以便它保持在頂部
             //刻度和範圍指示器
+            if(pointer != null)
             Canvas.SetZIndex(pointer, 100001);
-            Canvas.SetZIndex(knobButton, 100001);
-            Canvas.SetZIndex(arc, 99999);
+            if (knobButton != null)
+                Canvas.SetZIndex(knobButton, 100001);
+            if (arc != null)
+                Canvas.SetZIndex(arc, 99999);
 
             if (ResetPointerOnStartUp)
             {

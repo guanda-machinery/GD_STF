@@ -6,11 +6,12 @@
              xmlns:local="clr-namespace:STD_105"
              xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
              mc:Ignorable="d">
-    <Grid >
-        <Frame x:Name="newPage"
+    <Grid>
+        <Frame x:Name="newPage" 
                NavigationUIVisibility="Hidden" />
-        <Frame x:Name="oldPage" 
+        <Frame x:Name="oldPage"  
                NavigationUIVisibility="Hidden" />
+
     </Grid>
     <!--頁面顯示區域-->
     <!--

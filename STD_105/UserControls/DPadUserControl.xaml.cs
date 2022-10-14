@@ -190,7 +190,7 @@ namespace STD_105
         /// <summary>
         /// 圖片樣式
         /// </summary>
-        public UIElement BordeChild_1_Source
+        public UIElement BorderChild_1_Source
         {
             get { return (UIElement)GetValue(BorderChild_1_Property); }
             set { SetValue(BorderChild_1_Property, value); }
@@ -214,7 +214,7 @@ namespace STD_105
         /// <summary>
         /// 圖片樣式
         /// </summary>
-        public UIElement BordeChild_2_Source
+        public UIElement BorderChild_2_Source
         {
             get { return (UIElement)GetValue(BorderChild_2_Property); }
             set { SetValue(BorderChild_2_Property, value); }
@@ -237,7 +237,7 @@ namespace STD_105
         /// <summary>
         /// 圖片樣式
         /// </summary>
-        public UIElement BordeChild_3_Source
+        public UIElement BorderChild_3_Source
         {
             get { return (UIElement)GetValue(BorderChild_3_Property); }
             set { SetValue(BorderChild_3_Property, value); }
@@ -260,7 +260,7 @@ namespace STD_105
         /// <summary>
         /// 圖片樣式
         /// </summary>
-        public UIElement BordeChild_4_Source
+        public UIElement BorderChild_4_Source
         {
             get { return (UIElement)GetValue(BorderChild_4_Property); }
             set { SetValue(BorderChild_4_Property, value); }

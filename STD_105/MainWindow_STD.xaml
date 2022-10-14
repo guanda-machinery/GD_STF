@@ -18,9 +18,10 @@
         Closing="AppWindows_Closing"
         mc:Ignorable="d"
         Title="頁面框架"
-        Height="1024"
-        Width="1280">
+        Height="1280"
+        Width="1024">
     <Grid Background="{ StaticResource solidclr_LightGray }">
+
         <Grid.Resources>
             <!--  遮蔽背景  -->
             <Style x:Key="Fade"
@@ -152,8 +153,22 @@
                         </MultiBinding>
                     </local:MainFunctionButton.IsEnabled>
                 </local:MainFunctionButton>
+
+
+                <!--主軸模式2-->
+                <local:MainFunctionButton ButtonCommand="{Binding MainSpindleCommand }"
+                                          ButtonImageSource="{StaticResource Spindle}"
+                                          TitleText="{ DynamicResource LANGUAGE_SpindleMode }"
+                                          FontColor="{ StaticResource solidclr_DimGray }" />
+
+                
                 <!--機台其他功能-->
                 <local:MainFunctionButton ButtonCommand="{Binding MachineFuctionCommand }"
+                                          ButtonImageSource="{StaticResource Apps}"
+                                          TitleText="{ DynamicResource LANGUAGE_MachineFuctions }"
+                                          FontColor="{ StaticResource solidclr_DimGray }" />
+
+                <local:MainFunctionButton ButtonCommand="{Binding MachineFunctionCommand }"
                                           ButtonImageSource="{StaticResource Apps}"
                                           TitleText="{ DynamicResource LANGUAGE_MachineFuctions }"
                                           FontColor="{ StaticResource solidclr_DimGray }" />
