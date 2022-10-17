@@ -78,7 +78,7 @@
                 </Button>
                 <!--語言設定-->
 
-                <uc_language:MainView Padding="5" Background="WhiteSmoke" />
+                <uc_language:MainView Background="WhiteSmoke" />
 
                 <!--軟體版本-->
                 <Button Command="{Binding Path =SoftwareVersionCommand}"  Background="WhiteSmoke"  Padding="5">
@@ -87,7 +87,7 @@
                     </Button.Content>
                 </Button>
                 <!--貼紙機設定-->
-                <uc_sticker:MainView Padding="5" Background="WhiteSmoke"/>
+                <uc_sticker:MainView  Background="WhiteSmoke"/>
                 <!--Button  Background="WhiteSmoke">
                     <Button.Content>
                         <TextBlock Text="貼紙機設定" />
@@ -99,6 +99,9 @@
                         <TextBlock Text="選擇報表LOGO" />
                     </Button.Content>
                 </Button>
+                
+                
+                
                 <!--斷面規格轉inp-->
                 <Button Command="{ Binding Path=SectionSpecExcel2InpCommand }" Visibility="Collapsed"  Background="WhiteSmoke"  Padding="5">
                     <Button.Content>
@@ -107,6 +110,8 @@
                 </Button>
             </StackPanel>
         </Grid>
+        
+        
         <Grid Grid.Column="1" Margin="10,0">
             <!--頁面切換區域-->
             <std:OfficePageHost x:Name="pageHost1" 

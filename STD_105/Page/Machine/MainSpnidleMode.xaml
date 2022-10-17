@@ -30,14 +30,14 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Image  Grid.Column="0" Source="{StaticResource SpindleColorDrawingImage}"  Height="100" Width="auto"/>
-                        <Grid Grid.Column="1" Margin="10,-5,0,0" HorizontalAlignment="Left" Width="80">
+                        <Image  Grid.Column="0" Source="{StaticResource SpindleColorDrawingImage}"  Height="80" Width="auto" HorizontalAlignment="Right"/>
+                        <Grid Grid.Column="1" Margin="10,-4,0,0" HorizontalAlignment="Left" Width="80">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="Z"  Width="auto" Foreground ="Black" FontSize="50" />
-                            <TextBlock Grid.Column="1" Text="+"  Width="auto" Margin="0,-7,0,0"  Foreground ="Black" FontSize="60"  />
+                            <TextBlock Grid.Column="0" Text="Z"  Width="auto" Foreground ="Black" FontSize="40" />
+                            <TextBlock Grid.Column="1" Text="+"  Width="auto" Margin="4,-6,0,0"  Foreground ="Black" FontSize="40"  />
                         </Grid>
                     </Grid>
                 </local:JoystickUserControl.BorderChild_1_Source>
@@ -50,14 +50,14 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Image  Grid.Column="0" Source="{StaticResource SpindleColorDrawingImage}"  Height="100" Width="auto"/>
-                        <Grid Grid.Column="1" Margin="10,-5,0,0" HorizontalAlignment="Left" Width="80">
+                        <Image  Grid.Column="0" Source="{StaticResource SpindleColorDrawingImage}"  Height="80" HorizontalAlignment="Right" Width="auto"/>
+                        <Grid Grid.Column="1" Margin="10,-5,0,0" HorizontalAlignment="Left" >
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="Z"  Width="auto" Foreground ="Black" FontSize="50" />
-                            <TextBlock Grid.Column="1" Text="–"  Width="auto" Margin="8,-7,0,0"  Foreground ="Black" FontSize="60"  />
+                            <TextBlock Grid.Column="0" Text="Z"  Width="auto"  Foreground ="Black" FontSize="40" />
+                            <TextBlock Grid.Column="1" Text="–"  Width="auto" Margin="8,-4,0,0"  Foreground ="Black" FontSize="40"  />
                         </Grid>
                     </Grid>
                 </local:JoystickUserControl.BorderChild_3_Source>
@@ -106,7 +106,7 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="L" Width="auto" Foreground="Red" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="30" Margin="5,0"/>
+                        <TextBlock Grid.Column="3"  Text="U" Width="auto" Foreground="Red" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="30" Margin="5,0"/>
                         <Image  Grid.Column="1" Source="{StaticResource SpindleColorDrawingImage}"  Height="auto" Width="auto"/>
                         <Image  Grid.Column="0" Grid.Row="1" Source="{StaticResource SpindleLine_HorizonDrawingImage}"  Height="auto" Width="auto"/>
                         <Image  Grid.Column="1" Grid.Row="1" Source="{StaticResource HSteel_quadDrawingImage}"  Height="auto" Width="auto" Margin="5"/>
@@ -137,7 +137,7 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="L" Width="auto" Foreground="Red" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="30" Margin="5,0"/>
+                        <TextBlock Grid.Column="3" Text="R"  Width="auto" Foreground="Red" VerticalAlignment="Bottom" TextAlignment="Right" HorizontalAlignment="Right" FontSize="30" Margin="5,0"/>
                         <Image  Grid.Column="1" Source="{StaticResource SpindleLineDrawingImage}"  Height="auto" Width="auto"/>
                         <Image  Grid.Column="0" Grid.Row="1" Source="{StaticResource SpindleLine_HorizonDrawingImage}"  Height="auto" Width="auto" />
                         <Image  Grid.Column="1" Grid.Row="1" Source="{StaticResource HSteel_quadDrawingImage}"  Height="auto" Width="auto" Margin="5"/>
@@ -166,14 +166,14 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Image  Grid.Column="0" Source="{StaticResource SpindleColorDrawingImage}"  Height="100" Width="auto"/>
-                        <Grid Grid.Column="1" Margin="10,-5,0,0" Width="80">
+                        <Image  Grid.Column="0" Source="{StaticResource SpindleColorDrawingImage}"  Height="80" Width="auto" HorizontalAlignment="Right"/>
+                        <Grid Grid.Column="1" Margin="10,-5,0,0" Width="80" HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock  Grid.Column="0" Text="X"  Width="auto" Foreground ="Black" FontSize="50" />
-                            <TextBlock Grid.Column="1" Text="＋"  Width="auto" Margin="-8,-7,0,0" Foreground ="Black" FontSize="60"  />
+                            <TextBlock  Grid.Column="0" Text="X"  Width="auto" Foreground ="Black" FontSize="40" />
+                            <TextBlock Grid.Column="1" Text="＋"  Width="auto" Margin="-4,-4,0,0" Foreground ="Black" FontSize="40"  />
                         </Grid>
                     </Grid>
                 </local:DPadUserControl.BorderChild_1_Source>
@@ -183,14 +183,14 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Image  Grid.Column="0" Source="{StaticResource SpindleColorDrawingImage}"  Height="100" Width="auto"/>
-                        <Grid Grid.Column="1" Margin="10,-5,0,0" Width="80">
+                        <Image  Grid.Column="0" Source="{StaticResource SpindleColorDrawingImage}"  Height="80" Width="auto" HorizontalAlignment="Right"/>
+                        <Grid Grid.Column="1" Margin="10,-5,0,0" HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock  Grid.Column="0" Width="auto" Text="X" Foreground ="Black" FontSize="50" />
-                            <TextBlock Grid.Column="1" Height="auto" Text="–"  Margin="8,-7,0,0"  Foreground ="Black" FontSize="60" />
+                            <TextBlock  Grid.Column="0" Width="auto" Text="X" Foreground ="Black" FontSize="40" />
+                            <TextBlock Grid.Column="1" Height="auto" Text="–"  Margin="8,-4,0,0"  Foreground ="Black" FontSize="40" />
                         </Grid>
                     </Grid>
                 </local:DPadUserControl.BorderChild_2_Source>
@@ -201,14 +201,14 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Image  Grid.Column="0" Source="{StaticResource SpindleColorDrawingImage}"  Height="100" Width="auto"/>
+                        <Image  Grid.Column="0" Source="{StaticResource SpindleColorDrawingImage}"  Height="80" Width="auto" HorizontalAlignment="Right"/>
                         <Grid Grid.Column="1" Margin="10,-5,0,0" HorizontalAlignment="Left" Width="80">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="Y"  Width="auto" Foreground ="Black" FontSize="50" />
-                            <TextBlock Grid.Column="1" Text="＋"  Width="auto" Margin="-8,-7,0,0"  Foreground ="Black" FontSize="60" />
+                            <TextBlock Grid.Column="0" Text="Y"  Width="auto" Foreground ="Black" FontSize="40" />
+                            <TextBlock Grid.Column="1" Text="＋"  Width="auto" Margin="-8,-4,0,0"  Foreground ="Black" FontSize="40" />
                         </Grid>
                     </Grid>
                 </local:DPadUserControl.BorderChild_3_Source>
@@ -218,14 +218,14 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions> 
-                        <Image  Grid.Column="0" Source="{StaticResource SpindleColorDrawingImage}"  Height="100" Width="auto"/>
+                        <Image  Grid.Column="0" Source="{StaticResource SpindleColorDrawingImage}"  Height="80" Width="auto" HorizontalAlignment="Right"/>
                         <Grid Grid.Column="1" Margin="10,-5,0,0" HorizontalAlignment="Left" Width="80">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="Y"  Width="auto" Foreground ="Black" FontSize="50" />
-                            <TextBlock Grid.Column="1" Text="–"  Width="auto" Margin="8,-7,0,0"  Foreground ="Black" FontSize="60"  />
+                            <TextBlock Grid.Column="0" Text="Y"  Width="auto" Foreground ="Black" FontSize="40" />
+                            <TextBlock Grid.Column="1" Text="–"  Width="auto" Margin="-8,-5,0,0"  Foreground ="Black" FontSize="40"  />
                         </Grid>
                     </Grid>
                 </local:DPadUserControl.BorderChild_4_Source>
