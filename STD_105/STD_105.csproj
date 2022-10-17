@@ -1609,7 +1609,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="Word2Pdf\exe\word2pdf_test.exe" />
+    <None Include="Word2Pdf\exe\word2pdf_test.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Logo\GD_ReportLogo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
