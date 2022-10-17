@@ -94,7 +94,7 @@
                     </Button.Content>
                 </Button-->
                 <!--報表LOGO設定-->
-                <Button Command="{Binding Path =ReportLogoCommand}" Margin="5,8,0,0" Background="WhiteSmoke">
+                <Button Command="{Binding Path =ReportLogoCommand}" Padding="5" Background="WhiteSmoke">
                     <Button.Content>
                         <TextBlock Text="選擇報表LOGO" />
                     </Button.Content>

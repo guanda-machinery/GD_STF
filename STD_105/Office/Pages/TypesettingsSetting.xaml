@@ -595,7 +595,7 @@
                 </StackPanel>
 
             </Grid>
-            <Grid Grid.Row="1" Height="500">
+            <Grid Grid.Row="1" MaxHeight="600">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" MinWidth="700"/>
                     <ColumnDefinition Width="350" MinWidth="200"/>
@@ -1130,73 +1130,15 @@
                 <!--繪圖顯示模型-->
 
 
-                <TabControl Grid.Column="1" Margin="5" 
-                        BorderThickness="0"
-                        Background="#303030"
+            <TabControl Grid.Column="1" Margin="5" 
+                        Style="{StaticResource DrawTabControl}"
                         x:Name="DrawTabControl"
                         >
-                    <TabControl.Resources>
-                        <Style TargetType="TabItem">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type TabItem}">
-                                        <Grid x:Name="Root">
-                                            <Border x:Name="Border"
-                                                    Width="{Binding ElementName=ContentSite, Path=Width}"
-                                                    Height="{Binding ElementName=ContentSite, Path=Height}"
-                                                    VerticalAlignment="Center"
-                                                    Background="#eeeeee"
-                                                    BorderBrush="{StaticResource solidclr_SilverGray}"
-                                                    CornerRadius="5,5,0,0">
-                                                <ContentPresenter x:Name="ContentSite"
-                                                               Margin="40,9"
-                                                               HorizontalAlignment="Center"
-                                                               VerticalAlignment="Center"
-                                                               ContentSource="Header"
-                                                               RecognizesAccessKey="True"
-                                                               TextBlock.FontSize="16"
-                                                               TextBlock.Foreground="#303030" />
-                                            </Border>
-                                            <VisualStateManager.VisualStateGroups>
-                                                <VisualStateGroup x:Name="CommonStates">
-                                                    <VisualState x:Name="Normal" />
-                                                    <VisualState x:Name="Selected">
-                                                        <Storyboard>
-                                                            <ColorAnimation Storyboard.TargetName="Border"
-                                                        Storyboard.TargetProperty="(Border.Background).Color"
-                                                        To="#303030"
-                                                        Duration="0" />
-                                                            <ColorAnimation Storyboard.TargetName="ContentSite"
-                                                        Storyboard.TargetProperty="(TextBlock.Foreground).Color"
-                                                        To="White"
-                                                        Duration="0" />
-                                                            <ThicknessAnimation Storyboard.TargetName="Border"
-                                                            Storyboard.TargetProperty="BorderThickness"
-                                                            To="0"
-                                                            Duration="0" />
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                </VisualStateGroup>
-                                            </VisualStateManager.VisualStateGroups>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-
-
-
-
-                    </TabControl.Resources>
-
-
-                <TabItem Header="3D" Style="{StaticResource DrawTabItem}" >
-
-                        <Grid>
+                <TabItem Header="3D" >
+                    <Grid>
                             <!--新增3D模型處-->
                             <spa:ModelExt
                             Loaded="Model3D_Loaded"
-                            Margin="0,-5,0,0"
                             Name="model"
                             AutoRefresh ="True"
                             SelectionColor="{Binding Setting.SelectionColor, Converter={local:StringToDrawingColoConverter}}"
@@ -1277,12 +1219,11 @@
 
 
                     </TabItem>
-                <TabItem Header="2D" Style="{StaticResource DrawTabItem}" x:Name="dr" >
+                <TabItem Header="2D"  x:Name="dr" >
                         <Grid>
                             <Border Style="{StaticResource bro}"/>
                             <spa:ModelExt x:Name="drawing"
                             Loaded="drawing_Loaded"
-                            Margin="0,-5,0,0"
                             AutoRefresh ="True"
                             SelectionColor="{Binding Setting.SelectionColor, Converter={local:StringToDrawingColoConverter}}"
                             ActionMode="{Binding ActionMode}" 
