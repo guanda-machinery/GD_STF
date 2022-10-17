@@ -573,8 +573,8 @@ namespace STD_105.Office
 #if DEBUG
             log4net.LogManager.GetLogger("產生2D").Debug("結束");
 #endif
-            drawing.ZoomFit();//設置道適合的視口
-            drawing.Refresh();//刷新模型
+            //drawing.ZoomFit();//設置道適合的視口
+            //drawing.Refresh();//刷新模型
             return block2D;
         }
         /// <summary>
@@ -835,58 +835,43 @@ namespace STD_105.Office
                 }
 
 
-                //int placeIndex = place.FindIndex(el => el.Number == place[i].Number); //如果有重複的編號只會回傳第一個，以這個下去做比較。
+                int placeIndex = place.FindIndex(el => el.Number == place[i].Number); //如果有重複的編號只會回傳第一個，以這個下去做比較。
 
-                //if (placeIndex != i) //如果 i != 第一次出現的 index 代表需要使用複製
-                //{
-                //    EntityList ent = new EntityList();
-                //    entities.
-                //        Where(el => el.GroupIndex == placeIndex).
-                //        ForEach(el =>
-                //        {
-                //            Entity copy = (Entity)el.Clone(); //複製物件
-                //            copy.GroupIndex = i;
-                //            copy.Translate(place[i].Start - place[placeIndex].Start, 0);
-                //            ent.Add(copy);
-                //        });
-                //    entities.AddRange(ent);
-                //}
+                if (placeIndex != i) //如果 i != 第一次出現的 index 代表需要使用複製
+                {
+                    EntityList ent = new EntityList();
+                    entities.
+                        Where(el => el.GroupIndex == placeIndex).
+                        ForEach(el =>
+                        {
+                            Entity copy = (Entity)el.Clone(); //複製物件
+                            copy.GroupIndex = i;
+                            copy.Translate(place[i].Start - place[placeIndex].Start, 0);
+                            ent.Add(copy);
+                        });
+                    entities.AddRange(ent);
+                }
 
-                //else
-                //{
+                else
+                {
                     int partIndex = parts.FindIndex(el => el.Number == place[i].Number);
+
                     if (parts[partIndex].GUID.ToString() != "") //如果圖面檔案
                     {
-                        ReadFile file = ser.ReadPartModel(parts[partIndex].GUID.ToString()); //讀取檔案內容
-                        if (file == null)
-                        {
-                            WinUIMessageBox.Show(null,
-                                $"專案Dev_Part資料夾讀取失敗",
-                                "通知",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Exclamation,
-                                MessageBoxResult.None,
-                                MessageBoxOptions.None,
-                                FloatingMode.Popup);
-                            return;
-                        }
-                        file.DoWork();
-                        file.AddToScene(drawing);
-                    //   Point3D center = new Point3D();
-                    //   model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
+                        int FindSameSteelBlockIndex = model.Blocks.FindIndex(el => el.Name == parts[partIndex].GUID.ToString());
 
+                        Steel2DBlock steel2DBlock = new Steel2DBlock((devDept.Eyeshot.Entities.Mesh)model.Blocks[FindSameSteelBlockIndex].Entities[0], model.Blocks[FindSameSteelBlockIndex].Name);
+                        drawing.Blocks.Add(steel2DBlock);
+                        BlockReference block2D = new BlockReference(0, 0, 0, steel2DBlock.Name, 1, 1, 1, 0);//產生鋼構參考圖塊
 
-                    int FindSameSteelBlockIndex = drawing.Blocks.FindIndex(el => el.Name == parts[partIndex].GUID.ToString());
-
-                    BlockReference block2D = SteelTriangulation((Mesh)drawing.Blocks[FindSameSteelBlockIndex].Entities[0]);//產生2D圖塊
-
-
+                        //關閉三視圖用戶選擇
+                        block2D.Selectable = false;
                         block2D.GroupIndex = i;
                         block2D.Translate(place[i].Start, 0);
                         block2D.Selectable = false;
                         entities.Add(block2D);//加入到暫存列表
                     }
-                //}
+                }
             }
             drawing.Entities.Clear();
             drawing.Entities.AddRange(entities);
