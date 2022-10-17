@@ -68,7 +68,7 @@
     </Style>
 
 
-    <Style TargetType="TabItem" x:Key="DrawTabItem">
+    <Style TargetType="{x:Type TabItem}" x:Key="DrawTabItem">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TabItem}">
@@ -76,12 +76,12 @@
                         <Border x:Name="Border"
                                         Width="{Binding ElementName=ContentSite, Path=Width}"
                                         Height="{Binding ElementName=ContentSite, Path=Height}"
-                                        VerticalAlignment="Center"
+                                        VerticalAlignment="Bottom"
                                         Background="#d3d3d3"
                                         BorderBrush="#ABABAB"
                                         BorderThickness="1,1,1,0"
                                         CornerRadius="5,5,0,0"
-                                        Margin="-1,0,0,-1">
+                                        Margin="0,0,0,0">
                             <ContentPresenter x:Name="ContentSite"
                                               Margin="40,10"
                                               HorizontalAlignment="Center"
@@ -106,7 +106,7 @@
                                                         Duration="0" />
                                         <ThicknessAnimation Storyboard.TargetName="Border"
                                                             Storyboard.TargetProperty="BorderThickness"
-                                                            To="1,1,1,0"
+                                                            To="0,0,0,0"
                                                             Duration="0" />
                                     </Storyboard>
                                 </VisualState>
@@ -117,6 +117,16 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+
+    <Style TargetType="TabControl" x:Key="DrawTabControl">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="#303030"/>
+        <Style.Resources>
+            <Style TargetType="TabItem" BasedOn="{StaticResource DrawTabItem}"/>
+        </Style.Resources>
+    </Style>
+
 
     <Style TargetType="{x:Type UserControl}" x:Key="SectionSpecificationMenuWhiteStyle">
         <Style.Resources>

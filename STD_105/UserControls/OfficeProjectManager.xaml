@@ -135,7 +135,7 @@
                 <Grid x:Name="grid_ProjectBrowser">
                     <Grid.RowDefinitions>
                         <RowDefinition />
-                        <RowDefinition Height="120" />
+                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
                     <StackPanel>
                         <TextBlock Text="專案路徑：" />
@@ -190,16 +190,16 @@
                         <TextBox Text="{Binding OfficeViewModel.ProjectProperty.Revise, Source={x:Static WPFSTD:ViewLocator.Instance}, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"
                                  IsReadOnly="True" />
                     </StackPanel>
-                    <StackPanel Grid.Row="1"
+                    <StackPanel Grid.Row="1"   
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Right">
-                        <Button Content="匯出至遠端"
+                        <Button Content="匯出至遠端"  Margin="5,10"
                                 Command="{ Binding }" />
-                        <Button x:Name="YesButton1"
+                        <Button x:Name="YesButton1"     Margin="5,10"
                                 Content="載入"
                                 Command="{ Binding OpenProjectCommand }"
                                 CommandParameter="{Binding SelectedItem  ,ElementName=InputTextBox1}" />
-                        <Button x:Name="NoButton1"
+                        <Button x:Name="NoButton1"   Margin="5,10"
                                 Content="{ DynamicResource LANGUAGE_Cancel }"
                                 Command="{ Binding CloseProjectManagerCommand }" />
                     </StackPanel>
