@@ -1610,7 +1610,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <None Include="Word2Pdf\exe\word2pdf_test.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Logo\GD_ReportLogo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
