@@ -130,13 +130,43 @@
                                           Lock="{Binding ApplicationViewModel.PanelButton.Origin, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                                           TitleText="{DynamicResource LANGUAGE_ReturnButton}"
                                           FontColor="{ StaticResource solidclr_DimGray }" />
+
+
+
                 <!--主軸模式-->
+                <local:MainFunctionButton ButtonCommand="{Binding MainSpindleCommand }"
+                                          ButtonImageSource="{StaticResource Spindle}"
+                                          TitleText="{ DynamicResource LANGUAGE_SpindleMode }"
+                                          FontColor="{ StaticResource solidclr_DimGray }" />
+
+                <!--機台其他功能-->
+                <local:MainFunctionButton ButtonCommand="{Binding MachineFunctionCommand }"
+                                          ButtonImageSource="{StaticResource Apps}"
+                                          TitleText="{ DynamicResource LANGUAGE_MachineFuctions }"
+                                          FontColor="{ StaticResource solidclr_DimGray }" />
+                <!--參數設定-->
+                <local:MainFunctionButton ButtonCommand="{Binding SettingParCommand}"
+                                          ButtonImageSource="{StaticResource SoftwareSettings}"
+                                          TitleText="{ DynamicResource LANGUAGE_ParameterSettings }"
+                                          IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
+                                          FontColor="{ StaticResource solidclr_DimGray }" />
+                <!--多國語言-->
+                <local:MainFunctionButton ButtonCommand="{Binding LanguageSwitchCommand }"
+                                          ButtonImageSource="{StaticResource LanguageSwitcher}"
+                                          TitleText="{ DynamicResource LANGUAGE_Multilingual }"
+                                          FontColor="{ StaticResource solidclr_DimGray }" />
+                <!--專案管理-->
+                <local:MainFunctionButton ButtonCommand="{Binding ProjectManagerCommand }"
+                                          ButtonImageSource="{StaticResource Management}"
+                                          TitleText="{ DynamicResource LANGUAGE_ProjectManagement }"
+                                          FontColor="{ StaticResource solidclr_DimGray }" />
+                <!--舊主軸模式-->
                 <local:MainFunctionButton x:Name="mainSpindle"
                                           Badged=""
                                           ButtonCommand="{Binding MainAxisModeCommand}"
                                           ButtonImageSource="{StaticResource Spindle}"
                                           StartState="{Binding ApplicationViewModel.PanelButton.MainAxisMode, Source={x:Static WPFSTD:ViewLocator.Instance}}"
-                                          TitleText="{DynamicResource LANGUAGE_SpindleMode}"
+                                          TitleText="舊主軸"
                                           FontColor="{ StaticResource solidclr_DimGray }">
                     <local:MainFunctionButton.IsEnabled>
                         <MultiBinding Converter="{local:DoubleConditionToIsEnabledConerter}">
@@ -154,43 +184,15 @@
                     </local:MainFunctionButton.IsEnabled>
                 </local:MainFunctionButton>
 
-
-                <!--主軸模式2-->
-                <local:MainFunctionButton ButtonCommand="{Binding MainSpindleCommand }"
-                                          ButtonImageSource="{StaticResource Spindle}"
-                                          TitleText="{ DynamicResource LANGUAGE_SpindleMode }"
-                                          FontColor="{ StaticResource solidclr_DimGray }" />
-
-                
-                <!--機台其他功能-->
+                <!--機台舊功能-->
                 <local:MainFunctionButton ButtonCommand="{Binding MachineFuctionCommand }"
                                           ButtonImageSource="{StaticResource Apps}"
-                                          TitleText="{ DynamicResource LANGUAGE_MachineFuctions }"
+                                          IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
+                                          TitleText="舊功能"
                                           FontColor="{ StaticResource solidclr_DimGray }" />
 
-                <local:MainFunctionButton ButtonCommand="{Binding MachineFunctionCommand }"
-                                          ButtonImageSource="{StaticResource Apps}"
-                                          TitleText="{ DynamicResource LANGUAGE_MachineFuctions }"
-                                          FontColor="{ StaticResource solidclr_DimGray }" />
-                <!--參數設定-->
-                <local:MainFunctionButton ButtonCommand="{Binding SettingParCommand}"
-                                          ButtonImageSource="{StaticResource SoftwareSettings}"
-                                          TitleText="{ DynamicResource LANGUAGE_ParameterSettings }"
-                                          FontColor="{ StaticResource solidclr_DimGray }" />
-                <!--多國語言-->
-                <local:MainFunctionButton ButtonCommand="{Binding LanguageSwitchCommand }"
-                                          ButtonImageSource="{StaticResource LanguageSwitcher}"
-                                          TitleText="{ DynamicResource LANGUAGE_Multilingual }"
-                                          FontColor="{ StaticResource solidclr_DimGray }" />
-                <!--專案管理-->
-                <local:MainFunctionButton ButtonCommand="{Binding ProjectManagerCommand }"
-                                          ButtonImageSource="{StaticResource Management}"
-                                          TitleText="{ DynamicResource LANGUAGE_ProjectManagement }"
-                                          FontColor="{ StaticResource solidclr_DimGray }" />
-                
-                
-                
-                
+
+
             </StackPanel>
             <Grid.Triggers>
                 <EventTrigger RoutedEvent="Mouse.MouseEnter">
@@ -665,11 +667,12 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <!--  新建專案  -->
                     <local:MainFunctionButton ButtonCommand="{Binding NewProjectShowCommand}"
@@ -690,39 +693,39 @@
                                               TitleText="{DynamicResource LANGUAGE_ImportFiles}"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <!--  製品設定(舊)  -->
-                    <local:MainFunctionButton Grid.Column="1"
+                    <local:MainFunctionButton Grid.Column="1" Grid.Row="5"
                                               ButtonCommand="{Binding ProductSettingCommand}"
                                               ButtonImageSource="{StaticResource NewProductSettings}"
                                               IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
-                                              TitleText="{DynamicResource LANGUAGE_ProductsSettings}"
+                                              TitleText="舊製品"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <!--  排版設定(舊)  -->
-                    <local:MainFunctionButton Grid.Row="1"
-                                              Grid.Column="1"
+                    <local:MainFunctionButton Grid.Row="5"
+                                              Grid.Column="0"
                                               ButtonCommand="{Binding TypeSettingCommand}"
                                               ButtonImageSource="{StaticResource Layout}"
                                               IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
-                                              TitleText="{DynamicResource LANGUAGE_TypesettingSettings}"
+                                              TitleText="舊排版"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
-                    <!--  加工監控  -->
-                    <local:MainFunctionButton Grid.Row="2"
+                    <!--  加工監控(舊)   -->
+                    <local:MainFunctionButton Grid.Row="4"
                                               Grid.Column="1"
                                               ButtonCommand="{Binding MonitorCommand}"
                                               ButtonImageSource="{StaticResource Monitor_New}"
                                               IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
-                                              TitleText="{DynamicResource LANGUAGE_ProcessingSettings}"
+                                              TitleText="舊加工"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <!--排版設定(新)-->
 
-                        <local:MainFunctionButton Grid.Row="3"
-                                              Grid.Column="0"
+                        <local:MainFunctionButton Grid.Row="1"
+                                              Grid.Column="1"
                                               ButtonCommand="{Binding MachineTypeSettingCommand}"
                                               ButtonImageSource="{StaticResource Layout}"
                                               IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
                                               TitleText="{DynamicResource LANGUAGE_TypesettingSettings}"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <!--製品設定(新)-->
-                    <local:MainFunctionButton Grid.Row="3"
+                    <local:MainFunctionButton Grid.Row="0"
                                               Grid.Column="1"
                                               ButtonCommand="{Binding MachineProductSettingCommand}"            
                                               ButtonImageSource="{StaticResource NewProductSettings}"
@@ -730,7 +733,7 @@
                                               TitleText="{DynamicResource LANGUAGE_ProductsSettings}"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <!--  加工監控(新)  -->
-                    <local:MainFunctionButton Grid.Row="4"
+                    <local:MainFunctionButton Grid.Row="2"
                                               Grid.Column="1"
                                               ButtonCommand="{Binding MachineMonitorCommand}"
                                               ButtonImageSource="{StaticResource Monitor_New}"

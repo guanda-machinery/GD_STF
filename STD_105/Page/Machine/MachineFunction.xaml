@@ -12,7 +12,8 @@
     xmlns:WPFSTD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
     xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105" xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
     mc:Ignorable="d"    
-    Title="MachineFunction" >
+    Title="MachineFunction"
+    >
     <WPFBase:BasePage.Resources>
         <Style TargetType="TextBlock"
                BasedOn="{ StaticResource tbk_Title }">
@@ -25,25 +26,31 @@
             <Setter Property="TextWrapping"
                     Value="Wrap" />
         </Style>
-    </WPFBase:BasePage.Resources>
+        <Style TargetType="Button" BasedOn="{StaticResource CustomDesignButton}">
+            <Setter Property="Height" Value="114"/>
+        </Style>
 
-    <Grid Width="auto" Background="White">
-        <TabControl Padding="0">
-            <TabControl.Resources>
-                <ResourceDictionary>
-                    <Style TargetType="TabItem">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type TabItem}">
-                                    <Grid x:Name="Root">
-                                        <Border x:Name="Border" Margin="10"
+
+
+    </WPFBase:BasePage.Resources>
+    <Border Margin="0" BorderThickness="5" BorderBrush="#292929" Padding="0" Background="White">
+        <Grid>
+            <TabControl Padding="0" BorderThickness="0,2,0,0" BorderBrush="#6d6d6d" >
+                <TabControl.Resources>
+                    <ResourceDictionary>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type TabItem}">
+                                        <Grid x:Name="Root">
+                                            <Border x:Name="Border" Margin="10"
                                                     Width="{Binding ElementName=ContentSite, Path=Width}"
                                                     Height="{Binding ElementName=ContentSite, Path=Height}"
                                                     VerticalAlignment="Center"
                                                     Background="Transparent"
                                                     BorderBrush="Transparent"
                                                     BorderThickness="0,0,0,2">
-                                            <ContentPresenter x:Name="ContentSite"
+                                                <ContentPresenter x:Name="ContentSite"
                                                                   Margin="0,2"
                                                                   HorizontalAlignment="Center"
                                                                   VerticalAlignment="Center"
@@ -51,79 +58,84 @@
                                                                   RecognizesAccessKey="True"
                                                                   TextBlock.FontSize="16"
                                                                   TextBlock.Foreground="black" />
-                                        </Border>
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup x:Name="CommonStates">
+                                            </Border>
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup x:Name="CommonStates">
 
-                                                <VisualState x:Name="Normal" />
-                                                <VisualState x:Name="Selected">
-                                                    <Storyboard>
-                                                        <ColorAnimation Storyboard.TargetName="ContentSite"
+                                                    <VisualState x:Name="Normal" />
+                                                    <VisualState x:Name="Selected">
+                                                        <Storyboard>
+                                                            <ColorAnimation Storyboard.TargetName="ContentSite"
                                                                             Storyboard.TargetProperty="(TextBlock.Foreground).Color"
                                                                             To="#000000"
                                                                             Duration="0" />
 
-                                                        <ColorAnimation Storyboard.TargetName="Border"
+                                                            <ColorAnimation Storyboard.TargetName="Border"
                                                                             Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
                                                                             To="#4CFF00"
                                                                             Duration="0" />
-                                                    </Storyboard>
-                                                </VisualState>
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
-                                    </Grid>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ResourceDictionary>
-            </TabControl.Resources>
-            <TabItem>
-                <TabItem.Header>
-                    <Image Source="{StaticResource HSteel_CarryDrawingImage}" Width="100"  Height="100"/>
-                </TabItem.Header>
-                <Border Background="#c0c0c0" Padding="20">
+                                                        </Storyboard>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ResourceDictionary>
+                </TabControl.Resources>
+                <TabItem>
+                    <TabItem.Header>
+                        <Image Source="{StaticResource HSteel_CarryDrawingImage}" Width="100"  Height="100"/>
+                    </TabItem.Header>
+                    <Border Background="#c0c0c0" Padding="20">
 
-                    <DockPanel>
-                        <DockPanel.Resources>
-                            <WPFSTD105VM:Dpad_JoystickViewModel x:Key="HSteel_Carry_VM"/>
-                        </DockPanel.Resources>
+                        <DockPanel>
+                            <DockPanel.Resources>
+                                <WPFSTD105VM:Dpad_JoystickViewModel x:Key="HSteel_Carry_VM"/>
+                            </DockPanel.Resources>
 
-                        <local:DPadUserControl DataContext="{StaticResource HSteel_Carry_VM}" DockPanel.Dock="Top">
-                            <local:DPadUserControl.BorderChild_3_Source>
-                                <Grid Margin="80,0" VerticalAlignment="Center"  Width="100">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="auto"/>
-                                    </Grid.RowDefinitions>
-                                    <Image Grid.Column="0" Grid.Row="0" Source="{StaticResource RedArrow_upDrawingImage}" Height="25" Margin="-3,0,0,0"/>
-                                    <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_upDrawingImage}" Height="25" Margin="3,0,0,0"/>
-                                    <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Source="{StaticResource HSteel_CarryDrawingImage}" VerticalAlignment="Bottom" />
-                                </Grid>
-                            </local:DPadUserControl.BorderChild_3_Source>
-                            <local:DPadUserControl.BorderChild_4_Source>
-                                <Grid Margin="80,0" VerticalAlignment="Center" Width="100">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="auto"/>
-                                    </Grid.RowDefinitions>
-                                    <Image Grid.Column="0" Grid.Row="0" Source="{StaticResource RedArrow_downDrawingImage}" Height="25" Margin="-3,0,0,0"/>
-                                    <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_downDrawingImage}" Height="25" Margin="3,0,0,0"/>
-                                    <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Source="{StaticResource HSteel_CarryDrawingImage}" VerticalAlignment="Bottom" />
+                            <local:DPadUserControl DataContext="{StaticResource HSteel_Carry_VM}" DockPanel.Dock="Top">
+                                <local:DPadUserControl.BorderChild_3_Source>
+                                    <Button>
+                                    <Grid  VerticalAlignment="Center"  Width="100">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Image Grid.Column="0" Grid.Row="0" Source="{StaticResource RedArrow_upDrawingImage}" Height="25" Margin="-3,0,0,0"/>
+                                        <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_upDrawingImage}" Height="25" Margin="3,0,0,0"/>
+                                        <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Source="{StaticResource HSteel_CarryDrawingImage}" VerticalAlignment="Bottom" />
+                                        </Grid>
+                                    </Button>
 
-                                </Grid>
-                            </local:DPadUserControl.BorderChild_4_Source>
-                        </local:DPadUserControl>
+                                </local:DPadUserControl.BorderChild_3_Source>
+                                <local:DPadUserControl.BorderChild_4_Source>
+                                    <Button >
+                                    <Grid  VerticalAlignment="Center" Width="100">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Image Grid.Column="0" Grid.Row="0" Source="{StaticResource RedArrow_downDrawingImage}" Height="25" Margin="-3,0,0,0"/>
+                                        <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_downDrawingImage}" Height="25" Margin="3,0,0,0"/>
+                                        <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Source="{StaticResource HSteel_CarryDrawingImage}" VerticalAlignment="Bottom" />
 
-                        <CheckBox Grid.Column="1"  DockPanel.Dock="Bottom"
+                                        </Grid>
+                                    </Button>
+                                </local:DPadUserControl.BorderChild_4_Source>
+                            </local:DPadUserControl>
+
+                            <CheckBox Grid.Column="1"  DockPanel.Dock="Bottom"
                                   DataContext="{StaticResource HSteel_Carry_VM}"
                                   HorizontalAlignment="Right"
                                   VerticalAlignment="Bottom"
@@ -131,116 +143,118 @@
                                   Width="100"
                                   IsChecked="{Binding DescriptionDisplayBoolen}"
                                   Style="{ StaticResource GreenSwitch }" />
-                        
-                    </DockPanel>
 
-                </Border>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <Image Source="{StaticResource HSteel_GrabDrawingImage}" Height="100"/>
-                </TabItem.Header>
+                        </DockPanel>
 
-                <Border Background="#c0c0c0" Padding="20">
-                    <DockPanel>
-                        <DockPanel.Resources>
-                            <WPFSTD105VM:Dpad_JoystickViewModel x:Key="HSteel_Grab_VM"/>
-                        </DockPanel.Resources>
-                        <local:DPadUserControl DockPanel.Dock="Top" DataContext="{StaticResource HSteel_Grab_VM}">
-                        <local:DPadUserControl.BorderChild_1_Source>
+                    </Border>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <Image Source="{StaticResource HSteel_GrabDrawingImage}" Height="100"/>
+                    </TabItem.Header>
 
-                            <Grid Margin="80,0"  VerticalAlignment="Center" HorizontalAlignment="Center" Width="100">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-                                <Image Grid.Column="0" Grid.Row="0" Source="{StaticResource RedArrow_leftDrawingImage}"  Width="25" HorizontalAlignment="Left"/>
-                                <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_rightDrawingImage}" Width="25"  HorizontalAlignment="Right"/>
-                                <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Source="{StaticResource HSteel_GrabDrawingImage}" VerticalAlignment="Bottom" Margin="0,-15" />
-                            </Grid>
+                    <Border Background="#c0c0c0" Padding="20">
+                        <DockPanel>
+                            <DockPanel.Resources>
+                                <WPFSTD105VM:Dpad_JoystickViewModel x:Key="HSteel_Grab_VM"/>
+                            </DockPanel.Resources>
+                            <local:DPadUserControl DockPanel.Dock="Top" DataContext="{StaticResource HSteel_Grab_VM}">
+                                <local:DPadUserControl.BorderChild_1_Source>
 
-                        </local:DPadUserControl.BorderChild_1_Source>
-                        <local:DPadUserControl.BorderChild_2_Source>
-                            <Grid Margin="80,0" VerticalAlignment="Center" Width="100">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-                                <Image Grid.Column="0" Grid.Row="0" Source="{StaticResource RedArrow_rightDrawingImage}"  Width="25" HorizontalAlignment="Left"/>
-                                <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_leftDrawingImage}" Width="25"  HorizontalAlignment="Right"/>
-                                <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Source="{StaticResource HSteel_GrabDrawingImage}" VerticalAlignment="Bottom" Margin="0,-15" />
-                            </Grid>
-                        </local:DPadUserControl.BorderChild_2_Source>
+                                    <Grid Margin="80,0"  VerticalAlignment="Center" HorizontalAlignment="Center" Width="100">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Image Grid.Column="0" Grid.Row="0" Source="{StaticResource RedArrow_leftDrawingImage}"  Width="25" HorizontalAlignment="Left"/>
+                                        <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_rightDrawingImage}" Width="25"  HorizontalAlignment="Right"/>
+                                        <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Source="{StaticResource HSteel_GrabDrawingImage}" VerticalAlignment="Bottom" Margin="0,-15" />
+                                    </Grid>
 
-                    </local:DPadUserControl>
-                        <CheckBox Grid.Column="1"  DockPanel.Dock="Bottom" DataContext="{StaticResource HSteel_Grab_VM}"
+                                </local:DPadUserControl.BorderChild_1_Source>
+                                <local:DPadUserControl.BorderChild_2_Source>
+                                    <Grid Margin="80,0" VerticalAlignment="Center" Width="100">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Image Grid.Column="0" Grid.Row="0" Source="{StaticResource RedArrow_rightDrawingImage}"  Width="25" HorizontalAlignment="Left"/>
+                                        <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_leftDrawingImage}" Width="25"  HorizontalAlignment="Right"/>
+                                        <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Source="{StaticResource HSteel_GrabDrawingImage}" VerticalAlignment="Bottom" Margin="0,-15" />
+                                    </Grid>
+                                </local:DPadUserControl.BorderChild_2_Source>
+
+                            </local:DPadUserControl>
+                            <CheckBox Grid.Column="1"  DockPanel.Dock="Bottom" DataContext="{StaticResource HSteel_Grab_VM}"
                                   HorizontalAlignment="Right"
                                   VerticalAlignment="Bottom"
                                   Margin="5"
                                   Width="100"
                                   IsChecked="{Binding DescriptionDisplayBoolen}"
                                   Style="{ StaticResource GreenSwitch }" />
-                    </DockPanel>
-                    
+                        </DockPanel>
 
-                </Border>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <Image Source="{StaticResource TransportDrawingImage}" Height="100"/>
-                </TabItem.Header>
-                <Border Background="#c0c0c0" Padding="10">
-                    <Grid>
-                        <Grid.DataContext>
-                            <WPFSTD105VM:RacksOperationVM/>
-                        </Grid.DataContext>
-                        <Grid.Resources>
-                            <Style BasedOn="{StaticResource ParameterDarkGroupBox}" TargetType="GroupBox">
-                                <Setter Property="Margin" Value="5" />
-                            </Style>
-                            <Style BasedOn="{StaticResource rad_Hook1}" TargetType="RadioButton" />
-                            <Style TargetType="Border">
-                                <Setter Property="BorderBrush" Value="{StaticResource solidclr_DimGray}" />
-                                <Setter Property="Height" Value="auto" />
-                                <Setter Property="Width" Value="auto" />
-                            </Style>
-                            <WPFBase:InverseLogicBoolConverter x:Key="InverseLogicBool"/>
-                        </Grid.Resources>
+
+                    </Border>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <Grid Width="100" Height="100">
+                            <Image Source="{StaticResource TransportDrawingImage}"/>
+                        </Grid>
+                    </TabItem.Header>
+                    <Border Background="#c0c0c0" Padding="10">
                         <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition  Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <!--  料架選擇  -->
-                            <GroupBox Margin="10,5" Header="料架選擇" >
-                                <Grid HorizontalAlignment="Center">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <Border
+                            <Grid.DataContext>
+                                <WPFSTD105VM:RacksOperationVM/>
+                            </Grid.DataContext>
+                            <Grid.Resources>
+                                <Style BasedOn="{StaticResource ParameterDarkGroupBox}" TargetType="GroupBox">
+                                    <Setter Property="Margin" Value="5" />
+                                </Style>
+                                <Style BasedOn="{StaticResource rad_Hook1}" TargetType="RadioButton" />
+                                <Style TargetType="Border">
+                                    <Setter Property="BorderBrush" Value="{StaticResource solidclr_DimGray}" />
+                                    <Setter Property="Height" Value="auto" />
+                                    <Setter Property="Width" Value="auto" />
+                                </Style>
+                                <WPFBase:InverseLogicBoolConverter x:Key="InverseLogicBool"/>
+                            </Grid.Resources>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition  Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <!--  料架選擇  -->
+                                <GroupBox Margin="10,5" Header="料架選擇" >
+                                    <Grid HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Border
                             Grid.Column="0"  
                                         Grid.ColumnSpan="2"
                             Background="{StaticResource solidclr_DimGray}"
                             CornerRadius="50" />
-                                    <!--<Border Grid.Column="2" CornerRadius="0,10,10,0" BorderThickness="0,2,2,2" Background="{ Binding ElementName=rad_Wheel, Path=IsChecked, Converter={ WPFBase:BoolToColorCodeConverter }}"/>-->
-                                    <Border Grid.Column="1" BorderThickness="4,0,0,0"  Margin="-2,0,0,0" Width="auto" Height="auto" BorderBrush="#6f6f6f"/>
-                                    <RadioButton           
+                                        <!--<Border Grid.Column="2" CornerRadius="0,10,10,0" BorderThickness="0,2,2,2" Background="{ Binding ElementName=rad_Wheel, Path=IsChecked, Converter={ WPFBase:BoolToColorCodeConverter }}"/>-->
+                                        <Border Grid.Column="1" BorderThickness="4,0,0,0"  Margin="-2,0,0,0" Width="auto" Height="auto" BorderBrush="#6f6f6f"/>
+                                        <RadioButton           
                                         FontSize="25" Margin="30"
                             x:Name="rad_Entrance" 
                             Grid.Column="0"
@@ -248,7 +262,7 @@
                             Content="入口料架" 
                             IsChecked="{Binding ApplicationViewModel.PanelButton.EntranceRack, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                             IsEnabled="{Binding EntranceReadOnly}" />
-                                    <RadioButton 
+                                        <RadioButton 
                                         FontSize="25" Margin="30"
                             x:Name="rad_Exit"
                             Grid.Column="1"
@@ -256,275 +270,249 @@
                             Content="出口料架"
                             IsChecked="{Binding ApplicationViewModel.PanelButton.ExportRack, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                             IsEnabled="{Binding ExportReadOnly}" />
-                                    <!--<RadioButton x:Name="rad_Wheel" Grid.Column="2" Content="上浮滾輪"/>-->
-                                </Grid>
-                                
-                            </GroupBox>
-                            <StackPanel Grid.ColumnSpan="2"
+                                        <!--<RadioButton x:Name="rad_Wheel" Grid.Column="2" Content="上浮滾輪"/>-->
+                                    </Grid>
+
+                                </GroupBox>
+                                <StackPanel Grid.ColumnSpan="2"
                             HorizontalAlignment="Right"
                             Orientation="Horizontal">
-                                <Button Content="出口台車"
+                                    <Button Content="出口台車"
                             VerticalAlignment="Top"
                             Style="{ StaticResource btn_CommonFunctionKey_STD }" />
-                                <StackPanel Orientation="Vertical">
-                                    <Button Content="入口尻料"
+                                    <StackPanel Orientation="Vertical">
+                                        <Button Content="入口尻料"
                                 Style="{ StaticResource btn_CommonFunctionKey_STD }" />
-                                    <Button Content="檔塊升降"
+                                        <Button Content="檔塊升降"
                                 Style="{ StaticResource btn_CommonFunctionKey_STD }" />
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
 
-                            <GroupBox   Grid.Column="0" Grid.Row="1" Header="料架速度" Margin="10,5">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <CheckBox
+                                <GroupBox   Grid.Column="0" Grid.Row="1" Header="料架速度" Margin="10,5">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox
                             Height="64"
                             IsChecked="{Binding RockSpeed}"
                             Style="{StaticResource speedDisplay}" />
-                                    <Border Grid.Column="1" BorderThickness="1"  Width="auto" Height="auto" Margin="0"/>
-                                    <Grid  Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="64"/>
-                                        </Grid.RowDefinitions>
-                                        <Viewbox>
-                                            <Canvas Width="725" Height="1450">
-                                                <Path Data="M56.54,194.28h285.45c12.07,0,23.58,5.13,31.64,14.12L812.86,697.7c14.51,16.16,14.5,40.66-0.01,56.82                                      l-439.23,488.84c-8.06,8.98-19.56,14.1-31.63,14.1H56.46c-44.25,0-67.52-52.47-37.83-85.27l404.27-446.57L18.73,279.56                                      C-10.99,246.77,12.28,194.28,56.54,194.28z" Fill="{StaticResource solidclr_ButtonBlue}" />
-                                            </Canvas>
-                                        </Viewbox>
+                                        <Border Grid.Column="1" BorderThickness="1"  Width="auto" Height="auto" Margin="0"/>
+                                        <local:SpeedArrowUserControl Grid.Column="2" Height="46" HorizontalAlignment="Center" Foreground="#17a7ff" Value="0"/>
 
-                                        <Viewbox Grid.Column="1">
-                                            <Canvas   Width="725" Height="1450">
-                                                <Path Data="M56.54,194.28h285.45c12.07,0,23.58,5.13,31.64,14.12L812.86,697.7c14.51,16.16,14.5,40.66-0.01,56.82                                      l-439.23,488.84c-8.06,8.98-19.56,14.1-31.63,14.1H56.46c-44.25,0-67.52-52.47-37.83-85.27l404.27-446.57L18.73,279.56                                      C-10.99,246.77,12.28,194.28,56.54,194.28z" Fill="{StaticResource solidclr_ButtonBlue}" />
-                                            </Canvas>
-                                        </Viewbox>
 
-                                        <Viewbox  Grid.Column="2" >
-                                        <Canvas Width="725" Height="1450">
-                                                <Path Data="M56.54,194.28h285.45c12.07,0,23.58,5.13,31.64,14.12L812.86,697.7c14.51,16.16,14.5,40.66-0.01,56.82                                      l-439.23,488.84c-8.06,8.98-19.56,14.1-31.63,14.1H56.46c-44.25,0-67.52-52.47-37.83-85.27l404.27-446.57L18.73,279.56                                      C-10.99,246.77,12.28,194.28,56.54,194.28z" Fill="{StaticResource solidclr_ButtonBlue}" />
-                                            </Canvas>
-                                        </Viewbox>
                                     </Grid>
-
-
-                                </Grid>
-                            </GroupBox>
-                            <Grid Grid.Column="0" Grid.Row="2" Margin="5,5">
-                                <GroupBox Header="出口 - 動力滾輪" IsEnabled="{ Binding OpenRoll }">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="auto" />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <Button
+                                </GroupBox>
+                                <Grid Grid.Column="0" Grid.Row="2" Margin="5,5">
+                                    <GroupBox Header="出口 - 動力滾輪" IsEnabled="{ Binding OpenRoll }">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="auto" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <Button
                                 IsEnabled="{Binding ExportReadOnly}"
                                 Width="80"
                                 Height="80"
                                 ToolTip="滾輪逆轉" >
-                                            <Button.Style>
-                                                <Style TargetType="Button">
-                                                    <Setter Property="Background" Value="#696969" />
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate TargetType="{x:Type Button}">
-                                                                <Border
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="Background" Value="#696969" />
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                                    <Border
                                                                     Background="{TemplateBinding Background}"
                                                                     BorderBrush="#49FFFFFF"
                                                                     CornerRadius="15">
-                                                                    <Grid>
-                                                                        <Viewbox >
-                                                                            <materialDesign:PackIcon
+                                                                        <Grid>
+                                                                            <Viewbox >
+                                                                                <materialDesign:PackIcon
                                                                                 Margin="1"
                                                                                 Foreground="#d3d3d3" Kind="Restore"   HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                                                        </Viewbox>
+                                                                            </Viewbox>
 
-                                                                        <ContentPresenter
+                                                                            <ContentPresenter
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Content="{TemplateBinding Content}"
                                 TextBlock.FontFamily="{TemplateBinding FontFamily}"
                                 TextBlock.FontSize="{TemplateBinding FontSize}"
                                 TextBlock.Foreground="{TemplateBinding Foreground}" />
-                                                                    </Grid>
-                                                                </Border>
-                                                                <ControlTemplate.Triggers>
-                                                                    <EventTrigger RoutedEvent="Button.PreviewMouseLeftButtonDown">
-                                                                        <BeginStoryboard>
-                                                                            <Storyboard>
-                                                                                <ColorAnimation
+                                                                        </Grid>
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <EventTrigger RoutedEvent="Button.PreviewMouseLeftButtonDown">
+                                                                            <BeginStoryboard>
+                                                                                <Storyboard>
+                                                                                    <ColorAnimation
                                         Storyboard.TargetName="Path"
                                         Storyboard.TargetProperty="(Path.Stroke).Color"
                                         To="Lime"
                                         Duration="0:0:0.1" />
-                                                                                <ThicknessAnimation
+                                                                                    <ThicknessAnimation
                                         Storyboard.TargetName="bor_LeftTop"
                                         Storyboard.TargetProperty="BorderThickness"
                                         To="0,0,2,2"
                                         Duration="0:0:0.01" />
-                                                                                <ThicknessAnimation
+                                                                                    <ThicknessAnimation
                                         Storyboard.TargetName="bor_RightBottom"
                                         Storyboard.TargetProperty="BorderThickness"
                                         To="2,2,0,0"
                                         Duration="0:0:0.01" />
-                                                                            </Storyboard>
-                                                                        </BeginStoryboard>
-                                                                    </EventTrigger>
-                                                                    <EventTrigger RoutedEvent="Button.PreviewMouseLeftButtonUp">
-                                                                        <BeginStoryboard>
-                                                                            <Storyboard FillBehavior="HoldEnd">
-                                                                                <ColorAnimation
+                                                                                </Storyboard>
+                                                                            </BeginStoryboard>
+                                                                        </EventTrigger>
+                                                                        <EventTrigger RoutedEvent="Button.PreviewMouseLeftButtonUp">
+                                                                            <BeginStoryboard>
+                                                                                <Storyboard FillBehavior="HoldEnd">
+                                                                                    <ColorAnimation
                                         Storyboard.TargetName="Path"
                                         Storyboard.TargetProperty="(Path.Stroke).Color"
                                         To="#FFF3F3F3"
                                         Duration="0:0:0.1" />
-                                                                                <ThicknessAnimation
+                                                                                    <ThicknessAnimation
                                         Storyboard.TargetName="bor_LeftTop"
                                         Storyboard.TargetProperty="BorderThickness"
                                         To="2,2,0,0"
                                         Duration="0:0:0.01" />
-                                                                                <ThicknessAnimation
+                                                                                    <ThicknessAnimation
                                         Storyboard.TargetName="bor_RightBottom"
                                         Storyboard.TargetProperty="BorderThickness"
                                         To="0,0,2,2"
                                         Duration="0:0:0.01" />
-                                                                            </Storyboard>
-                                                                        </BeginStoryboard>
-                                                                    </EventTrigger>
-                                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                                        <Setter Property="Cursor" Value="Hand" />
-                                                                    </Trigger>
-                                                                </ControlTemplate.Triggers>
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Style>
-                                            </Button.Style>
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                                    <i:InvokeCommandAction  Command="{Binding RollerCommand}" CommandParameter="{x:Static STDEnum:MOBILE_RACK.INSIDE}"/>
-                                                </i:EventTrigger>
-                                                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                                    <i:InvokeCommandAction  Command="{Binding RollerCommand}" CommandParameter="{x:Static STDEnum:MOBILE_RACK.NULL}"/>
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-                                        </Button>
-                                        <Border Grid.Column="1" BorderThickness="1"  Width="auto" Height="auto" Margin="0"/>
-                                        <Button
+                                                                                </Storyboard>
+                                                                            </BeginStoryboard>
+                                                                        </EventTrigger>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Cursor" Value="Hand" />
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Button.Style>
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                                        <i:InvokeCommandAction  Command="{Binding RollerCommand}" CommandParameter="{x:Static STDEnum:MOBILE_RACK.INSIDE}"/>
+                                                    </i:EventTrigger>
+                                                    <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                                                        <i:InvokeCommandAction  Command="{Binding RollerCommand}" CommandParameter="{x:Static STDEnum:MOBILE_RACK.NULL}"/>
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Button>
+                                            <Border Grid.Column="1" BorderThickness="1"  Width="auto" Height="auto" Margin="0"/>
+                                            <Button
                                 IsEnabled="{Binding ExportReadOnly}"
                                 Grid.Column="2"
                                 Width="80"
                                 Height="80"
                                 ToolTip="滾輪順轉" >
-                                            <Button.Style>
-                                                <Style TargetType="Button">
-                                                    <Setter Property="Background" Value="#696969" />
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate TargetType="{x:Type Button}">
-                                                                <Border
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="Background" Value="#696969" />
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="{x:Type Button}">
+                                                                    <Border
                                                                     Background="{TemplateBinding Background}"
                                                                     BorderBrush="#49FFFFFF"
                                                                     CornerRadius="15">
-                                                                    <Grid>
-                                                                        <Viewbox >
-                                                                            <materialDesign:PackIcon
+                                                                        <Grid>
+                                                                            <Viewbox >
+                                                                                <materialDesign:PackIcon
                                                                                 Margin="1"
                                                                                 Foreground="#d3d3d3" Kind="Reload"   HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                                                        </Viewbox>
+                                                                            </Viewbox>
 
-                                                                        <ContentPresenter
+                                                                            <ContentPresenter
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Content="{TemplateBinding Content}"
                                 TextBlock.FontFamily="{TemplateBinding FontFamily}"
                                 TextBlock.FontSize="{TemplateBinding FontSize}"
                                 TextBlock.Foreground="{TemplateBinding Foreground}" />
-                                                                    </Grid>
-                                                                </Border>
-                                                                <ControlTemplate.Triggers>
-                                                                    <EventTrigger RoutedEvent="Button.PreviewMouseLeftButtonDown">
-                                                                        <BeginStoryboard>
-                                                                            <Storyboard>
-                                                                                <ColorAnimation
+                                                                        </Grid>
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <EventTrigger RoutedEvent="Button.PreviewMouseLeftButtonDown">
+                                                                            <BeginStoryboard>
+                                                                                <Storyboard>
+                                                                                    <ColorAnimation
                                         Storyboard.TargetName="Path"
                                         Storyboard.TargetProperty="(Path.Stroke).Color"
                                         To="Lime"
                                         Duration="0:0:0.1" />
-                                                                                <ThicknessAnimation
+                                                                                    <ThicknessAnimation
                                         Storyboard.TargetName="bor_LeftTop"
                                         Storyboard.TargetProperty="BorderThickness"
                                         To="0,0,2,2"
                                         Duration="0:0:0.01" />
-                                                                                <ThicknessAnimation
+                                                                                    <ThicknessAnimation
                                         Storyboard.TargetName="bor_RightBottom"
                                         Storyboard.TargetProperty="BorderThickness"
                                         To="2,2,0,0"
                                         Duration="0:0:0.01" />
-                                                                            </Storyboard>
-                                                                        </BeginStoryboard>
-                                                                    </EventTrigger>
-                                                                    <EventTrigger RoutedEvent="Button.PreviewMouseLeftButtonUp">
-                                                                        <BeginStoryboard>
-                                                                            <Storyboard FillBehavior="HoldEnd">
-                                                                                <ColorAnimation
+                                                                                </Storyboard>
+                                                                            </BeginStoryboard>
+                                                                        </EventTrigger>
+                                                                        <EventTrigger RoutedEvent="Button.PreviewMouseLeftButtonUp">
+                                                                            <BeginStoryboard>
+                                                                                <Storyboard FillBehavior="HoldEnd">
+                                                                                    <ColorAnimation
                                         Storyboard.TargetName="Path"
                                         Storyboard.TargetProperty="(Path.Stroke).Color"
                                         To="#FFF3F3F3"
                                         Duration="0:0:0.1" />
-                                                                                <ThicknessAnimation
+                                                                                    <ThicknessAnimation
                                         Storyboard.TargetName="bor_LeftTop"
                                         Storyboard.TargetProperty="BorderThickness"
                                         To="2,2,0,0"
                                         Duration="0:0:0.01" />
-                                                                                <ThicknessAnimation
+                                                                                    <ThicknessAnimation
                                         Storyboard.TargetName="bor_RightBottom"
                                         Storyboard.TargetProperty="BorderThickness"
                                         To="0,0,2,2"
                                         Duration="0:0:0.01" />
-                                                                            </Storyboard>
-                                                                        </BeginStoryboard>
-                                                                    </EventTrigger>
-                                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                                        <Setter Property="Cursor" Value="Hand" />
-                                                                    </Trigger>
-                                                                </ControlTemplate.Triggers>
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Style>
-                                            </Button.Style>
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                                    <i:InvokeCommandAction  Command="{Binding RollerCommand}" CommandParameter="{x:Static STDEnum:MOBILE_RACK.OUTER}"/>
-                                                </i:EventTrigger>
-                                                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                                    <i:InvokeCommandAction  Command="{Binding RollerCommand}" CommandParameter="{x:Static STDEnum:MOBILE_RACK.NULL}"/>
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-                                        </Button>
-                                    </Grid>
-                                </GroupBox>
-                                <CheckBox HorizontalAlignment="Right" VerticalAlignment="Top" Style="{ StaticResource CheckedStyle }"
+                                                                                </Storyboard>
+                                                                            </BeginStoryboard>
+                                                                        </EventTrigger>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Cursor" Value="Hand" />
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Button.Style>
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                                        <i:InvokeCommandAction  Command="{Binding RollerCommand}" CommandParameter="{x:Static STDEnum:MOBILE_RACK.OUTER}"/>
+                                                    </i:EventTrigger>
+                                                    <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                                                        <i:InvokeCommandAction  Command="{Binding RollerCommand}" CommandParameter="{x:Static STDEnum:MOBILE_RACK.NULL}"/>
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Button>
+                                        </Grid>
+                                    </GroupBox>
+                                    <CheckBox HorizontalAlignment="Right" VerticalAlignment="Top" Style="{ StaticResource CheckedStyle }"
                                   IsChecked="{ Binding OpenRoll }" Margin="0,10,-10,0"/>
-                            </Grid>
+                                </Grid>
 
-                            <Grid Grid.Column="1" Grid.RowSpan="3" MaxHeight="450">
-                                <Border
+                                <Grid Grid.Column="1" Grid.RowSpan="3" MaxHeight="450">
+                                    <Border
                                     Background="{StaticResource solidclr_DimGray}"
                                 CornerRadius="10"
                                 Style="{StaticResource bor_LightThinLine}" />
-                                <!--  入口  -->
-                                <Viewbox Margin="20" >
-                                    <WPFBase:KnobAddControl Style="{ StaticResource KnobStyle }"
+                                    <!--  入口  -->
+                                    <Viewbox Margin="20" >
+                                        <WPFBase:KnobAddControl Style="{ StaticResource KnobStyle }"
                                     CurrentValue="{Binding CurrentValue}"
                                     GaugeBackgroundColor="{StaticResource clr_DimGray}"
                                     IsEnabled="{Binding ApplicationViewModel.PanelButton.EntranceRack, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}"
@@ -549,10 +537,10 @@
                                     ScaleRadius="95"
                                     ScaleStartAngle="160"
                                     ScaleSweepAngle="220" />
-                                </Viewbox>
-                                <!--  出口  -->
-                                <Viewbox Margin="20">
-                                    <WPFBase:KnobAddControl Style="{ StaticResource KnobStyle }"                                    
+                                    </Viewbox>
+                                    <!--  出口  -->
+                                    <Viewbox Margin="20">
+                                        <WPFBase:KnobAddControl Style="{ StaticResource KnobStyle }"                                    
                                     CurrentValue="{Binding CurrentValue}"
                                     GaugeBackgroundColor="{StaticResource clr_DimGray}"
                                     KnobButtonCommand="{Binding SelectCountCommand}"
@@ -578,110 +566,110 @@
                                     ScaleStartAngle="160"
                                     ScaleSweepAngle="220"
                                     Visibility="{Binding ApplicationViewModel.PanelButton.ExportRack, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}" />
-                                </Viewbox>
+                                    </Viewbox>
 
 
-                            </Grid>
+                                </Grid>
 
-                            <!--  料架控制器  -->
-                            <Border Grid.Row="3" Grid.ColumnSpan="2"  Background="#c0c0c0" Width="auto" Height="auto" Margin="10,0,10,5">
-                                <local:DPadUserControl>
-                                    <local:DPadUserControl.BorderChild_1_Source>
+                                <!--  料架控制器  -->
+                                <Border Grid.Row="3" Grid.ColumnSpan="2"  Background="#c0c0c0" Width="auto" Height="auto" Margin="10,0,10,5">
+                                    <local:DPadUserControl>
+                                        <local:DPadUserControl.BorderChild_1_Source>
 
-                                        <Grid Margin="5"  VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="35"/>
-                                                <ColumnDefinition  Width="100"/>
-                                                <ColumnDefinition  Width="35"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="60"/>
-                                            </Grid.RowDefinitions>
-                                            <Image Grid.Column="0" Grid.Row="1" Source="{StaticResource RedArrow_leftDrawingImage}" Width="30" HorizontalAlignment="Left"/>
-                                            <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_noArrowDrawingImage}" />
-                                        </Grid>
-                                    </local:DPadUserControl.BorderChild_1_Source>
-                                    <local:DPadUserControl.BorderChild_2_Source>
+                                            <Grid Margin="5"  VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="35"/>
+                                                    <ColumnDefinition  Width="100"/>
+                                                    <ColumnDefinition  Width="35"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="30"/>
+                                                    <RowDefinition Height="60"/>
+                                                </Grid.RowDefinitions>
+                                                <Image Grid.Column="0" Grid.Row="1" Source="{StaticResource RedArrow_leftDrawingImage}" Width="30" HorizontalAlignment="Left"/>
+                                                <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_noArrowDrawingImage}" />
+                                            </Grid>
+                                        </local:DPadUserControl.BorderChild_1_Source>
+                                        <local:DPadUserControl.BorderChild_2_Source>
 
-                                        <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center" >
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="35"/>
-                                                <ColumnDefinition  Width="100"/>
-                                                <ColumnDefinition  Width="35"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="60"/>
-                                            </Grid.RowDefinitions>
-                                            <Image Grid.Column="2" Grid.Row="1" Source="{StaticResource RedArrow_rightDrawingImage}" Width="30" HorizontalAlignment="Right"/>
-                                            <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_noArrowDrawingImage}" />
-                                        </Grid>
-                                    </local:DPadUserControl.BorderChild_2_Source>
-                                    <local:DPadUserControl.BorderChild_3_Source>
+                                            <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center" >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="35"/>
+                                                    <ColumnDefinition  Width="100"/>
+                                                    <ColumnDefinition  Width="35"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="30"/>
+                                                    <RowDefinition Height="60"/>
+                                                </Grid.RowDefinitions>
+                                                <Image Grid.Column="2" Grid.Row="1" Source="{StaticResource RedArrow_rightDrawingImage}" Width="30" HorizontalAlignment="Right"/>
+                                                <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_noArrowDrawingImage}" />
+                                            </Grid>
+                                        </local:DPadUserControl.BorderChild_2_Source>
+                                        <local:DPadUserControl.BorderChild_3_Source>
 
-                                        <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="35"/>
-                                                <ColumnDefinition  Width="100"/>
-                                                <ColumnDefinition  Width="35"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="60"/>
-                                            </Grid.RowDefinitions>
-                                            <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_upDrawingImage}" Height="30" VerticalAlignment="Top"/>
-                                            <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_noArrowDrawingImage}" />
-                                        </Grid>
-                                    </local:DPadUserControl.BorderChild_3_Source>
-                                    <local:DPadUserControl.BorderChild_4_Source>
+                                            <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="35"/>
+                                                    <ColumnDefinition  Width="100"/>
+                                                    <ColumnDefinition  Width="35"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="30"/>
+                                                    <RowDefinition Height="60"/>
+                                                </Grid.RowDefinitions>
+                                                <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_upDrawingImage}" Height="30" VerticalAlignment="Top"/>
+                                                <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_noArrowDrawingImage}" />
+                                            </Grid>
+                                        </local:DPadUserControl.BorderChild_3_Source>
+                                        <local:DPadUserControl.BorderChild_4_Source>
 
-                                        <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="35"/>
-                                                <ColumnDefinition  Width="100"/>
-                                                <ColumnDefinition  Width="35"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="30"/>
-                                                <RowDefinition Height="60"/>
-                                            </Grid.RowDefinitions>
-                                            <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_downDrawingImage}" Height="30" VerticalAlignment="Top"/>
-                                            <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_noArrowDrawingImage}" />
-                                        </Grid>
-                                    </local:DPadUserControl.BorderChild_4_Source>
+                                            <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="35"/>
+                                                    <ColumnDefinition  Width="100"/>
+                                                    <ColumnDefinition  Width="35"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="30"/>
+                                                    <RowDefinition Height="60"/>
+                                                </Grid.RowDefinitions>
+                                                <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_downDrawingImage}" Height="30" VerticalAlignment="Top"/>
+                                                <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_noArrowDrawingImage}" />
+                                            </Grid>
+                                        </local:DPadUserControl.BorderChild_4_Source>
 
 
 
-                                </local:DPadUserControl>
-                            </Border>
-                            <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="15,0">
-                                <Grid.Resources>
-                                    <Style TargetType="Border">
-                                        <Setter Property="Width" Value="auto"/>
-                                        <Setter Property="Height" Value="130"/>
-                                        <Setter Property="Padding" Value="0"/>
-                                        <Setter Property="BorderBrush" Value="#4CFF00"/>
-                                        <Setter Property="BorderThickness" Value="2"/>
-                                        <Setter Property="Background" Value="White"/>
-                                    </Style>
-                                </Grid.Resources>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="350"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" >
-                                    <Image Source="{StaticResource Conveyor_BlockedDrawingImage}" Width="100"/>
+                                    </local:DPadUserControl>
                                 </Border>
-                                <Border Grid.Column="1" Margin="10,0">
-                                    <Image Source="{StaticResource Conveyor_RedDrawingImage}" Width="100"/>
-                                </Border>
-                                <Border Grid.Column="2" ></Border>
-                            </Grid>
+                                <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="15,0">
+                                    <Grid.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Width" Value="auto"/>
+                                            <Setter Property="Height" Value="130"/>
+                                            <Setter Property="Padding" Value="0"/>
+                                            <Setter Property="BorderBrush" Value="#4CFF00"/>
+                                            <Setter Property="BorderThickness" Value="2"/>
+                                            <Setter Property="Background" Value="White"/>
+                                        </Style>
+                                    </Grid.Resources>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="350"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" >
+                                        <Image Source="{StaticResource Conveyor_BlockedDrawingImage}" Width="100"/>
+                                    </Border>
+                                    <Border Grid.Column="1" Margin="10,0">
+                                        <Image Source="{StaticResource Conveyor_RedDrawingImage}" Width="100"/>
+                                    </Border>
+                                    <Border Grid.Column="2" ></Border>
+                                </Grid>
 
 
-                            <!--<GroupBox Grid.Row="1" Grid.Column="1" Header="液壓橫移">
+                                <!--<GroupBox Grid.Row="1" Grid.Column="1" Header="液壓橫移">
                     <GroupItem>
                         <Border CornerRadius="10" Background="#FF303030" Style="{ StaticResource bor_LightThinLine }">
                             <StackPanel Margin="40,10">
@@ -725,8 +713,8 @@
                     </GroupItem>
                 </GroupBox>-->
 
-                            <!--  上浮滾輪  -->
-                            <!--<GroupBox Grid.Row="1" Grid.ColumnSpan="2" Header="滾輪操作" Visibility="{ Binding ElementName=rad_Wheel, Path=IsChecked, Converter={ WPFBase:NoNullBooleanToVisibilityConverter }}">
+                                <!--  上浮滾輪  -->
+                                <!--<GroupBox Grid.Row="1" Grid.ColumnSpan="2" Header="滾輪操作" Visibility="{ Binding ElementName=rad_Wheel, Path=IsChecked, Converter={ WPFBase:NoNullBooleanToVisibilityConverter }}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
@@ -762,384 +750,387 @@
                     </Grid>
                 </GroupBox>-->
 
-                        </Grid>
-                    </Grid>
-
-                </Border>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <Image Source="{StaticResource Transport_by_RobotDrawingImage}" Width="100" Height="100" />
-                </TabItem.Header>
-                <Border Background="#c0c0c0" Padding="10">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.Resources>
-                            <WPFSTD105VM:Dpad_JoystickViewModel x:Key="Transport_BR_VM"/>
-                            <Style TargetType="Image">
-                                <Setter Property="Height" Value="80"/>
-                            </Style>
-                        </Grid.Resources>
-                        <local:JoystickUserControl Grid.Row="0" Margin="10"  DataContext="{StaticResource Transport_BR_VM}">
-                            <local:JoystickUserControl.BorderChild_1_Source>
-                                <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="50"/>
-                                        <ColumnDefinition  Width="100"/>
-                                        <ColumnDefinition  Width="50"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_upDrawingImage}" Height="30" HorizontalAlignment="Left"/>
-                                    <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto"/>
-                                    <Image Grid.Column="1" Grid.Row="2" Source="{StaticResource RedArrow_downDrawingImage}" Height="30" HorizontalAlignment="Left"/>
-                                </Grid>
-                            </local:JoystickUserControl.BorderChild_1_Source>
-                            <local:JoystickUserControl.BorderChild_3_Source>
-                                <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="50"/>
-                                        <ColumnDefinition  Width="100"/>
-                                        <ColumnDefinition  Width="50"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_downDrawingImage}" Height="30" HorizontalAlignment="Left"/>
-                                    <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto"/>
-                                    <Image Grid.Column="1" Grid.Row="2" Source="{StaticResource RedArrow_upDrawingImage}" Height="30" HorizontalAlignment="Left"/>
-                                </Grid>
-                            </local:JoystickUserControl.BorderChild_3_Source>
-                            <local:JoystickUserControl.BorderChild_4_Source>
-                                <Grid Width="200">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <Image  Grid.Column="0" Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto"/>
-                                    <StackPanel Grid.Column="1" Height="60" Width="75" Orientation="Horizontal">
-                                        <TextBlock Text="X"  Width="50" TextAlignment="Center" Foreground ="Black" FontSize="60"/>
-                                        <TextBlock Text="a"  Width="30" Margin="-10,0,0,-1" TextAlignment="Center" Foreground ="Black" FontSize="30" VerticalAlignment="Bottom"/>
-                                    </StackPanel>
-                                </Grid>
-                            </local:JoystickUserControl.BorderChild_4_Source>
-                            <local:JoystickUserControl.BorderChild_5_Source>
-                                <Grid Width="200">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <Image  Grid.Column="0"   Height="80" >
-                                        <Image.Source>
-                                            <DrawingImage>
-                                                <DrawingImage.Drawing>
-                                                    <DrawingGroup ClipGeometry="M0,0 V100 H100 V0 H0 Z">
-                                                        <GeometryDrawing Brush="#FFEC1C24" Geometry="F1 M100,100z M0,0z M50,30A30,20,0,0,0,21.439453,44L27.115234,44A25,15,0,0,1,50,35A25,15,0,0,1,72.910156,44L78.615234,44A30,20,0,0,0,50,30z M21.439453,56A30,20,0,0,0,50,70A30,20,0,0,0,78.560547,56L72.884766,56A25,15,0,0,1,50,65A25,15,0,0,1,27.115234,56z" />
-                                                        <GeometryDrawing Brush="#FF3B3B3B">
-                                                            <GeometryDrawing.Geometry>
-                                                                <RectangleGeometry RadiusX="0" RadiusY="0" Rect="10,20,10,60" />
-                                                            </GeometryDrawing.Geometry>
-                                                        </GeometryDrawing>
-                                                        <GeometryDrawing Brush="#FF3B3B3B">
-                                                            <GeometryDrawing.Geometry>
-                                                                <RectangleGeometry RadiusX="0" RadiusY="0" Rect="80,20,10,60" />
-                                                            </GeometryDrawing.Geometry>
-                                                        </GeometryDrawing>
-                                                        <GeometryDrawing Brush="#FF3B3B3B">
-                                                            <GeometryDrawing.Geometry>
-                                                                <RectangleGeometry RadiusX="0" RadiusY="0" Rect="10,45,80,10" />
-                                                            </GeometryDrawing.Geometry>
-                                                        </GeometryDrawing>
-                                                    </DrawingGroup>
-                                                </DrawingImage.Drawing>
-                                            </DrawingImage>
-                                        </Image.Source>
-                                    </Image>
-
-                                    <Image  Grid.Column="1" Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto"/>
-
-                                </Grid>
-                            </local:JoystickUserControl.BorderChild_5_Source>
-                            <local:JoystickUserControl.BorderChild_6_Source>
-                                <Grid Width="200">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <Image  Grid.Column="0"   Height="80" >
-                                        <Image.Source>
-                                            <DrawingImage>
-                                                <DrawingImage.Drawing>
-                                                    <DrawingGroup ClipGeometry="M0,0 V100 H100 V0 H0 Z">
-                                                        <GeometryDrawing Brush="#FFEC1C24" Geometry="F1 M100,100z M0,0z M85,6A14,14,0,0,0,71,20A14,14,0,0,0,79,32.644531L79,27.958984A10,10,0,0,1,75,20A10,10,0,0,1,85,10A10,10,0,0,1,95,20A10,10,0,0,1,91,27.958984L91,32.644531A14,14,0,0,0,99,20A14,14,0,0,0,85,6z" />
-                                                        <GeometryDrawing Brush="#FF3B3B3B">
-                                                            <GeometryDrawing.Geometry>
-                                                                <RectangleGeometry RadiusX="0" RadiusY="0" Rect="10,20,10,60" />
-                                                            </GeometryDrawing.Geometry>
-                                                        </GeometryDrawing>
-                                                        <GeometryDrawing Brush="#FF3B3B3B">
-                                                            <GeometryDrawing.Geometry>
-                                                                <RectangleGeometry RadiusX="0" RadiusY="0" Rect="80,20,10,60" />
-                                                            </GeometryDrawing.Geometry>
-                                                        </GeometryDrawing>
-                                                        <GeometryDrawing Brush="#FF3B3B3B">
-                                                            <GeometryDrawing.Geometry>
-                                                                <RectangleGeometry RadiusX="0" RadiusY="0" Rect="10,45,80,10" />
-                                                            </GeometryDrawing.Geometry>
-                                                        </GeometryDrawing>
-                                                    </DrawingGroup>
-                                                </DrawingImage.Drawing>
-                                            </DrawingImage>
-                                        </Image.Source>
-                                    </Image>
-
-                                    <Image  Grid.Column="1" Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto"/>
-
-                                </Grid>
-                            </local:JoystickUserControl.BorderChild_6_Source>
-
-
-                        </local:JoystickUserControl >
-
-
-
-
-
-
-                        <local:DPadUserControl Grid.Row="1" Margin="10"  DataContext="{StaticResource Transport_BR_VM}" VerticalAlignment="Top">
-                            <local:DPadUserControl.BorderChild_1_Source>
-                                <Grid Width="200">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Image  Grid.Column="0" Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto"/>
-                                    <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="10,-5,0,0" Width="80">
-                                        <TextBlock  Text="X"  Width="auto"  TextAlignment="Center" Foreground ="Black" FontSize="50" />
-                                        <TextBlock Text="＋"  Width="auto" Margin="-8,-7,0,0"  TextAlignment="Center" Foreground ="Black" FontSize="60" VerticalAlignment="Center" />
-                                    </StackPanel>
-                                </Grid>
-                            </local:DPadUserControl.BorderChild_1_Source>
-                            <local:DPadUserControl.BorderChild_2_Source>
-                                <Grid Width="200">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Image  Grid.Column="0" Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto"/>
-                                    <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="10,-5,0,0" Width="80">
-                                        <TextBlock  Text="X"  Width="auto"  TextAlignment="Center" Foreground ="Black" FontSize="50" />
-                                        <TextBlock Text="–"  Width="auto" Margin="8,-7,0,0"  TextAlignment="Center" Foreground ="Black" FontSize="60" VerticalAlignment="Center" />
-                                    </StackPanel>
-                                </Grid>
-                            </local:DPadUserControl.BorderChild_2_Source>
-
-                            <local:DPadUserControl.BorderChild_3_Source>
-                                <Grid Width="200">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Image  Grid.Column="0" Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto" HorizontalAlignment="Right"/>
-                                    <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="10,-5,0,0" HorizontalAlignment="Left" Width="80">
-                                        <TextBlock Text="Y"  Width="auto"  TextAlignment="Center" Foreground ="Black" FontSize="50" />
-                                        <TextBlock Text="＋"  Width="auto" Margin="-8,-7,0,0"  TextAlignment="Center" Foreground ="Black" FontSize="60" VerticalAlignment="Center" />
-                                    </StackPanel>
-                                </Grid>
-                            </local:DPadUserControl.BorderChild_3_Source>
-                            <local:DPadUserControl.BorderChild_4_Source>
-                                <Grid Width="200">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Image  Grid.Column="0" Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto" HorizontalAlignment="Right"/>
-                                    <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="10,-5,0,0" HorizontalAlignment="Left" Width="80">
-                                        <TextBlock  Text="Y"  Width="auto"  TextAlignment="Center" Foreground ="Black" FontSize="50" />
-                                        <TextBlock Text="–"  Width="auto" Margin="8,-7,0,0"  TextAlignment="Center" Foreground ="Black" FontSize="60" VerticalAlignment="Center" />
-                                    </StackPanel>
-                                </Grid>
-                            </local:DPadUserControl.BorderChild_4_Source>
-
-
-                        </local:DPadUserControl>
-
-                        <Border Grid.Row="2" BorderThickness="0,2,0,0" BorderBrush="#292929" />
-
-                        <StackPanel  Grid.Row="3" Margin="10">
-                            <Grid Margin="5">
-                                <Grid.Resources>
-                                    <Style TargetType="Border">
-                                        <Setter Property="Width" Value="auto"/>
-                                        <Setter Property="Height" Value="130"/>
-                                        <Setter Property="Padding" Value="0"/>
-                                        <Setter Property="BorderBrush" Value="#4CFF00"/>
-                                        <Setter Property="BorderThickness" Value="2"/>
-                                        <Setter Property="Background" Value="White"/>
-                                    </Style>
-                                </Grid.Resources>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="350"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" >
-                                    <Image Source="{StaticResource Conveyor_BlockedDrawingImage}" Width="100"/>
-                                </Border>
-                                <Border Grid.Column="1" Margin="10,0"/>
-
-
-                                <Border Grid.Column="2" ></Border>
                             </Grid>
-                        </StackPanel>
-                    </Grid>
+                        </Grid>
+
+                    </Border>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <Grid Width="100" Height="100">
+                            <Image Source="{StaticResource Transport_by_RobotDrawingImage}" VerticalAlignment="Bottom"  Margin="0,25"/>
+                        </Grid>
+                    </TabItem.Header>
+                    <Border Background="#c0c0c0" Padding="10">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.Resources>
+                                <WPFSTD105VM:Dpad_JoystickViewModel x:Key="Transport_BR_VM"/>
+                                <Style TargetType="Image">
+                                    <Setter Property="Height" Value="80"/>
+                                </Style>
+                            </Grid.Resources>
+                            <local:JoystickUserControl Grid.Row="0" Margin="10"  DataContext="{StaticResource Transport_BR_VM}">
+                                <local:JoystickUserControl.BorderChild_1_Source>
+                                    <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50"/>
+                                            <ColumnDefinition  Width="100"/>
+                                            <ColumnDefinition  Width="50"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_upDrawingImage}" Height="30" HorizontalAlignment="Left"/>
+                                        <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto"/>
+                                        <Image Grid.Column="1" Grid.Row="2" Source="{StaticResource RedArrow_downDrawingImage}" Height="30" HorizontalAlignment="Left"/>
+                                    </Grid>
+                                </local:JoystickUserControl.BorderChild_1_Source>
+                                <local:JoystickUserControl.BorderChild_3_Source>
+                                    <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50"/>
+                                            <ColumnDefinition  Width="100"/>
+                                            <ColumnDefinition  Width="50"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_downDrawingImage}" Height="30" HorizontalAlignment="Left"/>
+                                        <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto"/>
+                                        <Image Grid.Column="1" Grid.Row="2" Source="{StaticResource RedArrow_upDrawingImage}" Height="30" HorizontalAlignment="Left"/>
+                                    </Grid>
+                                </local:JoystickUserControl.BorderChild_3_Source>
+                                <local:JoystickUserControl.BorderChild_4_Source>
+                                    <Grid Width="200">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Image  Grid.Column="0" Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto"/>
+                                        <StackPanel Grid.Column="1" Height="60" Width="75" Orientation="Horizontal">
+                                            <TextBlock Text="X"  Width="50" TextAlignment="Center" Foreground ="Black" FontSize="60"/>
+                                            <TextBlock Text="a"  Width="30" Margin="-10,0,0,-1" TextAlignment="Center" Foreground ="Black" FontSize="30" VerticalAlignment="Bottom"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </local:JoystickUserControl.BorderChild_4_Source>
+                                <local:JoystickUserControl.BorderChild_5_Source>
+                                    <Grid Width="200">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Image  Grid.Column="0"   Height="80" >
+                                            <Image.Source>
+                                                <DrawingImage>
+                                                    <DrawingImage.Drawing>
+                                                        <DrawingGroup ClipGeometry="M0,0 V100 H100 V0 H0 Z">
+                                                            <GeometryDrawing Brush="#FFEC1C24" Geometry="F1 M100,100z M0,0z M50,30A30,20,0,0,0,21.439453,44L27.115234,44A25,15,0,0,1,50,35A25,15,0,0,1,72.910156,44L78.615234,44A30,20,0,0,0,50,30z M21.439453,56A30,20,0,0,0,50,70A30,20,0,0,0,78.560547,56L72.884766,56A25,15,0,0,1,50,65A25,15,0,0,1,27.115234,56z" />
+                                                            <GeometryDrawing Brush="#FF3B3B3B">
+                                                                <GeometryDrawing.Geometry>
+                                                                    <RectangleGeometry RadiusX="0" RadiusY="0" Rect="10,20,10,60" />
+                                                                </GeometryDrawing.Geometry>
+                                                            </GeometryDrawing>
+                                                            <GeometryDrawing Brush="#FF3B3B3B">
+                                                                <GeometryDrawing.Geometry>
+                                                                    <RectangleGeometry RadiusX="0" RadiusY="0" Rect="80,20,10,60" />
+                                                                </GeometryDrawing.Geometry>
+                                                            </GeometryDrawing>
+                                                            <GeometryDrawing Brush="#FF3B3B3B">
+                                                                <GeometryDrawing.Geometry>
+                                                                    <RectangleGeometry RadiusX="0" RadiusY="0" Rect="10,45,80,10" />
+                                                                </GeometryDrawing.Geometry>
+                                                            </GeometryDrawing>
+                                                        </DrawingGroup>
+                                                    </DrawingImage.Drawing>
+                                                </DrawingImage>
+                                            </Image.Source>
+                                        </Image>
+
+                                        <Image  Grid.Column="1" Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto"/>
+
+                                    </Grid>
+                                </local:JoystickUserControl.BorderChild_5_Source>
+                                <local:JoystickUserControl.BorderChild_6_Source>
+                                    <Grid Width="200">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Image  Grid.Column="0"   Height="80" >
+                                            <Image.Source>
+                                                <DrawingImage>
+                                                    <DrawingImage.Drawing>
+                                                        <DrawingGroup ClipGeometry="M0,0 V100 H100 V0 H0 Z">
+                                                            <GeometryDrawing Brush="#FFEC1C24" Geometry="F1 M100,100z M0,0z M85,6A14,14,0,0,0,71,20A14,14,0,0,0,79,32.644531L79,27.958984A10,10,0,0,1,75,20A10,10,0,0,1,85,10A10,10,0,0,1,95,20A10,10,0,0,1,91,27.958984L91,32.644531A14,14,0,0,0,99,20A14,14,0,0,0,85,6z" />
+                                                            <GeometryDrawing Brush="#FF3B3B3B">
+                                                                <GeometryDrawing.Geometry>
+                                                                    <RectangleGeometry RadiusX="0" RadiusY="0" Rect="10,20,10,60" />
+                                                                </GeometryDrawing.Geometry>
+                                                            </GeometryDrawing>
+                                                            <GeometryDrawing Brush="#FF3B3B3B">
+                                                                <GeometryDrawing.Geometry>
+                                                                    <RectangleGeometry RadiusX="0" RadiusY="0" Rect="80,20,10,60" />
+                                                                </GeometryDrawing.Geometry>
+                                                            </GeometryDrawing>
+                                                            <GeometryDrawing Brush="#FF3B3B3B">
+                                                                <GeometryDrawing.Geometry>
+                                                                    <RectangleGeometry RadiusX="0" RadiusY="0" Rect="10,45,80,10" />
+                                                                </GeometryDrawing.Geometry>
+                                                            </GeometryDrawing>
+                                                        </DrawingGroup>
+                                                    </DrawingImage.Drawing>
+                                                </DrawingImage>
+                                            </Image.Source>
+                                        </Image>
+
+                                        <Image  Grid.Column="1" Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto"/>
+
+                                    </Grid>
+                                </local:JoystickUserControl.BorderChild_6_Source>
+
+
+                            </local:JoystickUserControl >
 
 
 
-                </Border>
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <Grid Height="100" Width="100">
-                        <Image Source="{StaticResource ToolMagazine}" Margin="10"/>
-                    </Grid>
-                </TabItem.Header>
-                <Border Background="#c0c0c0" Padding="10">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.Resources>
-                            <WPFSTD105VM:Dpad_JoystickViewModel x:Key="ToolMagazine_Dpad_Js_VM"/>
-                            <Style TargetType="Image">
-                                <Setter Property="Height" Value="80"/>
-                            </Style>
-                        </Grid.Resources>
-                        <local:JoystickUserControl Grid.Row="0" Margin="10"  DataContext="{StaticResource ToolMagazine_Dpad_Js_VM}">
-                            <local:JoystickUserControl.BorderChild_3_Source>
-                                <Grid Width="200">
+
+
+
+                            <local:DPadUserControl Grid.Row="1" Margin="10"  DataContext="{StaticResource Transport_BR_VM}" VerticalAlignment="Top">
+                                <local:DPadUserControl.BorderChild_1_Source>
+                                    <Grid Width="200">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image  Grid.Column="0" Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto"/>
+                                        <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="10,-5,0,0" Width="80">
+                                            <TextBlock  Text="X"  Width="auto"  TextAlignment="Center" Foreground ="Black" FontSize="50" />
+                                            <TextBlock Text="＋"  Width="auto" Margin="-8,-7,0,0"  TextAlignment="Center" Foreground ="Black" FontSize="60" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Grid>
+                                </local:DPadUserControl.BorderChild_1_Source>
+                                <local:DPadUserControl.BorderChild_2_Source>
+                                    <Grid Width="200">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image  Grid.Column="0" Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto"/>
+                                        <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="10,-5,0,0" Width="80">
+                                            <TextBlock  Text="X"  Width="auto"  TextAlignment="Center" Foreground ="Black" FontSize="50" />
+                                            <TextBlock Text="–"  Width="auto" Margin="8,-7,0,0"  TextAlignment="Center" Foreground ="Black" FontSize="60" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Grid>
+                                </local:DPadUserControl.BorderChild_2_Source>
+
+                                <local:DPadUserControl.BorderChild_3_Source>
+                                    <Grid Width="200">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image  Grid.Column="0" Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto" HorizontalAlignment="Right"/>
+                                        <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="10,-5,0,0" HorizontalAlignment="Left" Width="80">
+                                            <TextBlock Text="Y"  Width="auto"  TextAlignment="Center" Foreground ="Black" FontSize="50" />
+                                            <TextBlock Text="＋"  Width="auto" Margin="-8,-7,0,0"  TextAlignment="Center" Foreground ="Black" FontSize="60" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Grid>
+                                </local:DPadUserControl.BorderChild_3_Source>
+                                <local:DPadUserControl.BorderChild_4_Source>
+                                    <Grid Width="200">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image  Grid.Column="0" Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto" HorizontalAlignment="Right"/>
+                                        <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="10,-5,0,0" HorizontalAlignment="Left" Width="80">
+                                            <TextBlock  Text="Y"  Width="auto"  TextAlignment="Center" Foreground ="Black" FontSize="50" />
+                                            <TextBlock Text="–"  Width="auto" Margin="8,-7,0,0"  TextAlignment="Center" Foreground ="Black" FontSize="60" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Grid>
+                                </local:DPadUserControl.BorderChild_4_Source>
+
+
+                            </local:DPadUserControl>
+
+                            <Border Grid.Row="2" BorderThickness="0,2,0,0" BorderBrush="#292929" />
+
+                            <StackPanel  Grid.Row="3" Margin="10">
+                                <Grid Margin="5">
+                                    <Grid.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Width" Value="auto"/>
+                                            <Setter Property="Height" Value="130"/>
+                                            <Setter Property="Padding" Value="0"/>
+                                            <Setter Property="BorderBrush" Value="#4CFF00"/>
+                                            <Setter Property="BorderThickness" Value="2"/>
+                                            <Setter Property="Background" Value="White"/>
+                                        </Style>
+                                    </Grid.Resources>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="350"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Ｂ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
+                                    <Border Grid.Column="0" >
+                                        <Image Source="{StaticResource Conveyor_BlockedDrawingImage}" Width="100"/>
+                                    </Border>
+                                    <Border Grid.Column="1" Margin="10,0"/>
 
-                                    <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
+
+                                    <Border Grid.Column="2" ></Border>
                                 </Grid>
-                            </local:JoystickUserControl.BorderChild_3_Source>
-                            <local:JoystickUserControl.BorderChild_4_Source>
-                                <Grid Width="200">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Ｃ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
+                            </StackPanel>
+                        </Grid>
 
-                                    <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
-                                </Grid>
-                            </local:JoystickUserControl.BorderChild_4_Source>
-                            <local:JoystickUserControl.BorderChild_5_Source>
-                                <Grid Width="200">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Ｄ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
 
-                                    <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
-                                </Grid>
-                            </local:JoystickUserControl.BorderChild_5_Source>
-                            <local:JoystickUserControl.BorderChild_6_Source>
-                                <Grid Width="200">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Ｅ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
 
-                                    <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
-                                </Grid>
-                            </local:JoystickUserControl.BorderChild_6_Source>
+                    </Border>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <Grid Height="100" Width="100">
+                            <Image Source="{StaticResource ToolMagazine}" Margin="10"/>
+                        </Grid>
+                    </TabItem.Header>
+                    <Border Background="#c0c0c0" Padding="10">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.Resources>
+                                <WPFSTD105VM:Dpad_JoystickViewModel x:Key="ToolMagazine_Dpad_Js_VM"/>
+                                <Style TargetType="Image">
+                                    <Setter Property="Height" Value="80"/>
+                                </Style>
+                            </Grid.Resources>
+                            <local:JoystickUserControl Grid.Row="0" Margin="10"  DataContext="{StaticResource ToolMagazine_Dpad_Js_VM}">
+                                <local:JoystickUserControl.BorderChild_3_Source>
+                                    <Grid Width="200">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Ｂ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
 
-                        </local:JoystickUserControl >
-                        <local:DPadUserControl Grid.Row="1" Margin="10"  DataContext="{StaticResource ToolMagazine_Dpad_Js_VM}">
-                            <local:DPadUserControl.BorderChild_1_Source>
-                                <Grid >
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="OUT"  Width="auto" TextAlignment="Right" Margin="0,0" Foreground ="Black" FontSize="45"/>
-                                    <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" HorizontalAlignment="Left" Margin="20,0"/>
-                                </Grid>
-                            </local:DPadUserControl.BorderChild_1_Source>
-                            <local:DPadUserControl.BorderChild_2_Source>
-                                <Grid Width="200">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="IN"  Width="auto" TextAlignment="Right" Margin="18,0" Foreground ="Black" FontSize="45"/>
+                                        <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
+                                    </Grid>
+                                </local:JoystickUserControl.BorderChild_3_Source>
+                                <local:JoystickUserControl.BorderChild_4_Source>
+                                    <Grid Width="200">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Ｃ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
 
-                                    <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}"  HorizontalAlignment="Left" Margin="20,0"/>
-                                </Grid>
-                            </local:DPadUserControl.BorderChild_2_Source>
+                                        <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
+                                    </Grid>
+                                </local:JoystickUserControl.BorderChild_4_Source>
+                                <local:JoystickUserControl.BorderChild_5_Source>
+                                    <Grid Width="200">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Ｄ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
 
-                        </local:DPadUserControl>
-                    </Grid>
-                </Border>
+                                        <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
+                                    </Grid>
+                                </local:JoystickUserControl.BorderChild_5_Source>
+                                <local:JoystickUserControl.BorderChild_6_Source>
+                                    <Grid Width="200">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Ｅ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
 
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
-                    <Grid Width="100" Height="100">
-                        <Image Source="{StaticResource Crumb_ConveyorDrawingImage}" Margin="10"/>
-                    </Grid>
-                </TabItem.Header>
-                <Border Background="#c0c0c0" Padding="10">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.Resources>
-                            <WPFSTD105VM:Dpad_JoystickViewModel x:Key="Conveyor_Dpad_Js_VM"/>
-                            <Style TargetType="Image">
-                                <Setter Property="Height" Value="80"/>
-                            </Style>
-                        </Grid.Resources>
-                        <local:JoystickUserControl Grid.Row="0" Margin="10"  DataContext="{StaticResource Conveyor_Dpad_Js_VM}">
+                                        <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
+                                    </Grid>
+                                </local:JoystickUserControl.BorderChild_6_Source>
 
-                        </local:JoystickUserControl >
-                        <local:DPadUserControl Grid.Row="1" Margin="10"  DataContext="{StaticResource Conveyor_Dpad_Js_VM}">
-                            <local:DPadUserControl.BorderChild_1_Source>
-                                <Grid Width="250">
-                                    <Image  Grid.Column="1" Source="{StaticResource Crumb_Conveyor_plusDrawingImage}" Width="80"/>
-                                </Grid>
-                            </local:DPadUserControl.BorderChild_1_Source>
-                            <local:DPadUserControl.BorderChild_2_Source>
-                                <Grid Width="200">
-                                    <Image  Grid.Column="1" Source="{StaticResource Crumb_Conveyor_minusDrawingImage}" Width="80"/>
-                                </Grid>
-                            </local:DPadUserControl.BorderChild_2_Source>
-                            
-                        </local:DPadUserControl>
-                    </Grid>
-                </Border>
-            </TabItem>
-        </TabControl>
-    </Grid>
+                            </local:JoystickUserControl >
+                            <local:DPadUserControl Grid.Row="1" Margin="10"  DataContext="{StaticResource ToolMagazine_Dpad_Js_VM}">
+                                <local:DPadUserControl.BorderChild_1_Source>
+                                    <Grid >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="OUT"  Width="auto" TextAlignment="Right" Margin="0,0" Foreground ="Black" FontSize="45"/>
+                                        <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" HorizontalAlignment="Left" Margin="20,0"/>
+                                    </Grid>
+                                </local:DPadUserControl.BorderChild_1_Source>
+                                <local:DPadUserControl.BorderChild_2_Source>
+                                    <Grid Width="200">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="IN"  Width="auto" TextAlignment="Right" Margin="18,0" Foreground ="Black" FontSize="45"/>
+
+                                        <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}"  HorizontalAlignment="Left" Margin="20,0"/>
+                                    </Grid>
+                                </local:DPadUserControl.BorderChild_2_Source>
+
+                            </local:DPadUserControl>
+                        </Grid>
+                    </Border>
+
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <Grid Width="100" Height="100">
+                            <Image Source="{StaticResource Crumb_ConveyorDrawingImage}" Margin="10"/>
+                        </Grid>
+                    </TabItem.Header>
+                    <Border Background="#c0c0c0" Padding="10">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.Resources>
+                                <WPFSTD105VM:Dpad_JoystickViewModel x:Key="Conveyor_Dpad_Js_VM"/>
+                                <Style TargetType="Image">
+                                    <Setter Property="Height" Value="80"/>
+                                </Style>
+                            </Grid.Resources>
+                            <local:JoystickUserControl Grid.Row="0" Margin="10"  DataContext="{StaticResource Conveyor_Dpad_Js_VM}">
+
+                            </local:JoystickUserControl >
+                            <local:DPadUserControl Grid.Row="1" Margin="10"  DataContext="{StaticResource Conveyor_Dpad_Js_VM}">
+                                <local:DPadUserControl.BorderChild_1_Source>
+                                    <Grid Width="250">
+                                        <Image  Grid.Column="1" Source="{StaticResource Crumb_Conveyor_plusDrawingImage}" Width="80"/>
+                                    </Grid>
+                                </local:DPadUserControl.BorderChild_1_Source>
+                                <local:DPadUserControl.BorderChild_2_Source>
+                                    <Grid Width="200">
+                                        <Image  Grid.Column="1" Source="{StaticResource Crumb_Conveyor_minusDrawingImage}" Width="80"/>
+                                    </Grid>
+                                </local:DPadUserControl.BorderChild_2_Source>
+
+                            </local:DPadUserControl>
+                        </Grid>
+                    </Border>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Border>
 </WPFBase:BasePage>

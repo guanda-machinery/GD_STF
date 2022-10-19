@@ -880,6 +880,9 @@
     <Compile Include="UserControls\SelectObjectWindows.xaml.cs">
       <DependentUpon>SelectObjectWindows.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\SpeedArrowUserControl.xaml.cs">
+      <DependentUpon>SpeedArrowUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Synchronization.xaml.cs">
       <DependentUpon>Synchronization.xaml</DependentUpon>
     </Compile>
@@ -1580,6 +1583,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\SelectObjectWindows.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SpeedArrowUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

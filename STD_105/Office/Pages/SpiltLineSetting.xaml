@@ -191,6 +191,7 @@
 
                     <StackPanel Grid.Row="3"
                             Orientation="Horizontal"
+                                Margin="10"
                             HorizontalAlignment="Right">
                         <Button 
                             Content="新增"

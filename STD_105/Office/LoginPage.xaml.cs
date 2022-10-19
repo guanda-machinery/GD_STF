@@ -216,7 +216,7 @@ namespace STD_105.Office
                 Status = "開啟中...",
                 Title = "STD_105",
                 Subtitle = "Powered by GUANDA",
-                Copyright = "版權所有 © 2021 GUANDA",
+                Copyright = "版權所有 © 2022 GUANDA",
             };
             SplashScreenManager manager;
 

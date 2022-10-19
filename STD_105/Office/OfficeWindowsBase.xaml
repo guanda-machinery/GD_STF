@@ -241,17 +241,7 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
-                    <!--(舊)製品設定-->
-                    <Button Command="{ Binding Old_ObSettingsPage_Office }"
-                            IsEnabled="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={std:NullToEnabledConverter} }">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="30"
-                                       Source="{ StaticResource NewProductSettings }" />
-                                <TextBlock Text="(舊)製品" />
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
+
                     <!--製品設定-->
                     <Button Command="{ Binding ObSettingsPage_Office }"
                             IsEnabled="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={std:NullToEnabledConverter} }">
@@ -263,17 +253,8 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
-                    <!--(舊)排版設定-->
-                    <Button Command="{ Binding old_PartsListCommand }"
-                            IsEnabled="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={std:NullToEnabledConverter} }">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="30"
-                                       Source="{ StaticResource Typesetting }" />
-                                <TextBlock Text="(舊)排版" />
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
+
+
                     <!--排版設定-->
                     <Button Command="{ Binding AutoTypeSettingsCommand }"
                             IsEnabled="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={std:NullToEnabledConverter} }">
@@ -319,11 +300,38 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
-                    <!--
+                <!--(舊)製品設定-->
+                <Button Command="{ Binding Old_ObSettingsPage_Office }"
+                            IsEnabled="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={std:NullToEnabledConverter} }">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="30"
+                                       Source="{ StaticResource Window_Close }" />
+                            <TextBlock Text="(舊)製品" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <!--(舊)排版設定-->
+                <Button Command="{ Binding old_PartsListCommand }"
+                            IsEnabled="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={std:NullToEnabledConverter} }">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="30"
+                                       Source="{ StaticResource Window_Close }" />
+                            <TextBlock Text="(舊)排版" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+
+
+
+                <!--
                     <TextBlock Text="{ Binding OfficeViewModel.WorkAreaHeight, Source={x:Static WPFSTD:ViewLocator.Instance} }" />
                     <TextBlock Text="{ Binding OfficeViewModel.WorkAreaWidth, Source={x:Static WPFSTD:ViewLocator.Instance} }" />
                     <TextBlock Text="{ Binding ElementName=workArea, Path=Height}" />
                     <TextBlock Text="{ Binding ElementName=workArea, Path=Width}" />-->
+                
+                
                 </StackPanel>
 
         </Grid>
@@ -334,15 +342,15 @@
                     Margin="0"
                     CornerRadius="0">
                 <Grid>
-                    <dxlc:ScrollBox Height="{Binding ElementName=workArea, Path=Height}"
-                                    Width="{Binding ElementName=workArea, Path=Width}" 
+                    <dxlc:ScrollBox MaxHeight="{Binding ElementName=workArea, Path=Height}"
+                                    MaxWidth="{Binding ElementName=workArea, Path=Width}" 
                                     Style="{ StaticResource sbx_Office }"
                                                         Margin="0">
                         <!--頁面切換區域-->
 
                         <std:OfficePageHost x:Name="pageHost"
                                             CurrentPage="{Binding }"    
-                                            DataContext="{Binding OfficeViewModel.CurrentPage, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={local:OfficePageConverter } }" 
+                                            DataContext="{Binding OfficeViewModel.CurrentPage, Source={ x:Static WPFSTD:ViewLocator.Instance },Converter={local:OfficePageConverter }}"
                                            />
                     </dxlc:ScrollBox>
                     <!--專案管理-->

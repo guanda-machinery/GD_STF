@@ -193,8 +193,8 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Grid >
                 <Grid.ColumnDefinitions>
@@ -203,7 +203,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Border  Margin="5" Background="#f0f0f0">
-                <TabControl BorderThickness="0,2,0,0" Margin="0,0,0,0">
+                <TabControl BorderThickness="0,1,0,0" Margin="0,0,0,0">
                     <TabControl.Resources>
                         <ResourceDictionary>
                             <Style TargetType="TabItem">
@@ -319,21 +319,20 @@
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="MaterialNumber"  IsSmart="True" Header="排版編號" />
-                        <dxg:GridColumn FieldName="Profile"  IsSmart="True" Header="斷面規格"   />
-                        <dxg:GridColumn FieldName="Material"  IsSmart="True" Header="材質" Width="auto"   />
-                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="數量" Width="auto"  />
-                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="已完成" Width="auto"  />
-                        <dxg:GridColumn FieldName="LengthStr"  IsSmart="True" Header="素材長"   />
+                        <dxg:GridColumn FieldName="MaterialNumber"  IsSmart="True" Header="排版編號" Width="80" />
+                        <dxg:GridColumn FieldName="Profile"  IsSmart="True" Header="斷面規格"  Width="120"  />
+                        <dxg:GridColumn FieldName="Material"  IsSmart="True" Header="材質" Width="60"   />
+                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="數量" Width="45"  />
+                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="已完成" Width="45"  />
+                        <dxg:GridColumn FieldName="LengthStr"  IsSmart="True" Header="素材長" Width="60"  />
                         <dxg:GridColumn Binding="{c:Binding LengthStr-Loss}"   IsSmart="True" Header="餘長" Width="auto"    >
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings DisplayFormat="F2"/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題一"  Width="auto"  />
-                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題二"   Width="auto" />
-
-                        <dxg:GridColumn FieldName="Position"
+                                <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題二"   Width="auto" />
+                                <dxg:GridColumn FieldName="Position"
                                                 Width="100"
                                                 Header="位置" />
                     </dxg:GridControl>
@@ -351,7 +350,8 @@
                             <TextBlock Text="加工進度表"  FontSize="16" VerticalAlignment="Center"></TextBlock>
                         </Grid>
                     </GroupBox.Header>
-                    <dxg:GridControl 
+
+                    <dxg:GridControl Margin="0,-1,0,-1"
                         Name="MachiningSchedule_List_GridControl"    
                         AutoGenerateColumns="None" 
                         Grid.Row="2"  Width="198"
@@ -423,8 +423,7 @@
 
                 </GroupBox>
             </Grid>
-            <TabControl Grid.Row="1" Margin="5"  Height="300"
-
+            <TabControl Grid.Row="1" Margin="5"  
                         BorderThickness="0"
                         Background="#303030"
                         x:Name="DrawTabControl"
@@ -483,7 +482,7 @@
                 <TabItem Header="2D">
                 </TabItem>
             </TabControl>
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="2" MaxHeight="265">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
@@ -498,7 +497,7 @@
                     <dxg:GridControl 
                     AutoGenerateColumns="None"
                     SelectionMode="MultipleRow"
-                    MaxHeight="365"    
+                    MaxHeight="2000"    
                     ItemsSource="{Binding DataViews}">
                         <dxg:GridControl.Resources>
 
@@ -553,7 +552,7 @@
                     <dxg:GridControl 
                     AutoGenerateColumns="None"
                     SelectionMode="MultipleRow"
-                    MaxHeight="365"    
+                    MaxHeight="2000"    
                     ItemsSource="{Binding DataViews}">
                         <dxg:GridControl.View >
                             <dxg:TableView  
@@ -586,7 +585,7 @@
                 </Border>
                 
                 <Border Background="White" Grid.Column="2" Grid.Row="2" Margin="5">
-                    <GroupBox    FontSize="20">
+                    <GroupBox FontSize="20">
                         <GroupBox.Header>
                             <TextBlock Margin="5" Text="Ready Go" FontSize="16" Foreground="White"/>
                         </GroupBox.Header>
@@ -659,7 +658,7 @@
                             <Button Grid.Column="1" Grid.Row="1" Width="auto"  Height="70">
                                 <Button.Content>
                                     <Grid Width="60" Height="60">
-                                        <Image Source="{StaticResource Input_by_ComputerDrawingImage}" Margin="2" />
+                                        <Image Source="{StaticResource Input_by_ComputerDrawingImage}" Margin="3" />
                                         <Border  BorderThickness="0,0,0,2" BorderBrush="#67b32c" />
                                     </Grid>
                                 </Button.Content>
@@ -669,7 +668,7 @@
                             <Button Grid.Column="0" Grid.Row="2"  Width="auto"  Height="70">
                                 <Button.Content>
                                     <Grid Width="60" Height="60">
-                                        <Image Source="{StaticResource DrillPinDrawingImage}"  />
+                                        <Image Source="{StaticResource DrillPinDrawingImage}"  Margin="3" />
                                         <Border  BorderThickness="0,0,0,2" BorderBrush="#67b32c" />
                                     </Grid>
                                 </Button.Content>
@@ -677,7 +676,7 @@
                             <Button Grid.Column="1" Grid.Row="2" Width="auto"  Height="70">
                                 <Button.Content>
                                     <Grid Width="60" Height="60">
-                                        <Image Source="{StaticResource DrillHoleDrawingImage}"  />
+                                        <Image Source="{StaticResource DrillHoleDrawingImage}"  Margin="2"  />
                                         <Border  BorderThickness="0,0,0,2" BorderBrush="#67b32c" />
                                     </Grid>
                                 </Button.Content>

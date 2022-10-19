@@ -80,10 +80,9 @@ namespace WPFSTD105.ViewModel
             {
                 return new WPFWindowsBase.RelayParameterizedCommand(el =>
                 {
-                    JOYSTICK select = (JOYSTICK)el;
-                    PanelButton _ = ApplicationViewModel.PanelButton;
-                    _.Joystick = select;
-                    WriteCodesysMemor.SetPanel(_);
+                    PanelButton PButton = ApplicationViewModel.PanelButton;
+                    PButton.Joystick = (JOYSTICK)el;
+                    WriteCodesysMemor.SetPanel(PButton);
                 });
             }
         }
@@ -95,9 +94,9 @@ namespace WPFSTD105.ViewModel
         {
             return new WPFWindowsBase.RelayCommand(() =>
             {
-                PanelButton _ = ApplicationViewModel.PanelButton;
-                _.Joystick = JOYSTICK.NULL;
-                WriteCodesysMemor.SetPanel(_);
+                PanelButton PButton  = ApplicationViewModel.PanelButton;
+                PButton.Joystick = JOYSTICK.NULL;
+                WriteCodesysMemor.SetPanel(PButton);
             });
         }
         #endregion

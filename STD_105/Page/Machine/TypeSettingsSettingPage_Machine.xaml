@@ -505,28 +505,28 @@
 
                                 </dxg:GridColumn.HeaderImageStyle>
                                 <dxg:GridColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <dxe:CheckEdit  IsThreeState="false">
-                                            <dxe:CheckEdit.Style>
-                                                <Style TargetType="{x:Type dxe:CheckEdit}">
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
-                                                                <dx:DXImage x:Name="EMarkDX" Height="20" Width="20" Source="{dx:DXImage 'SvgImages/Outlook Inspired/HighImportance.svg'}" Opacity="1" />
-                                                                <ControlTemplate.Triggers>
-                                                                    <Trigger Property="IsChecked" Value="False">
-                                                                        <Setter Property="Opacity" Value="0" TargetName="EMarkDX"  />
-                                                                    </Trigger>
-                                                                </ControlTemplate.Triggers>
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Style>
-                                            </dxe:CheckEdit.Style>
-                                        </dxe:CheckEdit>
+                            <DataTemplate>
+                                <dxe:CheckEdit  IsThreeState="false">
+                                    <dxe:CheckEdit.Style>
+                                        <Style TargetType="{x:Type dxe:CheckEdit}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
+                                                        <dx:DXImage x:Name="EMarkDX" Height="20" Width="20" Source="{dx:DXImage 'SvgImages/Outlook Inspired/HighImportance.svg'}" Opacity="1" />
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsChecked" Value="False">
+                                                                <Setter Property="Opacity" Value="0" TargetName="EMarkDX"  />
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </dxe:CheckEdit.Style>
+                                </dxe:CheckEdit>
 
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellTemplate>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
                             </dxg:GridColumn>
                             <dxg:GridColumn IsSmart="True" Name="LockGridCol" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                                 <dxg:GridColumn.HeaderImageStyle>
