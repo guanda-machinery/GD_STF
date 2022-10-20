@@ -139,7 +139,6 @@ namespace WPFSTD105.Model
                         }
                         file.DoWork();
                         file.AddToScene(model);
-                        Point3D center = new Point3D();
                         Entity _entity = null;
                         SteelAttr _steelAttr = null;
                         model.Entities.ForEach(el =>

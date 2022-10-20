@@ -34,6 +34,9 @@ using static DevExpress.XtraEditors.Mask.MaskSettings;
 using System.Web.UI.WebControls;
 using System.Windows.Media;
 using Color = System.Drawing.Color;
+using static DevExpress.Utils.Menu.DXMenuItemPainter;
+using DevExpress.Utils.Serializing;
+using DevExpress.Pdf.ContentGeneration;
 //using TriangleNet;
 
 namespace STD_105.Office
@@ -734,11 +737,8 @@ namespace STD_105.Office
             string content = SelectedData.MaterialNumber; //素材編號
           
             model.AssemblyPart(content);
-        
-            //drawing.AssemblyPart2D(content);
+            AssemblyPart2D(model,content);
 
-
-           AssemblyPart2D(model, content);
             //drawing.Entities.Regen();
             //model.Entities.Regen();
 
@@ -760,7 +760,7 @@ namespace STD_105.Office
             // model.SelectionChanged += model.Model_SelectionChanged; 
         }
 
-        /// <summary>
+          /// <summary>
         /// 
         /// </summary>
         /// <param name="model"></param>
@@ -821,15 +821,13 @@ namespace STD_105.Office
 
             EntityList entities = new EntityList();
 
+            bool findsteel = false;
+
+
             for (int i = 0; i < place.Count; i++)
             {
                 if (place[i].IsCut) //如果是切割物件
                 {
-                    //Entity cut = DrawCutMesh(parts[0], model, place[i].Start, place[i].End, "Cut");
-                    //if (cut != null)
-                    //{
-                    //    entities.Add(cut);
-                    //}
 
                     continue;
                 }
@@ -837,7 +835,7 @@ namespace STD_105.Office
 
                 int placeIndex = place.FindIndex(el => el.Number == place[i].Number); //如果有重複的編號只會回傳第一個，以這個下去做比較。
 
-                if (placeIndex != i) //如果 i != 第一次出現的 index 代表需要使用複製
+                if (placeIndex != i) //查表,第二次出現相同零件 ,不可再新增BLOCK(會顯示已有相同BLOCK錯誤), 直接由entity複製一份做位移.
                 {
                     EntityList ent = new EntityList();
                     entities.
@@ -855,21 +853,91 @@ namespace STD_105.Office
                 else
                 {
                     int partIndex = parts.FindIndex(el => el.Number == place[i].Number);
+                    findsteel = false;
+
 
                     if (parts[partIndex].GUID.ToString() != "") //如果圖面檔案
                     {
-                        int FindSameSteelBlockIndex = model.Blocks.FindIndex(el => el.Name == parts[partIndex].GUID.ToString());
+                        int FindSteelBlockIndex = model.Blocks.FindIndex(el => el.Name == parts[partIndex].GUID.ToString()); // 由model block裡 找尋對應零件位置
 
-                        Steel2DBlock steel2DBlock = new Steel2DBlock((devDept.Eyeshot.Entities.Mesh)model.Blocks[FindSameSteelBlockIndex].Entities[0], model.Blocks[FindSameSteelBlockIndex].Name);
-                        drawing.Blocks.Add(steel2DBlock);
-                        BlockReference block2D = new BlockReference(0, 0, 0, steel2DBlock.Name, 1, 1, 1, 0);//產生鋼構參考圖塊
+                        for (int searchboltindex = FindSteelBlockIndex; searchboltindex < model.Blocks.Count; searchboltindex++)
+                        {
 
-                        //關閉三視圖用戶選擇
-                        block2D.Selectable = false;
-                        block2D.GroupIndex = i;
-                        block2D.Translate(place[i].Start, 0);
-                        block2D.Selectable = false;
-                        entities.Add(block2D);//加入到暫存列表
+                            if (model.Blocks[searchboltindex].Entities[0].EntityData is SteelAttr && findsteel)
+                            {
+                                findsteel = false;
+                                break;
+                            }
+                            
+
+                            if (model.Blocks[searchboltindex].Entities[0].EntityData is SteelAttr && !findsteel)
+                            {
+                                Steel2DBlock steel2DBlock = new Steel2DBlock((devDept.Eyeshot.Entities.Mesh)model.Blocks[FindSteelBlockIndex].Entities[0], model.Blocks[FindSteelBlockIndex].Name);   // 產生2D
+                                drawing.Blocks.Add(steel2DBlock);
+                                BlockReference block2D = new BlockReference(0, 0, 0, steel2DBlock.Name, 1, 1, 1, 0);//產生鋼構參考圖塊
+
+
+                                block2D.Selectable = false;
+                                block2D.GroupIndex = i;
+                                block2D.Translate(place[i].Start, 0);
+                                block2D.Selectable = false;
+                                entities.Add(block2D);//加入到暫存列表
+
+                                findsteel = true;
+                            }
+
+                            if ((model.Blocks[searchboltindex].Entities[0].EntityData is BoltAttr) && findsteel )
+                            {
+
+                                Steel2DBlock steel2DBlock = new Steel2DBlock((devDept.Eyeshot.Entities.Mesh)model.Blocks[FindSteelBlockIndex].Entities[0], model.Blocks[FindSteelBlockIndex].Name);   // 產生2D
+
+
+
+                                int icount;
+                                for (icount = 0; icount < model.Entities.Count; icount++)
+                                {
+                                    BlockReference aa = (BlockReference)model.Entities[icount]; //取得參考圖塊
+                                    Block bb = model.Blocks[aa.BlockName]; //取得圖塊 
+                                    if (model.Blocks[searchboltindex].Name==bb.Name)
+                                    {
+                                        break;
+                                    }
+                                }
+
+
+                                BlockReference blockReference = (BlockReference)model.Entities[icount]; //取得參考圖塊
+                                Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
+                                
+                                Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生3D螺栓圖塊
+                                Bolts2DBlock bolts2DBlock = new Bolts2DBlock(bolts3DBlock, steel2DBlock); //產生2D螺栓圖塊
+
+                                int tmpindex=drawing.Blocks.FindIndex(x => x.Name == bolts2DBlock.Name);
+                                if (tmpindex ==-1)
+                                drawing.Blocks.Add(bolts2DBlock); //加入螺栓圖塊
+
+                                BlockReference block2D = new BlockReference(0, 0, 0, bolts2DBlock.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+
+                                block2D.Selectable = false;
+                                block2D.GroupIndex = i;
+                                block2D.Translate(place[i].Start, 0);
+                                block2D.Selectable = false;
+                                entities.Add(block2D);//加入到暫存列表
+                            }
+
+
+  
+
+                        }
+                        
+                        
+
+
+
+                        
+
+
+
+
                     }
                 }
             }
@@ -886,23 +954,7 @@ namespace STD_105.Office
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //model.Clear();
-            //drawing.Clear();
+            #region 備份
             //STDSerialization ser = new STDSerialization(); //序列化處理器
             //ObservableCollection<MaterialDataView> materialDataViews = ser.GetMaterialDataView(); //序列化列表
             //int index = materialDataViews.FindIndex(el => el.MaterialNumber == materialNumber);//序列化的列表索引
@@ -951,14 +1003,13 @@ namespace STD_105.Office
             //        Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
             //    }
             //}
+
+            //drawing.Clear();
+
             //EntityList entities = new EntityList();
-
-
 
             //for (int i = 0; i < place.Count; i++)
             //{
-            //    model.Clear();
-            //    drawing.Clear();
             //    if (place[i].IsCut) //如果是切割物件
             //    {
             //        //Entity cut = DrawCutMesh(parts[0], model, place[i].Start, place[i].End, "Cut");
@@ -991,28 +1042,17 @@ namespace STD_105.Office
             //    else
             //    {
             //        int partIndex = parts.FindIndex(el => el.Number == place[i].Number);
+
             //        if (parts[partIndex].GUID.ToString() != "") //如果圖面檔案
             //        {
-            //            ReadFile file = ser.ReadPartModel(parts[partIndex].GUID.ToString()); //讀取檔案內容
-            //            if (file == null)
-            //            {
-            //                WinUIMessageBox.Show(null,
-            //                    $"專案Dev_Part資料夾讀取失敗",
-            //                    "通知",
-            //                    MessageBoxButton.OK,
-            //                    MessageBoxImage.Exclamation,
-            //                    MessageBoxResult.None,
-            //                    MessageBoxOptions.None,
-            //                    FloatingMode.Popup);
-            //                return;
-            //            }
-            //            file.DoWork();
-            //            file.AddToScene(model);
-            //            Point3D center = new Point3D();
-            //            model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
-            //            BlockReference block2D = SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
+            //            int FindSameSteelBlockIndex = model.Blocks.FindIndex(el => el.Name == parts[partIndex].GUID.ToString());
 
+            //            Steel2DBlock steel2DBlock = new Steel2DBlock((devDept.Eyeshot.Entities.Mesh)model.Blocks[FindSameSteelBlockIndex].Entities[0], model.Blocks[FindSameSteelBlockIndex].Name);
+            //            drawing.Blocks.Add(steel2DBlock);
+            //            BlockReference block2D = new BlockReference(0, 0, 0, steel2DBlock.Name, 1, 1, 1, 0);//產生鋼構參考圖塊
 
+            //            //關閉三視圖用戶選擇
+            //            block2D.Selectable = false;
             //            block2D.GroupIndex = i;
             //            block2D.Translate(place[i].Start, 0);
             //            block2D.Selectable = false;
@@ -1020,13 +1060,12 @@ namespace STD_105.Office
             //        }
             //    }
             //}
+            //drawing.Entities.Clear();
             //drawing.Entities.AddRange(entities);
             //ser.SetMaterialModel(materialNumber + "2D", drawing); //儲存素材
-
+            #endregion
 
         }
-
-
 
         private void GridSplitter_MouseMove(object sender, MouseEventArgs e)
         {
@@ -1055,8 +1094,6 @@ namespace STD_105.Office
         {
             ((DevExpress.Xpf.Grid.TableView)sender).FocusedRowHandle = DevExpress.Xpf.Grid.GridControl.InvalidRowHandle;
         }
-
-
 
         private void ScrollOwner_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
@@ -1101,16 +1138,6 @@ namespace STD_105.Office
                 Console.WriteLine(ex.ToString());
             }
         }
-
-
-
-
-
-
-
-
-
-
 
     }
 }
