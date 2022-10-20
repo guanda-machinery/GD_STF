@@ -1057,7 +1057,7 @@ namespace WPFSTD105.ViewModel
                         {
                             _BufferModel.Dispose();
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
                         }
                     }

@@ -69,7 +69,6 @@ namespace WPFSTD105.ViewModel
 
 
 
-
         #region 命令處理方法
         /// <summary>
         /// 滑鼠指標在箭頭向上元素上方且按下滑鼠左按鈕時處理方法。

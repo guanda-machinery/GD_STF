@@ -40,6 +40,7 @@
                             To="Lime"
                             Duration="0:0:0.1" />
             </Storyboard>
+            <!--
             <Storyboard x:Key="CircleTopButton">
                 <ColorAnimation Storyboard.TargetName="tbk_CircleTop"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
@@ -71,6 +72,7 @@
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                             To="Lime"
                             Duration="0:0:0.1" />
+              
             </Storyboard>
             <Storyboard x:Key="EllipseBottomButton">
                 <DoubleAnimation Storyboard.TargetName="leftEllipse"
@@ -95,24 +97,25 @@
                              Storyboard.TargetProperty="(Canvas.Top)"
                              To="0"
                              Duration="0:0:0.1" />
-            </Storyboard>
+            </Storyboard>-->
             <Storyboard x:Key="AllTextBlockColorRecover">
                 <ColorAnimation Storyboard.TargetName="tbk_JoystickUp"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
-                            To="{ StaticResource clr_Gray }"
+                            To="white"
                             Duration="0" />
                 <ColorAnimation Storyboard.TargetName="tbk_JoystickDown"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
-                            To="{ StaticResource clr_Gray }"
+                            To="white"
                             Duration="0" />
                 <ColorAnimation Storyboard.TargetName="tbk_JoystickLeft"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
-                            To="{ StaticResource clr_Gray }"
+                            To="white"
                             Duration="0" />
                 <ColorAnimation Storyboard.TargetName="tbk_JoystickRight"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
-                            To="{ StaticResource clr_Gray }"
+                            To="white"
                             Duration="0" />
+                <!--
                 <ColorAnimation Storyboard.TargetName="tbk_CircleTop"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                             To="{ StaticResource clr_Gray }"
@@ -132,7 +135,7 @@
                 <ColorAnimation Storyboard.TargetName="tbk_EllipseBottom"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                             To="{ StaticResource clr_Gray }"
-                            Duration="0" />
+                            Duration="0" />-->
             </Storyboard>
             <Style TargetType="TextBlock"
                BasedOn="{ StaticResource tbk_Title }">
@@ -219,7 +222,8 @@
                         </EventTrigger>
                     </Button.Triggers>
                     <Button.Content>
-                        <TextBlock Text="X" Width="auto" FontSize="35" FontWeight="Bold" TextAlignment="Center" Foreground="White"  Margin="0,-10,0,0">
+                        <TextBlock x:Name="tbk_JoystickUp"  Foreground="White"
+                            Text="X" Width="auto" FontSize="35" FontWeight="Bold" TextAlignment="Center"  Margin="0,-10,0,0">
                         </TextBlock>
                     </Button.Content>
 
@@ -263,7 +267,8 @@
                     </Button.Triggers>
 
                     <Button.Content>
-                        <TextBlock Text="Y" Width="auto" FontSize="35" FontWeight="Bold" TextAlignment="Center" Foreground="White" RenderTransformOrigin="0.5,0.5"  Margin="0,-10,0,0" >
+                        <TextBlock x:Name="tbk_JoystickLeft" Foreground="White"
+                            Text="Y" Width="auto" FontSize="35" FontWeight="Bold" TextAlignment="Center"  RenderTransformOrigin="0.5,0.5"  Margin="0,-10,0,0" >
                             <TextBlock.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -305,7 +310,8 @@
                         </EventTrigger>
                     </Button.Triggers>
                     <Button.Content>
-                        <TextBlock Text="Y" Width="auto" FontSize="35" FontWeight="Bold" TextAlignment="Center" Foreground="White" RenderTransformOrigin="0.5,0.5"  Margin="0,-10,0,0" >
+                        <TextBlock x:Name="tbk_JoystickRight" Foreground="White"
+                            Text="Y" Width="auto" FontSize="35" FontWeight="Bold" TextAlignment="Center"  RenderTransformOrigin="0.5,0.5"  Margin="0,-10,0,0" >
                             <TextBlock.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -348,7 +354,8 @@
                         </EventTrigger>
                     </Button.Triggers>
                     <Button.Content>
-                        <TextBlock Text="X" Width="auto" FontSize="35" FontWeight="Bold" TextAlignment="Center" Foreground="White" Margin="0,-10,0,0" >
+                        <TextBlock x:Name="tbk_JoystickDown" Foreground="White"
+                            Text="X" Width="auto" FontSize="35" FontWeight="Bold" TextAlignment="Center" Margin="0,-10,0,0" >
                         </TextBlock>
                     </Button.Content>
                 </Button>

@@ -44,8 +44,15 @@ namespace STD_105
         {
             if (DataContext is IDisposable disposable)
             {
-                //model.Dispose();
-                disposable.Dispose();
+                try
+                {
+                    //model.Dispose();
+                    disposable.Dispose();
+                }
+                catch(Exception ex)
+                {
+
+                }
             }
         }
 

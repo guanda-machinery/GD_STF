@@ -88,7 +88,7 @@ namespace WPFSTD105
                 Host host = ReadCodesysMemor.GetHost();
                 ApplicationViewModel.FirstOrigin = host.Origin;
                 //持續偵測第一次原點復歸
-                Task.Run(() =>
+                var GetHostTask =  Task.Run(() =>
                 {
                     Thread.Sleep(1000);
                     while (!ApplicationViewModel.FirstOrigin)
@@ -104,7 +104,6 @@ namespace WPFSTD105
 
                 if (!host.PCOpen)
                 {
-
                     STDSerialization ser = new STDSerialization();
                     FluentAPI.MecSetting mecSetting = ser.GetMecSetting();
 
@@ -144,7 +143,7 @@ namespace WPFSTD105
                 MessageBoxOptions.None,
                 FloatingMode.Popup);
                 log4net.LogManager.GetLogger("嚴重錯誤").Error($"{ex.Message}\n{ex.StackTrace}\n{ex.InnerException.Message}");
-                throw;
+                //throw;
             }
             catch (FaultException ex) //SOAP 錯誤
             {
@@ -158,7 +157,7 @@ namespace WPFSTD105
                 MessageBoxOptions.None,
                 FloatingMode.Window);
                 log4net.LogManager.GetLogger("嚴重錯誤").Error($"{ex.Message}\n{ex.StackTrace}\n{ex.InnerException.Message}");
-                throw;
+                //throw;
             }
             catch (Exception ex)
             {
@@ -172,7 +171,7 @@ namespace WPFSTD105
                 MessageBoxOptions.None,
                 FloatingMode.Popup);
                 log4net.LogManager.GetLogger("嚴重錯誤").Error($"{ex.Message}\n{ex.StackTrace}\n{ex.InnerException.Message}");
-                throw;
+                //throw;
             }
         }
 

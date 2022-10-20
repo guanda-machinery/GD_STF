@@ -46,7 +46,7 @@
             <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="Green"/>
             <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="#FFFFFF"/>
             <!-- accent -->
-            <SolidColorBrush x:Key="SecondaryHueMidBrush" Color="#5C5B5E"/>
+
             <SolidColorBrush x:Key="SecondaryHueMidForegroundBrush" Color="#FFFFFF"/>
             <Style x:Key="ColorRow" TargetType="dxg:GridColumn">
                 <Style.Resources>
@@ -253,7 +253,7 @@
                             </Style>
                         </ResourceDictionary>
                     </TabControl.Resources>
-                        <TabItem Header="加工組合清單" IsSelected="{Binding MachiningCombinationl_List_GridControl_IsSelected}"  >
+                        <TabItem Header="加工組合清單">
                             <dxg:GridControl Margin="-11"
                         Name="MachiningCombinationl_List_GridControl"    
                         AutoGenerateColumns="None" 
@@ -337,7 +337,8 @@
                                                 Header="位置" />
                     </dxg:GridControl>
              </TabItem>
-                        <TabItem Header="加工細項"/>
+                        <TabItem Header="加工細項"  IsSelected="{Binding MachiningCombinationl_List_GridControl_IsSelected}"  >
+                        </TabItem>
                     </TabControl>
                 </Border>
 
@@ -484,12 +485,12 @@
             </TabControl>
             <Grid Grid.Row="2" MaxHeight="265">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="0"  Margin="5"
+                <Border Grid.Column="0"  Margin="5" 
                  Background="#ffffff" 
                  BorderThickness="2" 
                  BorderBrush="#595E60">
@@ -618,69 +619,83 @@
                                 <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
                                     <Setter Property="Margin" Value="2"/>
                                 </Style>
+                                <Style TargetType="RadioButton" BasedOn="{StaticResource MaterialDesignTabRadioButton}">
+                                    <Setter Property="Width" Value="60"/>
+                                    <Setter Property="Height" Value="60"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Margin" Value="5"/>
+                                    <Style.Resources>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Width" Value="60"/>
+                                            <Setter Property="Height" Value="60"/>
+                                        </Style>
+                                    </Style.Resources>
+                                </Style>
+                                <SolidColorBrush x:Key="SecondaryHueMidBrush" Color="#67b32c"/>
                             </Grid.Resources>
-                            <Border Grid.Row="0" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
-                            <Button Grid.Column="0" Grid.Row="0" Width="auto"  Height="70" Cursor="Hand">
-                                <Button.Content>
-                                    <Grid Width="60" Height="60">
-                                        <Image Source="{StaticResource TransportDrawingImage}" />
-                                        <Border  BorderThickness="0,0,0,2" BorderBrush="#67b32c" />
-                                    </Grid>
-                                </Button.Content>
-                            </Button>
-                            <!--dx:SimpleButton Grid.Column="1" Width="auto" Height="60" Glyph="{StaticResource Transport_by_ConveyorDrawingImage}"/-->
-                            <Button Grid.Column="1" Grid.Row="0" Width="auto"  Height="70" Cursor="Hand">
-                                <Button.Content>
-                                    <Grid Width="60" Height="60">
-                                        <Image Source="{StaticResource Transport_by_ConveyorDrawingImage}"  />
-                                        <Border  BorderThickness="0,0,0,2" BorderBrush="#67b32c" />
-                                    </Grid>
-                                </Button.Content>
-                            </Button>
-                            <Button Grid.Column="2" Grid.Row="0" Width="auto"  Height="70">
-                                <Button.Content>
-                                    <Grid Width="60" Height="60">
-                                        <Image Source="{StaticResource Transport_by_Robot_checkedDrawingImage}"  />
-                                        <Border  BorderThickness="0,0,0,2" BorderBrush="#67b32c" />
-                                    </Grid>
-                                </Button.Content>
-                            </Button>
 
-                            
-                            <Button Grid.Column="0" Grid.Row="1" Width="auto"  Height="70">
-                                <Button.Content>
-                                    <Grid Width="60" Height="60">
-                                        <Image Source="{StaticResource Input_by_SmartPhoneDrawingImage}" Margin="5" />
-                                        <Border  BorderThickness="0,0,0,2" BorderBrush="#67b32c" />
-                                    </Grid>
-                                </Button.Content>
-                            </Button>
-                            <Button Grid.Column="1" Grid.Row="1" Width="auto"  Height="70">
-                                <Button.Content>
-                                    <Grid Width="60" Height="60">
-                                        <Image Source="{StaticResource Input_by_ComputerDrawingImage}" Margin="3" />
-                                        <Border  BorderThickness="0,0,0,2" BorderBrush="#67b32c" />
-                                    </Grid>
-                                </Button.Content>
-                            </Button>
+                            <Border Grid.Row="0" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
+                            <RadioButton GroupName="Group_Transport" Name="Transport_RadioButton" Grid.Column="0"  IsChecked="False">
+                                <Image Source="{StaticResource TransportDrawingImage}" />
+                            </RadioButton>
+                            <RadioButton GroupName="Group_Transport" Name="Transport_by_C_RadioButton" Grid.Column="1"  IsChecked="False">
+                                <Image Source="{StaticResource Transport_by_ConveyorDrawingImage}"/>
+                            </RadioButton>
+                            <RadioButton GroupName="Group_Transport" Name="Transport_by_R_RadioButton" Grid.Column="2"   IsChecked="False">
+                                <Image Source="{StaticResource Transport_by_Robot_checkedDrawingImage}"/>
+                            </RadioButton>
+
+                            <RadioButton GroupName="Group_Input" Name="Input_by_SmartPhone_RadioButton" Grid.Column="0" Grid.Row="1" >
+                                <RadioButton.IsEnabled>
+                                    <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
+                                        <MultiBinding.Bindings>
+                                            <Binding ElementName="Transport_RadioButton" Path="IsChecked" />
+                                            <Binding ElementName="Transport_by_C_RadioButton" Path="IsChecked" />
+                                            <Binding ElementName="Transport_by_R_RadioButton" Path="IsChecked" />
+                                        </MultiBinding.Bindings>
+                                    </MultiBinding>
+                                </RadioButton.IsEnabled>
+                                <Image Source="{StaticResource Input_by_SmartPhoneDrawingImage}" Height="50" Width="50" />
+                            </RadioButton>
+
+                            <RadioButton  GroupName="Group_Input" Name="Input_by_Computer_RadioButton" Grid.Column="1" Grid.Row="1">
+                                <RadioButton.IsEnabled>
+                                    <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
+                                        <MultiBinding.Bindings>
+                                            <Binding ElementName="Transport_RadioButton" Path="IsChecked" />
+                                            <Binding ElementName="Transport_by_C_RadioButton" Path="IsChecked" />
+                                            <Binding ElementName="Transport_by_R_RadioButton" Path="IsChecked" />
+                                        </MultiBinding.Bindings>
+                                    </MultiBinding>
+                                </RadioButton.IsEnabled>
+                                <Image Source="{StaticResource Input_by_ComputerDrawingImage}"  Height="50" Width="50" />
+                            </RadioButton>
+
                             <Border Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
 
-                            <Button Grid.Column="0" Grid.Row="2"  Width="auto"  Height="70">
-                                <Button.Content>
-                                    <Grid Width="60" Height="60">
-                                        <Image Source="{StaticResource DrillPinDrawingImage}"  Margin="3" />
-                                        <Border  BorderThickness="0,0,0,2" BorderBrush="#67b32c" />
-                                    </Grid>
-                                </Button.Content>
-                            </Button>
-                            <Button Grid.Column="1" Grid.Row="2" Width="auto"  Height="70">
-                                <Button.Content>
-                                    <Grid Width="60" Height="60">
-                                        <Image Source="{StaticResource DrillHoleDrawingImage}"  Margin="2"  />
-                                        <Border  BorderThickness="0,0,0,2" BorderBrush="#67b32c" />
-                                    </Grid>
-                                </Button.Content>
-                            </Button>
+                            <RadioButton Grid.Column="0" Grid.Row="2" GroupName="Group_Drill">
+                                <RadioButton.IsEnabled>
+                                    <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
+                                        <MultiBinding.Bindings>
+                                            <Binding ElementName="Input_by_SmartPhone_RadioButton" Path="IsChecked" />
+                                            <Binding ElementName="Input_by_Computer_RadioButton" Path="IsChecked" />
+                                        </MultiBinding.Bindings>
+                                    </MultiBinding>
+                                </RadioButton.IsEnabled>
+                                <Image Source="{StaticResource DrillPinDrawingImage}" />
+                            </RadioButton>
+                            <RadioButton Grid.Column="1"  Grid.Row="2" GroupName="Group_Drill">
+                                <RadioButton.IsEnabled>
+                                    <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
+                                        <MultiBinding.Bindings>
+                                            <Binding ElementName="Input_by_SmartPhone_RadioButton" Path="IsChecked" />
+                                            <Binding ElementName="Input_by_Computer_RadioButton" Path="IsChecked" />
+                                        </MultiBinding.Bindings>
+                                    </MultiBinding>
+                                </RadioButton.IsEnabled>
+                                <Image Source="{StaticResource DrillHoleDrawingImage}"   />
+                            </RadioButton>
+
                             <Border Grid.Row="2" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
                         </Grid>
 
