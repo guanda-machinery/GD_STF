@@ -737,7 +737,7 @@
                         SelectionColor="{Binding Setting.SelectionColor, Converter={STD105:StringToDrawingColoConverter}}"
                         ActionMode="{Binding ActionMode}" DefaultColor="Beige" AutoRefresh ="True" KeyDown="model_KeyDown"
                         PreviewMouseRightButtonDown="model_PreviewMouseRightButtonDown"
-                        Focusable="True" AntiAliasingSamples="x16" Renderer="NativeExperimental" ShowFps="True" Margin="0,0,0,0">
+                        Focusable="True" AntiAliasingSamples="x16" Renderer="NativeExperimental" Margin="0,0,0,0">
                         <WPFSTD:ModelExt.ContextMenu>
                             <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
                                 <MenuItem Name="esc2D" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
