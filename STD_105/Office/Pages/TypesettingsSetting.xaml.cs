@@ -30,6 +30,14 @@ using DevExpress.Xpf.Core;
 using System.Windows.Controls.Primitives;
 using DevExpress.Xpf.Grid;
 using DevExpress.Xpf.Core.Native;
+using static DevExpress.XtraEditors.Mask.MaskSettings;
+using System.Web.UI.WebControls;
+using System.Windows.Media;
+using Color = System.Drawing.Color;
+using static DevExpress.Utils.Menu.DXMenuItemPainter;
+using DevExpress.Utils.Serializing;
+using DevExpress.Pdf.ContentGeneration;
+//using TriangleNet;
 
 namespace STD_105.Office
 {
@@ -96,6 +104,7 @@ namespace STD_105.Office
             if (NcTemp != null)
             {
                 STDSerialization ser = new STDSerialization(); //序列化處理器
+                
                 Steel3DBlock.AddSteel(NcTemp.SteelAttr, model, out BlockReference steelBlock); //加入 3d 鋼構參考圖塊
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
                 for (int i = 0; i < NcTemp.GroupBoltsAttrs.Count; i++) //逐步展開 nc 檔案的螺栓
@@ -502,7 +511,7 @@ namespace STD_105.Office
             {
                 var item = e.AddedItems[index];
 
-                if (item is SelectedFace)
+                if (item is SelectedFace)                                                                           
                 {
                     var faceItem = (SelectedFace)item;
                     var ent = faceItem.Item;
@@ -561,7 +570,9 @@ namespace STD_105.Office
             //關閉三視圖用戶選擇
             block2D.Selectable = false;
 
+            // 將TOP FRONT BACK圖塊加入drawing
             drawing.Entities.Add(block2D);
+
 #if DEBUG
             log4net.LogManager.GetLogger("產生2D").Debug("結束");
 #endif
@@ -724,21 +735,342 @@ namespace STD_105.Office
 
             model.ActionMode = actionType.SelectByBox;
             string content = SelectedData.MaterialNumber; //素材編號
+          
             model.AssemblyPart(content);
-            model.Entities.Regen();
+            AssemblyPart2D(model,content);
+
+            //drawing.Entities.Regen();
+            //model.Entities.Regen();
+
+
+            model.ZoomFit();        //設置道適合的視口
+            drawing.ZoomFit();      //設置道適合的視口
+
+            drawing.Refresh();
             model.Refresh();
-            model.Invalidate();
-            model.ZoomFit();//設置道適合的視口
-            model.Invalidate();//初始化模型
+
+
+            //model.Invalidate();     //初始化模型
+            //drawing.Invalidate();   //初始化模型
+
+
             //SaveModel();
-            //Draw();
-           // model.SelectionChanged -= model.Model_SelectionChanged;
-           // model.SelectionChanged += model.Model_SelectionChanged; 
+            // Draw();
+            // model.SelectionChanged -= model.Model_SelectionChanged;
+            // model.SelectionChanged += model.Model_SelectionChanged; 
+        }
+
+          /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="materialNumber"></param>
+        public void AssemblyPart2D(devDept.Eyeshot.Model model,string materialNumber)
+        {
+
+            STDSerialization ser = new STDSerialization(); //序列化處理器
+            ObservableCollection<MaterialDataView> materialDataViews = ser.GetMaterialDataView(); //序列化列表
+            int index = materialDataViews.FindIndex(el => el.MaterialNumber == materialNumber);//序列化的列表索引
+            MaterialDataView material = materialDataViews[index];
+            ObservableCollection<SteelPart> parts = ser.GetPart(material.Profile.GetHashCode().ToString());//零件列表
+            NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
+            var _ = material.Parts.Select(x => x.PartNumber); //選擇要使用的零件編號
+            var guid = (from el in ncTemps
+                        where _.ToList().Contains(el.SteelAttr.PartNumber)
+                        select el.SteelAttr.GUID.ToString()).ToList();//選擇使用的NC文件
+            //產生nc檔案圖檔
+            for (int i = 0; i < guid.Count; i++)
+            {
+                model.LoadNcToModel(guid[i]);
+            }
+
+
+            var place = new List<(double Start, double End, bool IsCut, string Number)>();//放置位置參數
+            place.Add((Start: 0, End: material.StartCut, IsCut: true, Number: "")); //素材起始切割物件
+            Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
+            for (int i = 0; i < material.Parts.Count; i++)
+            {
+                int partIndex = parts.FindIndex(el => el.Number == material.Parts[i].PartNumber); //回傳要使用的陣列位置
+                if (partIndex == -1)
+                {
+                    throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
+                }
+                else
+                {
+                    double startCurrent = place[place.Count - 1].End,//當前物件放置起始點的座標
+                                  endCurrent = startCurrent + parts[partIndex].Length;//當前物件放置結束點的座標
+                    place.Add((Start: startCurrent, End: endCurrent, IsCut: false, Number: parts[partIndex].Number));
+                    Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
+                    //計算切割物件
+                    double startCut = place[place.Count - 1].End, //當前切割物件放置起始點的座標
+                                  endCut;//當前切割物件放置結束點的座標
+                    if (i + 1 >= material.Parts.Count) //下一次迴圈結束
+                    {
+                        endCut = material.LengthStr + material.StartCut + material.EndCut;//當前切割物件放置結束點的座標
+                    }
+                    else //下一次迴圈尚未結束
+                    {
+                        endCut = startCut + material.Cut;//當前切割物件放置結束點的座標
+                    }
+                    place.Add((Start: startCut, End: endCut, IsCut: true, Number: "")); //素材零件位置
+                    Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
+                }
+            }
+
+            drawing.Clear();
+
+            EntityList entities = new EntityList();
+
+            bool findsteel = false;
+
+
+            for (int i = 0; i < place.Count; i++)
+            {
+                if (place[i].IsCut) //如果是切割物件
+                {
+
+                    continue;
+                }
+
+
+                int placeIndex = place.FindIndex(el => el.Number == place[i].Number); //如果有重複的編號只會回傳第一個，以這個下去做比較。
+
+                if (placeIndex != i) //查表,第二次出現相同零件 ,不可再新增BLOCK(會顯示已有相同BLOCK錯誤), 直接由entity複製一份做位移.
+                {
+                    EntityList ent = new EntityList();
+                    entities.
+                        Where(el => el.GroupIndex == placeIndex).
+                        ForEach(el =>
+                        {
+                            Entity copy = (Entity)el.Clone(); //複製物件
+                            copy.GroupIndex = i;
+                            copy.Translate(place[i].Start - place[placeIndex].Start, 0);
+                            ent.Add(copy);
+                        });
+                    entities.AddRange(ent);
+                }
+
+                else
+                {
+                    int partIndex = parts.FindIndex(el => el.Number == place[i].Number);
+                    findsteel = false;
+
+
+                    if (parts[partIndex].GUID.ToString() != "") //如果圖面檔案
+                    {
+                        int FindSteelBlockIndex = model.Blocks.FindIndex(el => el.Name == parts[partIndex].GUID.ToString()); // 由model block裡 找尋對應零件位置
+
+                        for (int searchboltindex = FindSteelBlockIndex; searchboltindex < model.Blocks.Count; searchboltindex++)
+                        {
+
+                            if (model.Blocks[searchboltindex].Entities[0].EntityData is SteelAttr && findsteel)
+                            {
+                                findsteel = false;
+                                break;
+                            }
+                            
+
+                            if (model.Blocks[searchboltindex].Entities[0].EntityData is SteelAttr && !findsteel)
+                            {
+                                Steel2DBlock steel2DBlock = new Steel2DBlock((devDept.Eyeshot.Entities.Mesh)model.Blocks[FindSteelBlockIndex].Entities[0], model.Blocks[FindSteelBlockIndex].Name);   // 產生2D
+                                drawing.Blocks.Add(steel2DBlock);
+                                BlockReference block2D = new BlockReference(0, 0, 0, steel2DBlock.Name, 1, 1, 1, 0);//產生鋼構參考圖塊
+
+
+                                block2D.Selectable = false;
+                                block2D.GroupIndex = i;
+                                block2D.Translate(place[i].Start, 0);
+                                block2D.Selectable = false;
+                                entities.Add(block2D);//加入到暫存列表
+
+                                findsteel = true;
+                            }
+
+                            if ((model.Blocks[searchboltindex].Entities[0].EntityData is BoltAttr) && findsteel )
+                            {
+
+                                Steel2DBlock steel2DBlock = new Steel2DBlock((devDept.Eyeshot.Entities.Mesh)model.Blocks[FindSteelBlockIndex].Entities[0], model.Blocks[FindSteelBlockIndex].Name);   // 產生2D
+
+
+
+                                int icount;
+                                for (icount = 0; icount < model.Entities.Count; icount++)
+                                {
+                                    BlockReference aa = (BlockReference)model.Entities[icount]; //取得參考圖塊
+                                    Block bb = model.Blocks[aa.BlockName]; //取得圖塊 
+                                    if (model.Blocks[searchboltindex].Name==bb.Name)
+                                    {
+                                        break;
+                                    }
+                                }
+
+
+                                BlockReference blockReference = (BlockReference)model.Entities[icount]; //取得參考圖塊
+                                Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
+                                
+                                Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生3D螺栓圖塊
+                                Bolts2DBlock bolts2DBlock = new Bolts2DBlock(bolts3DBlock, steel2DBlock); //產生2D螺栓圖塊
+
+                                int tmpindex=drawing.Blocks.FindIndex(x => x.Name == bolts2DBlock.Name);
+                                if (tmpindex ==-1)
+                                drawing.Blocks.Add(bolts2DBlock); //加入螺栓圖塊
+
+                                BlockReference block2D = new BlockReference(0, 0, 0, bolts2DBlock.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+
+                                block2D.Selectable = false;
+                                block2D.GroupIndex = i;
+                                block2D.Translate(place[i].Start, 0);
+                                block2D.Selectable = false;
+                                entities.Add(block2D);//加入到暫存列表
+                            }
+
+
+  
+
+                        }
+                        
+                        
+
+
+
+                        
+
+
+
+
+                    }
+                }
+            }
+            drawing.Entities.Clear();
+            drawing.Entities.AddRange(entities);
+            ser.SetMaterialModel(materialNumber + "2D", drawing); //儲存素材
+
+
+
+
+
+
+
+
+
+
+            #region 備份
+            //STDSerialization ser = new STDSerialization(); //序列化處理器
+            //ObservableCollection<MaterialDataView> materialDataViews = ser.GetMaterialDataView(); //序列化列表
+            //int index = materialDataViews.FindIndex(el => el.MaterialNumber == materialNumber);//序列化的列表索引
+            //MaterialDataView material = materialDataViews[index];
+            //ObservableCollection<SteelPart> parts = ser.GetPart(material.Profile.GetHashCode().ToString());//零件列表
+            //NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
+            //var _ = material.Parts.Select(x => x.PartNumber); //選擇要使用的零件編號
+            //var guid = (from el in ncTemps
+            //            where _.ToList().Contains(el.SteelAttr.PartNumber)
+            //            select el.SteelAttr.GUID.ToString()).ToList();//選擇使用的NC文件
+            ////產生nc檔案圖檔
+            //for (int i = 0; i < guid.Count; i++)
+            //{
+            //    model.LoadNcToModel(guid[i]);
+            //}
+
+
+            //var place = new List<(double Start, double End, bool IsCut, string Number)>();//放置位置參數
+            //place.Add((Start: 0, End: material.StartCut, IsCut: true, Number: "")); //素材起始切割物件
+            //Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
+            //for (int i = 0; i < material.Parts.Count; i++)
+            //{
+            //    int partIndex = parts.FindIndex(el => el.Number == material.Parts[i].PartNumber); //回傳要使用的陣列位置
+            //    if (partIndex == -1)
+            //    {
+            //        throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
+            //    }
+            //    else
+            //    {
+            //        double startCurrent = place[place.Count - 1].End,//當前物件放置起始點的座標
+            //                      endCurrent = startCurrent + parts[partIndex].Length;//當前物件放置結束點的座標
+            //        place.Add((Start: startCurrent, End: endCurrent, IsCut: false, Number: parts[partIndex].Number));
+            //        Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
+            //        //計算切割物件
+            //        double startCut = place[place.Count - 1].End, //當前切割物件放置起始點的座標
+            //                      endCut;//當前切割物件放置結束點的座標
+            //        if (i + 1 >= material.Parts.Count) //下一次迴圈結束
+            //        {
+            //            endCut = material.LengthStr + material.StartCut + material.EndCut;//當前切割物件放置結束點的座標
+            //        }
+            //        else //下一次迴圈尚未結束
+            //        {
+            //            endCut = startCut + material.Cut;//當前切割物件放置結束點的座標
+            //        }
+            //        place.Add((Start: startCut, End: endCut, IsCut: true, Number: "")); //素材零件位置
+            //        Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
+            //    }
+            //}
+
+            //drawing.Clear();
+
+            //EntityList entities = new EntityList();
+
+            //for (int i = 0; i < place.Count; i++)
+            //{
+            //    if (place[i].IsCut) //如果是切割物件
+            //    {
+            //        //Entity cut = DrawCutMesh(parts[0], model, place[i].Start, place[i].End, "Cut");
+            //        //if (cut != null)
+            //        //{
+            //        //    entities.Add(cut);
+            //        //}
+
+            //        continue;
+            //    }
+
+
+            //    int placeIndex = place.FindIndex(el => el.Number == place[i].Number); //如果有重複的編號只會回傳第一個，以這個下去做比較。
+
+            //    if (placeIndex != i) //如果 i != 第一次出現的 index 代表需要使用複製
+            //    {
+            //        EntityList ent = new EntityList();
+            //        entities.
+            //            Where(el => el.GroupIndex == placeIndex).
+            //            ForEach(el =>
+            //            {
+            //                Entity copy = (Entity)el.Clone(); //複製物件
+            //                copy.GroupIndex = i;
+            //                copy.Translate(place[i].Start - place[placeIndex].Start, 0);
+            //                ent.Add(copy);
+            //            });
+            //        entities.AddRange(ent);
+            //    }
+
+            //    else
+            //    {
+            //        int partIndex = parts.FindIndex(el => el.Number == place[i].Number);
+
+            //        if (parts[partIndex].GUID.ToString() != "") //如果圖面檔案
+            //        {
+            //            int FindSameSteelBlockIndex = model.Blocks.FindIndex(el => el.Name == parts[partIndex].GUID.ToString());
+
+            //            Steel2DBlock steel2DBlock = new Steel2DBlock((devDept.Eyeshot.Entities.Mesh)model.Blocks[FindSameSteelBlockIndex].Entities[0], model.Blocks[FindSameSteelBlockIndex].Name);
+            //            drawing.Blocks.Add(steel2DBlock);
+            //            BlockReference block2D = new BlockReference(0, 0, 0, steel2DBlock.Name, 1, 1, 1, 0);//產生鋼構參考圖塊
+
+            //            //關閉三視圖用戶選擇
+            //            block2D.Selectable = false;
+            //            block2D.GroupIndex = i;
+            //            block2D.Translate(place[i].Start, 0);
+            //            block2D.Selectable = false;
+            //            entities.Add(block2D);//加入到暫存列表
+            //        }
+            //    }
+            //}
+            //drawing.Entities.Clear();
+            //drawing.Entities.AddRange(entities);
+            //ser.SetMaterialModel(materialNumber + "2D", drawing); //儲存素材
+            #endregion
+
         }
 
         private void GridSplitter_MouseMove(object sender, MouseEventArgs e)
         {
             model.ZoomFit();//設置道適合的視口
+            drawing.ZoomFit();//設置道適合的視口
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -753,14 +1085,6 @@ namespace STD_105.Office
             //  SaveModel();
         }
 
-
-
-
-
-
-
-
-
         private void PartListTableView_Loaded(object sender, RoutedEventArgs e)
         {
             ((DevExpress.Xpf.Grid.TableView)sender).FocusedRowHandle = DevExpress.Xpf.Grid.GridControl.InvalidRowHandle;
@@ -770,8 +1094,6 @@ namespace STD_105.Office
         {
             ((DevExpress.Xpf.Grid.TableView)sender).FocusedRowHandle = DevExpress.Xpf.Grid.GridControl.InvalidRowHandle;
         }
-
-
 
         private void ScrollOwner_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
@@ -816,16 +1138,6 @@ namespace STD_105.Office
                 Console.WriteLine(ex.ToString());
             }
         }
-
-
-
-
-
-
-
-
-
-
 
     }
 }

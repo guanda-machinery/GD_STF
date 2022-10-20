@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows;
+
 using WPFSTD105.ViewModel;
 using WPFSTD105.Attribute;
 using WPFSTD105.Tekla;
@@ -22,6 +23,9 @@ using Region = devDept.Eyeshot.Entities.Region;
 using devDept.Graphics;
 using devDept.Serialization;
 using GD_STD.Enum;
+using System.Windows.Media;
+using static DevExpress.Utils.Menu.DXMenuItemPainter;
+//using TriangleNet;
 
 namespace WPFSTD105.Model
 {
@@ -31,12 +35,13 @@ namespace WPFSTD105.Model
     public static class Expand
     {
         /// <summary>
-        /// 組合零件變成素材
+        /// 組合零件變成素材(3D)
         /// </summary>
         /// <param name="model"></param>
         /// <param name="materialNumber">素材編號</param>
-        public static void AssemblyPart(this devDept.Eyeshot.Model model, string materialNumber)
+        public static void AssemblyPart(this devDept.Eyeshot.Model model, string materialNumber )
         {
+
             model.Clear();
             STDSerialization ser = new STDSerialization(); //序列化處理器
             ObservableCollection<MaterialDataView> materialDataViews = ser.GetMaterialDataView(); //序列化列表
@@ -54,10 +59,10 @@ namespace WPFSTD105.Model
                 model.LoadNcToModel(guid[i]);
             }
 
-            EntityList entitys = new EntityList();
+
             var place = new List<(double Start, double End, bool IsCut, string Number)>();//放置位置參數
             place.Add((Start: 0, End: material.StartCut, IsCut: true, Number: "")); //素材起始切割物件
-            Debug.WriteLine($"Start = {place[place.Count -1].Start}, End : {place[place.Count-1].End}, IsCut : {place[place.Count-1].IsCut}");//除錯工具
+            Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
             for (int i = 0; i < material.Parts.Count; i++)
             {
                 int partIndex = parts.FindIndex(el => el.Number == material.Parts[i].PartNumber); //回傳要使用的陣列位置
@@ -67,14 +72,14 @@ namespace WPFSTD105.Model
                 }
                 else
                 {
-                    double startCurrent = place[place.Count-1].End,//當前物件放置起始點的座標
+                    double startCurrent = place[place.Count - 1].End,//當前物件放置起始點的座標
                                   endCurrent = startCurrent + parts[partIndex].Length;//當前物件放置結束點的座標
                     place.Add((Start: startCurrent, End: endCurrent, IsCut: false, Number: parts[partIndex].Number));
-                    Debug.WriteLine($"Start = {place[place.Count -1].Start}, End : {place[place.Count-1].End}, IsCut : {place[place.Count-1].IsCut}");//除錯工具
+                    Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
                     //計算切割物件
-                    double startCut = place[place.Count-1].End, //當前切割物件放置起始點的座標
+                    double startCut = place[place.Count - 1].End, //當前切割物件放置起始點的座標
                                   endCut;//當前切割物件放置結束點的座標
-                    if (i +1 >= material.Parts.Count) //下一次迴圈結束
+                    if (i + 1 >= material.Parts.Count) //下一次迴圈結束
                     {
                         endCut = material.LengthStr + material.StartCut + material.EndCut;//當前切割物件放置結束點的座標
                     }
@@ -83,7 +88,7 @@ namespace WPFSTD105.Model
                         endCut = startCut + material.Cut;//當前切割物件放置結束點的座標
                     }
                     place.Add((Start: startCut, End: endCut, IsCut: true, Number: "")); //素材零件位置
-                    Debug.WriteLine($"Start = {place[place.Count -1].Start}, End : {place[place.Count-1].End}, IsCut : {place[place.Count-1].IsCut}");//除錯工具
+                    Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
                 }
             }
             EntityList entities = new EntityList();
@@ -134,7 +139,6 @@ namespace WPFSTD105.Model
                         }
                         file.DoWork();
                         file.AddToScene(model);
-                        Point3D center = new Point3D();
                         Entity _entity = null;
                         SteelAttr _steelAttr = null;
                         model.Entities.ForEach(el =>
@@ -165,15 +169,15 @@ namespace WPFSTD105.Model
                         var maxBackFlip = Flip((Entity)_entity.Clone(), maxFunc, _steelAttr, 100, out double maxBackAngle1, out double maxBackAngle2, out double backMaxX, transformation);
                         var minFrontFlip = Flip((Entity)_entity.Clone(), minFunc, _steelAttr, -100, out double minFrontAngle1, out double minFrontAngle2, out double frontMinX, transformation);
                         var maxFrontFlip = Flip((Entity)_entity.Clone(), maxFunc, _steelAttr, 100, out double maxFrontAngle1, out double maxFrontAngle2, out double frontMaxX, transformation);
-                        if ((minBackFlip && minFrontFlip) || (maxBackFlip&& maxFrontFlip))
+                        if ((minBackFlip && minFrontFlip) || (maxBackFlip && maxFrontFlip))
                         {
                             if (minTopFlip || maxTopFlip)
                             {
                                 _steelAttr.StartAngle = minTopAngle1 == 0 ? minTopAngle2 : minTopAngle1;
                                 _steelAttr.EndAngle = maxTopAngle1 == 0 ? maxTopAngle2 : maxTopAngle1;
-                                if (_steelAttr.StartAngle > 90 ||  _steelAttr.EndAngle> 90)
+                                if (_steelAttr.StartAngle > 90 || _steelAttr.EndAngle > 90)
                                 {
-                                    Rotate(entities.Where(el => el.GroupIndex == i), (_entity.BoxMin + _entity.BoxMax)/ 2);
+                                    Rotate(entities.Where(el => el.GroupIndex == i), (_entity.BoxMin + _entity.BoxMax) / 2);
                                 }
                             }
                             else if (backMinX < frontMinX)
@@ -200,13 +204,13 @@ namespace WPFSTD105.Model
                             _steelAttr.StartAngle = minFrontAngle1 == 0 ? minFrontAngle2 : minFrontAngle1;
                             _steelAttr.EndAngle = maxFrontAngle1 == 0 ? maxFrontAngle2 : maxFrontAngle1;
                         }
-                        else if (minTopFlip   || maxTopFlip)
+                        else if (minTopFlip || maxTopFlip)
                         {
                             _steelAttr.StartAngle = minTopAngle1 == 0 ? minTopAngle2 : minTopAngle1;
                             _steelAttr.EndAngle = maxTopAngle1 == 0 ? maxTopAngle2 : maxTopAngle1;
-                            if (_steelAttr.StartAngle > 90 ||  _steelAttr.EndAngle> 90)
+                            if (_steelAttr.StartAngle > 90 || _steelAttr.EndAngle > 90)
                             {
-                                Rotate(entities.Where(el => el.GroupIndex == i), (_entity.BoxMin + _entity.BoxMax)/ 2);
+                                Rotate(entities.Where(el => el.GroupIndex == i), (_entity.BoxMin + _entity.BoxMax) / 2);
                             }
                         }
                     }
@@ -269,7 +273,10 @@ namespace WPFSTD105.Model
             //EntityList result =  entities.Where(el => !((BlockReference)el).Attributes.ContainsKey("Cut")).ToList();
             model.Entities.AddRange(entities);
             model.Entities.AddRange(resultSolid);
+            ser.SetMaterialModel(materialNumber, model); //儲存素材
+
         }
+
         private static void Rotate(IEnumerable<Entity> entities, Point3D origin)
         {
             entities.ForEach(el =>
@@ -437,7 +444,7 @@ namespace WPFSTD105.Model
             LinearPath profile = new LinearPath(point3Ds);
             devDept.Eyeshot.Entities.Region region1 = new devDept.Eyeshot.Entities.Region(profile, Plane.XY, false);
             Mesh result = region1.ExtrudeAsMesh<Mesh>(new Vector3D(0, 0, t), 0.25, Mesh.natureType.Plain);// 拉伸輪廓以創建新的devDept.Eyeshot.Entities.Mesh。
-            result.Color = Color.Gray;
+            result.Color = System.Drawing.Color.Gray;
             return result;
         }
 
