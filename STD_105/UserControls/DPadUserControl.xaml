@@ -169,8 +169,8 @@
         <Grid  Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" >
             <Grid.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource btn_3D_DirectionKey}">
-                    <Setter Property="Width" Value="90"/>
-                    <Setter Property="Height" Value="auto"/>
+                    <Setter Property="Width" Value="auto"/>
+                    <Setter Property="Height" Value="85"/>
                 </Style>
                 <Style TargetType="Line">
                     <Setter Property="StrokeThickness" Value="2"/>

@@ -39,7 +39,7 @@
                 CornerRadius="0" />
         <!--拖曳視窗區域-->
         <Grid Grid.ColumnSpan="2"
-              Background="Transparent">
+              Background="#e8e8e8">
             <Grid.InputBindings>
                 <MouseBinding MouseAction="LeftClick"
                               Command="{ Binding DragMoveWindowCommand }"
@@ -124,19 +124,36 @@
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Background" Value="Transparent"/>
-                        <Setter Property="BorderThickness" Value="0"/>
-
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Grid Background="{TemplateBinding Background}">
+                                        <Image Source="{ StaticResource Window_Close}" Width="14" />
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
                         <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" Value="#e81123" />
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#e81123"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Grid Background="{TemplateBinding Background}">
+                                                <Image Source="{ StaticResource Window_Close_Light  }" Width="14" />
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
                             </Trigger>
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
-                <Image Source="{ StaticResource Window_Close }"
-                       Width="14" />
             </Button>
-            
+
+
+
+
         </Grid>
         <Grid Grid.Row="1">
             <!--專案頭像-->
@@ -213,10 +230,8 @@
                             Value="20,0" />
                 </Style>
             </Grid.Resources>
-            <dxlc:ScrollBox Width="200"
-                            Style="{ StaticResource sbx_STD }">
-                <StackPanel Margin="0,0">
-                    <!--專案管理-->
+            <StackPanel Margin="10">
+                <!--專案管理-->
                     <Button Command="{ Binding ProjectManagerCommand }">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
@@ -310,7 +325,7 @@
                     <TextBlock Text="{ Binding ElementName=workArea, Path=Height}" />
                     <TextBlock Text="{ Binding ElementName=workArea, Path=Width}" />-->
                 </StackPanel>
-            </dxlc:ScrollBox>
+
         </Grid>
         <Grid Grid.Column="1" Background="#d3d3d3"
               Grid.Row="1"
