@@ -221,10 +221,10 @@ namespace STD_105
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Exception error = (Exception)e.ExceptionObject;
-            log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(error.Message + "\"" + DateTime.Now.ToString() + "\"", error.StackTrace);
+            log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(error.Message + "\n"+error.InnerException+ "\"" + DateTime.Now.ToString() + "\"", error.StackTrace);
             //MessageBox.Show($"{error.Message}", "軟體異常", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
             WinUIMessageBox.Show(null,
-            $"{error.Message}",
+            $"{error.Message}\n{error.InnerException.Message.ToString()}",
             "軟體異常",
             MessageBoxButton.OK,
             MessageBoxImage.Error,
@@ -233,10 +233,23 @@ namespace STD_105
             FloatingMode.Window);
             //MessageBox.Show("應用程式發生嚴重異常，應用程式即將退出！\n如持續發生錯誤，請聯繫廣達國際機械。", "軟體異常", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
             ApplicationViewModel.DisposeListening(); //釋放掉聆聽執行緒
-            CodesysMemor.Abort();
-            ReadCodesysMemor.Abort();
-            WriteCodesysMemor.Abort();
-            ReadDuplexMemory.Abort();
+            if (CodesysMemor != null)
+            {
+                CodesysMemor.Abort();
+            }
+            if (ReadCodesysMemor != null)
+            {
+                ReadCodesysMemor.Abort();
+            }
+            if (WriteCodesysMemor != null)
+            {
+                WriteCodesysMemor.Abort();
+            }
+            if (ReadDuplexMemory != null)
+            {            
+                ReadDuplexMemory.Abort();
+
+            }
         }
     }
 }

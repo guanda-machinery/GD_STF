@@ -17,6 +17,19 @@ using System.Diagnostics;
 //using WordToPdfService; //WORD to PDF by Office
 using System.IO;
 
+//using GrapeCity.Documents.Word; //by GrapeCity
+//using System.Drawing;
+//using GrapeCity.Documents.Word.Layout;
+//using System.IO.Compression;
+using System.IO;
+
+//using Syncfusion.DocIO; //Syncfusion
+//using Syncfusion.DocIO.DLS;
+//using Syncfusion.OfficeChart;
+//using Syncfusion.DocToPDFConverter;
+//using Syncfusion.OfficeChartToImageConverter;
+//using Syncfusion.Pdf;
+
 namespace WPFSTD105
 {
     /// <summary>

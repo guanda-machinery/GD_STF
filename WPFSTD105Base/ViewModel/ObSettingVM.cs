@@ -424,6 +424,14 @@ namespace WPFSTD105.ViewModel
             }
         }
         /// <summary>
+        /// 構件編號
+        /// </summary>
+        public string AssemblyNumberProperty { get; set; } = "";
+        /// <summary>
+        /// 零件編號
+        /// </summary>
+        public string PartNumberProperty { get; set; } = "";
+        /// <summary>
         /// 製品長度
         /// </summary>
         public double ProductLengthProperty { get; set; }
@@ -432,17 +440,75 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public double ProductWeightProperty { get; set; }
         /// <summary>
+        /// 製品數量
+        /// </summary>
+        public double ProductCountProperty { get; set; }
+        /// <summary>
+        /// 製品名稱
+        /// </summary>
+        public string ProductNameProperty { get; set; } = "";
+        /// <summary>
+        /// 製品材質
+        /// </summary>
+        public string ProductMaterialProperty { get; set; } = "";
+        /// <summary>
+        /// Phase
+        /// </summary>
+        public int? PhaseProperty { get; set; }
+        /// <summary>
+        /// 拆運
+        /// </summary>
+        public int? ShippingNumberProperty { get; set; }
+        /// <summary>
+        /// 標題一
+        /// </summary>
+        public string Title1Property { get; set; }
+        /// <summary>
+        /// 標題二
+        /// </summary>
+        public string Title2Property { get; set; }
+        /// <summary>
+        /// 型鋼類型
+        /// </summary>
+        public int SteelTypeProperty_int { get; set; }
+        /// <summary>
+        /// 型鋼類型
+        /// </summary>
+        public OBJECT_TYPE SteelTypeProperty_enum { get; set; }
+        /// <summary>
         /// 當前斷面規格
         /// </summary>
         public string SteelSectionProperty { get; set; } = "";
         /// <summary>
-        /// 零件編號
+        /// 高
         /// </summary>
-        public string PartNumberProperty { get; set; } = "";
+        public int HProperty { get; set; }
         /// <summary>
-        /// 構件編號
+        /// 寬
         /// </summary>
-        public string AssemblyNumberProperty { get; set; } = "";
+        public int WProperty { get; set; }
+        /// <summary>
+        /// 腹板厚度
+        /// </summary>
+        public int t1Property { get; set; }
+        /// <summary>
+        /// 翼板厚度
+        /// </summary>
+        public int t2Property { get; set; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /// <summary>
         /// 標示資料來源的flag：true表示由零件清單, false表示由手動選擇
         /// </summary>
@@ -1427,14 +1493,17 @@ namespace WPFSTD105.ViewModel
                                 steelAttrVM = new ProductSettingsPageViewModel();
                                 // 建立日期
                                 steelAttrVM.Creation = item.Creation;
+                                steelAttrVM.steelAttr.Creation = item.Creation;
                                 // 修改日期
                                 steelAttrVM.Revise = item.Revise;
+                                steelAttrVM.steelAttr.Revise = item.Revise;
                                 // Tekla構件ID
                                 steelAttrVM.TeklaAssemblyID = assemID.ToString();
                                 // 構件編號
                                 steelAttrVM.steelAttr.AsseNumber = assem;
+                                steelAttrVM.AssemblyNumber = assem;
                                 // 零件編號
-                                steelAttrVM.steelAttr.PartNumber = item.Number;
+                                steelAttrVM.steelAttr.PartNumber = item.Number;                                
                                 // 斷面規格
                                 string profile = item.Profile;
                                 steelAttrVM.steelAttr.Profile = profile;
@@ -1470,6 +1539,7 @@ namespace WPFSTD105.ViewModel
 
                                 steelAttrVM.Type = item.Type;
                                 steelAttrVM.steelAttr.Type = item.Type;
+
                                 steelAttrVM.SteelType = Convert.ToInt32(item.Type);
                                 // 材質
                                 string material = item.Material;
@@ -1514,6 +1584,7 @@ namespace WPFSTD105.ViewModel
                                 allowType.Contains(x.Type));
                                 //if (single != null)
                                 steelAttrVM.steelAttr.GUID = item.GUID;
+                                steelAttrVM.DataName = item.GUID.ToString();
                                 //partNumber_ID.Remove(delPart);
                                 steelAttrList.Add(steelAttrVM);
                                 #endregion
