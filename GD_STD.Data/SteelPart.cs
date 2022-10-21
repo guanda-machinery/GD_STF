@@ -56,6 +56,11 @@ namespace GD_STD.Data
             {
                 throw new ArgumentException($"'{nameof(count)}' 不得小於等於 0", nameof(count));
             }
+
+            if (profile == null)
+            {
+                throw new ArgumentException($"'{nameof(profile)}' 資料異常", nameof(profile));
+            }
             H = profile.H;
             W = profile.W;
             t1 = profile.t1;
@@ -123,7 +128,7 @@ namespace GD_STD.Data
         [TeklaBom(13)]
         public string DrawingName { get; set; }
         /// <inheritdoc/>
-        public int Count { get; private set; }
+        public int Count { get;  set; }//private
         /// <inheritdoc/>
         public List<int> Father { get; set; }
         /// <summary>

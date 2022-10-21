@@ -269,7 +269,7 @@ namespace WPFSTD105
                         column++;
                         foreach (int father in part.Father)
                         {
-                            sheet.Cells[row++, column].Value = father;
+                            sheet.Cells[row++, column++].Value = father;
                         }
                         rowList.Add(row);
                         row = rowList.Max() + 1;
