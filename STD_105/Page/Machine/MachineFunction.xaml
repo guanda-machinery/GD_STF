@@ -209,8 +209,8 @@
                             <Style BasedOn="{StaticResource rad_Hook1}" TargetType="RadioButton" />
                             <Style TargetType="Border">
                                 <Setter Property="BorderBrush" Value="{StaticResource solidclr_DimGray}" />
-                                <Setter Property="Height" Value="40" />
-                                <Setter Property="Width" Value="120" />
+                                <Setter Property="Height" Value="auto" />
+                                <Setter Property="Width" Value="auto" />
                             </Style>
                             <WPFBase:InverseLogicBoolConverter x:Key="InverseLogicBool"/>
                         </Grid.Resources>
@@ -230,28 +230,26 @@
                             <GroupBox Margin="10,5" Header="料架選擇" >
                                 <Grid HorizontalAlignment="Center">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
+                                        <ColumnDefinition />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <Border
-                            Grid.Column="0"
+                            Grid.Column="0"  
+                                        Grid.ColumnSpan="2"
                             Background="{StaticResource solidclr_DimGray}"
-                            BorderThickness="2,2,0,2"
-                            CornerRadius="20,0,0,20" />
-                                    <Border
-                            Grid.Column="1"
-                                Background="{StaticResource solidclr_DimGray}"
-                            BorderThickness="2"
-                            CornerRadius="0,20,20,0" />
+                            CornerRadius="50" />
                                     <!--<Border Grid.Column="2" CornerRadius="0,10,10,0" BorderThickness="0,2,2,2" Background="{ Binding ElementName=rad_Wheel, Path=IsChecked, Converter={ WPFBase:BoolToColorCodeConverter }}"/>-->
-                                    <RadioButton
+                                    <Border Grid.Column="1" BorderThickness="4,0,0,0"  Margin="-2,0,0,0" Width="auto" Height="auto" BorderBrush="#6f6f6f"/>
+                                    <RadioButton           
+                                        FontSize="25" Margin="30"
                             x:Name="rad_Entrance" 
                             Grid.Column="0"
                             Command="{Binding SelectEntranceRackCommand}"
-                            Content="入口料架"
+                            Content="入口料架" 
                             IsChecked="{Binding ApplicationViewModel.PanelButton.EntranceRack, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                             IsEnabled="{Binding EntranceReadOnly}" />
-                                    <RadioButton
+                                    <RadioButton 
+                                        FontSize="25" Margin="30"
                             x:Name="rad_Exit"
                             Grid.Column="1"
                             Command="{Binding SelectExportRackCommand}"
@@ -260,6 +258,7 @@
                             IsEnabled="{Binding ExportReadOnly}" />
                                     <!--<RadioButton x:Name="rad_Wheel" Grid.Column="2" Content="上浮滾輪"/>-->
                                 </Grid>
+                                
                             </GroupBox>
                             <StackPanel Grid.ColumnSpan="2"
                             HorizontalAlignment="Right"
@@ -287,6 +286,35 @@
                             IsChecked="{Binding RockSpeed}"
                             Style="{StaticResource speedDisplay}" />
                                     <Border Grid.Column="1" BorderThickness="1"  Width="auto" Height="auto" Margin="0"/>
+                                    <Grid  Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="64"/>
+                                        </Grid.RowDefinitions>
+                                        <Viewbox>
+                                            <Canvas Width="725" Height="1450">
+                                                <Path Data="M56.54,194.28h285.45c12.07,0,23.58,5.13,31.64,14.12L812.86,697.7c14.51,16.16,14.5,40.66-0.01,56.82                                      l-439.23,488.84c-8.06,8.98-19.56,14.1-31.63,14.1H56.46c-44.25,0-67.52-52.47-37.83-85.27l404.27-446.57L18.73,279.56                                      C-10.99,246.77,12.28,194.28,56.54,194.28z" Fill="{StaticResource solidclr_ButtonBlue}" />
+                                            </Canvas>
+                                        </Viewbox>
+
+                                        <Viewbox Grid.Column="1">
+                                            <Canvas   Width="725" Height="1450">
+                                                <Path Data="M56.54,194.28h285.45c12.07,0,23.58,5.13,31.64,14.12L812.86,697.7c14.51,16.16,14.5,40.66-0.01,56.82                                      l-439.23,488.84c-8.06,8.98-19.56,14.1-31.63,14.1H56.46c-44.25,0-67.52-52.47-37.83-85.27l404.27-446.57L18.73,279.56                                      C-10.99,246.77,12.28,194.28,56.54,194.28z" Fill="{StaticResource solidclr_ButtonBlue}" />
+                                            </Canvas>
+                                        </Viewbox>
+
+                                        <Viewbox  Grid.Column="2" >
+                                        <Canvas Width="725" Height="1450">
+                                                <Path Data="M56.54,194.28h285.45c12.07,0,23.58,5.13,31.64,14.12L812.86,697.7c14.51,16.16,14.5,40.66-0.01,56.82                                      l-439.23,488.84c-8.06,8.98-19.56,14.1-31.63,14.1H56.46c-44.25,0-67.52-52.47-37.83-85.27l404.27-446.57L18.73,279.56                                      C-10.99,246.77,12.28,194.28,56.54,194.28z" Fill="{StaticResource solidclr_ButtonBlue}" />
+                                            </Canvas>
+                                        </Viewbox>
+                                    </Grid>
+
+
                                 </Grid>
                             </GroupBox>
                             <Grid Grid.Column="0" Grid.Row="2" Margin="5,5">
@@ -560,14 +588,14 @@
                                 <local:DPadUserControl>
                                     <local:DPadUserControl.BorderChild_1_Source>
 
-                                        <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <Grid Margin="5"  VerticalAlignment="Center" HorizontalAlignment="Center">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="50"/>
+                                                <ColumnDefinition Width="35"/>
                                                 <ColumnDefinition  Width="100"/>
-                                                <ColumnDefinition  Width="50"/>
+                                                <ColumnDefinition  Width="35"/>
                                             </Grid.ColumnDefinitions>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="30"/>
                                                 <RowDefinition Height="60"/>
                                             </Grid.RowDefinitions>
                                             <Image Grid.Column="0" Grid.Row="1" Source="{StaticResource RedArrow_leftDrawingImage}" Width="30" HorizontalAlignment="Left"/>
@@ -578,12 +606,12 @@
 
                                         <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center" >
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="50"/>
+                                                <ColumnDefinition Width="35"/>
                                                 <ColumnDefinition  Width="100"/>
-                                                <ColumnDefinition  Width="50"/>
+                                                <ColumnDefinition  Width="35"/>
                                             </Grid.ColumnDefinitions>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="30"/>
                                                 <RowDefinition Height="60"/>
                                             </Grid.RowDefinitions>
                                             <Image Grid.Column="2" Grid.Row="1" Source="{StaticResource RedArrow_rightDrawingImage}" Width="30" HorizontalAlignment="Right"/>
@@ -594,12 +622,12 @@
 
                                         <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="50"/>
+                                                <ColumnDefinition Width="35"/>
                                                 <ColumnDefinition  Width="100"/>
-                                                <ColumnDefinition  Width="50"/>
+                                                <ColumnDefinition  Width="35"/>
                                             </Grid.ColumnDefinitions>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="30"/>
                                                 <RowDefinition Height="60"/>
                                             </Grid.RowDefinitions>
                                             <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_upDrawingImage}" Height="30" VerticalAlignment="Top"/>
@@ -610,12 +638,12 @@
 
                                         <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="50"/>
+                                                <ColumnDefinition Width="35"/>
                                                 <ColumnDefinition  Width="100"/>
-                                                <ColumnDefinition  Width="50"/>
+                                                <ColumnDefinition  Width="35"/>
                                             </Grid.ColumnDefinitions>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="30"/>
                                                 <RowDefinition Height="60"/>
                                             </Grid.RowDefinitions>
                                             <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_downDrawingImage}" Height="30" VerticalAlignment="Top"/>
@@ -741,7 +769,7 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <Image Source="{StaticResource Transport_by_RobotDrawingImage}" Width="100" Height="100"/>
+                    <Image Source="{StaticResource Transport_by_RobotDrawingImage}" Width="100" Height="100" />
                 </TabItem.Header>
                 <Border Background="#c0c0c0" Padding="10">
                     <Grid>
@@ -984,7 +1012,9 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <Image Source="{StaticResource ToolMagazine}" Height="100" Width="100"/>
+                    <Grid Height="100" Width="100">
+                        <Image Source="{StaticResource ToolMagazine}" Margin="10"/>
+                    </Grid>
                 </TabItem.Header>
                 <Border Background="#c0c0c0" Padding="10">
                     <Grid>
@@ -1005,9 +1035,9 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="B"  Width="60" TextAlignment="Center" Foreground ="Black" FontSize="80"/>
+                                    <TextBlock Grid.Column="0" Text="Ｂ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
 
-                                    <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}"/>
+                                    <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
                                 </Grid>
                             </local:JoystickUserControl.BorderChild_3_Source>
                             <local:JoystickUserControl.BorderChild_4_Source>
@@ -1016,9 +1046,9 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="C"  Width="60" TextAlignment="Center" Foreground ="Black" FontSize="80"/>
+                                    <TextBlock Grid.Column="0" Text="Ｃ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
 
-                                    <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}"/>
+                                    <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
                                 </Grid>
                             </local:JoystickUserControl.BorderChild_4_Source>
                             <local:JoystickUserControl.BorderChild_5_Source>
@@ -1027,9 +1057,9 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="D"  Width="60" TextAlignment="Center" Foreground ="Black" FontSize="80"/>
+                                    <TextBlock Grid.Column="0" Text="Ｄ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
 
-                                    <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}"/>
+                                    <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
                                 </Grid>
                             </local:JoystickUserControl.BorderChild_5_Source>
                             <local:JoystickUserControl.BorderChild_6_Source>
@@ -1038,23 +1068,22 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="E"  Width="60" TextAlignment="Center" Foreground ="Black" FontSize="80"/>
+                                    <TextBlock Grid.Column="0" Text="Ｅ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
 
-                                    <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}"/>
+                                    <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
                                 </Grid>
                             </local:JoystickUserControl.BorderChild_6_Source>
 
                         </local:JoystickUserControl >
                         <local:DPadUserControl Grid.Row="1" Margin="10"  DataContext="{StaticResource ToolMagazine_Dpad_Js_VM}">
                             <local:DPadUserControl.BorderChild_1_Source>
-                                <Grid Width="250">
+                                <Grid >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="OUT"  Width="auto" TextAlignment="Center" Foreground ="Black" FontSize="55"/>
-
-                                    <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}"/>
+                                    <TextBlock Grid.Column="0" Text="OUT"  Width="auto" TextAlignment="Right" Margin="0,0" Foreground ="Black" FontSize="45"/>
+                                    <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" HorizontalAlignment="Left" Margin="20,0"/>
                                 </Grid>
                             </local:DPadUserControl.BorderChild_1_Source>
                             <local:DPadUserControl.BorderChild_2_Source>
@@ -1063,9 +1092,9 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="IN"  Width="auto" TextAlignment="Center" Foreground ="Black" FontSize="55"/>
+                                    <TextBlock Grid.Column="0" Text="IN"  Width="auto" TextAlignment="Right" Margin="18,0" Foreground ="Black" FontSize="45"/>
 
-                                    <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}"/>
+                                    <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}"  HorizontalAlignment="Left" Margin="20,0"/>
                                 </Grid>
                             </local:DPadUserControl.BorderChild_2_Source>
 
@@ -1076,7 +1105,9 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <Image Source="{StaticResource Crumb_ConveyorDrawingImage}" MaxWidth="100" MaxHeight="100"/>
+                    <Grid Width="100" Height="100">
+                        <Image Source="{StaticResource Crumb_ConveyorDrawingImage}" Margin="10"/>
+                    </Grid>
                 </TabItem.Header>
                 <Border Background="#c0c0c0" Padding="10">
                     <Grid>
@@ -1096,12 +1127,12 @@
                         <local:DPadUserControl Grid.Row="1" Margin="10"  DataContext="{StaticResource Conveyor_Dpad_Js_VM}">
                             <local:DPadUserControl.BorderChild_1_Source>
                                 <Grid Width="250">
-                                    <Image  Grid.Column="1" Source="{StaticResource Crumb_Conveyor_plusDrawingImage}" Width="100"/>
+                                    <Image  Grid.Column="1" Source="{StaticResource Crumb_Conveyor_plusDrawingImage}" Width="80"/>
                                 </Grid>
                             </local:DPadUserControl.BorderChild_1_Source>
                             <local:DPadUserControl.BorderChild_2_Source>
                                 <Grid Width="200">
-                                    <Image  Grid.Column="1" Source="{StaticResource Crumb_Conveyor_minusDrawingImage}" Width="100"/>
+                                    <Image  Grid.Column="1" Source="{StaticResource Crumb_Conveyor_minusDrawingImage}" Width="80"/>
                                 </Grid>
                             </local:DPadUserControl.BorderChild_2_Source>
                             

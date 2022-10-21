@@ -28,33 +28,9 @@
         <dx:DXMessageBoxService/>
     </dxmvvm:Interaction.Behaviors>
 
-    <Grid>
-        <Grid.Resources>
-            <Style TargetType="Button">
-                <Setter Property="Cursor" Value="Hand" />
-                <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                <Setter Property="Background" Value="white"/>
-                <Setter Property="Foreground" Value="{StaticResource ForegroundMainBrush}"/>
-                <Setter Property="IsEnabled" Value="True"/>
-                <Setter Property="BorderBrush" Value="{x:Null}"/>
-                <Setter Property="FontSize" Value="20"/>
-                <Setter Property="BorderThickness" Value="0"/>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="AliceBlue"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-            <Style TargetType="TextBlock">
-                <Setter Property="FontWeight" Value="Bold" />
-                <Setter Property="FontSize" Value="16" />
-                <Setter Property="Foreground" Value="{ StaticResource solidclr_DimGray }" />
-            </Style>
-        </Grid.Resources>
-        <Button Command="{Binding ShowRegistrationFormCommand}" Background="WhiteSmoke">
-            <Button.Content>
-                <TextBlock Text="語言設定" />
-            </Button.Content>
-        </Button>
-    </Grid>
+    <Button Command="{Binding ShowRegistrationFormCommand}" Background="WhiteSmoke" Padding="5">
+        <Button.Content>
+            <TextBlock Text="語言設定" />
+        </Button.Content>
+    </Button>
 </UserControl>
