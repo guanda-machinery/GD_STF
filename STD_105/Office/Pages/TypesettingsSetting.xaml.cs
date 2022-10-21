@@ -755,12 +755,11 @@ namespace STD_105.Office
 
 
             //SaveModel();
-            // Draw();
             // model.SelectionChanged -= model.Model_SelectionChanged;
             // model.SelectionChanged += model.Model_SelectionChanged; 
         }
 
-          /// <summary>
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="model"></param>
