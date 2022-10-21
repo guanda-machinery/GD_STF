@@ -46,8 +46,9 @@ namespace WPFSTD105.Tekla
             /*else*/
             //圓棒以外再比較
             if (t <=0 && type != OBJECT_TYPE.RB && type != OBJECT_TYPE.Unknown && type != OBJECT_TYPE.L && type != OBJECT_TYPE.C)
-            { 
-                throw new Exception("t 不可以是 0。");
+            {
+                //throw new Exception("t 不可以是 0。");
+                return null;
             }
             List<NcPoint3D> result = new List<NcPoint3D>();
             foreach (var item in Parameter)

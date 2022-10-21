@@ -18,6 +18,7 @@ using WPFSTD105.ViewModel;
 using static GD_STD.SerializationHelper;
 using SectionData;
 using SplitLineSettingData;
+using DevExpress.XtraRichEdit.Import.OpenXml;
 
 namespace WPFSTD105
 {
@@ -346,7 +347,10 @@ namespace WPFSTD105
                 SelectedOnly = false,
                 Purge = true, Blocks = model.Blocks, Entities = model.Entities, 
             }, $@"{path}\{dataName}.dm", new FileSerializerExt());
-            writeFile.DoWork();//存取檔案
+             writeFile.DoWork();//存取檔案
+          
+
+
         }
         /// <summary>
         /// 存取單零件<see cref="devDept.Eyeshot.Model"/>

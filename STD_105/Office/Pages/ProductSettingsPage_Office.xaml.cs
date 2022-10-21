@@ -1099,7 +1099,7 @@ namespace STD_105.Office
                     return;
                 }
 
-                GetViewToViewModel(false);
+                GetViewToViewModel(false, ViewModel.SteelAttr.GUID);
 
                 /*3D螺栓*/
                 ViewModel.GroupBoltsAttr.GUID = Guid.NewGuid();
