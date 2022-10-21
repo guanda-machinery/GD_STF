@@ -102,36 +102,36 @@
                     <ColumnDefinition Width="600"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <GroupBox Grid.Column="0" Grid.Row="0"   Margin="5" Padding="0">
-                    <GroupBox.Header>
-                        <Grid Margin="9" Height="18">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="零件清單"  FontSize="16"></TextBlock>
-                            <TextBox Grid.Column="1" materialDesign:HintAssist.Hint="Search Tasks(Ctrl + F)" BorderBrush="#cfcfcf"
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <GroupBox Grid.Column="0" Grid.Row="0"   Margin="5" Padding="0">
+                <GroupBox.Header>
+                    <Grid Margin="9" Height="18">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="零件清單"  FontSize="16"></TextBlock>
+                        <TextBox Grid.Column="1" materialDesign:HintAssist.Hint="Search Tasks(Ctrl + F)" BorderBrush="#cfcfcf"
                                  Text="{Binding PartsSearchString, Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}" 
                                 FontSize="14" 
                                  MaxWidth="250" Width="150" HorizontalAlignment="Right" Margin="0" Padding="0" />
-                        </Grid>
-                    </GroupBox.Header>
-                    <Grid>
+                    </Grid>
+                </GroupBox.Header>
+                <Grid>
                             <Grid.Resources>
                                 <Style TargetType="dxg:GridColumn" >
                                     <Setter Property="MinWidth" Value="35"/>
                                     <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
                                     <Setter Property="AllowGrouping" Value="false"/>
                                 </Style>
-                                <Style TargetType="dxe:TextEditSettings">
-                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                </Style>
-                            </Grid.Resources>
+                        <Style TargetType="dxe:TextEditSettings">
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+
+                    </Grid.Resources>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"  />
                                 <ColumnDefinition Width="auto"/>
@@ -141,6 +141,7 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <dxg:GridControl   
+
                                 Name="PartsGridControl"
                                 AutoGenerateColumns="None"
                                 SelectionMode="MultipleRow"
@@ -148,9 +149,18 @@
                                 Height="365"
                                 ItemsSource="{Binding DataViews}">
                                 <dxg:GridControl.View >
-                                    <dxg:TableView  
+                            <dxg:TableView        
+                                AllowPaging="True"
+                                PageSize="30"
+                                IsColumnMenuEnabled ="False"
+                                AllowSorting="false"
+                                AllowColumnFiltering="False"
+                                AllowColumnMoving="False"                                 
+                               IsColumnChooserVisible="False"     
+                                
                                     Name="PartListTableView"
                                     Loaded="PartListTableView_Loaded"  
+                                        
                                     SearchString="{Binding PartsSearchString, Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"
                                     VerticalScrollbarVisibility="Disabled"
                                     HorizontalScrollbarVisibility="Auto"
@@ -158,14 +168,34 @@
                                     ShowSearchPanelMode="Never"
                                     ScrollViewer.ScrollChanged="ScrollOwner_ScrollChanged"
                                     SearchPanelNullText="Search Tasks(Ctrl + F)" 
-                                    SearchPanelFindMode="Always" ShowIndicator="False"
+                                    SearchPanelFindMode="Always" ShowIndicator="True" IndicatorWidth="20"
                                     SearchDelay="0">
-                                        <dxg:TableView.CellStyle>
-                                            <Style>
-                                                <Setter Property="TextBlock.FontSize" Value="12"/>
-                                            </Style>
-                                        </dxg:TableView.CellStyle>
-                                    </dxg:TableView>
+                                <dxg:TableView.CellStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.FontSize" Value="12"/>
+                                    </Style>
+                                </dxg:TableView.CellStyle>
+                                
+                                
+                                <dxg:TableView.RowIndicatorContentTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.Resources>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="TextAlignment" Value="Center"/>
+
+                                                    <Setter Property="FontSize" Value="12"/>
+                                                    <Setter Property="Foreground" Value="Gray"/>
+                                                </Style>
+                                            </Grid.Resources>
+                                            <TextBlock Text="{c:Binding RowHandle.Value +1}" Margin="1,0"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </dxg:TableView.RowIndicatorContentTemplate>
+
+
+
+                            </dxg:TableView>
                                 </dxg:GridControl.View>
                                 <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"    Header="構件編號" Width="120"/>
                                 <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="120" />
@@ -231,33 +261,51 @@
                                 </Button>
                             </StackPanel>
                             <dxg:GridControl   Grid.Column="2"
+
                                 Name="SoftGridControl"
                                 AutoGenerateColumns="None"
                                 SelectionMode="MultipleRow"
                                 SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                            MaxHeight="365"    
                                 ItemsSource="{Binding DataViews}">
-                                <dxg:GridControl.View >
-                                    <dxg:TableView  
-                                        Name="SoftCountTableView"
+                        <dxg:GridControl.View >
+                            <dxg:TableView  
+                                        AllowPaging ="True"    
+                                        PageSize="{Binding PageSize, ElementName=PartListTableView}"    
+                                        CurrentPageIndex="{Binding CurrentPageIndex,ElementName=PartListTableView,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                        IsColumnMenuEnabled ="False"
+                                        AllowSorting="false"
+                                        AllowColumnFiltering="False"
+                                        AllowColumnMoving="False"                                            
+                                        IsColumnChooserVisible="False"     
+                     
+                                    Name="SoftCountTableView"
                                     Loaded="SoftCountTableView_Loaded"  
-                                    SearchString="{Binding
-                                        PartsSearchString, Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"
+                                    SearchString="{Binding PartsSearchString, Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"
                                     VerticalScrollbarVisibility="Visible"
                                     HorizontalScrollbarVisibility="Disabled"
                                     ShowGroupPanel="False"
                                     ShowSearchPanelMode="Never"
                                     ScrollViewer.ScrollChanged="ScrollOwner_ScrollChanged"
                                     SearchPanelNullText="Search Tasks(Ctrl + F)" 
-                                    SearchPanelFindMode="Always" ShowIndicator="False"
+                                    SearchPanelFindMode="Always" 
+                                ShowIndicator="False"
+                            
                                     SearchDelay="0">
                                         <dxg:TableView.CellStyle>
-                                            <Style>
-                                                <Setter Property="TextBlock.FontSize" Value="12"/>
-                                            </Style>
+                                    <Style>
+                                        <Setter Property="TextBlock.FontSize" Value="12"/>
+                                    </Style>
                                         </dxg:TableView.CellStyle>
+                                <dxg:TableView.Resources>
+                                    <Style TargetType="dxe:PagerControl">
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                    </Style>
+                                </dxg:TableView.Resources>
                                     </dxg:TableView>
-                                </dxg:GridControl.View>
+
+
+                        </dxg:GridControl.View>
                                 <dxg:GridColumn FieldName="SortCount" Width="60" AllowResizing="false" AllowMoving="false"  IsSmart="True"  Header="預排數量"    />
                                 <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"    Header="構件編號" Width="120"/>
                                 <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="120" />
@@ -638,6 +686,12 @@
                         MinHeight="200"  MaxHeight="1000">
                         <dxg:GridControl.View >
                             <dxg:TableView 
+                                IsColumnMenuEnabled ="False"
+                                AllowSorting="false"
+                                AllowColumnFiltering="False"
+                                AllowColumnMoving="False"                                 
+                               IsColumnChooserVisible="False"     
+                                
                                 SearchString="{Binding MaterialGridSearchString , Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}" 
                                 Loaded="Material_List_TableView_Loaded"
                                 VerticalScrollbarVisibility="Visible"
@@ -844,7 +898,7 @@
                                                             ShowTotalSummary="False" 
                                                             ShowGroupPanel="False"
                                                             AutoWidth="True" 
-                                                            ShowHorizontalLines="True" IndicatorWidth="40" ShowIndicator="True" 
+                                                            ShowHorizontalLines="True" IndicatorWidth="40" ShowIndicator="True"  
                                                             ShowVerticalLines="True"  
                                                             HorizontalScrollbarVisibility="Auto"
                                                             VerticalScrollbarVisibility="Auto">
@@ -1291,11 +1345,13 @@
                 </TabControl>                
                 <!--  <Border BorderThickness="0,0,1.5,0" BorderBrush="gray" Margin="0,5,-1,5" Opacity="0.7"></Border>-->
                 <!-- 可調整邊界拉柄(透明)-->
-                <GridSplitter Grid.Row="0" Grid.Column="0" Background="Transparent" Grid.RowSpan="2" HorizontalAlignment="Right"   VerticalAlignment="Stretch" Width="10"  Margin="-5" MouseMove="GridSplitter_MouseMove" />
+            <GridSplitter Grid.Row="0" Grid.Column="0" Background="Gray" Grid.RowSpan="2" HorizontalAlignment="Right"   VerticalAlignment="Stretch" Width="4"  Margin="-2,-5" MouseMove="GridSplitter_MouseMove"/>
 
-                
-                
-            </Grid>
+
+
+
+
+        </Grid>
         </Grid>
 
 

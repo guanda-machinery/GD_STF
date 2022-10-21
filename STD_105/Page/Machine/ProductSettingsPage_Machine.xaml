@@ -222,6 +222,12 @@
                         </dxg:GridControl.Resources>
                         <dxg:GridControl.View >
                             <dxg:TableView VerticalScrollbarVisibility="Visible" Margin="0,-1"
+                                                                           
+                                       IsColumnMenuEnabled ="False"
+                                       AllowSorting="false"
+                                       AllowColumnFiltering="False"
+                                       AllowColumnMoving="False"
+                                       
                                       HeaderPosition="SearchPanel"
                                        ShowGroupPanel="False"
                                        ShowSearchPanelMode="Always"

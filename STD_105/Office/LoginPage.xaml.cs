@@ -104,8 +104,8 @@ namespace STD_105.Office
             }
             catch (Exception)
             {
-                info.Content = "帳號錯誤";
-                info.Visibility = Visibility.Visible;
+               // info.Content = "帳號錯誤";
+               // info.Visibility = Visibility.Visible;
             }
 
             //OfficeBaseWindow window = new OfficeBaseWindow();
@@ -137,7 +137,7 @@ namespace STD_105.Office
 
             #region 2022/10/20 純測試用 可連線到其他電腦模擬進行測試 但須將CodesysIIS架設在iss上，並開啟WCF服務>HTTP
             //參考資料：https://dotblogs.com.tw/stanley14/2016/06/23/095523
-            /*var TestServerIp = "192.168.31.128";
+            var TestServerIp = "192.168.31.128";
             var Port = 63506;
 
             IPEndPoint tIPEndPoint = new IPEndPoint(IPAddress.Parse(TestServerIp), Port);
@@ -154,8 +154,10 @@ namespace STD_105.Office
                 Open();
 
                 DataContext = new LoginVM();
-                return;
-            }*/
+                return true;
+            }
+
+
             #endregion
             if (DetectIIS(WPFSTD105.Properties.SofSetting.Default.Address))
             {
@@ -244,6 +246,7 @@ namespace STD_105.Office
 
             manager.Show(this, ViewModel.StartupLocation, ViewModel.TrackOwnerPosition, ViewModel.InputBlock);
 
+            viewModel.Status = "啟動中 ...";
             //Open();
             if (CommonViewModel.GetType() == typeof(ApplicationVM)) //如果是工程模式
             {

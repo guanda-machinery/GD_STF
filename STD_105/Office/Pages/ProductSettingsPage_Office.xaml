@@ -168,6 +168,12 @@
                     </dxg:GridControl.Resources>
                     <dxg:GridControl.View >
                         <dxg:TableView VerticalScrollbarVisibility="Visible"
+                                       IsColumnMenuEnabled ="False"
+                                       AllowSorting="false"
+                                       AllowColumnFiltering="False"
+                                       AllowColumnMoving="False"
+                                       
+                                       
                                        ShowGroupPanel="False"
                                        ShowSearchPanelMode="Always"
                                        SearchPanelNullText="Search Tasks(Ctrl + F)" 
@@ -192,6 +198,7 @@
                             </dxg:TableView.Header>
                         </dxg:TableView>
                     </dxg:GridControl.View>
+
                     <dxg:GridColumn Name="Exc_GridColumn" FieldName="ExclamationMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                         <dxg:GridColumn.HeaderImageStyle>
                             <Style TargetType="Image">

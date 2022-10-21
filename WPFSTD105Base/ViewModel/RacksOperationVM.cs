@@ -14,22 +14,14 @@ namespace WPFSTD105.ViewModel
     /// </summary>
     public class RacksOperationVM : WPFWindowsBase.BaseViewModel
     {
-        private bool rockSpeed;
-        private bool openRoll;
+        private bool _rockSpeed;
+        private bool _openRoll;
 
         /// <summary>
         /// 標準建構式
         /// </summary>
         public RacksOperationVM()
         {
-            MoveCommand = Move();
-            RiseCommand = Rise();
-            SelectCountCommand = SelectCount();
-            SelectExportRackCommand = SelectExportRack();
-            SelectEntranceRackCommand = SelectEntranceRack();
-            RollerCommand = Roller();
-            EntranceReadOnly = GD_STD.Properties.Optional.Default.EntranceTraverseNumber != 0;
-            ExportReadOnly = GD_STD.Properties.Optional.Default.ExportTraverseNumber != 0;
             PanelButton panelButton = ApplicationViewModel.PanelButton;
             //如果都沒有選擇出入或口料架
             if (!panelButton.EntranceRack && !panelButton.ExportRack)
@@ -57,23 +49,35 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public bool OpenRoll
         {
-            get => openRoll;
+            get => _openRoll;
             set
             {
                 PanelButton panel = ApplicationViewModel.PanelButton;
                 panel.OpenRoll = value;
-                openRoll = value;
+                _openRoll = value;
                 WriteCodesysMemor.SetPanel(panel);
             }
         }
         /// <summary>
         /// 入口料架唯讀狀態
         /// </summary>
-        public bool EntranceReadOnly { get; set; } = false;
+        public bool EntranceReadOnly 
+        { 
+            get
+            {
+                return GD_STD.Properties.Optional.Default.EntranceTraverseNumber !=0;
+            }
+        } 
         /// <summary>
         /// 出口料架唯讀狀態
         /// </summary>
-        public bool ExportReadOnly { get; set; } = false;
+        public bool ExportReadOnly
+        {
+            get 
+            {
+                return GD_STD.Properties.Optional.Default.ExportTraverseNumber != 0;
+            }
+        }
         /// <summary>
         /// 料架速度 低速 return false 高速 return true 
         /// </summary>
@@ -81,7 +85,7 @@ namespace WPFSTD105.ViewModel
         {
             get
             {
-                return rockSpeed;
+                return _rockSpeed;
             }
             set
             {
@@ -89,7 +93,7 @@ namespace WPFSTD105.ViewModel
 
                 panel.HighSpeed = value;
                 WriteCodesysMemor.SetPanel(panel);
-                rockSpeed = value;
+                _rockSpeed = value;
             }
         }
 
@@ -153,124 +157,112 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 動力滾輪命令
         /// </summary>
-        public WPFWindowsBase.RelayParameterizedCommand RollerCommand { get; set; }
-        /// <summary>
-        /// 動力滾輪
-        /// </summary>
-        /// <returns></returns>
-        public WPFWindowsBase.RelayParameterizedCommand Roller()
+        public WPFWindowsBase.RelayParameterizedCommand RollerCommand
         {
-            return new WPFWindowsBase.RelayParameterizedCommand(el =>
+            get
             {
-                PanelButton panelButton = ApplicationViewModel.PanelButton;
-                panelButton.RollMove = (MOBILE_RACK)el;
-                if (panelButton.RollMove == MOBILE_RACK.NULL)
+                return new WPFWindowsBase.RelayParameterizedCommand(el =>
                 {
-                    panelButton.Clutch = false;
+                    PanelButton panelButton = ApplicationViewModel.PanelButton;
+                    panelButton.RollMove = (MOBILE_RACK)el;
+                    if (panelButton.RollMove == MOBILE_RACK.NULL)
+                    {
+                        panelButton.Clutch = false;
 
-                }
-                else
-                {
-                    panelButton.Clutch = true;
-                }
-                WriteCodesysMemor.SetPanel(panelButton);
-            });
+                    }
+                    else
+                    {
+                        panelButton.Clutch = true;
+                    }
+                    WriteCodesysMemor.SetPanel(panelButton);
+                });
+            }
         }
+        /// <summary>
+        /// 選擇入口料架命令
+        /// </summary>
+        public WPFWindowsBase.RelayCommand SelectExportRackCommand { get
+            {
+                return new WPFWindowsBase.RelayCommand(() =>
+                {
+                    PanelButton panelButton = ApplicationViewModel.PanelButton;
+                    panelButton.ExportRack = true;
+                    panelButton.EntranceRack = false;
+
+                    WriteCodesysMemor.SetPanel(panelButton);
+                });
+            }
+        }
+
         /// <summary>
         /// 選擇出口料架命令
         /// </summary>
-        public WPFWindowsBase.RelayCommand SelectExportRackCommand { get; set; }
-        /// <summary>
-        /// 選擇出口料架
-        /// </summary>
-        /// <returns></returns>
-        public WPFWindowsBase.RelayCommand SelectExportRack()
-        {
-            return new WPFWindowsBase.RelayCommand(() =>
+        public WPFWindowsBase.RelayCommand SelectEntranceRackCommand 
+        { 
+            get
             {
-                PanelButton panelButton = ApplicationViewModel.PanelButton;
-                panelButton.ExportRack = true;
-                panelButton.EntranceRack = false;
+                return new WPFWindowsBase.RelayCommand(() =>
+                {
+                    PanelButton panelButton = ApplicationViewModel.PanelButton;
+                    panelButton.ExportRack = false;
+                    panelButton.EntranceRack = true;
+                    WriteCodesysMemor.SetPanel(panelButton);
+                });
+            }
+        }
 
-                WriteCodesysMemor.SetPanel(panelButton);
-            });
-        }
-        /// <summary>
-        /// 選擇出口料架命令
-        /// </summary>
-        public WPFWindowsBase.RelayCommand SelectEntranceRackCommand { get; set; }
-        /// <summary>
-        /// 選擇出口料架
-        /// </summary>
-        /// <returns></returns>
-        public WPFWindowsBase.RelayCommand SelectEntranceRack()
-        {
-            return new WPFWindowsBase.RelayCommand(() =>
-            {
-                PanelButton panelButton = ApplicationViewModel.PanelButton;
-                panelButton.ExportRack = false;
-                panelButton.EntranceRack = true;
-                WriteCodesysMemor.SetPanel(panelButton);
-            });
-        }
         /// <summary>
         /// 橫移料架上升
         /// </summary>
-        public WPFWindowsBase.RelayParameterizedCommand RiseCommand { get; set; }
-        /// <summary>
-        /// 移動料架上升
-        /// </summary>
-        /// <returns></returns>
-        public WPFWindowsBase.RelayParameterizedCommand Rise()
+        public WPFWindowsBase.RelayParameterizedCommand RiseCommand
         {
-            return new WPFWindowsBase.RelayParameterizedCommand(el =>
+            get
             {
-                int value = Convert.ToInt32(el);
-                int rise = RiseLevel + value;
-                if (rise >= 0 && rise <= 2)
+                return new WPFWindowsBase.RelayParameterizedCommand(el =>
                 {
-                    RiseLevel += value;
-                    PanelButton panelButton = ApplicationViewModel.PanelButton;
-                    panelButton.Traverse_Shelf_UP = (SHELF)RiseLevel;
-                    WriteCodesysMemor.SetPanel(panelButton);
-                }
-            });
+                    int value = Convert.ToInt32(el);
+                    int rise = RiseLevel + value;
+                    if (rise >= 0 && rise <= 2)
+                    {
+                        RiseLevel += value;
+                        PanelButton panelButton = ApplicationViewModel.PanelButton;
+                        panelButton.Traverse_Shelf_UP = (SHELF)RiseLevel;
+                        WriteCodesysMemor.SetPanel(panelButton);
+                    }
+                });
+            }
         }
         /// <summary>
         /// 橫移料架往前移動
         /// </summary>
-        public WPFWindowsBase.RelayParameterizedCommand MoveCommand { get; set; }
-        /// <summary>
-        /// 移動料架移動
-        /// </summary>
-        /// <returns></returns>
-        public WPFWindowsBase.RelayParameterizedCommand Move()
+        public WPFWindowsBase.RelayParameterizedCommand MoveCommand
         {
-            return new WPFWindowsBase.RelayParameterizedCommand(el =>
+            get
             {
-                PanelButton panelButton = ApplicationViewModel.PanelButton;
-                MoveFrontState = !MoveFrontState;
-                panelButton.Move_OutSide = (MOBILE_RACK)el;
-                WriteCodesysMemor.SetPanel(panelButton);
-            });
+                return new WPFWindowsBase.RelayParameterizedCommand(el =>
+                {
+                    PanelButton panelButton = ApplicationViewModel.PanelButton;
+                    MoveFrontState = !MoveFrontState;
+                    panelButton.Move_OutSide = (MOBILE_RACK)el;
+                    WriteCodesysMemor.SetPanel(panelButton);
+                });
+            }
         }
         /// <summary>
         /// 選擇橫移料架數量命令
         /// </summary>
-        public WPFWindowsBase.RelayCommand SelectCountCommand { get; set; }
-        /// <summary>
-        /// 選擇橫移料架數量
-        /// </summary>
-        /// <returns></returns>
-        public WPFWindowsBase.RelayCommand SelectCount()
+        public WPFWindowsBase.RelayCommand SelectCountCommand
         {
-            return new WPFWindowsBase.RelayCommand(() =>
+            get
             {
-                PanelButton panelButton = ApplicationViewModel.PanelButton;
-                panelButton.Count = CountResult(panelButton.Count, panelButton.EntranceRack ? GD_STD.Properties.Optional.Default.EntranceTraverseNumber : GD_STD.Properties.Optional.Default.ExportTraverseNumber);
-                CurrentValue = panelButton.Count;
-                WriteCodesysMemor.SetPanel(panelButton);
-            });
+                return new WPFWindowsBase.RelayCommand(() =>
+                {
+                    PanelButton panelButton = ApplicationViewModel.PanelButton;
+                    panelButton.Count = CountResult(panelButton.Count, panelButton.EntranceRack ? GD_STD.Properties.Optional.Default.EntranceTraverseNumber : GD_STD.Properties.Optional.Default.ExportTraverseNumber);
+                    CurrentValue = panelButton.Count;
+                    WriteCodesysMemor.SetPanel(panelButton);
+                });
+            }
         }
         #endregion
 

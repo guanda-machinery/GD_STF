@@ -180,6 +180,7 @@
                         <Style TargetType="dxe:TextEditSettings">
                             <Setter Property="HorizontalContentAlignment" Value="Center"/>
                         </Style>
+
                     </Grid.Resources>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"  />
@@ -197,7 +198,14 @@
                                 Height="365"
                                 ItemsSource="{Binding DataViews}">
                         <dxg:GridControl.View >
-                            <dxg:TableView  
+                            <dxg:TableView            
+                                PageSize="30"
+                                AllowPaging="True"
+                                IsColumnMenuEnabled ="False"
+                               AllowSorting="false"
+                               AllowColumnFiltering="False"
+                               AllowColumnMoving="False"
+                                       
                                     Name="PartListTableView"
                                     Loaded="PartListTableView_Loaded"  
                                     SearchString="{Binding PartsSearchString, Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"
@@ -207,13 +215,28 @@
                                     ShowSearchPanelMode="Never"
                                     ScrollViewer.ScrollChanged="ScrollOwner_ScrollChanged"
                                     SearchPanelNullText="Search Tasks(Ctrl + F)" 
-                                    SearchPanelFindMode="Always" ShowIndicator="False"
+                                    SearchPanelFindMode="Always" ShowIndicator="True" IndicatorWidth="30"
                                     SearchDelay="0">
                                 <dxg:TableView.CellStyle>
                                     <Style>
                                         <Setter Property="TextBlock.FontSize" Value="12"/>
                                     </Style>
                                 </dxg:TableView.CellStyle>
+                                <dxg:TableView.RowIndicatorContentTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.Resources>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="TextAlignment" Value="Center"/>
+
+                                                    <Setter Property="FontSize" Value="12"/>
+                                                    <Setter Property="Foreground" Value="Gray"/>
+                                                </Style>
+                                            </Grid.Resources>
+                                            <TextBlock Text="{c:Binding RowHandle.Value +1}" Margin="1,0"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </dxg:TableView.RowIndicatorContentTemplate>
                             </dxg:TableView>
                         </dxg:GridControl.View>
                         <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"    Header="構件編號" Width="1.5*"/>
@@ -234,13 +257,10 @@
                         <dxg:GridColumn FieldName="AlreadyMatedMaterialCounts" IsSmart="True"  Width="*" Header="已配對"  />
                         <dxg:GridColumn Visible="False" FieldName="SortCount" Width="60" AllowResizing="false" AllowMoving="false"  IsSmart="True"  Header="預排數量"    />
                     </dxg:GridControl>
+
                     <StackPanel HorizontalAlignment="Center"  Margin="0,-38,0,0" Width="80"
                                         Grid.Column="1"
-                                        Background="#292929"  />
-                    <StackPanel HorizontalAlignment="Center"  Margin="0,0,0,0" Width="80"
-                                        Grid.Column="1"
                                         Background="#292929"  >
-
                         <!--{Binding ElementName= PartsGridControl , Converter={STD105:GridControlWidthConvert} ,ConverterParameter='SortCountGridColumnSpace' , UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True , NotifyOnTargetUpdated=True}"-->
                         <StackPanel.Resources>
                             <Style TargetType="TextBlock">
@@ -250,11 +270,9 @@
                             </Style>
 
                         </StackPanel.Resources>
-                        <StackPanel Margin="0,5"/>
-                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,40,0,0">
                             <TextBlock Text="加入素材" Margin="0,0,0,2.5" Foreground="White"/>
                         </StackPanel>
-
                         <Button Margin="10,5" Command="{Binding AddMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}">
                             <Button.Content>
                                 <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Width="28"/>
@@ -276,6 +294,16 @@
                                 ItemsSource="{Binding DataViews}">
                         <dxg:GridControl.View >
                             <dxg:TableView  
+                                                                        
+                                        AllowPaging ="True"    
+                                        PageSize="{Binding PageSize, ElementName=PartListTableView}"    
+                                        CurrentPageIndex="{Binding CurrentPageIndex,ElementName=PartListTableView,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                
+                                        IsColumnMenuEnabled ="False"
+                                       AllowSorting="false"
+                                       AllowColumnFiltering="False"
+                                       AllowColumnMoving="False"
+                                                                      
                                         Name="SoftCountTableView"
                                     Loaded="SoftCountTableView_Loaded"  
                                     SearchString="{Binding
@@ -293,6 +321,11 @@
                                         <Setter Property="TextBlock.FontSize" Value="12"/>
                                     </Style>
                                 </dxg:TableView.CellStyle>
+                                <dxg:TableView.Resources>
+                                    <Style TargetType="dxe:PagerControl">
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                    </Style>
+                                </dxg:TableView.Resources>
                             </dxg:TableView>
                         </dxg:GridControl.View>
                         <dxg:GridColumn FieldName="SortCount" Width="60" AllowResizing="false" AllowMoving="false"  IsSmart="True"  Header="預排數量"    />
@@ -474,9 +507,14 @@
                         MinHeight="200"  MaxHeight="500">
                             <dxg:GridControl.View >
                                 <dxg:TableView 
-                                Loaded="Material_List_TableView_Loaded"
+                                       
+                                    IsColumnMenuEnabled ="False"
+                                    AllowSorting="false"
+                                    AllowColumnFiltering="False"
+                                    AllowColumnMoving="False"           
+                                    Loaded="Material_List_TableView_Loaded"
                                     VerticalScrollbarVisibility="Visible"
-                                HorizontalScrollbarVisibility="Auto"
+                                    HorizontalScrollbarVisibility="Auto"
                                     HeaderPosition="SearchPanel"
                                     ShowGroupPanel="False"
                                     ShowSearchPanelMode="Always"
@@ -666,10 +704,16 @@
                                                         </dxg:GridControl.Resources>
                                                         <dxg:GridControl.View>
                                                             <dxg:TableView 
-                                                            ShowTotalSummary="False" 
-                                                            ShowGroupPanel="False"
-                                                            AutoWidth="True" 
-                                                            ShowHorizontalLines="True" IndicatorWidth="40" ShowIndicator="True" 
+                                                   
+                                                                IsColumnMenuEnabled ="False"
+                                                                AllowSorting="false"
+                                                                AllowColumnFiltering="False"
+                                                                AllowColumnMoving="False"
+                                                                ShowTotalSummary="False" 
+                                                                ShowGroupPanel="False"
+                                                                AutoWidth="True" 
+                                                                ShowHorizontalLines="True"
+                                                                IndicatorWidth="40" ShowIndicator="True" 
                                                             ShowVerticalLines="True"  
                                                             HorizontalScrollbarVisibility="Auto"
                                                             VerticalScrollbarVisibility="Auto">
