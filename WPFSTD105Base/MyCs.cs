@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DevExpress.CodeParser;
+using DevExpress.Diagram.Core.Shapes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +15,7 @@ namespace WPFSTD105
 
         }
 
+      
 
         /// <summary>
         /// 字串除法轉換
@@ -38,7 +41,19 @@ namespace WPFSTD105
 
 
 
+        public class assemblyPos
+        {
+           public double Start { set; get; }
+           public double End { set; get; }
+           public bool IsCut { set; get; }
+           public string Number { set; get; }
+        }
+
+
+
     }
+
+
 
 
 
