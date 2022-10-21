@@ -685,7 +685,9 @@
                         ItemsSource="{Binding MaterialDataViews}"
                         MinHeight="200"  MaxHeight="1000">
                         <dxg:GridControl.View >
-                            <dxg:TableView 
+                        <dxg:TableView                                   
+                            AllowPaging="True"
+                                PageSize="50"
                                 IsColumnMenuEnabled ="False"
                                 AllowSorting="false"
                                 AllowColumnFiltering="False"

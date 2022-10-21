@@ -137,7 +137,7 @@ namespace STD_105.Office
 
             #region 2022/10/20 純測試用 可連線到其他電腦模擬進行測試 但須將CodesysIIS架設在iss上，並開啟WCF服務>HTTP
             //參考資料：https://dotblogs.com.tw/stanley14/2016/06/23/095523
-            var TestServerIp = "192.168.31.128";
+            /*var TestServerIp = "192.168.31.128";
             var Port = 63506;
 
             IPEndPoint tIPEndPoint = new IPEndPoint(IPAddress.Parse(TestServerIp), Port);
@@ -155,7 +155,7 @@ namespace STD_105.Office
 
                 DataContext = new LoginVM();
                 return true;
-            }
+            }*/
 
 
             #endregion
