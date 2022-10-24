@@ -685,6 +685,7 @@
                                                 <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,5,0" >
                                                     <dxg:GridControl Name="ComponentGridControl" ItemsSource="{Binding Path =Parts}" 
                                                          AutoGenerateColumns="None" 
+                                                                     SelectionMode="Row"
                                                          IsEnabled="{Binding ButtonEnable}"
                                                          MinHeight="40" 
                                                          MaxHeight="110" 

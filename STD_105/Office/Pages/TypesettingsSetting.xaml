@@ -176,7 +176,6 @@
                                     </Style>
                                 </dxg:TableView.CellStyle>
                                 
-                                
                                 <dxg:TableView.RowIndicatorContentTemplate>
                                     <DataTemplate>
                                         <Grid>
@@ -685,15 +684,13 @@
                         ItemsSource="{Binding MaterialDataViews}"
                         MinHeight="200"  MaxHeight="1000">
                         <dxg:GridControl.View >
-                        <dxg:TableView                                   
-                            AllowPaging="True"
-                                PageSize="50"
+                        <dxg:TableView         
                                 IsColumnMenuEnabled ="False"
                                 AllowSorting="false"
                                 AllowColumnFiltering="False"
                                 AllowColumnMoving="False"                                 
-                               IsColumnChooserVisible="False"     
-                                
+                                IsColumnChooserVisible="False"     
+  
                                 SearchString="{Binding MaterialGridSearchString , Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}" 
                                 Loaded="Material_List_TableView_Loaded"
                                 VerticalScrollbarVisibility="Visible"
@@ -864,6 +861,7 @@
                             <dxg:ContentDetailDescriptor>
                                 <dxg:ContentDetailDescriptor.ContentTemplate >
                                     <DataTemplate>
+                                        
                                         <Grid Margin="6">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"  MinWidth="320"/>
@@ -874,11 +872,12 @@
                                             </Grid.RowDefinitions>
                                             <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,5,0" >
                                                 <dxg:GridControl Name="ComponentGridControl" ItemsSource="{Binding Path =Parts}" 
-                                                                 
+                                                  
                                                          AutoGenerateColumns="None" 
                                                          IsEnabled="{Binding ButtonEnable}"
                                                          MinHeight="40" 
                                                          MaxHeight="110" 
+                                                                 
                                                          Height="auto">
                                                     <dxg:GridControl.Resources>
                                                         <Style TargetType="dxg:GridColumnHeader">
@@ -945,7 +944,7 @@
                                             </dxg:GridControl>
                                             <StackPanel Orientation="Horizontal">
                                             <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
-                                                <Button >
+                                                    <Button>
                                                     <Button.Content>
                                                         <Grid>
                                                             <Grid.ColumnDefinitions>
@@ -961,7 +960,10 @@
                                                 <TextBlock Text="加入新零件" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                             </StackPanel>
                                             <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
-                                                <Button >
+                                                    <Button 
+                                                        IsEnabled="{Binding ButtonEnable}"
+                                                        Command="{Binding DeletePartCommand}"
+                                                        CommandParameter="{Binding ElementName=ComponentGridControl}">
                                                     <Button.Content>
                                                         <Grid>
                                                             <Grid.ColumnDefinitions>
@@ -1175,10 +1177,12 @@
 
 
                                         </Grid>
+                                        
                                     </DataTemplate>
                                 </dxg:ContentDetailDescriptor.ContentTemplate>
                             </dxg:ContentDetailDescriptor>
                         </dxg:GridControl.DetailDescriptor>
+                        
                     </dxg:GridControl>
 
 
