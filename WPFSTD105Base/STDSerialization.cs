@@ -335,6 +335,10 @@ namespace WPFSTD105
         /// <param name="model"></param>
         public void SetModel(string path, string dataName, devDept.Eyeshot.Model model)
         {
+            //if (File.Exists($@"{path}\{dataName}.dm"))
+            //{
+                //File.Delete($@"{path}\{dataName}.dm");//刪除檔案
+            //}
             WriteFile writeFile = new WriteFile(new WriteFileParams(model)  //產生序列化檔案
             {
                 Content = devDept.Serialization.contentType.GeometryAndTessellation,
