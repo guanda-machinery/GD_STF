@@ -880,6 +880,9 @@
     <Compile Include="UserControls\SelectObjectWindows.xaml.cs">
       <DependentUpon>SelectObjectWindows.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\SpeedArrowUserControl.xaml.cs">
+      <DependentUpon>SpeedArrowUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Synchronization.xaml.cs">
       <DependentUpon>Synchronization.xaml</DependentUpon>
     </Compile>
@@ -906,7 +909,7 @@
     <Compile Include="ValueConverters\ConverterAssemblyNumber.cs" />
     <Compile Include="ValueConverters\ConverterToPartNumber.cs" />
     <Compile Include="ValueConverters\DateTimeConverter.cs" />
-    <Compile Include="ValueConverters\DoubleConditionToIsEnabledConerter.cs" />
+    <Compile Include="ValueConverters\MultiValueConverters\DoubleConditionToIsEnabledConerter.cs" />
     <Compile Include="ValueConverters\DrillBrandGetPropertyConverter.cs" />
     <Compile Include="ValueConverters\DrillBrandToDataNameConverter.cs" />
     <Compile Include="ValueConverters\CutFaceConverter.cs" />
@@ -921,6 +924,7 @@
     <Compile Include="ValueConverters\GridControlWidthConvert.cs" />
     <Compile Include="ValueConverters\IListFilterToCountConverter.cs" />
     <Compile Include="ValueConverters\MaterialDesignPackIconToBitmapSourceConverter.cs" />
+    <Compile Include="ValueConverters\MultiValueConverters\BooleanArrayUnionToBooleanConverter.cs" />
     <Compile Include="ValueConverters\SteelPartWeightConverter.cs" />
     <Compile Include="ValueConverters\DrillingFaceConverter.cs" />
     <Compile Include="ValueConverters\SteelTypeToStringConverter.cs" />
@@ -932,17 +936,17 @@
     <Compile Include="ValueConverters\OfficePageConverter.cs" />
     <Compile Include="ValueConverters\PopupWindowsConverter.cs" />
     <Compile Include="ValueConverters\RackCountConverter.cs" />
-    <Compile Include="ValueConverters\RackIsEnabledConvertver.cs" />
+    <Compile Include="ValueConverters\MultiValueConverters\RackIsEnabledConvertver.cs" />
     <Compile Include="ValueConverters\RackMajorDivisionsCountConverter.cs" />
     <Compile Include="ValueConverters\RACKS_SELECTED_CompareConverter.cs" />
     <Compile Include="ValueConverters\RowValueToBackgroundConverter.cs" />
     <Compile Include="ValueConverters\RowValueToForegroundConverter.cs" />
     <Compile Include="ValueConverters\SectionTreeImageConverter.cs" />
     <Compile Include="ValueConverters\START_HOLE_ToStringConverter.cs" />
-    <Compile Include="ValueConverters\SteelMultiValueConverter.cs" />
+    <Compile Include="ValueConverters\MultiValueConverters\SteelMultiValueConverter.cs" />
     <Compile Include="ValueConverters\StringToBrushConverter.cs" />
     <Compile Include="ValueConverters\StringToDrawingColoConverter.cs" />
-    <Compile Include="ValueConverters\ComParConverter.cs" />
+    <Compile Include="ValueConverters\MultiValueConverters\ComParConverter.cs" />
     <Compile Include="ValueConverters\ConnectToStringConverter.cs" />
     <Compile Include="ValueConverters\DRILL_LEVEL_ToStringConverter.cs" />
     <Compile Include="ValueConverters\DRILL_TYPE_ToStringConverter.cs" />
@@ -1580,6 +1584,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\SelectObjectWindows.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SpeedArrowUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

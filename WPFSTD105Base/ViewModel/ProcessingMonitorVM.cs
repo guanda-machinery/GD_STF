@@ -130,7 +130,7 @@ namespace WPFSTD105.ViewModel
                 if (_MachiningCombinationl_List_GridControl_IsSelected != value)
                 {
                     _MachiningCombinationl_List_GridControl_IsSelected = value;
-                    //↓使isenable可即時反應
+                    //↓可即時反應
                     OnPropertyChanged("MachiningCombinationl_List_GridControl_IsSelected");
                 }
             }
@@ -1057,7 +1057,7 @@ namespace WPFSTD105.ViewModel
                         {
                             _BufferModel.Dispose();
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
                         }
                     }

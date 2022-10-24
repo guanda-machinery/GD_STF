@@ -1,8 +1,7 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
-    xmlns:local="clr-namespace:WPFWindowsBase">
+    xmlns:local="clr-namespace:WPFWindowsBase" xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing">
     <!--  Type converters  -->
     <local:ImageOffsetConverter x:Key="imageOffsetConverter" />
     <local:RadiusToDiameterConverter x:Key="radiusToDiameterConverter" />

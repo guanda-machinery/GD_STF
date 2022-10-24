@@ -334,6 +334,11 @@ namespace WPFSTD105
             Price = 29.3f
         };
 
+        
+
+
+
+
         /// <summary>
         /// GridControl之搜尋字串
         /// </summary>

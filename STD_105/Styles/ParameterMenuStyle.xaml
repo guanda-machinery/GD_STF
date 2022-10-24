@@ -36,11 +36,68 @@
 
 
 
-    <Style TargetType="{x:Type GroupBox}" x:Key="ParameterBaseStyleGroupBox" BasedOn="{StaticResource gbxParameter}">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Margin" Value="5" />
-        <Setter Property="BorderThickness" Value="2"/>
+    <Style TargetType="{x:Type GroupBox}" x:Key="ParameterBaseStyleGroupBox">
+        
+        <Setter Property="Padding" Value="5,15,5,5"/>
         <Setter Property="BorderBrush" Value="#666666"/>
+        <Setter Property="FontFamily" Value="{Binding FontFamily, Source={x:Static SofSetting:SofSetting.Default}}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="FontSize" Value="{Binding SubTitleFontSize, Source={x:Static SofSetting:SofSetting.Default}}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{Binding BorderBrushColor, Source={x:Static SofSetting:SofSetting.Default}}" />
+        <Setter Property="BorderBrush" Value="{Binding BorderBrushColor, Source={x:Static SofSetting:SofSetting.Default}}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type GroupBox}">
+                    <Grid SnapsToDevicePixels="true">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Border
+                            Grid.Row="1"
+                            Grid.RowSpan="2"
+                            Grid.ColumnSpan="2"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="1">
+                            <Border.OpacityMask>
+                                <MultiBinding Converter="{StaticResource BorderGapMaskConverter}" ConverterParameter="6">
+                                    <Binding ElementName="Header" Path="ActualWidth" />
+                                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}" />
+                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />
+                                </MultiBinding>
+                            </Border.OpacityMask>
+                        </Border>
+                        <Border
+                            Name="Header"
+                            Grid.RowSpan="2"  
+                            Padding="10,0,0,0">
+                            <ContentPresenter
+                                ContentSource="Header"
+                                RecognizesAccessKey="true"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                        <ContentPresenter
+                            Grid.Row="1" Grid.RowSpan="2"          
+                            Grid.ColumnSpan="2"
+                            Margin="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                            TextBlock.FontSize="{TemplateBinding FontSize}" />
+   
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+
+
+
     </Style>
 
 
@@ -131,11 +188,6 @@
     <Style TargetType="{x:Type UserControl}" x:Key="SectionSpecificationMenuWhiteStyle">
         <Style.Resources>
             <Style TargetType="GroupBox" BasedOn="{ StaticResource ParameterGroupBox }"/>
-            <Style TargetType="StackPanel">
-                <Style.Resources>
-                    <Style TargetType="GroupBox" BasedOn="{StaticResource ParameterBaseStyleGroupBox}"/>
-                </Style.Resources>
-            </Style>
             <Style TargetType="Button"  BasedOn="{ StaticResource ParameterButton }" />
             <Style TargetType="TextBox" BasedOn="{ StaticResource ParameterTextBox }">
             </Style>
@@ -184,7 +236,14 @@
     </Style>
 
 
-
+    <Style x:Key="CustomDesignButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+        <Setter Property="Width" Value="auto"/>
+        <Setter Property="Height" Value="auto"/>
+        <Setter Property="Padding" Value="0"/>
+        <Style.Resources>
+            <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="Gray"/>
+        </Style.Resources>
+    </Style>
 
 
 

@@ -56,8 +56,8 @@ namespace WPFWindowsBase
         /// <inheritdoc/>
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
-                throw new Exception("錯誤，不可接受 'value' 是空值");
+           /* if (value == null)
+                throw new Exception("錯誤，不可接受 'value' 是空值");*/
 
             if ((bool)value)
                 return System.Windows.Visibility.Collapsed;

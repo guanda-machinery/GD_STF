@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="STD_105.SpeedArrowUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:STD_105" 
+             mc:Ignorable="d">
+    <StackPanel Orientation="Horizontal" >
+        <StackPanel.Resources>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <DockPanel x:Name="dockPanel">
+                                <ContentPresenter
+                            VerticalAlignment="Center"
+                            Content="{TemplateBinding Content}"
+                            ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            RecognizesAccessKey="True"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                <Grid>
+                                    <Viewbox>
+                                        <Canvas Width="46" Height="60">
+                                            <Path   x:Name="arrow" Data="F1 M46,60z M0,0z M3.2128035,0.014108L19.127254,0.014108C19.800182,0.014108,20.441888,0.30361603,20.89125,0.81096243L45.379268,28.424349C46.18823,29.33633,46.187673,30.718976,45.37871,31.630955L20.890694,59.218383C20.441331,59.725165,19.800182,60.014108,19.127254,60.014108L3.208343,60.014108C0.74131055,60.014108,-0.55604191,57.052991,1.099239,55.20194L23.638159,30 1.1048151,4.8268391C-0.55213872,2.9763532,0.74521275,0.014108,3.2128035,0.014108z" 
+                                                    Fill="{TemplateBinding Foreground}" />
+                                        </Canvas>
+                                    </Viewbox>
+                                </Grid>
+                            </DockPanel>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Cursor" Value="Hand" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </StackPanel.Resources>
+
+
+        <Button Grid.Column="0" x:Name="ArrowButton_1" Click="ArrowButton_1_Click" />
+        <Button Grid.Column="1" x:Name="ArrowButton_2" Click="ArrowButton_2_Click" Margin="-8 ,0" />
+        <Button Grid.Column="2" x:Name="ArrowButton_3" Click="ArrowButton_3_Click"/>
+
+    </StackPanel>
+</UserControl>
