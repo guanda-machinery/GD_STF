@@ -47,7 +47,7 @@ namespace STD_105.Office
     public partial class TypesettingsSetting : BasePage<OfficeTypeSettingVM>
     {
 
-
+        public bool bResult;
         public ObSettingVM ViewModel { get; set; } = new ObSettingVM();
         /// <summary>
         /// nc 設定檔
@@ -727,15 +727,14 @@ namespace STD_105.Office
         {
             ControlDraw3D();
         }
-
-
         private void ControlDraw3D()
         {
             var SelectedData = (GD_STD.Data.MaterialDataView)Material_List_GridControl.SelectedItem;
 
             model.ActionMode = actionType.SelectByBox;
             string content = SelectedData.MaterialNumber; //素材編號
-          
+
+            
             model.AssemblyPart(content);
             AssemblyPart2D(model,content);
 
@@ -792,7 +791,18 @@ namespace STD_105.Office
                 int partIndex = parts.FindIndex(el => el.Number == material.Parts[i].PartNumber); //回傳要使用的陣列位置
                 if (partIndex == -1)
                 {
-                    throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
+                    // 未找到對應零件編號
+                    //string tmp = material.Parts[i].PartNumber;
+                    //WinUIMessageBox.Show(null,
+                    //$"未找到對應零件編號" + tmp,
+                    //"通知",
+                    //MessageBoxButton.OK,
+                    //MessageBoxImage.Exclamation,
+                    //MessageBoxResult.None,
+                    //MessageBoxOptions.None,
+                    //FloatingMode.Popup);
+                    return;
+                  // throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
                 }
                 else
                 {

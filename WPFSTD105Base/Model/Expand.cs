@@ -14,7 +14,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows;
-
 using WPFSTD105.ViewModel;
 using WPFSTD105.Attribute;
 using WPFSTD105.Tekla;
@@ -39,9 +38,8 @@ namespace WPFSTD105.Model
         /// </summary>
         /// <param name="model"></param>
         /// <param name="materialNumber">素材編號</param>
-        public static void AssemblyPart(this devDept.Eyeshot.Model model, string materialNumber )
+        public static void AssemblyPart(this devDept.Eyeshot.Model model, string materialNumber)
         {
-
             model.Clear();
             STDSerialization ser = new STDSerialization(); //序列化處理器
             ObservableCollection<MaterialDataView> materialDataViews = ser.GetMaterialDataView(); //序列化列表
@@ -68,7 +66,19 @@ namespace WPFSTD105.Model
                 int partIndex = parts.FindIndex(el => el.Number == material.Parts[i].PartNumber); //回傳要使用的陣列位置
                 if (partIndex == -1)
                 {
-                    throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
+                    // 未找到對應零件編號
+                    string tmp=material.Parts[i].PartNumber;
+                    WinUIMessageBox.Show(null,
+                    $"未找到對應零件編號"+ tmp,
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Popup);
+                    return;
+
+                    //throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
                 }
                 else
                 {
@@ -274,7 +284,6 @@ namespace WPFSTD105.Model
             model.Entities.AddRange(entities);
             model.Entities.AddRange(resultSolid);
             ser.SetMaterialModel(materialNumber, model); //儲存素材
-
         }
 
         private static void Rotate(IEnumerable<Entity> entities, Point3D origin)
@@ -813,5 +822,7 @@ namespace WPFSTD105.Model
             point3Ds.Add(point3Ds[0]);
             return new LinearPath(point3Ds);
         }
+
+
     }
 }

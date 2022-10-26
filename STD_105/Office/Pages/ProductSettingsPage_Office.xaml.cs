@@ -2845,12 +2845,9 @@ namespace STD_105.Office
 
             ScrollViewbox.IsEnabled = true;
 
-            // 由選取零件判斷三面是否為斜邊
             if (model.Entities[model.Entities.Count - 1].EntityData is null)
                 return;
 
-
-            // 斜邊自動執行程式
             SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
 
 

@@ -406,11 +406,19 @@ namespace GD_STD.Data
             //get => Parts.Select(el => el.Length).Aggregate((l1, l2) => l1 + l2)  + Cut * (Parts.Count -1d > 0d ? Parts.Count -1d : 0d); 
             get
             {
-                var AllPartAggregate = Parts.Select(el => el.Length).Aggregate((l1, l2) => l1 + l2); //總零件長
-                var CutLoss = Cut * (Parts.Count - 1d > 0d ? Parts.Count - 1d : 0d); //鋸床切割損耗
-                var SE_Cut = StartCut + EndCut; //素材前後切割
-                //材料前後端切除
-                return AllPartAggregate + CutLoss + SE_Cut;
+                try
+                {
+                    var AllPartAggregate = Parts.Select(el => el.Length).Aggregate((l1, l2) => l1 + l2); //總零件長
+                    var CutLoss = Cut * (Parts.Count - 1d > 0d ? Parts.Count - 1d : 0d); //鋸床切割損耗
+                    var SE_Cut = StartCut + EndCut; //素材前後切割
+                                                    //材料前後端切除
+                    return AllPartAggregate + CutLoss + SE_Cut;
+                }
+                catch(Exception ex)
+                {
+                    log4net.LogManager.GetLogger("點選GO").Debug("未找到零件,無法計算總消耗長度");
+                    return 0;
+                }
             }
         }
 
