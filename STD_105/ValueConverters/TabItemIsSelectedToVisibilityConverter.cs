@@ -12,19 +12,18 @@ namespace STD_105
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-
             if (value is bool)
             {
                 if (value is true)
                 {
-                    return Visibility.Visible;
+                    return Visibility.Collapsed;
                 }
                 else
                 {
-                    return Visibility.Collapsed;
+                    return Visibility.Visible;
                 }
             }
-            return Visibility.Visible;
+            return Visibility.Collapsed;
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

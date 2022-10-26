@@ -40,7 +40,7 @@
     </Style>
     <!--  訊息視窗  -->
     <ControlTemplate x:Key="DXMessageBoxTemplate" TargetType="{x:Type dxwui:WinUIMessageBox}">
-        <Border Width="{x:Static SystemParameters.MaximizedPrimaryScreenWidth}" Height="250">
+        <Border Height="250">
             <Grid Background="{StaticResource solidclr_CreamyGray}">
                 <Grid HorizontalAlignment="Center">
                     <Grid.RowDefinitions>

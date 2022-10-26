@@ -24,8 +24,6 @@
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Title="製品設定">
-
-
     <!--頁面框架-->
     <WPFBase:BasePage.Resources>
         <ResourceDictionary>
@@ -170,6 +168,12 @@
                     </dxg:GridControl.Resources>
                     <dxg:GridControl.View >
                         <dxg:TableView VerticalScrollbarVisibility="Visible"
+                                       IsColumnMenuEnabled ="False"
+                                       AllowSorting="false"
+                                       AllowColumnFiltering="False"
+                                       AllowColumnMoving="False"
+                                       
+                                       
                                        ShowGroupPanel="False"
                                        ShowSearchPanelMode="Always"
                                        SearchPanelNullText="Search Tasks(Ctrl + F)" 
@@ -194,6 +198,7 @@
                             </dxg:TableView.Header>
                         </dxg:TableView>
                     </dxg:GridControl.View>
+
                     <dxg:GridColumn Name="Exc_GridColumn" FieldName="ExclamationMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                         <dxg:GridColumn.HeaderImageStyle>
                             <Style TargetType="Image">
@@ -607,12 +612,12 @@
                     <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Background="Gold" Width="60" Margin="0,0,6,0" Click="OKtoConfirmChanges"/>
                     <Button x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}" Background="Gold" Width="110" Margin="0,0,0,0" />
 
-                    <STD105:DataButtons_Office Margin="105,0,-17,0"
+                    <STD105:DataButtons_Office 
                                                Modify="{Binding ModifyPart}"
                                                Add="{Binding AddPart}"
                                                ReadVisibility="Collapsed"
                                                DeleteVisibility="Collapsed"/>
-                    <Button x:Name="btn_AddNewOne" Content="另存" Command="{Binding AddNewOne}" DockPanel.Dock="Left" Width="76" Margin="15,0,0,0" Visibility="Visible"/>
+                    <Button x:Name="btn_AddNewOne" Content="另存" Command="{Binding AddNewOne}" DockPanel.Dock="Left" Width="76" Margin="0,0,0,0" Visibility="Visible"/>
 
                     <!--鎖頭的行為要與按鈕的開啟關閉binding 0902-->
                 </DockPanel>
@@ -812,7 +817,7 @@
         </TabControl>
         <!--繪圖顯示模型-->
         <Border Background="#F0F0F0" Margin="5"   Grid.Column="1" Grid.Row="1" >
-            <TabControl Margin="0.5,0">
+            <TabControl>
                 <TabControl.Resources>
                     <ResourceDictionary>
                         <Style TargetType="TabItem">
@@ -863,7 +868,7 @@
                     </ResourceDictionary>
                 </TabControl.Resources>
 
-                <TabItem Margin="0,0,0,0" Header="鑽孔" Name="DrillTabItem">
+                <TabItem Margin="0,0,0,0" Header="鑽孔" Name="DrillTabItem"  >
                     <TabItem.Resources>
                         <Style TargetType="GroupBox" BasedOn="{StaticResource BaseStyle}" >
                             <Setter Property="Foreground" Value="#3b3b3b"/>
@@ -871,7 +876,6 @@
                         </Style>
                         <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignStyleCustomTextBox}">
                             <Setter Property="Margin" Value="10,5"/>
-
                         </Style>
                     </TabItem.Resources>
                     <DockPanel >

@@ -18,7 +18,8 @@
         </Grid.RowDefinitions>
         <!--左軸-->
         <GroupBox Header="左軸數值"
-                  Style="{ StaticResource gbx_WithBorder }">
+                  Style="{ StaticResource ParameterDarkGroupBox }"
+                  Background="#c0c0c0">
             <Viewbox>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -161,7 +162,8 @@
         <!--中軸-->
         <GroupBox Grid.Row="2"
                   Header="中軸數值"
-                  Style="{ StaticResource gbx_WithBorder }">
+                  Background="#c0c0c0"
+                  Style="{ StaticResource ParameterDarkGroupBox }">
             <Viewbox>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -303,8 +305,9 @@
         </GroupBox>
         <!--右軸-->
         <GroupBox Grid.Row="4"
-                  Header="右軸數值"
-                  Style="{ StaticResource gbx_WithBorder }">
+                  Header="右軸數值"             
+     Background="#c0c0c0"
+                  Style="{ StaticResource ParameterDarkGroupBox }">
             <Viewbox>
                 <Grid>
                     <Grid.ColumnDefinitions>

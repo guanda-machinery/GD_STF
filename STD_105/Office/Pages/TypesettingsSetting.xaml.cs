@@ -1094,6 +1094,7 @@ namespace STD_105.Office
             ((DevExpress.Xpf.Grid.TableView)sender).FocusedRowHandle = DevExpress.Xpf.Grid.GridControl.InvalidRowHandle;
         }
 
+        
         private void ScrollOwner_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if ((sender as DevExpress.Xpf.Grid.TableView).Name == PartListTableView.Name)

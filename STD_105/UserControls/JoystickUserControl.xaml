@@ -18,44 +18,46 @@
 
     <Grid>
         <Grid.Resources>
+            <!--
             <Storyboard x:Key="JoystickUpButton">
-                <ColorAnimation Storyboard.TargetName="tbk_JoystickUp"
+                <ColorAnimation Storyboard.TargetName="btn_JoystickUp"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                             To="Lime"
                             Duration="0:0:0.1" />
             </Storyboard>
             <Storyboard x:Key="JoystickDownButton">
-                <ColorAnimation Storyboard.TargetName="tbk_JoystickDown"
+                <ColorAnimation Storyboard.TargetName="btn_JoystickDown"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                             To="Lime"
                             Duration="0:0:0.1" />
             </Storyboard>
             <Storyboard x:Key="JoystickLeftButton">
-                <ColorAnimation Storyboard.TargetName="tbk_JoystickLeft"
+                <ColorAnimation Storyboard.TargetName="btn_JoystickLeft"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                             To="Lime"
                             Duration="0:0:0.1" />
             </Storyboard>
             <Storyboard x:Key="JoystickRightButton">
-                <ColorAnimation Storyboard.TargetName="tbk_JoystickRight"
+                <ColorAnimation Storyboard.TargetName="btn_JoystickRight"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                             To="Lime"
                             Duration="0:0:0.1" />
-            </Storyboard>
+            </Storyboard>-->
+            
             <Storyboard x:Key="CircleTopButton">
-                <ColorAnimation Storyboard.TargetName="tbk_CircleTop"
+                <ColorAnimation Storyboard.TargetName="btn_CircleTop"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                             To="Lime"
                             Duration="0:0:0.1" />
             </Storyboard>
             <Storyboard x:Key="CircleMiddleButton">
-                <ColorAnimation Storyboard.TargetName="tbk_CircleMiddle"
+                <ColorAnimation Storyboard.TargetName="btn_CircleMiddle"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                             To="Lime"
                             Duration="0:0:0.1" />
             </Storyboard>
             <Storyboard x:Key="CircleBottomButton">
-                <ColorAnimation Storyboard.TargetName="tbk_CircleBottom"
+                <ColorAnimation Storyboard.TargetName="btn_CircleBottom"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                             To="Lime"
                             Duration="0:0:0.1" />
@@ -69,7 +71,7 @@
                              Storyboard.TargetProperty="(Canvas.Top)"
                              To="-10"
                              Duration="0:0:0.1" />
-                <ColorAnimation Storyboard.TargetName="tbk_EllipseTop"
+                <ColorAnimation Storyboard.TargetName="btn_EllipseTop"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                             To="Lime"
                             Duration="0:0:0.1" />
@@ -83,7 +85,7 @@
                              Storyboard.TargetProperty="(Canvas.Top)"
                              To="10"
                              Duration="0:0:0.1" />
-                <ColorAnimation Storyboard.TargetName="tbk_EllipseBottom"
+                <ColorAnimation Storyboard.TargetName="btn_EllipseBottom"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                             To="Lime"
                             Duration="0:0:0.1" />
@@ -99,39 +101,40 @@
                              Duration="0:0:0.1" />
             </Storyboard>
             <Storyboard x:Key="AllTextBlockColorRecover">
-                <ColorAnimation Storyboard.TargetName="tbk_JoystickUp"
+                <!--
+                <ColorAnimation Storyboard.TargetName="btn_JoystickUp"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                             To="{ StaticResource clr_Gray }"
                             Duration="0" />
-                <ColorAnimation Storyboard.TargetName="tbk_JoystickDown"
+                <ColorAnimation Storyboard.TargetName="btn_JoystickDown"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                             To="{ StaticResource clr_Gray }"
                             Duration="0" />
-                <ColorAnimation Storyboard.TargetName="tbk_JoystickLeft"
+                <ColorAnimation Storyboard.TargetName="btn_JoystickLeft"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                             To="{ StaticResource clr_Gray }"
                             Duration="0" />
-                <ColorAnimation Storyboard.TargetName="tbk_JoystickRight"
+                <ColorAnimation Storyboard.TargetName="btn_JoystickRight"
+                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
+                            To="{ StaticResource clr_Gray }"
+                            Duration="0" />-->
+                <ColorAnimation Storyboard.TargetName="btn_CircleTop"
+                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
+                            To="White"
+                            Duration="0" />
+                <ColorAnimation Storyboard.TargetName="btn_CircleMiddle"
+                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
+                            To="White"
+                            Duration="0" />
+                <ColorAnimation Storyboard.TargetName="btn_CircleBottom"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                             To="{ StaticResource clr_Gray }"
                             Duration="0" />
-                <ColorAnimation Storyboard.TargetName="tbk_CircleTop"
+                <ColorAnimation Storyboard.TargetName="btn_EllipseTop"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                             To="{ StaticResource clr_Gray }"
                             Duration="0" />
-                <ColorAnimation Storyboard.TargetName="tbk_CircleMiddle"
-                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
-                            To="{ StaticResource clr_Gray }"
-                            Duration="0" />
-                <ColorAnimation Storyboard.TargetName="tbk_CircleBottom"
-                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
-                            To="{ StaticResource clr_Gray }"
-                            Duration="0" />
-                <ColorAnimation Storyboard.TargetName="tbk_EllipseTop"
-                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
-                            To="{ StaticResource clr_Gray }"
-                            Duration="0" />
-                <ColorAnimation Storyboard.TargetName="tbk_EllipseBottom"
+                <ColorAnimation Storyboard.TargetName="btn_EllipseBottom"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                             To="{ StaticResource clr_Gray }"
                             Duration="0" />
