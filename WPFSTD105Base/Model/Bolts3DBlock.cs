@@ -291,19 +291,19 @@ namespace WPFSTD105.Model
                             break;
                     }
                     //boltAttr.Y += valueY;
-                    if (check)
-                    {
+                    //if (check)
+                    //{
                         bolt.EntityData = boltAttrEach;
                         //boltList.Add(bolt);
                         resultY.Add(bolt);//存取物件
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    //}
+                    //else
+                    //{
+                    //    break;
+                    //}
                 }
-                if (check)
-                {
+                //if (check)
+                //{
                     //if (resultY.Count != 1)//Count=1為斜邊打點
                     //{
                     //    Mesh bolt = (Mesh)resultY[0].Clone();
@@ -351,11 +351,11 @@ namespace WPFSTD105.Model
                         resultY = BoltsX(resultY, valueX);
                         this.Entities.AddRange(resultY);
                     }
-                }
-                else
-                {
-                    this.Entities.AddRange(originalEntities);
-                }
+                //}
+                //else
+                //{
+                //    this.Entities.AddRange(originalEntities);
+                //}
 
             }
 

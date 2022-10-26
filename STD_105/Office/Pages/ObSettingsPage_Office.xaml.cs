@@ -2923,7 +2923,7 @@ namespace STD_105.Office
         }
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-
+            ObSettingVM obvm = new ObSettingVM();
             if (fAddPartAndBolt)  //  新增零件功能
             {
                 var ResultRtn = WinUIMessageBox.Show(null,
@@ -3024,7 +3024,7 @@ namespace STD_105.Office
             }
             else //如果需要載入 nc 設定檔
             {
-                model.LoadNcToModel(data.DataName);
+                model.LoadNcToModel(data.DataName, obvm.allowType);
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
             }
 
