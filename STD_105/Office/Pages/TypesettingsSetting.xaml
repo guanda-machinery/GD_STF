@@ -1233,7 +1233,7 @@
                             Focusable="True" 
                             AntiAliasingSamples="x16" 
                             Renderer="NativeExperimental" 
-                            ShowFps="false">
+                            ShowFps="false" SelectionChanged="model_SelectionChanged">
                                 <spa:ModelExt.ContextMenu>
                                     <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
                                         <MenuItem Name="esc2D" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>

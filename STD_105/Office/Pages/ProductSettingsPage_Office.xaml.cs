@@ -2854,7 +2854,7 @@ namespace STD_105.Office
             SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
 
 
-            if (TmpSteelAttr.vPoint.Count != 0)         //  頂面斜邊
+            if (TmpSteelAttr.vPoint.Count != 0)     //  頂面斜邊
             {
                 AutoHypotenusePoint(FACE.TOP);
             }
@@ -2862,7 +2862,7 @@ namespace STD_105.Office
             {
                 AutoHypotenusePoint(FACE.FRONT);
             }
-            if (TmpSteelAttr.oPoint.Count != 0)    //  後面斜邊
+            if (TmpSteelAttr.oPoint.Count != 0)     //  後面斜邊
             {
                 AutoHypotenusePoint(FACE.BACK);
             }
@@ -2872,6 +2872,8 @@ namespace STD_105.Office
                 //if (!fAddSteelPart)   //  新建孔群是否於新增零件  : false 直接存檔
                 SaveModel(false, false);//存取檔案 
 
+            model.ZoomFit();
+            drawing.ZoomFit();
             //刷新模型
             model.Refresh();
             drawing.Refresh();
@@ -5451,6 +5453,13 @@ namespace STD_105.Office
                 //    drawing.Invalidate();
                 //}
             }
+        }
+
+        private void TabItem_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+            model.ZoomFit();
+            model.Refresh();
         }
     }
 }

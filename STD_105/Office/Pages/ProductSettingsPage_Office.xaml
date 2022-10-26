@@ -751,7 +751,7 @@
                     </WPFSTD:ModelExt>
                 </Grid>
             </TabItem>
-            <TabItem Header="2D視圖"    Style="{StaticResource DrawTabItem}">
+            <TabItem Header="2D視圖"    Style="{StaticResource DrawTabItem}" Height="40" VerticalAlignment="Top">
                 <Grid>
                     <WPFSTD:ModelExt x:Name="drawing" SelectionChanged="model_SelectionChanged" Loaded="drawing_Loaded"
                         SelectionColor="{Binding Setting.SelectionColor, Converter={STD105:StringToDrawingColoConverter}}"
