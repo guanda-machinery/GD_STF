@@ -35,6 +35,7 @@ using MouseButton = devDept.Eyeshot.MouseButton;
 using WPFSTD105;
 using GD_STD;
 using DevExpress.Office.Utils;
+using WPFSTD105.Tekla;
 
 namespace STD_105.Office
 {
@@ -456,6 +457,7 @@ namespace STD_105.Office
                 //PieceListGridControl.SelectItem(tempNewSource.Count - 1);
                 this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
                 ViewModel.ProfileType = tempSteelAttr.SteelType;
+                ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(tempSteelAttr.steelAttr.Type).ToString()}.inp");
                 cbx_SectionTypeComboBox.Text = tempSteelAttr.steelAttr.Profile;
                 //ConfirmCurrentSteelSection(((ProductSettingsPageViewModel)PieceListGridControl.SelectedItem));
                 ConfirmCurrentSteelSection(((ProductSettingsPageViewModel)tempSteelAttr));
@@ -1099,7 +1101,7 @@ namespace STD_105.Office
                     return;
                 }
 
-                GetViewToViewModel(false);
+                GetViewToViewModel(false, ViewModel.SteelAttr.GUID);
 
                 /*3D螺栓*/
                 ViewModel.GroupBoltsAttr.GUID = Guid.NewGuid();
@@ -2180,6 +2182,7 @@ namespace STD_105.Office
             //appVM.CreateDMFile(model);
 
             GridReload();
+
         }
 
         public bool DataCheck(string action) 
@@ -2482,6 +2485,7 @@ namespace STD_105.Office
             // DataViews最後一筆GUID是否在Dev_Part中，無則代表尚未正式存檔按OK，有則代表可按新增鈕
             if (PieceListGridControl.VisibleRowCount > 0)
             {
+
                 ProductSettingsPageViewModel row = (ProductSettingsPageViewModel)PieceListGridControl.GetRow(PieceListGridControl.VisibleRowCount - 1);
                 ProductSettingsPageViewModel temp = RowToEntity(row);
                 //Guid?  guid = row.steelAttr.GUID;
@@ -2546,6 +2550,7 @@ namespace STD_105.Office
                         this.PartCount.Text = temp.Count.ToString();
                         this.cbx_SectionTypeComboBox.SelectedValue = temp.steelAttr.Profile;
                         this.cbx_SteelTypeComboBox.SelectedValue = temp.SteelType;
+                        ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(temp.steelAttr.Type).ToString()}.inp");
                         #endregion
                         SaveModel(true, true);
 
@@ -2555,6 +2560,8 @@ namespace STD_105.Office
                         PieceListGridControl.ItemsSource = tempNewSource;
                         // 取得該GUID資料
                         PreIndex = tempNewSource.FindIndex(x => x.DataName == temp.steelAttr.GUID.ToString());
+                        var tns = tempNewSource.FirstOrDefault(x => x.DataName == temp.steelAttr.GUID.ToString());
+                        ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(tns.steelAttr.Type).ToString()}.inp");
                         PieceListGridControl.View.FocusedRowHandle = PreIndex;
                         PieceListGridControl.SelectItem(PreIndex);
                         this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
@@ -2852,7 +2859,7 @@ namespace STD_105.Office
 
             // 斜邊自動執行程式
             SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
-
+            GetViewToViewModel(false, TmpSteelAttr.GUID);
 
             if (TmpSteelAttr.vPoint.Count != 0)         //  頂面斜邊
             {
@@ -4561,7 +4568,29 @@ namespace STD_105.Office
             newModel = model;
             return newModel;
         }
+        private IEnumerable<string> GetAllNcPath(string dir)
+        {
+            foreach (string d in Directory.GetFileSystemEntries(dir))
+            {
+                if (File.Exists(d))
+                {
+                    string dataName = Path.GetFileName(d);//檔案名稱
+                    string ext = Path.GetExtension(d);//副檔名
+                    if (ext == ".nc1") //如果是 nc 檔案
+                    {
+                        FileInfo fi = new FileInfo(d);
+                        if (fi.Attributes.ToString().IndexOf("ReadOnly") != -1)
+                            fi.Attributes = FileAttributes.Normal;
 
+                        yield return d;
+                    }
+                    else
+                    {
+                        GetAllNcPath(d);
+                    }
+                }
+            }
+        }
         /// <summary>
         /// Grid Select Change
         /// </summary>
@@ -4646,6 +4675,13 @@ namespace STD_105.Office
                                 // 指向最後一列的guid
                                 focuseGUID = guid;
 
+                                if (!File.Exists($@"{ApplicationVM.DirectoryDevPart()}\{focuseGUID}.dm"))
+                                {
+                                    ApplicationVM appVM = new ApplicationVM();
+                                    appVM.CreateDMFile(model);
+                                }
+
+
                                 // 新零件
                                 SaveModel(true, true);
                             }
@@ -4719,9 +4755,39 @@ namespace STD_105.Office
                     //    fAddSteelPart = false;
                     //}
                     //ReadFile readFile = ser.ReadPartModel(item.DataName.ToString()); //讀取檔案內容
+
+                    string profile = "";
+                    int steelType = 0;
                     ReadFile readFile = ser.ReadPartModel(focuseGUID); //讀取檔案內容
                     if (readFile == null)
                     {
+                        //var profileDic = ser.GetSteelAttr();
+                        //ApplicationVM appVM = new ApplicationVM();
+                        //// 零件編號
+                        //string partNumber = item.steelAttr.PartNumber;
+                        //string path = ApplicationVM.DirectoryNc();
+
+                        //// 有NC檔時，讀取NC檔
+
+                        //if (GetAllNcPath(path).Any(x => x.IndexOf($"{partNumber}.nc1")>0))
+                        //{
+                        //    TeklaNcFactory t = new TeklaNcFactory();
+                        //    t.ncTemps = new NcTempList();
+                        //    t.DataCorrespond = new ObservableCollection<DataCorrespond>();
+                        //    t.ReadOneNc(sr.allowType, profileDic, path + $"\\{partNumber}.nc1");
+                        //    foreach (var item1 in t.newPart)
+                        //    {
+                        //        ser.SetPart(item1.Key, item1.Value);//存入模型零件列表
+                        //    }
+                        //    ser.SetDataCorrespond(t.DataCorrespond);
+                        //    ser.SetNcTempList(t.ncTemps);
+                        //    // 重新建立DM檔
+                        //    appVM.CreateDMFile(model);
+                        //    GridReload();
+                        //}
+
+                        //readFile = ser.ReadPartModel(focuseGUID); //讀取檔案內容
+
                         WinUIMessageBox.Show(null,
                             $"專案Dev_Part資料夾讀取失敗",
                             "通知",
@@ -4741,21 +4807,105 @@ namespace STD_105.Office
                     {
                         readFile.AddToScene(model);//將讀取完的檔案放入到模型
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        //ViewModel = (ObSettingVM)DataContext;
-                        Steel3DBlock steel = Steel3DBlock.AddSteel(ViewModel.GetSteelAttr(), model, out BlockReference blockReference);
-                        //((SteelAttr)model.Entities[0].EntityData).GUID = Guid.Parse(item.DataName);
-                        ((SteelAttr)model.Entities[0].EntityData).GUID = Guid.Parse(focuseGUID);
-                        //BlockReference steel2D = SteelTriangulation((Mesh)steel.Entities[0]);
-                        BlockReference steel2D = SteelTriangulation((Mesh)steel.Entities.Where(x => x.GetType().Name == "Mesh").FirstOrDefault());
-                    }
+                        //var profileDic = ser.GetSteelAttr();
+                        //ApplicationVM appVM = new ApplicationVM();
+                        //// 零件編號
+                        //string partNumber = item.steelAttr.PartNumber;
+                        //profile = item.steelAttr.Profile;
+                        //steelType = item.SteelType;
+                        //string path = ApplicationVM.DirectoryNc();
 
+                        //// 有NC檔時，讀取NC檔
+                        //if (GetAllNcPath(path).Contains(partNumber))
+                        //{
+                        //    TeklaNcFactory t = new TeklaNcFactory();
+                        //    t.ncTemps = new NcTempList();
+                        //    t.DataCorrespond = new ObservableCollection<DataCorrespond>();
+                        //    t.ReadOneNc(sr.allowType, profileDic, path);
+                        //    foreach (var item1 in t.newPart)
+                        //    {
+                        //        ser.SetPart(item1.Key, item1.Value);//存入模型零件列表
+                        //    }
+                        //    ser.SetDataCorrespond(DataCorrespond);
+                        //    ser.SetNcTempList(t.ncTemps);
+                        //    // 重新建立DM檔
+                        //    appVM.CreateDMFile(model);
+                        //}
+
+                        WinUIMessageBox.Show(null,
+                           $"專案Dev_Part資料夾讀取失敗",
+                           "通知",
+                           MessageBoxButton.OK,
+                           MessageBoxImage.Exclamation,
+                           MessageBoxResult.None,
+                           MessageBoxOptions.None,
+                           FloatingMode.Popup);
+                        return;
+
+                        //ApplicationVM appVM = new ApplicationVM();
+                        //// 重新建立DM檔
+                        //appVM.CreateDMFile(model, focuseGUID);
+                        //readFile = ser.ReadPartModel(focuseGUID); //讀取檔案內容
+                        //readFile.DoWork();//開始工作
+                        //model.Blocks.Clear();
+                        //model.Entities.Clear();
+                        //drawing.Blocks.Clear();
+                        //drawing.Entities.Clear();
+                        //ViewModel = (ObSettingVM)DataContext;
+                        //Steel3DBlock steel = Steel3DBlock.AddSteel(ViewModel.GetSteelAttr(), model, out BlockReference blockReference);
+                        ////((SteelAttr)model.Entities[0].EntityData).GUID = Guid.Parse(item.DataName);
+                        //((SteelAttr)model.Entities[0].EntityData).GUID = Guid.Parse(focuseGUID);
+                        ////BlockReference steel2D = SteelTriangulation((Mesh)steel.Entities[0]);
+                        //BlockReference steel2D = SteelTriangulation((Mesh)steel.Entities.Where(x => x.GetType().Name == "Mesh").FirstOrDefault());
+                    }
                     if (model.Blocks.Count==1)
                     {
-                        Steel3DBlock steel = Steel3DBlock.AddSteel(ViewModel.GetSteelAttr(), model, out BlockReference blockReference);
-                        ((SteelAttr)model.Entities[0].EntityData).GUID = Guid.Parse(focuseGUID);
-                        BlockReference steel2D = SteelTriangulation((Mesh)steel.Entities.Where(x => x.GetType().Name == "Mesh").FirstOrDefault());
+                        //var profileDic = ser.GetSteelAttr();
+                        //ApplicationVM appVM = new ApplicationVM();
+                        //// 零件編號
+                        //string partNumber = item.steelAttr.PartNumber;
+                        //string path = ApplicationVM.DirectoryNc();
+
+                        //// 有NC檔時，讀取NC檔
+                        //if (GetAllNcPath(path).Contains(partNumber))
+                        //{
+                        //    TeklaNcFactory t = new TeklaNcFactory();
+                        //    t.ncTemps = new NcTempList();
+                        //    t.DataCorrespond = new ObservableCollection<DataCorrespond>();
+                        //    t.ReadOneNc(sr.allowType, profileDic, path);
+                        //    foreach (var item1 in t.newPart)
+                        //    {
+                        //        ser.SetPart(item1.Key, item1.Value);//存入模型零件列表
+                        //    }
+                        //    ser.SetDataCorrespond(DataCorrespond);
+                        //    ser.SetNcTempList(t.ncTemps);
+                        //    // 重新建立DM檔
+                        //    appVM.CreateDMFile(model);
+                        //}
+
+                        WinUIMessageBox.Show(null,
+                            $"專案Dev_Part資料夾讀取失敗",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Popup);
+                        return;
+                        ////ApplicationVM appVM = new ApplicationVM();
+                        ////// 重新建立DM檔
+                        ////appVM.CreateDMFile(model, focuseGUID);
+                        ////readFile = ser.ReadPartModel(focuseGUID); //讀取檔案內容
+                        ////readFile.DoWork();//開始工作
+                        ////model.Blocks.Clear();
+                        ////model.Entities.Clear();
+                        ////drawing.Blocks.Clear();
+                        ////drawing.Entities.Clear();
+                        //Steel3DBlock steel = Steel3DBlock.AddSteel(ViewModel.GetSteelAttr(), model, out BlockReference blockReference);
+                        //((SteelAttr)model.Entities[0].EntityData).GUID = Guid.Parse(focuseGUID);
+                        //BlockReference steel2D = SteelTriangulation((Mesh)steel.Entities.Where(x => x.GetType().Name == "Mesh").FirstOrDefault());
                     }
 
 
@@ -4803,8 +4953,8 @@ namespace STD_105.Office
 
                     Dictionary<string, ObservableCollection<SteelAttr>> saFile = ser.GetSteelAttr();
                     double length = (sa).Length;
-                    int steelType = (int)((sa).Type);
-                    string profile = (sa).Profile;
+                    steelType = (int)((sa).Type);
+                    profile = (sa).Profile;
 
                     (sa).Weight = sr.PartWeight(new ProductSettingsPageViewModel()
                     {
