@@ -44,11 +44,11 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="20,16">
                 <StackPanel.Resources>
                     <Style TargetType="TextBlock">
                         <Setter Property="FontSize" Value="25"/>
@@ -57,21 +57,23 @@
                         <Setter Property="FontFamily" Value="Calibri (本文)"/>
                     </Style>
                 </StackPanel.Resources>
-                    <TextBlock Text="G" Margin="20,16,0,0" Foreground="Crimson"/>
-                    <TextBlock Text="D" Margin="0,16,0,0" Foreground="{ StaticResource solidclr_DarkGray }"/>
-                    <TextBlock Text="-" Margin="0,16,0,0" Foreground="{ StaticResource solidclr_DarkGray }"/>
-                    <TextBlock Text="P" Margin="0,16,0,0" Foreground="{ StaticResource solidclr_DarkGray }"/>
-                    <TextBlock Text="L" Margin="0,16,0,0" Foreground="Crimson"/>
-                    <TextBlock Text="M" Margin="0,16,0,0" Foreground="{ StaticResource solidclr_DarkGray }"/>
+                    <TextBlock Text="G" Foreground="Crimson"/>
+                    <TextBlock Text="D" Foreground="{ StaticResource solidclr_DarkGray }"/>
+                    <TextBlock Text="-"  Foreground="{ StaticResource solidclr_DarkGray }"/>
+                    <TextBlock Text="P"  Foreground="{ StaticResource solidclr_DarkGray }"/>
+                    <TextBlock Text="L"  Foreground="Crimson"/>
+                    <TextBlock Text="M" Foreground="{ StaticResource solidclr_DarkGray }"/>
                 </StackPanel>     
                 
-                <StackPanel Grid.Row="1" Grid.Column="0" Margin="40,100,0,0" >
+                <StackPanel Grid.Row="1" Grid.Column="0" Margin="20">
                     <TextBlock Text="軟體" VerticalAlignment="Top"  HorizontalAlignment="Left" FontSize="16" />
                     <TextBlock Text="V11.0(2022.16.1.2 e55928ee677f)" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="16" />
                     <TextBlock Text="軟體是最新的" VerticalAlignment="Top"  HorizontalAlignment="Left" FontSize="16" Foreground="LightGray"  Margin="0,20,0,0"/>
                 </StackPanel>
                 
-                <RepeatButton Grid.Row="2" Grid.Column="0"
+                
+                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="0"
+                        Margin="20"
                               Content="安裝"
                               Command="{Binding SoftwareVersionInstallCommand}"
                               FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
@@ -81,10 +83,10 @@
                               BorderBrush="Gray"
                               Height="25"
                               Width="70"
-                              Margin="340,675,0,10" Cursor="Hand"/>
+                        Cursor="Hand"/>
             </Grid>
-        
-            <Grid Grid.Column="1" Background="White">
+
+        <Grid Grid.Column="1" Background="White">
             <Grid.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="FontSize" Value="25"/>
@@ -93,7 +95,7 @@
                     <Setter Property="FontFamily" Value="Calibri (本文)"/>
                 </Style>
             </Grid.Resources>
-                <TextBlock Text="發行說明" VerticalAlignment="Top"  HorizontalAlignment="Left"  Foreground="DeepSkyBlue" FontSize="20" Margin="20,16,0,0"/>
+            <TextBlock Text="發行說明" VerticalAlignment="Top"  HorizontalAlignment="Left"  Foreground="DeepSkyBlue" FontSize="20"  Margin="20,16"/>
                 <TextBlock Text="說明字串" VerticalAlignment="Top"  HorizontalAlignment="Left"  Foreground="DeepSkyBlue"  Margin="0,50" Visibility="Collapsed"/>
             </Grid>
              

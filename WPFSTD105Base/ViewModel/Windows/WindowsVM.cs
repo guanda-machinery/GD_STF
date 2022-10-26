@@ -44,10 +44,10 @@ namespace WPFSTD105
                 if (SLPEMS() || SLPAlarm())
                     return;
 
-                PanelButton _ = ApplicationViewModel.PanelButton;
-                _.Oil = !_.Oil;
+                PanelButton PButton = ApplicationViewModel.PanelButton;
+                PButton.Oil = !PButton.Oil;
 
-                WriteCodesysMemor.SetPanel(_);//寫入操控面板 IO
+                WriteCodesysMemor.SetPanel(PButton);//寫入操控面板 IO
             });
         }
 

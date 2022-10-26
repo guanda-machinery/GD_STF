@@ -62,10 +62,8 @@
 
         <!--頁面框架-->
         <!--物件設定與設定完成的物件列表-->
-
-
             <Grid x:Name="DataGrid" dx:ThemeManager.ThemeName="Win10Light" 
-                  Background="#d3d3d3">
+                  Background="#292929">
             <Grid.Resources>
                 <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }" >
                     <Setter Property="BorderThickness" Value="1"/>
@@ -173,7 +171,7 @@
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="400"/>
+                <RowDefinition Height="450"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -224,6 +222,12 @@
                         </dxg:GridControl.Resources>
                         <dxg:GridControl.View >
                             <dxg:TableView VerticalScrollbarVisibility="Visible" Margin="0,-1"
+                                                                           
+                                       IsColumnMenuEnabled ="False"
+                                       AllowSorting="false"
+                                       AllowColumnFiltering="False"
+                                       AllowColumnMoving="False"
+                                       
                                       HeaderPosition="SearchPanel"
                                        ShowGroupPanel="False"
                                        ShowSearchPanelMode="Always"
@@ -394,8 +398,8 @@
                 </Grid>
             </DockPanel>
             <!--零件屬性-->
-            <GroupBox Header="零件屬性" Grid.Column="1" Margin="5" >
-                <Grid Margin="-2,-8,2,0">
+            <GroupBox Header="零件屬性" Grid.Column="1" Margin="0,5,5,5" >
+                <Grid>
                     <Grid.Resources>
                         <Style TargetType ="TextBlock">
                             <Setter Property="FontSize" Value="12"/>
@@ -649,13 +653,13 @@
                 </Grid>
             </GroupBox>
             <!--繪圖顯示模型-->
-            <TabControl Margin="5" 
+        <TabControl Margin="5,0,5,5"  Style="{StaticResource DrawTabControl}"
                     Grid.Column="0" Grid.Row="1"
                     Background="#303030"
                     SelectionChanged="TabControlSelectedIndexChanged"
                     x:Name="tabControl"                              
                     SelectedIndex="0">
-                <TabItem Header="3D視圖" Margin="0,0,0,0" Style="{StaticResource DrawTabItem}">
+                <TabItem Header="3D視圖">
                     <Grid>
                         <!--新增3D模型處-->
                         <WPFSTD:ModelExt x:Name="model"
@@ -783,7 +787,7 @@
                     </Grid>
                 </TabItem>
 
-                <TabItem Header="2D視圖"  Margin="-1,0,0,0"   Style="{StaticResource DrawTabItem}">
+                <TabItem Header="2D視圖"  >
                     <Grid>
                         <WPFSTD:ModelExt x:Name="drawing" SelectionChanged="model_SelectionChanged" Loaded="drawing_Loaded"
                         SelectionColor="{Binding Setting.SelectionColor, Converter={local:StringToDrawingColoConverter}}"
@@ -843,8 +847,8 @@
                 </TabItem>
             </TabControl>
             <!--繪圖顯示模型-->
-            <Border Background="#F0F0F0" Margin="5"   Grid.Column="1" Grid.Row="1" >
-                <TabControl Margin="0.5,0" BorderThickness="0,1,0,0">
+            <Border Background="#F0F0F0" Margin="0,0,5,5"   Grid.Column="1" Grid.Row="1" >
+                <TabControl >
                 <TabControl.Resources>
                     <ResourceDictionary>
                         <Style TargetType="TabItem">

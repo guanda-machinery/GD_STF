@@ -17,9 +17,10 @@
                   xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
                   xmlns:uc_language="clr-namespace:LanguageSettingDialog.View"
                   xmlns:uc_sticker="clr-namespace:StickerDialog.View"
-                  Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
-                  Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
-                  mc:Ignorable="d"
+                   mc:Ignorable="d" 
+                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
+                   Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
+                  
                   Title="參數設定 - 選單功能">
     <WPFBase:BasePage.DataContext>
         <STD105VM:OfficeVM_ParaSettingFuncListViewModel/>
@@ -78,7 +79,7 @@
                 </Button>
                 <!--語言設定-->
 
-                <uc_language:MainView Padding="5" Background="WhiteSmoke" />
+                <uc_language:MainView Background="WhiteSmoke" />
 
                 <!--軟體版本-->
                 <Button Command="{Binding Path =SoftwareVersionCommand}"  Background="WhiteSmoke"  Padding="5">
@@ -87,7 +88,7 @@
                     </Button.Content>
                 </Button>
                 <!--貼紙機設定-->
-                <uc_sticker:MainView Padding="5" Background="WhiteSmoke"/>
+                <uc_sticker:MainView  Background="WhiteSmoke"/>
                 <!--Button  Background="WhiteSmoke">
                     <Button.Content>
                         <TextBlock Text="貼紙機設定" />
@@ -99,6 +100,9 @@
                         <TextBlock Text="選擇報表LOGO" />
                     </Button.Content>
                 </Button>
+                
+                
+                
                 <!--斷面規格轉inp-->
                 <Button Command="{ Binding Path=SectionSpecExcel2InpCommand }" Visibility="Collapsed"  Background="WhiteSmoke"  Padding="5">
                     <Button.Content>
@@ -107,6 +111,8 @@
                 </Button>
             </StackPanel>
         </Grid>
+        
+        
         <Grid Grid.Column="1" Margin="10,0">
             <!--頁面切換區域-->
             <std:OfficePageHost x:Name="pageHost1" 

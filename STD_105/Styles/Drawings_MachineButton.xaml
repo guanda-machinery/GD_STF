@@ -208,24 +208,23 @@
     </DrawingGroup>
   </DrawingImage.Drawing>
 </DrawingImage>
-    
     <DrawingImage x:Key="TransportDrawingImage">
         <DrawingImage.Drawing>
-            <DrawingGroup ClipGeometry="M0,0 V100 H100 V0 H0 Z">
+            <DrawingGroup ClipGeometry="M0,0 V55 H90 V0 H0 Z">
                 <GeometryDrawing Brush="#FFFF0000">
                     <GeometryDrawing.Geometry>
-                        <RectangleGeometry RadiusX="0" RadiusY="0" Rect="11.6276,55.0482,83.1144,32.7439" />
+                        <RectangleGeometry RadiusX="0" RadiusY="0" Rect="7,22.2561,83.1144,32.7439" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
                 <GeometryDrawing Brush="#FF000000">
                     <GeometryDrawing.Geometry>
-                        <RectangleGeometry RadiusX="0" RadiusY="0" Rect="4.6713,48.7332,7.2363,15.9036" />
+                        <RectangleGeometry RadiusX="0" RadiusY="0" Rect="0.0437,15.9411,7.2363,15.9036" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
                 <DrawingGroup Transform="1.1066208,0,0,0.90365192,0,0">
                     <GlyphRunDrawing ForegroundBrush="#FFFFFFFF">
                         <GlyphRunDrawing.GlyphRun>
-                            <GlyphRun PixelsPerDip="1" BaselineOrigin="71.421738,77.219017" FontRenderingEmSize="14.0794" BidiLevel="0" IsSideways="False" CaretStops="1 1" ClusterMap="0" Characters="1" GlyphIndices="20" AdvanceWidths="7.58912" GlyphOffsets="0,0" Language="en-us">
+                            <GlyphRun PixelsPerDip="1" BaselineOrigin="67.240013,40.930584" FontRenderingEmSize="14.0794" BidiLevel="0" IsSideways="False" CaretStops="1 1" ClusterMap="0" Characters="1" GlyphIndices="20" AdvanceWidths="7.58912" GlyphOffsets="0,0" Language="en-us">
                                 <GlyphRun.GlyphTypeface>
                                     <GlyphTypeface FontUri="C:\WINDOWS\FONTS\SEGOEUI.TTF" StyleSimulations="None" />
                                 </GlyphRun.GlyphTypeface>
@@ -238,7 +237,7 @@
                         <Pen Brush="#FF000000" Thickness="4" StartLineCap="Flat" EndLineCap="Flat" LineJoin="Miter" />
                     </GeometryDrawing.Pen>
                     <GeometryDrawing.Geometry>
-                        <LineGeometry StartPoint="39.4535,39.6219" EndPoint="67.5153,39.6219" />
+                        <LineGeometry StartPoint="32.9691,8" EndPoint="61.0309,8" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
                 <GeometryDrawing>
@@ -246,7 +245,7 @@
                         <Pen Brush="#FF000000" Thickness="4" StartLineCap="Flat" EndLineCap="Flat" LineJoin="Miter" />
                     </GeometryDrawing.Pen>
                     <GeometryDrawing.Geometry>
-                        <LineGeometry StartPoint="38.0923,32.2002" EndPoint="38.0923,48.1038" />
+                        <LineGeometry StartPoint="32,0" EndPoint="32,15.9036" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
                 <GeometryDrawing>
@@ -254,14 +253,14 @@
                         <Pen Brush="#FF000000" Thickness="4" StartLineCap="Flat" EndLineCap="Flat" LineJoin="Miter" />
                     </GeometryDrawing.Pen>
                     <GeometryDrawing.Geometry>
-                        <LineGeometry StartPoint="67.7247,32.2002" EndPoint="67.7247,48.1038" />
+                        <LineGeometry StartPoint="62,0.0482" EndPoint="62,15.9518" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
-                <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M100,100z M0,0z M68.50564,75.35891L63.49146,69.84981 66.7937,69.84981 71.80788,75.35891 66.7937,80.868 63.49146,80.868z" />
-                <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M100,100z M0,0z M35.55302,75.35834L40.5672,80.86743 37.26496,80.86743 32.25078,75.35834 37.26496,69.84925 40.5672,69.84925z" />
+                <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M90,55z M0,0z M63.87806,42.566798L58.86388,37.057698 62.16612,37.057698 67.1803,42.566798 62.16612,48.075888 58.86388,48.075888z" />
+                <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M90,55z M0,0z M30.92544,42.566228L35.93962,48.075318 32.63738,48.075318 27.6232,42.566228 32.63738,37.057138 35.93962,37.057138z" />
                 <GeometryDrawing Brush="#FFFFFFFF">
                     <GeometryDrawing.Geometry>
-                        <RectangleGeometry RadiusX="0" RadiusY="0" Rect="34.8865,74.313,34.0502,2.27" />
+                        <RectangleGeometry RadiusX="0" RadiusY="0" Rect="30.2589,41.5209,34.0502,2.27" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
             </DrawingGroup>
