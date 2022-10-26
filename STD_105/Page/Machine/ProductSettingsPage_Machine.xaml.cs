@@ -3163,7 +3163,7 @@ namespace STD_105
             //}
 
 
-
+            ObSettingVM obvm = new ObSettingVM();
             TreeView treeView = (TreeView)sender; //樹狀列表
             TreeNode data = (TreeNode)e.NewValue;
             if (data.DataName == null)
@@ -3223,7 +3223,7 @@ namespace STD_105
             }
             else //如果需要載入 nc 設定檔
             {
-                model.LoadNcToModel(data.DataName);
+                model.LoadNcToModel(data.DataName, obvm.allowType);
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
             }
 

@@ -25,6 +25,7 @@ using devDept.Serialization;
 using GD_STD.Enum;
 using System.Windows.Media;
 using static DevExpress.Utils.Menu.DXMenuItemPainter;
+using DevExpress.Mvvm;
 //using TriangleNet;
 
 namespace WPFSTD105.Model
@@ -41,7 +42,7 @@ namespace WPFSTD105.Model
         /// <param name="materialNumber">素材編號</param>
         public static void AssemblyPart(this devDept.Eyeshot.Model model, string materialNumber )
         {
-
+            ObSettingVM obvm = new ObSettingVM();
             model.Clear();
             STDSerialization ser = new STDSerialization(); //序列化處理器
             ObservableCollection<MaterialDataView> materialDataViews = ser.GetMaterialDataView(); //序列化列表
@@ -56,7 +57,7 @@ namespace WPFSTD105.Model
             //產生nc檔案圖檔
             for (int i = 0; i < guid.Count; i++)
             {
-                model.LoadNcToModel(guid[i]);
+                model.LoadNcToModel(guid[i], obvm.allowType);
             }
 
 
@@ -495,15 +496,18 @@ namespace WPFSTD105.Model
         /// </summary>
         /// <param name="model"></param>
         /// <param name="dataName"></param>
-        public static void LoadNcToModel(this devDept.Eyeshot.Model model, string dataName)
+        /// <param name="allowType"></param>
+        public static void LoadNcToModel(this devDept.Eyeshot.Model model, string dataName, List<OBJECT_TYPE> allowType, DXSplashScreenViewModel vm = null)
         {
             STDSerialization ser = new STDSerialization(); //序列化處理器
             NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
             NcTemp nc = ncTemps.GetData(dataName); //取得nc資訊
-            ObSettingVM obVM = new ObSettingVM();
+            NcTemp reduceNC = new NcTemp() { GroupBoltsAttrs = nc.GroupBoltsAttrs, SteelAttr = nc.SteelAttr };
+
+            //ObSettingVM obVM = new ObSettingVM();
             if (nc == null)
             {
-                if (!obVM.allowType.Contains( nc.SteelAttr.Type))
+                if (!allowType.Contains( nc.SteelAttr.Type))
                 {
                     return;
                 }
@@ -525,8 +529,11 @@ namespace WPFSTD105.Model
                 cut2.Translate(0, nc.SteelAttr.H - nc.SteelAttr.t2);
                 Mesh otherCut2 = (Mesh)cut2.Clone();
                 List<Solid> solids = new List<Solid>();
-                solids.AddRange(Solid.Difference(otherCut1.ConvertToSolid(), vMesh.ConvertToSolid()).Where(el => el != null));
-                solids.AddRange(Solid.Difference(otherCut2.ConvertToSolid(), vMesh.ConvertToSolid()).Where(el => el != null));
+                Solid[] s1 = Solid.Difference(otherCut1.ConvertToSolid(), vMesh.ConvertToSolid());
+                Solid[] s2 = Solid.Difference(otherCut2.ConvertToSolid(), vMesh.ConvertToSolid());
+                Solid[] emptySolid = new Solid[0];
+                solids.AddRange(s1 == null ? emptySolid : s1.Where(el => el != null));
+                solids.AddRange(s2 == null ? emptySolid : s2.Where(el => el != null));
                 //solids.ForEach(el => el.Portions.Where(el => el.)
                 var cutMeshs = solids.Select(el => el.ConvertToMesh()).ToList();
                 cutMeshs.ForEach(mesh =>
@@ -650,9 +657,35 @@ namespace WPFSTD105.Model
             });
 
             // 寫入oPoint,vPoint,uPoint
+            ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = nc.SteelAttr.oPoint;
+            ((SteelAttr)model.Blocks[1].Entities[0].EntityData).vPoint = nc.SteelAttr.vPoint;
+            ((SteelAttr)model.Blocks[1].Entities[0].EntityData).uPoint = nc.SteelAttr.uPoint;
+
+
+            ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).oPoint = nc.SteelAttr.oPoint;
+            ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).vPoint = nc.SteelAttr.vPoint;
+            ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).uPoint = nc.SteelAttr.uPoint;
 
 
             ser.SetPartModel(dataName, model);//儲存 3d 視圖
+
+            #region 檢測是否成功，失敗則將NC檔寫回
+            ReadFile readFile = ser.ReadPartModel(dataName); //讀取檔案內容
+            readFile.DoWork();//開始工作
+            try
+            {
+                readFile.AddToScene(model);//將讀取完的檔案放入到模型
+                if (model.Blocks.Count() <= 1)
+                {
+                    ncTemps.Add(reduceNC);
+                }
+            }
+            catch (Exception ex)
+            {
+                ncTemps.Add(reduceNC);
+            } 
+            #endregion
+
             ser.SetNcTempList(ncTemps);//儲存檔案
         }
         /// <summary>
@@ -703,11 +736,19 @@ namespace WPFSTD105.Model
         {
             for (int i = 0; i < meshes.Count; i++)
             {
-                Solid[] solids = Solid.Difference(solid, meshes[i].ConvertToSolid());
-                if (solids != null)
+                try
                 {
-                    solid =  solids[0];
+                    Solid[] solids = Solid.Difference(solid, meshes[i].ConvertToSolid());
+                    if (solids != null)
+                    {
+                        solid = solids[0];
+                    }
                 }
+                catch (Exception ex)
+                {
+                    return solid;
+                }
+               
             }
             return solid;
         }

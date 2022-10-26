@@ -39,7 +39,8 @@ namespace WPFSTD105
         /// <param name="nc"></param>
         public new void Add(NcTemp nc)
         {
-            int index = this.FindIndex(el => el.SteelAttr.PartNumber == nc.SteelAttr.PartNumber); //查詢是否有相同物件
+            // 2022/10/25 呂宗霖 原只判斷零件編號 現加入長度
+            int index = this.FindIndex(el => el.SteelAttr.PartNumber == nc.SteelAttr.PartNumber && el.SteelAttr.Length==nc.SteelAttr.Length); //查詢是否有相同物件
             if (index == -1)//沒有相同物件
             {
                 base.Add(nc); //加入物件

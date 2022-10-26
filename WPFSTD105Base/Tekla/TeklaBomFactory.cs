@@ -381,34 +381,35 @@ namespace WPFSTD105.Tekla
                                 if (KeyValuePairs.ContainsKey(key))//如果找到相同的 key
                                 {
                                     int index = 0;//索引位置
-                                    if (obj.GetType() == typeof(SteelPart)) //如果類型是 SteelPart
+                                    SteelPart part = (SteelPart)obj; //轉換單零件
+                                    if (obj.GetType() == typeof(SteelPart) && obvm.allowType.Contains(part.Type)) //如果類型是 SteelPart
                                     {
-                                        index = KeyValuePairs[key].FindIndex(el => el.GetType() == typeof(SteelPart) && ((SteelPart)el).Number == ((SteelPart)obj).Number);//找出字典檔內物件
-                                        SteelPart part = (SteelPart)obj; //轉換單零件
-
                                         //判斷需要加入的斷面規格類型
-                                        if (obvm.allowType.Contains(part.Type)
-                                            //part.Type == OBJECT_TYPE.BH ||
-                                            //part.Type == OBJECT_TYPE.RH ||
-                                            //part.Type == OBJECT_TYPE.CH ||
-                                            //part.Type == OBJECT_TYPE.BOX
-                                            //|| part.Type == OBJECT_TYPE.L
-                                            )
+                                        //if (
+                                        //part.Type == OBJECT_TYPE.BH ||
+                                        //part.Type == OBJECT_TYPE.RH ||
+                                        //part.Type == OBJECT_TYPE.CH ||
+                                        //part.Type == OBJECT_TYPE.BOX
+                                        //|| part.Type == OBJECT_TYPE.L
+                                        //    )
+                                        //{
+                                        index = KeyValuePairs[key].FindIndex(el => el.GetType() == typeof(SteelPart) && ((SteelPart)el).Number == ((SteelPart)obj).Number && ((SteelPart)el).Length == ((SteelPart)obj).Length);//找出字典檔內物件
+
+                                        if (Profile[part.Type].FindIndex(el => el.Profile == part.Profile && el.Length == part.Length) == -1)//如果模型找不到相同的斷面規格
                                         {
-                                            if (Profile[part.Type].FindIndex(el => el.Profile == part.Profile) == -1)//如果模型找不到相同的斷面規格
-                                            {
-                                                /*自動新增斷面規格*/
-                                                SteelAttr att = new SteelAttr(part); //轉換斷面規格設定檔
-                                                att.GUID = Guid.NewGuid();
-                                                Profile[part.Type].Add(att);//加入到列表內
-                                                _LackProfile = true;
-                                            }
-                                            if (Material.FindIndex(el => el.Name == part.Material) == -1) //如果沒有模型材質列表沒有相對應的材質
-                                            {
-                                                Material.Add(new SteelMaterial { Name = part.Material });//加入到材質
-                                                _LackMaterial = true;
-                                            }
+                                            /*自動新增斷面規格*/
+                                            part.Nc = true;
+                                            SteelAttr att = new SteelAttr(part); //轉換斷面規格設定檔
+                                            att.GUID = Guid.NewGuid();
+                                            Profile[part.Type].Add(att);//加入到列表內
+                                            _LackProfile = true;
                                         }
+                                        if (Material.FindIndex(el => el.Name == part.Material) == -1) //如果沒有模型材質列表沒有相對應的材質
+                                        {
+                                            Material.Add(new SteelMaterial { Name = part.Material });//加入到材質
+                                            _LackMaterial = true;
+                                        }
+                                        //}
                                     }
                                     else //如果類型是 SteelBolt
                                     {
@@ -484,7 +485,7 @@ namespace WPFSTD105.Tekla
                                 else//如果找不到相同的 key
                                 {
                                     KeyValuePairs.Add(key, new ObservableCollection<object> { obj });
-                                    if (obj.GetType() == typeof(SteelPart))//只存入 SteelPart 的 Profile 
+                                    if (obj.GetType() == typeof(SteelPart))//只存入 SteelPart 的 Profile                                         
                                         ProfileList.Add(key);
                                 }
                             }
