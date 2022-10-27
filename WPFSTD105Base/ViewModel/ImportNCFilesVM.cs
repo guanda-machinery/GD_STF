@@ -21,6 +21,7 @@ using System.Windows;
 using System.Windows.Input;
 using WPFSTD105.Attribute;
 using WPFSTD105.Tekla;
+using WPFSTD105.ViewModel;
 using static WPFSTD105.ViewLocator;
 
 namespace WPFSTD105
@@ -159,7 +160,8 @@ namespace WPFSTD105
 
                 //ScreenManagerWaitIndicator.Show(inputBlock: InputBlockMode.None, timeout: 100);
                 STDSerialization ser = new STDSerialization();//序列化處理器
-                Thread.Sleep(500); //暫停兩秒為了要顯示 ScreenManager
+                ObSettingVM obvm = new ObSettingVM();
+                Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
                                     //if (IsNcLoad || IsBomLoad) //如果有載入過報表
                 if (false) //如果有載入過報表
                 {
@@ -256,12 +258,15 @@ namespace WPFSTD105
                             if (el.Value[0].GetType() == typeof(SteelPart))
                             {
                                 SteelPart steel = (SteelPart)el.Value[0]; //轉換物件
-                                int index = BomProperties.FindIndex(e => e.Type == steel.Type); //查看是否有相同的斷面規格在報表屬性設定檔內
-                                if (index == -1) //不再報表屬性內
+                                if (obvm.allowType.Contains(steel.Type))
                                 {
-                                    BomProperties.Add(new BomProperty() { Type = steel.Type });//加入到列表內
+                                    int index = BomProperties.FindIndex(e => e.Type == steel.Type); //查看是否有相同的斷面規格在報表屬性設定檔內
+                                    if (index == -1) //不再報表屬性內
+                                    {
+                                        BomProperties.Add(new BomProperty() { Type = steel.Type });//加入到列表內
+                                    }
+                                    ser.SetPart(el.Key.GetHashCode().ToString(), el.Value);
                                 }
-                                ser.SetPart(el.Key.GetHashCode().ToString(), el.Value);
                             }
                             else if (el.Value[0].GetType() == typeof(SteelBolts))
                             {
@@ -292,7 +297,7 @@ namespace WPFSTD105
                 {
                     DeleteFolder(ApplicationVM.DirectoryNc());//刪除既有nc檔案
                     CopyFolder(NcPath);//複製nc路徑的nc1檔案
-
+                    var profile = ser.GetSteelAttr();
                     TeklaNcFactory factory = new TeklaNcFactory();//nc1 讀取器
                     //load!
                     bool loadNcResult = factory.Load(ProcessingScreenWin.ViewModel); //載入NC檔案

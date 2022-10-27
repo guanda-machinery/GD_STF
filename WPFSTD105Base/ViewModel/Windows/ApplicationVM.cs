@@ -450,7 +450,8 @@ namespace WPFSTD105
         /// 建立dm檔
         /// </summary>
         /// <param name="model"></param>
-        public void CreateDMFile( ModelExt model)
+        /// <param name="guid"></param>
+        public void CreateDMFile(ModelExt model, string guid = "")
         {
 
 #if DEBUG
@@ -464,14 +465,32 @@ namespace WPFSTD105
             ObSettingVM obVM = new ObSettingVM();
             List<string> dmList = appVM.GetAllDevPart();
             NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
-            // 跑已存在dm檔，產生未有dm檔之NC檔
-            foreach (var nc in ncTemps)
+            int i = 0;
+            ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
+            // 產生指定GUID的DM檔
+            if (!string.IsNullOrEmpty(guid))
             {
-                if (!dmList.Contains(nc.SteelAttr.GUID.Value.ToString()) && obVM.allowType.Contains(nc.SteelAttr.Type))
+                NcTemp nc = ncTemps.Find(x => x.SteelAttr.GUID.ToString() == guid);
+                if (obVM.allowType.Contains(nc.SteelAttr.Type))
                 {
-                    //ScreenManager.ViewModel.Status =$"建立3D/2D圖檔中"{ };
+                    ScreenManager.ViewModel.Status = $"建立3D/2D圖檔中{nc.SteelAttr.PartNumber}";
+                    Thread.Sleep(1000);
                     model.Clear(); //清除目前模型
-                    model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString());
+                    model.LoadNcToModel(nc.SteelAttr.GUID.ToString(), obVM.allowType, ScreenManager.ViewModel);
+                }
+            }
+            else
+            {
+                // 跑已存在dm檔，產生未有dm檔之NC檔            
+                foreach (NcTemp nc in ncTemps)
+                {
+                    if (!dmList.Contains(nc.SteelAttr.GUID.Value.ToString()) && obVM.allowType.Contains(nc.SteelAttr.Type))
+                    {
+                        ScreenManager.ViewModel.Status = $"建立3D/2D圖檔中{nc.SteelAttr.PartNumber} {i++}/{ncTemps.Count}";
+                        Thread.Sleep(1000);
+                        model.Clear(); //清除目前模型
+                        model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), obVM.allowType, ScreenManager.ViewModel);
+                    }
                 }
             }
         }

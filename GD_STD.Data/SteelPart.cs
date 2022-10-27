@@ -12,7 +12,7 @@ namespace GD_STD.Data
     /// 報表 Part 訊息
     /// </summary>
     [Serializable]
-    public class SteelPart : ITeklaObject, IProfile, ISecondary, IModelObjectBase, IMerge, IDrawing, ITekla, IChange, ISteelProfile, ITypeSettingPartView
+    public class SteelPart : ITeklaObject, IProfile, ISecondary, IModelObjectBase, IMerge, IDrawing, ITekla, IChange, ISteelProfile, ITypeSettingPartView,IComparable
     {
         /// <summary>
         /// Tekla Part 訊息
@@ -220,7 +220,7 @@ namespace GD_STD.Data
         {
             if (obj is SteelPart steel)
             {
-                if (steel.Number != this.Number) //編號判斷合併物件
+                if (steel.Number != this.Number && steel.Length != this.Length) //編號判斷合併物件
                 {
                     throw new Exception("合併物件失敗，因編號不相同。");
                 }
@@ -352,6 +352,16 @@ namespace GD_STD.Data
             });
             return result;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public int CompareTo(object obj)
+        {
+            return W.CompareTo(obj);
+        }
+
         public static bool operator ==(SteelPart left, SteelPart right)
         {
             return EqualityComparer<SteelPart>.Default.Equals(left, right);
