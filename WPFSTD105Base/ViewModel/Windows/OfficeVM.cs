@@ -18,7 +18,7 @@ namespace WPFSTD105
     /// OfficeBasePage ViewModelz
     /// </summary>
     public class OfficeVM : AbsBaseWindowView
-    {        
+    {
         /// <summary>
         /// 新建路徑
         /// </summary>
@@ -36,20 +36,6 @@ namespace WPFSTD105
         /// </summary>
         public OfficeVM(Window window) : base(window)
         {
-            Old_ObSettingsPage_Office = Old_ObSettings_Office(); //舊版製品設定 20220824 張燕華
-            ObSettingsPage_Office = ObSettings_Office();
-            ProjectManagerCommand = ProjectManager();
-            //ParameterSettingsCommand = ParameterSettings(); //20220711 張燕華 由顯示參數設定頁面改為顯示參數設定功能選單
-            ParameterSettingsFuncListCommand = ParameterSettingsFuncList(); //20220711 張燕華 由顯示參數設定頁面改為顯示參數設定功能選單
-            AutoTypeSettingsCommand = AutoTypeSettings();
-            old_PartsListCommand = old_PartsList();
-            ProcessingMonitorCommand = ProcessingMonitor();
-            PageHostMaximizedCommand = PageHostMaximized();
-            DragMoveWindowCommand = DragMoveWindow();
-            NextPageCommand = NextPage();
-            PreviousPageCommand = PreviousPage();
-            WorkingAreaMonitorCommand = WorkingAreaMonitor();
-
             OpenProjectPathCommand = OpenProjectPath();
             OutProjectPathCommand = OutProjectPath();
         }
@@ -65,192 +51,230 @@ namespace WPFSTD105
                 Customizable = Customizable ? false : true;
             });
         }
-        
+
         /// <summary>
         /// 製品設定命令
         /// </summary>
-        public ICommand Old_ObSettingsPage_Office { get; set; } 
-        private WPFBase.RelayCommand Old_ObSettings_Office() 
+        public ICommand Old_ObSettingsPage_Office
         {
-            return new WPFBase.RelayCommand(() =>
+            get
             {
-                OfficeViewModel.CurrentPage = OfficePage.old_ObSettings;
-            });
+                return new WPFBase.RelayCommand(() =>
+                {
+                    OfficeViewModel.CurrentPage = OfficePage.old_ObSettings;
+                });
+            }
         }
         /// <summary>
         /// 製品設定命令
         /// </summary>
-        public ICommand ObSettingsPage_Office { get; set; }
-        private WPFBase.RelayCommand ObSettings_Office()
+        public ICommand ObSettingsPage_Office
         {
-            return new WPFBase.RelayCommand(() =>
+            get
             {
-                OfficeViewModel.CurrentPage = OfficePage.ObSettings;
-            });
+                return new WPFBase.RelayCommand(() =>
+                {
+                    OfficeViewModel.CurrentPage = OfficePage.ObSettings;
+                });
+            }
         }
         /// <summary>
         /// 開啟專案管理
         /// </summary>
-        public ICommand ProjectManagerCommand { get; set; }
-        private WPFBase.RelayCommand ProjectManager()
+        public ICommand ProjectManagerCommand
         {
-            return new WPFBase.RelayCommand(() =>
+            get
             {
-                OfficeViewModel.CurrentPage = OfficePage.Home; // 開啟專案管理時先回到空白頁
-                CommonViewModel.ProjectList = new ObservableCollection<string>(ApplicationVM.GetModelDirectory(WPFSTD105.Properties.SofSetting.Default.LoadPath));
-                if (OfficeViewModel.ProjectManagerControl)
-                    OfficeViewModel.ProjectManagerControl = false;
-                else
-                    OfficeViewModel.ProjectManagerControl = true;
-            });
+                return new WPFBase.RelayCommand(() =>
+                {
+                    OfficeViewModel.CurrentPage = OfficePage.Home; // 開啟專案管理時先回到空白頁
+                    CommonViewModel.ProjectList = new ObservableCollection<string>(ApplicationVM.GetModelDirectory(WPFSTD105.Properties.SofSetting.Default.LoadPath));
+                    if (OfficeViewModel.ProjectManagerControl)
+                        OfficeViewModel.ProjectManagerControl = false;
+                    else
+                        OfficeViewModel.ProjectManagerControl = true;
+                });
+            }
         }
 
         /// <summary>
         /// 20220711 張燕華 開啟參數設定 - 功能列表 頁面
         /// </summary>
-        public ICommand ParameterSettingsFuncListCommand { get; set; }
-        private WPFBase.RelayCommand ParameterSettingsFuncList()
+        public ICommand ParameterSettingsFuncListCommand
         {
-            return new WPFBase.RelayCommand(() =>
+            get
             {
-                OfficeViewModel.CurrentPage = OfficePage.ParameterSettings_FuncList;
-            });
+                return new WPFBase.RelayCommand(() =>
+                {
+                    OfficeViewModel.CurrentPage = OfficePage.ParameterSettings_FuncList;
+                });
+            }
         }
+
+        /// <summary>
+        /// 20221026 開啟參數設定2 
+        /// </summary>
+        public ICommand ParameterSettingsCommand
+        {
+            get
+            {
+                return new WPFBase.RelayCommand(() =>
+                {
+                    OfficeViewModel.CurrentPage = OfficePage.ParameterSettings;
+                });
+            }
+        }
+
+
 
         /// <summary>
         /// 排版設定(自動)
         /// </summary>
-        public ICommand AutoTypeSettingsCommand { get; set; }
-        private RelayCommand AutoTypeSettings()
+        public ICommand AutoTypeSettingsCommand
         {
-            return new WPFBase.RelayCommand(() =>
+            get
             {
-                OfficeViewModel.CurrentPage = OfficePage.AutoTypeSettings;
-            });
+                return new WPFBase.RelayCommand(() =>
+                {
+                    OfficeViewModel.CurrentPage = OfficePage.AutoTypeSettings;
+                });
+            }
         }
 
         /// <summary>
         /// 舊排版設定(自動)
         /// </summary>
-        public ICommand old_PartsListCommand { get; set; }
-        private RelayCommand old_PartsList()
+        public ICommand old_PartsListCommand
         {
-            return new WPFBase.RelayCommand(() =>
+            get
             {
-                OfficeViewModel.CurrentPage = OfficePage.old_PartsList;
-            });
+                return new WPFBase.RelayCommand(() =>
+                {
+                    OfficeViewModel.CurrentPage = OfficePage.old_PartsList;
+                });
+            }
         }
 
-        
+
 
 
 
         /// <summary>
         /// 加工監控
         /// </summary>
-        public ICommand ProcessingMonitorCommand { get; set; }
-        private RelayCommand ProcessingMonitor()
+        public ICommand ProcessingMonitorCommand
         {
-            return new WPFBase.RelayCommand(() =>
+            get
             {
-                OfficeViewModel.CurrentPage = OfficePage.ProcessingMonitor;
-            });
+                return new WPFBase.RelayCommand(() =>
+                {
+                    OfficeViewModel.CurrentPage = OfficePage.ProcessingMonitor;
+                });
+            }
         }
         /// <summary>
         /// 廠區監控
         /// </summary>
-        public ICommand WorkingAreaMonitorCommand { get; set; }
-        private RelayCommand WorkingAreaMonitor()
+        public ICommand WorkingAreaMonitorCommand
         {
-            return new RelayCommand(() =>
+            get
             {
-                OfficeViewModel.CurrentPage = OfficePage.WorkingAreaMonitor;
-            });
+                return new RelayCommand(() =>
+                {
+                    OfficeViewModel.CurrentPage = OfficePage.WorkingAreaMonitor;
+                });
+            }
         }
         /// <summary>
         /// 下一頁
         /// </summary>
-        public ICommand NextPageCommand { get; set; }
-        private RelayCommand NextPage()
+        public ICommand NextPageCommand
         {
-            return new WPFBase.RelayCommand(() =>
+            get
             {
-                OfficePage page = OfficeViewModel.CurrentPage;
-                int count = System.Enum.GetNames(typeof(OfficePage)).Length;
-                int index = (int)page;
-                index++;
-                if (index >= count)
+                return new WPFBase.RelayCommand(() =>
                 {
-                    index = 0;
-                }
+                    OfficePage page = OfficeViewModel.CurrentPage;
+                    int count = System.Enum.GetNames(typeof(OfficePage)).Length;
+                    int index = (int)page;
+                    index++;
+                    if (index >= count)
+                    {
+                        index = 0;
+                    }
 
-                if (string.IsNullOrEmpty(OfficeViewModel.ProjectName))
-                    return;
-                else
-                    OfficeViewModel.CurrentPage = (OfficePage)index;
-            });
+                    if (string.IsNullOrEmpty(OfficeViewModel.ProjectName))
+                        return;
+                    else
+                        OfficeViewModel.CurrentPage = (OfficePage)index;
+                });
+            }
         }
 
         /// <summary>
         /// 上一頁
         /// </summary>
-        public ICommand PreviousPageCommand { get; set; }
-        private RelayCommand PreviousPage()
+        public ICommand PreviousPageCommand
         {
-            return new WPFBase.RelayCommand(() =>
+            get
             {
-                OfficePage page = OfficeViewModel.CurrentPage;
-                int count = System.Enum.GetNames(typeof(OfficePage)).Length;
-                int index = (int)page;
-                index--;
-                if (index < 0)
+                return new WPFBase.RelayCommand(() =>
                 {
-                    index = count - 1;
-                }
+                    OfficePage page = OfficeViewModel.CurrentPage;
+                    int count = System.Enum.GetNames(typeof(OfficePage)).Length;
+                    int index = (int)page;
+                    index--;
+                    if (index < 0)
+                    {
+                        index = count - 1;
+                    }
 
-                if (string.IsNullOrEmpty(OfficeViewModel.ProjectName))
-                    return;
-                else
-                    OfficeViewModel.CurrentPage = (OfficePage)index;
-            });
+                    if (string.IsNullOrEmpty(OfficeViewModel.ProjectName))
+                        return;
+                    else
+                        OfficeViewModel.CurrentPage = (OfficePage)index;
+                });
+            }
         }
 
         /// <summary>
         /// 視窗拖曳
         /// </summary>
-        public ICommand DragMoveWindowCommand { get; set; }
-        private RelayParameterizedCommand DragMoveWindow()
+        public ICommand DragMoveWindowCommand
         {
-            return new WPFBase.RelayParameterizedCommand((e) =>
+            get
             {
-                if (string.IsNullOrWhiteSpace(e.ToString()))
+                return new WPFBase.RelayParameterizedCommand((e) =>
                 {
-                    return;
-                }
-                Window window = e as Window;
-                if (window != null)
-                {
-                    if (Mouse.LeftButton == MouseButtonState.Pressed)
+                    if (string.IsNullOrWhiteSpace(e.ToString()))
                     {
-                        window.DragMove();
+                        return;
                     }
+                    Window window = e as Window;
+                    if (window != null)
+                    {
+                        if (Mouse.LeftButton == MouseButtonState.Pressed)
+                        {
+                            window.DragMove();
+                        }
                     /*
                     if (window.WindowState == WindowState.Maximized)
                     {
                         window.WindowState = WindowState.Normal;
                     }*/
-                }
-            });
+                    }
+                });
+            }
         }
-
         /// <summary>
         /// 視窗放大
         /// </summary>
-        public ICommand PageHostMaximizedCommand { get; set; }
-        private RelayCommand PageHostMaximized()
+        public ICommand PageHostMaximizedCommand
         {
-            return new WPFBase.RelayCommand(() =>
+            get
             {
+                return new WPFBase.RelayCommand(() =>
+                {
                 /*
                 int oldHeight = (int)_Window.Height;
                 int oldWidth = (int)_Window.Width;
@@ -260,11 +284,13 @@ namespace WPFSTD105
                 OfficeViewModel.WorkAreaHeight += heightGap;
                 OfficeViewModel.WorkAreaWidth += widthGap;
                 */
-                _Window.WindowState ^= WindowState.Maximized;
-                OfficeViewModel.WorkAreaHeight = System.Windows.Forms.SystemInformation.WorkingArea.Height - 20;
-                OfficeViewModel.WorkAreaWidth = System.Windows.Forms.SystemInformation.WorkingArea.Width - 220;
-            });
+                    _Window.WindowState ^= WindowState.Maximized;
+                    OfficeViewModel.WorkAreaHeight = System.Windows.Forms.SystemInformation.WorkingArea.Height - 20;
+                    OfficeViewModel.WorkAreaWidth = System.Windows.Forms.SystemInformation.WorkingArea.Width - 220;
+                });
+            }
         }
+
         /// <summary>
         /// 新建專案 存路徑
         /// </summary>

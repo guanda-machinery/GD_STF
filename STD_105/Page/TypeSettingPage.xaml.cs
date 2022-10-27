@@ -63,7 +63,7 @@ namespace STD_105
                 if (!File.Exists($@"{ApplicationVM.DirectoryDevPart()}\{data.DataName}.dm"))
                 {
                     graphWin.model.LoadNcToModel(data.DataName);
-                    
+               
                 }
                 else
                 {

@@ -31,9 +31,15 @@ namespace WPFSTD105
     public class ImportNCFilesVM : WPFWindowsBase.BaseViewModel, IProjectProperty
     {
         /// <summary>
-        /// 啟動畫面管理器
+        /// 畫面管理器(進度條型)
         /// </summary>
-        public SplashScreenManager ScreenManager { get; set; } = SplashScreenManager.CreateWaitIndicator();
+        private  SplashScreenManager ProcessingScreenWin = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
+
+
+        /// <summary>
+        /// 畫面管理器(轉圈型)
+        /// </summary>
+        //public SplashScreenManager ScreenManagerWaitIndicator { get; set; } = SplashScreenManager.CreateWaitIndicator();
         /// <summary>
         /// 標準建構式
         /// </summary>
@@ -46,7 +52,6 @@ namespace WPFSTD105
             ImportBomCommand = ImportBom();
             SaveCommand = Save();
             BomPropertiesSaveCommand = BomPropertiesSave();
-            ScreenManager.ViewModel.Status = "準備匯入 ....";
         }
         /// <summary>
         /// 寫入專案參數
@@ -147,9 +152,14 @@ namespace WPFSTD105
         {
             return new WPFWindowsBase.RelayCommand(() =>
             {
-                ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
+                ProcessingScreenWin.Show(inputBlock: InputBlockMode.Window, timeout: 100);
+                ProcessingScreenWin.ViewModel.Status = "";
+                ProcessingScreenWin.ViewModel.IsIndeterminate = true;
+                //ProcessingScreenW.Show();
+
+                //ScreenManagerWaitIndicator.Show(inputBlock: InputBlockMode.None, timeout: 100);
                 STDSerialization ser = new STDSerialization();//序列化處理器
-                Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
+                Thread.Sleep(500); //暫停兩秒為了要顯示 ScreenManager
                                     //if (IsNcLoad || IsBomLoad) //如果有載入過報表
                 if (false) //如果有載入過報表
                 {
@@ -194,22 +204,47 @@ namespace WPFSTD105
                     //if (BomPath != string.Empty)//有選擇報表路徑
                     //    File.Delete(ApplicationVM.FileTeklaBom());//刪除既有的報表
                 }
-                ScreenManager.ViewModel.Status = "複製文件到 Model 中 ...";
-                Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
+
+                ProcessingScreenWin.ViewModel.Status = "複製文件到 Model 中 ...";
+                //ScreenManagerWaitIndicator.ViewModel.Status = "複製文件到 Model 中 ...";
+                Thread.Sleep(500); //暫停兩秒為了要顯示 ScreenManager
+
+                //測試用 顯示1->100
+                ProcessingScreenWin.ViewModel.IsIndeterminate = false;
+                ProcessingScreenWin.ViewModel.Status = $"Loading data...";
+                for (int i =0; i<100; i++)
+                {
+                    ProcessingScreenWin.ViewModel.Progress = i;
+                    Thread.Sleep(50);
+                }
+                ProcessingScreenWin.ViewModel.IsIndeterminate = true;
+
                 #region 只跑BOM
                 // 只跑BOM && string.IsNullOrEmpty(NcPath)
                 if (BomPath != string.Empty)//如果有選擇報表路徑
                 {
                     if (File.Exists(ApplicationVM.FileTeklaBom())) //檔案存在
                     {
+                        ProcessingScreenWin.ViewModel.Status = $"正在刪除BOM表舊檔案";
                         File.Delete(ApplicationVM.FileTeklaBom());//刪除檔案
+                        ProcessingScreenWin.ViewModel.Status = $"刪除BOM表舊檔案成功！";
                     }
+
+                    ProcessingScreenWin.ViewModel.Status = $"正在複製BOM表檔案到模型";
+
                     File.Copy(BomPath, ApplicationVM.FileTeklaBom());//複製報表到模型
+
+                    ProcessingScreenWin.ViewModel.Status = $"複製BOM表檔案完成";
                     CommonViewModel.ProjectProperty.BomLoad = DateTime.Now; //bom載入時間
                     CommonViewModel.ProjectProperty.Revise = DateTime.Now;//專案變動所以修改日期
 
+
+                    ProcessingScreenWin.ViewModel.Status = $"正在複製BOM表檔案到模型";
                     TeklaBomFactory teklaHtemlFactory = new TeklaBomFactory($@"{ApplicationVM.FileTeklaBom()}"); //報表讀取器
-                    bool loadBomResult = teklaHtemlFactory.Load(ScreenManager.ViewModel);//載入報表物件結果
+                    //load最花時間，需採集裡面的行數來計算
+
+                    bool loadBomResult = teklaHtemlFactory.Load(ProcessingScreenWin.ViewModel);//載入報表物件結果
+
                     if (loadBomResult) //載入成功
                     {
                         CommonViewModel.ProjectProperty.IsBomLoad = true;//改變報表載入參數
@@ -233,6 +268,7 @@ namespace WPFSTD105
                                 ser.SetBolts(el.Key.GetHashCode().ToString(), el.Value);
                             }
                         }
+
                         if (teklaHtemlFactory.LackMaterial())//如果報表導入到模型沒有找到符合的材質就序列化物件
                         {
                             SerializationHelper.GZipSerializeBinary(teklaHtemlFactory.Material, ApplicationVM.FileMaterial());
@@ -258,7 +294,8 @@ namespace WPFSTD105
                     CopyFolder(NcPath);//複製nc路徑的nc1檔案
 
                     TeklaNcFactory factory = new TeklaNcFactory();//nc1 讀取器
-                    bool loadNcResult = factory.Load(ScreenManager.ViewModel); //載入NC檔案
+                    //load!
+                    bool loadNcResult = factory.Load(ProcessingScreenWin.ViewModel); //載入NC檔案
                     if (loadNcResult)//NC檔案載入成功
                     {
                         CommonViewModel.ProjectProperty.NcLoad = DateTime.Now;//nc載入時間
@@ -294,9 +331,9 @@ namespace WPFSTD105
                 CommonViewModel.ProjectProperty.BomProperties = BomProperties; //改變ioc內部報表屬性參數
                 WriteProjectProperty(CommonViewModel.ProjectProperty);//改變目前vm的參數
                 ser.SetProjectProperty(CommonViewModel.ProjectProperty);
-                ScreenManager.ViewModel.Status = "結束 ...";
-                Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
-                ScreenManager.Close();//關閉等待畫面
+                ProcessingScreenWin.ViewModel.Status = "結束 ...";
+                Thread.Sleep(2000); //暫停1秒為了要顯示 ScreenManager
+                ProcessingScreenWin.Close();//關閉等待畫面
 
                 WinUIMessageBox.Show(null,
                    $"{CommonViewModel.ImportNCFilesVM.Name} 已匯入完成",
@@ -306,6 +343,10 @@ namespace WPFSTD105
                    MessageBoxResult.None,
                    MessageBoxOptions.None,
                    FloatingMode.Popup);
+
+
+
+
             });
         }
 
@@ -384,7 +425,7 @@ namespace WPFSTD105
         /// </summary>
         private void BackupFile(string zipPath)
         {
-            ScreenManager.ViewModel.Status = "備份文件中 ...";
+            ProcessingScreenWin.ViewModel.Status = "備份文件中 ...";
             Thread.Sleep(2000); //暫停兩秒為了要顯示 ScreenManager
             using (ZipFile zip = new ZipFile(Encoding.Default))
             {

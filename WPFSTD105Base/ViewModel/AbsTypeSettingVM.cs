@@ -28,7 +28,6 @@ namespace WPFSTD105
     /// </summary>
     public abstract class AbsTypeSettingVM : WPFBase.BaseViewModel
     {
-
         ObSettingVM obvm = new ObSettingVM();
         /// <summary>                             
         /// 控制排版結果是否顯示
@@ -284,8 +283,6 @@ namespace WPFSTD105
 
 
         public ObservableCollection<TypeSettingDataView> SelectedParts { get; set; } = new ObservableCollection<TypeSettingDataView>();
-
-
 
 
         /// <summary>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DevExpress.Xpf.Core;
+using DevExpress.Xpf.WindowsUI;
+using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
@@ -15,19 +17,51 @@ namespace WPFWindowsBase
         /// <summary>
         /// 最小化窗口的命令
         /// </summary>
-        public ICommand MinimizeCommand { get; set; }
+        public ICommand MinimizeCommand { get
+            {
+                return new RelayCommand(() => _Window.WindowState = WindowState.Minimized);
+            } }
         /// <summary>
         /// 最大化窗口的命令
         /// </summary>
-        public ICommand MaximizeCommand { get; set; }
+        public ICommand MaximizeCommand { get
+            {
+                return new RelayCommand(() =>
+                {
+                    _Window.WindowState ^= WindowState.Maximized;
+                });
+            }
+        }
         /// <summary>
         /// 關閉窗口命令
         /// </summary>
-        public ICommand CloseCommand { get; set; }
+        public ICommand CloseCommand { get
+            {
+                return new RelayCommand(() =>
+                {
+                    var MessageBoxReturn = WinUIMessageBox.Show(null,
+                                "是否要結束程式?",
+                                "通知",
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Exclamation,
+                                MessageBoxResult.None,
+                                MessageBoxOptions.None,
+                                FloatingMode.Window);
+                    if (MessageBoxReturn == MessageBoxResult.Yes)
+                        _Window.Close();
+
+                });
+            } }
         /// <summary>
         /// 菜單窗口命令
         /// </summary>
-        public ICommand MenuCommand { get; set; }
+        public ICommand MenuCommand 
+        { 
+            get
+            {
+                return new RelayCommand(() => SystemCommands.ShowSystemMenu(_Window, GetMousePosition()));
+            }
+        }
         #endregion
 
         #region 私用方法
@@ -142,19 +176,6 @@ namespace WPFWindowsBase
                 OnPropertyChanged(nameof(WindowRadius));
                 OnPropertyChanged(nameof(WindCornerRadius));
             };
-            //創建命令
-            MinimizeCommand = new RelayCommand(() => _Window.WindowState = WindowState.Minimized);
-            MaximizeCommand = new RelayCommand(() => 
-            {
-                _Window.WindowState ^= WindowState.Maximized;
-            });
-            
-            CloseCommand = new RelayCommand(() =>
-            {
-                _Window.Close();
-            });
-            MenuCommand = new RelayCommand(() => SystemCommands.ShowSystemMenu(_Window, GetMousePosition()));
-
             var resizer = new WindowResizer(_Window);
         }
         #endregion

@@ -8,7 +8,7 @@ using WPFWindowsBase;
 
 namespace STD_105
 {
-    internal class GridControlSelectedItemToBoolenConverter : BaseValueConverter<GridControlSelectedItemToBoolenConverter>
+    internal class GridControlSelectedItemToBooleanConverter : BaseValueConverter<GridControlSelectedItemToBooleanConverter>
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

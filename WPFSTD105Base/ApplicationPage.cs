@@ -177,9 +177,9 @@ namespace WPFSTD105
         /// </summary>
         WorkingAreaMonitor,
         /// <summary>
-        /// 參數設定
+        /// 參數設定2
         /// </summary>
-        //ParameterSettings,
+        ParameterSettings,
         /// <summary>
         /// 20220711 張燕華 參數設定 - 選單功能
         /// </summary>

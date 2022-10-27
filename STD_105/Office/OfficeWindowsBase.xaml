@@ -21,6 +21,7 @@
         Height="720"
         Width="1280"
         Background="Transparent">
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200" />
@@ -66,6 +67,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+
             <!--查看警告-->
             <Button Grid.Column="0" 
                     Margin="0">
@@ -161,19 +163,20 @@
             <StackPanel VerticalAlignment="Bottom">
                 <Border Width="auto" 
                         Height="80"
+                        Background="Gray"
                         CornerRadius="5"
-                        Background="#6dcdf7"
                         Style="{ StaticResource bor_LightThinLine }"
-                        Margin="20,10,30,10">
-                    <Button Style="{ StaticResource btn_TransparentCircleButton }"
+                        Margin="20,10">
+                    <Button Style="{ StaticResource btn_TransparentCircleButton }" 
                             ToolTip="開啟專案"
                             Command="{ Binding ProjectManagerCommand }">
                         <Button.Content>
-                            <WPFBase:Marquee Name="marquee"
+                            <!--<WPFBase:Marquee Name="marquee"
                                              Tag="{ Binding OfficeViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, TargetNullValue=尚未載入專案 }"
                                              Foreground="{ StaticResource solidclr_CreamyGray }"
                                              FontFamily="{ Binding FontFamily, Source={ x:Static SofSetting:SofSetting.Default } }"
-                                             FontSize="25" />
+                                             FontSize="25" />-->
+                            <Label Content="{ Binding OfficeViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, TargetNullValue=尚未載入專案 }" FontSize="20" Foreground="White" />
                         </Button.Content>
                     </Button>
                 </Border>
@@ -206,18 +209,10 @@
               HorizontalAlignment="Center"
               VerticalAlignment="Top">
             <Grid.Resources>
-                <Style TargetType="Button">
-                    <Setter Property="Opacity"
-                            Value="0.5" />
-                    <Setter Property="BorderThickness"
-                            Value="0" />
-                    <Setter Property="Background"
-                            Value="Transparent" />
-                    <Setter Property="Cursor"
-                            Value="Hand" />
-                    <Setter Property="Margin"
-                            Value="0,5" />
+                <Style TargetType="Button" BasedOn="{StaticResource SiegCustomButton}">
+                    <Setter Property="Margin" Value="0,5"/>
                 </Style>
+
                 <Style TargetType="TextBlock">
                     <Setter Property="Grid.Column"
                             Value="1" />
@@ -232,7 +227,7 @@
             </Grid.Resources>
             <StackPanel Margin="10">
                 <!--專案管理-->
-                    <Button Command="{ Binding ProjectManagerCommand }">
+                    <Button Command="{ Binding ProjectManagerCommand }" >
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="30"
@@ -267,7 +262,7 @@
                         </Button.Content>
                     </Button>
                     <!--加工監控-->
-                    <Button Command="{ Binding ProcessingMonitorCommand }"
+                <Button Command="{ Binding ProcessingMonitorCommand }" Visibility="Collapsed"
                             IsEnabled="False">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
@@ -278,7 +273,7 @@
                         </Button.Content>
                     </Button>
                     <!--廠區監控-->
-                    <Button Command="{ Binding WorkingAreaMonitorCommand }"
+                <Button Command="{ Binding WorkingAreaMonitorCommand }" Visibility="Collapsed"
                             IsEnabled="False">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
@@ -290,18 +285,31 @@
                     </Button>
                     <!--參數設定-->
                     <!--20220711 張燕華 Command Binding的Path由ParameterSettingsCommand改為ParameterSettingsFuncListCommand-->
-                    <Button Command="{ Binding ParameterSettingsFuncListCommand }"
+                <!--<Button Command="{ Binding ParameterSettingsFuncListCommand }"
                             IsEnabled="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={std:NullToEnabledConverter} }">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="30"
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="30"
                                        Source="{ StaticResource SoftwareSettings }" />
-                                <TextBlock Text="參數設定" />
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
+                            <TextBlock Text="參數設定" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>-->
+<!--20221027 新版參數介面 tabcontrol型-->
+                <Button Command="{ Binding ParameterSettingsCommand }"
+                            IsEnabled="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={std:NullToEnabledConverter} }">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="30"
+                                       Source="{ StaticResource SoftwareSettings }" />
+                            <TextBlock Text="參數設定" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+
+
                 <!--(舊)製品設定-->
-                <Button Command="{ Binding Old_ObSettingsPage_Office }"
+                <Button Command="{ Binding Old_ObSettingsPage_Office }"  Visibility="Collapsed"
                             IsEnabled="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={std:NullToEnabledConverter} }">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">
@@ -312,7 +320,7 @@
                     </Button.Content>
                 </Button>
                 <!--(舊)排版設定-->
-                <Button Command="{ Binding old_PartsListCommand }"
+                <Button Command="{ Binding old_PartsListCommand }"  Visibility="Collapsed"
                             IsEnabled="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={std:NullToEnabledConverter} }">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal">

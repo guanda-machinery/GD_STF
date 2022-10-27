@@ -227,24 +227,28 @@ namespace WPFSTD105
         {
             List<string> result = new List<string>();
             // 2020.06.23 呂宗霖 將以下判斷式的Properties.SofSetting.Default.LoadPath都改為newPath
-            string newPath = path;
-            //判斷是軟體用的模型資料夾
-            foreach (var model in Directory.GetDirectories(path))
+
+            //先檢查路徑是否為空
+            if (!string.IsNullOrWhiteSpace(path))
             {
-                string name = Path.GetFileNameWithoutExtension(model);
-                //TODO : 這邊要檢查邏輯，要新增，請參照一開始建置專案的時候，有產生的資料與資料夾。
-                if (Directory.Exists($@"{newPath}\{name}\{ModelPath.Nc}")) // NC 資料夾
-                    if (Directory.Exists($@"{newPath}\{name}\{ModelPath.Profile}")) //斷面規格目錄
-                        if (File.Exists($@"{newPath}\{name}\{ModelPath.ProjectProperty}"))//專案參數
-                            if (Directory.Exists($@"{newPath}\{name}\{ModelPath.DevMaterial}"))//素材3D序列化目錄
-                                if (Directory.Exists($@"{newPath}\{name}\{ModelPath.Dev_Part}"))//單零件的3D圖形目錄
-                                    if (File.Exists($@"{newPath}\{name}\{ModelPath.SteelAssembly}"))//構件資料目錄
-                                        if (Directory.Exists($@"{newPath}\{name}\{ModelPath.SteelPart}"))//零件資料序列化的目錄
-                                            if (Directory.Exists($@"{newPath}\{name}\{ModelPath.SteelBolts}"))//螺栓資料序列化的目錄
-                                                if (File.Exists(FileProfileList($@"{newPath}\{name}")))//螺栓資料序列化的目錄
-                                                    if (File.Exists($@"{newPath}\{name}\{ModelPath.Material}"))//模型材質文件
-                                                        if (Directory.Exists($@"{newPath}\{name}\{ModelPath.WorkMaterialBackup}"))//加工資料序列化的目錄
-                                                            result.Add(name);//模型資料夾名稱
+                //判斷是軟體用的模型資料夾
+                foreach (var model in Directory.GetDirectories(path))
+                {
+                    string name = Path.GetFileNameWithoutExtension(model);
+                    //TODO : 這邊要檢查邏輯，要新增，請參照一開始建置專案的時候，有產生的資料與資料夾。
+                    if (Directory.Exists($@"{path}\{name}\{ModelPath.Nc}")) // NC 資料夾
+                        if (Directory.Exists($@"{path}\{name}\{ModelPath.Profile}")) //斷面規格目錄
+                            if (File.Exists($@"{path}\{name}\{ModelPath.ProjectProperty}"))//專案參數
+                                if (Directory.Exists($@"{path}\{name}\{ModelPath.DevMaterial}"))//素材3D序列化目錄
+                                    if (Directory.Exists($@"{path}\{name}\{ModelPath.Dev_Part}"))//單零件的3D圖形目錄
+                                        if (File.Exists($@"{path}\{name}\{ModelPath.SteelAssembly}"))//構件資料目錄
+                                            if (Directory.Exists($@"{path}\{name}\{ModelPath.SteelPart}"))//零件資料序列化的目錄
+                                                if (Directory.Exists($@"{path}\{name}\{ModelPath.SteelBolts}"))//螺栓資料序列化的目錄
+                                                    if (File.Exists(FileProfileList($@"{path}\{name}")))//螺栓資料序列化的目錄
+                                                        if (File.Exists($@"{path}\{name}\{ModelPath.Material}"))//模型材質文件
+                                                            if (Directory.Exists($@"{path}\{name}\{ModelPath.WorkMaterialBackup}"))//加工資料序列化的目錄
+                                                                result.Add(name);//模型資料夾名稱
+                }
             }
             return result;
         }
