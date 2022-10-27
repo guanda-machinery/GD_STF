@@ -3570,8 +3570,8 @@ namespace STD_105.Office
 #if DEBUG
             log4net.LogManager.GetLogger("Esc").Debug("");
 #endif
-            drawing.SetCurrent(null);
-            model.SetCurrent(null);//層級 To 要編輯的 BlockReference
+            //drawing.SetCurrent(null);
+            //model.SetCurrent(null);//層級 To 要編輯的 BlockReference
 
             model.ActionMode = actionType.SelectByBox;
             drawing.ActionMode = actionType.SelectByBox;

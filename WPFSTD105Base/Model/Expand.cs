@@ -400,8 +400,8 @@ namespace WPFSTD105.Model
                         //cutList.AddRange(line2.Vertices);
                         //cutList.AddRange(line3.Vertices);
                         Mesh mesh = AKCalculateCutMesh(t, points, p1, p2,
-                                                                                         p1.StartAngle1 != 0 ? p1.StartAngle1 : p1.StartAngle2,
-                                                                                         p1.Angle1 != 0 ? p1.Angle1 : p1.Angle2);
+                        p1.StartAngle1 != 0 ? p1.StartAngle1 : p1.StartAngle2,
+                        p1.Angle1 != 0 ? p1.Angle1 : p1.Angle2);
                         result.Add(mesh);
                     }
                 }
@@ -597,50 +597,50 @@ namespace WPFSTD105.Model
                 vMesh.EntityData = nc.SteelAttr;
                 model.Blocks[steelBlock.BlockName].Entities.Add(vMesh);
                 model.Refresh();
-                ////前視圖
-                //Mesh vMesh = ConvertNcPointToMesh(nc.SteelAttr.vPoint, nc.SteelAttr.t1);
-                //List<Mesh> vCut = GetCutMesh(nc.SteelAttr.vPoint, nc.SteelAttr.t1);
-                //Mesh cut1 = Mesh.CreateBox(nc.SteelAttr.Length +10, nc.SteelAttr.t2, nc.SteelAttr.t2 +10);//切割前視圖翼板輪廓
-                //cut1.Translate(-5, 0);
-                //Mesh cut2 = (Mesh)cut1.Clone();
-                //cut2.Translate(0, nc.SteelAttr.H - nc.SteelAttr.t2);
-                //vCut.Add(cut1);
-                //vCut.Add(cut2);
-                //Solid vSolid = vMesh.ConvertToSolid();
-                //vSolid = vSolid.Difference(vCut);
-                //vMesh = vSolid.ConvertToMesh();
-                //vMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
-                //vMesh.ColorMethod = colorMethodType.byEntity;
-                //vMesh.Translate(0, 0, nc.SteelAttr.W * 0.5 - nc.SteelAttr.t1 * 0.5);
+                //////前視圖
+                ////Mesh vMesh = ConvertNcPointToMesh(nc.SteelAttr.vPoint, nc.SteelAttr.t1);
+                ////List<Mesh> vCut = GetCutMesh(nc.SteelAttr.vPoint, nc.SteelAttr.t1);
+                ////Mesh cut1 = Mesh.CreateBox(nc.SteelAttr.Length +10, nc.SteelAttr.t2, nc.SteelAttr.t2 +10);//切割前視圖翼板輪廓
+                ////cut1.Translate(-5, 0);
+                ////Mesh cut2 = (Mesh)cut1.Clone();
+                ////cut2.Translate(0, nc.SteelAttr.H - nc.SteelAttr.t2);
+                ////vCut.Add(cut1);
+                ////vCut.Add(cut2);
+                ////Solid vSolid = vMesh.ConvertToSolid();
+                ////vSolid = vSolid.Difference(vCut);
+                ////vMesh = vSolid.ConvertToMesh();
+                ////vMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
+                ////vMesh.ColorMethod = colorMethodType.byEntity;
+                ////vMesh.Translate(0, 0, nc.SteelAttr.W * 0.5 - nc.SteelAttr.t1 * 0.5);
 
-                ////頂視圖
-                //Mesh oMesh = ConvertNcPointToMesh(nc.SteelAttr.oPoint, nc.SteelAttr.t2);
-                //List<Mesh> oCut = GetCutMesh(nc.SteelAttr.oPoint, nc.SteelAttr.t2);
-                //Solid oSolid = oMesh.ConvertToSolid();
-                //oSolid = oSolid.Difference(oCut);
-                //oMesh = oSolid.ConvertToMesh();
-                //oMesh.Mirror(Vector3D.AxisY, new Point3D(-10, 0, nc.SteelAttr.t2*0.5), new Point3D(10, 0, nc.SteelAttr.t2*0.5));
-                //oMesh.Rotate(Math.PI / 2, Vector3D.AxisX);
-                //oMesh.Translate(0, nc.SteelAttr.H);
-                //oMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
-                //oMesh.ColorMethod = colorMethodType.byEntity;
+                //////頂視圖
+                ////Mesh oMesh = ConvertNcPointToMesh(nc.SteelAttr.oPoint, nc.SteelAttr.t2);
+                ////List<Mesh> oCut = GetCutMesh(nc.SteelAttr.oPoint, nc.SteelAttr.t2);
+                ////Solid oSolid = oMesh.ConvertToSolid();
+                ////oSolid = oSolid.Difference(oCut);
+                ////oMesh = oSolid.ConvertToMesh();
+                ////oMesh.Mirror(Vector3D.AxisY, new Point3D(-10, 0, nc.SteelAttr.t2*0.5), new Point3D(10, 0, nc.SteelAttr.t2*0.5));
+                ////oMesh.Rotate(Math.PI / 2, Vector3D.AxisX);
+                ////oMesh.Translate(0, nc.SteelAttr.H);
+                ////oMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
+                ////oMesh.ColorMethod = colorMethodType.byEntity;
 
-                ////底視圖
-                //Mesh uMesh = ConvertNcPointToMesh(nc.SteelAttr.uPoint, nc.SteelAttr.t2);
-                //List<Mesh> uCut = GetCutMesh(nc.SteelAttr.uPoint, nc.SteelAttr.t2);
-                //Solid uSolid = uMesh.ConvertToSolid();
-                //uSolid = uSolid.Difference(uCut);
-                //uMesh = uSolid.ConvertToMesh();
-                //uMesh.Rotate(Math.PI / 2, Vector3D.AxisX);
-                //uMesh.Translate(0, nc.SteelAttr.t2);
-                //uMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
-                //uMesh.ColorMethod = colorMethodType.byEntity;
+                //////底視圖
+                ////Mesh uMesh = ConvertNcPointToMesh(nc.SteelAttr.uPoint, nc.SteelAttr.t2);
+                ////List<Mesh> uCut = GetCutMesh(nc.SteelAttr.uPoint, nc.SteelAttr.t2);
+                ////Solid uSolid = uMesh.ConvertToSolid();
+                ////uSolid = uSolid.Difference(uCut);
+                ////uMesh = uSolid.ConvertToMesh();
+                ////uMesh.Rotate(Math.PI / 2, Vector3D.AxisX);
+                ////uMesh.Translate(0, nc.SteelAttr.t2);
+                ////uMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
+                ////uMesh.ColorMethod = colorMethodType.byEntity;
 
-                //vMesh.MergeWith(oMesh);
-                //vMesh.MergeWith(uMesh);
-                //vMesh.EntityData = nc.SteelAttr;
-                //model.Blocks[steelBlock.BlockName].Entities.Add(vMesh);
-                //model.Refresh();
+                ////vMesh.MergeWith(oMesh);
+                ////vMesh.MergeWith(uMesh);
+                ////vMesh.EntityData = nc.SteelAttr;
+                ////model.Blocks[steelBlock.BlockName].Entities.Add(vMesh);
+                ////model.Refresh();
             }
 
             nc.GroupBoltsAttrs.ForEach(bolt =>
