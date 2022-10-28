@@ -527,6 +527,12 @@
     <Compile Include="GraphWin.xaml.cs">
       <DependentUpon>GraphWin.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Office\Pages\ParametersSettings_Office.xaml.cs">
+      <DependentUpon>ParametersSettings_Office.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Page\InsertPartsWin.xaml.cs">
+      <DependentUpon>InsertPartsWin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="IPerformAccele.cs" />
     <Compile Include="IPSettings.xaml.cs">
       <DependentUpon>IPSettings.xaml</DependentUpon>
@@ -685,9 +691,6 @@
     </Compile>
     <Compile Include="Page\DrillMiddlePage.xaml.cs">
       <DependentUpon>DrillMiddlePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Page\EnClampDownPage.xaml.cs">
-      <DependentUpon>EnClampDownPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Page\ExClampDownPage.xaml.cs">
       <DependentUpon>ExClampDownPage.xaml</DependentUpon>
@@ -920,11 +923,13 @@
     <Compile Include="ValueConverters\BoolToOnImageConverter.cs" />
     <Compile Include="ValueConverters\DrawingImageToBitmapSourceConverter.cs" />
     <Compile Include="ValueConverters\FACE_ToStringConverter.cs" />
-    <Compile Include="ValueConverters\GridControlSelectedItemToBoolenConverter.cs" />
+    <Compile Include="ValueConverters\GridControlSelectedItemToBooleanConverter.cs" />
     <Compile Include="ValueConverters\GridControlWidthConvert.cs" />
     <Compile Include="ValueConverters\IListFilterToCountConverter.cs" />
     <Compile Include="ValueConverters\MaterialDesignPackIconToBitmapSourceConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\BooleanArrayUnionToBooleanConverter.cs" />
+    <Compile Include="ValueConverters\MultiValueConverters\MultiObjectArrayToBooleanConverter.cs" />
+    <Compile Include="ValueConverters\ObjectIsNullToBooleanConverter.cs" />
     <Compile Include="ValueConverters\SteelPartWeightConverter.cs" />
     <Compile Include="ValueConverters\DrillingFaceConverter.cs" />
     <Compile Include="ValueConverters\SteelTypeToStringConverter.cs" />
@@ -961,6 +966,14 @@
     <Compile Include="ValueConverters\TabItemIsSelectedToVisibilityConverter.cs" />
     <Compile Include="ZoomControls.cs" />
     <Page Include="GraphWin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Office\Pages\ParametersSettings_Office.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Page\InsertPartsWin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1193,10 +1206,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Page\DrillMiddlePage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Page\EnClampDownPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

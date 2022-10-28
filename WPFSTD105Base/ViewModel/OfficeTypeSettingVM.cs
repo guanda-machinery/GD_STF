@@ -46,11 +46,7 @@ namespace WPFSTD105
         /// </summary>
         public OfficeTypeSettingVM()
         {
-            //OpenPreviewCommand = OpenPreview();
-            //ExpandTableDetailCommand = ExpandTableDetail();
-            //SaveTypeSettingsModifyCommand = SaveTypeSettingsModify();
-            //CutControlCommand = CutControl();
-            //AmountControlCommand = AmountControl();
+
         }
         ///// <inheritdoc/>
         //protected override RelayCommand Auto()

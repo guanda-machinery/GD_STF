@@ -141,26 +141,34 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <dxg:GridControl   
-
+                                FilterGroupSortChanging="GridControl_FilterGroupSortChanging"
                                 Name="PartsGridControl"
                                 AutoGenerateColumns="None"
-                                SelectionMode="MultipleRow"
+                                SelectionMode="Row"
                                 SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                Height="365"
+                                Height="365" 
                                 ItemsSource="{Binding DataViews}">
                                 <dxg:GridControl.View >
-                            <dxg:TableView        
+                            <dxg:TableView       
                                 AllowPaging="True"
                                 PageSize="30"
-                                IsColumnMenuEnabled ="False"
-                                AllowSorting="false"
-                                AllowColumnFiltering="False"
-                                AllowColumnMoving="False"                                 
-                               IsColumnChooserVisible="False"     
                                 
-                                    Name="PartListTableView"
-                                    Loaded="PartListTableView_Loaded"  
-                                        
+                               ShowCheckBoxSelectorColumn="False"
+                               NavigationStyle="Row"
+                               AllowCascadeUpdate="True"
+                                
+                                IsColumnMenuEnabled ="False"
+
+                                AllowColumnFiltering="False"    
+                                AllowColumnMoving="False"       
+                                AllowSorting="True"
+                           
+                                
+                                IsColumnChooserVisible="False"     
+                                AllowEditing="False"
+                                Name="PartListTableView"
+                                Loaded="PartListTableView_Loaded"  
+                                  
                                     SearchString="{Binding PartsSearchString, Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"
                                     VerticalScrollbarVisibility="Disabled"
                                     HorizontalScrollbarVisibility="Auto"
@@ -168,7 +176,7 @@
                                     ShowSearchPanelMode="Never"
                                     ScrollViewer.ScrollChanged="ScrollOwner_ScrollChanged"
                                     SearchPanelNullText="Search Tasks(Ctrl + F)" 
-                                    SearchPanelFindMode="Always" ShowIndicator="True" IndicatorWidth="20"
+                                    SearchPanelFindMode="Always" ShowIndicator="True"  
                                     SearchDelay="0">
                                 <dxg:TableView.CellStyle>
                                     <Style>
@@ -182,7 +190,6 @@
                                             <Grid.Resources>
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="TextAlignment" Value="Center"/>
-
                                                     <Setter Property="FontSize" Value="12"/>
                                                     <Setter Property="Foreground" Value="Gray"/>
                                                 </Style>
@@ -212,8 +219,11 @@
                                 </dxg:GridColumn>
                                 <dxg:GridColumn FieldName="" Binding="{Binding ID,Converter={STD105:IListFilterToCountConverter} }"  IsSmart="True"  Width="45" Header="數量"  />
                                 <dxg:GridColumn FieldName="AlreadyMatedMaterialCounts" IsSmart="True"  Width="45" Header="已配對"  />
-                                <dxg:GridColumn Visible="False" FieldName="SortCount" Width="60" AllowResizing="false" AllowMoving="false"  IsSmart="True"  Header="預排數量"    />
-                            </dxg:GridControl>
+
+                        <dxg:GridColumn FieldName="SortCount" Width="60" AllowResizing="false" AllowMoving="false"  IsSmart="True"  Header="預排數量"    />
+
+
+                    </dxg:GridControl>
                             <StackPanel HorizontalAlignment="Center"  Margin="-1,0,0,0"
                                         Grid.Column="1"
                                         Background="#D3D3D3"  >
@@ -261,6 +271,7 @@
                             </StackPanel>
                             <dxg:GridControl   Grid.Column="2"
 
+                                FilterGroupSortChanging="GridControl_FilterGroupSortChanging"
                                 Name="SoftGridControl"
                                 AutoGenerateColumns="None"
                                 SelectionMode="MultipleRow"
@@ -269,11 +280,12 @@
                                 ItemsSource="{Binding DataViews}">
                         <dxg:GridControl.View >
                             <dxg:TableView  
+                                
                                         AllowPaging ="True"    
                                         PageSize="{Binding PageSize, ElementName=PartListTableView}"    
                                         CurrentPageIndex="{Binding CurrentPageIndex,ElementName=PartListTableView,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                         IsColumnMenuEnabled ="False"
-                                        AllowSorting="false"
+                                        AllowSorting="True"
                                         AllowColumnFiltering="False"
                                         AllowColumnMoving="False"                                            
                                         IsColumnChooserVisible="False"     
@@ -306,6 +318,7 @@
 
                         </dxg:GridControl.View>
                                 <dxg:GridColumn FieldName="SortCount" Width="60" AllowResizing="false" AllowMoving="false"  IsSmart="True"  Header="預排數量"    />
+                                
                                 <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"    Header="構件編號" Width="120"/>
                                 <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="120" />
                                 <dxg:GridColumn FieldName="Profile"  IsSmart="True"  Header="斷面規格"  Width="150" />
@@ -576,65 +589,45 @@
                     </Grid>
                 </GroupBox>
 
-                <StackPanel Grid.Column="2" Grid.Row="0" 
-                    Orientation="Vertical"
-                    HorizontalAlignment="Center">
+                <StackPanel Grid.Column="2" Grid.Row="0"  Margin="5,5,10,5">
                     <StackPanel.Resources>
-                        <Style TargetType="Button"
-                       BasedOn="{ StaticResource BaseStyle }">
-                            <Setter Property="Margin" Value="5"/>
-                            <Setter Property="Width" Value="85"/>
-                            <Setter Property="Height" Value="75"/>
-                        </Style>
-                    </StackPanel.Resources>
-                    <Button  Command="{Binding CutControlCommand}"   Width="65" Height="65">
-                        <Button.Content>
-                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="-10">
-                                <dx:DXImage Source="{dx:DXImage 'SvgImages/Outlook Inspired/TaskList.svg'}" Width="40" Margin="0,5,0,0"/>
-                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                    <Label Content="切割明細表" Foreground="Black"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
+                    <Style TargetType="Button" BasedOn="{StaticResource SiegCustomButton}">
+                        <Setter Property="Width"
+                                Value="60"/>
+                        <Setter Property="Height"
+                                Value="60"/>
+                    </Style>
+                        
+                </StackPanel.Resources>
+                <Button  Command="{Binding CutControlCommand}"  Width="60" >
+                    <Border>
+                        <dx:DXImage Source="{dx:DXImage 'SvgImages/Outlook Inspired/TaskList.svg'}"/>
+                    </Border>
+                </Button>
+                <Label Content="切割明細表" Foreground="Black"/>
 
-                    <Button Command="{Binding BuyControlCommand}"  Width="65" Height="65">
-                        <Button.Content>
-                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="-10" >
-                                <dx:DXImage Source="{dx:DXImage 'SvgImages/Outlook Inspired/TaskList.svg'}" Width="40" Margin="0,5,0,0"/>
-                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                    <Label Content="採購明細單" Foreground="Black"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </Button.Content>
+                <Button Command="{Binding BuyControlCommand}" Margin="0,10,0,0" >
+                    <Border>
+                        <dx:DXImage Source="{dx:DXImage 'SvgImages/Outlook Inspired/TaskList.svg'}"/>
+                    </Border>
+                </Button>
+                <Label Content="採購明細單" Foreground="Black"/>
 
-                    </Button>
-
-                    <Button Command="{Binding}" Width="65" Height="65" >
-
-                        <Button.Content>
-                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="-10" >
-
-                                <dx:DXImage Source="{StaticResource Logo}" Width="35" Margin="0,5,0,0">
-
-                                    <dx:DXImage.BitmapEffect>
-                                        <DropShadowBitmapEffect Opacity="0.5" />
-                                    </dx:DXImage.BitmapEffect>
-                                </dx:DXImage>
-
-                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                    <Label Content="匯出加工檔" Foreground="Black"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </Button.Content>
-
-                    </Button>
+                <Button Command="{Binding}" Margin="0,10,0,0">
+                    <Border>
+                    <dx:DXImage Source="{StaticResource Logo}">
+                        <dx:DXImage.BitmapEffect>
+                            <DropShadowBitmapEffect Opacity="0.5" />
+                        </dx:DXImage.BitmapEffect>
+                        </dx:DXImage>
+                    </Border>
+                </Button>
+                <Label Content="匯出加工檔" Foreground="Black"/>
 
 
 
 
-
-                    <!--
+                <!--
             <Button 
                     Content="採購金額預算表"
                     Width="160"
@@ -644,8 +637,8 @@
             </Grid>
             <Grid Grid.Row="1" MaxHeight="600">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" MinWidth="700"/>
-                    <ColumnDefinition Width="350" MinWidth="200"/>
+                    <ColumnDefinition Width="*" MinWidth="300"/>
+                    <ColumnDefinition Width="400" MinWidth="200" MaxWidth="1400"/>
                 </Grid.ColumnDefinitions>
                 <GroupBox Grid.Column="0" Margin="5" Padding="0">
                     <GroupBox.Header>
@@ -686,7 +679,7 @@
                         <dxg:GridControl.View >
                         <dxg:TableView         
                                 IsColumnMenuEnabled ="False"
-                                AllowSorting="false"
+                                AllowSorting="True"
                                 AllowColumnFiltering="False"
                                 AllowColumnMoving="False"                                 
                                 IsColumnChooserVisible="False"     
@@ -944,7 +937,7 @@
                                             </dxg:GridControl>
                                             <StackPanel Orientation="Horizontal">
                                             <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
-                                                    <Button>
+                                                    <Button Click="InsertPartCommandClick">
                                                     <Button.Content>
                                                         <Grid>
                                                             <Grid.ColumnDefinitions>
@@ -1351,7 +1344,7 @@
                 </TabControl>                
                 <!--  <Border BorderThickness="0,0,1.5,0" BorderBrush="gray" Margin="0,5,-1,5" Opacity="0.7"></Border>-->
                 <!-- 可調整邊界拉柄(透明)-->
-            <GridSplitter Grid.Row="0" Grid.Column="0" Background="Gray" Grid.RowSpan="2" HorizontalAlignment="Right"   VerticalAlignment="Stretch" Width="4"  Margin="-2,-5" MouseMove="GridSplitter_MouseMove"/>
+            <GridSplitter Grid.Row="0" Grid.Column="0" Background="Gray" HorizontalAlignment="Right"   VerticalAlignment="Stretch" Width="4"  Margin="-2,0" MouseMove="GridSplitter_MouseMove"/>
 
 
 

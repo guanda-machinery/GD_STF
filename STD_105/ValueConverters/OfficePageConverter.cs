@@ -36,11 +36,11 @@ namespace STD_105.Office
                     //basePage = new ObSettingsPage_Office();//舊版頁面
                     basePage = new ProductSettingsPage_Office();//新版頁面
                     break;
-                // 參數設定
-               /* case OfficePage.ParameterSettings:
+                // 20221026 參數設定
+                case OfficePage.ParameterSettings:
                     basePage = new ParametersSettings_Office();
-                    break;*/
-                // 20220711 張燕華 參數設定 - 選單功能
+                    break;
+                // 20220711 張燕華 參數設定 - 選單功能 old
                 case OfficePage.ParameterSettings_FuncList:
                     basePage = new ParametersSettings_Office_FuncList();
                     break;

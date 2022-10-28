@@ -27,20 +27,8 @@
     </WPFBase:BasePage.DataContext>
     <Grid>
         <Grid.Resources>
-            <Style TargetType="Button">
-                <Setter Property="Cursor" Value="Hand" />
-                <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                <Setter Property="Background" Value="white"/>
-                <Setter Property="Foreground" Value="{StaticResource ForegroundMainBrush}"/>
-                <Setter Property="IsEnabled" Value="True"/>
-                <Setter Property="BorderBrush" Value="{x:Null}"/>
-                <Setter Property="BorderThickness" Value="0"/>
-                <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="AliceBlue"/>
-                        </Trigger>
-                </Style.Triggers>
-            </Style>
+            <Style TargetType="Button" BasedOn="{StaticResource SiegCustomButton}"/>
+
             <Style TargetType="TextBlock">
                 <Setter Property="FontWeight" Value="Bold" />
                 <Setter Property="FontSize" Value="16" />
@@ -54,19 +42,17 @@
         <Grid Grid.Column="0" Background="WhiteSmoke">
             <StackPanel>
                 <!--斷面規格目錄-->
-                <Button Command="{ Binding Path=SectionSpecMenuCommand }"  Background="WhiteSmoke" Padding="5">
-                    <Button.Content>
-                        <TextBlock Text="斷面規格目錄" />
-                    </Button.Content>
+                <Button  Command="{ Binding Path=SectionSpecMenuCommand }"  Padding="5">
+                    <TextBlock Text="斷面規格目錄" />
                 </Button>
                 <!--切割線設定-->
-                <Button  Command="{ Binding Path=SpiltLineSettingCommand }"  Background="WhiteSmoke"  Padding="5">
-                    <Button.Content>
+                <Button  Command="{ Binding Path=SpiltLineSettingCommand }"  Padding="5">
+
                         <TextBlock Text="切割線設定" />
-                    </Button.Content>
+
                 </Button>
                 <!--型鋼加工區域設定-->
-                <Button Command="{Binding Path =ShapedSteelMachiningAreaSettingCommand}"  Background="WhiteSmoke"  Padding="5">
+                <Button Command="{Binding Path =ShapedSteelMachiningAreaSettingCommand}"  Padding="5">
                     <Button.Content>
                         <TextBlock Text="型鋼加工區域設定" />
                     </Button.Content>
@@ -82,7 +68,7 @@
                 <uc_language:MainView Background="WhiteSmoke" />
 
                 <!--軟體版本-->
-                <Button Command="{Binding Path =SoftwareVersionCommand}"  Background="WhiteSmoke"  Padding="5">
+                <Button Command="{Binding Path =SoftwareVersionCommand}"  Padding="5">
                     <Button.Content>
                         <TextBlock Text="軟體版本" />
                     </Button.Content>
@@ -95,7 +81,7 @@
                     </Button.Content>
                 </Button-->
                 <!--報表LOGO設定-->
-                <Button Command="{Binding Path =ReportLogoCommand}" Padding="5" Background="WhiteSmoke">
+                <Button Command="{Binding Path =ReportLogoCommand}" Padding="5" >
                     <Button.Content>
                         <TextBlock Text="選擇報表LOGO" />
                     </Button.Content>
@@ -104,7 +90,7 @@
                 
                 
                 <!--斷面規格轉inp-->
-                <Button Command="{ Binding Path=SectionSpecExcel2InpCommand }" Visibility="Collapsed"  Background="WhiteSmoke"  Padding="5">
+                <Button Command="{ Binding Path=SectionSpecExcel2InpCommand }" Visibility="Collapsed"    Padding="5">
                     <Button.Content>
                         <TextBlock Text="斷面規格excel轉inp" />
                     </Button.Content>

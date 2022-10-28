@@ -1,0 +1,288 @@
+﻿<WPFBase:BasePage
+        xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase" 
+        x:Class="STD_105.InsertPartsWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:STD_105"
+        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+        mc:Ignorable="d"
+        
+         xmlns:WPFSTD105="clr-namespace:WPFSTD105;assembly=WPFSTD105"      
+
+          x:TypeArguments="WPFSTD105:OfficeTypeSettingVM"      
+          d:DataContext="{d:DesignInstance Type=WPFSTD105:OfficeTypeSettingVM}"
+        >
+    <Grid Background="White">
+        <Grid.Resources>
+            <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }" >
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Background" Value="#F7F7F7"/>
+                <Style.Resources>
+                    <Style TargetType="materialDesign:ColorZone" >
+                        <Setter Property="TextBlock.Foreground" Value="Black"/>
+                        <Setter Property="TextBlock.FontSize" Value="16"/>
+                        <Setter Property="Background" Value="#f0f0f0"/>
+                        <Setter Property="BorderBrush" Value="#cfcfcf"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    </Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderThickness" Value="5"/>
+                    </Style>
+                </Style.Resources>
+
+            </Style>
+            <Style TargetType="Button"  BasedOn="{StaticResource MaterialDesignFlatButton}"   >
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="BorderBrush" Value="#CFCFCF"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="FontSize" Value="12"/>
+            </Style>
+            
+            
+        </Grid.Resources>
+        <Grid.ColumnDefinitions></Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" MaxHeight="600"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <GroupBox Grid.Column="0" Grid.Row="0"   Margin="5" Padding="0">
+            <GroupBox.Header>
+                <Grid Margin="9" Height="18">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="零件清單"  FontSize="16"></TextBlock>
+                    <TextBox Grid.Column="1" materialDesign:HintAssist.Hint="Search Tasks(Ctrl + F)" BorderBrush="#cfcfcf"
+                                 Text="{Binding PartsSearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                FontSize="14" 
+                                 MaxWidth="350" Width="150" HorizontalAlignment="Right" Margin="0" Padding="0" />
+                </Grid>
+            </GroupBox.Header>
+            <Grid>
+                <Grid.Resources>
+                    <Style TargetType="dxg:GridColumn" >
+                        <Setter Property="MinWidth" Value="35"/>
+                        <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
+                        <Setter Property="AllowGrouping" Value="false"/>
+                    </Style>
+                    <Style TargetType="dxe:TextEditSettings">
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"  />
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="78"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <dxg:GridControl   
+
+                                x:Name="PartsGridControl"
+                                AutoGenerateColumns="None"
+                                SelectionMode="MultipleRow"
+                                SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                MaxHeight="1000">
+                    <dxg:GridControl.View >
+                        <dxg:TableView       
+                            AllowEditing="False"
+                            AllowPaging="True"
+                            PageSize="30"
+                            IsColumnMenuEnabled ="False"
+                            AllowSorting="false"
+                            AllowColumnFiltering="False"
+                            AllowColumnMoving="False"     
+                            IsColumnChooserVisible="False"          
+                            Name="PartListTableView"     
+                            SearchString="{Binding PartsSearchString, Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"
+                            VerticalScrollbarVisibility="Disabled"
+                            HorizontalScrollbarVisibility="Auto"
+                            ShowGroupPanel="False"
+                            ShowSearchPanelMode="Never"
+                            ScrollViewer.ScrollChanged="ScrollOwner_ScrollChanged"
+                            SearchPanelNullText="Search Tasks(Ctrl + F)" 
+                            SearchPanelFindMode="Always" ShowIndicator="True" IndicatorWidth="20"
+                            SearchDelay="0">
+                            <dxg:TableView.CellStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.FontSize" Value="12"/>
+                                </Style>
+                            </dxg:TableView.CellStyle>
+
+                            <dxg:TableView.RowIndicatorContentTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextAlignment" Value="Center"/>
+
+                                                <Setter Property="FontSize" Value="12"/>
+                                                <Setter Property="Foreground" Value="Gray"/>
+                                            </Style>
+                                        </Grid.Resources>
+                                        <TextBlock Text="{c:Binding RowHandle.Value +1}" Margin="1,0"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:TableView.RowIndicatorContentTemplate>
+
+
+
+                        </dxg:TableView>
+                    </dxg:GridControl.View>
+                    <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"    Header="構件編號" Width="120"/>
+                    <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="120" />
+                    <dxg:GridColumn FieldName="Profile"  IsSmart="True"  Header="斷面規格"  Width="150" />
+                    <dxg:GridColumn FieldName="Material"  IsSmart="True"  Header="材質"  Width="80"/>
+                    <dxg:GridColumn FieldName="Length"  IsSmart="True"  Header="零件長" Width="70">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings DisplayFormat="F0" HorizontalContentAlignment="Center"/>
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="PartWeight" Binding="{c:Binding PartWeight/1000}"  IsSmart="True"  Header="零件重"  Width="50" >
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings DisplayFormat="F1" HorizontalContentAlignment="Center"/>
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="" Binding="{Binding ID,Converter={local:IListFilterToCountConverter} }"  IsSmart="True"  Width="45" Header="數量"  />
+                    <dxg:GridColumn FieldName="AlreadyMatedMaterialCounts" IsSmart="True"  Width="45" Header="已配對"  />
+                    <dxg:GridColumn Visible="False" FieldName="SortCount" Width="60" AllowResizing="false" AllowMoving="false"  IsSmart="True"  Header="預排數量"    />
+                </dxg:GridControl>
+                <StackPanel HorizontalAlignment="Center"  Margin="-1,0,0,0"
+                                        Grid.Column="1"
+                                        Background="#D3D3D3"  >
+
+                    <!--{Binding ElementName= PartGridControl , Converter={STD105:GridControlWidthConvert} ,ConverterParameter='SortCountGridColumnSpace' , UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True , NotifyOnTargetUpdated=True}"-->
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="#727272"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="FontSize" Value="12"/>
+                        </Style>
+
+                    </StackPanel.Resources>
+                    <StackPanel Margin="0,12"/>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="加入素材" Margin="0,0,0,2.5"/>
+                    </StackPanel>
+
+                    <Button Margin="1,0" Command="{Binding AddMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}">
+                        <Button.Content>
+                            <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Width="14"/>
+                        </Button.Content>
+                    </Button>
+                    <Button Margin="1,0"  Command="{Binding DeductMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}" >
+                        <Button.Content>
+                            <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Left.svg'}" Width="14"/>
+                        </Button.Content>
+                    </Button>
+                    <Button  Margin="1,0" Command="{Binding AddAllMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}"  >
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="ALL" VerticalAlignment="Center" Margin="0,0,5,0"   />
+                                <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Width="14"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button Margin="1,0" Command="{Binding DeductAllMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}" >
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="ALL" VerticalAlignment="Center" Margin="0,0,5,0" />
+                                <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Left.svg'}" Width="14"/>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+                <dxg:GridControl   Grid.Column="2"
+
+                                Name="SoftGridControl"
+                                AutoGenerateColumns="None"
+                                SelectionMode="MultipleRow"
+                                SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                               MaxHeight="1000"
+                                ItemsSource="{Binding DataViews}">
+                    <dxg:GridControl.View >
+                        <dxg:TableView  
+                                        AllowPaging ="True"    
+                                        PageSize="{Binding PageSize, ElementName=PartListTableView}"    
+                                        CurrentPageIndex="{Binding CurrentPageIndex,ElementName=PartListTableView,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                        IsColumnMenuEnabled ="False"
+                                        AllowSorting="false"
+                                        AllowColumnFiltering="False"
+                                        AllowColumnMoving="False"                                            
+                                        IsColumnChooserVisible="False"     
+                     
+                                    Name="SoftCountTableView"
+                                    SearchString="{Binding PartsSearchString, Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"
+                                    VerticalScrollbarVisibility="Visible"
+                                    HorizontalScrollbarVisibility="Disabled"
+                                    ShowGroupPanel="False"
+                                    ShowSearchPanelMode="Never"
+                                    ScrollViewer.ScrollChanged="ScrollOwner_ScrollChanged"
+                                    SearchPanelNullText="Search Tasks(Ctrl + F)" 
+                                    SearchPanelFindMode="Always" 
+                                ShowIndicator="False"
+                            
+                                    SearchDelay="0">
+                            <dxg:TableView.CellStyle>
+                                <Style>
+                                    <Setter Property="TextBlock.FontSize" Value="12"/>
+                                </Style>
+                            </dxg:TableView.CellStyle>
+                            <dxg:TableView.Resources>
+                                <Style TargetType="dxe:PagerControl">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </Style>
+                            </dxg:TableView.Resources>
+                        </dxg:TableView>
+
+
+                    </dxg:GridControl.View>
+                    <dxg:GridColumn FieldName="SortCount" Width="60" AllowResizing="false" AllowMoving="false"  IsSmart="True"  Header="預排數量"    />
+                    <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"    Header="構件編號" Width="120"/>
+                    <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="120" />
+                    <dxg:GridColumn FieldName="Profile"  IsSmart="True"  Header="斷面規格"  Width="150" />
+                    <dxg:GridColumn FieldName="Material"  IsSmart="True"  Header="材質"  Width="80"/>
+                    <dxg:GridColumn FieldName="Length"  IsSmart="True"  Header="零件長" Width="70">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn  FieldName="PartWeight"  IsSmart="True"  Header="零件重"  Width="50" >
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn  FieldName="" Binding="{Binding ID , Converter={local:IListFilterToCountConverter} }"  IsSmart="True"  Width="45" Header="數量"  />
+                    <dxg:GridColumn  FieldName="AlreadyMatedMaterialCounts" IsSmart="True"  Width="45" Header="已配對"  />
+
+
+                </dxg:GridControl>
+
+            </Grid>
+
+        </GroupBox>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <StackPanel.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource CustomDesignButton}">
+                    <Setter Property="Width" Value="100"/>
+                    <Setter Property="Margin" Value="10"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Style>
+            </StackPanel.Resources>
+            <Label Content="已使用長度:100m" VerticalAlignment="Center"></Label>
+            <Label Content="剩餘長度:100m" VerticalAlignment="Center"></Label>
+            <Button  Content="123" />
+            <Button Content="取消" />
+        </StackPanel>
+    </Grid>
+</WPFBase:BasePage>

@@ -264,18 +264,21 @@ namespace GD_STD.Data
 
 
         }
-        //刪除零件命令
+
+
+
+
+        /// <summary>
+        /// 刪除零件命令
+        /// </summary>
         public System.Windows.Input.ICommand DeletePartCommand
         {
             get
             {
-
                     return new WPFWindowsBase.RelayParameterizedCommand(obj =>
                     {
-                        if (obj is DevExpress.Xpf.Grid.GridControl)
-                        {
-                            var MessageBoxReturn = WinUIMessageBox.Show(null,
-                                "是否要刪除零件\r\nRetry the connection ? ",
+                        var MessageBoxReturn = WinUIMessageBox.Show(null,
+                                "是否要刪除零件\r\n按下是會立即刪除",
                                 "通知",
                                 MessageBoxButton.YesNo,
                                 MessageBoxImage.Exclamation,
@@ -283,34 +286,47 @@ namespace GD_STD.Data
                                 MessageBoxOptions.None,
                                 FloatingMode.Popup);
 
-                            if (MessageBoxReturn == MessageBoxResult.Yes)
+                        if (MessageBoxReturn == MessageBoxResult.Yes)
+                        {
+                            var GC_SelectedItem = new GD_STD.Data.TypeSettingDataView();
+
+                            if (obj is DevExpress.Xpf.Grid.GridControl)
                             {
-                                var OBJItemsSource = ((obj as DevExpress.Xpf.Grid.GridControl).ItemsSource as IEnumerable<GD_STD.Data.TypeSettingDataView>).ToList();
-                                var GC_SelectedItem = (obj as DevExpress.Xpf.Grid.GridControl).SelectedItem as GD_STD.Data.TypeSettingDataView;
+                                GC_SelectedItem = (obj as DevExpress.Xpf.Grid.GridControl).SelectedItem as GD_STD.Data.TypeSettingDataView;
+                            }
 
-                                if (OBJItemsSource.Remove(GC_SelectedItem))
-                                {
-                                    (obj as DevExpress.Xpf.Grid.GridControl).ItemsSource = OBJItemsSource;
-                                    (obj as DevExpress.Xpf.Grid.GridControl).RefreshData();
-
-                                    WinUIMessageBox.Show(null,
-                                        $"刪除成功！",
-                                        "通知",
-                                        MessageBoxButton.OK,
-                                        MessageBoxImage.Exclamation,
-                                        MessageBoxResult.None,
-                                        MessageBoxOptions.None,
-                                        FloatingMode.Popup);
-                                }
+                            if (obj is GD_STD.Data.TypeSettingDataView)
+                            {
+                                GC_SelectedItem = (obj as GD_STD.Data.TypeSettingDataView);
                             }
 
 
+                            if (Parts.Remove(GC_SelectedItem))
+                            {
+                                WinUIMessageBox.Show(null,
+                                    $"刪除成功！",
+                                    "通知",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Exclamation,
+                                    MessageBoxResult.None,
+                                    MessageBoxOptions.None,
+                                    FloatingMode.Popup);
+
+                                //須變更存檔
+                            }
+
                         }
 
-                });
+
+
+
+
+
+
+                    });
             }
         }
-        //零件刪除命令
+
 
 
 

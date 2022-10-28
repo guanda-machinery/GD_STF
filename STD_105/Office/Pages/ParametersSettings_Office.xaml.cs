@@ -1,13 +1,22 @@
-﻿using WPFSTD105.ViewModel;
+﻿using System;
+using System.Windows.Input;
+using WPFSTD105;
+using WPFSTD105.ViewModel;
 using WPFWindowsBase;
+using WPFBase = WPFWindowsBase;
+using static WPFSTD105.ViewLocator;
+using System.Windows;
+using System.Windows.Media;
+using STD_105.Office;
 
 namespace STD_105.Office
 {
     /// <summary>
-    /// ParametersSettings_Office.xaml 的互動邏輯
+    /// 20220711 張燕華 ParametersSettings_Office_FuncList.xaml 的互動邏輯
     /// </summary>
-    public partial class ParametersSettings_Office : BasePage<SettingParVM>
+    public partial class ParametersSettings_Office : BasePage
     {
+        
         public ParametersSettings_Office()
         {
             InitializeComponent();
