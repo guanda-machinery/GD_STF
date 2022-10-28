@@ -339,7 +339,8 @@ namespace STD_105
                 else if (model.Entities.Count > 0)
                 {
                     model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);
-                    ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);
+                    //ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);
+                    ViewModel.WriteSteelAttr((SteelAttr)model.Blocks[1].Entities[0].EntityData);
                     model.SetCurrent(null);
                 }
                 else
@@ -1451,7 +1452,8 @@ namespace STD_105
                 }
                 readFile.DoWork();//開始工作
                 readFile.AddToScene(model);//將讀取完的檔案放入到模型
-                ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
+                //ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
+                ViewModel.WriteSteelAttr((SteelAttr)model.Blocks[1].Entities[0].EntityData);//寫入到設定檔內
                 ViewModel.GetSteelAttr();
                 model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
@@ -1468,8 +1470,8 @@ namespace STD_105
             }
             else //如果需要載入 nc 設定檔
             {
-                ObSettingVM obvm = new ObSettingVM();
-                model.LoadNcToModel(data.DataName, obvm.allowType) ;
+                //ObSettingVM obvm = new ObSettingVM();
+                model.LoadNcToModel(data.DataName, ObSettingVM.allowType) ;
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
             }
             model.ZoomFit();//設置道適合的視口

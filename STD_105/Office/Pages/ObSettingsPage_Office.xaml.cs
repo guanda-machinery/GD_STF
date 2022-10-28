@@ -375,7 +375,8 @@ namespace STD_105.Office
                 else if (model.Entities.Count > 0)
                 {
                     model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);  // 取得主件資訊
-                    ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData); // 寫入主件設定檔 To VM
+                    //ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData); // 寫入主件設定檔 To VM
+                    ViewModel.WriteSteelAttr((SteelAttr)model.Blocks[1].Entities[0].EntityData); // 寫入主件設定檔 To VM
                     model.SetCurrent(null);  // 返回最上層
                 }
                 else
@@ -2923,7 +2924,7 @@ namespace STD_105.Office
         }
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            ObSettingVM obvm = new ObSettingVM();
+            //ObSettingVM obvm = new ObSettingVM();
             if (fAddPartAndBolt)  //  新增零件功能
             {
                 var ResultRtn = WinUIMessageBox.Show(null,
@@ -2994,7 +2995,8 @@ namespace STD_105.Office
                 {
                     return;
                 }
-                ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
+                //ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
+                ViewModel.WriteSteelAttr((SteelAttr)model.Blocks[1].Entities[0].EntityData);//寫入到設定檔內
                 ViewModel.GetSteelAttr();
                 model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式(零件)
 #if DEBUG
@@ -3024,7 +3026,7 @@ namespace STD_105.Office
             }
             else //如果需要載入 nc 設定檔
             {
-                model.LoadNcToModel(data.DataName, obvm.allowType);
+                model.LoadNcToModel(data.DataName, ObSettingVM.allowType);
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
             }
 

@@ -201,7 +201,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 限制Grid出現之內容
         /// </summary>
-        public List<OBJECT_TYPE> allowType = new List<OBJECT_TYPE> {
+        public static List<OBJECT_TYPE> allowType = new List<OBJECT_TYPE> {
             OBJECT_TYPE.RH, OBJECT_TYPE.BH};
         //, OBJECT_TYPE.H,
         //OBJECT_TYPE.BOX, OBJECT_TYPE.TUBE,
@@ -925,6 +925,9 @@ namespace WPFSTD105.ViewModel
                 if (ProfileList[i].Profile == steelAttr.Profile)
                 {
                     ProfileIndex = i;
+                    //this.SteelAttr.PartNumber = steelAttr.PartNumber;
+                    //this.SteelAttr.AsseNumber = steelAttr.AsseNumber;
+                    //this.SteelAttr.Name = steelAttr.Name;
                     break;
                 }
             }

@@ -28,7 +28,7 @@ namespace WPFSTD105
     /// </summary>
     public abstract class AbsTypeSettingVM : WPFBase.BaseViewModel
     {
-        ObSettingVM obvm = new ObSettingVM();
+        //ObSettingVM obvm = new ObSettingVM();
         /// <summary>                             
         /// 控制排版結果是否顯示
         /// </summary>
@@ -43,7 +43,7 @@ namespace WPFSTD105
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();//模型構件列表
             Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();//模型構件列表
 
-            obvm = new ObSettingVM();
+            //obvm = new ObSettingVM();
 
             MaterialDataViews = ser.GetMaterialDataView();
 
@@ -59,7 +59,7 @@ namespace WPFSTD105
                 // ObservableCollection<SteelPart> buffer = ser.GetPart(profile.GetHashCode().ToString()); //零件列表
 
                 //只將 BH RH L TUBE BOX CH H LB([)加入到列表內
-                if (buffer != null && obvm.allowType.Contains(buffer[0].Type))
+                if (buffer != null && ObSettingVM.allowType.Contains(buffer[0].Type))
                 //if (buffer != null &&(
                 //buffer[0].Type == OBJECT_TYPE.BH ||
                 //buffer[0].Type == OBJECT_TYPE.RH ||
@@ -838,11 +838,11 @@ namespace WPFSTD105
             //OfficeViewModel.LengthDodageControl = true;
             unsafe
             {
-                List<string> allowTypeStr = obvm.allowType.Select(x=>x.ToString()).ToList();
+                List<string> allowTypeStr = ObSettingVM.allowType.Select(x=>x.ToString()).ToList();
                 string allowTypString = String.Join(",", allowTypeStr);
                 STDSerialization ser = new STDSerialization();//序列化處理器
                 List<string> profiles = ser.GetProfile().Where(el => 
-                el.Contains(obvm.allowType.Select(x=>x.ToString())
+                el.Contains(ObSettingVM.allowType.Select(x=>x.ToString())
                 .ToArray()
                 )).ToList();//模型有使用到的斷面規格
                 string strNumber = "RH";
@@ -997,7 +997,7 @@ namespace WPFSTD105
                 var a = ser.GetProfile();
                 List<string> profiles = ser.GetProfile()
                     .Where(el =>!string.IsNullOrEmpty(el) && el.Contains(
-                        obvm.allowType.Select(x => x.ToString()).ToArray()) &&
+                        ObSettingVM.allowType.Select(x => x.ToString()).ToArray()) &&
                         sortProfile.Contains(el) 
                     ).ToList();//模型有使用到的斷面規格
                 // 在素材中，屬於前置碼PreCode的有幾筆

@@ -244,7 +244,7 @@ namespace WPFSTD105.Tekla
             {
                 STDSerialization ser = new STDSerialization();
                 var profile = ser.GetSteelAttr();
-                ObSettingVM obvm = new ObSettingVM();
+                //ObSettingVM obvm = new ObSettingVM();
                 ncPath = ncPath ?? ApplicationVM.DirectoryNc();
                 this.DataCorrespond = ser.GetDataCorrespond();// 3d model 零件
                 if (this.DataCorrespond ==null)
@@ -265,7 +265,7 @@ namespace WPFSTD105.Tekla
                 }
                 foreach (var path in GetAllNcPath(ncPath)) //逐步展開nc檔案
                 {
-                    ReadOneNc(obvm.allowType, profile, path, vm);
+                    ReadOneNc(ObSettingVM.allowType, profile, path, vm);
                     #region 讀每個NC檔
                     //string dataName = Path.GetFileName(path);//檔案名稱
                     //string line = ""; //資料行
@@ -651,14 +651,17 @@ namespace WPFSTD105.Tekla
                 return false;
             }
         }
-        /// <summary>
-        /// 讀取單一NC檔
-        /// </summary>
-        /// <param name="allowType"></param>
-        /// <param name="profile"></param>
-        /// <param name="path"></param>
-        /// <param name="vm"></param>
-        public void ReadOneNc(
+
+        
+
+            /// <summary>
+            /// 讀取單一NC檔
+            /// </summary>
+            /// <param name="allowType"></param>
+            /// <param name="profile"></param>
+            /// <param name="path"></param>
+            /// <param name="vm"></param>
+            public void ReadOneNc(
             List<OBJECT_TYPE> allowType,
             Dictionary<string, ObservableCollection<SteelAttr>> profile,
             string path, 
@@ -871,7 +874,7 @@ namespace WPFSTD105.Tekla
                                     steelAttr.PartNumber = item.Number;//寫入零件編號
 
                                     // 2022/10/21 呂宗霖 新增 + steelAttr.Number
-                                    steelAttr.Number = item.Count + steelAttr.Number;//零件數量
+                                    steelAttr.Number = item.Count;// + steelAttr.Number零件數量
                                                                                      //steelAttr.Length = item.Length;//寫入長度
                                     ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies(); //構件列表
                                                                                                               // 2022/08/26 呂宗霖 避免構件重複顯示，故不存在List中的構件才加入

@@ -7,9 +7,17 @@ using GD_STD.Enum;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using WPFSTD105.Attribute;
+using WPFSTD105.Tekla;
 using static WPFSTD105.Properties.SofSetting;
+using static WPFSTD105.Tekla.TeklaNcFactory;
+
 namespace WPFSTD105.Model
 {
     /// <summary>
@@ -49,6 +57,8 @@ namespace WPFSTD105.Model
 
             this.Entities.Add(mesh);//加入物件到圖塊內
         }
+
+        public Steel3DBlock() { }
         ///// <summary>
         ///// 鋼構設定檔
         ///// </summary>
@@ -196,6 +206,266 @@ namespace WPFSTD105.Model
                 throw;
             }
         }
+        /// <summary>
+        /// 螺栓文字列表
+        /// </summary>
+        private List<string> Bolts { get; set; } = new List<string>();
+        /// <summary>
+        /// 上視圖形狀
+        /// </summary>
+        private AK vAK { get; set; }
+        /// <summary>
+        /// 上視圖形狀
+        /// </summary>
+        private AK oAK { get; set; }
+        /// <summary>
+        /// 上視圖形狀
+        /// </summary>
+        private AK uAK { get; set; }
+        public void ReadNcFile(string path, Dictionary<string, ObservableCollection<SteelAttr>> profile, SteelAttr steelAttr, ref SteelAttr steelAttr1,ref List<GroupBoltsAttr> groups)
+        {
+            string line = "";
+            int lineNumber = 0;//資料行
+            string face = null; //形狀輪廓的面
+                                //SteelAttr steelAttr = new SteelAttr();//定義鋼構屬性
+            string blockName = string.Empty; //資料行的標示區塊，例如AK or BO
+            bool save = true; //檔案是否要儲存，需要true，不需要則false
+             groups = new List<GroupBoltsAttr>();//螺栓設定檔
+            Bolts = new List<string>();
+            oAK = new AK();
+            uAK = new AK();
+            vAK = new AK();
+            using (StreamReader stream = new StreamReader(path, Encoding.Default))
+            {
+                STDSerialization ser = new STDSerialization();
+                #region 讀NC檔內容
+
+                while ((line = stream.ReadLine().Trim()) != null)
+                {
+                    if (System.Enum.IsDefined(typeof(NcLine), lineNumber))
+                    {
+                        if (!Info(ref steelAttr, line, lineNumber, profile)) //如果不繼續讀取文件結束
+                        {
+                            save = false;//檔案不需要儲存
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (line.Contains("AK", "BO", "IK", "PU", "KO", "KA")) //輪廓螺栓標示區號
+                        {
+                            blockName = line.Trim();
+                            face = null;//清除目前的視圖標記
+                        }
+                        else if (line.Contains("SI")) //鋼印標示區號
+                        {
+                            line = stream.ReadLine().Trim();
+                            if (!Info(ref steelAttr, line, int.MaxValue, profile)) //如果不繼續讀取文件結束
+                            {
+                                save = false;//檔案不需要儲存
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if (line == "EN") //nc1 結束符號
+                            {
+                                break;
+                            }
+                            if (blockName == "AK")
+                            {
+                                if (face == null)
+                                {
+                                    string[] str = line.Split(' ').Where(el => el != string.Empty).ToArray();
+                                    if (str[0] == "v")
+                                    {
+                                        face = "v";
+                                        vAK.Parameter.Add(line.Split('v')[1]);
+                                    }
+                                    else if (str[0] == "o")
+                                    {
+                                        face = "o";
+                                        oAK.Parameter.Add(line);
+                                    }
+                                    else if (str[0] == "u")
+                                    {
+                                        face = "u";
+                                        uAK.Parameter.Add(line);
+                                    }
+                                }
+                                else if (face == "v")
+                                {
+                                    vAK.Parameter.Add(line);
+                                }
+                                else if (face == "o")
+                                {
+                                    oAK.Parameter.Add(line);
+                                }
+                                else if (face == "u")
+                                {
+                                    uAK.Parameter.Add(line);
+                                }
+                            }
+                            else if (blockName == "BO")//如果是螺栓
+                            {
+                                Bolts.Add(line);
+                            }
+                        }
+                    }
+                    lineNumber++;
+                }
+                #endregion
+            }
+            SteelAttr tempSA = new SteelAttr();
+            List<GroupBoltsAttr> tempGroups = new List<GroupBoltsAttr>();
+            tempSA = steelAttr;
+            Bolts.ForEach(el => tempGroups.Add(BO(el, tempSA)));
+            oAK.t = uAK.t = steelAttr.t2 == 0 ? steelAttr.t1 : steelAttr.t2;
+            vAK.t = steelAttr.t1;
+            steelAttr.oPoint = oAK.GetNcPoint(steelAttr.Type);
+            steelAttr.vPoint = vAK.GetNcPoint(steelAttr.Type);
+            steelAttr.uPoint = uAK.GetNcPoint(steelAttr.Type);
+            steelAttr1 = (SteelAttr)steelAttr.DeepClone();
+            groups = tempGroups;
+            //return steelAttr;
+
+        }
+
+        private bool Info(ref SteelAttr steel, string str, int line, Dictionary<string, ObservableCollection<SteelAttr>> steelAttr)
+        {
+            string value = str.Trim();//要加入的值
+            switch ((NcLine)line)
+            {
+                case NcLine.Length:
+                    steel.Length = Convert.ToDouble(value);
+                    break;
+                case NcLine.PartNumber:
+                    steel.PartNumber = value;
+                    break;
+                case NcLine.Material:
+                    steel.Material = value;//加入材質
+                    break;
+                case NcLine.Profile:
+                    steel.Profile = value;//加入斷面規格
+                    foreach (KeyValuePair<string, ObservableCollection<SteelAttr>> item in steelAttr)
+                    {
+                        foreach (var sa in item.Value.Where(x => x.Profile == value))
+                        {
+                            steel.Type = sa.Type;
+                            break;
+                        }
+                    }
+                    break;
+                case NcLine.SI:
+                    string[] array = str.Split(' ');
+                    steel.PartNumber = array[array.Length - 1].Split('#')[0];
+                    break;
+                default:
+                    break;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// nc 轉螺栓設定檔
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="steelAttr"></param>
+        /// <returns></returns>
+        private GroupBoltsAttr BO(string data, SteelAttr steelAttr)
+        {
+            GroupBoltsAttr result = new GroupBoltsAttr();
+            /*par[0] = 參考哪個面
+             * par[1] = x座標
+             * par[2] = y座標
+             * par[3] = 直徑*/
+            string[] par = data.Split(' ').Where(el => el != string.Empty).ToArray();//參數
+            FACE face = FACE.TOP;//螺栓面在的面
+            //面的處理方法順便賦予螺栓與Z軸位置
+            {
+                switch (par[0])
+                {
+                    case "v":
+                        face = FACE.TOP;
+                        result.t = steelAttr.t1;//孔位高度
+                        //斷面規格類型
+                        switch (steelAttr.Type)
+                        {
+                            case OBJECT_TYPE.BH:
+                            case OBJECT_TYPE.RH:
+                                result.Z = steelAttr.W * 0.5 - steelAttr.t1 * 0.5;
+                                break;
+                            case OBJECT_TYPE.BOX:
+                            case OBJECT_TYPE.CH:
+                                result.Z = steelAttr.W - steelAttr.t1;
+                                break;
+                            case OBJECT_TYPE.L:
+                                result.Z = 0;
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case "o":
+                        face = FACE.BACK;
+                        result.t = steelAttr.t2;
+                        result.Z = steelAttr.H;
+                        break;
+                    case "u":
+                        face = FACE.FRONT;
+                        result.t = steelAttr.t2;
+                        result.Z = steelAttr.t2;
+                        break;
+                    default:
+                        //Debugger.Break();
+                        break;
+                }
+            }
+            //螺栓座標的處理方法
+            {
+                /*value[0] = x座標
+                  * value[1] = y座標
+                  * value[2] = 直徑*/
+                //double[] value = new double[3];
+                //for (int i = 1; i < par.Length; i++)
+                //{
+                //    value[i - 1] = GetValue(par[i]);
+                //}
+                double[] value = new double[3];
+                for (int i = 0; i < value.Length; i++)
+                {
+                    value[i] = GetValue(par[i + 1]);
+                }
+                result.X = value[0];
+                result.Y = value[1];
+                result.Dia = value[2];
+                result.StartHole = START_HOLE.START;
+                result.xCount = 1;
+                result.yCount = 1;
+                result.Face = face;
+                result.Mode = AXIS_MODE.PIERCE;
+            }
+            return result;
+        }
+        /// <summary>
+        /// 取得數值
+        /// </summary>
+        /// <param name="str"></param>
+        private double GetValue(string str)
+        {
+            MatchCollection matches = Regex.Matches(str, @"[0-9.]+");//找出數值包含小數點
+            double result = 0d;
+            if (matches.Count > 0)
+            {
+                result = Convert.ToDouble(matches[0].Value);
+            }
+            else
+            {
+                Debugger.Break();
+            }
+            return result;
+        }
+
 
         /// <summary>
         /// 繪製方形輪廓
