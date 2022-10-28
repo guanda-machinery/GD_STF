@@ -24,7 +24,7 @@ namespace STD_105.ValidationRules
 
             if (string.IsNullOrEmpty(ValidString))
             {
-                return new ValidationResult(false, $"不可為空字串2");
+                return new ValidationResult(false, $"不可為空字串");
             }
             else if(string.IsNullOrWhiteSpace(ValidString))
             {

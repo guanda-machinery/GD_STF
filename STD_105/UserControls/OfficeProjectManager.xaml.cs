@@ -47,5 +47,7 @@ namespace STD_105
             //var pl = new ObservableCollection<string>(ApplicationVM.GetModelDirectory(path));
             CommonViewModel.ProjectList = new ObservableCollection<string>(ApplicationVM.GetModelDirectory(path));
         }
+
+
     }
 }
