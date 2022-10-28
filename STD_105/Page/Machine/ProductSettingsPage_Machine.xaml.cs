@@ -470,7 +470,8 @@ namespace STD_105
                 else if (model.Entities.Count > 0)
                 {
                     model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);  // 取得主件資訊
-                    ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData); // 寫入主件設定檔 To VM
+                    //ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData); // 寫入主件設定檔 To VM
+                    ViewModel.WriteSteelAttr((SteelAttr)model.Blocks[1].Entities[0].EntityData); // 寫入主件設定檔 To VM
                     model.SetCurrent(null);  // 返回最上層
                 }
                 else
@@ -3193,7 +3194,8 @@ namespace STD_105
                 {
                     return;
                 }
-                ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
+                //ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
+                ViewModel.WriteSteelAttr((SteelAttr)model.Blocks[1].Entities[0].EntityData);//寫入到設定檔內
                 ViewModel.GetSteelAttr();
                 model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式(零件)
 #if DEBUG
@@ -3393,7 +3395,8 @@ namespace STD_105
 
 
 
-                ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
+                //ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
+                ViewModel.WriteSteelAttr((SteelAttr)model.Blocks[1].Entities[0].EntityData);//寫入到設定檔內
                 ViewModel.GetSteelAttr();
 
 

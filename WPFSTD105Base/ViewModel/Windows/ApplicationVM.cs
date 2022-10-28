@@ -489,6 +489,7 @@ namespace WPFSTD105
                     }
                 }
             }
+            ScreenManager.Close();
         }
         /// <summary>
         /// 目前模型存放構件資料序列化的路徑

@@ -925,6 +925,9 @@ namespace WPFSTD105.ViewModel
                 if (ProfileList[i].Profile == steelAttr.Profile)
                 {
                     ProfileIndex = i;
+                    //this.SteelAttr.PartNumber = steelAttr.PartNumber;
+                    //this.SteelAttr.AsseNumber = steelAttr.AsseNumber;
+                    //this.SteelAttr.Name = steelAttr.Name;
                     break;
                 }
             }
