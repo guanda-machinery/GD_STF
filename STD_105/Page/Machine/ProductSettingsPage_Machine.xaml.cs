@@ -470,7 +470,8 @@ namespace STD_105
                 else if (model.Entities.Count > 0)
                 {
                     model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);  // 取得主件資訊
-                    ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData); // 寫入主件設定檔 To VM
+                    //ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData); // 寫入主件設定檔 To VM
+                    ViewModel.WriteSteelAttr((SteelAttr)model.Blocks[1].Entities[0].EntityData); // 寫入主件設定檔 To VM
                     model.SetCurrent(null);  // 返回最上層
                 }
                 else
@@ -1592,8 +1593,8 @@ namespace STD_105
 
             // 2022/07/14 呂宗霖 guid2區分2d或3d
             //ViewModel.SteelAttr.GUID2 = ViewModel.SteelAttr.GUID;
-            ViewModel.SteelAttr.PointFront = new CutList();//清除切割線
-            ViewModel.SteelAttr.PointTop = new CutList();//清除切割線
+            //ViewModel.SteelAttr.PointFront = new CutList();//清除切割線
+            //ViewModel.SteelAttr.PointTop = new CutList();//清除切割線
             ViewModel.SteelAttr.AsseNumber = this.asseNumber.Text;
             ViewModel.SteelAttr.Length = string.IsNullOrEmpty(this.Length.Text) ? 0 : Double.Parse(this.Length.Text);
             ViewModel.SteelAttr.Weight = string.IsNullOrEmpty(this.Weight.Text) ? 0 : double.Parse(this.Weight.Text);
@@ -3160,7 +3161,7 @@ namespace STD_105
             //}
 
 
-            ObSettingVM obvm = new ObSettingVM();
+            //ObSettingVM obvm = new ObSettingVM();
             TreeView treeView = (TreeView)sender; //樹狀列表
             TreeNode data = (TreeNode)e.NewValue;
             if (data.DataName == null)
@@ -3190,7 +3191,8 @@ namespace STD_105
                 {
                     return;
                 }
-                ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
+                //ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
+                ViewModel.WriteSteelAttr((SteelAttr)model.Blocks[1].Entities[0].EntityData);//寫入到設定檔內
                 ViewModel.GetSteelAttr();
                 model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式(零件)
 #if DEBUG
@@ -3220,7 +3222,7 @@ namespace STD_105
             }
             else //如果需要載入 nc 設定檔
             {
-                model.LoadNcToModel(data.DataName, obvm.allowType);
+                model.LoadNcToModel(data.DataName, ObSettingVM.allowType);
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
             }
 
@@ -3390,7 +3392,8 @@ namespace STD_105
 
 
 
-                ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
+                //ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
+                ViewModel.WriteSteelAttr((SteelAttr)model.Blocks[1].Entities[0].EntityData);//寫入到設定檔內
                 ViewModel.GetSteelAttr();
 
 
