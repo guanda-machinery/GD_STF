@@ -160,7 +160,7 @@ namespace WPFSTD105
 
                 //ScreenManagerWaitIndicator.Show(inputBlock: InputBlockMode.None, timeout: 100);
                 STDSerialization ser = new STDSerialization();//序列化處理器
-                ObSettingVM obvm = new ObSettingVM();
+                //ObSettingVM obvm = new ObSettingVM();
                 Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
                                     //if (IsNcLoad || IsBomLoad) //如果有載入過報表
                 if (false) //如果有載入過報表
@@ -258,7 +258,7 @@ namespace WPFSTD105
                             if (el.Value[0].GetType() == typeof(SteelPart))
                             {
                                 SteelPart steel = (SteelPart)el.Value[0]; //轉換物件
-                                if (obvm.allowType.Contains(steel.Type))
+                                if (ObSettingVM.allowType.Contains(steel.Type))
                                 {
                                     int index = BomProperties.FindIndex(e => e.Type == steel.Type); //查看是否有相同的斷面規格在報表屬性設定檔內
                                     if (index == -1) //不再報表屬性內

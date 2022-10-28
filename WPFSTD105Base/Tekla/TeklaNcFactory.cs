@@ -244,7 +244,7 @@ namespace WPFSTD105.Tekla
             {
                 STDSerialization ser = new STDSerialization();
                 var profile = ser.GetSteelAttr();
-                ObSettingVM obvm = new ObSettingVM();
+                //ObSettingVM obvm = new ObSettingVM();
                 ncPath = ncPath ?? ApplicationVM.DirectoryNc();
                 this.DataCorrespond = ser.GetDataCorrespond();// 3d model 零件
                 if (this.DataCorrespond ==null)
@@ -265,7 +265,7 @@ namespace WPFSTD105.Tekla
                 }
                 foreach (var path in GetAllNcPath(ncPath)) //逐步展開nc檔案
                 {
-                    ReadOneNc(obvm.allowType, profile, path, vm);
+                    ReadOneNc(ObSettingVM.allowType, profile, path, vm);
                     #region 讀每個NC檔
                     //string dataName = Path.GetFileName(path);//檔案名稱
                     //string line = ""; //資料行

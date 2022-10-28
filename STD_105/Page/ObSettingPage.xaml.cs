@@ -1470,8 +1470,8 @@ namespace STD_105
             }
             else //如果需要載入 nc 設定檔
             {
-                ObSettingVM obvm = new ObSettingVM();
-                model.LoadNcToModel(data.DataName, obvm.allowType) ;
+                //ObSettingVM obvm = new ObSettingVM();
+                model.LoadNcToModel(data.DataName, ObSettingVM.allowType) ;
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
             }
             model.ZoomFit();//設置道適合的視口

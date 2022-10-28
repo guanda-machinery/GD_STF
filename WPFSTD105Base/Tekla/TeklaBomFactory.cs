@@ -29,7 +29,7 @@ namespace WPFSTD105.Tekla
     public class TeklaBomFactory
     {
         #region 公開屬性
-        public ObSettingVM obvm = new ObSettingVM();
+        //public ObSettingVM obvm = new ObSettingVM();
         /// <summary>
         /// 有使用過的斷面規格
         /// </summary>
@@ -384,7 +384,7 @@ namespace WPFSTD105.Tekla
                                 {
                                     int index = 0;//索引位置
                                     SteelPart part = (SteelPart)obj; //轉換單零件
-                                    if (obj.GetType() == typeof(SteelPart) && obvm.allowType.Contains(part.Type)) //如果類型是 SteelPart
+                                    if (obj.GetType() == typeof(SteelPart) && ObSettingVM.allowType.Contains(part.Type)) //如果類型是 SteelPart
                                     {
                                         //判斷需要加入的斷面規格類型
                                         //if (
