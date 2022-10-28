@@ -638,53 +638,8 @@ namespace STD_105.Office
         }
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            //TreeView treeView = (TreeView)sender; //樹壯列表
-            //IModelData data = (IModelData)treeView.SelectedValue;
-            //if (data.DataName == null)
-            //    return;
-            //STDSerialization ser = new STDSerialization();
-            //NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
-            //NcTemp ncTemp = ncTemps.GetData(data.DataName);//需要實體化的nc物件
-            //model.Clear(); //清除目前模型
-            //if (ncTemp == null) //NC 檔案是空值
-            //{
-            //    ReadFile readFile = new ReadFile($@"{ApplicationVM.DirectoryDevPart()}\{data.DataName}.dm", new FileSerializerExt(devDept.Serialization.contentType.GeometryAndTessellation)); //讀取檔案內容
-            //    readFile.DoWork();//開始工作
-            //    readFile.AddToScene(model);//將讀取完的檔案放入到模型
-            //    ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
-            //    ViewModel.GetSteelAttr();
-            //    model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
-            //    SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
-            //    for (int i = 0; i < model.Entities.Count; i++)//逐步展開 3d 模型實體
-            //    {
-            //        if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
-            //        {
-            //            BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
-            //            Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
-            //            Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生螺栓圖塊
-            //            Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
-            //        }
-            //    }
-            //}
-            //else //如果需要載入 nc 設定檔
-            //{
-            //    Steel3DBlock.AddSteel(ncTemp.SteelAttr, model, out BlockReference steelBlock); //加入 3d 鋼構參考圖塊
-            //    SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
-            //    for (int i = 0; i < ncTemp.GroupBoltsAttrs.Count; i++) //逐步展開 nc 檔案的螺栓
-            //    {
-            //        Bolts3DBlock.AddBolts(ncTemp.GroupBoltsAttrs[i], model, out BlockReference botsBlock); //加入到 3d 視圖
-            //        Add2DHole((Bolts3DBlock)model.Blocks[botsBlock.BlockName], false);//加入孔位不刷新 2d 視圖
-            //    }
-            //    ser.SetNcTempList(ncTemps);//儲存檔案
-            //    ser.SetPartModel(ncTemp.SteelAttr.GUID.ToString(), model);//儲存 3d 視圖
 
-            //}
-            //model.ZoomFit();//設置道適合的視口
-            //model.Invalidate();//初始化模型
-            //drawing.ZoomFit();//設置道適合的視口
-            //drawing.Invalidate();
         }
-
 
         bool TableViewLoadedBoolen = false;
         private void Material_List_TableView_Loaded(object sender, RoutedEventArgs e)
@@ -1089,6 +1044,8 @@ namespace STD_105.Office
         {
             ((DevExpress.Xpf.Grid.TableView)sender).FocusedRowHandle = DevExpress.Xpf.Grid.GridControl.InvalidRowHandle;
 
+            //最左側IndicatorWidth自動變寬
+            ((DevExpress.Xpf.Grid.TableView)sender).IndicatorWidth = (((PartsGridControl.ItemsSource as System.Collections.ICollection).Count + 1).ToString().Length * 10) + 5;
         }
         private void SoftCountTableView_Loaded(object sender, RoutedEventArgs e)
         {
@@ -1111,6 +1068,12 @@ namespace STD_105.Office
                     PartsTableView_ScrollElement.SetVerticalOffset(e.VerticalOffset);
             }
         }
+
+
+
+
+
+
 
         private void CheckReportLogoExist()
         {
@@ -1140,6 +1103,71 @@ namespace STD_105.Office
             }
         }
 
+   
+        private void InsertPartCommandClick(object sender, RoutedEventArgs e)
+        {
+            //PartsGridControl.
+          var SelectedMaterial =  Material_List_GridControl.SelectedItem as GD_STD.Data.MaterialDataView;
+
+            var IPW = new InsertPartsWin();
+            var ITEM_Profile = (this.PartsGridControl.ItemsSource as IEnumerable<GD_STD.Data.TypeSettingDataView>).ToList().FindAll(x => (x.Profile == SelectedMaterial.Profile));
+            IPW.PartsGridControl.ItemsSource = ITEM_Profile;
+            IPW.SoftGridControl.ItemsSource = ITEM_Profile;
+            var Win = new Window
+            {
+                Content = IPW,
+                Width = IPW.ActualWidth,
+                Height = IPW.ActualHeight,
+                MinWidth = 900,
+                MinHeight = 500
+            };
+            
+            Win.Show();
+
+        }
+
+
+        /// <summary>
+        /// 使兩個GridControl排序同步化
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GridControl_FilterGroupSortChanging(object sender, FilterGroupSortChangingEventArgs e)
+        {
+            var GridC = new DevExpress.Xpf.Grid.GridControl();
+
+            if (SoftGridControl is null || PartsGridControl is null)
+                return;
+            
+
+                if ((sender as DevExpress.Xpf.Grid.GridControl).Name == PartsGridControl.Name)
+                {
+                    GridC = SoftGridControl;
+                }
+            
+
+                if ((sender as DevExpress.Xpf.Grid.GridControl).Name == SoftGridControl.Name)
+                {
+                    GridC = PartsGridControl;
+                }
+            
+            foreach (var item in e.SortInfo)
+            {
+                var CSortOrder = DevExpress.Data.ColumnSortOrder.None;
+                if (item.Direction == System.ComponentModel.ListSortDirection.Ascending)
+                {
+                    CSortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
+                }
+                else
+                {
+                    CSortOrder = DevExpress.Data.ColumnSortOrder.Descending;
+                }
+
+                GridC.ClearSorting();
+                GridC.SortBy(SoftGridControl.Columns[item.PropertyName], CSortOrder);
+                GridC.RefreshData();
+            }
+        }
     }
 }
 

@@ -455,6 +455,10 @@
                                                         Storyboard.TargetProperty="(TextBlock.Foreground).Color"
                                                         To="{ StaticResource clr_DimGray }"
                                                         Duration="0" />
+                                        <ColorAnimation Storyboard.TargetName="Border"
+                                                        Storyboard.TargetProperty="(Background).Color"
+                                                        To="{  StaticResource clr_LightSkyBlue }"
+                                                        Duration="0" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Selected">

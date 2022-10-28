@@ -6099,5 +6099,13 @@ namespace STD_105.Office
                 //}
             }
         }
+
+        private void GridSplitter_MouseMove(object sender, MouseEventArgs e)
+        {
+                model.ZoomFit();//設置道適合的視口
+                drawing.ZoomFit();//設置道適合的視口
+            
+
+        }
     }
 }

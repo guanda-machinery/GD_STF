@@ -305,6 +305,7 @@ namespace WPFSTD105.Tekla
                     string line;//資料行內容
                     double number = 0;//資料行位置
                     //讀取資料行
+                    //reader.ReadToEnd
                     while ((line = reader.ReadLine()) != null)
                     {
                         line = line.Replace(",,","").Trim(); 
