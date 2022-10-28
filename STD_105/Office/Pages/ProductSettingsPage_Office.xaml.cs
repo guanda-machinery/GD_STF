@@ -3277,6 +3277,7 @@ namespace STD_105.Office
                     break;
 
                 case FACE.TOP:
+
                     if (steelAttr.Top == null)
                         return;
 

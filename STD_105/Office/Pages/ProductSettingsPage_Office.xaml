@@ -138,9 +138,9 @@
             <RowDefinition Height="480" MaxHeight="915" MinHeight="55"/>
         </Grid.RowDefinitions>
         <Grid Margin="5">
-            <Grid.DataContext>
+           <!-- <Grid.DataContext>
                 <STD105VM:ObSettingVM/>
-            </Grid.DataContext>
+            </Grid.DataContext>-->
             <dxg:GridControl Name="PieceListGridControl"
                                  AutoGenerateColumns="None"
                                  SelectionMode="None"
