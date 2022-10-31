@@ -269,7 +269,7 @@ namespace WPFSTD105
                         column++;
                         foreach (int father in part.Father)
                         {
-                            sheet.Cells[row++, column++].Value = father;
+                            sheet.Cells[row++, column].Value = father;
                         }
                         rowList.Add(row);
                         row = rowList.Max() + 1;
@@ -371,6 +371,7 @@ namespace WPFSTD105
                                 break;
                             default:
                                 sheet.Cells[row, column++].Value = $"*1-1-0model.Blocks[{firstIndex}]";
+                                sheet.Cells[row, column++].Value = $"例外型別";
                                 sheet.Cells[row++, column++].Value = $"{block.GetType().Name}";
                                 column = 0;
                                 break;
@@ -418,6 +419,7 @@ namespace WPFSTD105
                                     break;
                                 default:
                                     sheet.Cells[row, column++].Value = $"*1-2model.Blocks[{firstIndex}].Entities[{secondIndex}]";
+                                    sheet.Cells[row, column++].Value = $"例外型別";
                                     sheet.Cells[row, column++].Value = $"{block.GetType().Name}";
                                     sheet.Cells[row++, column++].Value = $"{entities.GetType().Name}";
                                     column = 0;
@@ -438,9 +440,10 @@ namespace WPFSTD105
                                         sheet.Cells[row, column++].Value = $"{block.GetType().Name}";
                                         sheet.Cells[row += 2, column++].Value = $"{entities.GetType().Name}";
                                         column = 0;
-                                        break;
+                                        break; 
                                     default:
                                         sheet.Cells[row, column++].Value = $"*1-3model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData = null";
+                                        sheet.Cells[row, column++].Value = $"例外型別";
                                         sheet.Cells[row, column++].Value = $"{block.GetType().Name}";
                                         sheet.Cells[row += 2, column++].Value = $"{entities.GetType().Name}";
                                         column = 0;
@@ -455,7 +458,7 @@ namespace WPFSTD105
                                 {
                                     case "BoltAttr":
                                         BoltAttr ba = (BoltAttr)entities.EntityData;//Dia Model Type Face
-                                        sheet.Cells[row, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData]";
+                                        sheet.Cells[row, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData";
                                         sheet.Cells[row, column++].Value = entities.EntityData.GetType().Name;
                                         sheet.Cells[row, column++].Value = ba.GUID.ToString();
                                         sheet.Cells[row, column++].Value = ba.BlockName;
@@ -464,13 +467,12 @@ namespace WPFSTD105
                                         sheet.Cells[row, column++].Value = ba.Z;
                                         sheet.Cells[row, column++].Value = ba.Dia;
                                         sheet.Cells[row, column++].Value = $"{ba.Mode}";
-
                                         sheet.Cells[row += 2, column++].Value = ba.Type.ToString();
                                         column = 0;
                                         break;
                                     case "SteelAttr":
                                         SteelAttr sa = (SteelAttr)entities.EntityData;
-                                        sheet.Cells[row, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData]";
+                                        sheet.Cells[row, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData";
                                         sheet.Cells[row, column++].Value = sa.GetType().Name;
                                         sheet.Cells[row, column++].Value = sa.GUID.ToString();
                                         sheet.Cells[row, column++].Value = sa.AsseNumber;
@@ -499,7 +501,7 @@ namespace WPFSTD105
                                     case "Mesh":
                                         Mesh mesh = (Mesh)entities.EntityData;
                                         break;
-                                    case "GroupBoltsAttr":
+                                    case "GroupBoltsAttr":                                        
                                         GroupBoltsAttr gba = (GroupBoltsAttr)entities.EntityData;
                                         sheet.Cells[row, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData";
                                         sheet.Cells[row, column++].Value = $"{gba.GetType().Name}";
@@ -515,6 +517,7 @@ namespace WPFSTD105
                                         break;
                                     default:
                                         sheet.Cells[row, column++].Value = $"*1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData";
+                                        sheet.Cells[row, column++].Value = $"例外型別";
                                         sheet.Cells[row, column++].Value = $"{block.GetType().Name}+";
                                         sheet.Cells[row, column++].Value = $"{entities.GetType().Name}+";
                                         sheet.Cells[row += 2, column++].Value = $"{entities.EntityData.GetType().Name}";
@@ -551,8 +554,9 @@ namespace WPFSTD105
                                 sheet.Cells[row++, column++].Value = $"{br.BlockName}";
                                 column = 0;
                                 break;
-                            default:
+                            default:                                
                                 sheet.Cells[row, column++].Value = $"*2-1-0model.Entities[{firstIndex}]";
+                                sheet.Cells[row++, column++].Value = $"例外型別";
                                 sheet.Cells[row++, column++].Value = $"{entity.GetType().Name}";
                                 column = 0;
                                 break;
@@ -570,6 +574,7 @@ namespace WPFSTD105
                                     break;
                                 default:
                                     sheet.Cells[row, column++].Value = $"*2-2-0model.Entities[{firstIndex}].EntityData = null";
+                                    sheet.Cells[row++, column++].Value = $"例外型別";
                                     sheet.Cells[row++, column++].Value = $"{entity.GetType().Name}";
                                     column = 0;
                                     break;
@@ -633,6 +638,7 @@ namespace WPFSTD105
                                     break;
                                 default://BlockReference
                                     sheet.Cells[row, column++].Value = $"*2-2-0model.Entities[{firstIndex}].EntityData";
+                                    sheet.Cells[row, column++].Value = $"例外型別";
                                     sheet.Cells[row, column++].Value = entity.GetType().Name;
                                     sheet.Cells[row += 2, column++].Value = entity.EntityData.GetType().Name;
                                     column = 0;

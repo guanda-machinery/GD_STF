@@ -139,6 +139,8 @@ namespace WPFSTD105.Tekla
         }
         /// <summary>
         /// 計算圓心
+        /// 已知兩點座標和半徑，求圓心
+        /// https://www.twblogs.net/a/5b826af82b717766a1e82c3d
         /// </summary>
         /// <param name="x1">第一點 x 向</param>
         /// <param name="y1">第一點 y 向</param>

@@ -1,4 +1,5 @@
-﻿using GD_STD.Enum;
+﻿using devDept.Geometry;
+using GD_STD.Enum;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WPFSTD105.Attribute;
+using WPFSTD105.Model;
 using WPFWindowsBase;
 
 namespace WPFSTD105.ViewModel
@@ -115,6 +117,20 @@ namespace WPFSTD105.ViewModel
         /// 翼板厚度
         /// </summary>
         public double t2 { get; set; }
+
+        public List<Point3D> CutList { get; set; }
+        /// <summary>
+        /// NC 頂面形狀
+        /// </summary>
+        public List<NcPoint3D> oPoint { get; set; } = new List<NcPoint3D>();
+        /// <summary>
+        /// NC 前面形狀
+        /// </summary>
+        public List<NcPoint3D> vPoint { get; set; } = new List<NcPoint3D>();
+        /// <summary>
+        /// NC 底面形狀
+        /// </summary>
+        public List<NcPoint3D> uPoint { get; set; } = new List<NcPoint3D>();
 
         public ProductSettingsPageViewModel()
         {
