@@ -272,7 +272,6 @@ namespace WPFSTD105.Tekla
                 foreach (var path in All_NcPath) //逐步展開nc檔案
                 {
                     ReadOneNc(ObSettingVM.allowType, profile, path, vm);
-                    ReadOneNc(obvm.allowType, profile, path, vm);
                     if (vm != null)
                     {
                         vm.Status = "逐步展開nc檔案...";

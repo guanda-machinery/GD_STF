@@ -133,8 +133,14 @@ namespace WPFSTD105
                 {
                     DXOpenFileDialog dX = new DXOpenFileDialog();
                     dX.Filter = "Csv 檔案 |*.csv";
+                    try 
+                    { 
                     dX.ShowDialog();//Show 視窗
                     BomPath = dX.FileName;
+                    }
+                    catch(Exception ex)
+                    { 
+                    }
                 });
             }
         }
@@ -249,31 +255,43 @@ namespace WPFSTD105
                         bool loadBomResult = teklaHtemlFactory.Load(ProcessingScreenWin.ViewModel);//載入報表物件結果
 
                     if (loadBomResult) //載入成功
-                    {
-                        CommonViewModel.ProjectProperty.IsBomLoad = true;//改變報表載入參數
+                        {
+                            ProcessingScreenWin.ViewModel.Status = $"載入報表物件結果...";
+                            CommonViewModel.ProjectProperty.IsBomLoad = true;//改變報表載入參數
                         ser.SetSteelAssemblies(teklaHtemlFactory.SteelAssemblies);//序列化構件資訊
                         ser.SetProfileList(teklaHtemlFactory.ProfileList);
-                        foreach (var el in teklaHtemlFactory.KeyValuePairs)//逐步存取序列化物件
-                        {
-                            //判斷 type 序列化
-                            if (el.Value[0].GetType() == typeof(SteelPart))
+
+
+                            ProcessingScreenWin.ViewModel.Status = $"正在存取序列化物件";
+                            ProcessingScreenWin.ViewModel.IsIndeterminate = true;
+                            int KVP_Count = teklaHtemlFactory.KeyValuePairs.Count;
+                            int ci = 0;
+                            foreach (var el in teklaHtemlFactory.KeyValuePairs)//逐步存取序列化物件
                             {
-                                SteelPart steel = (SteelPart)el.Value[0]; //轉換物件
-                                if (ObSettingVM.allowType.Contains(steel.Type))
+                                //判斷 type 序列化
+                                if (el.Value[0].GetType() == typeof(SteelPart))
                                 {
-                                    int index = BomProperties.FindIndex(e => e.Type == steel.Type); //查看是否有相同的斷面規格在報表屬性設定檔內
-                                    if (index == -1) //不再報表屬性內
+                                    SteelPart steel = (SteelPart)el.Value[0]; //轉換物件
+                                    if (ObSettingVM.allowType.Contains(steel.Type))
                                     {
-                                        BomProperties.Add(new BomProperty() { Type = steel.Type });//加入到列表內
+                                        int index = BomProperties.FindIndex(e => e.Type == steel.Type); //查看是否有相同的斷面規格在報表屬性設定檔內
+                                        if (index == -1) //不再報表屬性內
+                                        {
+                                            BomProperties.Add(new BomProperty() { Type = steel.Type });//加入到列表內
+                                        }
+                                        ser.SetPart(el.Key.GetHashCode().ToString(), el.Value);
                                     }
-                                    ser.SetPart(el.Key.GetHashCode().ToString(), el.Value);
+                                   
+                                    ci++;
                                 }
+                                else if (el.Value[0].GetType() == typeof(SteelBolts))
+                                {
+                                    ser.SetBolts(el.Key.GetHashCode().ToString(), el.Value);
+                                }
+                                ProcessingScreenWin.ViewModel.Progress = ci / KVP_Count;
                             }
-                            else if (el.Value[0].GetType() == typeof(SteelBolts))
-                            {
-                                ser.SetBolts(el.Key.GetHashCode().ToString(), el.Value);
-                            }
-                        }
+                            ProcessingScreenWin.ViewModel.IsIndeterminate = false;
+
 
                             if (teklaHtemlFactory.LackMaterial())//如果報表導入到模型沒有找到符合的材質就序列化物件
                             {

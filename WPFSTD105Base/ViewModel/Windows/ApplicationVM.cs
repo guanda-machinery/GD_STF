@@ -41,13 +41,6 @@ namespace WPFSTD105
         /// </summary>
         private SplashScreenManager ProcessingScreenWin = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
 
-        /// <summary>
-        /// 啟動畫面管理器
-        /// </summary>
-        //public SplashScreenManager ProcessingScreenWin { get; set; } = SplashProcessingScreenWin.CreateWaitIndicator();
-
-        private SplashScreenManager ProcessingScreenWin = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
-
         ///// <summary>
         ///// 接續專案
         ///// </summary>
@@ -490,7 +483,7 @@ namespace WPFSTD105
                     ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔中{nc.SteelAttr.PartNumber}";
                     //Thread.Sleep(1000);
                     model.Clear(); //清除目前模型
-                    model.LoadNcToModel(nc.SteelAttr.GUID.ToString(), ObSettingVM.allowType, ScreenManager.ViewModel);
+                    model.LoadNcToModel(nc.SteelAttr.GUID.ToString(), ObSettingVM.allowType, ProcessingScreenWin.ViewModel);
                 }
             }
             else
@@ -500,22 +493,16 @@ namespace WPFSTD105
                 // 跑已存在dm檔，產生未有dm檔之NC檔            
                 foreach (NcTemp nc in ncTemps)
                 {
-                    if (!dmList.Contains(nc.SteelAttr.GUID.Value.ToString()) && ObSettingVM.allowType.Contains(nc.SteelAttr.Type))
-                    {
-                        ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔中{i++}/{ncTemps.Count}\n{nc.SteelAttr.PartNumber} ";
-                        //Thread.Sleep(1000);
-                        model.Clear(); //清除目前模型
-                        model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), ObSettingVM.allowType, ScreenManager.ViewModel);
                     if (nc != null)
                     {
-                        if (!dmList.Contains(nc.SteelAttr.GUID.Value.ToString()) && obVM.allowType.Contains(nc.SteelAttr.Type))
+                        if (!dmList.Contains(nc.SteelAttr.GUID.Value.ToString()) && ObSettingVM.allowType.Contains(nc.SteelAttr.Type))
                         {
-                            ProcessingScreenWin.ViewModel.Progress = i * 100 / ncTemps.Count;
                             ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔{nc.SteelAttr.PartNumber}... {i}/{ncTemps.Count}";
-
-                            Thread.Sleep(10);
+                
+                            ProcessingScreenWin.ViewModel.Progress = i *100 / ncTemps.Count;
+                            //Thread.Sleep(1000);
                             model.Clear(); //清除目前模型
-                            model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), obVM.allowType, ProcessingScreenWin.ViewModel);
+                            model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), ObSettingVM.allowType, ProcessingScreenWin.ViewModel);
                         }
                     }
                     i++;
