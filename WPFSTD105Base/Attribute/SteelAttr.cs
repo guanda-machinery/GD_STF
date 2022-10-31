@@ -43,7 +43,7 @@ namespace WPFSTD105.Attribute
             W = profile.W;
             t1 = profile.t1;
             t2 = profile.t2;
-            Profile = profile.Profile;
+            Profile = profile.Profile.Replace("*", "X").Replace(" ", "");
             Type = profile.Type;
             Material = profile.Material;
             
@@ -161,7 +161,6 @@ namespace WPFSTD105.Attribute
         public CutContour Back { get => GetCutPoint(PointBack, W); }
         /// <inheritdoc/>
         public bool IsMainPart { get => MainPartNumber == PartNumber; }
-
 
 
         /// <summary>

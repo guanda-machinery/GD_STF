@@ -29,7 +29,7 @@ namespace WPFSTD105.Tekla
     public class TeklaBomFactory
     {
         #region 公開屬性
-        public ObSettingVM obvm = new ObSettingVM();
+        //public ObSettingVM obvm = new ObSettingVM();
         /// <summary>
         /// 有使用過的斷面規格
         /// </summary>
@@ -380,13 +380,14 @@ namespace WPFSTD105.Tekla
                             else if (objType == typeof(SteelPart))
                             {
                                 ((ISecondary)obj).Father.Add(Father.ID[Father.ID.Count - 1]);//加入主件 ID
+                                ((IProfile)obj).Profile = ((IProfile)obj).Profile.Replace("*", "X").Replace(" ", "");
                                 string key = ((IProfile)obj).Profile; //字典 key 
                                 //string key = ((SteelPart)obj).Number; //字典 key 
                                 if (KeyValuePairs.ContainsKey(key))//如果找到相同的 key
                                 {
                                     int index = 0;//索引位置
                                     SteelPart part = (SteelPart)obj; //轉換單零件
-                                    if (obj.GetType() == typeof(SteelPart) && obvm.allowType.Contains(part.Type)) //如果類型是 SteelPart
+                                    if (obj.GetType() == typeof(SteelPart) && ObSettingVM.allowType.Contains(part.Type)) //如果類型是 SteelPart
                                     {
                                         //判斷需要加入的斷面規格類型
                                         //if (
@@ -454,6 +455,7 @@ namespace WPFSTD105.Tekla
                             else if (objType == typeof(SteelBolts))
                             {
                                 ((ISecondary)obj).Father.Add(Father.ID[Father.ID.Count - 1]);//加入主件 ID
+                                ((IProfile)obj).Profile = ((IProfile)obj).Profile.Replace("*", "X").Replace(" ", "");
                                 string profile = ((IProfile)obj).Profile; //字典 key 
                                 string key = ((SteelBolts)obj).Profile; //字典 key 
                                 if (KeyValuePairs.ContainsKey(key))//如果找到相同的 key

@@ -276,7 +276,8 @@ namespace WPFSTD105
                 bool InsideBorder = false;
 
                 //將相同內容的零件合計
-                ObservableCollection<MaterialDataView> Result_materialDataViews = FindSameMaterial(materialDataViews);
+                //ObservableCollection<MaterialDataView> Result_materialDataViews = FindSameMaterial(materialDataViews);
+                ObservableCollection<MaterialDataView> Result_materialDataViews = JsonConvert.DeserializeObject<ObservableCollection<MaterialDataView>>(JsonConvert.SerializeObject(materialDataViews));
 
                 foreach (string steel_type in temp_DistinctSteelType)//以型鋼型態分類
                 {
@@ -307,7 +308,8 @@ namespace WPFSTD105
                             CurrentMaterial[3] = Convert.ToString(Result_materialDataViews[i].Material);
                             CurrentMaterial[4] = Convert.ToString(Result_materialDataViews[i].LengthStr);
                             CurrentMaterial[5] = (Result_materialDataViews[i].LengthStr - Result_materialDataViews[i].Loss).ToString("#0.00");
-                            CurrentMaterial[6] = Convert.ToString(Result_materialDataViews[i].MeterialCount);
+                            //CurrentMaterial[6] = Convert.ToString(Result_materialDataViews[i].MeterialCount);
+                            CurrentMaterial[6] = "1";//素材數量皆為1，因帶有素材編號的素材是唯一的
                             CurrentMaterial[7] = Convert.ToString("");
                             CurrentMaterial[8] = Convert.ToString("");
 

@@ -16,6 +16,10 @@ namespace GD_STD.Enum
         /// </summary>
         POINT,
         /// <summary>
+        /// 斜邊打點
+        /// </summary>
+        HypotenusePOINT,
+        /// <summary>
         /// 畫線
         /// </summary>
         LINE,

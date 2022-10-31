@@ -169,54 +169,54 @@ namespace WPFSTD105
 
                     //ProcessingScreenW.Show();
 
-                    //ScreenManagerWaitIndicator.Show(inputBlock: InputBlockMode.None, timeout: 100);
-                    STDSerialization ser = new STDSerialization();//序列化處理器
-                    ObSettingVM obvm = new ObSettingVM();
-                    Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
-                                        //if (IsNcLoad || IsBomLoad) //如果有載入過報表
-                    if (false) //如果有載入過報表
-                    {
-                        // 2022/08/22 呂宗霖 因螺栓無法找到其歸屬零件編號，故架構師與副總討論後，決議先讓使用者只能匯入一次檔案，若要再次匯入，必須重新新增專案
-                        WinUIMessageBox.Show(null,
-                        $"已匯入專案，請重新建立專案",
-                        "通知",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Exclamation,
-                        MessageBoxResult.None,
-                        MessageBoxOptions.None,
-                        FloatingMode.Popup);
-                        return;
-                        //MessageBoxResult saveAsResult = MessageBox.Show($"請問是否要備份之前載入的檔案", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
-                        //if (saveAsResult == MessageBoxResult.Yes) //如果要備份檔案
-                        //{
-                        //    FolderBrowserDialogService service = DevExpand.NewFolder("請選擇另存路徑"); //文件夾瀏覽器對話服務
-                        //    IFolderBrowserDialogService folder = service;
-                        //    folder.ShowDialog();//Show 視窗
-                        //    string path = folder.ResultPath;//用戶選擇的路徑
-                        //    if (path != string.Empty) //如果有選擇路徑
-                        //    {
-                        //        string dataName = $"{CommonViewModel.ProjectName}{DateTime.Now.ToString("yy-MM-dd-HH-mm-ss")}.zip";//壓縮檔名稱
-                        //        string zipPath = $@"{path}\{dataName}";//壓縮檔完整路徑
-                        //        if (File.Exists(zipPath))//如果有重複的壓縮檔
-                        //        {
-                        //            MessageBoxResult coverResult = MessageBox.Show($"發現重複的檔案名稱 '{dataName}'，請問是否覆蓋此壓縮檔", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
-                        //            if (coverResult == MessageBoxResult.Yes)//如果選擇要覆蓋檔案
-                        //            {
-                        //                File.Delete(zipPath);//刪除檔案
-                        //                BackupFile(zipPath);//備份檔案
-                        //            }
-                        //        }
-                        //        else
-                        //        {
-                        //            BackupFile(zipPath);//備份檔案
-                        //        }
-                        //    }
-                        //}
-                        //if (NcPath != string.Empty)//有選擇nc路徑
-                        //    DeleteFolder(ApplicationVM.DirectoryNc());//刪除既有nc檔案
-                        //if (BomPath != string.Empty)//有選擇報表路徑
-                        //    File.Delete(ApplicationVM.FileTeklaBom());//刪除既有的報表
-                    }
+                //ScreenManagerWaitIndicator.Show(inputBlock: InputBlockMode.None, timeout: 100);
+                STDSerialization ser = new STDSerialization();//序列化處理器
+                //ObSettingVM obvm = new ObSettingVM();
+                Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
+                                    //if (IsNcLoad || IsBomLoad) //如果有載入過報表
+                if (false) //如果有載入過報表
+                {
+                    // 2022/08/22 呂宗霖 因螺栓無法找到其歸屬零件編號，故架構師與副總討論後，決議先讓使用者只能匯入一次檔案，若要再次匯入，必須重新新增專案
+                    WinUIMessageBox.Show(null,
+                    $"已匯入專案，請重新建立專案",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Popup);
+                    return;
+                    //MessageBoxResult saveAsResult = MessageBox.Show($"請問是否要備份之前載入的檔案", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                    //if (saveAsResult == MessageBoxResult.Yes) //如果要備份檔案
+                    //{
+                    //    FolderBrowserDialogService service = DevExpand.NewFolder("請選擇另存路徑"); //文件夾瀏覽器對話服務
+                    //    IFolderBrowserDialogService folder = service;
+                    //    folder.ShowDialog();//Show 視窗
+                    //    string path = folder.ResultPath;//用戶選擇的路徑
+                    //    if (path != string.Empty) //如果有選擇路徑
+                    //    {
+                    //        string dataName = $"{CommonViewModel.ProjectName}{DateTime.Now.ToString("yy-MM-dd-HH-mm-ss")}.zip";//壓縮檔名稱
+                    //        string zipPath = $@"{path}\{dataName}";//壓縮檔完整路徑
+                    //        if (File.Exists(zipPath))//如果有重複的壓縮檔
+                    //        {
+                    //            MessageBoxResult coverResult = MessageBox.Show($"發現重複的檔案名稱 '{dataName}'，請問是否覆蓋此壓縮檔", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                    //            if (coverResult == MessageBoxResult.Yes)//如果選擇要覆蓋檔案
+                    //            {
+                    //                File.Delete(zipPath);//刪除檔案
+                    //                BackupFile(zipPath);//備份檔案
+                    //            }
+                    //        }
+                    //        else
+                    //        {
+                    //            BackupFile(zipPath);//備份檔案
+                    //        }
+                    //    }
+                    //}
+                    //if (NcPath != string.Empty)//有選擇nc路徑
+                    //    DeleteFolder(ApplicationVM.DirectoryNc());//刪除既有nc檔案
+                    //if (BomPath != string.Empty)//有選擇報表路徑
+                    //    File.Delete(ApplicationVM.FileTeklaBom());//刪除既有的報表
+                }
 
                     //ProcessingScreenWin.ViewModel.Status = "複製文件到 Model 中 ...";
                     //ScreenManagerWaitIndicator.ViewModel.Status = "複製文件到 Model 中 ...";
@@ -248,44 +248,32 @@ namespace WPFSTD105
                         TeklaBomFactory teklaHtemlFactory = new TeklaBomFactory($@"{ApplicationVM.FileTeklaBom()}"); //報表讀取器
                         bool loadBomResult = teklaHtemlFactory.Load(ProcessingScreenWin.ViewModel);//載入報表物件結果
 
-                        if (loadBomResult) //載入成功
+                    if (loadBomResult) //載入成功
+                    {
+                        CommonViewModel.ProjectProperty.IsBomLoad = true;//改變報表載入參數
+                        ser.SetSteelAssemblies(teklaHtemlFactory.SteelAssemblies);//序列化構件資訊
+                        ser.SetProfileList(teklaHtemlFactory.ProfileList);
+                        foreach (var el in teklaHtemlFactory.KeyValuePairs)//逐步存取序列化物件
                         {
-                            ProcessingScreenWin.ViewModel.Status = $"載入報表物件結果...";
-                            CommonViewModel.ProjectProperty.IsBomLoad = true;//改變報表載入參數
-                            ser.SetSteelAssemblies(teklaHtemlFactory.SteelAssemblies);//序列化構件資訊
-                            ser.SetProfileList(teklaHtemlFactory.ProfileList);
-
-                            ProcessingScreenWin.ViewModel.Status = $"正在存取序列化物件";
-                            ProcessingScreenWin.ViewModel.IsIndeterminate = true;
-                            int KVP_Count = teklaHtemlFactory.KeyValuePairs.Count;
-                            int ci = 0;
-                            foreach (var el in teklaHtemlFactory.KeyValuePairs)//逐步存取序列化物件
+                            //判斷 type 序列化
+                            if (el.Value[0].GetType() == typeof(SteelPart))
                             {
-                                //判斷 type 序列化
-                                if (el.Value[0].GetType() == typeof(SteelPart))
+                                SteelPart steel = (SteelPart)el.Value[0]; //轉換物件
+                                if (ObSettingVM.allowType.Contains(steel.Type))
                                 {
-                                    SteelPart steel = (SteelPart)el.Value[0]; //轉換物件
-                                    if (obvm.allowType.Contains(steel.Type))
+                                    int index = BomProperties.FindIndex(e => e.Type == steel.Type); //查看是否有相同的斷面規格在報表屬性設定檔內
+                                    if (index == -1) //不再報表屬性內
                                     {
-                                        int index = BomProperties.FindIndex(e => e.Type == steel.Type); //查看是否有相同的斷面規格在報表屬性設定檔內
-                                        if (index == -1) //不再報表屬性內
-                                        {
-                                            BomProperties.Add(new BomProperty() { Type = steel.Type });//加入到列表內
-                                        }
-                                        ser.SetPart(el.Key.GetHashCode().ToString(), el.Value);
+                                        BomProperties.Add(new BomProperty() { Type = steel.Type });//加入到列表內
                                     }
+                                    ser.SetPart(el.Key.GetHashCode().ToString(), el.Value);
                                 }
-                                else if (el.Value[0].GetType() == typeof(SteelBolts))
-                                {
-                                    ser.SetBolts(el.Key.GetHashCode().ToString(), el.Value);
-                                }
-
-                                ProcessingScreenWin.ViewModel.Progress = ci / KVP_Count;
-                                ci++;
                             }
-                            ProcessingScreenWin.ViewModel.IsIndeterminate = false;
-
-
+                            else if (el.Value[0].GetType() == typeof(SteelBolts))
+                            {
+                                ser.SetBolts(el.Key.GetHashCode().ToString(), el.Value);
+                            }
+                        }
 
                             if (teklaHtemlFactory.LackMaterial())//如果報表導入到模型沒有找到符合的材質就序列化物件
                             {

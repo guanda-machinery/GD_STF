@@ -54,19 +54,20 @@ namespace GD_STD.Data
             //}
             if (count <= 0)
             {
-                throw new ArgumentException($"'{nameof(count)}' 不得小於等於 0", nameof(count));
+                //throw new ArgumentException($"'{nameof(count)}' 不得小於等於 0", nameof(count));
             }
 
-            if (profile == null)
+            if (profile != null)
             {
-                throw new ArgumentException($"'{nameof(profile)}' 資料異常", nameof(profile));
+                //throw new ArgumentException($"'{nameof(profile)}' 資料異常", nameof(profile));
+                H = profile.H;
+                W = profile.W;
+                t1 = profile.t1;
+                t2 = profile.t2;
+                Profile = profile.Profile;
+                Type = profile.Type;
             }
-            H = profile.H;
-            W = profile.W;
-            t1 = profile.t1;
-            t2 = profile.t2;
-            Profile = profile.Profile;
-            Type = profile.Type;
+           
             IsTekla = false;
             Number = partnumber;
             DrawingName = teklaName;
