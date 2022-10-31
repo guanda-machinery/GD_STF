@@ -42,7 +42,7 @@ namespace WPFSTD105.Model
         /// <param name="materialNumber">素材編號</param>
         public static void AssemblyPart(this devDept.Eyeshot.Model model, string materialNumber )
         {
-            ObSettingVM obvm = new ObSettingVM();
+            //ObSettingVM obvm = new ObSettingVM();
             model.Clear();
             STDSerialization ser = new STDSerialization(); //序列化處理器
             ObservableCollection<MaterialDataView> materialDataViews = ser.GetMaterialDataView(); //序列化列表
@@ -57,7 +57,7 @@ namespace WPFSTD105.Model
             //產生nc檔案圖檔
             for (int i = 0; i < guid.Count; i++)
             {
-                model.LoadNcToModel(guid[i], obvm.allowType);
+                model.LoadNcToModel(guid[i], ObSettingVM.allowType);
             }
 
 

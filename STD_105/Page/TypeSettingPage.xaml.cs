@@ -52,7 +52,7 @@ namespace STD_105
         /// <param name="e"></param>
         private void BrowserGraph(object sender, RoutedEventArgs e)
         {
-            ObSettingVM obvm = new ObSettingVM();
+            //ObSettingVM obvm = new ObSettingVM();
             string partNumber = ((Button)e.Source).Content.ToString(); //零件名稱
             STDSerialization ser = new STDSerialization(); //序列化處理器
             ObservableCollection<DataCorrespond> dataCorrespond = ser.GetDataCorrespond(); //序列化列表
@@ -64,7 +64,7 @@ namespace STD_105
                 graphWin.Show();
                 if (!File.Exists($@"{ApplicationVM.DirectoryDevPart()}\{data.DataName}.dm"))
                 {
-                    graphWin.model.LoadNcToModel(data.DataName, obvm.allowType);
+                    graphWin.model.LoadNcToModel(data.DataName, ObSettingVM.allowType);
                     
                 }
                 else
