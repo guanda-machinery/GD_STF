@@ -163,7 +163,6 @@ namespace WPFSTD105.Attribute
         public bool IsMainPart { get => MainPartNumber == PartNumber; }
 
 
-
         /// <summary>
         /// NC 頂面形狀
         /// </summary>

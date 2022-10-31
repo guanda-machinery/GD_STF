@@ -538,12 +538,13 @@ namespace WPFSTD105.Model
                 var cutMeshs = solids.Select(el => el.ConvertToMesh()).ToList();
                 cutMeshs.ForEach(mesh =>
                 {
-                    mesh.Vertices.ForEach(el =>
+                    mesh.Vertices.Where(x=>x.Z==nc.SteelAttr.t1).ForEach(el =>
                     {
-                        if (el.Z == nc.SteelAttr.t1)
-                        {
-                            el.Z  = nc.SteelAttr.W;
-                        }
+                        el.Z = nc.SteelAttr.W;
+                        //if (el.Z == nc.SteelAttr.t1)
+                        //{
+                        //    el.Z  = nc.SteelAttr.W;
+                        //}
                     });
                     mesh.Regen(1E3);
                 });
