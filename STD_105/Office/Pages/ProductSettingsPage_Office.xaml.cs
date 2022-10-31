@@ -3642,11 +3642,11 @@ namespace STD_105.Office
                 Phase = new List<int>(new int[ViewModel.SteelAttr.Number]),
             };
             List<int> buffer = new List<int>(), _buffer = new List<int>();
-            Random random = new Random();
+            Random random = new Random();            
             #region 構件資訊
             // 若無構件資訊或異動數量，新增資訊
             //if (ViewModel.SteelAssemblies.IndexOf(ass) == -1 && add)
-                if (SteelAssemblies.Count==0 || SteelAssemblies == null || !SteelAssemblies.Any(x=>x.Number==ass.Number && x.Length== ass.Length) && add)
+            if (SteelAssemblies.Count==0 || SteelAssemblies == null || !SteelAssemblies.Any(x=>x.Number==ass.Number && x.Length== ass.Length) && add)
                 ////if (!ViewModel.SteelAssemblies.Where(x => x.Number == ass.Number && x.Count == ViewModel.SteelAttr.Number).Any() && add)
                 {
                 //ass = new SteelAssembly()
