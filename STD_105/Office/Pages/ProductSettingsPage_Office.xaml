@@ -749,7 +749,12 @@
                             <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionTypeComboBox">
                                 <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
                             </i:EventTrigger>
+                            <!--<i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionTypeComboBox">
+                                <i:InvokeCommandAction Command="{ Binding ShowSteelTypeFromPartListCommand }"
+                                                           CommandParameter="{ Binding ElementName=cbx_SectionTypeComboBox, Path=SelectedItem }"/>
+                            </i:EventTrigger>-->
                         </i:Interaction.Triggers>
+                        
                     </ComboBox>
 
                     <Label Grid.Column="3" Grid.Row="2" Content="高度(H)：" />

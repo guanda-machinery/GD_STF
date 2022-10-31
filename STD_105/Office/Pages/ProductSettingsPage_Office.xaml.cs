@@ -2617,6 +2617,9 @@ namespace STD_105.Office
             //ViewModel.SteelAttr.GUID2 = ViewModel.SteelAttr.GUID;
             //ViewModel.SteelAttr.PointFront = new CutList();//清除切割線
             //ViewModel.SteelAttr.PointTop = new CutList();//清除切割線
+            //////
+            string a = ViewModel.SteelSectionProperty;
+            ///
             ViewModel.SteelAttr.AsseNumber = this.asseNumber.Text;
             ViewModel.SteelAttr.PartNumber = this.partNumber.Text;
             ViewModel.SteelAttr.Length = string.IsNullOrEmpty(this.Length.Text) ? 0 : Double.Parse(this.Length.Text);
