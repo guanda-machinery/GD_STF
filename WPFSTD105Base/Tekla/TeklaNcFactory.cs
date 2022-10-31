@@ -261,11 +261,21 @@ namespace WPFSTD105.Tekla
                 double number = GetAllNcPath(ncPath).Count(); //檔案數量
                 if (vm != null)
                 {
+                    vm.IsIndeterminate = false;
                     vm.Status = _Status;
                 }
-                foreach (var path in GetAllNcPath(ncPath)) //逐步展開nc檔案
+
+                var All_NcPath = GetAllNcPath(ncPath);
+                var ANPCount = All_NcPath.Count();
+                int pathcount = 0;
+                foreach (var path in All_NcPath) //逐步展開nc檔案
                 {
                     ReadOneNc(obvm.allowType, profile, path, vm);
+                    if (vm != null)
+                    {
+                        vm.Status = "逐步展開nc檔案...";
+                        vm.Progress = (pathcount*100 / ANPCount);
+                    }
                     #region 讀每個NC檔
                     //string dataName = Path.GetFileName(path);//檔案名稱
                     //string line = ""; //資料行
@@ -507,7 +517,7 @@ namespace WPFSTD105.Tekla
                     //                            {
                     //                                newPart.Add(fileName, new ObservableCollection<object> { item });
                     //                            }
-                                                
+
                     //                            Bolts.ForEach(el => groups.Add(BO(el, steelAttr)));
                     //                            NcTemp nc = new NcTemp { SteelAttr = steelAttr, GroupBoltsAttrs = groups };
                     //                            oAK.t = uAK.t = steelAttr.t2 == 0 ? steelAttr.t1 : steelAttr.t2;
@@ -625,16 +635,29 @@ namespace WPFSTD105.Tekla
                     // FloatingMode.Popup);
                     //} 
                     #endregion
+                    pathcount++;
                 }
 
+                int Itemcount = 0;
                 foreach (var item in newPart)
                 {
                     ser.SetPart(item.Key, item.Value);//存入模型零件列表
+                    if (vm != null)
+                    {
+                        vm.Status = "存入模型零件列表...";
+                        vm.Progress = (Itemcount*100 / newPart.Count);
+                    }
+                    Itemcount++;
                 }
                 ser.SetDataCorrespond(this.DataCorrespond);
-                ser.SetNcTempList(this.ncTemps);                
+                ser.SetNcTempList(this.ncTemps);
                 //this.DataCorrespond = DataCorrespond;
                 //this.ncTemps = ncTemps;
+                if (vm != null)
+                {
+                    vm.IsIndeterminate = true;
+                }
+
                 return true;
             }
             catch (Exception ex)

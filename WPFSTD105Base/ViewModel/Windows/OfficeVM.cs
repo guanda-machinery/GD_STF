@@ -31,9 +31,31 @@ namespace WPFSTD105
         /// 輸出客製化
         /// </summary>
         public bool Customizable { get; set; }
+
+        private bool _descriptionBoolen = false;
+        public bool? DescriptionBoolen
+        {
+            get
+            {
+                return _descriptionBoolen;
+            }
+            set 
+            {
+                if (value is bool)
+                {
+                    _descriptionBoolen = (bool)value;
+                }
+                else
+                {
+                    _descriptionBoolen = false;
+                }
+            }
+        }
+
         /// <summary>
         /// 視窗命令對應
         /// </summary>
+        /// 
         public OfficeVM(Window window) : base(window)
         {
             OpenProjectPathCommand = OpenProjectPath();
@@ -74,7 +96,7 @@ namespace WPFSTD105
             {
                 return new WPFBase.RelayCommand(() =>
                 {
-                    OfficeViewModel.CurrentPage = OfficePage.ObSettings;
+                    OfficeViewModel.CurrentPage = OfficePage.ProductSettings;
                 });
             }
         }
@@ -431,5 +453,28 @@ namespace WPFSTD105
         ///// 關閉子視窗
         ///// </summary>
         //public ICommand Close { get; set; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

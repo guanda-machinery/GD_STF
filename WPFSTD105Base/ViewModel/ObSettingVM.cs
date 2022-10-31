@@ -811,7 +811,7 @@ namespace WPFSTD105.ViewModel
             if (CheckFace)
             {
                 int temp_BoltsFace;
-                if (OfficeViewModel.CurrentPage == OfficePage.ObSettings)//若為新版製品設定頁面
+                if (OfficeViewModel.CurrentPage == OfficePage.ProductSettings)//若為新版製品設定頁面
                 {
                     temp_BoltsFace = rbtn_DrillingFace;
                 }
@@ -954,7 +954,7 @@ namespace WPFSTD105.ViewModel
         public void WriteCutAttr(SteelAttr steelAttr)
         {
             int temp_CutFace;
-            if (OfficeViewModel.CurrentPage == OfficePage.ObSettings)//若為新版製品設定頁面
+            if (OfficeViewModel.CurrentPage == OfficePage.ProductSettings)//若為新版製品設定頁面
             {
                 temp_CutFace = rbtn_CutFace;
             }
@@ -1009,7 +1009,7 @@ namespace WPFSTD105.ViewModel
             try
             {
                 int temp_CutFace;
-                if (OfficeViewModel.CurrentPage == OfficePage.ObSettings)//若為新版製品設定頁面
+                if (OfficeViewModel.CurrentPage == OfficePage.ProductSettings)//若為新版製品設定頁面
                 {
                     temp_CutFace = rbtn_CutFace;
                 }

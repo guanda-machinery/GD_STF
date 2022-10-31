@@ -15,6 +15,7 @@ using System.Windows.Input;
 using DevExpress.Xpf.WindowsUI;
 using WPFSTD105.Model;
 using System.Threading;
+using DevExpress.Mvvm;
 
 namespace WPFSTD105
 {
@@ -38,7 +39,10 @@ namespace WPFSTD105
         /// <summary>
         /// 啟動畫面管理器
         /// </summary>
-        public SplashScreenManager ScreenManager { get; set; } = SplashScreenManager.CreateWaitIndicator();
+        //public SplashScreenManager ProcessingScreenWin { get; set; } = SplashProcessingScreenWin.CreateWaitIndicator();
+
+        private SplashScreenManager ProcessingScreenWin = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
+
         ///// <summary>
         ///// 接續專案
         ///// </summary>
@@ -228,8 +232,8 @@ namespace WPFSTD105
             List<string> result = new List<string>();
             // 2020.06.23 呂宗霖 將以下判斷式的Properties.SofSetting.Default.LoadPath都改為newPath
 
-            //先檢查路徑是否為空
-            if (!string.IsNullOrWhiteSpace(path))
+            //先檢查路徑是否存在
+            if (Directory.Exists(path))
             {
                 //判斷是軟體用的模型資料夾
                 foreach (var model in Directory.GetDirectories(path))
@@ -457,42 +461,55 @@ namespace WPFSTD105
 #if DEBUG
             log4net.LogManager.GetLogger("CreateDMFile").Debug("");
 #endif
-            //ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
-            //Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
+            //ProcessingScreenWin.Show(inputBlock: InputBlockMode.None, timeout: 100);
+            //Thread.Sleep(1000); //暫停兩秒為了要顯示 ProcessingScreenWin
 
             STDSerialization ser = new STDSerialization();
             ApplicationVM appVM = new ApplicationVM();
             ObSettingVM obVM = new ObSettingVM();
             List<string> dmList = appVM.GetAllDevPart();
             NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
-            int i = 0;
-            ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
+
+            ProcessingScreenWin.Show(inputBlock: InputBlockMode.None, timeout: 100);
+            ProcessingScreenWin.ViewModel.Status = "建立3D/2D圖檔中...";
             // 產生指定GUID的DM檔
             if (!string.IsNullOrEmpty(guid))
             {
                 NcTemp nc = ncTemps.Find(x => x.SteelAttr.GUID.ToString() == guid);
                 if (obVM.allowType.Contains(nc.SteelAttr.Type))
                 {
-                    ScreenManager.ViewModel.Status = $"建立3D/2D圖檔中{nc.SteelAttr.PartNumber}";
+                    ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔 {nc.SteelAttr.PartNumber}";
                     Thread.Sleep(1000);
                     model.Clear(); //清除目前模型
-                    model.LoadNcToModel(nc.SteelAttr.GUID.ToString(), obVM.allowType, ScreenManager.ViewModel);
+                    model.LoadNcToModel(nc.SteelAttr.GUID.ToString(), obVM.allowType, ProcessingScreenWin.ViewModel);
                 }
             }
             else
             {
+                int i = 0;
+                ProcessingScreenWin.ViewModel.IsIndeterminate = false;
                 // 跑已存在dm檔，產生未有dm檔之NC檔            
                 foreach (NcTemp nc in ncTemps)
                 {
-                    if (!dmList.Contains(nc.SteelAttr.GUID.Value.ToString()) && obVM.allowType.Contains(nc.SteelAttr.Type))
+                    if (nc != null)
                     {
-                        ScreenManager.ViewModel.Status = $"建立3D/2D圖檔中{nc.SteelAttr.PartNumber} {i++}/{ncTemps.Count}";
-                        Thread.Sleep(1000);
-                        model.Clear(); //清除目前模型
-                        model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), obVM.allowType, ScreenManager.ViewModel);
+                        if (!dmList.Contains(nc.SteelAttr.GUID.Value.ToString()) && obVM.allowType.Contains(nc.SteelAttr.Type))
+                        {
+                            ProcessingScreenWin.ViewModel.Progress = i * 100 / ncTemps.Count;
+                            ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔{nc.SteelAttr.PartNumber}... {i}/{ncTemps.Count}";
+
+                            Thread.Sleep(10);
+                            model.Clear(); //清除目前模型
+                            model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), obVM.allowType, ProcessingScreenWin.ViewModel);
+                        }
                     }
+                    i++;
                 }
+                ProcessingScreenWin.ViewModel.IsIndeterminate = true;
             }
+
+            ProcessingScreenWin.ViewModel.Status = "建立3D/2D圖檔中... 完成";
+            ProcessingScreenWin.Close();
         }
         /// <summary>
         /// 目前模型存放構件資料序列化的路徑
