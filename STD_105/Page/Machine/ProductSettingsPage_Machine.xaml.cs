@@ -3327,8 +3327,8 @@ namespace STD_105
             ViewModel.fPartListOrManuall = true;
             ViewModel.PartNumberProperty = CuurentSelectedPart.steelAttr.PartNumber.ToString();
             ViewModel.AssemblyNumberProperty = CuurentSelectedPart.steelAttr.AsseNumber.ToString();
-            ViewModel.ProfileType = (int)CuurentSelectedPart.SteelType;
             ViewModel.SteelSectionProperty = CuurentSelectedPart.Profile;
+            ViewModel.ProfileType = (int)CuurentSelectedPart.SteelType;
             ViewModel.ProductLengthProperty = CuurentSelectedPart.Length;
             ViewModel.ProductWeightProperty = (CuurentSelectedPart.Length / 1000) * CuurentSelectedPart.Weight;
             if (CuurentSelectedPart.Weight == 0) ViewModel.ProductWeightProperty = ViewModel.CalculateSinglePartWeight();

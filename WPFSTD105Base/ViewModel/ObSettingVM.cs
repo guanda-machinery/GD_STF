@@ -381,7 +381,12 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public int ProfileType
         {
-            get => _ProfileType;
+            get {
+                if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)_ProfileType}.inp"))
+                {
+                    ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)_ProfileType}.inp");
+                } return _ProfileType;
+            }
             set
             {
                 try
@@ -394,6 +399,7 @@ namespace WPFSTD105.ViewModel
                     {
                         File.Copy($@"Profile\{TYPE}.inp", $@"{ApplicationVM.DirectoryPorfile()}\{TYPE}.inp");//複製 BH 斷面規格到模型內
                     }
+                    ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{TYPE}.inp");
 #if DEBUG
                     log4net.LogManager.GetLogger("載入斷面規格").Debug(TYPE.ToString());
 #endif
@@ -527,10 +533,23 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public int ProfileIndex
         {
-            get => _ProfileIndex;
+            get
+            {
+                if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp"))
+                {
+                    ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp");
+
+                }
+
+                return _ProfileIndex; }
             set
             {
                 _ProfileIndex = value;
+                if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp"))
+                {
+                    ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp");
+
+                }
 
                 SteelAttr _steelAttr;
                 if (value == -1)
@@ -920,10 +939,16 @@ namespace WPFSTD105.ViewModel
         {
             this.SteelAttr = steelAttr;
             this.Steelbuffer = (SteelAttr)steelAttr.Clone();
+            if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{steelAttr.Type}.inp"))
+            {
+                this.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{steelAttr.Type}.inp");
+            }
+           
             for (int i = 0; i < ProfileList.Count; i++)
             {
                 if (ProfileList[i].Profile == steelAttr.Profile)
                 {
+
                     ProfileIndex = i;
                     //this.SteelAttr.PartNumber = steelAttr.PartNumber;
                     //this.SteelAttr.AsseNumber = steelAttr.AsseNumber;
@@ -1362,7 +1387,14 @@ namespace WPFSTD105.ViewModel
         {
             return new WPFBase.RelayParameterizedCommand((object SelectedIndex) =>
             {
-                if ((int)SelectedIndex != -1) ProfileType = Convert.ToInt32(SelectedIndex);
+                if ((int)SelectedIndex != -1)
+                {
+                    ProfileType = Convert.ToInt32(SelectedIndex);
+                    if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp"))
+                    {
+                        ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp");
+                    }
+                }                
             });
         }
         /// <summary>
@@ -1392,7 +1424,6 @@ namespace WPFSTD105.ViewModel
 
             // 取得dm檔與零件之對應
             ObservableCollection<DataCorrespond> DataCorrespond = ser.GetDataCorrespond();
-
             // 取得構件資訊
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();
             if (assemblies == null)
@@ -1401,6 +1432,60 @@ namespace WPFSTD105.ViewModel
             }
             //取得零件資訊
             Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
+
+            var profileAll = ser.GetSteelAttr();
+            Dictionary<string, List<SteelAttr>> NcSA = new Dictionary<string, List<SteelAttr>>();
+            List<string> profileTemp = part.Keys.ToList();
+
+            foreach (string key in profileTemp) 
+            {
+                // 所有該斷面規格的零件
+                List<SteelPart> sa1 = part[key].ToList();
+                // 紀錄零件資訊
+                List<SteelAttr> saList = new List<SteelAttr>();
+                foreach (var item in DataCorrespond.Where(x=>x.Profile.GetHashCode().ToString()+".lis"==key))
+                {
+                    string path = ApplicationVM.DirectoryNc();
+                    string allPath = path + $"\\{item.Number}.nc1";
+                    string p = item.Profile;
+                    SteelAttr saTemp = new SteelAttr();
+                    if (File.Exists($@"{allPath}"))
+                    {
+                        string profileStr = item.Profile;
+                        var sp = sa1.Where(x => x.Number == item.Number).FirstOrDefault();
+
+                        if (sp != null)
+                        {
+                            saTemp = new SteelAttr()
+                            {
+                                t1 = sp.t1,
+                                t2 = sp.t2,
+                                H = sp.H,
+                                W = sp.W
+                            };
+                            Steel3DBlock s3Db = new Steel3DBlock();
+                            SteelAttr steelAttrNC = new SteelAttr();
+                            List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
+                            s3Db.ReadNcFile($@"{ApplicationVM.DirectoryNc()}\{item.Number}.nc1", profileAll, saTemp, ref steelAttrNC, ref groups);
+                            saTemp.GUID = Guid.NewGuid();
+                            saTemp.oPoint = steelAttrNC.oPoint;
+                            saTemp.vPoint = steelAttrNC.vPoint;
+                            saTemp.uPoint = steelAttrNC.uPoint;
+                            saTemp.CutList = steelAttrNC.CutList;
+                            saTemp.Length = steelAttrNC.Length;
+                            saTemp.Name = "";
+                            saTemp.Material = "";
+                            saTemp.Phase = 0;
+                            saTemp.ShippingNumber = 0;
+                            saTemp.Title1 = "";
+                            saTemp.Title2 = "";
+                        }
+                        saList.Add(saTemp);
+                    }
+                }
+                NcSA.Add(key, saList);
+            }
+           
 
             // 取得孔群資訊
             Dictionary<string, ObservableCollection<SteelBolts>> bolts = ser.GeBolts();
@@ -1448,7 +1533,7 @@ namespace WPFSTD105.ViewModel
                     x.Length,
                     x.UnitWeight,
                     x.Father,
-                    x.ID
+                    x.ID,                    
                 }).Where(x => allowType.Contains(x.Type)).ToList();
 
             // 孔 vs 父節點
@@ -1719,6 +1804,22 @@ namespace WPFSTD105.ViewModel
                 aa.steelAttr.Phase = item.Phase;
                 aa.steelAttr.ShippingNumber = item.ShippingNumber;
                 aa.steelAttr.ExclamationMark = item.ExclamationMark;
+
+                if (NcSA[aa.steelAttr.Profile.GetHashCode().ToString()+".lis"].Any())
+                {
+                    var NcSASingle = NcSA[aa.steelAttr.Profile.GetHashCode().ToString() + ".lis"].Where(x => x.PartNumber == aa.steelAttr.PartNumber).FirstOrDefault();
+                    if (NcSASingle != null)
+                    {
+                        aa.oPoint = NcSASingle.oPoint;
+                        aa.uPoint = NcSASingle.uPoint;
+                        aa.vPoint = NcSASingle.vPoint;
+                        aa.CutList = NcSASingle.CutList;
+                        aa.steelAttr.oPoint = NcSASingle.oPoint;
+                        aa.steelAttr.uPoint = NcSASingle.uPoint;
+                        aa.steelAttr.vPoint = NcSASingle.vPoint;
+                        aa.steelAttr.CutList = NcSASingle.CutList;
+                    }
+                }
                 list.Add(aa);
             }
             return list;

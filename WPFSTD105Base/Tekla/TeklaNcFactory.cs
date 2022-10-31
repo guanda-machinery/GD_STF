@@ -86,10 +86,11 @@ namespace WPFSTD105.Tekla
                     steel.Material = value;//加入材質
                     break;
                 case NcLine.Profile:
-                    steel.Profile = value;//加入斷面規格
+                    string p = value.Replace("*","X");
+                    steel.Profile = p;//加入斷面規格
                     foreach (KeyValuePair<string,ObservableCollection<SteelAttr>> item in steelAttr)
                     {
-                        foreach (var sa in item.Value.Where(x=>x.Profile==value))
+                        foreach (var sa in item.Value.Where(x=>x.Profile== p))
                         {
                             steel.Type = sa.Type;
                             break;
