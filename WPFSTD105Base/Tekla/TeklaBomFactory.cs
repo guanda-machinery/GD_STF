@@ -297,6 +297,7 @@ namespace WPFSTD105.Tekla
                 {
                     vm.Status = _Status;
                     rowNumber = TotalLines(_BomPath); //抓取資料長度
+                    vm.IsIndeterminate = false;
                 }
                 //讀取報表資料流
                 using (StreamReader reader = new StreamReader(_BomPath, Encoding.Default))
@@ -304,11 +305,13 @@ namespace WPFSTD105.Tekla
                     string errorString = string.Empty;//錯誤提示
                     string line;//資料行內容
                     double number = 0;//資料行位置
-                    //讀取資料行
-                    //reader.ReadToEnd
-                    while ((line = reader.ReadLine()) != null)
+                                      //讀取資料行
+                    var ReaderData = reader.ReadToEnd().Split(new string[] {"\r\n"},StringSplitOptions.None ).ToList();
+                    //while ((line = reader.ReadLine()) != null)
+
+                    foreach (var ReaderLine in ReaderData)
                     {
-                        line = line.Replace(",,","").Trim(); 
+                        line = ReaderLine.Replace(",,","").Trim(); 
                         log4net.LogManager.GetLogger("檢查").Debug(line);
                         // 有遇到資料為xxxx(?)就掛掉了
                         if (line.IndexOf("(?)")>0 || string.IsNullOrEmpty(line.Replace(",","")))
@@ -499,7 +502,14 @@ namespace WPFSTD105.Tekla
                         {
                             double per = number / rowNumber * 100; //百分比
                             vm.Status = $"{_Status} {Math.Round(per, 0, MidpointRounding.AwayFromZero)}%";
+                            vm.Progress = number / rowNumber * 100;
                         }
+                    }
+
+                    if (vm != null) //如果視圖模型不是空值
+                    {
+                        vm.Status = _Status +"完成";
+                        vm.IsIndeterminate = true;
                     }
                     return true;
                 }
