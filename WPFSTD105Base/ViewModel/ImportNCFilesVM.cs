@@ -36,7 +36,6 @@ namespace WPFSTD105
         /// </summary>
         private  SplashScreenManager ProcessingScreenWin = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
 
-
         /// <summary>
         /// 畫面管理器(轉圈型)
         /// </summary>
@@ -49,10 +48,6 @@ namespace WPFSTD105
             STDSerialization ser = new STDSerialization();
             ProjectProperty project = ser.GetProjectProperty();
             WriteProjectProperty(project);
-            ImportNcCommand = ImportNc();
-            ImportBomCommand = ImportBom();
-            SaveCommand = Save();
-            BomPropertiesSaveCommand = BomPropertiesSave();
         }
         /// <summary>
         /// 寫入專案參數
@@ -116,30 +111,38 @@ namespace WPFSTD105
         /// <summary>
         /// 匯入 nc 命令
         /// </summary>
-        public ICommand ImportNcCommand { get; set; }
-        private WPFWindowsBase.RelayCommand ImportNc()
-        {
-            return new WPFWindowsBase.RelayCommand(() =>
+        public ICommand ImportNcCommand { get
             {
-                FolderBrowserDialogService service = DevExpand.NewFolder("請選擇NC放置的資料夾");
-                IFolderBrowserDialogService folder = service;
-                folder.ShowDialog();//Show 視窗
-                NcPath = folder.ResultPath;//選擇的路徑
-            });
+                return new WPFWindowsBase.RelayCommand(() =>
+                {
+                    FolderBrowserDialogService service = DevExpand.NewFolder("請選擇NC放置的資料夾");
+                    IFolderBrowserDialogService folder = service;
+                    folder.ShowDialog();//Show 視窗
+                    NcPath = folder.ResultPath;//選擇的路徑
+                });
+            }
         }
         /// <summary>
         /// 匯入報表命令
         /// </summary>
-        public ICommand ImportBomCommand { get; set; }
-        private WPFWindowsBase.RelayCommand ImportBom()
+        public ICommand ImportBomCommand
         {
-            return new WPFWindowsBase.RelayCommand(() =>
+            get
             {
-                DXOpenFileDialog dX = new DXOpenFileDialog();
-                dX.Filter = "Csv 檔案 |*.csv";
-                dX.ShowDialog();//Show 視窗
-                BomPath = dX.FileName;
-            });
+                return new WPFWindowsBase.RelayCommand(() =>
+                {
+                    DXOpenFileDialog dX = new DXOpenFileDialog();
+                    dX.Filter = "Csv 檔案 |*.csv";
+                    try 
+                    { 
+                    dX.ShowDialog();//Show 視窗
+                    BomPath = dX.FileName;
+                    }
+                    catch(Exception ex)
+                    { 
+                    }
+                });
+            }
         }
         /// <summary>
         /// 關閉命令
@@ -148,15 +151,29 @@ namespace WPFSTD105
         /// <summary>
         /// 匯入報表命令
         /// </summary>
-        public ICommand SaveCommand { get; set; }
-        private WPFWindowsBase.RelayCommand Save()
+        public ICommand ImportCommand
         {
-            return new WPFWindowsBase.RelayCommand(() =>
+            get
             {
-                ProcessingScreenWin.Show(inputBlock: InputBlockMode.Window, timeout: 100);
-                ProcessingScreenWin.ViewModel.Status = "";
-                ProcessingScreenWin.ViewModel.IsIndeterminate = true;
-                //ProcessingScreenW.Show();
+                return new WPFWindowsBase.RelayCommand(() =>
+                {
+                    ProcessingScreenWin.Show(inputBlock: InputBlockMode.Window, timeout: 100);
+                    ProcessingScreenWin.ViewModel.Status = "";
+                    ProcessingScreenWin.ViewModel.IsIndeterminate = true;
+
+
+                    //測試用 顯示1->100
+                    /*ProcessingScreenWin.ViewModel.IsIndeterminate = false;
+                    ProcessingScreenWin.ViewModel.Status = $"Loading data...";
+                    for (double i = 0.01; i < 100; i+=0.01)
+                    {
+                        ProcessingScreenWin.ViewModel.Progress = i;
+                        Thread.Sleep(1);
+                    }*/
+                    ProcessingScreenWin.ViewModel.IsIndeterminate = true;
+
+
+                    //ProcessingScreenW.Show();
 
                 //ScreenManagerWaitIndicator.Show(inputBlock: InputBlockMode.None, timeout: 100);
                 STDSerialization ser = new STDSerialization();//序列化處理器
@@ -207,167 +224,180 @@ namespace WPFSTD105
                     //    File.Delete(ApplicationVM.FileTeklaBom());//刪除既有的報表
                 }
 
-                ProcessingScreenWin.ViewModel.Status = "複製文件到 Model 中 ...";
-                //ScreenManagerWaitIndicator.ViewModel.Status = "複製文件到 Model 中 ...";
-                Thread.Sleep(500); //暫停兩秒為了要顯示 ScreenManager
+                    //ProcessingScreenWin.ViewModel.Status = "複製文件到 Model 中 ...";
+                    //ScreenManagerWaitIndicator.ViewModel.Status = "複製文件到 Model 中 ...";
+                    Thread.Sleep(500); //暫停兩秒為了要顯示 ScreenManager
 
-                //測試用 顯示1->100
-                ProcessingScreenWin.ViewModel.IsIndeterminate = false;
-                ProcessingScreenWin.ViewModel.Status = $"Loading data...";
-                for (int i =0; i<100; i++)
-                {
-                    ProcessingScreenWin.ViewModel.Progress = i;
-                    Thread.Sleep(50);
-                }
-                ProcessingScreenWin.ViewModel.IsIndeterminate = true;
 
-                #region 只跑BOM
-                // 只跑BOM && string.IsNullOrEmpty(NcPath)
-                if (BomPath != string.Empty)//如果有選擇報表路徑
-                {
-                    if (File.Exists(ApplicationVM.FileTeklaBom())) //檔案存在
+
+                    #region 只跑BOM
+                    // 只跑BOM && string.IsNullOrEmpty(NcPath)
+                    if (BomPath != string.Empty)//如果有選擇報表路徑
                     {
-                        ProcessingScreenWin.ViewModel.Status = $"正在刪除BOM表舊檔案";
-                        File.Delete(ApplicationVM.FileTeklaBom());//刪除檔案
-                        ProcessingScreenWin.ViewModel.Status = $"刪除BOM表舊檔案成功！";
-                    }
+                        if (File.Exists(ApplicationVM.FileTeklaBom())) //檔案存在
+                        {
+                            ProcessingScreenWin.ViewModel.Status = $"正在刪除BOM表舊檔案";
+                            File.Delete(ApplicationVM.FileTeklaBom());//刪除檔案
+                            ProcessingScreenWin.ViewModel.Status = $"刪除BOM表舊檔案成功！";
+                        }
 
-                    ProcessingScreenWin.ViewModel.Status = $"正在複製BOM表檔案到模型";
+                        ProcessingScreenWin.ViewModel.Status = $"正在複製BOM表檔案到模型";
 
-                    File.Copy(BomPath, ApplicationVM.FileTeklaBom());//複製報表到模型
+                        File.Copy(BomPath, ApplicationVM.FileTeklaBom());//複製報表到模型
 
-                    ProcessingScreenWin.ViewModel.Status = $"複製BOM表檔案完成";
-                    CommonViewModel.ProjectProperty.BomLoad = DateTime.Now; //bom載入時間
-                    CommonViewModel.ProjectProperty.Revise = DateTime.Now;//專案變動所以修改日期
+                        ProcessingScreenWin.ViewModel.Status = $"複製BOM表檔案完成";
+                        CommonViewModel.ProjectProperty.BomLoad = DateTime.Now; //bom載入時間
+                        CommonViewModel.ProjectProperty.Revise = DateTime.Now;//專案變動所以修改日期
 
 
-                    ProcessingScreenWin.ViewModel.Status = $"正在複製BOM表檔案到模型";
-                    TeklaBomFactory teklaHtemlFactory = new TeklaBomFactory($@"{ApplicationVM.FileTeklaBom()}"); //報表讀取器
-                    //load最花時間，需採集裡面的行數來計算
-
-                    bool loadBomResult = teklaHtemlFactory.Load(ProcessingScreenWin.ViewModel);//載入報表物件結果
+                        ProcessingScreenWin.ViewModel.Status = $"正在複製BOM表檔案到模型";
+                        TeklaBomFactory teklaHtemlFactory = new TeklaBomFactory($@"{ApplicationVM.FileTeklaBom()}"); //報表讀取器
+                        bool loadBomResult = teklaHtemlFactory.Load(ProcessingScreenWin.ViewModel);//載入報表物件結果
 
                     if (loadBomResult) //載入成功
-                    {
-                        CommonViewModel.ProjectProperty.IsBomLoad = true;//改變報表載入參數
+                        {
+                            ProcessingScreenWin.ViewModel.Status = $"載入報表物件結果...";
+                            CommonViewModel.ProjectProperty.IsBomLoad = true;//改變報表載入參數
                         ser.SetSteelAssemblies(teklaHtemlFactory.SteelAssemblies);//序列化構件資訊
                         ser.SetProfileList(teklaHtemlFactory.ProfileList);
-                        foreach (var el in teklaHtemlFactory.KeyValuePairs)//逐步存取序列化物件
-                        {
-                            //判斷 type 序列化
-                            if (el.Value[0].GetType() == typeof(SteelPart))
+
+
+                            ProcessingScreenWin.ViewModel.Status = $"正在存取序列化物件";
+                            ProcessingScreenWin.ViewModel.IsIndeterminate = true;
+                            int KVP_Count = teklaHtemlFactory.KeyValuePairs.Count;
+                            int ci = 0;
+                            foreach (var el in teklaHtemlFactory.KeyValuePairs)//逐步存取序列化物件
                             {
-                                SteelPart steel = (SteelPart)el.Value[0]; //轉換物件
-                                if (ObSettingVM.allowType.Contains(steel.Type))
+                                //判斷 type 序列化
+                                if (el.Value[0].GetType() == typeof(SteelPart))
                                 {
-                                    int index = BomProperties.FindIndex(e => e.Type == steel.Type); //查看是否有相同的斷面規格在報表屬性設定檔內
-                                    if (index == -1) //不再報表屬性內
+                                    SteelPart steel = (SteelPart)el.Value[0]; //轉換物件
+                                    if (ObSettingVM.allowType.Contains(steel.Type))
                                     {
-                                        BomProperties.Add(new BomProperty() { Type = steel.Type });//加入到列表內
+                                        int index = BomProperties.FindIndex(e => e.Type == steel.Type); //查看是否有相同的斷面規格在報表屬性設定檔內
+                                        if (index == -1) //不再報表屬性內
+                                        {
+                                            BomProperties.Add(new BomProperty() { Type = steel.Type });//加入到列表內
+                                        }
+                                        ser.SetPart(el.Key.GetHashCode().ToString(), el.Value);
                                     }
-                                    ser.SetPart(el.Key.GetHashCode().ToString(), el.Value);
+                                   
+                                    ci++;
+                                }
+                                else if (el.Value[0].GetType() == typeof(SteelBolts))
+                                {
+                                    ser.SetBolts(el.Key.GetHashCode().ToString(), el.Value);
+                                }
+                                ProcessingScreenWin.ViewModel.Progress = ci / KVP_Count;
+                            }
+                            ProcessingScreenWin.ViewModel.IsIndeterminate = false;
+
+
+                            if (teklaHtemlFactory.LackMaterial())//如果報表導入到模型沒有找到符合的材質就序列化物件
+                            {
+                                ProcessingScreenWin.ViewModel.Status = $"正在存取序列化材質";
+                                SerializationHelper.GZipSerializeBinary(teklaHtemlFactory.Material, ApplicationVM.FileMaterial());
+                            }
+                            if (teklaHtemlFactory.LackProfile())//如果報表導入到模型沒有找到符合的斷面規格就序列化物件
+                            {
+                                ProcessingScreenWin.ViewModel.Status = $"正在存取序列化斷面規格";
+                                foreach (var item in teklaHtemlFactory.Profile)
+                                {
+                                    SerializationHelper.SerializeBinary(item.Value, $@"{ApplicationVM.DirectoryPorfile()}\{item.Key.ToString()}.inp");//斷面規格不是壓縮物件
                                 }
                             }
-                            else if (el.Value[0].GetType() == typeof(SteelBolts))
-                            {
-                                ser.SetBolts(el.Key.GetHashCode().ToString(), el.Value);
-                            }
                         }
-
-                        if (teklaHtemlFactory.LackMaterial())//如果報表導入到模型沒有找到符合的材質就序列化物件
-                        {
-                            SerializationHelper.GZipSerializeBinary(teklaHtemlFactory.Material, ApplicationVM.FileMaterial());
-                        }
-                        if (teklaHtemlFactory.LackProfile())//如果報表導入到模型沒有找到符合的斷面規格就序列化物件
-                        {
-                            foreach (var item in teklaHtemlFactory.Profile)
-                            {
-                                SerializationHelper.SerializeBinary(item.Value, $@"{ApplicationVM.DirectoryPorfile()}\{item.Key.ToString()}.inp");//斷面規格不是壓縮物件
-                            }
-                        }
-                    }
-                    CommonViewModel.ProjectProperty.BomLoad = DateTime.Now;//bom載入時間
-                    CommonViewModel.ProjectProperty.Revise = DateTime.Now;//專案變動所以修改日期
-                }
-                #endregion
-
-                #region 只跑NC1
-                // 只跑NC1 && string.IsNullOrEmpty(BomPath)
-                if (NcPath != string.Empty) //如果有選擇nc路徑
-                {
-                    DeleteFolder(ApplicationVM.DirectoryNc());//刪除既有nc檔案
-                    CopyFolder(NcPath);//複製nc路徑的nc1檔案
-                    var profile = ser.GetSteelAttr();
-                    TeklaNcFactory factory = new TeklaNcFactory();//nc1 讀取器
-                    //load!
-                    bool loadNcResult = factory.Load(ProcessingScreenWin.ViewModel); //載入NC檔案
-                    if (loadNcResult)//NC檔案載入成功
-                    {
-                        CommonViewModel.ProjectProperty.NcLoad = DateTime.Now;//nc載入時間
+                        CommonViewModel.ProjectProperty.BomLoad = DateTime.Now;//bom載入時間
                         CommonViewModel.ProjectProperty.Revise = DateTime.Now;//專案變動所以修改日期
-                        CommonViewModel.ProjectProperty.IsNcLoad = true;//改變報表載入參數
                     }
-                }
-                #endregion
+                    #endregion
 
-                //if (!string.IsNullOrEmpty(BomPath) && !string.IsNullOrEmpty(NcPath))
-                //{
-                //    #region BOM表
-                //    if (File.Exists(ApplicationVM.FileTeklaBom())) //檔案存在
-                //    {
-                //        File.Delete(ApplicationVM.FileTeklaBom());//刪除檔案
-                //    }
-                //    File.Copy(BomPath, ApplicationVM.FileTeklaBom());//複製報表到模型
-                //    CommonViewModel.ProjectProperty.BomLoad = DateTime.Now; //bom載入時間
-                //    CommonViewModel.ProjectProperty.Revise = DateTime.Now;//專案變動所以修改日期
+                    #region 只跑NC1
+                    // 只跑NC1 && string.IsNullOrEmpty(BomPath)
+                    if (NcPath != string.Empty) //如果有選擇nc路徑
+                    {
+                        DeleteFolder(ApplicationVM.DirectoryNc());//刪除既有nc檔案
+                        CopyFolder(NcPath);//複製nc路徑的nc1檔案
+                        var profile = ser.GetSteelAttr();
+                        TeklaNcFactory factory = new TeklaNcFactory();//nc1 讀取器
 
-                //    TeklaBomFactory teklaHtemlFactory = new TeklaBomFactory($@"{ApplicationVM.FileTeklaBom()}"); //報表讀取器 
-                //    bool loadBomResult = teklaHtemlFactory.Load(ScreenManager.ViewModel);//載入報表物件結果
-                //    #endregion
+                        ProcessingScreenWin.ViewModel.Status = $"正在載入NC表檔案到模型";
+                        bool loadNcResult = factory.Load(ProcessingScreenWin.ViewModel); //載入NC檔案
+                        if (loadNcResult)//NC檔案載入成功
+                        {
+                            CommonViewModel.ProjectProperty.NcLoad = DateTime.Now;//nc載入時間
+                            CommonViewModel.ProjectProperty.Revise = DateTime.Now;//專案變動所以修改日期
+                            CommonViewModel.ProjectProperty.IsNcLoad = true;//改變報表載入參數
+                        }
+                    }
+                    #endregion
 
-                //    #region NC檔
-                //    DeleteFolder(ApplicationVM.DirectoryNc());//刪除既有nc檔案
-                //    CopyFolder(NcPath);//複製nc路徑的nc1檔案
+                    //if (!string.IsNullOrEmpty(BomPath) && !string.IsNullOrEmpty(NcPath))
+                    //{
+                    //    #region BOM表
+                    //    if (File.Exists(ApplicationVM.FileTeklaBom())) //檔案存在
+                    //    {
+                    //        File.Delete(ApplicationVM.FileTeklaBom());//刪除檔案
+                    //    }
+                    //    File.Copy(BomPath, ApplicationVM.FileTeklaBom());//複製報表到模型
+                    //    CommonViewModel.ProjectProperty.BomLoad = DateTime.Now; //bom載入時間
+                    //    CommonViewModel.ProjectProperty.Revise = DateTime.Now;//專案變動所以修改日期
 
-                //    TeklaNcFactory factory = new TeklaNcFactory();//nc1 讀取器
-                //    bool loadNcResult = factory.Load(ScreenManager.ViewModel); //載入NC檔案
-                //    #endregion
-                //}
-                CommonViewModel.ProjectProperty.BomProperties = BomProperties; //改變ioc內部報表屬性參數
-                WriteProjectProperty(CommonViewModel.ProjectProperty);//改變目前vm的參數
-                ser.SetProjectProperty(CommonViewModel.ProjectProperty);
-                ProcessingScreenWin.ViewModel.Status = "結束 ...";
-                Thread.Sleep(2000); //暫停1秒為了要顯示 ScreenManager
-                ProcessingScreenWin.Close();//關閉等待畫面
+                    //    TeklaBomFactory teklaHtemlFactory = new TeklaBomFactory($@"{ApplicationVM.FileTeklaBom()}"); //報表讀取器 
+                    //    bool loadBomResult = teklaHtemlFactory.Load(ScreenManager.ViewModel);//載入報表物件結果
+                    //    #endregion
 
-                WinUIMessageBox.Show(null,
-                   $"{CommonViewModel.ImportNCFilesVM.Name} 已匯入完成",
-                   "通知",
-                   MessageBoxButton.OK,
-                   MessageBoxImage.Exclamation,
-                   MessageBoxResult.None,
-                   MessageBoxOptions.None,
-                   FloatingMode.Popup);
+                    //    #region NC檔
+                    //    DeleteFolder(ApplicationVM.DirectoryNc());//刪除既有nc檔案
+                    //    CopyFolder(NcPath);//複製nc路徑的nc1檔案
+
+                    //    TeklaNcFactory factory = new TeklaNcFactory();//nc1 讀取器
+                    //    bool loadNcResult = factory.Load(ScreenManager.ViewModel); //載入NC檔案
+                    //    #endregion
+                    //}
+                    ProcessingScreenWin.ViewModel.Status = $"改變ioc內部報表屬性參數";
+                    CommonViewModel.ProjectProperty.BomProperties = BomProperties; //改變ioc內部報表屬性參數
+                    WriteProjectProperty(CommonViewModel.ProjectProperty);//改變目前vm的參數
+                    ser.SetProjectProperty(CommonViewModel.ProjectProperty);
+                    ProcessingScreenWin.ViewModel.Status = "結束 ...";
+                    Thread.Sleep(2500); //暫停1秒為了要顯示 ScreenManager
+                    ProcessingScreenWin.Close();//關閉等待畫面
+
+                    WinUIMessageBox.Show(null,
+                       $"{CommonViewModel.ImportNCFilesVM.Name} 已匯入完成",
+                       "通知",
+                       MessageBoxButton.OK,
+                       MessageBoxImage.Exclamation,
+                       MessageBoxResult.None,
+                       MessageBoxOptions.None,
+                       FloatingMode.Popup);
 
 
+                    //頁面跳轉
+                    ProcessingScreenWin.Show();
+                    ProcessingScreenWin.ViewModel.Status = $"準備跳轉至專案管理頁面";
+                    WPFSTD105.ViewLocator.OfficeViewModel.CurrentPage = OfficePage.ProductSettings;
+                    ProcessingScreenWin.Close();
 
-
-            });
+                });
+            }
         }
 
         /// <summary>
         /// 屬性設定存取
         /// </summary>
-        public ICommand BomPropertiesSaveCommand { get; set; }
-        private WPFWindowsBase.RelayCommand BomPropertiesSave()
+        public ICommand BomPropertiesSaveCommand
         {
-            return new WPFWindowsBase.RelayCommand(() =>
+            get
             {
-                CommonViewModel.ProjectProperty.BomProperties = BomProperties; //改變ioc內部報表屬性參數
-                STDSerialization ser = new STDSerialization(); //序列化器
-                ser.SetProjectProperty(CommonViewModel.ProjectProperty);//存取設定檔
-                CommonViewModel.Close.Execute(null);
-            });
+                return new WPFWindowsBase.RelayCommand(() =>
+                {
+                    CommonViewModel.ProjectProperty.BomProperties = BomProperties; //改變ioc內部報表屬性參數
+                    STDSerialization ser = new STDSerialization(); //序列化器
+                    ser.SetProjectProperty(CommonViewModel.ProjectProperty);//存取設定檔
+                    CommonViewModel.Close.Execute(null);
+                });
+            }
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
         xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
@@ -18,7 +19,7 @@
         AllowsTransparency="True"
         Topmost="False"
         WindowStartupLocation="CenterScreen"
-        Height="720"
+        Height="960"
         Width="1280"
         Background="Transparent">
 
@@ -236,8 +237,8 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
-
-                    <!--製品設定-->
+                
+                <!--製品設定-->
                     <Button Command="{ Binding ObSettingsPage_Office }"
                             IsEnabled="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={std:NullToEnabledConverter} }">
                         <Button.Content>
@@ -356,13 +357,12 @@
                                                         Margin="0">
                         <!--頁面切換區域-->
 
-                        <std:OfficePageHost x:Name="pageHost"
-                                            CurrentPage="{Binding }"    
-                                            DataContext="{Binding OfficeViewModel.CurrentPage, Source={ x:Static WPFSTD:ViewLocator.Instance },Converter={local:OfficePageConverter }}"
-                                           />
+                        <std:OfficePageHost x:Name="pageHost" CurrentPage="{Binding OfficeViewModel.CurrentPage, Source={x:Static WPFSTD:ViewLocator.Instance },Converter={local:OfficePageConverter }}"/>
+
                     </dxlc:ScrollBox>
                     <!--專案管理-->
-                    <std:OfficeProjectManager HorizontalAlignment="Left"
+                    <std:OfficeProjectManager HorizontalAlignment="Left" 
+                                              Visibility="{ Binding OfficeViewModel.ProjectManagerControl, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={ dx:BooleanToVisibilityConverter Invert=True} }"
                                                   VerticalAlignment="Top" Margin="40,20"/>                    
                 </Grid>
             </Border>

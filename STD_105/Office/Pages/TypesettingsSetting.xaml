@@ -13,7 +13,7 @@
                   xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
                   xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
                   xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
-                  xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                  
                   xmlns:spa="clr-namespace:WPFSTD105;assembly=WPFSTD105"
                   xmlns:local="clr-namespace:STD_105"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -152,7 +152,7 @@
                             <dxg:TableView       
                                 AllowPaging="True"
                                 PageSize="30"
-                                
+                                HighlightItemOnHover="True"
                                ShowCheckBoxSelectorColumn="False"
                                NavigationStyle="Row"
                                AllowCascadeUpdate="True"
@@ -168,7 +168,7 @@
                                 AllowEditing="False"
                                 Name="PartListTableView"
                                 Loaded="PartListTableView_Loaded"  
-                                  
+                             
                                     SearchString="{Binding PartsSearchString, Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"
                                     VerticalScrollbarVisibility="Disabled"
                                     HorizontalScrollbarVisibility="Auto"
@@ -678,6 +678,7 @@
                         MinHeight="200"  MaxHeight="1000">
                         <dxg:GridControl.View >
                         <dxg:TableView         
+                                 HighlightItemOnHover="True"
                                 IsColumnMenuEnabled ="False"
                                 AllowSorting="True"
                                 AllowColumnFiltering="False"
@@ -1250,7 +1251,7 @@
                                             </ddes:ToolBar>
                                         </ddes:Viewport.ToolBars>
                                         <ddes:Viewport.ViewCubeIcon>
-                                            <ddes:ViewCubeIcon Lighting="True"
+                                            <ddes:ViewCubeIcon Lighting="True" 
                                             FrontColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
                                             BackColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
                                             TopColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
@@ -1325,7 +1326,7 @@
                                                 <ddes:ToolBarButton ToolTipText="線性標註" Click="LinearDim" StyleMode="PushButton"   
                                                                 Image="{Binding Source={materialDesign:PackIcon Kind=Ruler},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"
                                                                      />
-                                                <ddes:ToolBarButton ToolTipText="角度標註" Click="AngleDim" StyleMode="PushButton"
+                                                <ddes:ToolBarButton ToolTipText="角度標註" Click="AngleDim" StyleMode="PushButton" 
                                                 Image="{Binding Source={materialDesign:PackIcon Kind=AngleAcute},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"/>
                                                 <ddes:ToolBarButton ToolTipText="絕對座標" StyleMode="PushButton"
                                                 Image="{Binding Source={materialDesign:PackIcon Kind=AxisArrow},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"/>

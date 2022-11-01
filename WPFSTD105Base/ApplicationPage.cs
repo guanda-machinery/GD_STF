@@ -159,7 +159,7 @@ namespace WPFSTD105
         /// <summary>
         /// 製品設定
         /// </summary>
-        ObSettings,
+       ProductSettings,
         /// <summary>
         /// 排版設定
         /// </summary>
