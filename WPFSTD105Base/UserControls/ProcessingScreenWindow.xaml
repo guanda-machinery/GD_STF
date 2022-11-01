@@ -12,8 +12,8 @@
                        Background="Transparent"
  
                        DataContext="{x:Static dxmvvm:DXSplashScreenViewModel.DesignTimeData}">
-    <Grid   Width="400"
-                       Height="100">
+    <Grid   Width="500"
+                       Height="120">
         <Border
                 BorderBrush="#49FFFFFF"
                 Background="{ StaticResource solidclr_CreamyGray }"
@@ -38,8 +38,10 @@
                      IsIndeterminate="{Binding IsIndeterminate}"
                      Style="{ StaticResource MaterialDesignCircularProgressBar }"
                      />
-            <StackPanel Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Visibility="{Binding IsIndeterminate, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
-                <TextBlock Text="{Binding Progress}"         
+            <StackPanel Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal"
+ Visibility="{Binding IsIndeterminate, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
+
+                <TextBlock Text="{Binding Progress,StringFormat={}{0:F0}}"       
                        FontSize="20"
                        Foreground="{ StaticResource solidclr_DimGray }"
                    Style="{ StaticResource tbk_ContentTitle }"/>

@@ -4369,7 +4369,7 @@ namespace STD_105.Office
             catch (Exception ex)
             {
                 log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(ex.Message, ex.StackTrace);
-                Debugger.Break();
+                //Debugger.Break();
             }
 #if DEBUG
             log4net.LogManager.GetLogger("觸發線性標註").Debug("");

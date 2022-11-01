@@ -17,7 +17,7 @@ namespace STD_105.Office
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            WPFBase.BasePage basePage = null;
+            WPFBase.BasePage basePage = new FirstPage();
 
             switch ((OfficePage)value)
             {
@@ -32,7 +32,7 @@ namespace STD_105.Office
                     break;
                 //20220816 蘇冠綸 新排版
                 // 製品設定
-                case OfficePage.ObSettings:
+                case OfficePage.ProductSettings:
                     //basePage = new ObSettingsPage_Office();//舊版頁面
                     basePage = new ProductSettingsPage_Office();//新版頁面
                     break;

@@ -15,11 +15,15 @@
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
     xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
+    
+    xmlns:ee="http://schemas.microsoft.com/expression/2010/effects"
+    
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
     xmlns:STD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105" 
     xmlns:STD105ValidRule="clr-namespace:STD_105.ValidationRules" 
     xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+    
     mc:Ignorable="d"
     Title="排版設定">
     <WPFBase:BasePage.Resources>
@@ -192,6 +196,7 @@
                     </Grid.RowDefinitions>
                     <dxg:GridControl   
                                 Name="PartsGridControl"
+                  
                                 AutoGenerateColumns="None"
                                 SelectionMode="MultipleRow"
                                 SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -205,7 +210,8 @@
                                AllowSorting="false"
                                AllowColumnFiltering="False"
                                AllowColumnMoving="False"
-                                       
+                                
+                                
                                     Name="PartListTableView"
                                     Loaded="PartListTableView_Loaded"  
                                     SearchString="{Binding PartsSearchString, Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"
@@ -217,6 +223,8 @@
                                     SearchPanelNullText="Search Tasks(Ctrl + F)" 
                                     SearchPanelFindMode="Always" ShowIndicator="True" IndicatorWidth="30"
                                     SearchDelay="0">
+                                
+                                
                                 <dxg:TableView.CellStyle>
                                     <Style>
                                         <Setter Property="TextBlock.FontSize" Value="12"/>
@@ -238,7 +246,11 @@
                                     </DataTemplate>
                                 </dxg:TableView.RowIndicatorContentTemplate>
                             </dxg:TableView>
+                           
+                            
                         </dxg:GridControl.View>
+                      
+
                         <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"    Header="構件編號" Width="1.5*"/>
                         <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="1.5*" />
                         <dxg:GridColumn FieldName="Profile"  IsSmart="True"  Header="斷面規格"  Width="2*" />
