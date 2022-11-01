@@ -937,6 +937,8 @@ namespace WPFSTD105.ViewModel
         /// <param name="steelAttr"></param>
         public void WriteSteelAttr(SteelAttr steelAttr)
         {
+
+
             this.SteelAttr = steelAttr;
             this.Steelbuffer = (SteelAttr)steelAttr.Clone();
             if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{steelAttr.Type}.inp"))

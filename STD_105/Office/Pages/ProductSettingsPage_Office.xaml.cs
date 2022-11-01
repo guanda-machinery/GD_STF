@@ -36,6 +36,8 @@ using WPFSTD105;
 using GD_STD;
 using DevExpress.Office.Utils;
 using WPFSTD105.Tekla;
+using DevExpress.DataProcessing.InMemoryDataProcessor.GraphGenerator;
+using DevExpress.XtraSpreadsheet.TileLayout;
 
 namespace STD_105.Office
 {
@@ -6163,5 +6165,43 @@ namespace STD_105.Office
             
 
         }
+
+        //public bool GetverticesFromFile(SteelAttr TmpSteelAttr, int SteelIndex = 1)
+        //{
+        //    bool rtn = false;
+        //    string g_partNumber = TmpSteelAttr.PartNumber;
+
+        //    string path = ApplicationVM.DirectoryNc();
+        //    string allPath = path + $"\\{g_partNumber}.nc1";
+
+        //    if (File.Exists($@"{allPath}"))
+        //    {
+
+
+
+        //        sa = (SteelAttr)model.Blocks[SteelIndex].Entities[0].EntityData;
+
+        //        #region 讀NC檔
+        //        var profile = ser.GetSteelAttr();
+        //        TeklaNcFactory t = new TeklaNcFactory();
+        //        Steel3DBlock s3Db = new Steel3DBlock();
+        //        SteelAttr steelAttrNC = new SteelAttr();
+        //        List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
+        //        s3Db.ReadNcFile($@"{ApplicationVM.DirectoryNc()}\{ViewModel.SteelAttr.PartNumber}.nc1", profile, sa, ref steelAttrNC, ref groups);
+        //        sa.GUID = Guid.NewGuid();
+        //        sa.oPoint = steelAttrNC.oPoint;
+        //        sa.vPoint = steelAttrNC.vPoint;
+        //        sa.uPoint = steelAttrNC.uPoint;
+        //        sa.CutList = steelAttrNC.CutList;
+
+        //        rtn = true;
+        //    }
+
+
+
+        //    return rtn;
+        //}
+
+
     }
 }

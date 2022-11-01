@@ -685,7 +685,8 @@ namespace STD_105.Office
         private void ControlDraw3D()
         {
             var SelectedData = (GD_STD.Data.MaterialDataView)Material_List_GridControl.SelectedItem;
-
+            if (SelectedData == null)
+                return;
             model.ActionMode = actionType.SelectByBox;
             string content = SelectedData.MaterialNumber; //素材編號
 
@@ -814,7 +815,7 @@ namespace STD_105.Office
                     entities.AddRange(ent);
                 }
 
-                else
+                else  // 如果第一次出現零件,由3D model 建立2D Block與 Entities
                 {
                     int partIndex = parts.FindIndex(el => el.Number == place[i].Number);
                     findsteel = false;
