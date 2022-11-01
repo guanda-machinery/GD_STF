@@ -400,7 +400,8 @@ namespace WPFSTD105.Tekla
                                         //{
                                         index = KeyValuePairs[key].FindIndex(el => el.GetType() == typeof(SteelPart) && ((SteelPart)el).Number == ((SteelPart)obj).Number && ((SteelPart)el).Length == ((SteelPart)obj).Length);//找出字典檔內物件
 
-                                        if (Profile[part.Type].FindIndex(el => el.Profile == part.Profile && el.Length == part.Length) == -1)//如果模型找不到相同的斷面規格
+                                        //if (Profile[part.Type].FindIndex(el => el.Profile == part.Profile && el.Length == part.Length) == -1)//如果模型找不到相同的斷面規格
+                                        if (Profile[part.Type].FindIndex(el => el.Profile == part.Profile) == -1)//如果模型找不到相同的斷面規格
                                         {
                                             /*自動新增斷面規格*/
                                             part.Nc = true;
