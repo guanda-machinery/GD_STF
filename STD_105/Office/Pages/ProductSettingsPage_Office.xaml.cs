@@ -785,6 +785,7 @@ namespace STD_105.Office
                     GetViewToViewModel(true);
                     ViewModel.SteelAttr.Creation = DateTime.Now;
                     ViewModel.SteelAttr.Revise = DateTime.Now;
+                    steelAttr = ViewModel.SteelAttr;
                     steelAttr = GetViewToSteelAttr(steelAttr, true);
                     steelAttr.Creation = DateTime.Now;
                     steelAttr.Revise = DateTime.Now;
@@ -794,6 +795,7 @@ namespace STD_105.Office
                 {
                     GetViewToViewModel(false, (steelAttr).GUID);
                     ViewModel.SteelAttr.Revise = DateTime.Now;
+                    steelAttr=ViewModel.SteelAttr;
                     steelAttr = GetViewToSteelAttr(steelAttr,false, (steelAttr).GUID);
                     steelAttr.Revise = DateTime.Now;
                     //model.Blocks[1].Entities[0].EntityData = steelAttr;
@@ -890,14 +892,15 @@ namespace STD_105.Office
                     steelAttr.uPoint = steelAttrNC.uPoint;
                     steelAttr.CutList = steelAttrNC.CutList;
                     //modify = (BlockReference)model.Blocks[1].Entities[0];
+
                     var block1 = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
 
                     //block1.Entities[0].EntityData = steelAttr;                    
                     //block1.Name = steelAttr.GUID.Value.ToString();
                     model.Blocks[1] = block1;
                     //model.Entities[model.Entities.Count() - 1].EntityData = steelAttr;
-                                                                                              //modify = Steel3DBlock.GetProfile(steelAttr); //修改的形狀
-                                                                                              //modify2 = (BlockReference)model.Entities[model.Entities.Count() - 1];
+                    //modify = Steel3DBlock.GetProfile(steelAttr); //修改的形狀
+                    //modify2 = (BlockReference)model.Entities[model.Entities.Count() - 1];
                     ViewModel.tem3DRecycle.Add(model.Entities[model.Entities.Count - 1]);//加入垃圾桶準備刪除
                     ViewModel.tem2DRecycle.AddRange(drawing.Entities);//加入垃圾桶準備刪除
 
