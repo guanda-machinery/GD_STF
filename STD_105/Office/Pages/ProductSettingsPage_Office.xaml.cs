@@ -36,6 +36,7 @@ using WPFSTD105;
 using GD_STD;
 using DevExpress.Office.Utils;
 using WPFSTD105.Tekla;
+using System.Collections;
 
 namespace STD_105.Office
 {
@@ -2632,7 +2633,7 @@ namespace STD_105.Office
             ViewModel.SteelAttr.ShippingNumber = temp;
             ViewModel.SteelAttr.Title1 = this.Title1.Text;
             ViewModel.SteelAttr.Title2 = this.Title2.Text;
-            string profileStr = ViewModel.SteelSectionProperty;
+            string profileStr = ViewModel.SteelSectionProperty.Replace("*","X").Replace(" ","");
             ViewModel.SteelAttr.Type = (OBJECT_TYPE)this.cbx_SteelTypeComboBox.SelectedIndex;
             ViewModel.ProfileType = this.cbx_SteelTypeComboBox.SelectedIndex;
             ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(ViewModel.SteelAttr.Type).ToString()}.inp");
@@ -2972,49 +2973,90 @@ namespace STD_105.Office
         public ProductSettingsPageViewModel RowToEntity(ProductSettingsPageViewModel row)
         {
             ProductSettingsPageViewModel temp = new ProductSettingsPageViewModel();
-            temp.steelAttr.GUID = row.steelAttr.GUID;
-            temp.DataName = row.steelAttr.GUID.ToString();
-            temp.steelAttr.AsseNumber = row.steelAttr.AsseNumber;
-            temp.AssemblyNumber = row.steelAttr.AsseNumber;
-            temp.steelAttr.PartNumber = row.steelAttr.PartNumber;
-            temp.steelAttr.Length = double.Parse(row.steelAttr.Length.ToString());
-            temp.Length = double.Parse(row.steelAttr.Length.ToString());
-            temp.steelAttr.Weight = double.Parse(row.steelAttr.Weight.ToString());
-            temp.Weight = double.Parse(row.steelAttr.Weight.ToString());
-            temp.Count = double.Parse(row.Count.ToString());          
-            temp.steelAttr.Name = row.steelAttr.Name;
-            temp.TeklaName = row.steelAttr.Name;
-            temp.steelAttr.Material = row.steelAttr.Material;
-            temp.Material = row.steelAttr.Material;
-            temp.steelAttr.Phase = row.steelAttr.Phase;
-            temp.Phase = row.steelAttr.Phase;
-            temp.steelAttr.ShippingNumber = row.steelAttr.ShippingNumber;
-            temp.ShippingNumber = row.steelAttr.ShippingNumber;
-            temp.steelAttr.Title1 = row.steelAttr.Title1;
-            temp.Title1 = row.steelAttr.Title1;
-            temp.steelAttr.Title2 = row.steelAttr.Title2;
-            temp.Title2= row.steelAttr.Title2;
-            temp.steelAttr.Profile = row.steelAttr.Profile;
-            temp.Profile = row.steelAttr.Profile;
-            temp.SteelType = (int)row.steelAttr.Type;
-            temp.Type = row.steelAttr.Type;
-            temp.TypeDesc = row.TypeDesc;
-            temp.SteelType = row.SteelType;
-            temp.steelAttr.H = float.Parse(row.steelAttr.H.ToString());
-            temp.steelAttr.W = float.Parse(row.steelAttr.W.ToString());
-            temp.steelAttr.t1 = float.Parse(row.steelAttr.t1.ToString());
-            temp.steelAttr.t2 = float.Parse(row.steelAttr.t2.ToString());
-            temp.oPoint = row.oPoint;
-            temp.uPoint = row.uPoint;
-            temp.vPoint = row.vPoint;
-            temp.CutList = row.CutList;
-            temp.steelAttr.oPoint = row.oPoint;
-            temp.steelAttr.uPoint = row.uPoint;
-            temp.steelAttr.vPoint = row.vPoint;
-            temp.steelAttr.CutList = row.CutList;
+            //temp.steelAttr.GUID = row.steelAttr.GUID;
+            //temp.DataName = row.steelAttr.GUID.ToString();
+            //temp.steelAttr.AsseNumber = row.steelAttr.AsseNumber;
+            //temp.AssemblyNumber = row.steelAttr.AsseNumber;
+            //temp.steelAttr.PartNumber = row.steelAttr.PartNumber;
+            //temp.steelAttr.Length = double.Parse(row.steelAttr.Length.ToString());
+            //temp.Length = double.Parse(row.steelAttr.Length.ToString());
+            //temp.steelAttr.Weight = double.Parse(row.steelAttr.Weight.ToString());
+            //temp.Weight = double.Parse(row.steelAttr.Weight.ToString());
+            //temp.Count = double.Parse(row.Count.ToString());          
+            //temp.steelAttr.Name = row.steelAttr.Name;
+            //temp.TeklaName = row.steelAttr.Name;
+            //temp.steelAttr.Material = row.steelAttr.Material;
+            //temp.Material = row.steelAttr.Material;
+            //temp.steelAttr.Phase = row.steelAttr.Phase;
+            //temp.Phase = row.steelAttr.Phase;
+            //temp.steelAttr.ShippingNumber = row.steelAttr.ShippingNumber;
+            //temp.ShippingNumber = row.steelAttr.ShippingNumber;
+            //temp.steelAttr.Title1 = row.steelAttr.Title1;
+            //temp.Title1 = row.steelAttr.Title1;
+            //temp.steelAttr.Title2 = row.steelAttr.Title2;
+            //temp.Title2= row.steelAttr.Title2;
+            //temp.steelAttr.Profile = row.steelAttr.Profile;
+            //temp.Profile = row.steelAttr.Profile;
+            //temp.SteelType = (int)row.steelAttr.Type;
+            //temp.Type = row.steelAttr.Type;
+            //temp.TypeDesc = row.TypeDesc;
+            //temp.SteelType = row.SteelType;
+            //temp.steelAttr.H = float.Parse(row.steelAttr.H.ToString());
+            //temp.steelAttr.W = float.Parse(row.steelAttr.W.ToString());
+            //temp.steelAttr.t1 = float.Parse(row.steelAttr.t1.ToString());
+            //temp.steelAttr.t2 = float.Parse(row.steelAttr.t2.ToString());
+            //temp.oPoint = row.oPoint;
+            //temp.uPoint = row.uPoint;
+            //temp.vPoint = row.vPoint;
+            //temp.CutList = row.CutList;
+            //temp.steelAttr.oPoint = row.oPoint;
+            //temp.steelAttr.uPoint = row.uPoint;
+            //temp.steelAttr.vPoint = row.vPoint;
+            //temp.steelAttr.CutList = row.CutList;
 
-            ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(row.steelAttr.Type).ToString()}.inp");
-            cbx_SectionTypeComboBox.Text = row.steelAttr.Profile;
+            temp.steelAttr.GUID = ViewModel.SteelAttr.GUID;
+            temp.DataName = ViewModel.SteelAttr.GUID.ToString();
+            temp.steelAttr.AsseNumber = ViewModel.SteelAttr.AsseNumber;
+            temp.AssemblyNumber = ViewModel.SteelAttr.AsseNumber;
+            temp.steelAttr.PartNumber = ViewModel.SteelAttr.PartNumber;
+            temp.steelAttr.Length = double.Parse(ViewModel.SteelAttr.Length.ToString());
+            temp.Length = double.Parse(ViewModel.SteelAttr.Length.ToString());
+            temp.steelAttr.Weight = double.Parse(ViewModel.SteelAttr.Weight.ToString());
+            temp.Weight = double.Parse(ViewModel.SteelAttr.Weight.ToString());
+            temp.Count = double.Parse(ViewModel.SteelAttr.Number.ToString());
+            temp.steelAttr.Name = ViewModel.SteelAttr.Name;
+            temp.TeklaName = ViewModel.SteelAttr.Name;
+            temp.steelAttr.Material = ViewModel.SteelAttr.Material;
+            temp.Material = ViewModel.SteelAttr.Material;
+            temp.steelAttr.Phase = ViewModel.SteelAttr.Phase;
+            temp.Phase = ViewModel.SteelAttr.Phase;
+            temp.steelAttr.ShippingNumber = ViewModel.SteelAttr.ShippingNumber;
+            temp.ShippingNumber = ViewModel.SteelAttr.ShippingNumber;
+            temp.steelAttr.Title1 = ViewModel.SteelAttr.Title1;
+            temp.Title1 = ViewModel.SteelAttr.Title1;
+            temp.steelAttr.Title2 = ViewModel.SteelAttr.Title2;
+            temp.Title2 = ViewModel.SteelAttr.Title2;
+            temp.steelAttr.Profile = ViewModel.SteelAttr.Profile;
+            temp.Profile = ViewModel.SteelAttr.Profile;
+            temp.SteelType = (int)ViewModel.SteelAttr.Type;
+            temp.Type = ViewModel.SteelAttr.Type;
+            temp.TypeDesc = ViewModel.TypeDesc;
+            temp.SteelType = (int)ViewModel.SteelAttr.Type;
+            temp.steelAttr.H = float.Parse(ViewModel.SteelAttr.H.ToString());
+            temp.steelAttr.W = float.Parse(ViewModel.SteelAttr.W.ToString());
+            temp.steelAttr.t1 = float.Parse(ViewModel.SteelAttr.t1.ToString());
+            temp.steelAttr.t2 = float.Parse(ViewModel.SteelAttr.t2.ToString());
+            temp.oPoint = ViewModel.SteelAttr.oPoint;
+            temp.uPoint = ViewModel.SteelAttr.uPoint;
+            temp.vPoint = ViewModel.SteelAttr.vPoint;
+            temp.CutList = ViewModel.SteelAttr.CutList;
+            temp.steelAttr.oPoint = ViewModel.SteelAttr.oPoint;
+            temp.steelAttr.uPoint = ViewModel.SteelAttr.uPoint;
+            temp.steelAttr.vPoint = ViewModel.SteelAttr.vPoint;
+            temp.steelAttr.CutList = ViewModel.SteelAttr.CutList;
+
+            //ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(row.steelAttr.Type).ToString()}.inp");
+            //cbx_SectionTypeComboBox.Text = row.steelAttr.Profile;
 
 
 
@@ -4005,11 +4047,11 @@ namespace STD_105.Office
                 //Phase = new List<int>(new int[ViewModel.SteelAttr.Number]),
             };
             List<int> buffer = new List<int>(), _buffer = new List<int>();
-            Random random = new Random();
+            Random random = new Random();            
             #region 構件資訊
             // 若無構件資訊或異動數量，新增資訊
             //if (ViewModel.SteelAssemblies.IndexOf(ass) == -1 && add)
-                if (SteelAssemblies.Count==0 || SteelAssemblies == null || !SteelAssemblies.Any(x=>x.Number==ass.Number && x.Length== ass.Length) && add)
+            if (SteelAssemblies.Count==0 || SteelAssemblies == null || !SteelAssemblies.Any(x=>x.Number==ass.Number && x.Length== ass.Length) && add)
                 ////if (!ViewModel.SteelAssemblies.Where(x => x.Number == ass.Number && x.Count == ViewModel.SteelAttr.Number).Any() && add)
                 {
                 //ass = new SteelAssembly()
@@ -4188,7 +4230,7 @@ namespace STD_105.Office
 
             //ISteelProfile pf = ViewModel.ProfileList.Where(x => x.Profile == ViewModel.SteelAttr.Profile).FirstOrDefault();
             
-            ISteelProfile pf = pfList.Where(x => x.Profile == sa.Profile).FirstOrDefault();
+            ISteelProfile pf = pfList.Where(x => x.Profile == sa.Profile.Replace("*", "X").Replace(" ", "")).FirstOrDefault();
             pf.Type = sa.Type;
             steelPart = new SteelPart(
                 pf,
@@ -5042,6 +5084,17 @@ namespace STD_105.Office
                     // 　　　　不存檔，刪除最後一列，清空畫面資訊，讀取原選列
                     if (this.PieceListGridControl.VisibleRowCount > 0)
                     {
+#if DEBUG
+                        IList see = this.PieceListGridControl.VisibleItems;
+                        
+                        // 將字串寫入TXT檔
+                        StreamWriter str = new StreamWriter(@"Current_GridItems.txt");
+                        foreach (ProductSettingsPageViewModel se in see)
+                        {
+                            str.WriteLine(se.DataName.ToString() + " " + se.steelAttr.AsseNumber.ToString() + " " + se.steelAttr.PartNumber.ToString());   
+                        }
+                        str.Close();
+#endif
                         FinalRow = (ProductSettingsPageViewModel)this.PieceListGridControl.GetRow(this.PieceListGridControl.VisibleRowCount - 1);
                         ProductSettingsPageViewModel temp = RowToEntity(FinalRow);
                         string guid = FinalRow.DataName;
