@@ -16,6 +16,7 @@ using DevExpress.Xpf.WindowsUI;
 using WPFSTD105.Model;
 using System.Threading;
 using DevExpress.Mvvm;
+using System.Threading.Tasks;
 
 namespace WPFSTD105
 {
@@ -452,6 +453,67 @@ namespace WPFSTD105
             }
             return dmlist;
         }
+
+        private SynchronizationContext _SynchronizationContext;
+        public async void CreateDMFileSync(ModelExt model, string guid = "")
+        {
+            //_SynchronizationContext.Send(t =>
+            //{
+
+#if DEBUG
+                log4net.LogManager.GetLogger("CreateDMFile").Debug("");
+#endif
+                //ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
+                //Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
+
+                ProcessingScreenWin.Show(inputBlock: InputBlockMode.Window, timeout: 100);
+                ProcessingScreenWin.ViewModel.Status = "";
+                ProcessingScreenWin.ViewModel.IsIndeterminate = true;
+
+                STDSerialization ser = new STDSerialization();
+                ApplicationVM appVM = new ApplicationVM();
+                //ObSettingVM obVM = new ObSettingVM();
+                List<string> dmList = appVM.GetAllDevPart();
+                NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
+                int i = 0;
+                //ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
+                //ScreenManager.ViewModel.Status = "";
+                //ScreenManager.ViewModel.IsIndeterminate = true;
+                // 產生指定GUID的DM檔
+                if (!string.IsNullOrEmpty(guid))
+                {
+                    NcTemp nc = ncTemps.Find(x => x.SteelAttr.GUID.ToString() == guid);
+                    if (ObSettingVM.allowType.Contains(nc.SteelAttr.Type))
+                    {
+                        ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔中{nc.SteelAttr.PartNumber}";
+                        //Thread.Sleep(1000);
+                        model.Clear(); //清除目前模型
+                        model.LoadNcToModel(nc.SteelAttr.GUID.ToString(), ObSettingVM.allowType, ScreenManager.ViewModel);
+                    }
+                }
+                else
+                {
+                    // 跑已存在dm檔，產生未有dm檔之NC檔            
+                    foreach (NcTemp nc in ncTemps)
+                    {
+                        if (!dmList.Contains(nc.SteelAttr.GUID.Value.ToString()) && ObSettingVM.allowType.Contains(nc.SteelAttr.Type))
+                        {
+                            ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔中{i++}/{ncTemps.Count}\n{nc.SteelAttr.PartNumber} ";
+                            //Thread.Sleep(1000);
+                            model.Clear(); //清除目前模型
+                            model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), ObSettingVM.allowType, ScreenManager.ViewModel);
+                        }
+                    }
+                }
+                ProcessingScreenWin.Close();
+            //}, null);
+
+            //_SynchronizationContext.Send(t => _Model.Clear(), null);
+            //await Task.Yield();
+            //_Ser.SetMaterialDataView(DataViews);
+        }
+
+
         /// <summary>
         /// 建立dm檔
         /// </summary>
@@ -498,7 +560,7 @@ namespace WPFSTD105
                 {
                     if (!dmList.Contains(nc.SteelAttr.GUID.Value.ToString()) && ObSettingVM.allowType.Contains(nc.SteelAttr.Type))
                     {
-                        ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔中{i++}/{ncTemps.Count}\n{nc.SteelAttr.PartNumber} ";
+                        ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔中{i++}/{ncTemps.Count} ";//\n{nc.SteelAttr.PartNumber}
                         //Thread.Sleep(1000);
                         model.Clear(); //清除目前模型
                         model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), ObSettingVM.allowType, ScreenManager.ViewModel);

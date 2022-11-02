@@ -485,7 +485,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 當前斷面規格
         /// </summary>
-        public string SteelSectionProperty { get; set; } = "";
+        public string SteelSectionProperty { get; set; } 
         /// <summary>
         /// 高
         /// </summary>
@@ -534,12 +534,12 @@ namespace WPFSTD105.ViewModel
         public int ProfileIndex
         {
             get
-            {
+            {/*
                 if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp"))
                 {
                     ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp");
 
-                }
+                }*/
 
                 return _ProfileIndex; }
             set
@@ -1416,7 +1416,7 @@ namespace WPFSTD105.ViewModel
         /// 取得專案內零件資訊
         /// </summary>
         /// <returns></returns>
-        public List<ProductSettingsPageViewModel> GetData()
+        public static List<ProductSettingsPageViewModel> GetData()
         {
             STDSerialization ser = new STDSerialization();
             // 限制Grid出現之內容
@@ -1567,7 +1567,8 @@ namespace WPFSTD105.ViewModel
                     int assemID = id;
                     #region 零件資訊
                     // 在零件清單中，比對Father找到此構件
-                    var part_father = partNumber_ID.Where(x => x.Father.Contains(assemID) && x.Count == AssCount).ToList();
+                    // 2022/11/01 呂宗霖 因有相同零件出現再
+                    var part_father = partNumber_ID.Where(x => x.Father.Contains(assemID) ).ToList();
                     // 如果有找到的話
                     if (part_father.Any())
                     {
@@ -1722,14 +1723,14 @@ namespace WPFSTD105.ViewModel
             List<ProductSettingsPageViewModel> source = new List<ProductSettingsPageViewModel>();
             source = steelAttrList.Where(x => allowType.Contains(x.Type)).ToList();
             var group = (from a in source
-                         group a by new { AsseNumber = a.steelAttr.AsseNumber, a.steelAttr.PartNumber, a.TeklaName, a.Type, a.Length,a.Profile, a.Weight } into g
+                         group a by new { AsseNumber = a.steelAttr.AsseNumber, a.steelAttr.PartNumber, a.TeklaName, a.Type, a.Profile, a.Weight } into g
                          select new
                          {
                              AssemblyNumber = g.Key.AsseNumber,
                              PartNumber = g.Key.PartNumber,
                              Profile = g.Key.Profile,
-                             Length = g.Key.Length,
                              Weight = g.Key.Weight,
+                             Length = g.FirstOrDefault().Length,
                              Creation = g.FirstOrDefault().Creation,
                              Revise = g.FirstOrDefault().Revise,
                              DataName = g.FirstOrDefault().steelAttr.GUID,
@@ -1756,7 +1757,7 @@ namespace WPFSTD105.ViewModel
             //foreach (var item in source)
             foreach (var item in group)
             {
-                ProfileType = item.SteelType;
+                //ProfileType = item.SteelType;
                 ProductSettingsPageViewModel aa = new ProductSettingsPageViewModel()
                 {
                     Type = (OBJECT_TYPE)item.SteelType,
@@ -1794,7 +1795,7 @@ namespace WPFSTD105.ViewModel
                 aa.steelAttr.Profile = item.Profile;
                 aa.steelAttr.Material = item.Material;
                 aa.steelAttr.Length = item.Length;
-                aa.Weight = PartWeight(aa, saFile); //item.Weight,
+                aa.Weight = ObSettingVM.PartWeight(aa, saFile); //item.Weight,
                 aa.steelAttr.Weight = aa.Weight;
                 aa.steelAttr.Name = item.TeklaName;
                 aa.steelAttr.t1 = float.Parse(item.t1.ToString());
@@ -1830,7 +1831,7 @@ namespace WPFSTD105.ViewModel
         /// <param name="part_tekla"></param>
         /// <param name="saFile"></param>
         /// <returns></returns>
-        public double PartWeight(ProductSettingsPageViewModel part_tekla, Dictionary<string, ObservableCollection<SteelAttr>> saFile)
+        public static double PartWeight(ProductSettingsPageViewModel part_tekla, Dictionary<string, ObservableCollection<SteelAttr>> saFile)
         {
             var profile = saFile[((OBJECT_TYPE)part_tekla.SteelType).ToString()]
                 .Where(x => x.Profile == part_tekla.Profile)

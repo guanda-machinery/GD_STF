@@ -250,6 +250,9 @@ namespace WPFSTD105
                     if (loadBomResult) //載入成功
                     {
                         CommonViewModel.ProjectProperty.IsBomLoad = true;//改變報表載入參數
+
+                        
+
                         ser.SetSteelAssemblies(teklaHtemlFactory.SteelAssemblies);//序列化構件資訊
                         ser.SetProfileList(teklaHtemlFactory.ProfileList);
                         foreach (var el in teklaHtemlFactory.KeyValuePairs)//逐步存取序列化物件
