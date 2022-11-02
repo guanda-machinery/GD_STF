@@ -26,6 +26,7 @@ using DevExpress.Xpf.WindowsUI;
 using DevExpress.Xpf.Core;
 using devDept.Eyeshot.Translators;
 using WPFSTD105.Tekla;
+using System.Collections;
 
 namespace WPFSTD105.ViewModel
 {    
@@ -1426,6 +1427,15 @@ namespace WPFSTD105.ViewModel
 
             // 取得dm檔與零件之對應
             ObservableCollection<DataCorrespond> DataCorrespond = ser.GetDataCorrespond();
+#if DEBUG
+            // 將字串寫入TXT檔
+            StreamWriter str = new StreamWriter(@"DEBUG_PartList.txt");
+            foreach (DataCorrespond se in DataCorrespond)
+            {
+                str.WriteLine(se.DataName.ToString() + " " + se.Profile.ToString() + " " + se.Number.ToString());
+            }
+            str.Close();
+#endif
             // 取得構件資訊
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();
             if (assemblies == null)
@@ -1434,6 +1444,15 @@ namespace WPFSTD105.ViewModel
             }
             //取得零件資訊
             Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
+#if DEBUG
+            // 將字串寫入TXT檔
+            StreamWriter str1 = new StreamWriter(@"Current_PartInfo.txt");
+            foreach (KeyValuePair<string, ObservableCollection<SteelPart>> se in part)
+            {
+                str1.WriteLine(se.Key.ToString() + " " + se.Value.ToString());
+            }
+            str1.Close();
+#endif
 
             var profileAll = ser.GetSteelAttr();
             Dictionary<string, List<SteelAttr>> NcSA = new Dictionary<string, List<SteelAttr>>();
@@ -1443,6 +1462,15 @@ namespace WPFSTD105.ViewModel
             {
                 // 所有該斷面規格的零件
                 List<SteelPart> sa1 = part[key].ToList();
+#if DEBUG
+                // 將字串寫入TXT檔
+                StreamWriter str3 = new StreamWriter(@"Debug_ProfileCorespondToSteelPart.txt");
+                foreach (SteelPart se in sa1)
+                {
+                    str3.WriteLine(key + " " + se.GUID.ToString() + " " + se.Number.ToString() + " " + se.Count.ToString() + " " + se.IsTekla.ToString());
+                }
+                str3.Close();
+#endif
                 // 紀錄零件資訊
                 List<SteelAttr> saList = new List<SteelAttr>();
                 foreach (var item in DataCorrespond.Where(x=>x.Profile.GetHashCode().ToString()+".lis"==key))
@@ -1482,8 +1510,23 @@ namespace WPFSTD105.ViewModel
                             saTemp.Title1 = "";
                             saTemp.Title2 = "";
                         }
+#if DEBUG
+                        // 將字串寫入TXT檔
+                        StreamWriter str4 = File.AppendText(@"Debug_NcSuccessToDM.txt");
+                        str4.WriteLine(item.Profile.GetHashCode().ToString() + ".lis" + " " + item.Number + " " + saTemp.GUID.ToString() + " " + item.Profile.ToString());
+                        str4.Close();
+#endif
                         saList.Add(saTemp);
                     }
+#if DEBUG
+                    else
+                    {
+                        // 將字串寫入TXT檔
+                        StreamWriter str2 = File.AppendText(@"Debug_NcCannotToDM.txt");
+                        str2.WriteLine(item.Profile.GetHashCode().ToString() + ".lis" + " " + item.Number.ToString() + " " + item.Profile.ToString());
+                        str2.Close();
+                    }
+#endif
                 }
                 NcSA.Add(key, saList);
             }
