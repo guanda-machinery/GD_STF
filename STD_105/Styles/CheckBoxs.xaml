@@ -634,7 +634,7 @@
     </Style>
     <!--  編輯  -->
     <Style x:Key="Editor" TargetType="{x:Type CheckBox}">
-        <Setter Property="Width" Value="25" />
+        <Setter Property="Width" Value="24" />
         <Setter Property="Height" Value="{Binding Width}" />
         <Setter Property="Template">
             <Setter.Value>

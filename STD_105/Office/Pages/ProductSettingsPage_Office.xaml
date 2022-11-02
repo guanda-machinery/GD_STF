@@ -67,12 +67,8 @@
             <System:Boolean x:Key="TextBoxEnabled">false</System:Boolean>
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
-
     <!--物件設定與設定完成的物件列表-->
     <Grid x:Name="DataGrid" dx:ThemeManager.ThemeName="Win10Light"    Background="#d3d3d3"    >
-        <!--<Grid.DataContext>
-            <STD105VM:ObSettingVM/>
-        </Grid.DataContext>-->
         <Grid.Resources>
             <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }" >
                 <Setter Property="BorderThickness" Value="1"/>
@@ -138,9 +134,9 @@
             <RowDefinition Height="480" MaxHeight="915" MinHeight="55"/>
         </Grid.RowDefinitions>
         <Grid Margin="5">
-            <Grid.DataContext>
+            <!--<Grid.DataContext>
                 <STD105VM:ObSettingVM/>
-            </Grid.DataContext>
+            </Grid.DataContext>-->
             <dxg:GridControl Name="PieceListGridControl"
                                  AutoGenerateColumns="None"
                                  SelectionMode="None"
@@ -159,6 +155,7 @@
                 </dxg:GridControl.Resources>
                 <dxg:GridControl.View >
                     <dxg:TableView VerticalScrollbarVisibility="Visible"
+                                        HighlightItemOnHover="True"
                                        IsColumnMenuEnabled ="False"
                                        AllowSorting="false"
                                        AllowColumnFiltering="False"
@@ -340,14 +337,14 @@
  
         <!--繪圖顯示模型-->
             <Grid  Grid.Column="0" Grid.Row="1">
-        <TabControl Margin="5"  Style="{StaticResource DrawTabControl}" 
+        <TabControl Margin="5"  Style="{StaticResource DrawTabControl}"  
                     SelectionChanged="TabControlSelectedIndexChanged"
                     x:Name="tabControl"                              
                     SelectedIndex="0">
-            <TabItem Header="3D視圖" Style="{StaticResource DrawTabItem}">
-                <Grid>
+                    <TabItem Header="3D視圖" Style="{StaticResource DrawTabItem}">
+                <Grid >
                     <!--新增3D模型處-->
-                    <WPFSTD:ModelExt x:Name="model"
+                            <WPFSTD:ModelExt x:Name="model" 
                                   SelectionChanged="model_SelectionChanged"
                                   Loaded="Model3D_Loaded"
                                   AutoRefresh="True"
@@ -430,7 +427,7 @@
                                 <ddes:Viewport.ToolBars>
                                     <ddes:ToolBar>
                                         <ddes:ToolBar.Buttons>
-                                            <ddes:HomeToolBarButton />
+                                            <ddes:HomeToolBarButton/>
                                             <ddes:ZoomWindowToolBarButton />
                                             <ddes:ZoomToolBarButton />
                                             <ddes:PanToolBarButton />
@@ -473,13 +470,15 @@
             </TabItem>
             <TabItem Header="2D視圖"    Style="{StaticResource DrawTabItem}">
                 <Grid>
-                    <WPFSTD:ModelExt x:Name="drawing" SelectionChanged="model_SelectionChanged" Loaded="drawing_Loaded"
+                    <WPFSTD:ModelExt x:Name="drawing"  
+
+                                     SelectionChanged="model_SelectionChanged" Loaded="drawing_Loaded"
                         SelectionColor="{Binding Setting.SelectionColor, Converter={STD105:StringToDrawingColoConverter}}"
                         ActionMode="{Binding ActionMode}" DefaultColor="Beige" AutoRefresh ="True" KeyDown="model_KeyDown"
                         PreviewMouseRightButtonDown="model_PreviewMouseRightButtonDown"
                         Focusable="True" AntiAliasingSamples="x16" Renderer="NativeExperimental" Margin="0,0,0,0">
                         <WPFSTD:ModelExt.ContextMenu>
-                            <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
+                            <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12" >
                                 <MenuItem Name="esc2D" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
                                 <MenuItem Header="放大選取範圍" Style="{StaticResource BaseStyle}" Command="{Binding ZoomWindow}"/>
                                 <MenuItem Header="縮放" Style="{StaticResource BaseStyle}" Command="{Binding Zoom}"/>
@@ -748,7 +747,12 @@
                             <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionTypeComboBox">
                                 <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
                             </i:EventTrigger>
+                            <!--<i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionTypeComboBox">
+                                <i:InvokeCommandAction Command="{ Binding ShowSteelTypeFromPartListCommand }"
+                                                           CommandParameter="{ Binding ElementName=cbx_SectionTypeComboBox, Path=SelectedItem }"/>
+                            </i:EventTrigger>-->
                         </i:Interaction.Triggers>
+                        
                     </ComboBox>
 
                     <Label Grid.Column="3" Grid.Row="2" Content="高度(H)：" />
