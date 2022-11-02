@@ -883,7 +883,6 @@ namespace STD_105.Office
                 {
                     // 讀NC檔
                     var profile = ser.GetSteelAttr();
-                    TeklaNcFactory t = new TeklaNcFactory();
                     Steel3DBlock s3Db = new Steel3DBlock();
                     SteelAttr steelAttrNC = new SteelAttr();
                     List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
@@ -3216,6 +3215,7 @@ namespace STD_105.Office
 
             SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
             GetViewToViewModel(false, TmpSteelAttr.GUID);
+            GetverticesFromFile(TmpSteelAttr.PartNumber);
 
             if (TmpSteelAttr.vPoint.Count != 0)     //  頂面斜邊
             {
@@ -6166,41 +6166,37 @@ namespace STD_105.Office
 
         }
 
-        //public bool GetverticesFromFile(SteelAttr TmpSteelAttr, int SteelIndex = 1)
-        //{
-        //    bool rtn = false;
-        //    string g_partNumber = TmpSteelAttr.PartNumber;
+        public bool GetverticesFromFile(string PartNumber, int SteelIndex = 1)
+        {
+            bool rtn = false;
+            string g_partNumber = PartNumber;
 
-        //    string path = ApplicationVM.DirectoryNc();
-        //    string allPath = path + $"\\{g_partNumber}.nc1";
+            string path = ApplicationVM.DirectoryNc();
+            string allPath = path + $"\\{g_partNumber}.nc1";
+            if (File.Exists($@"{allPath}"))
+            {
+                STDSerialization ser = new STDSerialization();
+                SteelAttr sa = new SteelAttr();
+                sa = (SteelAttr)model.Blocks[SteelIndex].Entities[0].EntityData;
 
-        //    if (File.Exists($@"{allPath}"))
-        //    {
+                var profile = ser.GetSteelAttr();
+                Steel3DBlock s3Db = new Steel3DBlock();
+                SteelAttr steelAttrNC = new SteelAttr();
+                List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
+                s3Db.ReadNcFile($@"{ApplicationVM.DirectoryNc()}\{ViewModel.SteelAttr.PartNumber}.nc1", profile, sa, ref steelAttrNC, ref groups);
+                sa.GUID = Guid.NewGuid();
+                sa.oPoint = steelAttrNC.oPoint;
+                sa.vPoint = steelAttrNC.vPoint;
+                sa.uPoint = steelAttrNC.uPoint;
+                sa.CutList = steelAttrNC.CutList;
 
-
-
-        //        sa = (SteelAttr)model.Blocks[SteelIndex].Entities[0].EntityData;
-
-        //        #region 讀NC檔
-        //        var profile = ser.GetSteelAttr();
-        //        TeklaNcFactory t = new TeklaNcFactory();
-        //        Steel3DBlock s3Db = new Steel3DBlock();
-        //        SteelAttr steelAttrNC = new SteelAttr();
-        //        List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
-        //        s3Db.ReadNcFile($@"{ApplicationVM.DirectoryNc()}\{ViewModel.SteelAttr.PartNumber}.nc1", profile, sa, ref steelAttrNC, ref groups);
-        //        sa.GUID = Guid.NewGuid();
-        //        sa.oPoint = steelAttrNC.oPoint;
-        //        sa.vPoint = steelAttrNC.vPoint;
-        //        sa.uPoint = steelAttrNC.uPoint;
-        //        sa.CutList = steelAttrNC.CutList;
-
-        //        rtn = true;
-        //    }
+                rtn = true;
+            }
 
 
 
-        //    return rtn;
-        //}
+            return rtn;
+        }
 
 
     }
