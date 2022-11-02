@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+
 namespace GD_STD.Data
 {
     [AttributeUsageAttribute(AttributeTargets.All, Inherited = true, AllowMultiple = false)]
@@ -57,21 +58,6 @@ namespace GD_STD.Data
         /// </summary>
         [Excel("購料長", 3)]
         public double LengthStr { get; set; }
-        //{
-        //    get => lengthStr;
-        //    set
-        //    {
-        //        if (lengthStr != value)
-        //        {
-        //            int index = LengthList.IndexOf(lengthStr);
-        //            if (index >=0)
-        //            {
-        //                LengthList[index] = value;
-        //            }
-        //        }
-        //        lengthStr =value;
-        //    }
-        //}
         /// <summary>
         /// 材質
         /// </summary>
@@ -86,6 +72,8 @@ namespace GD_STD.Data
         /// 零件列表
         /// </summary>
         public ObservableCollection<TypeSettingDataView> Parts { get; set; } = new ObservableCollection<TypeSettingDataView>();
+        public TypeSettingDataView SelectedPart { get; set; } = new TypeSettingDataView();
+
         #region ButtonCommand
 
         private bool _buttoneable = false;
@@ -266,43 +254,38 @@ namespace GD_STD.Data
         }
 
 
-
-
         /// <summary>
         /// 刪除零件命令
         /// </summary>
+        /*
         public System.Windows.Input.ICommand DeletePartCommand
         {
             get
             {
-                    return new WPFWindowsBase.RelayParameterizedCommand(obj =>
+                return new WPFWindowsBase.RelayParameterizedCommand(obj =>
+                {
+                    var MessageBoxReturn = WinUIMessageBox.Show(null,
+                            "是否要刪除零件\r\n按下是會立即刪除",
+                            "通知",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Popup);
+
+                    if (MessageBoxReturn == MessageBoxResult.Yes)
                     {
-                        var MessageBoxReturn = WinUIMessageBox.Show(null,
-                                "是否要刪除零件\r\n按下是會立即刪除",
-                                "通知",
-                                MessageBoxButton.YesNo,
-                                MessageBoxImage.Exclamation,
-                                MessageBoxResult.None,
-                                MessageBoxOptions.None,
-                                FloatingMode.Popup);
 
-                        if (MessageBoxReturn == MessageBoxResult.Yes)
+                        if (obj is DevExpress.Xpf.Grid.GridControl)
                         {
-                            var GC_SelectedItem = new GD_STD.Data.TypeSettingDataView();
-
-                            if (obj is DevExpress.Xpf.Grid.GridControl)
-                            {
-                                GC_SelectedItem = (obj as DevExpress.Xpf.Grid.GridControl).SelectedItem as GD_STD.Data.TypeSettingDataView;
-                            }
-
-                            if (obj is GD_STD.Data.TypeSettingDataView)
-                            {
-                                GC_SelectedItem = (obj as GD_STD.Data.TypeSettingDataView);
-                            }
-
-
+                            var GC = obj as DevExpress.Xpf.Grid.GridControl;
+                            var GC_SelectedItem = GC.SelectedItem as GD_STD.Data.TypeSettingDataView;
                             if (Parts.Remove(GC_SelectedItem))
                             {
+
+
+
+                                //將數量加回零件清單
                                 WinUIMessageBox.Show(null,
                                     $"刪除成功！",
                                     "通知",
@@ -311,22 +294,25 @@ namespace GD_STD.Data
                                     MessageBoxResult.None,
                                     MessageBoxOptions.None,
                                     FloatingMode.Popup);
-
-                                //須變更存檔
+                            }
+                            else
+                            {
+                                throw new Exception("設定錯誤");
                             }
 
                         }
 
+                    }
 
 
 
 
 
 
-                    });
+
+                });
             }
-        }
-
+        }*/
 
 
 
@@ -422,19 +408,15 @@ namespace GD_STD.Data
             //get => Parts.Select(el => el.Length).Aggregate((l1, l2) => l1 + l2)  + Cut * (Parts.Count -1d > 0d ? Parts.Count -1d : 0d); 
             get
             {
-                try
+                double AllPartAggregate = 0;
+                double CutLoss = 0;
+                if (Parts.Count != 0)
                 {
-                    var AllPartAggregate = Parts.Select(el => el.Length).Aggregate((l1, l2) => l1 + l2); //總零件長
-                    var CutLoss = Cut * (Parts.Count - 1d > 0d ? Parts.Count - 1d : 0d); //鋸床切割損耗
-                    var SE_Cut = StartCut + EndCut; //素材前後切割
-                                                    //材料前後端切除
-                    return AllPartAggregate + CutLoss + SE_Cut;
+                    AllPartAggregate = Parts.Select(el => el.Length).Aggregate((l1, l2) => l1 + l2); //總零件長
+                    CutLoss = Cut * (Parts.Count - 1d > 0d ? Parts.Count - 1d : 0d); //鋸床切割損耗
                 }
-                catch(Exception ex)
-                {
-                    log4net.LogManager.GetLogger("點選GO").Debug("未找到零件,無法計算總消耗長度");
-                    return 0;
-                }
+                //材料前後端切除
+                return AllPartAggregate + CutLoss + StartCut + EndCut;
             }
         }
 
