@@ -60,13 +60,6 @@ namespace WPFSTD105
 
                 //只將 BH RH L TUBE BOX CH H LB([)加入到列表內
                 if (buffer != null && ObSettingVM.allowType.Contains(buffer[0].Type))
-                //if (buffer != null &&(
-                //buffer[0].Type == OBJECT_TYPE.BH ||
-                //buffer[0].Type == OBJECT_TYPE.RH ||
-                //buffer[0].Type == OBJECT_TYPE.L ||
-                //buffer[0].Type == OBJECT_TYPE.TUBE ||
-                //buffer[0].Type == OBJECT_TYPE.BOX ||
-                //buffer[0].Type == OBJECT_TYPE.CH))
                 {
                     foreach (var item in buffer.Where(x => x.ExclamationMark == false || x.ExclamationMark is null)) //逐步展開零件
                     {
@@ -275,7 +268,7 @@ namespace WPFSTD105
         ///// 顯示在建立零件列表內的集合
         ///// </summary>
         //public ObservableCollection<SteelPart> SteelParts { get; set; } = new ObservableCollection<SteelPart>();
-        public ObservableCollection<MaterialDataView> SelectedMaterial { get; set; } = new ObservableCollection<MaterialDataView>();
+       // public ObservableCollection<MaterialDataView> SelectedMaterial { get; set; } = new ObservableCollection<MaterialDataView>();
         /// <summary>
         /// 報表視圖
         /// </summary>
@@ -421,6 +414,48 @@ namespace WPFSTD105
             {
                 return new WPFBase.RelayParameterizedCommand(objArray =>
                 {
+                    //檢查數值 若最長零件比素材還長 中斷命令並跳出提示框
+
+                        List<double> LengthList = new List<double>();
+
+                        foreach (var MLength in MainLength.Split(' '))
+                        {
+                            if (double.TryParse(MLength, out var result))
+                                LengthList.Add(result);
+                        }
+                        foreach (var SLength in SecondaryLength.Split(' '))
+                        {
+                            if (double.TryParse(SLength, out var result))
+                                LengthList.Add(result);
+                        }
+
+                   if (!DataViews.ToList().Exists(x => (x.SortCount > 0)))
+                    {
+                        WinUIMessageBox.Show(null,
+                            $"需先於左側表格預排零件才可進行素材分配",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Popup);
+                        return;
+                    }
+
+                    if(DataViews.ToList().Exists(x => (x.SortCount > 0 && x.Length > LengthList.Max())))
+                    {
+                        WinUIMessageBox.Show(null,
+                            $"有預排零件長度超過素材最大長度！需更改素材長度以配合過長零件",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Popup);
+                        return;
+                    }
+
+
                     AutoMatchAsyncV2();
 
                     // 需排版之斷面規格
@@ -433,7 +468,6 @@ namespace WPFSTD105
                         grid.SelectAll();//全部資料行
                         grid.EndSelection();//强制立即更新
                     }
-
 
                     foreach (var Data in DataViews)
                     {
@@ -969,9 +1003,6 @@ namespace WPFSTD105
             MatchSetting.PreCode = PreCode;
             //MatchSetting.StartNumber = StartNumber;
 
-
-
-
             unsafe
             {
                 // 需排版之斷面規格
@@ -1054,27 +1085,6 @@ namespace WPFSTD105
                         }
                     }
 
-                    // 若數量5 排版2 以下寫法 若DataViews中有兩個相同的PartNumber 且 選定的零件數量有2個但排版數量為1 會兩個都排入
-                    //foreach (var item in steels.Where(x => sortPartNumber.Contains(x.Number)))//將物件全部變成單一個體
-                    //{
-                    //    //where->將符合搜尋條件的DataViews取出
-                    //    //Select->將上述的資料的每一個SortCount取出後建立另一個IEnumerable陣列
-                    //    IEnumerable<int> _where = DataViews
-                    //        .Where(el =>
-                    //        el.Profile == item.Profile &&
-                    //        el.PartNumber == item.Number &&
-                    //        el.Length == item.Length &&         // 2022/09/23 呂宗霖 新增
-                    //        el.SortCount > 0)                   // 2022/09/23 呂宗霖 新增
-                    //        .Select(el => el.SortCount);
-
-                    //    var count = _where.Aggregate((part1, part2) => part1 + part2);
-                    //    if (count > 0)
-                    //    {
-                    //        listPart.AddRange(SinglePart.UnfoldPart(item, out List<bool> match, count));//展開物件並加入配料列表內
-                    //        item.Match = match;
-                    //        //DataViews.
-                    //    }
-                    //}
                     ser.SetPart(profiles[i].GetHashCode().ToString(), new ObservableCollection<object>(steels));
                     listPart.Sort(Compare);//由大排到小
                     SinglePart[] weightsPatr = listPart.ToArray(); //權重比較的零件列表
@@ -1140,7 +1150,6 @@ namespace WPFSTD105
                                 //bool aa = DataViews[dataViewIndex].Match[matchIndex];
                                 DataViews[dataViewIndex].Match[matchIndex] = false;
                             }
-                            //DataViews.Where(el => el.).ForEach(el => el.SortCount  = el.GetSortCount());
                             startNumber++;
                         }
                     }

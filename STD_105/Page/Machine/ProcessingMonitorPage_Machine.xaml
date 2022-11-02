@@ -578,7 +578,6 @@
 
                         <dxg:GridColumn Header="時間" Width="auto" AllowMoving="false"  IsSmart="True"/>
                         <dxg:GridColumn Header="系統訊息" Width="auto" AllowMoving="false"  IsSmart="True"/>
-                        <dxg:GridColumn Header="零件編號" Width="*" AllowMoving="false"  IsSmart="True" HorizontalHeaderContentAlignment="Left"/>
 
 
                     </dxg:GridControl>

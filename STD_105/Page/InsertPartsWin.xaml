@@ -10,15 +10,13 @@
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
         mc:Ignorable="d"
-        
+    x:TypeArguments="WPFSTD105:OfficeTypeSettingVM"      
          xmlns:WPFSTD105="clr-namespace:WPFSTD105;assembly=WPFSTD105"      
-
-          x:TypeArguments="WPFSTD105:OfficeTypeSettingVM"      
           d:DataContext="{d:DesignInstance Type=WPFSTD105:OfficeTypeSettingVM}"
-        >
-    <Grid Background="White">
+     Height="500" VerticalAlignment="Top">
+    <Grid Background="White" Margin="-5,0">
         <Grid.Resources>
-            <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }" >
+            <Style TargetType="GroupBox" BasedOn="{StaticResource MaterialDesignGroupBox }" >
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="Background" Value="#F7F7F7"/>
                 <Style.Resources>
@@ -42,8 +40,17 @@
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="FontSize" Value="12"/>
             </Style>
-            
-            
+            <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBoxBase}">
+                <Setter Property="Foreground" Value="{ StaticResource solidclr_DimGray }" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="FontFamily" Value="Microsoft JhengHei"/>
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderBrush" Value="Gray"/>
+            </Style>
+
+
         </Grid.Resources>
         <Grid.ColumnDefinitions></Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -59,7 +66,7 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="零件清單"  FontSize="16"></TextBlock>
                     <TextBox Grid.Column="1" materialDesign:HintAssist.Hint="Search Tasks(Ctrl + F)" BorderBrush="#cfcfcf"
-                                 Text="{Binding PartsSearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                             Text="{Binding PartsSearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 FontSize="14" 
                                  MaxWidth="350" Width="150" HorizontalAlignment="Right" Margin="0" Padding="0" />
                 </Grid>
@@ -85,14 +92,18 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <dxg:GridControl   
-
+                                SelectionMode="Row"
                                 x:Name="PartsGridControl"
                                 AutoGenerateColumns="None"
-                                SelectionMode="MultipleRow"
                                 SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 MaxHeight="1000">
                     <dxg:GridControl.View >
                         <dxg:TableView       
+                            HighlightItemOnHover="True"
+                               ShowCheckBoxSelectorColumn="False"
+                               NavigationStyle="Row"
+                               AllowCascadeUpdate="True"
+                            
                             AllowEditing="False"
                             AllowPaging="True"
                             PageSize="30"
@@ -155,7 +166,7 @@
                     <dxg:GridColumn FieldName="AlreadyMatedMaterialCounts" IsSmart="True"  Width="45" Header="已配對"  />
                     <dxg:GridColumn Visible="False" FieldName="SortCount" Width="60" AllowResizing="false" AllowMoving="false"  IsSmart="True"  Header="預排數量"    />
                 </dxg:GridControl>
-                <StackPanel HorizontalAlignment="Center"  Margin="-1,0,0,0"
+                <StackPanel HorizontalAlignment="Center"  Margin="-1,0,0,0" MouseMove="Button_MouseMove" 
                                         Grid.Column="1"
                                         Background="#D3D3D3"  >
 
@@ -173,17 +184,17 @@
                         <TextBlock Text="加入素材" Margin="0,0,0,2.5"/>
                     </StackPanel>
 
-                    <Button Margin="1,0" Command="{Binding AddMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}">
+                    <Button  Margin="1,0"  Command="{Binding AddMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}" Cursor="Hand">
                         <Button.Content>
                             <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Width="14"/>
                         </Button.Content>
                     </Button>
-                    <Button Margin="1,0"  Command="{Binding DeductMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}" >
+                    <Button   Margin="1,0"  Command="{Binding DeductMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}" >
                         <Button.Content>
                             <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Left.svg'}" Width="14"/>
                         </Button.Content>
                     </Button>
-                    <Button  Margin="1,0" Command="{Binding AddAllMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}"  >
+                    <Button   Margin="1,0" Command="{Binding AddAllMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}"  >
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="ALL" VerticalAlignment="Center" Margin="0,0,5,0"   />
@@ -191,7 +202,7 @@
                             </StackPanel>
                         </Button.Content>
                     </Button>
-                    <Button Margin="1,0" Command="{Binding DeductAllMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}" >
+                    <Button  Margin="1,0" Command="{Binding DeductAllMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}" >
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="ALL" VerticalAlignment="Center" Margin="0,0,5,0" />
@@ -201,13 +212,11 @@
                     </Button>
                 </StackPanel>
                 <dxg:GridControl   Grid.Column="2"
-
                                 Name="SoftGridControl"
                                 AutoGenerateColumns="None"
-                                SelectionMode="MultipleRow"
+                                SelectionMode="MultipleRow" 
                                 SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                               MaxHeight="1000"
-                                ItemsSource="{Binding DataViews}">
+                               MaxHeight="1000">
                     <dxg:GridControl.View >
                         <dxg:TableView  
                                         AllowPaging ="True"    
@@ -245,7 +254,7 @@
 
 
                     </dxg:GridControl.View>
-                    <dxg:GridColumn FieldName="SortCount" Width="60" AllowResizing="false" AllowMoving="false"  IsSmart="True"  Header="預排數量"    />
+                    <dxg:GridColumn FieldName="SortCount" Width="60" AllowResizing="false" AllowMoving="false"  IsSmart="True"  Header="預排數量"   />
                     <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"    Header="構件編號" Width="120"/>
                     <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="120" />
                     <dxg:GridColumn FieldName="Profile"  IsSmart="True"  Header="斷面規格"  Width="150" />
@@ -260,7 +269,7 @@
                             <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
                         </dxg:GridColumn.EditSettings>
                     </dxg:GridColumn>
-                    <dxg:GridColumn  FieldName="" Binding="{Binding ID , Converter={local:IListFilterToCountConverter} }"  IsSmart="True"  Width="45" Header="數量"  />
+                    <dxg:GridColumn  FieldName="" Binding="{Binding ID , Converter={local:IListFilterToCountConverter} }"  IsSmart="True"  Width="45" Header="數量"   />
                     <dxg:GridColumn  FieldName="AlreadyMatedMaterialCounts" IsSmart="True"  Width="45" Header="已配對"  />
 
 
@@ -269,20 +278,44 @@
             </Grid>
 
         </GroupBox>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <StackPanel.Resources>
-                <Style TargetType="Button" BasedOn="{StaticResource CustomDesignButton}">
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.Resources>
+                <Style TargetType="Button" BasedOn="{StaticResource SiegCustomButton}">
                     <Setter Property="Width" Value="100"/>
-                    <Setter Property="Margin" Value="10"/>
+                    <Setter Property="Margin" Value="10,0"/>
                     <Setter Property="BorderBrush" Value="Black"/>
                     <Setter Property="BorderThickness" Value="1"/>
                     <Setter Property="Foreground" Value="Black"/>
                 </Style>
-            </StackPanel.Resources>
-            <Label Content="已使用長度:100m" VerticalAlignment="Center"></Label>
-            <Label Content="剩餘長度:100m" VerticalAlignment="Center"></Label>
-            <Button  Content="123" />
-            <Button Content="取消" />
-        </StackPanel>
+                <Style TargetType="Label">
+                    <Setter Property="FontSize" Value="18"/>
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+            <Label Content="素材長度:" ></Label>
+            <Label Name="MateriaLengthLabel" Content="xxx" ></Label>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+            <Label Content="已使用素材:"></Label>
+            <Label Name="UsedMateriaLengthLabel" Content="yyy" ContentStringFormat="{}{0:D}" ></Label>
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+            <Label Content="剩餘可用長度:"></Label>
+            <Label Name="RemainingMateriaLengthLabel" Content="zzz" ContentStringFormat="{}{0:D}"></Label>
+            </StackPanel>
+
+            <Button Grid.Column="3" Content="確認" Name="CheckButton" Click="Check_Button_Click" Cursor="Hand"/>
+            <Button Grid.Column="4" Content="取消" Click="Cancel_Button_Click" Cursor="Hand"/>
+        </Grid>
     </Grid>
 </WPFBase:BasePage>

@@ -9,7 +9,6 @@ using System.Windows.Input;
 using WPFSTD105.Attribute;
 using WPFSTD105.Model;
 using static devDept.Eyeshot.Environment;
-//using EntityList = WPFSTD105.EntityList;
 using WPFBase = WPFWindowsBase;
 using WPFSTD105.Properties;
 using System.Windows;
