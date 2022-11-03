@@ -54,10 +54,7 @@
                     </Grid.DataContext>
                     <Grid.Resources>
                         <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource WordBlue}"/>
-                        <Style TargetType="Button"  BasedOn="{StaticResource MaterialDesignFlatButton}"   >
-                            <Setter Property="Background" Value="White"/>
-                            <Setter Property="Foreground" Value="Black"/>
-                            <Setter Property="BorderBrush" Value="#CFCFCF"/>
+                        <Style TargetType="Button"  BasedOn="{StaticResource SiegCustomButtonWhite}"   >
                             <Setter Property="BorderThickness" Value="1"/>
                             <Setter Property="FontSize" Value="14"/>
                         </Style>
@@ -234,7 +231,7 @@
                             Command="{Binding ToggleAllSplitLineCheckboxCommand}"
                             FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
                             VerticalContentAlignment="Center"
-                                Background="LightGray"
+                             Style="{StaticResource SiegCustomButtonGray}"
                             Height="30"
                             Width="80"
                             Margin="10">
@@ -942,7 +939,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <StackPanel Margin="12,273,0,0" Width="240"  HorizontalAlignment="Left"  >
+        <StackPanel Margin="12,253,0,0" Width="240"  HorizontalAlignment="Left"  >
             <StackPanel.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource CustomDesignButton}">
                     <Setter Property="Opacity"

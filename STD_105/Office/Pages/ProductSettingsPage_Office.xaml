@@ -88,12 +88,8 @@
             </Style>
 
 
-            <Style TargetType="Button"  BasedOn="{StaticResource MaterialDesignFlatButton}"   >
-                <Setter Property="Background" Value="White"/>
-                <Setter Property="Foreground" Value="Black"/>
-                <Setter Property="BorderBrush" Value="#CFCFCF"/>
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="FontSize" Value="12"/>
+            <Style TargetType="Button"  BasedOn="{StaticResource SiegCustomButtonWhite}"   >
+
                 <Setter Property="Width" Value="80"/>
                 <Setter Property="Height" Value="24"/>
             </Style>
@@ -800,8 +796,8 @@
                     </Grid>
 
                     <StackPanel Grid.Row="13" Margin="2" Orientation="Horizontal" Grid.ColumnSpan="5">
-                        <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Background="Gold" Width="60" Margin="0,0,6,0" Click="OKtoConfirmChanges"/>
-                        <Button x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}" Background="Gold" Width="90" Padding="0" Margin="0,0,0,0" />
+                        <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Style="{StaticResource SiegCustomButtonGold}" Width="60" Margin="0,0,6,0" Click="OKtoConfirmChanges"/>
+                        <Button x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}" Style="{StaticResource SiegCustomButtonGold}" Width="90" Padding="0" Margin="0,0,0,0" />
 
                         <STD105:DataButtons_Office 
                                                Modify="{Binding ModifyPart}"
@@ -1072,7 +1068,7 @@
                             </Grid>
 
                             <StackPanel  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" DockPanel.Dock="Bottom"  VerticalAlignment="Bottom">
-                                <StackPanel  Orientation="Horizontal"
+                                <!--<StackPanel  Orientation="Horizontal"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Bottom"
                                          Margin="5">
@@ -1080,11 +1076,11 @@
                                     <Button Content="Y軸鏡射" Command="{Binding MirrorY}" Margin="5,0,0,0" Width="80" Height="24"  />
 
                                     <Button Content="rbtn choice" Command="{Binding Path=CmdShowMessage}" Margin="5" Width="80" Height="24" Visibility="Collapsed"/>
-                                </StackPanel>
+                                </StackPanel>-->
 
                                 <StackPanel  Grid.Row="3"     Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
 
-                                    <Button Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=DrillTabItem}"  Width="80" Margin="0,0,-7,0"  Background="#d8d8d8" Cursor="Hand" >
+                                    <Button Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=DrillTabItem}"  Width="80" Margin="0,0,-7,0"   Style="{StaticResource SiegCustomButtonGray}" Cursor="Hand" >
                                         <Button.Content >
                                             <StackPanel Orientation="Horizontal">
                                                 <materialDesign:PackIcon Kind="CheckboxOutline" />
@@ -1095,6 +1091,7 @@
                                     </Button>
 
                                     <STD105:DataButtons_Office
+                                     
                                         HorizontalAlignment="Left"
                                         ReadVisibility="Collapsed" 
                                         Delete="{Binding DeleteHole}"
@@ -1307,7 +1304,7 @@
                                 </GroupBox>
 
                                 <StackPanel  Grid.Row="3" Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <Button Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=CutTabItem}" Width="80" Margin="2,0"   Background="#d8d8d8" Cursor="Hand" >
+                                    <Button Command="{Binding SetAllCheckboxCheckedCommand}" Style="{StaticResource SiegCustomButtonGray}" CommandParameter="{Binding ElementName=CutTabItem}" Width="80" Margin="2,0"   Cursor="Hand" >
                                         <Button.Content >
                                             <StackPanel Orientation="Horizontal">
                                                 <materialDesign:PackIcon Kind="CheckboxOutline" />
@@ -1316,13 +1313,15 @@
                                             </StackPanel>
                                         </Button.Content>
                                     </Button>
+                                    <Button Content="輸入" Command="{Binding AddCut}" Margin="5,0"></Button>
+                                    <!--
                                     <STD105:DataButtons_Office Style="{StaticResource BaseStyle}"
                                                            Modify="{Binding ModifyCut}"
                                                            Add="{Binding AddCut}"
                                                            Delete="{Binding DeleteCut}"
                                                            ReadVisibility="Collapsed" 
                                                            VerticalAlignment="Bottom"
-                                                           Margin="0,0,0,0" />
+                                                           Margin="0,0,0,0" />-->
                                 </StackPanel>
                             </Grid>
                         </ScrollViewer>

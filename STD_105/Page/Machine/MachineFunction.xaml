@@ -93,11 +93,11 @@
                     <Border Background="#c0c0c0" Padding="20">
 
                         <DockPanel>
-                            <DockPanel.Resources>
-                                <WPFSTD105VM:Dpad_JoystickViewModel x:Key="HSteel_Carry_VM"/>
-                            </DockPanel.Resources>
 
-                            <local:DPadUserControl DataContext="{StaticResource HSteel_Carry_VM}" DockPanel.Dock="Top">
+                            <local:DPadUserControl  DockPanel.Dock="Top">
+                                <local:DPadUserControl.DataContext>
+                                    <WPFSTD105VM:Dpad_JoystickViewModel/>
+                                </local:DPadUserControl.DataContext>
                                 <local:DPadUserControl.BorderChild_3_Source>
                                     <Button>
                                     <Grid  VerticalAlignment="Center"  Width="100">

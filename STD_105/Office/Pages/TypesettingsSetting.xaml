@@ -26,7 +26,7 @@
                   xmlns:WPFSTD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
                   Title="排版設定"              
                   x:TypeArguments="WPFSTD105:OfficeTypeSettingVM"      
-                  xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105" 
+                  xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105" xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
                   d:DataContext="{d:DesignInstance Type=WPFSTD105:OfficeTypeSettingVM}"
                   mc:Ignorable="d"
                    Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD105:ViewLocator.Instance}}"
@@ -60,13 +60,14 @@
                 </Style.Resources>
 
             </Style>
-            <Style TargetType="Button"  BasedOn="{StaticResource MaterialDesignFlatButton}"   >
+          <!-- <Style TargetType="Button"  BasedOn="{StaticResource MaterialDesignFlatButton}"   >
                 <Setter Property="Background" Value="White"/>
                 <Setter Property="Foreground" Value="Black"/>
                 <Setter Property="BorderBrush" Value="#CFCFCF"/>
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="FontSize" Value="12"/>
-            </Style>
+            </Style>-->
+            <Style TargetType="Button"  BasedOn="{StaticResource SiegCustomButtonWhite}"   />
 
             <Style TargetType="Label">
                 <Setter Property="FontSize" Value="12"/>
@@ -138,15 +139,16 @@
                         <ColumnDefinition Width="78"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="360"/>
                     </Grid.RowDefinitions>
                     <dxg:GridControl   
                         FilterGroupSortChanging="GridControl_FilterGroupSortChanging"
                         Name="PartsGridControl"
+                        
                         AutoGenerateColumns="None"
                         SelectionMode="row"
                        SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                        Height="365" 
+                        MaxHeight="10000" 
                         ItemsSource="{Binding DataViews}">
                         <dxg:GridControl.View >
                             <dxg:TableView       
@@ -174,6 +176,7 @@
                                     HorizontalScrollbarVisibility="Auto"
                                     ShowGroupPanel="False"
                                     ShowSearchPanelMode="Never"
+                            
                                     ScrollViewer.ScrollChanged="ScrollOwner_ScrollChanged"
                                     SearchPanelNullText="Search Tasks(Ctrl + F)" 
                                     SearchPanelFindMode="Always" ShowIndicator="True"  
@@ -223,7 +226,7 @@
 
 
                     </dxg:GridControl>
-                    <StackPanel HorizontalAlignment="Center"  Margin="-1,0,0,0"
+                    <StackPanel HorizontalAlignment="Center"  Margin="0"
                                         Grid.Column="1"
                                         Background="#D3D3D3"  >
 
@@ -236,30 +239,30 @@
                             </Style>
 
                         </StackPanel.Resources>
-                        <StackPanel Margin="0,12"/>
+                        <StackPanel Margin="0,11"/>
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock Text="加入素材" Margin="0,0,0,2.5"/>
+                            <TextBlock Text="加入素材" Margin="0,0,0,2"/>
                         </StackPanel>
 
-                        <Button Margin="1,0" Command="{Binding AddMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}">
+                        <Button Width="80" Height="25" Margin="1,1" Command="{Binding AddMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}">
                             <Button.Content>
-                                <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Width="14"/>
+                                <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Width="16"/>
                             </Button.Content>
                         </Button>
-                        <Button Margin="1,0"  Command="{Binding DeductMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}" >
+                        <Button Margin="1,1" Height="25"  Command="{Binding DeductMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}" >
                             <Button.Content>
-                                <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Left.svg'}" Width="14"/>
+                                <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Left.svg'}" Width="16"/>
                             </Button.Content>
                         </Button>
-                        <Button  Margin="1,0" Command="{Binding AddAllMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}"  >
+                        <Button  Margin="1,1" Height="25" Command="{Binding AddAllMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}"  >
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="ALL" VerticalAlignment="Center" Margin="0,0,5,0"   />
-                                    <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Width="14"/>
+                                    <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Width="16"/>
                                 </StackPanel>
                             </Button.Content>
                         </Button>
-                        <Button Margin="1,0" Command="{Binding DeductAllMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}" >
+                        <Button Margin="1,1" Height="25" Command="{Binding DeductAllMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}" >
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="ALL" VerticalAlignment="Center" Margin="0,0,5,0" />
@@ -275,7 +278,8 @@
                                 AutoGenerateColumns="None"
                                 SelectionMode="MultipleRow"
                                 SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                           MaxHeight="365"    
+                                Height="{Binding Height, ElementName=PartsGridControl}"
+                                MaxHeight="10000"    
                                 ItemsSource="{Binding DataViews}">
                         <dxg:GridControl.View >
                             <dxg:TableView  
@@ -342,13 +346,13 @@
             </GroupBox>
 
             <!--長度參數設定-->
-            <GroupBox Grid.Column="1"
+            <GroupBox Grid.Column="1" 
                 Header="排版參數設定" 
                   Margin="5">
                 <Grid Name="TypeSettingParameterGrid">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <Grid.Resources>
                         <Style TargetType="GroupBox" BasedOn="{StaticResource BaseStyle}" >
@@ -554,33 +558,34 @@
                         </Grid>
                     </StackPanel>
 
-                    <Grid Margin="5" Grid.Row="1" >
+                    <Grid  Grid.Row="1" VerticalAlignment="Bottom"  >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Horizontal">
+
 
                             <!--ElementName 綁定grid目標-->
-                            <Button Name="GoButton" Content="GO" Command="{Binding GoCommand}"   Background="Gold" Foreground="Black" Width="80" Margin="5" Cursor="Hand">
+                            <Button Name="GoButton" Content="GO" Command="{Binding GoCommand}" Style="{StaticResource SiegCustomButtonGold}"  Foreground="Black" Width="80" Height="30" Margin="5,0" Cursor="Hand">
                                 <Button.CommandParameter>
                                     <MultiBinding Converter="{STD105:ComParConverter}">
                                         <MultiBinding.Bindings>
                                             <Binding ElementName="Material_List_GridControl"  />
+                                            <Binding ElementName="SoftGridControl"  />
                                             <Binding ElementName="PartsGridControl"/>
                                         </MultiBinding.Bindings>
                                     </MultiBinding>
                                 </Button.CommandParameter>
                             </Button>
 
-                        </StackPanel >
-                        <StackPanel Grid.Column="1" Margin="5"  VerticalAlignment="Center" Visibility="{Binding ElementName=GoButton ,Path=IsEnabled , Converter={dx:BooleanToVisibilityConverter Invert=True}}">
+
+                        <StackPanel Grid.Column="1" Margin="5,0"  VerticalAlignment="Center" Visibility="{Binding ElementName=GoButton ,Path=IsEnabled , Converter={dx:BooleanToVisibilityConverter Invert=True}}">
                             <TextBlock  Text="加工之零件過長" TextWrapping="Wrap"   Foreground="{StaticResource solidclr_ButtonRed}" FontWeight="Bold"/>
                             <TextBlock  Text="請修改素材長度設定！" TextWrapping="Wrap" Foreground="{StaticResource solidclr_ButtonRed}" FontWeight="Bold"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Grid.Column="2">
-                            <Button Width="80" Margin="5"  Background="#d8d8d8" Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=TypeSettingParameterGrid}" Cursor="Hand">
+                            <Button Width="80" Margin="5,0" Style="{StaticResource SiegCustomButtonGray}" Height="30"  Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=TypeSettingParameterGrid}" Cursor="Hand">
                                 <Button.Content >
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="CheckboxOutline" />
@@ -589,8 +594,8 @@
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
-                            <Button Content="清除" Command="{Binding CancelCommand}" Width="80" Margin="5"/>
-                            <Button Content="TEST" Width="80" Click="Button_Click"/>
+                            <Button Content="清除" Command="{Binding CancelCommand}" Width="80" Margin="5,0" Height="30"/>
+                            <Button Content="TEST" Width="80" Click="Button_Click" Margin="5,0" Height="30"/>
                         </StackPanel>
                     </Grid>
 
@@ -874,11 +879,13 @@
                                         <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,5,0" >
                                             <dxg:GridControl Name="ComponentGridControl" ItemsSource="{Binding Path =Parts}" 
                                                          AutoGenerateColumns="None" 
-                                                         SelectedItem="{Binding SelectedPart}"
+                                                             SelectedItem="{Binding SelectedPart}"
                                                          IsEnabled="{Binding ButtonEnable}"
                                                          MinHeight="40" 
                                                          MaxHeight="110" 
-                                                         Height="auto">
+                                                         Height="auto"
+                                                        Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                                             >
                                                 <dxg:GridControl.Resources>
                                                     <Style TargetType="dxg:GridColumnHeader">
                                                         <Setter Property="Background" Value="LemonChiffon"/>
@@ -977,11 +984,13 @@
                                                                 </Grid.ColumnDefinitions>
 
                                                                 <materialDesign:PackIcon Kind="MinusThick" />
-                                                                <materialDesign:PackIcon Kind="ScrewLag" Grid.Column="1"/>
+                                                                <materialDesign:PackIcon Kind="ScrewLag" Grid.Column="1"  Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter Invert=True},UpdateSourceTrigger=PropertyChanged}"/>
+                                                                <materialDesign:PackIcon Kind="Delete" Grid.Column="1"  Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"/>
                                                             </Grid>
                                                         </Button.Content>
                                                     </Button>
-                                                    <TextBlock Text="刪除零件" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                                    <TextBlock Text="刪除零件" VerticalAlignment="Center" Margin="10,0,0,0" Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <TextBlock Text="刪除素材" VerticalAlignment="Center" Margin="10,0,0,0" Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter Invert=True},UpdateSourceTrigger=PropertyChanged}"/>
                                                 </StackPanel>
                                             </StackPanel>
                                         </StackPanel>
