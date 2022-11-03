@@ -17,6 +17,9 @@ using WPFSTD105.Model;
 using System.Threading;
 using DevExpress.Mvvm;
 using System.Threading.Tasks;
+using WPFSTD105.Attribute;
+using devDept.Eyeshot.Entities;
+using System.Linq;
 
 namespace WPFSTD105
 {
@@ -484,7 +487,7 @@ namespace WPFSTD105
                         ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔中{nc.SteelAttr.PartNumber}";
                         //Thread.Sleep(1000);
                         model.Clear(); //清除目前模型
-                        model.LoadNcToModel(nc.SteelAttr.GUID.ToString(), ObSettingVM.allowType, ScreenManager.ViewModel);
+                        model.LoadNcToModel(nc.SteelAttr.GUID.ToString(), ObSettingVM.allowType, ProcessingScreenWin.ViewModel);
                     }
                 }
                 else
@@ -497,7 +500,7 @@ namespace WPFSTD105
                             ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔中{i++}/{ncTemps.Count}\n{nc.SteelAttr.PartNumber} ";
                             //Thread.Sleep(1000);
                             model.Clear(); //清除目前模型
-                            model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), ObSettingVM.allowType, ScreenManager.ViewModel);
+                            model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), ObSettingVM.allowType, ProcessingScreenWin.ViewModel);
                         }
                     }
                 }
@@ -512,6 +515,7 @@ namespace WPFSTD105
 
         /// <summary>
         /// 建立dm檔
+        /// 2022/11/02 
         /// </summary>
         /// <param name="model"></param>
         /// <param name="guid"></param>
@@ -534,6 +538,8 @@ namespace WPFSTD105
             List<string> dmList = appVM.GetAllDevPart();
             NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
 
+            Dictionary<string, ObservableCollection<SteelAttr>> saBase = ser.GetSteelAttr();
+
             ProcessingScreenWin.Show(inputBlock: InputBlockMode.None, timeout: 100);
             ProcessingScreenWin.ViewModel.Status = "建立3D/2D圖檔中...";
             // 產生指定GUID的DM檔
@@ -550,25 +556,87 @@ namespace WPFSTD105
             }
             else
             {
-                int i = 0;
+                int i = 1;
                 ProcessingScreenWin.ViewModel.IsIndeterminate = false;
-                // 跑已存在dm檔，產生未有dm檔之NC檔            
-                foreach (NcTemp nc in ncTemps)
-                {
-                    if (nc != null)
-                    {
-                        if (!dmList.Contains(nc.SteelAttr.GUID.Value.ToString()) && ObSettingVM.allowType.Contains(nc.SteelAttr.Type))
-                        {
-                            ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔{nc.SteelAttr.PartNumber}... {i}/{ncTemps.Count}";
                 
-                            ProcessingScreenWin.ViewModel.Progress = i *100 / ncTemps.Count;
-                            //Thread.Sleep(1000);
-                            model.Clear(); //清除目前模型
-                            model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), ObSettingVM.allowType, ProcessingScreenWin.ViewModel);
+                // 取得有NC檔的零件
+                List<string> hasNCPart = new List<string>();
+                //List<string> hasNoNCPart = new List<string>();
+
+                Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
+                //ncTemps.ForEach(x => hasNCPart.Add(x.SteelAttr.PartNumber));
+                // 取得所有NC檔之路徑
+                string path = ApplicationVM.DirectoryNc();
+                // 取得NC檔之檔名(零件)
+                hasNCPart = GetAllNcPath(path).Select(x => x.Substring(x.LastIndexOf("\\") + 1, x.LastIndexOf(".nc1") - x.LastIndexOf("\\") - 1)).ToList();
+                // 取得無NC之零件
+                List<SteelPart> hasNoNCPart = part.SelectMany(x => x.Value).Where(x => !hasNCPart.Contains(x.Number)).ToList();
+                List<String> hasNoNCPartStr = hasNoNCPart.Select(x => x.Number).ToList();
+                // 取得所有斷面規格
+                List<SteelAttr> saAll = ser.GetSteelAttr().Values.SelectMany(x => x).ToList();
+                // 跑已存在dm檔，產生未有dm檔之NC檔
+                int row = ncTemps.Count();
+                foreach (NcTemp nc in ncTemps)
+                {                    
+                    string partNumber = nc.SteelAttr.PartNumber;
+                    if (!hasNoNCPartStr.Contains(partNumber))
+                    {
+                        if (nc != null)
+                        {
+                            if (!dmList.Contains(nc.SteelAttr.GUID.Value.ToString()) && ObSettingVM.allowType.Contains(nc.SteelAttr.Type))
+                            {
+                                ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔... {i}/{row}";
+
+                                ProcessingScreenWin.ViewModel.Progress = i * 100 / ncTemps.Count;
+                                //Thread.Sleep(1000);
+                                model.Clear(); //清除目前模型
+                                model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), ObSettingVM.allowType, ProcessingScreenWin.ViewModel);
+                            }
                         }
+                    }
+                    else
+                    {
+                        ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔... {i}/{row}";
+
+                        ProcessingScreenWin.ViewModel.Progress = i * 100 / ncTemps.Count;
+                        model.LoadNoNCToModel(nc.SteelAttr);
                     }
                     i++;
                 }
+
+                //Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
+                //foreach (var parts in part.Values)
+                //{
+                //    foreach (SteelPart partSingle in parts)
+                //    {
+                //        if (!hasNCPart.Contains(partSingle.Number))
+                //        {
+                //            hasNoNCPart.Add(partSingle.Number);
+                //        }
+                //
+                //    }
+                //}
+
+                //// 無NC檔之BOM表零件
+                //// 取得無NC檔之零件清單
+                //// 因為part的架構為 斷面規格,List<零件> ，所以用SelectMany打平，取得所有的零件資訊
+                //// 條件為 無NC的零件
+                //i = 0;
+                //List<SteelPart> p = part.Values.SelectMany(x => x).Where(x => !hasNCPart.Contains(x.Number)).ToList();
+                //foreach (var item in p)
+                //{
+                //    ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔(無NC)... {i}/{p.Count}";
+
+                //    ProcessingScreenWin.ViewModel.Progress = i * 100 / p.Count;
+
+                //    string profile = item.Profile;
+                //    OBJECT_TYPE steelType = item.Type;
+                //    SteelAttr sa = saBase[steelType.ToString()].Where(x => x.Profile == profile).FirstOrDefault();
+                //    Steel3DBlock steel = Steel3DBlock.AddSteel(sa, model, out BlockReference blockReference);
+                //    ser.SetPartModel(model.Blocks[1].Name, model);//儲存 3d 視圖
+                //    i++;
+                //}
+
                 ProcessingScreenWin.ViewModel.IsIndeterminate = true;
             }
 

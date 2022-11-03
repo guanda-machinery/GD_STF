@@ -698,6 +698,61 @@ namespace WPFSTD105
                 #endregion
                 #endregion
 
+                #region Grid Data
+                sheet = book.Worksheets.Add("Grid Data"); //創建一個新工作表並將其附加到集合的末尾
+                book.Worksheets.ActiveWorksheet = sheet;
+                row = 0;
+                column = 0;
+                rowList = new List<int>();
+                #region 欄位名稱
+                sheet.Cells[row, column++].Value = "dm檔名";
+                sheet.Cells[row, column++].Value = "構件編號";
+                sheet.Cells[row, column++].Value = "零件編號";
+                sheet.Cells[row, column++].Value = "名稱";
+                sheet.Cells[row, column++].Value = "鋼材類型";
+                sheet.Cells[row, column++].Value = "斷面規格";
+                sheet.Cells[row, column++].Value = "鋼材類型(Index)";
+                sheet.Cells[row, column++].Value = "材質";
+                sheet.Cells[row, column++].Value = "數量";
+                sheet.Cells[row, column++].Value = "零件長";
+                sheet.Cells[row, column++].Value = "零件重";
+                sheet.Cells[row, column++].Value = "高度";
+                sheet.Cells[row, column++].Value = "寬度";
+                sheet.Cells[row, column++].Value = "腹板厚度";
+                sheet.Cells[row, column++].Value = "Phase";
+                sheet.Cells[row, column++].Value = "拆運";
+                sheet.Cells[row, column++].Value = "標題一";
+                sheet.Cells[row++, column++].Value = "標題二";
+                #endregion
+                #region 欄位塞值
+                foreach (ProductSettingsPageViewModel item in ObSettingVM.GetData())
+                {
+                    column = 0;
+                    sheet.Cells[row, column++].Value = item.steelAttr.GUID.Value.ToString();
+                    sheet.Cells[row, column++].Value = item.steelAttr.AsseNumber;
+                    sheet.Cells[row, column++].Value = item.steelAttr.PartNumber;
+                    sheet.Cells[row, column++].Value = item.steelAttr.Name;
+                    sheet.Cells[row, column++].Value = item.TypeDesc;
+                    sheet.Cells[row, column++].Value = item.steelAttr.Profile;
+                    sheet.Cells[row, column++].Value = item.SteelType;
+                    sheet.Cells[row, column++].Value = item.steelAttr.Material;
+                    sheet.Cells[row, column++].Value = item.Count;
+                    sheet.Cells[row, column++].Value = item.steelAttr.Length;
+                    sheet.Cells[row, column++].Value = item.steelAttr.Weight;
+                    sheet.Cells[row, column++].Value = item.steelAttr.H;
+                    sheet.Cells[row, column++].Value = item.steelAttr.W;
+                    sheet.Cells[row, column++].Value = item.steelAttr.t1;
+                    sheet.Cells[row, column++].Value = item.steelAttr.t2;
+                    sheet.Cells[row, column++].Value = item.steelAttr.Phase;
+                    sheet.Cells[row, column++].Value = item.steelAttr.ShippingNumber;
+                    sheet.Cells[row, column++].Value = item.steelAttr.Title1;
+                    sheet.Cells[row++, column++].Value = item.steelAttr.Title2;
+                }
+                #endregion
+                sheet.Cells.AutoFitColumns();
+                sheet.Rows.AutoOutline();
+                #endregion
+
                 book.BeginUpdate();
                 book.SaveDocument(path, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
             }

@@ -19,6 +19,7 @@ namespace GD_STD.Data
         /// </summary>
         public SteelPart()
         {
+            //CountList = new List<int>();
             ID = new List<int>();
             Father = new List<int>();
             Creation = DateTime.Now;
@@ -86,6 +87,10 @@ namespace GD_STD.Data
         /// <inheritdoc/>
         [TeklaBom(1)]
         public List<int> ID { get; set; }
+        /// <summary>
+        /// 依照構件紀錄數量
+        /// </summary>
+        //public List<int> CountList { get; set; } = new List<int>();  
         /// <inheritdoc/>
         [TeklaBom(2)]
         public string Number { get; set; }
@@ -221,13 +226,14 @@ namespace GD_STD.Data
         {
             if (obj is SteelPart steel)
             {
-                if (steel.Number != this.Number && steel.Length != this.Length) //編號判斷合併物件
+                // 群組條件依照 零件編號、長度、型鋼類型、斷面規格
+                if (steel.Number != this.Number && steel.Length != this.Length && steel.Type != this.Type && steel.Profile != this.Profile) //編號判斷合併物件
                 {
                     throw new Exception("合併物件失敗，因編號不相同。");
                 }
                 ID.AddRange(steel.ID);
                 Father.AddRange(steel.Father);
-
+                //CountList.Add(steel.Father.Count);
                 if (GUID != null) //如果有圖面 GUID 
                 {
                     //如果圖紙狀態是新建或數量減少
@@ -287,6 +293,7 @@ namespace GD_STD.Data
         public void Reduce(int id)
         {
             int index = ID.Find(el => el == id);//取出物件 ID 位置
+            //CountList.Remove(index);
             Father.Remove(index);//刪除父物件
             ID.Remove(index);//刪除物件
             Match.RemoveAt(index); //刪除匹配料件
@@ -307,6 +314,7 @@ namespace GD_STD.Data
                     State = DRAWING_STATE.INCREASE_COUNT;//就改變狀態為減少數量
                 }
                 Count = steel.Count; //賦予跟新後的數量
+                //CountList = steel.CountList;
                 Father = steel.Father;//賦予跟新後的父 ID
                 ID = steel.ID;//賦予跟新後的 ID
                 Length = steel.Length;//賦予跟新後的長度
