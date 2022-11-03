@@ -103,6 +103,23 @@ namespace WPFSTD105
                 ObservableCollection<SteelPart> add = new ObservableCollection<SteelPart>(_.Select(el => (SteelPart)el));
                 result.Add(item.Name, add);
             }
+#if DEBUG
+            try
+            {
+                // 將字串寫入TXT檔
+                StreamWriter str1 = new StreamWriter(@".\for_debugging_txt\Current_PartInfo.txt");
+                //StreamWriter str1 = new StreamWriter(@"Current_PartInfo.txt");
+                foreach (KeyValuePair<string, ObservableCollection<SteelPart>> se in result)
+                {
+                    str1.WriteLine(se.Key.ToString() + " " + se.Value.ToString());
+                }
+                str1.Close();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+#endif
             return result;
         }
         /// <summary>
@@ -346,7 +363,7 @@ namespace WPFSTD105
                 SelectedOnly = false,
                 Purge = true, Blocks = model.Blocks, Entities = model.Entities, 
             }, $@"{path}\{dataName}.dm", new FileSerializerExt());
-            writeFile.DoWork();//存取檔案
+            writeFile.DoWork();//存取檔案 //1103 OK
         }
         /// <summary>
         /// 存取單零件<see cref="devDept.Eyeshot.Model"/>
@@ -473,6 +490,23 @@ namespace WPFSTD105
         /// <param name="dataCorresponds"></param>
         public void SetDataCorrespond(ObservableCollection<DataCorrespond> dataCorresponds)
         {
+#if DEBUG
+            try
+            {
+                // 將字串寫入TXT檔
+                StreamWriter str = new StreamWriter(@".\for_debugging_txt\DEBUGing_PartList.txt");
+                //StreamWriter str = new StreamWriter(@"DEBUG_PartList.txt");
+                foreach (DataCorrespond se in dataCorresponds)
+                {
+                    str.WriteLine(se.DataName.ToString() + ".dm " + se.Profile.ToString() + " " + se.Number.ToString());
+                }
+                str.Close();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+#endif
             GZipSerializeBinary(dataCorresponds, ApplicationVM.FilePartList());
         }
         /// <summary>
@@ -480,6 +514,24 @@ namespace WPFSTD105
         /// </summary>
         public ObservableCollection<DataCorrespond> GetDataCorrespond()
         {
+            ObservableCollection<DataCorrespond> temp_corr = GZipDeserialize<ObservableCollection<DataCorrespond>>(ApplicationVM.FilePartList());
+#if DEBUG
+            try
+            {
+                // 將字串寫入TXT檔
+                StreamWriter str = new StreamWriter(@".\for_debugging_txt\DEBUGing_PartList.txt");
+                //StreamWriter str = new StreamWriter(@"DEBUG_PartList.txt");
+                foreach (DataCorrespond se in temp_corr)
+                {
+                    str.WriteLine(se.DataName.ToString() + ".dm " + se.Profile.ToString() + " " + se.Number.ToString());
+                }
+                str.Close();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+#endif
             return GZipDeserialize<ObservableCollection<DataCorrespond>>(ApplicationVM.FilePartList());
         }
         /// <summary>

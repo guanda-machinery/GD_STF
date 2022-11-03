@@ -743,7 +743,8 @@
                                   Padding="5,1,0,0"
                                   ItemsSource="{Binding ProfileList, UpdateSourceTrigger=PropertyChanged}" 
                                   DisplayMemberPath="Profile" 
-                                  Text="{Binding SteelSectionProperty, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="CBOX_SectionTypeChanged">
+                                  Text="{Binding SteelSectionProperty, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="CBOX_SectionTypeChanged"
+                                  IsSynchronizedWithCurrentItem="True">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionTypeComboBox">
                                 <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>

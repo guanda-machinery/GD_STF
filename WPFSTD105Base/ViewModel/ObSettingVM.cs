@@ -650,7 +650,7 @@ namespace WPFSTD105.ViewModel
                 DataCorrespond.Add(data);
                 //SerializationHelper.SerializeBinary(DataCorrespond, ApplicationVM.FilePartList());
                 STDSerialization ser = new STDSerialization();
-                ser.SetDataCorrespond(DataCorrespond);
+                ser.SetDataCorrespond(DataCorrespond);//1103 OK
                 if (data.Type == OBJECT_TYPE.BH)
                 {
 
@@ -1425,15 +1425,7 @@ namespace WPFSTD105.ViewModel
 
             // 取得dm檔與零件之對應
             ObservableCollection<DataCorrespond> DataCorrespond = ser.GetDataCorrespond();
-#if DEBUG
-            // 將字串寫入TXT檔
-            StreamWriter str = new StreamWriter(@"DEBUG_PartList.txt");
-            foreach (DataCorrespond se in DataCorrespond)
-            {
-                str.WriteLine(se.DataName.ToString() + " " + se.Profile.ToString() + " " + se.Number.ToString());
-            }
-            str.Close();
-#endif
+
             // 取得構件資訊
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();
             if (assemblies == null)
@@ -1442,15 +1434,6 @@ namespace WPFSTD105.ViewModel
             }
             //取得零件資訊
             Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
-#if DEBUG
-            // 將字串寫入TXT檔
-            StreamWriter str1 = new StreamWriter(@"Current_PartInfo.txt");
-            foreach (KeyValuePair<string, ObservableCollection<SteelPart>> se in part)
-            {
-                str1.WriteLine(se.Key.ToString() + " " + se.Value.ToString());
-            }
-            str1.Close();
-#endif
 
             var profileAll = ser.GetSteelAttr();
             Dictionary<string, List<SteelAttr>> NcSA = new Dictionary<string, List<SteelAttr>>();
@@ -1461,13 +1444,21 @@ namespace WPFSTD105.ViewModel
                 // 所有該斷面規格的零件
                 List<SteelPart> sa1 = part[key].ToList();
 #if DEBUG
-                // 將字串寫入TXT檔
-                StreamWriter str3 = new StreamWriter(@"Debug_ProfileCorespondToSteelPart.txt");
-                foreach (SteelPart se in sa1)
+                try
                 {
-                    str3.WriteLine(key + " " + se.GUID.ToString() + " " + se.Number.ToString() + " " + se.Count.ToString() + " " + se.IsTekla.ToString());
+                    // 將字串寫入TXT檔
+                    StreamWriter str3 = File.AppendText(@".\for_debugging_txt\Debug_ProfileCorespondToSteelPart.txt");
+                    //StreamWriter str3 = File.AppendText(@"Debug_ProfileCorespondToSteelPart.txt");
+                    foreach (SteelPart se in sa1)
+                    {
+                        str3.WriteLine(key + " " + se.GUID.ToString() + "-SteelPart " + part[key][0].Profile + " " + se.Number.ToString() + " " + se.Count.ToString() + " " + se.IsTekla.ToString());
+                    }
+                    str3.Close();
                 }
-                str3.Close();
+                catch (Exception)
+                {
+                    throw;
+                }
 #endif
                 // 紀錄零件資訊
                 List<SteelAttr> saList = new List<SteelAttr>();
@@ -1509,20 +1500,36 @@ namespace WPFSTD105.ViewModel
                             saTemp.Title2 = "";
                         }
 #if DEBUG
-                        // 將字串寫入TXT檔
-                        StreamWriter str4 = File.AppendText(@"Debug_NcSuccessToDM.txt");
-                        str4.WriteLine(item.Profile.GetHashCode().ToString() + ".lis" + " " + item.Number + " " + saTemp.GUID.ToString() + " " + item.Profile.ToString());
-                        str4.Close();
+                        try
+                        {
+                            // 將字串寫入TXT檔
+                            StreamWriter str4 = File.AppendText(@".\for_debugging_txt\Debug_NcSuccessToDM.txt");
+                            //StreamWriter str4 = File.AppendText(@"Debug_NcSuccessToDM.txt");
+                            str4.WriteLine(item.Profile.GetHashCode().ToString() + ".lis" + " " + item.Number + ".nc1 " + saTemp.GUID.ToString() + " " + item.Profile.ToString());
+                            str4.Close();
+                        }
+                        catch (Exception)
+                        {
+                            throw;
+                        }
 #endif
                         saList.Add(saTemp);
                     }
 #if DEBUG
                     else
                     {
-                        // 將字串寫入TXT檔
-                        StreamWriter str2 = File.AppendText(@"Debug_NcCannotToDM.txt");
-                        str2.WriteLine(item.Profile.GetHashCode().ToString() + ".lis" + " " + item.Number.ToString() + " " + item.Profile.ToString());
-                        str2.Close();
+                        try
+                        {
+                            // 將字串寫入TXT檔
+                            StreamWriter str2 = File.AppendText(@".\for_debugging_txt\Debug_NcCannotToDM.txt");
+                            //StreamWriter str2 = File.AppendText(@"Debug_NcCannotToDM.txt");
+                            str2.WriteLine(item.Profile.GetHashCode().ToString() + ".lis" + " " + item.Number + ".nc1 " + item.Profile.ToString());
+                            str2.Close();
+                        }
+                        catch (Exception)
+                        {
+                            throw;
+                        }
                     }
 #endif
                 }
