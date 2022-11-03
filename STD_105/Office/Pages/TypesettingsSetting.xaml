@@ -13,7 +13,6 @@
                   xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
                   xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
                   xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
-                  
                   xmlns:spa="clr-namespace:WPFSTD105;assembly=WPFSTD105"
                   xmlns:local="clr-namespace:STD_105"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -92,16 +91,17 @@
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
     <Grid dx:ThemeManager.ThemeName="Win10Light" Background="#D3D3D3">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"  />
-                    <ColumnDefinition Width="600"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"  />
+                <ColumnDefinition Width="600"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
@@ -121,34 +121,34 @@
                     </Grid>
                 </GroupBox.Header>
                 <Grid>
-                            <Grid.Resources>
-                                <Style TargetType="dxg:GridColumn" >
-                                    <Setter Property="MinWidth" Value="35"/>
-                                    <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
-                                    <Setter Property="AllowGrouping" Value="false"/>
-                                </Style>
+                    <Grid.Resources>
+                        <Style TargetType="dxg:GridColumn" >
+                            <Setter Property="MinWidth" Value="35"/>
+                            <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
+                            <Setter Property="AllowGrouping" Value="false"/>
+                        </Style>
                         <Style TargetType="dxe:TextEditSettings">
                             <Setter Property="HorizontalContentAlignment" Value="Center"/>
                         </Style>
 
                     </Grid.Resources>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"  />
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="78"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <dxg:GridControl   
-                                FilterGroupSortChanging="GridControl_FilterGroupSortChanging"
-                                Name="PartsGridControl"
-                                AutoGenerateColumns="None"
-                                SelectionMode="Row"
-                                SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                Height="365" 
-                                ItemsSource="{Binding DataViews}">
-                                <dxg:GridControl.View >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"  />
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="78"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <dxg:GridControl   
+                        FilterGroupSortChanging="GridControl_FilterGroupSortChanging"
+                        Name="PartsGridControl"
+                        AutoGenerateColumns="None"
+                        SelectionMode="row"
+                       SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                        Height="365" 
+                        ItemsSource="{Binding DataViews}">
+                        <dxg:GridControl.View >
                             <dxg:TableView       
                                 AllowPaging="True"
                                 PageSize="30"
@@ -183,7 +183,7 @@
                                         <Setter Property="TextBlock.FontSize" Value="12"/>
                                     </Style>
                                 </dxg:TableView.CellStyle>
-                                
+
                                 <dxg:TableView.RowIndicatorContentTemplate>
                                     <DataTemplate>
                                         <Grid>
@@ -202,74 +202,73 @@
 
 
                             </dxg:TableView>
-                                </dxg:GridControl.View>
-                                <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"    Header="構件編號" Width="120"/>
-                                <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="120" />
-                                <dxg:GridColumn FieldName="Profile"  IsSmart="True"  Header="斷面規格"  Width="150" />
-                                <dxg:GridColumn FieldName="Material"  IsSmart="True"  Header="材質"  Width="80"/>
-                                <dxg:GridColumn FieldName="Length"  IsSmart="True"  Header="零件長" Width="70">
-                                    <dxg:GridColumn.EditSettings>
-                                        <dxe:TextEditSettings DisplayFormat="F0" HorizontalContentAlignment="Center"/>
-                                    </dxg:GridColumn.EditSettings>
-                                </dxg:GridColumn>
+                        </dxg:GridControl.View>
+                        <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"    Header="構件編號" Width="120"/>
+                        <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="120" />
+                        <dxg:GridColumn FieldName="Profile"  IsSmart="True"  Header="斷面規格"  Width="150" />
+                        <dxg:GridColumn FieldName="Material"  IsSmart="True"  Header="材質"  Width="80"/>
+                        <dxg:GridColumn FieldName="Length"  IsSmart="True"  Header="零件長" Width="70">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings DisplayFormat="F0" HorizontalContentAlignment="Center"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
                         <dxg:GridColumn FieldName="PartWeight" Binding="{c:Binding PartWeight/1000}"  IsSmart="True"  Header="零件重"  Width="50" >
-                                    <dxg:GridColumn.EditSettings>
-                                        <dxe:TextEditSettings DisplayFormat="F1" HorizontalContentAlignment="Center"/>
-                                    </dxg:GridColumn.EditSettings>
-                                </dxg:GridColumn>
-                                <dxg:GridColumn FieldName="" Binding="{Binding ID,Converter={STD105:IListFilterToCountConverter} }"  IsSmart="True"  Width="45" Header="數量"  />
-                                <dxg:GridColumn FieldName="AlreadyMatedMaterialCounts" IsSmart="True"  Width="45" Header="已配對"  />
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings DisplayFormat="F1" HorizontalContentAlignment="Center"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="" Binding="{Binding ID,Converter={STD105:IListFilterToCountConverter} }"  IsSmart="True"  Width="45" Header="數量"  />
+                        <dxg:GridColumn FieldName="AlreadyMatedMaterialCounts" IsSmart="True"  Width="45" Header="已配對"  />
 
-                        <dxg:GridColumn FieldName="SortCount" Width="60" AllowResizing="false" AllowMoving="false"  IsSmart="True"  Header="預排數量"    />
 
 
                     </dxg:GridControl>
-                            <StackPanel HorizontalAlignment="Center"  Margin="-1,0,0,0"
+                    <StackPanel HorizontalAlignment="Center"  Margin="-1,0,0,0"
                                         Grid.Column="1"
                                         Background="#D3D3D3"  >
 
-                                <!--{Binding ElementName= PartGridControl , Converter={STD105:GridControlWidthConvert} ,ConverterParameter='SortCountGridColumnSpace' , UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True , NotifyOnTargetUpdated=True}"-->
-                                <StackPanel.Resources>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#727272"/>
-                                        <Setter Property="FontWeight" Value="Bold"/>
-                                        <Setter Property="FontSize" Value="12"/>
-                                    </Style>
+                        <!--{Binding ElementName= PartGridControl , Converter={STD105:GridControlWidthConvert} ,ConverterParameter='SortCountGridColumnSpace' , UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True , NotifyOnTargetUpdated=True}"-->
+                        <StackPanel.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="#727272"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="FontSize" Value="12"/>
+                            </Style>
 
-                                </StackPanel.Resources>
-                                <StackPanel Margin="0,12"/>
-                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <TextBlock Text="加入素材" Margin="0,0,0,2.5"/>
+                        </StackPanel.Resources>
+                        <StackPanel Margin="0,12"/>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock Text="加入素材" Margin="0,0,0,2.5"/>
+                        </StackPanel>
+
+                        <Button Margin="1,0" Command="{Binding AddMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}">
+                            <Button.Content>
+                                <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Width="14"/>
+                            </Button.Content>
+                        </Button>
+                        <Button Margin="1,0"  Command="{Binding DeductMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}" >
+                            <Button.Content>
+                                <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Left.svg'}" Width="14"/>
+                            </Button.Content>
+                        </Button>
+                        <Button  Margin="1,0" Command="{Binding AddAllMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}"  >
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="ALL" VerticalAlignment="Center" Margin="0,0,5,0"   />
+                                    <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Width="14"/>
                                 </StackPanel>
-
-                                <Button Margin="1,0" Command="{Binding AddMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}">
-                                    <Button.Content>
-                                        <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Width="14"/>
-                                    </Button.Content>
-                                </Button>
-                                <Button Margin="1,0"  Command="{Binding DeductMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}" >
-                                    <Button.Content>
-                                        <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Left.svg'}" Width="14"/>
-                                    </Button.Content>
-                                </Button>
-                                <Button  Margin="1,0" Command="{Binding AddAllMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}"  >
-                                    <Button.Content>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="ALL" VerticalAlignment="Center" Margin="0,0,5,0"   />
-                                            <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Width="14"/>
-                                        </StackPanel>
-                                    </Button.Content>
-                                </Button>
-                                <Button Margin="1,0" Command="{Binding DeductAllMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}" >
-                                    <Button.Content>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="ALL" VerticalAlignment="Center" Margin="0,0,5,0" />
-                                            <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Left.svg'}" Width="14"/>
-                                        </StackPanel>
-                                    </Button.Content>
-                                </Button>
-                            </StackPanel>
-                            <dxg:GridControl   Grid.Column="2"
+                            </Button.Content>
+                        </Button>
+                        <Button Margin="1,0" Command="{Binding DeductAllMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}" >
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="ALL" VerticalAlignment="Center" Margin="0,0,5,0" />
+                                    <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Left.svg'}" Width="14"/>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                    <dxg:GridControl   Grid.Column="2"
 
                                 FilterGroupSortChanging="GridControl_FilterGroupSortChanging"
                                 Name="SoftGridControl"
@@ -280,7 +279,6 @@
                                 ItemsSource="{Binding DataViews}">
                         <dxg:GridControl.View >
                             <dxg:TableView  
-                                
                                         AllowPaging ="True"    
                                         PageSize="{Binding PageSize, ElementName=PartListTableView}"    
                                         CurrentPageIndex="{Binding CurrentPageIndex,ElementName=PartListTableView,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -303,322 +301,333 @@
                                 ShowIndicator="False"
                             
                                     SearchDelay="0">
-                                        <dxg:TableView.CellStyle>
+                                <dxg:TableView.CellStyle>
                                     <Style>
                                         <Setter Property="TextBlock.FontSize" Value="12"/>
                                     </Style>
-                                        </dxg:TableView.CellStyle>
+                                </dxg:TableView.CellStyle>
                                 <dxg:TableView.Resources>
                                     <Style TargetType="dxe:PagerControl">
                                         <Setter Property="Visibility" Value="Hidden"/>
                                     </Style>
                                 </dxg:TableView.Resources>
-                                    </dxg:TableView>
+                            </dxg:TableView>
 
 
                         </dxg:GridControl.View>
-                                <dxg:GridColumn FieldName="SortCount" Width="60" AllowResizing="false" AllowMoving="false"  IsSmart="True"  Header="預排數量"    />
-                                
-                                <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"    Header="構件編號" Width="120"/>
-                                <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="120" />
-                                <dxg:GridColumn FieldName="Profile"  IsSmart="True"  Header="斷面規格"  Width="150" />
-                                <dxg:GridColumn FieldName="Material"  IsSmart="True"  Header="材質"  Width="80"/>
-                                <dxg:GridColumn FieldName="Length"  IsSmart="True"  Header="零件長" Width="70">
-                                    <dxg:GridColumn.EditSettings>
-                                        <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
-                                    </dxg:GridColumn.EditSettings>
-                                </dxg:GridColumn>
-                                <dxg:GridColumn  FieldName="PartWeight"  IsSmart="True"  Header="零件重"  Width="50" >
-                                    <dxg:GridColumn.EditSettings>
-                                        <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
-                                    </dxg:GridColumn.EditSettings>
-                                </dxg:GridColumn>
-                                <dxg:GridColumn  FieldName="" Binding="{Binding ID , Converter={STD105:IListFilterToCountConverter} }"  IsSmart="True"  Width="45" Header="數量"  />
-                                <dxg:GridColumn  FieldName="AlreadyMatedMaterialCounts" IsSmart="True"  Width="45" Header="已配對"  />
+                        <dxg:GridColumn FieldName="SortCount" Width="60" AllowResizing="false" AllowMoving="false"  IsSmart="True"  Header="預排數量"    />
+
+                        <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"    Header="構件編號" Width="120"/>
+                        <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="120" />
+                        <dxg:GridColumn FieldName="Profile"  IsSmart="True"  Header="斷面規格"  Width="150" />
+                        <dxg:GridColumn FieldName="Material"  IsSmart="True"  Header="材質"  Width="80"/>
+                        <dxg:GridColumn FieldName="Length"  IsSmart="True"  Header="零件長" Width="70">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn  FieldName="PartWeight"  IsSmart="True"  Header="零件重"  Width="50" >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn  FieldName="" Binding="{Binding ID , Converter={STD105:IListFilterToCountConverter} }"  IsSmart="True"  Width="45" Header="數量"  />
+                        <dxg:GridColumn  FieldName="AlreadyMatedMaterialCounts" IsSmart="True"  Width="45" Header="已配對"  />
 
 
-                            </dxg:GridControl>
+                    </dxg:GridControl>
 
-                        </Grid>
+                </Grid>
 
-                </GroupBox>
-                
-                <!--長度參數設定-->
-                <GroupBox Grid.Column="1"
+            </GroupBox>
+
+            <!--長度參數設定-->
+            <GroupBox Grid.Column="1"
                 Header="排版參數設定" 
                   Margin="5">
-                    <Grid Name="TypeSettingParameterGrid">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.Resources>
-                            <Style TargetType="GroupBox" BasedOn="{StaticResource BaseStyle}" >
-                                <Setter Property="Foreground" Value="#3b3b3b"/>
-                            </Style>
-                        </Grid.Resources>
-                        <StackPanel Grid.Row="0">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
+                <Grid Name="TypeSettingParameterGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="GroupBox" BasedOn="{StaticResource BaseStyle}" >
+                            <Setter Property="Foreground" Value="#3b3b3b"/>
+                        </Style>
+                    </Grid.Resources>
+                    <StackPanel Grid.Row="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
 
-                                <GroupBox Grid.Row="0" Grid.Column="0" Header="排版編號設定"  Margin="5">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="auto"/>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="10"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <CheckBox Grid.Column="0" Grid.Row="0"  Content="排版編號" IsChecked="{Binding StartNumberCheckboxBoolen}" />
-                                        <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Center">
-                                            <Label Content="前置字串："/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
-                                            <TextBox>
-                                                <TextBox.Text>
-                                                    <Binding Path="PreCode"  UpdateSourceTrigger="PropertyChanged" >
-                                                        <Binding.ValidationRules >
-                                                            <STD105ValidRule:CheckStringEmptyRule/>
-                                                        </Binding.ValidationRules>
-                                                    </Binding>
-                                                </TextBox.Text>
-                                            </TextBox>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="0" Grid.Row="3" VerticalAlignment="Center">
-                                            <Label Content="起始號碼：" />
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="1" Grid.Row="3" VerticalAlignment="Center">
-                                            <TextBox>
-                                                <TextBox.Text>
-                                                    <Binding Path="StartNumber"  UpdateSourceTrigger="PropertyChanged" >
-                                                        <Binding.ValidationRules >
-                                                            <STD105ValidRule:CheckStringEmptyRule/>
-                                                        </Binding.ValidationRules>
-                                                    </Binding>
-                                                </TextBox.Text>
-                                            </TextBox>
-                                        </StackPanel>
-                                    </Grid>
+                            <GroupBox Grid.Row="0" Grid.Column="0" Header="排版編號設定"  Margin="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="10"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <CheckBox Grid.Column="0" Grid.Row="0"  Content="排版編號" IsChecked="{Binding StartNumberCheckboxBoolen}" />
+                                    <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Center">
+                                        <Label Content="前置字串："/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
+                                        <TextBox>
+                                            <TextBox.Text>
+                                                <Binding Path="PreCode"  UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules >
+                                                        <STD105ValidRule:CheckStringEmptyRule/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="0" Grid.Row="3" VerticalAlignment="Center">
+                                        <Label Content="起始號碼：" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Grid.Row="3" VerticalAlignment="Center">
+                                        <TextBox>
+                                            <TextBox.Text>
+                                                <Binding Path="StartNumber"  UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules >
+                                                        <STD105ValidRule:CheckStringEmptyRule/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                    </StackPanel>
+                                </Grid>
 
-                                </GroupBox>
-                                <GroupBox Grid.Row="0" Grid.Column="1" Header="素材長度設定" Margin="5">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="12"/>
-                                            <RowDefinition Height="auto"/>
-                                            <RowDefinition Height="12"/>
-                                            <RowDefinition Height="auto"/>
-                                        </Grid.RowDefinitions>
-                                        <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0">
-                                            <Label Content="單位：m/m" />
-                                        </StackPanel>
+                            </GroupBox>
+                            <GroupBox Grid.Row="0" Grid.Column="1" Header="素材長度設定" Margin="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0">
+                                        <Label Content="單位：m/m" />
+                                    </StackPanel>
 
-                                        <CheckBox Content="預設長度："  Grid.Row="1" Grid.Column="0" IsChecked="{Binding MainLengthCheckboxBoolen}"/>
+                                    <CheckBox Content="預設長度："  Grid.Row="1" Grid.Column="0" IsChecked="{Binding MainLengthCheckboxBoolen}"/>
 
-                                        <StackPanel Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center">
-                                            <TextBox>
-                                                <TextBox.Text>
-                                                    <Binding Path="MainLength"  UpdateSourceTrigger="PropertyChanged" >
-                                                        <Binding.ValidationRules >
-                                                            <STD105ValidRule:CheckNumberArrayRule/>
-                                                        </Binding.ValidationRules>
-                                                    </Binding>
-                                                </TextBox.Text>
-                                            </TextBox>
-                                        </StackPanel>
-                                        <CheckBox Grid.Row="3" Grid.Column="0"  Content="次要條件：" IsChecked="{Binding SecondaryLengthCheckboxBoolen}"/>
-                                        <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0">
-                                            <Label Content="單位：m/m"/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">
-                                            <TextBox>
-                                                <TextBox.Text>
-                                                    <Binding Path="SecondaryLength"  UpdateSourceTrigger="PropertyChanged" >
-                                                        <Binding.ValidationRules >
-                                                            <STD105ValidRule:CheckNumberArrayRule/>
-                                                        </Binding.ValidationRules>
-                                                    </Binding>
-                                                </TextBox.Text>
-                                            </TextBox>
-                                        </StackPanel>
-                                    </Grid>
-                                </GroupBox>
+                                    <StackPanel Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center">
+                                        <TextBox>
+                                            <TextBox.Text>
+                                                <Binding Path="MainLength"  UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules >
+                                                        <STD105ValidRule:CheckNumberArrayRule/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                    </StackPanel>
+                                    <CheckBox Grid.Row="3" Grid.Column="0"  Content="次要條件：" IsChecked="{Binding SecondaryLengthCheckboxBoolen}"/>
+                                    <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0">
+                                        <Label Content="單位：m/m"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBox>
+                                            <TextBox.Text>
+                                                <Binding Path="SecondaryLength"  UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules >
+                                                        <STD105ValidRule:CheckNumberArrayRule/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                    </StackPanel>
+                                </Grid>
+                            </GroupBox>
 
-                            </Grid>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <GroupBox Grid.Row="0" Grid.Column="0"  Header="特殊條件設定" Width="150"  Margin="5">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="18"/>
-                                            <RowDefinition Height="auto"/>
-                                            <RowDefinition Height="24"/>
-                                            <RowDefinition Height="auto"/>
-                                        </Grid.RowDefinitions>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <GroupBox Grid.Row="0" Grid.Column="0"  Header="特殊條件設定" Width="150"  Margin="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="18"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="24"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
 
-                                        <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Width="auto">
-                                            <CheckBox  Content="Phase："  IsChecked="{Binding PhaseCheckboxBoolen}"/>
-                                        </StackPanel>
+                                    <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Width="auto">
+                                        <CheckBox  Content="Phase："  IsChecked="{Binding PhaseCheckboxBoolen}"/>
+                                    </StackPanel>
 
-                                        <StackPanel Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center">
-                                            <Label  Content="加入" HorizontalAlignment="Center" />
-                                        </StackPanel>
+                                    <StackPanel Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center">
+                                        <Label  Content="加入" HorizontalAlignment="Center" />
+                                    </StackPanel>
 
-                                        <StackPanel Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">
-                                            <CheckBox Content="拆運："  IsChecked="{Binding DismanteCheckboxBoolen}"/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center">
+                                    <StackPanel Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">
+                                        <CheckBox Content="拆運："  IsChecked="{Binding DismanteCheckboxBoolen}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center">
 
-                                        </StackPanel>
-                                        <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">
-                                            <Label Content="加入" HorizontalAlignment="Center" />
-                                        </StackPanel>
-                                    </Grid>
-                                </GroupBox>
-                                <GroupBox Grid.Row="0" Grid.Column="1"  Header="切割預留設定" Margin="5">
-                                    <Grid>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">
+                                        <Label Content="加入" HorizontalAlignment="Center" />
+                                    </StackPanel>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Grid.Row="0" Grid.Column="1"  Header="切割預留設定" Margin="5">
+                                <Grid>
 
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="12"/>
-                                            <RowDefinition Height="auto"/>
-                                            <RowDefinition Height="12"/>
-                                            <RowDefinition Height="auto"/>
-                                        </Grid.RowDefinitions>
-                                        <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5,0,0,0">
-                                            <Label Content="單位：m/m"  />
-                                        </StackPanel>
-                                        <CheckBox Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="素材前端切除："  IsChecked="{Binding StartCutCheckboxBoolen}"/>
-                                        <StackPanel Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center">
-                                            <TextBox  InputMethod.IsInputMethodEnabled="False"
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5,0,0,0">
+                                        <Label Content="單位：m/m"  />
+                                    </StackPanel>
+                                    <CheckBox Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="素材前端切除："  IsChecked="{Binding StartCutCheckboxBoolen}"/>
+                                    <StackPanel Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center">
+                                        <TextBox  InputMethod.IsInputMethodEnabled="False"
                                    MinWidth="100" >
-                                                <TextBox.Text>
-                                                    <Binding Path="MatchSettingStartCut" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" >
-                                                        <Binding.ValidationRules >
-                                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                        </Binding.ValidationRules>
-                                                    </Binding>
-                                                </TextBox.Text>
-                                            </TextBox>
-                                        </StackPanel>
-                                        <CheckBox Grid.Row="3" Grid.Column="0" Content="素材後端切除：" IsChecked="{Binding EndCutCheckboxBoolen}" />
-                                        <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="5,0,0,0">
-                                            <Label Content="單位：m/m" />
-                                        </StackPanel>
-                                        <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">
-                                            <TextBox MinWidth="100">
-                                                <TextBox.Text>
-                                                    <Binding Path="MatchSettingEndCut" StringFormat="{}{0:N2}"  UpdateSourceTrigger="PropertyChanged">
-                                                        <Binding.ValidationRules>
-                                                            <STD105ValidRule:CheckNumberRule  NumberMin="0"/>
-                                                        </Binding.ValidationRules>
-                                                    </Binding>
-                                                </TextBox.Text>
-                                            </TextBox>
-                                        </StackPanel>
+                                            <TextBox.Text>
+                                                <Binding Path="MatchSettingStartCut" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules >
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                    </StackPanel>
+                                    <CheckBox Grid.Row="3" Grid.Column="0" Content="素材後端切除：" IsChecked="{Binding EndCutCheckboxBoolen}" />
+                                    <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="5,0,0,0">
+                                        <Label Content="單位：m/m" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBox MinWidth="100">
+                                            <TextBox.Text>
+                                                <Binding Path="MatchSettingEndCut" StringFormat="{}{0:N2}"  UpdateSourceTrigger="PropertyChanged">
+                                                    <Binding.ValidationRules>
+                                                        <STD105ValidRule:CheckNumberRule  NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                    </StackPanel>
 
-                                        <StackPanel Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="20,0">
-                                            <Label Content="鋸床切割損耗：" />
-                                        </StackPanel>
-                                        <StackPanel Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
-                                            <Label Content="{ Binding MatchSetting.Cut }" />
-                                            <Label Content="mm" />
-                                        </StackPanel>
-                                    </Grid>
-                                </GroupBox>
+                                    <StackPanel Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="20,0">
+                                        <Label Content="鋸床切割損耗：" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal">
+                                        <Label Content="{ Binding MatchSetting.Cut }" />
+                                        <Label Content="mm" />
+                                    </StackPanel>
+                                </Grid>
+                            </GroupBox>
 
-                            </Grid>
-                        </StackPanel>
+                        </Grid>
+                    </StackPanel>
 
-                        <DockPanel Margin="5" Grid.Row="1" >
-                            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                    <Grid Margin="5" Grid.Row="1" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Horizontal">
 
-                                <!--ElementName 綁定grid目標-->
-                                <Button Content="GO" Command="{Binding GoCommand}"   Background="Gold" Foreground="Black" Width="80" Margin="5" Cursor="Hand">
-                                    <Button.CommandParameter>
-                                        <MultiBinding Converter="{STD105:ComParConverter}">
-                                            <MultiBinding.Bindings>
-                                                <Binding ElementName="Material_List_GridControl"  />
+                            <!--ElementName 綁定grid目標-->
+                            <Button Name="GoButton" Content="GO" Command="{Binding GoCommand}"   Background="Gold" Foreground="Black" Width="80" Margin="5" Cursor="Hand">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{STD105:ComParConverter}">
+                                        <MultiBinding.Bindings>
+                                            <Binding ElementName="Material_List_GridControl"  />
                                             <Binding ElementName="PartsGridControl"/>
-                                            </MultiBinding.Bindings>
-                                        </MultiBinding>
-                                    </Button.CommandParameter>
-                                </Button>
-                            </StackPanel >
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-                                <Button Width="80" Margin="5"  Background="#d8d8d8" Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=TypeSettingParameterGrid}" Cursor="Hand">
-                                    <Button.Content >
-                                        <StackPanel Orientation="Horizontal">
-                                            <materialDesign:PackIcon Kind="CheckboxOutline" />
-                                            <TextBlock Text="／"/>
-                                            <materialDesign:PackIcon Kind="CheckboxBlankOutline" />
-                                        </StackPanel>
-                                    </Button.Content>
-                                </Button>
-                                <Button Content="清除" Command="{Binding CancelCommand}" Width="80" Margin="5"/>
-                                <Button Content="TEST" Width="80" Click="Button_Click"/>
-                            </StackPanel>
-                        </DockPanel>
+                                        </MultiBinding.Bindings>
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
 
+                        </StackPanel >
+                        <StackPanel Grid.Column="1" Margin="5"  VerticalAlignment="Center" Visibility="{Binding ElementName=GoButton ,Path=IsEnabled , Converter={dx:BooleanToVisibilityConverter Invert=True}}">
+                            <TextBlock  Text="加工之零件過長" TextWrapping="Wrap"   Foreground="{StaticResource solidclr_ButtonRed}" FontWeight="Bold"/>
+                            <TextBlock  Text="請修改素材長度設定！" TextWrapping="Wrap" Foreground="{StaticResource solidclr_ButtonRed}" FontWeight="Bold"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Grid.Column="2">
+                            <Button Width="80" Margin="5"  Background="#d8d8d8" Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=TypeSettingParameterGrid}" Cursor="Hand">
+                                <Button.Content >
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="CheckboxOutline" />
+                                        <TextBlock Text="／"/>
+                                        <materialDesign:PackIcon Kind="CheckboxBlankOutline" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                            <Button Content="清除" Command="{Binding CancelCommand}" Width="80" Margin="5"/>
+                            <Button Content="TEST" Width="80" Click="Button_Click"/>
+                        </StackPanel>
                     </Grid>
-                </GroupBox>
 
-                <StackPanel Grid.Column="2" Grid.Row="0"  Margin="5,5,10,5">
-                    <StackPanel.Resources>
+                </Grid>
+            </GroupBox>
+
+            <StackPanel Grid.Column="2" Grid.Row="0"  Margin="5,5,10,5">
+                <StackPanel.Resources>
                     <Style TargetType="Button" BasedOn="{StaticResource SiegCustomButton}">
                         <Setter Property="Width"
                                 Value="60"/>
                         <Setter Property="Height"
                                 Value="60"/>
                     </Style>
-                        
+
                 </StackPanel.Resources>
                 <Button  Command="{Binding CutControlCommand}"  Width="60" >
                     <Border>
-                        <dx:DXImage Source="{dx:DXImage 'SvgImages/Outlook Inspired/TaskList.svg'}"/>
+                        <materialDesign:PackIcon Kind="CalendarCheck" Width="45" Height="45" />
+                      <!--  <dx:DXImage Source="{dx:DXImage 'SvgImages/Outlook Inspired/TaskList.svg'}"/>-->
                     </Border>
                 </Button>
                 <Label Content="切割明細表" Foreground="Black"/>
 
                 <Button Command="{Binding BuyControlCommand}" Margin="0,10,0,0" >
                     <Border>
-                        <dx:DXImage Source="{dx:DXImage 'SvgImages/Outlook Inspired/TaskList.svg'}"/>
+                        <materialDesign:PackIcon Kind="CartOutline" Width="45" Height="45" />
                     </Border>
                 </Button>
                 <Label Content="採購明細單" Foreground="Black"/>
 
                 <Button Command="{Binding}" Margin="0,10,0,0">
                     <Border>
-                    <dx:DXImage Source="{StaticResource Logo}">
-                        <dx:DXImage.BitmapEffect>
-                            <DropShadowBitmapEffect Opacity="0.5" />
-                        </dx:DXImage.BitmapEffect>
+                        <dx:DXImage Source="{StaticResource Logo}">
+                            <dx:DXImage.BitmapEffect>
+                                <DropShadowBitmapEffect Opacity="0.5" />
+                            </dx:DXImage.BitmapEffect>
                         </dx:DXImage>
                     </Border>
                 </Button>
@@ -632,43 +641,43 @@
                     Content="採購金額預算表"
                     Width="160"
                 Command="{Binding AmountControlCommand}"/>-->
-                </StackPanel>
+            </StackPanel>
 
-            </Grid>
-            <Grid Grid.Row="1" MaxHeight="600">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" MinWidth="300"/>
-                    <ColumnDefinition Width="400" MinWidth="200" MaxWidth="1400"/>
-                </Grid.ColumnDefinitions>
-                <GroupBox Grid.Column="0" Margin="5" Padding="0">
-                    <GroupBox.Header>
-                        <Grid Margin="9" Height="18">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="素材清單"  FontSize="16"></TextBlock>
-                            <TextBox Grid.Column="1" materialDesign:HintAssist.Hint="Search Tasks(Ctrl + F)" BorderBrush="#cfcfcf"
+        </Grid>
+        <Grid Grid.Row="1" MaxHeight="600">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="300"/>
+                <ColumnDefinition Width="400" MinWidth="200" MaxWidth="1400"/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Grid.Column="0" Margin="5" Padding="0">
+                <GroupBox.Header>
+                    <Grid Margin="9" Height="18">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="素材清單"  FontSize="16"></TextBlock>
+                        <TextBox Grid.Column="1" materialDesign:HintAssist.Hint="Search Tasks(Ctrl + F)" BorderBrush="#cfcfcf"
                                  Text="{Binding MaterialGridSearchString, Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}" 
                                 FontSize="14" 
                                  MaxWidth="250" Width="200" HorizontalAlignment="Right" Margin="0" Padding="0" />
-                        </Grid>
-                    </GroupBox.Header>
+                    </Grid>
+                </GroupBox.Header>
 
-                    <GroupBox.Resources>
-                        <Style TargetType="Button"
+                <GroupBox.Resources>
+                    <Style TargetType="Button"
                            BasedOn="{ StaticResource BaseStyle }"/>
-                        <Style TargetType="ProgressBar" 
+                    <Style TargetType="ProgressBar" 
                        BasedOn="{StaticResource MaterialDesignLinearProgressBar}">
-                            <Setter Property="Foreground" Value="#0078D7"/>
-                            <Setter Property="BorderBrush" Value="#0078D7"/>
-                            <Setter Property="BorderThickness" Value="0"/>
-                        </Style>
-                        <Style TargetType="dxg:GridColumn">
-                            <Setter Property="HorizontalHeaderContentAlignment"  Value="Center"/>
-                        </Style>
-                    </GroupBox.Resources>
-                    <dxg:GridControl 
+                        <Setter Property="Foreground" Value="#0078D7"/>
+                        <Setter Property="BorderBrush" Value="#0078D7"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                    </Style>
+                    <Style TargetType="dxg:GridColumn">
+                        <Setter Property="HorizontalHeaderContentAlignment"  Value="Center"/>
+                    </Style>
+                </GroupBox.Resources>
+                <dxg:GridControl 
                         Name="Material_List_GridControl"    
                         AutoGenerateColumns="None" 
                         MouseDown="TableView_MouseDown"
@@ -676,7 +685,7 @@
                         Grid.Row="2"    
                         ItemsSource="{Binding MaterialDataViews}"
                         MinHeight="200"  MaxHeight="1000">
-                        <dxg:GridControl.View >
+                    <dxg:GridControl.View >
                         <dxg:TableView         
                                  HighlightItemOnHover="True"
                                 IsColumnMenuEnabled ="False"
@@ -694,201 +703,199 @@
                                 SearchPanelNullText="Search Tasks(Ctrl + F)" 
                                 SearchPanelFindMode="Always" 
                                 SearchDelay="0">
-                                <dxg:TableView.CellStyle>
-                                    <Style>
-                                        <Setter Property="TextBlock.FontSize" Value="12"/>
-                                        <Setter Property="TextBlock.Foreground" Value="Black"/>
-                                    </Style>
-                                </dxg:TableView.CellStyle>
-                            </dxg:TableView>
-                        </dxg:GridControl.View>
-
-
-                        <dxg:GridColumn FieldName="ExclamationMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" Width="40" FixedWidth="True">
-                            <dxg:GridColumn.HeaderImageStyle>
-                                <Style TargetType="Image">
-                                    <Setter Property="Width" Value="16"></Setter>
-                                    <Setter Property="Margin" Value="0"></Setter>
-                                </Style>
-
-                            </dxg:GridColumn.HeaderImageStyle>
-                            <dxg:GridColumn.CellTemplate>
-                                <DataTemplate>
-                                    <dxe:CheckEdit  IsThreeState="false">
-                                        <dxe:CheckEdit.Style>
-                                            <Style TargetType="{x:Type dxe:CheckEdit}">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
-                                                            <dx:DXImage x:Name="EMarkDX" Height="20" Width="20" Source="{dx:DXImage 'SvgImages/Outlook Inspired/HighImportance.svg'}" Opacity="1" />
-                                                            <ControlTemplate.Triggers>
-                                                                <Trigger Property="IsChecked" Value="False">
-                                                                    <Setter Property="Opacity" Value="0" TargetName="EMarkDX"  />
-                                                                </Trigger>
-                                                            </ControlTemplate.Triggers>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </dxe:CheckEdit.Style>
-                                    </dxe:CheckEdit>
-
-                                </DataTemplate>
-                            </dxg:GridColumn.CellTemplate>
-                        </dxg:GridColumn>
-                        <dxg:GridColumn IsSmart="True" Name="LockGridCol" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
-                            <dxg:GridColumn.HeaderImageStyle>
-                                <Style TargetType="Image">
-                                    <Setter Property="Width" Value="16"></Setter>
-                                    <Setter Property="Margin" Value="0"></Setter>
-                                </Style>
-                            </dxg:GridColumn.HeaderImageStyle>
-                            <dxg:GridColumn.CellTemplate>
-                                <DataTemplate>
-                                    <dxe:CheckEdit IsThreeState="false" IsChecked="{Binding Row.LockMark}" x:Name="LockEdit">
-                                        <dxe:CheckEdit.Style>
-                                            <Style TargetType="{x:Type dxe:CheckEdit}">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
-                                                            <dx:DXImage x:Name="LockDX" Height="20" Width="20" Source="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" Opacity="1" />
-                                                            <ControlTemplate.Triggers>
-                                                                <Trigger Property="IsChecked" Value="False">
-                                                                    <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Icon Builder/Security_Unlock.svg'}" TargetName="LockDX"  />
-                                                                </Trigger>
-                                                            </ControlTemplate.Triggers>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </dxe:CheckEdit.Style>
-                                    </dxe:CheckEdit>
-
-                                </DataTemplate>
-                            </dxg:GridColumn.CellTemplate>
-                        </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="GearMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Dashboards/ScatterChartLabelOptions.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
-                            <dxg:GridColumn.HeaderImageStyle>
-                                <Style TargetType="Image">
-                                    <Setter Property="Width" Value="16"></Setter>
-                                    <Setter Property="Margin" Value="0"></Setter>
-                                </Style>
-                            </dxg:GridColumn.HeaderImageStyle>
-                            <dxg:GridColumn.CellTemplate>
-                                <DataTemplate>
-                                    <dxe:CheckEdit IsThreeState="false">
-                                        <dxe:CheckEdit.Style>
-                                            <Style TargetType="{x:Type dxe:CheckEdit}">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
-                                                            <dx:DXImage x:Name="GearDX" Height="20" Width="20" Source="{dx:DXImage 'SvgImages/Dashboards/ScatterChartLabelOptions.svg'}" Opacity="1" />
-                                                            <ControlTemplate.Triggers>
-                                                                <Trigger Property="IsChecked" Value="False">
-                                                                    <Setter Property="Opacity" Value="0" TargetName="GearDX" />
-                                                                </Trigger>
-                                                            </ControlTemplate.Triggers>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </dxe:CheckEdit.Style>
-                                    </dxe:CheckEdit>
-
-                                </DataTemplate>
-                            </dxg:GridColumn.CellTemplate>
-                        </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="BuildTime" IsSmart="True"  Header="建立日期" AllowEditing="false" >
-
-                        </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="" IsSmart="True" Header="修改日期" AllowEditing="false" >
-                            <dxg:GridColumn.CellStyle>
+                            <dxg:TableView.CellStyle>
                                 <Style>
-
-                                    <!--<Setter Property="TextBlock.Foreground" Value="Gray"/>-->
+                                    <Setter Property="TextBlock.FontSize" Value="12"/>
+                                    <Setter Property="TextBlock.Foreground" Value="Black"/>
                                 </Style>
-                            </dxg:GridColumn.CellStyle>
-                        </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="MaterialNumber"  IsSmart="True" Header="排版編號" AllowEditing="false" >
-                            <dxg:GridColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button 
+                            </dxg:TableView.CellStyle>
+                        </dxg:TableView>
+                    </dxg:GridControl.View>
+                    <dxg:GridColumn FieldName="ExclamationMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" Width="40" FixedWidth="True">
+                        <dxg:GridColumn.HeaderImageStyle>
+                            <Style TargetType="Image">
+                                <Setter Property="Width" Value="16"></Setter>
+                                <Setter Property="Margin" Value="0"></Setter>
+                            </Style>
+
+                        </dxg:GridColumn.HeaderImageStyle>
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <dxe:CheckEdit  IsThreeState="false">
+                                    <dxe:CheckEdit.Style>
+                                        <Style TargetType="{x:Type dxe:CheckEdit}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
+                                                        <dx:DXImage x:Name="EMarkDX" Height="20" Width="20" Source="{dx:DXImage 'SvgImages/Outlook Inspired/HighImportance.svg'}" Opacity="1" />
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsChecked" Value="False">
+                                                                <Setter Property="Opacity" Value="0" TargetName="EMarkDX"  />
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </dxe:CheckEdit.Style>
+                                </dxe:CheckEdit>
+
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn IsSmart="True" Name="LockGridCol" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
+                        <dxg:GridColumn.HeaderImageStyle>
+                            <Style TargetType="Image">
+                                <Setter Property="Width" Value="16"></Setter>
+                                <Setter Property="Margin" Value="0"></Setter>
+                            </Style>
+                        </dxg:GridColumn.HeaderImageStyle>
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <dxe:CheckEdit IsThreeState="false" IsChecked="{Binding Row.LockMark}" x:Name="LockEdit">
+                                    <dxe:CheckEdit.Style>
+                                        <Style TargetType="{x:Type dxe:CheckEdit}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
+                                                        <dx:DXImage x:Name="LockDX" Height="20" Width="20" Source="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" Opacity="1" />
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsChecked" Value="False">
+                                                                <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Icon Builder/Security_Unlock.svg'}" TargetName="LockDX"  />
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </dxe:CheckEdit.Style>
+                                </dxe:CheckEdit>
+
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="GearMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Dashboards/ScatterChartLabelOptions.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
+                        <dxg:GridColumn.HeaderImageStyle>
+                            <Style TargetType="Image">
+                                <Setter Property="Width" Value="16"></Setter>
+                                <Setter Property="Margin" Value="0"></Setter>
+                            </Style>
+                        </dxg:GridColumn.HeaderImageStyle>
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <dxe:CheckEdit IsThreeState="false">
+                                    <dxe:CheckEdit.Style>
+                                        <Style TargetType="{x:Type dxe:CheckEdit}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
+                                                        <dx:DXImage x:Name="GearDX" Height="20" Width="20" Source="{dx:DXImage 'SvgImages/Dashboards/ScatterChartLabelOptions.svg'}" Opacity="1" />
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsChecked" Value="False">
+                                                                <Setter Property="Opacity" Value="0" TargetName="GearDX" />
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </dxe:CheckEdit.Style>
+                                </dxe:CheckEdit>
+
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="BuildTime" IsSmart="True"  Header="建立日期" AllowEditing="false" >
+
+                    </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="" IsSmart="True" Header="修改日期" AllowEditing="false" >
+                        <dxg:GridColumn.CellStyle>
+                            <Style>
+
+                                <!--<Setter Property="TextBlock.Foreground" Value="Gray"/>-->
+                            </Style>
+                        </dxg:GridColumn.CellStyle>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="MaterialNumber"  IsSmart="True" Header="排版編號" AllowEditing="false" >
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button 
                                             Command="{Binding OpenPreview}"
                                             CommandParameter="{Binding ElementName=view}"
                                             Content="{Binding Value}"
                                             Foreground="{StaticResource solidclr_DarkGray}"
                                             Style="{StaticResource btn_CommonIconKey}"
                                             ToolTip="預覽圖形" />
-                                </DataTemplate>
-                            </dxg:GridColumn.CellTemplate>
-                        </dxg:GridColumn>
-                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="鋼材類型" AllowEditing="false" />
-                        <dxg:GridColumn FieldName="Profile"  IsSmart="True" Header="斷面規格" AllowEditing="false"  />
-                        <dxg:GridColumn FieldName="Material"  IsSmart="True" Header="材質" Width="auto"  AllowEditing="false" />
-                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="數量" Width="auto" AllowEditing="false" />
-                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="已完成" Width="auto" AllowEditing="false" />
-                        <dxg:GridColumn FieldName="LengthStr"  IsSmart="True" Header="素材長" AllowEditing="false"  />
-                        <dxg:GridColumn IsSmart="True" Header="素材使用率" AllowEditing="false">
-                     
-                            <dxg:GridColumn.CellTemplate>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn FieldName=""  IsSmart="True" Header="鋼材類型" AllowEditing="false" />
+                    <dxg:GridColumn FieldName="Profile"  IsSmart="True" Header="斷面規格" AllowEditing="false"  />
+                    <dxg:GridColumn FieldName="Material"  IsSmart="True" Header="材質" Width="auto"  AllowEditing="false" />
+                    <dxg:GridColumn FieldName=""  IsSmart="True" Header="數量" Width="auto" AllowEditing="false" />
+                    <dxg:GridColumn FieldName=""  IsSmart="True" Header="已完成" Width="auto" AllowEditing="false" />
+                    <dxg:GridColumn FieldName="LengthStr"  IsSmart="True" Header="素材長" AllowEditing="false"  />
+                    <dxg:GridColumn IsSmart="True" Header="素材使用率" AllowEditing="false">
+
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <ProgressBar Value="{c:Binding Row.Loss/Row.LengthStr}" Height="auto" Minimum="0" Maximum="1" Background="White" />
+                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" >
+                                        <TextBlock Text="{c:Binding Row.Loss/Row.LengthStr, StringFormat={}{0:P1}}"   />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+
+
+                    </dxg:GridColumn>
+                    <dxg:GridColumn Binding="{c:Binding LengthStr-Loss}"   IsSmart="True" Header="餘長" Width="auto"    >
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings DisplayFormat="F2"/>
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題一"  Width="auto"  />
+                    <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題二"   Width="auto" />
+
+                    <dxg:GridControl.DetailDescriptor>
+                        <dxg:ContentDetailDescriptor>
+                            <dxg:ContentDetailDescriptor.ContentTemplate >
                                 <DataTemplate>
-                                    <Grid>
-                                        <ProgressBar Value="{c:Binding Row.Loss/Row.LengthStr}" Height="auto" Minimum="0" Maximum="1" Background="White" />
-                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" >
-                                            <TextBlock Text="{c:Binding Row.Loss/Row.LengthStr, StringFormat={}{0:P1}}"   />
-                                        </StackPanel>
-                                    </Grid>
-                                </DataTemplate>
-                            </dxg:GridColumn.CellTemplate>
 
-
-                        </dxg:GridColumn>
-                        <dxg:GridColumn Binding="{c:Binding LengthStr-Loss}"   IsSmart="True" Header="餘長" Width="auto"    >
-                            <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings DisplayFormat="F2"/>
-                            </dxg:GridColumn.EditSettings>
-                        </dxg:GridColumn>
-                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題一"  Width="auto"  />
-                        <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題二"   Width="auto" />
-
-                        <dxg:GridControl.DetailDescriptor>
-                            <dxg:ContentDetailDescriptor>
-                                <dxg:ContentDetailDescriptor.ContentTemplate >
-                                    <DataTemplate>
-                                        
-                                        <Grid Margin="6">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"  MinWidth="320"/>
-                                                <ColumnDefinition Width="auto" MinWidth="285"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-                                            <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,5,0" >
-                                                <dxg:GridControl Name="ComponentGridControl" ItemsSource="{Binding Path =Parts}" 
-                                                  
+                                    <Grid Margin="6">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"  MinWidth="320"/>
+                                            <ColumnDefinition Width="auto" MinWidth="285"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,5,0" >
+                                            <dxg:GridControl Name="ComponentGridControl" ItemsSource="{Binding Path =Parts}" 
                                                          AutoGenerateColumns="None" 
+                                                         SelectedItem="{Binding SelectedPart}"
                                                          IsEnabled="{Binding ButtonEnable}"
                                                          MinHeight="40" 
                                                          MaxHeight="110" 
-                                                                 
                                                          Height="auto">
-                                                    <dxg:GridControl.Resources>
-                                                        <Style TargetType="dxg:GridColumnHeader">
-                                                            <Setter Property="Background" Value="LemonChiffon"/>
+                                                <dxg:GridControl.Resources>
+                                                    <Style TargetType="dxg:GridColumnHeader">
+                                                        <Setter Property="Background" Value="LemonChiffon"/>
 
-                                                        </Style>
-                                                        <Style TargetType="dxg:GridColumn" >
-                                                            <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
+                                                    </Style>
+                                                    <Style TargetType="dxg:GridColumn" >
+                                                        <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
 
-                                                        </Style>
-                                                        <Style TargetType="dxe:TextEditSettings">
-                                                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                                    </Style>
+                                                    <Style TargetType="dxe:TextEditSettings">
+                                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
 
-                                                        </Style>
-                                                    </dxg:GridControl.Resources>
-                                                    <dxg:GridControl.View>
-                                                        <dxg:TableView 
+                                                    </Style>
+                                                </dxg:GridControl.Resources>
+                                                <dxg:GridControl.View>
+                                                    <dxg:TableView 
+                                                        
                                                             AllowEditing="False"
                                                             ShowTotalSummary="False" 
                                                             ShowGroupPanel="False"
@@ -897,291 +904,296 @@
                                                             ShowVerticalLines="True"  
                                                             HorizontalScrollbarVisibility="Auto"
                                                             VerticalScrollbarVisibility="Auto">
-                                                            <dxg:TableView.ColumnHeaderDragIndicatorTemplate>
-                                                                <DataTemplate>
-                                                                    <StackPanel VerticalAlignment="Stretch"  
+                                                        <dxg:TableView.ColumnHeaderDragIndicatorTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel VerticalAlignment="Stretch"  
                                                                             HorizontalAlignment="Stretch">
-                                                                        <TextBlock Text="123"   
+                                                                    <TextBlock Text="123"   
                                                                                TextAlignment="Center"
                                                                                Foreground="Gray"/>
-                                                                    </StackPanel>
-                                                                </DataTemplate>
-                                                            </dxg:TableView.ColumnHeaderDragIndicatorTemplate>
-                                                            <dxg:TableView.RowIndicatorContentTemplate>
-                                                                <DataTemplate>
-                                                                    <StackPanel VerticalAlignment="Stretch"  
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </dxg:TableView.ColumnHeaderDragIndicatorTemplate>
+                                                        <dxg:TableView.RowIndicatorContentTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel VerticalAlignment="Stretch"  
                                                                             HorizontalAlignment="Stretch">
-                                                                        <TextBlock Text="{c:Binding RowHandle.Value +1}" Name="RowHandleStackpanel"   
+                                                                    <TextBlock Text="{c:Binding RowHandle.Value +1}" Name="RowHandleStackpanel"   
                                                                                TextAlignment="Center"
                                                                                Foreground="Gray"/>
-                                                                    </StackPanel>
-                                                                </DataTemplate>
-                                                            </dxg:TableView.RowIndicatorContentTemplate>
-                                                            <dxg:TableView.CellStyle>
-                                                                <Style>
-                                                                    <Setter Property="TextBlock.FontSize" Value="12"/>
-                                                                </Style>
-                                                            </dxg:TableView.CellStyle>
-                                                        </dxg:TableView>
-                                                    </dxg:GridControl.View>
-                                                    <dxg:GridColumn  FieldName="OrderNumber"  Header="順序"  MinWidth="40" Width="40" Visible="False" />
-                                                    <dxg:GridColumn FieldName="AssemblyNumber"   Header="構件編號"  MinWidth="60" Width="70" />
-                                                    <dxg:GridColumn FieldName="PartNumber" Header="零件編號"  MinWidth="60" Width="70" />
-                                                    <dxg:GridColumn FieldName="Length" Header="零件長"  MinWidth="60" Width="70"  >
-                                                        <dxg:GridColumn.EditSettings>
-                                                            <dxe:TextEditSettings DisplayFormat="F2"/>
-                                                        </dxg:GridColumn.EditSettings>
-                                                    </dxg:GridColumn>
-                                                    <dxg:GridColumn FieldName="" Header="數量"  MinWidth="40" Width="40" />
-                                                    <dxg:GridColumn FieldName="" Header="Phase"   MinWidth="40" Width="40"/>
-                                                    <dxg:GridColumn FieldName="" Header="拆運"   MinWidth="40" Width="40" />
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </dxg:TableView.RowIndicatorContentTemplate>
+                                                        <dxg:TableView.CellStyle>
+                                                            <Style>
+                                                                <Setter Property="TextBlock.FontSize" Value="12"/>
+                                                            </Style>
+                                                        </dxg:TableView.CellStyle>
+                                                    </dxg:TableView>
+                                                </dxg:GridControl.View>
+                                                <dxg:GridColumn  FieldName="OrderNumber"  Header="順序"  MinWidth="40" Width="40" Visible="False" />
+                                                <dxg:GridColumn FieldName="AssemblyNumber"   Header="構件編號"  MinWidth="60" Width="70" />
+                                                <dxg:GridColumn FieldName="PartNumber" Header="零件編號"  MinWidth="60" Width="70" />
+                                                <dxg:GridColumn FieldName="Length" Header="零件長"  MinWidth="60" Width="70"  >
+                                                    <dxg:GridColumn.EditSettings>
+                                                        <dxe:TextEditSettings DisplayFormat="F2"/>
+                                                    </dxg:GridColumn.EditSettings>
+                                                </dxg:GridColumn>
+                                                <dxg:GridColumn FieldName="" Header="數量"  MinWidth="40" Width="40" />
+                                                <dxg:GridColumn FieldName="" Header="Phase"   MinWidth="40" Width="40"/>
+                                                <dxg:GridColumn FieldName="" Header="拆運"   MinWidth="40" Width="40" />
                                             </dxg:GridControl>
                                             <StackPanel Orientation="Horizontal">
-                                            <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
-                                                    <Button Click="InsertPartCommandClick">
-                                                    <Button.Content>
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="*"/>
-                                                            </Grid.ColumnDefinitions>
-
-                                                            <materialDesign:PackIcon Kind="PlusThick" />
-                                                            <materialDesign:PackIcon Kind="ScrewLag" Grid.Column="1"/>
-                                                        </Grid>
-                                                    </Button.Content>
-                                                </Button>
-                                                <TextBlock Text="加入新零件" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                                            </StackPanel>
-                                            <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
-                                                    <Button 
+                                                <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
+                                                    <Button  
                                                         IsEnabled="{Binding ButtonEnable}"
-                                                        Command="{Binding DeletePartCommand}"
-                                                        CommandParameter="{Binding ElementName=ComponentGridControl}">
-                                                    <Button.Content>
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="*"/>
-                                                            </Grid.ColumnDefinitions>
+                                                        Click="InsertPartCommandClick">
+                                                        <Button.Content>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                </Grid.ColumnDefinitions>
 
-                                                            <materialDesign:PackIcon Kind="MinusThick" />
-                                                            <materialDesign:PackIcon Kind="ScrewLag" Grid.Column="1"/>
-                                                        </Grid>
-                                                    </Button.Content>
-                                                </Button>
-                                                <TextBlock Text="刪除零件" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                                            </StackPanel>
+                                                                <materialDesign:PackIcon Kind="PlusThick" />
+                                                                <materialDesign:PackIcon Kind="ScrewLag" Grid.Column="1"/>
+                                                            </Grid>
+                                                        </Button.Content>
+                                                    </Button>
+                                                    <TextBlock Text="加入新零件" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                                </StackPanel>
+                                                <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
+                                                    <Button 
+                                                        Click="DeletePartButtonClick"
+                                                        IsEnabled="{Binding ButtonEnable}">
+                                                        <!-- Command="{Binding DeletePartCommand}" 
+                                                        CommandParameter="{Binding ElementName=ComponentGridControl}"-->
+
+                                                        <Button.Content>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                </Grid.ColumnDefinitions>
+
+                                                                <materialDesign:PackIcon Kind="MinusThick" />
+                                                                <materialDesign:PackIcon Kind="ScrewLag" Grid.Column="1"/>
+                                                            </Grid>
+                                                        </Button.Content>
+                                                    </Button>
+                                                    <TextBlock Text="刪除零件" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                                </StackPanel>
                                             </StackPanel>
                                         </StackPanel>
 
-                                            <GridSplitter Style="{StaticResource MaterialDesignGridSplitter}" Background="LightGray" Grid.RowSpan="2" HorizontalAlignment="Right"  VerticalAlignment="Stretch" Width="4" Margin="0,0,-5,0"   />
-                                            <!-- 可調整邊界拉柄(透明)-->
-                                            <Grid Grid.Column="1"  MinHeight="150" Margin="10,0,0,0">
-                                                <Grid.Resources>
-                                                    <Style TargetType="TextBlock">
-                                                        <Setter Property="Margin" Value="3"/>
-                                                    </Style>
-                                                    <DrawingImage x:Key="HBeamImage">
-                                                        <DrawingImage.Drawing>
-                                                            <DrawingGroup>
-                                                                <GeometryDrawing Brush ="#63686c"   Geometry="M0.5,0.5 L8,0.5 12,0.5 19.5,0.5 19.5,4.5 12,4.5 12,15.5 19.5,15.5 19.5,19.5 12,19.5 8,19.5 0.5,19.5 0.5,15.5 8,15.5 8,4.5 0.5,4.5 z" />
-                                                            </DrawingGroup>
-                                                        </DrawingImage.Drawing>
-                                                    </DrawingImage>
-                                                </Grid.Resources>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="auto"/>
-                                                    <ColumnDefinition Width="5"/>
-                                                    <ColumnDefinition Width="auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="35"/>
-                                                    <RowDefinition Height="35"/>
-                                                    <RowDefinition Height="35"/>
-                                                    <RowDefinition Height="35"/>
-                                                </Grid.RowDefinitions>
-                                                <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                                                    <TextBlock Text="零件正轉"  />
-                                                    <Button Grid.Column="1" Grid.Row="0" Height="25" Margin="10,0,0,0"  MinWidth="70" 
+                                        <GridSplitter Style="{StaticResource MaterialDesignGridSplitter}" Background="LightGray" Grid.RowSpan="2" HorizontalAlignment="Right"  VerticalAlignment="Stretch" Width="4" Margin="0,0,-5,0"   />
+                                        <!-- 可調整邊界拉柄(透明)-->
+                                        <!--正逆轉功能 第一階段被關閉-->
+                                        <Grid Grid.Column="1"  MinHeight="150" Margin="10,0,0,0" Visibility="Collapsed">
+                                            <Grid.Resources>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Margin" Value="3"/>
+                                                </Style>
+                                                <DrawingImage x:Key="HBeamImage">
+                                                    <DrawingImage.Drawing>
+                                                        <DrawingGroup>
+                                                            <GeometryDrawing Brush ="#63686c"   Geometry="M0.5,0.5 L8,0.5 12,0.5 19.5,0.5 19.5,4.5 12,4.5 12,15.5 19.5,15.5 19.5,19.5 12,19.5 8,19.5 0.5,19.5 0.5,15.5 8,15.5 8,4.5 0.5,4.5 z" />
+                                                        </DrawingGroup>
+                                                    </DrawingImage.Drawing>
+                                                </DrawingImage>
+                                            </Grid.Resources>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="5"/>
+                                                <ColumnDefinition Width="auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="35"/>
+                                                <RowDefinition Height="35"/>
+                                                <RowDefinition Height="35"/>
+                                                <RowDefinition Height="35"/>
+                                            </Grid.RowDefinitions>
+                                            <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                                <TextBlock Text="零件正轉"  />
+                                                <Button Grid.Column="1" Grid.Row="0" Height="25" Margin="10,0,0,0"  MinWidth="70" 
                                                             IsEnabled="{Binding ButtonEnable}"
                                                             Command="{Binding ClockwiseRotationComponentCommand }"
                                                             >
 
-                                                        <Button.CommandParameter>
-                                                            <MultiBinding Converter="{STD105:ComParConverter}">
-                                                                <MultiBinding.Bindings>
-                                                                    <Binding ElementName="ComponentGridControl" Path="SelectedItem"/>
-                                                                    <Binding ElementName="DrawTabControl"/>
-                                                                </MultiBinding.Bindings>
-                                                            </MultiBinding>
-                                                        </Button.CommandParameter>
+                                                    <Button.CommandParameter>
+                                                        <MultiBinding Converter="{STD105:ComParConverter}">
+                                                            <MultiBinding.Bindings>
+                                                                <Binding ElementName="ComponentGridControl" Path="SelectedItem"/>
+                                                                <Binding ElementName="DrawTabControl"/>
+                                                            </MultiBinding.Bindings>
+                                                        </MultiBinding>
+                                                    </Button.CommandParameter>
 
-                                                        <Button.Content>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <Image  Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
-                                                                <Image  Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Rollback.svg'}" Margin="5,0,0,0"/>
-                                                            </Grid>
-                                                        </Button.Content>
-                                                    </Button>
-                                                </StackPanel>
-                                                <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                                                    <TextBlock Text="零件逆轉"  />
-                                                    <Button x:Name="CounterClockwiseRotationButton" Height="25" Margin="10,0,0,0"  MinWidth="70"
+                                                    <Button.Content>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Image  Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
+                                                            <Image  Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Rollback.svg'}" Margin="5,0,0,0"/>
+                                                        </Grid>
+                                                    </Button.Content>
+                                                </Button>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                                <TextBlock Text="零件逆轉"  />
+                                                <Button x:Name="CounterClockwiseRotationButton" Height="25" Margin="10,0,0,0"  MinWidth="70"
                                                             IsEnabled="{Binding ButtonEnable}"
                                                             Command="{Binding CounterClockwiseRotationComponentCommand}" >
-                                                        <Button.CommandParameter>
-                                                            <MultiBinding Converter="{STD105:ComParConverter}">
-                                                                <MultiBinding.Bindings>
-                                                                    <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
-                                                                    <Binding ElementName="DrawTabControl"/>
-                                                                </MultiBinding.Bindings>
-                                                            </MultiBinding>
-                                                        </Button.CommandParameter>
+                                                    <Button.CommandParameter>
+                                                        <MultiBinding Converter="{STD105:ComParConverter}">
+                                                            <MultiBinding.Bindings>
+                                                                <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
+                                                                <Binding ElementName="DrawTabControl"/>
+                                                            </MultiBinding.Bindings>
+                                                        </MultiBinding>
+                                                    </Button.CommandParameter>
 
-                                                        <Button.Content>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <Image  Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
-                                                                <Image  Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Rollback.svg'}" Margin="5,0,0,0" RenderTransformOrigin="0.5,0.5">
-                                                                    <Image.RenderTransform>
-                                                                        <ScaleTransform ScaleX="-1" />
-                                                                    </Image.RenderTransform>
-                                                                </Image>
-                                                            </Grid>
-                                                        </Button.Content>
-                                                    </Button>
-                                                </StackPanel>
-                                                <StackPanel Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                                                    <TextBlock Text="零件前進"  />
-                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" 
+                                                    <Button.Content>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Image  Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
+                                                            <Image  Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Rollback.svg'}" Margin="5,0,0,0" RenderTransformOrigin="0.5,0.5">
+                                                                <Image.RenderTransform>
+                                                                    <ScaleTransform ScaleX="-1" />
+                                                                </Image.RenderTransform>
+                                                            </Image>
+                                                        </Grid>
+                                                    </Button.Content>
+                                                </Button>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                                <TextBlock Text="零件前進"  />
+                                                <Button Height="25" Margin="10,0,0,0"  MinWidth="70" 
                                                             IsEnabled="{Binding ButtonEnable}"
                                                            Command="{Binding ForwardComponentCommand }">
-                                                        <Button.CommandParameter>
-                                                            <MultiBinding Converter="{STD105:ComParConverter}">
-                                                                <MultiBinding.Bindings>
-                                                                    <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
-                                                                    <Binding ElementName="DrawTabControl"/>
-                                                                </MultiBinding.Bindings>
-                                                            </MultiBinding>
-                                                        </Button.CommandParameter>
+                                                    <Button.CommandParameter>
+                                                        <MultiBinding Converter="{STD105:ComParConverter}">
+                                                            <MultiBinding.Bindings>
+                                                                <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
+                                                                <Binding ElementName="DrawTabControl"/>
+                                                            </MultiBinding.Bindings>
+                                                        </MultiBinding>
+                                                    </Button.CommandParameter>
 
-                                                        <Button.Content>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <Image Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
-                                                                <Image Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Margin="5,0,0,0"/>
-                                                            </Grid>
-                                                        </Button.Content>
-                                                    </Button>
-                                                </StackPanel>
-                                                <StackPanel Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                                                    <TextBlock Text="零件後退"  />
-                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70"
+                                                    <Button.Content>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Image Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
+                                                            <Image Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Margin="5,0,0,0"/>
+                                                        </Grid>
+                                                    </Button.Content>
+                                                </Button>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                                <TextBlock Text="零件後退"  />
+                                                <Button Height="25" Margin="10,0,0,0"  MinWidth="70"
                                                             IsEnabled="{Binding ButtonEnable}"
                                                             Command="{Binding BackwardComponentCommand }">
-                                                        <Button.CommandParameter>
-                                                            <MultiBinding Converter="{STD105:ComParConverter}">
-                                                                <MultiBinding.Bindings>
-                                                                    <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
-                                                                    <Binding ElementName="DrawTabControl"/>
-                                                                </MultiBinding.Bindings>
-                                                            </MultiBinding>
-                                                        </Button.CommandParameter>
+                                                    <Button.CommandParameter>
+                                                        <MultiBinding Converter="{STD105:ComParConverter}">
+                                                            <MultiBinding.Bindings>
+                                                                <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
+                                                                <Binding ElementName="DrawTabControl"/>
+                                                            </MultiBinding.Bindings>
+                                                        </MultiBinding>
+                                                    </Button.CommandParameter>
 
-                                                        <Button.Content>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <Image Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
-                                                                <Image Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Left.svg'}" Margin="5,0,0,0"/>
-                                                            </Grid>
-                                                        </Button.Content>
-                                                    </Button>
-                                                </StackPanel>
+                                                    <Button.Content>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Image Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
+                                                            <Image Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Left.svg'}" Margin="5,0,0,0"/>
+                                                        </Grid>
+                                                    </Button.Content>
+                                                </Button>
+                                            </StackPanel>
 
-                                                <StackPanel Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                                                    <TextBlock Text="零件退位"  />
-                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" 
+                                            <StackPanel Grid.Column="2" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                                <TextBlock Text="零件退位"  />
+                                                <Button Height="25" Margin="10,0,0,0"  MinWidth="70" 
                                                             IsEnabled="{Binding ButtonEnable}"
                                                            Command="{Binding BorrowComponentCommand}">
-                                                        <Button.CommandParameter>
-                                                            <MultiBinding Converter="{STD105:ComParConverter}">
-                                                                <MultiBinding.Bindings>
-                                                                    <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
-                                                                    <Binding ElementName="DrawTabControl"/>
-                                                                </MultiBinding.Bindings>
-                                                            </MultiBinding>
-                                                        </Button.CommandParameter>
+                                                    <Button.CommandParameter>
+                                                        <MultiBinding Converter="{STD105:ComParConverter}">
+                                                            <MultiBinding.Bindings>
+                                                                <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
+                                                                <Binding ElementName="DrawTabControl"/>
+                                                            </MultiBinding.Bindings>
+                                                        </MultiBinding>
+                                                    </Button.CommandParameter>
 
-                                                        <Button.Content>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <Image Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
-                                                                    <Image Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Up.svg'}" Margin="5,0,0,0"/>
-                                                                </StackPanel>
-                                                            </Grid>
-                                                        </Button.Content>
-                                                    </Button>
-                                                </StackPanel>
+                                                    <Button.Content>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <Image Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
+                                                                <Image Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Up.svg'}" Margin="5,0,0,0"/>
+                                                            </StackPanel>
+                                                        </Grid>
+                                                    </Button.Content>
+                                                </Button>
+                                            </StackPanel>
 
-                                                <StackPanel Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                                                    <TextBlock Text="零件進位"  />
-                                                    <Button Height="25" Margin="10,0,0,0"  MinWidth="70" 
+                                            <StackPanel Grid.Column="2" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                                <TextBlock Text="零件進位"  />
+                                                <Button Height="25" Margin="10,0,0,0"  MinWidth="70" 
                                                             IsEnabled="{Binding ButtonEnable}"
                                                            Command="{Binding CarryComponentCommand}">
-                                                        <Button.CommandParameter>
-                                                            <MultiBinding Converter="{STD105:ComParConverter}">
-                                                                <MultiBinding.Bindings>
-                                                                    <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
-                                                                    <Binding ElementName="DrawTabControl"/>
-                                                                </MultiBinding.Bindings>
-                                                            </MultiBinding>
-                                                        </Button.CommandParameter>
-                                                        <Button.Content>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <Image Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
-                                                                <Image Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Down.svg'}" Margin="5,0,0,0"/>
-                                                            </Grid>
-                                                        </Button.Content>
-                                                    </Button>
-                                                </StackPanel>
-                                            </Grid>
-
-
-
+                                                    <Button.CommandParameter>
+                                                        <MultiBinding Converter="{STD105:ComParConverter}">
+                                                            <MultiBinding.Bindings>
+                                                                <Binding ElementName="ComponentGridControl" Path="SelectedItem"  />
+                                                                <Binding ElementName="DrawTabControl"/>
+                                                            </MultiBinding.Bindings>
+                                                        </MultiBinding>
+                                                    </Button.CommandParameter>
+                                                    <Button.Content>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Image Grid.Column="0" Source="{StaticResource HBeamImage}"  Margin="3"/>
+                                                            <Image Grid.Column="1" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Down.svg'}" Margin="5,0,0,0"/>
+                                                        </Grid>
+                                                    </Button.Content>
+                                                </Button>
+                                            </StackPanel>
                                         </Grid>
-                                        
-                                    </DataTemplate>
-                                </dxg:ContentDetailDescriptor.ContentTemplate>
-                            </dxg:ContentDetailDescriptor>
-                        </dxg:GridControl.DetailDescriptor>
-                        
-                    </dxg:GridControl>
 
 
-                </GroupBox>
-                <!--繪圖顯示模型-->
+
+                                    </Grid>
+
+                                </DataTemplate>
+                            </dxg:ContentDetailDescriptor.ContentTemplate>
+                        </dxg:ContentDetailDescriptor>
+                    </dxg:GridControl.DetailDescriptor>
+
+                </dxg:GridControl>
+
+
+            </GroupBox>
+            <!--繪圖顯示模型-->
 
 
             <TabControl Grid.Column="1" Margin="5" 
@@ -1190,8 +1202,8 @@
                         >
                 <TabItem Header="3D" >
                     <Grid>
-                            <!--新增3D模型處-->
-                            <spa:ModelExt
+                        <!--新增3D模型處-->
+                        <spa:ModelExt
                             Loaded="Model3D_Loaded"
                             Name="model"
                             AutoRefresh ="True"
@@ -1204,54 +1216,54 @@
                             AntiAliasingSamples="x16" 
                             Renderer="NativeExperimental" 
                             ShowFps="True">
-                                <spa:ModelExt.ContextMenu>
-                                    <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
-                                        <MenuItem Name="esc" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
-                                        <MenuItem Header="放大選取範圍" Style="{StaticResource BaseStyle}" Command="{Binding ZoomWindow}"/>
-                                        <MenuItem Header="縮放" Style="{StaticResource BaseStyle}" Command="{Binding Zoom}"/>
-                                        <MenuItem Header="旋轉" Style="{StaticResource BaseStyle}" Command="{Binding Rotate}"/>
-                                        <MenuItem Header="平移" Style="{StaticResource BaseStyle}" Command="{Binding Pan}"/>
-                                        <!--<MenuItem Name="edit" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}" Visibility="Collapsed"/>
+                            <spa:ModelExt.ContextMenu>
+                                <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
+                                    <MenuItem Name="esc" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
+                                    <MenuItem Header="放大選取範圍" Style="{StaticResource BaseStyle}" Command="{Binding ZoomWindow}"/>
+                                    <MenuItem Header="縮放" Style="{StaticResource BaseStyle}" Command="{Binding Zoom}"/>
+                                    <MenuItem Header="旋轉" Style="{StaticResource BaseStyle}" Command="{Binding Rotate}"/>
+                                    <MenuItem Header="平移" Style="{StaticResource BaseStyle}" Command="{Binding Pan}"/>
+                                    <!--<MenuItem Name="edit" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}" Visibility="Collapsed"/>
                                         <MenuItem x:Name="delete" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}" Visibility="Collapsed"/>-->
-                                        <!--<MenuItem Header="清除標註" Command="{Binding ClearDim}" CommandParameter="{Binding ElementName=model}" Style="{StaticResource BaseStyle}"/>-->
-                                        <!--<MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
+                                    <!--<MenuItem Header="清除標註" Command="{Binding ClearDim}" CommandParameter="{Binding ElementName=model}" Style="{StaticResource BaseStyle}"/>-->
+                                    <!--<MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
                                         <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>-->
-                                    </ContextMenu>
-                                </spa:ModelExt.ContextMenu>
-                                <ddes:Model.ProgressBar>
-                                    <ddes:ProgressBar Lighting="False"/>
-                                </ddes:Model.ProgressBar>
-                                <ddes:Model.Viewports>
-                                    <ddes:Viewport DisplayMode="Flat" InitialView="vcFrontFaceTopLeft" OriginSymbols="{Binding OriginSymbols}" OpacityMask="AliceBlue" SmallSizeRatio="0.001">
-                                        <ddes:Viewport.Background>
-                                            <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#FF303030"/>
-                                        </ddes:Viewport.Background>
-                                        <ddes:Viewport.CoordinateSystemIcon>
-                                            <ddes:CoordinateSystemIcon Lighting="True" 
+                                </ContextMenu>
+                            </spa:ModelExt.ContextMenu>
+                            <ddes:Model.ProgressBar>
+                                <ddes:ProgressBar Lighting="False"/>
+                            </ddes:Model.ProgressBar>
+                            <ddes:Model.Viewports>
+                                <ddes:Viewport DisplayMode="Flat" InitialView="vcFrontFaceTopLeft" OriginSymbols="{Binding OriginSymbols}" OpacityMask="AliceBlue" SmallSizeRatio="0.001">
+                                    <ddes:Viewport.Background>
+                                        <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#FF303030"/>
+                                    </ddes:Viewport.Background>
+                                    <ddes:Viewport.CoordinateSystemIcon>
+                                        <ddes:CoordinateSystemIcon Lighting="True" 
                                             ArrowColorX="{Binding Setting.ArrowColorX, Converter={WPFBase:StringRGBToBrushConverter}}"
                                             ArrowColorY="{Binding Setting.ArrowColorY, Converter={WPFBase:StringRGBToBrushConverter}}"
                                             ArrowColorZ="{Binding Setting.ArrowColorZ, Converter={WPFBase:StringRGBToBrushConverter}}"/>
-                                        </ddes:Viewport.CoordinateSystemIcon>
-                                        <ddes:Viewport.Camera>
-                                            <ddes:Camera Distance="380" ProjectionMode="Orthographic" Target="0, 0, 45" ZoomFactor="2"/>
-                                        </ddes:Viewport.Camera>
-                                        <ddes:Viewport.Rotate>
-                                            <ddes:RotateSettings RotationCenter="CursorLocation"/>
-                                        </ddes:Viewport.Rotate>
-                                        <ddes:Viewport.ToolBars>
-                                            <ddes:ToolBar>
-                                                <ddes:ToolBar.Buttons>
-                                                    <ddes:HomeToolBarButton/>
-                                                    <ddes:ZoomWindowToolBarButton/>
-                                                    <ddes:ZoomToolBarButton/>
-                                                    <ddes:PanToolBarButton/>
-                                                    <ddes:RotateToolBarButton/>
-                                                    <ddes:ZoomFitToolBarButton/>
-                                                </ddes:ToolBar.Buttons>
-                                            </ddes:ToolBar>
-                                        </ddes:Viewport.ToolBars>
-                                        <ddes:Viewport.ViewCubeIcon>
-                                            <ddes:ViewCubeIcon Lighting="True" 
+                                    </ddes:Viewport.CoordinateSystemIcon>
+                                    <ddes:Viewport.Camera>
+                                        <ddes:Camera Distance="380" ProjectionMode="Orthographic" Target="0, 0, 45" ZoomFactor="2"/>
+                                    </ddes:Viewport.Camera>
+                                    <ddes:Viewport.Rotate>
+                                        <ddes:RotateSettings RotationCenter="CursorLocation"/>
+                                    </ddes:Viewport.Rotate>
+                                    <ddes:Viewport.ToolBars>
+                                        <ddes:ToolBar>
+                                            <ddes:ToolBar.Buttons>
+                                                <ddes:HomeToolBarButton/>
+                                                <ddes:ZoomWindowToolBarButton/>
+                                                <ddes:ZoomToolBarButton/>
+                                                <ddes:PanToolBarButton/>
+                                                <ddes:RotateToolBarButton/>
+                                                <ddes:ZoomFitToolBarButton/>
+                                            </ddes:ToolBar.Buttons>
+                                        </ddes:ToolBar>
+                                    </ddes:Viewport.ToolBars>
+                                    <ddes:Viewport.ViewCubeIcon>
+                                        <ddes:ViewCubeIcon Lighting="True" 
                                             FrontColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
                                             BackColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
                                             TopColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
@@ -1260,11 +1272,11 @@
                                             LeftColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
                                             BackRingLabel="北" FrontRingLabel="南" RightRingLabel="東" LeftRingLabel="西"
                                             LeftRingColor="White" RightRingColor="White" FrontRingColor="White" BackRingColor="White"/>
-                                        </ddes:Viewport.ViewCubeIcon>
-                                    </ddes:Viewport>
-                                </ddes:Model.Viewports>
-                            </spa:ModelExt>
-                        </Grid>
+                                    </ddes:Viewport.ViewCubeIcon>
+                                </ddes:Viewport>
+                            </ddes:Model.Viewports>
+                        </spa:ModelExt>
+                    </Grid>
 
 
 
@@ -1272,11 +1284,11 @@
 
 
 
-                    </TabItem>
+                </TabItem>
                 <TabItem Header="2D"  x:Name="dr" >
-                        <Grid>
-                            <Border Style="{StaticResource bro}"/>
-                            <spa:ModelExt x:Name="drawing"
+                    <Grid>
+                        <Border Style="{StaticResource bro}"/>
+                        <spa:ModelExt x:Name="drawing"
                             Loaded="drawing_Loaded"
                             AutoRefresh ="True"
                             SelectionColor="{Binding Setting.SelectionColor, Converter={local:StringToDrawingColoConverter}}"
@@ -1288,40 +1300,40 @@
                             AntiAliasingSamples="x16" 
                             Renderer="NativeExperimental" 
                             ShowFps="True">
-                                <spa:ModelExt.ContextMenu>
-                                    <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
-                                        <MenuItem Name="esc2D" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
-                                        <MenuItem Header="放大選取範圍" Style="{StaticResource BaseStyle}" Command="{Binding ZoomWindow}"/>
-                                        <MenuItem Header="縮放" Style="{StaticResource BaseStyle}" Command="{Binding Zoom}"/>
-                                        <MenuItem Header="平移" Style="{StaticResource BaseStyle}" Command="{Binding Pan}"/>
-                                        <MenuItem Name="edit2D" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}"/>
-                                        <MenuItem x:Name="delete2D" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}"/>
-                                        <MenuItem Header="清除標註" Command="{Binding ClearDim}" Style="{StaticResource BaseStyle}"/>
-                                        <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
-                                        <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
-                                    </ContextMenu>
-                                </spa:ModelExt.ContextMenu>
-                                <ddes:Model.ProgressBar>
-                                    <ddes:ProgressBar Lighting="False"/>
-                                </ddes:Model.ProgressBar>
-                                <ddes:Model.Viewports>
-                                    <ddes:Viewport DisplayMode="Flat" InitialView="Top" OriginSymbols="{Binding OriginSymbols}">
-                                        <ddes:Viewport.Background>
-                                            <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#FF303030"/>
-                                        </ddes:Viewport.Background>
-                                        <ddes:Viewport.Camera>
-                                            <ddes:Camera Distance="380" ProjectionMode="Orthographic" Target="0, 0, 45" ZoomFactor="2"/>
-                                        </ddes:Viewport.Camera>
-                                        <ddes:Viewport.Rotate>
-                                            <ddes:RotateSettings RotationCenter="CursorLocation" Enabled="False"/>
-                                        </ddes:Viewport.Rotate>
-                                        <ddes:Viewport.ToolBars>
-                                            <ddes:ToolBar>
-                                                <ddes:ToolBar.Buttons>
-                                                    <ddes:HomeToolBarButton/>
-                                                    <ddes:ZoomWindowToolBarButton/>
-                                                    <ddes:ZoomToolBarButton/>
-                                                    <ddes:PanToolBarButton/>
+                            <spa:ModelExt.ContextMenu>
+                                <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
+                                    <MenuItem Name="esc2D" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
+                                    <MenuItem Header="放大選取範圍" Style="{StaticResource BaseStyle}" Command="{Binding ZoomWindow}"/>
+                                    <MenuItem Header="縮放" Style="{StaticResource BaseStyle}" Command="{Binding Zoom}"/>
+                                    <MenuItem Header="平移" Style="{StaticResource BaseStyle}" Command="{Binding Pan}"/>
+                                    <MenuItem Name="edit2D" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}"/>
+                                    <MenuItem x:Name="delete2D" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}"/>
+                                    <MenuItem Header="清除標註" Command="{Binding ClearDim}" Style="{StaticResource BaseStyle}"/>
+                                    <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
+                                    <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
+                                </ContextMenu>
+                            </spa:ModelExt.ContextMenu>
+                            <ddes:Model.ProgressBar>
+                                <ddes:ProgressBar Lighting="False"/>
+                            </ddes:Model.ProgressBar>
+                            <ddes:Model.Viewports>
+                                <ddes:Viewport DisplayMode="Flat" InitialView="Top" OriginSymbols="{Binding OriginSymbols}">
+                                    <ddes:Viewport.Background>
+                                        <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#FF303030"/>
+                                    </ddes:Viewport.Background>
+                                    <ddes:Viewport.Camera>
+                                        <ddes:Camera Distance="380" ProjectionMode="Orthographic" Target="0, 0, 45" ZoomFactor="2"/>
+                                    </ddes:Viewport.Camera>
+                                    <ddes:Viewport.Rotate>
+                                        <ddes:RotateSettings RotationCenter="CursorLocation" Enabled="False"/>
+                                    </ddes:Viewport.Rotate>
+                                    <ddes:Viewport.ToolBars>
+                                        <ddes:ToolBar>
+                                            <ddes:ToolBar.Buttons>
+                                                <ddes:HomeToolBarButton/>
+                                                <ddes:ZoomWindowToolBarButton/>
+                                                <ddes:ZoomToolBarButton/>
+                                                <ddes:PanToolBarButton/>
                                                 <ddes:ZoomFitToolBarButton/>
                                                 <ddes:ToolBarButton ToolTipText="線性標註" Click="LinearDim" StyleMode="PushButton"   
                                                                 Image="{Binding Source={materialDesign:PackIcon Kind=Ruler},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"
@@ -1331,20 +1343,20 @@
                                                 <ddes:ToolBarButton ToolTipText="絕對座標" StyleMode="PushButton"
                                                 Image="{Binding Source={materialDesign:PackIcon Kind=AxisArrow},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"/>
                                             </ddes:ToolBar.Buttons>
-                                            </ddes:ToolBar>
-                                        </ddes:Viewport.ToolBars>
-                                    </ddes:Viewport>
-                                </ddes:Model.Viewports>
-                            </spa:ModelExt>                           
-                        </Grid>
-                       
-                    </TabItem>
+                                        </ddes:ToolBar>
+                                    </ddes:Viewport.ToolBars>
+                                </ddes:Viewport>
+                            </ddes:Model.Viewports>
+                        </spa:ModelExt>
+                    </Grid>
 
-                    
+                </TabItem>
 
-                </TabControl>                
-                <!--  <Border BorderThickness="0,0,1.5,0" BorderBrush="gray" Margin="0,5,-1,5" Opacity="0.7"></Border>-->
-                <!-- 可調整邊界拉柄(透明)-->
+
+
+            </TabControl>
+            <!--  <Border BorderThickness="0,0,1.5,0" BorderBrush="gray" Margin="0,5,-1,5" Opacity="0.7"></Border>-->
+            <!-- 可調整邊界拉柄(透明)-->
             <GridSplitter Grid.Row="0" Grid.Column="0" Background="Gray" HorizontalAlignment="Right"   VerticalAlignment="Stretch" Width="4"  Margin="-2,0" MouseMove="GridSplitter_MouseMove"/>
 
 
@@ -1352,7 +1364,7 @@
 
 
         </Grid>
-        </Grid>
+    </Grid>
 
 
 </WPFBase:BasePage>

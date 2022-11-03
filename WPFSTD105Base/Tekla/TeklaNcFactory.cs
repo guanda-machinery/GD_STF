@@ -59,7 +59,7 @@ namespace WPFSTD105.Tekla
         /// <summary>
         /// NC檔讀取資訊
         /// </summary>
-        public NcTempList ncTemps { get; set; }
+        public NcTempList ncTemps { get; set; } = new NcTempList();
         /// <summary>
         /// Group後的新零件
         /// </summary>
@@ -252,7 +252,8 @@ namespace WPFSTD105.Tekla
                 {
                     this.DataCorrespond = new ObservableCollection<DataCorrespond>();
                 }
-                this.ncTemps = ser.GetNcTempList();//NC設定檔
+                //this.ncTemps = ser.GetNcTempList();//NC設定檔
+                this.ncTemps.AddRange(ser.GetNcTempList());//NC設定檔
                 if (this.ncTemps ==null)
                 {
                     this.ncTemps = new NcTempList();
@@ -639,14 +640,45 @@ namespace WPFSTD105.Tekla
                     pathcount++;
                 }
 
-                int Itemcount = 0;
-                foreach (var item in newPart)
+                int Itemcount = 1;
+                // part 數量大於 newPart
+                var part = ser.GetPart().Values.SelectMany(x=>x).ToList();
+                List<string> profileList = part.Select(x=> x.Profile.GetHashCode().ToString()).Distinct().ToList();
+                ObservableCollection<object> insertTemp = new ObservableCollection<object>();
+                
+                foreach (var p in profileList)
                 {
-                    ser.SetPart(item.Key, item.Value);//存入模型零件列表
+                    insertTemp = new ObservableCollection<object>();
+                    foreach (SteelPart item in part)
+                    {
+                        Guid? g = null;
+                        if (this.ncTemps.Any(x => x.SteelAttr.PartNumber == item.Number && x.SteelAttr.Length == item.Length && x.SteelAttr.Type == item.Type && x.SteelAttr.Profile == item.Profile))
+                        {
+                            g = this.ncTemps.FirstOrDefault(x => x.SteelAttr.PartNumber == item.Number && x.SteelAttr.Length == item.Length && x.SteelAttr.Type == item.Type && x.SteelAttr.Profile == item.Profile).SteelAttr.GUID;
+                        }
+                        
+                        string fileName = item.Profile.GetHashCode().ToString();
+                        if (newPart.Keys.Contains(fileName) && newPart[fileName].Any(x => ((SteelPart)x).Profile == item.Profile && ((SteelPart)x).Number == item.Number && ((SteelPart)x).Length == item.Length && ((SteelPart)x).Type == item.Type))
+                        {
+                            object saTemp = newPart[fileName].FirstOrDefault(x => ((SteelPart)x).Profile == item.Profile && ((SteelPart)x).Number == item.Number && ((SteelPart)x).Length == item.Length && ((SteelPart)x).Type == item.Type);
+                            ((SteelPart)saTemp).GUID = g;
+                            insertTemp.Add(newPart[fileName].FirstOrDefault(x => ((SteelPart)x).Profile == item.Profile && ((SteelPart)x).Number == item.Number && ((SteelPart)x).Length == item.Length && ((SteelPart)x).Type == item.Type));
+                        }
+                        else
+                        {
+                            item.GUID = g;
+                            insertTemp.Add(item);
+                        }                        
+                    }
+                    ser.SetPart(p, insertTemp);
+                    //else
+                    //{
+                    //   ser.SetPart(item., item.Value);//存入模型零件列表
+                    //}
                     if (vm != null)
                     {
                         vm.Status = "存入模型零件列表...";
-                        vm.Progress = (Itemcount*100 / newPart.Count);
+                        vm.Progress = (Itemcount * 100 / newPart.Count);
                     }
                     Itemcount++;
                 }
@@ -965,6 +997,7 @@ namespace WPFSTD105.Tekla
                             }
 
                         }
+                        else { }
                     }
                 }
 

@@ -398,7 +398,10 @@ namespace WPFSTD105.Tekla
                                         //|| part.Type == OBJECT_TYPE.L
                                         //    )
                                         //{
-                                        index = KeyValuePairs[key].FindIndex(el => el.GetType() == typeof(SteelPart) && ((SteelPart)el).Number == ((SteelPart)obj).Number && ((SteelPart)el).Length == ((SteelPart)obj).Length);//找出字典檔內物件
+                                        index = KeyValuePairs[key].FindIndex(el =>
+                                        el.GetType() == typeof(SteelPart) &&
+                                        ((SteelPart)el).Number == ((SteelPart)obj).Number &&
+                                        ((SteelPart)el).Length == ((SteelPart)obj).Length);//找出字典檔內物件
 
                                         //if (Profile[part.Type].FindIndex(el => el.Profile == part.Profile && el.Length == part.Length) == -1)//如果模型找不到相同的斷面規格
                                         if (Profile[part.Type].FindIndex(el => el.Profile == part.Profile) == -1)//如果模型找不到相同的斷面規格
@@ -511,6 +514,26 @@ namespace WPFSTD105.Tekla
                         vm.Status = _Status +"完成";
                         vm.IsIndeterminate = true;
                     }
+
+                    foreach (SteelPart part in KeyValuePairs.Values.SelectMany(x => x).Where(x => x.GetType() == typeof(SteelPart) && ObSettingVM.allowType.Contains(((SteelPart)x).Type)).ToList())
+                    {
+                        foreach (int fatherID in part.Father)
+                        {
+                            if (SteelAssemblies.Any(x => x.ID.Contains(fatherID)))
+                            {
+                                var ass = SteelAssemblies.FindIndex(x => x.ID.Contains(fatherID));
+
+                                SteelAssemblies[ass].Length = part.Length;
+                                SteelAssemblies[ass].W = part.W;
+                                continue;
+                            }
+                        }
+
+                    }
+
+
+
+
                     return true;
                 }
             }
