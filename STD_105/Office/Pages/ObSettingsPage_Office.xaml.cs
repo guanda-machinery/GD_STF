@@ -2556,7 +2556,7 @@ namespace STD_105.Office
 
             var ass = new GD_STD.Data.SteelAssembly()
             {
-                Count = ViewModel.SteelAttr.Number,
+                Count = ViewModel.SteelAttr.Number,                
                 IsTekla = false,
                 Length = ViewModel.SteelAttr.Length,
                 ShippingDescription = new List<string>(new string[ViewModel.SteelAttr.Number]),
@@ -2611,6 +2611,7 @@ namespace STD_105.Office
                 ViewModel.SteelAttr.GUID.Value, ViewModel.SteelAttr.Phase, ViewModel.SteelAttr.ShippingNumber,
                 ViewModel.SteelAttr.Title1, ViewModel.SteelAttr.Title2, ViewModel.SteelAttr.Lock);
             steelPart.ID = new List<int>();
+            //steelPart.CountList = new List<int>();
             steelPart.Match = new List<bool>();
             steelPart.Material = ViewModel.SteelAttr.Material;
             steelPart.Father = ass.ID;
