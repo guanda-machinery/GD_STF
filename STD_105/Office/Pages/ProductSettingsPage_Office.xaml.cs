@@ -280,7 +280,7 @@ namespace STD_105.Office
                 }
 
                 //檢測用戶輸入的參數是否有完整
-                if (!CheckPart()) 
+                if (!CheckPart())
                 {
                     fclickOK = true;
                     return;
@@ -3249,10 +3249,9 @@ namespace STD_105.Office
             return bFindSamePos;
         }
 
-
-        bool? fFirstAdd = true;// 是否第一次按新增
-        bool? fNewPart = true;// 是否為新零件
-        bool? fGrid = false;// 是否點擊Grid
+        bool? fFirstAdd = true;// 是否第一次按新增 有點
+        bool? fNewPart = true;// 是否為新零件 dm
+        bool? fGrid = false;// 是否點擊Grid 新增 修改後為false
         bool? fclickOK = true; // 是否直接點擊OK
 
         bool fAddSteelPart = false;       //  判斷執行新增零件及孔位
@@ -4282,7 +4281,7 @@ namespace STD_105.Office
             steelPart.Material = sa.Material;
             steelPart.Father = ass.ID;
             //steelPart.Profile = ViewModel.SteelAttr.Profile;
-            steelPart.Profile = sa.Profile;
+            steelPart.Profile = sa.Profile.Replace("*","X").Replace(" ","");
             //steelPart.ExclamationMark = ViewModel.SteelAttr.ExclamationMark;
             steelPart.ExclamationMark = sa.ExclamationMark;
             //steelPart.Length = ViewModel.SteelAttr.Length;
@@ -4315,7 +4314,7 @@ namespace STD_105.Office
             }
             // 給定 零件 數量vsID
             steelPart.ID = buffer1.ToList();
-            
+
             // 比對 GUID ， 不存在 新增 ，存在 編輯
             if (!collection.Any(x =>
             //x.Number == steelPart.Number &&
@@ -4914,9 +4913,9 @@ namespace STD_105.Office
             
             if (cbx_SectionTypeComboBox.SelectedIndex != -1)
             {
-                //this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
-                ViewModel.ProfileIndex = cbx_SectionTypeComboBox.SelectedIndex;
-                //cbx_SectionTypeComboBox.SelectedIndex = ViewModel.ProfileIndex;
+                this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
+                //ViewModel.ProfileIndex = cbx_SectionTypeComboBox.SelectedIndex;
+                cbx_SectionTypeComboBox.SelectedIndex = ViewModel.ProfileIndex;
                 ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(cbx_SteelTypeComboBox.Text)}.inp");
                 var pf = ViewModel.ProfileList[ViewModel.ProfileIndex];
                 ViewModel.SteelAttr.H = pf.H;
@@ -4927,7 +4926,7 @@ namespace STD_105.Office
                 ViewModel.CurrentPartSteelAttr = ViewModel.ProfileList[ViewModel.ProfileIndex]; //ViewModel.SteelAttr;
                 ViewModel.SteelSectionProperty = pf.Profile;
                 cbx_SectionTypeComboBox.Text = pf.Profile;
-                //this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
+                this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
             }
         }
 
@@ -5130,17 +5129,6 @@ namespace STD_105.Office
                     // 　　　　不存檔，刪除最後一列，清空畫面資訊，讀取原選列
                     if (this.PieceListGridControl.VisibleRowCount > 0)
                     {
-#if DEBUG
-                        IList see = this.PieceListGridControl.VisibleItems;
-                        
-                        // 將字串寫入TXT檔
-                        StreamWriter str = new StreamWriter(@"Current_GridItems.txt");
-                        foreach (ProductSettingsPageViewModel se in see)
-                        {
-                            str.WriteLine(se.DataName.ToString() + " " + se.steelAttr.AsseNumber.ToString() + " " + se.steelAttr.PartNumber.ToString());   
-                        }
-                        str.Close();
-#endif
                         FinalRow = (ProductSettingsPageViewModel)this.PieceListGridControl.GetRow(this.PieceListGridControl.VisibleRowCount - 1);
                         ProductSettingsPageViewModel temp = RowToEntity(FinalRow);
                         string guid = FinalRow.DataName;

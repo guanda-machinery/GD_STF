@@ -484,6 +484,7 @@ namespace WPFSTD105
         /// </summary>
         public ObservableCollection<DataCorrespond> GetDataCorrespond()
         {
+            ObservableCollection<DataCorrespond> temp_corr = GZipDeserialize<ObservableCollection<DataCorrespond>>(ApplicationVM.FilePartList());
             return GZipDeserialize<ObservableCollection<DataCorrespond>>(ApplicationVM.FilePartList());
         }
         /// <summary>
