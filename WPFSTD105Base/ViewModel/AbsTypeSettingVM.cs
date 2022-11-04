@@ -458,17 +458,6 @@ namespace WPFSTD105
 
                     AutoMatchAsyncV2();
 
-                    // 需排版之斷面規格
-                    List<string> sortProfile = DataViews.Where(x => x.SortCount > 0).Select(x => x.Profile).Distinct().ToList();
-                    // 需排版之零件
-                    List<string> sortPartNumber = DataViews.Where(x => x.SortCount > 0).Select(x => x.PartNumber).Distinct().ToList();
-                    if (sortPartNumber.Count == 0 || sortProfile.Count == 0)
-                    {
-                        GridControl grid = (GridControl)((object[])objArray)[0];
-                        grid.SelectAll();//全部資料行
-                        grid.EndSelection();//强制立即更新
-                    }
-
                     foreach (var Data in DataViews)
                     {
                         Data.SortCount = 0;
@@ -488,10 +477,6 @@ namespace WPFSTD105
                                     GoCommandGridControl.RefreshData();
                                 });
                             }
-                            //else
-                            //{
-                            //    throw new Exception("系結只能為GridControl");
-                            //}
                         }
                     }
                     else
