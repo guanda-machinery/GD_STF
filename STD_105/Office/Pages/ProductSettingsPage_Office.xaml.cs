@@ -675,25 +675,6 @@ namespace STD_105.Office
                 //    PieceListGridControl.EndDataUpdate();
                 //});
                 #endregion
-#if DEBUG
-                try
-                {
-                    IList see = this.PieceListGridControl.VisibleItems;
-
-                    // 將字串寫入TXT檔
-                    StreamWriter str = new StreamWriter(@".\for_debugging_txt\Current_GridItems.txt");
-                    //StreamWriter str = new StreamWriter(@"Current_GridItems.txt");
-                    foreach (ProductSettingsPageViewModel se in tempNewSource)
-                    {
-                        str.WriteLine(se.DataName.ToString() + ".dm " + se.steelAttr.AsseNumber.ToString() + " " + se.steelAttr.PartNumber.ToString() + " " + se.TeklaName.ToString() + " " + se.Type.ToString() + " " + se.Profile.ToString() + " " + se.Material.ToString() + " " + se.Count.ToString() + " " + se.Length.ToString());
-                    }
-                    str.Close();
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-#endif
             });
             //修改主零件
             ViewModel.ModifyPart = new RelayCommand(async () =>
@@ -4930,7 +4911,7 @@ namespace STD_105.Office
             
             if (cbx_SectionTypeComboBox.SelectedIndex != -1)
             {
-                //this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
+                this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                 //ViewModel.ProfileIndex = cbx_SectionTypeComboBox.SelectedIndex;
                 cbx_SectionTypeComboBox.SelectedIndex = ViewModel.ProfileIndex;
                 ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(cbx_SteelTypeComboBox.Text)}.inp");
@@ -4942,7 +4923,7 @@ namespace STD_105.Office
                 ViewModel.CurrentPartSteelAttr = ViewModel.ProfileList[ViewModel.ProfileIndex]; //ViewModel.SteelAttr;
                 ViewModel.SteelSectionProperty = pf.Profile;
                 cbx_SectionTypeComboBox.Text = pf.Profile;
-                //this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
+                this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
             }
         }
 
@@ -5159,25 +5140,6 @@ namespace STD_105.Office
                     // 　　　　不存檔，刪除最後一列，清空畫面資訊，讀取原選列
                     if (this.PieceListGridControl.VisibleRowCount > 0)
                     {
-#if DEBUG
-                        try
-                        {
-                            IList see = this.PieceListGridControl.VisibleItems;
-
-                            // 將字串寫入TXT檔
-                            StreamWriter str = new StreamWriter(@".\for_debugging_txt\Current_GridItems.txt");
-                            //StreamWriter str = new StreamWriter(@"Current_GridItems.txt");
-                            foreach (ProductSettingsPageViewModel se in see)
-                            {
-                                str.WriteLine(se.DataName.ToString() + ".dm " + se.steelAttr.AsseNumber.ToString() + " " + se.steelAttr.PartNumber.ToString() + " " + se.TeklaName.ToString() + " " + se.Type.ToString() + " " + se.Profile.ToString() + " " + se.Material.ToString() + " " + se.Count.ToString() + " " + se.Length.ToString());
-                            }
-                            str.Close();
-                        }
-                        catch (Exception)
-                        {
-                            throw;
-                        }
-#endif
                         FinalRow = (ProductSettingsPageViewModel)this.PieceListGridControl.GetRow(this.PieceListGridControl.VisibleRowCount - 1);
                         ProductSettingsPageViewModel temp = RowToEntity(FinalRow);
                         string guid = FinalRow.DataName;
@@ -5800,25 +5762,6 @@ namespace STD_105.Office
                     cbx_SectionTypeComboBox.Text = collection[rowHandle].Profile;
                     this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);//1103 OK //1103 OK
                 }
-#if DEBUG
-                try
-                {
-                    IList see = this.PieceListGridControl.VisibleItems;
-
-                    // 將字串寫入TXT檔
-                    StreamWriter str = new StreamWriter(@".\for_debugging_txt\Current_GridItems.txt");
-                    //StreamWriter str = new StreamWriter(@"Current_GridItems.txt");
-                    foreach (ProductSettingsPageViewModel se in collection)
-                    {
-                        str.WriteLine(se.DataName.ToString() + ".dm " + se.steelAttr.AsseNumber.ToString() + " " + se.steelAttr.PartNumber.ToString() + " " + se.TeklaName.ToString() + " " + se.Type.ToString() + " " + se.Profile.ToString() + " " + se.Material.ToString() + " " + se.Count.ToString() + " " + se.Length.ToString());
-                    }
-                    str.Close();
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-#endif
             }
             else
             {

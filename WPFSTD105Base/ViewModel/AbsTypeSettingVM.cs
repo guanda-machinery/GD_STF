@@ -70,7 +70,8 @@ namespace WPFSTD105
                                 int index = assemblies.FindIndex(el => el.ID.Contains(item.Father[i])); //找出構件列表內是零件的 Father 位置
                                 if (index == -1) //找不到物件
                                 {
-                                    throw new Exception("index 不可以是 -1");
+                                    //throw new Exception("index 不可以是 -1");
+                                    continue;
                                 }
                                 int idIndex = assemblies[index].ID.IndexOf(item.Father[i]); //找出構件 id 所在的陣列位置
                                 TypeSettingDataView view = new TypeSettingDataView(item, assemblies[index], idIndex, i);

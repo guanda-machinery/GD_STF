@@ -536,10 +536,10 @@ namespace WPFSTD105.ViewModel
         {
             get
             {
-                //if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp"))
-                //{
-                //    ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp");
-                //}
+                if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp"))
+                {
+                    ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp");
+                }
 
                 return _ProfileIndex; 
             }
@@ -1505,23 +1505,6 @@ namespace WPFSTD105.ViewModel
             {
                 // 所有該斷面規格的零件
                 List<SteelPart> sa1 = part[key].ToList();
-#if DEBUG
-                try
-                {
-                    // 將字串寫入TXT檔
-                    StreamWriter str3 = File.AppendText(@".\for_debugging_txt\Debug_ProfileCorespondToSteelPart.txt");
-                    //StreamWriter str3 = File.AppendText(@"Debug_ProfileCorespondToSteelPart.txt");
-                    foreach (SteelPart se in sa1)
-                    {
-                        str3.WriteLine(key + " " + se.GUID.ToString() + "-SteelPart " + part[key][0].Profile + " " + se.Number.ToString() + " " + se.Count.ToString() + " " + se.IsTekla.ToString());
-                    }
-                    str3.Close();
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-#endif
                 // 紀錄零件資訊
                 List<SteelAttr> saList = new List<SteelAttr>();
                 foreach (var item in DataCorrespond.Where(x=>x.Profile.GetHashCode().ToString()+".lis"==key))
@@ -1561,39 +1544,8 @@ namespace WPFSTD105.ViewModel
                             saTemp.Title1 = "";
                             saTemp.Title2 = "";
                         }
-#if DEBUG
-                        try
-                        {
-                            // 將字串寫入TXT檔
-                            StreamWriter str4 = File.AppendText(@".\for_debugging_txt\Debug_NcSuccessToDM.txt");
-                            //StreamWriter str4 = File.AppendText(@"Debug_NcSuccessToDM.txt");
-                            str4.WriteLine(item.Profile.GetHashCode().ToString() + ".lis" + " " + item.Number + ".nc1 " + saTemp.GUID.ToString() + " " + item.Profile.ToString());
-                            str4.Close();
-                        }
-                        catch (Exception)
-                        {
-                            throw;
-                        }
-#endif
                         saList.Add(saTemp);
                     }
-#if DEBUG
-                    else
-                    {
-                        try
-                        {
-                            // 將字串寫入TXT檔
-                            StreamWriter str2 = File.AppendText(@".\for_debugging_txt\Debug_NcCannotToDM.txt");
-                            //StreamWriter str2 = File.AppendText(@"Debug_NcCannotToDM.txt");
-                            str2.WriteLine(item.Profile.GetHashCode().ToString() + ".lis" + " " + item.Number + ".nc1 " + item.Profile.ToString());
-                            str2.Close();
-                        }
-                        catch (Exception)
-                        {
-                            throw;
-                        }
-                    }
-#endif
                 }
                 NcSA.Add(key, saList);
             }
