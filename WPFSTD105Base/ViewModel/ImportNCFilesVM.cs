@@ -1,4 +1,6 @@
-﻿using DevExpress.Data.Extensions;
+﻿using devDept.Eyeshot;
+using devDept.Eyeshot.Entities;
+using DevExpress.Data.Extensions;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.POCO;
 using DevExpress.Mvvm.UI;
@@ -20,6 +22,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using WPFSTD105.Attribute;
+using WPFSTD105.Model;
 using WPFSTD105.Tekla;
 using WPFSTD105.ViewModel;
 using static WPFSTD105.ViewLocator;
@@ -254,12 +257,12 @@ namespace WPFSTD105
                         TeklaBomFactory teklaHtemlFactory = new TeklaBomFactory($@"{ApplicationVM.FileTeklaBom()}"); //報表讀取器
                         bool loadBomResult = teklaHtemlFactory.Load(ProcessingScreenWin.ViewModel);//載入報表物件結果
 
-                    if (loadBomResult) //載入成功
+                        if (loadBomResult) //載入成功
                         {
                             ProcessingScreenWin.ViewModel.Status = $"載入報表物件結果...";
                             CommonViewModel.ProjectProperty.IsBomLoad = true;//改變報表載入參數
-                        ser.SetSteelAssemblies(teklaHtemlFactory.SteelAssemblies);//序列化構件資訊
-                        ser.SetProfileList(teklaHtemlFactory.ProfileList);
+                            ser.SetSteelAssemblies(teklaHtemlFactory.SteelAssemblies);//序列化構件資訊
+                            ser.SetProfileList(teklaHtemlFactory.ProfileList);
 
 
                             ProcessingScreenWin.ViewModel.Status = $"正在存取序列化物件";
@@ -281,7 +284,7 @@ namespace WPFSTD105
                                         }
                                         ser.SetPart(el.Key.GetHashCode().ToString(), el.Value);
                                     }
-                                   
+
                                     ci++;
                                 }
                                 else if (el.Value[0].GetType() == typeof(SteelBolts))
@@ -311,15 +314,80 @@ namespace WPFSTD105
                         CommonViewModel.ProjectProperty.Revise = DateTime.Now;//專案變動所以修改日期
                     }
                     #endregion
+                    TeklaNcFactory factory = new TeklaNcFactory();//nc1 讀取器
+                    #region 未有NC檔之零件
+                    ObSettingVM obvm = new ObSettingVM();
+                    //STDSerialization ser = new STDSerialization();
+                    Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
+                    // 取得所有NC檔之路徑
+                    string path = ApplicationVM.DirectoryNc();
+                    string dataName = Path.GetFileName(path);//檔案名稱
+                                                             // 取得所有斷面規格
+                    List<SteelAttr> saAll = ser.GetSteelAttr().Values.SelectMany(x => x).ToList();
+                    // 取得NC檔之檔名(零件)
+                    List<String> hasNCPart = GetAllNcPath(path).Select(x => x.Substring(x.LastIndexOf("\\") + 1, x.LastIndexOf(".nc1") - x.LastIndexOf("\\") - 1)).ToList();
+                    // 取得無NC之零件
+                    List<SteelPart> hasNoNCPart = part.SelectMany(x => x.Value).Where(x => !hasNCPart.Contains(x.Number)).ToList();
+                    ObservableCollection<DataCorrespond> dc = new ObservableCollection<DataCorrespond>();
+                    //ModelExt model = new ModelExt();
+                    //devDept.Eyeshot.Model model = new devDept.Eyeshot.Model();
+                    factory.ncTemps.Clear();
+                    foreach (SteelPart item in hasNoNCPart)
+                    {
+                        SteelAttr sa = new SteelAttr()
+                        {      
+                            PartNumber = item.Number,
+                            Length = item.Length,
+                            H = item.H,
+                            W = item.W,
+                            t1 = item.t1,
+                            t2 = item.t2,
+                            Number = item.Count,
+                            Profile = item.Profile,
+                            Type = item.Type,
+                            Name = item.DrawingName,
+                            GUID = Guid.NewGuid(),
+                            Phase = item.Phase,
+                            ShippingNumber = item.ShippingNumber,
+                            Title1 = item.Title1,
+                            Title2 = item.Title2,
+                            Material = item.Material,
+                        };
+                        factory.ncTemps.Add(new NcTemp() { SteelAttr = sa });
 
-                    #region 只跑NC1
-                    // 只跑NC1 && string.IsNullOrEmpty(BomPath)
+
+
+
+                        //string profile = item.Profile;
+                        //SteelAttr sa = saAll.Find(x => x.Profile == profile);
+                        //model.InitializeViewports();
+                        ////model.Blocks.Add(new Steel3DBlock(Steel3DBlock.GetProfile(sa)));//加入鋼構圖塊到模型
+                        //var result = new Steel3DBlock(Steel3DBlock.GetProfile(sa));
+                        //model.Blocks.Add(result);//加入鋼構圖塊到模型
+                        //DataCorrespond data = new DataCorrespond()
+                        //{
+                        //    DataName = sa.GUID.ToString(),
+                        //    Number = sa.PartNumber,
+                        //    Type = sa.Type,
+                        //    Profile = sa.Profile,
+                        //    TP = false,
+                        //};
+                        //ser.SetPartModel(model.Blocks[1].Name, model);
+                        //dc.Add(data);
+                    }
+                    ser.SetDataCorrespond(dc);
+
+                
+                    #endregion
+
+                #region 只跑NC1
+                // 只跑NC1 && string.IsNullOrEmpty(BomPath)
                     if (NcPath != string.Empty) //如果有選擇nc路徑
                     {
                         DeleteFolder(ApplicationVM.DirectoryNc());//刪除既有nc檔案
                         CopyFolder(NcPath);//複製nc路徑的nc1檔案
                         var profile = ser.GetSteelAttr();
-                        TeklaNcFactory factory = new TeklaNcFactory();//nc1 讀取器
+                        
 
                         ProcessingScreenWin.ViewModel.Status = $"正在載入NC表檔案到模型";
                         bool loadNcResult = factory.Load(ProcessingScreenWin.ViewModel); //載入NC檔案
@@ -382,7 +450,34 @@ namespace WPFSTD105
                 });
             }
         }
+        /// <summary>
+        /// 取得模型資料夾所有的 nc1 檔案
+        /// </summary>
+        /// <param name="dir"></param>
+        /// <returns>目前模型內的所有 .nc1 檔案</returns>
+        private IEnumerable<string> GetAllNcPath(string dir)
+        {
+            foreach (string d in Directory.GetFileSystemEntries(dir))
+            {
+                if (File.Exists(d))
+                {
+                    string dataName = Path.GetFileName(d);//檔案名稱
+                    string ext = Path.GetExtension(d);//副檔名
+                    if (ext == ".nc1") //如果是 nc 檔案
+                    {
+                        FileInfo fi = new FileInfo(d);
+                        if (fi.Attributes.ToString().IndexOf("ReadOnly") != -1)
+                            fi.Attributes = FileAttributes.Normal;
 
+                        yield return d;
+                    }
+                    else
+                    {
+                        GetAllNcPath(d);
+                    }
+                }
+            }
+        }
         /// <summary>
         /// 屬性設定存取
         /// </summary>

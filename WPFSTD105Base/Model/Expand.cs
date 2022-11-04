@@ -501,6 +501,50 @@ namespace WPFSTD105.Model
             ent.Add(reference);
         }
 
+        public static void LoadNoNCToModel(this devDept.Eyeshot.Model model,SteelAttr sa)
+        {
+            STDSerialization ser = new STDSerialization(); //序列化處理器
+            NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
+            var nc = ncTemps.GetData(sa.GUID.Value.ToString()); //取得nc資訊
+            NcTemp reduceNC = new NcTemp() { GroupBoltsAttrs = nc.GroupBoltsAttrs, SteelAttr = nc.SteelAttr };
+            model.InitializeViewports();
+            //model.Blocks.Add(new Steel3DBlock(Steel3DBlock.GetProfile(sa)));//加入鋼構圖塊到模型
+            model.Clear(); //清除目前模型
+            Steel3DBlock steel = Steel3DBlock.AddSteel(nc.SteelAttr, model, out BlockReference blockReference);
+            string dataName = nc.SteelAttr.GUID.Value.ToString();
+            DataCorrespond data = new DataCorrespond()
+            {
+                DataName = sa.GUID.ToString(),
+                Number = sa.PartNumber,
+                Type = sa.Type,
+                Profile = sa.Profile,
+                TP = false,
+            };
+            ser.SetPartModel(model.Blocks[1].Name, model);
+
+            #region 檢測是否成功，失敗則將NC檔寫回
+            ReadFile readFile = ser.ReadPartModel(dataName); //讀取檔案內容
+            readFile.DoWork();//開始工作
+            try
+            {
+                readFile.AddToScene(model);//將讀取完的檔案放入到模型
+                if (model.Blocks.Count() <= 1)
+                {
+                    ncTemps.Add(reduceNC);
+                }
+            }
+            catch (Exception ex)
+            {
+                ncTemps.Add(reduceNC);
+            }
+            #endregion
+
+            ser.SetNcTempList(ncTemps);//儲存檔案
+        }
+
+
+
+
         /// <summary>
         /// 載入 <see cref="NcTemp"/> 到 <see cref="devDept.Eyeshot.Model"/>
         /// </summary>
@@ -644,28 +688,32 @@ namespace WPFSTD105.Model
                 ////model.Refresh();
             }
 
-            nc.GroupBoltsAttrs.ForEach(bolt =>
+            if (nc.GroupBoltsAttrs != null)
             {
-                GroupBoltsAttr temp = new GroupBoltsAttr()
-                {
-                    BlockName = bolt.BlockName,
-                    Dia = bolt.Dia,
-                    dX = "0",
-                    dY = "0",
-                    Face = bolt.Face,
-                    GUID = bolt.GUID,
-                    Mode = AXIS_MODE.PIERCE,
-                    StartHole = bolt.StartHole,
-                    t = bolt.t,
-                    Type = bolt.Type,
-                    xCount = 1,
-                    yCount = 1,
-                    X = bolt.X,
-                    Y = bolt.Y,
-                    Z = bolt.Z,
-                };
-                Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out bool check); //加入到 3d 視圖
-            });
+                nc.GroupBoltsAttrs.ForEach(bolt =>
+                           {
+                               GroupBoltsAttr temp = new GroupBoltsAttr()
+                               {
+                                   BlockName = bolt.BlockName,
+                                   Dia = bolt.Dia,
+                                   dX = "0",
+                                   dY = "0",
+                                   Face = bolt.Face,
+                                   GUID = bolt.GUID,
+                                   Mode = AXIS_MODE.PIERCE,
+                                   StartHole = bolt.StartHole,
+                                   t = bolt.t,
+                                   Type = bolt.Type,
+                                   xCount = 1,
+                                   yCount = 1,
+                                   X = bolt.X,
+                                   Y = bolt.Y,
+                                   Z = bolt.Z,
+                               };
+                               Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out bool check); //加入到 3d 視圖
+                           });
+            }
+           
 
             // 寫入oPoint,vPoint,uPoint
             ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = nc.SteelAttr.oPoint;

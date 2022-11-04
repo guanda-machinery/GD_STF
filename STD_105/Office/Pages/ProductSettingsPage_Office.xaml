@@ -220,7 +220,7 @@
                     </dxg:GridColumn.CellTemplate>
                 </dxg:GridColumn>
 
-                <dxg:GridColumn FieldName="ExclamationMark" Binding="{Binding Row.steelAttr.ExclamationMark}" IsSmart="True"   Header="構件編號" Width="auto"/>
+                    <dxg:GridColumn FieldName="ExclamationMark" Binding="{Binding Row.steelAttr.ExclamationMark}" IsSmart="True"   Header="構件編號" Width="auto" Visible="false"/>
 
                 <dxg:GridColumn FieldName="LockMark"  IsSmart="True" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True" Visible="false">
                     <dxg:GridColumn.HeaderImageStyle>
@@ -670,16 +670,15 @@
 
 
                     <Label Grid.Column="0" Grid.Row="7" Content="Phase：" />
-
+                    
                     <TextBox x:Name="phase" Grid.Column="1" Grid.Row="7" >
                         <TextBox.Text>
                             <!--<Binding Path="SelectedItems[0].Phase" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >-->
                             <Binding Path="PhaseProperty" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >
 
                             </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-
+                        </TextBox.Text>                        
+                    </TextBox>                   
                     <Label Grid.Column="0" Grid.Row="8" Content="拆運：" />
 
                     <TextBox x:Name="shippingNumber" Grid.Column="1" Grid.Row="8">
@@ -713,11 +712,11 @@
                             </Binding>
                         </TextBox.Text>
                     </TextBox>
-                    <!--<StackPanel Grid.Column="2"  Grid.Row="7" Grid.RowSpan="3" >
-                        <TextBox Text="{Binding SelectedItems[0].Type, ElementName=PieceListGridControl}" BorderBrush="Black"/>
+                    <StackPanel Grid.Column="4"  Grid.Row="7" Grid.RowSpan="3" >
+                        <!--<TextBox Text="{Binding SelectedItems[0].Type, ElementName=PieceListGridControl}" BorderBrush="Black"/>
                         <TextBox Text="{Binding SelectedItems[0].TypeDesc, ElementName=PieceListGridControl}" BorderBrush="Black"/>
-                        <TextBox Text="{Binding SelectedItems[0].SteelType, ElementName=PieceListGridControl}" BorderBrush="Black"/>
-                    </StackPanel>-->
+                        <TextBox Text="{Binding SteelSectionProperty, ElementName=PieceListGridControl}" BorderBrush="Black"/>-->
+                    </StackPanel>
 
                     <Label Grid.Column="3" Grid.Row="0"
                            Content="型鋼類型：" />
@@ -743,7 +742,9 @@
                                   Padding="5,1,0,0"
                                   ItemsSource="{Binding ProfileList, UpdateSourceTrigger=PropertyChanged}" 
                                   DisplayMemberPath="Profile" 
-                                  Text="{Binding SteelSectionProperty, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="CBOX_SectionTypeChanged">
+                                  Text="{Binding SteelSectionProperty, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="CBOX_SectionTypeChanged"
+                                 IsSynchronizedWithCurrentItem="True"
+                              > 
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionTypeComboBox">
                                 <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
@@ -798,11 +799,17 @@
                         <TextBlock Grid.Column="1" Text="mm" VerticalAlignment="Center" />
 
                     </Grid>
+                    <Grid Grid.Column="3" Grid.Row="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="3" Grid.Row="6" x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}" Background="Gold" Width="90" Padding="0" Margin="0,0,0,0" />
 
+                    </Grid>
                     <StackPanel Grid.Row="13" Margin="2" Orientation="Horizontal" Grid.ColumnSpan="5">
                         <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Background="Gold" Width="60" Margin="0,0,6,0" Click="OKtoConfirmChanges"/>
-                        <Button x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}" Background="Gold" Width="90" Padding="0" Margin="0,0,0,0" />
-
+                        
                         <STD105:DataButtons_Office 
                                                Modify="{Binding ModifyPart}"
                                                Add="{Binding AddPart}"
