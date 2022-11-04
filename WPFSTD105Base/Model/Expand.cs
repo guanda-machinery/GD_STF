@@ -678,28 +678,32 @@ namespace WPFSTD105.Model
                 //model.Refresh();
             }
 
-            nc.GroupBoltsAttrs.ForEach(bolt =>
+            if (nc.GroupBoltsAttrs != null)
             {
-                GroupBoltsAttr temp = new GroupBoltsAttr()
-                {
-                    BlockName = bolt.BlockName,
-                    Dia = bolt.Dia,
-                    dX = "0",
-                    dY = "0",
-                    Face = bolt.Face,
-                    GUID = bolt.GUID,
-                    Mode = AXIS_MODE.PIERCE,
-                    StartHole = bolt.StartHole,
-                    t = bolt.t,
-                    Type = bolt.Type,
-                    xCount = 1,
-                    yCount = 1,
-                    X = bolt.X,
-                    Y = bolt.Y,
-                    Z = bolt.Z,
-                };
-                Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out bool check); //加入到 3d 視圖
-            });
+                nc.GroupBoltsAttrs.ForEach(bolt =>
+                           {
+                               GroupBoltsAttr temp = new GroupBoltsAttr()
+                               {
+                                   BlockName = bolt.BlockName,
+                                   Dia = bolt.Dia,
+                                   dX = "0",
+                                   dY = "0",
+                                   Face = bolt.Face,
+                                   GUID = bolt.GUID,
+                                   Mode = AXIS_MODE.PIERCE,
+                                   StartHole = bolt.StartHole,
+                                   t = bolt.t,
+                                   Type = bolt.Type,
+                                   xCount = 1,
+                                   yCount = 1,
+                                   X = bolt.X,
+                                   Y = bolt.Y,
+                                   Z = bolt.Z,
+                               };
+                               Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out bool check); //加入到 3d 視圖
+                           });
+            }
+           
 
             // 寫入oPoint,vPoint,uPoint
             ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = nc.SteelAttr.oPoint;
