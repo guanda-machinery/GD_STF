@@ -157,7 +157,9 @@ namespace WPFSTD105.Tekla
             double B = (2 * x1*c2 - 2 * c1*c2 - 2 * y1);
             double C = x1*x1 - 2 * x1*c1 + c1*c1 + y1*y1 - r*r;
             bool isClockwise = IsClockwise(x1, y1, x2, y2);
-            y =!isClockwise ? (-B + Math.Sqrt(B*B - 4 * A*C)) / (2 * A) : (-B - Math.Sqrt(B*B - 4 * A*C)) / (2 * A);
+            // 2022/10/31 呂宗霖 
+            // 原公式無ABS，無法處理弧形，故先加ABS將其視為圓形
+            y =!isClockwise ? (-B + Math.Sqrt(Math.Abs(B*B - 4 * A*C))) / (2 * A) : (-B - Math.Sqrt(Math.Abs(B * B - 4 * A*C))) / (2 * A);
             x = c1 - c2 * y;
         }
         /// <summary>

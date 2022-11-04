@@ -3298,7 +3298,7 @@ namespace STD_105
                     p.Z = y;
                     p.Y = z;
                     break;
-                default:
+                default: 
                     break;
             }
             return p;
@@ -3480,7 +3480,7 @@ namespace STD_105
             //new_source.Add(new ProductSettingsPageViewModel());
 
             ProductSettingsPageViewModel aa = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
-            ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
+            ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(ObSettingVM.GetData());
             ViewModel.DataViews = collection;
             PreIndex = collection.FindIndex(x => x.DataName == aa.DataName);
             PieceListGridControl.ItemsSource = collection;

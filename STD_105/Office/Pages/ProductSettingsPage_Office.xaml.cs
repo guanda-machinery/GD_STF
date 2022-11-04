@@ -37,6 +37,7 @@ using GD_STD;
 using DevExpress.Office.Utils;
 using WPFSTD105.Tekla;
 using System.Collections;
+using System.Threading.Tasks;
 
 namespace STD_105.Office
 {
@@ -311,6 +312,9 @@ namespace STD_105.Office
                     double g_length = gridItem.steelAttr.Length;
                     string g_profile = gridItem.steelAttr.Profile;
                     OBJECT_TYPE g_Type = gridItem.steelAttr.Type;
+
+
+                    ViewModel.SteelAttr = new SteelAttr();
                     GetViewToViewModel(true);
                     ViewModel.SteelAttr.Creation = DateTime.Now;
                     ViewModel.SteelAttr.Revise = DateTime.Now;
@@ -432,20 +436,21 @@ namespace STD_105.Office
                             #endregion
 
                             #region 塞值
-                            sa = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
-                            sa.GUID = Guid.NewGuid();
-                            sa.Length = g_length;
-                            sa.Name = gridItem.steelAttr.Name;
-                            sa.Material = gridItem.steelAttr.Material;
-                            sa.Phase = 0;
-                            sa.ShippingNumber = 0;
-                            sa.Title1 = "";
-                            sa.Title2 = "";
-                            sa.PartNumber = ViewModel.SteelAttr.PartNumber;
-                            model.Blocks[1].Entities[0].EntityData = sa;
+                            //sa = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
+                            //sa.GUID = Guid.NewGuid();
+                            //sa.Length = g_length;
+                            //sa.Name = gridItem.steelAttr.Name;
+                            //sa.Material = gridItem.steelAttr.Material;
+                            //sa.Phase = 0;
+                            //sa.ShippingNumber = 0;
+                            //sa.Title1 = "";
+                            //sa.Title2 = "";
+                            //sa.PartNumber = ViewModel.SteelAttr.PartNumber;
+                            //model.Blocks[1].Entities[0].EntityData = sa;
+                            sa = GetViewToSteelAttr(sa, true);
                             model.Blocks[1].Name = sa.GUID.Value.ToString();
                             Mesh modify = Steel3DBlock.GetProfile(sa); //修改的形狀
-                            model.Entities.RemoveAt(model.Entities.Count()-1);
+                            model.Entities.RemoveAt(model.Entities.Count() - 1);
                             model.Entities.Add(modify);
                             #endregion
 
@@ -636,7 +641,7 @@ namespace STD_105.Office
                 var tmpSource = PieceListGridControl.ItemsSource;
 
                 #region tempNewSource = ItemSource + New Data
-                ObservableCollection<ProductSettingsPageViewModel> tempNewSource = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
+                ObservableCollection<ProductSettingsPageViewModel> tempNewSource = new ObservableCollection<ProductSettingsPageViewModel>(ObSettingVM.GetData());
                 tempNewSource.Add(tempSteelAttr);
                 #endregion
                 this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
@@ -669,7 +674,7 @@ namespace STD_105.Office
                 #endregion
             });
             //修改主零件
-            ViewModel.ModifyPart = new RelayCommand(() =>
+            ViewModel.ModifyPart = new RelayCommand(async () =>
             {
                 // 修改 = 新增
                 //ViewModel.AddPart.Execute(null);
@@ -1001,52 +1006,53 @@ namespace STD_105.Office
                 if (!fNewPart.Value)
                 {
                     SaveModel(true);//存取檔案
+                    //await SaveModelAsync(true);
                 }
 
-                //Esc();
+                ////Esc();
 
-                // 鋼材類別
-                SteelAttr sa = steelAttr;
-                var aa = sa.Type.GetType().GetMember(sa.Type.ToString())[0].GetCustomAttribute<DescriptionAttribute>();
-                string type = aa == null ? "" : aa.Description;
+                //// 鋼材類別
+                //SteelAttr sa = steelAttr;
+                //var aa = sa.Type.GetType().GetMember(sa.Type.ToString())[0].GetCustomAttribute<DescriptionAttribute>();
+                //string type = aa == null ? "" : aa.Description;
 
-                ProductSettingsPageViewModel tempSteelAttr = new ProductSettingsPageViewModel()
-                {
-                    steelAttr = sa,
-                    Length = sa.H,
-                    Weight = sa.Weight,
-                    Profile = sa.Profile,
-                    Material = sa.Material,
-                    Count = sa.Number,
-                    Phase = sa.Phase,
-                    ShippingNumber = sa.ShippingNumber,
-                    Title1 = sa.Title1,
-                    Title2 = sa.Title2,
-                    Type = sa.Type,
-                    TypeDesc = type,
-                    SteelType = Convert.ToInt32(sa.Type),
-                    TeklaName = sa.Name,
-                    DataName = sa.GUID.ToString()
-                };
-                tempSteelAttr.steelAttr.PartNumber = sa.PartNumber;
-                tempSteelAttr.steelAttr.AsseNumber = sa.AsseNumber;
-                tempSteelAttr.steelAttr.Length = sa.Length;
-                tempSteelAttr.steelAttr.Weight = sa.Weight;
-                tempSteelAttr.steelAttr.Name = sa.Name;
-                tempSteelAttr.steelAttr.Phase = sa.Phase;
-                tempSteelAttr.steelAttr.ShippingNumber = sa.ShippingNumber;
-                tempSteelAttr.steelAttr.Title1 = sa.Title1;
-                tempSteelAttr.steelAttr.Title2 = sa.Title2;
-                tempSteelAttr.steelAttr.ExclamationMark = sa.ExclamationMark;
-                tempSteelAttr.steelAttr.Material = sa.Material;
-                tempSteelAttr.steelAttr.Number = sa.Number;
-                tempSteelAttr.steelAttr.GUID = sa.GUID;
-                tempSteelAttr.steelAttr.Profile = sa.Profile;
-                tempSteelAttr.steelAttr.t1 = sa.t1;
-                tempSteelAttr.steelAttr.t2 = sa.t2;
-                tempSteelAttr.steelAttr.Type = sa.Type;
+                //ProductSettingsPageViewModel tempSteelAttr = new ProductSettingsPageViewModel()
+                //{
+                //    steelAttr = sa,
+                //    Length = sa.H,
+                //    Weight = sa.Weight,
+                //    Profile = sa.Profile,
+                //    Material = sa.Material,
+                //    Count = sa.Number,
+                //    Phase = sa.Phase,
+                //    ShippingNumber = sa.ShippingNumber,
+                //    Title1 = sa.Title1,
+                //    Title2 = sa.Title2,
+                //    Type = sa.Type,
+                //    TypeDesc = type,
+                //    SteelType = Convert.ToInt32(sa.Type),
+                //    TeklaName = sa.Name,
+                //    DataName = sa.GUID.ToString()
+                //};
+                //tempSteelAttr.steelAttr.PartNumber = sa.PartNumber;
+                //tempSteelAttr.steelAttr.AsseNumber = sa.AsseNumber;
+                //tempSteelAttr.steelAttr.Length = sa.Length;
+                //tempSteelAttr.steelAttr.Weight = sa.Weight;
+                //tempSteelAttr.steelAttr.Name = sa.Name;
+                //tempSteelAttr.steelAttr.Phase = sa.Phase;
+                //tempSteelAttr.steelAttr.ShippingNumber = sa.ShippingNumber;
+                //tempSteelAttr.steelAttr.Title1 = sa.Title1;
+                //tempSteelAttr.steelAttr.Title2 = sa.Title2;
+                //tempSteelAttr.steelAttr.ExclamationMark = sa.ExclamationMark;
+                //tempSteelAttr.steelAttr.Material = sa.Material;
+                //tempSteelAttr.steelAttr.Number = sa.Number;
+                //tempSteelAttr.steelAttr.GUID = sa.GUID;
+                //tempSteelAttr.steelAttr.Profile = sa.Profile;
+                //tempSteelAttr.steelAttr.t1 = sa.t1;
+                //tempSteelAttr.steelAttr.t2 = sa.t2;
+                //tempSteelAttr.steelAttr.Type = sa.Type;
 
-                var tmpSource = PieceListGridControl.ItemsSource;
+                //var tmpSource = PieceListGridControl.ItemsSource;
 
                 #region tempNewSource = ItemSource + New Data
                 // 斜邊打點已存
@@ -1055,16 +1061,16 @@ namespace STD_105.Office
                 //tempNewSource.Remove(row);
                 //tempNewSource.Insert(oriIndex,tempSteelAttr);
                 #endregion
-                ObservableCollection<ProductSettingsPageViewModel> tempNewSource = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
+                ObservableCollection<ProductSettingsPageViewModel> tempNewSource = new ObservableCollection<ProductSettingsPageViewModel>(ObSettingVM.GetData());
                 this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
                 PieceListGridControl.ItemsSource = tempNewSource;
                 PieceListGridControl.RefreshData();
                 // 取得該GUID資料
-                PreIndex = tempNewSource.FindIndex(x => x.DataName == tempSteelAttr.steelAttr.GUID.ToString());
+                PreIndex = tempNewSource.FindIndex(x => x.DataName == (steelAttr).GUID.ToString());
                 PieceListGridControl.View.FocusedRowHandle = PreIndex;
                 PieceListGridControl.SelectItem(PreIndex);
-                ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(tempSteelAttr.steelAttr.Type).ToString()}.inp");
-                cbx_SectionTypeComboBox.Text = tempSteelAttr.steelAttr.Profile;
+                ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{((steelAttr).Type).ToString()}.inp");
+                cbx_SectionTypeComboBox.Text = (steelAttr).Profile;
                 this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
                 
                 fclickOK = false;
@@ -1663,6 +1669,8 @@ namespace STD_105.Office
                 isNewPart = true;//還原零件狀態
 
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D三視圖
+
+                //RunHypotenusePoint();
 #if DEBUG
                 log4net.LogManager.GetLogger("加入切割線").Debug("結束");
 #endif
@@ -2895,7 +2903,7 @@ namespace STD_105.Office
                         SaveModel(true, true);
 
                         #region 指向新增零件
-                        ObservableCollection<ProductSettingsPageViewModel> tempNewSource = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
+                        ObservableCollection<ProductSettingsPageViewModel> tempNewSource = new ObservableCollection<ProductSettingsPageViewModel>(ObSettingVM.GetData());
                         this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
                         PieceListGridControl.ItemsSource = tempNewSource;
                         // 取得該GUID資料
@@ -3243,7 +3251,7 @@ namespace STD_105.Office
         /// <summary>
         /// 自動斜邊打點
         /// </summary>
-        public void RunHypotenusePoint()
+        public async void RunHypotenusePoint()
         {
 
             ScrollViewbox.IsEnabled = true;
@@ -3274,6 +3282,7 @@ namespace STD_105.Office
             if (!fNewPart.Value)
                 //if (!fAddSteelPart)   //  新建孔群是否於新增零件  : false 直接存檔
                 SaveModel(false, false);//存取檔案 
+            //await SaveModelAsync(false, false);
 
             //刷新模型
             model.Refresh();
@@ -3999,6 +4008,18 @@ namespace STD_105.Office
 
         }
 
+
+
+        //public static async Task SaveModelSync(bool add, bool reflesh = true)
+        //{
+        //    await SaveModelAsync(add,reflesh);
+        //}
+
+        public static async Task SaveModelAsync(bool add, bool reflesh = true) 
+        {
+            await SaveModelAsync(add, reflesh);
+        }
+
         /// <summary>
         /// 存取模型
         /// </summary>
@@ -4421,7 +4442,7 @@ namespace STD_105.Office
             modelExt.drawingLinearDim = true;
 
         }
-
+       
         /// <summary>
         /// 標註動作
         /// </summary>
@@ -4541,6 +4562,7 @@ namespace STD_105.Office
             //// 建立dm檔 for 尚未建立dm檔的零件
             ApplicationVM appVM = new ApplicationVM();
             appVM.CreateDMFile(model);
+            //appVM.CreateDMFileSync(model);
         }
 
         public BlockReference SteelTriangulation(Mesh mesh)
@@ -4878,15 +4900,22 @@ namespace STD_105.Office
         /// </summary>
         private void CBOX_SectionTypeChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
+            
             if (cbx_SectionTypeComboBox.SelectedIndex != -1)
             {
-                var pf = ViewModel.ProfileList[cbx_SectionTypeComboBox.SelectedIndex];
+                //this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
+                //ViewModel.ProfileIndex = cbx_SectionTypeComboBox.SelectedIndex;
+                cbx_SectionTypeComboBox.SelectedIndex = ViewModel.ProfileIndex;
+                ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(cbx_SteelTypeComboBox.Text)}.inp");
+                var pf = ViewModel.ProfileList[ViewModel.ProfileIndex];
                 ViewModel.SteelAttr.H = pf.H;
                 ViewModel.SteelAttr.W = pf.W;
                 ViewModel.SteelAttr.t1 = pf.t1;
                 ViewModel.SteelAttr.t2 = pf.t2;
-                ViewModel.CurrentPartSteelAttr = ViewModel.ProfileList[cbx_SectionTypeComboBox.SelectedIndex]; //ViewModel.SteelAttr;
+                ViewModel.CurrentPartSteelAttr = ViewModel.ProfileList[ViewModel.ProfileIndex]; //ViewModel.SteelAttr;
+                ViewModel.SteelSectionProperty = pf.Profile;
                 cbx_SectionTypeComboBox.Text = pf.Profile;
+                //this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
             }
         }
 
@@ -4906,11 +4935,13 @@ namespace STD_105.Office
             ViewModel.SteelAttr.Type = CuurentSelectedPart.Type;
             ViewModel.SteelTypeProperty_int = (int)CuurentSelectedPart.Type;
             ViewModel.SteelTypeProperty_enum = CuurentSelectedPart.Type;
+            //this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
             ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(CuurentSelectedPart.steelAttr.Type).ToString()}.inp");
             //cbx_SectionTypeComboBox.ItemsSource = ViewModel.ProfileList;
             //cbx_SectionTypeComboBox.Text = CuurentSelectedPart.Profile;
             ViewModel.SteelSectionProperty = profile;
             cbx_SectionTypeComboBox.Text = profile;
+            //this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
             //cbx_SectionTypeComboBox.Text = CuurentSelectedPart.Profile;
             ViewModel.ProductLengthProperty = CuurentSelectedPart.Length;
             ViewModel.SteelAttr.Length = CuurentSelectedPart.Length;
@@ -5049,7 +5080,7 @@ namespace STD_105.Office
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Grid_SelectedChange(object sender, SelectedItemChangedEventArgs e)
+        private async void Grid_SelectedChange(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.OldItem != null)
             {
@@ -5058,11 +5089,13 @@ namespace STD_105.Office
                     ProductSettingsPageViewModel item = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
                     // 異動指標
                     this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
-                    int selectIndex = ((ObservableCollection<ProductSettingsPageViewModel>)e.Source.ItemsSource).ToList().FindIndex(x => x.DataName == item.DataName);
+                    int selectIndex = ((ObservableCollection<ProductSettingsPageViewModel>)e.Source.ItemsSource).ToList().FindIndex(x => x.DataName == item.DataName && x.AssemblyNumber==item.AssemblyNumber && x.steelAttr.PartNumber==item.steelAttr.PartNumber);
+                    //this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                     PieceListGridControl.SelectItem(selectIndex);
                     PieceListGridControl.View.FocusedRowHandle = selectIndex;
                     ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{item.Type}.inp");
                     cbx_SectionTypeComboBox.Text = item.Profile;
+                    //this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                     this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
 
                     if (item == null || selectIndex == -1)
@@ -5113,8 +5146,10 @@ namespace STD_105.Office
                             {
                                 // 指向最後一列
                                 this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
+                                this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                                 PieceListGridControl.SelectItem(this.PieceListGridControl.VisibleRowCount - 1);
                                 PieceListGridControl.View.FocusedRowHandle = this.PieceListGridControl.VisibleRowCount - 1;
+                                this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                                 this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
 
                                 // 還原元件資訊
@@ -5129,12 +5164,13 @@ namespace STD_105.Office
                                 this.shippingNumber.Text = $"{temp.steelAttr.ShippingNumber}";
                                 this.Title1.Text = temp.steelAttr.Title1;
                                 this.Title2.Text = temp.steelAttr.Title2;
+                                this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                                 string tempProfile = temp.steelAttr.Profile;
                                 this.cbx_SteelTypeComboBox.SelectedIndex = (int)temp.SteelType;
                                 ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{temp.Type}.inp");
                                 ViewModel.SteelSectionProperty = tempProfile;
                                 this.cbx_SectionTypeComboBox.Text = tempProfile;
-                                
+                                this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                                 this.H.Text = $"{temp.steelAttr.H}";
                                 this.W.Text = $"{temp.steelAttr.W}";
                                 this.t1.Text = $"{temp.steelAttr.t1}";
@@ -5151,6 +5187,7 @@ namespace STD_105.Office
 
                                 // 新零件
                                 SaveModel(true, true);
+                                //await SaveModelAsync(true, true);
                             }
                             else
                             {
@@ -5161,8 +5198,10 @@ namespace STD_105.Office
                                     ObservableCollection<ProductSettingsPageViewModel> source = (ObservableCollection<ProductSettingsPageViewModel>)PieceListGridControl.ItemsSource;
                                     this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
                                     source.Remove(source.Where(x => x.DataName == guid.ToString()).FirstOrDefault());
+                                    //this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                                     PieceListGridControl.ItemsSource = source;
                                     PieceListGridControl.SelectItem(this.PieceListGridControl.VisibleRowCount - 1);
+                                    //this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                                     this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
                                 }
                                 #endregion
@@ -5179,9 +5218,11 @@ namespace STD_105.Office
                                 this.shippingNumber.Clear();
                                 this.Title1.Clear();
                                 this.Title2.Clear();
+                                this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                                 this.cbx_SteelTypeComboBox.SelectedIndex = 0;
                                 ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)0}.inp");
                                 this.cbx_SectionTypeComboBox.SelectedIndex = 0;
+                                this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                                 #endregion
                             }
 
@@ -5189,8 +5230,10 @@ namespace STD_105.Office
                         else {
                             // 還原指標
                             this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
+                            //this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                             PieceListGridControl.SelectItem(selectIndex);
                             PieceListGridControl.View.FocusedRowHandle = selectIndex;
+                            //this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                             ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{item.Type}.inp");
                             cbx_SectionTypeComboBox.Text = item.Profile;
                             ViewModel.SteelSectionProperty = item.Profile;
@@ -5362,6 +5405,11 @@ namespace STD_105.Office
                         //    // 重新建立DM檔
                         //    appVM.CreateDMFile(model);
                         //}
+                        var a = model.Blocks[0];
+                        a.Name =focuseGUID;
+                        ((SteelAttr)a.Entities[0].EntityData).GUID = Guid.Parse(focuseGUID);
+                        model.Blocks.Add(a);
+
 
                         WinUIMessageBox.Show(null,
                             $"專案Dev_Part資料夾讀取失敗",
@@ -5404,8 +5452,10 @@ namespace STD_105.Office
                     }
                     profile = sa.Profile;
                     //cbx_SectionTypeComboBox.Text = sa.Profile;
+                    //this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                     ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(sa.Type).ToString()}.inp");
                     cbx_SectionTypeComboBox.Text = profile;
+                    //this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                     model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
                     model.Blocks[1].Name = sa.GUID.Value.ToString();
                     SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
@@ -5438,7 +5488,7 @@ namespace STD_105.Office
                     //steelType = (int)((sa).Type);
                     //profile = (sa).Profile;
 
-                    (sa).Weight = sr.PartWeight(new ProductSettingsPageViewModel()
+                    (sa).Weight = ObSettingVM.PartWeight(new ProductSettingsPageViewModel()
                     {
                         Length = sa.Length,
                         SteelType = (int)sa.Type,
@@ -5629,7 +5679,7 @@ namespace STD_105.Office
             int steelType = (int)((sa).Type);
             string profile = (sa).Profile;
 
-            (sa).Weight = sr.PartWeight(new ProductSettingsPageViewModel()
+            (sa).Weight = ObSettingVM.PartWeight(new ProductSettingsPageViewModel()
             {
                 Length = length,
                 SteelType = steelType,
@@ -5685,7 +5735,7 @@ namespace STD_105.Office
             ProductSettingsPageViewModel aa = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
             if (aa != null)
             {
-                ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
+                ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(ObSettingVM.GetData());
                 ViewModel.DataViews = collection;
                 PreIndex = collection.FindIndex(x => x.DataName == aa.DataName);
                 if (PreIndex != -1)
@@ -5703,11 +5753,19 @@ namespace STD_105.Office
             }
             else
             {
-                ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
+                ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(ObSettingVM.GetData());
                 ViewModel.DataViews = collection;
-                this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
-                PieceListGridControl.ItemsSource = collection;
-                this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
+                if (collection.Count>0)
+                {
+                    this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
+                    PieceListGridControl.ItemsSource = collection;
+                    this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
+                    this.PieceListGridControl.SelectItem(0);
+                    PieceListGridControl.View.FocusedRowHandle = 0;
+
+                    aa = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
+                    ConfirmCurrentSteelSection(aa);
+                }
             }
         }
         private void OKtoConfirmChanges(object sender, RoutedEventArgs e)
