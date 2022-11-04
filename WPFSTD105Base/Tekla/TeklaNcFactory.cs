@@ -656,7 +656,10 @@ namespace WPFSTD105.Tekla
                         {
                             g = this.ncTemps.FirstOrDefault(x => x.SteelAttr.PartNumber == item.Number && x.SteelAttr.Length == item.Length && x.SteelAttr.Type == item.Type && x.SteelAttr.Profile == item.Profile).SteelAttr.GUID;
                         }
-                        
+                        if (g == null)
+                        {
+                            g = Guid.NewGuid();
+                        }
                         string fileName = item.Profile.GetHashCode().ToString();
                         if (newPart.Keys.Contains(fileName) && newPart[fileName].Any(x => ((SteelPart)x).Profile == item.Profile && ((SteelPart)x).Number == item.Number && ((SteelPart)x).Length == item.Length && ((SteelPart)x).Type == item.Type))
                         {

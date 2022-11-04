@@ -35,7 +35,8 @@ namespace STD_105
         private bool IsPanelZoomOut { get; set; } = true;
         public delegate void EventHandle(bool isShow);
         public event EventHandle ShowClickEvent;
-        private static SplashScreenManager manager = SplashScreenManager.Create(()=> new WaitIndicator(), new DXSplashScreenViewModel { });
+        //private static SplashScreenManager manager = SplashScreenManager.Create(()=> new WaitIndicator(), new DXSplashScreenViewModel { });
+        private static SplashScreenManager manager = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
         private readonly System.Windows.Threading.DispatcherTimer Timer = new System.Windows.Threading.DispatcherTimer();
 
         /// <summary>

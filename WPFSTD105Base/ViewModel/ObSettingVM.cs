@@ -1971,7 +1971,7 @@ namespace WPFSTD105.ViewModel
                              t2 = g.FirstOrDefault().steelAttr.t2,
                              H = g.FirstOrDefault().steelAttr.H,
                              W = g.FirstOrDefault().steelAttr.W
-                         }).OrderBy(x=>x.Profile).OrderByDescending(x=>x.PartNumber).ToList();
+                         }).OrderBy(x=>x.Profile).ThenBy(x=>x.PartNumber).ToList();
             List<ProductSettingsPageViewModel> list = new List<ProductSettingsPageViewModel>();
 
             Dictionary<string, ObservableCollection<SteelAttr>> saFile = ser.GetSteelAttr();
