@@ -127,7 +127,7 @@
         <Grid Grid.Column="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" MinHeight="50" />
-            <RowDefinition Height="480" MaxHeight="915" MinHeight="55"/>
+            <RowDefinition Height="480" MaxHeight="915" MinHeight="51"/>
         </Grid.RowDefinitions>
         <Grid Margin="5">
             <!--<Grid.DataContext>
@@ -793,16 +793,11 @@
                         <TextBlock Grid.Column="1" Text="mm" VerticalAlignment="Center" />
 
                     </Grid>
-                    <Grid Grid.Column="3" Grid.Row="6">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Button Grid.Column="3" Grid.Row="6" x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}" Background="Gold" Width="90" Padding="0" Margin="0,0,0,0" />
 
-                    </Grid>
+                    <Button Grid.Column="3" Grid.Row="6" Grid.ColumnSpan="2" x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}"  Style="{StaticResource SiegCustomButtonGold}" Width="90" HorizontalAlignment="Left" />
+
                     <StackPanel Grid.Row="13" Margin="2" Orientation="Horizontal" Grid.ColumnSpan="5">
-                        <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Background="Gold" Width="60" Margin="0,0,6,0" Click="OKtoConfirmChanges"/>
+                        <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Style="{StaticResource SiegCustomButtonGold}" Width="80" Margin="0,0,6,0" Click="OKtoConfirmChanges"/>
                         
                         <STD105:DataButtons_Office 
                                                Modify="{Binding ModifyPart}"
