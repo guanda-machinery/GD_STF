@@ -25,7 +25,8 @@ namespace STD_105.Office
     /// </summary>
     public partial class OfficeWindowsBase : Window
     {
-        private static SplashScreenManager manager = SplashScreenManager.Create(() => new WaitIndicator(), new DXSplashScreenViewModel { });
+        //private static SplashScreenManager manager = SplashScreenManager.Create(() => new WaitIndicator(), new DXSplashScreenViewModel { });
+        private static SplashScreenManager manager = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
         public OfficeWindowsBase()
         {
             InitializeComponent();

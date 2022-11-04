@@ -28,8 +28,7 @@ namespace STD_105.Office
     {
         public delegate void EventHandle(bool isShow);
         public event EventHandle ShowClickEvent;
-        private static SplashScreenManager manager = SplashScreenManager.Create(() => new WaitIndicator(), new DXSplashScreenViewModel { });
-
+        private static SplashScreenManager manager = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
         public OfficeBaseWindow()
         {
             InitializeComponent();
