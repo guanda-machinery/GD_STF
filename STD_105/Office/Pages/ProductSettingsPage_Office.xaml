@@ -136,7 +136,7 @@
         <Grid Margin="5">
             <!--<Grid.DataContext>
                 <STD105VM:ObSettingVM/>
-            </Grid.DataContext>
+            </Grid.DataContext>-->
             <dxg:GridControl Name="PieceListGridControl"
                                  AutoGenerateColumns="None"
                                  SelectionMode="None"

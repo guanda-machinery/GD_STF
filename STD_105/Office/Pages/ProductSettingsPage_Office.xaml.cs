@@ -39,6 +39,8 @@ using WPFSTD105.Tekla;
 using System.Collections;
 using DevExpress.DataProcessing.InMemoryDataProcessor.GraphGenerator;
 using DevExpress.XtraSpreadsheet.TileLayout;
+using DevExpress.Dialogs.Core.View;
+using ControlzEx.Standard;
 
 namespace STD_105.Office
 {
@@ -936,7 +938,8 @@ namespace STD_105.Office
                     ViewModel.tem2DRecycle.Clear();
 
                     ViewModel.Reductions.AddContinuous(new List<Entity>() { (Mesh)block1.Entities[0] }, steel2D);
-                    model.Entities.Insert(model.Entities.Count() - 1, (Mesh)block1.Entities[0]);
+                    //model.Entities.Insert(model.Entities.Count() - 1, (Mesh)block1.Entities[0]);
+                    model.Entities.Add((Mesh)block1.Entities[0]);
                     drawing.Entities.AddRange(steel2D);
                 }
 
@@ -3249,7 +3252,7 @@ namespace STD_105.Office
         /// </summary>
         public void RunHypotenusePoint()
         {
-
+            lstBoltsCutPoint = new List<Bolts3DBlock>();
             ScrollViewbox.IsEnabled = true;
 
             if (model.Entities[model.Entities.Count - 1].EntityData is null)
@@ -3257,20 +3260,11 @@ namespace STD_105.Office
 
             SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
             GetViewToViewModel(false, TmpSteelAttr.GUID);
-            GetverticesFromFile(TmpSteelAttr.PartNumber);
 
-            if (TmpSteelAttr.vPoint.Count != 0)     //  頂面斜邊
-            {
-                AutoHypotenusePoint(FACE.TOP);
-            }
-            if (TmpSteelAttr.uPoint.Count != 0)     //  前面斜邊
-            {
-                AutoHypotenusePoint(FACE.FRONT);
-            }
-            if (TmpSteelAttr.oPoint.Count != 0)     //  後面斜邊
-            {
-                AutoHypotenusePoint(FACE.BACK);
-            }
+            AutoHypotenusePoint(FACE.TOP);
+            AutoHypotenusePoint(FACE.FRONT);
+            AutoHypotenusePoint(FACE.BACK);
+         
 
             // 只有既有零件(NC/BOM匯入)才有斜邊
             if (!fNewPart.Value)
@@ -3317,7 +3311,10 @@ namespace STD_105.Office
             if (model.Entities[model.Entities.Count - 1].EntityData is null)
                 return;
 
-            SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+            SteelAttr CSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+            SteelAttr TmpSteelAttr = new SteelAttr();
+            GetverticesFromFile(CSteelAttr.PartNumber, ref TmpSteelAttr);
+
 
             bool hasOutSteel = false;
 
@@ -6215,34 +6212,30 @@ namespace STD_105.Office
         {
                 model.ZoomFit();//設置道適合的視口
                 drawing.ZoomFit();//設置道適合的視口
-            
+
 
         }
 
-        public bool GetverticesFromFile(string PartNumber, int SteelIndex = 1)
+        public bool GetverticesFromFile(string PartNumber, ref SteelAttr TmpSteeAttr , int SteelIndex = 1)
         {
             bool rtn = false;
-            string g_partNumber = PartNumber;
-
             string path = ApplicationVM.DirectoryNc();
-            string allPath = path + $"\\{g_partNumber}.nc1";
+            string allPath = path + $"\\{PartNumber}.nc1";
             if (File.Exists($@"{allPath}"))
             {
                 STDSerialization ser = new STDSerialization();
-                SteelAttr sa = new SteelAttr();
-                sa = (SteelAttr)model.Blocks[SteelIndex].Entities[0].EntityData;
+                TmpSteeAttr = (SteelAttr)model.Blocks[SteelIndex].Entities[0].EntityData;
 
                 var profile = ser.GetSteelAttr();
                 Steel3DBlock s3Db = new Steel3DBlock();
                 SteelAttr steelAttrNC = new SteelAttr();
                 List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
-                s3Db.ReadNcFile($@"{ApplicationVM.DirectoryNc()}\{ViewModel.SteelAttr.PartNumber}.nc1", profile, sa, ref steelAttrNC, ref groups);
-                sa.GUID = Guid.NewGuid();
-                sa.oPoint = steelAttrNC.oPoint;
-                sa.vPoint = steelAttrNC.vPoint;
-                sa.uPoint = steelAttrNC.uPoint;
-                sa.CutList = steelAttrNC.CutList;
-
+                s3Db.ReadNcFile($@"{ApplicationVM.DirectoryNc()}\{PartNumber}.nc1", profile, TmpSteeAttr, ref steelAttrNC, ref groups);
+                TmpSteeAttr.oPoint = steelAttrNC.oPoint;
+                TmpSteeAttr.vPoint = steelAttrNC.vPoint;
+                TmpSteeAttr.uPoint = steelAttrNC.uPoint;
+                TmpSteeAttr.CutList = steelAttrNC.CutList;
+                
                 rtn = true;
             }
 
