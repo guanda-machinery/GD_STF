@@ -382,10 +382,10 @@ namespace WPFSTD105.ViewModel
         public int ProfileType
         {
             get {
-                if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)_ProfileType}.inp"))
-                {
-                    ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)_ProfileType}.inp");
-                } 
+                //if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)_ProfileType}.inp"))
+                //{
+                //    ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)_ProfileType}.inp");
+                //} 
                 return _ProfileType;
             }
             set
@@ -536,20 +536,20 @@ namespace WPFSTD105.ViewModel
         {
             get
             {
-                if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp"))
-                {
-                    ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp");
-                }
+                //if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp"))
+                //{
+                //    ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp");
+                //}
 
                 return _ProfileIndex; 
             }
             set
             {
                 _ProfileIndex = value;
-                if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp"))
-                {
-                    ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp");
-                }
+                //if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp"))
+                //{
+                //    ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp");
+                //}
 
                 SteelAttr _steelAttr;
                 if (value == -1)
@@ -649,7 +649,7 @@ namespace WPFSTD105.ViewModel
                 DataCorrespond.Add(data);
                 //SerializationHelper.SerializeBinary(DataCorrespond, ApplicationVM.FilePartList());
                 STDSerialization ser = new STDSerialization();
-                ser.SetDataCorrespond(DataCorrespond);//1103 OK
+                ser.SetDataCorrespond(DataCorrespond);
                 if (data.Type == OBJECT_TYPE.BH)
                 {
 

@@ -267,7 +267,7 @@ namespace STD_105.Office
                 //model.Clear(); //清除目前模型
                 //drawing.Clear();
 
-                ViewModel.SteelAttr.PartNumber = this.partNumber.Text;//1103 addpart
+                ViewModel.SteelAttr.PartNumber = this.partNumber.Text;
 
                 if (!DataCheck("add"))
                 {
@@ -276,7 +276,7 @@ namespace STD_105.Office
                 }
 
                 //檢測用戶輸入的參數是否有完整
-                if (!CheckPart()) //1103 addpart
+                if (!CheckPart())
                 {
                     fclickOK = true;
                     return;
@@ -285,16 +285,13 @@ namespace STD_105.Office
                 // 第一次按新增
                 if (fFirstAdd.Value)
                 {
-                    //CYH 1102 test
-                    fAddButNotyetOK = true;
-
                     fFirstAdd = false;
                     fNewPart = true;
                     fGrid = false;
                     StateParaSetting(false, true, false);
                 }
                 
-                model.Entities.Clear();//清除模型物件 //1103 addpart
+                model.Entities.Clear();//清除模型物件
                 model.Blocks.Clear(); //清除模型圖塊
 
                 STDSerialization ser = new STDSerialization();
@@ -545,7 +542,7 @@ namespace STD_105.Office
                         PieceListGridControl.SelectItem(PreIndex);
                         ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(sa.Type).ToString()}.inp");
                         cbx_SectionTypeComboBox.Text = sa.Profile;
-                        this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);//1103 addpart
+                        this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
 
 
 
@@ -553,10 +550,10 @@ namespace STD_105.Office
                     }
                     #endregion
                 }
-                else//1103 CM
+                else
                 {
                     #region 一般新增
-                    sa = ViewModel.GetSteelAttr();//1103 CYH 取到的是舊值，並不是現在新輸入的零件屬性值
+                    sa = ViewModel.GetSteelAttr();
                     if (string.IsNullOrEmpty(sa.PartNumber))
                     {
                         // 若ViewModel.SteelAttr.PartNumber代表取值又失敗了，只好強制給值囉~
@@ -660,7 +657,7 @@ namespace STD_105.Office
                 //ConfirmCurrentSteelSection(((ProductSettingsPageViewModel)PieceListGridControl.SelectedItem));
                 ConfirmCurrentSteelSection(((ProductSettingsPageViewModel)tempSteelAttr));
 #if DEBUG
-                log4net.LogManager.GetLogger("AddPart").Debug("");//1103 addpart //1103 addpart
+                log4net.LogManager.GetLogger("AddPart").Debug("");
                 log4net.LogManager.GetLogger("加入主件").Debug("結束");
 #endif
                 ////ObSettingVM sr = new ObSettingVM();
@@ -1248,9 +1245,6 @@ namespace STD_105.Office
                 //    fAddSteelPart=false;
                 //}
 
-                //CYH 1102
-                fAddButNotyetOK = false;//1103 OK
-
                 // 直接按OK
                 if (fclickOK.Value)
                 {
@@ -1282,8 +1276,6 @@ namespace STD_105.Office
                 string selectGUID = "";
                 if (PieceListGridControl.VisibleRowCount > 0)
                 {
-                    //CYH 1103 問題描述：目前選取到的列不一定是要儲存的新增零件
-                    //         情境描述：點擊新增按鈕新增零件後，去零件清單點另一個零件，再點OK按鈕，此時所選列不是原本欲新增的列
                     selectGUID = ((ProductSettingsPageViewModel)PieceListGridControl.SelectedItem).DataName;
                 }
                 else
@@ -1382,7 +1374,7 @@ namespace STD_105.Office
                         // 取得該GUID資料
                         PreIndex = ViewModel.DataViews.FindIndex(x => x.DataName == ViewModel.SteelAttr.GUID.ToString());
                         // Grid 指標指於該 Guid
-                        PieceListGridControl.View.FocusedRowHandle = PreIndex;//1103 OK
+                        PieceListGridControl.View.FocusedRowHandle = PreIndex;
                         PieceListGridControl.SelectItem(PreIndex);
                         ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(ViewModel.DataViews[PreIndex].Type).ToString()}.inp");
                         cbx_SectionTypeComboBox.Text = ViewModel.DataViews[PreIndex].Profile;
@@ -2629,7 +2621,7 @@ namespace STD_105.Office
 #if DEBUG
             log4net.LogManager.GetLogger("GetViewToVM").Debug("");
 #endif
-            if (newGUID)//1103 addpart
+            if (newGUID)
             {
                 ViewModel.SteelAttr.GUID = Guid.NewGuid();//產生新的 id
             }
@@ -2654,7 +2646,7 @@ namespace STD_105.Office
             ViewModel.SteelAttr.Title1 = this.Title1.Text;
             ViewModel.SteelAttr.Title2 = this.Title2.Text;
             string profileStr = ViewModel.SteelSectionProperty.Replace("*","X").Replace(" ","");
-            ViewModel.SteelAttr.Type = (OBJECT_TYPE)this.cbx_SteelTypeComboBox.SelectedIndex;//1103 addpart //1103 addpart
+            ViewModel.SteelAttr.Type = (OBJECT_TYPE)this.cbx_SteelTypeComboBox.SelectedIndex;
             ViewModel.ProfileType = this.cbx_SteelTypeComboBox.SelectedIndex;
             ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(ViewModel.SteelAttr.Type).ToString()}.inp");
             ViewModel.SteelAttr.Profile = profileStr;
@@ -2664,7 +2656,7 @@ namespace STD_105.Office
             ViewModel.SteelAttr.t1 = string.IsNullOrEmpty(this.t1.Text) ? 0 : float.Parse(this.t1.Text);
             ViewModel.SteelAttr.t2 = string.IsNullOrEmpty(this.t2.Text) ? 0 : float.Parse(this.t2.Text);
             ViewModel.SteelAttr.ExclamationMark = false;
-            ViewModel.SteelAttr.Lock = false;//1103 addpart //1103 addpart
+            ViewModel.SteelAttr.Lock = false;
         }
 
         /// <summary>
@@ -2833,7 +2825,7 @@ namespace STD_105.Office
             //    ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內1000
             //    ViewModel.GetSteelAttr();
             //}
-            ViewModel.SteelAttr.PartNumber = ViewModel.PartNumberProperty;//1103 addpart
+            ViewModel.SteelAttr.PartNumber = ViewModel.PartNumberProperty;
             ViewModel.SteelAttr.AsseNumber = ViewModel.AssemblyNumberProperty;
             if(ViewModel.SteelAttr.PartNumber==null || ViewModel.SteelAttr.AsseNumber == null) 
             {
@@ -2866,7 +2858,7 @@ namespace STD_105.Office
                 //string W = row.steelAttr.W.ToString();
                 //string t1 = row.t1.ToString();
                 //string t2 = row.t2.ToString();
-                if (!File.Exists($@"{ApplicationVM.DirectoryDevPart()}\{temp.steelAttr.GUID}.dm"))//1103 addpart
+                if (!File.Exists($@"{ApplicationVM.DirectoryDevPart()}\{temp.steelAttr.GUID}.dm"))
                 {
                     var ResultRtn = WinUIMessageBox.Show(null,
                         $"列表最後一筆 構件編號{temp.steelAttr.AsseNumber}. 零件編號{temp.steelAttr.PartNumber} 尚未點擊OK，是否放棄",
@@ -3080,7 +3072,7 @@ namespace STD_105.Office
 
 
 
-            return temp;//1103 addpart //1103 OK //1103 OK
+            return temp;
         }
 
         private void Cbx_SteelTypeComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -3250,7 +3242,6 @@ namespace STD_105.Office
             return bFindSamePos;
         }
 
-        bool fAddButNotyetOK = false; //點過新增但尚未點OK CYH 1102
         bool? fFirstAdd = true;// 是否第一次按新增 有點
         bool? fNewPart = true;// 是否為新零件 dm
         bool? fGrid = false;// 是否點擊Grid 新增 修改後為false
@@ -4039,7 +4030,7 @@ namespace STD_105.Office
         /// <param name="steelAttr"></param>
         /// <param name="reflesh">是否更新Grid</param>
         public void SaveModel(bool add, bool reflesh = true)
-        {//1103 OK
+        {
             //if (ViewModel.SteelAttr.PartNumber == null && ViewModel.SteelAttr.AsseNumber == null)
             //{
             //    // 錯誤狀況;無此判斷及SLEEP會造讀到的ViewModel.SteelAttr是new SteelAttr()
@@ -4054,7 +4045,7 @@ namespace STD_105.Office
             //SteelAttr sa = (SteelAttr)model.Entities[model.Entities.Count() - 1].EntityData;
             model.Blocks[1].Name = sa.GUID.Value.ToString();
             //ser.SetPartModel(ViewModel.SteelAttr.GUID.ToString(), model);
-            ser.SetPartModel(sa.GUID.ToString(), model);//1103 OK
+            ser.SetPartModel(sa.GUID.ToString(), model);
 
 
             ObservableCollection<SteelAssembly> SteelAssemblies = new ObservableCollection<SteelAssembly>();
@@ -4114,7 +4105,7 @@ namespace STD_105.Office
                     }
                 }
                 ass.ID.AddRange(buffer.ToArray());
-                SteelAssemblies.Add(ass);//1103 OK
+                SteelAssemblies.Add(ass);
             }
             else
             {
@@ -4320,7 +4311,7 @@ namespace STD_105.Office
                 }
             }
             // 給定 零件 數量vsID
-            steelPart.ID = buffer1.ToList();//1103 OK
+            steelPart.ID = buffer1.ToList();
 
             // 比對 GUID ， 不存在 新增 ，存在 編輯
             if (!collection.Any(x =>
@@ -5105,21 +5096,6 @@ namespace STD_105.Office
             {
                 if (model != null && PieceListGridControl.SelectedItem != null)
                 {
-                    //CYH 1102
-                    if (fAddButNotyetOK)
-                    {
-                        string a = ViewModel.SteelSectionProperty;
-                        //WinUIMessageBox.Show(null,
-                        //                $"尚有未確認的新增零件，請點擊OK按鈕確認是否存檔!",
-                        //                "通知",
-                        //                MessageBoxButton.OK,
-                        //                MessageBoxImage.Exclamation,
-                        //                MessageBoxResult.None,
-                        //                MessageBoxOptions.None,
-                        //                FloatingMode.Popup);
-                        //return;
-                    }
-
                     ProductSettingsPageViewModel item = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
                     // 異動指標
                     this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
@@ -5773,7 +5749,7 @@ namespace STD_105.Office
                     PieceListGridControl.SelectItem(rowHandle);
                     ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(collection[rowHandle].Type).ToString()}.inp");
                     cbx_SectionTypeComboBox.Text = collection[rowHandle].Profile;
-                    this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);//1103 OK //1103 OK
+                    this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
                 }
             }
             else
