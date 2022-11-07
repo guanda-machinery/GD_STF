@@ -1505,15 +1505,6 @@ namespace WPFSTD105.ViewModel
             }
             //取得零件資訊
             Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
-#if DEBUG
-            // 將字串寫入TXT檔
-            StreamWriter str1 = new StreamWriter(@"Current_PartInfo.txt");
-            foreach (KeyValuePair<string, ObservableCollection<SteelPart>> se in part)
-            {
-                str1.WriteLine(se.Key.ToString() + " " + se.Value.ToString());
-            }
-            str1.Close();
-#endif
 
             var profileAll = ser.GetSteelAttr();
             Dictionary<string, List<SteelAttr>> NcSA = new Dictionary<string, List<SteelAttr>>();
@@ -1523,15 +1514,6 @@ namespace WPFSTD105.ViewModel
             {
                 // 所有該斷面規格的零件
                 List<SteelPart> sa1 = part[key].ToList();
-#if DEBUG
-                // 將字串寫入TXT檔
-                StreamWriter str3 = new StreamWriter(@"Debug_ProfileCorespondToSteelPart.txt");
-                foreach (SteelPart se in sa1)
-                {
-                    str3.WriteLine(key + " " + se.GUID.ToString() + " " + se.Number.ToString() + " " + se.Count.ToString() + " " + se.IsTekla.ToString());
-                }
-                str3.Close();
-#endif
                 // 紀錄零件資訊
                 List<SteelAttr> saList = new List<SteelAttr>();
                 foreach (var item in DataCorrespond.Where(x=>x.Profile.GetHashCode().ToString()+".lis"==key))
@@ -1571,12 +1553,6 @@ namespace WPFSTD105.ViewModel
                             saTemp.Title1 = "";
                             saTemp.Title2 = "";
                         }
-#if DEBUG
-                        // 將字串寫入TXT檔
-                        StreamWriter str4 = File.AppendText(@"Debug_NcSuccessToDM.txt");
-                        str4.WriteLine(item.Profile.GetHashCode().ToString() + ".lis" + " " + item.Number + " " + saTemp.GUID.ToString() + " " + item.Profile.ToString());
-                        str4.Close();
-#endif
                         saList.Add(saTemp);
                     }
 #if DEBUG

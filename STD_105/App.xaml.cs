@@ -223,7 +223,7 @@ namespace STD_105
             Exception error = (Exception)e.ExceptionObject;
             log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(error.Message + "\n"+error.InnerException+ "\"" + DateTime.Now.ToString() + "\"", error.StackTrace);
             //MessageBox.Show($"{error.Message}", "軟體異常", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
-            WinUIMessageBox.Show(null,
+           WinUIMessageBox.Show(null,
             $"{error.Message}\n{error.InnerException.Message.ToString()}",
             "軟體異常",
             MessageBoxButton.OK,

@@ -276,7 +276,7 @@ namespace STD_105.Office
                 }
 
                 //檢測用戶輸入的參數是否有完整
-                if (!CheckPart()) 
+                if (!CheckPart())
                 {
                     fclickOK = true;
                     return;
@@ -3362,10 +3362,9 @@ namespace STD_105.Office
             return bFindSamePos;
         }
 
-
-        bool? fFirstAdd = true;// 是否第一次按新增
-        bool? fNewPart = true;// 是否為新零件
-        bool? fGrid = false;// 是否點擊Grid
+        bool? fFirstAdd = true;// 是否第一次按新增 有點
+        bool? fNewPart = true;// 是否為新零件 dm
+        bool? fGrid = false;// 是否點擊Grid 新增 修改後為false
         bool? fclickOK = true; // 是否直接點擊OK
 
         bool fAddSteelPart = false;       //  判斷執行新增零件及孔位
@@ -4394,7 +4393,7 @@ namespace STD_105.Office
             steelPart.Material = sa.Material;
             steelPart.Father = ass.ID;
             //steelPart.Profile = ViewModel.SteelAttr.Profile;
-            steelPart.Profile = sa.Profile;
+            steelPart.Profile = sa.Profile.Replace("*","X").Replace(" ","");
             //steelPart.ExclamationMark = ViewModel.SteelAttr.ExclamationMark;
             steelPart.ExclamationMark = sa.ExclamationMark;
             //steelPart.Length = ViewModel.SteelAttr.Length;

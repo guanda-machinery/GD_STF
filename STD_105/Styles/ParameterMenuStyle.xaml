@@ -101,6 +101,79 @@
     </Style>
 
 
+    <Style x:Key="CustomDesignButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+        <Setter Property="Width" Value="auto"/>
+        <Setter Property="Height" Value="auto"/>
+        <Setter Property="Padding" Value="0"/>
+        <Style.Resources>
+            <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="Gray"/>
+        </Style.Resources>
+    </Style>
+
+    <Style x:Key="SiegCustomButton" TargetType="Button" BasedOn="{StaticResource CustomDesignButton}">
+        <Setter Property="Opacity"
+                            Value="0.9" />
+        <Setter Property="BorderThickness"
+                            Value="0" />
+        <Setter Property="Cursor"
+                            Value="Hand" />
+        <Setter Property="Margin"
+                            Value="0" />
+        <Setter Property="Padding"
+                            Value="5" />
+        <Setter Property="Background"
+                            Value="WhiteSmoke" />
+
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"        
+                            Margin="0"
+                            CornerRadius="5"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                        </ContentPresenter>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="LightSkyBlue"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="Orange"/>
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.3"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+    <Style x:Key="SiegCustomButtonWhite" TargetType="Button" BasedOn="{StaticResource SiegCustomButton}">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="BorderBrush" Value="#CFCFCF"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="0"/>
+    </Style>
+
+    <Style x:Key="SiegCustomButtonGray" TargetType="Button" BasedOn="{StaticResource SiegCustomButtonWhite}">
+        <Setter Property="Background" Value="#d8d8d8"/>
+    </Style>
+
+    <Style x:Key="SiegCustomButtonGold" TargetType="Button" BasedOn="{StaticResource SiegCustomButtonWhite}">
+        <Setter Property="Background" Value="Gold"/>
+    </Style>
+
+
+
     <Style TargetType="{x:Type Button}"  x:Key="ParameterButton" BasedOn="{ StaticResource BaseStyle }" >
         <Setter Property="Background" Value="#fdfdfd"/>
         <Setter Property="Foreground" Value="Black"/>
@@ -188,7 +261,7 @@
     <Style TargetType="{x:Type UserControl}" x:Key="SectionSpecificationMenuWhiteStyle">
         <Style.Resources>
             <Style TargetType="GroupBox" BasedOn="{ StaticResource ParameterGroupBox }"/>
-            <Style TargetType="Button"  BasedOn="{ StaticResource ParameterButton }" />
+            <Style TargetType="Button"  BasedOn="{ StaticResource SiegCustomButtonWhite  }" />
             <Style TargetType="TextBox" BasedOn="{ StaticResource ParameterTextBox }">
             </Style>
             <Style TargetType="Border">
@@ -236,62 +309,7 @@
     </Style>
 
 
-    <Style x:Key="CustomDesignButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
-        <Setter Property="Width" Value="auto"/>
-        <Setter Property="Height" Value="auto"/>
-        <Setter Property="Padding" Value="0"/>
-        <Style.Resources>
-            <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="Gray"/>
-        </Style.Resources>
-    </Style>
-
-    <Style x:Key="SiegCustomButton" TargetType="Button" BasedOn="{StaticResource CustomDesignButton}">
-        <Setter Property="Opacity"
-                            Value="0.9" />
-        <Setter Property="BorderThickness"
-                            Value="0" />
-        <Setter Property="Cursor"
-                            Value="Hand" />
-        <Setter Property="Margin"
-                            Value="0" />
-        <Setter Property="Padding"
-                            Value="5,10" />
-
-        <Setter Property="Background"
-                            Value="WhiteSmoke" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}"               
-                                        CornerRadius="10"
-                                            BorderThickness="0"
-                                            Padding="5"
-                                            BorderBrush="#000">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center">
-
-                        </ContentPresenter>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="LightSkyBlue"/>
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="Orange"/>
-            </Trigger>
-
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value="0.3"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
-
-
-
+ 
 
 
 </ResourceDictionary>
