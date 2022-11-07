@@ -38,7 +38,7 @@ namespace WPFSTD105
         /// </summary>
         public AbsTypeSettingVM()
         {
-            DataViews = LoadDataViews();
+            DataViews = LoadDataViews(); 
             STDSerialization ser = new STDSerialization();
             ObservableCollection<BomProperty> bomProperties = CommonViewModel.ProjectProperty.BomProperties; //報表屬性設定檔
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();//模型構件列表
@@ -69,7 +69,7 @@ namespace WPFSTD105
             //foreach (var profile in ser.GetProfile()) //逐步展開斷面規格
             //{
             foreach (KeyValuePair<string, ObservableCollection<SteelPart>> eachPart in partFilter)
-            {
+            { 
                 ObservableCollection<SteelPart> buffer = eachPart.Value;
 
                 // ObservableCollection<SteelPart> buffer = ser.GetPart(profile.GetHashCode().ToString()); //零件列表
@@ -123,12 +123,12 @@ namespace WPFSTD105
             return LoadedDataViews;
         }
 
+    
 
 
 
 
-
-        private GridControl _GridControl { get; set; }
+    private GridControl _GridControl { get; set; }
         #region 命令
         /// <summary>
         /// 手動排版命令
