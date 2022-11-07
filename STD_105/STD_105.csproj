@@ -930,6 +930,7 @@
     <Compile Include="ValueConverters\ConverterAssemblyNumber.cs" />
     <Compile Include="ValueConverters\ConverterToPartNumber.cs" />
     <Compile Include="ValueConverters\DateTimeConverter.cs" />
+    <Compile Include="ValueConverters\ListCountToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\DoubleConditionToIsEnabledConerter.cs" />
     <Compile Include="ValueConverters\DrillBrandGetPropertyConverter.cs" />
     <Compile Include="ValueConverters\DrillBrandToDataNameConverter.cs" />

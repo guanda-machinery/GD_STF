@@ -31,8 +31,6 @@ namespace GD_STD.Data
     [Serializable]
     public class MaterialDataView : WPFWindowsBase.BaseViewModel, IProfile, IMatchSetting
     {
-        private double lengthStr;
-
         /// <summary>
         /// 長度列表
         /// </summary>
@@ -68,11 +66,30 @@ namespace GD_STD.Data
         /// </summary>
         [Excel("廠商", 4)]
         public int SourceIndex { get; set; }
-        /// <summary>
+
+        private ObservableCollection<TypeSettingDataView> _parts = new ObservableCollection<TypeSettingDataView>();
         /// 零件列表
         /// </summary>
-        public ObservableCollection<TypeSettingDataView> Parts { get; set; } = new ObservableCollection<TypeSettingDataView>();
-        public TypeSettingDataView SelectedPart { get; set; } = new TypeSettingDataView();
+        public ObservableCollection<TypeSettingDataView> Parts 
+        {
+            get 
+            {
+                if (_parts == null)
+                {
+                    _parts = new ObservableCollection<TypeSettingDataView>();
+                }
+                return _parts;
+            }
+            set
+            {
+                _parts = value;
+            }
+        }
+
+
+        public TypeSettingDataView SelectedPart { get; set; } 
+
+        // public ObservableCollection<TypeSettingDataView> SelectedPartsList { get; set; } 
 
         #region ButtonCommand
 
@@ -405,16 +422,17 @@ namespace GD_STD.Data
         [Excel("消耗", 5)]
         public double Loss
         {
-            //get => Parts.Select(el => el.Length).Aggregate((l1, l2) => l1 + l2)  + Cut * (Parts.Count -1d > 0d ? Parts.Count -1d : 0d); 
             get
             {
                 double AllPartAggregate = 0;
                 double CutLoss = 0;
-                if (Parts.Count != 0)
+
+                if (_parts.Count != 0)
                 {
-                    AllPartAggregate = Parts.Select(el => el.Length).Aggregate((l1, l2) => l1 + l2); //總零件長
-                    CutLoss = Cut * (Parts.Count - 1d > 0d ? Parts.Count - 1d : 0d); //鋸床切割損耗
+                    AllPartAggregate = _parts.Select(el => el.Length).Aggregate((l1, l2) => l1 + l2); //總零件長
+                    CutLoss = Cut * (_parts.Count - 1d > 0d ? _parts.Count - 1d : 0d); //鋸床切割損耗
                 }
+
                 //材料前後端切除
                 return AllPartAggregate + CutLoss + StartCut + EndCut;
             }

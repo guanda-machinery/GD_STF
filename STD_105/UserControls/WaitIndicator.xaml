@@ -10,9 +10,8 @@
                        WindowStartupLocation="CenterScreen"
                        mc:Ignorable="d"
                        Background="Transparent"
-                       DataContext="{x:Static dxmvvm:DXSplashScreenViewModel.DesignTimeData}">
-    <Grid Width="160"
-          Height="80">
+                       DataContext="{x:Static dxmvvm:DXSplashScreenViewModel.DesignTimeData}" >
+    <Grid Width="160"  Height="40">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60" />
             <ColumnDefinition />

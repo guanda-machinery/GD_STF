@@ -394,7 +394,7 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <dxlc:ScrollBox Style="{ StaticResource sbx_STD }"
-                                        Margin="0,40">
+                                        Margin="0,20">
                             <StackPanel x:Name="HeaderPanel"
                                         Background="Transparent"
                                         IsItemsHost="True"
