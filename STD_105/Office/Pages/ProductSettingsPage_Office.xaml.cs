@@ -44,6 +44,8 @@ namespace STD_105.Office
 {
     public partial class ProductSettingsPage_Office : BasePage<ObSettingVM>
     {
+
+        ApplicationVM appVM = new ApplicationVM();
         public ObSettingVM sr = new ObSettingVM();
 
         /// <summary>
@@ -63,6 +65,8 @@ namespace STD_105.Office
         public int PreIndex { get; set; }
 
         public ObservableCollection<DataCorrespond> DataCorrespond { get; set; } = new ObservableCollection<DataCorrespond>();
+
+       
 
         /// <summary>
         /// 20220823 蘇冠綸 製品設定
@@ -785,23 +789,7 @@ namespace STD_105.Office
                     // 非新零件
                     fNewPart = false;
                 }
-                STDSerialization ser = new STDSerialization();
-                ReadFile readFile = ser.ReadPartModel(temp.steelAttr.GUID.ToString()); //讀取檔案內容
-                if (readFile == null)
-                {
-                    WinUIMessageBox.Show(null,
-                        $"專案Dev_Part資料夾讀取失敗",
-                        "通知",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Exclamation,
-                        MessageBoxResult.None,
-                        MessageBoxOptions.None,
-                        FloatingMode.Popup);
-                    return;
-                }
-                readFile.DoWork();//開始工作
-                readFile.AddToScene(model);//將讀取完的檔案放入到模型
-                //}
+                
 
 #if DEBUG
                 log4net.LogManager.GetLogger("ModifyPart").Debug("");
@@ -837,7 +825,23 @@ namespace STD_105.Office
                 //    GetViewToViewModel();
                 //}
 
-                
+                STDSerialization ser = new STDSerialization();
+                ReadFile readFile = ser.ReadPartModel(temp.steelAttr.GUID.ToString()); //讀取檔案內容
+                if (readFile == null)
+                {
+                    WinUIMessageBox.Show(null,
+                        $"專案Dev_Part資料夾讀取失敗",
+                        "通知",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                        FloatingMode.Popup);
+                    return;
+                }
+                readFile.DoWork();//開始工作
+                readFile.AddToScene(model);//將讀取完的檔案放入到模型
+                //}
 
 
 
@@ -1011,6 +1015,7 @@ namespace STD_105.Office
                     steelAttr.Title1 = ViewModel.Title1Property;
                     steelAttr.Title2 = ViewModel.Title2Property;
                     steelAttr.Number = (int)ViewModel.ProductCountProperty;
+                    steelAttr.Revise = DateTime.Now;
                     //modify = (BlockReference)model.Blocks[1].Entities[0];
                     var block1 = new Steel3DBlock(Steel3DBlock.GetProfile(steelAttr));//改變讀取到的圖塊變成自訂義格式
                     model.SetCurrent(null);
@@ -1299,7 +1304,7 @@ namespace STD_105.Office
 
                 var stringFilePath = $@"{ApplicationVM.DirectoryModel()}\檔案概況{DateTime.Now.ToString("yyyyMMddHHmmss")}.xls";
 
-                ApplicationVM appVM = new ApplicationVM();
+              
                 //ObSettingVM obVM = new ObSettingVM();
                 List<string> dmList = appVM.GetAllDevPart();
                 List<object> modelBlockList = new List<object>();
@@ -2652,6 +2657,7 @@ namespace STD_105.Office
             model.Invalidate();
             drawing.Invalidate();
 
+
             //ApplicationVM appVM = new ApplicationVM();
             //appVM.CreateDMFile(model);
 
@@ -3413,7 +3419,7 @@ namespace STD_105.Office
 
             // 斜邊自動執行程式
             SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
-            GetViewToViewModel(false, TmpSteelAttr.GUID);
+            //GetViewToViewModel(false, TmpSteelAttr.GUID);
 
             if (TmpSteelAttr.vPoint.Count != 0)         //  頂面斜邊
             {
@@ -4194,7 +4200,7 @@ namespace STD_105.Office
             //ser.SetPartModel(ViewModel.SteelAttr.GUID.ToString(), model);
             var stringFilePath = $@"{ApplicationVM.DirectoryModel()}\model檔案概況{DateTime.Now.ToString("yyyyMMddHHmmss")}.xls";
 
-            ExcelBuyService.CreateModelOverView(stringFilePath, model);
+            //ExcelBuyService.CreateModelOverView(stringFilePath, model);
             ser.SetPartModel(sa.GUID.ToString(), model);
 
 
@@ -4786,11 +4792,10 @@ namespace STD_105.Office
             model.Refresh();
 
             STDSerialization ser = new STDSerialization();
-
             //// 建立dm檔 for 尚未建立dm檔的零件
-            ApplicationVM appVM = new ApplicationVM();
             appVM.CreateDMFile(model);
             //appVM.CreateDMFileSync(model);
+
         }
 
         public BlockReference SteelTriangulation(Mesh mesh)
@@ -5161,40 +5166,42 @@ namespace STD_105.Office
         {
             ViewModel.fPartListOrManuall = true;
 
-            string profile = CuurentSelectedPart.Profile;
-            ViewModel.ProfileType = (int)CuurentSelectedPart.SteelType;
+            string profile = CuurentSelectedPart.steelAttr.Profile;
+            ViewModel.ProfileType = (int)CuurentSelectedPart.steelAttr.Type;
             //this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
             //ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(CuurentSelectedPart.steelAttr.Type).ToString()}.inp");
             //cbx_SectionTypeComboBox.ItemsSource = ViewModel.ProfileList;
             //cbx_SectionTypeComboBox.Text = CuurentSelectedPart.Profile;
             //this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
             //cbx_SectionTypeComboBox.Text = CuurentSelectedPart.Profile;
+
             ViewModel.PartNumberProperty = CuurentSelectedPart.steelAttr.PartNumber.ToString();
             ViewModel.AssemblyNumberProperty = CuurentSelectedPart.steelAttr.AsseNumber.ToString();
-            ViewModel.ProductLengthProperty = CuurentSelectedPart.Length;
-            ViewModel.ProductWeightProperty = (CuurentSelectedPart.Length / 1000) * CuurentSelectedPart.Weight;
-            if (CuurentSelectedPart.Weight == 0) ViewModel.ProductWeightProperty = ViewModel.CalculateSinglePartWeight();
+            ViewModel.ProductLengthProperty = CuurentSelectedPart.steelAttr.Length;
+            ViewModel.ProductWeightProperty = (CuurentSelectedPart.steelAttr.Length / 1000) * CuurentSelectedPart.steelAttr.Weight;
+            if (CuurentSelectedPart.steelAttr.Weight == 0) ViewModel.ProductWeightProperty = ViewModel.CalculateSinglePartWeight();
             ViewModel.SteelAttr.Weight = ViewModel.ProductWeightProperty;
-            ViewModel.ProductCountProperty = CuurentSelectedPart.Count;
-            ViewModel.ProductNameProperty = CuurentSelectedPart.TeklaName;
-            ViewModel.ProductMaterialProperty = CuurentSelectedPart.Material;
-            ViewModel.PhaseProperty = CuurentSelectedPart.Phase;
-            ViewModel.ShippingNumberProperty = CuurentSelectedPart.ShippingNumber;
-            ViewModel.Title1Property = CuurentSelectedPart.Title1;
-            ViewModel.Title2Property = CuurentSelectedPart.Title2;
-            ViewModel.SteelAttr.GUID =Guid.Parse( CuurentSelectedPart.DataName);
+            ViewModel.ProductCountProperty = CuurentSelectedPart.steelAttr.Number;
+            ViewModel.ProductNameProperty = CuurentSelectedPart.steelAttr.Name;
+            ViewModel.ProductMaterialProperty = CuurentSelectedPart.steelAttr.Material;
+            ViewModel.PhaseProperty = CuurentSelectedPart.steelAttr.Phase;
+            ViewModel.ShippingNumberProperty = CuurentSelectedPart.steelAttr.ShippingNumber;
+            ViewModel.Title1Property = CuurentSelectedPart.steelAttr.Title1;
+            ViewModel.Title2Property = CuurentSelectedPart.steelAttr.Title2;
+            ViewModel.SteelSectionProperty = CuurentSelectedPart.steelAttr.Profile;
+            ViewModel.SteelAttr.GUID =CuurentSelectedPart.steelAttr.GUID;
 
-            CuurentSelectedPart.steelAttr.Name = CuurentSelectedPart.TeklaName;
-            CuurentSelectedPart.steelAttr.Title2 = CuurentSelectedPart.Title2;
-            CuurentSelectedPart.steelAttr.Title1 = CuurentSelectedPart.Title1;
-            CuurentSelectedPart.steelAttr.ShippingNumber = CuurentSelectedPart.ShippingNumber;
-            CuurentSelectedPart.steelAttr.Phase = CuurentSelectedPart.Phase;
-            CuurentSelectedPart.steelAttr.Material = CuurentSelectedPart.Material;
-            CuurentSelectedPart.steelAttr.Weight = ViewModel.SteelAttr.Weight;
-            CuurentSelectedPart.steelAttr.Number = (int)CuurentSelectedPart.Count;
-            CuurentSelectedPart.steelAttr.Length = CuurentSelectedPart.Length;
+            //CuurentSelectedPart.steelAttr.Name = CuurentSelectedPart.TeklaName;
+            //CuurentSelectedPart.steelAttr.Title2 = CuurentSelectedPart.Title2;
+            //CuurentSelectedPart.steelAttr.Title1 = CuurentSelectedPart.Title1;
+            //CuurentSelectedPart.steelAttr.ShippingNumber = CuurentSelectedPart.ShippingNumber;
+            //CuurentSelectedPart.steelAttr.Phase = CuurentSelectedPart.Phase;
+            //CuurentSelectedPart.steelAttr.Material = CuurentSelectedPart.Material;
+            //CuurentSelectedPart.steelAttr.Weight = ViewModel.SteelAttr.Weight;
+            //CuurentSelectedPart.steelAttr.Number = (int)CuurentSelectedPart.Count;
+            //CuurentSelectedPart.Length = CuurentSelectedPart.steelAttr.Length;
             ViewModel.SteelAttr = CuurentSelectedPart.steelAttr;
-            ViewModel.SteelSectionProperty = profile;
+            //ViewModel.SteelSectionProperty = profile;
 
             ViewModel.fPartListOrManuall = false;
 
@@ -5537,7 +5544,7 @@ namespace STD_105.Office
                     fGrid = true;
                     StateParaSetting(true, false, true);
 
-                    string profile = "";
+                    string profileStr = "";
                     int steelType = 0;
                     ReadFile readFile = ser.ReadPartModel(focuseGUID); //讀取檔案內容
                     if (readFile == null)
@@ -5596,9 +5603,32 @@ namespace STD_105.Office
                     //////////                    
                     ConfirmCurrentSteelSection(item);
                     //SteelAttr sa = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
-                    SteelAttr sa = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
+                    SteelAttr sa = ViewModel.SteelAttr;//(SteelAttr)model.Blocks[1].Entities[0].EntityData;
                     //ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
                     
+                    string path = ApplicationVM.DirectoryNc();
+                    string allPath = path + $"\\{sa.PartNumber}.nc1";
+
+                    var profile = ser.GetSteelAttr();
+                    TeklaNcFactory t = new TeklaNcFactory();
+                    Steel3DBlock s3Db = new Steel3DBlock();
+                    SteelAttr steelAttrNC = new SteelAttr() ;
+                    SteelAttr saT = new SteelAttr() { Profile = sa.Profile, Type = sa.Type, t1 = sa.t1, t2 = sa.t2, H = sa.H, W = sa.W };
+                    List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
+                    s3Db.ReadNcFile($@"{allPath}", profile, saT, ref steelAttrNC, ref groups);
+                    if (File.Exists(allPath))
+                    {
+                        //sa.GUID = sa.GUID;
+                        sa.oPoint = steelAttrNC.oPoint;
+                        sa.vPoint = steelAttrNC.vPoint;
+                        sa.uPoint = steelAttrNC.uPoint;
+                        sa.CutList = steelAttrNC.CutList;
+                    }
+                    //else { sa = steelAttrNC; }
+
+
+
+
                     //ViewModel.WriteSteelAttr(sa);//寫入到設定檔內
                     //ViewModel.GetSteelAttr();
                     ////////////                    GetViewToViewModel(false, sa.GUID);
@@ -5612,27 +5642,27 @@ namespace STD_105.Office
                     //    ViewModel.WriteSteelAttr(sa);//寫入到設定檔內1000
                     //    ViewModel.GetSteelAttr();
                     //}
-                    profile = sa.Profile;
+                    profileStr = sa.Profile;
                     //cbx_SectionTypeComboBox.Text = sa.Profile;
                     //this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                     //ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(sa.Type).ToString()}.inp");
                     //cbx_SectionTypeComboBox.Text = profile;
                     //this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
 
-                    Steel3DBlock result = new Steel3DBlock(Steel3DBlock.GetProfile(sa));
+                    Steel3DBlock result = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);
                     if (model.Blocks.Count > 1)
                     {
                         model.Blocks.Remove(model.Blocks[1]);
                     }
                     model.Blocks.Insert(1, result);//加入鋼構圖塊到模型
                     BlockReference blockReference = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);
-                    blockReference.EntityData = ViewModel.SteelAttr;
+                    blockReference.EntityData = sa;
                     blockReference.Selectable = false;//關閉用戶選擇
                     blockReference.Attributes.Add("steel", new AttributeReference(0, 0, 0));
-                    //if (model.Entities.Count > 0)
-                    //{
-                    //    model.Entities.RemoveAt(model.Entities.Count - 1);
-                    //}
+                    if (model.Entities.Count > 0)
+                    {
+                        model.Entities.RemoveAt(model.Entities.Count - 1);
+                    }
                     model.Entities.Insert(model.Entities.Count, blockReference);//加入參考圖塊到模型
 
                     //model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
@@ -5674,6 +5704,7 @@ namespace STD_105.Office
                         Profile = sa.Profile,
                     }, saFile);
                     ViewModel.ProductWeightProperty = (sa).Weight;
+                    ViewModel.SteelAttr.Weight = (sa).Weight;
                     //////////                    ConfirmCurrentSteelSection(item);
                     //////////                    GetViewToViewModel(false, Guid.Parse(focuseGUID));
                     // 執行斜邊打點

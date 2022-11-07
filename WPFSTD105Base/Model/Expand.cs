@@ -513,7 +513,7 @@ namespace WPFSTD105.Model
             NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
             var nc = ncTemps.GetData(sa.GUID.Value.ToString()); //取得nc資訊
             NcTemp reduceNC = new NcTemp() { GroupBoltsAttrs = nc.GroupBoltsAttrs, SteelAttr = nc.SteelAttr };
-            model.InitializeViewports();
+            //model.InitializeViewports();
             //model.Blocks.Add(new Steel3DBlock(Steel3DBlock.GetProfile(sa)));//加入鋼構圖塊到模型
             model.Clear(); //清除目前模型
             Steel3DBlock steel = Steel3DBlock.AddSteel(nc.SteelAttr, model, out BlockReference blockReference);
