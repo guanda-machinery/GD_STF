@@ -11,7 +11,7 @@
              mc:Ignorable="d" 
              >
     <UserControl.DataContext>
-        <STD105VM:Dpad_JoystickViewModel/>
+        <STD105VM:Dpad_ViewModel/>
     </UserControl.DataContext>
 
     <Grid>
@@ -150,15 +150,9 @@
                 <Setter Property="Width"
                     Value="180" />
             </Style>
-            <Style TargetType="Border">
-                <Setter Property="Width" Value="auto"/>
-                <Setter Property="Height" Value="auto"/>
-                <Setter Property="Margin" Value="0"/>
-                <Setter Property="Padding" Value="0"/>
-                <Setter Property="BorderBrush" Value="#4CFF00"/>
-                <Setter Property="BorderThickness" Value="2"/>
-                <Setter Property="Background" Value="White"/>
-            </Style>
+
+            <Style TargetType="Button" BasedOn="{StaticResource SiegCustomButtonGreenBorder}"/>
+
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" MinWidth="50"/>
@@ -197,7 +191,7 @@
 
 
             <Grid  Width="210" Height="210" >
-                <Button Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center"   Name="btn_JoystickUp">
+                <Button Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center"   Name="btn_JoystickUp"  IsEnabled="{Binding Button_Up_IsEnabled}">
                     <Button.Effect>
                         <DropShadowEffect Opacity="0.5"
                                   ShadowDepth="3"
@@ -226,18 +220,9 @@
                             Text="X" Width="auto" FontSize="35" FontWeight="Bold" TextAlignment="Center"  Margin="0,-10,0,0">
                         </TextBlock>
                     </Button.Content>
-
-
-                    <!--
-                <Button.Content>
-                    <TextBlock x:Name="tbk_JoystickUp"
-                               Text="{ Binding JoystickUpDESC, StringFormat={}{0}, TargetNullValue=沒有作用 }"
-                               TextWrapping="Wrap"
-                               Visibility="{ Binding DescriptionDisplayControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }"/>
-                </Button.Content>-->
                 </Button>
                 <!--向左按鈕-->
-                <Button Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Name="btn_JoystickLeft">
+                <Button Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Name="btn_JoystickLeft" IsEnabled="{Binding Button_Left_IsEnabled}">
                     <Button.LayoutTransform>
                         <RotateTransform Angle="270" />
                     </Button.LayoutTransform>
@@ -281,7 +266,7 @@
                     </Button.Content>
                 </Button>
                 <!--向右按鈕-->
-                <Button  HorizontalAlignment="Right" VerticalAlignment="Center"  Name="btn_JoystickRight">
+                <Button  HorizontalAlignment="Right" VerticalAlignment="Center"  Name="btn_JoystickRight"  IsEnabled="{Binding Button_Right_IsEnabled}">
                     <Button.LayoutTransform>
                         <RotateTransform Angle="90" />
                     </Button.LayoutTransform>
@@ -325,7 +310,7 @@
 
                 </Button>
                 <!--向下按鈕-->
-                <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Name="btn_JoystickDown">
+                <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Name="btn_JoystickDown"  IsEnabled="{Binding Button_Down_IsEnabled}">
                     <Button.LayoutTransform>
                         <RotateTransform Angle="180" />
                     </Button.LayoutTransform>
@@ -363,20 +348,73 @@
 
             </Grid>
         </Grid>
-        <Border Name="DPad_Border1"    Margin="5,5,0,5"  />
+        <Button Name="DPad_Button1"    Margin="5,5,0,5"  
+                  IsEnabled="{Binding Button_Left_IsEnabled}" >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                            CommandParameter="{x:Static STDEnum:JOYSTICK.LEFT_DESC}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                            CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
 
-        <Border  Name="DPad_Border2" Margin="5,5,0,5"
+        <Button  Name="DPad_Button2" Margin="5,5,0,5"
                             Grid.Column="0"
-                            Grid.Row="1"/>
+                            Grid.Row="1"
+                   IsEnabled="{Binding Button_Right_IsEnabled}" >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                            CommandParameter="{x:Static STDEnum:JOYSTICK.RIGHT_DESC}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                            CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
 
+        <Button Name="DPad_Button3" 
+  
+                Margin="0,5,5,5" 
+                Grid.Column="2" 
+                Grid.Row="0" 
+                IsEnabled="{Binding Button_Up_IsEnabled}"  >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                            CommandParameter="{x:Static STDEnum:JOYSTICK.UP_DESC}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                            CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
 
-        <Border  Name="DPad_Border3" Margin="0,5,5,5"
-                            Grid.Column="2"
-                            Grid.Row="0"/>
+        </Button>
 
-        <Border    Name="DPad_Border4" Margin="0,5,5,5"
-                            Grid.Column="2"
-                            Grid.Row="2"/>
+        <Button  Name="DPad_Button4" 
+                 
+                 Margin="0,5,5,5"
+                 Grid.Column="2"
+                 Grid.Row="2"
+                 IsEnabled="{Binding Button_Down_IsEnabled}">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                            CommandParameter="{x:Static STDEnum:JOYSTICK.DOWN_DESC}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                            CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
 
 
 

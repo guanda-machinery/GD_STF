@@ -12,7 +12,7 @@ namespace WPFSTD105.ViewModel
     /// <summary>
     /// 設備料架 
     /// </summary>
-    public class RacksOperationVM : WPFWindowsBase.BaseViewModel
+    public class RacksOperationVM : Dpad_ViewModel
     {
         private bool _rockSpeed;
         private bool _openRoll;
@@ -22,6 +22,8 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public RacksOperationVM()
         {
+            this.Button_Down_IsEnabled = false;
+
             PanelButton panelButton = ApplicationViewModel.PanelButton;
             //如果都沒有選擇出入或口料架
             if (!panelButton.EntranceRack && !panelButton.ExportRack)
