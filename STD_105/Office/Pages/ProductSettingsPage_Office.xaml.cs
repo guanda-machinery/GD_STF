@@ -728,8 +728,8 @@ namespace STD_105.Office
 #if DEBUG
                 log4net.LogManager.GetLogger("AddPart").Debug("");
                 log4net.LogManager.GetLogger("加入主件").Debug("結束");
-                Thread.Sleep(1000);
-                ViewModel.FileOverView.Execute(null);
+                //Thread.Sleep(1000);
+                //ViewModel.FileOverView.Execute(null);
 #endif
                 ////ObSettingVM sr = new ObSettingVM();
                 //ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
@@ -785,6 +785,22 @@ namespace STD_105.Office
                     // 非新零件
                     fNewPart = false;
                 }
+                STDSerialization ser = new STDSerialization();
+                ReadFile readFile = ser.ReadPartModel(temp.steelAttr.GUID.ToString()); //讀取檔案內容
+                if (readFile == null)
+                {
+                    WinUIMessageBox.Show(null,
+                        $"專案Dev_Part資料夾讀取失敗",
+                        "通知",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                        FloatingMode.Popup);
+                    return;
+                }
+                readFile.DoWork();//開始工作
+                readFile.AddToScene(model);//將讀取完的檔案放入到模型
                 //}
 
 #if DEBUG
@@ -821,22 +837,7 @@ namespace STD_105.Office
                 //    GetViewToViewModel();
                 //}
 
-                STDSerialization ser = new STDSerialization();
-                ReadFile readFile = ser.ReadPartModel(temp.steelAttr.GUID.ToString()); //讀取檔案內容
-                if (readFile == null)
-                {
-                    WinUIMessageBox.Show(null,
-                        $"專案Dev_Part資料夾讀取失敗",
-                        "通知",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Exclamation,
-                        MessageBoxResult.None,
-                        MessageBoxOptions.None,
-                        FloatingMode.Popup);
-                    return;
-                }
-                readFile.DoWork();//開始工作
-                readFile.AddToScene(model);//將讀取完的檔案放入到模型
+                
 
 
 
@@ -978,36 +979,8 @@ namespace STD_105.Office
                 }
                 else
                 {
-                    // 讀NC檔
-                    var profile = ser.GetSteelAttr();
-                    TeklaNcFactory t = new TeklaNcFactory();
-                    Steel3DBlock s3Db = new Steel3DBlock();
-                    SteelAttr steelAttrNC = new SteelAttr();
-                    List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
-                    s3Db.ReadNcFile(allPath, profile, steelAttr, ref steelAttrNC, ref groups);
-                    steelAttr.GUID = Guid.Parse(gridItem.DataName);
-                    steelAttr.oPoint = steelAttrNC.oPoint;
-                    steelAttr.vPoint = steelAttrNC.vPoint;
-                    steelAttr.uPoint = steelAttrNC.uPoint;
-                    steelAttr.CutList = steelAttrNC.CutList;
-                    //modify = (BlockReference)model.Blocks[1].Entities[0];
-                    var block1 = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
-
-                    block1.Entities[0].EntityData = steelAttr;                    
-                    //block1.Name = steelAttr.GUID.Value.ToString();
-                    model.Blocks[1] = block1;
-                    //model.Entities[model.Entities.Count() - 1].EntityData = steelAttr;
-                                                                                              //modify = Steel3DBlock.GetProfile(steelAttr); //修改的形狀
-                                                                                              //modify2 = (BlockReference)model.Entities[model.Entities.Count() - 1];
                     ViewModel.tem3DRecycle.Add(model.Entities[model.Entities.Count - 1]);//加入垃圾桶準備刪除
                     ViewModel.tem2DRecycle.AddRange(drawing.Entities);//加入垃圾桶準備刪除
-
-
-                    //model.Entities[0].Selected = true;//選擇物件
-                    drawing.Entities.ForEach(el => el.Selected = true);
-                    steel2D = new Steel2DBlock((Mesh)block1.Entities[0], "123").Entities.ToList();
-                    Steel2DBlock steel2DBlock2 = (Steel2DBlock)drawing.Blocks[reference2D.BlockName];//drawing.CurrentBlockReference.BlockName→1
-                    steel2DBlock2.ChangeMesh((Mesh)block1.Entities[0]);
                     //加入復原動作至LIST
                     ViewModel.Reductions.Add(new Reduction()
                     {
@@ -1020,9 +993,62 @@ namespace STD_105.Office
                         Recycle = new List<List<Entity>>() { ViewModel.tem2DRecycle.ToList() },
                         User = new List<ACTION_USER>() { ACTION_USER.DELETE }
                     });
+                    // 讀NC檔
+                    var profile = ser.GetSteelAttr();
+                    TeklaNcFactory t = new TeklaNcFactory();
+                    Steel3DBlock s3Db = new Steel3DBlock();
+                    SteelAttr steelAttrNC = new SteelAttr();
+                    List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
+                    s3Db.ReadNcFile(allPath, profile, steelAttr, ref steelAttrNC, ref groups);
+                    steelAttr.GUID = Guid.Parse(gridItem.DataName);
+                    steelAttr.oPoint = steelAttrNC.oPoint;
+                    steelAttr.vPoint = steelAttrNC.vPoint;
+                    steelAttr.uPoint = steelAttrNC.uPoint;
+                    steelAttr.CutList = steelAttrNC.CutList;
+                    steelAttr.Name = ViewModel.ProductNameProperty;
+                    steelAttr.Phase = ViewModel.PhaseProperty;
+                    steelAttr.ShippingNumber = ViewModel.ShippingNumberProperty;
+                    steelAttr.Title1 = ViewModel.Title1Property;
+                    steelAttr.Title2 = ViewModel.Title2Property;
+                    steelAttr.Number = (int)ViewModel.ProductCountProperty;
+                    //modify = (BlockReference)model.Blocks[1].Entities[0];
+                    var block1 = new Steel3DBlock(Steel3DBlock.GetProfile(steelAttr));//改變讀取到的圖塊變成自訂義格式
+                    model.SetCurrent(null);
+                    if (model.Blocks.Count > 1)
+                    {
+                        model.Blocks.RemoveAt(1);
+                    }
+
+                    model.Blocks.Insert(1,block1);//加入鋼構圖塊到模型
+                    BlockReference blockReference = new BlockReference(0, 0, 0, block1.Name, 1, 1, 1, 0);
+                    blockReference.EntityData = steelAttr;
+                    blockReference.Selectable = false;//關閉用戶選擇
+                    blockReference.Attributes.Add("Steel", new AttributeReference(0, 0, 0));
+                    if (model.Entities.Count > 0)
+                    {
+                        model.Entities.RemoveAt(model.Entities.Count - 1);
+                    }
+                    model.Entities.Add(blockReference);//加入參考圖塊到模型
+
+
+
+
+
+                    //model.Entities[model.Entities.Count() - 1].EntityData = steelAttr;
+                    //modify = Steel3DBlock.GetProfile(steelAttr); //修改的形狀
+                    //modify2 = (BlockReference)model.Entities[model.Entities.Count() - 1];
+                    //model.Entities.Add((Mesh)block1.Entities[0]);
+
+
+                    //model.Entities[0].Selected = true;//選擇物件
+                    drawing.Entities.ForEach(el => el.Selected = true);
+                    steel2D = new Steel2DBlock((Mesh)block1.Entities[0], "123").Entities.ToList();
+                    Steel2DBlock steel2DBlock2 = (Steel2DBlock)drawing.Blocks[reference2D.BlockName];//drawing.CurrentBlockReference.BlockName→1
+                    steel2DBlock2.ChangeMesh((Mesh)block1.Entities[0]);
+                    
                     //刪除指定物件
-                    model.Blocks[1].Entities[0] = block1.Entities[0];
-                    model.Entities.RemoveAt(model.Entities.Count() - 1);
+                    //model.Blocks[1].Entities[0] = block1.Entities[0];
+                    //model.Entities.RemoveAt(model.Entities.Count() - 1);
                     drawing.Entities.Clear();
                     //清空選擇物件
                     ViewModel.Select2DItem.Clear();
@@ -1032,7 +1058,8 @@ namespace STD_105.Office
                     ViewModel.tem2DRecycle.Clear();
 
                     ViewModel.Reductions.AddContinuous(new List<Entity>() { (Mesh)block1.Entities[0] }, steel2D);
-                    model.Entities.Insert(model.Entities.Count() - 1, (Mesh)block1.Entities[0]);
+                    //model.Entities.Insert(model.Entities.Count() - 1, (Mesh)block1.Entities[0]);
+                    
                     drawing.Entities.AddRange(steel2D);
                 }
 
@@ -1196,8 +1223,8 @@ namespace STD_105.Office
 #if DEBUG
                 log4net.LogManager.GetLogger("ModifyPart").Debug("");
                 log4net.LogManager.GetLogger("修改主件").Debug("結束");
-                Thread.Sleep(1000);
-                ViewModel.FileOverView.Execute(null);
+                //Thread.Sleep(1000);
+                //ViewModel.FileOverView.Execute(null);
 #endif
             });
             //讀取主零件
@@ -1508,7 +1535,7 @@ namespace STD_105.Office
                     StateParaSetting(null, null, null);
                 }
 #if DEBUG
-                ViewModel.FileOverView.Execute(null);
+                //ViewModel.FileOverView.Execute(null);
 #endif
             });
             //加入孔
@@ -2670,10 +2697,10 @@ namespace STD_105.Office
                     }
 
 
-                    SteelAttr steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
+                    //SteelAttr steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
 
                     // 2022/10/13 呂宗霖 編輯:零件編號須一致才可按編輯
-                    if (steelAttr.PartNumber != this.partNumber.Text)
+                    if (ViewModel.PartNumberProperty != this.partNumber.Text)
                     {
                         WinUIMessageBox.Show(null,
                        $"零件編號相同，才可修改",
@@ -4448,7 +4475,7 @@ namespace STD_105.Office
                 // 取得原始零件之斷面規格之所有零件
                 var old_Profile_Part = part[oldPart.Profile.GetHashCode().ToString()+".lis"];
                 // 比對目前畫面上斷面規格中的零件 是否有修改後的零件
-                if (part.Any(x=>x.Key==sa.Profile.GetHashCode().ToString()+".lis"))
+                if (part.Any(x=>x.Key==sa.Profile.GetHashCode().ToString()+".lis" && x.Value.Any(y=>y.Number==sa.PartNumber)))
                 {
                     // 取得目前畫面上斷面規格之所屬零件
                     var new_profile_part = part[sa.Profile.GetHashCode().ToString()+".lis"];

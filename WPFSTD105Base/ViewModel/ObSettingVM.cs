@@ -1513,9 +1513,11 @@ namespace WPFSTD105.ViewModel
             foreach (string key in profileTemp) 
             {
                 // 所有該斷面規格的零件
-                List<SteelPart> sa1 = part[key].ToList();
+                List<SteelPart> sa1 = new List<SteelPart>();
+                sa1 = (from a in part[key].ToList()
+                       select new SteelPart() { t1 = a.t1, t2 = a.t2, H = a.H, W = a.W }).ToList();
                 // 紀錄零件資訊
-                List<SteelAttr> saList = new List<SteelAttr>();
+                List < SteelAttr > saList = new List<SteelAttr>();
                 foreach (var item in DataCorrespond.Where(x=>x.Profile.GetHashCode().ToString()+".lis"==key))
                 {
                     string path = ApplicationVM.DirectoryNc();
@@ -1546,12 +1548,12 @@ namespace WPFSTD105.ViewModel
                             saTemp.uPoint = steelAttrNC.uPoint;
                             saTemp.CutList = steelAttrNC.CutList;
                             saTemp.Length = steelAttrNC.Length;
-                            saTemp.Name = "";
+                            //saTemp.Name = "";
                             saTemp.Material = "";
-                            saTemp.Phase = 0;
-                            saTemp.ShippingNumber = 0;
-                            saTemp.Title1 = "";
-                            saTemp.Title2 = "";
+                            //saTemp.Phase = 0;
+                            //saTemp.ShippingNumber = 0;
+                            //saTemp.Title1 = "";
+                            //saTemp.Title2 = "";
                         }
                         saList.Add(saTemp);
                     }

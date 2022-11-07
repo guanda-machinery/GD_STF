@@ -670,7 +670,7 @@
                     <TextBox x:Name="phase" Grid.Column="1" Grid.Row="7" >
                         <TextBox.Text>
                             <!--<Binding Path="SelectedItems[0].Phase" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >-->
-                            <Binding Path="PhaseProperty" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding Path="PhaseProperty" UpdateSourceTrigger="PropertyChanged" >
 
                             </Binding>
                         </TextBox.Text>                        

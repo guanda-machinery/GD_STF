@@ -195,7 +195,7 @@ namespace WPFSTD105.Model
 #if DEBUG
                 log4net.LogManager.GetLogger("完成").Debug(steelAttr.GUID.ToString());
 #endif
-                result.EntityData = steelAttr.DeepClone();
+                //result.EntityData = steelAttr.DeepClone();
                 result.Color = ColorTranslator.FromHtml(Default.Part);
                 result.ColorMethod = colorMethodType.byEntity;
                 return result;
