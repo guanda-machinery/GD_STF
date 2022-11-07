@@ -1148,13 +1148,15 @@ namespace STD_105.Office
 
             Win.Close();
             Material_List_GridControl.RefreshData();
-
             ScreenManager.ViewModel.Status = "加入零件中...";
             ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
             ReloadMaterialGrid();
+            
             ScreenManager.ViewModel.Status = "完成...";
             System.Threading.Thread.Sleep(100);
             ScreenManager.Close();
+
+
         }
 
         private void DeletePartButtonClick(object sender, RoutedEventArgs e)
@@ -1171,6 +1173,10 @@ namespace STD_105.Office
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
                     FloatingMode.Popup);
+            }
+            else if(MDataView.Parts.Count==1)
+            {
+                MDataView.SelectedPart = MDataView.Parts[0];
             }
             else if (MDataView.SelectedPart == null)
             {
@@ -1220,11 +1226,8 @@ namespace STD_105.Office
                 var OTS_VM = this.DataContext as WPFSTD105.OfficeTypeSettingVM;
                 //以下代碼在第二階段需要重構
                 ObservableCollection<SteelPart> steelParts = ser.GetPart(MDataView.Profile.GetHashCode().ToString());
-
                 if (MDataView.Parts.Count != 0)
                 {
-                    //  foreach (var SelectedPart in MDataView.SelectedPartsList)
-
                     int index = OTS_VM.DataViews.FindIndex(x => x == MDataView.SelectedPart);
                     if (index != -1)
                     {
@@ -1250,12 +1253,8 @@ namespace STD_105.Office
                     //無零件時 刪除素材
                     OTS_VM.MaterialDataViews.Remove(MDataView);
                 }
-
-
                 //存檔
                 ser.SetMaterialDataView(Material_List_GridControl.ItemsSource as ObservableCollection<MaterialDataView>);
-
-
 
                 ScreenManager.ViewModel.Status = "刪除零件中...";
                 ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
@@ -1263,9 +1262,6 @@ namespace STD_105.Office
                 ScreenManager.ViewModel.Status = "完成...";
                 System.Threading.Thread.Sleep(100);
                 ScreenManager.Close();
-
-
-
                 WinUIMessageBox.Show(null,
                     $"刪除成功！",
                     "通知",
@@ -1283,6 +1279,11 @@ namespace STD_105.Office
             
         private void ReloadMaterialGrid()
         {
+            //紀錄卷軸位置
+            double Material_TableView_VerticalOffset = 0;
+            IScrollInfo Material_TableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(Material_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
+            if (Material_TableView_ScrollElement != null)
+                Material_TableView_VerticalOffset = Material_TableView_ScrollElement.VerticalOffset;
 
             //記錄所有有展開的datarow
             var ExpandedList = new Dictionary<int, bool>();
@@ -1300,14 +1301,15 @@ namespace STD_105.Office
 
             if (Handle != -1)
             {
+                //素材區展開歸位
                 Material_List_GridControl.Dispatcher.Invoke(() =>
                 {
-                    //Material_List_GridControl.SelectedItem =
                     Material_List_GridControl.SelectedItem = (Material_List_GridControl.ItemsSource as ObservableCollection<MaterialDataView>).First(x=>(x.MaterialNumber == Selected.MaterialNumber));
                     foreach (var Exp in ExpandedList)
                     {
                         if (Exp.Value == true)
                         {
+                       
                             Material_List_GridControl.ExpandMasterRow(Exp.Key);
                         }
                         else
@@ -1315,13 +1317,31 @@ namespace STD_105.Office
                             Material_List_GridControl.CollapseMasterRow(Exp.Key);
                         }
                     }
+
                 });
+                //素材區卷軸歸位
+                Material_TableView.Dispatcher.Invoke(() =>
+                {
+                    if (Material_TableView_ScrollElement != null)
+                        Material_TableView_ScrollElement.SetVerticalOffset(Material_TableView_VerticalOffset)   ;
+                });
+
             }
 
-            for (int i = 0; i < (PartsGridControl.ItemsSource as ObservableCollection<TypeSettingDataView>).Count; i++)
+            PartsGridControl.Dispatcher.Invoke(() =>
             {
-                PartsGridControl.RefreshRow(i);
-            }
+                PartsGridControl.ItemsSource = (this.DataContext as OfficeTypeSettingVM).LoadDataViews();
+                for (int i = 0; i < (PartsGridControl.ItemsSource as ObservableCollection<TypeSettingDataView>).Count; i++)
+                {
+                    PartsGridControl.RefreshRow(i);
+                }
+            });
+
+
+
+
+
+
         }
 
 

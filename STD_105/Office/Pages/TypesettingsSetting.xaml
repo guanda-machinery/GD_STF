@@ -144,7 +144,6 @@
                     <dxg:GridControl   
                         FilterGroupSortChanging="GridControl_FilterGroupSortChanging"
                         Name="PartsGridControl"
-                        
                         AutoGenerateColumns="None"
                         SelectionMode="row"
                        SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -690,6 +689,7 @@
                         MinHeight="200"  MaxHeight="1000">
                     <dxg:GridControl.View >
                         <dxg:TableView         
+                                   Name="Material_TableView"
                                  HighlightItemOnHover="True"
                                 IsColumnMenuEnabled ="False"
                                 AllowSorting="True"
