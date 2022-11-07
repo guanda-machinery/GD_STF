@@ -42,7 +42,7 @@ namespace WPFSTD105
             ObservableCollection<BomProperty> bomProperties = CommonViewModel.ProjectProperty.BomProperties; //報表屬性設定檔
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();//模型構件列表
             Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();//模型構件列表
-
+            var partFilter = part.Where(x => x.Value.Count() > 0);
             //obvm = new ObSettingVM();
 
             MaterialDataViews = ser.GetMaterialDataView();
@@ -52,7 +52,7 @@ namespace WPFSTD105
             //20220824 蘇 新增icommand
             //foreach (var profile in ser.GetProfile()) //逐步展開斷面規格
             //{
-            foreach (KeyValuePair<string, ObservableCollection<SteelPart>> eachPart in part)
+            foreach (KeyValuePair<string, ObservableCollection<SteelPart>> eachPart in partFilter)
             {
                 ObservableCollection<SteelPart> buffer = eachPart.Value;
 

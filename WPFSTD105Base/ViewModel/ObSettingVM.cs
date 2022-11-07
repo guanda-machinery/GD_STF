@@ -382,10 +382,10 @@ namespace WPFSTD105.ViewModel
         public int ProfileType
         {
             get {
-                if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)_ProfileType}.inp"))
-                {
-                    ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)_ProfileType}.inp");
-                } 
+                //if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)_ProfileType}.inp"))
+                //{
+                //    ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)_ProfileType}.inp");
+                //} 
                 return _ProfileType;
             }
             set
@@ -400,7 +400,7 @@ namespace WPFSTD105.ViewModel
                     {
                         File.Copy($@"Profile\{TYPE}.inp", $@"{ApplicationVM.DirectoryPorfile()}\{TYPE}.inp");//複製 BH 斷面規格到模型內
                     }
-                    ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{TYPE}.inp");
+                    //ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{TYPE}.inp");
 #if DEBUG
                     log4net.LogManager.GetLogger("載入斷面規格").Debug(TYPE.ToString());
 #endif
@@ -411,13 +411,14 @@ namespace WPFSTD105.ViewModel
                         case OBJECT_TYPE.LB: //20220802 張燕華 新增斷面規格
                         case OBJECT_TYPE.RH:
                         case OBJECT_TYPE.CH:
-                        //case OBJECT_TYPE.L: //20220805 張燕華 新增斷面規格 - 已不在介面上顯示此規格
                         case OBJECT_TYPE.BOX:
                         case OBJECT_TYPE.BH:
+                        //case OBJECT_TYPE.L: //20220805 張燕華 新增斷面規格 - 已不在介面上顯示此規格
                             ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(TYPE).ToString()}.inp");
                             break;
                         default:
-                            throw new Exception($"找不到{TYPE.ToString()}");
+                            ProfileList = new ObservableCollection<SteelAttr>();
+                            break;
                     }
 #if DEBUG
                     log4net.LogManager.GetLogger("載入斷面規格").Debug("完成");
@@ -546,10 +547,10 @@ namespace WPFSTD105.ViewModel
             set
             {
                 _ProfileIndex = value;
-                if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp"))
-                {
-                    ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp");
-                }
+                //if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp"))
+                //{
+                //    ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp");
+                //}
 
                 SteelAttr _steelAttr;
                 if (value == -1)
@@ -939,10 +940,10 @@ namespace WPFSTD105.ViewModel
         {
             this.SteelAttr = steelAttr;
             this.Steelbuffer = (SteelAttr)steelAttr.Clone();
-            if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{steelAttr.Type}.inp"))
-            {
-                this.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{steelAttr.Type}.inp");
-            }
+            //if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{steelAttr.Type}.inp"))
+            //{
+            //    this.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{steelAttr.Type}.inp");
+            //}
            
             for (int i = 0; i < ProfileList.Count; i++)
             {
@@ -1492,7 +1493,7 @@ namespace WPFSTD105.ViewModel
             StreamWriter str = new StreamWriter(@"DEBUG_PartList.txt");
             foreach (DataCorrespond se in DataCorrespond)
             {
-                str.WriteLine(se.DataName.ToString() + " " + se.Profile.ToString() + " " + se.Number.ToString());
+                str.WriteLine($"{se.DataName} {se.Profile} {se.Number}");
             }
             str.Close();
 #endif
@@ -1583,7 +1584,7 @@ namespace WPFSTD105.ViewModel
                     {
                         // 將字串寫入TXT檔
                         StreamWriter str2 = File.AppendText(@"Debug_NcCannotToDM.txt");
-                        str2.WriteLine(item.Profile.GetHashCode().ToString() + ".lis" + " " + item.Number.ToString() + " " + item.Profile.ToString());
+                        str2.WriteLine($"{item.Profile.GetHashCode()}.lis {item.Number} {item.Profile}");
                         str2.Close();
                     }
 #endif
@@ -2058,8 +2059,11 @@ namespace WPFSTD105.ViewModel
                 list.Add(aa);
 
                 double Per = (ItemCount * 100) / group.Count;
-                ProcessingScreenWin.ViewModel.Status = $"正在讀取{aa.steelAttr.PartNumber} - {ItemCount} / {group.Count}";
-                ProcessingScreenWin.ViewModel.Progress = Per;
+                if (group.Count > 0)
+                {
+                    ProcessingScreenWin.ViewModel.Status = $"正在讀取{aa.steelAttr.PartNumber} - {ItemCount} / {group.Count}";
+                    ProcessingScreenWin.ViewModel.Progress = Per;
+                }
                 ItemCount++;
             }
             ProcessingScreenWin.ViewModel.IsIndeterminate = true;
