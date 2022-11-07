@@ -649,23 +649,29 @@ namespace WPFSTD105.Tekla
                 foreach (var p in profileList)
                 {
                     insertTemp = new ObservableCollection<object>();
-                    foreach (SteelPart item in part)
+                    foreach (SteelPart item in part.Where(x=>x.Profile.GetHashCode().ToString()==p))
                     {
                         Guid? g = null;
-                        if (this.ncTemps.Any(x => x.SteelAttr.PartNumber == item.Number && x.SteelAttr.Length == item.Length && x.SteelAttr.Type == item.Type && x.SteelAttr.Profile == item.Profile))
+                        // 2022/11/07 呂宗霖 與暐淇討論後 長度不看
+                        //if (this.ncTemps.Any(x => x.SteelAttr.PartNumber == item.Number && x.SteelAttr.Length == item.Length && x.SteelAttr.Type == item.Type && x.SteelAttr.Profile == item.Profile))
+                        if (this.ncTemps.Any(x => x.SteelAttr.PartNumber == item.Number && x.SteelAttr.Type == item.Type && x.SteelAttr.Profile == item.Profile))
                         {
-                            g = this.ncTemps.FirstOrDefault(x => x.SteelAttr.PartNumber == item.Number && x.SteelAttr.Length == item.Length && x.SteelAttr.Type == item.Type && x.SteelAttr.Profile == item.Profile).SteelAttr.GUID;
+                            //g = this.ncTemps.FirstOrDefault(x => x.SteelAttr.PartNumber == item.Number && x.SteelAttr.Length == item.Length && x.SteelAttr.Type == item.Type && x.SteelAttr.Profile == item.Profile).SteelAttr.GUID;
+                            g = this.ncTemps.FirstOrDefault(x => x.SteelAttr.PartNumber == item.Number && x.SteelAttr.Type == item.Type && x.SteelAttr.Profile == item.Profile).SteelAttr.GUID;
                         }
                         if (g == null)
                         {
                             g = Guid.NewGuid();
                         }
                         string fileName = item.Profile.GetHashCode().ToString();
-                        if (newPart.Keys.Contains(fileName) && newPart[fileName].Any(x => ((SteelPart)x).Profile == item.Profile && ((SteelPart)x).Number == item.Number && ((SteelPart)x).Length == item.Length && ((SteelPart)x).Type == item.Type))
+                        //if (newPart.Keys.Contains(fileName) && newPart[fileName].Any(x => ((SteelPart)x).Profile == item.Profile && ((SteelPart)x).Number == item.Number && ((SteelPart)x).Length == item.Length && ((SteelPart)x).Type == item.Type))
+                        if (newPart.Keys.Contains(fileName) && newPart[fileName].Any(x => ((SteelPart)x).Profile == item.Profile && ((SteelPart)x).Number == item.Number && ((SteelPart)x).Type == item.Type))
                         {
-                            object saTemp = newPart[fileName].FirstOrDefault(x => ((SteelPart)x).Profile == item.Profile && ((SteelPart)x).Number == item.Number && ((SteelPart)x).Length == item.Length && ((SteelPart)x).Type == item.Type);
+                            //object saTemp = newPart[fileName].FirstOrDefault(x => ((SteelPart)x).Profile == item.Profile && ((SteelPart)x).Number == item.Number && ((SteelPart)x).Length == item.Length && ((SteelPart)x).Type == item.Type);
+                            object saTemp = newPart[fileName].FirstOrDefault(x => ((SteelPart)x).Profile == item.Profile && ((SteelPart)x).Number == item.Number && ((SteelPart)x).Type == item.Type);
                             ((SteelPart)saTemp).GUID = g;
-                            insertTemp.Add(newPart[fileName].FirstOrDefault(x => ((SteelPart)x).Profile == item.Profile && ((SteelPart)x).Number == item.Number && ((SteelPart)x).Length == item.Length && ((SteelPart)x).Type == item.Type));
+                            //insertTemp.Add(newPart[fileName].FirstOrDefault(x => ((SteelPart)x).Profile == item.Profile && ((SteelPart)x).Number == item.Number && ((SteelPart)x).Length == item.Length && ((SteelPart)x).Type == item.Type));
+                            insertTemp.Add(newPart[fileName].FirstOrDefault(x => ((SteelPart)x).Profile == item.Profile && ((SteelPart)x).Number == item.Number && ((SteelPart)x).Type == item.Type));
                         }
                         else
                         {

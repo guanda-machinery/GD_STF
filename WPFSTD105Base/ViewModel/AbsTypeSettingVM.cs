@@ -40,6 +40,12 @@ namespace WPFSTD105
         {
             DataViews = LoadDataViews();
             STDSerialization ser = new STDSerialization();
+            ObservableCollection<BomProperty> bomProperties = CommonViewModel.ProjectProperty.BomProperties; //報表屬性設定檔
+            ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();//模型構件列表
+            Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();//模型構件列表
+            var partFilter = part.Where(x => x.Value.Count() > 0);
+            //obvm = new ObSettingVM();
+
             MaterialDataViews = ser.GetMaterialDataView();
             AllSelectedGridCommand = AllSelectedGrid();// 選擇報表全部物件命令
             ReverseSelectedGridCommand = ReverseSelectedGrid();//反向選取命令
@@ -60,8 +66,9 @@ namespace WPFSTD105
             ObservableCollection<BomProperty> bomProperties = CommonViewModel.ProjectProperty.BomProperties; //報表屬性設定檔
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();//模型構件列表
             //20220824 蘇 新增icommand
-            Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();//模型構件列表
-            foreach (KeyValuePair<string, ObservableCollection<SteelPart>> eachPart in part)
+            //foreach (var profile in ser.GetProfile()) //逐步展開斷面規格
+            //{
+            foreach (KeyValuePair<string, ObservableCollection<SteelPart>> eachPart in partFilter)
             {
                 ObservableCollection<SteelPart> buffer = eachPart.Value;
 
