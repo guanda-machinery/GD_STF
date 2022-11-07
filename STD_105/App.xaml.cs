@@ -212,10 +212,13 @@ namespace STD_105
                 //WinUIMessageBox.Show();
             }
 
+            Office.OfficeBaseWindow.DeactivateLoading();
             Office.LoginPage login = new Office.LoginPage(); //登入畫面
+
             login.ShowDialog();
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             Current.MainWindow.Show();
+            
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

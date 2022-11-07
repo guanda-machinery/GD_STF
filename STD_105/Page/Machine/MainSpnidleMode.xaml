@@ -17,15 +17,14 @@
             </Grid.RowDefinitions>
             <Grid.Resources>
                 <!--統一兩個usercontrol的VM，使其可同步-->
-                <STD105VM:Dpad_JoystickViewModel x:Key="Dpad_Js_VM"/>
+                <STD105VM:Dpad_ViewModel x:Key="Dpad_Js_VM"/>
                 <Style TargetType="Button" BasedOn="{StaticResource CustomDesignButton}"/>
             </Grid.Resources>
 
             <local:JoystickUserControl Grid.Row="0" Margin="10" DataContext="{StaticResource Dpad_Js_VM}">
 
-                <local:JoystickUserControl.BorderChild_1_Source>
-                    <Button>
-                        <Grid Width="200">
+                <local:JoystickUserControl.ButtonContent_1_Source>
+                    <Grid Width="200">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
@@ -39,13 +38,11 @@
                             <TextBlock Grid.Column="0" Text="Z"  Width="auto" Foreground ="Black" FontSize="40" />
                             <TextBlock Grid.Column="1" Text="+"  Width="auto" Margin="4,-6,0,0"  Foreground ="Black" FontSize="40"  />
                         </Grid>
-                        </Grid>
-                    </Button>
-                </local:JoystickUserControl.BorderChild_1_Source>
+                    </Grid>
+                </local:JoystickUserControl.ButtonContent_1_Source>
 
 
-                <local:JoystickUserControl.BorderChild_3_Source>
-                    <Button>
+                <local:JoystickUserControl.ButtonContent_3_Source>
                     <Grid Width="200">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -60,17 +57,15 @@
                             <TextBlock Grid.Column="0" Text="Z"  Width="auto"  Foreground ="Black" FontSize="40" />
                             <TextBlock Grid.Column="1" Text="–"  Width="auto" Margin="8,-4,0,0"  Foreground ="Black" FontSize="40"  />
                         </Grid>
-                        </Grid>
-                    </Button>
-                </local:JoystickUserControl.BorderChild_3_Source>
+                    </Grid>
+                </local:JoystickUserControl.ButtonContent_3_Source>
 
-                <local:JoystickUserControl.BorderChild_4_Source>
-                    <Button>
+                <local:JoystickUserControl.ButtonContent_4_Source>
                     <Grid Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="60"/>
                             <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="60"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="60"/>
@@ -78,25 +73,23 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="L" Width="auto" Foreground="Red" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="30" Margin="5,0"/>
-                            <Image  Grid.Column="1" Source="{StaticResource SpindleLineDrawingImage}"  Height="auto" Width="auto"/>
+                        <Image  Grid.Column="1" Source="{StaticResource SpindleLineDrawingImage}"  Height="auto" Width="auto"/>
                         <Image  Grid.Column="0" Grid.Row="1" Source="{StaticResource SpindleColor_HorizonDrawingImage}"  Height="auto" Width="auto" Margin="-2,0,2,0"/>
-                            <Image  Grid.Column="1" Grid.Row="1" Source="{StaticResource HSteel_quadDrawingImage}"  Height="auto" Width="auto" Margin="5"/>
-                            <Image  Grid.Column="2" Grid.Row="1" Source="{StaticResource SpindleLine_HorizonDrawingImage}"  Height="auto" Width="auto" RenderTransformOrigin="0.5,0.5" >
-                                <Image.RenderTransform>
-                                    <TransformGroup>
-                                        <ScaleTransform/>
-                                        <SkewTransform/>
-                                        <RotateTransform Angle="-180"/>
-                                        <TranslateTransform/>
-                                    </TransformGroup>
-                                </Image.RenderTransform>
-                            </Image>
+                        <Image  Grid.Column="1" Grid.Row="1" Source="{StaticResource HSteel_quadDrawingImage}"  Height="auto" Width="auto" Margin="5"/>
+                        <Image  Grid.Column="2" Grid.Row="1" Source="{StaticResource SpindleLine_HorizonDrawingImage}"  Height="auto" Width="auto" RenderTransformOrigin="0.5,0.5" >
+                            <Image.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="-180"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </Image.RenderTransform>
+                        </Image>
 
-                        </Grid>
-                    </Button>
-                </local:JoystickUserControl.BorderChild_4_Source>
-                <local:JoystickUserControl.BorderChild_5_Source>
-                    <Button>
+                    </Grid>
+                </local:JoystickUserControl.ButtonContent_4_Source>
+                <local:JoystickUserControl.ButtonContent_5_Source>
                     <Grid Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="60"/>
@@ -124,10 +117,8 @@
                         </Image>
 
                     </Grid>
-                    </Button>
-                </local:JoystickUserControl.BorderChild_5_Source>
-                <local:JoystickUserControl.BorderChild_6_Source>
-                    <Button>
+                </local:JoystickUserControl.ButtonContent_5_Source>
+                <local:JoystickUserControl.ButtonContent_6_Source>
                     <Grid Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="60"/>
@@ -155,15 +146,13 @@
                         </Image>
 
                     </Grid>
-                    </Button>
-                </local:JoystickUserControl.BorderChild_6_Source>
+                </local:JoystickUserControl.ButtonContent_6_Source>
                 
                 
             </local:JoystickUserControl >
             
             <local:DPadUserControl Grid.Row="1" Margin="10,5"  DataContext="{StaticResource Dpad_Js_VM}" VerticalAlignment="Top">
-                <local:DPadUserControl.BorderChild_1_Source>
-                    <Button>
+                <local:DPadUserControl.ButtonContent_1_Source>
                     <Grid Width="200">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -178,11 +167,9 @@
                             <TextBlock  Grid.Column="0" Text="X"  Width="auto" Foreground ="Black" FontSize="40" />
                             <TextBlock Grid.Column="1" Text="＋"  Width="auto" Margin="-4,-4,0,0" Foreground ="Black" FontSize="40"  />
                         </Grid>
-                        </Grid>
-                    </Button>
-                </local:DPadUserControl.BorderChild_1_Source>
-                <local:DPadUserControl.BorderChild_2_Source>
-                    <Button>
+                    </Grid>
+                </local:DPadUserControl.ButtonContent_1_Source>
+                <local:DPadUserControl.ButtonContent_2_Source>
                     <Grid Width="200">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -197,12 +184,11 @@
                             <TextBlock  Grid.Column="0" Width="auto" Text="X" Foreground ="Black" FontSize="40" />
                             <TextBlock Grid.Column="1" Height="auto" Text="–"  Margin="8,-4,0,0"  Foreground ="Black" FontSize="40" />
                         </Grid>
-                        </Grid>
-                    </Button>
-                </local:DPadUserControl.BorderChild_2_Source>
+                    </Grid>
+                </local:DPadUserControl.ButtonContent_2_Source>
 
-                <local:DPadUserControl.BorderChild_3_Source>
-                    <Button>
+                <local:DPadUserControl.ButtonContent_3_Source>
+      
                     <Grid Width="200">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -218,10 +204,10 @@
                             <TextBlock Grid.Column="1" Text="＋"  Width="auto" Margin="-8,-4,0,0"  Foreground ="Black" FontSize="40" />
                         </Grid>
                         </Grid>
-                    </Button>
-                </local:DPadUserControl.BorderChild_3_Source>
-                <local:DPadUserControl.BorderChild_4_Source>
-                    <Button>
+    
+                </local:DPadUserControl.ButtonContent_3_Source>
+                <local:DPadUserControl.ButtonContent_4_Source>
+
                     <Grid Width="200">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -237,8 +223,8 @@
                             <TextBlock Grid.Column="1" Text="–"  Width="auto" Margin="-8,-5,0,0"  Foreground ="Black" FontSize="40"  />
                         </Grid>
                     </Grid>
-                    </Button>
-                </local:DPadUserControl.BorderChild_4_Source>
+
+                </local:DPadUserControl.ButtonContent_4_Source>
 
 
             </local:DPadUserControl>

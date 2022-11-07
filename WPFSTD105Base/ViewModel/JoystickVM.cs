@@ -21,16 +21,6 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public JoystickVM()
         {
-            LeftButtonCommand =  LeftButton();
-            //JoystickDownPreviewMouseLeftButtonDownCommand = JoystickDownPreviewMouseLeftButtonDown();
-            //JoystickLeftPreviewMouseLeftButtonDownCommand = JoystickLeftPreviewMouseLeftButtonDown();
-            //JoystickRightPreviewMouseLeftButtonDownCommand = JoystickRightPreviewMouseLeftButtonDown();
-            //CircleTopPreviewMouseLeftButtonDownCommand = CircleTopPreviewMouseLeftButtonDown();
-            //CircleMiddlePreviewMouseLeftButtonDownCommand = CircleMiddlePreviewMouseLeftButtonDown();
-            //CircleBottomPreviewMouseLeftButtonDownCommand = CircleBottomPreviewMouseLeftButtonDown();
-            //EllipseTopPreviewMouseLeftButtonDownCommand = EllipseTopPreviewMouseLeftButtonDown();
-            //EllipseBottomPreviewMouseLeftButtonDownCommand = EllipseBottomPreviewMouseLeftButtonDown();
-            //ButtonUpCommand = ButtonUp();
         }
         /// <summary>
         /// 控制顯示說明文字
@@ -77,41 +67,40 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public bool IsEnable { get; set; }
         #region 命令
-        /// <summary>
-        /// 滑鼠指標在箭頭向上元素上方且按下滑鼠左按鈕時發生。
-        /// </summary>
-        public WPFBase.RelayParameterizedCommand LeftButtonCommand { get; set; }
-        /// <summary>
-        /// 滑鼠指標在此下橢圓形元素上方且放開滑鼠左按鈕時發生。
-        /// </summary>
-        public WPFBase.RelayCommand ButtonUpCommand { get; set; }
+
         #endregion
 
         #region 命令處理方法
         /// <summary>
         /// 滑鼠指標在箭頭向上元素上方且按下滑鼠左按鈕時處理方法。
         /// </summary>
-        protected WPFBase.RelayParameterizedCommand LeftButton()
+        public WPFBase.RelayParameterizedCommand LeftButtonCommand
         {
-            return new WPFBase.RelayParameterizedCommand(el =>
+            get
             {
-                JOYSTICK select = (JOYSTICK)el;
-                PanelButton _ = ApplicationViewModel.PanelButton;
-                _.Joystick = select;
-                WriteCodesysMemor.SetPanel(_);
-            });
+                return new WPFBase.RelayParameterizedCommand(el =>
+                {
+                    JOYSTICK select = (JOYSTICK)el;
+                    PanelButton _ = ApplicationViewModel.PanelButton;
+                    _.Joystick = select;
+                    WriteCodesysMemor.SetPanel(_);
+                });
+            }
         }
         /// <summary>
         /// 滑鼠指標在此下橢圓形元素上方且放開滑鼠左按鈕時發生。
         /// </summary>
-        protected WPFBase.RelayCommand ButtonUp()
+        public WPFBase.RelayCommand ButtonUpCommand
         {
-            return new WPFBase.RelayCommand(() =>
+            get
             {
-                PanelButton _ = ApplicationViewModel.PanelButton;
-                _.Joystick = JOYSTICK.NULL;
-                WriteCodesysMemor.SetPanel(_);
-            });
+                return new WPFBase.RelayCommand(() =>
+                {
+                    PanelButton _ = ApplicationViewModel.PanelButton;
+                    _.Joystick = JOYSTICK.NULL;
+                    WriteCodesysMemor.SetPanel(_);
+                });
+            }
         }
         #endregion
     }

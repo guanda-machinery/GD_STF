@@ -1060,13 +1060,22 @@ namespace WPFSTD105
                            el.SortCount > 0)                   // 2022/09/23 呂宗霖 新增
                            .Select(el => el.SortCount);
 
-                            var count = _where.Aggregate((part1, part2) => part1 + part2);
-                            if (count > 0)
+                            //20221107 蘇冠綸加入條件式 防止在特定情況下_where陣列為0而導致崩潰的問題
+                            if (_where.Count() > 0)
                             {
-                                listPart.AddRange(SinglePart.UnfoldPart(steel, out List<bool> match, count));//展開物件並加入配料列表內
-                                steel.Match = match;
-                                //DataViews.
+                                var count = _where.Aggregate((total, next) => total + next);
+                                if (count > 0)
+                                {
+                                    listPart.AddRange(SinglePart.UnfoldPart(steel, out List<bool> match, count));//展開物件並加入配料列表內
+                                    steel.Match = match;
+                                }
                             }
+                            else
+                            {
+
+                            }
+
+
                         }
                     }
 

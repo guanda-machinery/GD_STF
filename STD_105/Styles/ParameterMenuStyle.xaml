@@ -172,6 +172,15 @@
         <Setter Property="Background" Value="Gold"/>
     </Style>
 
+    <Style x:Key="SiegCustomButtonGreenBorder" TargetType="Button" BasedOn="{StaticResource SiegCustomButtonWhite}">
+        <Setter Property="Width" Value="auto"/>
+            <Setter Property="Height" Value="114"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="BorderBrush" Value="#4CFF00"/>
+            <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Background" Value="White"/>
+    </Style>
 
 
     <Style TargetType="{x:Type Button}"  x:Key="ParameterButton" BasedOn="{ StaticResource BaseStyle }" >
