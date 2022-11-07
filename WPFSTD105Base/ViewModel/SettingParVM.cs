@@ -67,7 +67,7 @@ namespace WPFSTD105.ViewModel
             SensorCommand = Sensor();
             OAxisCommand = OAxis();
             OSensorCommand = OSensor();
-            SaveModelRoSystemCommand = SaveAs();
+            SaveModelRoSystemCommand = SaveAs();//儲存新增的斷面規格
             ProfileSaveModelRoSystemCommand = SaveProfile();
             MaterialSaveModelRoSystemCommand = SaveMaterial();
             //如果是機器操作介面
@@ -106,7 +106,7 @@ namespace WPFSTD105.ViewModel
 
             CheckParameterSettingDirectoryExists();//20220819 張燕華 檢查參數設定資料夾是否存在, 若否則新增
 
-            initializationProcessingZoneData();//20220818 張燕華 加工區域設定 - 檢查設定值檔案存在, 若否則新增預設設定值
+            //initializationProcessingZoneData();//20220818 張燕華 加工區域設定 - 檢查設定值檔案存在, 若否則新增預設設定值
             ShowProcessingZoneCommand = ShowProcessingZone();//20220810 張燕華 加工區域設定 - 顯示斷面規格設定圖片
             ShowProcessingSettingValueCommand = ShowProcessingSettingValue();//20220811 張燕華 加工區域設定 - 加工方式
             NewProcessingZoneCommand = NewProcessingZone();//20220811 張燕華 加工區域設定 - 新增加工區域設定數值
@@ -2356,9 +2356,10 @@ namespace WPFSTD105.ViewModel
                     backPropertyInfo.SetValue(this, value); //存取資料到背景列表
                     showPropertyInfo.SetValue(this, SerializationHelper.Clone(value));//存取資料到顯示畫面的列表
 
-                    if (str == "系統")//如果確定要變更系統
+                    if (str == "模型&系統")//如果確定要變更系統
                     {
-                        ObservableCollection<SteelAttr> system = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryModel()}\{ModelPath.Profile}\{strType}.inp");//系統的斷面規格
+                        //ObservableCollection<SteelAttr> system = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryModel()}\{ModelPath.Profile}\{strType}.inp");//系統的斷面規格
+                        ObservableCollection<SteelAttr> system = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>(System.AppDomain.CurrentDomain.BaseDirectory + $@"Profile\{strType}.inp");//系統的斷面規格(在輸出目錄中)
                         SteelAttr steelAttr = GetSettingSteelAttr(); //取得設定好的斷面規格
                         if (system.IndexOf(e => e.Profile == steelAttr.Profile) != -1) //如果有相同的斷面規格
                         {
@@ -2425,6 +2426,7 @@ namespace WPFSTD105.ViewModel
                 if (str == "系統")//如果確定要變更系統
                 {
                     ObservableCollection<SteelAttr> system = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryModel()}\{ModelPath.Profile}\{strType}.inp");//系統的斷面規格
+                    
                     SteelAttr steelAttr = GetSettingSteelAttr(); //取得設定好的斷面規格
                     if (system.IndexOf(e => e.Profile == steelAttr.Profile) != -1) //如果有相同的斷面規格
                     {
@@ -3584,27 +3586,27 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         private void initializationSplitLineSettingData()
         {
-            //檢查使用者專案中是否已經存在設定檔案SplitLineSetting.lis
-            STDSerialization ser_file = new STDSerialization();
-            bool checkSplitLineDataFile = ser_file.CheckSplitLineDataFile();
-
-            if (checkSplitLineDataFile == false)//若設定值檔案不存在
-            {
-                //新增設定值檔案
-                STDSerialization ser_AddFile = new STDSerialization(); //序列化處理器
-                ObservableCollection<SplitLineSettingClass> listSplitLineData = new ObservableCollection<SplitLineSettingClass>();
-                listSplitLineData.Add(new SplitLineSettingClass()
-                {
-                    HowManyParts = "5",
-                    A = "1/5",
-                    B = "4/5",
-                    C = "1/5",
-                    D = "4/5",
-                    Thickness = 3,
-                    RemainingLength = 500.00
-                });
-                ser_AddFile.SetSplitLineData(listSplitLineData);
-            }
+            ////檢查使用者專案中是否已經存在設定檔案SplitLineSetting.lis
+            //STDSerialization ser_file = new STDSerialization();
+            //bool checkSplitLineDataFile = ser_file.CheckSplitLineDataFile();
+            //
+            //if (checkSplitLineDataFile == false)//若設定值檔案不存在
+            //{
+            //    //新增設定值檔案
+            //    STDSerialization ser_AddFile = new STDSerialization(); //序列化處理器
+            //    ObservableCollection<SplitLineSettingClass> listSplitLineData = new ObservableCollection<SplitLineSettingClass>();
+            //    listSplitLineData.Add(new SplitLineSettingClass()
+            //    {
+            //        HowManyParts = "5",
+            //        A = "1/5",
+            //        B = "4/5",
+            //        C = "1/5",
+            //        D = "4/5",
+            //        Thickness = 3,
+            //        RemainingLength = 500.00
+            //    });
+            //    ser_AddFile.SetSplitLineData(listSplitLineData);
+            //}
 
             //讀入SplitLineSetting.lis中切割線設定值
             STDSerialization ser = new STDSerialization(); //序列化處理器

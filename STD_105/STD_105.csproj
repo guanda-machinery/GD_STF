@@ -1644,6 +1644,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="DefaultParameterSetting\BOX_DRILLING_processingzone.lis">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DefaultParameterSetting\CH_DRILLING_processingzone.lis">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DefaultParameterSetting\H_DRILLING_processingzone.lis">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DefaultParameterSetting\SplitLineSetting.lis">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Word2Pdf\exe\word2pdf_test.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -1751,7 +1763,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Profile\BH.inp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Profile\BOX.inp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

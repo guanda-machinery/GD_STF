@@ -86,18 +86,16 @@ namespace WPFSTD105 {
                 return ResourceManager.GetString("Bom", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   查詢類似 TeklaBom.csv 的當地語系化字串。
+        ///   查詢類似 ParameterSetting 的當地語系化字串。
         /// </summary>
-        public static string ReportLogo
-        {
-            get
-            {
-                return "ReportLogo";
+        public static string DefaultParameterSetting {
+            get {
+                return ResourceManager.GetString("DefaultParameterSetting", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   查詢類似 Dev_Part 的當地語系化字串。
         /// </summary>
@@ -212,6 +210,15 @@ namespace WPFSTD105 {
         public static string ProjectProperty {
             get {
                 return ResourceManager.GetString("ProjectProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 ReportLogo 的當地語系化字串。
+        /// </summary>
+        public static string ReportLogo {
+            get {
+                return ResourceManager.GetString("ReportLogo", resourceCulture);
             }
         }
         

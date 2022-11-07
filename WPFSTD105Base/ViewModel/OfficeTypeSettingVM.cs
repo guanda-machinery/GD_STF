@@ -164,7 +164,7 @@ namespace WPFSTD105
                     double TotalLoss_BothSide = MatchSettingStartCut + MatchSettingEndCut;//素材前後端切割損耗
                     word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", MaterialDataViews, TotalLoss_BothSide);
 
-                    string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
+                    string current_time = DateTime.Now.ToString("yyyyMMdd");
                     //以python封裝exe執行轉檔
                     try
                     {
@@ -232,7 +232,7 @@ namespace WPFSTD105
                     double TotalLoss_BothSide = MatchSettingStartCut + MatchSettingEndCut;//素材前後端切割損耗
                     word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", MaterialDataViews, TotalLoss_BothSide);
 
-                    string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
+                    string current_time = DateTime.Now.ToString("yyyyMMdd");
                     //以python封裝exe執行轉檔                    
                     try
                     {                        

@@ -432,6 +432,18 @@ namespace WPFSTD105
             throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }
         /// <summary>
+        /// "型鋼加工區域設定"&"切割線設定"的初始設定值資料夾
+        /// </summary>
+        public static string DirectoryDefaultParameterSetting()
+        {
+            string projectName = CommonViewModel.ProjectName; //專案名稱
+
+            if (projectName != null)
+                return $@"{DirectoryModel()}\{ModelPath.DefaultParameterSetting}";
+
+            throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
+        }
+        /// <summary>
         /// 取得所有dm檔
         /// </summary>
         /// <returns></returns>
@@ -877,6 +889,18 @@ namespace WPFSTD105
                 SerializationHelper.GZipSerializeBinary(new ObservableCollection<DataCorrespond>(), ApplicationVM.FilePartList());//斷面規格列表
                 SerializationHelper.GZipSerializeBinary(new ObservableCollection<MaterialDataView>(), ApplicationVM.FileMaterialDataView());//斷面規格列表
                 SerializationHelper.GZipSerializeBinary(new NcTempList(), ApplicationVM.FileNcTemp()); //nc 尚未實體化的資料
+
+                // 2022/11/04 張燕華 複製"型鋼加工區域設定"&"切割線設定"的初始設定值到專案資料夾
+                Directory.CreateDirectory(ApplicationVM.DirectoryDefaultParameterSetting());
+                string[] files = Directory.GetFiles(System.AppDomain.CurrentDomain.BaseDirectory + $@"DefaultParameterSetting", "*.lis");
+                foreach (string file in files)
+                {
+                    string[] filename = file.Split('\\');
+                    if (!File.Exists($@"{ApplicationVM.DirectoryDefaultParameterSetting()}\{file.ToString()}.lis"))
+                    {
+                        File.Copy(file, $@"{ApplicationVM.DirectoryDefaultParameterSetting()}\{filename[filename.Length-1]}");
+                    }
+                }
 
                 // 2022/08/22 呂宗霖 若有缺少斷面規格，自動產生
                 foreach (OBJECT_TYPE format in System.Enum.GetValues(typeof(OBJECT_TYPE)))
