@@ -458,6 +458,12 @@
     <Compile Include="UserControls\ProcessingScreenWindow.xaml.cs">
       <DependentUpon>ProcessingScreenWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\Machine\Dpad\joystick\DpadConveyor_ViewModel.cs" />
+    <Compile Include="ViewModel\Machine\Dpad\joystick\ToolMagazine_ViewModel.cs" />
+    <Compile Include="ViewModel\Machine\Dpad\joystick\GrabArm_ViewModel.cs" />
+    <Compile Include="ViewModel\Machine\Dpad\Machine_HSteelGrabViewModel.cs" />
+    <Compile Include="ViewModel\Machine\Dpad\Machine_HSteelCarryViewModel.cs" />
+    <Compile Include="ViewModel\Machine\Dpad\joystick\Dpad_Joystick_ViewModel.cs" />
     <Compile Include="WordToPdfService.cs" />
     <Compile Include="WordCutService.cs" />
     <Compile Include="WordBuyService.cs" />
@@ -586,7 +592,7 @@
     <Compile Include="ViewModel\JoystickVM.cs" />
     <Compile Include="ViewModel\LeftAxisVM.cs" />
     <Compile Include="ViewModel\LoginVM.cs" />
-    <Compile Include="ViewModel\Machine\Dpad_JoystickViewModel.cs" />
+    <Compile Include="ViewModel\Machine\Dpad\Dpad_ViewModel.cs" />
     <Compile Include="ViewModel\MiddleAxisVM.cs" />
     <Compile Include="ViewModel\ModeSelectedVM.cs" />
     <Compile Include="ViewModel\OfficeVM_ParaSettingFuncListViewModel.cs" />
@@ -595,7 +601,7 @@
     <Compile Include="ViewModel\OfficeTypeSettingVM.cs" />
     <Compile Include="ViewModel\ProcessingMonitorVM.cs" />
     <Compile Include="ViewModel\ProductSettingsPageViewModel.cs" />
-    <Compile Include="ViewModel\RacksOperationVM.cs" />
+    <Compile Include="ViewModel\Machine\RacksOperationVM.cs" />
     <Compile Include="ViewModel\RightAxisVM.cs" />
     <Compile Include="ViewModel\SideClampVM.cs" />
     <Compile Include="ViewModel\VolumeVM.cs" />

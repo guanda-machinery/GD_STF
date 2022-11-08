@@ -195,7 +195,7 @@ namespace WPFSTD105.Model
 #if DEBUG
                 log4net.LogManager.GetLogger("完成").Debug(steelAttr.GUID.ToString());
 #endif
-                result.EntityData = steelAttr.DeepClone();
+                //result.EntityData = steelAttr.DeepClone();
                 result.Color = ColorTranslator.FromHtml(Default.Part);
                 result.ColorMethod = colorMethodType.byEntity;
                 return result;
@@ -222,7 +222,7 @@ namespace WPFSTD105.Model
         /// 上視圖形狀
         /// </summary>
         private AK uAK { get; set; }
-        public void ReadNcFile(string path, Dictionary<string, ObservableCollection<SteelAttr>> profile, SteelAttr steelAttr, ref SteelAttr steelAttr1,ref List<GroupBoltsAttr> groups)
+        public void ReadNcFile(string path, Dictionary<string, ObservableCollection<SteelAttr>> profile, SteelAttr steelAttr, ref SteelAttr steelAttr1, ref List<GroupBoltsAttr> groups)
         {
             string line = "";
             int lineNumber = 0;//資料行
@@ -230,37 +230,24 @@ namespace WPFSTD105.Model
                                 //SteelAttr steelAttr = new SteelAttr();//定義鋼構屬性
             string blockName = string.Empty; //資料行的標示區塊，例如AK or BO
             bool save = true; //檔案是否要儲存，需要true，不需要則false
-             groups = new List<GroupBoltsAttr>();//螺栓設定檔
+            groups = new List<GroupBoltsAttr>();//螺栓設定檔
             Bolts = new List<string>();
             oAK = new AK();
             uAK = new AK();
             vAK = new AK();
-            using (StreamReader stream = new StreamReader(path, Encoding.Default))
-            {
-                STDSerialization ser = new STDSerialization();
-                #region 讀NC檔內容
 
-                while ((line = stream.ReadLine().Trim()) != null)
+            if (File.Exists(path))
+            {
+                using (StreamReader stream = new StreamReader(path, Encoding.Default))
                 {
-                    if (System.Enum.IsDefined(typeof(NcLine), lineNumber))
+                    STDSerialization ser = new STDSerialization();
+                    #region 讀NC檔內容
+
+                    while ((line = stream.ReadLine().Trim()) != null)
                     {
-                        if (!Info(ref steelAttr, line, lineNumber, profile)) //如果不繼續讀取文件結束
+                        if (System.Enum.IsDefined(typeof(NcLine), lineNumber))
                         {
-                            save = false;//檔案不需要儲存
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        if (line.Contains("AK", "BO", "IK", "PU", "KO", "KA")) //輪廓螺栓標示區號
-                        {
-                            blockName = line.Trim();
-                            face = null;//清除目前的視圖標記
-                        }
-                        else if (line.Contains("SI")) //鋼印標示區號
-                        {
-                            line = stream.ReadLine().Trim();
-                            if (!Info(ref steelAttr, line, int.MaxValue, profile)) //如果不繼續讀取文件結束
+                            if (!Info(ref steelAttr, line, lineNumber, profile)) //如果不繼續讀取文件結束
                             {
                                 save = false;//檔案不需要儲存
                                 break;
@@ -268,67 +255,88 @@ namespace WPFSTD105.Model
                         }
                         else
                         {
-                            if (line == "EN") //nc1 結束符號
+                            if (line.Contains("AK", "BO", "IK", "PU", "KO", "KA")) //輪廓螺栓標示區號
                             {
-                                break;
+                                blockName = line.Trim();
+                                face = null;//清除目前的視圖標記
                             }
-                            if (blockName == "AK")
+                            else if (line.Contains("SI")) //鋼印標示區號
                             {
-                                if (face == null)
+                                line = stream.ReadLine().Trim();
+                                if (!Info(ref steelAttr, line, int.MaxValue, profile)) //如果不繼續讀取文件結束
                                 {
-                                    string[] str = line.Split(' ').Where(el => el != string.Empty).ToArray();
-                                    if (str[0] == "v")
+                                    save = false;//檔案不需要儲存
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                if (line == "EN") //nc1 結束符號
+                                {
+                                    break;
+                                }
+                                if (blockName == "AK")
+                                {
+                                    if (face == null)
                                     {
-                                        face = "v";
-                                        vAK.Parameter.Add(line.Split('v')[1]);
+                                        string[] str = line.Split(' ').Where(el => el != string.Empty).ToArray();
+                                        if (str[0] == "v")
+                                        {
+                                            face = "v";
+                                            vAK.Parameter.Add(line.Split('v')[1]);
+                                        }
+                                        else if (str[0] == "o")
+                                        {
+                                            face = "o";
+                                            oAK.Parameter.Add(line);
+                                        }
+                                        else if (str[0] == "u")
+                                        {
+                                            face = "u";
+                                            uAK.Parameter.Add(line);
+                                        }
                                     }
-                                    else if (str[0] == "o")
+                                    else if (face == "v")
                                     {
-                                        face = "o";
+                                        vAK.Parameter.Add(line);
+                                    }
+                                    else if (face == "o")
+                                    {
                                         oAK.Parameter.Add(line);
                                     }
-                                    else if (str[0] == "u")
+                                    else if (face == "u")
                                     {
-                                        face = "u";
                                         uAK.Parameter.Add(line);
                                     }
                                 }
-                                else if (face == "v")
+                                else if (blockName == "BO")//如果是螺栓
                                 {
-                                    vAK.Parameter.Add(line);
+                                    Bolts.Add(line);
                                 }
-                                else if (face == "o")
-                                {
-                                    oAK.Parameter.Add(line);
-                                }
-                                else if (face == "u")
-                                {
-                                    uAK.Parameter.Add(line);
-                                }
-                            }
-                            else if (blockName == "BO")//如果是螺栓
-                            {
-                                Bolts.Add(line);
                             }
                         }
+                        lineNumber++;
                     }
-                    lineNumber++;
+                    #endregion
                 }
-                #endregion
+                SteelAttr tempSA = new SteelAttr();
+                List<GroupBoltsAttr> tempGroups = new List<GroupBoltsAttr>();
+                tempSA = steelAttr;
+                Bolts.ForEach(el => tempGroups.Add(BO(el, tempSA)));
+                oAK.t = uAK.t = steelAttr.t2 == 0 ? steelAttr.t1 : steelAttr.t2;
+                vAK.t = steelAttr.t1;
+                steelAttr.oPoint = oAK.GetNcPoint(steelAttr.Type);
+                steelAttr.vPoint = vAK.GetNcPoint(steelAttr.Type);
+                steelAttr.uPoint = uAK.GetNcPoint(steelAttr.Type);
+                steelAttr1 = (SteelAttr)steelAttr.DeepClone();
+                groups = tempGroups;
+                //return steelAttr;
             }
-            SteelAttr tempSA = new SteelAttr();
-            List<GroupBoltsAttr> tempGroups = new List<GroupBoltsAttr>();
-            tempSA = steelAttr;
-            Bolts.ForEach(el => tempGroups.Add(BO(el, tempSA)));
-            oAK.t = uAK.t = steelAttr.t2 == 0 ? steelAttr.t1 : steelAttr.t2;
-            vAK.t = steelAttr.t1;
-            steelAttr.oPoint = oAK.GetNcPoint(steelAttr.Type);
-            steelAttr.vPoint = vAK.GetNcPoint(steelAttr.Type);
-            steelAttr.uPoint = uAK.GetNcPoint(steelAttr.Type);
-            steelAttr1 = (SteelAttr)steelAttr.DeepClone();
-            groups = tempGroups;
-            //return steelAttr;
-
+            else
+            {
+                steelAttr1 = profile[steelAttr.Type.ToString()].FirstOrDefault(x => x.Profile == steelAttr.Profile);
+                groups = null;
+            }
         }
 
         private bool Info(ref SteelAttr steel, string str, int line, Dictionary<string, ObservableCollection<SteelAttr>> steelAttr)
@@ -538,7 +546,7 @@ namespace WPFSTD105.Model
             blockReference.EntityData = steelAttr;
             blockReference.Selectable = false;//關閉用戶選擇
             blockReference.Attributes.Add(dic, new AttributeReference(0, 0, 0));
-            model.Entities.Add(blockReference);//加入參考圖塊到模型
+            model.Entities.Insert(0,blockReference);//加入參考圖塊到模型
             return result;
         }
 

@@ -42,18 +42,5 @@ namespace STD_105.Office
             //DataContext = vm;
 
         }
-        
-        /*
-        public static void ActivateLoading()
-        {
-            manager.ViewModel.Status = "讀取頁面中";
-            manager.Show(null, WindowStartupLocation.CenterScreen, true, InputBlockMode.Window);
-        }
-
-        public static void DeactivateLoading()
-        {
-            manager.Close();
-        }
-        */
     }
 }

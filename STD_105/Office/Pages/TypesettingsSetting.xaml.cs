@@ -652,6 +652,11 @@ namespace STD_105.Office
             if (TableViewLoadedBoolen == false)
                 return;
 
+            //無選擇任何物件 直接跳過不處理
+            if (e.NewItem == null)
+                return;
+
+
             var SenderC = sender as DevExpress.Xpf.Grid.GridControl;
 
             if (SenderC.View != null)
@@ -819,6 +824,12 @@ namespace STD_105.Office
 
                         for (int searchboltindex = FindSteelBlockIndex; searchboltindex < model.Blocks.Count; searchboltindex++)
                         {
+                            //沒找到零件
+                            if(searchboltindex ==-1)
+                            {
+                                findsteel = false;
+                                break;
+                            }
 
                             if (model.Blocks[searchboltindex].Entities[0].EntityData is SteelAttr && findsteel)
                             {
@@ -1105,7 +1116,7 @@ namespace STD_105.Office
             }
         }
 
-
+        //加入新零件
         private void InsertPartCommandClick(object sender, RoutedEventArgs e)
         {
             var SelectedMaterial = Material_List_GridControl.SelectedItem as GD_STD.Data.MaterialDataView;
@@ -1137,20 +1148,21 @@ namespace STD_105.Office
 
             Win.Close();
             Material_List_GridControl.RefreshData();
-            //將目前選定的DetailDescriptor關閉後再展開->觸發更新訊號
-            var Handle = Material_List_GridControl.FindRow(Material_List_GridControl.SelectedItem);
-          
             ScreenManager.ViewModel.Status = "加入零件中...";
             ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
-            Material_List_GridControl.CollapseMasterRow(Handle);
-            System.Threading.Thread.Sleep(500);
-            Material_List_GridControl.ExpandMasterRow(Handle);
+            ReloadMaterialGrid();
+            
+            ScreenManager.ViewModel.Status = "完成...";
+            System.Threading.Thread.Sleep(100);
             ScreenManager.Close();
+
+
         }
 
         private void DeletePartButtonClick(object sender, RoutedEventArgs e)
         {
-            var MDataView = (sender as System.Windows.Controls.Button).DataContext as GD_STD.Data.MaterialDataView;
+            var MDataView = Material_List_GridControl.SelectedItem as GD_STD.Data.MaterialDataView;
+            //var MDataView = (sender as System.Windows.Controls.Button).DataContext as GD_STD.Data.MaterialDataView;
             if (MDataView.Parts.Count == 0)
             {
                 WinUIMessageBox.Show(null,
@@ -1161,6 +1173,10 @@ namespace STD_105.Office
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
                     FloatingMode.Popup);
+            }
+            else if(MDataView.Parts.Count==1)
+            {
+                MDataView.SelectedPart = MDataView.Parts[0];
             }
             else if (MDataView.SelectedPart == null)
             {
@@ -1178,15 +1194,6 @@ namespace STD_105.Office
             var MessageBoxReturn = MessageBoxResult.None;
             if (MDataView.Parts.Count != 0 )
             {
-                /*string AssemblyNumberString = "";
-                string PartNumberString = "";
-                foreach (var part in MDataView.SelectedPartsList)
-                {
-                    AssemblyNumberString += part.AssemblyNumber + ",";
-                    PartNumberString += part.PartNumber + ",";
-                }
-                AssemblyNumberString.TrimEnd(',');
-                PartNumberString.TrimEnd(',');*/
 
                 MessageBoxReturn = WinUIMessageBox.Show(null,
                         $"是否要刪除素材編號:{MDataView.MaterialNumber}內的零件：\r\n" +
@@ -1219,34 +1226,27 @@ namespace STD_105.Office
                 var OTS_VM = this.DataContext as WPFSTD105.OfficeTypeSettingVM;
                 //以下代碼在第二階段需要重構
                 ObservableCollection<SteelPart> steelParts = ser.GetPart(MDataView.Profile.GetHashCode().ToString());
-
                 if (MDataView.Parts.Count != 0)
                 {
-                  //  foreach (var SelectedPart in MDataView.SelectedPartsList)
-                    
-                        int index = OTS_VM.DataViews.FindIndex(x => x == MDataView.SelectedPart);
-                        if (index != -1)
-                        {
-                            int m = OTS_VM.DataViews[index].Match.FindLastIndex(x => x == false);
-                            if (m != -1)
-                                OTS_VM.DataViews[index].Match[m] = true;
-                        }
+                    int index = OTS_VM.DataViews.FindIndex(x => x == MDataView.SelectedPart);
+                    if (index != -1)
+                    {
+                        int m = OTS_VM.DataViews[index].Match.FindLastIndex(x => x == false);
+                        if (m != -1)
+                            OTS_VM.DataViews[index].Match[m] = true;
+                    }
 
-                        int steelIndex = steelParts.FindIndex(x => x.Number == MDataView.SelectedPart.PartNumber);
-                        if (steelIndex != -1)
-                        {
-                            int partMatch = steelParts[steelIndex].Match.FindLastIndex(x => x == false);
-                            if (partMatch != -1)
-                                steelParts[steelIndex].Match[partMatch] = true;
-                        }
+                    int steelIndex = steelParts.FindIndex(x => x.Number == MDataView.SelectedPart.PartNumber);
+                    if (steelIndex != -1)
+                    {
+                        int partMatch = steelParts[steelIndex].Match.FindLastIndex(x => x == false);
+                        if (partMatch != -1)
+                            steelParts[steelIndex].Match[partMatch] = true;
+                    }
 
-                        MDataView.Parts.Remove(MDataView.SelectedPart);
-                    
+                    MDataView.Parts.Remove(MDataView.SelectedPart);
+
                     ser.SetPart(MDataView.Profile.GetHashCode().ToString(), new ObservableCollection<object>(steelParts));
-                    //將目前選定的DetailDescriptor關閉後再展開->觸發更新訊號
-                    var Handle = Material_List_GridControl.FindRow(Material_List_GridControl.SelectedItem);
-                    Material_List_GridControl.CollapseMasterRow(Handle);
-                    Material_List_GridControl.ExpandMasterRow(Handle);
                 }
                 else
                 {
@@ -1256,10 +1256,12 @@ namespace STD_105.Office
                 //存檔
                 ser.SetMaterialDataView(Material_List_GridControl.ItemsSource as ObservableCollection<MaterialDataView>);
 
-
-                Material_List_GridControl.RefreshData();
-                PartsGridControl.RefreshData();
-
+                ScreenManager.ViewModel.Status = "刪除零件中...";
+                ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
+                ReloadMaterialGrid();
+                ScreenManager.ViewModel.Status = "完成...";
+                System.Threading.Thread.Sleep(100);
+                ScreenManager.Close();
                 WinUIMessageBox.Show(null,
                     $"刪除成功！",
                     "通知",
@@ -1269,13 +1271,87 @@ namespace STD_105.Office
                     MessageBoxOptions.None,
                     FloatingMode.Popup);
 
+
+
             }
 
         }
             
+        private void ReloadMaterialGrid()
+        {
+            //紀錄卷軸位置
+            double Material_TableView_VerticalOffset = 0;
+            IScrollInfo Material_TableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(Material_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
+            if (Material_TableView_ScrollElement != null)
+                Material_TableView_VerticalOffset = Material_TableView_ScrollElement.VerticalOffset;
+
+            //記錄所有有展開的datarow
+            var ExpandedList = new Dictionary<int, bool>();
+            for (int i = 0; i < (Material_List_GridControl.ItemsSource as ObservableCollection<MaterialDataView>).Count; i++)
+            {
+                ExpandedList[i] = Material_List_GridControl.IsMasterRowExpanded(i);
+            }
+            var Selected = Material_List_GridControl.SelectedItem as MaterialDataView;
+            var Handle = (Material_List_GridControl.ItemsSource as ObservableCollection<MaterialDataView>).FindIndex(x => (x.MaterialNumber == Selected.MaterialNumber));
+
+            var OTS_VM = this.DataContext as WPFSTD105.OfficeTypeSettingVM;
+            OTS_VM.MaterialDataViews.Clear();
+            STDSerialization ser = new STDSerialization(); //序列化處理器
+            OTS_VM.MaterialDataViews = ser.GetMaterialDataView();
+
+            if (Handle != -1)
+            {
+                //素材區展開歸位
+                Material_List_GridControl.Dispatcher.Invoke(() =>
+                {
+                    Material_List_GridControl.SelectedItem = (Material_List_GridControl.ItemsSource as ObservableCollection<MaterialDataView>).First(x=>(x.MaterialNumber == Selected.MaterialNumber));
+                    foreach (var Exp in ExpandedList)
+                    {
+                        if (Exp.Value == true)
+                        {
+                       
+                            Material_List_GridControl.ExpandMasterRow(Exp.Key);
+                        }
+                        else
+                        {
+                            Material_List_GridControl.CollapseMasterRow(Exp.Key);
+                        }
+                    }
+
+                });
+                //素材區卷軸歸位
+                Material_TableView.Dispatcher.Invoke(() =>
+                {
+                    if (Material_TableView_ScrollElement != null)
+                        Material_TableView_ScrollElement.SetVerticalOffset(Material_TableView_VerticalOffset)   ;
+                });
+
+            }
+
+            PartsGridControl.Dispatcher.Invoke(() =>
+            {
+                PartsGridControl.ItemsSource = (this.DataContext as OfficeTypeSettingVM).LoadDataViews();
+                for (int i = 0; i < (PartsGridControl.ItemsSource as ObservableCollection<TypeSettingDataView>).Count; i++)
+                {
+                    PartsGridControl.RefreshRow(i);
+                }
+            });
 
 
-    
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
 
 
         /// <summary>

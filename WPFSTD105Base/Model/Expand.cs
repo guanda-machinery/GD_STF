@@ -125,11 +125,27 @@ namespace WPFSTD105.Model
                     int partIndex = parts.FindIndex(el => el.Number == place[i].Number);
                     if (parts[partIndex].GUID.ToString() != "") //如果圖面檔案
                     {
-                        ReadFile file = ser.ReadPartModel(parts[partIndex].GUID.ToString()); //讀取檔案內容
+                        var DataName = parts[partIndex].GUID.ToString();
+                        ReadFile file = ser.ReadPartModel(DataName); //讀取檔案內容
                         if (file == null)
                         {
+                            var Path = ApplicationVM.DirectoryDevPart();
+                            var _path = string.Empty;
+                            foreach(var p in Path)
+                            {
+                                switch(p)
+                                {
+                                    case '/':
+                                        break;
+
+                                    default:
+                                        _path += p;
+                                        break;
+                                }
+                            }
+
                             WinUIMessageBox.Show(null,
-                                $"專案Dev_Part資料夾讀取失敗",
+                                $"Dev_Part資料:{_path}\\{DataName}.dm\r\n讀取失敗",
                                 "通知",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Exclamation,
@@ -497,7 +513,7 @@ namespace WPFSTD105.Model
             NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
             var nc = ncTemps.GetData(sa.GUID.Value.ToString()); //取得nc資訊
             NcTemp reduceNC = new NcTemp() { GroupBoltsAttrs = nc.GroupBoltsAttrs, SteelAttr = nc.SteelAttr };
-            model.InitializeViewports();
+            //model.InitializeViewports();
             //model.Blocks.Add(new Steel3DBlock(Steel3DBlock.GetProfile(sa)));//加入鋼構圖塊到模型
             model.Clear(); //清除目前模型
             Steel3DBlock steel = Steel3DBlock.AddSteel(nc.SteelAttr, model, out BlockReference blockReference);

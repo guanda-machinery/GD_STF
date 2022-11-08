@@ -300,20 +300,22 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-            <Label Content="素材長度:" ></Label>
-            <Label Name="MateriaLengthLabel" Content="xxx" ></Label>
+                <Label Content="素材長度:" />
+                <Label Name="MateriaLengthLabel" Content="xxx" ></Label>
             </StackPanel>
             
-            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-            <Label Content="已使用素材:"></Label>
-            <Label Name="UsedMateriaLengthLabel" Content="yyy" ContentStringFormat="{}{0:D}" ></Label>
-            </StackPanel>
 
-            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
             <Label Content="剩餘可用長度:"></Label>
             <Label Name="RemainingMateriaLengthLabel" Content="zzz" ContentStringFormat="{}{0:D}"></Label>
             </StackPanel>
-
+            
+            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                <Label Content="已使用素材:"></Label>
+                <Label Name="UsedMateriaLengthLabel" Content="yyy" ContentStringFormat="{}{0:D}" ></Label>
+            </StackPanel>
+            
             <Button Grid.Column="3" Content="確認" Name="CheckButton" Click="Check_Button_Click" Cursor="Hand"/>
             <Button Grid.Column="4" Content="取消" Click="Cancel_Button_Click" Cursor="Hand"/>
         </Grid>

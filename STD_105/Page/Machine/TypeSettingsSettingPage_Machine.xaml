@@ -519,7 +519,8 @@
                         MinHeight="200"  MaxHeight="500">
                             <dxg:GridControl.View >
                                 <dxg:TableView 
-                                       AllowPaging="True"
+        
+                                     AllowPaging="True"
                                       PageSize="50"
                                     IsColumnMenuEnabled ="False"
                                     AllowSorting="false"
