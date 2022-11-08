@@ -345,12 +345,9 @@ namespace WPFSTD105
                 Content = devDept.Serialization.contentType.GeometryAndTessellation,
                 SerializationMode = devDept.Serialization.serializationType.WithLengthPrefix,
                 SelectedOnly = false,
-                Purge = true, Blocks = model.Blocks, Entities = model.Entities, 
-            }, $@"{path}\{dataName}.dm", new FileSerializerExt());
-             writeFile.DoWork();//存取檔案
-          
-
-
+                Purge = true, Blocks = model.Blocks, Entities = model.Entities,
+                }, $@"{path}\{dataName}.dm", new FileSerializerExt());    
+            writeFile.DoWork();//存取檔案
         }
         /// <summary>
         /// 存取單零件<see cref="devDept.Eyeshot.Model"/>
