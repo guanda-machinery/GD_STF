@@ -1863,7 +1863,8 @@ namespace WPFSTD105.ViewModel
                                 // 驚嘆號
                                 steelAttrVM.steelAttr.ExclamationMark = item.ExclamationMark;
                                 steelAttrVM.ExclamationMark = item.ExclamationMark;
-                                                             
+                                              
+                                
 
                                 //// GUID (Data Name)
                                 //DataCorrespond single = DataCorrespond.FirstOrDefault(x =>
@@ -1999,6 +2000,8 @@ namespace WPFSTD105.ViewModel
                 //aa.steelAttr.H = item.steelAttr.H;
                 //aa.steelAttr.W = item.steelAttr.W;
                 // group專用
+                aa.steelAttr.Creation = item.Creation;
+                aa.steelAttr.Revise = item.Revise;
                 aa.steelAttr.GUID = item.DataName;
                 aa.steelAttr.PartNumber = item.PartNumber;
                 aa.steelAttr.H = item.H;
