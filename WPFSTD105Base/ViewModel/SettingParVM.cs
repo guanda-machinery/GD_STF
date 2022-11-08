@@ -1587,6 +1587,11 @@ namespace WPFSTD105.ViewModel
         public ObservableCollection<SteelAttr> RH_new_system { get; set; } = new ObservableCollection<SteelAttr>();
 
         /// <summary>
+        /// 20221108 張燕華 新增斷面規格到系統的中間暫存資料
+        /// </summary>
+        private SteelAttr steelAttr_system = new SteelAttr();
+
+        /// <summary>
         /// 20220728 張燕華 轉換出inp檔案
         /// </summary>
         public ICommand TransformInpCommand { get; set; }
@@ -2360,12 +2365,12 @@ namespace WPFSTD105.ViewModel
                     {
                         //ObservableCollection<SteelAttr> system = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryModel()}\{ModelPath.Profile}\{strType}.inp");//系統的斷面規格
                         ObservableCollection<SteelAttr> system = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>(System.AppDomain.CurrentDomain.BaseDirectory + $@"Profile\{strType}.inp");//系統的斷面規格(在輸出目錄中)
-                        SteelAttr steelAttr = GetSettingSteelAttr(); //取得設定好的斷面規格
-                        if (system.IndexOf(e => e.Profile == steelAttr.Profile) != -1) //如果有相同的斷面規格
+                        //SteelAttr steelAttr = GetSettingSteelAttr(); //取得設定好的斷面規格
+                        if (system.IndexOf(e => e.Profile == steelAttr_system.Profile) != -1) //如果有相同的斷面規格
                         {
-                            system.Remove(e => e.Profile == steelAttr.Profile);//刪除
+                            system.Remove(e => e.Profile == steelAttr_system.Profile);//刪除
                         }
-                        system.Add(steelAttr);//加入到系統
+                        system.Add(steelAttr_system);//加入到系統
                         SerializationHelper.SerializeBinary(system, $@"{ModelPath.Profile}\{strType}.inp"); //變更系統斷面規格檔案
                     }
                     SerializationHelper.SerializeBinary(value, $@"{ApplicationVM.DirectoryModel()}\{ModelPath.Profile}\{strType}.inp");//變更模型設定的斷面規格
@@ -3675,6 +3680,7 @@ namespace WPFSTD105.ViewModel
             if (index == -1)
             {
                 SteelAttr data = GetSettingSteelAttr();
+                steelAttr_system = GetSettingSteelAttr();
                 List<SteelAttr> result = new List<SteelAttr>(list.ToList());
                 result.Add(data);
 
