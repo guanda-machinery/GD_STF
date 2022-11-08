@@ -187,97 +187,99 @@ namespace STD_105
         #endregion
 
 
+
         /// <summary>
         /// 圖片樣式
         /// </summary>
-        public UIElement BorderChild_1_Source
+        public UIElement ButtonContent_1_Source
         {
-            get { return (UIElement)GetValue(BorderChild_1_Property); }
-            set { SetValue(BorderChild_1_Property, value); }
+            get { return (UIElement)GetValue(ButtonContent_1_Property); }
+            set { SetValue(ButtonContent_1_Property, value); }
         }
         /// <summary>
         /// <see cref=""/> 註冊為依賴屬性
         /// </summary>
-        public static readonly DependencyProperty BorderChild_1_Property =
-            DependencyProperty.Register(nameof(DPad_Border1), typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(BorderChild_1_PropertyChanged));
+        public static readonly DependencyProperty ButtonContent_1_Property =
+            DependencyProperty.Register(nameof(DPad_Button1), typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(ButtonContent_1_PropertyChanged));
         /// <summary>
         /// <see cref=""/>變更時觸發
         /// </summary>
         /// <param name="d"></param>
         /// <param name="e"></param>
-        private static void BorderChild_1_PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void ButtonContent_1_PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as DPadUserControl).DPad_Border1.Child = (UIElement)e.NewValue;
+            (d as DPadUserControl).DPad_Button1.Content = (UIElement)e.NewValue;
         }
 
 
         /// <summary>
         /// 圖片樣式
         /// </summary>
-        public UIElement BorderChild_2_Source
+        public UIElement ButtonContent_2_Source
         {
-            get { return (UIElement)GetValue(BorderChild_2_Property); }
-            set { SetValue(BorderChild_2_Property, value); }
+            get { return (UIElement)GetValue(ButtonContent_2_Property); }
+            set { SetValue(ButtonContent_2_Property, value); }
         }
         /// <summary>
         /// <see cref=""/> 註冊為依賴屬性
         /// </summary>
-        public static readonly DependencyProperty BorderChild_2_Property =
-            DependencyProperty.Register(nameof(DPad_Border2), typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(BorderChild_2_PropertyChanged));
+        public static readonly DependencyProperty ButtonContent_2_Property =
+            DependencyProperty.Register("DPad_Button2Content", typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(ButtonContent_2_PropertyChanged));
         /// <summary>
         /// <see cref=""/>變更時觸發
         /// </summary>
         /// <param name="d"></param>
         /// <param name="e"></param>
-        private static void BorderChild_2_PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void ButtonContent_2_PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as DPadUserControl).DPad_Border2.Child = (UIElement)e.NewValue;
+            (d as DPadUserControl).DPad_Button2.Content = (UIElement)e.NewValue;
+        }
+
+
+        /// <summary>
+        /// 圖片樣式
+        /// </summary>
+        public UIElement ButtonContent_3_Source
+        {
+            get { return (UIElement)GetValue(ButtonContent_3_Property); }
+            set { SetValue(ButtonContent_3_Property, value); }
+        }
+        /// <summary>
+        /// <see cref=""/> 註冊為依賴屬性
+        /// </summary>
+        public static readonly DependencyProperty ButtonContent_3_Property =
+            DependencyProperty.Register(nameof(DPad_Button3), typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(ButtonContent_3_PropertyChanged));
+        /// <summary>
+        /// <see cref=""/>變更時觸發
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
+        private static void ButtonContent_3_PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as DPadUserControl).DPad_Button3.Content = (UIElement)e.NewValue;
         }
 
         /// <summary>
         /// 圖片樣式
         /// </summary>
-        public UIElement BorderChild_3_Source
+        public UIElement ButtonContent_4_Source
         {
-            get { return (UIElement)GetValue(BorderChild_3_Property); }
-            set { SetValue(BorderChild_3_Property, value); }
+            get { return (UIElement)GetValue(ButtonContent_4_Property); }
+            set { SetValue(ButtonContent_4_Property, value); }
         }
         /// <summary>
         /// <see cref=""/> 註冊為依賴屬性
         /// </summary>
-        public static readonly DependencyProperty BorderChild_3_Property =
-            DependencyProperty.Register(nameof(DPad_Border3), typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(BorderChild_3_PropertyChanged));
+        public static readonly DependencyProperty ButtonContent_4_Property =
+            DependencyProperty.Register(nameof(DPad_Button4), typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(ButtonContent_4_PropertyChanged));
         /// <summary>
         /// <see cref=""/>變更時觸發
         /// </summary>
         /// <param name="d"></param>
         /// <param name="e"></param>
-        private static void BorderChild_3_PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void ButtonContent_4_PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as DPadUserControl).DPad_Border3.Child = (UIElement)e.NewValue;
-        }
-
-        /// <summary>
-        /// 圖片樣式
-        /// </summary>
-        public UIElement BorderChild_4_Source
-        {
-            get { return (UIElement)GetValue(BorderChild_4_Property); }
-            set { SetValue(BorderChild_4_Property, value); }
-        }
-        /// <summary>
-        /// <see cref=""/> 註冊為依賴屬性
-        /// </summary>
-        public static readonly DependencyProperty BorderChild_4_Property =
-            DependencyProperty.Register(nameof(DPad_Border4), typeof(UIElement), typeof(DPadUserControl), new PropertyMetadata(BorderChild_4_PropertyChanged));
-        /// <summary>
-        /// <see cref=""/>變更時觸發
-        /// </summary>
-        /// <param name="d"></param>
-        /// <param name="e"></param>
-        private static void BorderChild_4_PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            (d as DPadUserControl).DPad_Border4.Child = (UIElement)e.NewValue;
+            (d as DPadUserControl).DPad_Button1.Content = (UIElement)e.NewValue;
         }
 
 

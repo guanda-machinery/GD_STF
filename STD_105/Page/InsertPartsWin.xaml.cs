@@ -1,7 +1,10 @@
-﻿using DevExpress.Xpf.Core.Native;
+﻿using DevExpress.Data.Extensions;
+using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Grid;
+using GD_STD.Data;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -15,7 +18,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
 
 namespace STD_105
 {
@@ -116,18 +118,41 @@ namespace STD_105
             foreach (var Softing in SoftList)
             {
                 //有複數零件 重複加入
-                for(int i =0; i< Softing.SortCount;i++)
+                for (int i = 0; i < Softing.SortCount; i++)
                 {
                     SelectedMaterial.Parts.Add(Softing);
                 }
             }
 
-            /*做完動作不在此存檔! 在外部進行存檔*/
+            //做完動作在此存檔!
             var ser = new WPFSTD105.STDSerialization(); //序列化處理器
                                                         //零件存檔
-
-            //素材存檔
+                                                        //素材存檔
             ser.SetMaterialDataView(_materialListGridControl.ItemsSource as System.Collections.ObjectModel.ObservableCollection<GD_STD.Data.MaterialDataView>);
+            //零件存檔
+
+
+            foreach (var _PartItem in SoftList)
+            {
+                ObservableCollection<SteelPart> steelParts = ser.GetPart(_PartItem.Profile.GetHashCode().ToString());
+
+
+                int steelIndex = steelParts.FindIndex(x => x.Number == _PartItem.PartNumber);
+                if (steelIndex != -1)
+                {
+                    int partMatch = steelParts[steelIndex].Match.FindIndex(x => x == true);
+                     if (partMatch != -1)
+                         steelParts[steelIndex].Match[partMatch] = false;
+                     else
+                        steelParts[steelIndex].Match.Add(false);
+
+                }
+                _PartItem.Revise = DateTime.Now;
+                ser.SetPart(_PartItem.Profile.GetHashCode().ToString(), new ObservableCollection<object>(steelParts));
+            }
+
+
+
 
             ExitWin();
         }

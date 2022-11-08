@@ -144,7 +144,6 @@
                     <dxg:GridControl   
                         FilterGroupSortChanging="GridControl_FilterGroupSortChanging"
                         Name="PartsGridControl"
-                        
                         AutoGenerateColumns="None"
                         SelectionMode="row"
                        SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -158,9 +157,7 @@
                                ShowCheckBoxSelectorColumn="False"
                                NavigationStyle="Row"
                                AllowCascadeUpdate="True"
-                                
                                 IsColumnMenuEnabled ="False"
-
                                 AllowColumnFiltering="False"    
                                 AllowColumnMoving="False"       
                                 AllowSorting="True"
@@ -688,10 +685,11 @@
                         MouseDown="TableView_MouseDown"
                         SelectedItemChanged="Material_List_GridControl_SelectedItemChanged"
                         Grid.Row="2"    
-                        ItemsSource="{Binding MaterialDataViews}"
+                        ItemsSource="{Binding MaterialDataViews, Mode=TwoWay , NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"
                         MinHeight="200"  MaxHeight="1000">
                     <dxg:GridControl.View >
                         <dxg:TableView         
+                                   Name="Material_TableView"
                                  HighlightItemOnHover="True"
                                 IsColumnMenuEnabled ="False"
                                 AllowSorting="True"
@@ -984,8 +982,8 @@
                                                                 </Grid.ColumnDefinitions>
 
                                                                 <materialDesign:PackIcon Kind="MinusThick" />
-                                                                <materialDesign:PackIcon Kind="ScrewLag" Grid.Column="1"  Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter Invert=True},UpdateSourceTrigger=PropertyChanged}"/>
-                                                                <materialDesign:PackIcon Kind="Delete" Grid.Column="1"  Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"/>
+                                                                <materialDesign:PackIcon Kind="ScrewLag" Grid.Column="1"  Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"/>
+                                                                <materialDesign:PackIcon Kind="Delete" Grid.Column="1"  Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter Invert=True},UpdateSourceTrigger=PropertyChanged}"/>
                                                             </Grid>
                                                         </Button.Content>
                                                     </Button>

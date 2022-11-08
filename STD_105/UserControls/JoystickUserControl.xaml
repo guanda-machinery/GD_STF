@@ -10,10 +10,9 @@
              xmlns:STD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
              xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
              mc:Ignorable="d" 
-             
              >
     <UserControl.DataContext>
-        <STD105VM:Dpad_JoystickViewModel/>
+        <STD105VM:Dpad_Joystick_ViewModel/>
     </UserControl.DataContext>
 
     <Grid>
@@ -101,23 +100,6 @@
                              Duration="0:0:0.1" />
             </Storyboard>
             <Storyboard x:Key="AllTextBlockColorRecover">
-                <!--
-                <ColorAnimation Storyboard.TargetName="btn_JoystickUp"
-                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
-                            To="{ StaticResource clr_Gray }"
-                            Duration="0" />
-                <ColorAnimation Storyboard.TargetName="btn_JoystickDown"
-                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
-                            To="{ StaticResource clr_Gray }"
-                            Duration="0" />
-                <ColorAnimation Storyboard.TargetName="btn_JoystickLeft"
-                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
-                            To="{ StaticResource clr_Gray }"
-                            Duration="0" />
-                <ColorAnimation Storyboard.TargetName="btn_JoystickRight"
-                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
-                            To="{ StaticResource clr_Gray }"
-                            Duration="0" />-->
                 <ColorAnimation Storyboard.TargetName="btn_CircleTop"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
                             To="White"
@@ -128,7 +110,7 @@
                             Duration="0" />
                 <ColorAnimation Storyboard.TargetName="btn_CircleBottom"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
-                            To="{ StaticResource clr_Gray }"
+                            To="White"
                             Duration="0" />
                 <ColorAnimation Storyboard.TargetName="btn_EllipseTop"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
@@ -152,15 +134,7 @@
                 <Setter Property="Width"
                     Value="180" />
             </Style>
-            <Style TargetType="Border">
-                <Setter Property="Width" Value="auto"/>
-                <Setter Property="Height" Value="auto"/>
-                <Setter Property="Margin" Value="0"/>
-                <Setter Property="Padding" Value="0"/>
-                <Setter Property="BorderBrush" Value="#4CFF00"/>
-                <Setter Property="BorderThickness" Value="2"/>
-                <Setter Property="Background" Value="White"/>
-            </Style>
+            <Style TargetType="Button" BasedOn="{StaticResource SiegCustomButtonGreenBorder}"/>
         </Grid.Resources>
     <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" MinWidth="50"/>
@@ -174,10 +148,6 @@
         </Grid.RowDefinitions>
         <Grid  Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" >
             <Grid.Resources>
-                <Style TargetType="Button" BasedOn="{StaticResource btn_3D_DirectionKey}">
-                    <Setter Property="Width" Value="70"/>
-                    <Setter Property="Height" Value="70"/>
-                </Style>
                 <Style TargetType="Line">
                     <Setter Property="StrokeThickness" Value="2"/>
                     <Setter Property="Stroke" Value="#4CFF00"/>
@@ -692,13 +662,6 @@
                                     <BeginStoryboard Storyboard="{ StaticResource AllTextBlockColorRecover }" />
                                 </EventTrigger>
                             </Button.Triggers>
-                            <!--
-                        <Button.Content>
-                            <TextBlock x:Name="tbk_CircleMiddle"
-                                       Text="{ Binding CircleMiddleButtonDESC, StringFormat={}{0}, TargetNullValue=沒有作用 }"
-                                       TextWrapping="Wrap"
-                                       Visibility="{ Binding DescriptionDisplayControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }" />
-                        </Button.Content> -->
                         </Button>
                         <!--右下圓按鈕-->
                         <Button x:Name="btn_CircleBottom"  Content="R" Foreground="White" FontSize="90"
@@ -725,14 +688,8 @@
                                     <BeginStoryboard Storyboard="{ StaticResource AllTextBlockColorRecover }" />
                                 </EventTrigger>
                             </Button.Triggers>
-                            <!--
-                        <Button.Content>
-                            <TextBlock x:Name="tbk_CircleBottom"
-                                       Text="{ Binding CircleBottomButtonDESC, StringFormat={}{0}, TargetNullValue=沒有作用 }"
-                                       TextWrapping="Wrap"
-                                       Visibility="{ Binding DescriptionDisplayControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }" />
-                        </Button.Content>-->
                         </Button>
+                        
                     </Canvas>
                 </Viewbox>
             </Grid>
@@ -746,21 +703,21 @@
                   IsChecked="{Binding DescriptionDisplayBoolen}"
                   Style="{ StaticResource GreenSwitch }" />
 
-        <Border Name="Joystick_Border1"    Margin="5,5,0,5"    />
-        <Border    Name="Joystick_Border2" Margin="5,5,0,5"  Visibility="Collapsed"
+        <Button Name="Joystick_Button1"    Margin="5,5,0,5" IsEnabled="{Binding JoyStickButton1_isEnabled }"  />
+        <Button    Name="Joystick_Button2" Margin="5,5,0,5" Visibility="Collapsed"  IsEnabled="{Binding JoyStickButton2_isEnabled }"
                             Grid.Column="0"
                             Grid.Row="1"/>
-        <Border    Name="Joystick_Border3" Margin="5,5,0,5"
+        <Button    Name="Joystick_Button3" Margin="5,5,0,5"  IsEnabled="{Binding JoyStickButton3_isEnabled }"
                             Grid.Column="0"
                             Grid.Row="2"/>
 
-        <Border  Name="Joystick_Border4" Margin="0,5,5,5"
+        <Button  Name="Joystick_Button4" Margin="0,5,5,5" IsEnabled="{Binding JoyStickButton4_isEnabled }"
                             Grid.Column="2"
                             Grid.Row="0"/>
-        <Border         Name="Joystick_Border5" Margin="0,5,5,5"
+        <Button         Name="Joystick_Button5" Margin="0,5,5,5"  IsEnabled="{Binding JoyStickButton5_isEnabled }"
                             Grid.Column="2"
                             Grid.Row="1"/>
-        <Border         Name="Joystick_Border6" Margin="0,5,5,5"
+        <Button         Name="Joystick_Button6" Margin="0,5,5,5"  IsEnabled="{Binding JoyStickButton6_isEnabled }"
                             Grid.Column="2"
                             Grid.Row="2"/>
 

@@ -40,6 +40,341 @@ namespace WPFSTD105
         /// </summary>
         public SplashScreenManager ScreenManager { get; set; } = SplashScreenManager.CreateWaitIndicator();
 
+        public static void CreateModelOverView(string path, ModelExt model) 
+        {
+            SpreadsheetControl spreadSheet = new SpreadsheetControl();
+            List<int> rowList = new List<int>();
+            IWorkbook book = spreadSheet.Document; //提供對控件中加載的工作簿的訪問
+            #region  model              
+            Worksheet sheet = book.Worksheets.Add("dm file"); //創建一個新工作表並將其附加到集合的末尾
+            book.Worksheets.ActiveWorksheet = sheet;
+            int row = 0;
+            int column = 0;
+            int zeroIndex = 0, firstIndex = 0, secondIndex = 0, thirdIndex = 0;
+            #region Blocks
+            List<object> modelBlockList = new List<object>();
+            List<object> modelEntityList = new List<object>();
+            Entity[] _entities = new Entity[model.Entities.Count];
+            Block[] _blocks = new Block[model.Blocks.Count];
+            model.Entities.CopyTo(_entities, 0);
+            model.Blocks.CopyTo(_blocks, 0);
+            modelBlockList.Add(_blocks);
+            modelEntityList.Add(_entities);
+            sheet.Cells[row++, column].Value = "model.Blocks";
+            firstIndex = 0;
+            
+            for (int i = 0; i < modelBlockList.Count; i++)
+            {
+                var blocks = (Block[])modelBlockList[i];
+                #region 第一層
+                foreach (Block block in blocks)
+                {
+                    switch (block.GetType().Name)
+                    {
+                        case "Block":
+                            Block b = (Block)block;
+                            sheet.Cells[row, column++].Value = $"1-1-0model.Blocks[{firstIndex}]";
+                            sheet.Cells[row, column++].Value = $"{block.GetType().Name}";
+                            sheet.Cells[row++, column++].Value = $"{b.Name}";
+                            column = 0;
+                            break;
+                        case "Steel3DBlock":
+                            Steel3DBlock sdb = (Steel3DBlock)block;
+                            sheet.Cells[row, column++].Value = $"1-1-0model.Blocks[{firstIndex}]";
+                            sheet.Cells[row, column++].Value = $"{block.GetType().Name}";
+                            sheet.Cells[row, column++].Value = $"{sdb.Name}";
+                            sheet.Cells[row++, column++].Value = $"{sdb.Units}";
+                            column = 0;
+                            break;
+                        default:
+                            sheet.Cells[row, column++].Value = $"*1-1-0model.Blocks[{firstIndex}]";
+                            sheet.Cells[row, column++].Value = $"例外型別";
+                            sheet.Cells[row++, column++].Value = $"{block.GetType().Name}";
+                            column = 0;
+                            break;
+                    }
+                    #region 第二層
+                    secondIndex = 0;
+                    foreach (Entity entities in (EntityList)block.Entities)
+                    {
+                        switch (entities.GetType().Name)
+                        {
+                            case "BlockReference":
+                                BlockReference br = (BlockReference)entities;
+                                sheet.Cells[row, column++].Value = $"1-2model.Blocks[{firstIndex}].Entities[{secondIndex}]";
+                                sheet.Cells[row, column++].Value = $"{entities.GetType().Name}";
+                                sheet.Cells[row++, column++].Value = $"{br.BlockName}";
+                                column = 0;
+                                break;
+                            case "Line":
+                                Line line = (Line)entities;
+                                sheet.Cells[row, column++].Value = $"1-2model.Blocks[{firstIndex}].Entities[{secondIndex}]";
+                                sheet.Cells[row, column++].Value = $"{entities.GetType().Name}";
+                                sheet.Cells[row, column++].Value = $"StartPoint:{line.StartPoint.X},{line.StartPoint.Y},{line.StartPoint.Z}";
+                                sheet.Cells[row++, column++].Value = $"EndPoint:{line.EndPoint.X},{line.EndPoint.Y},{line.EndPoint.Z}";
+                                column = 0;
+                                break;
+                            //case "Block":
+                            //    Block block = (Block)entities;
+                            //    break;
+                            case "Circle":
+                                Circle circle = (Circle)entities;
+                                sheet.Cells[row, column++].Value = $"1-2model.Blocks[{firstIndex}].Entities[{secondIndex}]";
+                                sheet.Cells[row, column++].Value = $"{entities.GetType().Name}";
+                                sheet.Cells[row++, column++].Value = $"{circle.Diameter}";///Center
+                                column = 0;
+                                break;
+                            case "Mesh":
+                                Mesh mesh = (Mesh)entities;
+                                sheet.Cells[row, column++].Value = $"1-2model.Blocks[{firstIndex}].Entities[{secondIndex}]";
+                                sheet.Cells[row, column++].Value = $"{entities.GetType().Name}";
+                                sheet.Cells[row, column++].Value = (mesh.Vertices.Count() > 0 ? "有Vertices" : "無Vertices");
+                                sheet.Cells[row, column++].Value = $"{mesh.MaterialName}";
+                                sheet.Cells[row, column++].Value = $"{mesh.Faces}";
+                                sheet.Cells[row++, column++].Value = $"{mesh.LineTypeName}";
+                                column = 0;
+                                break;
+                            default:
+                                sheet.Cells[row, column++].Value = $"*1-2model.Blocks[{firstIndex}].Entities[{secondIndex}]";
+                                sheet.Cells[row, column++].Value = $"例外型別";
+                                sheet.Cells[row, column++].Value = $"{block.GetType().Name}";
+                                sheet.Cells[row++, column++].Value = $"{entities.GetType().Name}";
+                                column = 0;
+                                break;
+                        }
+                        #region 第三層
+                        thirdIndex = 0;
+                        if (entities.EntityData == null)
+                        {
+                            switch (entities.GetType().Name)
+                            {
+                                case "Block":
+                                case "Line":
+                                case "SteelAttr":
+                                case "BoltAttr":
+                                case "BlockReference":
+                                    sheet.Cells[row, column++].Value = $"1-3model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData = null";
+                                    sheet.Cells[row, column++].Value = $"{block.GetType().Name}";
+                                    sheet.Cells[row += 2, column++].Value = $"{entities.GetType().Name}";
+                                    column = 0;
+                                    break;
+                                default:
+                                    sheet.Cells[row, column++].Value = $"*1-3model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData = null";
+                                    sheet.Cells[row, column++].Value = $"例外型別";
+                                    sheet.Cells[row, column++].Value = $"{block.GetType().Name}";
+                                    sheet.Cells[row += 2, column++].Value = $"{entities.GetType().Name}";
+                                    column = 0;
+                                    break;
+                            }
+                            //sheet.Cells[row++, column++].Value = $"{((BlockReference)entities).BlockName}無EntityData";
+                            column = 0;
+                        }
+                        else
+                        {
+                            switch (entities.EntityData.GetType().Name)
+                            {
+                                case "BoltAttr":
+                                    BoltAttr ba = (BoltAttr)entities.EntityData;//Dia Model Type Face
+                                    sheet.Cells[row, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData";
+                                    sheet.Cells[row, column++].Value = entities.EntityData.GetType().Name;
+                                    sheet.Cells[row, column++].Value = ba.GUID.ToString();
+                                    sheet.Cells[row, column++].Value = ba.BlockName;
+                                    sheet.Cells[row, column++].Value = ba.X;
+                                    sheet.Cells[row, column++].Value = ba.Y;
+                                    sheet.Cells[row, column++].Value = ba.Z;
+                                    sheet.Cells[row, column++].Value = ba.Dia;
+                                    sheet.Cells[row, column++].Value = $"{ba.Mode}";
+                                    sheet.Cells[row += 2, column++].Value = ba.Type.ToString();
+                                    column = 0;
+                                    break;
+                                case "SteelAttr":
+                                    SteelAttr sa = (SteelAttr)entities.EntityData;
+                                    sheet.Cells[row, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData";
+                                    sheet.Cells[row, column++].Value = sa.GetType().Name;
+                                    sheet.Cells[row, column++].Value = sa.GUID.ToString();
+                                    sheet.Cells[row, column++].Value = sa.AsseNumber;
+                                    sheet.Cells[row, column++].Value = sa.PartNumber;
+                                    sheet.Cells[row, column++].Value = ((OBJECT_TYPE)sa.Type).ToString();
+                                    sheet.Cells[row, column++].Value = sa.Profile;
+                                    sheet.Cells[row, column++].Value = sa.Material;
+                                    sheet.Cells[row, column++].Value = sa.Number;
+                                    sheet.Cells[row, column++].Value = sa.Creation;
+                                    sheet.Cells[row, column++].Value = sa.Revise;
+                                    sheet.Cells[row, column++].Value = sa.ExclamationMark;
+                                    sheet.Cells[row, column++].Value = sa.Lock;
+                                    sheet.Cells[row, column++].Value = sa.H;
+                                    sheet.Cells[row, column++].Value = sa.W;
+                                    sheet.Cells[row, column++].Value = sa.Kg;
+                                    sheet.Cells[row, column++].Value = sa.Length;
+                                    sheet.Cells[row, column++].Value = sa.Weight;
+                                    sheet.Cells[row, column++].Value = sa.t1;
+                                    sheet.Cells[row, column++].Value = sa.t2;
+                                    sheet.Cells[row, column++].Value = sa.Phase;
+                                    sheet.Cells[row, column++].Value = sa.ShippingNumber;
+                                    sheet.Cells[row, column++].Value = sa.Title1;
+                                    sheet.Cells[row += 2, column++].Value = sa.Title2;
+                                    column = 0;
+                                    break;
+                                case "Mesh":
+                                    Mesh mesh = (Mesh)entities.EntityData;
+                                    break;
+                                case "GroupBoltsAttr":
+                                    GroupBoltsAttr gba = (GroupBoltsAttr)entities.EntityData;
+                                    sheet.Cells[row, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData";
+                                    sheet.Cells[row, column++].Value = $"{gba.GetType().Name}";
+                                    sheet.Cells[row, column++].Value = gba.GUID.ToString();
+                                    sheet.Cells[row, column++].Value = gba.X.ToString();
+                                    sheet.Cells[row, column++].Value = gba.Y.ToString();
+                                    sheet.Cells[row, column++].Value = gba.Z.ToString();
+                                    sheet.Cells[row, column++].Value = gba.Dia.ToString();
+                                    sheet.Cells[row, column++].Value = gba.StartHole.ToString();
+                                    sheet.Cells[row, column++].Value = ((AXIS_MODE)gba.Mode).ToString();
+                                    sheet.Cells[row += 2, column++].Value = gba.Count.ToString();
+                                    column = 0;
+                                    break;
+                                default:
+                                    sheet.Cells[row, column++].Value = $"*1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData";
+                                    sheet.Cells[row, column++].Value = $"例外型別";
+                                    sheet.Cells[row, column++].Value = $"{block.GetType().Name}+";
+                                    sheet.Cells[row, column++].Value = $"{entities.GetType().Name}+";
+                                    sheet.Cells[row += 2, column++].Value = $"{entities.EntityData.GetType().Name}";
+                                    column = 0;
+                                    break;
+                            }
+                        }
+                        thirdIndex++;
+                        #endregion
+                        secondIndex++;
+                    }
+                    #endregion
+                    firstIndex++;
+                }
+                #endregion
+            }
+            #endregion
+            #region Entities
+            firstIndex = 0; secondIndex = 0; thirdIndex = 0;
+            sheet.Cells[row++, column].Value = "model.Entities";
+            for (int i = 0; i < modelEntityList.Count; i++)
+            {
+                Entity[] entities = (Entity[])modelEntityList[i];
+                #region 第一層
+                firstIndex = 0;
+                foreach (var entity in entities)
+                {
+                    switch (entity.GetType().Name)
+                    {
+                        case "BlockReference":
+                            BlockReference br = (BlockReference)entity;
+                            sheet.Cells[row, column++].Value = $"2-1-0model.Entities[{firstIndex}]";
+                            sheet.Cells[row, column++].Value = $"{entity.GetType().Name}";
+                            sheet.Cells[row++, column++].Value = $"{br.BlockName}";
+                            column = 0;
+                            break;
+                        default:
+                            sheet.Cells[row, column++].Value = $"*2-1-0model.Entities[{firstIndex}]";
+                            sheet.Cells[row++, column++].Value = $"例外型別";
+                            sheet.Cells[row++, column++].Value = $"{entity.GetType().Name}";
+                            column = 0;
+                            break;
+                    }
+                    #region 第二層
+                    secondIndex = 0;
+                    if (entity.EntityData == null)
+                    {
+                        switch (entity.GetType().Name)
+                        {
+                            case "BlockReference":
+                                sheet.Cells[row, column++].Value = $"2-2-0model.Entities[{firstIndex}].EntityData = null";
+                                sheet.Cells[row++, column++].Value = $"{entity.GetType().Name}";
+                                column = 0;
+                                break;
+                            default:
+                                sheet.Cells[row, column++].Value = $"*2-2-0model.Entities[{firstIndex}].EntityData = null";
+                                sheet.Cells[row++, column++].Value = $"例外型別";
+                                sheet.Cells[row++, column++].Value = $"{entity.GetType().Name}";
+                                column = 0;
+                                break;
+                        }
+                        //sheet.Cells[row++, column++].Value = $"{((BlockReference)entities).BlockName}無EntityData";
+                        column = 0;
+                    }
+                    else
+                    {
+                        switch (entity.EntityData.GetType().Name)
+                        {
+                            case "GroupBoltsAttr":
+                                GroupBoltsAttr gba = (GroupBoltsAttr)entity.EntityData;
+                                sheet.Cells[row, column++].Value = $"2-2-0model.Entities[{firstIndex}].EntityData";
+                                sheet.Cells[row, column++].Value = $"{gba.GetType().Name}";
+                                sheet.Cells[row, column++].Value = gba.GUID.ToString();
+                                sheet.Cells[row, column++].Value = $"{gba.Face}";
+                                sheet.Cells[row, column++].Value = $"{gba.Type}";
+                                sheet.Cells[row, column++].Value = gba.X.ToString();
+                                sheet.Cells[row, column++].Value = gba.Y.ToString();
+                                sheet.Cells[row, column++].Value = gba.Z.ToString();
+                                sheet.Cells[row, column++].Value = gba.dX;
+                                sheet.Cells[row, column++].Value = String.Join(" ", gba.dXs.ToArray());
+                                sheet.Cells[row, column++].Value = gba.dY;
+                                sheet.Cells[row, column++].Value = String.Join(" ", gba.dYs.ToArray());
+                                sheet.Cells[row, column++].Value = $"{gba.Count}";
+                                sheet.Cells[row, column++].Value = gba.Dia.ToString();
+                                sheet.Cells[row, column++].Value = gba.StartHole.ToString();
+                                sheet.Cells[row += 2, column++].Value = ((AXIS_MODE)gba.Mode).ToString();//Count
+                                column = 0;
+                                break;
+                            case "BlockReference":
+                                break;
+                            case "SteelAttr":
+                                SteelAttr sa = (SteelAttr)entity.EntityData;
+                                sheet.Cells[row, column++].Value = $"2-2-0model.Entities[{firstIndex}].EntityData";
+                                sheet.Cells[row, column++].Value = sa.GetType().Name;
+                                sheet.Cells[row, column++].Value = sa.GUID.ToString();
+                                sheet.Cells[row, column++].Value = sa.AsseNumber;
+                                sheet.Cells[row, column++].Value = sa.PartNumber;
+                                sheet.Cells[row, column++].Value = ((OBJECT_TYPE)sa.Type).ToString();
+                                sheet.Cells[row, column++].Value = sa.Profile;
+                                sheet.Cells[row, column++].Value = sa.Material;
+                                sheet.Cells[row, column++].Value = sa.Number;
+                                sheet.Cells[row, column++].Value = sa.Creation;
+                                sheet.Cells[row, column++].Value = sa.Revise;
+                                sheet.Cells[row, column++].Value = sa.ExclamationMark;
+                                sheet.Cells[row, column++].Value = sa.Lock;
+                                sheet.Cells[row, column++].Value = sa.H;
+                                sheet.Cells[row, column++].Value = sa.W;
+                                sheet.Cells[row, column++].Value = sa.Kg;
+                                sheet.Cells[row, column++].Value = sa.Length;
+                                sheet.Cells[row, column++].Value = sa.Weight;
+                                sheet.Cells[row, column++].Value = sa.t1;
+                                sheet.Cells[row, column++].Value = sa.t2;
+                                sheet.Cells[row, column++].Value = sa.Phase;
+                                sheet.Cells[row, column++].Value = sa.ShippingNumber;
+                                sheet.Cells[row, column++].Value = sa.Title1;
+                                sheet.Cells[row += 2, column++].Value = sa.Title2;
+                                column = 0;
+                                break;
+                            default://BlockReference
+                                sheet.Cells[row, column++].Value = $"*2-2-0model.Entities[{firstIndex}].EntityData";
+                                sheet.Cells[row, column++].Value = $"例外型別";
+                                sheet.Cells[row, column++].Value = entity.GetType().Name;
+                                sheet.Cells[row += 2, column++].Value = entity.EntityData.GetType().Name;
+                                column = 0;
+                                break;
+                        }
+                    }
+                    #endregion
+                    secondIndex++;
+                }
+                #endregion
+                firstIndex++;
+            }
+            #endregion
+            #endregion
+
+            book.BeginUpdate();
+            book.SaveDocument(path, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
+        }
+
         /// <summary>
         /// 檔案總覽
         /// </summary>
@@ -763,6 +1098,7 @@ namespace WPFSTD105
                 book.BeginUpdate();
                 book.SaveDocument(subPath1+"Error."+subPath2, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
             }
+            ScreenManager.Close();
         }
 
         /// <summary>

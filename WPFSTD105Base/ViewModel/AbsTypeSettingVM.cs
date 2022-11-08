@@ -38,20 +38,29 @@ namespace WPFSTD105
         /// </summary>
         public AbsTypeSettingVM()
         {
+            DataViews = LoadDataViews(); 
+            STDSerialization ser = new STDSerialization();
+            MaterialDataViews = ser.GetMaterialDataView();
+            AllSelectedGridCommand = AllSelectedGrid();// 選擇報表全部物件命令
+            ReverseSelectedGridCommand = ReverseSelectedGrid();//反向選取命令
+            UnselectSelectedGridCommand = UnselectSelectedGrid();//取消選取命令
+            SaveMatchCommand = SaveMatch();
+        }
+
+
+        /// <summary>
+        /// 載入DataViews
+        /// </summary>
+        /// <returns></returns>
+        public ObservableCollection<TypeSettingDataView> LoadDataViews()
+        {
+            var LoadedDataViews = new ObservableCollection<TypeSettingDataView>();
+
             STDSerialization ser = new STDSerialization();
             ObservableCollection<BomProperty> bomProperties = CommonViewModel.ProjectProperty.BomProperties; //報表屬性設定檔
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();//模型構件列表
-            Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();//模型構件列表
-
-            //obvm = new ObSettingVM();
-
-            MaterialDataViews = ser.GetMaterialDataView();
-
-
-
             //20220824 蘇 新增icommand
-            //foreach (var profile in ser.GetProfile()) //逐步展開斷面規格
-            //{
+            Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();//模型構件列表
             foreach (KeyValuePair<string, ObservableCollection<SteelPart>> eachPart in part)
             {
                 ObservableCollection<SteelPart> buffer = eachPart.Value;
@@ -76,20 +85,20 @@ namespace WPFSTD105
                                 int idIndex = assemblies[index].ID.IndexOf(item.Father[i]); //找出構件 id 所在的陣列位置
                                 TypeSettingDataView view = new TypeSettingDataView(item, assemblies[index], idIndex, i);
                                 view.SortCount = 0;
-                                int dataIndex = DataViews.IndexOf(view); //搜尋指定的物件
+                                int dataIndex = LoadedDataViews.ToList().IndexOf(view); //搜尋指定的物件
                                 if (dataIndex == -1) //如果找不到物件
                                 {
-                                    DataViews.Add(view);
+                                    LoadedDataViews.Add(view);
                                 }
                                 else
                                 {
-                                    DataViews[dataIndex].Add(item, i);
+                                    LoadedDataViews[dataIndex].Add(item, i);
                                 }
                             }
                         }
                         else
                         {
-                            DataViews.Add(new TypeSettingDataView()
+                            LoadedDataViews.Add(new TypeSettingDataView()
                             {
                                 Profile = item.Profile,
                                 Length = item.Length,
@@ -103,16 +112,16 @@ namespace WPFSTD105
                         }
                     }
                 }
-                //}
             }
-            AllSelectedGridCommand = AllSelectedGrid();// 選擇報表全部物件命令
-            ReverseSelectedGridCommand = ReverseSelectedGrid();//反向選取命令
-            UnselectSelectedGridCommand = UnselectSelectedGrid();//取消選取命令
-            SaveMatchCommand = SaveMatch();
-            //ManualCommand = Manual();
-
+            return LoadedDataViews;
         }
-        private GridControl _GridControl { get; set; }
+
+    
+
+
+
+
+    private GridControl _GridControl { get; set; }
         #region 命令
         /// <summary>
         /// 手動排版命令
@@ -1046,9 +1055,6 @@ namespace WPFSTD105
                         continue;
                     }
                     List<SinglePart> listPart = new List<SinglePart>();//配料列表
-
-
-
                     foreach (var item in DataViews.Where(x => x.SortCount > 0))
                     {
                         foreach (var steel in steels.Where(x => x.Number == item.PartNumber))
@@ -1061,13 +1067,22 @@ namespace WPFSTD105
                            el.SortCount > 0)                   // 2022/09/23 呂宗霖 新增
                            .Select(el => el.SortCount);
 
-                            var count = _where.Aggregate((part1, part2) => part1 + part2);
-                            if (count > 0)
+                            //20221107 蘇冠綸加入條件式 防止在特定情況下_where陣列為0而導致崩潰的問題
+                            if (_where.Count() > 0)
                             {
-                                listPart.AddRange(SinglePart.UnfoldPart(steel, out List<bool> match, count));//展開物件並加入配料列表內
-                                steel.Match = match;
-                                //DataViews.
+                                var count = _where.Aggregate((total, next) => total + next);
+                                if (count > 0)
+                                {
+                                    listPart.AddRange(SinglePart.UnfoldPart(steel, out List<bool> match, count));//展開物件並加入配料列表內
+                                    steel.Match = match;
+                                }
                             }
+                            else
+                            {
+
+                            }
+
+
                         }
                     }
 

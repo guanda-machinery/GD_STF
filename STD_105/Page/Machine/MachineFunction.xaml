@@ -27,7 +27,7 @@
             <Setter Property="TextWrapping"
                     Value="Wrap" />
         </Style>
-        <Style TargetType="Button" BasedOn="{StaticResource CustomDesignButton}">
+        <Style TargetType="Button" BasedOn="{StaticResource SiegCustomButton}">
             <Setter Property="Height" Value="114"/>
         </Style>
 
@@ -94,12 +94,13 @@
 
                         <DockPanel>
                             <DockPanel.Resources>
-                                <WPFSTD105VM:Dpad_JoystickViewModel x:Key="HSteel_Carry_VM"/>
+                                <WPFSTD105VM:Machine_HSteelCarryViewModel x:Key="HSteel_Carry_VM"/>
                             </DockPanel.Resources>
 
-                            <local:DPadUserControl  DockPanel.Dock="Top" DataContext="{StaticResource HSteel_Carry_VM}">
-                                <local:DPadUserControl.BorderChild_3_Source>
-                                    <Button>
+                            <local:DPadUserControl x:Name="HSteel_Carry_UserControl"  DockPanel.Dock="Top" 
+                                                   DataContext="{StaticResource HSteel_Carry_VM}">
+
+                                <local:DPadUserControl.ButtonContent_3_Source>
                                     <Grid  VerticalAlignment="Center"  Width="100">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition/>
@@ -112,12 +113,10 @@
                                         <Image Grid.Column="0" Grid.Row="0" Source="{StaticResource RedArrow_upDrawingImage}" Height="25" Margin="-3,0,0,0"/>
                                         <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_upDrawingImage}" Height="25" Margin="3,0,0,0"/>
                                         <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Source="{StaticResource HSteel_CarryDrawingImage}" VerticalAlignment="Bottom" />
-                                        </Grid>
-                                    </Button>
-
-                                </local:DPadUserControl.BorderChild_3_Source>
-                                <local:DPadUserControl.BorderChild_4_Source>
-                                    <Button >
+                                    </Grid>
+                                </local:DPadUserControl.ButtonContent_3_Source>
+                                <local:DPadUserControl.ButtonContent_4_Source>
+                      
                                     <Grid  VerticalAlignment="Center" Width="100">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition/>
@@ -132,8 +131,8 @@
                                         <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Source="{StaticResource HSteel_CarryDrawingImage}" VerticalAlignment="Bottom" />
 
                                         </Grid>
-                                    </Button>
-                                </local:DPadUserControl.BorderChild_4_Source>
+                            
+                                </local:DPadUserControl.ButtonContent_4_Source>
                             </local:DPadUserControl>
 
                             <CheckBox Grid.Column="1"  DockPanel.Dock="Bottom"
@@ -157,11 +156,11 @@
                     <Border Background="#c0c0c0" Padding="20">
                         <DockPanel>
                             <DockPanel.Resources>
-                                <WPFSTD105VM:Dpad_JoystickViewModel x:Key="HSteel_Grab_VM"/>
+                                <WPFSTD105VM:Machine_HSteelGrabViewModel x:Key="HSteel_Grab_VM"/>
                             </DockPanel.Resources>
-                            <local:DPadUserControl DockPanel.Dock="Top" DataContext="{StaticResource HSteel_Grab_VM}">
-                                <local:DPadUserControl.BorderChild_1_Source>
-                                    <Button>
+                            <local:DPadUserControl DockPanel.Dock="Top" DataContext="{StaticResource HSteel_Grab_VM}" >
+                                <local:DPadUserControl.ButtonContent_1_Source>
+
                                     <Grid Margin="80,0"  VerticalAlignment="Center" HorizontalAlignment="Center" Width="100">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition/>
@@ -175,11 +174,11 @@
                                         <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_rightDrawingImage}" Width="25"  HorizontalAlignment="Right"/>
                                         <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Source="{StaticResource HSteel_GrabDrawingImage}" VerticalAlignment="Bottom" Margin="0,-15" />
                                         </Grid>
-                                    </Button>
 
-                                </local:DPadUserControl.BorderChild_1_Source>
-                                <local:DPadUserControl.BorderChild_2_Source>
-                                    <Button>
+
+                                </local:DPadUserControl.ButtonContent_1_Source>
+                                <local:DPadUserControl.ButtonContent_2_Source>
+                                   
                                     <Grid Margin="80,0" VerticalAlignment="Center" Width="100">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition/>
@@ -193,8 +192,8 @@
                                         <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_leftDrawingImage}" Width="25"  HorizontalAlignment="Right"/>
                                         <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Source="{StaticResource HSteel_GrabDrawingImage}" VerticalAlignment="Bottom" Margin="0,-15" />
                                         </Grid>
-                                    </Button>
-                                </local:DPadUserControl.BorderChild_2_Source>
+                                    
+                                </local:DPadUserControl.ButtonContent_2_Source>
 
                             </local:DPadUserControl>
                             <CheckBox Grid.Column="1"  DockPanel.Dock="Bottom" DataContext="{StaticResource HSteel_Grab_VM}"
@@ -220,9 +219,6 @@
                     </TabItem.DataContext>
                     <Border Background="#c0c0c0" Padding="10">
                         <Grid>
-                            <Grid.DataContext>
-                                <WPFSTD105VM:RacksOperationVM/>
-                            </Grid.DataContext>
                             <Grid.Resources>
                                 <Style BasedOn="{StaticResource ParameterDarkGroupBox}" TargetType="GroupBox">
                                     <Setter Property="Margin" Value="5" />
@@ -574,8 +570,7 @@
                                 <!--  料架控制器  -->
                                 <Border Grid.Row="3" Grid.ColumnSpan="2"  Background="#c0c0c0" Width="auto" Height="auto" Margin="10,0,10,5">
                                     <local:DPadUserControl>
-                                        <local:DPadUserControl.BorderChild_1_Source>
-                                            <Button>
+                                        <local:DPadUserControl.ButtonContent_1_Source>
                                             <Grid Margin="5"  VerticalAlignment="Center" HorizontalAlignment="Center">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="35"/>
@@ -589,10 +584,9 @@
                                                 <Image Grid.Column="0" Grid.Row="1" Source="{StaticResource RedArrow_leftDrawingImage}" Width="30" HorizontalAlignment="Left"/>
                                                 <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_noArrowDrawingImage}" />
                                             </Grid>
-                                            </Button>
-                                        </local:DPadUserControl.BorderChild_1_Source>
-                                        <local:DPadUserControl.BorderChild_2_Source>
-                                            <Button>
+                                        </local:DPadUserControl.ButtonContent_1_Source>
+                                        <local:DPadUserControl.ButtonContent_2_Source>
+                                          
                                             <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center" >
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="35"/>
@@ -606,10 +600,10 @@
                                                 <Image Grid.Column="2" Grid.Row="1" Source="{StaticResource RedArrow_rightDrawingImage}" Width="30" HorizontalAlignment="Right"/>
                                                 <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_noArrowDrawingImage}" />
                                                 </Grid>
-                                            </Button>
-                                        </local:DPadUserControl.BorderChild_2_Source>
-                                        <local:DPadUserControl.BorderChild_3_Source>
-                                            <Button>
+                                  
+                                        </local:DPadUserControl.ButtonContent_2_Source>
+                                        <local:DPadUserControl.ButtonContent_3_Source>
+
                                             <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="35"/>
@@ -623,10 +617,9 @@
                                                 <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_upDrawingImage}" Height="30" VerticalAlignment="Top"/>
                                                 <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_noArrowDrawingImage}" />
                                                 </Grid>
-                                            </Button>
-                                        </local:DPadUserControl.BorderChild_3_Source>
-                                        <local:DPadUserControl.BorderChild_4_Source>
-                                            <Button>
+
+                                        </local:DPadUserControl.ButtonContent_3_Source>
+                                        <local:DPadUserControl.ButtonContent_4_Source>
                                             <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="35"/>
@@ -639,9 +632,8 @@
                                                 </Grid.RowDefinitions>
                                                 <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_downDrawingImage}" Height="30" VerticalAlignment="Top"/>
                                                 <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_noArrowDrawingImage}" />
-                                                </Grid>
-                                            </Button>
-                                        </local:DPadUserControl.BorderChild_4_Source>
+                                            </Grid>
+                                        </local:DPadUserControl.ButtonContent_4_Source>
 
 
 
@@ -649,13 +641,8 @@
                                 </Border>
                                 <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="15,0">
                                     <Grid.Resources>
-                                        <Style TargetType="Border">
-                                            <Setter Property="Width" Value="auto"/>
-                                            <Setter Property="Height" Value="120"/>
-                                            <Setter Property="Padding" Value="0"/>
-                                            <Setter Property="BorderBrush" Value="#4CFF00"/>
-                                            <Setter Property="BorderThickness" Value="2"/>
-                                            <Setter Property="Background" Value="White"/>
+                                        <Style TargetType="Button" BasedOn="{StaticResource SiegCustomButtonGreenBorder}">
+                                            <Setter Property="Height" Value="114"/>
                                         </Style>
                                     </Grid.Resources>
                                     <Grid.ColumnDefinitions>
@@ -663,17 +650,14 @@
                                         <ColumnDefinition Width="350"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Border Grid.Column="0">
-                                        <Button >
-                                        <Image Source="{StaticResource Conveyor_BlockedDrawingImage}" Width="100"/>
+                                    <Button >
+                                            <Image Source="{StaticResource Conveyor_BlockedDrawingImage}" Width="100"/>
                                         </Button>
-                                    </Border>
-                                    <Border Grid.Column="1" Margin="10,0">
-                                        <Button >
-                                            <Image Source="{StaticResource Conveyor_RedDrawingImage}" Width="100"/>
-                                            </Button >
-                                    </Border>
-                                    <Border Grid.Column="2" ></Border>
+                                        <Button Grid.Column="1" Margin="10,0">
+                                        <Image Source="{StaticResource Conveyor_RedDrawingImage}" Width="100"/>
+ 
+                                    </Button>
+                                    <Button Grid.Column="2"  IsEnabled="False"></Button>
                                 </Grid>
 
 
@@ -777,14 +761,13 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <Grid.Resources>
-                                <WPFSTD105VM:Dpad_JoystickViewModel x:Key="Transport_BR_VM"/>
+                                <WPFSTD105VM:GrabArm_ViewModel x:Key="ArmGrab_Dpad_Js_VM"/>
                                 <Style TargetType="Image">
                                     <Setter Property="Height" Value="80"/>
                                 </Style>
                             </Grid.Resources>
-                            <local:JoystickUserControl Grid.Row="0" Margin="10"  DataContext="{StaticResource Transport_BR_VM}">
-                                <local:JoystickUserControl.BorderChild_1_Source>
-                                    <Button>
+                            <local:JoystickUserControl Grid.Row="0" Margin="10" DataContext="{StaticResource ArmGrab_Dpad_Js_VM}">
+                                <local:JoystickUserControl.ButtonContent_1_Source>
                                     <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="50"/>
@@ -800,10 +783,8 @@
                                         <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto"/>
                                         <Image Grid.Column="1" Grid.Row="2" Source="{StaticResource RedArrow_downDrawingImage}" Height="30" HorizontalAlignment="Left"/>
                                     </Grid>
-                                    </Button>
-                                </local:JoystickUserControl.BorderChild_1_Source>
-                                <local:JoystickUserControl.BorderChild_3_Source>
-                                    <Button>
+                                </local:JoystickUserControl.ButtonContent_1_Source>
+                                <local:JoystickUserControl.ButtonContent_3_Source>
                                     <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="50"/>
@@ -819,10 +800,8 @@
                                         <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto"/>
                                         <Image Grid.Column="1" Grid.Row="2" Source="{StaticResource RedArrow_upDrawingImage}" Height="30" HorizontalAlignment="Left"/>
                                     </Grid>
-                                    </Button>
-                                </local:JoystickUserControl.BorderChild_3_Source>
-                                <local:JoystickUserControl.BorderChild_4_Source>
-                                    <Button>
+                                </local:JoystickUserControl.ButtonContent_3_Source>
+                                <local:JoystickUserControl.ButtonContent_4_Source>
                                     <Grid Width="200">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
@@ -835,10 +814,8 @@
                                             <TextBlock Text="a"  Width="30" Margin="-10,0,0,-1" TextAlignment="Center" Foreground ="Black" FontSize="30" VerticalAlignment="Bottom"/>
                                         </StackPanel>
                                     </Grid>
-                                    </Button>
-                                </local:JoystickUserControl.BorderChild_4_Source>
-                                <local:JoystickUserControl.BorderChild_5_Source>
-                                    <Button>
+                                </local:JoystickUserControl.ButtonContent_4_Source>
+                                <local:JoystickUserControl.ButtonContent_5_Source>
                                     <Grid Width="200">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
@@ -875,10 +852,8 @@
                                         <Image  Grid.Column="1" Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto"/>
 
                                     </Grid>
-                                    </Button>
-                                </local:JoystickUserControl.BorderChild_5_Source>
-                                <local:JoystickUserControl.BorderChild_6_Source>
-                                    <Button>
+                                </local:JoystickUserControl.ButtonContent_5_Source>
+                                <local:JoystickUserControl.ButtonContent_6_Source>
                                     <Grid Width="200">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
@@ -915,20 +890,13 @@
                                         <Image  Grid.Column="1" Source="{StaticResource Transport_by_RobotDrawingImage}"  Width="100" Height="auto"/>
 
                                     </Grid>
-                                    </Button>
-                                </local:JoystickUserControl.BorderChild_6_Source>
+                                </local:JoystickUserControl.ButtonContent_6_Source>
 
 
                             </local:JoystickUserControl >
+                            <local:DPadUserControl Grid.Row="1" Margin="10"  VerticalAlignment="Top" DataContext="{StaticResource ArmGrab_Dpad_Js_VM}">
+                                <local:DPadUserControl.ButtonContent_1_Source>
 
-
-
-
-
-
-                            <local:DPadUserControl Grid.Row="1" Margin="10"  DataContext="{StaticResource Transport_BR_VM}" VerticalAlignment="Top">
-                                <local:DPadUserControl.BorderChild_1_Source>
-                                    <Button>
                                     <Grid Width="200">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
@@ -939,11 +907,11 @@
                                             <TextBlock  Text="X"  Width="auto"  TextAlignment="Center" Foreground ="Black" FontSize="50" />
                                             <TextBlock Text="＋"  Width="auto" Margin="-8,-7,0,0"  TextAlignment="Center" Foreground ="Black" FontSize="60" VerticalAlignment="Center" />
                                         </StackPanel>
-                                        </Grid>
-                                    </Button>
-                                </local:DPadUserControl.BorderChild_1_Source>
-                                <local:DPadUserControl.BorderChild_2_Source>
-                                    <Button>
+                                    </Grid>
+
+                                </local:DPadUserControl.ButtonContent_1_Source>
+                                <local:DPadUserControl.ButtonContent_2_Source>
+
                                     <Grid Width="200">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
@@ -954,12 +922,11 @@
                                             <TextBlock  Text="X"  Width="auto"  TextAlignment="Center" Foreground ="Black" FontSize="50" />
                                             <TextBlock Text="–"  Width="auto" Margin="8,-7,0,0"  TextAlignment="Center" Foreground ="Black" FontSize="60" VerticalAlignment="Center" />
                                         </StackPanel>
-                                        </Grid>
-                                    </Button>
-                                </local:DPadUserControl.BorderChild_2_Source>
+                                    </Grid>
 
-                                <local:DPadUserControl.BorderChild_3_Source>
-                                    <Button>
+                                </local:DPadUserControl.ButtonContent_2_Source>
+
+                                <local:DPadUserControl.ButtonContent_3_Source>
                                     <Grid Width="200">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
@@ -970,11 +937,9 @@
                                             <TextBlock Text="Y"  Width="auto"  TextAlignment="Center" Foreground ="Black" FontSize="50" />
                                             <TextBlock Text="＋"  Width="auto" Margin="-8,-7,0,0"  TextAlignment="Center" Foreground ="Black" FontSize="60" VerticalAlignment="Center" />
                                         </StackPanel>
-                                        </Grid>
-                                    </Button>
-                                </local:DPadUserControl.BorderChild_3_Source>
-                                <local:DPadUserControl.BorderChild_4_Source>
-                                    <Button>
+                                    </Grid>
+                                </local:DPadUserControl.ButtonContent_3_Source>
+                                <local:DPadUserControl.ButtonContent_4_Source>
                                     <Grid Width="200">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
@@ -985,25 +950,17 @@
                                             <TextBlock  Text="Y"  Width="auto"  TextAlignment="Center" Foreground ="Black" FontSize="50" />
                                             <TextBlock Text="–"  Width="auto" Margin="8,-7,0,0"  TextAlignment="Center" Foreground ="Black" FontSize="60" VerticalAlignment="Center" />
                                         </StackPanel>
-                                        </Grid>
-                                    </Button>
-                                </local:DPadUserControl.BorderChild_4_Source>
+                                    </Grid>
+                                </local:DPadUserControl.ButtonContent_4_Source>
 
 
                             </local:DPadUserControl>
-
                             <Border Grid.Row="2" BorderThickness="0,2,0,0" BorderBrush="#292929" />
-
-                            <StackPanel  Grid.Row="3" Margin="10">
+                            <StackPanel  Grid.Row="3" Margin="10" DataContext="{StaticResource ArmGrab_Dpad_Js_VM}">
                                 <Grid Margin="5">
                                     <Grid.Resources>
-                                        <Style TargetType="Border">
-                                            <Setter Property="Width" Value="auto"/>
+                                        <Style TargetType="Button" BasedOn="{StaticResource SiegCustomButtonGreenBorder}">
                                             <Setter Property="Height" Value="120"/>
-                                            <Setter Property="Padding" Value="0"/>
-                                            <Setter Property="BorderBrush" Value="#4CFF00"/>
-                                            <Setter Property="BorderThickness" Value="2"/>
-                                            <Setter Property="Background" Value="White"/>
                                         </Style>
                                     </Grid.Resources>
                                     <Grid.ColumnDefinitions>
@@ -1011,15 +968,13 @@
                                         <ColumnDefinition Width="350"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Border Grid.Column="0" >
-                                        <Button>
+                                    <Button>
                                             <Image Source="{StaticResource Conveyor_BlockedDrawingImage}" Width="100"/>
-                                            </Button>
-                                    </Border>
-                                    <Border Grid.Column="1" Margin="10,0"/>
+                                        </Button>
+                                        <Button Grid.Column="1" Margin="10,0" IsEnabled="False"/>
 
 
-                                    <Border Grid.Column="2" ></Border>
+                                    <Button Grid.Column="2" IsEnabled="False"/>
                                 </Grid>
                             </StackPanel>
                         </Grid>
@@ -1041,14 +996,13 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <Grid.Resources>
-                                <WPFSTD105VM:Dpad_JoystickViewModel x:Key="ToolMagazine_Dpad_Js_VM"/>
+                                <WPFSTD105VM:ToolMagazine_ViewModel x:Key="ToolMagazine_Dpad_Js_VM"/>
                                 <Style TargetType="Image">
                                     <Setter Property="Height" Value="80"/>
                                 </Style>
                             </Grid.Resources>
                             <local:JoystickUserControl Grid.Row="0" Margin="10"  DataContext="{StaticResource ToolMagazine_Dpad_Js_VM}">
-                                <local:JoystickUserControl.BorderChild_3_Source>
-                                    <Button>
+                                <local:JoystickUserControl.ButtonContent_3_Source>
                                     <Grid Width="200">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
@@ -1058,10 +1012,8 @@
 
                                         <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
                                     </Grid>
-                                    </Button>
-                                </local:JoystickUserControl.BorderChild_3_Source>
-                                <local:JoystickUserControl.BorderChild_4_Source>
-                                    <Button>
+                                </local:JoystickUserControl.ButtonContent_3_Source>
+                                <local:JoystickUserControl.ButtonContent_4_Source>
                                     <Grid Width="200">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
@@ -1070,11 +1022,9 @@
                                         <TextBlock Grid.Column="0" Text="Ｃ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
 
                                         <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
-                                        </Grid>
-                                    </Button>
-                                </local:JoystickUserControl.BorderChild_4_Source>
-                                <local:JoystickUserControl.BorderChild_5_Source>
-                                    <Button>
+                                    </Grid>
+                                </local:JoystickUserControl.ButtonContent_4_Source>
+                                <local:JoystickUserControl.ButtonContent_5_Source>
                                     <Grid Width="200">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
@@ -1083,11 +1033,9 @@
                                         <TextBlock Grid.Column="0" Text="Ｄ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
 
                                         <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
-                                        </Grid>
-                                    </Button>
-                                </local:JoystickUserControl.BorderChild_5_Source>
-                                <local:JoystickUserControl.BorderChild_6_Source>
-                                    <Button>
+                                    </Grid>
+                                </local:JoystickUserControl.ButtonContent_5_Source>
+                                <local:JoystickUserControl.ButtonContent_6_Source>
                                     <Grid Width="200">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
@@ -1096,26 +1044,22 @@
                                         <TextBlock Grid.Column="0" Text="Ｅ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
 
                                         <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
-                                        </Grid>
-                                    </Button>
-                                </local:JoystickUserControl.BorderChild_6_Source>
-
+                                    </Grid>
+                                </local:JoystickUserControl.ButtonContent_6_Source>
                             </local:JoystickUserControl >
                             <local:DPadUserControl Grid.Row="1" Margin="10"  DataContext="{StaticResource ToolMagazine_Dpad_Js_VM}">
-                                <local:DPadUserControl.BorderChild_1_Source>
-                                    <Button>
-                                        <Grid >
+                                <local:DPadUserControl.ButtonContent_1_Source>
+                                    <Grid >
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="OUT"  Width="auto" TextAlignment="Right" Margin="0,0" Foreground ="Black" FontSize="45"/>
                                         <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" HorizontalAlignment="Left" Margin="20,0"/>
-                                        </Grid>
-                                </Button>
-                                </local:DPadUserControl.BorderChild_1_Source>
-                                <local:DPadUserControl.BorderChild_2_Source>
-                                    <Button>
+                                    </Grid>
+                                </local:DPadUserControl.ButtonContent_1_Source>
+                                <local:DPadUserControl.ButtonContent_2_Source>
+                                
                                     <Grid Width="200">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
@@ -1125,8 +1069,8 @@
 
                                             <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}"  HorizontalAlignment="Left" Margin="20,0"/>
                                         </Grid>
-                                    </Button>
-                                </local:DPadUserControl.BorderChild_2_Source>
+                               
+                                </local:DPadUserControl.ButtonContent_2_Source>
 
                             </local:DPadUserControl>
                         </Grid>
@@ -1147,7 +1091,7 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <Grid.Resources>
-                                <WPFSTD105VM:Dpad_JoystickViewModel x:Key="Conveyor_Dpad_Js_VM"/>
+                                <WPFSTD105VM:DpadConveyor_ViewModel x:Key="Conveyor_Dpad_Js_VM"/>
                                 <Style TargetType="Image">
                                     <Setter Property="Height" Value="80"/>
                                 </Style>
@@ -1156,20 +1100,20 @@
 
                             </local:JoystickUserControl >
                             <local:DPadUserControl Grid.Row="1" Margin="10"  DataContext="{StaticResource Conveyor_Dpad_Js_VM}">
-                                <local:DPadUserControl.BorderChild_1_Source>
-                                    <Button>
+                                <local:DPadUserControl.ButtonContent_1_Source>
+                                   
                                     <Grid Width="250">
                                         <Image  Grid.Column="1" Source="{StaticResource Crumb_Conveyor_plusDrawingImage}" Width="80"/>
                                         </Grid>
-                                    </Button>
-                                </local:DPadUserControl.BorderChild_1_Source>
-                                <local:DPadUserControl.BorderChild_2_Source>
-                                    <Button>
+                                 
+                                </local:DPadUserControl.ButtonContent_1_Source>
+                                <local:DPadUserControl.ButtonContent_2_Source>
+                                   
                                     <Grid Width="200">
                                         <Image  Grid.Column="1" Source="{StaticResource Crumb_Conveyor_minusDrawingImage}" Width="80"/>
                                     </Grid>
-                                    </Button>
-                                </local:DPadUserControl.BorderChild_2_Source>
+                                    
+                                </local:DPadUserControl.ButtonContent_2_Source>
 
                             </local:DPadUserControl>
                         </Grid>
