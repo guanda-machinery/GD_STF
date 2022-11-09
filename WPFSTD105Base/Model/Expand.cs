@@ -896,6 +896,7 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.Mode = AXIS_MODE.POINT;
                         TmpBoltsArr.X = tmplist1[z].X;
                         TmpBoltsArr.Y = tmplist1[z].Y;
+                        TmpBoltsArr.BlockName = "BackHypotenuse";
                         TmpBoltsArr.GUID = Guid.NewGuid();
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
                     }
@@ -970,6 +971,7 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.Mode = AXIS_MODE.POINT;
                         TmpBoltsArr.X = tmplist1[z].X;
                         TmpBoltsArr.Y = tmplist1[z].Y;
+                        TmpBoltsArr.BlockName = "FRONTHypotenuse";
                         TmpBoltsArr.GUID = Guid.NewGuid();
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
                     }
