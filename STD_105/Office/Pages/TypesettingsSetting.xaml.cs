@@ -868,8 +868,6 @@ namespace STD_105.Office
 
                                 Steel2DBlock steel2DBlock = new Steel2DBlock((devDept.Eyeshot.Entities.Mesh)model.Blocks[FindSteelBlockIndex].Entities[0], model.Blocks[FindSteelBlockIndex].Name);   // 產生2D
 
-
-
                                 int icount;
                                 for (icount = 0; icount < model.Entities.Count; icount++)
                                 {
@@ -880,7 +878,6 @@ namespace STD_105.Office
                                         break;
                                     }
                                 }
-
 
                                 BlockReference blockReference = (BlockReference)model.Entities[icount]; //取得參考圖塊
                                 Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
@@ -900,34 +897,13 @@ namespace STD_105.Office
                                 block2D.Selectable = false;
                                 entities.Add(block2D);//加入到暫存列表
                             }
-
-
-  
-
                         }
-                        
-                        
-
-
-
-                        
-
-
-
-
                     }
                 }
             }
             drawing.Entities.Clear();
             drawing.Entities.AddRange(entities);
-            ser.SetMaterialModel(materialNumber + "2D", drawing); //儲存素材
-
-
-
-
-
-
-
+            //ser.SetMaterialModel(materialNumber + "2D", drawing); //儲存素材
 
 
 

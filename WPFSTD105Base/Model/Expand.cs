@@ -108,11 +108,11 @@ namespace WPFSTD105.Model
             {
                 if (place[i].IsCut) //如果是切割物件
                 {
-                    //Entity cut = DrawCutMesh(parts[0], model, place[i].Start, place[i].End, "Cut");
-                    //if (cut != null)
-                    //{
-                    //    entities.Add(cut);
-                    //}
+                    Entity cut1 = DrawCutMesh(parts[0], model, place[i].Start, place[i].End, "Cut");
+                    if (cut1 != null)
+                    {
+                        entities.Add(cut1);
+                    }
 
                     continue;
                 }
@@ -492,7 +492,7 @@ namespace WPFSTD105.Model
                 return null;
             }
             Steel3DBlock.AddSteel(steelAttr, model, out BlockReference result, dic);
-            model.Blocks[steelAttr.GUID.ToString()].Entities[0].Color = ColorTranslator.FromHtml(WPFSTD105.Properties.SofSetting.Default.Ingredient2);
+            model.Blocks[steelAttr.GUID.ToString()].Entities[0].Color = ColorTranslator.FromHtml(WPFSTD105.Properties.SofSetting.Default.Surplus);
             result.GroupIndex = int.MaxValue;
             result.Translate(start, 0);
             return result;
