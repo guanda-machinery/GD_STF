@@ -18,6 +18,7 @@ using WPFSTD105.ViewModel;
 using static GD_STD.SerializationHelper;
 using SectionData;
 using SplitLineSettingData;
+using DevExpress.XtraRichEdit.Import.OpenXml;
 
 namespace WPFSTD105
 {

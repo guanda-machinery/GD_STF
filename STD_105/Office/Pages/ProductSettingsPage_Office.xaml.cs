@@ -39,6 +39,10 @@ using WPFSTD105.Tekla;
 using System.Collections;
 using System.Threading.Tasks;
 using DevExpress.Mvvm;
+using DevExpress.DataProcessing.InMemoryDataProcessor.GraphGenerator;
+using DevExpress.XtraSpreadsheet.TileLayout;
+using DevExpress.Dialogs.Core.View;
+using ControlzEx.Standard;
 
 namespace STD_105.Office
 {
@@ -869,6 +873,7 @@ namespace STD_105.Office
                     GetViewToViewModel(true);
                     ViewModel.SteelAttr.Creation = DateTime.Now;
                     ViewModel.SteelAttr.Revise = DateTime.Now;
+                    steelAttr = ViewModel.SteelAttr;
                     steelAttr = GetViewToSteelAttr(steelAttr, true);
                     steelAttr.Creation = DateTime.Now;
                     steelAttr.Revise = DateTime.Now;
@@ -878,6 +883,7 @@ namespace STD_105.Office
                 {
                     GetViewToViewModel(false, (steelAttr).GUID);
                     ViewModel.SteelAttr.Revise = DateTime.Now;
+                    steelAttr=ViewModel.SteelAttr;
                     steelAttr = GetViewToSteelAttr(steelAttr,false, (steelAttr).GUID);
                     steelAttr.Revise = DateTime.Now;
                     //model.Blocks[1].Entities[0].EntityData = steelAttr;
@@ -999,7 +1005,6 @@ namespace STD_105.Office
                     });
                     // 讀NC檔
                     var profile = ser.GetSteelAttr();
-                    TeklaNcFactory t = new TeklaNcFactory();
                     Steel3DBlock s3Db = new Steel3DBlock();
                     SteelAttr steelAttrNC = new SteelAttr();
                     List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
@@ -1578,6 +1583,8 @@ namespace STD_105.Office
                     return;
                 }
 
+                
+
                 GetViewToViewModel(false, ViewModel.SteelAttr.GUID);
 
                 /*3D螺栓*/
@@ -1589,6 +1596,8 @@ namespace STD_105.Office
                 ViewModel.SteelAttr.ShippingNumber = temp;
                 ViewModel.SteelAttr.Title1 = this.Title1.Text;
                 ViewModel.SteelAttr.Title2 = this.Title2.Text;
+                ViewModel.GetSteelAttr();
+
 
                 Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference, out bool check);
 
@@ -1606,7 +1615,7 @@ namespace STD_105.Office
                 {
                     //if (!fAddSteelPart)
                         if (!fNewPart.Value)
-                            SaveModel(false);//存取檔案
+                            SaveModel(true);//存取檔案
 
                     //不是修改孔位狀態
                     if (!modifyHole)
@@ -3409,30 +3418,19 @@ namespace STD_105.Office
         /// </summary>
         public async void RunHypotenusePoint()
         {
-
+            lstBoltsCutPoint = new List<Bolts3DBlock>();
             ScrollViewbox.IsEnabled = true;
 
-            // 由選取零件判斷三面是否為斜邊
             if (model.Entities[model.Entities.Count - 1].EntityData is null)
                 return;
 
-
-            // 斜邊自動執行程式
             SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
             //GetViewToViewModel(false, TmpSteelAttr.GUID);
 
-            if (TmpSteelAttr.vPoint.Count != 0)         //  頂面斜邊
-            {
-                AutoHypotenusePoint(FACE.TOP);
-            }
-            if (TmpSteelAttr.uPoint.Count != 0)     //  前面斜邊
-            {
-                AutoHypotenusePoint(FACE.FRONT);
-            }
-            if (TmpSteelAttr.oPoint.Count != 0)    //  後面斜邊
-            {
-                AutoHypotenusePoint(FACE.BACK);
-            }
+            AutoHypotenusePoint(FACE.TOP);
+            AutoHypotenusePoint(FACE.FRONT);
+            AutoHypotenusePoint(FACE.BACK);
+         
 
             // 只有既有零件(NC/BOM匯入)才有斜邊
             if (!fNewPart.Value)
@@ -3440,6 +3438,8 @@ namespace STD_105.Office
                 SaveModel(false, false);//存取檔案 
             //await SaveModelAsync(false, false);
 
+            model.ZoomFit();
+            drawing.ZoomFit();
             //刷新模型
             model.Refresh();
             drawing.Refresh();
@@ -3478,7 +3478,10 @@ namespace STD_105.Office
             if (model.Entities[model.Entities.Count - 1].EntityData is null)
                 return;
 
-            SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+            SteelAttr CSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+            SteelAttr TmpSteelAttr = new SteelAttr();
+            GetverticesFromFile(CSteelAttr.PartNumber, ref TmpSteelAttr);
+
 
             bool hasOutSteel = false;
 
@@ -3839,6 +3842,7 @@ namespace STD_105.Office
                     break;
 
                 case FACE.TOP:
+
                     if (steelAttr.Top == null)
                         return;
 
@@ -4132,8 +4136,8 @@ namespace STD_105.Office
 #if DEBUG
             log4net.LogManager.GetLogger("Esc").Debug("");
 #endif
-            drawing.SetCurrent(null);
-            model.SetCurrent(null);//層級 To 要編輯的 BlockReference
+            //drawing.SetCurrent(null);
+            //model.SetCurrent(null);//層級 To 要編輯的 BlockReference
 
             model.ActionMode = actionType.SelectByBox;
             drawing.ActionMode = actionType.SelectByBox;
@@ -5387,7 +5391,7 @@ namespace STD_105.Office
                         StreamWriter str = new StreamWriter(@"Current_GridItems.txt");
                         foreach (ProductSettingsPageViewModel se in see)
                         {
-                            str.WriteLine(se.DataName.ToString() + " " + se.steelAttr.AsseNumber.ToString() + " " + se.steelAttr.PartNumber.ToString());
+                            str.WriteLine($"{se.DataName} {se.steelAttr.AsseNumber} {se.steelAttr.PartNumber}");
                         }
                         str.Close();
 #endif
@@ -6275,12 +6279,49 @@ namespace STD_105.Office
             }
         }
 
+        private void TabItem_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+            model.ZoomFit();
+            model.Refresh();
+        }
+
         private void GridSplitter_MouseMove(object sender, MouseEventArgs e)
         {
                 model.ZoomFit();//設置道適合的視口
                 drawing.ZoomFit();//設置道適合的視口
-            
+
 
         }
+
+        public bool GetverticesFromFile(string PartNumber, ref SteelAttr TmpSteeAttr , int SteelIndex = 1)
+        {
+            bool rtn = false;
+            string path = ApplicationVM.DirectoryNc();
+            string allPath = path + $"\\{PartNumber}.nc1";
+            if (File.Exists($@"{allPath}"))
+            {
+                STDSerialization ser = new STDSerialization();
+                TmpSteeAttr = (SteelAttr)model.Blocks[SteelIndex].Entities[0].EntityData;
+
+                var profile = ser.GetSteelAttr();
+                Steel3DBlock s3Db = new Steel3DBlock();
+                SteelAttr steelAttrNC = new SteelAttr();
+                List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
+                s3Db.ReadNcFile($@"{ApplicationVM.DirectoryNc()}\{PartNumber}.nc1", profile, TmpSteeAttr, ref steelAttrNC, ref groups);
+                TmpSteeAttr.oPoint = steelAttrNC.oPoint;
+                TmpSteeAttr.vPoint = steelAttrNC.vPoint;
+                TmpSteeAttr.uPoint = steelAttrNC.uPoint;
+                TmpSteeAttr.CutList = steelAttrNC.CutList;
+                
+                rtn = true;
+            }
+
+
+
+            return rtn;
+        }
+
+
     }
 }
