@@ -137,6 +137,14 @@
     <value>Dev_Part</value>
     <comment>存放單零件的3D圖形序列化的資料夾</comment>
   </data>
+  <data name="DefaultParameterSetting" xml:space="preserve">
+    <value>ParameterSetting</value>
+    <comment>型鋼加工區域設定及切割線設定的初始設定值資料夾</comment>
+  </data>
+  <data name="ReportLogo" xml:space="preserve">
+    <value>ReportLogo</value>
+    <comment>放置報表LOGO資料夾</comment>
+  </data>
   <data name="DrillBrand" xml:space="preserve">
     <value>DrillBrand.lis</value>
     <comment>鑽頭品牌列表</comment>
