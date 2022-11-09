@@ -16,12 +16,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 //using WordToPdfService; //WORD to PDF by Office
 using System.IO;
+using Microsoft.Office.Interop.Word;
+using WordApplication = Microsoft.Office.Interop.Word.Application;
 
 //using GrapeCity.Documents.Word; //by GrapeCity
 //using System.Drawing;
 //using GrapeCity.Documents.Word.Layout;
 //using System.IO.Compression;
-using System.IO;
 
 //using Syncfusion.DocIO; //Syncfusion
 //using Syncfusion.DocIO.DLS;
@@ -141,6 +142,7 @@ namespace WPFSTD105
             }
         }
 
+        public Microsoft.Office.Interop.Word.Document wordDocument { get; set; }
         /// <summary>
         /// 呼叫列印預覽視窗
         /// </summary>
@@ -162,18 +164,75 @@ namespace WPFSTD105
                     //20220930 張燕華 改為word輸出報表
                     WordCutService word = new WordCutService();
                     double TotalLoss_BothSide = MatchSettingStartCut + MatchSettingEndCut;//素材前後端切割損耗
-                    word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", MaterialDataViews, TotalLoss_BothSide);
-
-                    string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
-                    //以python封裝exe執行轉檔
                     try
                     {
-                        var a = Process.Start(@"Word2Pdf\exe\word2pdf_test.exe", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx {Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf");
+                        word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", MaterialDataViews, TotalLoss_BothSide);
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.ToString());
+
+                        WinUIMessageBox.Show(null,
+                        $"寫入切割明細表發生錯誤，請確認是否已關閉切割明細表",
+                        "通知",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                        FloatingMode.Popup);
                     }
+
+                    string current_time = DateTime.Now.ToString("yyyyMMdd");
+
+                    try 
+                    { 
+                        //Word轉PDF
+                        Microsoft.Office.Interop.Word.Application appWord = new Microsoft.Office.Interop.Word.Application();
+                        wordDocument = appWord.Documents.Open($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx");
+                        wordDocument.ExportAsFixedFormat($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf", WdExportFormat.wdExportFormatPDF);
+                        wordDocument.Close(false);
+
+                        
+
+                        WinUIMessageBox.Show(null,
+                        $"切割明細表已下載",
+                        "通知",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                        FloatingMode.Popup);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.ToString());
+
+                        WinUIMessageBox.Show(null,
+                        $"產生切割明細表PDF檔發生錯誤",
+                        "通知",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                        FloatingMode.Popup);
+                    }
+
+                    try 
+                    {
+                        DeleteWordFileAfterDelay(3000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf");
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+
+                    ////以python封裝exe執行轉檔
+                    //try
+                    //{
+                    //    string para = $@"""{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx"" ""{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf""";
+                    //    var a = Process.Start(@"Word2Pdf\exe\word2pdf_test.exe", para);
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    Console.WriteLine(ex.ToString());
+                    //}
 
                     ////word to pdf by Office
                     //using (var cvtr = new PdfConverter())
@@ -182,18 +241,6 @@ namespace WPFSTD105
                     //    string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
                     //    File.WriteAllBytes($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf", buff);
                     //}
-
-                    DeleteWordFileAfterDelay(5000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf");
-
-                    WinUIMessageBox.Show(null,
-                        $"切割明細表已下載",
-                        "通知",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Exclamation,
-                        MessageBoxResult.None,
-                        MessageBoxOptions.None,
-                        FloatingMode.Popup);
-
                 });
             }
         }
@@ -230,18 +277,75 @@ namespace WPFSTD105
                     //20220928 張燕華 改為word輸出報表
                     WordBuyService word = new WordBuyService();
                     double TotalLoss_BothSide = MatchSettingStartCut + MatchSettingEndCut;//素材前後端切割損耗
-                    word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", MaterialDataViews, TotalLoss_BothSide);
-
-                    string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
-                    //以python封裝exe執行轉檔                    
                     try
-                    {                        
-                        var a = Process.Start(@"Word2Pdf\exe\word2pdf_test.exe", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx {Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf");
+                    {
+                        word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", MaterialDataViews, TotalLoss_BothSide);
                     }
                     catch (Exception ex)
-                    { 
-                        Console.WriteLine(ex.ToString()); 
+                    {
+                        Console.WriteLine(ex.ToString());
+
+                        WinUIMessageBox.Show(null,
+                        $"寫入採購明細單發生錯誤，請確認是否已關閉採購明細單",
+                        "通知",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                        FloatingMode.Popup);
                     }
+
+                    string current_time = DateTime.Now.ToString("yyyyMMdd");
+
+                    try
+                    {
+                        //Word轉PDF
+                        Microsoft.Office.Interop.Word.Application appWord = new Microsoft.Office.Interop.Word.Application();
+                        wordDocument = appWord.Documents.Open($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx");
+                        wordDocument.ExportAsFixedFormat($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf", WdExportFormat.wdExportFormatPDF);
+                        wordDocument.Close(false);
+
+                        
+
+                        WinUIMessageBox.Show(null,
+                        $"採購明細單已下載",
+                        "通知",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                        FloatingMode.Popup);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.ToString());
+
+                        WinUIMessageBox.Show(null,
+                        $"產生採購明細單PDF檔發生錯誤",
+                        "通知",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                        FloatingMode.Popup);
+                    }
+
+                    try
+                    {
+                        DeleteWordFileAfterDelay(3000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf");
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+
+                    ////以python封裝exe執行轉檔                    
+                    //try
+                    //{
+                    //    string para = $@"""{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx"" ""{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf""";
+                    //    var a = Process.Start(@"Word2Pdf\exe\word2pdf_test.exe", para);
+                    //}
+                    //catch (Exception ex)
+                    //{ 
+                    //    Console.WriteLine(ex.ToString()); 
+                    //}
 
                     ////word to pdf by Office
                     //using (var cvtr = new PdfConverter())
@@ -250,17 +354,6 @@ namespace WPFSTD105
                     //    //string current_time = DateTime.Now.ToString("yyyyMMddhhmmss");
                     //    File.WriteAllBytes($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf", buff);
                     //}
-
-                    DeleteWordFileAfterDelay(5000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf");
-
-                    WinUIMessageBox.Show(null,
-                        $"採購明細單已下載",
-                        "通知",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Exclamation,
-                        MessageBoxResult.None,
-                        MessageBoxOptions.None,
-                        FloatingMode.Popup);
                 });
             }
         }
@@ -303,6 +396,7 @@ namespace WPFSTD105
                 OfficeViewModel.LengthDodageControl = false;
         });
 
+        private WordApplication m_word;
         /// <summary>
         /// 背景執行緒等待設定時間後，檢查PDF已存在的話，則刪除原本的WORD檔
         /// </summary>
@@ -313,7 +407,29 @@ namespace WPFSTD105
             {
                 if (File.Exists(PdfFilePath))
                 {
-                    try { File.Delete(WordFilePath); }
+                    //刪除word檔案
+                    try 
+                    { 
+                        File.Delete(WordFilePath);
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+
+                    //刪除存留的word程序
+                    try
+                    {
+                        Process[] processes = System.Diagnostics.Process.GetProcessesByName("WINWORD");
+
+                        foreach (System.Diagnostics.Process process in processes)
+                        {
+                            if (process.MainWindowTitle == "")
+                            {
+                                process.Kill();
+
+                                System.Threading.Thread.Sleep(500);
+                            }
+                            GC.Collect();
+                        }
+                    }
                     catch (Exception ex) { Console.WriteLine(ex.ToString()); }
                 }
             });  

@@ -132,9 +132,9 @@ namespace TestDevdept
         public void AK()
         {
             //前視圖
-            Mesh vMesh = ConvertNcPointToMesh(SteelAttr.vPoint, SteelAttr.t1);
-            List<Mesh> vCut = GetCutMesh(SteelAttr.vPoint, SteelAttr.t1);
-            Mesh cut1 = Mesh.CreateBox(SteelAttr.Length, SteelAttr.t2, SteelAttr.t1);//切割前視圖翼板輪廓
+            Mesh vMesh = ConvertNcPointToMesh(SteelAttr.vPoint, SteelAttr.t1);          // 將 nc 座標轉實體
+            List<Mesh> vCut = GetCutMesh(SteelAttr.vPoint, SteelAttr.t1);               // 取得切割物件
+            Mesh cut1 = Mesh.CreateBox(SteelAttr.Length, SteelAttr.t2, SteelAttr.t1);   // 切割前視圖翼板輪廓
             //cut1.Translate(-5, 0);
             Mesh otherCut1 = (Mesh)cut1.Clone();
             Mesh cut2 = (Mesh)cut1.Clone();

@@ -34,6 +34,7 @@ using SectionData;
 using SplitLineSettingData;
 
 using DevExpress.Xpf.Dialogs;
+using WPFSTD105;
 
 namespace WPFSTD105.ViewModel
 {
@@ -67,7 +68,7 @@ namespace WPFSTD105.ViewModel
             SensorCommand = Sensor();
             OAxisCommand = OAxis();
             OSensorCommand = OSensor();
-            SaveModelRoSystemCommand = SaveAs();
+            SaveModelRoSystemCommand = SaveAs();//儲存新增的斷面規格
             ProfileSaveModelRoSystemCommand = SaveProfile();
             MaterialSaveModelRoSystemCommand = SaveMaterial();
             //如果是機器操作介面
@@ -106,7 +107,7 @@ namespace WPFSTD105.ViewModel
 
             CheckParameterSettingDirectoryExists();//20220819 張燕華 檢查參數設定資料夾是否存在, 若否則新增
 
-            initializationProcessingZoneData();//20220818 張燕華 加工區域設定 - 檢查設定值檔案存在, 若否則新增預設設定值
+            //initializationProcessingZoneData();//20220818 張燕華 加工區域設定 - 檢查設定值檔案存在, 若否則新增預設設定值
             ShowProcessingZoneCommand = ShowProcessingZone();//20220810 張燕華 加工區域設定 - 顯示斷面規格設定圖片
             ShowProcessingSettingValueCommand = ShowProcessingSettingValue();//20220811 張燕華 加工區域設定 - 加工方式
             NewProcessingZoneCommand = NewProcessingZone();//20220811 張燕華 加工區域設定 - 新增加工區域設定數值
@@ -1587,6 +1588,11 @@ namespace WPFSTD105.ViewModel
         public ObservableCollection<SteelAttr> RH_new_system { get; set; } = new ObservableCollection<SteelAttr>();
 
         /// <summary>
+        /// 20221108 張燕華 新增斷面規格到系統的中間暫存資料
+        /// </summary>
+        private SteelAttr steelAttr_system = new SteelAttr();
+
+        /// <summary>
         /// 20220728 張燕華 轉換出inp檔案
         /// </summary>
         public ICommand TransformInpCommand { get; set; }
@@ -2356,16 +2362,18 @@ namespace WPFSTD105.ViewModel
                     backPropertyInfo.SetValue(this, value); //存取資料到背景列表
                     showPropertyInfo.SetValue(this, SerializationHelper.Clone(value));//存取資料到顯示畫面的列表
 
-                    if (str == "系統")//如果確定要變更系統
+                    if (str == "模型&系統")//如果確定要變更系統
                     {
-                        ObservableCollection<SteelAttr> system = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryModel()}\{ModelPath.Profile}\{strType}.inp");//系統的斷面規格
-                        SteelAttr steelAttr = GetSettingSteelAttr(); //取得設定好的斷面規格
-                        if (system.IndexOf(e => e.Profile == steelAttr.Profile) != -1) //如果有相同的斷面規格
+                        //ObservableCollection<SteelAttr> system = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryModel()}\{ModelPath.Profile}\{strType}.inp");//系統的斷面規格
+                        ObservableCollection<SteelAttr> system = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>(System.AppDomain.CurrentDomain.BaseDirectory + $@"Profile\{strType}.inp");//系統的斷面規格(在輸出目錄中)
+                        //SteelAttr steelAttr = GetSettingSteelAttr(); //取得設定好的斷面規格
+                        if (system.IndexOf(e => e.Profile == steelAttr_system.Profile) != -1) //如果有相同的斷面規格
                         {
-                            system.Remove(e => e.Profile == steelAttr.Profile);//刪除
+                            system.Remove(e => e.Profile == steelAttr_system.Profile);//刪除
                         }
-                        system.Add(steelAttr);//加入到系統
-                        SerializationHelper.SerializeBinary(system, $@"{ModelPath.Profile}\{strType}.inp"); //變更系統斷面規格檔案
+                        system.Add(steelAttr_system);//加入到系統
+                        //SerializationHelper.SerializeBinary(system, $@"{ModelPath.Profile}\{strType}.inp"); //變更系統斷面規格檔案
+                        SerializationHelper.SerializeBinary(system, System.AppDomain.CurrentDomain.BaseDirectory + $@"Profile\{strType}.inp"); //變更系統斷面規格檔案
                     }
                     SerializationHelper.SerializeBinary(value, $@"{ApplicationVM.DirectoryModel()}\{ModelPath.Profile}\{strType}.inp");//變更模型設定的斷面規格
                 }
@@ -2425,6 +2433,7 @@ namespace WPFSTD105.ViewModel
                 if (str == "系統")//如果確定要變更系統
                 {
                     ObservableCollection<SteelAttr> system = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryModel()}\{ModelPath.Profile}\{strType}.inp");//系統的斷面規格
+                    
                     SteelAttr steelAttr = GetSettingSteelAttr(); //取得設定好的斷面規格
                     if (system.IndexOf(e => e.Profile == steelAttr.Profile) != -1) //如果有相同的斷面規格
                     {
@@ -3584,26 +3593,41 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         private void initializationSplitLineSettingData()
         {
-            //檢查使用者專案中是否已經存在設定檔案SplitLineSetting.lis
-            STDSerialization ser_file = new STDSerialization();
-            bool checkSplitLineDataFile = ser_file.CheckSplitLineDataFile();
+            ////檢查使用者專案中是否已經存在設定檔案SplitLineSetting.lis
+            //STDSerialization ser_file = new STDSerialization();
+            //bool checkSplitLineDataFile = ser_file.CheckSplitLineDataFile();
+            //
+            //if (checkSplitLineDataFile == false)//若設定值檔案不存在
+            //{
+            //    //新增設定值檔案
+            //    STDSerialization ser_AddFile = new STDSerialization(); //序列化處理器
+            //    ObservableCollection<SplitLineSettingClass> listSplitLineData = new ObservableCollection<SplitLineSettingClass>();
+            //    listSplitLineData.Add(new SplitLineSettingClass()
+            //    {
+            //        HowManyParts = "5",
+            //        A = "1/5",
+            //        B = "4/5",
+            //        C = "1/5",
+            //        D = "4/5",
+            //        Thickness = 3,
+            //        RemainingLength = 500.00
+            //    });
+            //    ser_AddFile.SetSplitLineData(listSplitLineData);
+            //}
 
-            if (checkSplitLineDataFile == false)//若設定值檔案不存在
+            // 2022/11/09 張燕華 判斷"型鋼加工區域設定"&"切割線設定"的初始設定值是否存在for改版前舊專案
+            ApplicationVM appVM = new ApplicationVM();
+            bool DirCreate = appVM.CheckParameterSettingDirectoryPath();
+
+            string[] files = Directory.GetFiles(System.AppDomain.CurrentDomain.BaseDirectory + $@"DefaultParameterSetting", "*.lis");
+            foreach (string file in files)
             {
-                //新增設定值檔案
-                STDSerialization ser_AddFile = new STDSerialization(); //序列化處理器
-                ObservableCollection<SplitLineSettingClass> listSplitLineData = new ObservableCollection<SplitLineSettingClass>();
-                listSplitLineData.Add(new SplitLineSettingClass()
+                string[] filename = file.Split('\\');
+                string a = $@"{ApplicationVM.DirectoryDefaultParameterSetting()}\{filename[filename.Length - 1]}";
+                if (!File.Exists($@"{ApplicationVM.DirectoryDefaultParameterSetting()}\{filename[filename.Length - 1]}"))
                 {
-                    HowManyParts = "5",
-                    A = "1/5",
-                    B = "4/5",
-                    C = "1/5",
-                    D = "4/5",
-                    Thickness = 3,
-                    RemainingLength = 500.00
-                });
-                ser_AddFile.SetSplitLineData(listSplitLineData);
+                    File.Copy(file, $@"{ApplicationVM.DirectoryDefaultParameterSetting()}\{filename[filename.Length - 1]}");
+                }
             }
 
             //讀入SplitLineSetting.lis中切割線設定值
@@ -3673,6 +3697,7 @@ namespace WPFSTD105.ViewModel
             if (index == -1)
             {
                 SteelAttr data = GetSettingSteelAttr();
+                steelAttr_system = GetSettingSteelAttr();
                 List<SteelAttr> result = new List<SteelAttr>(list.ToList());
                 result.Add(data);
 

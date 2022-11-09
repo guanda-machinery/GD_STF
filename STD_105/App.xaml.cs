@@ -216,7 +216,7 @@ namespace STD_105
             Office.LoginPage login = new Office.LoginPage(); //登入畫面
 
             login.ShowDialog();
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             Current.MainWindow.Show();
             
         }

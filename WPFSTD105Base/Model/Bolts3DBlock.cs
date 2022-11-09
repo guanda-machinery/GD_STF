@@ -189,11 +189,17 @@ namespace WPFSTD105.Model
                         break;
                     default:
                         break;
-                } 
+                }
                 #endregion
+                // 孔 #調整顏色
                 resultY[0].Color = ColorTranslator.FromHtml(Default.Hole);
                 resultY[0].ColorMethod = colorMethodType.byEntity;
 
+                // 與暐淇討論後 斜邊打點 綠色(3D) #調整顏色
+                if (this.Info.BlockName.IndexOf("Hypotenuse") > 0)
+                {
+                    resultY[0].Color = System.Drawing.ColorTranslator.FromHtml(Default.Point);
+                }
 
 
 
@@ -509,7 +515,7 @@ namespace WPFSTD105.Model
                 result.steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
             if (!model.Blocks.Contains(result.Name))
             {
-                result.CreateBolts(model, ref check);//創建孔位群組
+              result.CreateBolts(model, ref check);//創建孔位群組
             }
             // 符合加工區域
             if (check)

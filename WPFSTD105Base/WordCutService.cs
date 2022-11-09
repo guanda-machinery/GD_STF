@@ -576,6 +576,16 @@ namespace WPFSTD105
 
         static void WordTmplRendering(string ProjectName, string ProjectNumber, string TmpDocPath, string DesDocPath, double TotalLossBothSide)
         {
+            //計算ProjectNumber-TwoSideCut, ProjectName-CutLoss這兩行各自需要的空格數目
+            //ProjectNumber-TwoSideCut
+            int NeedSpace_ProjectNumber2TwoSideCut = (70 - ProjectNumber.Length)/2;
+            for (int i = 0; i < NeedSpace_ProjectNumber2TwoSideCut; i++) ProjectNumber += "  ";
+            ProjectNumber += "雙邊切除：";
+            //ProjectName-CutLoss
+            int NeedSpace_ProjectName2CutLoss = (70 - ProjectName.Length)/2;
+            for (int i = 0; i < NeedSpace_ProjectName2CutLoss; i++) ProjectName += "  ";
+            ProjectName += "切割損耗：";
+
             //取得報表上方資訊
             string current_date = DateTime.Now.ToString("yyyy-MM-dd");
 

@@ -38,7 +38,7 @@ namespace WPFSTD105
         /// </summary>
         public AbsTypeSettingVM()
         {
-            DataViews = LoadDataViews();
+            DataViews = LoadDataViews(); 
             STDSerialization ser = new STDSerialization();
             MaterialDataViews = ser.GetMaterialDataView();
             AllSelectedGridCommand = AllSelectedGrid();// 選擇報表全部物件命令
@@ -111,12 +111,12 @@ namespace WPFSTD105
             return LoadedDataViews;
         }
 
+    
 
 
 
 
-
-        private GridControl _GridControl { get; set; }
+    private GridControl _GridControl { get; set; }
         #region 命令
         /// <summary>
         /// 手動排版命令
@@ -939,12 +939,12 @@ namespace WPFSTD105
                         List<Population> _ = new List<Population>() { uPopulation, wPopulation, aPopulation, umPopulation }; //存入到列表內
 
                         //尋找最優化
-                        double minValue = _[0].TotalSurplus(); //最少的於料
+                        double minValue = _[0].TotalSurplus(); //最少的餘料
                         int minIndex = 0; //最小值索引
-                        for (int c = 1; c < _.Count; c++) //逐步展開配料結果的於料
+                        for (int c = 1; c < _.Count; c++) //逐步展開配料結果的餘料
                         {
-                            double value = _[c].TotalSurplus(); //於料
-                            if (minValue > value) //目前最小值大於於料
+                            double value = _[c].TotalSurplus(); //餘料
+                            if (minValue > value) //目前最小值大於餘料
                             {
                                 minValue = value; //修改最小值
                                 minIndex = c;//紀錄最小於列的索引位置
@@ -1109,12 +1109,12 @@ namespace WPFSTD105
                         List<Population> _ = new List<Population>() { uPopulation, wPopulation, aPopulation, umPopulation }; //存入到列表內
 
                         //尋找最優化
-                        double minValue = _[0].TotalSurplus(); //最少的於料
+                        double minValue = _[0].TotalSurplus(); //最少的餘料
                         int minIndex = 0; //最小值索引
-                        for (int c = 1; c < _.Count; c++) //逐步展開配料結果的於料
+                        for (int c = 1; c < _.Count; c++) //逐步展開配料結果的餘料
                         {
-                            double value = _[c].TotalSurplus(); //於料
-                            if (minValue > value) //目前最小值大於於料
+                            double value = _[c].TotalSurplus(); //餘料
+                            if (minValue > value) //目前最小值大於餘料
                             {
                                 minValue = value; //修改最小值
                                 minIndex = c;//紀錄最小於列的索引位置
