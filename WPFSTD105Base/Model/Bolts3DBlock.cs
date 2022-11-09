@@ -509,7 +509,7 @@ namespace WPFSTD105.Model
                 result.steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
             if (!model.Blocks.Contains(result.Name))
             {
-                result.CreateBolts(model, ref check);//創建孔位群組
+              result.CreateBolts(model, ref check);//創建孔位群組
             }
             // 符合加工區域
             if (check)
