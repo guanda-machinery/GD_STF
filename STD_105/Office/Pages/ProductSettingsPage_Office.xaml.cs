@@ -5608,7 +5608,7 @@ namespace STD_105.Office
                     //////////                    
                     ConfirmCurrentSteelSection(item);
                     //SteelAttr sa = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
-                    SteelAttr sa = ViewModel.SteelAttr;//(SteelAttr)model.Blocks[1].Entities[0].EntityData;
+                    SteelAttr sa = ViewModel.SteelAttr;//(SteelAttr)model.Blocks[1].Entities[0].EntityData;//CYH 1108
                     //ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
                     
                     string path = ApplicationVM.DirectoryNc();
