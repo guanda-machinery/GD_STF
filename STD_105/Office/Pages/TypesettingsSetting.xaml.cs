@@ -797,8 +797,16 @@ namespace STD_105.Office
 
             for (int i = 0; i < place.Count; i++)
             {
+
+
+
                 if (place[i].IsCut) //如果是切割物件
                 {
+                    Entity cut1 = Draw2DCutMesh(parts[0], model, place[i].Start, place[i].End, "Cut"+ i);
+                    if (cut1 != null)
+                    {
+                        entities.Add(cut1);
+                    }
 
                     continue;
                 }
@@ -1018,6 +1026,24 @@ namespace STD_105.Office
             //ser.SetMaterialModel(materialNumber + "2D", drawing); //儲存素材
             #endregion
 
+        }
+        private Entity Draw2DCutMesh(SteelPart part, devDept.Eyeshot.Model model, double end, double start, string dic)
+        {
+            SteelAttr steelAttr = new SteelAttr(part);
+            steelAttr.Length = end - start;
+
+            if (steelAttr.Length == 0)
+            {
+                return null;
+            }
+
+            Steel2DBlock steel2DBlock = new Steel2DBlock(Steel3DBlock.GetProfile(steelAttr), dic);   // 產生2D
+            drawing.Blocks.Add(steel2DBlock);
+            BlockReference block2D = new BlockReference(0, 0, 0, steel2DBlock.Name, 1, 1, 1, 0);//產生鋼構參考圖塊
+            block2D.Translate(start, 0);
+            block2D.Selectable = false;
+
+            return block2D;
         }
 
         private void GridSplitter_MouseMove(object sender, MouseEventArgs e)
