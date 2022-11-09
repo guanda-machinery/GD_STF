@@ -443,7 +443,7 @@ namespace WPFSTD105
 
                     //頁面跳轉
                     ProcessingScreenWin.Show();
-                    ProcessingScreenWin.ViewModel.Status = $"準備跳轉至專案管理頁面";
+                    ProcessingScreenWin.ViewModel.Status = $"準備跳轉至製品設定頁面";
                     WPFSTD105.ViewLocator.OfficeViewModel.CurrentPage = OfficePage.ProductSettings;
                     ProcessingScreenWin.Close();
 
