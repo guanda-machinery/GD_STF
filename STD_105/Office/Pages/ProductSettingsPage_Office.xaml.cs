@@ -1583,6 +1583,8 @@ namespace STD_105.Office
                     return;
                 }
 
+                
+
                 GetViewToViewModel(false, ViewModel.SteelAttr.GUID);
 
                 /*3D螺栓*/
@@ -1594,6 +1596,8 @@ namespace STD_105.Office
                 ViewModel.SteelAttr.ShippingNumber = temp;
                 ViewModel.SteelAttr.Title1 = this.Title1.Text;
                 ViewModel.SteelAttr.Title2 = this.Title2.Text;
+                ViewModel.GetSteelAttr();
+
 
                 Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference, out bool check);
 
@@ -1611,7 +1615,7 @@ namespace STD_105.Office
                 {
                     //if (!fAddSteelPart)
                         if (!fNewPart.Value)
-                            SaveModel(false);//存取檔案
+                            SaveModel(true);//存取檔案
 
                     //不是修改孔位狀態
                     if (!modifyHole)
@@ -5387,7 +5391,7 @@ namespace STD_105.Office
                         StreamWriter str = new StreamWriter(@"Current_GridItems.txt");
                         foreach (ProductSettingsPageViewModel se in see)
                         {
-                            str.WriteLine(se.DataName.ToString() + " " + se.steelAttr.AsseNumber.ToString() + " " + se.steelAttr.PartNumber.ToString());
+                            str.WriteLine($"{se.DataName} {se.steelAttr.AsseNumber} {se.steelAttr.PartNumber}");
                         }
                         str.Close();
 #endif
