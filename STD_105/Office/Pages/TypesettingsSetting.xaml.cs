@@ -48,7 +48,7 @@ namespace STD_105.Office
     {
         public SplashScreenManager ScreenManager { get; set; } = SplashScreenManager.Create(() => new WaitIndicator(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
 
-
+        public bool bResult;
         public ObSettingVM ViewModel { get; set; } = new ObSettingVM();
         /// <summary>
         /// nc 設定檔
@@ -685,8 +685,6 @@ namespace STD_105.Office
         {
             ControlDraw3D();
         }
-
-
         private void ControlDraw3D()
         {
             var SelectedData = (GD_STD.Data.MaterialDataView)Material_List_GridControl.SelectedItem;
@@ -697,7 +695,8 @@ namespace STD_105.Office
 
             model.ActionMode = actionType.SelectByBox;
             string content = SelectedData.MaterialNumber; //素材編號
-          
+
+            
             model.AssemblyPart(content);
             AssemblyPart2D(model,content);
 
@@ -717,12 +716,11 @@ namespace STD_105.Office
 
 
             //SaveModel();
-            // Draw();
             // model.SelectionChanged -= model.Model_SelectionChanged;
             // model.SelectionChanged += model.Model_SelectionChanged; 
         }
 
-          /// <summary>
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="model"></param>
@@ -755,7 +753,18 @@ namespace STD_105.Office
                 int partIndex = parts.FindIndex(el => el.Number == material.Parts[i].PartNumber); //回傳要使用的陣列位置
                 if (partIndex == -1)
                 {
-                    throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
+                    // 未找到對應零件編號
+                    //string tmp = material.Parts[i].PartNumber;
+                    //WinUIMessageBox.Show(null,
+                    //$"未找到對應零件編號" + tmp,
+                    //"通知",
+                    //MessageBoxButton.OK,
+                    //MessageBoxImage.Exclamation,
+                    //MessageBoxResult.None,
+                    //MessageBoxOptions.None,
+                    //FloatingMode.Popup);
+                    return;
+                  // throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
                 }
                 else
                 {
@@ -812,7 +821,7 @@ namespace STD_105.Office
                     entities.AddRange(ent);
                 }
 
-                else
+                else  // 如果第一次出現零件,由3D model 建立2D Block與 Entities
                 {
                     int partIndex = parts.FindIndex(el => el.Number == place[i].Number);
                     findsteel = false;
@@ -859,8 +868,6 @@ namespace STD_105.Office
 
                                 Steel2DBlock steel2DBlock = new Steel2DBlock((devDept.Eyeshot.Entities.Mesh)model.Blocks[FindSteelBlockIndex].Entities[0], model.Blocks[FindSteelBlockIndex].Name);   // 產生2D
 
-
-
                                 int icount;
                                 for (icount = 0; icount < model.Entities.Count; icount++)
                                 {
@@ -871,7 +878,6 @@ namespace STD_105.Office
                                         break;
                                     }
                                 }
-
 
                                 BlockReference blockReference = (BlockReference)model.Entities[icount]; //取得參考圖塊
                                 Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
@@ -891,34 +897,13 @@ namespace STD_105.Office
                                 block2D.Selectable = false;
                                 entities.Add(block2D);//加入到暫存列表
                             }
-
-
-  
-
                         }
-                        
-                        
-
-
-
-                        
-
-
-
-
                     }
                 }
             }
             drawing.Entities.Clear();
             drawing.Entities.AddRange(entities);
-            ser.SetMaterialModel(materialNumber + "2D", drawing); //儲存素材
-
-
-
-
-
-
-
+            //ser.SetMaterialModel(materialNumber + "2D", drawing); //儲存素材
 
 
 

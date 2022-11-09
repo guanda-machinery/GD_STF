@@ -182,6 +182,9 @@ namespace WPFSTD105.ViewModel
                         case "廢料顏色設定":
                             DefaultColor = WPFSTD105.Properties.SofSetting.Default.Null.ToString();
                             break;
+                        case "餘料顏色設定":
+                            DefaultColor = WPFSTD105.Properties.SofSetting.Default.Surplus.ToString();
+                            break;
                         case "打點":
                             DefaultColor = WPFSTD105.Properties.SofSetting.Default.Point.ToString();
                             break;
