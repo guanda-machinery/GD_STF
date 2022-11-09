@@ -17,6 +17,7 @@ using System.Diagnostics;
 //using WordToPdfService; //WORD to PDF by Office
 using System.IO;
 using Microsoft.Office.Interop.Word;
+using WordApplication = Microsoft.Office.Interop.Word.Application;
 
 //using GrapeCity.Documents.Word; //by GrapeCity
 //using System.Drawing;
@@ -191,7 +192,7 @@ namespace WPFSTD105
                         wordDocument.ExportAsFixedFormat($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf", WdExportFormat.wdExportFormatPDF);
                         wordDocument.Close(false);
 
-                        DeleteWordFileAfterDelay(5000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf");
+                        
 
                         WinUIMessageBox.Show(null,
                         $"切割明細表已下載",
@@ -215,6 +216,12 @@ namespace WPFSTD105
                         MessageBoxOptions.None,
                         FloatingMode.Popup);
                     }
+
+                    try 
+                    {
+                        DeleteWordFileAfterDelay(3000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf");
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
 
                     ////以python封裝exe執行轉檔
                     //try
@@ -298,7 +305,7 @@ namespace WPFSTD105
                         wordDocument.ExportAsFixedFormat($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf", WdExportFormat.wdExportFormatPDF);
                         wordDocument.Close(false);
 
-                        DeleteWordFileAfterDelay(5000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf");
+                        
 
                         WinUIMessageBox.Show(null,
                         $"採購明細單已下載",
@@ -322,7 +329,12 @@ namespace WPFSTD105
                         MessageBoxOptions.None,
                         FloatingMode.Popup);
                     }
-                    
+
+                    try
+                    {
+                        DeleteWordFileAfterDelay(3000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf");
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
 
                     ////以python封裝exe執行轉檔                    
                     //try
@@ -384,6 +396,7 @@ namespace WPFSTD105
                 OfficeViewModel.LengthDodageControl = false;
         });
 
+        private WordApplication m_word;
         /// <summary>
         /// 背景執行緒等待設定時間後，檢查PDF已存在的話，則刪除原本的WORD檔
         /// </summary>
@@ -394,7 +407,29 @@ namespace WPFSTD105
             {
                 if (File.Exists(PdfFilePath))
                 {
-                    try { File.Delete(WordFilePath); }
+                    //刪除word檔案
+                    try 
+                    { 
+                        File.Delete(WordFilePath);
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+
+                    //刪除存留的word程序
+                    try
+                    {
+                        Process[] processes = System.Diagnostics.Process.GetProcessesByName("WINWORD");
+
+                        foreach (System.Diagnostics.Process process in processes)
+                        {
+                            if (process.MainWindowTitle == "")
+                            {
+                                process.Kill();
+
+                                System.Threading.Thread.Sleep(500);
+                            }
+                            GC.Collect();
+                        }
+                    }
                     catch (Exception ex) { Console.WriteLine(ex.ToString()); }
                 }
             });  
