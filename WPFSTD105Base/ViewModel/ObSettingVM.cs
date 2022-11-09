@@ -665,6 +665,7 @@ namespace WPFSTD105.ViewModel
         /// <returns></returns>
         public GroupBoltsAttr GetGroupBoltsAttr(GroupBoltsAttr att)
         {
+            this.Steelbuffer = (SteelAttr)SteelAttr.Clone();
             //對調回世界座標
             switch (att.Face)
             {
@@ -690,6 +691,7 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public GroupBoltsAttr GetHypotenuseBoltsAttr(FACE Face, START_HOLE SHoleType)
         {
+            this.Steelbuffer = (SteelAttr)SteelAttr.Clone();
             Boltsbuffer.GUID = GroupBoltsAttr.GUID;
             //直徑設定
             if (CheckDia)
