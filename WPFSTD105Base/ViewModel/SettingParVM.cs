@@ -34,6 +34,7 @@ using SectionData;
 using SplitLineSettingData;
 
 using DevExpress.Xpf.Dialogs;
+using WPFSTD105;
 
 namespace WPFSTD105.ViewModel
 {
@@ -2371,7 +2372,8 @@ namespace WPFSTD105.ViewModel
                             system.Remove(e => e.Profile == steelAttr_system.Profile);//刪除
                         }
                         system.Add(steelAttr_system);//加入到系統
-                        SerializationHelper.SerializeBinary(system, $@"{ModelPath.Profile}\{strType}.inp"); //變更系統斷面規格檔案
+                        //SerializationHelper.SerializeBinary(system, $@"{ModelPath.Profile}\{strType}.inp"); //變更系統斷面規格檔案
+                        SerializationHelper.SerializeBinary(system, System.AppDomain.CurrentDomain.BaseDirectory + $@"Profile\{strType}.inp"); //變更系統斷面規格檔案
                     }
                     SerializationHelper.SerializeBinary(value, $@"{ApplicationVM.DirectoryModel()}\{ModelPath.Profile}\{strType}.inp");//變更模型設定的斷面規格
                 }
@@ -3612,6 +3614,21 @@ namespace WPFSTD105.ViewModel
             //    });
             //    ser_AddFile.SetSplitLineData(listSplitLineData);
             //}
+
+            // 2022/11/09 張燕華 判斷"型鋼加工區域設定"&"切割線設定"的初始設定值是否存在for改版前舊專案
+            ApplicationVM appVM = new ApplicationVM();
+            bool DirCreate = appVM.CheckParameterSettingDirectoryPath();
+
+            string[] files = Directory.GetFiles(System.AppDomain.CurrentDomain.BaseDirectory + $@"DefaultParameterSetting", "*.lis");
+            foreach (string file in files)
+            {
+                string[] filename = file.Split('\\');
+                string a = $@"{ApplicationVM.DirectoryDefaultParameterSetting()}\{filename[filename.Length - 1]}";
+                if (!File.Exists($@"{ApplicationVM.DirectoryDefaultParameterSetting()}\{filename[filename.Length - 1]}"))
+                {
+                    File.Copy(file, $@"{ApplicationVM.DirectoryDefaultParameterSetting()}\{filename[filename.Length - 1]}");
+                }
+            }
 
             //讀入SplitLineSetting.lis中切割線設定值
             STDSerialization ser = new STDSerialization(); //序列化處理器
