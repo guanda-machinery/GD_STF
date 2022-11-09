@@ -610,8 +610,8 @@
     <Compile Include="Page\Machine\MachineFunction.xaml.cs">
       <DependentUpon>MachineFunction.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Page\Machine\MainSpnidleMode.xaml.cs">
-      <DependentUpon>MainSpnidleMode.xaml</DependentUpon>
+    <Compile Include="Page\Machine\MainSpindleMode.xaml.cs">
+      <DependentUpon>MainSpindleMode.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\JoystickUserControl.xaml.cs">
       <DependentUpon>JoystickUserControl.xaml</DependentUpon>
@@ -931,6 +931,7 @@
     <Compile Include="ValueConverters\ConverterToPartNumber.cs" />
     <Compile Include="ValueConverters\DateTimeConverter.cs" />
     <Compile Include="ValueConverters\ListCountToVisibilityConverter.cs" />
+    <Compile Include="ValueConverters\MultiValueConverters\DatetimeArrayToLastestDatetimeConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\DoubleConditionToIsEnabledConerter.cs" />
     <Compile Include="ValueConverters\DrillBrandGetPropertyConverter.cs" />
     <Compile Include="ValueConverters\DrillBrandToDataNameConverter.cs" />
@@ -983,6 +984,7 @@
     <Compile Include="ValueConverters\PageEnumToBoolConverter.cs" />
     <Compile Include="ValueConverters\PerformanceToConverter.cs" />
     <Compile Include="ValueConverters\TabItemIsSelectedToVisibilityConverter.cs" />
+    <Compile Include="ValueConverters\TypesettingsSettingsToDrillDataConverter.cs" />
     <Compile Include="ZoomControls.cs" />
     <Page Include="GraphWin.xaml">
       <SubType>Designer</SubType>
@@ -1088,7 +1090,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Page\Machine\MainSpnidleMode.xaml">
+    <Page Include="Page\Machine\MainSpindleMode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

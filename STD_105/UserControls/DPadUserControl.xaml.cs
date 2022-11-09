@@ -279,7 +279,7 @@ namespace STD_105
         /// <param name="e"></param>
         private static void ButtonContent_4_PropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as DPadUserControl).DPad_Button1.Content = (UIElement)e.NewValue;
+            (d as DPadUserControl).DPad_Button4.Content = (UIElement)e.NewValue;
         }
 
 

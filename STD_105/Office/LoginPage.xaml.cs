@@ -162,7 +162,7 @@ namespace STD_105.Office
             if (DetectIIS(WPFSTD105.Properties.SofSetting.Default.Address))
             {
                 #if _DEBUG_IIS
-                WPFSTD105.Properties.SofSetting.Default.Address = "localhost:63505";
+                //WPFSTD105.Properties.SofSetting.Default.Address = "localhost:63505";
                 #endif
                 ChangeClient();
                 WPFSTD105.Properties.SofSetting.Default.Save();

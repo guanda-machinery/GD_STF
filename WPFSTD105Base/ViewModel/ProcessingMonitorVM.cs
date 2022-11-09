@@ -77,7 +77,15 @@ namespace WPFSTD105.ViewModel
             }
         } 
 
-        public MaterialDataView Finish_UndoneDataViews_Selected { get; set; }
+
+        /// <summary>
+        /// 選擇素材後更新素材資訊(孔位)
+        /// </summary>
+        public MaterialDataView Finish_UndoneDataViews_Selected 
+        {
+            get; 
+            set; 
+        }
 
 
 
