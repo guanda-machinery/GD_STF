@@ -2105,7 +2105,7 @@ namespace STD_105
                         TmpBoltsArr.dY = "0";
                         TmpBoltsArr.xCount = 1;
                         TmpBoltsArr.yCount = 1;
-                        TmpBoltsArr.Mode = AXIS_MODE.POINT;
+                        TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
                         TmpBoltsArr.X = tmplist1[z].X;
                         TmpBoltsArr.Y = tmplist1[z].Y;
                         TmpBoltsArr.GUID = Guid.NewGuid();
@@ -2181,7 +2181,7 @@ namespace STD_105
                         TmpBoltsArr.dY = "0";
                         TmpBoltsArr.xCount = 1;
                         TmpBoltsArr.yCount = 1;
-                        TmpBoltsArr.Mode = AXIS_MODE.POINT;
+                        TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
                         TmpBoltsArr.X = tmplist1[z].X;
                         TmpBoltsArr.Y = tmplist1[z].Y;
                         TmpBoltsArr.GUID = Guid.NewGuid();
@@ -2259,7 +2259,7 @@ namespace STD_105
                         TmpBoltsArr.dY = "0";
                         TmpBoltsArr.xCount = 1;
                         TmpBoltsArr.yCount = 1;
-                        TmpBoltsArr.Mode = AXIS_MODE.POINT;
+                        TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
                         TmpBoltsArr.X = tmplist1[z].X;
                         TmpBoltsArr.Y = tmplist1[z].Y;
                         TmpBoltsArr.GUID = Guid.NewGuid();
@@ -2370,7 +2370,7 @@ namespace STD_105
                         TmpBoltsArr.dY = "0";
                         TmpBoltsArr.xCount = 1;
                         TmpBoltsArr.yCount = 1;
-                        TmpBoltsArr.Mode = AXIS_MODE.POINT;
+                        TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
                         TmpBoltsArr.X = HypotenusePoint[z].Item1;
                         TmpBoltsArr.Y = HypotenusePoint[z].Item2;
                         TmpBoltsArr.GUID = Guid.NewGuid();
@@ -2434,7 +2434,7 @@ namespace STD_105
                         TmpBoltsArr.dY = "0";
                         TmpBoltsArr.xCount = 1;
                         TmpBoltsArr.yCount = 1;
-                        TmpBoltsArr.Mode = AXIS_MODE.POINT;
+                        TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
                         TmpBoltsArr.X = HypotenusePoint[z].Item1;
                         TmpBoltsArr.Y = HypotenusePoint[z].Item2;
                         TmpBoltsArr.GUID = Guid.NewGuid();
@@ -2500,7 +2500,7 @@ namespace STD_105
                         TmpBoltsArr.dY = "0";
                         TmpBoltsArr.xCount = 1;
                         TmpBoltsArr.yCount = 1;
-                        TmpBoltsArr.Mode = AXIS_MODE.POINT;
+                        TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
                         TmpBoltsArr.X = HypotenusePoint[z].Item1;
                         TmpBoltsArr.Y = HypotenusePoint[z].Item2;
                         TmpBoltsArr.GUID = Guid.NewGuid();

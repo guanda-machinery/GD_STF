@@ -48,6 +48,7 @@
     <Compile Include="ARM_CLAMP.cs" />
     <Compile Include="AXIS_MODE.cs" />
     <Compile Include="AXIS_SELECTED.cs" />
+    <Compile Include="DecimalPlaces.cs" />
     <Compile Include="BAVT.cs" />
     <Compile Include="BOLT_TYPE.cs" />
     <Compile Include="CLAMP_DOWN.cs" />

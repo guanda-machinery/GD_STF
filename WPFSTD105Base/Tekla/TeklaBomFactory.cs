@@ -351,6 +351,7 @@ namespace WPFSTD105.Tekla
                             else if (objType == typeof(SteelAssembly))//如果是構件
                             {
                                 Father = (SteelAssembly)obj;//存取物件報表是樹狀圖的所以需要用到此物件的部分資訊
+                                Father.Length = Math.Round(Father.Length, (int)DecimalPlaces.Length);
                                 var steels = SteelAssemblies.Where(el => el.Number == Father.Number); //只篩選構件編號
                                 if (steels.Count() > 0) //如果找到相同物件
                                 {
@@ -387,6 +388,7 @@ namespace WPFSTD105.Tekla
                                 {
                                     int index = 0;//索引位置
                                     SteelPart part = (SteelPart)obj; //轉換單零件
+                                    part.Length = Math.Round(part.Length, (int)DecimalPlaces.Length);
                                     if (obj.GetType() == typeof(SteelPart) && ObSettingVM.allowType.Contains(part.Type)) //如果類型是 SteelPart
                                     {
                                         //判斷需要加入的斷面規格類型
