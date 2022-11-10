@@ -829,7 +829,7 @@
                     <dxg:GridColumn FieldName=""  IsSmart="True" Header="鋼材類型" AllowEditing="false" />
                     <dxg:GridColumn FieldName="Profile"  IsSmart="True" Header="斷面規格" AllowEditing="false"  />
                     <dxg:GridColumn FieldName="Material"  IsSmart="True" Header="材質" Width="auto"  AllowEditing="false" />
-                    <dxg:GridColumn FieldName=""  IsSmart="True" Header="數量" Width="auto" AllowEditing="false" />
+                    <dxg:GridColumn Binding="{c:Binding Parts.Count}"  IsSmart="True" Header="零件數量" Width="auto" AllowEditing="false"/>
                     <dxg:GridColumn FieldName=""  IsSmart="True" Header="已完成" Width="auto" AllowEditing="false" />
                     <dxg:GridColumn FieldName="LengthStr"  IsSmart="True" Header="素材長" AllowEditing="false"  />
                     <dxg:GridColumn IsSmart="True" Header="素材使用率" AllowEditing="false">
