@@ -4066,9 +4066,18 @@ namespace STD_105.Office
             //    ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內1000
             //    ViewModel.GetSteelAttr();
             //}
-            
-            STDSerialization ser = new STDSerialization();
+
             SteelAttr sa = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
+            STDSerialization ser = new STDSerialization();
+            // 取出所有零件
+            Dictionary<string, ObservableCollection<SteelPart>> part1 = ser.GetPart();
+            // 所有零件
+            var allPart1 = part1.SelectMany(x => x.Value).ToList();
+            // 目前零件之構件資訊
+            var Part1 = part1.SelectMany(x => x.Value).FirstOrDefault(x => x.Number == sa.PartNumber && x.GUID == sa.GUID).Father;
+
+
+
             //SteelAttr sa = (SteelAttr)model.Entities[model.Entities.Count() - 1].EntityData;
             model.Blocks[1].Name = sa.GUID.Value.ToString();
             //ser.SetPartModel(ViewModel.SteelAttr.GUID.ToString(), model);
@@ -4237,6 +4246,12 @@ namespace STD_105.Office
                 //    //ViewModel.SteelAssemblies.Where(x => x.GUID == ViewModel.SteelAttr.GUID).FirstOrDefault().ID.AddRange(buffer.ToArray());
                 //    //ass.ID = buffer.ToList();
             }
+
+            
+            if (add)
+            {
+                ser.SetSteelAssemblies(SteelAssemblies);
+            }
             #endregion
             //GetViewToViewModel(false, ((SteelAttr)model.Blocks[1].Entities[0].EntityData).GUID);
             #region 斷面規格
@@ -4250,6 +4265,14 @@ namespace STD_105.Office
                 ser.SetProfileList(profile);
             }
             #endregion
+
+            // 原零件之構建ID
+            var oriFather = allPart1.FirstOrDefault(x => x.GUID == sa.GUID).Father;
+            var oriID = allPart1.FirstOrDefault(x => x.GUID == sa.GUID).Father;
+            // 此零件構件外之構建ID
+            var diffFather = oriFather.Except(ass.ID).ToList();
+            ass.ID.AddRange(diffFather);
+
 
             #region 零件列表
             // 2022/09/08 呂宗霖 與架構師討論後，零件編輯單純做編輯動作            
@@ -4298,6 +4321,7 @@ namespace STD_105.Office
             steelPart.Match = new List<bool>();
             //steelPart.Material = ViewModel.SteelAttr.Material;
             steelPart.Material = sa.Material;
+            
             steelPart.Father = ass.ID;
             //steelPart.Profile = ViewModel.SteelAttr.Profile;
             steelPart.Profile = sa.Profile.Replace("*","X").Replace(" ","");
@@ -4317,13 +4341,13 @@ namespace STD_105.Office
                 steelPart.Type = pf2.Type;
             }
 
-            for (int i = 0; i < steelPart.Count; i++)
+            for (int i = 0; i < ass.ID.Count; i++)
             {
                 steelPart.Match.Add(true);
             }
             List<int> buffer1 = new List<int>();
             //while (buffer1.Count != ViewModel.SteelAttr.Number)
-            while (buffer1.Count != sa.Number)
+            while (buffer1.Count != ass.ID.Count)
             {
                 int id = random.Next(1000000, 9000000);
                 if (!buffer1.Contains(id))
@@ -4333,7 +4357,7 @@ namespace STD_105.Office
             }
             // 給定 零件 數量vsID
             steelPart.ID = buffer1.ToList();
-
+            steelPart.Count = ass.ID.Count();
 
 
             //// 取出零件
@@ -4459,10 +4483,6 @@ namespace STD_105.Office
             #endregion
             #endregion
 
-            if (add)
-            {
-                ser.SetSteelAssemblies(SteelAssemblies);
-            }
             ViewModel.SaveDataCorrespond();
 
             // 重新載入

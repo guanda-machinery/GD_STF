@@ -1784,6 +1784,8 @@ namespace WPFSTD105.ViewModel
                             var partIndex = fatherList.IndexOf(assemID);
                             // 取得該筆零件ID
                             int partID = partList[partIndex];
+
+                            int count = assembliesItem.Item3.Intersect(fatherList).Count();
                             // 當父節點中還找的到父節點ID時，代表該零件尚存在其他構件中
                             while (fatherList.Contains(assemID))
                             {
@@ -1837,7 +1839,7 @@ namespace WPFSTD105.ViewModel
                                 steelAttrVM.steelAttr.Material = material;
                                 steelAttrVM.Material = material;
                                 // 數量
-                                int count = item.Count;
+                                // 由零件Father往回抓構件的ID List                                
                                 steelAttrVM.steelAttr.Number = count;
                                 steelAttrVM.Count = count;
                                 // 零件重

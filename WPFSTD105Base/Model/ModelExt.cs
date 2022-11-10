@@ -133,6 +133,7 @@ namespace WPFSTD105
                             vm.Select2DItem.Add(item);//加入到 2D 選擇物件
                             vm.Select3DItem.Add(new SelectedItem() { Item = Selected(Secondary, (BlockReference)item.Item, true) });//加入到 3D 選擇物件
                         }
+                        i = 0;
                         foreach (var item in e.RemovedItems)
                         {
 
