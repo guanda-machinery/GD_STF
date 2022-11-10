@@ -5089,7 +5089,8 @@ namespace STD_105.Office
             ViewModel.Title1Property = CuurentSelectedPart.steelAttr.Title1;
             ViewModel.Title2Property = CuurentSelectedPart.steelAttr.Title2;
             ViewModel.SteelSectionProperty = CuurentSelectedPart.steelAttr.Profile;
-            ViewModel.SteelAttr.GUID =CuurentSelectedPart.steelAttr.GUID;
+            //ViewModel.SteelAttr.GUID =CuurentSelectedPart.steelAttr.GUID;//1110 暫時註解掉，避免 e.OldItem, e.NewItem 間同時指向VM層連動導致(因為有binding到)e.OldItem資料被變更 CYH
+
 
             //CuurentSelectedPart.steelAttr.Name = CuurentSelectedPart.TeklaName;
             //CuurentSelectedPart.steelAttr.Title2 = CuurentSelectedPart.Title2;
@@ -5100,7 +5101,7 @@ namespace STD_105.Office
             //CuurentSelectedPart.steelAttr.Weight = ViewModel.SteelAttr.Weight;
             //CuurentSelectedPart.steelAttr.Number = (int)CuurentSelectedPart.Count;
             //CuurentSelectedPart.Length = CuurentSelectedPart.steelAttr.Length;
-            ViewModel.SteelAttr = CuurentSelectedPart.steelAttr;
+            //ViewModel.SteelAttr = CuurentSelectedPart.steelAttr;//1110 暫時註解掉，避免 e.OldItem, e.NewItem 間同時指向VM層連動導致(因為有binding到)e.OldItem資料被變更 CYH
             //ViewModel.SteelSectionProperty = profile;
 
             ViewModel.fPartListOrManuall = false;
@@ -5245,6 +5246,7 @@ namespace STD_105.Office
                     ProductSettingsPageViewModel item = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
                     // 異動指標
                     this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
+                    
                     int selectIndex = ((ObservableCollection<ProductSettingsPageViewModel>)e.Source.ItemsSource).ToList().FindIndex(x => x.DataName == item.DataName && x.AssemblyNumber==item.AssemblyNumber && x.steelAttr.PartNumber==item.steelAttr.PartNumber);
                     //this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                     PieceListGridControl.SelectItem(selectIndex);
@@ -5498,13 +5500,15 @@ namespace STD_105.Office
                             FloatingMode.Popup);
                         return;
                     }
-                    
+
                     //////////                    
                     ConfirmCurrentSteelSection(item);
+
                     //SteelAttr sa = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
-                    SteelAttr sa = ViewModel.SteelAttr;//(SteelAttr)model.Blocks[1].Entities[0].EntityData;//CYH 1108
+                    //SteelAttr sa = ViewModel.SteelAttr;//(SteelAttr)model.Blocks[1].Entities[0].EntityData;//1110 暫時註解掉，避免 e.OldItem, e.NewItem 間同時指向VM層連動導致(因為有binding到)e.OldItem資料被變更 CYH
+                    SteelAttr sa = item.steelAttr;//1110 改由e.NewItem的steelAttr給值 CYH
                     //ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
-                    
+
                     string path = ApplicationVM.DirectoryNc();
                     string allPath = path + $"\\{sa.PartNumber}.nc1";
 
