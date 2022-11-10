@@ -44,7 +44,7 @@ namespace WPFSTD105.Model
         public Steel2DBlock(Mesh mesh, string name) : base(name)
         {
             ChangeMesh(mesh);
-            Triangulation();
+            Triangulation(name);
             //_Triangulation();
         }
         /// <summary>
@@ -346,9 +346,10 @@ namespace WPFSTD105.Model
         /// <summary>
         /// 三角畫法
         /// </summary>
-        private void Triangulation()
+        private void Triangulation(string SteelName="")
         {
 
+            Line top=new Line(0, 0, 0, 0) ;
             //儲存列表
             List<Line>
                 topList = new List<Line>(),
@@ -360,7 +361,11 @@ namespace WPFSTD105.Model
                 {
                     //產生線段 0826依需求更換顏色(彥谷)
                     //Line top =   new Line(solidPortion.Vertices[item.V1], solidPortion.Vertices[item.V2]) { Color = Color.White, ColorMethod = colorMethodType.byEntity };
-                    Line top = new Line(solidPortion.Vertices[item.V1], solidPortion.Vertices[item.V2]) { Color = Color.Yellow, ColorMethod = colorMethodType.byEntity };
+                    if (SteelName.Substring(0,3) =="Cut")
+                        top = new Line(solidPortion.Vertices[item.V1], solidPortion.Vertices[item.V2]) { Color = Color.Gray, ColorMethod = colorMethodType.byEntity };
+                    else
+                        top = new Line(solidPortion.Vertices[item.V1], solidPortion.Vertices[item.V2]) { Color = Color.Yellow, ColorMethod = colorMethodType.byEntity };
+
                     //複製線段
                     Line from = (Line)top.Clone();
                     //from.Color = System.Drawing.Color.Blue;
