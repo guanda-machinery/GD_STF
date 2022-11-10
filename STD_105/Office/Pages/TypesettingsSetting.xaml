@@ -1222,15 +1222,15 @@
                             Focusable="True" 
                             AntiAliasingSamples="x16" 
                             Renderer="NativeExperimental" 
-                            ShowFps="True">
-                            <spa:ModelExt.ContextMenu>
-                                <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
-                                    <MenuItem Name="esc" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
-                                    <MenuItem Header="放大選取範圍" Style="{StaticResource BaseStyle}" Command="{Binding ZoomWindow}"/>
-                                    <MenuItem Header="縮放" Style="{StaticResource BaseStyle}" Command="{Binding Zoom}"/>
-                                    <MenuItem Header="旋轉" Style="{StaticResource BaseStyle}" Command="{Binding Rotate}"/>
-                                    <MenuItem Header="平移" Style="{StaticResource BaseStyle}" Command="{Binding Pan}"/>
-                                    <!--<MenuItem Name="edit" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}" Visibility="Collapsed"/>
+                            ShowFps="false">
+                                <spa:ModelExt.ContextMenu>
+                                    <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
+                                        <MenuItem Name="esc" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
+                                        <MenuItem Header="放大選取範圍" Style="{StaticResource BaseStyle}" Command="{Binding ZoomWindow}"/>
+                                        <MenuItem Header="縮放" Style="{StaticResource BaseStyle}" Command="{Binding Zoom}"/>
+                                        <MenuItem Header="旋轉" Style="{StaticResource BaseStyle}" Command="{Binding Rotate}"/>
+                                        <MenuItem Header="平移" Style="{StaticResource BaseStyle}" Command="{Binding Pan}"/>
+                                        <!--<MenuItem Name="edit" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}" Visibility="Collapsed"/>
                                         <MenuItem x:Name="delete" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}" Visibility="Collapsed"/>-->
                                     <!--<MenuItem Header="清除標註" Command="{Binding ClearDim}" CommandParameter="{Binding ElementName=model}" Style="{StaticResource BaseStyle}"/>-->
                                     <!--<MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
@@ -1306,41 +1306,41 @@
                             Focusable="True" 
                             AntiAliasingSamples="x16" 
                             Renderer="NativeExperimental" 
-                            ShowFps="True">
-                            <spa:ModelExt.ContextMenu>
-                                <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
-                                    <MenuItem Name="esc2D" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
-                                    <MenuItem Header="放大選取範圍" Style="{StaticResource BaseStyle}" Command="{Binding ZoomWindow}"/>
-                                    <MenuItem Header="縮放" Style="{StaticResource BaseStyle}" Command="{Binding Zoom}"/>
-                                    <MenuItem Header="平移" Style="{StaticResource BaseStyle}" Command="{Binding Pan}"/>
-                                    <MenuItem Name="edit2D" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}"/>
-                                    <MenuItem x:Name="delete2D" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}"/>
-                                    <MenuItem Header="清除標註" Command="{Binding ClearDim}" Style="{StaticResource BaseStyle}"/>
-                                    <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
-                                    <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
-                                </ContextMenu>
-                            </spa:ModelExt.ContextMenu>
-                            <ddes:Model.ProgressBar>
-                                <ddes:ProgressBar Lighting="False"/>
-                            </ddes:Model.ProgressBar>
-                            <ddes:Model.Viewports>
-                                <ddes:Viewport DisplayMode="Flat" InitialView="Top" OriginSymbols="{Binding OriginSymbols}">
-                                    <ddes:Viewport.Background>
-                                        <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#FF303030"/>
-                                    </ddes:Viewport.Background>
-                                    <ddes:Viewport.Camera>
-                                        <ddes:Camera Distance="380" ProjectionMode="Orthographic" Target="0, 0, 45" ZoomFactor="2"/>
-                                    </ddes:Viewport.Camera>
-                                    <ddes:Viewport.Rotate>
-                                        <ddes:RotateSettings RotationCenter="CursorLocation" Enabled="False"/>
-                                    </ddes:Viewport.Rotate>
-                                    <ddes:Viewport.ToolBars>
-                                        <ddes:ToolBar>
-                                            <ddes:ToolBar.Buttons>
-                                                <ddes:HomeToolBarButton/>
-                                                <ddes:ZoomWindowToolBarButton/>
-                                                <ddes:ZoomToolBarButton/>
-                                                <ddes:PanToolBarButton/>
+                            ShowFps="false" SelectionChanged="model_SelectionChanged">
+                                <spa:ModelExt.ContextMenu>
+                                    <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
+                                        <MenuItem Name="esc2D" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
+                                        <MenuItem Header="放大選取範圍" Style="{StaticResource BaseStyle}" Command="{Binding ZoomWindow}"/>
+                                        <MenuItem Header="縮放" Style="{StaticResource BaseStyle}" Command="{Binding Zoom}"/>
+                                        <MenuItem Header="平移" Style="{StaticResource BaseStyle}" Command="{Binding Pan}"/>
+                                        <MenuItem Name="edit2D" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}"/>
+                                        <MenuItem x:Name="delete2D" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}"/>
+                                        <MenuItem Header="清除標註" Command="{Binding ClearDim}" Style="{StaticResource BaseStyle}"/>
+                                        <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
+                                        <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
+                                    </ContextMenu>
+                                </spa:ModelExt.ContextMenu>
+                                <ddes:Model.ProgressBar>
+                                    <ddes:ProgressBar Lighting="False"/>
+                                </ddes:Model.ProgressBar>
+                                <ddes:Model.Viewports>
+                                    <ddes:Viewport DisplayMode="Flat" InitialView="Top" OriginSymbols="{Binding OriginSymbols}">
+                                        <ddes:Viewport.Background>
+                                            <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#FF303030"/>
+                                        </ddes:Viewport.Background>
+                                        <ddes:Viewport.Camera>
+                                            <ddes:Camera Distance="380" ProjectionMode="Orthographic" Target="0, 0, 45" ZoomFactor="2"/>
+                                        </ddes:Viewport.Camera>
+                                        <ddes:Viewport.Rotate>
+                                            <ddes:RotateSettings RotationCenter="CursorLocation" Enabled="False"/>
+                                        </ddes:Viewport.Rotate>
+                                        <ddes:Viewport.ToolBars>
+                                            <ddes:ToolBar>
+                                                <ddes:ToolBar.Buttons>
+                                                    <ddes:HomeToolBarButton/>
+                                                    <ddes:ZoomWindowToolBarButton/>
+                                                    <ddes:ZoomToolBarButton/>
+                                                    <ddes:PanToolBarButton/>
                                                 <ddes:ZoomFitToolBarButton/>
                                                 <ddes:ToolBarButton ToolTipText="線性標註" Click="LinearDim" StyleMode="PushButton"   
                                                                 Image="{Binding Source={materialDesign:PackIcon Kind=Ruler},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"

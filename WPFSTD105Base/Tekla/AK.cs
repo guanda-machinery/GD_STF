@@ -55,12 +55,12 @@ namespace WPFSTD105.Tekla
                 //將 string 轉換 double
                 List<double> values = GetValues(item);
                 NcPoint3D point3D = new NcPoint3D(values[0],
-                                                                                    values[1],
-                                                                                    r: values[2],
-                                                                                    angle1: values[3],
-                                                                                    startAngle1: values[4],
-                                                                                    angle2: values[5],
-                                                                                    startAngle2: values[6]);
+                                                    values[1],
+                                                    r: values[2],
+                                                    angle1: values[3],
+                                                    startAngle1: values[4],
+                                                    angle2: values[5],
+                                                    startAngle2: values[6]);
                 if (result.Count -1 != -1)
                 {
                     NcPoint3D p1 = result[result.Count -1];

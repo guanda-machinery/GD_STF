@@ -166,7 +166,22 @@ namespace WPFSTD105.Properties {
                 this["Null"] = value;
             }
         }
-        
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#808080")]
+        public string Surplus
+        {
+            get
+            {
+                return ((string)(this["Surplus"]));
+            }
+            set
+            {
+                this["Surplus"] = value;
+            }
+        }
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("#FF303030")]
