@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFSTD105.ViewModel;
 using WPFWindowsBase;
 
 namespace STD_105
@@ -21,6 +22,7 @@ namespace STD_105
     /// </summary>
     public partial class MachineFunction : BasePage
     {
+
         public MachineFunction()
         {
             InitializeComponent();

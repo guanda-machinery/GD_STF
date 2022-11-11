@@ -94,7 +94,7 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(WriteMemorLog, ex);
-                throw;
+               // //throw;
             }
         }
         #region Memor
@@ -120,9 +120,10 @@ namespace CodesysIIS
         [return: WsdlParamOrReturnDocumentation("回傳當前值，出入口的占用長度。")]
         public WorkOther GetWorkOther()
         {
+            WorkOther result = new WorkOther();
             try
             {
-                WorkOther result = new WorkOther();
+             
                 Type type = typeof(MonitorWork);
                 long currentOffset = Marshal.OffsetOf(type, nameof(MonitorWork.Current)).ToInt64();//current 記憶體起始偏移位置
                 long enOffset = Marshal.OffsetOf(type, nameof(MonitorWork.EntranceOccupy)).ToInt64();//入口占用料架偏移量
@@ -134,25 +135,26 @@ namespace CodesysIIS
                 result.ExportOccupy2 = SharedMemory.GetValue<MonitorWork, double>(ex2Offset, Marshal.SizeOf(typeof(double))); //出口占用位置
                 string info = JsonConvert.SerializeObject(result, new JsonSerializerSettings { Formatting = Formatting.Indented });  //參數訊息轉為 Json 方便寫入 Log
                 WriteInfo(ReadMemorLog, "讀取加工其他參數", info);
-                return result;
+              
             }
             catch (Exception ex)
             {
                 WriteError(WriteMemorLog, ex);
-                throw;
+                ////throw;
             }
+            return result;
         }
         /// <inheritdoc/>
         [return: WsdlParamOrReturnDocumentation("回傳所有陣列除了 -1 以後的值")]
         public short[] GetIndex()
         {
+            List<short> result = new List<short>(); //index 儲存列表
             try
             {
                 Type type = typeof(MonitorWork);
                 long indexOffset = Marshal.OffsetOf(type, nameof(MonitorWork.Index)).ToInt64();//index 記憶體起始偏移位置
                 long countOffset = Marshal.OffsetOf(type, nameof(MonitorWork.Count)).ToInt64();//數量記憶體偏移位置
                 int indexSize = Marshal.SizeOf(typeof(short));
-                List<short> result = new List<short>(); //index 儲存列表
                 int count = SharedMemory.GetValue<MonitorWork, short>(countOffset, Marshal.SizeOf(typeof(ushort))); //目前加工陣列的數量
                 for (int i = 0; i < count; i++)
                 {
@@ -175,13 +177,14 @@ namespace CodesysIIS
                         WriteInfo(ReadMemorLog, "讀取 MonitorWork.Index 內容", info);
                     }
                 });
-                return result.ToArray();
+              
             }
             catch (Exception ex)
             {
                 WriteError(WriteMemorLog, ex);
-                throw;
+                ////throw;
             }
+            return result.ToArray();
 
         }
         /// <inheritdoc/>
@@ -225,13 +228,13 @@ namespace CodesysIIS
 
                 /*寫入公司名稱給 Codesysy*/
 
-                return host;
             }
             catch (Exception ex)
             {
                 WriteError(WriteMemorLog, ex);
-                throw;
+                ////throw;
             }
+            return host;
         }
 
         private static void OpenExe(string fileName)
@@ -323,7 +326,7 @@ namespace CodesysIIS
             {
                 WriteError(WriteMemorLog, ex);
 #if DEBUG
-                throw;
+                ////throw;
 #endif
             }
         }
@@ -418,7 +421,7 @@ namespace CodesysIIS
                     WriteError(CollectLog, ex);
                     Debug.Print(ex.Message);
 #if DEBUG
-                    throw;
+                    //throw;
 #endif
                 }
             }
@@ -431,44 +434,49 @@ namespace CodesysIIS
         [return: WsdlParamOrReturnDocumentation("APP 及時監控參數")]
         public GD_STD.Phone.MonitorMec GetAPPMonitorMec()
         {
+            GD_STD.Phone.MonitorMec result = new GD_STD.Phone.MonitorMec();
             try
             {
-                GD_STD.Phone.MonitorMec result = PCSharedMemory.GetValue<GD_STD.Phone.MonitorMec>(); //讀取記憶體
+                result = PCSharedMemory.GetValue<GD_STD.Phone.MonitorMec>(); //讀取記憶體
                 string info = JsonConvert.SerializeObject(result, new JsonSerializerSettings { Formatting = Formatting.Indented }); //參數訊息轉為 Json 方便寫入 Log
                 WriteInfo(ReadMemorLog, "APP 及時監控參數", info);
-                return result;
+             
             }
             catch (Exception ex)
             {
                 WriteError(ReadMemorLog, ex);
-                throw;
+                //throw;
             }
+            return result;
         }
 
         /// <inheritdoc/>
         [return: WsdlParamOrReturnDocumentation("取得 APP 手動操作")]
         public GD_STD.Phone.APP_Struct GetAPP_Struct()
         {
+            GD_STD.Phone.APP_Struct result = new GD_STD.Phone.APP_Struct();
             try
             {
-                GD_STD.Phone.APP_Struct result = PCSharedMemory.GetValue<GD_STD.Phone.APP_Struct>(); //讀取記憶體
+                result = PCSharedMemory.GetValue<GD_STD.Phone.APP_Struct>(); //讀取記憶體
                 string info = JsonConvert.SerializeObject(result, new JsonSerializerSettings { Formatting = Formatting.Indented }); //參數訊息轉為 Json 方便寫入 Log
                 WriteInfo(ReadMemorLog, "APP 手動操作狀態", info);
-                return result;
+
             }
             catch (Exception ex)
             {
                 WriteError(ReadMemorLog, ex);
-                throw;
+                //throw;
             }
+            return result;
         }
         /// <inheritdoc/>
         [return: WsdlParamOrReturnDocumentation("目前 Codesys 操控面板 IO 狀態")]
         public PanelButton GetPanel()
         {
+            PanelButton result = new PanelButton();
             try
             {
-                PanelButton result = PCSharedMemory.GetValue<PanelButton>(); //讀取記憶體
+                result = PCSharedMemory.GetValue<PanelButton>(); //讀取記憶體
 
                 if (!Enum.IsDefined(typeof(ERROR_CODE), result.Alarm))
                 {
@@ -486,37 +494,40 @@ namespace CodesysIIS
                     catch (Exception ex)
 #pragma warning restore CS0168 // 已宣告變數 'ex'，但從未使用過它
                     {
-                        throw;
+                        //throw;
                     }
                 }
                 string info = JsonConvert.SerializeObject(result, new JsonSerializerSettings { Formatting = Formatting.Indented }); //參數訊息轉為 Json 方便寫入 Log
                 WriteInfo(ReadMemorLog, "操控面板 IO 狀態", info);
-                return result;
+                
             }
             catch (Exception ex)
             {
                 WriteError(ReadMemorLog, ex);
-                throw;
+                //throw;
             }
+            return result;
         }
 
         /// <inheritdoc/>
         [return: WsdlParamOrReturnDocumentation("用戶在 Codesys 設定的刀庫")]
         public GD_STD.DrillWarehouse GetDrillWarehouse()
         {
+            GD_STD.DrillWarehouse result = new GD_STD.DrillWarehouse();
             try
             {
                 GD_STD.Phone.APP_Struct app = PCSharedMemory.GetValue<GD_STD.Phone.APP_Struct>(); //讀取記憶體
-                GD_STD.DrillWarehouse result = new GD_STD.DrillWarehouse(app.DrillWarehouse);
+                result = new GD_STD.DrillWarehouse(app.DrillWarehouse);
                 string info = JsonConvert.SerializeObject(result, new JsonSerializerSettings { Formatting = Formatting.Indented });  //參數訊息轉為 Json 方便寫入 Log
                 WriteInfo(ReadMemorLog, "用戶在 Codesys 設定的刀庫", info);
-                return result;
+
             }
             catch (Exception ex)
             {
                 WriteError(ReadMemorLog, ex);
-                throw;
+                //throw;
             }
+            return result;
         }
 
         /// <inheritdoc/>
@@ -533,8 +544,9 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(ReadMemorLog, ex);
-                throw;
+                //throw;
             }
+            return null;
         }
 
         /// <inheritdoc/>
@@ -551,17 +563,19 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(ReadMemorLog, ex);
-                throw;
+                //throw;
             }
+            return null;
         }
 
         /// <inheritdoc/>
         [return: WsdlParamOrReturnDocumentation("用戶在 Codesys 設定的潤滑油系統參數")]
         public LubricantSystem GetLubricant()
         {
+            OillSystem result = new OillSystem();
             try
             {
-                OillSystem result = PCSharedMemory.GetValue<OillSystem>(); //讀取記憶體
+                result = PCSharedMemory.GetValue<OillSystem>(); //讀取記憶體
                 string info = JsonConvert.SerializeObject(result.LubricantSystem, new JsonSerializerSettings { Formatting = Formatting.Indented });  //參數訊息轉為 Json 方便寫入 Log
                 WriteInfo(ReadMemorLog, "用戶在 Codesys 設定的潤滑油系統參數", info);
                 return result.LubricantSystem;
@@ -569,80 +583,89 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(ReadMemorLog, ex);
-                throw;
+                //throw;
             }
+            return result.LubricantSystem;
         }
 
         /// <inheritdoc/>
         [return: WsdlParamOrReturnDocumentation("用戶在 Codesys 設定的切削油系統參數")]
         public CutOilSystem GetCut()
         {
+            OillSystem result = null;
             try
             {
-                OillSystem result = PCSharedMemory.GetValue<OillSystem>(); //讀取記憶體
+                result = PCSharedMemory.GetValue<OillSystem>(); //讀取記憶體
                 string info = JsonConvert.SerializeObject(result.CutOilSystem, new JsonSerializerSettings { Formatting = Formatting.Indented });  //參數訊息轉為 Json 方便寫入 Log
                 WriteInfo(ReadMemorLog, "用戶在 Codesys 設定的切削油系統參數", info);
-                return result.CutOilSystem;
+              
             }
             catch (Exception ex)
             {
                 WriteError(ReadMemorLog, ex);
-                throw;
+                //throw;
             }
+            return result.CutOilSystem;
         }
 
         /// <inheritdoc/>
         [return: WsdlParamOrReturnDocumentation("目前 Codesys 軸向訊息")]
         public AxisInfo GetAxisInfo()
         {
+            AxisInfo result = new AxisInfo();
             try
             {
-                AxisInfo result = PCSharedMemory.GetValue<AxisInfo>(); //讀取記憶體
+                result = PCSharedMemory.GetValue<AxisInfo>(); //讀取記憶體
                 string info = JsonConvert.SerializeObject(result, new JsonSerializerSettings { Formatting = Formatting.Indented });  //參數訊息轉為 Json 方便寫入 Log
                 WriteInfo(ReadMemorLog, "目前 Codesys 軸向訊息", info);
-                return result;
+
             }
             catch (Exception ex)
             {
                 WriteError(ReadMemorLog, ex);
-                throw;
+                //throw;
             }
+            return result;
         }
 
         /// <inheritdoc/>
         [return: WsdlParamOrReturnDocumentation("目前 PC 與 Codesys 主機交握狀態")]
         public Host GetHost()
         {
+            Host result = new Host();
             try
             {
-                Host result = PCSharedMemory.GetValue<Host>(); //讀取記憶體
+                 result = PCSharedMemory.GetValue<Host>(); //讀取記憶體
                 string info = JsonConvert.SerializeObject(result, new JsonSerializerSettings { Formatting = Formatting.Indented });  //參數訊息轉為 Json 方便寫入 Log
                 WriteInfo(ReadMemorLog, "目前 PC 與 Codesys 主機交握狀態", info);
-                return result;
+              
             }
             catch (Exception ex)
             {
                 WriteError(ReadMemorLog, ex);
-                throw;
+                //throw;
             }
+            return result;
         }
 
         /// <inheritdoc/>
         [return: WsdlParamOrReturnDocumentation("目前的斷電保持數值")]
         public Outage GetOutage()
         {
+            Outage result = new Outage();
             try
             {
-                Outage result = PCSharedMemory.GetValue<Outage>(); //讀取記憶體
+                result = PCSharedMemory.GetValue<Outage>(); //讀取記憶體
                 string info = JsonConvert.SerializeObject(result, new JsonSerializerSettings { Formatting = Formatting.Indented });  //參數訊息轉為 Json 方便寫入 Log
                 WriteInfo(ReadMemorLog, "目前斷電保持的數值", info);
-                return result;
+            
             }
             catch (Exception ex)
             {
                 WriteError(ReadMemorLog, ex);
-                throw;
+                //throw;
             }
+            return result;
         }
 
         /// <inheritdoc/>
@@ -663,25 +686,28 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(ReadMemorLog, ex);
-                throw;
+                //throw;
             }
+            return null;
         }
         /// <inheritdoc/>
         [return: WsdlParamOrReturnDocumentation("APP 控制訊號")]
         public GD_STD.Phone.Operating GetOperating()
         {
+            GD_STD.Phone.Operating result = new GD_STD.Phone.Operating();
             try
             {
-                GD_STD.Phone.Operating result = PCSharedMemory.GetValue<GD_STD.Phone.Operating>(); //讀取記憶體
+                result = PCSharedMemory.GetValue<GD_STD.Phone.Operating>(); //讀取記憶體
                 string info = JsonConvert.SerializeObject(result, new JsonSerializerSettings { Formatting = Formatting.Indented });  //參數訊息轉為 Json 方便寫入 Log
                 WriteInfo(ReadMemorLog, "目前 APP 控制訊號", info);
-                return result;
+               
             }
             catch (Exception ex)
             {
                 WriteError(ReadMemorLog, ex);
-                throw;
+                //throw;
             }
+            return result;
         }
         /// <inheritdoc/>
         [return: WsdlParamOrReturnDocumentation("如果沒專案回傳 null，有專案則回傳 MonitorWork.ProjectName。")]
@@ -701,29 +727,32 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(ReadMemorLog, ex);
-                throw;
+                //throw;
             }
+            return null;
         }
         /// <inheritdoc/>
         [return: WsdlParamOrReturnDocumentation("GD_STD.Phone.MonitorWork.WorkMaterial[index]")]
         public WorkMaterial GetWorkMaterial(ushort index)
         {
+            WorkMaterial result = new WorkMaterial();
             try
             {
                 Type type = typeof(MonitorWork);
                 long workOffset = Marshal.OffsetOf(type, nameof(MonitorWork.WorkMaterial)).ToInt64(); //加工陣列記憶體起始位置偏移位置
                 int workSize = Marshal.SizeOf(typeof(WorkMaterial)); //WorkMaterial 結構大小 
                 long cWorkOffset = workOffset + (workSize * index);
-                WorkMaterial result = SharedMemory.GetValue<MonitorWork, WorkMaterial>(cWorkOffset, Marshal.SizeOf(typeof(WorkMaterial)));
+                result = SharedMemory.GetValue<MonitorWork, WorkMaterial>(cWorkOffset, Marshal.SizeOf(typeof(WorkMaterial)));
                 string info = JsonConvert.SerializeObject(result, new JsonSerializerSettings { Formatting = Formatting.Indented });  //參數訊息轉為 Json 方便寫入 Log
                 WriteInfo(ReadMemorLog, $"GD_STD.Phone.MonitorWork.WorkMaterial[{index}]", info);
-                return result;
+             
             }
             catch (Exception ex)
             {
                 WriteError(ReadMemorLog, ex);
-                throw;
+                //throw;
             }
+            return result;
         }
         #endregion ReadMemor
 
@@ -741,7 +770,7 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(WriteMemorLog, ex);
-                throw;
+                //throw;
             }
         }
 
@@ -773,7 +802,7 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(WriteMemorLog, ex);
-                throw;
+                ////throw;
             }
         }
 
@@ -789,7 +818,7 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(WriteMemorLog, ex);
-                throw;
+               // //throw;
             }
         }
 
@@ -806,7 +835,7 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(WriteMemorLog, ex);
-                throw;
+               // //throw;
             }
         }
 
@@ -823,7 +852,7 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(WriteMemorLog, ex);
-                throw;
+                ////throw;
             }
         }
 
@@ -840,7 +869,7 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(WriteMemorLog, ex);
-                throw;
+                //throw;
             }
         }
 
@@ -856,7 +885,7 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(WriteMemorLog, ex);
-                throw;
+                //throw;
             }
         }
         /// <inheritdoc/>
@@ -871,7 +900,7 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(WriteMemorLog, ex);
-                throw;
+                //throw;
             }
         }
         /// <inheritdoc/>
@@ -886,7 +915,7 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(WriteMemorLog, ex);
-                throw;
+                //throw;
             }
         }
         /// <inheritdoc/>
@@ -901,7 +930,7 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(WriteMemorLog, ex);
-                throw;
+                //throw;
             }
         }
         /// <inheritdoc/>
@@ -916,7 +945,7 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(WriteMemorLog, ex);
-                throw;
+                //throw;
             }
         }
         /// <inheritdoc/>
@@ -931,7 +960,7 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(WriteMemorLog, ex);
-                throw;
+                //throw;
             }
         }
         /// <inheritdoc/>
@@ -946,7 +975,7 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(WriteMemorLog, ex);
-                throw;
+                //throw;
             }
         }
         /// <inheritdoc/>
@@ -989,7 +1018,7 @@ namespace CodesysIIS
         //    catch (Exception ex)
         //    {
         //        WriteError(WriteMemorLog, ex);
-        //        throw;
+        //        //throw;
         //    }
         //}
 
@@ -1013,18 +1042,20 @@ namespace CodesysIIS
         public AndroidTest GetAndroidTest()
 #pragma warning restore CS1591 // 遺漏公用可見類型或成員 'Memor.GetAndroidTest()' 的 XML 註解
         {
+            AndroidTest result = new AndroidTest();
             try
             {
-                AndroidTest result = PCSharedMemory.GetValue<AndroidTest>(); //讀取記憶體
+                 result = PCSharedMemory.GetValue<AndroidTest>(); //讀取記憶體
                 string info = JsonConvert.SerializeObject(result, new JsonSerializerSettings { Formatting = Formatting.Indented }); //參數訊息轉為 Json 方便寫入 Log
                 WriteInfo(ReadMemorLog, "AndroidTest", info);
-                return result;
+
             }
             catch (Exception ex)
             {
                 WriteError(ReadMemorLog, ex);
-                throw;
+                //throw;
             }
+            return result;
         }
         public void SetAndroidTest(AndroidTest value)
         {
@@ -1037,7 +1068,7 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(WriteMemorLog, ex);
-                throw;
+                //throw;
             }
         }
         /// <inheritdoc/>
@@ -1052,7 +1083,7 @@ namespace CodesysIIS
             catch (Exception ex)
             {
                 WriteError(WriteMemorLog, ex);
-                throw;
+                //throw;
             }
         }
         /// <inheritdoc/>

@@ -1245,6 +1245,8 @@ namespace STD_105.Office
                         int m = OTS_VM.DataViews[index].Match.FindLastIndex(x => x == false);
                         if (m != -1)
                             OTS_VM.DataViews[index].Match[m] = true;
+
+                        OTS_VM.DataViews[index].Revise = DateTime.Now;
                     }
 
                     int steelIndex = steelParts.FindIndex(x => x.Number == MDataView.SelectedPart.PartNumber);
@@ -1341,12 +1343,15 @@ namespace STD_105.Office
 
             PartsGridControl.Dispatcher.Invoke(() =>
             {
-                PartsGridControl.ItemsSource = (this.DataContext as OfficeTypeSettingVM).LoadDataViews();
+                //↓不要這樣寫!會導致表格 icommand失靈！
+                //PartsGridControl.ItemsSource = (this.DataContext as OfficeTypeSettingVM).LoadDataViews(); 
+          
                 for (int i = 0; i < (PartsGridControl.ItemsSource as ObservableCollection<TypeSettingDataView>).Count; i++)
                 {
                     PartsGridControl.RefreshRow(i);
                 }
             });
+
 
 
 
