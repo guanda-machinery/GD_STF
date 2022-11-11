@@ -78,10 +78,6 @@ namespace WPFSTD105.ViewModel
         }
 
 
-        /// <summary>
-        ///  未加工-已完成合併清單 選擇素材
-        /// </summary>
-        public MaterialDataView Finish_UndoneDataViews_Selected { get; set; }
 
         /// <summary>
         /// 未加工-已完成合併清單-細項
@@ -93,7 +89,6 @@ namespace WPFSTD105.ViewModel
                 var _MPartDetail = new ObservableCollection<MaterialPartDetail>();
                 foreach (var FUdataviews in Finish_UndoneDataViews)
                 {
-                    //無零件的話加入一個空值
                     if (FUdataviews.Parts.Count != 0)
                     {
                         foreach (var FUPart in FUdataviews.Parts)
@@ -110,8 +105,9 @@ namespace WPFSTD105.ViewModel
                             });
                         }
                     }
-                    else
+                    /*else
                     {
+                    //無零件的話跳過!
                         _MPartDetail.Add(new MaterialPartDetail()
                         {
                             MaterialNumber = FUdataviews.MaterialNumber,//排版編號
@@ -121,7 +117,7 @@ namespace WPFSTD105.ViewModel
                             PartNumber = null,
                             Length = null
                         });
-                    }
+                    }*/
                 }
 
                 // return new ObservableCollection<MaterialDataView>(DViews); ;
@@ -1173,6 +1169,8 @@ namespace WPFSTD105.ViewModel
         }
 
 
+        #region app server 溝通按鈕
+
         /// <summary>
         /// 切換到橫移料架
         /// </summary>
@@ -1180,19 +1178,27 @@ namespace WPFSTD105.ViewModel
         {
             get
             {
-                return new WPFBase.RelayParameterizedCommand(el =>
+                return new WPFBase.RelayCommand(()=>
                 {
-                    if (el is RadioButton)
+                    Transport_RadioButtonIsChecked = false;
+
+                    ProgressBar_Visible_Transport_Visibility = true;
+                    Transport_RadioButtonIsEnable = false;
+                    Transport_by_C_RadioButtonIsEnable = false;
+                    Transport_by_R_RadioButtonIsEnable = false;
+
+                    Task.Run(() =>
                     {
-                        (el as RadioButton).IsChecked = false;
-                    }
+                        Thread.Sleep(3000);
+                        //對機台端下命令 並回傳是否成功，當成功時IsChecked=true 否則IsChecked = False
 
-                 /*  var a =new   async Task=>(){
+                        ProgressBar_Visible_Transport_Visibility = false;
+                        Transport_RadioButtonIsChecked = true;
 
-                    }
-                    Thread.Sleep(10000);*/
-
-
+                        Transport_RadioButtonIsEnable = true;
+                        Transport_by_C_RadioButtonIsEnable = true;
+                        Transport_by_R_RadioButtonIsEnable = true;
+                    });
                 });
             }
         }
@@ -1203,13 +1209,26 @@ namespace WPFSTD105.ViewModel
         {
             get
             {
-                return new WPFBase.RelayParameterizedCommand(el =>
+                return new WPFBase.RelayCommand(() =>
                 {
-                    if (el is RadioButton)
+                    ProgressBar_Visible_Transport_by_C_Visibility = true;
+                    Transport_by_C_RadioButtonIsChecked = false;
+
+                    Transport_RadioButtonIsEnable = false;
+                    Transport_by_C_RadioButtonIsEnable = false;
+                    Transport_by_R_RadioButtonIsEnable = false;
+
+                    Task.Run(() =>
                     {
-                        (el as RadioButton).IsChecked = false;
-                    }
-                    
+                        Thread.Sleep(2000);
+                        ProgressBar_Visible_Transport_by_C_Visibility = false;
+
+                        Transport_by_C_RadioButtonIsChecked = true;
+
+                        Transport_RadioButtonIsEnable = true;
+                        Transport_by_C_RadioButtonIsEnable = true;
+                        Transport_by_R_RadioButtonIsEnable = true;
+                    });
 
 
                 });
@@ -1222,19 +1241,164 @@ namespace WPFSTD105.ViewModel
         {
             get
             {
-                return new WPFBase.RelayParameterizedCommand(el =>
+                return new WPFBase.RelayCommand(() =>
                 {
-                    if (el is RadioButton)
-                    {
-                        (el as RadioButton).IsChecked = false;
-                    }
+                    Transport_by_R_RadioButtonIsChecked = false;
 
+                    ProgressBar_Visible_Transport_by_R_Visibility = true;
+
+                    Transport_RadioButtonIsEnable = false;
+                    Transport_by_C_RadioButtonIsEnable = false;
+                    Transport_by_R_RadioButtonIsEnable = false;
+
+                    Task.Run(() =>
+                    {
+                        Thread.Sleep(2000);
+                        ProgressBar_Visible_Transport_by_R_Visibility = false;
+                        //Transport_by_R_RadioButtonIsChecked = true;
+
+                        Transport_RadioButtonIsEnable = true;
+                        Transport_by_C_RadioButtonIsEnable = true;
+                        Transport_by_R_RadioButtonIsEnable = true;
+                    });
 
 
                 });
             }
         }
 
+        public bool Transport_RadioButtonIsEnable { get; set; } = true;
+        public bool Transport_by_C_RadioButtonIsEnable { get; set; } = true;
+        public bool Transport_by_R_RadioButtonIsEnable { get; set; } = true;
+
+        public bool Transport_RadioButtonIsChecked { get; set; }
+        public bool Transport_by_C_RadioButtonIsChecked { get; set; }
+        public bool Transport_by_R_RadioButtonIsChecked { get; set; }
+
+
+        public bool ProgressBar_Visible_Transport_Visibility { get; set; } = false;
+
+        public bool ProgressBar_Visible_Transport_by_C_Visibility { get; set; } = false;
+
+        public bool ProgressBar_Visible_Transport_by_R_Visibility { get; set; } = false;
+
+
+
+
+
+        public ICommand Set_Input_by_Computer_Command
+        {
+            get
+            {
+                return new WPFBase.RelayCommand(() =>
+                {
+                    Input_by_Computer_RadioButtonIsChecked = false;
+                    ProgressBar_Visible_Input_by_Computer = true;
+                    Task.Run(() =>
+                    {
+                        var Result = ActiveAppPairing(false);
+                        ProgressBar_Visible_Input_by_Computer = false;
+
+                        if (Result)
+                        {
+                            Input_by_Computer_RadioButtonIsChecked = true;
+                        }
+
+                    });
+
+
+                });
+            }
+        }
+
+        public ICommand Set_Input_by_SmartPhone_Command
+        {
+            get
+            {
+                return new WPFBase.RelayCommand(() =>
+                {
+                    Input_by_SmartPhone_RadioButtonIsChecked = false;
+                    ProgressBar_Visible_Input_by_SmartPhone = true;
+                    Task.Run(() =>
+                    {
+                        var Result = ActiveAppPairing(true);
+                        ProgressBar_Visible_Input_by_SmartPhone = false;
+                      
+                        if(Result)
+                        {
+                            Input_by_SmartPhone_RadioButtonIsChecked = true;
+                        }
+
+                    });
+
+
+                });
+            }
+        }
+
+        public bool Input_by_Computer_RadioButtonIsChecked { get; set; } = false;
+        public bool Input_by_SmartPhone_RadioButtonIsChecked { get; set; } = false;
+
+
+
+        /// <summary>
+        /// 傳入true為開啟app模式 傳入false為關閉app模式  回傳bool則代表是否有成功下命令
+        /// </summary>
+        /// <param name="AppPairing"></param>
+        /// <returns></returns>
+        private bool ActiveAppPairing(bool AppPairing)
+        {
+            Input_by_SmartPhone_RadioButtonVMEnable = false;
+            Input_by_Computer_RadioButtonVMEnable = false;
+
+            var Result = WPFSTD105.HttpRequest.AppServerCommunication.EnableAppPairing(AppPairing);
+
+            //不管成功或失敗 都使按鈕恢復可用
+            Input_by_SmartPhone_RadioButtonVMEnable = true;
+            Input_by_Computer_RadioButtonVMEnable = true;
+
+            return Result;
+        }
+
+
+
+        /// <summary>
+        /// 使用多重綁定時當Input_by_SmartPhoneVMEnable=false時 Enable 直接為false，其餘狀況依照聯集結果而定
+        /// </summary>
+        public bool Input_by_SmartPhone_RadioButtonVMEnable { get; set; } = true;
+        /// <summary>
+        /// 使用多重綁定時當Input_by_Computer_RadioButtonVMEnable=false時 Enable 直接為false，其餘狀況依照聯集結果而定
+        /// </summary>
+        public bool Input_by_Computer_RadioButtonVMEnable { get; set; } = true;
+
+        public bool ProgressBar_Visible_Input_by_SmartPhone { get; set; } = false;
+
+        public bool ProgressBar_Visible_Input_by_Computer { get; set; } = false;
+
+
+
+
+
+
+        /// <summary>
+        /// 檢查app連線狀態 定期更新
+        /// </summary>
+        private void Check()
+        {
+            if(true)
+            {
+
+            }
+            else
+            {
+                
+
+            }
+        }
+
+
+
+        #endregion
 
 
 

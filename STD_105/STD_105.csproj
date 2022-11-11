@@ -983,7 +983,6 @@
     <Compile Include="ValueConverters\OillBoolToImageSourceConverter.cs" />
     <Compile Include="ValueConverters\PageEnumToBoolConverter.cs" />
     <Compile Include="ValueConverters\PerformanceToConverter.cs" />
-    <Compile Include="ValueConverters\TabItemIsSelectedToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\TypesettingsSettingsToDrillDataConverter.cs" />
     <Compile Include="ZoomControls.cs" />
     <Page Include="GraphWin.xaml">
