@@ -15,9 +15,13 @@ namespace STD_105
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             ObservableCollection<TypeSettingDataView> views = (ObservableCollection<TypeSettingDataView>)value;
-            string result = views.Select(el => el.PartNumber)
-                                                    .Aggregate((str1, str2) => $"{str1},{str2}");
-            return result;
+            if (views.Count > 0)
+            {
+                string result = views.Select(el => el.PartNumber)
+                                                        .Aggregate((str1, str2) => $"{str1},{str2}");
+                return result;
+            }
+            return null;
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

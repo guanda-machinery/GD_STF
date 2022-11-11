@@ -10,28 +10,28 @@ namespace WPFSTD105.ViewModel
     {
         public MainSpindle_ViewModel()
         {
-            this.JoyStick_BorderButton4_Trigger = MachiningDirecationLeftCommand; //L
+            /*this.JoyStick_BorderButton4_Trigger = MachiningDirecationLeftCommand; //L
             this.JoyStick_BorderButton5_Trigger = MachiningDirecationUpCommand;//U
             this.JoyStick_BorderButton6_Trigger = MachiningDirecationRightCommand; //R
 
             this.JoyStick_BorderButton4_Trigger = null; //L
             this.JoyStick_BorderButton5_Trigger = null;//U
-            this.JoyStick_BorderButton6_Trigger = null; //R
+            this.JoyStick_BorderButton6_Trigger = null; //R*/
 
 
-            this.JoyStick_BorderButton1_Trigger = ZAxisPlusMoveCommand;
+          /*  this.JoyStick_BorderButton1_Trigger = ZAxisPlusMoveCommand;
             this.JoyStick_BorderButton1_Release = ZAxisPlusStopCommand;
             this.JoyStick_BorderButton3_Trigger = ZAxisMinusMoveCommand;
-            this.JoyStick_BorderButton3_Release = ZAxisMinusStopCommand;
+            this.JoyStick_BorderButton3_Release = ZAxisMinusStopCommand;*/
 
-            this.BorderButton_Left_Trigger = XAxisPlusMoveCommand;//X+
+          /*  this.BorderButton_Left_Trigger = XAxisPlusMoveCommand;//X+
             this.BorderButton_Left_Release = XAxisPlusStopCommand;//X+
             this.BorderButton_Right_Trigger = XAxisMinusMoveCommand;//X-
             this.BorderButton_Right_Release = XAxisMinusStopCommand;//X-
             this.BorderButton_Up_Trigger = YAxisPlusMoveCommand;//Y+
             this.BorderButton_Up_Release = YAxisPlusStopCommand;//Y+
             this.BorderButton_Down_Trigger = YAxisMinusMoveCommand;//Y-
-            this.BorderButton_Down_Release = YAxisMinusStopCommand; //Y-
+            this.BorderButton_Down_Release = YAxisMinusStopCommand; //Y-*/
 
             GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
             PButton.MainAxisMode = true;

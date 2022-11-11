@@ -461,7 +461,7 @@
     </Compile>
     <Compile Include="ViewModel\Machine\Dpad\joystick\DpadConveyor_ViewModel.cs" />
     <Compile Include="ViewModel\Machine\Dpad\joystick\MainSpindle_ViewModel.cs" />
-    <Compile Include="ViewModel\Machine\Dpad\joystick\ToolMagazine_ViewModel.cs" />
+    <Compile Include="ViewModel\Machine\Dpad\joystick\ToolMagazineControl_ViewModel.cs" />
     <Compile Include="ViewModel\Machine\Dpad\joystick\GrabArm_ViewModel.cs" />
     <Compile Include="ViewModel\Machine\Dpad\Machine_HSteelGrabViewModel.cs" />
     <Compile Include="ViewModel\Machine\Dpad\Machine_HSteelClampViewModel.cs" />

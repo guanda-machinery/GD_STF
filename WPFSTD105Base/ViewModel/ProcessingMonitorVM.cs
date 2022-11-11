@@ -72,10 +72,148 @@ namespace WPFSTD105.ViewModel
                 var DViews = new List<MaterialDataView>();
                 DViews.AddRange(FinishDataViews);
                 DViews.AddRange(UndoneDataView);
-
+                DViews.RemoveAll(x => (x.Parts.Count == 0));
                 return new ObservableCollection<MaterialDataView>(DViews); ;
             }
         }
+
+
+        private MaterialDataView _finish_UndoneDataViews_SelectedItem;
+        public MaterialDataView Finish_UndoneDataViews_SelectedItem { 
+            get         
+            {
+                return _finish_UndoneDataViews_SelectedItem;
+            }
+            set
+            {
+                DrillBoltsItemChange(value); 
+                _finish_UndoneDataViews_SelectedItem = value;
+            } 
+        }
+
+
+        public class DrillBolts
+        {
+            public string WorkType { get; set; } = "孔";
+            public GD_STD.Enum.FACE Face { get; set; }
+            public int DrillHoleCount { get; set; }
+            public double DrillHoleDiameter { get; set; }
+        }
+
+        public ObservableCollection<DrillBolts> MachiningCombinational_DrillBoltsItemSource { get; set; }
+        public ObservableCollection<DrillBolts> MachiningDetail_DrillBoltsItemSource { get; set; }
+
+        private void DrillBoltsItemChange(GD_STD.Data.MaterialDataView Materialdata)
+        {
+            var AssemblyNumberList = new List<string>();
+            foreach (var M_part in Materialdata.Parts)
+            {
+                AssemblyNumberList.Add(M_part.AssemblyNumber);
+            }
+            MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(AssemblyNumberList);
+        }
+
+        private void DrillBoltsItemChange(WPFSTD105.ViewModel.ProcessingMonitorVM.MaterialPartDetail value)
+        {
+                MachiningDetail_DrillBoltsItemSource = GetDrillBoltsItemCollection(new List<string>() { value.AssemblyNumber });
+        }
+
+
+        private ObservableCollection<DrillBolts> GetDrillBoltsItemCollection(List<string>NumberList)
+        {
+            var DrillBoltsListInfo = new List<DrillBolts>();
+            var DataViews = new ObservableCollection<WPFSTD105.ViewModel.ProductSettingsPageViewModel>(WPFSTD105.ViewModel.ObSettingVM.GetData(false)).ToList();
+            //選擇單一素材
+            //取得專案內所有資料 並找出符合本零件的dataname(dm名) 
+            //有可能會有複數個(選擇素材/單一零件的差別)
+            var PartsList = new List<ProductSettingsPageViewModel>();
+            foreach (var AssemblyNum in NumberList)
+            {
+                PartsList.AddRange(DataViews.FindAll(x => x.AssemblyNumber == AssemblyNum));
+            }
+
+            foreach (var _part in PartsList)
+            {
+                GetMaterialdataDrillBoltsInfo(_part.DataName, out var MaterialDrillBolts);
+                //複數零件時須將零件資料合併
+                foreach (var MDrill in MaterialDrillBolts)
+                {
+                    if (DrillBoltsListInfo.Exists(x => (x.WorkType == MDrill.WorkType && x.Face == MDrill.Face && x.DrillHoleDiameter == MDrill.DrillHoleDiameter)))
+                    {
+                        DrillBoltsListInfo.Find(x => (x.WorkType == MDrill.WorkType && x.Face == MDrill.Face && x.DrillHoleDiameter == MDrill.DrillHoleDiameter)).DrillHoleCount += MDrill.DrillHoleCount;
+                    }
+                    else
+                    {
+                        DrillBoltsListInfo.Add(MDrill);
+                    }
+                }
+            }
+            return new ObservableCollection<DrillBolts>(DrillBoltsListInfo);
+        }
+
+
+
+
+        /// <summary>
+        /// 給定DataName 回傳該零件所有的孔位及位置
+        /// </summary>
+        /// <param name="DataName"></param>
+        /// <param name="DrillBoltsList"></param>
+        /// <returns></returns>
+        private bool GetMaterialdataDrillBoltsInfo(string DataName, out List<DrillBolts> DrillBoltsList)
+        {
+            DrillBoltsList = new List<DrillBolts>();
+            devDept.Eyeshot.Model _BufferModel = new devDept.Eyeshot.Model();
+            _BufferModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
+            _BufferModel.InitializeViewports();
+            _BufferModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
+
+            var ser = new STDSerialization();
+            var readFile = ser.ReadPartModel(DataName); //讀取檔案內容
+            if (readFile == null)
+            {
+                return false;
+                //continue;
+            }
+
+            readFile.DoWork();//開始工作
+            readFile.AddToScene(_BufferModel);//將讀取完的檔案放入到模型
+            if (_BufferModel.Entities[_BufferModel.Entities.Count - 1].EntityData is null)
+            {
+                return false;
+                //continue;
+            }
+            //ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
+            //WriteSteelAttr((SteelAttr)_BufferModel.Blocks[1].Entities[0].EntityData);//寫入到設定檔內
+            //ViewModel.GetSteelAttr();
+            _BufferModel.Blocks[1] = new Steel3DBlock((Mesh)_BufferModel.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式(零件)
+
+            for (int i = 0; i < _BufferModel.Entities.Count; i++)//逐步展開 3d 模型實體
+            {
+                if (_BufferModel.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
+                {
+                    BlockReference blockReference = (BlockReference)_BufferModel.Entities[i]; //取得參考圖塊
+                    var BoltsAttr = blockReference.EntityData as GroupBoltsAttr;
+                    //BoltsList.Add(BoltsAttr);
+
+                    //如果直徑和面已經存在 則加入舊的 否則建立新的資料
+                    if (DrillBoltsList.Exists(x => (x.DrillHoleDiameter == BoltsAttr.Dia && x.Face == BoltsAttr.Face)))
+                    {
+                        DrillBoltsList.Find(x => x.DrillHoleDiameter == BoltsAttr.Dia).DrillHoleCount += BoltsAttr.Count;
+                    }
+                    else
+                    {
+                        DrillBoltsList.Add(new DrillBolts { DrillHoleDiameter = BoltsAttr.Dia, DrillHoleCount = BoltsAttr.Count, Face = BoltsAttr.Face });
+                    }
+                }
+            }
+
+            return true;
+        }
+
+
+
+
 
 
 
@@ -119,16 +257,29 @@ namespace WPFSTD105.ViewModel
                         });
                     }*/
                 }
-
-                // return new ObservableCollection<MaterialDataView>(DViews); ;
                 return _MPartDetail;
             }
         }
 
-        /// <summary>
-        /// 展開素材內的零件所使用的資料表
-        /// </summary>
-        public struct MaterialPartDetail
+        private MaterialPartDetail _finish_UndoneDataViewsDetail_SelectedItem;
+
+        public MaterialPartDetail Finish_UndoneDataViewsDetail_SelectedItem
+        {
+            get
+            {
+                return _finish_UndoneDataViewsDetail_SelectedItem;
+            }
+            set
+            {
+                 DrillBoltsItemChange(value);
+                _finish_UndoneDataViewsDetail_SelectedItem = value;
+            }
+        }
+
+/// <summary>
+/// 展開素材內的零件所使用的資料表
+/// </summary>
+public struct MaterialPartDetail
         {
             /// <summary>
             /// /// 排版編號
@@ -201,26 +352,30 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public string MaterialGridControlSearchString { get; set; }
 
-        private bool _MachiningCombinationl_List_GridControl_IsSelected = false;
+        private bool _MachiningCombinational_List_GridControl_IsSelected = false;
         /// <summary>
-        /// 已選擇MachiningCombinationl_List_GridControl
+        /// 已選擇MachiningCombinational_List_GridControl
         /// </summary>
-        public bool MachiningCombinationl_List_GridControl_IsSelected
+        public bool MachiningCombinational_List_GridControl_IsSelected
         {
             get
             {
-                return _MachiningCombinationl_List_GridControl_IsSelected;
+                return _MachiningCombinational_List_GridControl_IsSelected;
             }
             set
             {
-                if (_MachiningCombinationl_List_GridControl_IsSelected != value)
+                if (_MachiningCombinational_List_GridControl_IsSelected != value)
                 {
-                    _MachiningCombinationl_List_GridControl_IsSelected = value;
+                    _MachiningCombinational_List_GridControl_IsSelected = value;
                     //↓可即時反應
-                    OnPropertyChanged("MachiningCombinationl_List_GridControl_IsSelected");
+                    OnPropertyChanged("MachiningCombinational_List_GridControl_IsSelected");
                 }
             }
         }
+
+
+
+        
 
 
 
