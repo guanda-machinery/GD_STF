@@ -60,7 +60,7 @@ namespace STD_105
         
         private void ScrollOwner_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if ((sender as DevExpress.Xpf.Grid.TableView).Name == MachiningCombinationl_List_TableView.Name)
+            if ((sender as DevExpress.Xpf.Grid.TableView).Name == MachiningCombinational_List_TableView.Name)
             {
                 IScrollInfo SoftCountTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningSchedule_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
                 if (SoftCountTableView_ScrollElement != null)
@@ -68,7 +68,7 @@ namespace STD_105
             }
             if ((sender as DevExpress.Xpf.Grid.TableView).Name == MachiningSchedule_List_TableView.Name)
             {
-                IScrollInfo PartsTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningCombinationl_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
+                IScrollInfo PartsTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningCombinational_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
                 if (PartsTableView_ScrollElement != null)
                     PartsTableView_ScrollElement.SetVerticalOffset(e.VerticalOffset);
             }
