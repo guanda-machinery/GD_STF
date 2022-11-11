@@ -486,7 +486,8 @@ namespace WPFSTD105
                 sheet.Cells[row, column++].Value = "構件ID";
                 sheet.Cells[row, column++].Value = "構件Phase";
                 sheet.Cells[row, column++].Value = "構件位置";
-                sheet.Cells[row++, column++].Value = "運輸說明";
+                sheet.Cells[row, column++].Value = "運輸說明";
+                sheet.Cells[row++, column++].Value = "運輸號碼";
                 #endregion
                 #region 欄位塞值
                 foreach (SteelAssembly item in assembliesDataViews)

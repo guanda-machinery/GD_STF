@@ -84,7 +84,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 數量
         /// </summary>
-        public double Count { get; set; }
+        public int Count { get; set; }
         /// <summary>
         /// 零件重
         /// </summary>

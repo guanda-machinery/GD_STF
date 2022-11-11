@@ -433,7 +433,7 @@ namespace WPFSTD105.Model
         {
             bool check = true;
             // 無加工範圍設定或打點 不判斷
-            if (workingRange.Count == 0 || this.Info.Mode == AXIS_MODE.POINT)
+            if (workingRange.Count == 0 || (this.Info.Mode == AXIS_MODE.POINT || this.Info.Mode == AXIS_MODE.HypotenusePOINT) )
             {
                 return check;
             }

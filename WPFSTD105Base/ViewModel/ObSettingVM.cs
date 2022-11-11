@@ -451,7 +451,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 製品數量
         /// </summary>
-        public double ProductCountProperty { get; set; }
+        public int ProductCountProperty { get; set; }
         /// <summary>
         /// 製品名稱
         /// </summary>
@@ -489,13 +489,29 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public string SteelSectionProperty { get; set; } 
         /// <summary>
+        /// GUID
+        /// </summary>
+        public Guid? GuidProperty { get; set; }
+        /// <summary>
+        /// 切割線
+        /// </summary>
+        public CutList PointTopProperty { get; set; } = new CutList();
+        /// <summary>
+        /// 切割線
+        /// </summary>
+        public CutList PointFrontProperty { get; set; } = new CutList();
+        /// <summary>
+        /// 切割線
+        /// </summary>
+        public CutList PointBackProperty { get; set; } = new CutList();
+        /// <summary>
         /// 高
         /// </summary>
-        public int HProperty { get; set; }
+        public float HProperty { get; set; }
         /// <summary>
         /// 寬
         /// </summary>
-        public int WProperty { get; set; }
+        public float WProperty { get; set; }
         /// <summary>
         /// 腹板厚度
         /// </summary>
@@ -504,7 +520,10 @@ namespace WPFSTD105.ViewModel
         /// 翼板厚度
         /// </summary>
         public int t2Property { get; set; }
-
+        /// <summary>
+        /// 驚嘆號
+        /// </summary>
+        public bool? ExclamationMarkProperty { get; set; }
 
 
 
@@ -1552,6 +1571,9 @@ namespace WPFSTD105.ViewModel
                             saTemp.uPoint = steelAttrNC.uPoint;
                             saTemp.CutList = steelAttrNC.CutList;
                             saTemp.Length = steelAttrNC.Length;
+                            //saTemp.PointTop = steelAttrNC.PointTop;
+                            //saTemp.PointBack = steelAttrNC.PointBack;
+                            //saTemp.PointFront = steelAttrNC.PointFront;
                             //saTemp.Name = "";
                             saTemp.Material = "";
                             //saTemp.Phase = 0;
@@ -1622,7 +1644,7 @@ namespace WPFSTD105.ViewModel
                     x.Length,
                     x.UnitWeight,
                     x.Father,
-                    x.ID,                    
+                    x.ID
                 }).Where(x => allowType.Contains(x.Type)).ToList();
 
             // 孔 vs 父節點
@@ -1870,8 +1892,6 @@ namespace WPFSTD105.ViewModel
                                 steelAttrVM.steelAttr.ExclamationMark = item.ExclamationMark;
                                 steelAttrVM.ExclamationMark = item.ExclamationMark;
                                               
-                                
-
                                 //// GUID (Data Name)
                                 //DataCorrespond single = DataCorrespond.FirstOrDefault(x =>
                                 //x.Profile == steelAttrVM.Profile &&
