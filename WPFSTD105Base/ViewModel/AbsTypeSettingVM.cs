@@ -990,8 +990,8 @@ namespace WPFSTD105
         private void AutoMatchAsyncV2()
         {
             // 2020.06.22  呂宗霖 新增IsNullOrEmpty條件
-            MatchSetting.MainLengths = MainLength.Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(el => Convert.ToDouble(el)).ToList();
-            MatchSetting.SecondaryLengths = SecondaryLength.Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(el => Convert.ToDouble(el)).ToList();
+            MatchSetting.MainLengths = MainLength.Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(el => Convert.ToDouble(el) - (MatchSettingStartCut+ MatchSettingEndCut)).ToList(); //1110 加入動作:先扣除MatchSettingStartCut+ MatchSettingEndCut CYH
+            MatchSetting.SecondaryLengths = SecondaryLength.Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(el => Convert.ToDouble(el) - (MatchSettingStartCut + MatchSettingEndCut)).ToList(); //1110 加入動作:先扣除MatchSettingStartCut+ MatchSettingEndCut CYH
             MatchSetting.PreCode = PreCode;
             //MatchSetting.StartNumber = StartNumber;
 
@@ -1054,8 +1054,14 @@ namespace WPFSTD105
                     List<SinglePart> listPart = new List<SinglePart>();//配料列表
                     foreach (var item in DataViews.Where(x => x.SortCount > 0))
                     {
+                        //1110 排版計算前添加鋸床切割損耗，DataViews中Part的Length此時已被變動 CYH
+                        item.Length += 3;
+
                         foreach (var steel in steels.Where(x => x.Number == item.PartNumber))
                         {
+                            //1110 排版計算前添加鋸床切割損耗 CYH
+                            steel.Length += 3;
+
                             IEnumerable<int> _where = DataViews
                            .Where(el =>
                            el.Profile == steel.Profile &&
@@ -1079,8 +1085,11 @@ namespace WPFSTD105
 
                             }
 
-
+                            //1111 排版計算前添加鋸床切割損耗, 復原長度 CYH
+                            steel.Length -= 3;
                         }
+                        //1111 排版計算前添加鋸床切割損耗, 復原長度 CYH
+                        item.Length -= 3;
                     }
 
                     ser.SetPart(profiles[i].GetHashCode().ToString(), new ObservableCollection<object>(steels));
@@ -1135,13 +1144,14 @@ namespace WPFSTD105
                             MaterialDataViews[MaterialDataViews.Count - 1].LengthList.AddRange(MatchSetting.SecondaryLengths); //加入長度列表
                             MaterialDataViews[MaterialDataViews.Count - 1].LengthIndex = MaterialDataViews[MaterialDataViews.Count - 1].LengthList.FindIndex(el => _[minIndex][q].Length - MatchSetting.EndCut - MatchSetting.StartCut == el); //長度索引
                             int index = MaterialDataViews[MaterialDataViews.Count - 1].LengthIndex;
-                            MaterialDataViews[MaterialDataViews.Count - 1].LengthStr = MaterialDataViews[MaterialDataViews.Count - 1].LengthList[index];
+                            MaterialDataViews[MaterialDataViews.Count - 1].LengthStr = MaterialDataViews[MaterialDataViews.Count - 1].LengthList[index] + (MatchSetting.EndCut + MatchSetting.StartCut); //1110 加入動作:將素材長度加回MatchSettingStartCut+ MatchSettingEndCut CYH
                             MaterialDataViews[MaterialDataViews.Count - 1].StartCut = MatchSetting.StartCut;
                             MaterialDataViews[MaterialDataViews.Count - 1].EndCut = MatchSetting.EndCut;
                             MaterialDataViews[MaterialDataViews.Count - 1].Cut = MatchSetting.Cut;
                             for (int c = 0; c < _[minIndex][q].PartNumber.Length; c++)
                             {
                                 int dataViewIndex = DataViews.FindIndex(el => el.PartNumber == _[minIndex][q].PartNumber[c] && el.Match.FindIndex(el2 => el2 == true) != -1);
+
                                 MaterialDataViews[MaterialDataViews.Count - 1].Parts.Add(DataViews[dataViewIndex]);
                                 MaterialDataViews[MaterialDataViews.Count - 1].Material = DataViews[dataViewIndex].Material;
                                 int matchIndex = DataViews[dataViewIndex].Match.IndexOf(el => el == true);

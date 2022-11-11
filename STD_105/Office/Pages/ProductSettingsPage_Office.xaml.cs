@@ -5191,7 +5191,8 @@ namespace STD_105.Office
             ViewModel.ProductWeightProperty = (CuurentSelectedPart.steelAttr.Length / 1000) * CuurentSelectedPart.steelAttr.Weight;
             if (CuurentSelectedPart.steelAttr.Weight == 0) ViewModel.ProductWeightProperty = ViewModel.CalculateSinglePartWeight();
             ViewModel.SteelAttr.Weight = ViewModel.ProductWeightProperty;
-            ViewModel.ProductCountProperty = CuurentSelectedPart.steelAttr.Number;
+            //ViewModel.ProductCountProperty = CuurentSelectedPart.steelAttr.Number;
+            ViewModel.ProductCountProperty = CuurentSelectedPart.Count;
             ViewModel.ProductNameProperty = CuurentSelectedPart.steelAttr.Name;
             ViewModel.ProductMaterialProperty = CuurentSelectedPart.steelAttr.Material;
             ViewModel.PhaseProperty = CuurentSelectedPart.steelAttr.Phase;
@@ -5354,6 +5355,8 @@ namespace STD_105.Office
                 if (model != null && PieceListGridControl.SelectedItem != null)
                 {
                     ProductSettingsPageViewModel item = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
+                    item.steelAttr.Number = (int)item.Count;
+
                     // 異動指標
                     this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
                     
