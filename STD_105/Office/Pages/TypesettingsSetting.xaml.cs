@@ -798,7 +798,10 @@ namespace STD_105.Office
             for (int i = 0; i < place.Count; i++)
             {
 
-
+                if (place.Count == 1) // count=1表素材沒有零件組成,只有(前端切除)程序紀錄
+                {
+                    return;
+                }
 
                 if (place[i].IsCut) //如果是切割物件
                 {
@@ -1027,6 +1030,15 @@ namespace STD_105.Office
             #endregion
 
         }
+        /// <summary>
+        /// 繪製3D餘料形狀
+        /// </summary>
+        /// <param name="part">零件類別</param>
+        /// <param name="model">3D模型類別</param>
+        /// <param name="end">結束位置</param>
+        /// <param name="start">開始位置</param>
+        /// <param name="dic">判斷載入名稱 顯示不同顏色</param>
+        /// <returns></returns>
         private Entity Draw2DCutMesh(SteelPart part, devDept.Eyeshot.Model model, double end, double start, string dic)
         {
             SteelAttr steelAttr = new SteelAttr(part);

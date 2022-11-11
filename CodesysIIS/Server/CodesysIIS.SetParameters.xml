@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <setParameter name="IIS Web Application Name" value="CodesysIIS" />
+  <setParameter name="MecEntities-Web.config Connection String" value="metadata=res://*/MecModel.csdl|res://*/MecModel.ssdl|res://*/MecModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=tcp:122.117.88.137\SQLEXPRESS,1035;initial catalog=三軸;persist security info=True;user id=Mechanical;password=Ab123;MultipleActiveResultSets=True;App=EntityFramework&quot;" />
+  <setParameter name="Model1-Web.config Connection String" value="data source=(LocalDb)\MSSQLLocalDB;initial catalog=CodesysIIS.Model1;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework" />
+</parameters>
