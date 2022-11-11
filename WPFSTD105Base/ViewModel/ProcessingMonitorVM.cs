@@ -66,8 +66,8 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 未加工-已完成合併清單
         /// </summary>
-        public ObservableCollection<MaterialDataView> Finish_UndoneDataViews { 
-            get 
+        public ObservableCollection<MaterialDataView> Finish_UndoneDataViews {
+            get
             {
                 var DViews = new List<MaterialDataView>();
                 DViews.AddRange(FinishDataViews);
@@ -75,9 +75,95 @@ namespace WPFSTD105.ViewModel
 
                 return new ObservableCollection<MaterialDataView>(DViews); ;
             }
-        } 
+        }
 
-        public MaterialDataView Finish_UndoneDataViews_Selected { get; set; }
+
+
+        /// <summary>
+        /// 未加工-已完成合併清單-細項
+        /// </summary>
+        public ObservableCollection<MaterialPartDetail> Finish_UndoneDataViewsDetail
+        {
+            get
+            {
+                var _MPartDetail = new ObservableCollection<MaterialPartDetail>();
+                foreach (var FUdataviews in Finish_UndoneDataViews)
+                {
+                    if (FUdataviews.Parts.Count != 0)
+                    {
+                        foreach (var FUPart in FUdataviews.Parts)
+                        {
+                            //加入素材<->零件 先素材再零件    
+                            _MPartDetail.Add(new MaterialPartDetail()
+                            {
+                                MaterialNumber = FUdataviews.MaterialNumber,//排版編號
+                                Profile = FUdataviews.Profile,//斷面規格
+                                Material = FUdataviews.Material,//材質
+                                AssemblyNumber = FUPart.AssemblyNumber,
+                                PartNumber = FUPart.PartNumber,
+                                Length = FUPart.Length
+                            });
+                        }
+                    }
+                    /*else
+                    {
+                    //無零件的話跳過!
+                        _MPartDetail.Add(new MaterialPartDetail()
+                        {
+                            MaterialNumber = FUdataviews.MaterialNumber,//排版編號
+                            Profile = FUdataviews.Profile,//斷面規格
+                            Material = FUdataviews.Material,//材質
+                            AssemblyNumber = null,
+                            PartNumber = null,
+                            Length = null
+                        });
+                    }*/
+                }
+
+                // return new ObservableCollection<MaterialDataView>(DViews); ;
+                return _MPartDetail;
+            }
+        }
+
+        /// <summary>
+        /// 展開素材內的零件所使用的資料表
+        /// </summary>
+        public struct MaterialPartDetail
+        {
+            /// <summary>
+            /// /// 排版編號
+            /// /// </summary>
+            public string MaterialNumber { get; set; }
+            /// <summary>
+            /// 斷面規格
+            /// </summary>
+            public string Profile { get; set; }
+            /// <summary>
+            /// 材質
+            /// </summary>
+            public string Material { get; set; }
+            /// <summary>
+            /// 構件編號
+            /// </summary>
+            public string AssemblyNumber { get; set; }
+            /// <summary>
+            /// 零件編號
+            /// </summary>
+            public string PartNumber { get; set; }
+            /// <summary>
+            /// 零件長度
+            /// </summary>
+            public double? Length { get; set; }
+
+
+        }
+
+
+
+
+
+
+
 
 
 
@@ -113,13 +199,13 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 搜尋字串
         /// </summary>
-        public string MaterialGridControlSearchString {get;set;}
+        public string MaterialGridControlSearchString { get; set; }
 
         private bool _MachiningCombinationl_List_GridControl_IsSelected = false;
         /// <summary>
         /// 已選擇MachiningCombinationl_List_GridControl
         /// </summary>
-        public bool MachiningCombinationl_List_GridControl_IsSelected 
+        public bool MachiningCombinationl_List_GridControl_IsSelected
         {
             get
             {
@@ -292,10 +378,10 @@ namespace WPFSTD105.ViewModel
                 {
                     var index = read.GetIndex().ToList();
                     var workOther = read.GetWorkOther();
-                    var workIndex = index[workOther.Current+1];
+                    var workIndex = index[workOther.Current + 1];
                     long cWork = _WorkOffset + _WorkSize * workIndex;
                     long cInsert = cWork + Marshal.OffsetOf<WorkMaterial>(nameof(WorkMaterial.Insert)).ToInt64();
-                    index.Insert(workOther.Current+1, Convert.ToInt16(DataViews.IndexOf((MaterialDataView)el)));
+                    index.Insert(workOther.Current + 1, Convert.ToInt16(DataViews.IndexOf((MaterialDataView)el)));
                     write.SetMonitorWorkOffset(new byte[] { 1 }, cInsert); //寫入準備加工的陣列位置
                     write.SetMonitorWorkOffset(index.ToByteArray(), Marshal.OffsetOf<MonitorWork>(nameof(MonitorWork.Index)).ToInt64()); //寫入準備加工的陣列位置
                 }
@@ -321,9 +407,9 @@ namespace WPFSTD105.ViewModel
                 }
                 MaterialDataView dataView = (MaterialDataView)el;
                 int selected = DataViews.IndexOf(dataView);
-                short[] value = new short[index.Length+1];
+                short[] value = new short[index.Length + 1];
                 Array.Copy(index, value, index.Length);
-                value[value.Length-1] = Convert.ToInt16(selected);
+                value[value.Length - 1] = Convert.ToInt16(selected);
                 long indexOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.Index)).ToInt64(); //index 偏移量
                 byte[] writeByte = value.ToByteArray();
                 using (Memor.WriteMemorClient write = new Memor.WriteMemorClient())
@@ -345,10 +431,10 @@ namespace WPFSTD105.ViewModel
                 //MaterialDataView dataView = (MaterialDataView)el;
                 MaterialDataView dataView = (MaterialDataView)el;
                 int selected = DataViews.IndexOf(dataView);
-                _WorkMaterials[selected].Finish  = 100;
+                _WorkMaterials[selected].Finish = 100;
                 _WorkMaterials[selected].IsExport = true;
                 _WorkMaterials[selected].Position = -2;
-                long cWork = _WorkOffset +(_WorkSize* selected);
+                long cWork = _WorkOffset + (_WorkSize * selected);
                 using (Memor.WriteMemorClient write = new Memor.WriteMemorClient())
                 {
 
@@ -493,7 +579,7 @@ namespace WPFSTD105.ViewModel
                 {
                     workOther = _Ser.GetWorkMaterialOtherBackup();
                     current = workOther.Current;
-                    enOccupy  = workOther.EntranceOccupy;
+                    enOccupy = workOther.EntranceOccupy;
                     exOccupy1 = workOther.ExportOccupy1;
                     exOccupy2 = workOther.ExportOccupy2;
                 }
@@ -507,7 +593,7 @@ namespace WPFSTD105.ViewModel
                     }
                     else //如果不同專案名稱
                     {
-                        Array.Copy(dataIndex, index, current == -1 ? 0 : current +1); //複製備份檔的 index 到要發送的 index
+                        Array.Copy(dataIndex, index, current == -1 ? 0 : current + 1); //複製備份檔的 index 到要發送的 index
                     }
                 }
 
@@ -530,17 +616,17 @@ namespace WPFSTD105.ViewModel
             {
                 #region 目前偏移量
                 long cWork = _WorkOffset + _WorkSize * workIndex;
-                long cMaterialNumber = cWork +_MaterialNumberOffset;
-                long cProfile = cWork +_ProfileOffset;
-                long cPartNumber = cWork +_PartNumberOffset;
-                long cLength = cWork +_LengthOffset;
-                long cMaterial = cWork +_MaterialOffset;
-                long cAssemblyNumber = cWork +_AssemblyNumberOffset;
-                long cH = cWork +_hOffset;
-                long cW = cWork +_wOffset;
+                long cMaterialNumber = cWork + _MaterialNumberOffset;
+                long cProfile = cWork + _ProfileOffset;
+                long cPartNumber = cWork + _PartNumberOffset;
+                long cLength = cWork + _LengthOffset;
+                long cMaterial = cWork + _MaterialOffset;
+                long cAssemblyNumber = cWork + _AssemblyNumberOffset;
+                long cH = cWork + _hOffset;
+                long cW = cWork + _wOffset;
                 long ct1 = cWork + _t1Offset;
-                long ct2 = cWork +_t2Offset;
-                long cGuid = cWork +_GuidOffset;
+                long ct2 = cWork + _t2Offset;
+                long cGuid = cWork + _GuidOffset;
                 #endregion
                 var steelPart = _Ser.GetPart($"{view.Profile.GetHashCode()}")[0];
                 using (Memor.WriteMemorClient Write = new Memor.WriteMemorClient())
@@ -550,7 +636,7 @@ namespace WPFSTD105.ViewModel
                     Write.SetMonitorWorkOffset(view.Parts
                         .Select(el => el.PartNumber).Aggregate((str1, str2) => $"{str1},{str2}").ToByteArray(), cPartNumber);//寫入零件編號
                     Write.SetMonitorWorkOffset(view.LengthStr.ToByteArray(), cLength);//寫入素材長度
-                    Write.SetMonitorWorkOffset(Encoding.ASCII.GetBytes(view.Material == null ? "0" : view.Material), (_WorkOffset + _WorkSize * workIndex) +_MaterialOffset);//寫入材質
+                    Write.SetMonitorWorkOffset(Encoding.ASCII.GetBytes(view.Material == null ? "0" : view.Material), (_WorkOffset + _WorkSize * workIndex) + _MaterialOffset);//寫入材質
                     Write.SetMonitorWorkOffset(view.Parts
                         .Select(el => el.AssemblyNumber).Aggregate((str1, str2) => $"{str1},{str2}").ToByteArray(), cAssemblyNumber);//寫入構件編號
                     Write.SetMonitorWorkOffset(steelPart.H.ToByteArray(), cH);//寫入高度
@@ -584,14 +670,14 @@ namespace WPFSTD105.ViewModel
             });
             cutPointX?.ForEach(el =>
             {
-                if (el > 0 && el <length)
+                if (el > 0 && el < length)
                 {
-                    dList.Add(new Drill { X = el, Y = h / 3 *1, AXIS_MODE = AXIS_MODE.POINT });
-                    dList.Add(new Drill { X = el, Y =h / 3 *2, AXIS_MODE = AXIS_MODE.POINT });
+                    dList.Add(new Drill { X = el, Y = h / 3 * 1, AXIS_MODE = AXIS_MODE.POINT });
+                    dList.Add(new Drill { X = el, Y = h / 3 * 2, AXIS_MODE = AXIS_MODE.POINT });
                 }
             });
-            long cBoltsL = cWork +boltsCountOffset;
-            long cDrillL = cWork +drOffset;
+            long cBoltsL = cWork + boltsCountOffset;
+            long cDrillL = cWork + drOffset;
             Drill[] drillArray = DrillSort(dList).ToArray();
 
             using (Memor.WriteMemorClient Write = new Memor.WriteMemorClient())
@@ -615,7 +701,7 @@ namespace WPFSTD105.ViewModel
                     _.Reverse();
                 }
                 result.AddRange(_);
-                reverse =  !reverse;
+                reverse = !reverse;
             }
             return result;
         }
@@ -761,7 +847,7 @@ namespace WPFSTD105.ViewModel
                        break;
                }
                drills[i].Dia = attr.Dia;
-               drills[i].AXIS_MODE =attr.Mode;
+               drills[i].AXIS_MODE = attr.Mode;
            });
             return drills;
         }
@@ -790,7 +876,7 @@ namespace WPFSTD105.ViewModel
                 {
                     if (errorCount == 0) //如果沒有發送失敗
                     {
-                        _CreateFileTask =  Task.Factory.StartNew(CreateFile, _Token);
+                        _CreateFileTask = Task.Factory.StartNew(CreateFile, _Token);
                         _WriteCodesysTask = Task.Factory.StartNew(WriteCodesys, _Token);
                     }
                     //如有備份檔就寫回給 Codesys
@@ -804,12 +890,12 @@ namespace WPFSTD105.ViewModel
                             int workSize = Marshal.SizeOf(typeof(WorkMaterial));
                             if (work.Value.AssemblyNumber != null && work.Value.MaterialNumber != null)
                             {
-                                WriteCodesysMemor.SetMonitorWorkOffset(work.Value.ToByteArray(), workOffset + (workSize* i)); //發送加工陣列
+                                WriteCodesysMemor.SetMonitorWorkOffset(work.Value.ToByteArray(), workOffset + (workSize * i)); //發送加工陣列
                                 _SendIndex.Add(Convert.ToInt16(i));
                                 if (work.Value.Position == -2) //如果是完成的狀態
                                 {
                                     FinishDataViews.Add(DataViews[i]);
-                                    FinishDataViews[FinishDataViews.Count -1].Position = "完成";
+                                    FinishDataViews[FinishDataViews.Count - 1].Position = "完成";
                                     UndoneDataView.Remove(DataViews[i]);
                                     _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
                                 }
@@ -828,7 +914,7 @@ namespace WPFSTD105.ViewModel
                         for (int i = synIndex; i < DataViews.Count; i++)
                         {
                             _WorkMaterials[i] = client.GetWorkMaterial(Convert.ToUInt16(i));
-                            if (_WorkMaterials[i].BoltsCountL != 0 || _WorkMaterials[i].BoltsCountR  != 0|| _WorkMaterials[i].IndexBoltsM != 0)
+                            if (_WorkMaterials[i].BoltsCountL != 0 || _WorkMaterials[i].BoltsCountR != 0 || _WorkMaterials[i].IndexBoltsM != 0)
                             {
                                 _SendIndex.Add(Convert.ToInt16(i));
                             }
@@ -848,7 +934,7 @@ namespace WPFSTD105.ViewModel
                 if (errorCount < 20) //如果同步失敗 20 次
                 {
                     log4net.LogManager.GetLogger("同步失敗").Debug($"同步失敗");
-                    SetModel(mdoel, synIndex = 0, errorCount +1); //繼續同步
+                    SetModel(mdoel, synIndex = 0, errorCount + 1); //繼續同步
                     return;
                 }
                 else
@@ -996,7 +1082,7 @@ namespace WPFSTD105.ViewModel
             {
                 if (count < 30)
                 {
-                    ContinuedSerialization(count +1);
+                    ContinuedSerialization(count + 1);
                     Debug.WriteLine($"讀取失敗第 {count} 次 ...");
                 }
                 else
@@ -1064,7 +1150,7 @@ namespace WPFSTD105.ViewModel
                 }
                 // TODO: 釋出非受控資源 (非受控物件) 並覆寫完成項
                 // TODO: 將大型欄位設為 Null
-                _DsposedValue=true;
+                _DsposedValue = true;
             }
         }
         /// <summary>
@@ -1081,6 +1167,246 @@ namespace WPFSTD105.ViewModel
                     ThreeDimensionalDisplayControl = true;
             });
         }
+
+
+        #region app server 溝通按鈕
+
+        /// <summary>
+        /// 切換到橫移料架
+        /// </summary>
+        public ICommand ChangeTransportModeCommand
+        {
+            get
+            {
+                return new WPFBase.RelayCommand(()=>
+                {
+                    Transport_RadioButtonIsChecked = false;
+
+                    ProgressBar_Visible_Transport_Visibility = true;
+                    Transport_RadioButtonIsEnable = false;
+                    Transport_by_C_RadioButtonIsEnable = false;
+                    Transport_by_R_RadioButtonIsEnable = false;
+
+                    Task.Run(() =>
+                    {
+                        Thread.Sleep(3000);
+                        //對機台端下命令 並回傳是否成功，當成功時IsChecked=true 否則IsChecked = False
+
+                        ProgressBar_Visible_Transport_Visibility = false;
+                        Transport_RadioButtonIsChecked = true;
+
+                        Transport_RadioButtonIsEnable = true;
+                        Transport_by_C_RadioButtonIsEnable = true;
+                        Transport_by_R_RadioButtonIsEnable = true;
+                    });
+                });
+            }
+        }
+        /// <summary>
+        /// 切換到輸送料架
+        /// </summary>
+        public ICommand ChangeTransportMode_To_C_Command
+        {
+            get
+            {
+                return new WPFBase.RelayCommand(() =>
+                {
+                    ProgressBar_Visible_Transport_by_C_Visibility = true;
+                    Transport_by_C_RadioButtonIsChecked = false;
+
+                    Transport_RadioButtonIsEnable = false;
+                    Transport_by_C_RadioButtonIsEnable = false;
+                    Transport_by_R_RadioButtonIsEnable = false;
+
+                    Task.Run(() =>
+                    {
+                        Thread.Sleep(2000);
+                        ProgressBar_Visible_Transport_by_C_Visibility = false;
+
+                        Transport_by_C_RadioButtonIsChecked = true;
+
+                        Transport_RadioButtonIsEnable = true;
+                        Transport_by_C_RadioButtonIsEnable = true;
+                        Transport_by_R_RadioButtonIsEnable = true;
+                    });
+
+
+                });
+            }
+        }
+        /// <summary>
+        /// 切換到手動模式
+        /// </summary>
+        public ICommand ChangeTransportMode_To_R_Command
+        {
+            get
+            {
+                return new WPFBase.RelayCommand(() =>
+                {
+                    Transport_by_R_RadioButtonIsChecked = false;
+
+                    ProgressBar_Visible_Transport_by_R_Visibility = true;
+
+                    Transport_RadioButtonIsEnable = false;
+                    Transport_by_C_RadioButtonIsEnable = false;
+                    Transport_by_R_RadioButtonIsEnable = false;
+
+                    Task.Run(() =>
+                    {
+                        Thread.Sleep(2000);
+                        ProgressBar_Visible_Transport_by_R_Visibility = false;
+                        //Transport_by_R_RadioButtonIsChecked = true;
+
+                        Transport_RadioButtonIsEnable = true;
+                        Transport_by_C_RadioButtonIsEnable = true;
+                        Transport_by_R_RadioButtonIsEnable = true;
+                    });
+
+
+                });
+            }
+        }
+
+        public bool Transport_RadioButtonIsEnable { get; set; } = true;
+        public bool Transport_by_C_RadioButtonIsEnable { get; set; } = true;
+        public bool Transport_by_R_RadioButtonIsEnable { get; set; } = true;
+
+        public bool Transport_RadioButtonIsChecked { get; set; }
+        public bool Transport_by_C_RadioButtonIsChecked { get; set; }
+        public bool Transport_by_R_RadioButtonIsChecked { get; set; }
+
+
+        public bool ProgressBar_Visible_Transport_Visibility { get; set; } = false;
+
+        public bool ProgressBar_Visible_Transport_by_C_Visibility { get; set; } = false;
+
+        public bool ProgressBar_Visible_Transport_by_R_Visibility { get; set; } = false;
+
+
+
+
+
+        public ICommand Set_Input_by_Computer_Command
+        {
+            get
+            {
+                return new WPFBase.RelayCommand(() =>
+                {
+                    Input_by_Computer_RadioButtonIsChecked = false;
+                    ProgressBar_Visible_Input_by_Computer = true;
+                    Task.Run(() =>
+                    {
+                        var Result = ActiveAppPairing(false);
+                        ProgressBar_Visible_Input_by_Computer = false;
+
+                        if (Result)
+                        {
+                            Input_by_Computer_RadioButtonIsChecked = true;
+                        }
+
+                    });
+
+
+                });
+            }
+        }
+
+        public ICommand Set_Input_by_SmartPhone_Command
+        {
+            get
+            {
+                return new WPFBase.RelayCommand(() =>
+                {
+                    Input_by_SmartPhone_RadioButtonIsChecked = false;
+                    ProgressBar_Visible_Input_by_SmartPhone = true;
+                    Task.Run(() =>
+                    {
+                        var Result = ActiveAppPairing(true);
+                        ProgressBar_Visible_Input_by_SmartPhone = false;
+                      
+                        if(Result)
+                        {
+                            Input_by_SmartPhone_RadioButtonIsChecked = true;
+                        }
+
+                    });
+
+
+                });
+            }
+        }
+
+        public bool Input_by_Computer_RadioButtonIsChecked { get; set; } = false;
+        public bool Input_by_SmartPhone_RadioButtonIsChecked { get; set; } = false;
+
+
+
+        /// <summary>
+        /// 傳入true為開啟app模式 傳入false為關閉app模式  回傳bool則代表是否有成功下命令
+        /// </summary>
+        /// <param name="AppPairing"></param>
+        /// <returns></returns>
+        private bool ActiveAppPairing(bool AppPairing)
+        {
+            Input_by_SmartPhone_RadioButtonVMEnable = false;
+            Input_by_Computer_RadioButtonVMEnable = false;
+
+            var Result = WPFSTD105.HttpRequest.AppServerCommunication.EnableAppPairing(AppPairing);
+
+            //不管成功或失敗 都使按鈕恢復可用
+            Input_by_SmartPhone_RadioButtonVMEnable = true;
+            Input_by_Computer_RadioButtonVMEnable = true;
+
+            return Result;
+        }
+
+
+
+        /// <summary>
+        /// 使用多重綁定時當Input_by_SmartPhoneVMEnable=false時 Enable 直接為false，其餘狀況依照聯集結果而定
+        /// </summary>
+        public bool Input_by_SmartPhone_RadioButtonVMEnable { get; set; } = true;
+        /// <summary>
+        /// 使用多重綁定時當Input_by_Computer_RadioButtonVMEnable=false時 Enable 直接為false，其餘狀況依照聯集結果而定
+        /// </summary>
+        public bool Input_by_Computer_RadioButtonVMEnable { get; set; } = true;
+
+        public bool ProgressBar_Visible_Input_by_SmartPhone { get; set; } = false;
+
+        public bool ProgressBar_Visible_Input_by_Computer { get; set; } = false;
+
+
+
+
+
+
+        /// <summary>
+        /// 檢查app連線狀態 定期更新
+        /// </summary>
+        private void Check()
+        {
+            if(true)
+            {
+
+            }
+            else
+            {
+                
+
+            }
+        }
+
+
+
+        #endregion
+
+
+
+
+
+
+
+
 
         /// <summary>
         /// 解構式

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace STD_105
 {
     /// <summary>
-    /// MainSpnidleMode.xaml 的互動邏輯
+    /// MainSpindleMode.xaml 的互動邏輯
     /// </summary>
-    public partial class MainSpnidleMode : WPFWindowsBase.BasePage
+    public partial class MainSpindleMode : WPFWindowsBase.BasePage
     {
-        public MainSpnidleMode()
+        public MainSpindleMode()
         {
             InitializeComponent();
         }

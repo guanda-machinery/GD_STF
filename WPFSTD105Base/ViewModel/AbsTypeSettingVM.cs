@@ -47,7 +47,6 @@ namespace WPFSTD105
             SaveMatchCommand = SaveMatch();
         }
 
-
         /// <summary>
         /// 載入DataViews
         /// </summary>
@@ -55,7 +54,6 @@ namespace WPFSTD105
         public ObservableCollection<TypeSettingDataView> LoadDataViews()
         {
             var LoadedDataViews = new ObservableCollection<TypeSettingDataView>();
-
             STDSerialization ser = new STDSerialization();
             ObservableCollection<BomProperty> bomProperties = CommonViewModel.ProjectProperty.BomProperties; //報表屬性設定檔
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();//模型構件列表
@@ -64,9 +62,6 @@ namespace WPFSTD105
             foreach (KeyValuePair<string, ObservableCollection<SteelPart>> eachPart in part)
             {
                 ObservableCollection<SteelPart> buffer = eachPart.Value;
-
-                // ObservableCollection<SteelPart> buffer = ser.GetPart(profile.GetHashCode().ToString()); //零件列表
-
                 //只將 BH RH L TUBE BOX CH H LB([)加入到列表內
                 if (buffer != null && ObSettingVM.allowType.Contains(buffer[0].Type))
                 {
@@ -284,10 +279,7 @@ namespace WPFSTD105
         /// </summary>
         public ObservableCollection<TypeSettingDataView> DataViews { get; set; } = new ObservableCollection<TypeSettingDataView>();
 
-
         public ObservableCollection<TypeSettingDataView> SelectedParts { get; set; } = new ObservableCollection<TypeSettingDataView>();
-
-
         /// <summary>
         /// 素材組合列表
         /// </summary>
@@ -526,8 +518,9 @@ namespace WPFSTD105
                         PartGirdControl.Dispatcher.Invoke(() =>
                         {
                             PartGirdControl.RefreshData();
-                        });
-                     
+                        }); 
+
+
                     }
                 }
                 );
@@ -993,8 +986,8 @@ namespace WPFSTD105
         private void AutoMatchAsyncV2()
         {
             // 2020.06.22  呂宗霖 新增IsNullOrEmpty條件
-            MatchSetting.MainLengths = MainLength.Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(el => Convert.ToDouble(el)).ToList();
-            MatchSetting.SecondaryLengths = SecondaryLength.Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(el => Convert.ToDouble(el)).ToList();
+            MatchSetting.MainLengths = MainLength.Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(el => Convert.ToDouble(el) - (MatchSettingStartCut+ MatchSettingEndCut)).ToList(); //1110 加入動作:先扣除MatchSettingStartCut+ MatchSettingEndCut CYH
+            MatchSetting.SecondaryLengths = SecondaryLength.Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(el => Convert.ToDouble(el) - (MatchSettingStartCut + MatchSettingEndCut)).ToList(); //1110 加入動作:先扣除MatchSettingStartCut+ MatchSettingEndCut CYH
             MatchSetting.PreCode = PreCode;
             //MatchSetting.StartNumber = StartNumber;
 
@@ -1057,8 +1050,14 @@ namespace WPFSTD105
                     List<SinglePart> listPart = new List<SinglePart>();//配料列表
                     foreach (var item in DataViews.Where(x => x.SortCount > 0))
                     {
+                        //1110 排版計算前添加鋸床切割損耗，DataViews中Part的Length此時已被變動 CYH
+                        item.Length += 3;
+
                         foreach (var steel in steels.Where(x => x.Number == item.PartNumber))
                         {
+                            //1110 排版計算前添加鋸床切割損耗 CYH
+                            steel.Length += 3;
+
                             IEnumerable<int> _where = DataViews
                            .Where(el =>
                            el.Profile == steel.Profile &&
@@ -1138,23 +1137,58 @@ namespace WPFSTD105
                             MaterialDataViews[MaterialDataViews.Count - 1].LengthList.AddRange(MatchSetting.SecondaryLengths); //加入長度列表
                             MaterialDataViews[MaterialDataViews.Count - 1].LengthIndex = MaterialDataViews[MaterialDataViews.Count - 1].LengthList.FindIndex(el => _[minIndex][q].Length - MatchSetting.EndCut - MatchSetting.StartCut == el); //長度索引
                             int index = MaterialDataViews[MaterialDataViews.Count - 1].LengthIndex;
-                            MaterialDataViews[MaterialDataViews.Count - 1].LengthStr = MaterialDataViews[MaterialDataViews.Count - 1].LengthList[index];
+                            MaterialDataViews[MaterialDataViews.Count - 1].LengthStr = MaterialDataViews[MaterialDataViews.Count - 1].LengthList[index] + (MatchSetting.EndCut + MatchSetting.StartCut); //1110 加入動作:將素材長度加回MatchSettingStartCut+ MatchSettingEndCut CYH
                             MaterialDataViews[MaterialDataViews.Count - 1].StartCut = MatchSetting.StartCut;
                             MaterialDataViews[MaterialDataViews.Count - 1].EndCut = MatchSetting.EndCut;
                             MaterialDataViews[MaterialDataViews.Count - 1].Cut = MatchSetting.Cut;
                             for (int c = 0; c < _[minIndex][q].PartNumber.Length; c++)
                             {
                                 int dataViewIndex = DataViews.FindIndex(el => el.PartNumber == _[minIndex][q].PartNumber[c] && el.Match.FindIndex(el2 => el2 == true) != -1);
-                                MaterialDataViews[MaterialDataViews.Count - 1].Parts.Add(DataViews[dataViewIndex]);
-                                MaterialDataViews[MaterialDataViews.Count - 1].Material = DataViews[dataViewIndex].Material;
+
+                                //1111 CYH
+                                TypeSettingDataView temp_DataView = DataViews[dataViewIndex].DeepClone() as TypeSettingDataView;
+                                MaterialDataViews[MaterialDataViews.Count - 1].Parts.Add(temp_DataView);
+                                MaterialDataViews[MaterialDataViews.Count - 1].Material = temp_DataView.Material;
+
+                                //MaterialDataViews[MaterialDataViews.Count - 1].Parts.Add(DataViews[dataViewIndex]);
+                                //MaterialDataViews[MaterialDataViews.Count - 1].Material = DataViews[dataViewIndex].Material;
                                 int matchIndex = DataViews[dataViewIndex].Match.IndexOf(el => el == true);
                                 //bool aa = DataViews[dataViewIndex].Match[matchIndex];
                                 DataViews[dataViewIndex].Match[matchIndex] = false;
+
+                                //1111 CYH
+                                MaterialDataViews[MaterialDataViews.Count - 1].Parts[MaterialDataViews[MaterialDataViews.Count - 1].Parts.Count - 1].Length -= 3;
                             }
                             startNumber++;
                         }
                     }
                 }
+                //1111 復原DataViews中零件長度長度 & 取出零件.lis修正回原來長度 CYH
+                for (int i = 0; i < profiles.Count; i++)
+                {
+                    string partData = profiles[i].GetHashCode().ToString(); //資料名稱
+
+                    ObservableCollection<SteelPart> steels = ser.GetPart(partData); //零件序列化檔案
+                    if (steels == null)
+                    {
+                        continue;
+                    }
+
+                    foreach (var item in DataViews.Where(x => x.SortCount > 0))
+                    {
+                        //1110 排版計算前添加鋸床切割損耗，DataViews中Part的Length此時已被變動 CYH
+                        item.Length -= 3;
+
+                        foreach (var steel in steels.Where(x => x.Number == item.PartNumber))
+                        {
+                            //1110 排版計算前添加鋸床切割損耗 CYH
+                            steel.Length -= 3;
+                        }
+                    }
+
+                    ser.SetPart(profiles[i].GetHashCode().ToString(), new ObservableCollection<object>(steels));
+                }
+
                 ser.SetMaterialDataView(MaterialDataViews);
             }
         }
