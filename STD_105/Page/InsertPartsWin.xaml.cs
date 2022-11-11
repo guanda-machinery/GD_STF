@@ -120,6 +120,7 @@ namespace STD_105
                 //有複數零件 重複加入
                 for (int i = 0; i < Softing.SortCount; i++)
                 {
+                    Softing.Revise = DateTime.Now;
                     SelectedMaterial.Parts.Add(Softing);
                 }
             }
@@ -127,16 +128,13 @@ namespace STD_105
             //做完動作在此存檔!
             var ser = new WPFSTD105.STDSerialization(); //序列化處理器
                                                         //零件存檔
-                                                        //素材存檔
+            //素材存檔
             ser.SetMaterialDataView(_materialListGridControl.ItemsSource as System.Collections.ObjectModel.ObservableCollection<GD_STD.Data.MaterialDataView>);
+   
             //零件存檔
-
-
             foreach (var _PartItem in SoftList)
             {
                 ObservableCollection<SteelPart> steelParts = ser.GetPart(_PartItem.Profile.GetHashCode().ToString());
-
-
                 int steelIndex = steelParts.FindIndex(x => x.Number == _PartItem.PartNumber);
                 if (steelIndex != -1)
                 {

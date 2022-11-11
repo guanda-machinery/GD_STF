@@ -6,7 +6,7 @@ using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using static GD_STD.MemoryHelper;
-using IPCSharedMemory = GD_STD.Base.IPCSharedMemory;
+//using IPCSharedMemory = GD_STD.Base.IPCSharedMemory;
 
 namespace GD_STD
 {

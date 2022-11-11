@@ -47,7 +47,6 @@ namespace WPFSTD105
             SaveMatchCommand = SaveMatch();
         }
 
-
         /// <summary>
         /// 載入DataViews
         /// </summary>
@@ -55,7 +54,6 @@ namespace WPFSTD105
         public ObservableCollection<TypeSettingDataView> LoadDataViews()
         {
             var LoadedDataViews = new ObservableCollection<TypeSettingDataView>();
-
             STDSerialization ser = new STDSerialization();
             ObservableCollection<BomProperty> bomProperties = CommonViewModel.ProjectProperty.BomProperties; //報表屬性設定檔
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();//模型構件列表
@@ -64,9 +62,6 @@ namespace WPFSTD105
             foreach (KeyValuePair<string, ObservableCollection<SteelPart>> eachPart in part)
             {
                 ObservableCollection<SteelPart> buffer = eachPart.Value;
-
-                // ObservableCollection<SteelPart> buffer = ser.GetPart(profile.GetHashCode().ToString()); //零件列表
-
                 //只將 BH RH L TUBE BOX CH H LB([)加入到列表內
                 if (buffer != null && ObSettingVM.allowType.Contains(buffer[0].Type))
                 {
@@ -284,10 +279,7 @@ namespace WPFSTD105
         /// </summary>
         public ObservableCollection<TypeSettingDataView> DataViews { get; set; } = new ObservableCollection<TypeSettingDataView>();
 
-
         public ObservableCollection<TypeSettingDataView> SelectedParts { get; set; } = new ObservableCollection<TypeSettingDataView>();
-
-
         /// <summary>
         /// 素材組合列表
         /// </summary>
@@ -526,8 +518,9 @@ namespace WPFSTD105
                         PartGirdControl.Dispatcher.Invoke(() =>
                         {
                             PartGirdControl.RefreshData();
-                        });
-                     
+                        }); 
+
+
                     }
                 }
                 );

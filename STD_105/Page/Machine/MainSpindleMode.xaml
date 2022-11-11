@@ -1,6 +1,6 @@
 ﻿<WPFBase:BasePage  
     xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
-    x:Class="STD_105.MainSpnidleMode"
+    x:Class="STD_105.MainSpindleMode"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -17,11 +17,11 @@
             </Grid.RowDefinitions>
             <Grid.Resources>
                 <!--統一兩個usercontrol的VM，使其可同步-->
-                <STD105VM:Dpad_ViewModel x:Key="Dpad_Js_VM"/>
+                <STD105VM:MainSpindle_ViewModel x:Key="MainSpindle_VM"/>
                 <Style TargetType="Button" BasedOn="{StaticResource CustomDesignButton}"/>
             </Grid.Resources>
 
-            <local:JoystickUserControl Grid.Row="0" Margin="10" DataContext="{StaticResource Dpad_Js_VM}">
+            <local:JoystickUserControl Grid.Row="0" Margin="10" DataContext="{StaticResource MainSpindle_VM}">
 
                 <local:JoystickUserControl.ButtonContent_1_Source>
                     <Grid Width="200">
@@ -150,8 +150,8 @@
                 
                 
             </local:JoystickUserControl >
-            
-            <local:DPadUserControl Grid.Row="1" Margin="10,5"  DataContext="{StaticResource Dpad_Js_VM}" VerticalAlignment="Top">
+
+            <local:DPadUserControl Grid.Row="1" Margin="10,5"  DataContext="{StaticResource MainSpindle_VM}" VerticalAlignment="Top">
                 <local:DPadUserControl.ButtonContent_1_Source>
                     <Grid Width="200">
                         <Grid.ColumnDefinitions>
@@ -228,44 +228,28 @@
 
 
             </local:DPadUserControl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <Border Grid.Row="2" BorderThickness="0,2,0,0" BorderBrush="#292929" />
-
-            <StackPanel  Grid.Row="3" Margin="10">
+            <StackPanel  Grid.Row="3" Margin="10" DataContext="{StaticResource MainSpindle_VM}">
+                <StackPanel.Resources>
+                    <Style TargetType="Button" BasedOn="{StaticResource SiegCustomButtonGreenBorder}">
+                        <Setter Property="Width" Value="auto"/>
+                        <Setter Property="Height" Value="130"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="BorderThickness" Value="2"/>
+                    </Style>
+                </StackPanel.Resources>
 
                 <Grid Margin="5">
-                    <Grid.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="Width" Value="auto"/>
-                            <Setter Property="Height" Value="130"/>
-                            <Setter Property="Padding" Value="0"/>
-                            <Setter Property="BorderBrush" Value="#4CFF00"/>
-                            <Setter Property="BorderThickness" Value="2"/>
-                            <Setter Property="Background" Value="White"/>
-                        </Style>
-                    </Grid.Resources>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="350"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0" >
-                        <Button>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Button Command="{Binding MainSpindleRotateCommand}">
                         <Grid Width="auto" HorizontalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -283,9 +267,9 @@
                             <Image Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="2" Source="{StaticResource Hex_StartDrawingImage}" Width="60" HorizontalAlignment="Left" Margin="10,0,0,0"/>
                             </Grid>
                         </Button>
-                    </Border>
-                    <Border Grid.Column="1" Margin="10,0">
-                        <Button>
+
+
+                        <Button Grid.Column="1" Margin="10,0" Command="{Binding MainSpindleStopCommand}">
                         <Grid Width="auto" HorizontalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -303,39 +287,21 @@
                             <Image Grid.Column="2" Grid.ColumnSpan="2" Grid.RowSpan="2" Source="{StaticResource Hex_StopDrawingImage}" Width="60" HorizontalAlignment="Left" Margin="10,0,0,0"/>
                             </Grid>
                         </Button>
-                    </Border>
-                    <Border Grid.Column="2" ></Border>
-                </Grid>
-                <Grid Margin="5">
-                    <Grid.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="Width" Value="auto"/>
-                            <Setter Property="Height" Value="130"/>
-                            <Setter Property="Padding" Value="0"/>
-                            <Setter Property="BorderBrush" Value="#4CFF00"/>
-                            <Setter Property="BorderThickness" Value="2"/>
-                            <Setter Property="Background" Value="White"/>
-                        </Style>
-                    </Grid.Resources>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="350"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0" >
-                        <Button>
-                        <Image Source="{StaticResource Spindle_ToolChange_HorizonDrawingImage}" Height="95" />
+
+                    <Button Grid.Column="2" IsEnabled="False"/>
+
+                    <Button Grid.Row="1" Command="{Binding LooseToolCommand}">
+                            <Image Source="{StaticResource Spindle_ToolChange_HorizonDrawingImage}" Height="95" />
                         </Button>
-                    </Border>
-                    <Border Grid.Column="1" Margin="10,0">
-                        <Button>
+
+                    <Button Grid.Row="1" Grid.Column="1" Margin="10,10" Command="{Binding MainSpindleCoolantCommand}">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
                             <Image Source="{StaticResource SpindleColor_HorizonDrawingImage}" Width="100"  />
                             <Image Source="{StaticResource SprayingDrawingImage}" Height="50" Margin="10,0,0,0"/>
                         </StackPanel>
                         </Button>
-                    </Border>
-                    <Border Grid.Column="2" ></Border>
+
+                    <Button Grid.Row="1" Grid.Column="2"  IsEnabled="False"></Button>
                 </Grid>
             </StackPanel>
         </Grid>
