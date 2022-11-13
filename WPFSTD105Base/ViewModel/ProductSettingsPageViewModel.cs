@@ -132,6 +132,8 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public List<NcPoint3D> uPoint { get; set; } = new List<NcPoint3D>();
 
+
+
         public ProductSettingsPageViewModel()
         {
             steelAttr = new SteelAttr();

@@ -1541,7 +1541,7 @@ namespace WPFSTD105.ViewModel
                        select new SteelPart() { t1 = a.t1, t2 = a.t2, H = a.H, W = a.W }).ToList();
                 // 紀錄零件資訊
                 List < SteelAttr > saList = new List<SteelAttr>();
-                foreach (var item in DataCorrespond.Where(x=>x.Profile.GetHashCode().ToString()+".lis"==key))
+                foreach (var item in DataCorrespond.Where(x=> x.Profile.GetHashCode().ToString()+".lis"==key))
                 {
                     string path = ApplicationVM.DirectoryNc();
                     string allPath = path + $"\\{item.Number}.nc1";
