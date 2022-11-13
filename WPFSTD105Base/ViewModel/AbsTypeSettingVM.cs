@@ -835,6 +835,10 @@ namespace WPFSTD105
         public bool? PhaseCheckboxBoolen { get; set; } = true;
         public bool? DismanteCheckboxBoolen { get; set; } = true;
 
+
+
+
+
         #endregion
 
 
@@ -1081,8 +1085,11 @@ namespace WPFSTD105
 
                             }
 
-
+                            //1111 排版計算前添加鋸床切割損耗, 復原長度 CYH
+                            steel.Length -= 3;
                         }
+                        //1111 排版計算前添加鋸床切割損耗, 復原長度 CYH
+                        item.Length -= 3;
                     }
 
                     ser.SetPart(profiles[i].GetHashCode().ToString(), new ObservableCollection<object>(steels));
@@ -1145,50 +1152,16 @@ namespace WPFSTD105
                             {
                                 int dataViewIndex = DataViews.FindIndex(el => el.PartNumber == _[minIndex][q].PartNumber[c] && el.Match.FindIndex(el2 => el2 == true) != -1);
 
-                                //1111 CYH
-                                TypeSettingDataView temp_DataView = DataViews[dataViewIndex].DeepClone() as TypeSettingDataView;
-                                MaterialDataViews[MaterialDataViews.Count - 1].Parts.Add(temp_DataView);
-                                MaterialDataViews[MaterialDataViews.Count - 1].Material = temp_DataView.Material;
-
-                                //MaterialDataViews[MaterialDataViews.Count - 1].Parts.Add(DataViews[dataViewIndex]);
-                                //MaterialDataViews[MaterialDataViews.Count - 1].Material = DataViews[dataViewIndex].Material;
+                                MaterialDataViews[MaterialDataViews.Count - 1].Parts.Add(DataViews[dataViewIndex]);
+                                MaterialDataViews[MaterialDataViews.Count - 1].Material = DataViews[dataViewIndex].Material;
                                 int matchIndex = DataViews[dataViewIndex].Match.IndexOf(el => el == true);
                                 //bool aa = DataViews[dataViewIndex].Match[matchIndex];
                                 DataViews[dataViewIndex].Match[matchIndex] = false;
-
-                                //1111 CYH
-                                MaterialDataViews[MaterialDataViews.Count - 1].Parts[MaterialDataViews[MaterialDataViews.Count - 1].Parts.Count - 1].Length -= 3;
                             }
                             startNumber++;
                         }
                     }
                 }
-                //1111 復原DataViews中零件長度長度 & 取出零件.lis修正回原來長度 CYH
-                for (int i = 0; i < profiles.Count; i++)
-                {
-                    string partData = profiles[i].GetHashCode().ToString(); //資料名稱
-
-                    ObservableCollection<SteelPart> steels = ser.GetPart(partData); //零件序列化檔案
-                    if (steels == null)
-                    {
-                        continue;
-                    }
-
-                    foreach (var item in DataViews.Where(x => x.SortCount > 0))
-                    {
-                        //1110 排版計算前添加鋸床切割損耗，DataViews中Part的Length此時已被變動 CYH
-                        item.Length -= 3;
-
-                        foreach (var steel in steels.Where(x => x.Number == item.PartNumber))
-                        {
-                            //1110 排版計算前添加鋸床切割損耗 CYH
-                            steel.Length -= 3;
-                        }
-                    }
-
-                    ser.SetPart(profiles[i].GetHashCode().ToString(), new ObservableCollection<object>(steels));
-                }
-
                 ser.SetMaterialDataView(MaterialDataViews);
             }
         }

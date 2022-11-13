@@ -1499,11 +1499,12 @@ namespace WPFSTD105.ViewModel
                 }
             }
         }
+
         /// <summary>
         /// 取得專案內零件資訊
         /// </summary>
         /// <returns></returns>
-        public static List<ProductSettingsPageViewModel> GetData()
+        public static List<ProductSettingsPageViewModel> GetData(bool ShowProcessingScreenWin = true)
         {
             STDSerialization ser = new STDSerialization();
             // 限制Grid出現之內容
@@ -1987,15 +1988,21 @@ namespace WPFSTD105.ViewModel
 
             var ProcessingScreenWin = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
 
-            System.Threading.Thread.Sleep(100);
-            ProcessingScreenWin.Show(inputBlock: InputBlockMode.Window, timeout: 700);
-            System.Threading.Thread.Sleep(100);
+            if (ShowProcessingScreenWin)
+            {
+                ProcessingScreenWin.Show(inputBlock: InputBlockMode.Window, timeout: 700);
+            }
+
             ProcessingScreenWin.ViewModel.Status = "取得專案內零件資訊";
             ProcessingScreenWin.ViewModel.IsIndeterminate = false;
             int ItemCount = 0;
 
             foreach (var item in group)
             {
+                double Per = (ItemCount * 100) / group.Count;
+                ProcessingScreenWin.ViewModel.Status = $"正在讀取{item.PartNumber} - {ItemCount} / {group.Count}";
+                ProcessingScreenWin.ViewModel.Progress = Per;
+
                 //ProfileType = item.SteelType;
                 ProductSettingsPageViewModel aa = new ProductSettingsPageViewModel()
                 {
@@ -2048,7 +2055,7 @@ namespace WPFSTD105.ViewModel
                 aa.steelAttr.ShippingNumber = item.ShippingNumber;
                 aa.steelAttr.ExclamationMark = item.ExclamationMark;
 
-                if (NcSA[aa.steelAttr.Profile.GetHashCode().ToString()+".lis"].Any())
+                if (NcSA[aa.steelAttr.Profile.GetHashCode().ToString() + ".lis"].Any())
                 {
                     var NcSASingle = NcSA[aa.steelAttr.Profile.GetHashCode().ToString() + ".lis"].Where(x => x.PartNumber == aa.steelAttr.PartNumber).FirstOrDefault();
                     if (NcSASingle != null)
@@ -2065,12 +2072,7 @@ namespace WPFSTD105.ViewModel
                 }
                 list.Add(aa);
 
-                double Per = (ItemCount * 100) / group.Count;
-                if (group.Count > 0)
-                {
-                    ProcessingScreenWin.ViewModel.Status = $"正在讀取{aa.steelAttr.PartNumber} - {ItemCount} / {group.Count}";
-                    ProcessingScreenWin.ViewModel.Progress = Per;
-                }
+
                 ItemCount++;
             }
             ProcessingScreenWin.ViewModel.IsIndeterminate = true;

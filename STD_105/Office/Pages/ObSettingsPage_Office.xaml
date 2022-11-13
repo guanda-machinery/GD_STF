@@ -359,7 +359,7 @@
                              Text="{Binding SteelAttr.Number}" Cursor="IBeam" />
                     <STD105:DataButtons_Office Grid.Row="8"
                                                Grid.ColumnSpan="2"
-                                               Width="450"
+                                               Width="450" 
                                                Modify="{Binding ModifyPart}"
                                                Add="{Binding AddPart}"
                                                Read="{Binding ReadPart}"
