@@ -654,10 +654,14 @@ namespace WPFSTD105.ViewModel
         {
             DataCorrespond data = new DataCorrespond()
             {
-                DataName = SteelAttr.GUID.ToString(),
-                Number = SteelAttr.PartNumber,
-                Type = SteelAttr.Type,
-                Profile = SteelAttr.Profile,
+                DataName = GuidProperty.Value.ToString(),
+                Number = PartNumberProperty,
+                Type = (OBJECT_TYPE)SteelTypeProperty_int,
+                Profile = SteelSectionProperty,
+                //DataName = SteelAttr.GUID.ToString(),
+                //Number = SteelAttr.PartNumber,
+                //Type = SteelAttr.Type,
+                //Profile = SteelAttr.Profile,
                 // 2022/09/08 彥谷
                 oPoint = SteelAttr.oPoint.ToArray(),
                 vPoint = SteelAttr.vPoint.ToArray(),
@@ -852,7 +856,7 @@ namespace WPFSTD105.ViewModel
             if (CheckFace)
             {
                 int temp_BoltsFace;
-                if (OfficeViewModel.CurrentPage == OfficePage.ProductSettings)//若為新版製品設定頁面
+                if (OfficeViewModel.CurrentPage == OfficePage.ProductSettings || ViewLocator.ApplicationViewModel.CurrentPage == ApplicationPage.MachineProductSetting )//若為新版製品設定頁面
                 {
                     temp_BoltsFace = rbtn_DrillingFace;
                 }
@@ -1664,119 +1668,7 @@ namespace WPFSTD105.ViewModel
 
             List<ProductSettingsPageViewModel> steelAttrList = new List<ProductSettingsPageViewModel>();
             ProductSettingsPageViewModel steelAttrVM = new ProductSettingsPageViewModel();
-            #region 構件開始
-            ////foreach (var item in partNumber_ID)
-            ////{
-            ////    foreach (int fatherID in item.Father)
-            ////    {
-            ////        var fatherInfo = assNumber_ID.Where(x=>x.Item3.Contains(fatherID));
-            ////        if (fatherInfo != null)
-            ////        {
-            ////            #region Grid零件內容
-            ////            steelAttrVM = new ProductSettingsPageViewModel();
-            ////            // 建立日期
-            ////            steelAttrVM.Creation = item.Creation;
-            ////            steelAttrVM.steelAttr.Creation = item.Creation;
-            ////            // 修改日期
-            ////            steelAttrVM.Revise = item.Revise;
-            ////            steelAttrVM.steelAttr.Revise = item.Revise;
-            ////            // Tekla構件ID
-            ////            steelAttrVM.TeklaAssemblyID = fatherID.ToString();
-            ////            // 構件編號
-            ////            steelAttrVM.steelAttr.AsseNumber = fatherInfo.FirstOrDefault().Item1;
-            ////            steelAttrVM.AssemblyNumber = fatherInfo.FirstOrDefault().Item1;
-            ////            // 零件編號
-            ////            steelAttrVM.steelAttr.PartNumber = item.Number;
-            ////            // 斷面規格
-            ////            string profile = item.Profile;
-            ////            steelAttrVM.steelAttr.Profile = profile;
-            ////            steelAttrVM.Profile = profile;
-            ////            // 零件長
-            ////            double length = item.Length;
-            ////            steelAttrVM.steelAttr.Length = length;
-            ////            steelAttrVM.Length = length;
-            ////            // 零件ID List
-            ////            var partList = partNumber_ID.Where(x => x.Number == item.Number && x.Profile == profile && x.Length == length && x.Father.Contains(fatherID)).Select(x => x.ID).FirstOrDefault();
-            ////            // 構件ID List
-            ////            var fatherList = partNumber_ID.Where(x => x.Number == item.Number && x.Profile == profile && x.Length == length && x.Father.Contains(fatherID)).Select(x => x.Father).FirstOrDefault();
-            ////            // Father的index = Part的index
-            ////            var partIndex = fatherList.IndexOf(fatherID);
-            ////            // 取得該筆零件ID
-            ////            int partID = partList[partIndex];
-            ////            //partNumber_ID.Where(x => x.Number == item.Number && x.Father[i] == assemID && x.ID[i] == partID).FirstOrDefault();
-            ////            //var idList = partNumber_ID.Where(x => x.Number == item.Number).Select(x => x.ID).FirstOrDefault();
-            ////            // 移除本次構件ID 避免下次 FirstOrDefault 重複抓到
-            ////            fatherList.Remove(fatherID);
-            ////            // 移除本次零件ID 避免下次 FirstOrDefault 重複抓到
-            ////            partList.Remove(partID);
-            ////            // 零件ID
-            ////            steelAttrVM.steelAttr.TeklaPartID = partID.ToString();
-            ////            // Tekla 圖名稱 // 匯入時 請檢查是匯入"NuLL還是空白"
-            ////            steelAttrVM.TeklaName = (string.IsNullOrEmpty(item.DrawingName) || item.DrawingName == "null") ? "" : item.DrawingName;
-            ////            steelAttrVM.steelAttr.Name = (string.IsNullOrEmpty(item.DrawingName) || item.DrawingName == "null") ? "" : item.DrawingName;
-            ////            // 鋼材類別
-            ////            var aa = item.Type.GetType().GetMember(item.Type.ToString())[0].GetCustomAttribute<DescriptionAttribute>();
-            ////            string type = aa == null ? "" : aa.Description;
-
-            ////            steelAttrVM.TypeDesc = type;
-
-            ////            steelAttrVM.Type = item.Type;
-            ////            steelAttrVM.steelAttr.Type = item.Type;
-
-            ////            steelAttrVM.SteelType = Convert.ToInt32(item.Type);
-            ////            // 材質
-            ////            string material = item.Material;
-            ////            steelAttrVM.steelAttr.Material = material;
-            ////            steelAttrVM.Material = material;
-            ////            // 數量
-            ////            int count = item.Count;
-            ////            steelAttrVM.steelAttr.Number = count;
-            ////            steelAttrVM.Count = count;
-            ////            // 零件重
-            ////            double weight = item.UnitWeight;
-            ////            steelAttrVM.steelAttr.Weight = weight;
-            ////            steelAttrVM.Weight = weight;
-
-            ////            steelAttrVM.steelAttr.H = item.H;
-            ////            steelAttrVM.steelAttr.W = item.W;
-            ////            steelAttrVM.steelAttr.t1 = item.t1;
-            ////            steelAttrVM.t1 = item.t1;
-            ////            steelAttrVM.steelAttr.t2 = item.t2;
-            ////            steelAttrVM.t2 = item.t2;
-
-            ////            steelAttrVM.Title1 = item.Title1;
-            ////            steelAttrVM.steelAttr.Title1 = item.Title1;
-            ////            steelAttrVM.Title2 = item.Title2;
-            ////            steelAttrVM.steelAttr.Title2 = item.Title2;
-            ////            steelAttrVM.Phase = item.Phase;
-            ////            steelAttrVM.steelAttr.Phase = item.Phase;
-            ////            steelAttrVM.ShippingNumber = item.ShippingNumber;
-            ////            steelAttrVM.steelAttr.ShippingNumber = item.ShippingNumber;
-
-            ////            // 上鎖
-            ////            steelAttrVM.steelAttr.Lock = item.Lock;
-            ////            steelAttrVM.Lock = item.Lock;
-            ////            // 驚嘆號
-            ////            steelAttrVM.steelAttr.ExclamationMark = item.ExclamationMark;
-            ////            steelAttrVM.ExclamationMark = item.ExclamationMark;
-
-            ////            //// GUID (Data Name)
-            ////            //DataCorrespond single = DataCorrespond.FirstOrDefault(x =>
-            ////            //x.Profile == steelAttrVM.Profile &&
-            ////            //x.Number == steelAttrVM.steelAttr.PartNumber &&
-            ////            //allowType.Contains(x.Type));
-            ////            //if (single != null)
-            ////            steelAttrVM.steelAttr.GUID = item.GUID;
-            ////            steelAttrVM.DataName = item.GUID.ToString();
-            ////            //partNumber_ID.Remove(delPart);
-            ////            steelAttrList.Add(steelAttrVM);
-            ////            #endregion
-            ////        }
-            ////    }
-            ////}
-            
-            
-            
+            #region 構件開始            
             //foreach (KeyValuePair<object, List<int>> assembliesItem in assNumber_ID)
             foreach (Tuple<string,int, List<int>> assembliesItem in assNumber_ID)
             {
