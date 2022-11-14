@@ -913,7 +913,7 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.dY = "0";
                         TmpBoltsArr.xCount = 1;
                         TmpBoltsArr.yCount = 1;
-                        TmpBoltsArr.Mode = AXIS_MODE.POINT;
+                        TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
                         TmpBoltsArr.X = tmplist1[z].X;
                         TmpBoltsArr.Y = tmplist1[z].Y;
                         TmpBoltsArr.BlockName = "BackHypotenuse";
@@ -988,7 +988,7 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.dY = "0";
                         TmpBoltsArr.xCount = 1;
                         TmpBoltsArr.yCount = 1;
-                        TmpBoltsArr.Mode = AXIS_MODE.POINT;
+                        TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
                         TmpBoltsArr.X = tmplist1[z].X;
                         TmpBoltsArr.Y = tmplist1[z].Y;
                         TmpBoltsArr.BlockName = "FRONTHypotenuse";
@@ -1066,7 +1066,7 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.dY = "0";
                         TmpBoltsArr.xCount = 1;
                         TmpBoltsArr.yCount = 1;
-                        TmpBoltsArr.Mode = AXIS_MODE.POINT;
+                        TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
                         TmpBoltsArr.BlockName = "TopHypotenuse";
                         TmpBoltsArr.X = tmplist1[z].X;
                         TmpBoltsArr.Y = tmplist1[z].Y;

@@ -451,7 +451,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 製品數量
         /// </summary>
-        public double ProductCountProperty { get; set; }
+        public int ProductCountProperty { get; set; }
         /// <summary>
         /// 製品名稱
         /// </summary>
@@ -489,13 +489,29 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public string SteelSectionProperty { get; set; } 
         /// <summary>
+        /// GUID
+        /// </summary>
+        public Guid? GuidProperty { get; set; }
+        /// <summary>
+        /// 切割線
+        /// </summary>
+        public CutList PointTopProperty { get; set; } = new CutList();
+        /// <summary>
+        /// 切割線
+        /// </summary>
+        public CutList PointFrontProperty { get; set; } = new CutList();
+        /// <summary>
+        /// 切割線
+        /// </summary>
+        public CutList PointBackProperty { get; set; } = new CutList();
+        /// <summary>
         /// 高
         /// </summary>
-        public int HProperty { get; set; }
+        public float HProperty { get; set; }
         /// <summary>
         /// 寬
         /// </summary>
-        public int WProperty { get; set; }
+        public float WProperty { get; set; }
         /// <summary>
         /// 腹板厚度
         /// </summary>
@@ -504,7 +520,10 @@ namespace WPFSTD105.ViewModel
         /// 翼板厚度
         /// </summary>
         public int t2Property { get; set; }
-
+        /// <summary>
+        /// 驚嘆號
+        /// </summary>
+        public bool? ExclamationMarkProperty { get; set; }
 
 
 
@@ -1523,7 +1542,7 @@ namespace WPFSTD105.ViewModel
                        select new SteelPart() { t1 = a.t1, t2 = a.t2, H = a.H, W = a.W }).ToList();
                 // 紀錄零件資訊
                 List < SteelAttr > saList = new List<SteelAttr>();
-                foreach (var item in DataCorrespond.Where(x=>x.Profile.GetHashCode().ToString()+".lis"==key))
+                foreach (var item in DataCorrespond.Where(x=> x.Profile.GetHashCode().ToString()+".lis"==key))
                 {
                     string path = ApplicationVM.DirectoryNc();
                     string allPath = path + $"\\{item.Number}.nc1";
@@ -1553,6 +1572,9 @@ namespace WPFSTD105.ViewModel
                             saTemp.uPoint = steelAttrNC.uPoint;
                             saTemp.CutList = steelAttrNC.CutList;
                             saTemp.Length = steelAttrNC.Length;
+                            //saTemp.PointTop = steelAttrNC.PointTop;
+                            //saTemp.PointBack = steelAttrNC.PointBack;
+                            //saTemp.PointFront = steelAttrNC.PointFront;
                             //saTemp.Name = "";
                             saTemp.Material = "";
                             //saTemp.Phase = 0;
@@ -1623,7 +1645,7 @@ namespace WPFSTD105.ViewModel
                     x.Length,
                     x.UnitWeight,
                     x.Father,
-                    x.ID,                    
+                    x.ID
                 }).Where(x => allowType.Contains(x.Type)).ToList();
 
             // 孔 vs 父節點
@@ -1785,6 +1807,8 @@ namespace WPFSTD105.ViewModel
                             var partIndex = fatherList.IndexOf(assemID);
                             // 取得該筆零件ID
                             int partID = partList[partIndex];
+
+                            int count = assembliesItem.Item3.Intersect(fatherList).Count();
                             // 當父節點中還找的到父節點ID時，代表該零件尚存在其他構件中
                             while (fatherList.Contains(assemID))
                             {
@@ -1838,7 +1862,7 @@ namespace WPFSTD105.ViewModel
                                 steelAttrVM.steelAttr.Material = material;
                                 steelAttrVM.Material = material;
                                 // 數量
-                                int count = item.Count;
+                                // 由零件Father往回抓構件的ID List                                
                                 steelAttrVM.steelAttr.Number = count;
                                 steelAttrVM.Count = count;
                                 // 零件重
@@ -1869,8 +1893,6 @@ namespace WPFSTD105.ViewModel
                                 steelAttrVM.steelAttr.ExclamationMark = item.ExclamationMark;
                                 steelAttrVM.ExclamationMark = item.ExclamationMark;
                                               
-                                
-
                                 //// GUID (Data Name)
                                 //DataCorrespond single = DataCorrespond.FirstOrDefault(x =>
                                 //x.Profile == steelAttrVM.Profile &&

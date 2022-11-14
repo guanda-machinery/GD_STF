@@ -127,7 +127,7 @@ namespace GD_STD.Data
             }
         }
         /// <inheritdoc/>
-        public double TotalWeight() => UnitWeight * Count;
+        public double TotalWeight() =>Math.Round( UnitWeight * Count,(int)DecimalPlaces.TotalWeight);
         /// <inheritdoc/>
         public double TotalArea() => UnitWeight * Count;
         /// <inheritdoc/>

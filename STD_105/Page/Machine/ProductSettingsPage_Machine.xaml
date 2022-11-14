@@ -192,16 +192,12 @@
                     </TreeView>
                 </GroupBox>
 
-                <Grid Margin="5"> 
-                    <Grid.Resources>
-                        <!--標題列背景-->
-                        <SolidColorBrush x:Key="{dxgt:TableViewThemeKey ResourceKey=SearchPanelBackground, IsThemeIndependent=True}" Color="#f0f0f0" />
-                    </Grid.Resources>
-                <Grid.DataContext>
-                    <STD105VM:ObSettingVM/>
-                        <!--<WPFSTD:OfficeTypeSettingVM/>-->
-                    </Grid.DataContext>
-                    <!--<GroupBox.DataContext>          -->
+                <Grid Margin="5">
+                <Grid.Resources>
+                    <!--標題列背景-->
+                    <SolidColorBrush x:Key="{dxgt:TableViewThemeKey ResourceKey=SearchPanelBackground, IsThemeIndependent=True}" Color="#f0f0f0" />
+                </Grid.Resources>
+                <!--<GroupBox.DataContext>          -->
                     <!--    <spa:OfficeTypeSettingVM/>  -->
                     <!--</GroupBox.DataContext>         -->
                     <dxg:GridControl Name="PieceListGridControl"
@@ -209,7 +205,7 @@
                                  SelectionMode="None"
                                  MaxHeight="450"
                                  AllowLiveDataShaping="True"
-                                 ItemsSource="{Binding DataViews, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange">
+                                  ItemsSource="{Binding ProductSettingsPageViewModel.DataViews, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange">
                         <dxg:GridControl.Resources>
 
                             <Style TargetType="dxg:GridColumn" >
@@ -340,18 +336,18 @@
                         <dxg:GridColumn FieldName="AssemblyNumber" Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="60"/>
                         <dxg:GridColumn FieldName="PartNumber" Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="60" />
                         <dxg:GridColumn FieldName="TeklaName" Binding="{Binding steelAttr.Name}" IsSmart="True" Header="名稱" Width="80"/>
-                        <dxg:GridColumn FieldName="TypeDesc"  IsSmart="True" Header="鋼材類型" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn FieldName="TypeDesc" Binding="{Binding TypeDesc}" IsSmart="True" Header="鋼材類型" Visible="{StaticResource visible}"/>
                         <dxg:GridColumn Binding="{Binding Path=SteelType, Converter={local:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類型" Width="60"/>
-                        <dxg:GridColumn FieldName="Profile" IsSmart="True" Header="斷面規格"  Width="140"/>
-                        <dxg:GridColumn FieldName="SteelType"  IsSmart="True" Header="鋼材類型(Index)" Visible="{StaticResource visible}"/>
-                        <dxg:GridColumn FieldName="Material" IsSmart="True"  Header="材質"  Width="80"/>
-                        <dxg:GridColumn FieldName="Count"  IsSmart="True"  Width="40" Header="數量"  />
-                        <dxg:GridColumn FieldName="Length" Binding="{Binding Length}" IsSmart="True" Header="零件長" Width="70">
+                    <dxg:GridColumn FieldName="Profile" Binding="{Binding steelAttr.Profile}" IsSmart="True" Header="斷面規格"  Width="140"/>
+                    <dxg:GridColumn FieldName="SteelType"  Binding="{Binding steelAttr.Profile}"  IsSmart="True" Header="鋼材類型(Index)" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn FieldName="Material" Binding="{Binding steelAttr.Material}" IsSmart="True"  Header="材質"  Width="80"/>
+                    <dxg:GridColumn FieldName="Count" Binding="{Binding Count}" IsSmart="True"  Width="40" Header="數量"  />
+                    <dxg:GridColumn FieldName="Length" Binding="{Binding steelAttr.Length}" IsSmart="True" Header="零件長" Width="70">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings Mask="f0" MaskType="Numeric" MaskUseAsDisplayFormat="true"/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="Weight" Binding="{Binding Weight}" IsSmart="True" Header="零件重" Width="70">
+                    <dxg:GridColumn FieldName="Weight" Binding="{Binding steelAttr.Weight}" IsSmart="True" Header="零件重" Width="70">
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings Mask="f1" MaskType="Numeric" MaskUseAsDisplayFormat="true"/>
                             </dxg:GridColumn.EditSettings>
@@ -361,10 +357,10 @@
                         <dxg:GridColumn FieldName="t1" Binding="{Binding steelAttr.t1}" IsSmart="True"  Header="腹板厚度" Width="auto" Visible="{StaticResource visible}"/>
                         <dxg:GridColumn FieldName="t2" Binding="{Binding steelAttr.t2}" IsSmart="True"  Header="翼板厚度" Width="auto" Visible="{StaticResource visible}"/>
 
-                        <dxg:GridColumn FieldName="Phase"  IsSmart="True"  Width="40" Header="Phase" />
-                        <dxg:GridColumn FieldName="ShippingNumber"  IsSmart="True"  Width="40" Header="拆運"  />
-                        <dxg:GridColumn FieldName="Title1" IsSmart="True"  Width="45" Header="標題一"  />
-                        <dxg:GridColumn FieldName="Title2" IsSmart="True"  Width="45" Header="標題二"  />
+                    <dxg:GridColumn FieldName="Phase" Binding="{Binding steelAttr.Phase}" IsSmart="True"  Width="40" Header="Phase" />
+                    <dxg:GridColumn FieldName="ShippingNumber" Binding="{Binding steelAttr.ShippingNumber}" IsSmart="True"  Width="40" Header="拆運"  />
+                    <dxg:GridColumn FieldName="Title1" Binding="{Binding steelAttr.Title1}" IsSmart="True"  Width="45" Header="標題一"  />
+                    <dxg:GridColumn FieldName="Title2" Binding="{Binding steelAttr.Title2}" IsSmart="True"  Width="45" Header="標題二"  />
 
                         <!--<dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"   Header="構件編號" Width="auto"/>
                         <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="auto" />
@@ -498,7 +494,8 @@
 
                     <TextBox Grid.Column="1" Grid.Row="4" Name="PartCount">
                         <TextBox.Text>
-                            <Binding Path="SteelAttr.Number" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                        <!--  <Binding Path="SteelAttr.Number" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >-->
+                        <Binding Path="ProductCountProperty" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                 <Binding.ValidationRules>
                                     <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                 </Binding.ValidationRules>
@@ -508,7 +505,8 @@
 
                     <Label Grid.Column="0" Grid.Row="5" Content="名稱：" />
 
-                    <TextBox Name ="teklaName" Grid.Column="1" Grid.Row="5" Text="{Binding Path=SelectedItems[0].TeklaName , ElementName=PieceListGridControl , Mode=OneWay , UpdateSourceTrigger=PropertyChanged}" >
+                <!-- <TextBox Name ="teklaName" Grid.Column="1" Grid.Row="5" Text="{Binding Path=SelectedItems[0].TeklaName , ElementName=PieceListGridControl , Mode=OneWay , UpdateSourceTrigger=PropertyChanged}" >-->
+                <TextBox Name ="teklaName" Grid.Column="1" Grid.Row="5" Text="{Binding Path=ProductNameProperty ,  UpdateSourceTrigger=PropertyChanged}" >
                         <!--     <TextBox.Text>
                                 <Binding Path="SelectedItems[0].TeklaName" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >
                                     <Binding.ValidationRules>
@@ -520,26 +518,31 @@
 
                     <Label Grid.Column="0"  Grid.Row="6" Content="材質：" />
 
-                    <ComboBox Grid.Column="1" Grid.Row="6" Name="material" ItemsSource="{Binding Materials, Converter={local:MaterialToNameConverter}}" SelectedValue="{Binding SelectedItems[0].Material, ElementName=PieceListGridControl, Mode=OneWay}" Padding="5,1,0,0" />
+                <ComboBox Grid.Column="1" Grid.Row="6" Name="material" ItemsSource="{Binding Materials, Converter={local:MaterialToNameConverter}}"
+                    SelectedValue="{Binding ProductMaterialPropert, Mode=OneWay}"
+                              Padding="5,1,0,0" />
+                           <!--   SelectedValue="{Binding SelectedItems[0].Material, ElementName=PieceListGridControl, Mode=OneWay}"-->
 
                     <Label Grid.Column="0" Grid.Row="7" Content="Phase：" />
 
                     <TextBox x:Name="phase" Grid.Column="1" Grid.Row="7" >
                         <TextBox.Text>
-                            <Binding Path="SelectedItems[0].Phase" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >
-                                <Binding.ValidationRules>
+                       <!-- <Binding Path="SelectedItems[0].Phase" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >-->
+                        <Binding Path="PhaseProperty" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding.ValidationRules>
                                     <STD105ValidRule:CheckStringEmptyRule/>
                                 </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
+                        </Binding>
+                    </TextBox.Text>
                     </TextBox>
 
                     <Label Grid.Column="0" Grid.Row="8" Content="拆運：" />
 
                     <TextBox x:Name="shippingNumber" Grid.Column="1" Grid.Row="8">
                         <TextBox.Text>
-                            <Binding Path="SelectedItems[0].ShippingNumber" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >
-                                <Binding.ValidationRules>
+                        <!-- <Binding Path="SelectedItems[0].ShippingNumber" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >-->
+                        <Binding Path="ShippingNumberProperty" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding.ValidationRules>
                                     <STD105ValidRule:CheckStringEmptyRule></STD105ValidRule:CheckStringEmptyRule>
                                 </Binding.ValidationRules>
                             </Binding>
@@ -555,29 +558,29 @@
                     <Label Grid.Column="0" Grid.Row="9"
                            Content="型鋼類型：" />
 
-                    <ComboBox x:Name="cbx_SteelType"
+                <ComboBox x:Name="cbx_SteelTypeComboBox"
                               Grid.Column="1"  Grid.Row="9" 
                               ItemsSource="{Binding Source={StaticResource obType},Path=Strings}"
-                              SelectedIndex="{Binding SelectedItems[0].SteelType, ElementName=PieceListGridControl, Mode=OneWay}"
+                              SelectedIndex="{Binding SteelTypeProperty_int}"
                               Padding="5,1,0,0">
                         <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SteelType">
+                        <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SteelTypeComboBox">
                                 <i:InvokeCommandAction Command="{ Binding ShowSteelTypeCommand }"
-                                                           CommandParameter="{ Binding ElementName=cbx_SteelType, Path=SelectedIndex }"/>
+                                                           CommandParameter="{ Binding ElementName=cbx_SteelTypeComboBox, Path=SelectedIndex }"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </ComboBox>
                     <Label Grid.Column="0" Grid.Row="10"
                            Content="斷面規格：" />
 
-                    <ComboBox x:Name="cbx_SectionType"
+                <ComboBox x:Name="cbx_SectionTypeComboBox"
                                   Grid.Column="1" Grid.Row="10"
                                   Padding="5,1,0,0"
                                   ItemsSource="{Binding ProfileList}" 
                                   DisplayMemberPath="Profile" 
                                   Text="{Binding SteelSectionProperty}" SelectionChanged="CBOX_SectionTypeChanged">
                         <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionType">
+                        <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionTypeComboBox">
                                 <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
@@ -598,16 +601,19 @@
                     <Label Grid.Column="0" Grid.Row="11" Content="標題一："  Visibility="{StaticResource BoxVisibilityCollapsed}"/>
                     <TextBox Grid.Column="1" Grid.Row="11" Name="Title1" Visibility="{StaticResource BoxVisibilityCollapsed}">
                         <TextBox.Text>
-                            <Binding Path="SelectedItems[0].Title1" ElementName="PieceListGridControl" StringFormat="{}{0:N2}" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >
-                                <Binding.ValidationRules>
-                                    <STD105ValidRule:CheckStringEmptyRule/>
-                                </Binding.ValidationRules>
+                        <!-- <Binding Path="SelectedItems[0].Title1" ElementName="PieceListGridControl" StringFormat="{}{0:N2}" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >-->
+                            <Binding Path="Title1Property" UpdateSourceTrigger="PropertyChanged" >
+                               
                             </Binding>
                         </TextBox.Text>
                     </TextBox>
                     <Label Grid.Column="0" Grid.Row="12" Content="標題二：" Visibility="{StaticResource BoxVisibilityCollapsed}" />
-                    <TextBox Grid.Column="1" Grid.Row="12" Name="Title2" Text="{Binding SelectedItems[0].Title2, ElementName=PieceListGridControl,Mode=OneWay}" Visibility="{StaticResource BoxVisibilityCollapsed}"/>
-
+                <TextBox Grid.Column="1" Grid.Row="12" Name="Title2">
+                    <TextBox.Text>
+                        <!--<Binding SelectedItems[0].Title2, ElementName=PieceListGridControl,Mode=OneWay}" Visibility="{StaticResource BoxVisibilityCollapsed}"/>-->
+                        <Binding Path="Title2Property" UpdateSourceTrigger="PropertyChanged" ></Binding>
+                    </TextBox.Text>
+                </TextBox>
                     <Label Grid.Column="0" Grid.Row="13" Content="高度(H)：" Visibility="{StaticResource BoxVisibilityCollapsed}" />
                     <Grid Grid.Column="1" Grid.Row="13" Visibility="{StaticResource BoxVisibilityCollapsed}">
                         <Grid.ColumnDefinitions>
@@ -1138,7 +1144,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <GroupBox Header="位置" Style="{StaticResource BaseStyle}" Margin="5">
+                                <GroupBox Header="位置" Style="{StaticResource BaseStyle}" Margin="5" Name="CuttingGroupPosition">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>

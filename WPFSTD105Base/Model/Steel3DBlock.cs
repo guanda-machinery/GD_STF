@@ -346,7 +346,7 @@ namespace WPFSTD105.Model
             switch ((NcLine)line)
             {
                 case NcLine.Length:
-                    steel.Length = Convert.ToDouble(value);
+                    steel.Length = Math.Round(Convert.ToDouble(value), (int)DecimalPlaces.Length);
                     break;
                 case NcLine.PartNumber:
                     steel.PartNumber = value;

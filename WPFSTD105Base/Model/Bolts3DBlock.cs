@@ -111,17 +111,12 @@ namespace WPFSTD105.Model
             List<Mesh> resultY = new List<Mesh>();//Y向螺栓結果(3D實體)，要給X向複製用
             var originalEntities = this.Entities;
             //如果是打點改直徑
-            if (this.Info.Mode == AXIS_MODE.POINT)
+            if (this.Info.Mode == AXIS_MODE.POINT || this.Info.Mode == AXIS_MODE.HypotenusePOINT)
             {
                 this.Info.Dia = 10;
             }
             double high = this.Info.t + h * 2;
             resultY.Add(Mesh.CreateCylinder(this.Info.Dia * 0.5, high, 36));//創建一個圓柱體// Vertices XY有值 Z=0
-            //如果是打點改變顏色
-            if (this.Info.Mode == AXIS_MODE.POINT)
-            {
-                resultY[0].Color = System.Drawing.ColorTranslator.FromHtml(Default.Point);
-            }
             //建立螺栓參數
             resultY[0].EntityData = new BoltAttr()
             {
@@ -137,7 +132,7 @@ namespace WPFSTD105.Model
             };
 
             // 若起始座標小於半徑，不可加入
-            if (Info.X < this.Info.Dia / 2 && Info.dX!="0" && this.Info.Mode != AXIS_MODE.POINT)
+            if (Info.X < this.Info.Dia / 2 && Info.dX!= "0" && this.Info.Mode != AXIS_MODE.POINT && this.Info.Mode != AXIS_MODE.HypotenusePOINT)
             {
                 check = false;
             }
@@ -195,8 +190,13 @@ namespace WPFSTD105.Model
                 resultY[0].Color = ColorTranslator.FromHtml(Default.Hole);
                 resultY[0].ColorMethod = colorMethodType.byEntity;
 
+                //如果是打點改變顏色
+                if (this.Info.Mode == AXIS_MODE.POINT)
+                {
+                    resultY[0].Color = System.Drawing.ColorTranslator.FromHtml(Default.Point);
+                }
                 // 與暐淇討論後 斜邊打點 綠色(3D) #調整顏色
-                if (this.Info.BlockName.IndexOf("Hypotenuse") > 0)
+                if (this.Info.Mode == AXIS_MODE.HypotenusePOINT)
                 {
                     resultY[0].Color = System.Drawing.ColorTranslator.FromHtml(Default.Point);
                 }
@@ -433,7 +433,7 @@ namespace WPFSTD105.Model
         {
             bool check = true;
             // 無加工範圍設定或打點 不判斷
-            if (workingRange.Count == 0 || this.Info.Mode == AXIS_MODE.POINT)
+            if (workingRange.Count == 0 || (this.Info.Mode == AXIS_MODE.POINT || this.Info.Mode == AXIS_MODE.HypotenusePOINT) )
             {
                 return check;
             }
@@ -520,7 +520,7 @@ namespace WPFSTD105.Model
             // 符合加工區域
             if (check)
             {
-                if (attr.Mode != AXIS_MODE.POINT)
+                if (attr.Mode != AXIS_MODE.POINT && attr.Mode != AXIS_MODE.HypotenusePOINT)
                 {
                     bool inSteel = true;
                     foreach (var item in result.Entities)

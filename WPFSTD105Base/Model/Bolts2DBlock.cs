@@ -39,7 +39,7 @@ namespace WPFSTD105.Model
             {
                 CreateHole(bolts3DBlock, steel2DBlock);
             }
-            else if (bolts3DBlock.Info.Mode == AXIS_MODE.POINT)
+            else if (bolts3DBlock.Info.Mode == AXIS_MODE.POINT || bolts3DBlock.Info.Mode == AXIS_MODE.HypotenusePOINT)
             {
                 CreatePoint(bolts3DBlock, steel2DBlock);
             }
@@ -75,7 +75,7 @@ namespace WPFSTD105.Model
                     default:
                         break;
                 }
-
+                Random rand = new Random();
                 //打點顏色在這修改
                 lines = GetCross(5, center, boltAttr, true).ToList();
                 lines.ForEach(el =>
