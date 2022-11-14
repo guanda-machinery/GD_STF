@@ -107,6 +107,12 @@ namespace WPFSTD105.Model
             EntityList entities = new EntityList();
             for (int i = 0; i < place.Count; i++)
             {
+               if (place.Count==1) // count=1表素材沒有零件組成,只有(前端切除)程序紀錄
+                {
+                    return;
+                }
+
+
                 if (place[i].IsCut) //如果是切割物件
                 {
                     Entity cut1 = DrawCutMesh(parts[0], model, place[i].Start, place[i].End, "Cut");
@@ -476,14 +482,17 @@ namespace WPFSTD105.Model
             return result;
         }
 
+
+
         /// <summary>
-        /// 繪製切割型狀
+        /// 繪製3D餘料形狀
         /// </summary>
-        /// <param name="part"></param>
-        /// <param name="model"></param>
-        /// <param name="end"></param>
-        /// <param name="start"></param>
-        /// <param name="dic"></param>
+        /// <param name="part">零件類別</param>
+        /// <param name="model">3D模型類別</param>
+        /// <param name="end">結束位置</param>
+        /// <param name="start">開始位置</param>
+        /// <param name="dic">判斷載入名稱 顯示不同顏色</param>
+
         private static Entity DrawCutMesh(SteelPart part, devDept.Eyeshot.Model model, double end, double start, string dic)
         {
             SteelAttr steelAttr = new SteelAttr(part);
@@ -732,7 +741,7 @@ namespace WPFSTD105.Model
             }
 
              // 寫入oPoint,vPoint,uPoint
-             ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = nc.SteelAttr.oPoint;
+            ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = nc.SteelAttr.oPoint;
             ((SteelAttr)model.Blocks[1].Entities[0].EntityData).vPoint = nc.SteelAttr.vPoint;
             ((SteelAttr)model.Blocks[1].Entities[0].EntityData).uPoint = nc.SteelAttr.uPoint;
 

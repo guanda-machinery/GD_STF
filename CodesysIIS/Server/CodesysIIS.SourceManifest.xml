@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sitemanifest>
+  <IisApp path="D:\GD_STF\CodesysIIS\obj\Debug\Package\PackageTmp" />
+  <setAcl path="D:\GD_STF\CodesysIIS\obj\Debug\Package\PackageTmp" setAclResourceType="Directory" />
+  <setAcl path="D:\GD_STF\CodesysIIS\obj\Debug\Package\PackageTmp" setAclUser="anonymousAuthenticationUser" setAclResourceType="Directory" />
+</sitemanifest>
