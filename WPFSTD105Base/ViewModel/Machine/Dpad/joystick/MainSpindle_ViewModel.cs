@@ -19,21 +19,27 @@ namespace WPFSTD105.ViewModel
             this.JoyStick_BorderButton6_Trigger = null; //R*/
 
 
-          /*  this.JoyStick_BorderButton1_Trigger = ZAxisPlusMoveCommand;
-            this.JoyStick_BorderButton1_Release = ZAxisPlusStopCommand;
-            this.JoyStick_BorderButton3_Trigger = ZAxisMinusMoveCommand;
-            this.JoyStick_BorderButton3_Release = ZAxisMinusStopCommand;*/
+            /*  this.JoyStick_BorderButton1_Trigger = ZAxisPlusMoveCommand;
+              this.JoyStick_BorderButton1_Release = ZAxisPlusStopCommand;
+              this.JoyStick_BorderButton3_Trigger = ZAxisMinusMoveCommand;
+              this.JoyStick_BorderButton3_Release = ZAxisMinusStopCommand;*/
 
-          /*  this.BorderButton_Left_Trigger = XAxisPlusMoveCommand;//X+
-            this.BorderButton_Left_Release = XAxisPlusStopCommand;//X+
-            this.BorderButton_Right_Trigger = XAxisMinusMoveCommand;//X-
-            this.BorderButton_Right_Release = XAxisMinusStopCommand;//X-
-            this.BorderButton_Up_Trigger = YAxisPlusMoveCommand;//Y+
-            this.BorderButton_Up_Release = YAxisPlusStopCommand;//Y+
-            this.BorderButton_Down_Trigger = YAxisMinusMoveCommand;//Y-
-            this.BorderButton_Down_Release = YAxisMinusStopCommand; //Y-*/
+            /*  this.Joystcik_Left_Trigger_Command = XAxisPlusMoveCommand;//X+
+              this.Joystcik_Left_Release_Command = XAxisPlusStopCommand;//X+
+              this.Joystcik_Right_Trigger_Command = XAxisMinusMoveCommand;//X-
+              this.Joystcik_Right_Release_Command = XAxisMinusStopCommand;//X-
+              this.Joystcik_Up_Trigger_Command = YAxisPlusMoveCommand;//Y+
+              this.Joystcik_Up_Release_Command = YAxisPlusStopCommand;//Y+
+              this.Joystcik_Down_Trigger_Command = YAxisMinusMoveCommand;//Y-
+              this.Joystcik_Down_Release_Command = YAxisMinusStopCommand; //Y-*/
 
             GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+            PButton.ClampDown = false;
+            PButton.SideClamp = false;
+            PButton.EntranceRack = false;
+            PButton.Hand = false;
+            PButton.DrillWarehouse = false;
+            PButton.Volume = false;
             PButton.MainAxisMode = true;
             CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
         }
@@ -46,7 +52,7 @@ namespace WPFSTD105.ViewModel
         }
 
 
-
+        /*
 
         /// <summary>
         /// 主軸移動Z+
@@ -257,6 +263,7 @@ namespace WPFSTD105.ViewModel
                 });
             }
         }
+        */
 
 
         private WPFWindowsBase.RelayCommand MachiningDirecationLeftCommand
@@ -370,11 +377,8 @@ namespace WPFSTD105.ViewModel
                 {
                     if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
                         return;
-
                     GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-
                     PButton.AxisLooseKnife = !PButton.AxisLooseKnife;
-
                     PButton.AxisEffluent = false;
                     PButton.AxisRotation = false;
                     PButton.AxisStop = true;

@@ -4035,6 +4035,7 @@ namespace STD_105.Office
                 ShippingDescription = new List<string>(new string[sa.Number]),
                 ShippingNumber = new List<int>(new int[sa.Number]),
                 Phase = new List<int>(new int[sa.Number]),
+                
                 //Number = ViewModel.SteelAttr.AsseNumber,
                 ///Length = ViewModel.SteelAttr.Length,
                 //ShippingDescription = new List<string>(new string[ViewModel.SteelAttr.Number]),

@@ -42,10 +42,7 @@ namespace WPFSTD105.ViewModel
         }
 
         #region 公開屬性
-        /// <summary>
-        /// 顯示說明文字
-        /// </summary>
-        public bool DescriptionDisplayControl { get; set; } 
+
         /// <summary>
         /// 啟動動力滾輪
         /// </summary>

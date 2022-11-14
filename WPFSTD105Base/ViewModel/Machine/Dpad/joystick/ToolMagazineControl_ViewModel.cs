@@ -15,23 +15,23 @@ namespace WPFSTD105.ViewModel
             this.Button_Up_IsEnabled = false;
             this.Button_Down_IsEnabled = false;
 
-            this.JoyStick_BorderButton1_Trigger = ToolMagazine_A_Command; //刀庫A
-            this.JoyStick_BorderButton3_Trigger = ToolMagazine_B_Command; //刀庫B
-            this.JoyStick_BorderButton4_Trigger = ToolMagazine_C_Command;//刀庫C
-            this.JoyStick_BorderButton5_Trigger = ToolMagazine_D_Command;//刀庫D
-            this.JoyStick_BorderButton6_Trigger = ToolMagazine_E_Command; //刀庫E
+         //   this.JoyStick_BorderButton1_Trigger = ToolMagazine_A_Command; //刀庫A
+          //  this.JoyStick_BorderButton3_Trigger = ToolMagazine_B_Command; //刀庫B
+           // this.JoyStick_BorderButton4_Trigger = ToolMagazine_C_Command;//刀庫C
+            //this.JoyStick_BorderButton5_Trigger = ToolMagazine_D_Command;//刀庫D
+            //this.JoyStick_BorderButton6_Trigger = ToolMagazine_E_Command; //刀庫E
 
-            //this.BorderButton_Left_Trigger = ToolMagazine_Out_Command; //刀庫out ->直接繼承joystick
-            //this.BorderButton_Right_Trigger = ToolMagazine_In_Command; //刀庫in ->直接繼承joystick
+            //this.Joystcik_Left_Trigger_Command = ToolMagazine_Out_Command; //刀庫out ->直接繼承joystick
+            //this.Joystcik_Right_Trigger_Command = ToolMagazine_In_Command; //刀庫in ->直接繼承joystick
 
-            this.JoyStick_BorderButton1_Release = null; //刀庫B
-            this.JoyStick_BorderButton3_Release = null; //刀庫B
-            this.JoyStick_BorderButton4_Release = null;//刀庫C
-            this.JoyStick_BorderButton5_Release = null;//刀庫D
-            this.JoyStick_BorderButton6_Release = null; //刀庫E
+           // this.JoyStick_BorderButton1_Release = null; //刀庫B
+           // this.JoyStick_BorderButton3_Release = null; //刀庫B
+           // this.JoyStick_BorderButton4_Release = null;//刀庫C
+           // this.JoyStick_BorderButton5_Release = null;//刀庫D
+           // this.JoyStick_BorderButton6_Release = null; //刀庫E
 
-            //this.BorderButton_Left_Release = null; //刀庫out ->直接繼承joystick
-            //this.BorderButton_Right_Release = null; //刀庫in ->直接繼承joystick
+            //this.Joystcik_Left_Release_Command = null; //刀庫out ->直接繼承joystick
+            //this.Joystcik_Right_Release_Command = null; //刀庫in ->直接繼承joystick
 
             //GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
             //PButton.DrillWarehouse = true;

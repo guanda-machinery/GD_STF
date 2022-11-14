@@ -879,7 +879,7 @@ AllowEditing="False"
                             </Grid.Resources>
 
                             <Border Grid.Row="0" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
-                            <RadioButton  GroupName="Group_Transport" Name="Transport_RadioButton" Grid.Column="0"  IsEnabled="{Binding Transport_RadioButtonIsEnable}" IsChecked="{Binding Transport_RadioButtonIsChecked}" Command="{Binding ChangeTransportModeCommand}" >
+                            <RadioButton  GroupName="Group_Transport" Name="Transport_RadioButton" Grid.Column="0"  IsEnabled="{Binding Transport_RadioButtonIsEnable}" IsChecked="{Binding Transport_RadioButtonIsChecked}" Command="{Binding ChangeTransportModeCommand}" Cursor="Hand" >
                                 <Image Source="{StaticResource TransportDrawingImage}" />
                             </RadioButton>
 
@@ -891,7 +891,7 @@ AllowEditing="False"
 
                             <ProgressBar  Grid.Column="1" Visibility="{Binding ProgressBar_Visible_Transport_by_C_Visibility,Converter={dx:BooleanToVisibilityConverter}}"/>
 
-                            <RadioButton GroupName="Group_Transport" Name="Transport_by_R_RadioButton" Grid.Column="2"  IsEnabled="{Binding Transport_by_R_RadioButtonIsEnable}"  IsChecked="{Binding Transport_by_R_RadioButtonIsChecked}" Command="{Binding ChangeTransportMode_To_R_Command}" >
+                            <RadioButton GroupName="Group_Transport" Name="Transport_by_R_RadioButton" Grid.Column="2"  IsEnabled="{Binding Transport_by_R_RadioButtonIsEnable}"  IsChecked="{Binding Transport_by_R_RadioButtonIsChecked}" Command="{Binding ChangeTransportMode_To_R_Command}" CommandParameter="{Binding ElementName=Transport_by_R_RadioButton}">
                                 <Image Source="{StaticResource Transport_by_Robot_checkedDrawingImage}"/>
                             </RadioButton>
 

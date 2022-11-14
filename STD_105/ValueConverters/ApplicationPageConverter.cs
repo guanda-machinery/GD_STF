@@ -159,111 +159,133 @@ namespace STD_105
     /// </summary>
     public class ApplicationPageNameConverter : WPFBase.BaseValueConverter<ApplicationPageNameConverter>
     {
-        private enum LangEnum
+        private struct LangStruct
         {
-            ZH, EN, VN, TH
+            public string ZH { get; set; }
+            public string EN { get; set; }
+            public string VN { get; set; }
+            public string TH { get; set; }
         }
 
-        private Dictionary<ApplicationPage, Dictionary<LangEnum, string>> Page_LanguageDict
+        private Dictionary<ApplicationPage, LangStruct> Page_LanguageDict
         {
             get
             {
-                var LangDict = new Dictionary<ApplicationPage, Dictionary<LangEnum, string>>();
-                LangDict[ApplicationPage.Lock] = null;
-                LangDict[ApplicationPage.ModeSelected] = null;
-                LangDict[ApplicationPage.Home] = new Dictionary<LangEnum, string>
+                var LangDict = new Dictionary<ApplicationPage, LangStruct>();
+                LangDict[ApplicationPage.Lock] = new LangStruct();
+                LangDict[ApplicationPage.ModeSelected] = new LangStruct();
+                LangDict[ApplicationPage.Home] = new LangStruct
                 {
-                    { LangEnum.ZH, "儀錶板" },
-                    { LangEnum.EN, "Dashboard" },
-                    { LangEnum.VN, "bảng điều khiển" },
-                    { LangEnum.TH, "แผงควบคุม" }
+                    ZH = "儀錶板",
+                    EN = "Dashboard",
+                    VN = "bảng điều khiển",
+                    TH = "แผงควบคุม"
                 };
-                LangDict[ApplicationPage.SettingPar] = new Dictionary<LangEnum, string>
+                LangDict[ApplicationPage.SettingPar] = new LangStruct
                 {
-                    { LangEnum.ZH, "參數設定" },{ LangEnum.EN, "Parameter Settings" },{ LangEnum.VN, "Cài đặt tham số" },{ LangEnum.TH, "การตั้งค่าพารามิเตอร์" }
+                    ZH = "參數設定",
+                    EN = "Parameter Settings",
+                    VN = "Cài đặt tham số",
+                    TH = "การตั้งค่าพารามิเตอร์"
                 };
-                LangDict[ApplicationPage.MachineProductSetting] = new Dictionary<LangEnum, string>
+                LangDict[ApplicationPage.MachineProductSetting] = new LangStruct
                 {
-                    { LangEnum.ZH, "製品設定" },{ LangEnum.EN, "Product Settings" },{ LangEnum.VN, "Cài đặt sản phẩm" },{ LangEnum.TH, "การตั้งค่าผลิตภัณฑ์" }
+                    ZH ="製品設定" ,EN = "Product Settings" ,VN = "Cài đặt sản phẩm" ,TH = "การตั้งค่าผลิตภัณฑ์" ,
                 };
-                LangDict[ApplicationPage.ObSetting] = new Dictionary<LangEnum, string>
+                LangDict[ApplicationPage.ObSetting] = new LangStruct
                 {
-                    { LangEnum.ZH, "製品設定" },{ LangEnum.EN, "Product Settings" },{ LangEnum.VN, "Cài đặt sản phẩm" },{ LangEnum.TH, "การตั้งค่าผลิตภัณฑ์" }
+                    ZH ="製品設定" ,EN = "Product Settings" ,VN = "Cài đặt sản phẩm" ,TH = "การตั้งค่าผลิตภัณฑ์" ,
                 };
-                LangDict[ApplicationPage.LeftAxis] = new Dictionary<LangEnum, string>
+                LangDict[ApplicationPage.LeftAxis] = new LangStruct
                 {
-                { LangEnum.ZH, "左軸模式" },{ LangEnum.EN, "Left Spindle" },{ LangEnum.VN, "Trái Trục Chính" },{ LangEnum.TH, "แกนหมุนซ้าย" }
+                ZH ="左軸模式" ,EN = "Left Spindle" ,VN = "Trái Trục Chính" ,TH = "แกนหมุนซ้าย" ,
                 };
-                LangDict[ApplicationPage.MiddleAxis] = new Dictionary<LangEnum, string>
+                LangDict[ApplicationPage.MiddleAxis] = new LangStruct
                 {
-                    { LangEnum.ZH, "中軸模式" },{ LangEnum.EN, "Top Spindle" },{ LangEnum.VN, "Trục Chính" },{ LangEnum.TH, "แกนหมุนด้านบน" }
+                    ZH ="中軸模式" ,EN = "Top Spindle" ,VN = "Trục Chính" ,TH = "แกนหมุนด้านบน" ,
                 };
-                LangDict[ApplicationPage.RightAxis] = new Dictionary<LangEnum, string>
+                LangDict[ApplicationPage.RightAxis] = new LangStruct
                 {
-                    { LangEnum.ZH, "右軸模式" },{ LangEnum.EN, "Right Spindle" },{ LangEnum.VN, "Đúng Trục Chính" },{ LangEnum.TH, "แกนหมุนขวา" }
+                    ZH ="右軸模式" ,EN = "Right Spindle" ,VN = "Đúng Trục Chính" ,TH = "แกนหมุนขวา" ,
                 };
-                var ToolMagazineDict = new Dictionary<LangEnum, string>
+                var ToolMagazineDict = new LangStruct
                 {
-                    { LangEnum.ZH, "刀庫模式" },{ LangEnum.EN, "Tool Magazine" },{ LangEnum.VN, "Tạp chí công cụ" },{ LangEnum.TH, "นิตยสารเครื่องมือ" }
+                    ZH ="刀庫模式" ,EN = "Tool Magazine" ,VN = "Tạp chí công cụ" ,TH = "นิตยสารเครื่องมือ" ,
                 };
                 LangDict[ApplicationPage.DrillEntrance_L] = ToolMagazineDict;
                 LangDict[ApplicationPage.DrillEntrance_R] = ToolMagazineDict;
                 LangDict[ApplicationPage.DrillExport_R] = ToolMagazineDict;
                 LangDict[ApplicationPage.DrillMiddle] = ToolMagazineDict;
-                LangDict[ApplicationPage.EnClampDown] = new Dictionary<LangEnum, string>
+                LangDict[ApplicationPage.EnClampDown] = new LangStruct
                 {
-                    { LangEnum.ZH, "夾具下壓" },{ LangEnum.EN, "Fixture Down" },{ LangEnum.VN, "Lịch thi đấu xuống" },{ LangEnum.TH, "ติดตั้งลง" }
+                    ZH ="夾具下壓" ,EN = "Fixture Down" ,VN = "Lịch thi đấu xuống" ,TH = "ติดตั้งลง" ,
                 };
-                LangDict[ApplicationPage.RackOperation] = new Dictionary<LangEnum, string>
+                LangDict[ApplicationPage.RackOperation] = new LangStruct
                 {
-                    { LangEnum.ZH, "周邊料架" },{ LangEnum.EN, "Racks" },{ LangEnum.VN, "Giá đỡ" },{ LangEnum.TH, "ชั้นวาง" }
+                    ZH ="周邊料架" ,EN = "Racks" ,VN = "Giá đỡ" ,TH = "ชั้นวาง" ,
                 };
-                LangDict[ApplicationPage.Hand] = new Dictionary<LangEnum, string>
+                LangDict[ApplicationPage.Hand] = new LangStruct
                 {
-                    { LangEnum.ZH, "手臂模式" },{ LangEnum.EN, "Arm" },{ LangEnum.VN, "Cánh tay" },{ LangEnum.TH, "แขน" }
+                    ZH ="手臂模式" ,EN = "Arm" ,VN = "Cánh tay" ,TH = "แขน" ,
                 };
-                LangDict[ApplicationPage.SideClamp] = new Dictionary<LangEnum, string>
+                LangDict[ApplicationPage.SideClamp] = new LangStruct
                 {
-                    { LangEnum.ZH, "夾具側壓" },{ LangEnum.EN, "Fixture Push" },{ LangEnum.VN, "Đẩy lịch thi đấu" },{ LangEnum.TH, "การแข่งขันผลักดัน" }
+                    ZH ="夾具側壓" ,EN = "Fixture Push" ,VN = "Đẩy lịch thi đấu" ,TH = "การแข่งขันผลักดัน" ,
                 };
-                LangDict[ApplicationPage.SofSettings] = new Dictionary<LangEnum, string>
+                LangDict[ApplicationPage.SofSettings] = new LangStruct
                 {
-                    { LangEnum.ZH, "軟體設定" },{ LangEnum.EN, "Software Settings" },{ LangEnum.VN, "Cài đặt phần mềm" },{ LangEnum.TH, "การตั้งค่าซอฟต์แวร์" }
+                    ZH ="軟體設定" ,EN = "Software Settings" ,VN = "Cài đặt phần mềm" ,TH = "การตั้งค่าซอฟต์แวร์" ,
                 };
-                LangDict[ApplicationPage.Volume] = new Dictionary<LangEnum, string>
+                LangDict[ApplicationPage.Volume] = new LangStruct
                 {
-                    { LangEnum.ZH, "捲屑機模式" },{ LangEnum.EN, "Conveyor" },{ LangEnum.VN, "Băng tải" },{ LangEnum.TH, "สายพานลำเลียง" }
+                    ZH ="捲屑機模式" ,EN = "Conveyor" ,VN = "Băng tải" ,TH = "สายพานลำเลียง" ,
                 };
-                LangDict[ApplicationPage.Monitor] = new Dictionary<LangEnum, string>
+                LangDict[ApplicationPage.Monitor] = new LangStruct
                 {
-                    { LangEnum.ZH, "加工監控" },{ LangEnum.EN, "Processing Monitor" },{ LangEnum.VN, "Giám sát xử lý" },{ LangEnum.TH, "การตรวจสอบการประมวลผล" }
+                    ZH ="加工監控" ,EN = "Processing Monitor" ,VN = "Giám sát xử lý" ,TH = "การตรวจสอบการประมวลผล" ,
                 };
-                LangDict[ApplicationPage.MachineMonitor] = new Dictionary<LangEnum, string>
+                LangDict[ApplicationPage.MachineMonitor] = new LangStruct
                 {  
-                    { LangEnum.ZH, "加工監控" },{ LangEnum.EN, "Processing Monitor" },{ LangEnum.VN, "Giám sát xử lý" },{ LangEnum.TH, "การตรวจสอบการประมวลผล" }
+                    ZH ="加工監控" ,EN = "Processing Monitor" ,VN = "Giám sát xử lý" ,TH = "การตรวจสอบการประมวลผล" ,
                 };
-                LangDict[ApplicationPage.TypeSetting] = new Dictionary<LangEnum, string>
+                LangDict[ApplicationPage.TypeSetting] = new LangStruct
                 {
-                    { LangEnum.ZH, "排版設定" },{ LangEnum.EN, "Typesetting" },{ LangEnum.VN, "Sắp chữ" },{ LangEnum.TH, "การเรียงพิมพ์" }
+                    ZH = "排版設定",
+                    EN = "Typesetting",
+                    VN = "Sắp chữ",
+                    TH = "การเรียงพิมพ์",
                 };
-                LangDict[ApplicationPage.MachineTypeSetting] = new Dictionary<LangEnum, string>
+                LangDict[ApplicationPage.MachineTypeSetting] = new LangStruct
                 {
-                    { LangEnum.ZH, "排版設定" },{ LangEnum.EN, "Typesetting" },{ LangEnum.VN, "Sắp chữ" },{ LangEnum.TH, "การเรียงพิมพ์" }
+                    ZH = "排版設定",
+                    EN = "Typesetting",
+                    VN = "Sắp chữ",
+                    TH = "การเรียงพิมพ์",
                 };
-                LangDict[ApplicationPage.Alarm] = new Dictionary<LangEnum, string>
+                LangDict[ApplicationPage.Alarm] = new LangStruct
                 {
-                    { LangEnum.ZH, "警報" },{ LangEnum.EN, "Alert" },{ LangEnum.VN, "báo động" },{ LangEnum.TH, "เตือน" }
-                }; 
+                    ZH = "警報",
+                    EN = "Alert",
+                    VN = "báo động",
+                    TH = "เตือน",
+                };
 
-                LangDict[ApplicationPage.MachineFunction] = new Dictionary<LangEnum, string>
+                LangDict[ApplicationPage.MachineFunction] = new LangStruct
                 {
-                    { LangEnum.ZH, "機台功能" },{ LangEnum.EN, "MachineFunction" },{ LangEnum.VN, "MachineFunction" },{ LangEnum.TH, "MachineFunction" }
+                    ZH = "機台功能",
+                    EN = "MachineFunction",
+                    VN = "MachineFunction",
+                    TH = "MachineFunction",
                 };
 
-                LangDict[ApplicationPage.MainSpindleMode] = new Dictionary<LangEnum, string>
+                LangDict[ApplicationPage.MainSpindleMode] = new LangStruct
                 {
-                    { LangEnum.ZH, "主軸模式" },{ LangEnum.EN, "MainSpindleMode" },{ LangEnum.VN, "MainSpindleMode" },{ LangEnum.TH, "MainSpindleMode" }
+                    ZH = "主軸模式",
+                    EN = "MainSpindleMode",
+                    VN = "MainSpindleMode",
+                    TH = "MainSpindleMode",
                 };
+
                 return LangDict;
             }
         }
@@ -276,29 +298,26 @@ namespace STD_105
             {
                 var pageL = Page_LanguageDict[(ApplicationPage)value];
                 //找語言
-                LangEnum _Lang = LangEnum.ZH;
+                string PageName = null;
                 switch (WPFSTD105.Properties.SofSetting.Default.Language)
                 {
                     case 0:
-                        _Lang = LangEnum.ZH;
+                        PageName = pageL.ZH;
                         break;
                     case 1:
-                        _Lang = LangEnum.EN;
+                        PageName = pageL.EN;
                         break;
                     case 2:
-                        _Lang = LangEnum.VN;
+                        PageName = pageL.VN;
                         break;
                     case 3:
-                        _Lang = LangEnum.TH;
+                        PageName = pageL.TH;
                         break;
                     default:
                         break;
                 }
 
-                if (pageL != null)
-                    return pageL[_Lang];
-                else
-                    return null;
+                return PageName;
             }
             return null;
         }
@@ -308,10 +327,10 @@ namespace STD_105
         /*
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string[] ZH = { "儀錶板", "參數設定", "製品設定", "左軸模式", "中軸模式", "右軸模式", "刀庫模式", "夾具下壓", "周邊料架", "手臂模式", "夾具側壓", "軟體設定", "捲屑機模式", "加工監控", "排版設定", "警報" };
-            string[] EN = { "Dashboard", "Parameter Settings", "Product Settings", "Left Spindle", "Top Spindle", "Right Spindle", "Tool Magazine", "Fixture Down", "Racks", "Arm", "Fixture Push", "Software Settings", "Conveyor", "Processing Monitor", "Typesetting", "Alert" };
-            string[] VN = { "bảng điều khiển", "Cài đặt tham số", "Cài đặt sản phẩm", "Trái Trục Chính", "Trục Chính", "Đúng Trục Chính", "Tạp chí công cụ", "Lịch thi đấu xuống", "Giá đỡ", "Cánh tay", "Đẩy lịch thi đấu", "Cài đặt phần mềm", "Băng tải", "Giám sát xử lý", "Sắp chữ", "báo động" };
-            string[] TH = { "แผงควบคุม", "การตั้งค่าพารามิเตอร์", "การตั้งค่าผลิตภัณฑ์", "แกนหมุนซ้าย", "แกนหมุนด้านบน", "แกนหมุนขวา", "นิตยสารเครื่องมือ", "ติดตั้งลง", "ชั้นวาง", "แขน", "การแข่งขันผลักดัน", "การตั้งค่าซอฟต์แวร์", "สายพานลำเลียง", "การตรวจสอบการประมวลผล", "การเรียงพิมพ์", "เตือน" };
+            string[] ZH = { "儀錶板", "參數設定", "製品設定", "左軸模式", "中軸模式", "右軸模式", "刀庫模式", "夾具下壓", "周邊料架", "手臂模式", "夾具側壓", "軟體設定", "捲屑機模式", "加工監控", "排版設定", "警報" ,};
+            string[] EN = { "Dashboard", "Parameter Settings", "Product Settings", "Left Spindle", "Top Spindle", "Right Spindle", "Tool Magazine", "Fixture Down", "Racks", "Arm", "Fixture Push", "Software Settings", "Conveyor", "Processing Monitor", "Typesetting", "Alert" ,};
+            string[] VN = { "bảng điều khiển", "Cài đặt tham số", "Cài đặt sản phẩm", "Trái Trục Chính", "Trục Chính", "Đúng Trục Chính", "Tạp chí công cụ", "Lịch thi đấu xuống", "Giá đỡ", "Cánh tay", "Đẩy lịch thi đấu", "Cài đặt phần mềm", "Băng tải", "Giám sát xử lý", "Sắp chữ", "báo động" ,};
+            string[] TH = { "แผงควบคุม", "การตั้งค่าพารามิเตอร์", "การตั้งค่าผลิตภัณฑ์", "แกนหมุนซ้าย", "แกนหมุนด้านบน", "แกนหมุนขวา", "นิตยสารเครื่องมือ", "ติดตั้งลง", "ชั้นวาง", "แขน", "การแข่งขันผลักดัน", "การตั้งค่าซอฟต์แวร์", "สายพานลำเลียง", "การตรวจสอบการประมวลผล", "การเรียงพิมพ์", "เตือน" ,};
             string[] basePage = { };
 
             switch (WPFSTD105.Properties.SofSetting.Default.Language)

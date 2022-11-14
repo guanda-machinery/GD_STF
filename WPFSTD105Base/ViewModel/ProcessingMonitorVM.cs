@@ -1333,7 +1333,7 @@ public struct MaterialPartDetail
         {
             get
             {
-                return new WPFBase.RelayCommand(()=>
+                return new WPFBase.RelayParameterizedCommand(obj =>
                 {
                     Transport_RadioButtonIsChecked = false;
 
@@ -1344,15 +1344,48 @@ public struct MaterialPartDetail
 
                     Task.Run(() =>
                     {
-                        Thread.Sleep(3000);
-                        //對機台端下命令 並回傳是否成功，當成功時IsChecked=true 否則IsChecked = False
+                        //計時器 單位為毫秒
+                        var SleepTask = Task.Run(() => { Thread.Sleep(3000); });
+                        //對機台下命令 並回傳是否成功，當成功時IsChecked=true 否則IsChecked = False
+                        //ApplicationViewModel.PanelButton.Hand
+
+
+                        //等待sleep完成
+                        SleepTask.Wait();
+
+                        PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+                        PButton.EntranceRack = true;
+                        CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                        SleepTask.Wait();
+
+                        //失敗時跳出提示 成功時則繼續執行
+                        if (ViewLocator.ApplicationViewModel.PanelButton.EntranceRack)
+                        {
+                            Transport_RadioButtonIsChecked = true;
+                        }
+                        else
+                        {
+                            if (obj is UIElement)
+                            {
+                                (obj as UIElement).Dispatcher.BeginInvoke(new Action(delegate
+                                {
+                                    WinUIMessageBox.Show(null,
+                                    $"無法切換到橫移料架",
+                                    "通知",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Exclamation,
+                                    MessageBoxResult.None,
+                                    MessageBoxOptions.None,
+                                    FloatingMode.Window);
+                                }));
+                            }
+                        }
 
                         ProgressBar_Visible_Transport_Visibility = false;
-                        Transport_RadioButtonIsChecked = true;
-
                         Transport_RadioButtonIsEnable = true;
                         Transport_by_C_RadioButtonIsEnable = true;
                         Transport_by_R_RadioButtonIsEnable = true;
+
                     });
                 });
             }
@@ -1364,7 +1397,7 @@ public struct MaterialPartDetail
         {
             get
             {
-                return new WPFBase.RelayCommand(() =>
+                return new WPFBase.RelayParameterizedCommand(obj =>
                 {
                     ProgressBar_Visible_Transport_by_C_Visibility = true;
                     Transport_by_C_RadioButtonIsChecked = false;
@@ -1375,14 +1408,43 @@ public struct MaterialPartDetail
 
                     Task.Run(() =>
                     {
-                        Thread.Sleep(2000);
+                        //計時器 單位為毫秒
+                        var SleepTask = Task.Run(() => { Thread.Sleep(2000); });
+                        //對機台下命令 並回傳是否成功，當成功時IsChecked=true 否則IsChecked = False
+
+
+
+                        //等待sleep完成
+                        SleepTask.Wait();
+
+                        //失敗時跳出提示 成功時則繼續執行
+                        if (true)
+                        {
+                            Transport_by_C_RadioButtonIsChecked = true;
+                        }
+                        else
+                        {
+                            if (obj is UIElement)
+                            {
+                                (obj as UIElement).Dispatcher.BeginInvoke(new Action(delegate
+                                {
+                                    WinUIMessageBox.Show(null,
+                                    $"無法切換到輸送料架",
+                                    "通知",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Exclamation,
+                                    MessageBoxResult.None,
+                                    MessageBoxOptions.None,
+                                    FloatingMode.Window);
+                                }));
+                            }
+                        }
                         ProgressBar_Visible_Transport_by_C_Visibility = false;
-
-                        Transport_by_C_RadioButtonIsChecked = true;
-
                         Transport_RadioButtonIsEnable = true;
                         Transport_by_C_RadioButtonIsEnable = true;
                         Transport_by_R_RadioButtonIsEnable = true;
+
+
                     });
 
 
@@ -1396,25 +1458,56 @@ public struct MaterialPartDetail
         {
             get
             {
-                return new WPFBase.RelayCommand(() =>
+                return new WPFBase.RelayParameterizedCommand(obj =>
                 {
                     Transport_by_R_RadioButtonIsChecked = false;
-
                     ProgressBar_Visible_Transport_by_R_Visibility = true;
 
                     Transport_RadioButtonIsEnable = false;
                     Transport_by_C_RadioButtonIsEnable = false;
                     Transport_by_R_RadioButtonIsEnable = false;
 
+
                     Task.Run(() =>
                     {
-                        Thread.Sleep(2000);
-                        ProgressBar_Visible_Transport_by_R_Visibility = false;
-                        //Transport_by_R_RadioButtonIsChecked = true;
+                        //計時器 單位為毫秒
+                        var SleepTask = Task.Run(() => { Thread.Sleep(1000); });
+                        //對機台下命令 並回傳是否成功，當成功時IsChecked=true 否則IsChecked = False
 
+                        PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+                        PButton.Hand = true;
+                        CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                        SleepTask.Wait();
+
+                        //等待sleep完成
+                        //失敗時跳出提示 成功時則繼續執行
+                        if (ViewLocator.ApplicationViewModel.PanelButton.Hand)
+                        {
+                            Transport_by_R_RadioButtonIsChecked = true;
+                        }
+                        else
+                        {
+                            if (obj is UIElement)
+                            {
+                                (obj as UIElement).Dispatcher.BeginInvoke(new Action(delegate
+                                {
+                                    WinUIMessageBox.Show(null,
+                                    $"無法切換到手動模式",
+                                    "通知",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Exclamation,
+                                    MessageBoxResult.None,
+                                    MessageBoxOptions.None,
+                                    FloatingMode.Window);
+                                }));
+                            }
+                        }
+
+                        ProgressBar_Visible_Transport_by_R_Visibility = false;
                         Transport_RadioButtonIsEnable = true;
                         Transport_by_C_RadioButtonIsEnable = true;
                         Transport_by_R_RadioButtonIsEnable = true;
+
                     });
 
 
