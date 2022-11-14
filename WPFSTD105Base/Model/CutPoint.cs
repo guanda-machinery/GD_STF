@@ -16,6 +16,8 @@ namespace WPFSTD105.Model
         /// </summary>
         public CutPoint()
         {
+            X= 0;
+            Y= 0;
         }
 
         /// <summary>
@@ -23,8 +25,8 @@ namespace WPFSTD105.Model
         /// </summary>
         public CutPoint(CutPointSurrogate cut)
         {
-            X = cut.X;
-            Y = cut.Y;
+            X =cut==null? 0: cut.X;
+            Y = cut == null ? 0 : cut.Y;
         }
 #pragma warning disable CS1591 // 遺漏公用可見類型或成員 'CutPoint.X' 的 XML 註解
         public double X { get; set; }

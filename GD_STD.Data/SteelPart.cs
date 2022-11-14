@@ -196,7 +196,7 @@ namespace GD_STD.Data
 
         #region 公開方法
         /// <inheritdoc/>
-        public double TotalWeight() => UnitWeight * Count;
+        public double TotalWeight() =>Math.Round( UnitWeight * Count,(int)DecimalPlaces.TotalWeight);
         /// <inheritdoc/>
         public double TotalArea() => UnitWeight * Count;
         /// <inheritdoc/>
