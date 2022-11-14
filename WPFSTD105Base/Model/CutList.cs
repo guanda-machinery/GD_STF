@@ -25,10 +25,10 @@ namespace WPFSTD105.Model
         /// <param name="dl">左邊下緣</param>
         public CutList(CutPoint ur, CutPoint dr, CutPoint ul, CutPoint dl)
         {
-            UR = ur;
-            DR = dr;
-            UL = ul;
-            DL = dl;
+            UR = new CutPoint(ur);
+            DR = new CutPoint(dr);
+            UL = new CutPoint(ul);
+            DL = new CutPoint(dl);
         }
         /// <summary>
         /// 右邊上緣
