@@ -982,7 +982,7 @@
             </DrawingGroup>
         </DrawingImage.Drawing>
     </DrawingImage>
-    <DrawingImage x:Key="HSteel_CarryDrawingImage">
+    <DrawingImage x:Key="HSteel_ClampDrawingImage">
         <DrawingImage.Drawing>
             <DrawingGroup ClipGeometry="M0,0 V60 H100 V0 H0 Z">
                 <DrawingGroup.Transform>

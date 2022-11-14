@@ -15,6 +15,9 @@
     mc:Ignorable="d"    
     Title="MachineFunction"
     >
+    <WPFBase:BasePage.DataContext>
+        <WPFSTD105VM:MachineFunctionVM/>
+    </WPFBase:BasePage.DataContext>
     <WPFBase:BasePage.Resources>
         <Style TargetType="TextBlock"
                BasedOn="{ StaticResource tbk_Title }">
@@ -36,7 +39,7 @@
     </WPFBase:BasePage.Resources>
     <Border Margin="0" BorderThickness="5" BorderBrush="#292929" Padding="0" Background="White">
         <Grid>
-            <TabControl Padding="0" BorderThickness="0,2,0,0" BorderBrush="#6d6d6d" >
+            <TabControl Padding="0" BorderThickness="0,2,0,0" BorderBrush="#6d6d6d" SelectedItem="{Binding TabItemSelected , Mode=OneWayToSource}">
                 <TabControl.Resources>
                     <ResourceDictionary>
                         <Style TargetType="TabItem">
@@ -86,19 +89,19 @@
                         </Style>
                     </ResourceDictionary>
                 </TabControl.Resources>
-                <TabItem>
+                <TabItem x:Name="HSteel_Clamp_TabItem">
                     <TabItem.Header>
-                        <Image Source="{StaticResource HSteel_CarryDrawingImage}" Width="100"  Height="100"/>
+                        <Image Source="{StaticResource HSteel_ClampDrawingImage}" Width="100"  Height="100"/>
                     </TabItem.Header>
-                    <Border Background="#c0c0c0" Padding="20">
+                    <Border Background="#c0c0c0" Padding="20" >
 
                         <DockPanel>
                             <DockPanel.Resources>
-                                <WPFSTD105VM:Machine_HSteelCarryViewModel x:Key="HSteel_Carry_VM"/>
+                                <WPFSTD105VM:Machine_HSteelClampViewModel x:Key="HSteel_Clamp_VM"/>
                             </DockPanel.Resources>
 
-                            <local:DPadUserControl x:Name="HSteel_Carry_UserControl"  DockPanel.Dock="Top" 
-                                                   DataContext="{StaticResource HSteel_Carry_VM}">
+                            <local:DPadUserControl x:Name="HSteel_Clamp_UserControl"  DockPanel.Dock="Top"  
+                                                   DataContext="{StaticResource HSteel_Clamp_VM}">
 
                                 <local:DPadUserControl.ButtonContent_3_Source>
                                     <Grid  VerticalAlignment="Center"  Width="100">
@@ -112,7 +115,7 @@
                                         </Grid.RowDefinitions>
                                         <Image Grid.Column="0" Grid.Row="0" Source="{StaticResource RedArrow_upDrawingImage}" Height="25" Margin="-3,0,0,0"/>
                                         <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_upDrawingImage}" Height="25" Margin="3,0,0,0"/>
-                                        <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Source="{StaticResource HSteel_CarryDrawingImage}" VerticalAlignment="Bottom" />
+                                        <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Source="{StaticResource HSteel_ClampDrawingImage}" VerticalAlignment="Bottom" />
                                     </Grid>
                                 </local:DPadUserControl.ButtonContent_3_Source>
                                 <local:DPadUserControl.ButtonContent_4_Source>
@@ -128,7 +131,7 @@
                                         </Grid.RowDefinitions>
                                         <Image Grid.Column="0" Grid.Row="0" Source="{StaticResource RedArrow_downDrawingImage}" Height="25" Margin="-3,0,0,0"/>
                                         <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_downDrawingImage}" Height="25" Margin="3,0,0,0"/>
-                                        <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Source="{StaticResource HSteel_CarryDrawingImage}" VerticalAlignment="Bottom" />
+                                        <Image Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Source="{StaticResource HSteel_ClampDrawingImage}" VerticalAlignment="Bottom" />
 
                                         </Grid>
                             
@@ -136,7 +139,7 @@
                             </local:DPadUserControl>
 
                             <CheckBox Grid.Column="1"  DockPanel.Dock="Bottom"
-                                  DataContext="{StaticResource HSteel_Carry_VM}"
+                                  DataContext="{StaticResource HSteel_Clamp_VM}"
                                   HorizontalAlignment="Right"
                                   VerticalAlignment="Bottom"
                                   Margin="5"
@@ -148,7 +151,7 @@
 
                     </Border>
                 </TabItem>
-                <TabItem>
+                <TabItem Name="HSteel_Grab_TabItem">
                     <TabItem.Header>
                         <Image Source="{StaticResource HSteel_GrabDrawingImage}" Height="100"/>
                     </TabItem.Header>
@@ -208,7 +211,7 @@
 
                     </Border>
                 </TabItem>
-                <TabItem>
+                <TabItem Name="Transport_TabItem">
                     <TabItem.Header>
                         <Grid Width="100" Height="100">
                             <Image Source="{StaticResource TransportDrawingImage}"/>
@@ -229,7 +232,6 @@
                                     <Setter Property="Height" Value="auto" />
                                     <Setter Property="Width" Value="auto" />
                                 </Style>
-                                <WPFBase:InverseLogicBoolConverter x:Key="InverseLogicBool"/>
                             </Grid.Resources>
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -559,12 +561,6 @@
                                     ScaleSweepAngle="220"
                                     Visibility="{Binding ApplicationViewModel.PanelButton.ExportRack, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}" />
                                     </Viewbox>
-
-
-
-
-
-
                                 </Grid>
 
                                 <!--  料架控制器  -->
@@ -634,12 +630,9 @@
                                                 <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_noArrowDrawingImage}" />
                                             </Grid>
                                         </local:DPadUserControl.ButtonContent_4_Source>
-
-
-
                                     </local:DPadUserControl>
                                 </Border>
-                                <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="15,0">
+                                <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="10,0">
                                     <Grid.Resources>
                                         <Style TargetType="Button" BasedOn="{StaticResource SiegCustomButtonGreenBorder}">
                                             <Setter Property="Height" Value="114"/>
@@ -650,7 +643,7 @@
                                         <ColumnDefinition Width="350"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Button >
+                                    <Button Command="{Binding}">
                                             <Image Source="{StaticResource Conveyor_BlockedDrawingImage}" Width="100"/>
                                         </Button>
                                         <Button Grid.Column="1" Margin="10,0">
@@ -747,7 +740,7 @@
 
                     </Border>
                 </TabItem>
-                <TabItem>
+                <TabItem Name="Transport_by_Robot_TabItem">
                     <TabItem.Header>
                         <Grid Width="100" Height="100">
                             <Image Source="{StaticResource Transport_by_RobotDrawingImage}" VerticalAlignment="Bottom"  Margin="0,25"/>
@@ -896,7 +889,6 @@
                             </local:JoystickUserControl >
                             <local:DPadUserControl Grid.Row="1" Margin="10"  VerticalAlignment="Top" DataContext="{StaticResource ArmGrab_Dpad_Js_VM}">
                                 <local:DPadUserControl.ButtonContent_1_Source>
-
                                     <Grid Width="200">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
@@ -957,7 +949,7 @@
                             </local:DPadUserControl>
                             <Border Grid.Row="2" BorderThickness="0,2,0,0" BorderBrush="#292929" />
                             <StackPanel  Grid.Row="3" Margin="10" DataContext="{StaticResource ArmGrab_Dpad_Js_VM}">
-                                <Grid Margin="5">
+                                <Grid Margin="0,5">
                                     <Grid.Resources>
                                         <Style TargetType="Button" BasedOn="{StaticResource SiegCustomButtonGreenBorder}">
                                             <Setter Property="Height" Value="120"/>
@@ -968,12 +960,10 @@
                                         <ColumnDefinition Width="350"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Button>
-                                            <Image Source="{StaticResource Conveyor_BlockedDrawingImage}" Width="100"/>
-                                        </Button>
-                                        <Button Grid.Column="1" Margin="10,0" IsEnabled="False"/>
-
-
+                                    <Button Command="{Binding PostRiseCommand}">
+                                       <Image Source="{StaticResource Conveyor_BlockedDrawingImage}" Width="100"/>
+                                    </Button>
+                                    <Button Grid.Column="1" Margin="10,0" IsEnabled="False"/>
                                     <Button Grid.Column="2" IsEnabled="False"/>
                                 </Grid>
                             </StackPanel>
@@ -983,7 +973,7 @@
 
                     </Border>
                 </TabItem>
-                <TabItem>
+                <TabItem Name="ToolMagazine_TabItemName">
                     <TabItem.Header>
                         <Grid Height="100" Width="100">
                             <Image Source="{StaticResource ToolMagazine}" Margin="10"/>
@@ -996,12 +986,22 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <Grid.Resources>
-                                <WPFSTD105VM:ToolMagazine_ViewModel x:Key="ToolMagazine_Dpad_Js_VM"/>
+                                <WPFSTD105VM:ToolMagazineControl_ViewModel x:Key="ToolMagazine_Dpad_VM"/>
                                 <Style TargetType="Image">
                                     <Setter Property="Height" Value="80"/>
                                 </Style>
                             </Grid.Resources>
-                            <local:JoystickUserControl Grid.Row="0" Margin="10"  DataContext="{StaticResource ToolMagazine_Dpad_Js_VM}">
+                            <local:JoystickUserControl Grid.Row="0" Margin="10" x:Name="ToolMagazineControl" DataContext="{StaticResource ToolMagazine_Dpad_VM}">
+                                <local:JoystickUserControl.ButtonContent_1_Source>
+                                    <Grid Width="200" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="A"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
+                                        <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
+                                    </Grid>
+                                </local:JoystickUserControl.ButtonContent_1_Source>
                                 <local:JoystickUserControl.ButtonContent_3_Source>
                                     <Grid Width="200">
                                         <Grid.ColumnDefinitions>
@@ -1047,37 +1047,36 @@
                                     </Grid>
                                 </local:JoystickUserControl.ButtonContent_6_Source>
                             </local:JoystickUserControl >
-                            <local:DPadUserControl Grid.Row="1" Margin="10"  DataContext="{StaticResource ToolMagazine_Dpad_Js_VM}">
+
+                            <local:DPadUserControl Grid.Row="1" Margin="10"  DataContext="{Binding ElementName=ToolMagazineControl,Path=DataContext}">
                                 <local:DPadUserControl.ButtonContent_1_Source>
                                     <Grid >
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="OUT"  Width="auto" TextAlignment="Right" Margin="0,0" Foreground ="Black" FontSize="45"/>
+                                        <TextBlock Grid.Column="0" Text="OUT"  Width="auto" TextAlignment="Right" Margin="18,0" Foreground ="Black" FontSize="45"/>
                                         <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" HorizontalAlignment="Left" Margin="20,0"/>
                                     </Grid>
                                 </local:DPadUserControl.ButtonContent_1_Source>
                                 <local:DPadUserControl.ButtonContent_2_Source>
-                                
-                                    <Grid Width="200">
+                                    <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="IN"  Width="auto" TextAlignment="Right" Margin="18,0" Foreground ="Black" FontSize="45"/>
 
-                                            <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}"  HorizontalAlignment="Left" Margin="20,0"/>
-                                        </Grid>
-                               
-                                </local:DPadUserControl.ButtonContent_2_Source>
+                                        <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}"  HorizontalAlignment="Left" Margin="20,0"/>
+                                    </Grid>
 
+                                </local:DPadUserControl.ButtonContent_2_Source>
                             </local:DPadUserControl>
                         </Grid>
                     </Border>
 
                 </TabItem>
-                <TabItem>
+                <TabItem Name="Crumb_Conveyor_TabItemName">
                     <TabItem.Header>
                         <Grid Width="100" Height="100">
                             <Image Source="{StaticResource Crumb_ConveyorDrawingImage}" Margin="10"/>

@@ -125,7 +125,7 @@ namespace STD_105
                         break;
 
                 case ApplicationPage.MainSpindleMode:
-                    basePage = new MainSpnidleMode();
+                    basePage = new MainSpindleMode();
                     break;
 
                 default:

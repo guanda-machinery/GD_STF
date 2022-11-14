@@ -689,14 +689,13 @@
                         MinHeight="200"  MaxHeight="1000">
                     <dxg:GridControl.View >
                         <dxg:TableView         
-                                   Name="Material_TableView"
+                                 Name="Material_TableView"
                                  HighlightItemOnHover="True"
                                 IsColumnMenuEnabled ="False"
                                 AllowSorting="True"
                                 AllowColumnFiltering="False"
                                 AllowColumnMoving="False"                                 
                                 IsColumnChooserVisible="False"     
-  
                                 SearchString="{Binding MaterialGridSearchString , Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}" 
                                 Loaded="Material_List_TableView_Loaded"
                                 VerticalScrollbarVisibility="Visible"
@@ -808,16 +807,11 @@
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
-                    <dxg:GridColumn FieldName="BuildTime" IsSmart="True"  Header="建立日期" AllowEditing="false" >
+                    <dxg:GridColumn Binding="{Binding Parts , Converter={local:DatetimeArrayToLastestDatetimeConverter}}" IsSmart="True"  Header="建立日期" AllowEditing="false" >
 
                     </dxg:GridColumn>
-                    <dxg:GridColumn FieldName="" IsSmart="True" Header="修改日期" AllowEditing="false" >
-                        <dxg:GridColumn.CellStyle>
-                            <Style>
+                    <dxg:GridColumn Binding="{Binding Parts , Converter={local:DatetimeArrayToLastestDatetimeConverter},ConverterParameter='revise' }" IsSmart="True" Header="修改日期" AllowEditing="false" >
 
-                                <!--<Setter Property="TextBlock.Foreground" Value="Gray"/>-->
-                            </Style>
-                        </dxg:GridColumn.CellStyle>
                     </dxg:GridColumn>
                     <dxg:GridColumn FieldName="MaterialNumber"  IsSmart="True" Header="排版編號" AllowEditing="false" >
                         <dxg:GridColumn.CellTemplate>
@@ -835,7 +829,7 @@
                     <dxg:GridColumn FieldName=""  IsSmart="True" Header="鋼材類型" AllowEditing="false" />
                     <dxg:GridColumn FieldName="Profile"  IsSmart="True" Header="斷面規格" AllowEditing="false"  />
                     <dxg:GridColumn FieldName="Material"  IsSmart="True" Header="材質" Width="auto"  AllowEditing="false" />
-                    <dxg:GridColumn FieldName=""  IsSmart="True" Header="數量" Width="auto" AllowEditing="false" />
+                    <dxg:GridColumn Binding="{c:Binding Parts.Count}"  IsSmart="True" Header="零件數量" Width="auto" AllowEditing="false"/>
                     <dxg:GridColumn FieldName=""  IsSmart="True" Header="已完成" Width="auto" AllowEditing="false" />
                     <dxg:GridColumn FieldName="LengthStr"  IsSmart="True" Header="素材長" AllowEditing="false"  />
                     <dxg:GridColumn IsSmart="True" Header="素材使用率" AllowEditing="false">
@@ -1241,7 +1235,12 @@
                                 <ddes:ProgressBar Lighting="False"/>
                             </ddes:Model.ProgressBar>
                             <ddes:Model.Viewports>
-                                <ddes:Viewport DisplayMode="Flat" InitialView="vcFrontFaceTopLeft" OriginSymbols="{Binding OriginSymbols}" OpacityMask="AliceBlue" SmallSizeRatio="0.001">
+                                <ddes:Viewport
+                                    DisplayMode="Flat" 
+                                    InitialView="vcFrontFaceTopLeft" 
+                                    OriginSymbols="{Binding OriginSymbols}" 
+                                    OpacityMask="AliceBlue" 
+                                    SmallSizeRatio="0.001">
                                     <ddes:Viewport.Background>
                                         <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#FF303030"/>
                                     </ddes:Viewport.Background>
@@ -1295,7 +1294,7 @@
                 <TabItem Header="2D"  x:Name="dr" >
                     <Grid>
                         <Border Style="{StaticResource bro}"/>
-                        <spa:ModelExt x:Name="drawing"
+                        <spa:ModelExt x:Name="drawing" 
                             Loaded="drawing_Loaded"
                             AutoRefresh ="True"
                             SelectionColor="{Binding Setting.SelectionColor, Converter={local:StringToDrawingColoConverter}}"

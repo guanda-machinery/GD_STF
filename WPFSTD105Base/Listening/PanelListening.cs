@@ -508,6 +508,34 @@ namespace WPFSTD105
             }
             return true;
         }
+
+
+
+        public static bool IsAxisLooseKnife()
+#pragma warning restore CS1574 // XML 註解有無法解析的 cref 屬性 'Key'
+        {
+            if (ApplicationViewModel.PanelButton.AxisLooseKnife)
+            {
+                //MessageBox.Show("請將鑰匙旋轉到手動模式", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                WinUIMessageBox.Show(null,
+                    $"不可在鬆刀情況下旋轉主軸",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Popup);
+                return false;
+            }
+            return true;
+        }
+
+
+
+
+
+
+
         #endregion
     }
 }

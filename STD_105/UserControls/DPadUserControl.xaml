@@ -184,7 +184,7 @@
 
                 <Line X1="0" X2="115" Y1="185" Y2="185"/>
                 <Line X1="115" X2="165" Y1="185" Y2="140"/>
-                <Line X1="165" X2="200" Y1="140" Y2="140"/>
+                <Line X1="165" X2="205" Y1="140" Y2="140"/>
 
                 <Line X1="350" X2="150" Y1="185" Y2="185" />
             </Grid>
@@ -348,50 +348,44 @@
 
             </Grid>
         </Grid>
-        <Button Name="DPad_Button1"    Margin="5,5,0,5"  
+        <Button Name="DPad_Button1"    Margin="0,5"  
                   IsEnabled="{Binding Button_Left_IsEnabled}" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.LEFT_DESC}" />
+                    <i:InvokeCommandAction  Command="{Binding BorderButton_Left_Trigger}"/>
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                    <i:InvokeCommandAction  Command="{Binding BorderButton_Left_Release}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>
 
-        <Button  Name="DPad_Button2" Margin="5,5,0,5"
+        <Button  Name="DPad_Button2" Margin="0,5"
                             Grid.Column="0"
                             Grid.Row="1"
                    IsEnabled="{Binding Button_Right_IsEnabled}" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.RIGHT_DESC}" />
+                    <i:InvokeCommandAction  Command="{Binding BorderButton_Right_Trigger}"/>
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                    <i:InvokeCommandAction  Command="{Binding BorderButton_Right_Release}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>
 
         <Button Name="DPad_Button3" 
   
-                Margin="0,5,5,5" 
+                Margin="0,5" 
                 Grid.Column="2" 
                 Grid.Row="0" 
-                IsEnabled="{Binding Button_Up_IsEnabled}"  >
+                IsEnabled="{Binding Button_Up_IsEnabled}" Cursor="Hand"  >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.UP_DESC}" />
+                    <i:InvokeCommandAction  Command="{Binding BorderButton_Up_Trigger}"/>
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                    <i:InvokeCommandAction  Command="{Binding BorderButton_Up_Release}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
 
@@ -399,19 +393,17 @@
 
         <Button  Name="DPad_Button4" 
                  
-                 Margin="0,5,5,5"
+                 Margin="0,5"
                  Grid.Column="2"
                  Grid.Row="2"
                  IsEnabled="{Binding Button_Down_IsEnabled}">
 
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.DOWN_DESC}" />
+                    <i:InvokeCommandAction  Command="{Binding BorderButton_Down_Trigger}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                    <i:InvokeCommandAction  Command="{Binding BorderButton_Down_Release}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>

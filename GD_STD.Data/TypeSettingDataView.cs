@@ -9,6 +9,9 @@ using System.Collections.ObjectModel;
 //using WPFSTD105.Attribute;
 using GD_STD;
 using DevExpress.Xpf.Grid;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace GD_STD.Data
 {
@@ -239,5 +242,20 @@ namespace GD_STD.Data
         //{
         //    throw new NotImplementedException();
         //}
+
+        public object DeepClone()
+        {
+            using (Stream objectStream = new MemoryStream())
+            {
+                //序列化物件格式
+                IFormatter formatter = new BinaryFormatter();
+                //將自己所有資料序列化
+                formatter.Serialize(objectStream, this);
+                //複寫資料流位置，返回最前端
+                objectStream.Seek(0, SeekOrigin.Begin);
+                //再將objectStream反序列化回去 
+                return formatter.Deserialize(objectStream) as TypeSettingDataView;
+            }
+        }
     }
 }
