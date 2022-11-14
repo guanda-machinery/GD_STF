@@ -209,8 +209,9 @@
                 <TabControl BorderThickness="0,1,0,0" Margin="0,0,0,0">
                     <TabControl.Resources>
                         <ResourceDictionary>
-                            <Style TargetType="TabItem">
-                                <Setter Property="Template">
+                                <Style TargetType="TabItem">
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                    <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type TabItem}">
                                             <Grid x:Name="Root">
@@ -256,16 +257,18 @@
                             </Style>
                         </ResourceDictionary>
                     </TabControl.Resources>
-                        <TabItem Header="加工組合清單" Name="MachiningCombinationlTabItem">
-                            <dxg:GridControl Margin="-11"
-                        Name="MachiningCombinationl_List_GridControl"    
-                        AutoGenerateColumns="None" 
-                       SelectionMode="Row"
-                        ItemsSource="{Binding Finish_UndoneDataViews}"
-                        MinHeight="200"  MaxHeight="300">
+                        <TabItem Header="加工組合清單" Name="MachiningCombinationalTabItem">
+                            <dxg:GridControl Margin="-11"  Cursor="Arrow"
+                                             Name="MachiningCombinational_List_GridControl"    
+                                             AutoGenerateColumns="None" 
+                                             SelectionMode="Row"
+                                             SelectedItem="{Binding Finish_UndoneDataViews_SelectedItem}"
+                                             ItemsSource="{Binding Finish_UndoneDataViews}"
+                                             MinHeight="200"  MaxHeight="300">
                         <dxg:GridControl.View >
                             <dxg:TableView
-                        Name="MachiningCombinationl_List_TableView"
+                                AllowEditing="False"
+                        Name="MachiningCombinational_List_TableView"
                             ScrollViewer.ScrollChanged="ScrollOwner_ScrollChanged"
                             SearchString="{Binding MaterialGridControlSearchString,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                     VerticalScrollbarVisibility="Visible"
@@ -339,11 +342,12 @@
                                                 Header="位置" />
                     </dxg:GridControl>
              </TabItem>
-                        <TabItem Header="加工細項" Name="MachiningDetailTabItem"  >
-                            <dxg:GridControl Margin="-11"
+                        <TabItem Header="加工細項" Name="MachiningDetailTabItem">
+                            <dxg:GridControl Margin="-11" Cursor="Arrow"
                          Name="MachiningDetail_List_GridControl"    
                         AutoGenerateColumns="None" 
                        SelectionMode="Row"
+                       SelectedItem="{Binding Finish_UndoneDataViewsDetail_SelectedItem}"
                         ItemsSource="{Binding Finish_UndoneDataViewsDetail}"
                         MinHeight="200"  MaxHeight="300">
                                 <dxg:GridControl.View >
@@ -386,7 +390,7 @@ AllowEditing="False"
                     </TabControl>
                 </Border>
 
-                <GroupBox Grid.Column="1" Margin="5" Padding="0" Visibility="{Binding ElementName=MachiningCombinationlTabItem,Path=IsSelected, Converter={dx:BooleanToVisibilityConverter}}">
+                <GroupBox Grid.Column="1" Margin="5" Padding="0" Visibility="{Binding ElementName=MachiningCombinationalTabItem,Path=IsSelected, Converter={dx:BooleanToVisibilityConverter}}">
                     <GroupBox.Header>
                         <Grid Margin="5" Height="35">
                             <TextBlock Text="加工進度表"  FontSize="16" VerticalAlignment="Center"></TextBlock>
@@ -397,8 +401,8 @@ AllowEditing="False"
                         Name="MachiningSchedule_List_GridControl"    
                         AutoGenerateColumns="None" 
                         Grid.Row="2"  Width="198"
-                        SelectedItems="{Binding ElementName=MachiningCombinationl_List_GridControl,Path=SelectedItems}"
-                        ItemsSource="{Binding ElementName=MachiningCombinationl_List_GridControl,Path=ItemsSource}"
+                        SelectedItems="{Binding ElementName=MachiningCombinational_List_GridControl,Path=SelectedItems}"
+                        ItemsSource="{Binding ElementName=MachiningCombinational_List_GridControl,Path=ItemsSource}"
                 SelectionMode="Row"
                         MinHeight="200"  MaxHeight="300">
                         <dxg:GridControl.View >
@@ -533,7 +537,7 @@ AllowEditing="False"
                  BorderThickness="2" 
                  BorderBrush="#595E60">
                     <Grid>
-                        <GroupBox  Padding="0,0"  Visibility="{Binding ElementName=MachiningCombinationlTabItem,Path=IsSelected, Converter={dx:BooleanToVisibilityConverter}}">
+                        <GroupBox  Padding="0,0"  Visibility="{Binding ElementName=MachiningCombinationalTabItem,Path=IsSelected, Converter={dx:BooleanToVisibilityConverter}}">
                         <GroupBox.Header>
                             <Grid Margin="0,1,0,0" Height="20">
                                 <TextBlock Text="已選擇素材資訊"  FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
@@ -547,10 +551,10 @@ AllowEditing="False"
                             </Grid.ColumnDefinitions>
                             <dxg:GridControl
                                 Grid.Column="0"
-                    AutoGenerateColumns="None"
-                    SelectionMode="MultipleRow"
-                    MaxHeight="2000"    
-                    ItemsSource="{Binding ElementName=MachiningCombinationl_List_GridControl,Path=SelectedItem,
+                                AutoGenerateColumns="None"
+                                SelectionMode="MultipleRow"
+                                MaxHeight="2000"    
+                                ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource,
                                 ConverterParameter={x:Static GD_STD_Enum:FACE.FRONT}, 
                                 Converter={local:TypesettingsSettingsToDrillDataConverter}, 
                                 Mode=TwoWay , 
@@ -584,7 +588,7 @@ AllowEditing="False"
                     AutoGenerateColumns="None"
                     SelectionMode="MultipleRow"
                     MaxHeight="2000"    
-                    ItemsSource="{Binding ElementName=MachiningCombinationl_List_GridControl,Path=SelectedItem,
+                    ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource,
                                 ConverterParameter={x:Static GD_STD_Enum:FACE.TOP}, 
                                 Converter={local:TypesettingsSettingsToDrillDataConverter}, 
                                 Mode=TwoWay , 
@@ -617,7 +621,7 @@ AllowEditing="False"
                     AutoGenerateColumns="None"
                     SelectionMode="Row"
                     MaxHeight="2000"    
-                    ItemsSource="{Binding ElementName=MachiningCombinationl_List_GridControl,Path=SelectedItem,
+                    ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource,
                                 ConverterParameter={x:Static GD_STD_Enum:FACE.BACK}, 
                                 Converter={local:TypesettingsSettingsToDrillDataConverter}, 
                                 Mode=TwoWay , 
@@ -649,8 +653,6 @@ AllowEditing="False"
                         </Grid>
                     </GroupBox>
 
-
-
                         <GroupBox  Padding="0,0"  Visibility="{Binding ElementName=MachiningDetailTabItem,Path=IsSelected, Converter={dx:BooleanToVisibilityConverter}}">
                             <GroupBox.Header>
                                 <Grid Margin="0,1,0,0" Height="20">
@@ -666,9 +668,9 @@ AllowEditing="False"
                                 <dxg:GridControl
                                 Grid.Column="0"
                     AutoGenerateColumns="None"
-                    SelectionMode="MultipleRow"
+                    SelectionMode="Row"
                     MaxHeight="2000"    
-                    ItemsSource="{Binding ElementName=MachiningDetail_List_GridControl,Path=SelectedItem,
+                    ItemsSource="{Binding MachiningDetail_DrillBoltsItemSource,
                                 ConverterParameter={x:Static GD_STD_Enum:FACE.FRONT}, 
                                 Converter={local:TypesettingsSettingsToDrillDataConverter}, 
                                 Mode=TwoWay , 
@@ -700,9 +702,9 @@ AllowEditing="False"
                                 Margin="0,0,0,0"
                                 Grid.Column="1"
                     AutoGenerateColumns="None"
-                    SelectionMode="MultipleRow"
+                    SelectionMode="Row"
                     MaxHeight="2000"    
-                    ItemsSource="{Binding ElementName=MachiningDetail_List_GridControl,Path=SelectedItem,
+                    ItemsSource="{Binding MachiningDetail_DrillBoltsItemSource,
                                 ConverterParameter={x:Static GD_STD_Enum:FACE.TOP}, 
                                 Converter={local:TypesettingsSettingsToDrillDataConverter}, 
                                 Mode=TwoWay , 
@@ -735,7 +737,7 @@ AllowEditing="False"
                     AutoGenerateColumns="None"
                     SelectionMode="Row"
                     MaxHeight="2000"    
-                    ItemsSource="{Binding ElementName=MachiningDetail_List_GridControl,Path=SelectedItem,
+                    ItemsSource="{Binding MachiningDetail_DrillBoltsItemSource,
                                 ConverterParameter={x:Static GD_STD_Enum:FACE.BACK}, 
                                 Converter={local:TypesettingsSettingsToDrillDataConverter}, 
                                 Mode=TwoWay , 
@@ -783,6 +785,12 @@ AllowEditing="False"
                     AutoGenerateColumns="None"
                     SelectionMode="Row"
                     MaxHeight="2000"    >
+                        <dxg:GridControl.Resources>
+                            <Style TargetType="dxg:GridColumnHeader">
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="FontSize" Value="14"/>
+                            </Style>
+                        </dxg:GridControl.Resources>
                         <dxg:GridControl.View >
                             <dxg:TableView  
                           
@@ -798,14 +806,14 @@ AllowEditing="False"
                                     SearchDelay="0">
                                 <dxg:TableView.CellStyle>
                                     <Style>
-                                        <Setter Property="TextBlock.FontSize" Value="12"/>
+                                        <Setter Property="TextBlock.FontSize" Value="14"/>
                                     </Style>
                                 </dxg:TableView.CellStyle>
                             </dxg:TableView>
                         </dxg:GridControl.View>
 
-                        <dxg:GridColumn Header="時間" Width="auto" AllowMoving="false"  IsSmart="True"/>
-                        <dxg:GridColumn Header="系統訊息" Width="auto" AllowMoving="false"  IsSmart="True"/>
+                        <dxg:GridColumn Header="時間" Width="100" AllowMoving="false"  IsSmart="True"/>
+                        <dxg:GridColumn Header="系統訊息" Width="180" AllowMoving="false"  IsSmart="True"/>
 
 
                     </dxg:GridControl>
@@ -852,6 +860,7 @@ AllowEditing="False"
                                     <Setter Property="Height" Value="60"/>
                                     <Setter Property="Padding" Value="0"/>
                                     <Setter Property="Margin" Value="5"/>
+                                    <Setter Property="Cursor" Value="Hand"/>
                                     <Style.Resources>
                                         <Style TargetType="Image">
                                             <Setter Property="Width" Value="60"/>
@@ -870,7 +879,7 @@ AllowEditing="False"
                             </Grid.Resources>
 
                             <Border Grid.Row="0" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
-                            <RadioButton GroupName="Group_Transport" Name="Transport_RadioButton" Grid.Column="0"  IsEnabled="{Binding Transport_RadioButtonIsEnable}" IsChecked="{Binding Transport_RadioButtonIsChecked}" Command="{Binding ChangeTransportModeCommand}" >
+                            <RadioButton  GroupName="Group_Transport" Name="Transport_RadioButton" Grid.Column="0"  IsEnabled="{Binding Transport_RadioButtonIsEnable}" IsChecked="{Binding Transport_RadioButtonIsChecked}" Command="{Binding ChangeTransportModeCommand}" >
                                 <Image Source="{StaticResource TransportDrawingImage}" />
                             </RadioButton>
 

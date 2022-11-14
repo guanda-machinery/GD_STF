@@ -1235,7 +1235,12 @@
                                 <ddes:ProgressBar Lighting="False"/>
                             </ddes:Model.ProgressBar>
                             <ddes:Model.Viewports>
-                                <ddes:Viewport DisplayMode="Flat" InitialView="vcFrontFaceTopLeft" OriginSymbols="{Binding OriginSymbols}" OpacityMask="AliceBlue" SmallSizeRatio="0.001">
+                                <ddes:Viewport
+                                    DisplayMode="Flat" 
+                                    InitialView="vcFrontFaceTopLeft" 
+                                    OriginSymbols="{Binding OriginSymbols}" 
+                                    OpacityMask="AliceBlue" 
+                                    SmallSizeRatio="0.001">
                                     <ddes:Viewport.Background>
                                         <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#FF303030"/>
                                     </ddes:Viewport.Background>
@@ -1289,7 +1294,7 @@
                 <TabItem Header="2D"  x:Name="dr" >
                     <Grid>
                         <Border Style="{StaticResource bro}"/>
-                        <spa:ModelExt x:Name="drawing"
+                        <spa:ModelExt x:Name="drawing" 
                             Loaded="drawing_Loaded"
                             AutoRefresh ="True"
                             SelectionColor="{Binding Setting.SelectionColor, Converter={local:StringToDrawingColoConverter}}"

@@ -639,6 +639,7 @@ namespace WPFSTD105
         /// <param name="e"></param>
         protected override void OnMouseEnter(EventArgs e)
         {
+   
             base.OnMouseEnter(e);
             cursorOutside = false;
             base.OnMouseEnter(e);
@@ -650,6 +651,11 @@ namespace WPFSTD105
         /// <param name="e"></param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
+            //20221111 滑鼠移動時 強制把十字改成游標
+            if (this.Cursor == Cursors.Cross)
+            {
+                this.Cursor = Cursors.Arrow;
+            }
             //RenderContextUtility 提供渲染上下文實用程序方法的類。
             mouseLocation = RenderContextUtility.ConvertPoint(GetMousePosition(e));//將System.Windows.Point轉換為System.Drawing.Point的方法。
 
@@ -824,6 +830,7 @@ namespace WPFSTD105
                         DrawInteractiveLinearDim();
                     else if (drawingAlignedDim)
                         DrawInteractiveAlignedDim();
+
                 }
             }
             else if (drawingOrdinateDim)
@@ -1600,11 +1607,11 @@ namespace WPFSTD105
                     //清空圖塊內物件
                     obSettingVM.tem3DRecycle.Clear();
                     obSettingVM.tem3DRecycle.Clear();
+
+                    //20221111 修改 避免按下任意按鍵都會導致連續重新整理
+                    STDSerialization ser = new STDSerialization();
+                    ser.SetPartModel(obSettingVM.SteelAttr.GUID.ToString(), this);
                 }
-                base.OnKeyDown(e);
-                STDSerialization ser = new STDSerialization();
-                ser.SetPartModel(obSettingVM.SteelAttr.GUID.ToString(), this);
-                return;
             }
 
             base.OnKeyDown(e);

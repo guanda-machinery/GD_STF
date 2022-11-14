@@ -835,6 +835,10 @@ namespace WPFSTD105
         public bool? PhaseCheckboxBoolen { get; set; } = true;
         public bool? DismanteCheckboxBoolen { get; set; } = true;
 
+
+
+
+
         #endregion
 
 

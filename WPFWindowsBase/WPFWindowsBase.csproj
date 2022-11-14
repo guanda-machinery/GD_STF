@@ -360,6 +360,7 @@
     <Compile Include="MD5DES.cs" />
     <Compile Include="UIControl\KnobAddControl.cs" />
     <Compile Include="UIControl\Marquee.cs" />
+    <Compile Include="UIControl\MouseBehaviour.cs" />
     <Compile Include="UIDispatcher.cs" />
     <Compile Include="ValueConverters\BooleanToStringConverter.cs" />
     <Compile Include="ValueConverters\BoolToColorCodeConverter.cs" />

@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace WPFSTD105.ViewModel
 {
-    public class ToolMagazine_ViewModel : Dpad_Joystick_ViewModel
+    public class ToolMagazineControl_ViewModel : Dpad_Joystick_ViewModel
     {
-        public ToolMagazine_ViewModel()
+        public ToolMagazineControl_ViewModel()
         {
-
+            
             this.Button_Up_IsEnabled = false;
             this.Button_Down_IsEnabled = false;
 
@@ -25,7 +25,7 @@ namespace WPFSTD105.ViewModel
             //this.BorderButton_Right_Trigger = ToolMagazine_In_Command; //刀庫in ->直接繼承joystick
 
             this.JoyStick_BorderButton1_Release = null; //刀庫B
-            this.JoyStick_BorderButton3_Release= null; //刀庫B
+            this.JoyStick_BorderButton3_Release = null; //刀庫B
             this.JoyStick_BorderButton4_Release = null;//刀庫C
             this.JoyStick_BorderButton5_Release = null;//刀庫D
             this.JoyStick_BorderButton6_Release = null; //刀庫E
@@ -37,16 +37,11 @@ namespace WPFSTD105.ViewModel
             //PButton.DrillWarehouse = true;
             //CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
 
-            UpDate();
+              UpDate();
+
         }
 
-        ~ToolMagazine_ViewModel()
-        {
-            GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-            PButton.DrillWarehouse = false;
-            CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-            UnusedSave();
-        }
+
 
         private void UnusedSave()
         {
@@ -424,4 +419,7 @@ namespace WPFSTD105.ViewModel
         }
 
     }
+
+
+
 }
