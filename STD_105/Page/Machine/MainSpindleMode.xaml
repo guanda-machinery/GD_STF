@@ -21,8 +21,15 @@
                 <Style TargetType="Button" BasedOn="{StaticResource CustomDesignButton}"/>
             </Grid.Resources>
 
-            <local:JoystickUserControl Grid.Row="0" Margin="10" DataContext="{StaticResource MainSpindle_VM}">
+            <CheckBox Grid.Column="0"
+                                  VerticalAlignment="Top"
+                                  Margin="5"
+                                  Width="100"
+                      DataContext="{StaticResource MainSpindle_VM}"
+                                  IsChecked="{Binding DescriptionDisplayBoolen}"
+                                  Style="{ StaticResource GreenSwitch }" />
 
+            <local:JoystickUserControl Grid.Row="0" Margin="10" DataContext="{StaticResource MainSpindle_VM}">
                 <local:JoystickUserControl.ButtonContent_1_Source>
                     <Grid Width="200">
                         <Grid.ColumnDefinitions>
@@ -40,8 +47,6 @@
                         </Grid>
                     </Grid>
                 </local:JoystickUserControl.ButtonContent_1_Source>
-
-
                 <local:JoystickUserControl.ButtonContent_3_Source>
                     <Grid Width="200">
                         <Grid.ColumnDefinitions>
@@ -59,7 +64,6 @@
                         </Grid>
                     </Grid>
                 </local:JoystickUserControl.ButtonContent_3_Source>
-
                 <local:JoystickUserControl.ButtonContent_4_Source>
                     <Grid Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center" >
                         <Grid.ColumnDefinitions>
@@ -147,8 +151,6 @@
 
                     </Grid>
                 </local:JoystickUserControl.ButtonContent_6_Source>
-                
-                
             </local:JoystickUserControl >
 
             <local:DPadUserControl Grid.Row="1" Margin="10,5"  DataContext="{StaticResource MainSpindle_VM}" VerticalAlignment="Top">
