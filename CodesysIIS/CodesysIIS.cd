@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CodesysIIS.FileName" Collapsed="true">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CodesysIIS.MecEntities" Collapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAkACAAiAAAQAAAAAAAAA=</HashCode>
+      <FileName>MecModel.Context.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CodesysIIS.BuildErrorCode" Collapsed="true">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAgAAAAAAAAAAAAAAgAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>BuildErrorCode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CodesysIIS.DrillData" Collapsed="true">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAQAAAAAAAgAAgQAAAAAABAAAgAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>DrillData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CodesysIIS.MSAxisMain" Collapsed="true">
+    <Position X="7" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAgAAgQQAAAAABAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MSAxisMain.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CodesysIIS.MSIO" Collapsed="true">
+    <Position X="8.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAggAAAAAAAIAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MSIO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CodesysIIS.MSRuler" Collapsed="true">
+    <Position X="3.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAgAAAAAAAIAAAAAAgAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>MSRuler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CodesysIIS.MSServoAxis" Collapsed="true">
+    <Position X="5.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAgAAgAAAAIAABAAAgAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>MSServoAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CodesysIIS.ThrowErrorCode" Collapsed="true">
+    <Position X="7" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAgAAAAAAgAAAAAAAgAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>ThrowErrorCode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CodesysIIS.Memor" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GIIKAQAAABAEAAhQQIgEBiVSpgggAEQJAFTgRAISZEA=</HashCode>
+      <FileName>Memor.svc.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CodesysIIS.MonitorDuplex" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQQEAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>MonitorDuplex.svc.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CodesysIIS.PhoneConnectDuplex" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgEAAAIAAAAAEEAAAAAAAAACABAAgAAAAwAAAAQAA=</HashCode>
+      <FileName>PhoneConnectDuplex.svc.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CodesysIIS.ReadMemoryDuplex" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QACCAQAAACAAAAAAAEAAAAAAGAAAAAAAAACAAAACAAA=</HashCode>
+      <FileName>ReadMemoryDuplex.svc.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CodesysIIS.Properties.Resources" Collapsed="true">
+    <Position X="3.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CodesysIIS.Properties.Settings" Collapsed="true">
+    <Position X="5.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="CodesysIIS.IMemor" Collapsed="true">
+    <Position X="3.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAEAgAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>App_Data\IMemor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CodesysIIS.IMonitorDuplex" Collapsed="true">
+    <Position X="5.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQQAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>App_Data\IMonitorDuplex.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CodesysIIS.IMonitorDuplexCallback" Collapsed="true">
+    <Position X="7" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App_Data\IMonitorDuplex.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CodesysIIS.IPhoneConnectDuplex" Collapsed="true">
+    <Position X="8.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAABAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>App_Data\IPhoneConnectDuplex.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CodesysIIS.IPhoneConnectDuplexCallback" Collapsed="true">
+    <Position X="3.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAGAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>App_Data\IPhoneConnectDuplexCallback.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CodesysIIS.IReadMemor" Collapsed="true">
+    <Position X="5.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CIAIAQAAAAAAAAAQAIAAAARQoAAAAAABAASABAISRAA=</HashCode>
+      <FileName>App_Data\IReadMemor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CodesysIIS.IReadMemoryDuplex" Collapsed="true">
+    <Position X="7" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAACAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>App_Data\IReadMemoryDuplex.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CodesysIIS.IReadMemoryDuplexCallback" Collapsed="true">
+    <Position X="8.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAACAACAAAABA=</HashCode>
+      <FileName>App_Data\IReadMemoryDuplex.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CodesysIIS.IWriteMemor" Collapsed="true">
+    <Position X="3.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>GAAAAQAAAAAEAABAQAgAAAECAgAAAAAAAFBgQAAAIEA=</HashCode>
+      <FileName>App_Data\IWriteMemor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Microsoft JhengHei UI" Size="9" />
+</ClassDiagram>
