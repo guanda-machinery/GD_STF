@@ -1146,6 +1146,8 @@ namespace WPFSTD105
                             MaterialDataViews[MaterialDataViews.Count - 1].Cut = MatchSetting.Cut;
                             for (int c = 0; c < _[minIndex][q].PartNumber.Length; c++)
                             {
+                                //1111 CYH dataViewIndex是從相同零件編號的零件群中找起，並不管零件與構件的對應關係，因此在排版設定中選擇的零件若在其同零件編號的後面，則配對後在排版設定中會顯示已配對的零件
+                                //會從同零件編號群中的第一個開始標記，而不是一開始所選擇的零件
                                 int dataViewIndex = DataViews.FindIndex(el => el.PartNumber == _[minIndex][q].PartNumber[c] && el.Match.FindIndex(el2 => el2 == true) != -1);
 
                                 MaterialDataViews[MaterialDataViews.Count - 1].Parts.Add(DataViews[dataViewIndex]);
