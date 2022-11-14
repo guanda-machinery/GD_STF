@@ -84,7 +84,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 數量
         /// </summary>
-        public double Count { get; set; }
+        public int Count { get; set; }
         /// <summary>
         /// 零件重
         /// </summary>
@@ -131,6 +131,8 @@ namespace WPFSTD105.ViewModel
         /// NC 底面形狀
         /// </summary>
         public List<NcPoint3D> uPoint { get; set; } = new List<NcPoint3D>();
+
+
 
         public ProductSettingsPageViewModel()
         {
