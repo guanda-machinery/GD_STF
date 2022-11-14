@@ -94,7 +94,8 @@ namespace WPFSTD105.Model
                                   endCut;//當前切割物件放置結束點的座標
                     if (i + 1 >= material.Parts.Count) //下一次迴圈結束
                     {
-                        endCut = material.LengthStr + material.StartCut + material.EndCut;//當前切割物件放置結束點的座標
+                        //endCut = material.LengthStr + material.StartCut + material.EndCut;//當前切割物件放置結束點的座標
+                        endCut = material.LengthStr;// - material.StartCut - material.EndCut;//當前切割物件放置結束點的座標
                     }
                     else //下一次迴圈尚未結束
                     {
@@ -194,60 +195,60 @@ namespace WPFSTD105.Model
                                 entities.Add(el);//加入到暫存列表
                             }
                         });
-                        Func<List<Point3D>, double> minFunc = (point3d) => point3d.Min(e => e.X);
-                        Func<List<Point3D>, double> maxFunc = (point3d) => point3d.Max(e => e.X);
-                        Transformation transformation = new Transformation(new Point3D(0, _steelAttr.H / 2, _steelAttr.W), Vector3D.AxisX, new Vector3D(0, 0, 1), new Vector3D(0, -1, 0));
+                        //Func<List<Point3D>, double> minFunc = (point3d) => point3d.Min(e => e.X);
+                        //Func<List<Point3D>, double> maxFunc = (point3d) => point3d.Max(e => e.X);
+                        //Transformation transformation = new Transformation(new Point3D(0, _steelAttr.H / 2, _steelAttr.W), Vector3D.AxisX, new Vector3D(0, 0, 1), new Vector3D(0, -1, 0));
 
-                        var minTopFlip = Flip((Entity)_entity.Clone(), minFunc, _steelAttr, -100, out double minTopAngle1, out double minTopAngle2, out double topMinX);
-                        var maxTopFlip = Flip((Entity)_entity.Clone(), maxFunc, _steelAttr, 100, out double maxTopAngle1, out double maxTopAngle2, out double topMaxX);
-                        var minBackFlip = Flip((Entity)_entity.Clone(), minFunc, _steelAttr, -100, out double minBackAngle1, out double minBackAngle2, out double backMinX, transformation);
-                        var maxBackFlip = Flip((Entity)_entity.Clone(), maxFunc, _steelAttr, 100, out double maxBackAngle1, out double maxBackAngle2, out double backMaxX, transformation);
-                        var minFrontFlip = Flip((Entity)_entity.Clone(), minFunc, _steelAttr, -100, out double minFrontAngle1, out double minFrontAngle2, out double frontMinX, transformation);
-                        var maxFrontFlip = Flip((Entity)_entity.Clone(), maxFunc, _steelAttr, 100, out double maxFrontAngle1, out double maxFrontAngle2, out double frontMaxX, transformation);
-                        if ((minBackFlip && minFrontFlip) || (maxBackFlip && maxFrontFlip))
-                        {
-                            if (minTopFlip || maxTopFlip)
-                            {
-                                _steelAttr.StartAngle = minTopAngle1 == 0 ? minTopAngle2 : minTopAngle1;
-                                _steelAttr.EndAngle = maxTopAngle1 == 0 ? maxTopAngle2 : maxTopAngle1;
-                                if (_steelAttr.StartAngle > 90 || _steelAttr.EndAngle > 90)
-                                {
-                                    Rotate(entities.Where(el => el.GroupIndex == i), (_entity.BoxMin + _entity.BoxMax) / 2);
-                                }
-                            }
-                            else if (backMinX < frontMinX)
-                                _steelAttr.StartAngle = minBackAngle1 == 0 ? minBackAngle2 : minBackAngle1;
-                            else
-                                _steelAttr.StartAngle = minFrontAngle1 == 0 ? minFrontAngle2 : minFrontAngle1;
+                        //var minTopFlip = Flip((Entity)_entity.Clone(), minFunc, _steelAttr, -100, out double minTopAngle1, out double minTopAngle2, out double topMinX);
+                        //var maxTopFlip = Flip((Entity)_entity.Clone(), maxFunc, _steelAttr, 100, out double maxTopAngle1, out double maxTopAngle2, out double topMaxX);
+                        //var minBackFlip = Flip((Entity)_entity.Clone(), minFunc, _steelAttr, -100, out double minBackAngle1, out double minBackAngle2, out double backMinX, transformation);
+                        //var maxBackFlip = Flip((Entity)_entity.Clone(), maxFunc, _steelAttr, 100, out double maxBackAngle1, out double maxBackAngle2, out double backMaxX, transformation);
+                        //var minFrontFlip = Flip((Entity)_entity.Clone(), minFunc, _steelAttr, -100, out double minFrontAngle1, out double minFrontAngle2, out double frontMinX, transformation);
+                        //var maxFrontFlip = Flip((Entity)_entity.Clone(), maxFunc, _steelAttr, 100, out double maxFrontAngle1, out double maxFrontAngle2, out double frontMaxX, transformation);
+                        //if ((minBackFlip && minFrontFlip) || (maxBackFlip && maxFrontFlip))
+                        //{
+                        //    if (minTopFlip || maxTopFlip)
+                        //    {
+                        //        _steelAttr.StartAngle = minTopAngle1 == 0 ? minTopAngle2 : minTopAngle1;
+                        //        _steelAttr.EndAngle = maxTopAngle1 == 0 ? maxTopAngle2 : maxTopAngle1;
+                        //        if (_steelAttr.StartAngle > 90 || _steelAttr.EndAngle > 90)
+                        //        {
+                        //            Rotate(entities.Where(el => el.GroupIndex == i), (_entity.BoxMin + _entity.BoxMax) / 2);
+                        //        }
+                        //    }
+                        //    else if (backMinX < frontMinX)
+                        //        _steelAttr.StartAngle = minBackAngle1 == 0 ? minBackAngle2 : minBackAngle1;
+                        //    else
+                        //        _steelAttr.StartAngle = minFrontAngle1 == 0 ? minFrontAngle2 : minFrontAngle1;
 
-                            if (backMaxX < frontMaxX)
-                            {
-                                _steelAttr.EndAngle = maxBackAngle1 == 0 ? maxBackAngle2 : maxBackAngle1;
-                            }
-                            else
-                            {
-                                _steelAttr.EndAngle = maxFrontAngle1 == 0 ? maxFrontAngle2 : maxFrontAngle1;
-                            }
-                        }
-                        else if (minBackFlip || maxBackFlip)
-                        {
-                            _steelAttr.StartAngle = minBackAngle1 == 0 ? minBackAngle2 : minBackAngle1;
-                            _steelAttr.EndAngle = maxBackAngle1 == 0 ? maxBackAngle2 : maxBackAngle1;
-                        }
-                        else if (minFrontFlip || maxFrontFlip)
-                        {
-                            _steelAttr.StartAngle = minFrontAngle1 == 0 ? minFrontAngle2 : minFrontAngle1;
-                            _steelAttr.EndAngle = maxFrontAngle1 == 0 ? maxFrontAngle2 : maxFrontAngle1;
-                        }
-                        else if (minTopFlip || maxTopFlip)
-                        {
-                            _steelAttr.StartAngle = minTopAngle1 == 0 ? minTopAngle2 : minTopAngle1;
-                            _steelAttr.EndAngle = maxTopAngle1 == 0 ? maxTopAngle2 : maxTopAngle1;
-                            if (_steelAttr.StartAngle > 90 || _steelAttr.EndAngle > 90)
-                            {
-                                Rotate(entities.Where(el => el.GroupIndex == i), (_entity.BoxMin + _entity.BoxMax) / 2);
-                            }
-                        }
+                        //    if (backMaxX < frontMaxX)
+                        //    {
+                        //        _steelAttr.EndAngle = maxBackAngle1 == 0 ? maxBackAngle2 : maxBackAngle1;
+                        //    }
+                        //    else
+                        //    {
+                        //        _steelAttr.EndAngle = maxFrontAngle1 == 0 ? maxFrontAngle2 : maxFrontAngle1;
+                        //    }
+                        //}
+                        //else if (minBackFlip || maxBackFlip)
+                        //{
+                        //    _steelAttr.StartAngle = minBackAngle1 == 0 ? minBackAngle2 : minBackAngle1;
+                        //    _steelAttr.EndAngle = maxBackAngle1 == 0 ? maxBackAngle2 : maxBackAngle1;
+                        //}
+                        //else if (minFrontFlip || maxFrontFlip)
+                        //{
+                        //    _steelAttr.StartAngle = minFrontAngle1 == 0 ? minFrontAngle2 : minFrontAngle1;
+                        //    _steelAttr.EndAngle = maxFrontAngle1 == 0 ? maxFrontAngle2 : maxFrontAngle1;
+                        //}
+                        //else if (minTopFlip || maxTopFlip)
+                        //{
+                        //    _steelAttr.StartAngle = minTopAngle1 == 0 ? minTopAngle2 : minTopAngle1;
+                        //    _steelAttr.EndAngle = maxTopAngle1 == 0 ? maxTopAngle2 : maxTopAngle1;
+                        //    if (_steelAttr.StartAngle > 90 || _steelAttr.EndAngle > 90)
+                        //    {
+                        //        Rotate(entities.Where(el => el.GroupIndex == i), (_entity.BoxMin + _entity.BoxMax) / 2);
+                        //    }
+                        //}
                     }
                     else //如果沒有 NC 檔案
                     {
