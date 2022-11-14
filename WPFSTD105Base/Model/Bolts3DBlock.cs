@@ -207,8 +207,12 @@ namespace WPFSTD105.Model
                 //先產生Y向，原因是，三軸機先Y向移動工作效率較大
                 List<double> dYList = Info.dYs;
                 List<Mesh> boltList = new List<Mesh>();
-                for (int i = 1; i < this.Info.yCount; i++)
+                for (int i = 1; i <= this.Info.yCount; i++)
                 {
+                    if (this.Info.Mode== AXIS_MODE.HypotenusePOINT)
+                    {
+                        continue;
+                    }
                     //複製物件
                     Mesh bolt = (Mesh)resultY[i - 1].Clone();
                     BoltAttr boltAttrEach = (BoltAttr)((BoltAttr)resultY[i - 1].EntityData).DeepClone();
@@ -527,14 +531,10 @@ namespace WPFSTD105.Model
                     {
                         // 檢查產生之孔位是否在鋼體內
                         //if (((Mesh)model.Entities[model.Entities.Count - 1].EntityData).IsPointInside(
+                        Point3D checkPoint3D = new Point3D(((BoltAttr)item.EntityData).X, ((BoltAttr)item.EntityData).Y, ((BoltAttr)item.EntityData).Z);
+                        var testPoint = Coordinates(((BoltAttr)item.EntityData).Face, checkPoint3D);
 
-                        if (((Mesh)model.Blocks[1].Entities[model.Blocks[1].Entities.Count - 1]).IsPointInside(
-                            new Point3D()
-                            {
-                                X = ((BoltAttr)item.EntityData).X,
-                                Y = ((BoltAttr)item.EntityData).Y,
-                                Z = ((BoltAttr)item.EntityData).Z
-                            }))
+                        if (((Mesh)model.Blocks[1].Entities[model.Blocks[1].Entities.Count - 1]).IsPointInside(testPoint))
                         {
                             inSteel = true;
                         }
@@ -593,6 +593,35 @@ namespace WPFSTD105.Model
 
 
 
+        }
+
+        /// <summary>
+        /// 轉換世界座標
+        /// </summary>
+        /// <param name="face"></param>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        public static  Point3D Coordinates(FACE face, Point3D p)
+        {
+            switch (face)
+            {
+                case GD_STD.Enum.FACE.TOP:
+                    break;
+                case GD_STD.Enum.FACE.FRONT:
+                case GD_STD.Enum.FACE.BACK:
+                    double y, z;
+                    y = p.Z;
+                    z = p.Y;
+                    p.Y = y;
+                    p.Z = z;
+                    break;
+                default:
+                    break;
+            }
+            //X = p.X, Y = p.Y, Z = p.Z
+            Point3D[] points = new Point3D[3];
+            points[0] = new Point3D() { X = p.X, Y = p.Y, Z = p.Z };
+            return points[0];
         }
         ///// <summary>
         ///// 轉換 Codesys Memory 可用資料 

@@ -12,7 +12,8 @@ namespace STD_105
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (DateTime)value == DateTime.MinValue ? null : value;
+            if (value == null) return null;
+            return (DateTime)value == DateTime.MinValue ? null :(object) ((DateTime)value).Date;
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
