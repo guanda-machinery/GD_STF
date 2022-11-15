@@ -16,7 +16,7 @@ namespace WPFSTD105.Attribute
     /// </summary>
     [Serializable]
     public class SteelAttr: AbsAttr, ISteelAttr, ISteelProfile
-    {
+    {        
         /// <summary>
         /// 轉換器
         /// </summary>
