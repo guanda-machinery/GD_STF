@@ -56,5 +56,7 @@ namespace WPFSTD105.Model
         {
             return new CutListSurrogate(this);
         }
+
+        
     }
 }
