@@ -19,16 +19,16 @@ namespace WPFSTD105.ViewModel
             this.Button_Up_IsEnabled = false;
             this.Button_Down_IsEnabled = false;
 
-            this.BorderButton_Left_Trigger = VolumePlusCommand;//捲削機正轉
-            this.BorderButton_Right_Trigger = VolumeMinusCommand; //捲削機逆轉
+            /*this.Joystcik_Left_Trigger_Command = VolumePlusCommand;//捲削機正轉
+            this.Joystcik_Right_Trigger_Command = VolumeMinusCommand; //捲削機逆轉
 
-            this.BorderButton_Left_Release= null;
-            this.BorderButton_Right_Release = null; 
+            this.Joystcik_Left_Release_Command= null;
+            this.Joystcik_Right_Release_Command = null; */
         }
 
 
 
-        private WPFWindowsBase.RelayCommand VolumePlusCommand
+       /* private WPFWindowsBase.RelayCommand VolumePlusCommand
         {
             get
             {
@@ -57,7 +57,7 @@ namespace WPFSTD105.ViewModel
                     CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
                 });
             }
-        }
+        }*/
 
 
     }

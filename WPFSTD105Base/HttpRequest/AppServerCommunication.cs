@@ -16,9 +16,22 @@ namespace WPFSTD105.HttpRequest
         public static bool EnableAppPairing(bool Enable = true)
         {
             System.Threading.Thread.Sleep(2000);
+
+
             //待撰寫
+
+
             return true;
         }
+
+
+
+
+
+
+
+
+
 
 
     }

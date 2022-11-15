@@ -854,7 +854,7 @@ namespace WPFSTD105
                MessageBoxImage.Exclamation,
                MessageBoxResult.None,
                MessageBoxOptions.None,
-               FloatingMode.Popup);
+               FloatingMode.Window);
                 return false;
             }
             //FolderBrowserDialogViewModel vm =value;
@@ -873,7 +873,7 @@ namespace WPFSTD105
                 MessageBoxImage.Exclamation,
                 MessageBoxResult.None,
                 MessageBoxOptions.None,
-                FloatingMode.Popup);
+                FloatingMode.Window);
                 return false;
             }
             else
@@ -1023,7 +1023,7 @@ namespace WPFSTD105
                 MessageBoxImage.Exclamation,
                 MessageBoxResult.None,
                 MessageBoxOptions.None,
-                FloatingMode.Popup);
+                FloatingMode.Window);
                 return false;
             }
 
