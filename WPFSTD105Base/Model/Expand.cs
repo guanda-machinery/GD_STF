@@ -600,7 +600,7 @@ namespace WPFSTD105.Model
             {
                 //model.Clear();//清除模型內物件
                 model.Blocks[steelBlock.BlockName].Entities.Clear();//清除圖塊
-                                                                    //前視圖
+                //前視圖
                 Mesh vMesh = ConvertNcPointToMesh(nc.SteelAttr.vPoint, nc.SteelAttr.t1);
                 List<Mesh> vCut = GetCutMesh(nc.SteelAttr.vPoint, nc.SteelAttr.t1);
                 Mesh cut1 = Mesh.CreateBox(nc.SteelAttr.Length +10, nc.SteelAttr.t2, nc.SteelAttr.t1);//切割前視圖翼板輪廓
