@@ -1,8 +1,11 @@
-﻿using System;
+﻿using GD_STD;
+using GD_STD.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace WPFSTD105.ViewModel
 {
@@ -10,6 +13,8 @@ namespace WPFSTD105.ViewModel
     {
         public Dpad_Joystick_ViewModel()
         {
+
+
 
         }
 
@@ -32,11 +37,6 @@ namespace WPFSTD105.ViewModel
         public WPFWindowsBase.RelayCommand JoyStick_BorderButton4_Release { get; set; }
         public WPFWindowsBase.RelayCommand JoyStick_BorderButton5_Release { get; set; }
         public WPFWindowsBase.RelayCommand JoyStick_BorderButton6_Release { get; set; }
-
-
-
-
-
 
 
     }

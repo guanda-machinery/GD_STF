@@ -10,16 +10,15 @@ namespace WPFSTD105.ViewModel
     {
         public Machine_HSteelGrabViewModel()
         {
-            this.Button_Up_IsEnabled = false; 
-            this.Button_Down_IsEnabled =false;
+            this.Button_Up_IsEnabled = false;
+            this.Button_Down_IsEnabled = false;
+            // this.Joystcik_Left_Trigger_Command = UnSideClampCommand ;
+            // this.Joystcik_Right_Trigger_Command = SideClampCommand;
+            //this.Joystcik_Left_Release_Command = null;
+            //this.Joystcik_Right_Release_Command = null;
+         }
 
-            this.BorderButton_Left_Trigger = UnSideClampCommand ;
-            this.BorderButton_Right_Trigger = SideClampCommand;
-
-            this.BorderButton_Left_Release = null;
-            this.BorderButton_Right_Release = null;
-        }
-
+        /*
         private WPFWindowsBase.RelayCommand SideClampCommand
         {
             get
@@ -51,6 +50,6 @@ namespace WPFSTD105.ViewModel
                 });
             }
         }
-
+        */
     }
 }

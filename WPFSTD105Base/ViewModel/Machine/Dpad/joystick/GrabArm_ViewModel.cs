@@ -11,28 +11,28 @@ namespace WPFSTD105.ViewModel
         public GrabArm_ViewModel()
         {
 
-            this.JoyStick_BorderButton1_Trigger = ArmReleaseCommand; //arm打開
+           /* this.JoyStick_BorderButton1_Trigger = ArmReleaseCommand; //arm打開
             this.JoyStick_BorderButton3_Trigger = ArmGrabCommand;//arm夾持
             this.JoyStick_BorderButton4_Trigger = ArmXaCommand;//armXa
             this.JoyStick_BorderButton5_Trigger = ArmHSteelCenterCommand;//arm H鋼中心
             this.JoyStick_BorderButton6_Trigger = ArmHSteelPointCommand;//arm H鋼尖端
 
-            this.BorderButton_Left_Trigger = ArmXPlusCommand;//arm X+
-            this.BorderButton_Up_Trigger = ArmYPlusCommand;//arm Y+
-            this.BorderButton_Right_Trigger = ArmXMinusCommand;//arm X-
-            this.BorderButton_Down_Trigger = ArmYMinusCommand;//arm Y-
+            this.Joystcik_Left_Trigger_Command = ArmXPlusCommand;//arm X+
+            this.Joystcik_Up_Trigger_Command = ArmYPlusCommand;//arm Y+
+            this.Joystcik_Right_Trigger_Command = ArmXMinusCommand;//arm X-
+            this.Joystcik_Down_Trigger_Command = ArmYMinusCommand;//arm Y-*/
 
 
-            this.JoyStick_BorderButton1_Release = null; //arm打開
+            /*this.JoyStick_BorderButton1_Release = null; //arm打開
             this.JoyStick_BorderButton3_Release = null;//arm夾持
             this.JoyStick_BorderButton4_Release = null;//armXa
             this.JoyStick_BorderButton5_Release = null;//arm H鋼中心
             this.JoyStick_BorderButton6_Release = null;//arm H鋼尖端
 
-            this.BorderButton_Left_Release = null;//arm X+
-            this.BorderButton_Up_Release = null;//arm Y+
-            this.BorderButton_Right_Release = null;//arm X-
-            this.BorderButton_Down_Release = null;//arm Y-
+            this.Joystcik_Left_Release_Command = null;//arm X+
+            this.Joystcik_Up_Release_Command = null;//arm Y+
+            this.Joystcik_Right_Release_Command = null;//arm X-
+            this.Joystcik_Down_Release_Command = null;//arm Y-*/
 
 
         }
@@ -41,7 +41,7 @@ namespace WPFSTD105.ViewModel
         public bool OptionalGrabArmButton2_isEnabled { get; set; } = false;
         public bool OptionalGrabArmButton3_isEnabled { get; set; } = false;
 
-
+        /*
         //手臂放開
         private WPFWindowsBase.RelayCommand ArmReleaseCommand
         {
@@ -187,7 +187,7 @@ namespace WPFSTD105.ViewModel
                 });
             }
         }
-
+        */
 
 
 
