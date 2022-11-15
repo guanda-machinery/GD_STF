@@ -845,7 +845,7 @@ namespace WPFSTD105.ViewModel
             if (CheckY)
             {
                 Boltsbuffer.dY = GroupBoltsAttr.dY;
-                Boltsbuffer.xCount = CalBoltNumber(GroupBoltsAttr.dY);
+                Boltsbuffer.yCount = CalBoltNumber(GroupBoltsAttr.dY);
                 //Boltsbuffer.yCount = GroupBoltsAttr.yCount;
             }
             else {
@@ -1065,7 +1065,7 @@ namespace WPFSTD105.ViewModel
             try
             {
                 int temp_CutFace;
-                if (OfficeViewModel.CurrentPage == OfficePage.ProductSettings)//若為新版製品設定頁面
+                if (OfficeViewModel.CurrentPage == OfficePage.ProductSettings || ViewLocator.ApplicationViewModel.CurrentPage == ApplicationPage.MachineProductSetting)//若為新版製品設定頁面
                 {
                     temp_CutFace = rbtn_CutFace;
                 }

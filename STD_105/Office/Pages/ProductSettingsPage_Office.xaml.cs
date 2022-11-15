@@ -43,6 +43,8 @@ using DevExpress.DataProcessing.InMemoryDataProcessor.GraphGenerator;
 using DevExpress.XtraSpreadsheet.TileLayout;
 using DevExpress.Dialogs.Core.View;
 using ControlzEx.Standard;
+using System.Runtime.Serialization;
+using WPFSTD105.Surrogate;
 
 namespace STD_105.Office
 {
@@ -414,10 +416,10 @@ namespace STD_105.Office
                             blockReference.EntityData = sa;
                             blockReference.Selectable = false;//關閉用戶選擇
                             blockReference.Attributes.Add("steel", new AttributeReference(0, 0, 0));
-                            if (model.Entities.Count > 0)
-                            {
-                                model.Entities.RemoveAt(model.Entities.Count - 1);
-                            }
+                            //if (model.Entities.Count > 0)
+                            //{
+                            //    model.Entities.RemoveAt(model.Entities.Count - 1);
+                            //}
                             model.Entities.Insert(model.Entities.Count , blockReference);//加入參考圖塊到模型
                             #endregion
                             SaveModel(true, true);
@@ -491,10 +493,10 @@ namespace STD_105.Office
                             blockReference.EntityData = sa;
                             blockReference.Selectable = false;//關閉用戶選擇
                             blockReference.Attributes.Add("steel", new AttributeReference(0, 0, 0));
-                            if (model.Entities.Count > 0)
-                            {
-                                model.Entities.RemoveAt(model.Entities.Count - 1);
-                            }
+                            //if (model.Entities.Count > 0)
+                            //{
+                            //    model.Entities.RemoveAt(model.Entities.Count - 1);
+                            //}
                             model.Entities.Insert(model.Entities.Count , blockReference);//加入參考圖塊到模型
                             //model.Blocks[1].Name = sa.GUID.Value.ToString();
                             //Mesh modify = Steel3DBlock.GetProfile(sa); //修改的形狀
@@ -1062,10 +1064,10 @@ namespace STD_105.Office
                     blockReference.EntityData = steelAttr;
                     blockReference.Selectable = false;//關閉用戶選擇
                     blockReference.Attributes.Add("Steel", new AttributeReference(0, 0, 0));
-                    if (model.Entities.Count > 0)
-                    {
-                        model.Entities.RemoveAt(model.Entities.Count - 1);
-                    }
+                    //if (model.Entities.Count > 0)
+                    //{
+                    //    model.Entities.RemoveAt(model.Entities.Count - 1);
+                    //}
                     model.Entities.Add(blockReference);//加入參考圖塊到模型
 
 
@@ -1752,7 +1754,26 @@ namespace STD_105.Office
                 isNewPart = true;//還原零件狀態
 
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D三視圖
-
+                bool hasOutSteel = false;
+                for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
+                {
+                    if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
+                    {
+                        BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
+                        Block block = model.Blocks[blockReference.BlockName]; //取得圖塊
+                        Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts((GroupBoltsAttr)model.Entities[i].EntityData, model, out BlockReference blockRef, out bool checkRef);
+                        //Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生螺栓圖塊
+                        if (bolts3DBlock.hasOutSteel)
+                        {
+                            hasOutSteel = true;
+                        }
+                        Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
+                    }
+                }
+                if (hasOutSteel)
+                {
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                }
                 //RunHypotenusePoint();
 #if DEBUG
                 log4net.LogManager.GetLogger("加入切割線").Debug("結束");
@@ -3957,7 +3978,7 @@ namespace STD_105.Office
         {
             await SaveModelAsync(add, reflesh);
         }
-
+      
         /// <summary>
         /// 存取模型
         /// </summary>
@@ -3969,6 +3990,12 @@ namespace STD_105.Office
             STDSerialization ser = new STDSerialization();
             // 取得目前鋼構資訊
             SteelAttr sa = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
+
+            //((SteelAttr)model.Blocks[1].Entities[0].EntityData).ConvertToSurrogate();
+
+            //bool t = (model.Blocks[1].Entities[0].EntityData).GetType().IsSerializable;
+            SteelAttrSurrogate a = new SteelAttrSurrogate((SteelAttr)model.Blocks[1].Entities[0].EntityData);
+           
             //ViewModel.SteelAttr = sa;            // 取出所有零件
             Dictionary<string, ObservableCollection<SteelPart>> part1 = ser.GetPart();
             // 所有零件
@@ -4242,6 +4269,7 @@ namespace STD_105.Office
             // 給定 零件 數量vsID
             steelPart.ID = buffer1.ToList();
             steelPart.Count = ass.ID.Count();
+            steelPart.Revise = (sa.Revise.HasValue ? sa.Revise.Value : DateTime.Now);
 
             // 原零件之構建ID
             // 取出所有零件
@@ -4971,6 +4999,18 @@ namespace STD_105.Office
             ViewModel.PointBackProperty = CuurentSelectedPart.steelAttr.PointBack;
             ViewModel.PointFrontProperty = CuurentSelectedPart.steelAttr.PointFront;
             ViewModel.PointTopProperty = CuurentSelectedPart.steelAttr.PointTop;
+            ViewModel.CurrentPartSteelAttr.PointTop.DL = CuurentSelectedPart.steelAttr.PointTop.DL;
+            ViewModel.CurrentPartSteelAttr.PointTop.DR = CuurentSelectedPart.steelAttr.PointTop.DR;
+            ViewModel.CurrentPartSteelAttr.PointTop.UL = CuurentSelectedPart.steelAttr.PointTop.UL;
+            ViewModel.CurrentPartSteelAttr.PointTop.UR = CuurentSelectedPart.steelAttr.PointTop.UR;
+            ViewModel.CurrentPartSteelAttr.PointFront.DL = CuurentSelectedPart.steelAttr.PointFront.DL;
+            ViewModel.CurrentPartSteelAttr.PointFront.DR = CuurentSelectedPart.steelAttr.PointFront.DR;
+            ViewModel.CurrentPartSteelAttr.PointFront.UL = CuurentSelectedPart.steelAttr.PointFront.UL;
+            ViewModel.CurrentPartSteelAttr.PointFront.UR = CuurentSelectedPart.steelAttr.PointFront.UR;
+            ViewModel.CurrentPartSteelAttr.PointBack.DL = CuurentSelectedPart.steelAttr.PointBack.DL;
+            ViewModel.CurrentPartSteelAttr.PointBack.DR = CuurentSelectedPart.steelAttr.PointBack.DR;
+            ViewModel.CurrentPartSteelAttr.PointBack.UL = CuurentSelectedPart.steelAttr.PointBack.UL;
+            ViewModel.CurrentPartSteelAttr.PointBack.UR = CuurentSelectedPart.steelAttr.PointBack.UR;
 
 
             //ViewModel.SteelAttr.GUID =CuurentSelectedPart.steelAttr.GUID;//1110 暫時註解掉，避免 e.OldItem, e.NewItem 間同時指向VM層連動導致(因為有binding到)e.OldItem資料被變更 CYH
@@ -5393,9 +5433,10 @@ namespace STD_105.Office
                     //SteelAttr sa = ViewModel.SteelAttr;//(SteelAttr)model.Blocks[1].Entities[0].EntityData;//1110 暫時註解掉，避免 e.OldItem, e.NewItem 間同時指向VM層連動導致(因為有binding到)e.OldItem資料被變更 CYH
                     SteelAttr sa = item.steelAttr;//1110 改由e.NewItem的steelAttr給值 CYH
                     //SteelAttr sa = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
-
+                    SteelAttr saTemp = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
+                    
                     //ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
-
+                    model.Blocks[1].ConvertToSurrogate();
                     string path = ApplicationVM.DirectoryNc();
                     string allPath = path + $"\\{sa.PartNumber}.nc1";
 
@@ -5460,7 +5501,11 @@ namespace STD_105.Office
                     model.Entities.Insert(model.Entities.Count, blockReference);//加入參考圖塊到模型
 
                     SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
+                    ScrollViewbox.IsEnabled = true;
                     ManHypotenusePoint((FACE)ViewModel.rbtn_CutFace);
+                    AutoHypotenuseEnable(FACE.TOP);
+                    AutoHypotenuseEnable(FACE.FRONT);
+                    AutoHypotenuseEnable(FACE.BACK);
                     bool hasOutSteel = false;
                     for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
                     {
@@ -5504,7 +5549,7 @@ namespace STD_105.Office
                     //////////                    ConfirmCurrentSteelSection(item);
                     //////////                    GetViewToViewModel(false, Guid.Parse(focuseGUID));
                     // 執行斜邊打點
-                    ManHypotenusePoint((FACE)ViewModel.rbtn_CutFace);
+                    //ManHypotenusePoint((FACE)ViewModel.rbtn_CutFace);
 
 
                     model.ZoomFit();//設置道適合的視口

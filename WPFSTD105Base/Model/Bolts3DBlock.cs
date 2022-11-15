@@ -207,7 +207,7 @@ namespace WPFSTD105.Model
                 //先產生Y向，原因是，三軸機先Y向移動工作效率較大
                 List<double> dYList = Info.dYs;
                 List<Mesh> boltList = new List<Mesh>();
-                for (int i = 1; i <= this.Info.yCount; i++)
+                for (int i = 1; i < this.Info.yCount; i++)
                 {
                     if (this.Info.Mode== AXIS_MODE.HypotenusePOINT)
                     {
