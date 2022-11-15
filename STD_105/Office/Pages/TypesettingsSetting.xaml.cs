@@ -777,7 +777,8 @@ namespace STD_105.Office
                                   endCut;//當前切割物件放置結束點的座標
                     if (i + 1 >= material.Parts.Count) //下一次迴圈結束
                     {
-                        endCut = material.LengthStr + material.StartCut + material.EndCut;//當前切割物件放置結束點的座標
+                        //endCut = material.LengthStr + material.StartCut + material.EndCut;//當前切割物件放置結束點的座標
+                        endCut = material.LengthStr;// - material.StartCut - material.EndCut;//當前切割物件放置結束點的座標
                     }
                     else //下一次迴圈尚未結束
                     {
