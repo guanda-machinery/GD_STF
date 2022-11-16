@@ -1177,7 +1177,7 @@
                                 <Button x:Name="YesButton2"
                                         Background="{StaticResource solidclr_ButtonBlue}"
                                         Foreground="{ StaticResource solidclr_CreamyWhite }"
-                                        Command="{Binding SaveCommand}"
+                                        Command="{Binding ImportCommand}"
                                         Content="匯入"
                                         Style="{StaticResource btn_Submit}" />
                                 <Button Grid.Column="1"

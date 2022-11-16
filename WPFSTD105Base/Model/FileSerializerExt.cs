@@ -25,7 +25,7 @@ namespace WPFSTD105.Model
         /// 使用此構造函數為<see cref ="WriteFile"/>類定義序列化模型，該類接受<see cref ="devDept.Eyeshot.Model" />作為參數。
         /// </remarks>
         public FileSerializerExt()
-        {
+        { 
         }
         /// <summary>
         /// 與<see cref ="ReadFile"/>類結合使用的構造方法。

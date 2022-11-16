@@ -291,20 +291,22 @@
                                     ShowSearchPanelMode="Never"
                                     SearchPanelNullText="Search Tasks(Ctrl + F)"
                                 ShowIndicator="False" 
-                                    SearchPanelFindMode="Always"      
-                                    SearchDelay="0">
-                                        <dxg:TableView.CellStyle>
-                                            <Style>
-                                                <Setter Property="TextBlock.FontSize" Value="12"/>
-                                                <Setter Property="TextBlock.Foreground" Value="Black"/>
-                                            </Style>
-                                        </dxg:TableView.CellStyle>
-                                        <dxg:TableView.Header>
-                                            <TextBlock Text="零件清單" FontSize="16" Foreground="Black"/>
-                                        </dxg:TableView.Header>
-                                    </dxg:TableView>
-                                </dxg:GridControl.View>
-                                <dxg:GridColumn IsSmart="True" Name="LockGridCol" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
+                                    SearchPanelFindMode="Always"         
+
+                                    SearchDelay="0" MouseDown="MachiningCombinational_List_TableView_MouseDown">
+                                <dxg:TableView.CellStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.FontSize" Value="12"/>
+                                        <Setter Property="TextBlock.Foreground" Value="Black"/>
+                                    </Style>
+                                </dxg:TableView.CellStyle>
+                                <dxg:TableView.Header>
+                                    <TextBlock Text="零件清單" FontSize="16" Foreground="Black"/>
+                                </dxg:TableView.Header>
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+
+                        <dxg:GridColumn IsSmart="True" Name="LockGridCol" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                             <dxg:GridColumn.HeaderImageStyle>
                                 <Style TargetType="Image">
                                     <Setter Property="Width" Value="16"></Setter>
@@ -529,8 +531,162 @@ AllowEditing="False"
                     </Style>
                 </TabControl.Resources>
                 <TabItem Header="3D">
+                    <Grid>
+
+
+                        <!--新增3D模型處-->
+                        <spa:ModelExt
+                            Loaded="Model3D_Loaded"
+                            Name="model"
+                            AutoRefresh ="True"
+                            SelectionColor="{Binding Setting.SelectionColor, Converter={local:StringToDrawingColoConverter}}"
+                            ActionMode="{Binding ActionMode}" 
+                            DefaultColor="Beige" 
+                            KeyDown="model_KeyDown"
+                            PreviewMouseRightButtonDown="model_PreviewMouseRightButtonDown"
+                            Focusable="True" 
+                            AntiAliasingSamples="x16" 
+                            Renderer="NativeExperimental" 
+                            ShowFps="false">
+                            <spa:ModelExt.ContextMenu>
+                                <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
+                                    <MenuItem Name="esc" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
+                                    <MenuItem Header="放大選取範圍" Style="{StaticResource BaseStyle}" Command="{Binding ZoomWindow}"/>
+                                    <MenuItem Header="縮放" Style="{StaticResource BaseStyle}" Command="{Binding Zoom}"/>
+                                    <MenuItem Header="旋轉" Style="{StaticResource BaseStyle}" Command="{Binding Rotate}"/>
+                                    <MenuItem Header="平移" Style="{StaticResource BaseStyle}" Command="{Binding Pan}"/>
+                                    <!--<MenuItem Name="edit" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}" Visibility="Collapsed"/>
+                                        <MenuItem x:Name="delete" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}" Visibility="Collapsed"/>-->
+                                    <!--<MenuItem Header="清除標註" Command="{Binding ClearDim}" CommandParameter="{Binding ElementName=model}" Style="{StaticResource BaseStyle}"/>-->
+                                    <!--<MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
+                                        <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>-->
+                                </ContextMenu>
+                            </spa:ModelExt.ContextMenu>
+                            <ddes:Model.ProgressBar>
+                                <ddes:ProgressBar Lighting="False"/>
+                            </ddes:Model.ProgressBar>
+                            <ddes:Model.Viewports>
+                                <ddes:Viewport
+                                    DisplayMode="Flat" 
+                                    InitialView="vcFrontFaceTopLeft" 
+                                    OriginSymbols="{Binding OriginSymbols}" 
+                                    OpacityMask="AliceBlue" 
+                                    SmallSizeRatio="0.001">
+                                    <ddes:Viewport.Background>
+                                        <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#FF303030"/>
+                                    </ddes:Viewport.Background>
+                                    <ddes:Viewport.CoordinateSystemIcon>
+                                        <ddes:CoordinateSystemIcon Lighting="True" 
+                                            ArrowColorX="{Binding Setting.ArrowColorX, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                            ArrowColorY="{Binding Setting.ArrowColorY, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                            ArrowColorZ="{Binding Setting.ArrowColorZ, Converter={WPFBase:StringRGBToBrushConverter}}"/>
+                                    </ddes:Viewport.CoordinateSystemIcon>
+                                    <ddes:Viewport.Camera>
+                                        <ddes:Camera Distance="380" ProjectionMode="Orthographic" Target="0, 0, 45" ZoomFactor="2"/>
+                                    </ddes:Viewport.Camera>
+                                    <ddes:Viewport.Rotate>
+                                        <ddes:RotateSettings RotationCenter="CursorLocation"/>
+                                    </ddes:Viewport.Rotate>
+                                    <ddes:Viewport.ToolBars>
+                                        <ddes:ToolBar>
+                                            <ddes:ToolBar.Buttons>
+                                                <ddes:HomeToolBarButton/>
+                                                <ddes:ZoomWindowToolBarButton/>
+                                                <ddes:ZoomToolBarButton/>
+                                                <ddes:PanToolBarButton/>
+                                                <ddes:RotateToolBarButton/>
+                                                <ddes:ZoomFitToolBarButton/>
+                                            </ddes:ToolBar.Buttons>
+                                        </ddes:ToolBar>
+                                    </ddes:Viewport.ToolBars>
+                                    <ddes:Viewport.ViewCubeIcon>
+                                        <ddes:ViewCubeIcon Lighting="True" 
+                                            FrontColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                            BackColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                            TopColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                            BottomColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                            RightColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                            LeftColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
+                                            BackRingLabel="北" FrontRingLabel="南" RightRingLabel="東" LeftRingLabel="西"
+                                            LeftRingColor="White" RightRingColor="White" FrontRingColor="White" BackRingColor="White"/>
+                                    </ddes:Viewport.ViewCubeIcon>
+                                </ddes:Viewport>
+                            </ddes:Model.Viewports>
+                        </spa:ModelExt>
+
+
+
+                    </Grid>
                 </TabItem>
                 <TabItem Header="2D">
+                    <Grid>
+
+
+                        <Border Style="{StaticResource bro}"/>
+                        <spa:ModelExt x:Name="drawing" 
+                            Loaded="drawing_Loaded"
+                            AutoRefresh ="True"
+                            SelectionColor="{Binding Setting.SelectionColor, Converter={local:StringToDrawingColoConverter}}"
+                            ActionMode="{Binding ActionMode}" 
+                            DefaultColor="Beige" 
+                            KeyDown="model_KeyDown"
+                            PreviewMouseRightButtonDown="model_PreviewMouseRightButtonDown"
+                            Focusable="True" 
+                            AntiAliasingSamples="x16" 
+                            Renderer="NativeExperimental" 
+                            ShowFps="false" SelectionChanged="model_SelectionChanged">
+                            <spa:ModelExt.ContextMenu>
+                                <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
+                                    <MenuItem Name="esc2D" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
+                                    <MenuItem Header="放大選取範圍" Style="{StaticResource BaseStyle}" Command="{Binding ZoomWindow}"/>
+                                    <MenuItem Header="縮放" Style="{StaticResource BaseStyle}" Command="{Binding Zoom}"/>
+                                    <MenuItem Header="平移" Style="{StaticResource BaseStyle}" Command="{Binding Pan}"/>
+                                    <MenuItem Name="edit2D" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}"/>
+                                    <MenuItem x:Name="delete2D" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}"/>
+                                    <MenuItem Header="清除標註" Command="{Binding ClearDim}" Style="{StaticResource BaseStyle}"/>
+                                    <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
+                                    <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
+                                </ContextMenu>
+                            </spa:ModelExt.ContextMenu>
+                            <ddes:Model.ProgressBar>
+                                <ddes:ProgressBar Lighting="False"/>
+                            </ddes:Model.ProgressBar>
+                            <ddes:Model.Viewports>
+                                <ddes:Viewport DisplayMode="Flat" InitialView="Top" OriginSymbols="{Binding OriginSymbols}">
+                                    <ddes:Viewport.Background>
+                                        <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#FF303030"/>
+                                    </ddes:Viewport.Background>
+                                    <ddes:Viewport.Camera>
+                                        <ddes:Camera Distance="380" ProjectionMode="Orthographic" Target="0, 0, 45" ZoomFactor="2"/>
+                                    </ddes:Viewport.Camera>
+                                    <ddes:Viewport.Rotate>
+                                        <ddes:RotateSettings RotationCenter="CursorLocation" Enabled="False"/>
+                                    </ddes:Viewport.Rotate>
+                                    <ddes:Viewport.ToolBars>
+                                        <ddes:ToolBar>
+                                            <ddes:ToolBar.Buttons>
+                                                <ddes:HomeToolBarButton/>
+                                                <ddes:ZoomWindowToolBarButton/>
+                                                <ddes:ZoomToolBarButton/>
+                                                <ddes:PanToolBarButton/>
+                                                <ddes:ZoomFitToolBarButton/>
+                                                <ddes:ToolBarButton ToolTipText="線性標註" Click="LinearDim" StyleMode="PushButton"   
+                                                                Image="{Binding Source={materialDesign:PackIcon Kind=Ruler},Converter={local:MaterialDesignPackIconToBitmapSourceConverter}}"
+                                                                     />
+                                                <ddes:ToolBarButton ToolTipText="角度標註" Click="AngleDim" StyleMode="PushButton" 
+                                                Image="{Binding Source={materialDesign:PackIcon Kind=AngleAcute},Converter={local:MaterialDesignPackIconToBitmapSourceConverter}}"/>
+                                                <ddes:ToolBarButton ToolTipText="絕對座標" StyleMode="PushButton"
+                                                Image="{Binding Source={materialDesign:PackIcon Kind=AxisArrow},Converter={local:MaterialDesignPackIconToBitmapSourceConverter}}"/>
+                                            </ddes:ToolBar.Buttons>
+                                        </ddes:ToolBar>
+                                    </ddes:Viewport.ToolBars>
+                                </ddes:Viewport>
+                            </ddes:Model.Viewports>
+                        </spa:ModelExt>
+
+
+
+                    </Grid>
                 </TabItem>
             </TabControl>
             <Grid Grid.Row="2" Height="250">

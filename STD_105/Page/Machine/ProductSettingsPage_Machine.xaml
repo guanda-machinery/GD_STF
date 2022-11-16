@@ -205,7 +205,7 @@
                                  SelectionMode="None"
                                  MaxHeight="450"
                                  AllowLiveDataShaping="True"
-                                  ItemsSource="{Binding ProductSettingsPageViewModel.DataViews, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange">
+                                  ItemsSource="{Binding ProductSettingsPageViewModel.DataViews, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange"  MouseDown="Button_PreviewMouseLeftButtonDown">
                         <dxg:GridControl.Resources>
 
                             <Style TargetType="dxg:GridColumn" >
@@ -315,14 +315,14 @@
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
                         <!--<dxg:GridColumn FieldName="{Binding Creation, Converter={local:DateTimeConverter} }" IsSmart="True" Header="建立日期"  >-->
-                        <dxg:GridColumn FieldName="Creation" IsSmart="True" Header="建立日期"  Width="80">
+                    <dxg:GridColumn Binding="{Binding steelAttr.Creation, Converter={local:DateTimeConverter} }" IsSmart="True" Header="建立日期"  Width="80">
                             <dxg:GridColumn.CellStyle>
                                 <Style>
                                     <Setter Property="TextBlock.Foreground" Value="Gray"/>
                                 </Style>
                             </dxg:GridColumn.CellStyle>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="{Binding Revise, Converter={local:DateTimeConverter} }" IsSmart="True" Header="修改日期" Width="80">
+                    <dxg:GridColumn Binding="{Binding steelAttr.Revise, Converter={local:DateTimeConverter} }" IsSmart="True" Header="修改日期" Width="80">
                             <dxg:GridColumn.CellStyle>
                                 <Style>
                                     <Setter Property="TextBlock.Foreground" Value="Gray"/>
@@ -517,10 +517,9 @@
 
                     <Label Grid.Column="0"  Grid.Row="6" Content="材質：" />
 
-                <ComboBox Grid.Column="1" Grid.Row="6" Name="material" ItemsSource="{Binding Materials, Converter={local:MaterialToNameConverter}}"
-                    SelectedValue="{Binding ProductMaterialPropert, Mode=OneWay}"
-                              Padding="5,1,0,0" />
-                           <!--   SelectedValue="{Binding SelectedItems[0].Material, ElementName=PieceListGridControl, Mode=OneWay}"-->
+                <!--<ComboBox Grid.Column="1" Grid.Row="6" Name="material" ItemsSource="{Binding Materials, Converter={local:MaterialToNameConverter}}" SelectedValue="{Binding ProductMaterialPropert, Mode=OneWay}" Padding="5,1,0,0" />-->
+                <ComboBox Grid.Column="1" Grid.Row="6" Name="material" ItemsSource="{Binding Materials, Converter={local:MaterialToNameConverter}}" SelectedValue="{Binding ProductMaterialProperty}" Padding="5,1,0,0" />
+                <!--   SelectedValue="{Binding SelectedItems[0].Material, ElementName=PieceListGridControl, Mode=OneWay}"-->
 
                     <Label Grid.Column="0" Grid.Row="7" Content="Phase：" />
 
@@ -606,14 +605,16 @@
                             </Binding>
                         </TextBox.Text>
                     </TextBox>
-                    <Label Grid.Column="0" Grid.Row="12" Content="標題二：" Visibility="{StaticResource BoxVisibilityCollapsed}" />
-                <TextBox Grid.Column="1" Grid.Row="12" Name="Title2">
+                <Label Grid.Column="0" Grid.Row="11" Content="標題二："  Visibility="{StaticResource BoxVisibilityCollapsed}"/>
+                <TextBox Grid.Column="1" Grid.Row="11" Name="Title2" Visibility="{StaticResource BoxVisibilityCollapsed}">
                     <TextBox.Text>
-                        <!--<Binding SelectedItems[0].Title2, ElementName=PieceListGridControl,Mode=OneWay}" Visibility="{StaticResource BoxVisibilityCollapsed}"/>-->
-                        <Binding Path="Title2Property" UpdateSourceTrigger="PropertyChanged" ></Binding>
+                        <!-- <Binding Path="SelectedItems[0].Title1" ElementName="PieceListGridControl" StringFormat="{}{0:N2}" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >-->
+                        <Binding Path="Title2Property" UpdateSourceTrigger="PropertyChanged" >
+
+                        </Binding>
                     </TextBox.Text>
                 </TextBox>
-                    <Label Grid.Column="0" Grid.Row="13" Content="高度(H)：" Visibility="{StaticResource BoxVisibilityCollapsed}" />
+                <Label Grid.Column="0" Grid.Row="13" Content="高度(H)：" Visibility="{StaticResource BoxVisibilityCollapsed}" />
                     <Grid Grid.Column="1" Grid.Row="13" Visibility="{StaticResource BoxVisibilityCollapsed}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
