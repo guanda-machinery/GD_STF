@@ -75,11 +75,19 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 壓
         /// </summary>
-        public Machine_HSteelClampViewModel Machine_HSteelClampVM { get; set; } = new Machine_HSteelClampViewModel();
+        public Dpad_ViewModel Machine_HSteelClampVM { get; set; } = new Dpad_ViewModel()
+        {
+            Button_Left_IsEnabled = false,
+            Button_Right_IsEnabled = false
+        };
         /// <summary>
         /// 夾
         /// </summary>
-        public Machine_HSteelGrabViewModel Machine_HSteelGrabVM { get; set; } = new Machine_HSteelGrabViewModel();
+        public Dpad_ViewModel Machine_HSteelGrabVM { get; set; } = new Dpad_ViewModel()
+        {
+            Button_Up_IsEnabled = false,
+            Button_Down_IsEnabled = false
+        };
         /// <summary>
         /// 輸送帶VM
         /// </summary>
@@ -91,13 +99,27 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 換刀VM
         /// </summary>
-        public ToolMagazineControl_ViewModel ToolMagazineControl_VM { get; set; } = new ToolMagazineControl_ViewModel();
+        public Dpad_Joystick_ViewModel ToolMagazineControl_VM { get; set; } = new Dpad_Joystick_ViewModel()
+        {
+            Button_Up_IsEnabled = false,
+            Button_Down_IsEnabled = false,
+        };
         /// <summary>
         /// 捲屑機VM
         /// </summary>
-        public DpadConveyor_ViewModel DpadConveyor_VM { get; set; } = new DpadConveyor_ViewModel();
+        public Dpad_Joystick_ViewModel DpadConveyor_VM { get; set; } = new Dpad_Joystick_ViewModel()
+        {
+            JoyStickButton1_isEnabled = false,
+            JoyStickButton2_isEnabled = false,
+            JoyStickButton3_isEnabled = false,
+            JoyStickButton4_isEnabled = false,
+            JoyStickButton5_isEnabled = false,
+            JoyStickButton6_isEnabled = false,
+            Button_Up_IsEnabled = false,
+            Button_Down_IsEnabled = false
+        };
 
-        private bool _descriptionDisplayBoolenAll = false;
+        private bool _descriptionDisplayBoolenAll = true;
         public bool DescriptionDisplayBoolenAll 
         { 
             get
@@ -109,6 +131,7 @@ namespace WPFSTD105.ViewModel
                 _descriptionDisplayBoolenAll = value;
 
                 Machine_HSteelClampVM.DescriptionDisplayBoolen = _descriptionDisplayBoolenAll;
+                
                 Machine_HSteelGrabVM.DescriptionDisplayBoolen = _descriptionDisplayBoolenAll;
                 _RacksOperationVM.DescriptionDisplayBoolen = _descriptionDisplayBoolenAll;
                 ArmGrab_Dpad_VM.DescriptionDisplayBoolen = _descriptionDisplayBoolenAll;

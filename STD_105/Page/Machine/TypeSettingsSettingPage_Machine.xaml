@@ -260,7 +260,7 @@
                                 <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="PartWeight"  IsSmart="True"  Header="零件重"  Width="*" >
+                        <dxg:GridColumn FieldName="PartWeight" Binding="{c:Binding PartWeight/1000}"  IsSmart="True"  Header="零件重"  Width="*" >
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
                             </dxg:GridColumn.EditSettings>

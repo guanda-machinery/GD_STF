@@ -456,16 +456,14 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="HttpRequest\AppServerCommunication.cs" />
+    <Compile Include="Model\OperatingLog.cs" />
     <Compile Include="UserControls\ProcessingScreenWindow.xaml.cs">
       <DependentUpon>ProcessingScreenWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\Machine\Dpad\joystick\DpadConveyor_ViewModel.cs" />
-    <Compile Include="ViewModel\Machine\Dpad\joystick\MainSpindle_ViewModel.cs" />
-    <Compile Include="ViewModel\Machine\Dpad\joystick\ToolMagazineControl_ViewModel.cs" />
     <Compile Include="ViewModel\Machine\Dpad\joystick\GrabArm_ViewModel.cs" />
-    <Compile Include="ViewModel\Machine\Dpad\Machine_HSteelGrabViewModel.cs" />
-    <Compile Include="ViewModel\Machine\Dpad\Machine_HSteelClampViewModel.cs" />
+    <Compile Include="ViewModel\Machine\Dpad\joystick\MainSpindle_ViewModel.cs" />
     <Compile Include="ViewModel\Machine\Dpad\joystick\Dpad_Joystick_ViewModel.cs" />
+    <Compile Include="ViewModel\Machine\Dpad\joystick\ToolMagazineControl_ViewModel.cs" />
     <Compile Include="ViewModel\Machine\MachineFunctionVM.cs" />
     <Compile Include="ViewModel\ProcessingMonitor_MachineVM.cs" />
     <Compile Include="WordToPdfService.cs" />

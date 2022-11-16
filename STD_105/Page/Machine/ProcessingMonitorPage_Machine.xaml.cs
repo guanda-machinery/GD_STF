@@ -37,6 +37,8 @@ namespace STD_105
     { 
         public ProcessingMonitorPage_Machine()
         {
+
+
             InitializeComponent();
 
          }
@@ -74,6 +76,32 @@ namespace STD_105
             }
         }
 
+        private void MachineMessage_ItemsSourceChanged(object sender, ItemsSourceChangedEventArgs e)
+        {
+            var ItemList = ((sender as GridControl).ItemsSource as IEnumerable<OperatingLog>).ToList();
+
+            if (ItemList != null)
+            {
+               // var ItemList = ItemIEnum.ToList();
+                if (ItemList.Count() > 0)
+                {
+                    //等待0.1秒 等頁面刷新後再捲動
+                    //捲到最底下
+                    Task.Run(() =>
+                    {
+                        Thread.Sleep(100);
+                        MachineMessage_TableView.Dispatcher.Invoke(() =>
+                        {
+                            MachineMessage_TableView.TopRowIndex = ItemList.Count() - 1;
+                            (sender as GridControl).SelectedItem = ItemList[ItemList.Count() - 1];
+                        }
+                        ); 
+                    });
+                }
+            }
+
+
+        }
 
 
     }
