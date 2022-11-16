@@ -152,7 +152,7 @@
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"  />
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="300"/>
                     </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
@@ -198,7 +198,7 @@
                                 Name="PartsGridControl"
                   
                                 AutoGenerateColumns="None"
-                                SelectionMode="MultipleRow"
+                                SelectionMode="Row"
                                 SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 Height="365"
                                 ItemsSource="{Binding DataViews}">
@@ -300,7 +300,7 @@
                     <dxg:GridControl   Grid.Column="2"
                                 Name="SoftGridControl"
                                 AutoGenerateColumns="None"
-                                SelectionMode="MultipleRow"
+                                SelectionMode="Row"
                                 SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                            MaxHeight="365"    
                                 ItemsSource="{Binding DataViews}">
@@ -457,7 +457,7 @@
                         </Grid>
                     </GroupBox>
                     <DockPanel Margin="5" Grid.Row="1" >
-                        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Visibility="Collapsed">
 
                             <!--ElementName 綁定grid目標-->
                             <Button Content="GO" Command="{Binding GoCommand}"   Background="Gold" Foreground="Black" Width="80" Margin="5" Cursor="Hand">

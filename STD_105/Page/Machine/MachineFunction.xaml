@@ -96,12 +96,8 @@
                     <Border Background="#c0c0c0" Padding="20" >
 
                         <DockPanel>
-                            <DockPanel.Resources>
-                                <WPFSTD105VM:Machine_HSteelClampViewModel x:Key="HSteel_Clamp_VM"/>
-                            </DockPanel.Resources>
-
                             <local:DPadUserControl x:Name="HSteel_Clamp_UserControl"  DockPanel.Dock="Top"  
-                                                   DataContext="{StaticResource HSteel_Clamp_VM}">
+                                                   DataContext="{Binding Machine_HSteelClampVM}">
 
                                 <local:DPadUserControl.ButtonContent_3_Source>
                                     <Grid  VerticalAlignment="Center"  Width="100">
@@ -139,12 +135,12 @@
                             </local:DPadUserControl>
 
                             <CheckBox Grid.Column="1"  DockPanel.Dock="Bottom"
-                                  DataContext="{StaticResource HSteel_Clamp_VM}"
+
                                   HorizontalAlignment="Right"
                                   VerticalAlignment="Bottom"
                                   Margin="5"
                                   Width="100"
-                                  IsChecked="{Binding DescriptionDisplayBoolen}"
+                                  IsChecked="{Binding DescriptionDisplayBoolenAll}"
                                   Style="{ StaticResource GreenSwitch }" />
 
                         </DockPanel>
@@ -158,10 +154,7 @@
 
                     <Border Background="#c0c0c0" Padding="20">
                         <DockPanel>
-                            <DockPanel.Resources>
-                                <WPFSTD105VM:Machine_HSteelGrabViewModel x:Key="HSteel_Grab_VM"/>
-                            </DockPanel.Resources>
-                            <local:DPadUserControl DockPanel.Dock="Top" DataContext="{StaticResource HSteel_Grab_VM}" >
+                            <local:DPadUserControl DockPanel.Dock="Top" DataContext="{Binding Machine_HSteelGrabVM}" >
                                 <local:DPadUserControl.ButtonContent_1_Source>
 
                                     <Grid Margin="80,0"  VerticalAlignment="Center" HorizontalAlignment="Center" Width="100">
@@ -199,12 +192,12 @@
                                 </local:DPadUserControl.ButtonContent_2_Source>
 
                             </local:DPadUserControl>
-                            <CheckBox Grid.Column="1"  DockPanel.Dock="Bottom" DataContext="{StaticResource HSteel_Grab_VM}"
+                            <CheckBox Grid.Column="1"  DockPanel.Dock="Bottom"
                                   HorizontalAlignment="Right"
                                   VerticalAlignment="Bottom"
                                   Margin="5"
                                   Width="100"
-                                  IsChecked="{Binding DescriptionDisplayBoolen}"
+                                  IsChecked="{Binding DescriptionDisplayBoolenAll}"
                                   Style="{ StaticResource GreenSwitch }" />
                         </DockPanel>
 
@@ -217,11 +210,12 @@
                             <Image Source="{StaticResource TransportDrawingImage}"/>
                         </Grid>
                     </TabItem.Header>
-                    <TabItem.DataContext>
-                        <WPFSTD105VM:RacksOperationVM/>
-                    </TabItem.DataContext>
                     <Border Background="#c0c0c0" Padding="10">
                         <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
                             <Grid.Resources>
                                 <Style BasedOn="{StaticResource ParameterDarkGroupBox}" TargetType="GroupBox">
                                     <Setter Property="Margin" Value="5" />
@@ -233,7 +227,7 @@
                                     <Setter Property="Width" Value="auto" />
                                 </Style>
                             </Grid.Resources>
-                            <Grid>
+                            <Grid DataContext="{Binding _RacksOperationVM}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto" />
                                     <RowDefinition Height="auto" />
@@ -387,8 +381,8 @@
                                                         </Setter>
                                                     </Style>
                                                 </Button.Style>
-                                                
-                                                
+
+
                                                 <i:Interaction.Triggers>
                                                     <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                                         <i:InvokeCommandAction  Command="{Binding RollerCommand}" CommandParameter="{x:Static STDEnum:MOBILE_RACK.INSIDE}"/>
@@ -497,7 +491,6 @@
                                     <CheckBox HorizontalAlignment="Right" VerticalAlignment="Top" Style="{ StaticResource CheckedStyle }" Width="20"
                                   IsChecked="{ Binding OpenRoll }" Margin="0,13,13,0"/>
                                 </Grid>
-
                                 <Grid Grid.Column="1" Grid.RowSpan="3" Width="440" Margin="5,5,5,10">
                                     <Border 
                                     Background="{StaticResource solidclr_DimGray}"
@@ -562,10 +555,15 @@
                                     Visibility="{Binding ApplicationViewModel.PanelButton.ExportRack, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}" />
                                     </Viewbox>
                                 </Grid>
-
+                            </Grid>
+                            <Grid Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
                                 <!--  料架控制器  -->
-                                <Border Grid.Row="3" Grid.ColumnSpan="2"  Background="#c0c0c0" Width="auto" Height="auto" Margin="10,0,10,5">
-                                    <local:DPadUserControl>
+                                <Border Grid.Row="0"  Background="#c0c0c0" Width="auto" Height="auto" Margin="10,0,10,5">
+                                    <local:DPadUserControl DataContext="{Binding _RacksOperationVM}">
                                         <local:DPadUserControl.ButtonContent_1_Source>
                                             <Grid Margin="5"  VerticalAlignment="Center" HorizontalAlignment="Center">
                                                 <Grid.ColumnDefinitions>
@@ -582,7 +580,7 @@
                                             </Grid>
                                         </local:DPadUserControl.ButtonContent_1_Source>
                                         <local:DPadUserControl.ButtonContent_2_Source>
-                                          
+
                                             <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center" >
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="35"/>
@@ -595,8 +593,8 @@
                                                 </Grid.RowDefinitions>
                                                 <Image Grid.Column="2" Grid.Row="1" Source="{StaticResource RedArrow_rightDrawingImage}" Width="30" HorizontalAlignment="Right"/>
                                                 <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_noArrowDrawingImage}" />
-                                                </Grid>
-                                  
+                                            </Grid>
+
                                         </local:DPadUserControl.ButtonContent_2_Source>
                                         <local:DPadUserControl.ButtonContent_3_Source>
 
@@ -612,7 +610,7 @@
                                                 </Grid.RowDefinitions>
                                                 <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource RedArrow_upDrawingImage}" Height="30" VerticalAlignment="Top"/>
                                                 <Image Grid.Column="1" Grid.Row="1"  Source="{StaticResource Transport_noArrowDrawingImage}" />
-                                                </Grid>
+                                            </Grid>
 
                                         </local:DPadUserControl.ButtonContent_3_Source>
                                         <local:DPadUserControl.ButtonContent_4_Source>
@@ -632,7 +630,7 @@
                                         </local:DPadUserControl.ButtonContent_4_Source>
                                     </local:DPadUserControl>
                                 </Border>
-                                <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="10,0">
+                                <Grid Grid.Row="1"  Margin="10,0"  DataContext="{Binding _RacksOperationVM}">
                                     <Grid.Resources>
                                         <Style TargetType="Button" BasedOn="{StaticResource SiegCustomButtonGreenBorder}">
                                             <Setter Property="Height" Value="114"/>
@@ -644,17 +642,17 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Button Command="{Binding}">
-                                            <Image Source="{StaticResource Conveyor_BlockedDrawingImage}" Width="100"/>
-                                        </Button>
-                                        <Button Grid.Column="1" Margin="10,0">
+                                        <Image Source="{StaticResource Conveyor_BlockedDrawingImage}" Width="100"/>
+                                    </Button>
+                                    <Button Grid.Column="1" Margin="10,0">
                                         <Image Source="{StaticResource Conveyor_RedDrawingImage}" Width="100"/>
- 
+
                                     </Button>
                                     <Button Grid.Column="2"  IsEnabled="False"></Button>
                                 </Grid>
+                            </Grid>
 
-
-                                <!--<GroupBox Grid.Row="1" Grid.Column="1" Header="液壓橫移">
+                            <!--<GroupBox Grid.Row="1" Grid.Column="1" Header="液壓橫移">
                     <GroupItem>
                         <Border CornerRadius="10" Background="#FF303030" Style="{ StaticResource bor_LightThinLine }">
                             <StackPanel Margin="40,10">
@@ -736,7 +734,7 @@
                 </GroupBox>-->
 
                             </Grid>
-                        </Grid>
+
 
                     </Border>
                 </TabItem>
@@ -754,12 +752,17 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <Grid.Resources>
-                                <WPFSTD105VM:GrabArm_ViewModel x:Key="ArmGrab_Dpad_Js_VM"/>
                                 <Style TargetType="Image">
                                     <Setter Property="Height" Value="80"/>
                                 </Style>
                             </Grid.Resources>
-                            <local:JoystickUserControl Grid.Row="0" Margin="10" DataContext="{StaticResource ArmGrab_Dpad_Js_VM}">
+                            <CheckBox Grid.Column="0"  
+                                  VerticalAlignment="Top"
+                                  Margin="5"
+                                  Width="100"
+                                  IsChecked="{Binding DescriptionDisplayBoolenAll}"
+                                  Style="{ StaticResource GreenSwitch }" />
+                            <local:JoystickUserControl Grid.Row="0" Margin="10" DataContext="{Binding ArmGrab_Dpad_VM}">
                                 <local:JoystickUserControl.ButtonContent_1_Source>
                                     <Grid Margin="0,0"  VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <Grid.ColumnDefinitions>
@@ -887,7 +890,7 @@
 
 
                             </local:JoystickUserControl >
-                            <local:DPadUserControl Grid.Row="1" Margin="10"  VerticalAlignment="Top" DataContext="{StaticResource ArmGrab_Dpad_Js_VM}">
+                            <local:DPadUserControl Grid.Row="1" Margin="10"  VerticalAlignment="Top" DataContext="{Binding ArmGrab_Dpad_VM}">
                                 <local:DPadUserControl.ButtonContent_1_Source>
                                     <Grid Width="200">
                                         <Grid.ColumnDefinitions>
@@ -948,7 +951,7 @@
 
                             </local:DPadUserControl>
                             <Border Grid.Row="2" BorderThickness="0,2,0,0" BorderBrush="#292929" />
-                            <StackPanel  Grid.Row="3" Margin="10" DataContext="{StaticResource ArmGrab_Dpad_Js_VM}">
+                            <StackPanel  Grid.Row="3" Margin="10" DataContext="{Binding ArmGrab_Dpad_VM}">
                                 <Grid Margin="0,5">
                                     <Grid.Resources>
                                         <Style TargetType="Button" BasedOn="{StaticResource SiegCustomButtonGreenBorder}">
@@ -973,7 +976,7 @@
 
                     </Border>
                 </TabItem>
-                <TabItem Name="ToolMagazine_TabItemName">
+                <TabItem Name="ToolMagazine_TabItem">
                     <TabItem.Header>
                         <Grid Height="100" Width="100">
                             <Image Source="{StaticResource ToolMagazine}" Margin="10"/>
@@ -986,12 +989,17 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <Grid.Resources>
-                                <WPFSTD105VM:ToolMagazineControl_ViewModel x:Key="ToolMagazine_Dpad_VM"/>
                                 <Style TargetType="Image">
                                     <Setter Property="Height" Value="80"/>
                                 </Style>
                             </Grid.Resources>
-                            <local:JoystickUserControl Grid.Row="0" Margin="10" x:Name="ToolMagazineControl" DataContext="{StaticResource ToolMagazine_Dpad_VM}">
+                            <CheckBox Grid.Column="0"  
+                                  VerticalAlignment="Top"
+                                  Margin="5"
+                                  Width="100"
+                                  IsChecked="{Binding DescriptionDisplayBoolenAll}"
+                                  Style="{ StaticResource GreenSwitch }" />
+                            <local:JoystickUserControl Grid.Row="0" Margin="10" x:Name="ToolMagazineControl" DataContext="{Binding ToolMagazineControl_VM}">
                                 <local:JoystickUserControl.ButtonContent_1_Source>
                                     <Grid Width="200" HorizontalAlignment="Center" VerticalAlignment="Center" >
                                         <Grid.ColumnDefinitions>
@@ -1048,7 +1056,7 @@
                                 </local:JoystickUserControl.ButtonContent_6_Source>
                             </local:JoystickUserControl >
 
-                            <local:DPadUserControl Grid.Row="1" Margin="10"  DataContext="{Binding ElementName=ToolMagazineControl,Path=DataContext}">
+                            <local:DPadUserControl Grid.Row="1" Margin="10"  DataContext="{Binding ToolMagazineControl_VM}">
                                 <local:DPadUserControl.ButtonContent_1_Source>
                                     <Grid >
                                         <Grid.ColumnDefinitions>
@@ -1076,7 +1084,7 @@
                     </Border>
 
                 </TabItem>
-                <TabItem Name="Crumb_Conveyor_TabItemName">
+                <TabItem Name="Crumb_Conveyor_TabItem">
                     <TabItem.Header>
                         <Grid Width="100" Height="100">
                             <Image Source="{StaticResource Crumb_ConveyorDrawingImage}" Margin="10"/>
@@ -1090,15 +1098,20 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
                             <Grid.Resources>
-                                <WPFSTD105VM:DpadConveyor_ViewModel x:Key="Conveyor_Dpad_Js_VM"/>
                                 <Style TargetType="Image">
                                     <Setter Property="Height" Value="80"/>
                                 </Style>
                             </Grid.Resources>
-                            <local:JoystickUserControl Grid.Row="0" Margin="10"  DataContext="{StaticResource Conveyor_Dpad_Js_VM}">
+                            <CheckBox Grid.Column="0"  
+                                  VerticalAlignment="Top"
+                                  Margin="5"
+                                  Width="100"
+                                  IsChecked="{Binding DescriptionDisplayBoolenAll}"
+                                  Style="{ StaticResource GreenSwitch }" />
+                            <local:JoystickUserControl Grid.Row="0" Margin="10"  DataContext="{Binding DpadConveyor_VM}">
 
                             </local:JoystickUserControl >
-                            <local:DPadUserControl Grid.Row="1" Margin="10"  DataContext="{StaticResource Conveyor_Dpad_Js_VM}">
+                            <local:DPadUserControl Grid.Row="1" Margin="10"  DataContext="{Binding DpadConveyor_VM}">
                                 <local:DPadUserControl.ButtonContent_1_Source>
                                    
                                     <Grid Width="250">

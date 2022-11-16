@@ -35,7 +35,10 @@ namespace WPFSTD105.Surrogate
         public CutListSurrogate(CutList obj) : base(obj)
 #pragma warning restore CS1591 // 遺漏公用可見類型或成員 'CutListSurrogate.CutListSurrogate(CutList)' 的 XML 註解
         {
-
+            UR = obj.UR ?? new CutPoint().ConvertToSurrogate();
+            UL = obj.UL ?? new CutPoint().ConvertToSurrogate();
+            DL = obj.DL ?? new CutPoint().ConvertToSurrogate();   
+            DR = obj.DR ?? new CutPoint().ConvertToSurrogate();
         }
 
 #pragma warning disable CS1591 // 遺漏公用可見類型或成員 'CutListSurrogate.ConvertToObject()' 的 XML 註解
@@ -66,6 +69,7 @@ namespace WPFSTD105.Surrogate
             obj.UL = UL;
             obj.DL = DL;
         }
+       
         /// <summary>
         /// 在反序列化過程中將代理轉換為相關對象。
         /// </summary>        

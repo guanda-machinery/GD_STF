@@ -226,7 +226,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
 
                 return false;
             }
@@ -240,7 +240,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
                 return false;
             }
             if (ViewModel.SteelAttr.Number <= 0) //檢測用戶是否零件數量大於0
@@ -253,7 +253,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
                 return false;
             }
             if (ViewModel.DataCorrespond.FindIndex(el => el.Number == ViewModel.SteelAttr.PartNumber) != -1)
@@ -266,7 +266,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
                 return false;
             }
 #if DEBUG
@@ -545,7 +545,7 @@ namespace STD_105
                     //MessageBoxImage.Exclamation,
                     //MessageBoxResult.None,
                     //MessageBoxOptions.None,
-                    //FloatingMode.Popup);
+                    //FloatingMode.Window);
                     return;
                     // throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
                 }
@@ -560,7 +560,8 @@ namespace STD_105
                                   endCut;//當前切割物件放置結束點的座標
                     if (i + 1 >= material.Parts.Count) //下一次迴圈結束
                     {
-                        endCut = material.LengthStr + material.StartCut + material.EndCut;//當前切割物件放置結束點的座標
+                        //endCut = material.LengthStr + material.StartCut + material.EndCut;//當前切割物件放置結束點的座標
+                        endCut = material.LengthStr;// - material.StartCut - material.EndCut;//當前切割物件放置結束點的座標
                     }
                     else //下一次迴圈尚未結束
                     {
@@ -937,7 +938,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
             }
             else if (MDataView.Parts.Count == 1)
             {
@@ -952,7 +953,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
                 return;
             }
 
@@ -970,7 +971,7 @@ namespace STD_105
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                        FloatingMode.Window);
             }
             else
             {
@@ -981,7 +982,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
             }
 
             if (MessageBoxReturn == MessageBoxResult.Yes)
@@ -1036,7 +1037,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
 
 
 

@@ -16,11 +16,12 @@ namespace WPFSTD105.ViewModel
             this.Button_Left_IsEnabled = false;
             this.Button_Right_IsEnabled =false;
 
-            //this.BorderButton_Up_Trigger
-            this.BorderButton_Left_Trigger = ClampCommand;
-            this.BorderButton_Up_Trigger = UnClampCommand;
-            this.BorderButton_Left_Release = null;
-            this.BorderButton_Up_Release = null;
+
+           // this.Joystcik_Down_Trigger_Command = ClampCommand;
+           // this.Joystcik_Up_Trigger_Command = UnClampCommand;
+
+           // this.Joystcik_Down_Release_Command = null;
+           // this.Joystcik_Up_Release_Command = null;
         }
 
         private WPFWindowsBase.RelayCommand  ClampCommand

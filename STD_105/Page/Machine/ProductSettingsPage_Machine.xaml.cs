@@ -177,7 +177,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
                 }
             });
             //還原上一個動作
@@ -265,7 +265,8 @@ namespace STD_105
                 //drawing.Clear();
 
                 //ViewModel.SteelAttr.PartNumber = this.partNumber.Text;
-
+                //SteelAttr sa = new SteelAttr();
+                //sa =  GetViewToSteelAttr(sa,true);
                 if (!DataCheck("add"))
                 {
                     fclickOK = true;
@@ -294,7 +295,7 @@ namespace STD_105
                 STDSerialization ser = new STDSerialization();
                 SteelAttr sa = new SteelAttr();
                 ViewModel.SteelAttr = new SteelAttr();
-                //GetViewToViewModel(true);
+                GetViewToViewModel(true);
                 sa = GetViewToSteelAttr(sa, true);
                 sa.Creation = DateTime.Now;
                 sa.Revise = DateTime.Now;
@@ -359,7 +360,7 @@ namespace STD_105
                                     MessageBoxImage.Exclamation,
                                     MessageBoxResult.None,
                                     MessageBoxOptions.None,
-                                    FloatingMode.Popup);
+                                    FloatingMode.Window);
                                 return;
                             }
                             readFile.DoWork();//開始工作
@@ -367,6 +368,14 @@ namespace STD_105
                             #endregion
 
                             sa = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
+                            // 若原零件有多組構件，sa.AsseNumber會呈現字串串接的狀態，故調整回單一個構件
+                            sa.AsseNumber = ViewModel.AssemblyNumberProperty;
+                            // 原零件檔中的數量欄位為總數量，故調整為畫面上之數量
+                            sa.Number = ViewModel.ProductCountProperty;
+                            // 來源不為Tekla
+                            sa.TeklaAssemblyID = "";
+                            // 來源不為Tekla
+                            sa.TeklaPartID = "";
 
                             #region 讀NC檔
                             var profile = ser.GetSteelAttr();
@@ -387,9 +396,10 @@ namespace STD_105
                             sa.ShippingNumber = 0;
                             sa.Title1 = "";
                             sa.Title2 = "";
+                            sa.Creation = DateTime.Now;
                             //model.Blocks[1].Entities[0].EntityData = sa;
                             //model.Blocks[1].Name = sa.GUID.Value.ToString();
-                            Steel3DBlock result = new Steel3DBlock(Steel3DBlock.GetProfile(sa));
+                            Steel3DBlock result = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);
                             if (model.Blocks.Count > 1)
                             {
                                 model.Blocks.Remove(model.Blocks[1]);
@@ -399,10 +409,10 @@ namespace STD_105
                             blockReference.EntityData = sa;
                             blockReference.Selectable = false;//關閉用戶選擇
                             blockReference.Attributes.Add("steel", new AttributeReference(0, 0, 0));
-                            if (model.Entities.Count > 0)
-                            {
-                                model.Entities.RemoveAt(model.Entities.Count - 1);
-                            }
+                            //if (model.Entities.Count > 0)
+                            //{
+                            //    model.Entities.RemoveAt(model.Entities.Count - 1);
+                            //}
                             model.Entities.Insert(model.Entities.Count, blockReference);//加入參考圖塊到模型
                             #endregion
                             SaveModel(true, true);
@@ -444,7 +454,7 @@ namespace STD_105
                                     MessageBoxImage.Exclamation,
                                     MessageBoxResult.None,
                                     MessageBoxOptions.None,
-                                    FloatingMode.Popup);
+                                    FloatingMode.Window);
                                 return;
                             }
                             readFile.DoWork();//開始工作
@@ -462,9 +472,10 @@ namespace STD_105
                             sa.Title1 = "";
                             sa.Title2 = "";
                             sa.PartNumber = ViewModel.PartNumberProperty;
+                            sa.Creation = DateTime.Now;
                             //model.Blocks[1].Entities[0].EntityData = sa;
                             //sa = GetViewToSteelAttr(sa, true);
-                            Steel3DBlock result = new Steel3DBlock(Steel3DBlock.GetProfile(sa));
+                            Steel3DBlock result = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);
                             if (model.Blocks.Count > 1)
                             {
                                 model.Blocks.Remove(model.Blocks[1]);
@@ -474,10 +485,10 @@ namespace STD_105
                             blockReference.EntityData = sa;
                             blockReference.Selectable = false;//關閉用戶選擇
                             blockReference.Attributes.Add("steel", new AttributeReference(0, 0, 0));
-                            if (model.Entities.Count > 0)
-                            {
-                                model.Entities.RemoveAt(model.Entities.Count - 1);
-                            }
+                            //if (model.Entities.Count > 0)
+                            //{
+                            //    model.Entities.RemoveAt(model.Entities.Count - 1);
+                            //}
                             model.Entities.Insert(model.Entities.Count, blockReference);//加入參考圖塊到模型
                             //model.Blocks[1].Name = sa.GUID.Value.ToString();
                             //Mesh modify = Steel3DBlock.GetProfile(sa); //修改的形狀
@@ -516,12 +527,17 @@ namespace STD_105
                     {
                         #region 一般新增
                         sa = GetViewToSteelAttr(sa, true);
-                        sa = ViewModel.GetSteelAttr();
+                        sa.Creation = DateTime.Now;
                         ViewModel.WriteSteelAttr(sa);
+                        sa = ViewModel.GetSteelAttr();
                         if (string.IsNullOrEmpty(sa.PartNumber))
                         {
                             // 若ViewModel.SteelAttr.PartNumber代表取值又失敗了，只好強制給值囉~
-                            GetViewToViewModel(true);
+                            Thread.Sleep(1000);
+                            sa = GetViewToSteelAttr(sa, true);
+                            sa.Creation = DateTime.Now;
+                            ViewModel.WriteSteelAttr(sa);
+                            sa = ViewModel.GetSteelAttr();
                         }
 
                         Steel3DBlock result = new Steel3DBlock(Steel3DBlock.GetProfile(sa));
@@ -586,16 +602,25 @@ namespace STD_105
                 else
                 {
                     #region 一般新增
-                    sa=GetViewToSteelAttr(sa, true);
-                    sa = ViewModel.GetSteelAttr();
+                    sa = GetViewToSteelAttr(sa, true);
+                    sa.Creation = DateTime.Now;
+                    //ViewModel.SteelAttr = sa;
+                    //sa = ViewModel.GetSteelAttr();
                     ViewModel.WriteSteelAttr(sa);
+                    sa = ViewModel.GetSteelAttr();
 
                     var profile = ser.GetProfile();
 
                     if (string.IsNullOrEmpty(sa.PartNumber))
                     {
                         // 若ViewModel.SteelAttr.PartNumber代表取值又失敗了，只好強制給值囉~
-                        GetViewToViewModel(true);
+                        Thread.Sleep(1000);
+                        sa = GetViewToSteelAttr(sa, true);
+                        sa.Creation = DateTime.Now;
+                        //ViewModel.SteelAttr = sa;
+                        //sa = ViewModel.GetSteelAttr();
+                        ViewModel.WriteSteelAttr(sa);
+                        sa = ViewModel.GetSteelAttr();
                     }
                     Steel3DBlock result = new Steel3DBlock(Steel3DBlock.GetProfile(sa));
                     if (model.Blocks.Count > 1)
@@ -759,7 +784,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
                     fclickOK = true;
                     return;
                 }
@@ -821,7 +846,7 @@ namespace STD_105
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                        FloatingMode.Window);
                     return;
                 }
                 readFile.DoWork();//開始工作
@@ -845,7 +870,7 @@ namespace STD_105
                 //   MessageBoxImage.Exclamation,
                 //   MessageBoxResult.None,
                 //   MessageBoxOptions.None,
-                //   FloatingMode.Popup);
+                //   FloatingMode.Window);
                 //    return;
                 //}
 
@@ -1008,6 +1033,7 @@ namespace STD_105
                     steelAttr.Title2 = ViewModel.Title2Property;
                     steelAttr.Number = (int)ViewModel.ProductCountProperty;
                     steelAttr.Revise = DateTime.Now;
+                    steelAttr.Creation = DateTime.Now;
                     //modify = (BlockReference)model.Blocks[1].Entities[0];
                     var block1 = new Steel3DBlock(Steel3DBlock.GetProfile(steelAttr));//改變讀取到的圖塊變成自訂義格式
                     model.SetCurrent(null);
@@ -1153,7 +1179,7 @@ namespace STD_105
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                        FloatingMode.Window);
 #if DEBUG
                 log4net.LogManager.GetLogger("ModifyPart").Debug("");
                 log4net.LogManager.GetLogger("修改主件").Debug("結束");
@@ -1174,7 +1200,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
                 }
                 //如果模型裡面有物件
                 else if (model.Entities.Count > 0)
@@ -1202,7 +1228,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
                 }
             });
             //另存加入零件 20220902 張燕華
@@ -1248,7 +1274,7 @@ namespace STD_105
                     try
                     {
                         ProcessingScreenWin.ViewModel.Status = $"讀取{dataName}中 ..{i}/{dmList.Count()}";
-                        ProcessingScreenWin.ViewModel.Progress = i * 100 / dmList.Count;
+                        ProcessingScreenWin.ViewModel.Progress = (i * 100) / dmList.Count;
                         //Thread.Sleep(500); //暫停兩秒為了要顯示 ScreenManager
                         guid = dataName;
                         ModelExt modelExt = new ModelExt();
@@ -1281,7 +1307,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
 
             });
             //OK鈕 20220902 張燕華
@@ -1296,7 +1322,7 @@ namespace STD_105
                 //    MessageBoxImage.Exclamation,
                 //    MessageBoxResult.None,
                 //    MessageBoxOptions.None,
-                //    FloatingMode.Popup);
+                //    FloatingMode.Window);
 
                 //    SaveModel(true);//存取檔案OKtoConfirmChanges
                 //    fAddSteelPart=false;
@@ -1312,7 +1338,7 @@ namespace STD_105
                          MessageBoxImage.Exclamation,
                          MessageBoxResult.None,
                          MessageBoxOptions.None,
-                         FloatingMode.Popup);
+                         FloatingMode.Window);
 
                     // 新增
                     if (ResultRtn == MessageBoxResult.OK)
@@ -1368,7 +1394,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
                     if (ResultRtn == MessageBoxResult.Yes)
                     {
                         if (this.PieceListGridControl.VisibleRowCount > 0)
@@ -1420,7 +1446,7 @@ namespace STD_105
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                        FloatingMode.Window);
                         //fFirstAdd = true;
                         //fNewPart = false;
                         //fGrid = false;
@@ -1499,7 +1525,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
                     fclickOK = true;
                     return;
                 }
@@ -1514,13 +1540,14 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
                     fclickOK = true;
                     return;
                 }
 
 
                 SteelAttr sa = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
+                sa.Revise = DateTime.Now;
                 sa = GetViewToSteelAttr(sa, false, sa.GUID);
                 GetViewToViewModel(false, ViewModel.GuidProperty);
                 ViewModel.SteelAttr = sa;
@@ -1550,7 +1577,7 @@ namespace STD_105
                                  MessageBoxImage.Exclamation,
                                  MessageBoxResult.None,
                                  MessageBoxOptions.None,
-                                 FloatingMode.Popup);
+                                 FloatingMode.Window);
                     fclickOK = true;
                     return;
                 }
@@ -1626,7 +1653,7 @@ namespace STD_105
                                 MessageBoxImage.Exclamation,
                                 MessageBoxResult.None,
                                 MessageBoxOptions.None,
-                                FloatingMode.Popup);
+                                FloatingMode.Window);
                             return;
                         }
                         //如果選擇的物件不是孔位
@@ -1639,7 +1666,7 @@ namespace STD_105
                                 MessageBoxImage.Exclamation,
                                 MessageBoxResult.None,
                                 MessageBoxOptions.None,
-                                FloatingMode.Popup);
+                                FloatingMode.Window);
                             return;
 
                         }
@@ -1683,7 +1710,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
                 }
             });
             //讀取孔位
@@ -1704,7 +1731,7 @@ namespace STD_105
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                            FloatingMode.Window);
                         return;
                     }
                     //如果選擇的物件不是孔位
@@ -1717,7 +1744,7 @@ namespace STD_105
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                            FloatingMode.Window);
                     }
                     ViewModel.WriteGroupBoltsAttr((GroupBoltsAttr)blockReference.EntityData);
                 }
@@ -1730,7 +1757,7 @@ namespace STD_105
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                        FloatingMode.Window);
                 }
             });
             //加入或修改切割線
@@ -1759,7 +1786,26 @@ namespace STD_105
                 isNewPart = true;//還原零件狀態
 
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D三視圖
-
+                bool hasOutSteel = false;
+                for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
+                {
+                    if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
+                    {
+                        BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
+                        Block block = model.Blocks[blockReference.BlockName]; //取得圖塊
+                        Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts((GroupBoltsAttr)model.Entities[i].EntityData, model, out BlockReference blockRef, out bool checkRef);
+                        //Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生螺栓圖塊
+                        if (bolts3DBlock.hasOutSteel)
+                        {
+                            hasOutSteel = true;
+                        }
+                        Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
+                    }
+                }
+                if (hasOutSteel)
+                {
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                }
                 //RunHypotenusePoint();
 #if DEBUG
                 log4net.LogManager.GetLogger("加入切割線").Debug("結束");
@@ -1788,7 +1834,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
                 }
                 //如果模型裡面有物件
                 else if (model.Entities.Count > 0)
@@ -1806,7 +1852,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
                 }
             });
             //鏡射 X 軸
@@ -1836,7 +1882,7 @@ namespace STD_105
                                     MessageBoxImage.Exclamation,
                                     MessageBoxResult.None,
                                     MessageBoxOptions.None,
-                                    FloatingMode.Popup);
+                                    FloatingMode.Window);
                                 return;
                             }
                             //如果選擇的物件不是孔位
@@ -1849,7 +1895,7 @@ namespace STD_105
                                     MessageBoxImage.Exclamation,
                                     MessageBoxResult.None,
                                     MessageBoxOptions.None,
-                                    FloatingMode.Popup);
+                                    FloatingMode.Window);
                             }
 #if DEBUG
                             log4net.LogManager.GetLogger("鏡射孔位").Debug("開始");
@@ -2303,7 +2349,7 @@ namespace STD_105
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                            FloatingMode.Window);
                     }
                 }
                 catch (Exception ex)
@@ -2340,7 +2386,7 @@ namespace STD_105
                                     MessageBoxImage.Exclamation,
                                     MessageBoxResult.None,
                                     MessageBoxOptions.None,
-                                    FloatingMode.Popup);
+                                    FloatingMode.Window);
                                 return;
                             }
                             //如果選擇的物件不是孔位
@@ -2353,7 +2399,7 @@ namespace STD_105
                                     MessageBoxImage.Exclamation,
                                     MessageBoxResult.None,
                                     MessageBoxOptions.None,
-                                    FloatingMode.Popup);
+                                    FloatingMode.Window);
                                 return;
                             }
 #if DEBUG
@@ -2584,7 +2630,7 @@ namespace STD_105
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                            FloatingMode.Window);
                     }
                 }
                 catch (Exception ex)
@@ -2725,7 +2771,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
                 return null;
             }
             readFile.DoWork();//開始工作
@@ -2887,20 +2933,18 @@ namespace STD_105
             steelAttr.Weight = ViewModel.ProductWeightProperty;
             steelAttr.Name = ViewModel.ProductNameProperty;
             steelAttr.Material = ViewModel.ProductMaterialProperty;
-            int.TryParse(this.phase.Text, out int temp);
             steelAttr.Phase = ViewModel.PhaseProperty;
-            int.TryParse(this.shippingNumber.Text, out temp);
             steelAttr.ShippingNumber = ViewModel.ShippingNumberProperty;
             steelAttr.Title1 = ViewModel.Title1Property;
             steelAttr.Title2 = ViewModel.Title2Property;
             //steelAttr.Type = (OBJECT_TYPE)this.cbx_SteelTypeComboBox.SelectedIndex;
             steelAttr.Type = (OBJECT_TYPE)ViewModel.SteelTypeProperty_int;
-            //string profileStr = this.cbx_SectionTypeComboBox.Text;
+            string profileStr = this.cbx_SectionTypeComboBox.Text;
             //ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(steelAttr.Type).ToString()}.inp");
             //this.cbx_SectionTypeComboBox.Text = profileStr;
-            //this.cbx_SectionTypeComboBox.Text = ViewModel.SteelSectionProperty;
+            this.cbx_SectionTypeComboBox.Text = ViewModel.SteelSectionProperty;
             //steelAttr.Profile = profileStr;
-            steelAttr.Profile = ViewModel.SteelSectionProperty; ;
+            steelAttr.Profile = ViewModel.SteelSectionProperty;
             steelAttr.H = ViewModel.CurrentPartSteelAttr.H;
             //steelAttr.H = (string.IsNullOrEmpty(this.H.Text) || float.Parse(this.H.Text) == 0) ? 0 : float.Parse(this.H.Text);
             steelAttr.W = ViewModel.CurrentPartSteelAttr.W;
@@ -2936,7 +2980,7 @@ namespace STD_105
         #endregion
 
 
-       
+
 
 
         public bool DataCheck(string action)
@@ -2956,7 +3000,7 @@ namespace STD_105
                        MessageBoxImage.Exclamation,
                        MessageBoxResult.None,
                        MessageBoxOptions.None,
-                       FloatingMode.Popup);
+                       FloatingMode.Window);
                         return false;
                     }
                     break;
@@ -2972,14 +3016,15 @@ namespace STD_105
                       MessageBoxImage.Exclamation,
                       MessageBoxResult.None,
                       MessageBoxOptions.None,
-                      FloatingMode.Popup);
+                      FloatingMode.Window);
                         return false;
                     }
 
                     //SteelAttr steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
 
+                    ProductSettingsPageViewModel row = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
                     // 2022/10/13 呂宗霖 編輯:零件編號須一致才可按編輯
-                    if (ViewModel.PartNumberProperty != this.partNumber.Text)
+                    if (ViewModel.PartNumberProperty != row.steelAttr.PartNumber)
                     {
                         WinUIMessageBox.Show(null,
                        $"零件編號相同，才可修改",
@@ -2988,10 +3033,9 @@ namespace STD_105
                        MessageBoxImage.Exclamation,
                        MessageBoxResult.None,
                        MessageBoxOptions.None,
-                       FloatingMode.Popup);
+                       FloatingMode.Window);
                         return false;
                     }
-                    ProductSettingsPageViewModel row = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
                     ProductSettingsPageViewModel temp = RowToEntity(row);
                     if (!File.Exists($@"{ApplicationVM.DirectoryDevPart()}\{Guid.Parse(row.DataName)}.dm"))
                     {
@@ -3003,7 +3047,7 @@ namespace STD_105
                            MessageBoxImage.Exclamation,
                            MessageBoxResult.None,
                            MessageBoxOptions.None,
-                           FloatingMode.Popup);
+                           FloatingMode.Window);
                         return false;
                     }
 
@@ -3197,7 +3241,7 @@ namespace STD_105
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                        FloatingMode.Window);
                     if (ResultRtn == MessageBoxResult.Yes)
                     {
                         // 放棄，刪除Grid Guid相同的資料列 並 return false
@@ -3262,7 +3306,7 @@ namespace STD_105
                 MessageBoxImage.Exclamation,
                 MessageBoxResult.None,
                 MessageBoxOptions.None,
-                FloatingMode.Popup);
+                FloatingMode.Window);
                 return false;
             }
             if (ViewModel.ProductLengthProperty <= 0)//檢測用戶長度是否有大於0
@@ -3274,7 +3318,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
                 return false;
             }
             if (ViewModel.ProductCountProperty <= 0) //檢測用戶是否零件數量大於0
@@ -3286,7 +3330,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
                 return false;
             }
 
@@ -3299,7 +3343,7 @@ namespace STD_105
             //        MessageBoxImage.Exclamation,
             //        MessageBoxResult.None,
             //        MessageBoxOptions.None,
-            //        FloatingMode.Popup);
+            //        FloatingMode.Window);
             //    return false;
             //}
 #if DEBUG
@@ -4057,7 +4101,7 @@ namespace STD_105
             STDSerialization ser = new STDSerialization();
             // 取得目前鋼構資訊
             SteelAttr sa = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
-            // 取出所有零件
+            //ViewModel.SteelAttr = sa;            // 取出所有零件
             Dictionary<string, ObservableCollection<SteelPart>> part1 = ser.GetPart();
             // 所有零件
             var allPart1 = part1.SelectMany(x => x.Value).ToList();
@@ -4247,7 +4291,7 @@ namespace STD_105
             #endregion
 
 
-            if (allPart1 != null)
+            if (allPart1.Count > 0 && allPart1.Any(x => x.GUID == sa.GUID))
             {
                 var oriFather = allPart1.FirstOrDefault(x => x.GUID == sa.GUID).Father;
                 ass.ID = ass.ID.Union(oriFather).ToList();
@@ -4329,6 +4373,7 @@ namespace STD_105
             // 給定 零件 數量vsID
             steelPart.ID = buffer1.ToList();
             steelPart.Count = ass.ID.Count();
+            steelPart.Revise = sa.Revise.Value;
 
             // 原零件之構建ID
             // 取出所有零件
@@ -4336,8 +4381,8 @@ namespace STD_105
             // 所有零件攤平
             var allPart = part.SelectMany(x => x.Value).ToList();
             // 原始零件
-            var oldPart = allPart.FirstOrDefault(x => x.GUID == sa.GUID);
-            if (oldPart != null)
+            var oldPart = allPart.FirstOrDefault(x => x.GUID == Guid.Parse(((ProductSettingsPageViewModel)this.PieceListGridControl.SelectedItem).DataName));
+            if (allPart.Any(x => x.GUID == Guid.Parse(((ProductSettingsPageViewModel)this.PieceListGridControl.SelectedItem).DataName)))
             {
                 // 取得原始零件之斷面規格之所有零件
                 var old_Profile_Part = part[oldPart.Profile.GetHashCode().ToString() + ".lis"];
@@ -4445,7 +4490,7 @@ namespace STD_105
             //ser.SetPart($@"{steelPart.Profile.GetHashCode()}", new ObservableCollection<object>(collection)); 
             #endregion
             #endregion
-
+            ViewModel.SteelAttr = sa;
             ViewModel.SaveDataCorrespond();
 
             // 重新載入
@@ -4453,6 +4498,260 @@ namespace STD_105
             {
                 GridReload();
             }
+        }
+        private void Button_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (PieceListGridControl.VisibleRowCount == 1)
+            {
+                ProductSettingsPageViewModel item = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
+                if (item != null)
+                {
+                    ProductSettingsPageViewModel row = (ProductSettingsPageViewModel)this.PieceListGridControl.GetRow(this.PieceListGridControl.VisibleRowCount - 1);
+                    ProductSettingsPageViewModel temp = RowToEntity(row);
+                    string guid = row.DataName;
+                    if (!File.Exists($@"{ApplicationVM.DirectoryDevPart()}\{guid}.dm"))
+                    {
+                        var ResultRtn = WinUIMessageBox.Show(null,
+                        $"新增零件未存檔,是否存檔",
+                        "通知",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                        FloatingMode.Window);
+
+                        if (ResultRtn == MessageBoxResult.Yes)
+                        {
+                            // 指向最後一列
+                            this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
+                            PieceListGridControl.SelectItem(this.PieceListGridControl.VisibleRowCount - 1);
+                            PieceListGridControl.View.FocusedRowHandle = this.PieceListGridControl.VisibleRowCount - 1;
+                            this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
+
+                            // 還原元件資訊
+                            this.asseNumber.Text = temp.steelAttr.AsseNumber;
+                            this.partNumber.Text = temp.steelAttr.PartNumber;
+                            this.Length.Text = $"{temp.steelAttr.Length}";
+                            this.Weight.Text = $"{temp.steelAttr.Weight}";
+                            this.PartCount.Text = $"{temp.steelAttr.Number}";
+                            this.teklaName.Text = temp.steelAttr.Name;
+                            this.material.Text = temp.steelAttr.Material;
+                            this.phase.Text = $"{temp.steelAttr.Phase}";
+                            this.shippingNumber.Text = $"{temp.steelAttr.ShippingNumber}";
+                            this.Title1.Text = temp.steelAttr.Title1;
+                            this.Title2.Text = temp.steelAttr.Title2;
+                            this.cbx_SteelTypeComboBox.SelectedIndex = (int)temp.SteelType;
+                            ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{temp.Type}.inp");
+                            ViewModel.SteelSectionProperty = temp.steelAttr.Profile;
+                            this.cbx_SectionTypeComboBox.Text = temp.steelAttr.Profile;
+
+                            this.H.Text = $"{temp.steelAttr.H}";
+                            this.W.Text = $"{temp.steelAttr.W}";
+                            this.t1.Text = $"{temp.steelAttr.t1}";
+                            this.t2.Text = $"{temp.steelAttr.t2}";
+
+                            // 指向最後一列的guid
+                            string focuseGUID = guid;
+
+                            if (!File.Exists($@"{ApplicationVM.DirectoryDevPart()}\{focuseGUID}.dm"))
+                            {
+                                ApplicationVM appVM = new ApplicationVM();
+                                appVM.CreateDMFile(model);
+                            }
+
+
+                            // 新零件
+                            SaveModel(true, true);
+                            model.Refresh();
+                            drawing.Refresh();
+                        }
+                        else
+                        {
+                            #region 還原零件清單
+                            if (this.PieceListGridControl.VisibleRowCount > 0)
+                            {
+                                //刪除最後一列明細
+                                ObservableCollection<ProductSettingsPageViewModel> source = (ObservableCollection<ProductSettingsPageViewModel>)PieceListGridControl.ItemsSource;
+                                source.Remove(source.Where(x => x.DataName == guid.ToString()).FirstOrDefault());
+                                this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
+                                PieceListGridControl.ItemsSource = source;
+                                PieceListGridControl.SelectItem(this.PieceListGridControl.VisibleRowCount - 1);
+                                this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
+                            }
+                            #endregion
+
+                            #region 清空零件屬性
+                            this.asseNumber.Clear();
+                            this.partNumber.Clear();
+                            this.PartCount.Clear();
+                            this.Length.Clear();
+                            this.Weight.Text = "";
+                            this.PartCount.Clear();
+                            this.teklaName.Clear();
+                            this.phase.Clear();
+                            this.shippingNumber.Clear();
+                            this.Title1.Clear();
+                            this.Title2.Clear();
+                            this.cbx_SteelTypeComboBox.SelectedIndex = 0;
+                            this.cbx_SectionTypeComboBox.SelectedIndex = 0;
+                            #endregion
+                        }
+
+                    }
+                    else
+                    {
+                        // 還原指標
+                        this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
+                        PieceListGridControl.SelectItem(0);
+                        PieceListGridControl.View.FocusedRowHandle = 0;
+                        ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{item.Type}.inp");
+                        cbx_SectionTypeComboBox.Text = item.Profile;
+                        ViewModel.SteelSectionProperty = item.Profile;
+                        this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
+
+                        ConfirmCurrentSteelSection(item);
+                        DMtoModel(item);
+                        GetViewToViewModel(false, Guid.Parse(item.DataName));
+                        //SaveModel(false, true);
+                        GridReload();
+                        model.Refresh();
+                        drawing.Refresh();
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Row Data to Model
+        /// </summary>
+        /// <param name="GUID">GUID</param>
+        /// <param name="item">零件清單</param>
+        public void DMtoModel(ProductSettingsPageViewModel item)
+        {
+            STDSerialization ser = new STDSerialization();
+            ReadFile readFile = ser.ReadPartModel(item.DataName); //讀取檔案內容
+            if (readFile == null)
+            {
+                WinUIMessageBox.Show(null,
+                    $"專案Dev_Part資料夾讀取失敗",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Window);
+                return;
+            }
+            readFile.DoWork();//開始工作
+            model.Blocks.Clear();
+            model.Entities.Clear();
+            drawing.Blocks.Clear();
+            drawing.Entities.Clear();
+            BlockReference blockReference;
+            try
+            {
+                readFile.AddToScene(model);//將讀取完的檔案放入到模型
+            }
+            catch (Exception)
+            {
+                //ViewModel = (ObSettingVM)DataContext;
+                Steel3DBlock steel = Steel3DBlock.AddSteel(ViewModel.GetSteelAttr(), model, out blockReference);
+                //((SteelAttr)model.Entities[0].EntityData).GUID = Guid.Parse(item.DataName);
+                ((SteelAttr)model.Entities[0].EntityData).GUID = Guid.Parse(item.DataName);
+                //BlockReference steel2D = SteelTriangulation((Mesh)steel.Entities[0]);
+                BlockReference steel2D = SteelTriangulation((Mesh)steel.Entities.Where(x => x.GetType().Name == "Mesh").FirstOrDefault());
+            }
+            if (model.Blocks.Count == 1)
+            {
+                ViewModel.SteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+                Steel3DBlock steel = Steel3DBlock.AddSteel(ViewModel.GetSteelAttr(), model, out blockReference);
+                ((SteelAttr)model.Entities[0].EntityData).GUID = Guid.Parse(item.DataName);
+                BlockReference steel2D = SteelTriangulation((Mesh)steel.Entities.Where(x => x.GetType().Name == "Mesh").FirstOrDefault());
+            }
+
+            ConfirmCurrentSteelSection(item);
+            SteelAttr sa = GetViewToSteelAttr(new SteelAttr(), false, Guid.Parse(item.DataName));
+            string path = ApplicationVM.DirectoryNc();
+            string allPath = path + $"\\{sa.PartNumber}.nc1";
+            var profile = ser.GetSteelAttr();
+            TeklaNcFactory t = new TeklaNcFactory();
+            Steel3DBlock s3Db = new Steel3DBlock();
+            SteelAttr steelAttrNC = new SteelAttr();
+            SteelAttr saT = new SteelAttr() { Profile = sa.Profile, Type = sa.Type, t1 = sa.t1, t2 = sa.t2, H = sa.H, W = sa.W };
+            List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
+            s3Db.ReadNcFile($@"{allPath}", profile, saT, ref steelAttrNC, ref groups);
+            if (File.Exists(allPath))
+            {
+                //sa.GUID = sa.GUID;
+                sa.oPoint = steelAttrNC.oPoint;
+                sa.vPoint = steelAttrNC.vPoint;
+                sa.uPoint = steelAttrNC.uPoint;
+                sa.CutList = steelAttrNC.CutList;
+            }
+            model.Blocks[1].Entities[0].EntityData = sa;
+            Steel3DBlock result = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);
+            if (model.Blocks.Count > 1)
+            {
+                model.Blocks.Remove(model.Blocks[1]);
+            }
+            model.Blocks.Insert(1, result);//加入鋼構圖塊到模型
+            blockReference = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);
+            blockReference.EntityData = sa;
+            blockReference.Selectable = false;//關閉用戶選擇
+            blockReference.Attributes.Add("steel", new AttributeReference(0, 0, 0));
+            //if (model.Entities.Count > 0)
+            //{
+            //    model.Entities.RemoveAt(model.Entities.Count - 1);
+            //}
+            model.Entities.Insert(model.Entities.Count, blockReference);//加入參考圖塊到模型
+
+            //model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
+            //model.Blocks[1].Name = sa.GUID.Value.ToString();
+            SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
+            ManHypotenusePoint((FACE)ViewModel.rbtn_CutFace);
+            bool hasOutSteel = false;
+            //List<string> BoltBlockName = (from a in model.Entities where a.EntityData.GetType() == typeof(GroupBoltsAttr) select ((BlockReference)a).BlockName).ToList();
+            for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
+            {
+                if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
+                {
+                    blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
+                    Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
+                    Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts((GroupBoltsAttr)model.Entities[i].EntityData, model, out BlockReference blockRef, out bool checkRef);
+                    Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
+                    if (bolts3DBlock.hasOutSteel)
+                    {
+                        hasOutSteel = true;
+                    }
+                    //Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
+                }
+            }
+            if (hasOutSteel)
+            {
+                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                item.steelAttr.ExclamationMark = true;
+                item.ExclamationMark = true;
+            }
+            else
+            {
+                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+                item.steelAttr.ExclamationMark = false;
+                item.ExclamationMark = false;
+            }
+
+            Dictionary<string, ObservableCollection<SteelAttr>> saFile = ser.GetSteelAttr();
+
+            (sa).Weight = ObSettingVM.PartWeight(new ProductSettingsPageViewModel()
+            {
+                Length = sa.Length,
+                SteelType = (int)sa.Type,
+                Profile = sa.Profile,
+            }, saFile);
+            ViewModel.ProductWeightProperty = (sa).Weight;
+            ViewModel.SteelAttr.Weight = (sa).Weight;
+            model.ZoomFit();//設置道適合的視口
+            model.Invalidate();//初始化模型
+            drawing.ZoomFit();//設置道適合的視口
+            drawing.Invalidate();
         }
         /// <summary>
         /// 載入模型
@@ -4765,7 +5064,7 @@ namespace STD_105
                      MessageBoxImage.Exclamation,
                      MessageBoxResult.None,
                      MessageBoxOptions.None,
-                     FloatingMode.Popup);
+                     FloatingMode.Window);
 
 
                 if (ResultRtn == MessageBoxResult.OK)
@@ -4785,7 +5084,7 @@ namespace STD_105
             //         MessageBoxImage.Exclamation,
             //         MessageBoxResult.None,
             //         MessageBoxOptions.None,
-            //         FloatingMode.Popup);
+            //         FloatingMode.Window);
 
 
             //    if (ResultRtn == MessageBoxResult.OK)
@@ -4817,7 +5116,7 @@ namespace STD_105
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                        FloatingMode.Window);
                     return;
                 }
                 readFile.DoWork();//開始工作
@@ -5043,8 +5342,8 @@ namespace STD_105
 
             //this.partNumber.Text = ViewModel.PartNumberProperty;
             //this.asseNumber.Text = ViewModel.AssemblyNumberProperty;
-            //this.cbx_SteelTypeComboBox.SelectedIndex = ViewModel.ProfileType;
-            //this.cbx_SectionTypeComboBox.Text = ViewModel.SteelSectionProperty;
+            this.cbx_SteelTypeComboBox.SelectedIndex = ViewModel.ProfileType;
+            this.cbx_SectionTypeComboBox.Text = ViewModel.SteelSectionProperty;
             //this.Length.Text = CuurentSelectedPart.Length.ToString();
             //this.Weight.Text = ViewModel.ProductWeightProperty.ToString();
         }
@@ -5116,7 +5415,7 @@ namespace STD_105
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                            FloatingMode.Window);
 
                             if (ResultRtn == MessageBoxResult.Yes)
                             {
@@ -5157,7 +5456,7 @@ namespace STD_105
                                 // 指向最後一列的guid
                                 focuseGUID = guid;
 
-                                if (!File.Exists($@"{ApplicationVM.DirectoryDevPart()}\{focuseGUID}.dm"))
+                                if (File.Exists($@"{ApplicationVM.DirectoryDevPart()}\{focuseGUID}.dm"))
                                 {
                                     ApplicationVM appVM = new ApplicationVM();
                                     ReadFile readFile1 = ser.ReadPartModel(focuseGUID); //讀取檔案內容
@@ -5182,7 +5481,7 @@ namespace STD_105
                                                MessageBoxImage.Exclamation,
                                                MessageBoxResult.None,
                                                MessageBoxOptions.None,
-                                               FloatingMode.Popup);
+                                               FloatingMode.Window);
                                             return;
                                         }
                                     }
@@ -5195,7 +5494,7 @@ namespace STD_105
                                             MessageBoxImage.Exclamation,
                                             MessageBoxResult.None,
                                             MessageBoxOptions.None,
-                                            FloatingMode.Popup);
+                                            FloatingMode.Window);
                                         return;
                                     }
                                 }
@@ -5274,7 +5573,7 @@ namespace STD_105
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                            FloatingMode.Window);
                         return;
                     }
                     readFile.DoWork();//開始工作
@@ -5296,7 +5595,7 @@ namespace STD_105
                            MessageBoxImage.Exclamation,
                            MessageBoxResult.None,
                            MessageBoxOptions.None,
-                           FloatingMode.Popup);
+                           FloatingMode.Window);
                         return;
                     }
                     if (model.Blocks.Count == 1)
@@ -5314,7 +5613,7 @@ namespace STD_105
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                            FloatingMode.Window);
                         return;
                     }
 
@@ -5343,6 +5642,10 @@ namespace STD_105
                         sa.vPoint = steelAttrNC.vPoint;
                         sa.uPoint = steelAttrNC.uPoint;
                         sa.CutList = steelAttrNC.CutList;
+                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = sa.oPoint;
+                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).vPoint = sa.vPoint;
+                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).uPoint = sa.uPoint;
+                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).CutList = sa.CutList;
                     }
                     //else { sa = steelAttrNC; }
 
@@ -5385,7 +5688,12 @@ namespace STD_105
                     model.Entities.Insert(model.Entities.Count, blockReference);//加入參考圖塊到模型
 
                     SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
-
+                    CuttingGroupBox.IsEnabled = true;
+                    CuttingGroupPosition.IsEnabled = true;
+                    ManHypotenusePoint((FACE)ViewModel.rbtn_CutFace);
+                    AutoHypotenuseEnable(FACE.TOP);
+                    AutoHypotenuseEnable(FACE.FRONT);
+                    AutoHypotenuseEnable(FACE.BACK);
                     bool hasOutSteel = false;
                     for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
                     {
@@ -5511,7 +5819,7 @@ namespace STD_105
                          MessageBoxImage.Exclamation,
                          MessageBoxResult.None,
                          MessageBoxOptions.None,
-                         FloatingMode.Popup);
+                         FloatingMode.Window);
 
                 if (ResultRtn == MessageBoxResult.OK)
                     SaveModel(true);//存取檔案

@@ -1,4 +1,5 @@
 ﻿<UserControl x:Class="STD_105.JoystickUserControl"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:GD_STD="clr-namespace:GD_STD.Properties;assembly=GD_STD" 
@@ -155,7 +156,7 @@
 
 
             </Grid.Resources>
-            <Grid Visibility="{Binding DescriptionDisplayVisibility,UpdateSourceTrigger=PropertyChanged}" Panel.ZIndex="1" >
+            <Grid Visibility="{Binding DescriptionDisplayBoolen , Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}" Panel.ZIndex="1" >
                 <Line X1="0" X2="127" Y1="70" Y2="70"  />
                 <Line X1="126" X2="126" Y1="70" Y2="125" />
 
@@ -262,6 +263,7 @@
                         </Path>
                         <!--左橢圓上按鈕-->
                         <Button x:Name="btn_EllipseTop"  
+                        IsEnabled="{Binding JoyStickButton1_isEnabled }"
                         Canvas.Top="110"
                         Canvas.Left="85"
                         Height="105"
@@ -269,11 +271,11 @@
                         Style="{ StaticResource btn_3D_EllipseKeyUp }">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
                                                     CommandParameter="{x:Static STDEnum:JOYSTICK.ELLIPSE_TOP_DESC}" />
                                 </i:EventTrigger>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
                                                     CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
@@ -298,6 +300,7 @@
                         </Button>
                         <!--左橢圓下按鈕-->
                         <Button x:Name="btn_EllipseBottom"
+                                IsEnabled="{Binding JoyStickButton3_isEnabled }"
                         Canvas.Top="235"
                         Canvas.Left="85"
                         Height="125"
@@ -305,11 +308,11 @@
                         Style="{ StaticResource btn_3D_EllipseKeyDown }">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
                                                     CommandParameter="{x:Static STDEnum:JOYSTICK.ELLIPSE_BOTTOM_DESC}" />
                                 </i:EventTrigger>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
                                                     CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
@@ -616,14 +619,15 @@
                         Canvas.Top="46"
                         Height="107"
                         Width="107"
+                        IsEnabled="{Binding JoyStickButton4_isEnabled}"
                         Style="{ StaticResource btn_JoystickCircleButton }">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
                                                     CommandParameter="{x:Static STDEnum:JOYSTICK.CIRCLE_TOP_DESC}" />
                                 </i:EventTrigger>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
                                                     CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
@@ -643,14 +647,15 @@
                         Canvas.Top="191"
                         Height="107"
                         Width="107"
+                        IsEnabled="{Binding JoyStickButton5_isEnabled}"
                         Style="{ StaticResource btn_JoystickCircleButton }">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
                                                     CommandParameter="{x:Static STDEnum:JOYSTICK.CIRCLE_MIDDLE_DESC}" />
                                 </i:EventTrigger>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
                                                     CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
@@ -669,14 +674,15 @@
                         Canvas.Top="324"
                         Height="107"
                         Width="107"
+                        IsEnabled="{Binding JoyStickButton6_isEnabled}"
                         Style="{ StaticResource btn_JoystickCircleButton }">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
                                                     CommandParameter="{x:Static STDEnum:JOYSTICK.CIRCLE_BOTTOM_DESC}" />
                                 </i:EventTrigger>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
                                                     CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
@@ -695,31 +701,80 @@
             </Grid>
         </Grid>
 
-        <CheckBox Grid.Column="1"
-                  HorizontalAlignment="Center"
-                  VerticalAlignment="Top"
-                  Margin="5"
-                  Width="75"
-                  IsChecked="{Binding DescriptionDisplayBoolen}"
-                  Style="{ StaticResource GreenSwitch }" />
-        <Button Name="Joystick_Button1"    Margin="0,0" IsEnabled="{Binding JoyStickButton1_isEnabled }"  />
-      
-        <Button    Name="Joystick_Button2" Margin="0,0" Visibility="Collapsed"  IsEnabled="{Binding JoyStickButton2_isEnabled }"
+
+        <Button Name="Joystick_Button1"    Margin="0,0" IsEnabled="{Binding JoyStickButton1_isEnabled }" >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
+                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.ELLIPSE_TOP_DESC}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
+                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+         <Button    Name="Joystick_Button2" Margin="0,0" Visibility="Collapsed"  IsEnabled="{Binding JoyStickButton2_isEnabled }"
                             Grid.Column="0"
                             Grid.Row="1"/>
         <Button    Name="Joystick_Button3" Margin="0,0"  IsEnabled="{Binding JoyStickButton3_isEnabled }"
                             Grid.Column="0"
-                            Grid.Row="2"/>
+                            Grid.Row="2">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
+                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.ELLIPSE_BOTTOM_DESC}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
+                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
 
         <Button  Name="Joystick_Button4" Margin="0,0" IsEnabled="{Binding JoyStickButton4_isEnabled }"
                             Grid.Column="2"
-                            Grid.Row="0"/>
-        <Button         Name="Joystick_Button5" Margin="0,0"  IsEnabled="{Binding JoyStickButton5_isEnabled }"
+                            Grid.Row="0">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
+                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.CIRCLE_TOP_DESC}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
+                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+        <Button  Name="Joystick_Button5" Margin="0,0"  IsEnabled="{Binding JoyStickButton5_isEnabled }"
                             Grid.Column="2"
-                            Grid.Row="1"/>
-        <Button         Name="Joystick_Button6" Margin="0,0"  IsEnabled="{Binding JoyStickButton6_isEnabled }"
+                            Grid.Row="1">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
+                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.CIRCLE_MIDDLE_DESC}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
+                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+        <Button Name="Joystick_Button6" Margin="0,0"  IsEnabled="{Binding JoyStickButton6_isEnabled }"
                             Grid.Column="2"
-                            Grid.Row="2"/>
+                            Grid.Row="2">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
+                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.CIRCLE_BOTTOM_DESC}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                    <i:InvokeCommandAction  Command="{Binding Joystick_Command}"
+                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
 
 
 

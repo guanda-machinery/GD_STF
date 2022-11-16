@@ -62,9 +62,9 @@ namespace WPFSTD105.Surrogate
         public FACE Face { get; set; }
         public double StartAngle { get; set; }
         public double EndAngle { get; set; }
-        //public List<NcPoint3D> oPoint { get; set; }
-        //public List<NcPoint3D> vPoint { get; set; }
-        //public List<NcPoint3D> uPoint { get; set; }
+       //public List<NcPoint3D> oPoint { get; set; }
+       //public List<NcPoint3D> vPoint { get; set; }
+       //public List<NcPoint3D> uPoint { get; set; }
 
         protected override SteelAttr ConvertToObject()
 
