@@ -610,11 +610,6 @@
     <Compile Include="Office\Pages\ObSettingsPage_Office.xaml.cs">
       <DependentUpon>ObSettingsPage_Office.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Page\MachineAndPhoneAPI\Assemblyinfo.cs" />
-    <Compile Include="Page\MachineAndPhoneAPI\EnableAppPairing.cs" />
-    <Compile Include="Page\MachineAndPhoneAPI\Helper.cs" />
-    <Compile Include="Page\MachineAndPhoneAPI\RegisterAssembly.cs" />
-    <Compile Include="Page\MachineAndPhoneAPI\UnreigisterAssembly.cs" />
     <Compile Include="Page\Machine\MachineFunction.xaml.cs">
       <DependentUpon>MachineFunction.xaml</DependentUpon>
     </Compile>
@@ -934,6 +929,7 @@
       <DependentUpon>PageHost.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValueConverters\BAVTConverter.cs" />
+    <Compile Include="ValueConverters\BooleanToForefroundConverter.cs" />
     <Compile Include="ValueConverters\ConditionToIsEnabledConerter.cs" />
     <Compile Include="ValueConverters\ConverterAssemblyNumber.cs" />
     <Compile Include="ValueConverters\ConverterToPartNumber.cs" />

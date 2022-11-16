@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MachineAndPhoneAPI
+namespace MachineAndPhoneAPI.Models
 {
     public class UnreigisterAssembly
     {

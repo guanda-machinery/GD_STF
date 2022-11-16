@@ -66,13 +66,15 @@ namespace WPFSTD105
                 }
                 else
                 {
-                    throw;
+                    return;
+                    //throw;
                 }
             }
             catch (Exception ex)
             {
                 log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(ex.Message, ex.StackTrace);
-                throw;
+                //throw;
+                return;
             }
             //PanelButton panel = new PanelButton();
             //try
