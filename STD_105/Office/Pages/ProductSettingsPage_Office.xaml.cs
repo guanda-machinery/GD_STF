@@ -397,8 +397,8 @@ namespace STD_105.Office
                             sa.Length = g_length;
                             sa.Name = gridItem.steelAttr.Name;
                             sa.Material = gridItem.steelAttr.Material;
-                            sa.Phase = 0;
-                            sa.ShippingNumber = 0;
+                            sa.Phase = null;
+                            sa.ShippingNumber = null;
                             sa.Title1 = "";
                             sa.Title2 = "";
                             sa.Creation = DateTime.Now;
@@ -1744,11 +1744,11 @@ namespace STD_105.Office
                     model.Blocks.Remove(model.Blocks[del.GUID.Value.ToString()]);
                 }
                 // 因為ModifyPart會再讀檔，故儲存
-                SaveModel(false, false);
                 ViewModel.SaveCut();
                 ((SteelAttr)model.Blocks[1].Entities[0].EntityData).PointBack = ViewModel.SteelAttr.PointBack;
                 ((SteelAttr)model.Blocks[1].Entities[0].EntityData).PointTop = ViewModel.SteelAttr.PointTop;
                 ((SteelAttr)model.Blocks[1].Entities[0].EntityData).PointFront = ViewModel.SteelAttr.PointFront;
+                SaveModel(false, false);
                 isNewPart = false;//fasle不產生新GUID
                 ViewModel.ModifyPart.Execute(null);
                 isNewPart = true;//還原零件狀態
@@ -2989,6 +2989,7 @@ namespace STD_105.Office
                 RoutedEvent = Keyboard.KeyDownEvent
             };
             InputManager.Current.ProcessInput(c);
+            SaveModel(false, true);
         }
 
         /// <summary>
@@ -3994,7 +3995,7 @@ namespace STD_105.Office
             //((SteelAttr)model.Blocks[1].Entities[0].EntityData).ConvertToSurrogate();
 
             //bool t = (model.Blocks[1].Entities[0].EntityData).GetType().IsSerializable;
-            SteelAttrSurrogate a = new SteelAttrSurrogate((SteelAttr)model.Blocks[1].Entities[0].EntityData);
+            //SteelAttrSurrogate a = new SteelAttrSurrogate((SteelAttr)model.Blocks[1].Entities[0].EntityData);
            
             //ViewModel.SteelAttr = sa;            // 取出所有零件
             Dictionary<string, ObservableCollection<SteelPart>> part1 = ser.GetPart();
@@ -4980,8 +4981,8 @@ namespace STD_105.Office
             //this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
             //cbx_SectionTypeComboBox.Text = CuurentSelectedPart.Profile;
 
-            ViewModel.PartNumberProperty = CuurentSelectedPart.steelAttr.PartNumber.ToString();
-            ViewModel.AssemblyNumberProperty = CuurentSelectedPart.steelAttr.AsseNumber.ToString();
+            ViewModel.PartNumberProperty = CuurentSelectedPart.steelAttr.PartNumber;
+            ViewModel.AssemblyNumberProperty = CuurentSelectedPart.steelAttr.AsseNumber;
             ViewModel.ProductLengthProperty = CuurentSelectedPart.steelAttr.Length;
             ViewModel.ProductWeightProperty = (CuurentSelectedPart.steelAttr.Length / 1000) * CuurentSelectedPart.steelAttr.Weight;
             if (CuurentSelectedPart.steelAttr.Weight == 0) ViewModel.ProductWeightProperty = ViewModel.CalculateSinglePartWeight();
@@ -5011,7 +5012,6 @@ namespace STD_105.Office
             ViewModel.CurrentPartSteelAttr.PointBack.DR = CuurentSelectedPart.steelAttr.PointBack.DR;
             ViewModel.CurrentPartSteelAttr.PointBack.UL = CuurentSelectedPart.steelAttr.PointBack.UL;
             ViewModel.CurrentPartSteelAttr.PointBack.UR = CuurentSelectedPart.steelAttr.PointBack.UR;
-
 
             //ViewModel.SteelAttr.GUID =CuurentSelectedPart.steelAttr.GUID;//1110 暫時註解掉，避免 e.OldItem, e.NewItem 間同時指向VM層連動導致(因為有binding到)e.OldItem資料被變更 CYH
 

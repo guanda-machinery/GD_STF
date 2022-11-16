@@ -6,6 +6,7 @@ using GD_STD.IBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using WPFSTD105.Model;
 using WPFSTD105.Surrogate;
 
@@ -31,7 +32,6 @@ namespace WPFSTD105.Attribute
         /// </summary>
         public SteelAttr()
         {
-
         }
         /// <summary>
         /// 寫入 <see cref="SteelPart"/> 
@@ -279,6 +279,18 @@ namespace WPFSTD105.Attribute
         public virtual SteelAttrSurrogate ConvertToSurrogate()
         {
             return new SteelAttrSurrogate(this);
+        }
+        public SteelAttr(SerializationInfo info, StreamingContext context)
+        {
+            PointTop = (CutList)info.GetValue("PointTop", typeof(CutList));
+            PointFront = (CutList)info.GetValue("PointFront", typeof(CutList));
+            PointBack = (CutList)info.GetValue("PointBack", typeof(CutList));
+        }
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("PointTop", PointTop);
+            info.AddValue("PointFront", PointFront);
+            info.AddValue("PointBack", PointBack);
         }
     }
 }
