@@ -22,7 +22,7 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public RacksOperationVM()
         {
-            this.Button_Down_IsEnabled = false;
+            //this.Button_Down_IsEnabled = false;
 
             PanelButton panelButton = ApplicationViewModel.PanelButton;
             //如果都沒有選擇出入或口料架
@@ -149,6 +149,11 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public double CurrentValue { get; set; } = 2;
 
+        public double EntranceRack_CurrentValue { get; set; } = 2;
+        /// <summary>
+        /// 目前數量-出口
+        /// </summary>
+        public double ExportRack_CurrentValue { get; set; } = 2;
         #endregion
 
         #region 命令
@@ -248,7 +253,7 @@ namespace WPFSTD105.ViewModel
             }
         }
         /// <summary>
-        /// 選擇橫移料架數量命令
+        /// 選擇橫移料架數量命令(舊)
         /// </summary>
         public WPFWindowsBase.RelayCommand SelectCountCommand
         {
@@ -263,6 +268,41 @@ namespace WPFSTD105.ViewModel
                 });
             }
         }
+
+
+        /// <summary>
+        /// 選擇橫移料架數量命令 入口
+        /// </summary>
+        public WPFWindowsBase.RelayCommand SelectCount_EntranceRack_Command
+        {
+            get
+            {
+                return new WPFWindowsBase.RelayCommand(() =>
+                {
+                    PanelButton panelButton = ApplicationViewModel.PanelButton;
+                    panelButton.Count = CountResult(panelButton.Count, GD_STD.Properties.Optional.Default.EntranceTraverseNumber );
+                    EntranceRack_CurrentValue = panelButton.Count;
+                    WriteCodesysMemor.SetPanel(panelButton);
+                });
+            }
+        }
+        /// <summary>
+        /// 選擇橫移料架數量命令 出口
+        /// </summary>
+        public WPFWindowsBase.RelayCommand SelectCount_ExportRack_Command
+        {
+            get
+            {
+                return new WPFWindowsBase.RelayCommand(() =>
+                {
+                    PanelButton panelButton = ApplicationViewModel.PanelButton;
+                    panelButton.Count = CountResult(panelButton.Count, GD_STD.Properties.Optional.Default.ExportTraverseNumber);
+                    ExportRack_CurrentValue = panelButton.Count;
+                    WriteCodesysMemor.SetPanel(panelButton);
+                });
+            }
+        }
+
         #endregion
 
         #region 私有方法

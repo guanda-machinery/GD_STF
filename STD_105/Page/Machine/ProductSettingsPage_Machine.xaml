@@ -231,8 +231,7 @@
                                        SearchPanelFindMode="Always" 
                                        SearchDelay="0"
                                        AllowEditing="False"
-                                       EnableImmediatePosting="True"
-                                       FocusedRow="">
+                                       EnableImmediatePosting="True">
                                 <dxg:TableView.Header>
                                     <TextBlock Text="零件清單" FontSize="16" Foreground="Black"/>
                                 </dxg:TableView.Header>

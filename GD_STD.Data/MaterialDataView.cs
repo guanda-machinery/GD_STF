@@ -416,6 +416,12 @@ namespace GD_STD.Data
                 OnPropertyChanged("Position");
             }
         }
+
+        
+
+
+
+
         /// <summary>
         /// 素材消耗
         /// </summary>

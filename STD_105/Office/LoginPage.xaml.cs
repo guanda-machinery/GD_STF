@@ -174,12 +174,7 @@ namespace STD_105.Office
             }
             else
             {
-                //WinUIMessageBox.Show("請重新設定 Address",
-                //    "伺服器連接失敗 ...",
-                //    MessageBoxButton.OK,
-                //    MessageBoxImage.Exclamation,
-                //    MessageBoxResult.None,
-                //    MessageBoxOptions.None);
+
                 WinUIMessageBox.Show(null,
                     "請重新設定 Address",
                     "伺服器連接失敗 ...",
@@ -188,6 +183,7 @@ namespace STD_105.Office
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
                     FloatingMode.Popup);
+
                 IPSettings settings = new IPSettings();
                 settings.ShowDialog();
                 //CallServer();
@@ -232,6 +228,7 @@ namespace STD_105.Office
                 InputBlock = InputBlockMode.WindowContent,
                 TrackOwnerPosition = false,
             };
+
             DXSplashScreenViewModel viewModel = new DXSplashScreenViewModel()
             {
                 Logo = new Uri(@"pack://application:,,,/STD_105;component/Logo/SmallLogo.svg"),
@@ -256,7 +253,7 @@ namespace STD_105.Office
                 {
                     Thread.Sleep(1000);
                 }
-                Thread.Sleep(100);
+                Thread.Sleep(1000);
                 viewModel.Status = "伺服器設定完成 ...";
 
             }
