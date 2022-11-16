@@ -15,6 +15,8 @@ namespace WPFSTD105.Model
     }
     public enum LogSourceEnum
     {
+        Init ,
+        Phone,
         Machine,
         Software
     }

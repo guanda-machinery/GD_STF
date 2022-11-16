@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MachineAndPhoneAPI
+namespace MachineAndPhoneAPI.Models
 {
     public class EnableAppPairing
     {

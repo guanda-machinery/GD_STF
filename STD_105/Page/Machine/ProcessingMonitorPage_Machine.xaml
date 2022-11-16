@@ -349,7 +349,6 @@
                         </dxg:GridColumn>
                         <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題一"  Width="auto"  />
                                 <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題二"   Width="auto" />
-                                <dxg:GridColumn Binding="{Binding Position}" Width="100" Header="位置" />
                             </dxg:GridControl>
              </TabItem>
                         <TabItem Header="加工細項" Name="MachiningDetailTabItem">
@@ -1083,7 +1082,8 @@ AllowEditing="False"
 
                             <RadioButton GroupName="Group_Input" Name="Input_by_SmartPhone_RadioButton" Grid.Column="0" Grid.Row="1" 
                                          IsChecked="{Binding Input_by_SmartPhone_RadioButtonIsChecked}"
-                                         Command="{Binding Set_Input_by_SmartPhone_Command}">
+                                         Command="{Binding Set_Input_by_SmartPhone_Command}"
+                                         CommandParameter="{Binding ElementName=Input_by_SmartPhone_RadioButton}">
                                 <RadioButton.IsEnabled>
                                     <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
                                         <MultiBinding.Bindings>
@@ -1101,7 +1101,8 @@ AllowEditing="False"
 
                             <RadioButton  GroupName="Group_Input" Name="Input_by_Computer_RadioButton" Grid.Column="1" Grid.Row="1" 
                                           IsChecked="{Binding Input_by_Computer_RadioButtonIsChecked}"
-                                          Command="{Binding Set_Input_by_Computer_Command}">
+                                          Command="{Binding Set_Input_by_Computer_Command}"
+                                          CommandParameter="{Binding ElementName=Input_by_Computer_RadioButton}">
                                 <RadioButton.IsEnabled>
                                     <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
                                         <MultiBinding.Bindings>
