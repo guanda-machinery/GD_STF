@@ -403,6 +403,9 @@ namespace WPFSTD105
             // 取得孔群資訊
             Dictionary<string, ObservableCollection<SteelBolts>> steelBolts = ser.GeBolts();
 
+            // 取得排版資訊
+             ObservableCollection<MaterialDataView> materialDataViews = ser.GetMaterialDataView();
+            
             ScreenManager.ViewModel.Status = $"資訊已取得 ...";
             //Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
             #endregion
@@ -1032,6 +1035,28 @@ namespace WPFSTD105
                 //    //    break; 
                 //    #endregion
                 #endregion
+                #endregion
+
+                #region Material
+                sheet = book.Worksheets.Add("Material file"); //創建一個新工作表並將其附加到集合的末尾
+                book.Worksheets.ActiveWorksheet = sheet;
+                row = 0;
+                column = 0;
+                #region 欄位名稱
+                sheet.Cells[row, column++].Value = "是否為Tekla文件";
+                sheet.Cells[row, column++].Value = "數量";
+                sheet.Cells[row, column++].Value = "材質";
+                sheet.Cells[row, column++].Value = "斷面規格";
+                sheet.Cells[row, column++].Value = "圖面狀態";
+                sheet.Cells[row, column++].Value = "螺栓類型";
+                sheet.Cells[row, column++].Value = "建立日期";
+                sheet.Cells[row, column++].Value = "修改日期";
+                sheet.Cells[row++, column++].Value = "歸屬購件";
+                #endregion
+                foreach (MaterialDataView item in materialDataViews)
+                {
+                    //item.MaterialNumber;
+                }
                 #endregion
 
                 #region Grid Data

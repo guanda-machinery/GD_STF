@@ -409,10 +409,10 @@ namespace STD_105
                             blockReference.EntityData = sa;
                             blockReference.Selectable = false;//關閉用戶選擇
                             blockReference.Attributes.Add("steel", new AttributeReference(0, 0, 0));
-                            if (model.Entities.Count > 0)
-                            {
-                                model.Entities.RemoveAt(model.Entities.Count - 1);
-                            }
+                            //if (model.Entities.Count > 0)
+                            //{
+                            //    model.Entities.RemoveAt(model.Entities.Count - 1);
+                            //}
                             model.Entities.Insert(model.Entities.Count, blockReference);//加入參考圖塊到模型
                             #endregion
                             SaveModel(true, true);
@@ -485,10 +485,10 @@ namespace STD_105
                             blockReference.EntityData = sa;
                             blockReference.Selectable = false;//關閉用戶選擇
                             blockReference.Attributes.Add("steel", new AttributeReference(0, 0, 0));
-                            if (model.Entities.Count > 0)
-                            {
-                                model.Entities.RemoveAt(model.Entities.Count - 1);
-                            }
+                            //if (model.Entities.Count > 0)
+                            //{
+                            //    model.Entities.RemoveAt(model.Entities.Count - 1);
+                            //}
                             model.Entities.Insert(model.Entities.Count, blockReference);//加入參考圖塊到模型
                             //model.Blocks[1].Name = sa.GUID.Value.ToString();
                             //Mesh modify = Steel3DBlock.GetProfile(sa); //修改的形狀
@@ -1786,7 +1786,26 @@ namespace STD_105
                 isNewPart = true;//還原零件狀態
 
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D三視圖
-
+                bool hasOutSteel = false;
+                for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
+                {
+                    if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
+                    {
+                        BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
+                        Block block = model.Blocks[blockReference.BlockName]; //取得圖塊
+                        Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts((GroupBoltsAttr)model.Entities[i].EntityData, model, out BlockReference blockRef, out bool checkRef);
+                        //Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生螺栓圖塊
+                        if (bolts3DBlock.hasOutSteel)
+                        {
+                            hasOutSteel = true;
+                        }
+                        Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
+                    }
+                }
+                if (hasOutSteel)
+                {
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                }
                 //RunHypotenusePoint();
 #if DEBUG
                 log4net.LogManager.GetLogger("加入切割線").Debug("結束");
@@ -4354,6 +4373,7 @@ namespace STD_105
             // 給定 零件 數量vsID
             steelPart.ID = buffer1.ToList();
             steelPart.Count = ass.ID.Count();
+            steelPart.Revise = sa.Revise.Value;
 
             // 原零件之構建ID
             // 取出所有零件
@@ -5668,7 +5688,12 @@ namespace STD_105
                     model.Entities.Insert(model.Entities.Count, blockReference);//加入參考圖塊到模型
 
                     SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
-
+                    CuttingGroupBox.IsEnabled = true;
+                    CuttingGroupPosition.IsEnabled = true;
+                    ManHypotenusePoint((FACE)ViewModel.rbtn_CutFace);
+                    AutoHypotenuseEnable(FACE.TOP);
+                    AutoHypotenuseEnable(FACE.FRONT);
+                    AutoHypotenuseEnable(FACE.BACK);
                     bool hasOutSteel = false;
                     for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
                     {

@@ -280,7 +280,7 @@
                                 ShowIndicator="False" 
                                     SearchPanelFindMode="Always"         
 
-                                    SearchDelay="0">
+                                    SearchDelay="0" MouseDown="MachiningCombinational_List_TableView_MouseDown">
                                 <dxg:TableView.CellStyle>
                                     <Style>
                                         <Setter Property="TextBlock.FontSize" Value="12"/>
