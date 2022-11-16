@@ -9,11 +9,15 @@
     xmlns:local="clr-namespace:TestDevdept"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MainWindow"
-    Width="800"
-    Height="450"
+    Width="1118"
+    Height="702"
     mc:Ignorable="d">
-    <Grid>
-        <ddes:Model x:Name="model1" Margin="0,0,64,0">
+    <Grid Margin="0,0,37,12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="379*"/>
+            <ColumnDefinition Width="239*"/>
+        </Grid.ColumnDefinitions>
+        <ddes:Model x:Name="model1" Margin="0,0,165,43" Grid.ColumnSpan="2">
             <ddes:Model.Viewports>
                 <ddes:Viewport>
                     <ddes:Viewport.Camera>
@@ -56,21 +60,19 @@
         </ddes:Model>
         <Button
             x:Name="button"
-            Width="50"
+            Width="87"
             Height="50"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Content="Button"
-            PreviewMouseLeftButtonUp="button_PreviewMouseLeftButtonUp"
-            d:LayoutOverrides="Width, Height" />
+            PreviewMouseLeftButtonUp="button_PreviewMouseLeftButtonUp" Margin="0,0,40,74" Grid.Column="1" />
         <Button
             x:Name="button_Copy"
-            Width="50"
+            Width="87"
             Height="50"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Content="Button"
-            PreviewMouseLeftButtonUp="button_Copy_PreviewMouseLeftButtonUp"
-    d:LayoutOverrides="Width, Height" Margin="0,0,0,55" />
+            PreviewMouseLeftButtonUp="button_Copy_PreviewMouseLeftButtonUp" Margin="0,0,40,148" Grid.Column="1" />
     </Grid>
 </Window>
