@@ -135,7 +135,7 @@
                             </local:DPadUserControl>
 
                             <CheckBox Grid.Column="1"  DockPanel.Dock="Bottom"
-
+                                      IsThreeState="False"
                                   HorizontalAlignment="Right"
                                   VerticalAlignment="Bottom"
                                   Margin="5"
@@ -299,27 +299,34 @@
                                                 <ColumnDefinition />
                                             </Grid.ColumnDefinitions>
                                             <Button 
-                                IsEnabled="{Binding ExportReadOnly}"
-                                Width="80"
+                                             
+                                                IsEnabled="{Binding ExportReadOnly}"
+                                                Width="80"
                                 Height="80"
                                 ToolTip="滾輪逆轉" >
                                                 <Button.Style>
                                                     <Style TargetType="Button">
-                                                        <Setter Property="Background" Value="#696969" />
-                                                        <Setter Property="Template">
+                                                    <Setter Property="Background" Value="{StaticResource solidclr_DarkGray}" />
+                                                     <Setter Property="Template">
                                                             <Setter.Value>
                                                                 <ControlTemplate TargetType="{x:Type Button}">
                                                                     <Border
-                                                                    Background="{TemplateBinding Background}"
-                                                                    BorderBrush="#49FFFFFF"
-                                                                    CornerRadius="15">
+                                                                        x:Name="bor_LeftTop"
+                                                                        Background="{TemplateBinding Background}"
+                                                                        BorderBrush="#49FFFFFF"
+                                                                        BorderThickness="2,2,0,0"
+                                                                        CornerRadius="15">
                                                                         <Grid>
-                                                                            <Viewbox >
+                                                                            <Border
+                                                                                x:Name="bor_RightBottom"
+                                                                                BorderBrush="#49000000"
+                                                                                BorderThickness="0,0,2,2"
+                                                                                CornerRadius="{Binding ElementName=bor_LeftTop, Path=CornerRadius}" />
+                                                                            <Viewbox>
                                                                                 <materialDesign:PackIcon
-                                                                                Margin="1"
-                                                                                Foreground="White" Kind="Restore"   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                                Margin="1" Name="MPackIcon"
+                                                                                Foreground="{StaticResource solidclr_CreamyWhite}" Kind="Restore"   HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                                             </Viewbox>
-
                                                                             <ContentPresenter
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
@@ -334,8 +341,8 @@
                                                                             <BeginStoryboard>
                                                                                 <Storyboard>
                                                                                     <ColorAnimation
-                                        Storyboard.TargetName="Path"
-                                        Storyboard.TargetProperty="(Path.Stroke).Color"
+                                        Storyboard.TargetName="MPackIcon"
+                                        Storyboard.TargetProperty="Foreground.Color"
                                         To="Lime"
                                         Duration="0:0:0.1" />
                                                                                     <ThicknessAnimation
@@ -355,9 +362,9 @@
                                                                             <BeginStoryboard>
                                                                                 <Storyboard FillBehavior="HoldEnd">
                                                                                     <ColorAnimation
-                                        Storyboard.TargetName="Path"
-                                        Storyboard.TargetProperty="(Path.Stroke).Color"
-                                        To="#FFF3F3F3"
+                                        Storyboard.TargetName="MPackIcon"
+                                        Storyboard.TargetProperty="(Foreground).Color"
+                                        To="{StaticResource clr_CreamyWhite}"
                                         Duration="0:0:0.1" />
                                                                                     <ThicknessAnimation
                                         Storyboard.TargetName="bor_LeftTop"
@@ -375,13 +382,15 @@
                                                                         <Trigger Property="IsMouseOver" Value="True">
                                                                             <Setter Property="Cursor" Value="Hand" />
                                                                         </Trigger>
+                                                                        <Trigger Property="IsEnabled" Value="False">
+                                                                            <Setter TargetName="bor_LeftTop"  Property="Opacity" Value="0.3" />
+                                                                        </Trigger>
                                                                     </ControlTemplate.Triggers>
                                                                 </ControlTemplate>
                                                             </Setter.Value>
                                                         </Setter>
                                                     </Style>
                                                 </Button.Style>
-
 
                                                 <i:Interaction.Triggers>
                                                     <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
@@ -401,21 +410,27 @@
                                 ToolTip="滾輪順轉" >
                                                 <Button.Style>
                                                     <Style TargetType="Button">
-                                                        <Setter Property="Background" Value="#696969" />
+                                                        <Setter Property="Background" Value="{StaticResource solidclr_DarkGray}" />
                                                         <Setter Property="Template">
                                                             <Setter.Value>
                                                                 <ControlTemplate TargetType="{x:Type Button}">
                                                                     <Border
-                                                                    Background="{TemplateBinding Background}"
-                                                                    BorderBrush="#49FFFFFF"
-                                                                    CornerRadius="15">
+                                                                        x:Name="bor_LeftTop"
+                                                                        Background="{TemplateBinding Background}"
+                                                                        BorderBrush="#49FFFFFF"
+                                                                        BorderThickness="2,2,0,0"
+                                                                        CornerRadius="15">
                                                                         <Grid>
-                                                                            <Viewbox >
+                                                                            <Border
+                                                                                x:Name="bor_RightBottom"
+                                                                                BorderBrush="#49000000"
+                                                                                BorderThickness="0,0,2,2"
+                                                                                CornerRadius="{Binding ElementName=bor_LeftTop, Path=CornerRadius}" />
+                                                                            <Viewbox>
                                                                                 <materialDesign:PackIcon
-                                                                                Margin="1"
-                                                                                Foreground="White" Kind="Reload"   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                                Margin="1" Name="MPackIcon"
+                                                                                Foreground="{StaticResource solidclr_CreamyWhite}" Kind="Reload"   HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                                             </Viewbox>
-
                                                                             <ContentPresenter
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
@@ -430,8 +445,8 @@
                                                                             <BeginStoryboard>
                                                                                 <Storyboard>
                                                                                     <ColorAnimation
-                                        Storyboard.TargetName="Path"
-                                        Storyboard.TargetProperty="(Path.Stroke).Color"
+                                        Storyboard.TargetName="MPackIcon"
+                                        Storyboard.TargetProperty="Foreground.Color"
                                         To="Lime"
                                         Duration="0:0:0.1" />
                                                                                     <ThicknessAnimation
@@ -451,9 +466,9 @@
                                                                             <BeginStoryboard>
                                                                                 <Storyboard FillBehavior="HoldEnd">
                                                                                     <ColorAnimation
-                                        Storyboard.TargetName="Path"
-                                        Storyboard.TargetProperty="(Path.Stroke).Color"
-                                        To="#FFF3F3F3"
+                                        Storyboard.TargetName="MPackIcon"
+                                        Storyboard.TargetProperty="(Foreground).Color"
+                                        To="{StaticResource clr_CreamyWhite}"
                                         Duration="0:0:0.1" />
                                                                                     <ThicknessAnimation
                                         Storyboard.TargetName="bor_LeftTop"
@@ -470,6 +485,9 @@
                                                                         </EventTrigger>
                                                                         <Trigger Property="IsMouseOver" Value="True">
                                                                             <Setter Property="Cursor" Value="Hand" />
+                                                                        </Trigger>
+                                                                        <Trigger Property="IsEnabled" Value="False">
+                                                                            <Setter TargetName="bor_LeftTop"  Property="Opacity" Value="0.3" />
                                                                         </Trigger>
                                                                     </ControlTemplate.Triggers>
                                                                 </ControlTemplate>
@@ -499,10 +517,10 @@
                                     <!--  入口  -->
                                     <Viewbox Margin="20">
                                         <WPFBase:KnobAddControl Style="{ StaticResource KnobStyle }"
-                                    CurrentValue="{Binding CurrentValue}"
+                                    CurrentValue="{Binding EntranceRack_CurrentValue}"
                                     GaugeBackgroundColor="{StaticResource clr_DimGray}"
                                     IsEnabled="{Binding ApplicationViewModel.PanelButton.EntranceRack, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}"
-                                    KnobButtonCommand="{Binding SelectCountCommand}"
+                                    KnobButtonCommand="{Binding SelectCount_EntranceRack_Command}"
                                     MajorDivisionsCount="{Binding EntranceTraverseNumber, Source={x:Static GD_STD:Optional.Default}, Converter={local:RackMajorDivisionsCountConverter}}"
                                     MajorTickColor="{StaticResource clr_LightGray}"
                                     MajorTickSize="15,3"
@@ -523,14 +541,15 @@
                                     ScaleLabelSize="40,20"
                                     ScaleRadius="95"
                                     ScaleStartAngle="160"
-                                    ScaleSweepAngle="220" />
+                                    ScaleSweepAngle="220" 
+                                     Visibility="{Binding ApplicationViewModel.PanelButton.EntranceRack, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}" />
                                     </Viewbox>
                                     <!--  出口  -->
                                     <Viewbox Margin="20">
                                         <WPFBase:KnobAddControl Style="{ StaticResource KnobStyle }"                                    
-                                    CurrentValue="{Binding CurrentValue}"
+                                    CurrentValue="{Binding ExportRack_CurrentValue}"
                                     GaugeBackgroundColor="{StaticResource clr_DimGray}"
-                                    KnobButtonCommand="{Binding SelectCountCommand}"
+                                    KnobButtonCommand="{Binding SelectCount_ExportRack_Command}"
                                     MajorDivisionsCount="{Binding ExportTraverseNumber, Source={x:Static GD_STD:Optional.Default}, Converter={local:RackMajorDivisionsCountConverter}}"
                                     MajorTickColor="{StaticResource clr_LightGray}"
                                     MajorTickSize="15,3"
@@ -544,7 +563,7 @@
                                     PointerThickness="65"
                                     Radius="150"
                                     ArcRadius="205"
-                                    ArcColor="{ StaticResource clr_ButtonBlue }"
+                                    ArcColor="{ StaticResource clr_DeepSkyBlue }"
                                     ScaleLabelFontSize="20"
                                     ScaleLabelForeground="{StaticResource clr_LightGray}"
                                     ScaleLabelRadius="120"

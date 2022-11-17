@@ -22,7 +22,6 @@ namespace WPFSTD105.ViewModel
             this.Joystcik_Right_Trigger_Command = ArmXMinusCommand;//arm X-
             this.Joystcik_Down_Trigger_Command = ArmYMinusCommand;//arm Y-*/
 
-
             /*this.JoyStick_BorderButton1_Release = null; //arm打開
             this.JoyStick_BorderButton3_Release = null;//arm夾持
             this.JoyStick_BorderButton4_Release = null;//armXa

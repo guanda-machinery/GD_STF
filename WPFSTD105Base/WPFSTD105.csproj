@@ -340,6 +340,9 @@
     <Reference Include="PropertyChanged, Version=3.2.8.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.3.2.8\lib\net40\PropertyChanged.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp, Version=106.11.7.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.11.7\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Syncfusion.Compression.Base, Version=20.3460.0.49, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.Compression.Base.20.3.0.49\lib\net46\Syncfusion.Compression.Base.dll</HintPath>
     </Reference>
@@ -407,6 +410,7 @@
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
@@ -455,17 +459,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="HttpRequest\AppServerCommunication.cs" />
+    <Compile Include="MachineAndPhoneAPI\AppServerCommunicate.cs" />
+    <Compile Include="MachineAndPhoneAPI\Models\Assemblyinfo.cs" />
+    <Compile Include="MachineAndPhoneAPI\Models\EnableAppPairing.cs" />
+    <Compile Include="MachineAndPhoneAPI\Models\RegisterAssembly.cs" />
+    <Compile Include="MachineAndPhoneAPI\Models\UnreigisterAssembly.cs" />
+    <Compile Include="Model\OperatingLog.cs" />
     <Compile Include="UserControls\ProcessingScreenWindow.xaml.cs">
       <DependentUpon>ProcessingScreenWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\Machine\Dpad\joystick\DpadConveyor_ViewModel.cs" />
-    <Compile Include="ViewModel\Machine\Dpad\joystick\MainSpindle_ViewModel.cs" />
-    <Compile Include="ViewModel\Machine\Dpad\joystick\ToolMagazineControl_ViewModel.cs" />
     <Compile Include="ViewModel\Machine\Dpad\joystick\GrabArm_ViewModel.cs" />
-    <Compile Include="ViewModel\Machine\Dpad\Machine_HSteelGrabViewModel.cs" />
-    <Compile Include="ViewModel\Machine\Dpad\Machine_HSteelClampViewModel.cs" />
+    <Compile Include="ViewModel\Machine\Dpad\joystick\MainSpindle_ViewModel.cs" />
     <Compile Include="ViewModel\Machine\Dpad\joystick\Dpad_Joystick_ViewModel.cs" />
+    <Compile Include="ViewModel\Machine\Dpad\joystick\ToolMagazineControl_ViewModel.cs" />
     <Compile Include="ViewModel\Machine\MachineFunctionVM.cs" />
     <Compile Include="ViewModel\ProcessingMonitor_MachineVM.cs" />
     <Compile Include="WordToPdfService.cs" />
