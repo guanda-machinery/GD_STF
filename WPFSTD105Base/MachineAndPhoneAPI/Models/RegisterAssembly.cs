@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MachineAndPhoneAPI
+namespace MachineAndPhoneAPI.Models
 {
     public class RegisterAssembly
     {

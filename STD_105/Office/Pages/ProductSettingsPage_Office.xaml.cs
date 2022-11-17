@@ -1044,6 +1044,7 @@ namespace STD_105.Office
                     steelAttr.Type = (OBJECT_TYPE)ViewModel.SteelTypeProperty_int;
                     steelAttr.Length = ViewModel.ProductLengthProperty;
                     steelAttr.Profile = ViewModel.SteelSectionProperty;
+                    steelAttr.Length = ViewModel.ProductLengthProperty;//1117 張燕華 加入使用者輸入長度賦值
                     steelAttr.Name = ViewModel.ProductNameProperty;
                     steelAttr.Phase = ViewModel.PhaseProperty;
                     steelAttr.ShippingNumber = ViewModel.ShippingNumberProperty;
@@ -4390,6 +4391,7 @@ namespace STD_105.Office
                         single.H = steelPart.H;
                         single.Father = ass.ID;
                         single.ID = steelPart.ID;
+                        single.Match = steelPart.Match;
                         single.t1 = steelPart.t1;
                         single.t2 = steelPart.t2;
                         single.Phase = steelPart.Phase;
