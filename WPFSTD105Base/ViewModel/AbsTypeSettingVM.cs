@@ -57,18 +57,7 @@ namespace WPFSTD105
             STDSerialization ser = new STDSerialization();
             ObservableCollection<BomProperty> bomProperties = CommonViewModel.ProjectProperty.BomProperties; //報表屬性設定檔
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();//模型構件列表
-            ////1117 assemblies做group CYH
-            //var result = assemblies.GroupBy(x => x.ID)
-            //                       .Select(g => new SteelAssembly {
-            //                           ID = g.Key,
-            //                           Position = new List<string>(),
-            //                           TopLevel = new List<string>(),
-            //                           Phase = new List<int>(),
-            //                           ShippingNumber = new List<int>(),
-            //                           ShippingDescription = new List<string>(),
-            //                           IsTekla = true,
-            //                           State = DRAWING_STATE.NEW,
-            //                       }).ToList();
+            
             //20220824 蘇 新增icommand
             Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();//模型構件列表
             foreach (KeyValuePair<string, ObservableCollection<SteelPart>> eachPart in part)
