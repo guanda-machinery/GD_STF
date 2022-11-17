@@ -111,8 +111,11 @@ namespace STD_105.Office
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
                 for (int i = 0; i < NcTemp.GroupBoltsAttrs.Count; i++) //逐步展開 nc 檔案的螺栓
                 {
-                    Bolts3DBlock.AddBolts(NcTemp.GroupBoltsAttrs[i], model, out BlockReference botsBlock, out bool check); //加入到 3d 視圖
-                    Add2DHole((Bolts3DBlock)model.Blocks[botsBlock.BlockName], false);//加入孔位不刷新 2d 視圖
+                    Bolts3DBlock B3DB = Bolts3DBlock.AddBolts(NcTemp.GroupBoltsAttrs[i], model, out BlockReference botsBlock, out bool check); //加入到 3d 視圖
+                    if (!B3DB.hasOutSteel)
+                    {
+                        Add2DHole((Bolts3DBlock)model.Blocks[botsBlock.BlockName], false);//加入孔位不刷新 2d 視圖
+                    }                    
                 }
                 ser.SetPartModel(NcTemp.SteelAttr.GUID.ToString(), model);//儲存 3d 視圖
             }

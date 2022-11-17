@@ -148,11 +148,11 @@ namespace WPFSTD105.Attribute
         /// <inheritdoc/>
         public string Profile { get; set; }
         /// <inheritdoc/>
-        public CutList PointTop { get; set; } = new CutList();
+        public CutList PointTop { get; set; } = new CutList().ConvertToSurrogate();
         /// <inheritdoc/>
-        public CutList PointFront { get; set; } = new CutList();
+        public CutList PointFront { get; set; } = new CutList().ConvertToSurrogate();
         /// <inheritdoc/>
-        public CutList PointBack { get; set; } = new CutList();
+        public CutList PointBack { get; set; } = new CutList().ConvertToSurrogate();
         /// <inheritdoc/>
         public CutContour Top { get => GetCutPoint(PointTop, H); }
         /// <inheritdoc/>
@@ -279,18 +279,6 @@ namespace WPFSTD105.Attribute
         public virtual SteelAttrSurrogate ConvertToSurrogate()
         {
             return new SteelAttrSurrogate(this);
-        }
-        public SteelAttr(SerializationInfo info, StreamingContext context)
-        {
-            PointTop = (CutList)info.GetValue("PointTop", typeof(CutList));
-            PointFront = (CutList)info.GetValue("PointFront", typeof(CutList));
-            PointBack = (CutList)info.GetValue("PointBack", typeof(CutList));
-        }
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("PointTop", PointTop);
-            info.AddValue("PointFront", PointFront);
-            info.AddValue("PointBack", PointBack);
         }
     }
 }

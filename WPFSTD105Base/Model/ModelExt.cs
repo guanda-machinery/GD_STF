@@ -12,6 +12,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using WPFSTD105.Attribute;
+using WPFSTD105.Surrogate;
 using WPFSTD105.ViewModel;
 
 
@@ -1612,6 +1613,7 @@ namespace WPFSTD105
                     //20221111 修改 避免按下任意按鍵都會導致連續重新整理
                     STDSerialization ser = new STDSerialization();
                     ser.SetPartModel(obSettingVM.SteelAttr.GUID.ToString(), this);
+                    this.Refresh();
                 }
             }
 

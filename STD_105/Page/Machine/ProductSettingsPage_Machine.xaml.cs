@@ -1561,8 +1561,8 @@ namespace STD_105
                 ViewModel.SteelAttr.Title2 = ViewModel.Title2Property;
                 ViewModel.GetSteelAttr();
 
-
                 Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference, out bool check);
+                BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
 
                 SteelAttr steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
 
@@ -1585,7 +1585,7 @@ namespace STD_105
                 {
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
                     ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = false;
-                    BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                    
                                                                      //if (!fAddSteelPart)
                     if (!fNewPart.Value)
                         SaveModel(false, true);//存取檔案
@@ -1787,6 +1787,7 @@ namespace STD_105
 
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D三視圖
                 bool hasOutSteel = false;
+                List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
                 for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
                 {
                     if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
@@ -1799,12 +1800,23 @@ namespace STD_105
                         {
                             hasOutSteel = true;
                         }
-                        Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
+                        //else
+                        //{
+                            B3DB.Add(bolts3DBlock);
+                        //}
                     }
                 }
                 if (hasOutSteel)
                 {
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                }
+                else
+                {
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+                }
+                foreach (Bolts3DBlock item in B3DB)
+                {
+                    Add2DHole(item, false);//加入孔位不刷新 2d 視圖
                 }
                 //RunHypotenusePoint();
 #if DEBUG
@@ -2807,7 +2819,7 @@ namespace STD_105
 
             model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
             SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
-
+            List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
             bool hasOutSteel = false;
             for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
             {
@@ -2821,12 +2833,20 @@ namespace STD_105
                     {
                         hasOutSteel = true;
                     }
-                    Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
+                    B3DB.Add(bolts3DBlock);
                 }
             }
             if (hasOutSteel)
             {
                 ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+            }
+            else
+            {
+                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+            }
+            foreach (Bolts3DBlock item in B3DB)
+            {
+                Add2DHole(item, false);//加入孔位不刷新 2d 視圖
             }
             ModelExt newModel = new ModelExt();
             newModel = model;
@@ -3762,7 +3782,7 @@ namespace STD_105
                         HypotenusePoint.Add(((PosRatioD * a) + result[0].X, (PosRatioD * b) + result[1].Y));
                     }
 
-
+                    List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
                     for (int z = 0; z < HypotenusePoint.Count; z++)
                     {
                         GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(FACE.BACK, START_HOLE.START);
@@ -3780,8 +3800,16 @@ namespace STD_105
                         {
                             hasOutSteel = true;
                         }
-                        BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                        else { B3DB.Add(bolts); }
+                        //BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                     }
+                    //if (!hasOutSteel)
+                    //{
+                    foreach (Bolts3DBlock item in B3DB)
+                    {
+                        BlockReference referenceBolts = Add2DHole(item);//加入孔位到2D
+                    }
+                    //}
                     break;
 
                 case FACE.TOP:
@@ -3832,7 +3860,7 @@ namespace STD_105
                         HypotenusePoint.Add(((PosRatioA * a) + result[0].X, (PosRatioA * b) + result[1].Y));
                         HypotenusePoint.Add(((PosRatioB * a) + result[0].X, (PosRatioB * b) + result[1].Y));
                     }
-
+                    B3DB = new List<Bolts3DBlock>();
                     for (int z = 0; z < HypotenusePoint.Count; z++)
                     {
                         GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(FACE.TOP, START_HOLE.START);
@@ -3850,9 +3878,18 @@ namespace STD_105
                         {
                             hasOutSteel = true;
                         }
+                        else { B3DB.Add(bolts); }
                         //BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
-                        Add2DHole(bolts, false);//加入孔位不刷新 2d 視圖
+                        //Add2DHole(bolts, false);//加入孔位不刷新 2d 視圖
                     }
+                    //if (!hasOutSteel)
+                    //{
+                    foreach (Bolts3DBlock item in B3DB)
+                    {
+                        BlockReference referenceBolts = Add2DHole(item);//加入孔位到2D
+                    }
+                    //}
+
                     break;
 
 
@@ -3904,7 +3941,7 @@ namespace STD_105
                         HypotenusePoint.Add(((PosRatioD * a) + result[0].X, (PosRatioD * b) + result[1].Y));
                     }
 
-
+                    B3DB = new List<Bolts3DBlock>();
                     for (int z = 0; z < HypotenusePoint.Count; z++)
                     {
                         GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(FACE.FRONT, START_HOLE.START);
@@ -3922,8 +3959,16 @@ namespace STD_105
                         {
                             hasOutSteel = true;
                         }
-                        BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                        else { B3DB.Add(bolts); }
+                        //BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                     }
+                    //if (!hasOutSteel)
+                    //{
+                    foreach (Bolts3DBlock item in B3DB)
+                    {
+                        BlockReference referenceBolts = Add2DHole(item);//加入孔位到2D
+                    }
+                    //}
                     break;
             }
 
@@ -4710,6 +4755,7 @@ namespace STD_105
             ManHypotenusePoint((FACE)ViewModel.rbtn_CutFace);
             bool hasOutSteel = false;
             //List<string> BoltBlockName = (from a in model.Entities where a.EntityData.GetType() == typeof(GroupBoltsAttr) select ((BlockReference)a).BlockName).ToList();
+            List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
             for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
             {
                 if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
@@ -4717,11 +4763,12 @@ namespace STD_105
                     blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
                     Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
                     Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts((GroupBoltsAttr)model.Entities[i].EntityData, model, out BlockReference blockRef, out bool checkRef);
-                    Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
+                    //Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
                     if (bolts3DBlock.hasOutSteel)
                     {
                         hasOutSteel = true;
                     }
+                    else { B3DB.Add(bolts3DBlock); }
                     //Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
                 }
             }
@@ -4736,6 +4783,10 @@ namespace STD_105
                 ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
                 item.steelAttr.ExclamationMark = false;
                 item.ExclamationMark = false;
+            }
+            foreach (Bolts3DBlock bolt in B3DB)
+            {
+                BlockReference referenceBolts = Add2DHole(bolt, false);//加入孔位到2D
             }
 
             Dictionary<string, ObservableCollection<SteelAttr>> saFile = ser.GetSteelAttr();
@@ -5695,6 +5746,7 @@ namespace STD_105
                     AutoHypotenuseEnable(FACE.FRONT);
                     AutoHypotenuseEnable(FACE.BACK);
                     bool hasOutSteel = false;
+                    List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
                     for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
                     {
                         if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
@@ -5702,11 +5754,12 @@ namespace STD_105
                             blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
                             Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
                             Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts((GroupBoltsAttr)model.Entities[i].EntityData, model, out BlockReference blockRef, out bool checkRef);
-                            Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
+                            //Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
                             if (bolts3DBlock.hasOutSteel)
                             {
                                 hasOutSteel = true;
                             }
+                            else { B3DB.Add(bolts3DBlock); }
                         }
                     }
                     if (hasOutSteel)
@@ -5714,6 +5767,16 @@ namespace STD_105
                         ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
                         item.steelAttr.ExclamationMark = true;
                         item.ExclamationMark = true;
+                    }
+                    else
+                    {
+                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+                        item.steelAttr.ExclamationMark = false;
+                        item.ExclamationMark = false;
+                    }
+                    foreach (Bolts3DBlock bolt in B3DB)
+                    {
+                        BlockReference referenceBolts = Add2DHole(bolt);//加入孔位到2D
                     }
 
                     Dictionary<string, ObservableCollection<SteelAttr>> saFile = ser.GetSteelAttr();
