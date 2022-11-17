@@ -6,6 +6,7 @@ using GD_STD.IBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using WPFSTD105.Model;
 using WPFSTD105.Surrogate;
 
@@ -31,7 +32,6 @@ namespace WPFSTD105.Attribute
         /// </summary>
         public SteelAttr()
         {
-
         }
         /// <summary>
         /// 寫入 <see cref="SteelPart"/> 
@@ -148,11 +148,11 @@ namespace WPFSTD105.Attribute
         /// <inheritdoc/>
         public string Profile { get; set; }
         /// <inheritdoc/>
-        public CutList PointTop { get; set; } = new CutList();
+        public CutList PointTop { get; set; } = new CutList().ConvertToSurrogate();
         /// <inheritdoc/>
-        public CutList PointFront { get; set; } = new CutList();
+        public CutList PointFront { get; set; } = new CutList().ConvertToSurrogate();
         /// <inheritdoc/>
-        public CutList PointBack { get; set; } = new CutList();
+        public CutList PointBack { get; set; } = new CutList().ConvertToSurrogate();
         /// <inheritdoc/>
         public CutContour Top { get => GetCutPoint(PointTop, H); }
         /// <inheritdoc/>

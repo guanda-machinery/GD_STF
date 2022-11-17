@@ -391,9 +391,20 @@ namespace STD_105
                 {
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
                 }
-                BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
-
-
+                else
+                {
+                    BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                    //不是修改孔位狀態
+                    if (!modifyHole)
+                    {
+                        ViewModel.Reductions.Add(new Reduction()
+                        {
+                            Recycle = new List<List<Entity>>() { new List<Entity>() { referenceBolts } },
+                            SelectReference = null,
+                            User = new List<ACTION_USER>() { ACTION_USER.Add }
+                        });
+                    }
+                }
                 SaveModel();//存取檔案
 
                 //不是修改孔位狀態
@@ -402,11 +413,6 @@ namespace STD_105
                     ViewModel.Reductions.Add(new Reduction()
                     {
                         Recycle = new List<List<Entity>>() { new List<Entity>() { blockReference } },
-                        SelectReference = null,
-                        User = new List<ACTION_USER>() { ACTION_USER.Add }
-                    }, new Reduction()
-                    {
-                        Recycle = new List<List<Entity>>() { new List<Entity>() { referenceBolts } },
                         SelectReference = null,
                         User = new List<ACTION_USER>() { ACTION_USER.Add }
                     });

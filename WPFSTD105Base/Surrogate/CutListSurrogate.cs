@@ -14,6 +14,10 @@ namespace WPFSTD105.Surrogate
     /// </summary>
     public class CutListSurrogate : Surrogate<CutList>
     {
+        public CutListSurrogate(CutList obj) : base(obj)
+#pragma warning restore CS1591 // 遺漏公用可見類型或成員 'CutListSurrogate.CutListSurrogate(CutList)' 的 XML 註解
+        {
+        }
         /// <summary>
         /// <see cref="CutList.UR"/>
         /// </summary>
@@ -32,14 +36,6 @@ namespace WPFSTD105.Surrogate
         public CutPointSurrogate DL = new CutPoint().ConvertToSurrogate();
 
 #pragma warning disable CS1591 // 遺漏公用可見類型或成員 'CutListSurrogate.CutListSurrogate(CutList)' 的 XML 註解
-        public CutListSurrogate(CutList obj) : base(obj)
-#pragma warning restore CS1591 // 遺漏公用可見類型或成員 'CutListSurrogate.CutListSurrogate(CutList)' 的 XML 註解
-        {
-            UR = obj.UR ?? new CutPoint().ConvertToSurrogate();
-            UL = obj.UL ?? new CutPoint().ConvertToSurrogate();
-            DL = obj.DL ?? new CutPoint().ConvertToSurrogate();   
-            DR = obj.DR ?? new CutPoint().ConvertToSurrogate();
-        }
 
 #pragma warning disable CS1591 // 遺漏公用可見類型或成員 'CutListSurrogate.ConvertToObject()' 的 XML 註解
         protected override CutList ConvertToObject()
