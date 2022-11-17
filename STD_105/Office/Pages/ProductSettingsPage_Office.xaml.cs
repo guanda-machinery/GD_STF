@@ -1035,7 +1035,7 @@ namespace STD_105.Office
                     Steel3DBlock s3Db = new Steel3DBlock();
                     SteelAttr steelAttrNC = new SteelAttr();
                     List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
-                    s3Db.ReadNcFile(allPath, profile, steelAttr, ref steelAttrNC, ref groups);
+                    s3Db.ReadNcFile(allPath, profile, steelAttr, ref steelAttrNC, ref groups);//1117 steelAttr length被改為原清單中的值 CYH
                     steelAttr.GUID = Guid.Parse(gridItem.DataName);
                     steelAttr.oPoint = steelAttrNC.oPoint;
                     steelAttr.vPoint = steelAttrNC.vPoint;
@@ -1043,6 +1043,7 @@ namespace STD_105.Office
                     steelAttr.CutList = steelAttrNC.CutList;
                     steelAttr.Type = (OBJECT_TYPE)ViewModel.SteelTypeProperty_int;
                     steelAttr.Profile = ViewModel.SteelSectionProperty;
+                    steelAttr.Length = ViewModel.ProductLengthProperty;//1117 加入使用者輸入長度賦值 CYH
                     steelAttr.Name = ViewModel.ProductNameProperty;
                     steelAttr.Phase = ViewModel.PhaseProperty;
                     steelAttr.ShippingNumber = ViewModel.ShippingNumberProperty;
@@ -1068,7 +1069,7 @@ namespace STD_105.Office
                     //{
                     //    model.Entities.RemoveAt(model.Entities.Count - 1);
                     //}
-                    model.Entities.Add(blockReference);//加入參考圖塊到模型
+                    model.Entities.Add(blockReference);//加入參考圖塊到模型 //1117 看新加入的模型的資料 CYH
 
 
 
@@ -4296,6 +4297,7 @@ namespace STD_105.Office
                         single.H = steelPart.H;
                         single.Father = ass.ID;
                         single.ID = steelPart.ID;
+                        single.Match = steelPart.Match;
                         single.t1 = steelPart.t1;
                         single.t2 = steelPart.t2;
                         single.Phase = steelPart.Phase;
