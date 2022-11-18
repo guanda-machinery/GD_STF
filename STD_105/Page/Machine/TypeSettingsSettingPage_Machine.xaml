@@ -176,7 +176,7 @@
                 </GroupBox.Header>
                 <Grid>
                     <Grid.Resources>
-                        <Style TargetType="dxg:GridColumn" >
+                        <Style TargetType="dxg:GridColumn">
                             <Setter Property="MinWidth" Value="35"/>
                             <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
                             <Setter Property="AllowGrouping" Value="false"/>
@@ -194,16 +194,16 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <dxg:GridControl   
+                    <dxg:GridControl Style="{StaticResource SiegCustomGridControl}"  
                                 Name="PartsGridControl"
-                  
                                 AutoGenerateColumns="None"
                                 SelectionMode="Row"
                                 SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 Height="365"
                                 ItemsSource="{Binding DataViews}">
                         <dxg:GridControl.View >
-                            <dxg:TableView            
+                            <dxg:TableView                           
+                                AllowEditing="False"  
                                 PageSize="30"
                                 AllowPaging="True"
                                 IsColumnMenuEnabled ="False"
@@ -297,7 +297,7 @@
                         </Button>
                  
                     </StackPanel>
-                    <dxg:GridControl   Grid.Column="2"
+                    <dxg:GridControl   Grid.Column="2" Style="{StaticResource SiegCustomGridControl}"  
                                 Name="SoftGridControl"
                                 AutoGenerateColumns="None"
                                 SelectionMode="Row"
@@ -306,7 +306,8 @@
                                 ItemsSource="{Binding DataViews}">
                         <dxg:GridControl.View >
                             <dxg:TableView  
-                                                                        
+                                         
+                                AllowEditing="False"  
                                         AllowPaging ="True"    
                                         PageSize="{Binding PageSize, ElementName=PartListTableView}"    
                                         CurrentPageIndex="{Binding CurrentPageIndex,ElementName=PartListTableView,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -516,7 +517,7 @@
                     <Setter Property="HorizontalHeaderContentAlignment"  Value="Center"/>
                 </Style>
             </GroupBox.Resources>
-            <dxg:GridControl 
+            <dxg:GridControl  Style="{StaticResource SiegCustomGridControl}"  
                         Name="Material_List_GridControl"    
                         AutoGenerateColumns="None" 
                         MouseDown="TableView_MouseDown"

@@ -142,6 +142,7 @@
                         <RowDefinition Height="360"/>
                     </Grid.RowDefinitions>
                     <dxg:GridControl   
+                        Style="{StaticResource SiegCustom_CompactGridControl}"
                         FilterGroupSortChanging="GridControl_FilterGroupSortChanging"
                         Name="PartsGridControl"
                         AutoGenerateColumns="None"
@@ -269,7 +270,7 @@
                         </Button>
                     </StackPanel>
                     <dxg:GridControl   Grid.Column="2"
-
+Style="{StaticResource SiegCustom_CompactGridControl}"
                                 FilterGroupSortChanging="GridControl_FilterGroupSortChanging"
                                 Name="SoftGridControl"
                                 AutoGenerateColumns="None"
@@ -592,7 +593,7 @@
                                 </Button.Content>
                             </Button>
                             <Button Content="清除" Command="{Binding CancelCommand}" Width="80" Margin="5,0" Height="30"/>
-                            <Button Content="TEST" Width="80" Click="Button_Click" Margin="5,0" Height="30"/>
+                           <!-- <Button Content="TEST" Width="80" Click="Button_Click" Margin="5,0" Height="30"/>-->
                         </StackPanel>
                     </Grid>
 
@@ -675,11 +676,17 @@
                         <Setter Property="BorderBrush" Value="#0078D7"/>
                         <Setter Property="BorderThickness" Value="0"/>
                     </Style>
-                    <Style TargetType="dxg:GridColumn">
-                        <Setter Property="HorizontalHeaderContentAlignment"  Value="Center"/>
+                    <Style TargetType="dxg:GridColumn" >
+                        <Setter Property="MinWidth" Value="35"/>
+                        <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
+                        <Setter Property="AllowGrouping" Value="false"/>
+                    </Style>
+                    <Style TargetType="dxe:TextEditSettings">
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
                     </Style>
                 </GroupBox.Resources>
                 <dxg:GridControl 
+                    Style="{StaticResource SiegCustom_CompactGridControl}"
                         Name="Material_List_GridControl"    
                         AutoGenerateColumns="None" 
                         MouseDown="TableView_MouseDown"
@@ -705,12 +712,7 @@
                                 SearchPanelNullText="Search Tasks(Ctrl + F)" 
                                 SearchPanelFindMode="Always" 
                                 SearchDelay="0">
-                            <dxg:TableView.CellStyle>
-                                <Style>
-                                    <Setter Property="TextBlock.FontSize" Value="12"/>
-                                    <Setter Property="TextBlock.Foreground" Value="Black"/>
-                                </Style>
-                            </dxg:TableView.CellStyle>
+
                         </dxg:TableView>
                     </dxg:GridControl.View>
                     <dxg:GridColumn FieldName="ExclamationMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" Width="40" FixedWidth="True">
@@ -814,7 +816,7 @@
 
                     </dxg:GridColumn>
                     <dxg:GridColumn FieldName="MaterialNumber"  IsSmart="True" Header="排版編號" AllowEditing="false" >
-                        <dxg:GridColumn.CellTemplate>
+                       <!-- <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <Button 
                                             Command="{Binding OpenPreview}"
@@ -824,7 +826,7 @@
                                             Style="{StaticResource btn_CommonIconKey}"
                                             ToolTip="預覽圖形" />
                             </DataTemplate>
-                        </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn.CellTemplate>-->
                     </dxg:GridColumn>
                     <dxg:GridColumn FieldName=""  IsSmart="True" Header="鋼材類型" AllowEditing="false" />
                     <dxg:GridColumn FieldName="Profile"  IsSmart="True" Header="斷面規格" AllowEditing="false"  />

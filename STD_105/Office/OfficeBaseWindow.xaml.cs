@@ -57,7 +57,7 @@ namespace STD_105.Office
 
         public static void ActivateLoading()
         {
-            manager.ViewModel.Status = "讀取中";
+            manager.ViewModel.Status = "讀取中.";
             manager.Show(null, WindowStartupLocation.CenterScreen, true, InputBlockMode.Window);
         }
 

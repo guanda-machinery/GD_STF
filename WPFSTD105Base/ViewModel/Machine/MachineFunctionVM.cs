@@ -64,6 +64,7 @@ namespace WPFSTD105.ViewModel
             PButton.ClampDown = false;
             PButton.SideClamp = false;
             PButton.EntranceRack = false;
+            PButton.ExportRack = false;
             PButton.Hand = false;
             PButton.DrillWarehouse = false;
             PButton.Volume = false;
