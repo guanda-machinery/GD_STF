@@ -72,7 +72,6 @@
                 </Style.Resources>
             </Style>
         </ResourceDictionary>
-
     </WPFBase:BasePage.Resources>
     <WPFBase:BasePage.DataContext>
         <STD105VM:ProcessingMonitorVM/>
