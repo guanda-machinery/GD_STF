@@ -33,19 +33,19 @@ namespace WPFSTD105.Model
         /// <summary>
         /// 右邊上緣
         /// </summary>
-        public CutPoint UR { get; set; } = new CutPoint();
+        public CutPoint UR { get; set; } = new CutPoint().ConvertToSurrogate();
         /// <summary>
         /// 右邊下緣
         /// </summary>
-        public CutPoint DR { get; set; } = new CutPoint();
+        public CutPoint DR { get; set; } = new CutPoint().ConvertToSurrogate();
         /// <summary>
         /// 左邊上緣
         /// </summary>
-        public CutPoint UL { get; set; } = new CutPoint();
+        public CutPoint UL { get; set; } = new CutPoint().ConvertToSurrogate();
         /// <summary>
         /// 左邊下緣
         /// </summary>
-        public CutPoint DL { get; set; } = new CutPoint();
+        public CutPoint DL { get; set; } = new CutPoint().ConvertToSurrogate();
 
 
         /// <summary>

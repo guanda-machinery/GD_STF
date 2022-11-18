@@ -44,9 +44,10 @@ namespace GD_STD.Data
             State = steelPart.State;
             ID = new List<int>() { steelPart.ID[partIndex] };
             Match = new List<bool>() { steelPart.Match[partIndex] };
-            ShippingNumber = steelAssembly.ShippingNumber[assemblyIndex];
-            Phase = steelAssembly.Phase[assemblyIndex];
-            ShippingDescription = steelAssembly.ShippingDescription[assemblyIndex];
+            //1114 CYH
+            //ShippingNumber = steelAssembly.ShippingNumber[assemblyIndex];
+            //Phase = steelAssembly.Phase[assemblyIndex];
+            //ShippingDescription = steelAssembly.ShippingDescription[assemblyIndex];
             SteelType = Convert.ToInt32(steelPart.Type); //型鋼型態 20220831 張燕華
             H = steelPart.H;
             W = steelPart.W;

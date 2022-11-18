@@ -427,32 +427,54 @@ namespace STD_105.Office
                 /*3D螺栓*/
                 ViewModel.GroupBoltsAttr.GUID = Guid.NewGuid();
 
-
                 Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference, out bool check);
+                if (check)
+                {
+                    ViewModel.Reductions.Add(new Reduction()
+                    {
+                        Recycle = new List<List<Entity>>() { new List<Entity>() { blockReference } },
+                        SelectReference = null,
+                        User = new List<ACTION_USER>() { ACTION_USER.Add }
+                    });
+                }
                 if (bolts.hasOutSteel)
                 {
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
                 }
-                BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
-                if (check)
+                else
                 {
-                    SaveModel(false);//存取檔案
-
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+                    BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                     //不是修改孔位狀態
                     if (!modifyHole)
                     {
-                        ViewModel.Reductions.Add(new Reduction()
-                        {
-                            Recycle = new List<List<Entity>>() { new List<Entity>() { blockReference } },
-                            SelectReference = null,
-                            User = new List<ACTION_USER>() { ACTION_USER.Add }
-                        }, new Reduction()
+                        ViewModel.Reductions.Add(new Reduction()                        
                         {
                             Recycle = new List<List<Entity>>() { new List<Entity>() { referenceBolts } },
                             SelectReference = null,
                             User = new List<ACTION_USER>() { ACTION_USER.Add }
                         });
                     }
+                }
+                if (check)
+                {
+                    SaveModel(false);//存取檔案
+
+                    //不是修改孔位狀態
+                    //if (!modifyHole)
+                    //{
+                        //ViewModel.Reductions.Add(new Reduction()
+                        //{
+                            //Recycle = new List<List<Entity>>() { new List<Entity>() { blockReference } },
+                            //SelectReference = null,
+                            //User = new List<ACTION_USER>() { ACTION_USER.Add }
+                        //}, new Reduction()
+                        //{
+                            //Recycle = new List<List<Entity>>() { new List<Entity>() { referenceBolts } },
+                            //SelectReference = null,
+                            //User = new List<ACTION_USER>() { ACTION_USER.Add }
+                        //});
+                    //}
                     //刷新模型
                     model.Refresh();
                     drawing.Refresh();
@@ -1860,8 +1882,11 @@ namespace STD_105.Office
                         {
                             hasOutSteel = true;
                         }
-                        BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
-                        lstBoltsCutPoint.Add(bolts);
+                        else
+                        {
+                            BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                            lstBoltsCutPoint.Add(bolts);
+                        }
                     }
 
                     break;
@@ -1938,8 +1963,11 @@ namespace STD_105.Office
                         {
                             hasOutSteel = true;
                         }
-                        BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
-                        lstBoltsCutPoint.Add(bolts);
+                        else
+                        {
+                            BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                            lstBoltsCutPoint.Add(bolts);
+                        }
                     }
 
                     break;
@@ -2257,16 +2285,11 @@ namespace STD_105.Office
             model.Refresh();
             drawing.Refresh();
 
-            if (hasOutSteel)
-            {
-                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
-            }
-
+            ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = hasOutSteel;
 
             if (!fAddPartAndBolt)   //  是否新增零件及孔群 : false 直接存檔
             {
                 SaveModel(false);//存取檔案 
-
             }
             else
             {

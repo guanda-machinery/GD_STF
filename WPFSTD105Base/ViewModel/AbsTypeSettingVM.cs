@@ -57,6 +57,7 @@ namespace WPFSTD105
             STDSerialization ser = new STDSerialization();
             ObservableCollection<BomProperty> bomProperties = CommonViewModel.ProjectProperty.BomProperties; //報表屬性設定檔
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();//模型構件列表
+            
             //20220824 蘇 新增icommand
             Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();//模型構件列表
             foreach (KeyValuePair<string, ObservableCollection<SteelPart>> eachPart in part)
@@ -71,12 +72,13 @@ namespace WPFSTD105
                         {
                             for (int i = 0; i < item.Father.Count; i++)  //逐步展開零件  id or match
                             {
-                                int index = assemblies.FindIndex(el => el.ID.Contains(item.Father[i])); //找出構件列表內是零件的 Father 位置
+                                int index = assemblies.FindIndex(el => el.ID.Contains(item.Father[i]) && el.Length == item.Length); //找出構件列表內是零件的 Father 位置
                                 if (index == -1) //找不到物件
                                 {
                                     //throw new Exception("index 不可以是 -1");
                                     continue;
                                 }
+
                                 int idIndex = assemblies[index].ID.IndexOf(item.Father[i]); //找出構件 id 所在的陣列位置
                                 TypeSettingDataView view = new TypeSettingDataView(item, assemblies[index], idIndex, i);
                                 view.SortCount = 0;
@@ -1150,6 +1152,8 @@ namespace WPFSTD105
                             MaterialDataViews[MaterialDataViews.Count - 1].Cut = MatchSetting.Cut;
                             for (int c = 0; c < _[minIndex][q].PartNumber.Length; c++)
                             {
+                                //1111 CYH dataViewIndex是從相同零件編號的零件群中找起，並不管零件與構件的對應關係，因此在排版設定中選擇的零件若在其同零件編號的後面，則配對後在排版設定中會顯示已配對的零件
+                                //會從同零件編號群中的第一個開始標記，而不是一開始所選擇的零件
                                 int dataViewIndex = DataViews.FindIndex(el => el.PartNumber == _[minIndex][q].PartNumber[c] && el.Match.FindIndex(el2 => el2 == true) != -1);
 
                                 MaterialDataViews[MaterialDataViews.Count - 1].Parts.Add(DataViews[dataViewIndex]);
