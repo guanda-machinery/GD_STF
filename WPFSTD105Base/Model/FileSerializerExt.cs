@@ -15,6 +15,8 @@ namespace WPFSTD105.Model
 {
     /// <summary>
     /// 為Eyeshot專有文件格式定義擴展名。
+    /// eyeshot的檔案是binary format，所以得用二進制的檔案儲存方式
+    /// https://devdept.zendesk.com/hc/en-us/articles/360003318873-Eyeshot-Proprietary-File-Format
     /// </summary>
     public class FileSerializerExt : FileSerializer
     {
@@ -84,7 +86,8 @@ namespace WPFSTD105.Model
             {
                 meta.Add(i + 1, vs[i]);
             }
-            meta.SetCallbacks(null, null, data.FullName, null);
+            //meta.SetCallbacks(null, null, data.FullName, null);
+            meta.SetCallbacks(null, null, "BeforeDeserialize", null);
             meta.UseConstructor = false; // 避免使用無參數構造函數。
         }
 #pragma warning disable CS1591 // 遺漏公用可見類型或成員 'FileSerializerExt.GetTypeForObject(string)' 的 XML 註解
