@@ -141,9 +141,10 @@ namespace WPFSTD105
             string dataName = values.MaterialNumber
                                                             .Where(el => el != 0)
                                                             .Select(el => Convert.ToChar(el).ToString())
-                                                            .Aggregate((str1, str2) => str1+ str2);
+                                                            .Aggregate((str1, str2) => str1 + str2);
 
             GZipSerializeBinary(values, $@"{ApplicationVM.DirectoryWorkMaterialBackup()}\{dataName}.db");
+
         }
         /// <summary>
         /// 讀取工作陣列列表 (壓縮)

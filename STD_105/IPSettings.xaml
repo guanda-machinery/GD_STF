@@ -4,7 +4,8 @@
         xmlns:Setting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:STD_105"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:STD105ValidRule="clr-namespace:STD_105.ValidationRules"
         Title="IP設定"
         Topmost="True"
         Width="400"
@@ -12,6 +13,8 @@
         WindowStartupLocation="Manual"
         WindowStyle="None"
         mc:Ignorable="d">
+    <Window.Resources>
+    </Window.Resources>
     <Border CornerRadius="5"
             Background="{StaticResource solidclr_CreamyWhite}">
         <Grid>
@@ -26,18 +29,28 @@
                 <RowDefinition />
                 <RowDefinition  Height="1.5*"/>
             </Grid.RowDefinitions>
-            <TextBlock Text="Address："
+            <TextBlock Text="通訊地址："
                        Foreground="{ StaticResource solidclr_Gray }" 
-                       Margin="5"/>
-            <TextBox Grid.Row="1"
-                     Text="{Binding Address, Source={x:Static Setting:SofSetting.Default}}"
+                       Margin="10"/>
+            <!--   Text="{Binding Address, Source={x:Static Setting:SofSetting.Default}}"-->
+            <TextBox Grid.Row="1"  Name="AddressTextBox"
                      FontSize="20"
                      Foreground="{ StaticResource solidclr_DimGray }" 
-                     Margin="10"/>
-            <Button Grid.Row="2"
+                     Margin="10">
+                <TextBox.Text>
+                    <Binding Path="Address" Source="{x:Static Setting:SofSetting.Default}" UpdateSourceTrigger="PropertyChanged" >
+                        <Binding.ValidationRules>
+                            <STD105ValidRule:CheckIPAddressPortStringRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Button Grid.Row="2" Name="CorrectButton"
+                    IsEnabled="{Binding ElementName=AddressTextBox , Path=(Validation.HasError) ,Converter={local:AntiLogicConverter}}"
                     Content="確定"
+                    Width="120" Height="40"
                     HorizontalAlignment="Right"
-                    Style="{ StaticResource btn_CommonFunctionKey_STD }"
+                    Style="{ StaticResource SiegCustomButtonGray }" BorderThickness="1" BorderBrush="DarkGray"
                     PreviewMouseLeftButtonDown="Button_PreviewMouseLeftButtonDown_1" 
                     Margin="10"/>
         </Grid>

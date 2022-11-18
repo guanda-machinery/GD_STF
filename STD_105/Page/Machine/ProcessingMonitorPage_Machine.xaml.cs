@@ -21,7 +21,6 @@ using WPFWindowsBase;
 using WPFSTD105;
 using WPFSTD105.Attribute;
 using WPFSTD105.Model;
-using static WPFSTD105.CodesysIIS;
 using devDept.Eyeshot;
 using WPFSTD105.ViewModel;
 using DevExpress.Xpf.Grid;
@@ -44,8 +43,6 @@ namespace STD_105
     /// </summary>
     public partial class ProcessingMonitorPage_Machine : BasePage<ProcessingMonitorVM>
     {
-
-
      //   public SplashScreenManager ScreenManager { get; set; } = SplashScreenManager.Create(() => new WaitIndicator(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
 
         public ObSettingVM ViewModel { get; set; } = new ObSettingVM();

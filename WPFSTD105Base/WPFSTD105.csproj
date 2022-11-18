@@ -464,6 +464,7 @@
     <Compile Include="MachineAndPhoneAPI\Models\EnableAppPairing.cs" />
     <Compile Include="MachineAndPhoneAPI\Models\RegisterAssembly.cs" />
     <Compile Include="MachineAndPhoneAPI\Models\UnreigisterAssembly.cs" />
+    <Compile Include="Model\DrillBolts.cs" />
     <Compile Include="Model\OperatingLog.cs" />
     <Compile Include="UserControls\ProcessingScreenWindow.xaml.cs">
       <DependentUpon>ProcessingScreenWindow.xaml</DependentUpon>
@@ -473,7 +474,6 @@
     <Compile Include="ViewModel\Machine\Dpad\joystick\Dpad_Joystick_ViewModel.cs" />
     <Compile Include="ViewModel\Machine\Dpad\joystick\ToolMagazineControl_ViewModel.cs" />
     <Compile Include="ViewModel\Machine\MachineFunctionVM.cs" />
-    <Compile Include="ViewModel\ProcessingMonitor_MachineVM.cs" />
     <Compile Include="WordToPdfService.cs" />
     <Compile Include="WordCutService.cs" />
     <Compile Include="WordBuyService.cs" />
@@ -644,6 +644,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CodesysIIS\CodesysIIS.csproj">
+      <Project>{3E7AA2C5-871D-4C77-A798-85CDF57A96BC}</Project>
+      <Name>CodesysIIS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GD_STD.Data\GD_STD.Data.csproj">
       <Project>{390C0859-C722-45E8-9B21-5FA41CA5C18C}</Project>
       <Name>GD_STD.Data</Name>

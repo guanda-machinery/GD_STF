@@ -137,10 +137,11 @@ namespace MachineAndPhoneAPI
             _preProcessing.insert = false;
             _preProcessing.data = new List<DataList>();
             var ProjectNameBase64 = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(ProjectName.ToCharArray()));
-            {
-                new DataList() { materialNumber = Register_MaterialNumber, smeltingNumber = "1", source = "1", length = Register_length.ToString(), id = ProjectNameBase64 + Register_MaterialNumber, material = Register_material, profile = Register_profile };
-            };
-            var body = JsonConvert.SerializeObject(_preProcessing);
+
+            var ReadyToRegisterMaterialData = new DataList() { materialNumber = Register_MaterialNumber, smeltingNumber = "1", source = "1", length = Register_length.ToString(), id = ProjectNameBase64 + Register_MaterialNumber, material = Register_material, profile = Register_profile };
+            _preProcessing.data.Add(ReadyToRegisterMaterialData);
+
+           var body = JsonConvert.SerializeObject(_preProcessing);
             request.AddParameter("application/json", body, ParameterType.RequestBody);
             var response = client.Execute(request);
 

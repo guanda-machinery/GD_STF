@@ -1040,19 +1040,21 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <Button x:Name="YesButton1"
-                                        Background="{StaticResource solidclr_ButtonBlue}"
-                                        Foreground="{ StaticResource solidclr_CreamyWhite }"
                                         Command="{Binding OpenProjectCommand}"
                                         CommandParameter="{Binding SelectedItem, ElementName=InputTextBox1}"
-                                        Content="{DynamicResource LANGUAGE_OpenProject}"
-                                        Style="{StaticResource btn_Submit}" />
+                                        Content="{DynamicResource LANGUAGE_OpenProject}"        
+                                        Width="160" 
+                                        Height="50" 
+                                        FontSize="20" 
+                                    Style="{StaticResource SiegCustomButtonBlue}" />
                                 <Button Grid.Column="1"
                                         x:Name="NoButton1"
-                                        Background="{StaticResource solidclr_LightGray}"
-                                        Foreground="{ StaticResource solidclr_CreamyWhite }"
                                         Command="{Binding CollapsedCommand}"
-                                        Content="{DynamicResource LANGUAGE_Cancel}"
-                                        Style="{StaticResource btn_Cancel}" />
+                                        Content="{DynamicResource LANGUAGE_Cancel}"                                  
+                                        Width="160" 
+                                        Height="50" 
+                                        FontSize="20" 
+                                        Style="{StaticResource SiegCustomButtonWhite}" />
                             </Grid>
                         </StackPanel>
                     </Border>
