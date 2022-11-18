@@ -346,7 +346,7 @@ namespace WPFSTD105
                 SerializationMode = devDept.Serialization.serializationType.WithLengthPrefix,
                 SelectedOnly = false,
                 Purge = false, Blocks = model.Blocks, Entities = model.Entities, 
-                }, $@"{path}\{dataName}.dm", new FileSerializerExt( devDept.Serialization.contentType.GeometryAndTessellation));    
+                }, $@"{path}\{dataName}.dm", new FileSerializerExt());    
             writeFile.DoWork();//存取檔案
         }
         /// <summary>
@@ -386,7 +386,7 @@ namespace WPFSTD105
         {
             try
             {
-                ReadFile result = new ReadFile($@"{path}\{dataName}.dm", new FileSerializerExt(devDept.Serialization.contentType.GeometryAndTessellation));
+                ReadFile result = new ReadFile($@"{path}\{dataName}.dm", new FileSerializerExt());
                 return result;
             }
             catch (Exception)

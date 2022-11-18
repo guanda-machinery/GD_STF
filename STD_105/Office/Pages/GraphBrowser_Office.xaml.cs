@@ -392,15 +392,6 @@ namespace STD_105.Office
                 //model.Entities.Add(blockReference);//加入參考圖塊到模型
 
                 Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference,out bool check);
-                if (bolts.hasOutSteel)
-                {
-                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
-                }
-                BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
-
-
-                SaveModel();//存取檔案
-
                 //不是修改孔位狀態
                 if (!modifyHole)
                 {
@@ -409,13 +400,31 @@ namespace STD_105.Office
                         Recycle = new List<List<Entity>>() { new List<Entity>() { blockReference } },
                         SelectReference = null,
                         User = new List<ACTION_USER>() { ACTION_USER.Add }
-                    }, new Reduction()
-                    {
-                        Recycle = new List<List<Entity>>() { new List<Entity>() { referenceBolts } },
-                        SelectReference = null,
-                        User = new List<ACTION_USER>() { ACTION_USER.Add }
                     });
                 }
+                if (bolts.hasOutSteel)
+                {
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                }
+                else
+                {
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+                    BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                                                                     //不是修改孔位狀態
+                    if (!modifyHole)
+                    {
+                        ViewModel.Reductions.Add(new Reduction()
+                        {
+                            Recycle = new List<List<Entity>>() { new List<Entity>() { referenceBolts } },
+                            SelectReference = null,
+                            User = new List<ACTION_USER>() { ACTION_USER.Add }
+                        });
+                    }
+                }
+
+                SaveModel();//存取檔案
+
+                
                 //刷新模型
                 model.Refresh();
                 drawing.Refresh();
@@ -1026,34 +1035,34 @@ namespace STD_105.Office
                 Esc();
                 esc.Visibility = Visibility.Collapsed;//關閉取消功能
             }
-            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.P)) //俯視圖
-            {
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + P");
-#endif
-                model.InitialView = viewType.Top;
-                model.ZoomFit();//在視口控件的工作區中適合整個模型。
-            }
-            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Z)) //退回
-            {
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z");
-#endif
-                ViewModel.Reductions.Previous();
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z 完成");
-#endif
-            }
-            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Y)) //退回
-            {
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y");
-#endif
-                ViewModel.Reductions.Next();//回到上一個動作
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y 完成");
-#endif
-            }
+//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.P)) //俯視圖
+//            {
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + P");
+//#endif
+//                model.InitialView = viewType.Top;
+//                model.ZoomFit();//在視口控件的工作區中適合整個模型。
+//            }
+//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Z)) //退回
+//            {
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z");
+//#endif
+//                ViewModel.Reductions.Previous();
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z 完成");
+//#endif
+//            }
+//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Y)) //退回
+//            {
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y");
+//#endif
+//                ViewModel.Reductions.Next();//回到上一個動作
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y 完成");
+//#endif
+//            }
             model.Invalidate();
             drawing.Invalidate();
         }
@@ -1481,7 +1490,6 @@ namespace STD_105.Office
                     {
                         hasOutSteel = true;
                     }
-
                     Add2DHole((Bolts3DBlock)model.Blocks[botsBlock.BlockName], false);//加入孔位不刷新 2d 視圖
                 }
                 if (hasOutSteel) { 

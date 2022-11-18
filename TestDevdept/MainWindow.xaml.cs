@@ -198,18 +198,37 @@ namespace TestDevdept
             vMesh.MergeWith(oMesh);
             vMesh.MergeWith(uMesh);
             //model1.Entities.Add(vMesh);
-            //     model1.Blocks[steelBlock.BlockName].Entities.Add(vMesh);
+           //     model1.Blocks[steelBlock.BlockName].Entities.Add(vMesh);
 
-
+            
 
 
 
             SteelAttr.Type = GD_STD.Enum.OBJECT_TYPE.BH;
 
-            Steel3DBlock asd = new Steel3DBlock(Steel3DBlock.GetProfile(SteelAttr));
+           Steel3DBlock asd = new Steel3DBlock(Steel3DBlock.GetProfile(SteelAttr));
             Mesh ccc = Steel3DBlock.GetProfile(SteelAttr);
 
 
+             
+
+            ccc.Color = ColorTranslator.FromHtml(WPFSTD105.Properties.SofSetting.Default.Surplus);
+
+          
+                 
+           // Solid[] seccut = Solid.Difference(aaaaaaa.ConvertToSolid(), vMesh.ConvertToSolid());
+
+               Solid[] resultSolid1 = Solid.Difference(ccc.ConvertToSolid(), vMesh.ConvertToSolid());
+
+
+
+            ////EntityList result =  entities.Where(el => !((BlockReference)el).Attributes.ContainsKey("Cut")).ToList();
+
+
+
+            //    model1.Entities.AddRange(resultSolid1,0, System.Drawing.Color.FromArgb(255, 0, 0));
+
+            model1.Entities.Add(ccc);
 
 
             ccc.Color = ColorTranslator.FromHtml(WPFSTD105.Properties.SofSetting.Default.Surplus);

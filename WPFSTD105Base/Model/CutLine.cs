@@ -66,10 +66,10 @@ namespace WPFSTD105.Model
 
             //double x = 200; //延伸距離
 
-            result[2].X -= x;
-            result[2].Y += Math.Tan(alpha) * x;
-            result[1].X += Math.Tan(beta) * x;
-            result[1].Y -= x;
+            //result[2].X -= x;
+            //result[2].Y += Math.Tan(alpha) * x;
+            //result[1].X += Math.Tan(beta) * x;
+            //result[1].Y -= x;
             return result;
         }
         /// <summary>
@@ -89,10 +89,10 @@ namespace WPFSTD105.Model
 
             //double x = 200; //延伸距離
 
-            result[2].X += x;
-            result[2].Y += Math.Tan(alpha) * x;
-            result[0].X -= Math.Tan(beta) * x;
-            result[0].Y -= x;
+            //result[2].X += x;
+            //result[2].Y += Math.Tan(alpha) * x;
+            //result[0].X -= Math.Tan(beta) * x;
+            //result[0].Y -= x;
            
             return result;
         }
@@ -111,10 +111,10 @@ namespace WPFSTD105.Model
             double alpha = Alpha(result[1].Y - result[0].Y, result[2].X);
             double beta = Math.PI / 2 - alpha;
 
-            result[2].X += Math.Tan(beta) * x;
-            result[2].Y += x;
-            result[0].X -= x;
-            result[0].Y -= Math.Tan(alpha) * x;
+            //result[2].X += Math.Tan(beta) * x;
+            //result[2].Y += x;
+            //result[0].X -= x;
+            //result[0].Y -= Math.Tan(alpha) * x;
 
             return result;
         }
@@ -135,19 +135,21 @@ namespace WPFSTD105.Model
 
             //double x = 200; //延伸距離
 
-            result[0].X -= Math.Tan(beta) * x;
-            result[0].Y +=  x;
-            result[1].X += x;
-            result[1].Y -= Math.Tan(beta) * x;
+            //result[0].X -= Math.Tan(beta) * x;
+            //result[0].Y += x;
+            //result[1].X += x;
+            //result[1].Y -= Math.Tan(beta) * x;
             return result;
         }
         /// <summary>
-        /// 取得阿爾法 (α)
+        /// 取得阿爾法 (α),
         /// </summary>
         /// <returns></returns>
         private double Alpha(double a, double b)
         {
+            // 斜邊
             double c = Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));
+            // a/斜邊
             return Math.Asin(a / c);
         }
     }

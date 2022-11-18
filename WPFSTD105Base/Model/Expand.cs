@@ -754,7 +754,16 @@ namespace WPFSTD105.Model
             ObSettingVM obvm = new ObSettingVM();
             RunHypotenusePoint(model, obvm);
 
-
+            if (!Bolts3DBlock.CheckBolts(model))
+            {
+                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
+            }
+            else
+            {
+                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+                ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = false;
+            }
 
 
 

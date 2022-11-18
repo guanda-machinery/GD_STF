@@ -35,11 +35,11 @@ namespace WPFSTD105.Surrogate
         /// <inheritdoc/>
         public string PartNumber { get; set; }
         /// <inheritdoc/>                                                                                1
-        public CutListSurrogate PointBack { get; set; }
+        public CutListSurrogate PointBack { get; set; } = new CutList().ConvertToSurrogate();
         /// <inheritdoc/>
-        public CutListSurrogate PointFront { get; set; }
+        public CutListSurrogate PointFront { get; set; } = new CutList().ConvertToSurrogate();
         /// <inheritdoc/>
-        public CutListSurrogate PointTop { get; set; }
+        public CutListSurrogate PointTop { get; set; } = new CutList().ConvertToSurrogate();
         /// <inheritdoc/>
         public string Profile { get; set; }
         /// <inheritdoc/>

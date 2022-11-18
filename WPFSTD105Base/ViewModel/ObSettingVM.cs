@@ -577,7 +577,7 @@ namespace WPFSTD105.ViewModel
                 else
                     _steelAttr = ProfileList[value];
 
-                SteelAttr = (SteelAttr)_steelAttr.DeepClone();
+                Steelbuffer = (SteelAttr)_steelAttr.DeepClone();
             }
         }
 
@@ -1892,8 +1892,8 @@ namespace WPFSTD105.ViewModel
             foreach (var item in group)
             {
                 double Per = (ItemCount * 100) / group.Count;
-                ProcessingScreenWin.ViewModel.Status = $"正在讀取{item.PartNumber} - {ItemCount} / {group.Count}";
-                ProcessingScreenWin.ViewModel.Progress = Per;
+                //ProcessingScreenWin.ViewModel.Status = $"正在讀取{item.PartNumber} - {ItemCount} / {group.Count}";
+                //ProcessingScreenWin.ViewModel.Progress = Per;
 
                 //ProfileType = item.SteelType;
                 ProductSettingsPageViewModel aa = new ProductSettingsPageViewModel()
