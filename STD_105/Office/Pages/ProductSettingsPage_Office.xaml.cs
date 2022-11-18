@@ -2789,6 +2789,7 @@ namespace STD_105.Office
             temp.steelAttr.PartNumber = row.steelAttr.PartNumber;
             temp.steelAttr.Length = double.Parse(row.steelAttr.Length.ToString());
             temp.Length = double.Parse(row.steelAttr.Length.ToString());
+            temp.steelAttr.Kg = float.Parse(row.steelAttr.Kg.ToString());
             temp.steelAttr.Weight = double.Parse(row.steelAttr.Weight.ToString());
             temp.Weight = double.Parse(row.steelAttr.Weight.ToString());
             temp.Count = row.Count;
@@ -2807,6 +2808,7 @@ namespace STD_105.Office
             temp.steelAttr.Profile = row.steelAttr.Profile;
             temp.Profile = row.steelAttr.Profile;
             temp.SteelType = (int)row.steelAttr.Type;
+            temp.steelAttr.Type = row.steelAttr.Type;
             temp.Type = row.steelAttr.Type;
             temp.TypeDesc = row.TypeDesc;
             temp.SteelType = row.SteelType;
@@ -2963,6 +2965,7 @@ namespace STD_105.Office
             steelAttr.AsseNumber = ViewModel.AssemblyNumberProperty;
             steelAttr.PartNumber = ViewModel.PartNumberProperty;
             steelAttr.Length = ViewModel.ProductLengthProperty;
+            steelAttr.Kg = ViewModel.CurrentPartSteelAttr.Kg;
             steelAttr.Weight = ViewModel.ProductWeightProperty;
             steelAttr.Name = ViewModel.ProductNameProperty;
             steelAttr.Material = ViewModel.ProductMaterialProperty;
@@ -4332,6 +4335,7 @@ namespace STD_105.Office
 
             steelPart.Father = ass.ID;
             steelPart.Profile = sa.Profile.Replace("*", "X").Replace(" ", "");
+            steelPart.UnitWeight = sa.Kg;
             steelPart.ExclamationMark = sa.ExclamationMark;
 
             if (pf == null)
