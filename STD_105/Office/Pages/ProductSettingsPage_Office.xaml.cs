@@ -1087,9 +1087,9 @@ namespace STD_105.Office
                     steelAttr.Creation = DateTime.Now;
                     steelAttr.Revise = DateTime.Now;
                     //modify = (BlockReference)model.Blocks[1].Entities[0];
-                    //var block1 = new Steel3DBlock(Steel3DBlock.GetProfile(steelAttr));//改變讀取到的圖塊變成自訂義格式
-                    model.Blocks[1].Entities[0].EntityData = steelAttr;
-                    var block1 = new Steel3DBlock((Mesh)(model.Blocks[1].Entities[0]));//改變讀取到的圖塊變成自訂義格式
+                    var block1 = new Steel3DBlock(Steel3DBlock.GetProfile(steelAttr));//改變讀取到的圖塊變成自訂義格式
+                    //model.Blocks[1].Entities[0].EntityData = steelAttr;
+                    //var block1 = new Steel3DBlock((Mesh)(model.Blocks[1].Entities[0]));//改變讀取到的圖塊變成自訂義格式
                     model.SetCurrent(null);
                     if (model.Blocks.Count > 1)
                     {
@@ -1118,6 +1118,8 @@ namespace STD_105.Office
                     steel2D = new Steel2DBlock((Mesh)block1.Entities[0], "123").Entities.ToList();
                     Steel2DBlock steel2DBlock2 = (Steel2DBlock)drawing.Blocks[reference2D.BlockName];//drawing.CurrentBlockReference.BlockName→1
                     steel2DBlock2.ChangeMesh((Mesh)block1.Entities[0]);
+                    
+                    
                     bool hasOutSteel = false;
                     List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
                     foreach (GroupBoltsAttr bolt in groups)
@@ -1162,7 +1164,7 @@ namespace STD_105.Office
                     //刪除指定物件
                     //model.Blocks[1].Entities[0] = block1.Entities[0];
                     //model.Entities.RemoveAt(model.Entities.Count() - 1);
-                    //drawing.Entities.Clear();
+                    drawing.Entities.Clear();
                     //清空選擇物件
                     ViewModel.Select2DItem.Clear();
                     ViewModel.Select3DItem.Clear();
@@ -1173,7 +1175,7 @@ namespace STD_105.Office
                     ViewModel.Reductions.AddContinuous(new List<Entity>() { (Mesh)block1.Entities[0] }, steel2D);
                     //model.Entities.Insert(model.Entities.Count() - 1, (Mesh)block1.Entities[0]);
 
-                    //drawing.Entities.AddRange(steel2D);
+                    drawing.Entities.AddRange(steel2D);
                 }
 
                 if (!Bolts3DBlock.CheckBolts(model))
