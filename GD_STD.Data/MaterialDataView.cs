@@ -29,7 +29,7 @@ namespace GD_STD.Data
     /// 素材組合
     /// </summary>
     [Serializable]
-    public class MaterialDataView : WPFWindowsBase.BaseViewModel, IProfile, IMatchSetting
+    public class MaterialDataView : WPFWindowsBase.BaseViewModel, IProfile, IMatchSetting 
     {
         /// <summary>
         /// 長度列表
@@ -376,6 +376,8 @@ namespace GD_STD.Data
             }
             return false;
         }
+
+
         #endregion
 
 
@@ -460,4 +462,6 @@ namespace GD_STD.Data
 
 
     }
+
+
 }

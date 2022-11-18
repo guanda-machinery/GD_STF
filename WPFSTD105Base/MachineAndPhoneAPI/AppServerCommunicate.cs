@@ -123,6 +123,10 @@ namespace MachineAndPhoneAPI
         }
 
 
+        public static string StringToBase64Converter(string SourceString)
+        {
+           return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(SourceString.ToCharArray()));
+        }
         /// <summary>
         /// 機台呼叫註冊配料
         /// </summary>
@@ -136,7 +140,8 @@ namespace MachineAndPhoneAPI
             _preProcessing.matchMaterial = false;
             _preProcessing.insert = false;
             _preProcessing.data = new List<DataList>();
-            var ProjectNameBase64 = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(ProjectName.ToCharArray()));
+
+            var ProjectNameBase64 =StringToBase64Converter(ProjectName);
 
             var ReadyToRegisterMaterialData = new DataList() { materialNumber = Register_MaterialNumber, smeltingNumber = "1", source = "1", length = Register_length.ToString(), id = ProjectNameBase64 + Register_MaterialNumber, material = Register_material, profile = Register_profile };
             _preProcessing.data.Add(ReadyToRegisterMaterialData);

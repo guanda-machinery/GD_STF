@@ -51,6 +51,7 @@
             <!-- accent -->
             <SolidColorBrush x:Key="SecondaryHueMidForegroundBrush" Color="#FFFFFF"/>
             <Style x:Key="ColorRow" TargetType="dxg:GridColumn">
+                <Setter Property="HorizontalHeaderContentAlignment"  Value="Center"/>
                 <Style.Resources>
                     <Style TargetType="dxg:RowControl">
                         <Style.Triggers>
@@ -71,6 +72,56 @@
                     </Style>
                 </Style.Resources>
             </Style>
+
+            <Style x:Key="SiegCustomBlackMessageGridControl" TargetType="dxg:GridControl">
+                <Style.Resources>
+                    <Style TargetType="dxg:TableView">
+                        <Setter Property="CellStyle">
+                            <Setter.Value>
+                                <Style TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
+                                    <Setter Property="TextBlock.FontSize" Value="14"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Foreground" Value="{Binding Row.IsAlert , Converter={local:BooleanToForefroundConverter} ,ConverterParameter={StaticResource solidclr_WhiteSmoke}}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="RowStyle">
+                            <Setter.Value>
+                                <Style TargetType="{x:Type dxg:RowControl}">
+                                    <Setter Property="Foreground" Value="{Binding Row.IsAlert , Converter={local:BooleanToForefroundConverter} ,ConverterParameter={StaticResource solidclr_White}}"/>
+                                    <Style.Triggers>
+                                        <!--IsSelected只在複選時有效 會和IsFocusedRow互相覆蓋-->
+                                        <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
+                                            <Setter Property="Background" Value="DimGray" />
+                                            <Setter Property="Foreground" Value="{Binding Row.IsAlert , Converter={local:BooleanToForefroundConverter} ,ConverterParameter={StaticResource solidclr_White}}" />
+                                        </DataTrigger>
+                                        <!--   <Trigger Property="dxg:GridViewBase.IsFocusedRow" Value="True">
+                                                <Setter Property="Foreground" Value="LightYellow"/>
+                                                <Setter Property="Background" Value="Blue" />
+                                            </Trigger>-->
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#67b32c" />
+                                            <Setter Property="Foreground" Value="{Binding Row.IsAlert , Converter={local:BooleanToForefroundConverter} ,ConverterParameter={StaticResource solidclr_White}}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Style.Resources>
+            </Style>
+
+
+            
+            
+            
+            
+            
+            
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
     <WPFBase:BasePage.DataContext>
@@ -265,7 +316,7 @@
                         <dxg:GridControl Margin="-11"  Cursor="Arrow" 
                                              Name="MachiningCombinational_List_GridControl"    
                                              AutoGenerateColumns="None" 
-
+                                         Style="{StaticResource SiegCustomGridControl}"
                                              SelectionMode="Row"
                                              SelectedItem="{Binding Finish_UndoneDataViews_SelectedItem}"
                                              ItemsSource="{Binding Finish_UndoneDataViews}"
@@ -341,8 +392,7 @@
                             <dxg:GridColumn FieldName="MaterialNumber"  IsSmart="True" Header="排版編號" Width="80" />
                             <dxg:GridColumn FieldName="Profile"  IsSmart="True" Header="斷面規格"  Width="120"  />
                             <dxg:GridColumn FieldName="Material"  IsSmart="True" Header="材質" Width="60"   />
-                            <dxg:GridColumn FieldName=""  IsSmart="True" Header="零件數量" Width="45"  />
-                            <dxg:GridColumn FieldName=""  IsSmart="True" Header="已完成" Width="45"  />
+                            <dxg:GridColumn Binding="{c:Binding Parts.Count}"  IsSmart="True" Header="零件數量" Width="60"  />
                             <dxg:GridColumn FieldName="LengthStr"  IsSmart="True" Header="素材長" Width="60"  />
                             <dxg:GridColumn Binding="{c:Binding LengthStr-Loss}"   IsSmart="True" Header="餘長" Width="auto"    >
                                 <dxg:GridColumn.EditSettings>
@@ -409,15 +459,23 @@ AllowEditing="False"
                         </Grid>
                     </GroupBox.Header>
                     <dxg:GridControl Margin="0,-1,0,-1" 
+                        Style="{StaticResource SiegCustomGridControl}"
                         Name="MachiningSchedule_List_GridControl"    
                         AutoGenerateColumns="None" 
-                        Grid.Row="2"  Width="198"
+                        Grid.Row="2"  Width="159"
                         SelectedItems="{Binding ElementName=MachiningCombinational_List_GridControl,Path=SelectedItems}"
                         ItemsSource="{Binding ElementName=MachiningCombinational_List_GridControl,Path=ItemsSource}"
                         SelectionMode="Row"
                         MinHeight="200"  MaxHeight="300">
                         <dxg:GridControl.View >
-                            <dxg:TableView            
+                            <dxg:TableView           
+                                                                                 AllowEditing="False"              
+                                        IsColumnMenuEnabled ="False"
+                                       AllowSorting="false"
+                                       AllowColumnFiltering="False"
+                                       AllowColumnMoving="False"
+                                       
+                                
                         Name="MachiningSchedule_List_TableView"
                             ScrollViewer.ScrollChanged="ScrollOwner_ScrollChanged"
                             SearchString="{Binding MaterialGridControlSearchString,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged }"
@@ -438,8 +496,9 @@ AllowEditing="False"
                                 </dxg:TableView.CellStyle>
                             </dxg:TableView>
                         </dxg:GridControl.View>
-                        <dxg:GridColumn FieldName=""  MaxWidth="40" MinWidth="40"  FixedWidth="True" Header="狀態" />
-                        <dxg:GridColumn FieldName="Position" MaxWidth="70" MinWidth="70"  FixedWidth="True" Header="位置" Style="{StaticResource ColorRow}"  />
+                       <!-- <dxg:GridColumn FieldName=""  MaxWidth="40" MinWidth="40"  FixedWidth="True" Header="狀態" />-->
+                        <dxg:GridColumn FieldName="Position" MaxWidth="70" MinWidth="70"  FixedWidth="True" Header="位置"
+                                        Style="{StaticResource ColorRow}"  />
 
 
                         <dxg:GridColumn Binding="{Binding Schedule}"
@@ -907,59 +966,13 @@ AllowEditing="False"
                  BorderThickness="2" 
                  BorderBrush="#595E60" >
                 <dxg:GridControl  Background="Transparent" 
+                                  Style="{StaticResource SiegCustomBlackMessageGridControl}"
                     AutoGenerateColumns="None"
                     SelectionMode="Row"
                     ItemsSource="{Binding LogDataList , UpdateSourceTrigger=PropertyChanged ,NotifyOnSourceUpdated=True}"
                         ItemsSourceChanged="MachineMessage_ItemsSourceChanged"
                     MaxHeight="2000"    >
-                    <dxg:GridControl.Resources>
-                        <Style TargetType="dxg:GridColumnHeader">
-                            <Setter Property="FontWeight" Value="Bold"/>
-                            <Setter Property="FontSize" Value="14"/>
-                        </Style>
 
-                        <Style TargetType="dxg:TableView">
-                            <Setter Property="CellStyle">
-                                <Setter.Value>
-                                    <Style TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
-                                        <Setter Property="TextBlock.FontSize" Value="14"/>
-                                        <Style.Triggers>
-                                            <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
-                                                <Setter Property="Background" Value="Transparent"/>
-                                                <Setter Property="Foreground" Value="{Binding Row.IsAlert , Converter={local:BooleanToForefroundConverter} ,ConverterParameter={StaticResource solidclr_White}}"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Setter.Value>
-                            </Setter>
-                            <Setter Property="RowStyle">
-                                <Setter.Value>
-                                    <Style TargetType="{x:Type dxg:RowControl}">
-                                        <Setter Property="Foreground" Value="{Binding Row.IsAlert , Converter={local:BooleanToForefroundConverter} ,ConverterParameter={StaticResource solidclr_White}}"/>
-                                        <Setter Property="FontWeight" Value="Bold"/>
-                                        <Style.Triggers>
-                                            <!--IsSelected只在複選時有效 會和IsFocusedRow互相覆蓋-->
-                                            <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
-                                                <Setter Property="Background" Value="DimGray" />
-                                                <Setter Property="Foreground" Value="{Binding Row.IsAlert , Converter={local:BooleanToForefroundConverter} ,ConverterParameter={StaticResource solidclr_White}}" />
-                                            </DataTrigger>
-                                            <!--   <Trigger Property="dxg:GridViewBase.IsFocusedRow" Value="True">
-                                                <Setter Property="Foreground" Value="LightYellow"/>
-                                                <Setter Property="Background" Value="Blue" />
-                                            </Trigger>-->
-
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Background" Value="#67b32c" />
-
-                                                <Setter Property="Foreground" Value="{Binding Row.IsAlert , Converter={local:BooleanToForefroundConverter} ,ConverterParameter={StaticResource solidclr_Black}}" />
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-
-                    </dxg:GridControl.Resources>
                     <dxg:GridControl.View >
                         <dxg:TableView  
                                 IsColumnMenuEnabled ="False"

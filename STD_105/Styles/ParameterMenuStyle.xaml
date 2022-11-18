@@ -158,13 +158,14 @@
 
     <Style x:Key="SiegCustomButtonWhite" TargetType="Button" BasedOn="{StaticResource SiegCustomButton}">
         <Setter Property="Background" Value="White"/>
-        <Setter Property="Foreground" Value="DarkGray"/>
+        <Setter Property="Foreground" Value="DimGray"/>
         <Setter Property="BorderBrush" Value="#CFCFCF"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="0"/>
     </Style>
 
     <Style x:Key="SiegCustomButtonGray" TargetType="Button" BasedOn="{StaticResource SiegCustomButtonWhite}">
+        
         <Setter Property="Background" Value="#d8d8d8"/>
     </Style>
 

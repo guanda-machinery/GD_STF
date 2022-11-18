@@ -130,16 +130,7 @@
             <RowDefinition Height="480" MaxHeight="915" MinHeight="51"/>
         </Grid.RowDefinitions>
         <Grid Margin="5">
-            <!--<Grid.DataContext>
-                <STD105VM:ObSettingVM/>
-            </Grid.DataContext>-->
-            <dxg:GridControl Name="PieceListGridControl"
-                                 AutoGenerateColumns="None"
-                                 SelectionMode="None"
-                                 MaxHeight="2000"
-                                 AllowLiveDataShaping="True"
-                                 ItemsSource="{Binding ProductSettingsPageViewModel.DataViews, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange" MouseDown="Button_PreviewMouseLeftButtonDown">
-                <dxg:GridControl.Resources>
+                <Grid.Resources>
                     <Style TargetType="dxg:GridColumn" >
                         <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
                         <Setter Property="AllowGrouping" Value="false"/>
@@ -147,9 +138,15 @@
                     <Style TargetType="dxe:TextEditSettings">
                         <Setter Property="HorizontalContentAlignment" Value="Center"/>
                     </Style>
-                    <SolidColorBrush x:Key="{dxgt:TableViewThemeKey ResourceKey=SearchPanelBackground, IsThemeIndependent=True}" Color="#f0f0f0" />
-                </dxg:GridControl.Resources>
-                <dxg:GridControl.View >
+                 <!--   <SolidColorBrush x:Key="{dxgt:TableViewThemeKey ResourceKey=SearchPanelBackground, IsThemeIndependent=True}" Color="#f0f0f0" />-->
+                </Grid.Resources>
+                <dxg:GridControl Name="PieceListGridControl" Style="{StaticResource SiegCustomGridControl}"
+                                 AutoGenerateColumns="None"
+                                 SelectionMode="None"
+                                 MaxHeight="2000"
+                                 AllowLiveDataShaping="True"
+                                 ItemsSource="{Binding ProductSettingsPageViewModel.DataViews, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange" MouseDown="Button_PreviewMouseLeftButtonDown">
+                    <dxg:GridControl.View >
                     <dxg:TableView VerticalScrollbarVisibility="Visible"
                                         HighlightItemOnHover="True"
                                        IsColumnMenuEnabled ="False"
@@ -264,7 +261,7 @@
                     </dxg:GridColumn.CellStyle>
                 </dxg:GridColumn>
 
-                <dxg:GridColumn Binding="{Binding steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="{StaticResource visible}"/>
+                <!--<dxg:GridColumn Binding="{Binding steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="{StaticResource visible}"/>-->
                 <dxg:GridColumn Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="60"/>
                 <dxg:GridColumn Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="60" />
                 <dxg:GridColumn Binding="{Binding steelAttr.Name,UpdateSourceTrigger=PropertyChanged}" IsSmart="True" Header="名稱" Width="80"/>
@@ -273,7 +270,7 @@
                 <dxg:GridColumn Binding="{Binding Path=SteelType, Converter={STD105:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類型" Width="60"/>
                 <dxg:GridColumn Binding="{Binding steelAttr.Profile}"  IsSmart="True" Header="斷面規格"  Width="140"/>
                 <!--FieldName="Profile"-->
-                <dxg:GridColumn Binding="{Binding SteelType}"   IsSmart="True" Header="鋼材類型(Index)" Visible="{StaticResource visible}"/>
+                <!--<dxg:GridColumn Binding="{Binding SteelType}"   IsSmart="True" Header="鋼材類型(Index)" Visible="{StaticResource visible}"/>-->
                 <!--FieldName="SteelType"-->
                 <dxg:GridColumn Binding="{Binding steelAttr.Material}"  IsSmart="True"  Header="材質"  Width="80"/>
                 <!--FieldName="Material"-->

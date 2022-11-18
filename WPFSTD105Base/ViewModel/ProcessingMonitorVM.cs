@@ -186,16 +186,29 @@ namespace WPFSTD105.ViewModel
         {
             get
             {
-                return _finish_UndoneDataViews;
+                //將資料表重新排列
+                var FUDataList = _finish_UndoneDataViews.ToList();
+                FUDataList.Sort((x, y) =>
+                {
+                    return x.Position.CompareTo(y.Position);
+                });
+                //_finish_UndoneDataViews
+                return new ObservableCollection<MaterialDataView>(FUDataList);
             }
             set
             {
+
+                UndoneDataView = new ObservableCollection<MaterialDataView>(value.ToList().FindAll(x => (x.Position != FinishString)));
+                FinishDataViews = new ObservableCollection<MaterialDataView>(value.ToList().FindAll(x => (x.Position == FinishString)));
+
                 _finish_UndoneDataViews = value;
-                UndoneDataView = new ObservableCollection<MaterialDataView>(_finish_UndoneDataViews.ToList().FindAll(x => (x.Position != FinishString)));
-                FinishDataViews = new ObservableCollection<MaterialDataView>(_finish_UndoneDataViews.ToList().FindAll(x => (x.Position == FinishString)));
                 OnPropertyChanged("Finish_UndoneDataViews");
             }
         }
+
+
+
+
 
 
 
@@ -371,7 +384,7 @@ namespace WPFSTD105.ViewModel
 
 
         /// <summary>
-        /// 未加工-已完成合併清單-細項
+        /// 未加工-已完成清單-細項
         /// </summary>
         public ObservableCollection<MaterialPartDetail> Finish_UndoneDataViewsDetail
         {
@@ -386,6 +399,7 @@ namespace WPFSTD105.ViewModel
                         {
                             foreach (var FUPart in FUdataviews.Parts)
                             {
+                             
                                 //加入素材<->零件 先素材再零件    
                                 _MPartDetail.Add(new MaterialPartDetail()
                                 {
@@ -394,7 +408,8 @@ namespace WPFSTD105.ViewModel
                                     Material = FUdataviews.Material,//材質
                                     AssemblyNumber = FUPart.AssemblyNumber,
                                     PartNumber = FUPart.PartNumber,
-                                    Length = FUPart.Length
+                                    Length = FUPart.Length,
+                                    Position =FUdataviews.Position,
                                 });
                             }
                         }
@@ -406,7 +421,9 @@ namespace WPFSTD105.ViewModel
         }
 
         private MaterialPartDetail _finish_UndoneDataViewsDetail_SelectedItem;
-
+        /// <summary>
+        /// 展開零件資訊
+        /// </summary>
         public MaterialPartDetail Finish_UndoneDataViewsDetail_SelectedItem
         {
             get
@@ -449,6 +466,10 @@ namespace WPFSTD105.ViewModel
             /// 零件長度
             /// </summary>
             public double? Length { get; set; }
+            /// <summary>
+            /// 位置
+            /// </summary>
+            public string Position { get; set; }
         }
 
 
@@ -920,7 +941,7 @@ namespace WPFSTD105.ViewModel
                         count++;
                         if (count < 30)
                         {
-                            AddOperatingLog(LogSourceEnum.Software, $"序列化執行續讀取失敗第 {count} 次 ...");
+                            //AddOperatingLog(LogSourceEnum.Software, $"序列化執行續讀取失敗第 {count} 次 ...");
                         }
                         else
                         {
@@ -1335,6 +1356,9 @@ namespace WPFSTD105.ViewModel
             }
             return result;
         }
+
+        private readonly object balanceLock = new object();
+
         /// <summary>
         /// 發送加工訊息
         /// </summary>
@@ -1343,17 +1367,18 @@ namespace WPFSTD105.ViewModel
 
             _CreateFileTask?.Wait(); //等待 Task CreateFile 完成 link:ProcessingMonitorVM.cs:CreateFile()
                                      //_SynchronizationContext.Wait();
-            _SynchronizationContext.Send(t =>
+                                     //沒必要使用占用主執行序 
+                                     // _SynchronizationContext.Send(t =>
+            lock (balanceLock)
             {
                 SplashScreenManager manager = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
 
 
-                //會占用主執行序 需跳出傳輸中提示...
                 _BufferModel.Clear();
                 //List<double> cutPointX = new List<double>();
                 //產生加工陣列
                 var view = DataViews[index];
-                
+                //跳出傳輸中提示...
                 manager.Show();
                 manager.ViewModel.Status = $"正在發送素材編號:{view.MaterialNumber}的加工訊息";
                 AddOperatingLog(LogSourceEnum.Software, $"正在發送素材編號:{view.MaterialNumber}的加工訊息");
@@ -1432,11 +1457,11 @@ namespace WPFSTD105.ViewModel
                 }
 
                 manager.ViewModel.Status = $"素材編號:{view.MaterialNumber}的加工訊息發送完成";
-                AddOperatingLog(LogSourceEnum.Software,  $"素材編號:{ view.MaterialNumber}的加工訊息發送完成");
+                AddOperatingLog(LogSourceEnum.Software, $"素材編號:{view.MaterialNumber}的加工訊息發送完成");
                 manager.Close();
 
-            }, null);
-
+            } 
+  
 
 
 
@@ -2236,6 +2261,7 @@ namespace WPFSTD105.ViewModel
 
                     }
                 }
+                AddOperatingLog(LogSourceEnum.Software, "停用輪巡", false);
             });
             TourTask.Start();
         }
@@ -2251,11 +2277,24 @@ namespace WPFSTD105.ViewModel
                     var MaterialIndex = Finish_UndoneDataViews.ToList().FindIndex(x => (x.MaterialNumber == EachPair.materialNumber));
                     if (MaterialIndex != -1)
                     {
-                        if (Finish_UndoneDataViews[MaterialIndex].Position != "手機配對")
+                        if (Finish_UndoneDataViews[MaterialIndex].Position == WaitBePairString)
                         {
-                            Finish_UndoneDataViews[MaterialIndex].Position = "手機配對";
-                            AddOperatingLog(LogSourceEnum.Phone, $"素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}從手機配料", false);
+                            //軟體配對 
+                            //區別手機與機台配料->如果id中有包含專案名稱->機台的 沒有的話則是手機
+                            var ProjectNameBase64 = MachineAndPhoneAPI.AppServerCommunicate.StringToBase64Converter(ApplicationViewModel.ProjectName);
+                            if (EachPair.id.Contains(ProjectNameBase64))
+                            {
+                                Finish_UndoneDataViews[MaterialIndex].Position = "手機配對";
+                                AddOperatingLog(LogSourceEnum.Phone, $"素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}從軟體配料", false);
+                            }
+                            else
+                            {
+                                //手機配對
+                                Finish_UndoneDataViews[MaterialIndex].Position = "手機配對";
+                                AddOperatingLog(LogSourceEnum.Phone, $"素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}從手機配料", false);
+                            }
                         }
+
                     }
                 }
             }
