@@ -140,7 +140,8 @@
                     </Style>
                  <!--   <SolidColorBrush x:Key="{dxgt:TableViewThemeKey ResourceKey=SearchPanelBackground, IsThemeIndependent=True}" Color="#f0f0f0" />-->
                 </Grid.Resources>
-                <dxg:GridControl Name="PieceListGridControl" Style="{StaticResource SiegCustomGridControl}"
+                <dxg:GridControl Name="PieceListGridControl" 
+                                 Style="{StaticResource SiegCustom_CompactGridControl}"
                                  AutoGenerateColumns="None"
                                  SelectionMode="None"
                                  MaxHeight="2000"
@@ -163,16 +164,7 @@
                                        AllowEditing="False"
                                        EnableImmediatePosting="True"
                                        FocusedRow="">
-                        <dxg:TableView.RowStyle>
-                            <Style TargetType="dxg:RowControl">
-                                <Setter Property="Height" Value="20"/>
-                            </Style>
-                        </dxg:TableView.RowStyle>
-                        <dxg:TableView.CellStyle>
-                            <Style>
-                                <Setter Property="TextBlock.FontSize" Value="12"/>
-                            </Style>
-                        </dxg:TableView.CellStyle>
+
                         <dxg:TableView.Header>
                             <TextBlock Text="零件清單" FontSize="16" Foreground="Black"/>
                         </dxg:TableView.Header>

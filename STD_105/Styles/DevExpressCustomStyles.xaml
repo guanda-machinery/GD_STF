@@ -71,6 +71,7 @@
                     <Setter.Value>
                         <Style TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
                             <Setter Property="TextBlock.FontSize" Value="12"/>
+                            <Setter Property="TextBlock.Height" Value="20"/>
                             <Style.Triggers>
                                 <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
                                     <Setter Property="Background" Value="Transparent"/>
@@ -83,7 +84,7 @@
                 <Setter Property="RowStyle">
                     <Setter.Value>
                         <Style TargetType="{x:Type dxg:RowControl}">
-                            <Setter Property="Height" Value="20"/>
+
                             <Setter Property="Foreground" Value="{Binding Row.IsAlert , Converter={local:BooleanToForefroundConverter} ,ConverterParameter={StaticResource solidclr_White}}"/>
                             <Style.Triggers>
                                 <!--IsSelected只在複選時有效 會和IsFocusedRow互相覆蓋-->
@@ -96,7 +97,7 @@
                                                 <Setter Property="Background" Value="Blue" />
                                             </Trigger>-->
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="LightSlateGray" />
+                                    <Setter Property="Background" Value="Gray" />
                                     <!--<Setter Property="Foreground" Value="{Binding Row.IsAlert , Converter={local:BooleanToForefroundConverter} ,ConverterParameter={StaticResource solidclr_Black}}" />-->
                                 </Trigger>
                             </Style.Triggers>
