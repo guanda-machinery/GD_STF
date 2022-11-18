@@ -594,7 +594,7 @@ namespace WPFSTD105
                 if (row>0)
                 {
                     ProcessingScreenWin.Show(inputBlock: InputBlockMode.None, timeout: 100);
-                    ProcessingScreenWin.ViewModel.Status = "建立3D/2D圖檔中...";
+                    ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔...";
                 }
                 foreach (NcTemp nc in ncTemps)
                 {                    
@@ -616,8 +616,8 @@ namespace WPFSTD105
                     }
                     else
                     {
-                        ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔...";
-                        ProcessingScreenWin.ViewModel.Progress = i * 100 / ncTemps.Count;
+                        ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔...{i}/{row}";
+                        ProcessingScreenWin.ViewModel.Progress = i * 100 / row;
                         _BufferModel.LoadNoNCToModel(nc.SteelAttr);
                     }
                     i++;

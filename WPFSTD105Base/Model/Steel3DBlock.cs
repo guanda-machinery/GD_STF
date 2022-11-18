@@ -223,6 +223,14 @@ namespace WPFSTD105.Model
         /// 上視圖形狀
         /// </summary>
         private AK uAK { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path">NC檔路徑</param>
+        /// <param name="profile">斷面規格檔</param>
+        /// <param name="steelAttr">重讀之型鋼</param>
+        /// <param name="steelAttr1">型鋼DeepClone</param>
+        /// <param name="groups">孔群資訊</param>
         public void ReadNcFile(string path, Dictionary<string, ObservableCollection<SteelAttr>> profile, SteelAttr steelAttr, ref SteelAttr steelAttr1, ref List<GroupBoltsAttr> groups)
         {
             string line = "";
@@ -322,6 +330,7 @@ namespace WPFSTD105.Model
                 }
                 SteelAttr tempSA = new SteelAttr();
                 List<GroupBoltsAttr> tempGroups = new List<GroupBoltsAttr>();
+                // 因為ForEach中 不可使用steelAttr
                 tempSA = steelAttr;
                 Bolts.ForEach(el => tempGroups.Add(BO(el, tempSA)));
                 oAK.t = uAK.t = steelAttr.t2 == 0 ? steelAttr.t1 : steelAttr.t2;
@@ -336,7 +345,7 @@ namespace WPFSTD105.Model
             else
             {
                 steelAttr1 = profile[steelAttr.Type.ToString()].FirstOrDefault(x => x.Profile == steelAttr.Profile);
-                groups = null;
+                groups = new List<GroupBoltsAttr>();
             }
         }
 
@@ -451,6 +460,8 @@ namespace WPFSTD105.Model
                 result.StartHole = START_HOLE.START;
                 result.xCount = 1;
                 result.yCount = 1;
+                result.dX = "0";
+                result.dY = "0";
                 result.Face = face;
                 result.Mode = AXIS_MODE.PIERCE;
             }
