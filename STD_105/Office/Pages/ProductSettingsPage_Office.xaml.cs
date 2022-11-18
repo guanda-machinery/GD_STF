@@ -2805,7 +2805,9 @@ namespace STD_105.Office
                     //SteelAttr steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
 
                     // 2022/10/13 呂宗霖 編輯:零件編號須一致才可按編輯
-                    if (ViewModel.PartNumberProperty != this.partNumber.Text)
+                    ProductSettingsPageViewModel row = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
+                    //if (ViewModel.PartNumberProperty != this.partNumber.Text)
+                    if (ViewModel.PartNumberProperty != row.steelAttr.PartNumber)
                     {
                         WinUIMessageBox.Show(null,
                        $"零件編號相同，才可修改",
@@ -2817,7 +2819,6 @@ namespace STD_105.Office
                        FloatingMode.Popup);
                         return false;
                     }
-                    ProductSettingsPageViewModel row = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
                     ProductSettingsPageViewModel temp = RowToEntity(row);
                     if (!File.Exists($@"{ApplicationVM.DirectoryDevPart()}\{Guid.Parse(row.DataName)}.dm"))
                     {
@@ -2853,6 +2854,7 @@ namespace STD_105.Office
             temp.steelAttr.PartNumber = row.steelAttr.PartNumber;
             temp.steelAttr.Length = double.Parse(row.steelAttr.Length.ToString());
             temp.Length = double.Parse(row.steelAttr.Length.ToString());
+            temp.steelAttr.Kg = float.Parse(row.steelAttr.Kg.ToString());
             temp.steelAttr.Weight = double.Parse(row.steelAttr.Weight.ToString());
             temp.Weight = double.Parse(row.steelAttr.Weight.ToString());
             temp.Count = row.Count;
@@ -2871,6 +2873,7 @@ namespace STD_105.Office
             temp.steelAttr.Profile = row.steelAttr.Profile;
             temp.Profile = row.steelAttr.Profile;
             temp.SteelType = (int)row.steelAttr.Type;
+            temp.steelAttr.Type = row.steelAttr.Type;
             temp.Type = row.steelAttr.Type;
             temp.TypeDesc = row.TypeDesc;
             temp.SteelType = row.SteelType;
@@ -3027,6 +3030,7 @@ namespace STD_105.Office
             steelAttr.AsseNumber = ViewModel.AssemblyNumberProperty;
             steelAttr.PartNumber = ViewModel.PartNumberProperty;
             steelAttr.Length = ViewModel.ProductLengthProperty;
+            steelAttr.Kg = ViewModel.CurrentPartSteelAttr.Kg;
             steelAttr.Weight = ViewModel.ProductWeightProperty;
             steelAttr.Name = ViewModel.ProductNameProperty;
             steelAttr.Material = ViewModel.ProductMaterialProperty;
@@ -4384,6 +4388,7 @@ namespace STD_105.Office
 
             steelPart.Father = ass.ID;
             steelPart.Profile = sa.Profile.Replace("*", "X").Replace(" ", "");
+            steelPart.UnitWeight = sa.Kg;
             steelPart.ExclamationMark = sa.ExclamationMark;
 
             if (pf == null)
@@ -5135,8 +5140,15 @@ namespace STD_105.Office
             ViewModel.PartNumberProperty = CuurentSelectedPart.steelAttr.PartNumber;
             ViewModel.AssemblyNumberProperty = CuurentSelectedPart.steelAttr.AsseNumber;
             ViewModel.ProductLengthProperty = CuurentSelectedPart.steelAttr.Length;
-            ViewModel.ProductWeightProperty = (CuurentSelectedPart.steelAttr.Length / 1000) * CuurentSelectedPart.steelAttr.Weight;
-            if (CuurentSelectedPart.steelAttr.Weight == 0) ViewModel.ProductWeightProperty = ViewModel.CalculateSinglePartWeight();
+            if (CuurentSelectedPart.steelAttr.Kg != 0)
+            {
+                ViewModel.ProductWeightProperty = (CuurentSelectedPart.steelAttr.Length / 1000) * CuurentSelectedPart.steelAttr.Kg;
+            }
+            else
+            {
+                ViewModel.ProductWeightProperty = CuurentSelectedPart.steelAttr.Weight;
+                if (CuurentSelectedPart.steelAttr.Weight == 0) ViewModel.ProductWeightProperty = ViewModel.CalculateSinglePartWeight();
+            }
             ViewModel.SteelAttr.Weight = ViewModel.ProductWeightProperty;
             ViewModel.ProductCountProperty = CuurentSelectedPart.Count;
             ViewModel.ProductNameProperty = CuurentSelectedPart.steelAttr.Name;
