@@ -223,6 +223,12 @@ namespace STD_105.Office
             ViewModel.Delete = new RelayCommand(() =>
             {
                 SimulationDelete();
+                Esc();
+                model.Invalidate();//刷新模型
+                if (!fNewPart.Value)
+                    SaveModel(false);//存取檔案
+
+
             });
             //清除標註
             ViewModel.ClearDim = new RelayCommand(() =>

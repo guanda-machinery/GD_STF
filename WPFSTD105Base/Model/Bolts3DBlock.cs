@@ -559,7 +559,7 @@ namespace WPFSTD105.Model
                     result.Entities.AddRange(model.Blocks[result.Name].Entities);
                 }
             }
-            else { result.Entities.AddRange(model.Blocks[result.Name].Entities); }
+            //else { result.Entities.AddRange(model.Blocks[result.Name].Entities); }
 
             return result;
 
