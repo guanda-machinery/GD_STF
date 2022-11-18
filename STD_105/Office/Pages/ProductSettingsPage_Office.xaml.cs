@@ -2980,9 +2980,6 @@ namespace STD_105.Office
         /// </summary>
         private void SimulationDelete()
         {
-
-
-
             //模擬鍵盤按下Delete
             var c = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Delete)
             {
@@ -3004,34 +3001,34 @@ namespace STD_105.Office
                 Esc();
                 esc.Visibility = Visibility.Collapsed;//關閉取消功能
             }
-            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.P)) //俯視圖
-            {
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + P");
-#endif
-                model.InitialView = viewType.Top;
-                model.ZoomFit();//在視口控件的工作區中適合整個模型。
-            }
-            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Z)) //退回
-            {
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z");
-#endif
-                ViewModel.Reductions.Previous();
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z 完成");
-#endif
-            }
-            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Y)) //退回
-            {
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y");
-#endif
-                ViewModel.Reductions.Next();//回到上一個動作
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y 完成");
-#endif
-            }
+//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.P)) //俯視圖
+//            {
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + P");
+//#endif
+//                model.InitialView = viewType.Top;
+//                model.ZoomFit();//在視口控件的工作區中適合整個模型。
+//            }
+//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Z)) //退回
+//            {
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z");
+//#endif
+//                ViewModel.Reductions.Previous();
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z 完成");
+//#endif
+//            }
+//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Y)) //退回
+//            {
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y");
+//#endif
+//                ViewModel.Reductions.Next();//回到上一個動作
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y 完成");
+//#endif
+//            }
             // 2020/08/04 呂宗霖 因按Delete會造成無窮迴圈 跳不出去系統造成當掉 故先停用直接按Delete的動作
             //else if (Keyboard.IsKeyDown(Key.Delete))
             //{
@@ -5163,6 +5160,7 @@ namespace STD_105.Office
         /// <param name="e"></param>
         private void Grid_SelectedChange(object sender, SelectedItemChangedEventArgs e)
         {
+            Esc();
             if (e.OldItem != null)
             {
                 if (model != null && PieceListGridControl.SelectedItem != null)
@@ -5371,6 +5369,14 @@ namespace STD_105.Office
                     fGrid = true;
                     StateParaSetting(true, false, true);
 
+
+
+                    model.Blocks.Clear();
+                    model.Entities.Clear();
+                    drawing.Blocks.Clear();
+                    drawing.Entities.Clear();
+
+
                     int steelType = 0;
                     ReadFile readFile = ser.ReadPartModel(focuseGUID); //讀取檔案內容
                     if (readFile == null)
@@ -5386,10 +5392,7 @@ namespace STD_105.Office
                         return;
                     }
                     readFile.DoWork();//開始工作
-                    model.Blocks.Clear();
-                    model.Entities.Clear();
-                    drawing.Blocks.Clear();
-                    drawing.Entities.Clear();
+
                     try
                     {
                         readFile.AddToScene(model);//將讀取完的檔案放入到模型
