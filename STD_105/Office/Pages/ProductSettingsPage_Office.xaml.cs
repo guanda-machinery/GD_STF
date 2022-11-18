@@ -2741,7 +2741,9 @@ namespace STD_105.Office
                     //SteelAttr steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
 
                     // 2022/10/13 呂宗霖 編輯:零件編號須一致才可按編輯
-                    if (ViewModel.PartNumberProperty != this.partNumber.Text)
+                    ProductSettingsPageViewModel row = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
+                    //if (ViewModel.PartNumberProperty != this.partNumber.Text)
+                    if (ViewModel.PartNumberProperty != row.steelAttr.PartNumber)
                     {
                         WinUIMessageBox.Show(null,
                        $"零件編號相同，才可修改",
@@ -2753,7 +2755,6 @@ namespace STD_105.Office
                        FloatingMode.Popup);
                         return false;
                     }
-                    ProductSettingsPageViewModel row = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
                     ProductSettingsPageViewModel temp = RowToEntity(row);
                     if (!File.Exists($@"{ApplicationVM.DirectoryDevPart()}\{Guid.Parse(row.DataName)}.dm"))
                     {
@@ -5087,8 +5088,15 @@ namespace STD_105.Office
             ViewModel.PartNumberProperty = CuurentSelectedPart.steelAttr.PartNumber;
             ViewModel.AssemblyNumberProperty = CuurentSelectedPart.steelAttr.AsseNumber;
             ViewModel.ProductLengthProperty = CuurentSelectedPart.steelAttr.Length;
-            ViewModel.ProductWeightProperty = (CuurentSelectedPart.steelAttr.Length / 1000) * CuurentSelectedPart.steelAttr.Weight;
-            if (CuurentSelectedPart.steelAttr.Weight == 0) ViewModel.ProductWeightProperty = ViewModel.CalculateSinglePartWeight();
+            if (CuurentSelectedPart.steelAttr.Kg != 0)
+            {
+                ViewModel.ProductWeightProperty = (CuurentSelectedPart.steelAttr.Length / 1000) * CuurentSelectedPart.steelAttr.Kg;
+            }
+            else
+            {
+                ViewModel.ProductWeightProperty = CuurentSelectedPart.steelAttr.Weight;
+                if (CuurentSelectedPart.steelAttr.Weight == 0) ViewModel.ProductWeightProperty = ViewModel.CalculateSinglePartWeight();
+            }
             ViewModel.SteelAttr.Weight = ViewModel.ProductWeightProperty;
             ViewModel.ProductCountProperty = CuurentSelectedPart.Count;
             ViewModel.ProductNameProperty = CuurentSelectedPart.steelAttr.Name;
