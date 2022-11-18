@@ -419,18 +419,27 @@ namespace WPFSTD105.Model
         /// <param name="model"></param>
         /// <param name="steelAttr"></param>
         /// <returns></returns>
-        public static bool CheckBolts(devDept.Eyeshot.Model model)
+        public static bool CheckBolts(devDept.Eyeshot.Model model,string guid = "")
         {
             // 最終檢驗值
-            bool check = true; 
+            bool check = true;
             // 鋼構資訊
-            SteelAttr steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+            //SteelAttr steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+            SteelAttr steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
             OBJECT_TYPE type = steelAttr.Type;
             // 取得所有孔
             for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
             {
                 if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
                 {
+                    if (!string.IsNullOrEmpty(guid))
+                    {
+                        //if (((GroupBoltsAttr)model.Entities[i].EntityData).GUID.Value != Guid.Parse(guid))
+                        if (((GroupBoltsAttr)model.Entities[i].EntityData).GUID.Value != Guid.Parse(guid))
+                        {
+                            continue;
+                        }
+                    }
                     BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
                     BoltAttr bolt = (BoltAttr)model.Entities[i].EntityData;
                     // 加工區域計算
@@ -443,8 +452,9 @@ namespace WPFSTD105.Model
                             Point3D checkPoint3D = new Point3D(bolt.X, bolt.Y, bolt.Z);
                             var testPoint = Coordinates(bolt.Face, checkPoint3D);
 
-                            if (!((Mesh)model.Blocks[1].Entities[model.Blocks[1].Entities.Count - 1]).IsPointInside(testPoint))
-                            {
+                            if (!((Mesh)model.Blocks[1].Entities[0]).IsPointInside(testPoint))
+                               // if (!((Mesh)model.Entities[model.Entities.Count - 1]).IsPointInside(testPoint))
+                                {
                                 return false;
                             }
                         }
@@ -473,11 +483,17 @@ namespace WPFSTD105.Model
             block = null;
 
             Bolts3DBlock result = new Bolts3DBlock(attr); //產生孔位圖塊
-                result.steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+            //result.steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+            result.steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
             if (!model.Blocks.Contains(result.Name))
             {
               result.CreateBolts(model, ref check);//創建孔位群組
             }
+            else if(CheckBolts(model, result.Name))
+            {
+                check = true;
+            }
+            else { check = false; }
             // 符合加工區域
             if (check)
             {
@@ -489,7 +505,8 @@ namespace WPFSTD105.Model
                         Point3D checkPoint3D = new Point3D(attr.X, attr.Y, attr.Z);
                         var testPoint = Coordinates(attr.Face, checkPoint3D);
 
-                        if (((Mesh)model.Blocks[1].Entities[model.Blocks[1].Entities.Count - 1]).IsPointInside(testPoint))
+                        if (((Mesh)model.Blocks[1].Entities[0]).IsPointInside(testPoint))
+                        //if (((Mesh)model.Entities[model.Entities.Count - 1]).IsPointInside(testPoint))
                         {
                             inSteel = true;
                         }
@@ -508,7 +525,8 @@ namespace WPFSTD105.Model
                             Point3D checkPoint3D = new Point3D(((BoltAttr)item.EntityData).X, ((BoltAttr)item.EntityData).Y, ((BoltAttr)item.EntityData).Z);
                             var testPoint = Coordinates(((BoltAttr)item.EntityData).Face, checkPoint3D);
 
-                            if (((Mesh)model.Blocks[1].Entities[model.Blocks[1].Entities.Count - 1]).IsPointInside(testPoint))
+                            if (((Mesh)model.Blocks[1].Entities[0]).IsPointInside(testPoint))
+                            //if (((Mesh)model.Entities[model.Entities.Count-1]).IsPointInside(testPoint))
                             {
                                 inSteel = true;
                             }
@@ -559,7 +577,7 @@ namespace WPFSTD105.Model
                     result.Entities.AddRange(model.Blocks[result.Name].Entities);
                 }
             }
-            //else { result.Entities.AddRange(model.Blocks[result.Name].Entities); }
+           // else { result.Entities.AddRange(model.Blocks[result.Name].Entities); }
 
             return result;
 

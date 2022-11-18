@@ -414,6 +414,36 @@ namespace STD_105
                             //    model.Entities.RemoveAt(model.Entities.Count - 1);
                             //}
                             model.Entities.Insert(model.Entities.Count, blockReference);//加入參考圖塊到模型
+                            bool hasOutSteel = false;
+                            List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
+                            foreach (GroupBoltsAttr bolt in groups)
+                            {
+                                Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts(bolt, model, out BlockReference blockRef, out bool checkRef);
+                                if (bolts3DBlock.hasOutSteel)
+                                {
+                                    hasOutSteel = true;
+                                }
+                                else
+                                {
+                                    B3DB.Add(bolts3DBlock);
+                                }
+                            }
+                            if (hasOutSteel)
+                            {
+                                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                                //item.steelAttr.ExclamationMark = true;
+                                //item.ExclamationMark = true;
+                            }
+                            else
+                            {
+                                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+                                //item.steelAttr.ExclamationMark = false;
+                                //item.ExclamationMark = false;
+                            }
+                                foreach (Bolts3DBlock bolt in B3DB)
+                                {
+                                    BlockReference referenceBolts = Add2DHole(bolt);//加入孔位到2D
+                                }
                             #endregion
                             SaveModel(true, true);
 
@@ -1068,6 +1098,40 @@ namespace STD_105
                     steel2D = new Steel2DBlock((Mesh)block1.Entities[0], "123").Entities.ToList();
                     Steel2DBlock steel2DBlock2 = (Steel2DBlock)drawing.Blocks[reference2D.BlockName];//drawing.CurrentBlockReference.BlockName→1
                     steel2DBlock2.ChangeMesh((Mesh)block1.Entities[0]);
+                    bool hasOutSteel = false;
+                    List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
+                    foreach (GroupBoltsAttr bolt in groups)
+                    {
+                        Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts(bolt, model, out BlockReference blockRef, out bool checkRef);
+                        if (bolts3DBlock.hasOutSteel)
+                        {
+                            hasOutSteel = true;
+                        }
+                        else
+                        {
+                            B3DB.Add(bolts3DBlock);
+                        }
+                    }
+
+
+                    if (hasOutSteel)
+                    {
+                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                        //item.steelAttr.ExclamationMark = true;
+                        //item.ExclamationMark = true;
+                    }
+                    else
+                    {
+                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+                        //item.steelAttr.ExclamationMark = false;
+                        //item.ExclamationMark = false;
+                    }
+                        foreach (Bolts3DBlock bolt in B3DB)
+                        {
+                            BlockReference referenceBolts = Add2DHole(bolt);//加入孔位到2D
+                        }
+
+
 
                     //刪除指定物件
                     //model.Blocks[1].Entities[0] = block1.Entities[0];
@@ -5890,7 +5954,7 @@ namespace STD_105
                 fAddSteelPart = false;
             }
         }
-        public bool GetverticesFromFile(string PartNumber, ref SteelAttr TmpSteeAttr, int SteelIndex = 1)
+        public bool GetverticesFromFile(string PartNumber,  ref SteelAttr TmpSteeAttr, int SteelIndex = 1)
         {
             bool rtn = false;
             string path = ApplicationVM.DirectoryNc();
@@ -5904,7 +5968,7 @@ namespace STD_105
                 Steel3DBlock s3Db = new Steel3DBlock();
                 SteelAttr steelAttrNC = new SteelAttr();
                 List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
-                s3Db.ReadNcFile($@"{ApplicationVM.DirectoryNc()}\{PartNumber}.nc1", profile, TmpSteeAttr, ref steelAttrNC, ref groups);
+                s3Db.ReadNcFile($@"{ApplicationVM.DirectoryNc()}\{PartNumber}.nc1", profile, new SteelAttr(), ref steelAttrNC, ref groups);
                 TmpSteeAttr.oPoint = steelAttrNC.oPoint;
                 TmpSteeAttr.vPoint = steelAttrNC.vPoint;
                 TmpSteeAttr.uPoint = steelAttrNC.uPoint;
