@@ -557,6 +557,7 @@ namespace WPFSTD105
                 rowList = new List<int>();
                 #region 欄位名稱
                 sheet.Cells[row, column++].Value = "GUID";
+                sheet.Cells[row, column++].Value = "零件狀況";
                 sheet.Cells[row, column++].Value = "零件編號";
                 sheet.Cells[row, column++].Value = "名稱";
                 sheet.Cells[row, column++].Value = "斷面規格";
@@ -583,6 +584,7 @@ namespace WPFSTD105
                     {
                         column = 0;
                         sheet.Cells[row, column++].Value = part.GUID.ToString();
+                        sheet.Cells[row, column++].Value = part.ExclamationMark;
                         sheet.Cells[row, column++].Value = part.Number;
                         sheet.Cells[row, column++].Value = part.DrawingName;
                         sheet.Cells[row, column++].Value = part.Profile;
