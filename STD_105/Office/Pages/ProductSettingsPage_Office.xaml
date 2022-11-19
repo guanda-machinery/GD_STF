@@ -182,7 +182,7 @@
                     </dxg:TableView>
                 </dxg:GridControl.View>
 
-                <dxg:GridColumn Name="Exc_GridColumn" FieldName="ExclamationMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
+                    <dxg:GridColumn Name="Exc_GridColumn" Binding="{Binding steelAttr.ExclamationMark}" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                     <dxg:GridColumn.HeaderImageStyle>
                         <Style TargetType="Image">
                             <Setter Property="Width" Value="20"></Setter>
@@ -216,9 +216,9 @@
                     </dxg:GridColumn.CellTemplate>
                 </dxg:GridColumn>
 
-                    <dxg:GridColumn FieldName="ExclamationMark" Binding="{Binding Row.steelAttr.ExclamationMark}" IsSmart="True"   Header="構件編號" Width="auto" Visible="false"/>
-
-                <dxg:GridColumn FieldName="LockMark"  IsSmart="True" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True" Visible="false">
+                    <dxg:GridColumn Binding="{Binding steelAttr.ExclamationMark}" IsSmart="True"   Header="構件編號111" Width="auto" Visible="False"/>
+                    
+                    <dxg:GridColumn FieldName="LockMark"  IsSmart="True" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True" Visible="false">
                     <dxg:GridColumn.HeaderImageStyle>
                         <Style TargetType="Image">
                             <Setter Property="Width" Value="20"></Setter>
@@ -249,7 +249,7 @@
                     </dxg:GridColumn.CellTemplate>
                 </dxg:GridColumn>
                 <!--<dxg:GridColumn FieldName="{Binding Creation, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="建立日期"  >-->
-                <dxg:GridColumn FieldName="Creation" IsSmart="True" Header="建立日期"  Width="80">
+                <dxg:GridColumn FieldName="Creation" IsSmart="True" Header="建立日期"  Width="90">
                     <dxg:GridColumn.CellStyle>
                         <Style>
                             <Setter Property="TextBlock.Foreground" Value="Gray"/>

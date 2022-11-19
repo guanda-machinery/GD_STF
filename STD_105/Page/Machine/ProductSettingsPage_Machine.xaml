@@ -282,7 +282,7 @@
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
 
-                        <dxg:GridColumn FieldName="ExclamationMark" Binding="{Binding Row.steelAttr.ExclamationMark}" IsSmart="True"   Header="構件編號" Width="auto"/>
+                        <dxg:GridColumn Binding="{Binding Row.steelAttr.ExclamationMark}" IsSmart="True"   Header="構件編號" Width="auto"/>
 
                         <dxg:GridColumn FieldName="LockMark"  IsSmart="True" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True" Visible="false">
                             <dxg:GridColumn.HeaderImageStyle>
