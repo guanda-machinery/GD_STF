@@ -11,7 +11,6 @@ using System.Text;
 using System.Threading.Tasks;
 using WPFSTD105;
 using WPFSTD105.Attribute;
-using WPFSTD105.Model;
 using WPFWindowsBase;
 
 namespace STD_105
@@ -20,9 +19,9 @@ namespace STD_105
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is ObservableCollection<WPFSTD105.ViewModel.ProcessingMonitorVM.DrillBolts>)
+            if (value is ObservableCollection<WPFSTD105.Model.DrillBolts>)
             {
-                var DrillBoltsListInfo = (value as ObservableCollection<WPFSTD105.ViewModel.ProcessingMonitorVM.DrillBolts>).ToList();
+                var DrillBoltsListInfo = (value as ObservableCollection<WPFSTD105.Model.DrillBolts>).ToList();
                 if (parameter is GD_STD.Enum.FACE)
                 {
                     return DrillBoltsListInfo.FindAll(x => (x.Face == (GD_STD.Enum.FACE)parameter));

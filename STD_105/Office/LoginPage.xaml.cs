@@ -134,59 +134,49 @@ namespace STD_105.Office
         /// </summary>
         public bool CallServer()
         {
-
-            #region 2022/10/20 純測試用 可連線到其他電腦模擬進行測試 但須將CodesysIIS架設在iss上，並開啟WCF服務>HTTP
-            //參考資料：https://dotblogs.com.tw/stanley14/2016/06/23/095523
-            /*var TestServerIp = "192.168.31.128";
-            var Port = 63506;
-
-            IPEndPoint tIPEndPoint = new IPEndPoint(IPAddress.Parse(TestServerIp), Port);
-            var tClient = new System.Net.Sockets.TcpClient();
-            tClient.Connect(tIPEndPoint);
-            bool tResult = tClient.Connected;
-            tClient.Close();
-
-            if (tResult)
+            try
             {
-                WPFSTD105.Properties.SofSetting.Default.Address = "192.168.31.128:63506";
-                ChangeClient();
-                WPFSTD105.Properties.SofSetting.Default.Save();
-                Open();
+                #region 2022/10/20 純測試用 可連線到其他電腦模擬進行測試 但須將CodesysIIS架設在iss上，並開啟WCF服務>HTTP
+                //參考資料：https://dotblogs.com.tw/stanley14/2016/06/23/095523
+                /*var TestServerIp = "192.168.31.128";
+                var Port = 63506;
+                IPEndPoint tIPEndPoint = new IPEndPoint(IPAddress.Parse(TestServerIp), Port);
+                var tClient = new System.Net.Sockets.TcpClient();
+                tClient.Connect(tIPEndPoint);
+                bool tResult = tClient.Connected;
+                tClient.Close();
+                if (tResult)
+                {
+                    WPFSTD105.Properties.SofSetting.Default.Address = "192.168.31.128:63506";
+                    ChangeClient();
+                    WPFSTD105.Properties.SofSetting.Default.Save();
+                    Open();
 
-                DataContext = new LoginVM();
-                return true;
-            }*/
+                    DataContext = new LoginVM();
+                    return true;
+                }*/
 
-
-            #endregion
-            if (DetectIIS(WPFSTD105.Properties.SofSetting.Default.Address))
-            {
-                #if _DEBUG_IIS
+                #endregion
+                if (DetectIIS(WPFSTD105.Properties.SofSetting.Default.Address))
+                {
+#if _DEBUG_IIS
                 //WPFSTD105.Properties.SofSetting.Default.Address = "localhost:63505";
-                #endif
-                ChangeClient();
-                WPFSTD105.Properties.SofSetting.Default.Save();
+#endif
+                    ChangeClient();
+                    WPFSTD105.Properties.SofSetting.Default.Save();
 
-                Open();
+                    Open();
 
-                DataContext = new LoginVM();
-                return true;
+                    DataContext = new LoginVM();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
+            catch(Exception ex)
             {
-
-                WinUIMessageBox.Show(null,
-                    "請重新設定 Address",
-                    "伺服器連接失敗 ...",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Exclamation,
-                    MessageBoxResult.None,
-                    MessageBoxOptions.None,
-                    FloatingMode.Popup);
-
-                IPSettings settings = new IPSettings();
-                settings.ShowDialog();
-                //CallServer();
                 return false;
             }
         }
@@ -237,9 +227,7 @@ namespace STD_105.Office
                 Subtitle = "Powered by GUANDA",
                 Copyright = "版權所有 © 2022 GUANDA",
             };
-            SplashScreenManager manager;
-
-            manager = SplashScreenManager.CreateFluent(viewModel);
+            SplashScreenManager manager = SplashScreenManager.CreateFluent(viewModel);
 
             manager.Show(this, ViewModel.StartupLocation, ViewModel.TrackOwnerPosition, ViewModel.InputBlock);
 
@@ -249,13 +237,40 @@ namespace STD_105.Office
             {
                 viewModel.Status = "檢查伺服器回應狀況 ...";
                 //持續搜尋伺服器
-                while (!CallServer())
+                while (true)
                 {
+                    try
+                    {
+                        var IsServerOnline = CallServer();
+                        if (IsServerOnline)
+                            break;
+                        else
+                        {
+                            this.Dispatcher.Invoke((Action)(() =>
+                            {
+                                WinUIMessageBox.Show(null,
+                                "請重新設定 Address",
+                                "伺服器連接失敗 ...",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Exclamation,
+                                MessageBoxResult.None,
+                                MessageBoxOptions.None,
+                                FloatingMode.Popup);
+
+                                IPSettings settings = new IPSettings();
+                                settings.ShowDialog();
+                            }));
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        
+                    }
                     Thread.Sleep(1000);
                 }
-                Thread.Sleep(1000);
+                Thread.Sleep(100);
                 viewModel.Status = "伺服器設定完成 ...";
-
             }
             //啟動時間縮短
             Thread.Sleep(100);
@@ -285,7 +300,11 @@ namespace STD_105.Office
                 System.Net.WebRequest myRequest = System.Net.WebRequest.Create(url);
                 System.Net.WebResponse myResponse = myRequest.GetResponse();
             }
-            catch (System.Net.WebException)
+            catch (System.Net.WebException webEx)
+            {
+                return false;
+            }
+            catch(Exception ex)
             {
                 return false;
             }

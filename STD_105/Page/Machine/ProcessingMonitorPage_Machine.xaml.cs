@@ -21,7 +21,6 @@ using WPFWindowsBase;
 using WPFSTD105;
 using WPFSTD105.Attribute;
 using WPFSTD105.Model;
-using static WPFSTD105.CodesysIIS;
 using devDept.Eyeshot;
 using WPFSTD105.ViewModel;
 using DevExpress.Xpf.Grid;
@@ -44,8 +43,6 @@ namespace STD_105
     /// </summary>
     public partial class ProcessingMonitorPage_Machine : BasePage<ProcessingMonitorVM>
     {
-
-
      //   public SplashScreenManager ScreenManager { get; set; } = SplashScreenManager.Create(() => new WaitIndicator(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
 
         public ObSettingVM ViewModel { get; set; } = new ObSettingVM();
@@ -54,26 +51,20 @@ namespace STD_105
         /// </summary>
         //public NcTemp NcTemp { get; set; }
         //public string DataPath { get; set; }
-        public List<List<object>> DataList { get; set; }
+        //public List<List<object>> DataList { get; set; }
 
         public ProcessingMonitorPage_Machine()
         {
-
-
             InitializeComponent();
-
             model.DataContext = ViewModel;
             drawing.DataContext = ViewModel;
             model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             drawing.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             model.ActionMode = actionType.None;
-            DataList = new List<List<object>>();
+            //DataList = new List<List<object>>();
             drawing.LineTypes.Add(Steel2DBlock.LineTypeName, new float[] { 35, -35, 35, -35 });
             model.Secondary = drawing;
             drawing.Secondary = model;
-            //ControlDraw3D();
-            //CheckReportLogoExist();
-
         }
         private void BasePage_Unloaded(object sender, RoutedEventArgs e)
         {

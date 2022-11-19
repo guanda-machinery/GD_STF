@@ -920,6 +920,7 @@
       <DependentUpon>ZoomButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValidationRules\CheckHoleGroupArrayStringRule.cs" />
+    <Compile Include="ValidationRules\CheckIPAddressPortStringRule.cs" />
     <Compile Include="ValidationRules\CheckNumberArrayRule.cs" />
     <Compile Include="ValidationRules\CheckNumberRule.cs" />
     <Compile Include="ValidationRules\CheckStringEmptyRule.cs" />

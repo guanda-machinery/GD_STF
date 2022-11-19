@@ -158,19 +158,26 @@
 
     <Style x:Key="SiegCustomButtonWhite" TargetType="Button" BasedOn="{StaticResource SiegCustomButton}">
         <Setter Property="Background" Value="White"/>
-        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Foreground" Value="DimGray"/>
         <Setter Property="BorderBrush" Value="#CFCFCF"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="0"/>
     </Style>
 
     <Style x:Key="SiegCustomButtonGray" TargetType="Button" BasedOn="{StaticResource SiegCustomButtonWhite}">
+        
         <Setter Property="Background" Value="#d8d8d8"/>
     </Style>
 
     <Style x:Key="SiegCustomButtonGold" TargetType="Button" BasedOn="{StaticResource SiegCustomButtonWhite}">
         <Setter Property="Background" Value="Gold"/>
     </Style>
+
+    <Style x:Key="SiegCustomButtonBlue" TargetType="Button" BasedOn="{StaticResource SiegCustomButtonWhite}">
+        <Setter Property="Background" Value="{StaticResource solidclr_ButtonBlue}"/>
+        <Setter Property="Foreground" Value="{StaticResource solidclr_CreamyWhite}"/>
+    </Style>
+
 
     <Style x:Key="SiegCustomButtonGreenBorder" TargetType="Button" BasedOn="{StaticResource SiegCustomButtonWhite}">
         <Setter Property="Width" Value="auto"/>

@@ -134,44 +134,20 @@ namespace WPFSTD105
             catch (EndpointNotFoundException ex)//找不到或無法連線遠端端點時，所擲回的例外狀況
             {
                 //MessageBox.Show($"{ex.InnerException.Message}", "錯誤", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
-                WinUIMessageBox.Show(null,
-                $"{ex.InnerException.Message}",
-                "錯誤",
-                MessageBoxButton.OK,
-                MessageBoxImage.Exclamation,
-                MessageBoxResult.None,
-                MessageBoxOptions.None,
-                FloatingMode.Popup);
                 log4net.LogManager.GetLogger("嚴重錯誤").Error($"{ex.Message}\n{ex.StackTrace}\n{ex.InnerException.Message}");
-                //throw;
+                throw ex;
             }
             catch (FaultException ex) //SOAP 錯誤
             {
                 //MessageBox.Show($"{ex.InnerException.Message}", "錯誤", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
-                WinUIMessageBox.Show(null,
-                $"{ex.InnerException.Message}",
-                "錯誤",
-                MessageBoxButton.OK,
-                MessageBoxImage.Exclamation,
-                MessageBoxResult.None,
-                MessageBoxOptions.None,
-                FloatingMode.Window);
-                log4net.LogManager.GetLogger("嚴重錯誤").Error($"{ex.Message}\n{ex.StackTrace}\n{ex.InnerException.Message}");
-                //throw;
+                //log4net.LogManager.GetLogger("嚴重錯誤").Error($"{ex.Message}\n{ex.StackTrace}\n{ex.InnerException.Message}");
+                throw ex;
             }
             catch (Exception ex)
             {
                 //MessageBox.Show($"{ex.InnerException.Message}", "錯誤", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
-                WinUIMessageBox.Show(null,
-                $"{ex.InnerException.Message}",
-                "錯誤",
-                MessageBoxButton.OK,
-                MessageBoxImage.Exclamation,
-                MessageBoxResult.None,
-                MessageBoxOptions.None,
-                FloatingMode.Popup);
-                log4net.LogManager.GetLogger("嚴重錯誤").Error($"{ex.Message}\n{ex.StackTrace}\n{ex.InnerException.Message}");
-                //throw;
+                //log4net.LogManager.GetLogger("嚴重錯誤").Error($"{ex.Message}\n{ex.StackTrace}\n{ex.InnerException.Message}");
+                throw ex;
             }
         }
 

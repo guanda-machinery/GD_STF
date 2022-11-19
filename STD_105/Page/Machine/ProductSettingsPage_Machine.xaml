@@ -196,27 +196,23 @@
                 <Grid.Resources>
                     <!--標題列背景-->
                     <SolidColorBrush x:Key="{dxgt:TableViewThemeKey ResourceKey=SearchPanelBackground, IsThemeIndependent=True}" Color="#f0f0f0" />
+                    <Style TargetType="dxg:GridColumn" >
+                        <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
+                        <Setter Property="AllowGrouping" Value="false"/>
+                    </Style>
+                    <Style TargetType="dxe:TextEditSettings">
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+
                 </Grid.Resources>
-                <!--<GroupBox.DataContext>          -->
-                    <!--    <spa:OfficeTypeSettingVM/>  -->
-                    <!--</GroupBox.DataContext>         -->
-                    <dxg:GridControl Name="PieceListGridControl"
+                <dxg:GridControl Name="PieceListGridControl"
+                                 Style="{StaticResource SiegCustom_CompactGridControl}"  
                                  AutoGenerateColumns="None"
-                                 SelectionMode="None"
+                                 SelectionMode="Row"
                                  MaxHeight="450"
                                  AllowLiveDataShaping="True"
                                   ItemsSource="{Binding ProductSettingsPageViewModel.DataViews, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange"  MouseDown="Button_PreviewMouseLeftButtonDown">
-                        <dxg:GridControl.Resources>
-
-                            <Style TargetType="dxg:GridColumn" >
-                                <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
-                                <Setter Property="AllowGrouping" Value="false"/>
-                            </Style>
-                            <Style TargetType="dxe:TextEditSettings">
-                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                            </Style>
-                        </dxg:GridControl.Resources>
-                        <dxg:GridControl.View >
+                    <dxg:GridControl.View >
                             <dxg:TableView VerticalScrollbarVisibility="Visible" Margin="0,-1"
                                                                            
                                        IsColumnMenuEnabled ="False"
@@ -235,18 +231,8 @@
                                 <dxg:TableView.Header>
                                     <TextBlock Text="零件清單" FontSize="16" Foreground="Black"/>
                                 </dxg:TableView.Header>
-                                <dxg:TableView.RowStyle>
-                                    <Style TargetType="dxg:RowControl">
-                                        <Setter Property="Height" Value="20"/>
-                                    </Style>
-                                </dxg:TableView.RowStyle>
-                                <dxg:TableView.CellStyle>
-                                    <Style>
-                                        <Setter Property="TextBlock.FontSize" Value="12"/>
-                                    </Style>
-                                </dxg:TableView.CellStyle>
 
-                            </dxg:TableView>
+                        </dxg:TableView>
                         </dxg:GridControl.View>
                         <dxg:GridColumn Name="Exc_GridColumn" FieldName="ExclamationMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                             <dxg:GridColumn.HeaderImageStyle>
@@ -282,7 +268,7 @@
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
 
-                        <dxg:GridColumn Binding="{Binding Row.steelAttr.ExclamationMark}" IsSmart="True"   Header="構件編號" Width="auto"/>
+                      <!--  <dxg:GridColumn FieldName="ExclamationMark" Binding="{Binding Row.steelAttr.ExclamationMark}" IsSmart="True"   Header="構件編號" Width="auto"/>-->
 
                         <dxg:GridColumn FieldName="LockMark"  IsSmart="True" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True" Visible="false">
                             <dxg:GridColumn.HeaderImageStyle>
@@ -314,23 +300,23 @@
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
-                        <!--<dxg:GridColumn FieldName="{Binding Creation, Converter={local:DateTimeConverter} }" IsSmart="True" Header="建立日期"  >-->
+                      
                     <dxg:GridColumn Binding="{Binding steelAttr.Creation, Converter={local:DateTimeConverter} }" IsSmart="True" Header="建立日期"  Width="80">
                             <dxg:GridColumn.CellStyle>
                                 <Style>
-                                    <Setter Property="TextBlock.Foreground" Value="Gray"/>
+                                    <Setter Property="TextBlock.Foreground" Value="Black"/>
                                 </Style>
                             </dxg:GridColumn.CellStyle>
                         </dxg:GridColumn>
                     <dxg:GridColumn Binding="{Binding steelAttr.Revise, Converter={local:DateTimeConverter} }" IsSmart="True" Header="修改日期" Width="80">
                             <dxg:GridColumn.CellStyle>
                                 <Style>
-                                    <Setter Property="TextBlock.Foreground" Value="Gray"/>
+                                <Setter Property="TextBlock.Foreground" Value="Black"/>
                                 </Style>
                             </dxg:GridColumn.CellStyle>
                         </dxg:GridColumn>
 
-                        <dxg:GridColumn FieldName="GUID" Binding="{Binding steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="true"/>
+                        <!--<dxg:GridColumn FieldName="GUID" Binding="{Binding steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="true"/>-->
                         <!--Visible="{StaticResource visible}"/>-->
                         <dxg:GridColumn FieldName="AssemblyNumber" Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="60"/>
                         <dxg:GridColumn FieldName="PartNumber" Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="60" />
