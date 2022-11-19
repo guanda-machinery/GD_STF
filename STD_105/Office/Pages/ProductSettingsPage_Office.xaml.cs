@@ -1667,7 +1667,7 @@ namespace STD_105.Office
                                  MessageBoxOptions.None,
                                  FloatingMode.Popup);
                     fclickOK = true;
-                    return;
+                    //return;
                 }
                 else
                 {
