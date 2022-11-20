@@ -210,6 +210,7 @@ namespace STD_105
             ViewModel.Delete = new RelayCommand(() =>
             {
                 SimulationDelete();
+                Esc();
                 SaveModel(false);
             });
             //清除標註
@@ -1629,7 +1630,7 @@ namespace STD_105
                                  MessageBoxOptions.None,
                                  FloatingMode.Window);
                     fclickOK = true;
-                    return;
+                    //return;
                 }
                 else
                 {
@@ -2710,7 +2711,7 @@ namespace STD_105
                     drawing.Focus();
                 }
                 SimulationDelete();
-
+                Esc();
                 if (!fAddSteelPart)
                     SaveModel(false);
             });
