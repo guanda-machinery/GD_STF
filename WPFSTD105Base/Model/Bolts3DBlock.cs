@@ -562,8 +562,8 @@ namespace WPFSTD105.Model
                 //((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
             }
 
-            if (!result.hasOutSteel)
-            {
+            //if (!result.hasOutSteel)
+            //{
                 if (!model.Blocks.Contains(result.Name))
                 {
                     model.Blocks.Add(result);//加入孔位群組圖塊到模型
@@ -576,7 +576,7 @@ namespace WPFSTD105.Model
                 {
                     result.Entities.AddRange(model.Blocks[result.Name].Entities);
                 }
-            }
+            //}
            // else { result.Entities.AddRange(model.Blocks[result.Name].Entities); }
 
             return result;

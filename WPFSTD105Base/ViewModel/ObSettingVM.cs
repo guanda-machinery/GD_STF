@@ -1180,7 +1180,14 @@ namespace WPFSTD105.ViewModel
             //如果模型有材質設定
             if (!File.Exists(ApplicationVM.FileMaterial()))
             {
-                Materials.AddRange(SerializationHelper.GZipDeserialize<ObservableCollection<SteelMaterial>>(ApplicationVM.FileMaterial())); //材質序列化檔案
+                try
+                {
+                    Materials.AddRange(SerializationHelper.GZipDeserialize<ObservableCollection<SteelMaterial>>(ApplicationVM.FileMaterial())); //材質序列化檔案
+                }
+                catch
+                {
+
+                }
             }
             DicSteelPart = ser.GetPart();
             Materials = ser.GetMaterial(); //材質序列化檔案
@@ -1945,7 +1952,7 @@ namespace WPFSTD105.ViewModel
                 aa.steelAttr.Title2 = item.Title2;
                 aa.steelAttr.Phase = item.Phase;
                 aa.steelAttr.ShippingNumber = item.ShippingNumber;
-                aa.steelAttr.ExclamationMark = item.ExclamationMark;
+                aa.steelAttr.ExclamationMark = item.ExclamationMark == null ? false : item.ExclamationMark;
 
                 if (NcSA[aa.steelAttr.Profile.GetHashCode().ToString() + ".lis"].Any())
                 {

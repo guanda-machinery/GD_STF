@@ -547,6 +547,28 @@ namespace WPFSTD105.Model
                 Profile = sa.Profile,
                 TP = false,
             };
+
+            // 取得該零件並更新驚嘆號
+            ObservableCollection<SteelPart> parts = ser.GetPart(nc.SteelAttr.Profile.GetHashCode().ToString());//零件列表
+            SteelPart part = parts.FirstOrDefault(x => x.GUID == nc.SteelAttr.GUID);
+
+            if (!Bolts3DBlock.CheckBolts(model))
+            {
+                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
+
+                part.ExclamationMark = true;
+                ser.SetPart(nc.SteelAttr.Profile.GetHashCode().ToString(), new ObservableCollection<object>(parts));
+            }
+            else
+            {
+                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+                ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = false;
+
+                part.ExclamationMark = false;
+                ser.SetPart(nc.SteelAttr.Profile.GetHashCode().ToString(), new ObservableCollection<object>(parts));
+            }
+
             ser.SetPartModel(model.Blocks[1].Name, model);
 
             #region 檢測是否成功，失敗則將NC檔寫回
@@ -754,20 +776,34 @@ namespace WPFSTD105.Model
             ObSettingVM obvm = new ObSettingVM();
             RunHypotenusePoint(model, obvm);
 
+            // 取得該零件並更新驚嘆號
+            ObservableCollection<SteelPart> parts = ser.GetPart(nc.SteelAttr.Profile.GetHashCode().ToString());//零件列表
+            SteelPart part = parts.FirstOrDefault(x => x.GUID == nc.SteelAttr.GUID);
+
             if (!Bolts3DBlock.CheckBolts(model))
             {
                 ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
                 ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
+
+                part.ExclamationMark = true;
+                ser.SetPart(nc.SteelAttr.Profile.GetHashCode().ToString(), new ObservableCollection<object>(parts));
             }
             else
             {
                 ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
                 ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = false;
+                
+                part.ExclamationMark = false;
+                ser.SetPart(nc.SteelAttr.Profile.GetHashCode().ToString(), new ObservableCollection<object>(parts));
             }
 
 
 
             ser.SetPartModel(dataName, model);//儲存 3d 視圖
+
+
+
+
 
             #region 檢測是否成功，失敗則將NC檔寫回
             ReadFile readFile = ser.ReadPartModel(dataName); //讀取檔案內容
