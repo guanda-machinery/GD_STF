@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,52 +14,111 @@ namespace WPFSTD105.ViewModel
     /// </summary>
     public class MachineFunctionVM : WPFWindowsBase.BaseViewModel
     {
-
-        private const string Hsteel_Clamp_TabItemName = "HSteel_Clamp_TabItem";
-        private const string HSteel_Grab_TabItemName = "HSteel_Grab_TabItem";
-        private const string Transport_TabItemName = "Transport_TabItem";
-        private const string Transport_by_Robot_TabItemName = "Transport_by_Robot_TabItem";
-        private const string ToolMagazine_TabItemName = "ToolMagazine_TabItem";
-        private const string Crumb_Conveyor_TabItemName = "Crumb_Conveyor_TabItem";
-
-        public TabItem TabItemSelected
+        private bool Taskboolen = true;
+        public MachineFunctionVM()
         {
-            //會在切換頁面的時候切換CodesysMemor
-            set
+            //初始化時建立一個task監督GD_STD.PanelButton
+            //是否可由其他方法代替? 需查證
+            Task.Run(() =>
             {
-                if (value != null)
+                while (Taskboolen)
                 {
                     GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    ClearPButtonModeValue(ref PButton);
-
-                    switch (value.Name)
+                    if (PButton.ClampDown && TabControlSelectedIndex !=0)
                     {
-                        case Hsteel_Clamp_TabItemName:
-                            PButton.ClampDown = true;
-                            break;
-                        case HSteel_Grab_TabItemName:
-                            PButton.SideClamp = true;
-                            break;
-                        case Transport_TabItemName:
-                            PButton.EntranceRack = true;
-                            break;
-                        case Transport_by_Robot_TabItemName:
-                            PButton.Hand = true;
-                            break;
-                        case ToolMagazine_TabItemName:
-                            PButton.DrillWarehouse = true;
-                            break;
-                        case Crumb_Conveyor_TabItemName:
-                            PButton.Volume = true;
-                            break;
-                        default:
-                            break;
+                        TabControlSelectedIndex = 0;
                     }
-
-                    CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                    else if (PButton.SideClamp && TabControlSelectedIndex != 1)
+                    {
+                        TabControlSelectedIndex = 1;
+                    }
+                    else if((PButton.EntranceRack || PButton.ExportRack) && TabControlSelectedIndex != 2)
+                    {
+                        TabControlSelectedIndex = 2;
+                    }
+                    else if (PButton.Hand && TabControlSelectedIndex != 3)
+                    {
+                        TabControlSelectedIndex = 3;
+                    }
+                    else if (PButton.DrillWarehouse && TabControlSelectedIndex != 4)
+                    {
+                        TabControlSelectedIndex = 4;
+                    }
+                    else if (PButton.Volume && TabControlSelectedIndex != 5)
+                    {
+                        TabControlSelectedIndex = 5;
+                    }
+                    Thread.Sleep(100);
                 }
+
+            });
+        }
+
+        ~MachineFunctionVM()
+        {
+            Taskboolen = false;
+            //解構時清除狀態
+            GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+            PButton.ClampDown = false;
+            PButton.SideClamp = false;
+            PButton.EntranceRack = false;
+            PButton.ExportRack = false;
+            PButton.Hand = false;
+            PButton.DrillWarehouse = false;
+            PButton.Volume = false;
+            PButton.MainAxisMode = false;
+            CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+        }
+
+        private int _tabControlSelectedIndex = -1;
+        public int TabControlSelectedIndex
+        {
+            get
+            {
+                   return _tabControlSelectedIndex;
+            }
+            set
+            {
+                GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+                var Exboolen = PButton.ExportRack;
+
+                ClearPButtonModeValue(ref PButton);
+
+                switch (value)
+                {
+                    case 0:
+                        PButton.ClampDown = true;
+                        break;
+                    case 1:
+                        PButton.SideClamp = true;
+                        break;
+                    case 2:
+                        if(!Exboolen)   
+                            PButton.EntranceRack = true;
+                        else
+                            PButton.ExportRack = true;
+                        break;
+                    case 3:
+                        PButton.Hand = true;
+                        break;
+                    case 4:
+                        PButton.DrillWarehouse = true;
+                        break;
+                    case 5:
+                        PButton.Volume = true;
+                        break;
+                    default:
+                        break;
+                }
+                //比較值 若功能沒變則不寫入
+                if(!PanelButtonIsEqual(ViewLocator.ApplicationViewModel.PanelButton, PButton))
+                    CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                
+                _tabControlSelectedIndex = value;
             }
         }
+
+
         private void ClearPButtonModeValue(ref GD_STD.PanelButton PButton)
         {
             PButton.ClampDown = false;
@@ -70,6 +130,23 @@ namespace WPFSTD105.ViewModel
             PButton.Volume = false;
             PButton.MainAxisMode = false;
         }
+
+        private bool PanelButtonIsEqual(GD_STD.PanelButton OldButton, GD_STD.PanelButton NewPButton)
+        {
+            return
+            OldButton.ClampDown == NewPButton.ClampDown &&
+            OldButton.SideClamp == NewPButton.SideClamp &&
+            OldButton.EntranceRack == NewPButton.EntranceRack &&
+            OldButton.ExportRack == NewPButton.ExportRack &&
+            OldButton.Hand == NewPButton.Hand &&
+            OldButton.DrillWarehouse == NewPButton.DrillWarehouse &&
+            OldButton.Volume == NewPButton.Volume &&
+            OldButton.MainAxisMode == NewPButton.MainAxisMode;
+
+        }
+
+
+
 
 
         #region 使用之vm
