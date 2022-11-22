@@ -1455,7 +1455,7 @@ namespace STD_105.Office
                 if (
                 fNewPart.Value ||          // 新零件
                 (fFirstAdd.Value && !fNewPart.Value)  // 尚未按新增 & 非新零件(新增零件OK後或Grid切換再按OK)
-            )
+                )
                 {
                     var ResultRtn = WinUIMessageBox.Show(null,
                     $"零件是否存檔 ?",
@@ -5129,6 +5129,7 @@ namespace STD_105.Office
                 ViewModel.SteelAttr.W = pf.W;
                 ViewModel.SteelAttr.t1 = pf.t1;
                 ViewModel.SteelAttr.t2 = pf.t2;
+                ViewModel.SteelAttr.Kg = pf.Kg;
                 ViewModel.SteelAttr.Profile = pf.Profile;
                 ViewModel.CurrentPartSteelAttr = ViewModel.ProfileList[cbx_SectionTypeComboBox.SelectedIndex]; //ViewModel.SteelAttr;
                 ViewModel.SteelSectionProperty = pf.Profile;
