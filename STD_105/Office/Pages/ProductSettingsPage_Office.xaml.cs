@@ -3543,6 +3543,12 @@ namespace STD_105.Office
 
                     if (TmpSteelAttr.oPoint.Count == 0) return;
 
+                    if (TmpSteelAttr.oPoint.Select(x=>x.X).Distinct().Count()>2)
+                    {
+                        ScrollViewbox.IsEnabled = false;
+                        break;
+                    }
+
                     var tmp1 = TmpSteelAttr.oPoint.GroupBy(uu => uu.Y).Select(q => new
                     {
                         key = q.Key,
@@ -3571,6 +3577,12 @@ namespace STD_105.Office
                 case FACE.FRONT:
 
                     if (TmpSteelAttr.uPoint.Count == 0) return;
+
+                    if (TmpSteelAttr.uPoint.Select(x => x.X).Distinct().Count() > 2)
+                    {
+                        ScrollViewbox.IsEnabled = false;
+                        break;
+                    }
 
                     var tmp2 = TmpSteelAttr.uPoint.GroupBy(uu => uu.Y).Select(q => new
                     {
@@ -3601,6 +3613,12 @@ namespace STD_105.Office
                 case FACE.TOP:
 
                     if (TmpSteelAttr.vPoint.Count == 0) return;
+
+                    if (TmpSteelAttr.vPoint.Select(x => x.X).Distinct().Count() > 2)
+                    {
+                        ScrollViewbox.IsEnabled = false;
+                        break;
+                    }
 
                     var tmp3 = TmpSteelAttr.vPoint.GroupBy(uu => uu.Y).Select(q => new
                     {
