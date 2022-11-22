@@ -63,7 +63,7 @@
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="BorderBrush" Value="Gray"/>
             </Style>
-            <System:Boolean x:Key="visible">true</System:Boolean>
+            <System:Boolean x:Key="visible">false</System:Boolean>
             <System:Boolean x:Key="TextBoxEnabled">false</System:Boolean>
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
@@ -253,13 +253,13 @@
                     </dxg:GridColumn.CellStyle>
                 </dxg:GridColumn>
 
-                <!--<dxg:GridColumn Binding="{Binding steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="{StaticResource visible}"/>-->
-                <dxg:GridColumn Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="60"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="60"/>
                 <dxg:GridColumn Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="60" />
                 <dxg:GridColumn Binding="{Binding steelAttr.Name,UpdateSourceTrigger=PropertyChanged}" IsSmart="True" Header="名稱" Width="80"/>
-                <dxg:GridColumn Binding="{Binding TypeDesc}" IsSmart="True" Header="鋼材類型" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn Binding="{Binding TypeDesc}" IsSmart="True" Header="鋼材類別" Visible="{StaticResource visible}"/>
                 <!--FieldName="TypeDesc"-->
-                <dxg:GridColumn Binding="{Binding Path=SteelType, Converter={STD105:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類型" Width="60"/>
+                    <dxg:GridColumn Binding="{Binding Path=SteelType, Converter={STD105:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類別" Width="60"/>
                 <dxg:GridColumn Binding="{Binding steelAttr.Profile}"  IsSmart="True" Header="斷面規格"  Width="140"/>
                 <!--FieldName="Profile"-->
                 <!--<dxg:GridColumn Binding="{Binding SteelType}"   IsSmart="True" Header="鋼材類型(Index)" Visible="{StaticResource visible}"/>-->
