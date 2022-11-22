@@ -161,7 +161,8 @@
                                           TitleText="{ DynamicResource LANGUAGE_ProjectManagement }"
                                           FontColor="{ StaticResource solidclr_DimGray }" />
                 <!--舊主軸模式-->
-                <local:MainFunctionButton x:Name="mainSpindle"
+                <local:MainFunctionButton Visibility="Collapsed"
+                    x:Name="mainSpindle"
                                           Badged=""
                                           ButtonCommand="{Binding MainAxisModeCommand}"
                                           ButtonImageSource="{StaticResource Spindle}"
@@ -185,7 +186,8 @@
                 </local:MainFunctionButton>
 
                 <!--機台舊功能-->
-                <local:MainFunctionButton ButtonCommand="{Binding MachineFuctionCommand }"
+                <local:MainFunctionButton Visibility="Collapsed"
+                    ButtonCommand="{Binding MachineFuctionCommand }"
                                           ButtonImageSource="{StaticResource Apps}"
                                           IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
                                           TitleText="舊功能"

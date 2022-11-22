@@ -13,52 +13,87 @@ namespace WPFSTD105.ViewModel
     /// </summary>
     public class MachineFunctionVM : WPFWindowsBase.BaseViewModel
     {
-
-        private const string Hsteel_Clamp_TabItemName = "HSteel_Clamp_TabItem";
-        private const string HSteel_Grab_TabItemName = "HSteel_Grab_TabItem";
-        private const string Transport_TabItemName = "Transport_TabItem";
-        private const string Transport_by_Robot_TabItemName = "Transport_by_Robot_TabItem";
-        private const string ToolMagazine_TabItemName = "ToolMagazine_TabItem";
-        private const string Crumb_Conveyor_TabItemName = "Crumb_Conveyor_TabItem";
-
-        public TabItem TabItemSelected
+        private int _tabControlSelectedIndex = -1;
+        public int TabControlSelectedIndex
         {
-            //會在切換頁面的時候切換CodesysMemor
-            set
+            get
             {
-                if (value != null)
+                GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+                if (PButton.ClampDown)
                 {
-                    GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    ClearPButtonModeValue(ref PButton);
-
-                    switch (value.Name)
-                    {
-                        case Hsteel_Clamp_TabItemName:
-                            PButton.ClampDown = true;
-                            break;
-                        case HSteel_Grab_TabItemName:
-                            PButton.SideClamp = true;
-                            break;
-                        case Transport_TabItemName:
-                            PButton.EntranceRack = true;
-                            break;
-                        case Transport_by_Robot_TabItemName:
-                            PButton.Hand = true;
-                            break;
-                        case ToolMagazine_TabItemName:
-                            PButton.DrillWarehouse = true;
-                            break;
-                        case Crumb_Conveyor_TabItemName:
-                            PButton.Volume = true;
-                            break;
-                        default:
-                            break;
-                    }
-
-                    CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                    _tabControlSelectedIndex = 0;
+                    return 0;
+                }
+                else if (PButton.SideClamp)
+                {
+                    _tabControlSelectedIndex = 1;
+                    return 1;
+                }
+                else if (PButton.EntranceRack)
+                {
+                    _tabControlSelectedIndex = 2;
+                    return 2;
+                }
+                else if (PButton.ExportRack)
+                {
+                    _tabControlSelectedIndex = 2;
+                    return 2;
+                }
+                else if (PButton.Hand)
+                {
+                    _tabControlSelectedIndex = 3;
+                    return 3;
+                }
+                else if (PButton.DrillWarehouse)
+                {
+                    _tabControlSelectedIndex = 4;
+                    return 4;
+                }
+                else if (PButton.Volume)
+                {
+                    _tabControlSelectedIndex = 5;
+                    return 5;
+                }
+                else
+                {
+                    return -1;
                 }
             }
+            set
+            {
+                GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+                ClearPButtonModeValue(ref PButton);
+
+                switch (value)
+                {
+                    case 0:
+                        PButton.ClampDown = true;
+                        break;
+                    case 1:
+                        PButton.SideClamp = true;
+                        break;
+                    case 2:
+                        PButton.EntranceRack = true;
+                        break;
+                    case 3:
+                        PButton.Hand = true;
+                        break;
+                    case 4:
+                        PButton.DrillWarehouse = true;
+                        break;
+                    case 5:
+                        PButton.Volume = true;
+                        break;
+                    default:
+                        break;
+                }
+                CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+
+                _tabControlSelectedIndex = value;
+            }
         }
+
+
         private void ClearPButtonModeValue(ref GD_STD.PanelButton PButton)
         {
             PButton.ClampDown = false;

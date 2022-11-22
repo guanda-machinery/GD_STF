@@ -24,7 +24,7 @@
                    xmlns:GD_STD_Enum="clr-namespace:GD_STD.Enum;assembly=GD_STD.Enum"
                    xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
                    Title="加工監控"
-                   x:TypeArguments="STD105VM:ProcessingMonitorVM"
+                   x:TypeArguments="STD105VM:ProcessingMonitor_MachineVM"
                   KeepAlive="True"
                   Unloaded="BasePage_Unloaded"
                   mc:Ignorable="d">
@@ -125,7 +125,7 @@
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
     <WPFBase:BasePage.DataContext>
-        <STD105VM:ProcessingMonitorVM/>
+        <STD105VM:ProcessingMonitor_MachineVM/>
     </WPFBase:BasePage.DataContext>
     <Grid dx:ThemeManager.ThemeName="Win10Light" Background="#292929">
         <Grid.Resources>

@@ -206,6 +206,16 @@ namespace STD_105.Office
         {
             Close();
         }
+
+        DXSplashScreenViewModel viewModel = new DXSplashScreenViewModel()
+        {
+            Logo = new Uri(@"pack://application:,,,/STD_105;component/Logo/SmallLogo.svg"),
+            Status = "開啟中...",
+            Title = "STD_105",
+            Subtitle = "Powered by GUANDA",
+            Copyright = "版權所有 © 2022 GUANDA",
+        };
+
         /// <summary>
         /// 環境檢查
         /// </summary>
@@ -219,14 +229,7 @@ namespace STD_105.Office
                 TrackOwnerPosition = false,
             };
 
-            DXSplashScreenViewModel viewModel = new DXSplashScreenViewModel()
-            {
-                Logo = new Uri(@"pack://application:,,,/STD_105;component/Logo/SmallLogo.svg"),
-                Status = "開啟中...",
-                Title = "STD_105",
-                Subtitle = "Powered by GUANDA",
-                Copyright = "版權所有 © 2022 GUANDA",
-            };
+
             SplashScreenManager manager = SplashScreenManager.CreateFluent(viewModel);
 
             manager.Show(this, ViewModel.StartupLocation, ViewModel.TrackOwnerPosition, ViewModel.InputBlock);

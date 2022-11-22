@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFSTD105;
 using WPFSTD105.ViewModel;
 using WPFWindowsBase;
 
@@ -27,5 +28,25 @@ namespace STD_105
         {
             InitializeComponent();
         }
+
+        /// <summary>
+        /// 離開頁面時清除所有按鈕
+        /// </summary>
+        ~MachineFunction()
+        {
+            GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+            PButton.ClampDown = false;
+            PButton.SideClamp = false;
+            PButton.EntranceRack = false;
+            PButton.ExportRack = false;
+            PButton.Hand = false;
+            PButton.DrillWarehouse = false;
+            PButton.Volume = false;
+            PButton.MainAxisMode = false;
+            CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+        }
+
+
+
     }
 }

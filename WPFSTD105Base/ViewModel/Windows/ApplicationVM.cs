@@ -196,7 +196,7 @@ namespace WPFSTD105
         /// </summary>
         public bool EngineeringMode { get; set; } = false;
         /// <inheritdoc/>
-        public string ProjectName { get; set; } = string.Empty;
+        public string ProjectName { get; set; } = null;
         /// <inheritdoc/>
         public string GetNowDate { get; set; } = "1970/01/01";
         /// <inheritdoc/>

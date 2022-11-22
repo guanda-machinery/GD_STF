@@ -83,7 +83,6 @@ namespace STD_105
                 case ApplicationPage.DrillMiddle:
                     basePage = new ChangeDrillPage();
                     break;
-                case ApplicationPage.EnClampDown:
                 case ApplicationPage.ExClampDown:
                     basePage = new ExClampDownPage();
                     break;
@@ -131,7 +130,7 @@ namespace STD_105
                 default:
                     return null;
             }
-            MainWindow_STD.ActivateLoading();
+            //MainWindow_STD.ActivateLoading();
             basePage.CloseLoadingWindow += BasePage_LoadingEvent;
             if ((ApplicationPage)value != ApplicationPage.Home)
             {
@@ -142,7 +141,7 @@ namespace STD_105
 
         private static void BasePage_LoadingEvent(object sender, EventArgs e)
         {
-            MainWindow_STD.DeactivateLoading();
+            //MainWindow_STD.DeactivateLoading();
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -39,7 +39,7 @@
     </WPFBase:BasePage.Resources>
     <Border Margin="0" BorderThickness="5" BorderBrush="#292929" Padding="0" Background="White">
         <Grid>
-            <TabControl Padding="0" BorderThickness="0,2,0,0" BorderBrush="#6d6d6d" SelectedItem="{Binding TabItemSelected , Mode=OneWayToSource}">
+            <TabControl Padding="0" BorderThickness="0,2,0,0" BorderBrush="#6d6d6d" SelectedIndex="{Binding TabControlSelectedIndex,Mode=TwoWay}">
                 <TabControl.Resources>
                     <ResourceDictionary>
                         <Style TargetType="TabItem">
