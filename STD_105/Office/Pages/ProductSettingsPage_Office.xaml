@@ -330,6 +330,7 @@
                 <Grid >
                     <!--新增3D模型處-->
                             <WPFSTD:ModelExt x:Name="model" 
+                                  
                                   SelectionChanged="model_SelectionChanged"
                                   Loaded="Model3D_Loaded"
                                   AutoRefresh="True"

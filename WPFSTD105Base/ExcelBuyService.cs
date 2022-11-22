@@ -573,6 +573,7 @@ namespace WPFSTD105
                 sheet.Cells[row, column++].Value = "腹板厚度";
                 sheet.Cells[row, column++].Value = "翼板厚度";
                 sheet.Cells[row, column++].Value = "型鋼類型";
+                sheet.Cells[row, column++].Value = "排版";
                 sheet.Cells[row, column++].Value = "零件ID";
                 sheet.Cells[row++, column++].Value = "構件ID";
                 #endregion
@@ -601,6 +602,13 @@ namespace WPFSTD105
                         sheet.Cells[row, column++].Value = part.t2;
                         sheet.Cells[row, column++].Value = part.Type.ToString();
                         int tempRow = row;
+                        foreach (bool match in part.Match)
+                        {
+                            sheet.Cells[row++, column].Value = match;
+                        }
+                        rowList.Add(row);
+                        row = tempRow;
+                        column++;
                         foreach (int id in part.ID)
                         {
                             sheet.Cells[row++, column].Value = id;

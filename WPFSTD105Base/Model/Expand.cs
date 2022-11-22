@@ -600,11 +600,24 @@ namespace WPFSTD105.Model
         /// <param name="model"></param>
         /// <param name="dataName"></param>
         /// <param name="allowType"></param>
-        public static void LoadNcToModel(this devDept.Eyeshot.Model model, string dataName, List<OBJECT_TYPE> allowType, DXSplashScreenViewModel vm = null)
+        /// <param name="diffLength">差異長度 = 原始長度 - 修正後長度</param>
+        /// <param name="vm"></param>
+        /// <param name="steelAttr">指定鋼構資訊</param>
+        /// <param name="groups"></param>
+        public static void LoadNcToModel(this devDept.Eyeshot.Model model, string dataName, List<OBJECT_TYPE> allowType,double diffLength=0, DXSplashScreenViewModel vm = null,SteelAttr steelAttr = null,List<GroupBoltsAttr> groups = null)
         {
             STDSerialization ser = new STDSerialization(); //序列化處理器
             NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
             NcTemp nc = ncTemps.GetData(dataName); //取得nc資訊
+            if (steelAttr != null)
+            {
+                nc = nc ?? new NcTemp() { SteelAttr = new SteelAttr(), GroupBoltsAttrs = new List<GroupBoltsAttr>() };
+                nc.SteelAttr = steelAttr;
+                nc.GroupBoltsAttrs = groups;
+            }
+
+            
+
             NcTemp reduceNC = new NcTemp() { GroupBoltsAttrs = nc.GroupBoltsAttrs, SteelAttr = nc.SteelAttr };
 
             //ObSettingVM obVM = new ObSettingVM();
@@ -618,18 +631,19 @@ namespace WPFSTD105.Model
             }
             model.Clear();//清除模型內物件
             Steel3DBlock.AddSteel(nc.SteelAttr, model, out BlockReference steelBlock); //加入 3d 鋼構參考圖塊
+            double midX = (nc.SteelAttr.Length+diffLength) / 2;
             if (nc.SteelAttr.oPoint.Count != 0)
-            {
+            {                
                 //model.Clear();//清除模型內物件
                 model.Blocks[steelBlock.BlockName].Entities.Clear();//清除圖塊
                 //前視圖
                 Mesh vMesh = ConvertNcPointToMesh(nc.SteelAttr.vPoint, nc.SteelAttr.t1);
                 List<Mesh> vCut = GetCutMesh(nc.SteelAttr.vPoint, nc.SteelAttr.t1);
-                Mesh cut1 = Mesh.CreateBox(nc.SteelAttr.Length +10, nc.SteelAttr.t2, nc.SteelAttr.t1);//切割前視圖翼板輪廓
-                cut1.Translate(-5, 0);
+                Mesh cut1 = Mesh.CreateBox(nc.SteelAttr.Length+diffLength +10, nc.SteelAttr.t2, nc.SteelAttr.t1);//切割前視圖翼板輪廓
+                cut1.Translate(-5, 0);//(-5,0)
                 Mesh otherCut1 = (Mesh)cut1.Clone();
                 Mesh cut2 = (Mesh)cut1.Clone();
-                cut2.Translate(0, nc.SteelAttr.H - nc.SteelAttr.t2);
+                cut2.Translate(0, nc.SteelAttr.H - nc.SteelAttr.t2);//0, nc.SteelAttr.H - nc.SteelAttr.t2
                 Mesh otherCut2 = (Mesh)cut2.Clone();
                 List<Solid> solids = new List<Solid>();
                 Solid[] s1 = Solid.Difference(otherCut1.ConvertToSolid(), vMesh.ConvertToSolid());
@@ -641,7 +655,7 @@ namespace WPFSTD105.Model
                 var cutMeshs = solids.Select(el => el.ConvertToMesh()).ToList();
                 cutMeshs.ForEach(mesh =>
                 {
-                    mesh.Vertices.Where(x=>x.Z==nc.SteelAttr.t1).ForEach(el =>
+                    mesh.Vertices.Where(x => x.Z == nc.SteelAttr.t1).ForEach(el =>
                     {
                         el.Z = nc.SteelAttr.W;
                         //if (el.Z == nc.SteelAttr.t1)
@@ -651,7 +665,7 @@ namespace WPFSTD105.Model
                     });
                     mesh.Regen(1E3);
                 });
-                vCut.Add(cut1);
+                vCut.Add(cut1);// Front
                 vCut.Add(cut2);
                 Solid vSolid = vMesh.ConvertToSolid();
                 vSolid = vSolid.Difference(vCut);
@@ -659,7 +673,7 @@ namespace WPFSTD105.Model
                 vMesh.Color =ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
                 vMesh.ColorMethod = colorMethodType.byEntity;
                 vMesh.Translate(0, 0, nc.SteelAttr.W * 0.5 - nc.SteelAttr.t1 * 0.5);
-
+                
                 //頂視圖
                 Mesh oMesh = ConvertNcPointToMesh(nc.SteelAttr.oPoint, nc.SteelAttr.t2);
                 List<Mesh> oCut = GetCutMesh(nc.SteelAttr.oPoint, nc.SteelAttr.t2);
@@ -670,7 +684,7 @@ namespace WPFSTD105.Model
                 oSolid.Translate(0, nc.SteelAttr.H);
                 //oSolid = oSolid.Difference(cutMeshs);
                 oMesh = oSolid.ConvertToMesh();
-                oMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
+                oMesh.Color = System.Drawing.Color.White;//ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
                 oMesh.ColorMethod = colorMethodType.byEntity;
 
                 //底視圖
@@ -682,14 +696,29 @@ namespace WPFSTD105.Model
                 uSolid.Translate(0, nc.SteelAttr.t2);
                 //uSolid = uSolid.Difference(cutMeshs);
                 uMesh = uSolid.ConvertToMesh();
-                uMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
+                uMesh.Color = System.Drawing.Color.Tomato;//ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
                 uMesh.ColorMethod = colorMethodType.byEntity;
 
                 vMesh.MergeWith(oMesh);
                 
                 vMesh.MergeWith(uMesh);
+                //vMesh = uMesh;
                 vMesh.EntityData = nc.SteelAttr;
-                model.Blocks[steelBlock.BlockName].Entities.Add(vMesh);
+                vMesh.Regen(1E3);
+                midX = (vMesh.Vertices.Select(x => x.X).Max() + vMesh.Vertices.Select(x => x.X).Min()) / 2;
+
+                double maxX = nc.SteelAttr.oPoint.Union(nc.SteelAttr.uPoint).Union(nc.SteelAttr.vPoint).Select(x => x.X).Max();
+                double minX = nc.SteelAttr.oPoint.Union(nc.SteelAttr.uPoint).Union(nc.SteelAttr.vPoint).Select(x => x.X).Min();
+                midX = (minX + maxX) / 2;
+                //diffLength = 0;
+                vMesh.Vertices.ForEach(x =>
+                {
+                    if (x.X>= midX)
+                    {
+                        x.X = x.X - diffLength;
+                    }
+                });
+                model.Blocks[steelBlock.BlockName].Entities.Add(vMesh);                
                 model.Refresh();
                 //////前視圖
                 ////Mesh vMesh = ConvertNcPointToMesh(nc.SteelAttr.vPoint, nc.SteelAttr.t1);
@@ -774,7 +803,7 @@ namespace WPFSTD105.Model
             ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).uPoint = nc.SteelAttr.uPoint;
 
             ObSettingVM obvm = new ObSettingVM();
-            RunHypotenusePoint(model, obvm);
+            RunHypotenusePoint(model, obvm,diffLength);
 
             // 取得該零件並更新驚嘆號
             ObservableCollection<SteelPart> parts = ser.GetPart(nc.SteelAttr.Profile.GetHashCode().ToString());//零件列表
@@ -801,10 +830,6 @@ namespace WPFSTD105.Model
 
             ser.SetPartModel(dataName, model);//儲存 3d 視圖
 
-
-
-
-
             #region 檢測是否成功，失敗則將NC檔寫回
             ReadFile readFile = ser.ReadPartModel(dataName); //讀取檔案內容
             readFile.DoWork();//開始工作
@@ -825,7 +850,7 @@ namespace WPFSTD105.Model
             ser.SetNcTempList(ncTemps);//儲存檔案
         }
 
-        public static void RunHypotenusePoint(devDept.Eyeshot.Model model, ObSettingVM obvm)
+        public static void RunHypotenusePoint(devDept.Eyeshot.Model model, ObSettingVM obvm,double diffLength)
         {
             // 由選取零件判斷三面是否為斜邊
             if (model.Entities[model.Entities.Count - 1].EntityData is null)
@@ -836,23 +861,30 @@ namespace WPFSTD105.Model
             SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
             //GetViewToViewModel(false, TmpSteelAttr.GUID);
             obvm.SteelAttr = (SteelAttr)TmpSteelAttr.DeepClone();
+
+            // 移除斜邊打點
+            List<GroupBoltsAttr> delList = model.Blocks.SelectMany(x => x.Entities).Where(y => y.GetType() == typeof(BlockReference) && y.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)y.EntityData).Mode == AXIS_MODE.HypotenusePOINT).Select(y => (GroupBoltsAttr)y.EntityData).ToList();
+            foreach (GroupBoltsAttr del in delList)
+            {
+                model.Blocks.Remove(model.Blocks[del.GUID.Value.ToString()]);
+            }
             if (TmpSteelAttr.vPoint.Count != 0)     //  頂面斜邊
             {
-                AutoHypotenusePoint(FACE.TOP, model, obvm);
+                AutoHypotenusePoint(FACE.TOP, model, obvm,diffLength);
             }
             if (TmpSteelAttr.uPoint.Count != 0)     //  前面斜邊
             {
-                AutoHypotenusePoint(FACE.FRONT, model, obvm);
+                AutoHypotenusePoint(FACE.FRONT, model, obvm, diffLength);
             }
             if (TmpSteelAttr.oPoint.Count != 0)    //  後面斜邊
             {
-                AutoHypotenusePoint(FACE.BACK, model, obvm);
+                AutoHypotenusePoint(FACE.BACK, model, obvm, diffLength);
             }
         }
         /// <summary>
         /// 自動斜邊打點
         /// </summary>
-        public static void AutoHypotenusePoint(FACE face,devDept.Eyeshot.Model model, ObSettingVM obvm)
+        public static void AutoHypotenusePoint(FACE face, devDept.Eyeshot.Model model, ObSettingVM obvm,double diffLength)
         {
             //ObSettingVM obvm = new ObSettingVM();
 
@@ -883,13 +915,18 @@ namespace WPFSTD105.Model
             if (model.Entities[model.Entities.Count - 1].EntityData is null)
                 return;
 
-            SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+            SteelAttr TmpSteelAttr = (SteelAttr)((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).DeepClone();
             obvm.SteelAttr = (SteelAttr)TmpSteelAttr.DeepClone();
 
             GroupBoltsAttr TmpBoltsArr = new GroupBoltsAttr();
-            
-            //bool hasOutSteel = false;
 
+            //bool hasOutSteel = false;
+            double maxX = TmpSteelAttr.oPoint.Union(TmpSteelAttr.uPoint).Union(TmpSteelAttr.vPoint).Select(x => x.X).Max();
+            double minX = TmpSteelAttr.oPoint.Union(TmpSteelAttr.uPoint).Union(TmpSteelAttr.vPoint).Select(x => x.X).Min();
+            double midX = (minX + maxX) / 2;
+            TmpSteelAttr.vPoint.ForEach(x => {if (x.X>=midX) x.X = x.X - diffLength; });
+            TmpSteelAttr.uPoint.ForEach(x => {if (x.X>=midX) x.X = x.X - diffLength; });
+            TmpSteelAttr.oPoint.ForEach(x => { if (x.X >= midX) x.X = x.X - diffLength; });
             switch (face)
             {
                 #region Back
