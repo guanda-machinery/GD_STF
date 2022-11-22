@@ -1907,7 +1907,7 @@ namespace WPFSTD105.ViewModel
                     t1 = item.t1,
                     t2 = item.t2,
                     ExclamationMark = item.ExclamationMark == null ? false : item.ExclamationMark,
-
+                     
                 };
                 //// source專用
                 //aa.steelAttr.GUID = item.steelAttr.GUID;

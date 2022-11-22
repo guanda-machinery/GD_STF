@@ -3120,17 +3120,17 @@ namespace STD_105.Office
 //#endif
 //            }
             // 2020/08/04 呂宗霖 因按Delete會造成無窮迴圈 跳不出去系統造成當掉 故先停用直接按Delete的動作
-            //else if (Keyboard.IsKeyDown(Key.Delete))
-            //{
+            else if (Keyboard.IsKeyDown(Key.Delete))
+            {
             //    ViewModel.EditObject.Execute(null);
             //    drawing.SetCurrent(drawing.CurrentBlockReference);
             //    //model.Blocks.Remove(model.CurrentBlock);
             //    //SimulationDelete();
             //    //if (!fAddSteelPart)
-            //    //    SaveModel(false);
+                    SaveModel(false);
             //    //drawing.SetCurrent(null);
             //    //model.SetCurrent(null);
-            //}
+            }
             model.Invalidate();
             drawing.Invalidate();
         }
@@ -5553,7 +5553,7 @@ namespace STD_105.Office
                     SteelAttr sa = item.steelAttr;//1110 改由e.NewItem的steelAttr給值 CYH
                     //SteelAttr sa = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
                     SteelAttr saTemp = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
-
+                    model.Blocks[1].Entities[0].EntityData = sa;
                     //ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
                     //model.Blocks[1].ConvertToSurrogate();
                     string path = ApplicationVM.DirectoryNc();
