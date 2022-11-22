@@ -152,12 +152,12 @@ namespace STD_105
             //刪除物件
             ViewModel.Delete = new RelayCommand(() =>
             {
-                //模擬鍵盤按下Delete
-                var c = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Delete)
-                {
-                    RoutedEvent = Keyboard.KeyDownEvent
-                };
-                InputManager.Current.ProcessInput(c);
+                ////模擬鍵盤按下Delete
+                //var c = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Delete)
+                //{
+                //    RoutedEvent = Keyboard.KeyDownEvent
+                //};
+                //InputManager.Current.ProcessInput(c);
             });
             //清除標註
             ViewModel.ClearDim = new RelayCommand(() =>
@@ -999,13 +999,13 @@ namespace STD_105
         /// </summary>
         private void SimulationDelete()
         {
-            //模擬鍵盤按下Delete
-            var c = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Delete)
-            {
-                RoutedEvent = Keyboard.KeyDownEvent
-            };
-            InputManager.Current.ProcessInput(c);
-            SaveModel();
+            ////模擬鍵盤按下Delete
+            //var c = new KeyEventArgs(Keyboard.PrimaryDevice, Keyboard.PrimaryDevice.ActiveSource, 0, Key.Delete)
+            //{
+            //    RoutedEvent = Keyboard.KeyDownEvent
+            //};
+            //InputManager.Current.ProcessInput(c);
+            //SaveModel();
         }
         /// <summary>
         /// 在模型視圖按下鍵盤
@@ -1020,34 +1020,34 @@ namespace STD_105
                 Esc();
                 esc.Visibility = Visibility.Collapsed;//關閉取消功能
             }
-            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.P)) //俯視圖
-            {
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + P");
-#endif
-                model.InitialView = viewType.Top;
-                model.ZoomFit();//在視口控件的工作區中適合整個模型。
-            }
-            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Z)) //退回
-            {
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z");
-#endif
-                ViewModel.Reductions.Previous();
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z 完成");
-#endif
-            }
-            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Y)) //退回
-            {
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y");
-#endif
-                ViewModel.Reductions.Next();//回到上一個動作
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y 完成");
-#endif
-            }
+//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.P)) //俯視圖
+//            {
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + P");
+//#endif
+//                model.InitialView = viewType.Top;
+//                model.ZoomFit();//在視口控件的工作區中適合整個模型。
+//            }
+//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Z)) //退回
+//            {
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z");
+//#endif
+//                ViewModel.Reductions.Previous();
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z 完成");
+//#endif
+//            }
+//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Y)) //退回
+//            {
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y");
+//#endif
+//                ViewModel.Reductions.Next();//回到上一個動作
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y 完成");
+//#endif
+//            }
             model.Invalidate();
             drawing.Invalidate();
         }

@@ -35,13 +35,16 @@ using static devDept.Eyeshot.Environment;
 using DevExpress.Data.Extensions;
 using GD_STD.Data;
 using System.Collections.ObjectModel;
+using DevExpress.Mvvm;
+using static DevExpress.XtraEditors.Mask.MaskSettings;
+using DevExpress.Dialogs.Core.View;
 
 namespace STD_105
 {
     /// <summary>
     /// 新加工監控 ProcessingMonitorPage_Machine.xaml 的互動邏輯
     /// </summary>
-    public partial class ProcessingMonitorPage_Machine : BasePage<ProcessingMonitorVM>
+    public partial class ProcessingMonitorPage_Machine : BasePage<ProcessingMonitor_MachineVM>
     {
      //   public SplashScreenManager ScreenManager { get; set; } = SplashScreenManager.Create(() => new WaitIndicator(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
 
@@ -65,6 +68,9 @@ namespace STD_105
             drawing.LineTypes.Add(Steel2DBlock.LineTypeName, new float[] { 35, -35, 35, -35 });
             model.Secondary = drawing;
             drawing.Secondary = model;
+
+            (this.DataContext as ProcessingMonitor_MachineVM).Combinational_List_GridControl = MachiningCombinational_List_GridControl;
+
         }
         private void BasePage_Unloaded(object sender, RoutedEventArgs e)
         {
@@ -102,6 +108,12 @@ namespace STD_105
             }
 
             #endregion
+
+            //非同步初始化相關物件 以後要重構
+            (this.DataContext as ProcessingMonitor_MachineVM).SetModel(model);
+
+            model.Loaded -= Model3D_Loaded;
+
         }
 
 
@@ -372,34 +384,34 @@ namespace STD_105
                 Esc();
                 esc.Visibility = Visibility.Collapsed;//關閉取消功能
             }
-            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.P)) //俯視圖
-            {
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + P");
-#endif
-                model.InitialView = viewType.Top;
-                model.ZoomFit();//在視口控件的工作區中適合整個模型。
-            }
-            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Z)) //退回
-            {
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z");
-#endif
-                ViewModel.Reductions.Previous();
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z 完成");
-#endif
-            }
-            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Y)) //退回
-            {
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y");
-#endif
-                ViewModel.Reductions.Next();//回到上一個動作
-#if DEBUG
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y 完成");
-#endif
-            }
+//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.P)) //俯視圖
+//            {
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + P");
+//#endif
+//                model.InitialView = viewType.Top;
+//                model.ZoomFit();//在視口控件的工作區中適合整個模型。
+//            }
+//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Z)) //退回
+//            {
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z");
+//#endif
+//                ViewModel.Reductions.Previous();
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z 完成");
+//#endif
+//            }
+//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Y)) //退回
+//            {
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y");
+//#endif
+//                ViewModel.Reductions.Next();//回到上一個動作
+//#if DEBUG
+//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y 完成");
+//#endif
+//            }
             model.Invalidate();
             drawing.Invalidate();
 

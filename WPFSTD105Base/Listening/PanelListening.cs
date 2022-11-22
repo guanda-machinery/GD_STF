@@ -133,30 +133,36 @@ namespace WPFSTD105
                     if (panelButton.ClampDownSelected == CLAMP_DOWN.Entrance && currentPage != ApplicationPage.EnClampDown)
                     {
                         if (IsReplacePage(currentPage))
-                            ApplicationViewModel.CurrentPage = ApplicationPage.EnClampDown;
+                            ApplicationViewModel.CurrentPage = ApplicationPage.MachineFunction;
+                        //ApplicationViewModel.CurrentPage = ApplicationPage.EnClampDown;
                     }
                     //如果下壓夾具選擇是出料口處，但是頁面不在出口下壓夾具畫面，就換到對應畫面
                     else if (panelButton.ClampDownSelected == CLAMP_DOWN.Export && currentPage != ApplicationPage.ExClampDown)
                     {
                         if (IsReplacePage(currentPage))
-                            ApplicationViewModel.CurrentPage = ApplicationPage.ExClampDown;
+                            ApplicationViewModel.CurrentPage = ApplicationPage.MachineFunction;
+                        //ApplicationViewModel.CurrentPage = ApplicationPage.ExClampDown;
                     }
                 }
                 //如果按下側壓夾具，但是頁面不在側壓夾具畫面，就換到對應畫面
                 else if (panelButton.SideClamp && currentPage != ApplicationPage.SideClamp)
                 {
                     if (IsReplacePage(currentPage))
-                        ApplicationViewModel.CurrentPage = ApplicationPage.SideClamp;
+                        ApplicationViewModel.CurrentPage = ApplicationPage.MachineFunction;
+                    //ApplicationViewModel.CurrentPage = ApplicationPage.SideClamp;
                 }
                 //如果按下送料手臂，但是頁面不在送料手臂畫面，就換到對應畫面
                 else if (panelButton.Hand && currentPage != ApplicationPage.Hand)
                 {
                     if (IsReplacePage(currentPage))
-                        ApplicationViewModel.CurrentPage = ApplicationPage.Hand;
+                        ApplicationViewModel.CurrentPage = ApplicationPage.MachineFunction;
+                        //ApplicationViewModel.CurrentPage = ApplicationPage.Hand;
                 }
                 //如果按下，主軸模式
                 else if (panelButton.MainAxisMode)
-                {
+                {    
+                    //舊頁面
+                    /*
                     //如果下壓夾具選擇是左軸，但是頁面不在左軸畫面，就換到對應畫面
                     if (panelButton.AxisSelect == AXIS_SELECTED.Left && currentPage != ApplicationPage.LeftAxis)
                     {
@@ -175,18 +181,30 @@ namespace WPFSTD105
                         if (IsReplacePage(currentPage))
                             ApplicationViewModel.CurrentPage = ApplicationPage.RightAxis;
                     }
+                         */
+                    
+                    //新頁面
+                    if (currentPage != ApplicationPage.MainSpindleMode)
+                    {
+                        if (IsReplacePage(currentPage))
+                            ApplicationViewModel.CurrentPage = ApplicationPage.MainSpindleMode;
+                    }
+                    
+
                 }
                 //如果選擇出入口料架，但是頁面不在料架頁面，就換到對應畫面
                 else if ((panelButton.EntranceRack || panelButton.ExportRack) && currentPage != ApplicationPage.RackOperation)
                 {
                     if (IsReplacePage(currentPage))
-                        ApplicationViewModel.CurrentPage = ApplicationPage.RackOperation;
+                        ApplicationViewModel.CurrentPage = ApplicationPage.MachineFunction;
+                        //ApplicationViewModel.CurrentPage = ApplicationPage.RackOperation;
+
                 }
                 //如果按下，刀庫
                 else if (panelButton.DrillWarehouse)
                 {
                     //如果刀庫選擇是左軸出料口，但是頁面不在左軸出料口畫面，就換到對應畫面
-                    if (panelButton.DrillSelected == DRILL_POSITION.ENTRANCE_L && currentPage != ApplicationPage.DrillEntrance_L)
+                    /*if (panelButton.DrillSelected == DRILL_POSITION.ENTRANCE_L && currentPage != ApplicationPage.DrillEntrance_L)
                     {
                         if (IsReplacePage(currentPage))
                             ApplicationViewModel.CurrentPage = ApplicationPage.DrillEntrance_L;
@@ -214,12 +232,14 @@ namespace WPFSTD105
                     {
                         if (IsReplacePage(currentPage))
                             ApplicationViewModel.CurrentPage = ApplicationPage.DrillMiddle;
-                    }
+                    }  */
+                    ApplicationViewModel.CurrentPage = ApplicationPage.MachineFunction;
                 }
                 else if (panelButton.Volume && currentPage != ApplicationPage.Volume)
                 {
                     if (IsReplacePage(currentPage))
-                        ApplicationViewModel.CurrentPage = ApplicationPage.Volume;
+                        ApplicationViewModel.CurrentPage = ApplicationPage.MachineFunction;
+                    //ApplicationViewModel.CurrentPage = ApplicationPage.Volume;
                 }
                 //如果沒有選擇主軸模式，但是目前頁面是在主軸模式相關的畫面，就返回首頁
                 else if (!panelButton.MainAxisMode &&

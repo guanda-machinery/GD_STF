@@ -14,7 +14,7 @@
             <RowDefinition />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <Border
+        <Border 
             x:Name="bor_Main"
             Grid.RowSpan="2"            
             Background="Transparent"
