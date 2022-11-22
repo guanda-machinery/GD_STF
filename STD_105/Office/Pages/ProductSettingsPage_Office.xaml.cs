@@ -633,6 +633,9 @@ namespace STD_105.Office
                         });
                         #endregion
 
+                        //1122 CYH
+                        SaveModel(true,false);
+
                         fAddSteelPart = true; // hank 新設 新增零件旗號,暫不儲存
                         StateParaSetting(true, true, false);
                         fclickOK = false;
@@ -5395,17 +5398,6 @@ namespace STD_105.Office
                     // 　　　　不存檔，刪除最後一列，清空畫面資訊，讀取原選列
                     if (this.PieceListGridControl.VisibleRowCount > 0)
                     {
-#if DEBUG
-                        IList see = this.PieceListGridControl.VisibleItems;
-
-                        // 將字串寫入TXT檔
-                        StreamWriter str = new StreamWriter(@"Current_GridItems.txt");
-                        foreach (ProductSettingsPageViewModel se in see)
-                        {
-                            str.WriteLine($"{se.DataName} {se.steelAttr.AsseNumber} {se.steelAttr.PartNumber}");
-                        }
-                        str.Close();
-#endif
                         FinalRow = (ProductSettingsPageViewModel)this.PieceListGridControl.GetRow(this.PieceListGridControl.VisibleRowCount - 1);
                         ProductSettingsPageViewModel temp = RowToEntity(FinalRow);
                         string guid = FinalRow.DataName;
