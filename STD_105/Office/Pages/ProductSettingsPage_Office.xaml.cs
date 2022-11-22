@@ -633,7 +633,6 @@ namespace STD_105.Office
                         });
                         #endregion
 
-                        //1122 CYH
                         SaveModel(true,false);
 
                         fAddSteelPart = true; // hank 新設 新增零件旗號,暫不儲存
