@@ -169,7 +169,7 @@ namespace WPFSTD105.Model
                         // EntityData XYZ有值
                         // Vertices XY有值 Z=0
                         resultY[0].Rotate(Math.PI / 2, Vector3D.AxisX);
-                        // 此時Vertices與YZ皆轉換
+                        // 此時Vertices與YZ皆轉換Vertices
                         // EntityData XYZ有值(不變)
                         // Vertices X有值 YZ對調(Y=0)
 

@@ -37,7 +37,7 @@ namespace WPFSTD105.Tekla
         /// <inheritdoc/>
         public List<string> Parameter { get; set; }
         /// <inheritdoc/>
-        public List<NcPoint3D> GetNcPoint(OBJECT_TYPE type = OBJECT_TYPE.RB)
+        public List<NcPoint3D> GetNcPoint(OBJECT_TYPE type = OBJECT_TYPE.RB, double DiffLength = 0)
         {
             //if (Z == -1)
             //{
@@ -78,6 +78,18 @@ namespace WPFSTD105.Tekla
                 }
                 result.Add(point3D);
             }
+
+            //// 取得最大兩點座標 做長度異動之調整
+            //List<double> maxX = result.OrderByDescending(x => x.X).Take(2).Select(x => x.X).ToList();
+            //foreach (NcPoint3D item in result)
+            //{
+            //    if (maxX.Contains(item.X))
+            //    {
+            //        item.X = item.X + 500;
+            //    }
+            //}
+
+
             return result;
         }
         /// <summary>

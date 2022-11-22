@@ -330,6 +330,7 @@
                 <Grid >
                     <!--新增3D模型處-->
                             <WPFSTD:ModelExt x:Name="model" 
+                                  
                                   SelectionChanged="model_SelectionChanged"
                                   Loaded="Model3D_Loaded"
                                   AutoRefresh="True"
@@ -616,8 +617,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Name="Weight" Text="{Binding ProductWeightProperty, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N1}}" Margin="6,0,0,0"/>
-                        <TextBlock Grid.Column="1"  Text="Kg"   Margin="3,0,0,0"/>
+                        <TextBox Grid.Column="0" Name="Weight" Text="{Binding ProductWeightProperty, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N1}}" IsEnabled="False" Margin="6,0,0,0"/>
+                        <TextBlock Grid.Column="1"  Text="Kg"   Margin="3,5,0,0"/>
 
                     </Grid>
 

@@ -499,7 +499,7 @@ namespace WPFSTD105
                         ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔中{nc.SteelAttr.PartNumber}";
                         //Thread.Sleep(1000);
                         model.Clear(); //清除目前模型
-                        model.LoadNcToModel(nc.SteelAttr.GUID.ToString(), ObSettingVM.allowType, ProcessingScreenWin.ViewModel);
+                        model.LoadNcToModel(nc.SteelAttr.GUID.ToString(), ObSettingVM.allowType,0, ProcessingScreenWin.ViewModel);
                     }
                 }
                 else
@@ -512,7 +512,7 @@ namespace WPFSTD105
                             ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔中{i++}/{ncTemps.Count}\n{nc.SteelAttr.PartNumber} ";
                             //Thread.Sleep(1000);
                             model.Clear(); //清除目前模型
-                            model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), ObSettingVM.allowType, ProcessingScreenWin.ViewModel);
+                            model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), ObSettingVM.allowType,0, ProcessingScreenWin.ViewModel);
                         }
                     }
                 }
@@ -566,7 +566,7 @@ namespace WPFSTD105
                     ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔中{nc.SteelAttr.PartNumber}";
                     //Thread.Sleep(1000);
                     _BufferModel.Clear(); //清除目前模型
-                    _BufferModel.LoadNcToModel(nc.SteelAttr.GUID.ToString(), ObSettingVM.allowType, ProcessingScreenWin.ViewModel);
+                    _BufferModel.LoadNcToModel(nc.SteelAttr.GUID.ToString(), ObSettingVM.allowType,0, ProcessingScreenWin.ViewModel);
                 }
             }
             else
@@ -610,7 +610,7 @@ namespace WPFSTD105
 
                                 //Thread.Sleep(1000);
                                 _BufferModel.Clear(); //清除目前模型
-                                _BufferModel.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), ObSettingVM.allowType, ProcessingScreenWin.ViewModel);
+                                _BufferModel.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), ObSettingVM.allowType,0, ProcessingScreenWin.ViewModel);
                             }
                         }
                     }
