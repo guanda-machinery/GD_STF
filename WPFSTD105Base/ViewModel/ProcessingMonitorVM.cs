@@ -405,7 +405,7 @@ namespace WPFSTD105.ViewModel
             InsertCommand = Insert();
             FinishCommand = Finish();
             ContinueCommand = Continue();
-
+                                                                              
 
             int synIndex = 0;
             if (ApplicationViewModel.PanelButton.Key != KEY_HOLE.AUTO) //如果沒有在自動狀況下

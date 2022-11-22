@@ -46,7 +46,5 @@ namespace STD_105
             CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
         }
 
-
-
     }
 }

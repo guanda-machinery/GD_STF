@@ -24,8 +24,9 @@ namespace WPFSTD105.ViewModel
         {
             //this.Button_Down_IsEnabled = false;
 
-            PanelButton panelButton = ApplicationViewModel.PanelButton;
+            /*PanelButton panelButton = ApplicationViewModel.PanelButton;
             //如果都沒有選擇出入或口料架
+
             if (!panelButton.EntranceRack && !panelButton.ExportRack)
             {
                 //如果出口料架不是唯讀
@@ -38,7 +39,7 @@ namespace WPFSTD105.ViewModel
                     panelButton.ExportRack = true;
                 }
                 WriteCodesysMemor.SetPanel(panelButton);
-            }
+            }  */
         }
 
         #region 公開屬性

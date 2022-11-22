@@ -121,7 +121,7 @@ namespace STD_105
                     break;
                 case ApplicationPage.MachineFunction:
                     basePage = new MachineFunction();
-                        break;
+                    break;
 
                 case ApplicationPage.MainSpindleMode:
                     basePage = new MainSpindleMode();
