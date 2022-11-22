@@ -627,7 +627,8 @@ namespace STD_105.Office
                         });
                         #endregion
 
-                        SaveModel(true,false);
+                        // 2022/11/22 呂宗霖 暐淇說改為異動Grid時詢問
+                        //SaveModel(true,false);
 
                         fAddSteelPart = true; // hank 新設 新增零件旗號,暫不儲存
                         StateParaSetting(true, true, false);
@@ -1353,26 +1354,24 @@ namespace STD_105.Office
                 if (fclickOK.Value)
                 {
                     var ResultRtn = WinUIMessageBox.Show(null,
-                         $"請選擇執行動作[新增OK] / [修改Cancel]",
+                         $"請選擇執行動作[新增] / [修改]",
                          "通知",
-                         MessageBoxButton.OKCancel,
+                         MessageBoxButton.OK,
                          MessageBoxImage.Exclamation,
                          MessageBoxResult.None,
                          MessageBoxOptions.None,
                          FloatingMode.Popup);
+                    return;
+                   
+                }
+                if (!DataCheck("add"))
+                {
+                    fclickOK = true; return;
+                }
 
-                    // 新增
-                    if (ResultRtn == MessageBoxResult.OK)
-                    {
-                        if (!DataCheck("add"))
-                        {
-                            fclickOK = true; return;
-                        }
-                    }
-                    else if (!DataCheck("edit"))
-                    {
-                        fclickOK = true; return;
-                    }
+                else if (!DataCheck("edit"))
+                {
+                    fclickOK = true; return;
                 }
 
                 #region 取得目前選取列的GUID
@@ -3544,6 +3543,12 @@ namespace STD_105.Office
 
                     if (TmpSteelAttr.oPoint.Count == 0) return;
 
+                    if (TmpSteelAttr.oPoint.Select(x=>x.X).Distinct().Count()>2)
+                    {
+                        ScrollViewbox.IsEnabled = false;
+                        break;
+                    }
+
                     var tmp1 = TmpSteelAttr.oPoint.GroupBy(uu => uu.Y).Select(q => new
                     {
                         key = q.Key,
@@ -3572,6 +3577,12 @@ namespace STD_105.Office
                 case FACE.FRONT:
 
                     if (TmpSteelAttr.uPoint.Count == 0) return;
+
+                    if (TmpSteelAttr.uPoint.Select(x => x.X).Distinct().Count() > 2)
+                    {
+                        ScrollViewbox.IsEnabled = false;
+                        break;
+                    }
 
                     var tmp2 = TmpSteelAttr.uPoint.GroupBy(uu => uu.Y).Select(q => new
                     {
@@ -3602,6 +3613,12 @@ namespace STD_105.Office
                 case FACE.TOP:
 
                     if (TmpSteelAttr.vPoint.Count == 0) return;
+
+                    if (TmpSteelAttr.vPoint.Select(x => x.X).Distinct().Count() > 2)
+                    {
+                        ScrollViewbox.IsEnabled = false;
+                        break;
+                    }
 
                     var tmp3 = TmpSteelAttr.vPoint.GroupBy(uu => uu.Y).Select(q => new
                     {
@@ -5356,48 +5373,48 @@ namespace STD_105.Office
                                 // 指向最後一列的guid
                                 focuseGUID = guid;
 
-                                if (!File.Exists($@"{ApplicationVM.DirectoryDevPart()}\{focuseGUID}.dm"))
-                                {
-                                    ApplicationVM appVM = new ApplicationVM();
-                                    ReadFile readFile1 = ser.ReadPartModel(focuseGUID); //讀取檔案內容
-                                    if (readFile1 != null)
-                                    {
-                                        readFile1.DoWork();//開始工作
-                                        model.Blocks.Clear();
-                                        model.Entities.Clear();
-                                        drawing.Blocks.Clear();
-                                        drawing.Entities.Clear();
-                                        try
-                                        {
-                                            readFile1.AddToScene(model);//將讀取完的檔案放入到模型
-                                            appVM.CreateDMFile(model);
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            WinUIMessageBox.Show(null,
-                                               $"專案Dev_Part資料夾讀取失敗",
-                                               "通知",
-                                               MessageBoxButton.OK,
-                                               MessageBoxImage.Exclamation,
-                                               MessageBoxResult.None,
-                                               MessageBoxOptions.None,
-                                               FloatingMode.Popup);
-                                            return;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        WinUIMessageBox.Show(null,
-                                            $"專案Dev_Part資料夾讀取失敗",
-                                            "通知",
-                                            MessageBoxButton.OK,
-                                            MessageBoxImage.Exclamation,
-                                            MessageBoxResult.None,
-                                            MessageBoxOptions.None,
-                                            FloatingMode.Popup);
-                                        return;
-                                    }
-                                }
+                                //if (!File.Exists($@"{ApplicationVM.DirectoryDevPart()}\{focuseGUID}.dm"))
+                                //{
+                                //    ApplicationVM appVM = new ApplicationVM();
+                                //    ReadFile readFile1 = ser.ReadPartModel(focuseGUID); //讀取檔案內容
+                                //    if (readFile1 != null)
+                                //    {
+                                //        readFile1.DoWork();//開始工作
+                                //        model.Blocks.Clear();
+                                //        model.Entities.Clear();
+                                //        drawing.Blocks.Clear();
+                                //        drawing.Entities.Clear();
+                                //        try
+                                //        {
+                                //            readFile1.AddToScene(model);//將讀取完的檔案放入到模型
+                                //            appVM.CreateDMFile(model);
+                                //        }
+                                //        catch (Exception ex)
+                                //        {
+                                //            WinUIMessageBox.Show(null,
+                                //               $"專案Dev_Part資料夾讀取失敗",
+                                //               "通知",
+                                //               MessageBoxButton.OK,
+                                //               MessageBoxImage.Exclamation,
+                                //               MessageBoxResult.None,
+                                //               MessageBoxOptions.None,
+                                //               FloatingMode.Popup);
+                                //            return;
+                                //        }
+                                //    }
+                                //    else
+                                //    {
+                                //        WinUIMessageBox.Show(null,
+                                //            $"專案Dev_Part資料夾讀取失敗",
+                                //            "通知",
+                                //            MessageBoxButton.OK,
+                                //            MessageBoxImage.Exclamation,
+                                //            MessageBoxResult.None,
+                                //            MessageBoxOptions.None,
+                                //            FloatingMode.Popup);
+                                //        return;
+                                //    }
+                                //}
                                 // 新零件
                                 SaveModel(true, true);
                                 //await SaveModelAsync(true, true);
