@@ -3140,45 +3140,46 @@ namespace STD_105.Office
                 Esc();
                 esc.Visibility = Visibility.Collapsed;//關閉取消功能
             }
-//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.P)) //俯視圖
-//            {
-//#if DEBUG
-//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + P");
-//#endif
-//                model.InitialView = viewType.Top;
-//                model.ZoomFit();//在視口控件的工作區中適合整個模型。
-//            }
-//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Z)) //退回
-//            {
-//#if DEBUG
-//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z");
-//#endif
-//                ViewModel.Reductions.Previous();
-//#if DEBUG
-//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z 完成");
-//#endif
-//            }
-//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Y)) //退回
-//            {
-//#if DEBUG
-//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y");
-//#endif
-//                ViewModel.Reductions.Next();//回到上一個動作
-//#if DEBUG
-//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y 完成");
-//#endif
-//            }
+            //            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.P)) //俯視圖
+            //            {
+            //#if DEBUG
+            //                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + P");
+            //#endif
+            //                model.InitialView = viewType.Top;
+            //                model.ZoomFit();//在視口控件的工作區中適合整個模型。
+            //            }
+            //            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Z)) //退回
+            //            {
+            //#if DEBUG
+            //                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z");
+            //#endif
+            //                ViewModel.Reductions.Previous();
+            //#if DEBUG
+            //                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z 完成");
+            //#endif
+            //            }
+            //            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Y)) //退回
+            //            {
+            //#if DEBUG
+            //                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y");
+            //#endif
+            //                ViewModel.Reductions.Next();//回到上一個動作
+            //#if DEBUG
+            //                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y 完成");
+            //#endif
+            //            }
             // 2020/08/04 呂宗霖 因按Delete會造成無窮迴圈 跳不出去系統造成當掉 故先停用直接按Delete的動作
             else if (Keyboard.IsKeyDown(Key.Delete))
             {
-            //    ViewModel.EditObject.Execute(null);
-            //    drawing.SetCurrent(drawing.CurrentBlockReference);
-            //    //model.Blocks.Remove(model.CurrentBlock);
-            //    //SimulationDelete();
-            //    //if (!fAddSteelPart)
-                    SaveModel(false);
-            //    //drawing.SetCurrent(null);
-            //    //model.SetCurrent(null);
+                //    ViewModel.EditObject.Execute(null);
+                //    drawing.SetCurrent(drawing.CurrentBlockReference);
+                //    //model.Blocks.Remove(model.CurrentBlock);
+                //    //SimulationDelete();
+                //    //if (!fAddSteelPart)
+                SaveModel(false);
+                Esc();
+                //    //drawing.SetCurrent(null);
+                //    //model.SetCurrent(null);
             }
             model.Invalidate();
             drawing.Invalidate();
@@ -4141,6 +4142,7 @@ namespace STD_105.Office
         /// <param name="reflesh">是否更新Grid</param>
         public void SaveModel(bool add, bool reflesh = true)
         {
+            model.SetCurrent(null);
             STDSerialization ser = new STDSerialization();
             // 取得目前鋼構資訊
             SteelAttr sa = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
@@ -4172,7 +4174,11 @@ namespace STD_105.Office
             else
             {
                 ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
-                ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = false;
+                if (model.Entities.Count>=1)
+                {
+                    ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = false;
+                }
+                
                 exclamationMark = false;
             }
             // model檔存檔
