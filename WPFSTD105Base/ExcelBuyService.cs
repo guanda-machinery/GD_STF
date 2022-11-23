@@ -573,6 +573,7 @@ namespace WPFSTD105
                 sheet.Cells[row, column++].Value = "腹板厚度";
                 sheet.Cells[row, column++].Value = "翼板厚度";
                 sheet.Cells[row, column++].Value = "型鋼類型";
+                sheet.Cells[row, column++].Value = "排版";
                 sheet.Cells[row, column++].Value = "零件ID";
                 sheet.Cells[row++, column++].Value = "構件ID";
                 #endregion
@@ -601,6 +602,13 @@ namespace WPFSTD105
                         sheet.Cells[row, column++].Value = part.t2;
                         sheet.Cells[row, column++].Value = part.Type.ToString();
                         int tempRow = row;
+                        foreach (bool match in part.Match)
+                        {
+                            sheet.Cells[row++, column].Value = match;
+                        }
+                        rowList.Add(row);
+                        row = tempRow;
+                        column++;
                         foreach (int id in part.ID)
                         {
                             sheet.Cells[row++, column].Value = id;
@@ -1040,25 +1048,25 @@ namespace WPFSTD105
                 #endregion
 
                 #region Material
-                sheet = book.Worksheets.Add("Material file"); //創建一個新工作表並將其附加到集合的末尾
-                book.Worksheets.ActiveWorksheet = sheet;
-                row = 0;
-                column = 0;
+                //sheet = book.Worksheets.Add("Material file"); //創建一個新工作表並將其附加到集合的末尾
+                //book.Worksheets.ActiveWorksheet = sheet;
+                //row = 0;
+                //column = 0;
                 #region 欄位名稱
-                sheet.Cells[row, column++].Value = "是否為Tekla文件";
-                sheet.Cells[row, column++].Value = "數量";
-                sheet.Cells[row, column++].Value = "材質";
-                sheet.Cells[row, column++].Value = "斷面規格";
-                sheet.Cells[row, column++].Value = "圖面狀態";
-                sheet.Cells[row, column++].Value = "螺栓類型";
-                sheet.Cells[row, column++].Value = "建立日期";
-                sheet.Cells[row, column++].Value = "修改日期";
-                sheet.Cells[row++, column++].Value = "歸屬購件";
+                //sheet.Cells[row, column++].Value = "來源列表";
+                //sheet.Cells[row, column++].Value = "素材編號";
+                //sheet.Cells[row, column++].Value = "斷面規格";
+                //sheet.Cells[row, column++].Value = "索引值";
+                //sheet.Cells[row, column++].Value = "購料長";
+                //sheet.Cells[row, column++].Value = "材質";
+                //sheet.Cells[row, column++].Value = "建立日期";
+                //sheet.Cells[row, column++].Value = "修改日期";
+                //sheet.Cells[row++, column++].Value = "歸屬購件";
                 #endregion
-                foreach (MaterialDataView item in materialDataViews)
-                {
-                    //item.MaterialNumber;
-                }
+                //foreach (MaterialDataView item in materialDataViews)
+                //{
+                //   
+                //}
                 #endregion
 
                 #region Grid Data

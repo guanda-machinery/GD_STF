@@ -1523,15 +1523,7 @@ namespace WPFSTD105.ViewModel
 
             // 取得dm檔與零件之對應
             ObservableCollection<DataCorrespond> DataCorrespond = ser.GetDataCorrespond();
-#if DEBUG
-            // 將字串寫入TXT檔
-            StreamWriter str = new StreamWriter(@"DEBUG_PartList.txt");
-            foreach (DataCorrespond se in DataCorrespond)
-            {
-                str.WriteLine($"{se.DataName} {se.Profile} {se.Number}");
-            }
-            str.Close();
-#endif
+
             // 取得構件資訊
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();
             if (assemblies == null)
@@ -1595,15 +1587,6 @@ namespace WPFSTD105.ViewModel
                         }
                         saList.Add(saTemp);
                     }
-#if DEBUG
-                    else
-                    {
-                        // 將字串寫入TXT檔
-                        StreamWriter str2 = File.AppendText(@"Debug_NcCannotToDM.txt");
-                        str2.WriteLine($"{item.Profile.GetHashCode()}.lis {item.Number} {item.Profile}");
-                        str2.Close();
-                    }
-#endif
                 }
                 NcSA.Add(key, saList);
             }
@@ -1924,7 +1907,7 @@ namespace WPFSTD105.ViewModel
                     t1 = item.t1,
                     t2 = item.t2,
                     ExclamationMark = item.ExclamationMark == null ? false : item.ExclamationMark,
-
+                     
                 };
                 //// source專用
                 //aa.steelAttr.GUID = item.steelAttr.GUID;

@@ -18,6 +18,7 @@ namespace WPFSTD105.ViewModel
         public MachineFunctionVM()
         {
             //初始化時建立一個task監督GD_STD.PanelButton
+            //是否可由其他方法代替? 需查證
             Task.Run(() =>
             {
                 while (Taskboolen)
@@ -112,7 +113,7 @@ namespace WPFSTD105.ViewModel
                 //比較值 若功能沒變則不寫入
                 if(!PanelButtonIsEqual(ViewLocator.ApplicationViewModel.PanelButton, PButton))
                     CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-
+                
                 _tabControlSelectedIndex = value;
             }
         }

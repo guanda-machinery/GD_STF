@@ -97,7 +97,7 @@ namespace WPFSTD105.ViewModel
                             //error202->Material not found 
                             if (RegisterResult.data != null)
                             {
-                                //只有一筆資料
+                                //一次只會加入一筆資料 所以回傳資料list行直接取取[0]
                                 if (RegisterResult.data[0].errorCode == 0)
                                 {
                                     foreach (var Data in Finish_UndoneDataViews)
@@ -1721,103 +1721,92 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 發送加工訊息
         /// </summary>
+
         private void SendDrill(int index)
         {
-
-            //_CreateFileTask?.Wait(); //等待 Task CreateFile 完成 link:ProcessingMonitorVM.cs:CreateFile()
+            _CreateFileTask?.Wait(); //等待 Task CreateFile 完成 link:ProcessingMonitorVM.cs:CreateFile()
                                      //_SynchronizationContext.Wait();
-                                     //沒必要使用占用主執行序 
-                                     // _SynchronizationContext.Send(t =>
-
-            SplashScreenManager manager = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
-
-
-            _BufferModel.Clear();
-            //List<double> cutPointX = new List<double>();
-            //產生加工陣列
-            var view = Finish_UndoneDataViews[index];
-            //跳出傳輸中提示...
-            manager.Show();
-            manager.ViewModel.Status = $"正在發送素材編號:{view.MaterialNumber}的加工訊息";
-            AddOperatingLog(LogSourceEnum.Software, $"正在發送素材編號:{view.MaterialNumber}的加工訊息");
-
-            Dictionary<FACE, List<Drill>> keyValuePairs = new Dictionary<FACE, List<Drill>>();
-            if (File.Exists($@"{ApplicationVM.DirectoryMaterial()}\{view.MaterialNumber}.dm"))
+            _SynchronizationContext.Send(t =>
             {
-                ReadFile readFile = _Ser.ReadMaterialModel(view.MaterialNumber);
-                //_SynchronizationContext.Send(t =>
-                //{
                 _BufferModel.Clear();
-                readFile.DoWork();
-                readFile.AddToScene(_BufferModel);
-                //}, null);
-                FACE face = FACE.TOP;
-                var steelPart = _Ser.GetPart($"{view.Profile.GetHashCode()}")[0];
-                _BufferModel.Entities.ForEach(el =>
+                //List<double> cutPointX = new List<double>();
+                //產生加工陣列
+                var view = Finish_UndoneDataViews[index];
+                Dictionary<FACE, List<Drill>> keyValuePairs = new Dictionary<FACE, List<Drill>>();
+                if (File.Exists($@"{ApplicationVM.DirectoryMaterial()}\{view.MaterialNumber}.dm"))
                 {
-                    BlockReference blockReference = (BlockReference)el;
-                    if (blockReference.Attributes.ContainsKey("Bolts"))
+                    ReadFile readFile = _Ser.ReadMaterialModel(view.MaterialNumber);
+                    //_SynchronizationContext.Send(t =>
+                    //{
+                    _BufferModel.Clear();
+                    readFile.DoWork();
+                    readFile.AddToScene(_BufferModel);
+                    //}, null);
+                    FACE face = FACE.TOP;
+                    var steelPart = _Ser.GetPart($"{view.Profile.GetHashCode()}")[0];
+                    _BufferModel.Entities.ForEach(el =>
                     {
-                        Entity[] entities = blockReference.Explode(_BufferModel.Blocks); //返回圖塊引用單個實體列表
-                        BoltAttr attr = (BoltAttr)entities[0].EntityData;
-                        if (!keyValuePairs.ContainsKey(attr.Face))
+                        BlockReference blockReference = (BlockReference)el;
+                        if (blockReference.Attributes.ContainsKey("Bolts"))
                         {
-                            keyValuePairs.Add(attr.Face, new List<Drill>());
+                            Entity[] entities = blockReference.Explode(_BufferModel.Blocks); //返回圖塊引用單個實體列表
+                            BoltAttr attr = (BoltAttr)entities[0].EntityData;
+                            if (!keyValuePairs.ContainsKey(attr.Face))
+                            {
+                                keyValuePairs.Add(attr.Face, new List<Drill>());
+                            }
+                            if (attr.Face == FACE.TOP)
+                            {
+                                keyValuePairs[attr.Face].AddRange(BoltAsDrill(entities, new Transformation(new Point3D(0, steelPart.H, 0), Vector3D.AxisX, new Vector3D(0, -1), Vector3D.AxisZ)));
+                            }
+                            else
+                            {
+                                keyValuePairs[attr.Face].AddRange(BoltAsDrill(entities));
+                            }
                         }
-                        if (attr.Face == FACE.TOP)
+                        else if (blockReference.Attributes.ContainsKey("Steel"))
                         {
-                            keyValuePairs[attr.Face].AddRange(BoltAsDrill(entities, new Transformation(new Point3D(0, steelPart.H, 0), Vector3D.AxisX, new Vector3D(0, -1), Vector3D.AxisZ)));
+                            SteelAttr steelAttr = (SteelAttr)blockReference.EntityData;
+
+                            _BufferModel.Blocks[blockReference.BlockName].Entities.ForEach(steel =>
+                            {
+
+                                //Point3D[] oCut = steel.Vertices.Select(el =>  )
+                            });
                         }
-                        else
-                        {
-                            keyValuePairs[attr.Face].AddRange(BoltAsDrill(entities));
-                        }
-                    }
-                    else if (blockReference.Attributes.ContainsKey("Steel"))
+                    });
+
+                    long cWork = _WorkOffset + _WorkSize * index;
+
+                    //葉:計算切割點先頂著用，等待修正
+                    #region 計算切割點
+                    //double[] cutPointX = new double[view.Parts.Count +1];
+                    //double total = view.StartCut;
+                    //cutPointX[0] =total -(view.Cut*0.5);
+                    //for (int i = 0; i < view.Parts.Count; i++)
+                    //{
+
+                    //}
+                    #endregion
+
+
+                    if (keyValuePairs.ContainsKey(FACE.FRONT))
                     {
-                        SteelAttr steelAttr = (SteelAttr)blockReference.EntityData;
-
-                        _BufferModel.Blocks[blockReference.BlockName].Entities.ForEach(steel =>
-                        {
-
-                            //Point3D[] oCut = steel.Vertices.Select(el =>  )
-                        });
+                        SendDrill(_BoltsCountLOffset, _DrLOffset, keyValuePairs[FACE.FRONT], steelPart, cWork, steelPart.W, Finish_UndoneDataViews[index].LengthStr, null);
                     }
-                });
-
-                long cWork = _WorkOffset + _WorkSize * index;
-
-                //葉:計算切割點先頂著用，等待修正
-                #region 計算切割點
-                //double[] cutPointX = new double[view.Parts.Count +1];
-                //double total = view.StartCut;
-                //cutPointX[0] =total -(view.Cut*0.5);
-                //for (int i = 0; i < view.Parts.Count; i++)
-                //{
-
-                //}
-                #endregion
-
-
-                if (keyValuePairs.ContainsKey(FACE.FRONT))
-                {
-                    SendDrill(_BoltsCountLOffset, _DrLOffset, keyValuePairs[FACE.FRONT], steelPart, cWork, steelPart.W, Finish_UndoneDataViews[index].LengthStr, null);
+                    if (keyValuePairs.ContainsKey(FACE.TOP))
+                    {
+                        SendDrill(_BoltsCountMOffset, DrMOffset, keyValuePairs[FACE.TOP], steelPart, cWork, steelPart.H, Finish_UndoneDataViews[index].LengthStr, null);
+                    }
+                    if (keyValuePairs.ContainsKey(FACE.BACK))
+                    {
+                        SendDrill(_BoltsCountROffset, _DrROffset, keyValuePairs[FACE.BACK], steelPart, cWork, steelPart.W, Finish_UndoneDataViews[index].LengthStr, null);
+                    }
                 }
-                if (keyValuePairs.ContainsKey(FACE.TOP))
-                {
-                    SendDrill(_BoltsCountMOffset, DrMOffset, keyValuePairs[FACE.TOP], steelPart, cWork, steelPart.H, Finish_UndoneDataViews[index].LengthStr, null);
-                }
-                if (keyValuePairs.ContainsKey(FACE.BACK))
-                {
-                    SendDrill(_BoltsCountROffset, _DrROffset, keyValuePairs[FACE.BACK], steelPart, cWork, steelPart.W, Finish_UndoneDataViews[index].LengthStr, null);
-                }
-            }
+            }, null);
+        }
 
-            manager.ViewModel.Status = $"素材編號:{view.MaterialNumber}的加工訊息發送完成";
-            AddOperatingLog(LogSourceEnum.Software, $"素材編號:{view.MaterialNumber}的加工訊息發送完成");
-            manager.Close();
 
-        } 
         /// <summary>
         /// 排序 y 向鑽孔
         /// </summary>
@@ -2654,6 +2643,8 @@ namespace WPFSTD105.ViewModel
                         _WriteCodesysTask = Task.Factory.StartNew(WriteCodesys, _Token);
                     }
 
+                   
+
                     //如有備份檔就寫回給 Codesys
                     for (int i = synIndex; i < Finish_UndoneDataViews.Count; i++)
                     {
@@ -2824,7 +2815,8 @@ namespace WPFSTD105.ViewModel
                 else
                 {
                     log4net.LogManager.GetLogger("同步失敗").Debug($"同步失敗");
-                    throw new Exception("伺服器無法連線 ....");
+                    Debugger.Break();
+                    //throw new Exception("伺服器無法連線 ....");
                 }
             }
 

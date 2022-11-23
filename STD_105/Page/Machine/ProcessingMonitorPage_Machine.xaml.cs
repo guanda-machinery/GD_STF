@@ -111,6 +111,9 @@ namespace STD_105
 
             //非同步初始化相關物件 以後要重構
             (this.DataContext as ProcessingMonitor_MachineVM).SetModel(model);
+
+            model.Loaded -= Model3D_Loaded;
+
         }
 
 

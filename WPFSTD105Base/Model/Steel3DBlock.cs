@@ -559,6 +559,7 @@ namespace WPFSTD105.Model
             blockReference.Selectable = false;//關閉用戶選擇
             blockReference.Attributes.Add(dic, new AttributeReference(0, 0, 0));
             model.Entities.Insert(0,blockReference);//加入參考圖塊到模型
+            model.Entities.Regen();
             return result;
         }
 
