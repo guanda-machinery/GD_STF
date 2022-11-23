@@ -4168,7 +4168,11 @@ namespace STD_105.Office
             if (!Bolts3DBlock.CheckBolts(model))
             {
                 ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
-                ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
+                if (model.Entities.Count >= 1)
+                {
+                    ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
+                }
+                //((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
                 exclamationMark = true;
             }
             else
@@ -4739,6 +4743,15 @@ namespace STD_105.Office
                     }
                 }
             }
+
+            if (ViewModel.EditObjectVisibility)
+            {
+                edit2D.Visibility = Visibility.Visible;
+            }
+            else {
+                edit2D.Visibility = Visibility.Collapsed;
+            }
+        
         }
 
         /// <summary>
@@ -5739,12 +5752,14 @@ namespace STD_105.Office
                         ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
                         item.steelAttr.ExclamationMark = true;
                         item.ExclamationMark = true;
+                        PieceListGridControl.RefreshRow(PieceListGridControl.View.FocusedRowHandle);
                     }
                     else
                     {
                         ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
                         item.steelAttr.ExclamationMark = false;
                         item.ExclamationMark = false;
+                        PieceListGridControl.RefreshRow(PieceListGridControl.View.FocusedRowHandle);
                     }
 
                     Dictionary<string, ObservableCollection<SteelAttr>> saFile = ser.GetSteelAttr();
