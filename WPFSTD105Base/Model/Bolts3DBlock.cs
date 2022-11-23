@@ -445,6 +445,22 @@ namespace WPFSTD105.Model
                     // 加工區域計算
                     List<double> list = WorkingRange(type, bolt, steelAttr);
                     // 符合加工區域
+
+                    // 檢查座標依平面而有異動
+                    double checkValue = 0;
+                    switch (bolt.Face)
+                    {
+                        case FACE.TOP:
+                            checkValue = bolt.Y;
+                            break;
+                        case FACE.FRONT:
+                        case FACE.BACK:
+                            checkValue = bolt.Z;
+                            break;
+                        default:
+                            break;
+                    }
+
                     if (CheckWorkingRange(bolt.Mode, bolt.Face, type, bolt.Y, list))
                     {
                         if (bolt.Mode != AXIS_MODE.POINT && bolt.Mode != AXIS_MODE.HypotenusePOINT)
@@ -453,8 +469,8 @@ namespace WPFSTD105.Model
                             var testPoint = Coordinates(bolt.Face, checkPoint3D);
 
                             if (!((Mesh)model.Blocks[1].Entities[0]).IsPointInside(testPoint))
-                               // if (!((Mesh)model.Entities[model.Entities.Count - 1]).IsPointInside(testPoint))
-                                {
+                            // if (!((Mesh)model.Entities[model.Entities.Count - 1]).IsPointInside(testPoint))
+                            {
                                 return false;
                             }
                         }
