@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,55 +14,73 @@ namespace WPFSTD105.ViewModel
     /// </summary>
     public class MachineFunctionVM : WPFWindowsBase.BaseViewModel
     {
+        private bool Taskboolen = true;
+        public MachineFunctionVM()
+        {
+            //初始化時建立一個task監督GD_STD.PanelButton
+            Task.Run(() =>
+            {
+                while (Taskboolen)
+                {
+                    GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+                    if (PButton.ClampDown && TabControlSelectedIndex !=0)
+                    {
+                        TabControlSelectedIndex = 0;
+                    }
+                    else if (PButton.SideClamp && TabControlSelectedIndex != 1)
+                    {
+                        TabControlSelectedIndex = 1;
+                    }
+                    else if((PButton.EntranceRack || PButton.ExportRack) && TabControlSelectedIndex != 2)
+                    {
+                        TabControlSelectedIndex = 2;
+                    }
+                    else if (PButton.Hand && TabControlSelectedIndex != 3)
+                    {
+                        TabControlSelectedIndex = 3;
+                    }
+                    else if (PButton.DrillWarehouse && TabControlSelectedIndex != 4)
+                    {
+                        TabControlSelectedIndex = 4;
+                    }
+                    else if (PButton.Volume && TabControlSelectedIndex != 5)
+                    {
+                        TabControlSelectedIndex = 5;
+                    }
+                    Thread.Sleep(100);
+                }
+
+            });
+        }
+
+        ~MachineFunctionVM()
+        {
+            Taskboolen = false;
+            //解構時清除狀態
+            GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+            PButton.ClampDown = false;
+            PButton.SideClamp = false;
+            PButton.EntranceRack = false;
+            PButton.ExportRack = false;
+            PButton.Hand = false;
+            PButton.DrillWarehouse = false;
+            PButton.Volume = false;
+            PButton.MainAxisMode = false;
+            CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+        }
+
         private int _tabControlSelectedIndex = -1;
         public int TabControlSelectedIndex
         {
             get
             {
-                GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                if (PButton.ClampDown)
-                {
-                    _tabControlSelectedIndex = 0;
-                    return 0;
-                }
-                else if (PButton.SideClamp)
-                {
-                    _tabControlSelectedIndex = 1;
-                    return 1;
-                }
-                else if (PButton.EntranceRack)
-                {
-                    _tabControlSelectedIndex = 2;
-                    return 2;
-                }
-                else if (PButton.ExportRack)
-                {
-                    _tabControlSelectedIndex = 2;
-                    return 2;
-                }
-                else if (PButton.Hand)
-                {
-                    _tabControlSelectedIndex = 3;
-                    return 3;
-                }
-                else if (PButton.DrillWarehouse)
-                {
-                    _tabControlSelectedIndex = 4;
-                    return 4;
-                }
-                else if (PButton.Volume)
-                {
-                    _tabControlSelectedIndex = 5;
-                    return 5;
-                }
-                else
-                {
-                    return -1;
-                }
+                   return _tabControlSelectedIndex;
             }
             set
             {
                 GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+                var Exboolen = PButton.ExportRack;
+
                 ClearPButtonModeValue(ref PButton);
 
                 switch (value)
@@ -73,7 +92,10 @@ namespace WPFSTD105.ViewModel
                         PButton.SideClamp = true;
                         break;
                     case 2:
-                        PButton.EntranceRack = true;
+                        if(!Exboolen)   
+                            PButton.EntranceRack = true;
+                        else
+                            PButton.ExportRack = true;
                         break;
                     case 3:
                         PButton.Hand = true;
@@ -87,7 +109,9 @@ namespace WPFSTD105.ViewModel
                     default:
                         break;
                 }
-                CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                //比較值 若功能沒變則不寫入
+                if(!PanelButtonIsEqual(ViewLocator.ApplicationViewModel.PanelButton, PButton))
+                    CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
 
                 _tabControlSelectedIndex = value;
             }
@@ -105,6 +129,23 @@ namespace WPFSTD105.ViewModel
             PButton.Volume = false;
             PButton.MainAxisMode = false;
         }
+
+        private bool PanelButtonIsEqual(GD_STD.PanelButton OldButton, GD_STD.PanelButton NewPButton)
+        {
+            return
+            OldButton.ClampDown == NewPButton.ClampDown &&
+            OldButton.SideClamp == NewPButton.SideClamp &&
+            OldButton.EntranceRack == NewPButton.EntranceRack &&
+            OldButton.ExportRack == NewPButton.ExportRack &&
+            OldButton.Hand == NewPButton.Hand &&
+            OldButton.DrillWarehouse == NewPButton.DrillWarehouse &&
+            OldButton.Volume == NewPButton.Volume &&
+            OldButton.MainAxisMode == NewPButton.MainAxisMode;
+
+        }
+
+
+
 
 
         #region 使用之vm

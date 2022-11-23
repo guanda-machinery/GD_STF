@@ -35,6 +35,9 @@ using static devDept.Eyeshot.Environment;
 using DevExpress.Data.Extensions;
 using GD_STD.Data;
 using System.Collections.ObjectModel;
+using DevExpress.Mvvm;
+using static DevExpress.XtraEditors.Mask.MaskSettings;
+using DevExpress.Dialogs.Core.View;
 
 namespace STD_105
 {
@@ -65,6 +68,9 @@ namespace STD_105
             drawing.LineTypes.Add(Steel2DBlock.LineTypeName, new float[] { 35, -35, 35, -35 });
             model.Secondary = drawing;
             drawing.Secondary = model;
+
+            (this.DataContext as ProcessingMonitor_MachineVM).Combinational_List_GridControl = MachiningCombinational_List_GridControl;
+
         }
         private void BasePage_Unloaded(object sender, RoutedEventArgs e)
         {
@@ -103,9 +109,8 @@ namespace STD_105
 
             #endregion
 
-
-
-
+            //非同步初始化相關物件 以後要重構
+            (this.DataContext as ProcessingMonitor_MachineVM).SetModel(model);
         }
 
 
