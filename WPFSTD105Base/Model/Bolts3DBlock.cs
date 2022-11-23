@@ -445,7 +445,6 @@ namespace WPFSTD105.Model
                     // 加工區域計算
                     List<double> list = WorkingRange(type, bolt, steelAttr);
                     // 符合加工區域
-
                     // 檢查座標依平面而有異動
                     double checkValue = 0;
                     switch (bolt.Face)
@@ -461,7 +460,7 @@ namespace WPFSTD105.Model
                             break;
                     }
 
-                    if (CheckWorkingRange(bolt.Mode, bolt.Face, type, bolt.Y, list))
+                    if (CheckWorkingRange(bolt.Mode, bolt.Face, type, checkValue, list))
                     {
                         if (bolt.Mode != AXIS_MODE.POINT && bolt.Mode != AXIS_MODE.HypotenusePOINT)
                         {
