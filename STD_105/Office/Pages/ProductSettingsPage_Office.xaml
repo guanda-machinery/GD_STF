@@ -63,7 +63,7 @@
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="BorderBrush" Value="Gray"/>
             </Style>
-            <System:Boolean x:Key="visible">false</System:Boolean>
+            <System:Boolean x:Key="visible">true</System:Boolean>
             <System:Boolean x:Key="TextBoxEnabled">false</System:Boolean>
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
@@ -245,7 +245,8 @@
                         </Style>
                     </dxg:GridColumn.CellStyle>
                 </dxg:GridColumn>
-                <dxg:GridColumn FieldName="{Binding Revise, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="修改日期" Width="80">
+                <!--<dxg:GridColumn FieldName="{Binding steelAttr.Revise, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="修改日期" Width="80">-->
+                    <dxg:GridColumn FieldName="Revise" IsSmart="True" Header="修改日期"  Width="90">
                     <dxg:GridColumn.CellStyle>
                         <Style>
                             <Setter Property="TextBlock.Foreground" Value="Gray"/>
@@ -786,7 +787,7 @@
 
                     </Grid>
 
-                    <Button Grid.Column="3" Grid.Row="6" Grid.ColumnSpan="2" x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}"  Style="{StaticResource SiegCustomButtonGold}" Width="90" HorizontalAlignment="Left" />
+                    <Button Grid.Column="3" Grid.Row="6" Grid.ColumnSpan="2" x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}"  Style="{StaticResource SiegCustomButtonGold}" Width="90" HorizontalAlignment="Left" Visibility="Collapsed" />
 
                     <StackPanel Grid.Row="13" Margin="2" Orientation="Horizontal" Grid.ColumnSpan="5">
                         <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Style="{StaticResource SiegCustomButtonGold}" Width="80" Margin="0,0,6,0" Click="OKtoConfirmChanges"/>

@@ -603,7 +603,7 @@ namespace WPFSTD105.Model
         /// <param name="diffLength">差異長度 = 原始長度 - 修正後長度</param>
         /// <param name="vm"></param>
         /// <param name="steelAttr">指定鋼構資訊</param>
-        /// <param name="groups"></param>
+        /// <param name="groups">既有型鋼孔</param>
         public static void LoadNcToModel(this devDept.Eyeshot.Model model, string dataName, List<OBJECT_TYPE> allowType,double diffLength=0, DXSplashScreenViewModel vm = null,SteelAttr steelAttr = null,List<GroupBoltsAttr> groups = null)
         {
             STDSerialization ser = new STDSerialization(); //序列化處理器
@@ -616,9 +616,9 @@ namespace WPFSTD105.Model
                 nc.GroupBoltsAttrs = groups;
             }
 
-            
 
-            NcTemp reduceNC = new NcTemp() { GroupBoltsAttrs = nc.GroupBoltsAttrs, SteelAttr = nc.SteelAttr };
+
+NcTemp reduceNC = new NcTemp() { GroupBoltsAttrs = nc.GroupBoltsAttrs, SteelAttr = nc.SteelAttr };
 
             //ObSettingVM obVM = new ObSettingVM();
             if (nc == null)
@@ -636,10 +636,11 @@ namespace WPFSTD105.Model
             {                
                 //model.Clear();//清除模型內物件
                 model.Blocks[steelBlock.BlockName].Entities.Clear();//清除圖塊
+                #region 前視圖
                 //前視圖
                 Mesh vMesh = ConvertNcPointToMesh(nc.SteelAttr.vPoint, nc.SteelAttr.t1);
                 List<Mesh> vCut = GetCutMesh(nc.SteelAttr.vPoint, nc.SteelAttr.t1);
-                Mesh cut1 = Mesh.CreateBox(nc.SteelAttr.Length+diffLength +10, nc.SteelAttr.t2, nc.SteelAttr.t1);//切割前視圖翼板輪廓
+                Mesh cut1 = Mesh.CreateBox(nc.SteelAttr.Length + diffLength + 10, nc.SteelAttr.t2, nc.SteelAttr.t1);//切割前視圖翼板輪廓
                 cut1.Translate(-5, 0);//(-5,0)
                 Mesh otherCut1 = (Mesh)cut1.Clone();
                 Mesh cut2 = (Mesh)cut1.Clone();
@@ -670,23 +671,27 @@ namespace WPFSTD105.Model
                 Solid vSolid = vMesh.ConvertToSolid();
                 vSolid = vSolid.Difference(vCut);
                 vMesh = vSolid.ConvertToMesh();
-                vMesh.Color =ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
+                vMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
                 vMesh.ColorMethod = colorMethodType.byEntity;
-                vMesh.Translate(0, 0, nc.SteelAttr.W * 0.5 - nc.SteelAttr.t1 * 0.5);
-                
+                vMesh.Translate(0, 0, nc.SteelAttr.W * 0.5 - nc.SteelAttr.t1 * 0.5); 
+                #endregion
+
+                #region 頂視圖
                 //頂視圖
                 Mesh oMesh = ConvertNcPointToMesh(nc.SteelAttr.oPoint, nc.SteelAttr.t2);
                 List<Mesh> oCut = GetCutMesh(nc.SteelAttr.oPoint, nc.SteelAttr.t2);
                 Solid oSolid = oMesh.ConvertToSolid();
                 oSolid = oSolid.Difference(oCut);
-                oSolid.Mirror(Vector3D.AxisY, new Point3D(-10, 0, nc.SteelAttr.t2*0.5), new Point3D(10, 0, nc.SteelAttr.t2*0.5));
+                oSolid.Mirror(Vector3D.AxisY, new Point3D(-10, 0, nc.SteelAttr.t2 * 0.5), new Point3D(10, 0, nc.SteelAttr.t2 * 0.5));
                 oSolid.Rotate(Math.PI / 2, Vector3D.AxisX);
                 oSolid.Translate(0, nc.SteelAttr.H);
                 //oSolid = oSolid.Difference(cutMeshs);
                 oMesh = oSolid.ConvertToMesh();
-                oMesh.Color = System.Drawing.Color.White;//ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
-                oMesh.ColorMethod = colorMethodType.byEntity;
+                oMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
+                oMesh.ColorMethod = colorMethodType.byEntity; 
+                #endregion
 
+                #region 底視圖
                 //底視圖
                 Mesh uMesh = ConvertNcPointToMesh(nc.SteelAttr.uPoint, nc.SteelAttr.t2);
                 List<Mesh> uCut = GetCutMesh(nc.SteelAttr.uPoint, nc.SteelAttr.t2);
@@ -696,21 +701,20 @@ namespace WPFSTD105.Model
                 uSolid.Translate(0, nc.SteelAttr.t2);
                 //uSolid = uSolid.Difference(cutMeshs);
                 uMesh = uSolid.ConvertToMesh();
-                uMesh.Color = System.Drawing.Color.Tomato;//ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
-                uMesh.ColorMethod = colorMethodType.byEntity;
+                uMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
+                uMesh.ColorMethod = colorMethodType.byEntity; 
+                #endregion
 
-                vMesh.MergeWith(oMesh);
-                
+                vMesh.MergeWith(oMesh);                
                 vMesh.MergeWith(uMesh);
                 //vMesh = uMesh;
                 vMesh.EntityData = nc.SteelAttr;
                 vMesh.Regen(1E3);
-                midX = (vMesh.Vertices.Select(x => x.X).Max() + vMesh.Vertices.Select(x => x.X).Min()) / 2;
-
+                
                 double maxX = nc.SteelAttr.oPoint.Union(nc.SteelAttr.uPoint).Union(nc.SteelAttr.vPoint).Select(x => x.X).Max();
                 double minX = nc.SteelAttr.oPoint.Union(nc.SteelAttr.uPoint).Union(nc.SteelAttr.vPoint).Select(x => x.X).Min();
                 midX = (minX + maxX) / 2;
-                //diffLength = 0;
+                // 將X座標大於中間座標視為右邊座標，長度伸縮時須跟著伸縮
                 vMesh.Vertices.ForEach(x =>
                 {
                     if (x.X>= midX)
@@ -769,27 +773,27 @@ namespace WPFSTD105.Model
             if (nc.GroupBoltsAttrs != null)
             {
                 nc.GroupBoltsAttrs.ForEach(bolt =>
-                           {
-                               GroupBoltsAttr temp = new GroupBoltsAttr()
-                               {
-                                   BlockName = bolt.BlockName,
-                                   Dia = bolt.Dia,
-                                   dX = "0",
-                                   dY = "0",
-                                   Face = bolt.Face,
-                                   GUID = bolt.GUID,
-                                   Mode = AXIS_MODE.PIERCE,
-                                   StartHole = bolt.StartHole,
-                                   t = bolt.t,
-                                   Type = bolt.Type,
-                                   xCount = 1,
-                                   yCount = 1,
-                                   X = bolt.X,
-                                   Y = bolt.Y,
-                                   Z = bolt.Z,
-                               };
-                               Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out bool check); //加入到 3d 視圖
-                           });
+                {
+                    GroupBoltsAttr temp = new GroupBoltsAttr()
+                    {
+                        BlockName = bolt.BlockName,
+                        Dia = bolt.Dia,
+                        dX = "0",
+                        dY = "0",
+                        Face = bolt.Face,
+                        GUID = bolt.GUID,
+                        Mode = AXIS_MODE.PIERCE,
+                        StartHole = bolt.StartHole,
+                        t = bolt.t,
+                        Type = bolt.Type,
+                        xCount = 1,
+                        yCount = 1,
+                        X = bolt.X,
+                        Y = bolt.Y,
+                        Z = bolt.Z,
+                    };
+                    Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out bool check); //加入到 3d 視圖
+                });
             }
 
              // 寫入oPoint,vPoint,uPoint
@@ -825,9 +829,9 @@ namespace WPFSTD105.Model
                 part.ExclamationMark = false;
                 ser.SetPart(nc.SteelAttr.Profile.GetHashCode().ToString(), new ObservableCollection<object>(parts));
             }
-
-
-
+            
+            
+            
             ser.SetPartModel(dataName, model);//儲存 3d 視圖
 
             #region 檢測是否成功，失敗則將NC檔寫回
