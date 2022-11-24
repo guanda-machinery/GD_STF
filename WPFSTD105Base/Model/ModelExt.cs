@@ -60,7 +60,7 @@ namespace WPFSTD105
                 return;
 
             ObSettingVM vm = (ObSettingVM)DataContext;
-
+                        
             if (ActionMode != actionType.SelectVisibleByPick)
             {
                 if (Name == "model")
