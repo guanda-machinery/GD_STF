@@ -146,7 +146,7 @@
                                  SelectionMode="None"
                                  MaxHeight="2000"
                                  AllowLiveDataShaping="True"
-                                 ItemsSource="{Binding ProductSettingsPageViewModel.DataViews, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange" MouseDown="Button_PreviewMouseLeftButtonDown">
+                                 ItemsSource="{Binding DataViews, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange" MouseDown="Button_PreviewMouseLeftButtonDown">
                     <dxg:GridControl.View >
                     <dxg:TableView VerticalScrollbarVisibility="Visible"
                                         HighlightItemOnHover="True"
@@ -171,7 +171,7 @@
                     </dxg:TableView>
                 </dxg:GridControl.View>
 
-                    <dxg:GridColumn Name="Exc_GridColumn" Binding="{Binding steelAttr.ExclamationMark}" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
+                    <dxg:GridColumn Name="Exc_GridColumn" Binding="{Binding steelAttr.ExclamationMark, UpdateSourceTrigger=PropertyChanged}" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                     <dxg:GridColumn.HeaderImageStyle>
                         <Style TargetType="Image">
                             <Setter Property="Width" Value="20"></Setter>
@@ -180,7 +180,7 @@
                     </dxg:GridColumn.HeaderImageStyle>
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
-                            <dxe:CheckEdit x:Name="PART_Editor" IsChecked="{Binding Row.steelAttr.ExclamationMark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <dxe:CheckEdit x:Name="PART_Editor" IsChecked="{Binding steelAttr.ExclamationMark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <dxe:CheckEdit.Style>
                                     <Style TargetType="{x:Type dxe:CheckEdit}">
                                         <Setter Property="Template">
@@ -797,7 +797,7 @@
 
                     </Grid>
 
-                    <Button Grid.Column="3" Grid.Row="6" Grid.ColumnSpan="2" x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}"  Style="{StaticResource SiegCustomButtonGold}" Width="90" HorizontalAlignment="Left" Visibility="Collapsed" />
+                    <Button Grid.Column="3" Grid.Row="6" Grid.ColumnSpan="2" x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}"  Style="{StaticResource SiegCustomButtonGold}" Width="90" HorizontalAlignment="Left" Visibility="Visible" />
 
                     <StackPanel Grid.Row="13" Margin="2" Orientation="Horizontal" Grid.ColumnSpan="5">
                         <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Style="{StaticResource SiegCustomButtonGold}" Width="80" Margin="0,0,6,0" Click="OKtoConfirmChanges"/>

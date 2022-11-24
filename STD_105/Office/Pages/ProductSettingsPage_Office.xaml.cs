@@ -72,7 +72,10 @@ namespace STD_105.Office
 
         public ObservableCollection<DataCorrespond> DataCorrespond { get; set; } = new ObservableCollection<DataCorrespond>();
 
-
+        /// <summary>
+        /// 是否為首次匯入NC&BOM的falg
+        /// </summary>
+        private bool fAfterFirstImportTeklaData { get; set; } = true;
 
         /// <summary>
         /// 20220823 蘇冠綸 製品設定
@@ -4788,6 +4791,12 @@ namespace STD_105.Office
             appVM.CreateDMFile(model);
             //appVM.CreateDMFileSync(model);
 
+            //首次匯入tekla資料後執行GridReload來更新驚嘆號顯示
+            if (fAfterFirstImportTeklaData)
+            {
+                GridReload();
+                fAfterFirstImportTeklaData = false;
+            }
         }
 
         public BlockReference SteelTriangulation(Mesh mesh)
@@ -6098,8 +6107,9 @@ namespace STD_105.Office
             }
             else
             {
-                ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(ObSettingVM.GetData());
-                ViewModel.DataViews = collection;
+                //ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(ObSettingVM.GetData());
+                //ViewModel.DataViews = collection;
+                ObservableCollection<ProductSettingsPageViewModel> collection = ViewModel.DataViews;
                 if (collection.Count > 0)
                 {
                     this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
