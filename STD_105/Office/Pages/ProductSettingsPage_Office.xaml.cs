@@ -4791,6 +4791,7 @@ namespace STD_105.Office
             appVM.CreateDMFile(model);
             //appVM.CreateDMFileSync(model);
 
+            //首次匯入tekla資料後執行GridReload來更新驚嘆號顯示
             if (fAfterFirstImportTeklaData)
             {
                 GridReload();
