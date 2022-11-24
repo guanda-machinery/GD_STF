@@ -952,10 +952,7 @@ namespace WPFSTD105.Model
                 nc.SteelAttr = steelAttr;
                 nc.GroupBoltsAttrs = groups;
             }
-
-
-
-NcTemp reduceNC = new NcTemp() { GroupBoltsAttrs = nc.GroupBoltsAttrs, SteelAttr = nc.SteelAttr };
+            NcTemp reduceNC = new NcTemp() { GroupBoltsAttrs = nc.GroupBoltsAttrs, SteelAttr = nc.SteelAttr };
 
             //ObSettingVM obVM = new ObSettingVM();
             if (nc == null)
