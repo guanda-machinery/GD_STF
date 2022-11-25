@@ -33,6 +33,7 @@ namespace WPFSTD105
         {
         }
         #region 私有屬性
+        private devDept.Eyeshot.Model _BufferModel { get; set; }
         #endregion
 
         /// <summary>
@@ -408,7 +409,21 @@ namespace WPFSTD105
              ObservableCollection<MaterialDataView> materialDataViews = ser.GetMaterialDataView();
 
             // 取得排版零件資訊
+            _BufferModel = new devDept.Eyeshot.Model();
+            _BufferModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
+            _BufferModel.InitializeViewports();
+            _BufferModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
             ObservableCollection<TypeSettingDataView> DataViews = tsVM.LoadDataViews();
+
+            // 取得切割線設定資訊
+            ObservableCollection<SteelCutSetting> cutSettingList = ser.GetCutSettingList();
+
+            // 排版DM
+
+            //ReadFile readFile = _Ser.ReadMaterialModel(view.MaterialNumber);
+            //_BufferModel.Clear();
+            //readFile.DoWork();
+            //readFile.AddToScene(_BufferModel);
 
             ScreenManager.ViewModel.Status = $"資訊已取得 ...";
             //Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
@@ -668,6 +683,44 @@ namespace WPFSTD105
                     {
                         sheet.Cells[row++, column].Value = father;
                     }
+                }
+                #endregion
+                sheet.Cells.AutoFitColumns();
+                sheet.Rows.AutoOutline();
+                #endregion
+
+                #region SteelAttrCutSetting
+                sheet = book.Worksheets.Add("SteelAttrCutSetting"); //創建一個新工作表並將其附加到集合的末尾
+                book.Worksheets.ActiveWorksheet = sheet;
+                row = 0;
+                column = 0;
+                rowList = new List<int>();
+                #region 欄位名稱
+                sheet.Cells[row, column++].Value = "零件GUID";
+                sheet.Cells[row, column++].Value = "Face";
+                sheet.Cells[row, column++].Value = "左上X";
+                sheet.Cells[row, column++].Value = "左上Y";
+                sheet.Cells[row, column++].Value = "右上X";
+                sheet.Cells[row, column++].Value = "右上Y";
+                sheet.Cells[row, column++].Value = "右下X";
+                sheet.Cells[row, column++].Value = "右下Y";
+                sheet.Cells[row, column++].Value = "左下X";
+                sheet.Cells[row++, column++].Value = "左下Y";
+                #endregion
+                #region 欄位塞值
+                foreach (SteelCutSetting item in cutSettingList)
+                {
+                    column = 0;
+                    sheet.Cells[row, column++].Value = $"{item.GUID}";
+                    sheet.Cells[row, column++].Value = $"{item.face}";
+                    sheet.Cells[row, column++].Value = $"{item.ULX}";
+                    sheet.Cells[row, column++].Value = $"{item.ULY}";
+                    sheet.Cells[row, column++].Value = $"{item.URX}";
+                    sheet.Cells[row, column++].Value = $"{item.URY}";
+                    sheet.Cells[row, column++].Value = $"{item.DRX}";
+                    sheet.Cells[row, column++].Value = $"{item.DRY}";
+                    sheet.Cells[row, column++].Value = $"{item.DLX}";
+                    sheet.Cells[row++, column++].Value = $"{item.DLY}";
                 }
                 #endregion
                 sheet.Cells.AutoFitColumns();
@@ -1150,6 +1203,10 @@ namespace WPFSTD105
                     column++;
                 }
                 #endregion
+                #endregion
+
+                #region 排版DM
+
                 #endregion
 
                 #region Grid Data

@@ -633,7 +633,8 @@ namespace WPFSTD105.Model
         {
             STDSerialization ser = new STDSerialization();
             ObservableCollection<SteelCutSetting> csList = ser.GetCutSettingList();
-            List<SteelCutSetting> list = csList.ToList().Where(x => x.GUID == steelAttr.GUID.Value).ToList();
+            if (csList == null) return;
+            List<SteelCutSetting> list = csList.Where(x => x.GUID == steelAttr.GUID.Value).ToList();
             foreach (SteelCutSetting item in list)
             {
                 switch (item.face)

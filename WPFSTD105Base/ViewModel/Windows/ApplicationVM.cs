@@ -464,6 +464,23 @@ namespace WPFSTD105
             }
             return dmlist;
         }
+        public List<string> GetAllDevMateialPart()
+        {
+            List<string> dmlist = new List<string>();
+            foreach (string d in Directory.GetFileSystemEntries(ApplicationVM.DirectoryMaterial()))
+            {
+                if (File.Exists(d))
+                {
+                    string dataName = Path.GetFileName(d);//檔案名稱
+                    string ext = Path.GetExtension(d);//副檔名
+                    if (ext == ".dm") //如果是 dm 檔案
+                    {
+                        dmlist.Add(dataName.Replace(ext, ""));
+                    }
+                }
+            }
+            return dmlist;
+        }
 
         private SynchronizationContext _SynchronizationContext;
         public async void CreateDMFileSync(ModelExt model, string guid = "")
