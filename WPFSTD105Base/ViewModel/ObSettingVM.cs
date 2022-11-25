@@ -173,6 +173,10 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public ICommand CalculateWeightCommand { get; set; }
         /// <summary>
+        /// 20221125 張燕華 根據型鋼位置載入切割線數值
+        /// </summary>
+        public ICommand rb_CutLinePosition_Command { get; set; }
+        /// <summary>
         /// 20220906 張燕華 鑽孔rbtn測試
         /// </summary>
         public ICommand CmdShowMessage { get; set; }
@@ -1258,6 +1262,7 @@ namespace WPFSTD105.ViewModel
 
             ShowSteelTypeCommand = ShowSteelType(); //20220829 張燕華 選擇型鋼型態
             CalculateWeightCommand = CalculateWeight();
+            rb_CutLinePosition_Command = rb_CutLinePosition();
 
             InitializeSteelAttr();
         }
@@ -1486,6 +1491,64 @@ namespace WPFSTD105.ViewModel
                 {
                     ProductWeightProperty = CalculateSinglePartWeight();
                 }
+            });
+        }
+        /// <summary>
+        /// 20221125 張燕華 根據型鋼位置載入切割線數值
+        /// </summary>
+        private WPFBase.RelayCommand rb_CutLinePosition()
+        {
+            return new WPFBase.RelayCommand(() =>
+            {
+                // 讀取切割線設定檔
+                STDSerialization ser = new STDSerialization(); //序列化處理器
+                ObservableCollection<SteelCutSetting> steelcutSettings = new ObservableCollection<SteelCutSetting>();
+                steelcutSettings = ser.GetCutSettingList();
+                steelcutSettings = steelcutSettings ?? new ObservableCollection<SteelCutSetting>();
+
+                
+                if (steelcutSettings.Any(x => x.GUID == this.GuidProperty && x.face == (FACE)rbtn_CutFace))
+                {
+                    SteelCutSetting cs = steelcutSettings.FirstOrDefault(x => x.GUID == this.GuidProperty && x.face == (FACE)rbtn_CutFace);
+
+                    DLPoint.X = cs.DLX;
+                    DLPoint.Y = cs.DLY;
+                    ULPoint.X = cs.ULX;
+                    ULPoint.Y = cs.ULY;
+                    DRPoint.X = cs.DRX;
+                    DRPoint.Y = cs.DRY;
+                    URPoint.X = cs.URX;
+                    URPoint.Y = cs.URY;
+                }
+                else
+                {
+                    SteelCutSetting cs = new SteelCutSetting()
+                    {
+                        GUID = this.GuidProperty,
+                        face = (FACE)rbtn_CutFace,
+                        DLX = 0,
+                        DLY = 0,
+                        ULX = 0,
+                        ULY = 0,
+                        DRX = 0,
+                        DRY = 0,
+                        URX = 0,
+                        URY = 0,
+                    };
+                    steelcutSettings.Add(cs);
+                    ser.SetCutSettingList(steelcutSettings);
+
+                    DLPoint.X = 0;
+                    DLPoint.Y = 0;
+                    ULPoint.X = 0;
+                    ULPoint.Y = 0;
+                    DRPoint.X = 0;
+                    DRPoint.Y = 0;
+                    URPoint.X = 0;
+                    URPoint.Y = 0;
+                }
+                        
+                
             });
         }
         #endregion
