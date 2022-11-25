@@ -436,7 +436,7 @@
                                                     <Label Content="B值："  Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" />
                                                     <TextBox  Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" Margin="5,0">
                                                         <TextBox.Text>
-                                                            <Binding Path="ProcessingZone_B" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                            <Binding Path="ProcessingZone_B" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                                                 <Binding.ValidationRules>
                                                                     <STD105ValidRule:CheckNumberRule NumberMin="14"/>
                                                                 </Binding.ValidationRules>
