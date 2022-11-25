@@ -669,10 +669,6 @@ namespace STD_105.Office
                         //ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(sa.Type).ToString()}.inp");
                         cbx_SectionTypeComboBox.Text = sa.Profile;
                         this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
-
-
-
-
                     }
                     #endregion
                 }
@@ -4560,7 +4556,8 @@ namespace STD_105.Office
             }
             else
             {
-                ObservableCollection<object> partList = new ObservableCollection<object>();
+                List<SteelPart> partList = new List<SteelPart>();
+                partList = allPart.Where(x => x.Profile == steelPart.Profile).ToList();
                 steelPart.ExclamationMark = exclamationMark;
                 partList.Add(steelPart);
                 ser.SetPart($@"{sa.Profile.GetHashCode().ToString()}", new ObservableCollection<object>(partList));
