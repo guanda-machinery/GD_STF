@@ -16,6 +16,8 @@ using GD_STD.Data;
 using WPFSTD105.ViewModel;
 using WPFSTD105.Surrogate;
 using System.Runtime.InteropServices;
+using DevExpress.Xpf.WindowsUI;
+using DevExpress.Xpf.Core;
 
 namespace WPFSTD105
 {
@@ -459,6 +461,20 @@ namespace WPFSTD105
         {
             return new WPFBase.RelayParameterizedCommand(e =>
             {
+                //機台正在加工
+                if (ReadCodesysMemor.GetHost().CodesysStatus == CODESYS_STATUS.RUN)
+                {
+                    WinUIMessageBox.Show(null, 
+                        "機台正在進行加工，\n無法變更專案。", 
+                        "通知",
+                        MessageBoxButton.OK, 
+                        MessageBoxImage.Exclamation, 
+                        MessageBoxResult.None, 
+                        MessageBoxOptions.ServiceNotification, 
+                        FloatingMode.Window);
+                    return;
+                }
+
                 string RCMProjectName = ReadCodesysMemor.GetProjectName();
                 //軟體端還沒開過
                 if (String.IsNullOrEmpty(ApplicationViewModel.ProjectName))
@@ -475,9 +491,15 @@ namespace WPFSTD105
                         {
                             //若相同則問是否要續接
 
-                            var messageBoxResult = MessageBox.Show("請確認是否續接專案，\n不續接專案將會初始化所有工件的當前位置。", "通知", MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
-                       
-                            
+                            var messageBoxResult = WinUIMessageBox.Show(null,
+                                "請確認是否續接專案，\n不續接專案將會初始化所有工件的當前位置。", 
+                                "通知", MessageBoxButton.YesNo, 
+                                MessageBoxImage.Exclamation, 
+                                MessageBoxResult.None, 
+                                MessageBoxOptions.ServiceNotification,
+                                FloatingMode.Window);
+
+
                             ApplicationViewModel.CurrentPage = ApplicationPage.Home;
                             Task.Run(() =>
                             {
@@ -501,7 +523,17 @@ namespace WPFSTD105
                         else
                         {
                             //若不同則問是否要換成這一個專案並洗掉紀錄
-                            var RBoxResult = MessageBox.Show($"機台上次加工的專案為「{RCMProjectName}」，\n是否要切換成「{e.ToString()}」?\n切換後會初始化所有工件的當前位置", "通知", MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                            // var RBoxResult = MessageBox.Show(, MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                            var RBoxResult = WinUIMessageBox.Show(null,
+                                $"機台上次加工的專案為「{RCMProjectName}」，\n是否要切換成「{e.ToString()}」?\n切換後會初始化所有工件的當前位置",
+                                "通知",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Exclamation,
+                                MessageBoxResult.None,
+                                MessageBoxOptions.ServiceNotification,
+                                FloatingMode.Window);
+
+
                             if (RBoxResult == MessageBoxResult.No)
                             {
                                 return;
@@ -544,7 +576,13 @@ namespace WPFSTD105
                         }
                         else
                         {
-                            var RBoxResult = MessageBox.Show($"機台上次加工的專案為「{RCMProjectName}」，\n是否要切換成「{e.ToString()}」?\n切換後會初始化所有工件的當前位置", "通知", MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                            var RBoxResult = WinUIMessageBox.Show(null,
+                                $"機台上次加工的專案為「{RCMProjectName}」，\n是否要切換成「{e.ToString()}」?\n切換後會初始化所有工件的當前位置", 
+                                "通知", 
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Exclamation, 
+                                MessageBoxResult.None, MessageBoxOptions.ServiceNotification,
+                                FloatingMode.Window);
                             if (RBoxResult == MessageBoxResult.No)
                             {
                                 return;

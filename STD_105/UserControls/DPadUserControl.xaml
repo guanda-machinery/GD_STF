@@ -393,7 +393,7 @@
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                     <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.DOWN_DESC}" />
+                                            CommandParameter="{x:Static STDEnum:JOYSTICK.UP_DESC}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
                     <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
@@ -405,18 +405,19 @@
         </Button>
 
         <Button  Name="DPad_Button4" 
-                 
                  Margin="0,5"
                  Grid.Column="2"
                  Grid.Row="2"
-                 IsEnabled="{Binding Button_Down_IsEnabled}">
+                 IsEnabled="{Binding Button_Down_IsEnabled}" Cursor="Hand">
 
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                    <i:InvokeCommandAction  Command="{Binding Joystcik_Down_Trigger_Command}" />
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                            CommandParameter="{x:Static STDEnum:JOYSTICK.DOWN_DESC}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                    <i:InvokeCommandAction  Command="{Binding Joystcik_Down_Release_Command}"/>
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                            CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>

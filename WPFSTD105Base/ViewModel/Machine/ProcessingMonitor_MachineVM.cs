@@ -2377,13 +2377,6 @@ namespace WPFSTD105.ViewModel
                             }
                         }
                     }
-
-                    using (Memor.WriteMemorClient Write = new Memor.WriteMemorClient())
-                    {
-                        long ImportProjectOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.ImportProject)).ToInt64();
-                        Write.SetMonitorWorkOffset(new byte[1] { 1 }, ImportProjectOffset);//寫入匯入專案完成
-                    }
-
                     break;
                 }
                 catch (Exception ex)
@@ -2408,6 +2401,12 @@ namespace WPFSTD105.ViewModel
 
             _SerializationThread.Start();
             _HostThread.Start();
+
+            using (Memor.WriteMemorClient Write = new Memor.WriteMemorClient())
+            {
+                long ImportProjectOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.ImportProject)).ToInt64();
+                Write.SetMonitorWorkOffset(new byte[1] { 1 }, ImportProjectOffset);//寫入匯入專案完成
+            }
         }
 
         /// <summary>
