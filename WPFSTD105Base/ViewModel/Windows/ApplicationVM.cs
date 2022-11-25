@@ -736,6 +736,7 @@ namespace WPFSTD105
 
             throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }
+
         /// <summary>
         /// 目前模型有使用的斷面規格資料表路徑。
         /// </summary>
@@ -1056,6 +1057,20 @@ namespace WPFSTD105
 
             if (projectName != null)
                 return $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\part.lis";
+
+            throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
+        }
+        /// <summary>
+        /// 切割設定檔
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public static string FileCutSettingList()
+        {
+            string projectName = CommonViewModel.ProjectName; //專案名稱
+
+            if (projectName != null)
+                return $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\cutSetting.lis";
 
             throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }
