@@ -551,22 +551,24 @@ namespace WPFSTD105.Model
             // 取得該零件並更新驚嘆號
             ObservableCollection<SteelPart> parts = ser.GetPart(nc.SteelAttr.Profile.GetHashCode().ToString());//零件列表
             SteelPart part = parts.FirstOrDefault(x => x.GUID == nc.SteelAttr.GUID);
-
-            if (!Bolts3DBlock.CheckBolts(model))
+            if (parts.Any(x => x.GUID == nc.SteelAttr.GUID))
             {
-                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
-                ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
+                if (!Bolts3DBlock.CheckBolts(model))
+                {
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                    ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
 
-                part.ExclamationMark = true;
-                ser.SetPart(nc.SteelAttr.Profile.GetHashCode().ToString(), new ObservableCollection<object>(parts));
-            }
-            else
-            {
-                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
-                ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = false;
+                    part.ExclamationMark = true;
+                    ser.SetPart(nc.SteelAttr.Profile.GetHashCode().ToString(), new ObservableCollection<object>(parts));
+                }
+                else
+                {
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+                    ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = false;
 
-                part.ExclamationMark = false;
-                ser.SetPart(nc.SteelAttr.Profile.GetHashCode().ToString(), new ObservableCollection<object>(parts));
+                    part.ExclamationMark = false;
+                    ser.SetPart(nc.SteelAttr.Profile.GetHashCode().ToString(), new ObservableCollection<object>(parts));
+                }
             }
 
             ser.SetPartModel(model.Blocks[1].Name, model);
@@ -627,12 +629,28 @@ namespace WPFSTD105.Model
                 return;
             }
             model.Clear();//清除模型內物件
-            Steel3DBlock.AddSteel(nc.SteelAttr, model, out BlockReference steelBlock); //加入 3d 鋼構參考圖塊
+            string blockName = string.Empty;
+
+
+
+            
             double midX = (nc.SteelAttr.Length+diffLength) / 2;
-            if (nc.SteelAttr.oPoint.Count != 0)
-            {                
+            // opoint個代表原點經四點再回原點，Group X及Y只會有兩個數字，一般正常型鋼，可切斜邊，所以要讀斜邊設定檔 將斜邊寫回
+            if ((nc.SteelAttr.oPoint.Count == 5 && nc.SteelAttr.oPoint.GroupBy(x => x.X).Count() == 2 && nc.SteelAttr.oPoint.GroupBy(x => x.Y).Count() == 2)
+
+                )
+            {
+                Steel3DBlock.FillCutSetting(nc.SteelAttr);
+                Steel3DBlock.AddSteel(nc.SteelAttr, model, out BlockReference steelBlock); //加入 3d 鋼構參考圖塊
+                blockName = steelBlock.BlockName;
+            }
+            else             
+            //if (nc.SteelAttr.oPoint.Count != 0)
+            {
+                Steel3DBlock.AddSteel(nc.SteelAttr, model, out BlockReference steelBlock); //加入 3d 鋼構參考圖塊
+                blockName = steelBlock.BlockName;
                 //model.Clear();//清除模型內物件
-                model.Blocks[steelBlock.BlockName].Entities.Clear();//清除圖塊
+                model.Blocks[blockName].Entities.Clear();//清除圖塊
                 #region 前視圖
                 //前視圖
                 Mesh vMesh = ConvertNcPointToMesh(nc.SteelAttr.vPoint, nc.SteelAttr.t1);
@@ -719,7 +737,7 @@ namespace WPFSTD105.Model
                         x.X = x.X - diffLength;
                     }
                 });
-                model.Blocks[steelBlock.BlockName].Entities.Add(vMesh);                
+                model.Blocks[blockName].Entities.Add(vMesh);                
                 model.Refresh();
                 //////前視圖
                 ////Mesh vMesh = ConvertNcPointToMesh(nc.SteelAttr.vPoint, nc.SteelAttr.t1);
@@ -806,7 +824,7 @@ namespace WPFSTD105.Model
             ObSettingVM obvm = new ObSettingVM();
             RunHypotenusePoint(model, obvm,diffLength);
 
-            // 取得該零件並更新驚嘆號
+            // 取得該零件並更新驚嘆號Loading
             ObservableCollection<SteelPart> parts = ser.GetPart(nc.SteelAttr.Profile.GetHashCode().ToString());//零件列表
             SteelPart part = parts.FirstOrDefault(x => x.GUID == nc.SteelAttr.GUID);
 

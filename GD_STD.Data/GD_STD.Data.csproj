@@ -62,6 +62,7 @@
     <Compile Include="MaterialDataView.cs" />
     <Compile Include="MatchDI\MultipleUsageRate.cs" />
     <Compile Include="SteelMaterial.cs" />
+    <Compile Include="SteelCutSetting.cs" />
     <Compile Include="TypeSettingDataView.cs" />
     <Compile Include="MatchDI\UsageRate.cs" />
     <Compile Include="IDrawing.cs" />
