@@ -81,7 +81,6 @@ namespace WPFSTD105.ViewModel
                         _.Joystick = select;
                         CodesysIIS.WriteCodesysMemor.SetPanel(_);
                     }
-
                     if (el is GD_STD.Enum.AXIS_SELECTED)
                     {
                         AXIS_SELECTED select = (AXIS_SELECTED)el;
@@ -115,14 +114,7 @@ namespace WPFSTD105.ViewModel
             }
         }
 
-
-
-
         #endregion
-
-
-
-
     }
 
 }

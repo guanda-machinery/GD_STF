@@ -145,14 +145,14 @@
                             Grid.Column="0"  
                                         Grid.ColumnSpan="2"
                             Background="{StaticResource solidclr_DimGray}"
-                            CornerRadius="50" />
+                            CornerRadius="5" />
                                     <!--<Border Grid.Column="2" CornerRadius="0,10,10,0" BorderThickness="0,2,2,2" Background="{ Binding ElementName=rad_Wheel, Path=IsChecked, Converter={ WPFBase:BoolToColorCodeConverter }}"/>-->
                                     <Border Grid.Column="1" BorderThickness="4,0,0,0"  Margin="-2,0,0,0" Width="auto" Height="auto" BorderBrush="#6f6f6f"/>
                                     <RadioButton           
                                         FontSize="25" Margin="30"
                                         Grid.Column="0"
                                         Content="入口端" 
-                                        IsChecked="{Binding ApplicationViewModel.PanelButton.ClampDownSelected, Source={x:Static WPFSTD:ViewLocator.Instance},ConverterParameter={x:Static STDEnum:CLAMP_DOWN.Entrance} , Converter={local:ClampDownToBoolenConverter}}">
+                                        IsChecked="{Binding ApplicationViewModel.PanelButton.ClampDownSelected,ConverterParameter={x:Static STDEnum:CLAMP_DOWN.Entrance},Converter={local:ClampDownToBoolenConverter}}" Cursor="Arrow">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                                 <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
@@ -168,7 +168,8 @@
                                         FontSize="25" Margin="30"
                             Grid.Column="1"
                             Content="出口端"
-                            IsChecked="{Binding ApplicationViewModel.PanelButton.ClampDownSelected, Source={x:Static WPFSTD:ViewLocator.Instance},ConverterParameter={x:Static STDEnum:CLAMP_DOWN.Export}, Converter={local:ClampDownToBoolenConverter}}">
+                            IsChecked="{Binding ApplicationViewModel.PanelButton.ClampDownSelected,ConverterParameter={x:Static STDEnum:CLAMP_DOWN.Export},Converter={local:ClampDownToBoolenConverter}}">
+                                        <!--Source={x:Static WPFSTD:ViewLocator.Instance}-->
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                                 <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
