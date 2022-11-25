@@ -218,6 +218,24 @@ namespace WPFSTD105
         {
             GZipSerializeBinary(bolts, $@"{ApplicationVM.DirectorySteelBolts()}\{profile}.lis");
         }
+
+        /// <summary>
+        ///  儲存序列化切割線資料
+        /// </summary>
+        /// <param name="SteelCutSetting"></param>
+        public void SetCutSettingList(ObservableCollection<SteelCutSetting> cutSettingList)
+        {
+            GZipSerializeBinary(cutSettingList, ApplicationVM.FileCutSettingList());
+        }
+        /// <summary>
+        ///  取得序列化切割線資料
+        /// </summary>
+        public ObservableCollection<SteelCutSetting> GetCutSettingList()
+        {
+            ObservableCollection<SteelCutSetting> temp_corr = GZipDeserialize<ObservableCollection<SteelCutSetting>>(ApplicationVM.FileCutSettingList());
+            return GZipDeserialize<ObservableCollection<SteelCutSetting>>(ApplicationVM.FileCutSettingList());
+        }
+
         /// <summary>
         /// 取得目前模型訊息斷面規格列表
         /// </summary>

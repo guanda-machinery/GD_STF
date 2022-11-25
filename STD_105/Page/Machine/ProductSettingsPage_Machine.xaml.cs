@@ -1806,6 +1806,7 @@ namespace STD_105
                 ((SteelAttr)model.Blocks[1].Entities[0].EntityData).PointFront = ViewModel.SteelAttr.PointFront;
                 SaveModel(false, false);
                 isNewPart = false;//fasle不產生新GUID
+                ViewModel.WriteCutAttr((SteelAttr)model.Blocks[1].Entities[0].EntityData);
                 ViewModel.ModifyPart.Execute(null);
                 isNewPart = true;//還原零件狀態
 

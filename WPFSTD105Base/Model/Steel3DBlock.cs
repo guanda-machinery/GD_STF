@@ -3,6 +3,7 @@ using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using GD_STD;
+using GD_STD.Data;
 using GD_STD.Enum;
 using System;
 using System.Collections.Generic;
@@ -558,7 +559,7 @@ namespace WPFSTD105.Model
             blockReference.EntityData = steelAttr;
             blockReference.Selectable = false;//關閉用戶選擇
             blockReference.Attributes.Add(dic, new AttributeReference(0, 0, 0));
-            model.Entities.Insert(0,blockReference);//加入參考圖塊到模型
+            model.Entities.Insert(0, blockReference);//加入參考圖塊到模型
             model.Entities.Regen();
             return result;
         }
@@ -624,5 +625,56 @@ namespace WPFSTD105.Model
 
         //    return mesh;
         //}
+        /// <summary>
+        /// 斜邊設定檔塞值，
+        /// </summary>
+        /// <param name="steelAttr"></param>
+        public static void FillCutSetting(SteelAttr steelAttr)
+        {
+            STDSerialization ser = new STDSerialization();
+            List<SteelCutSetting> csList = ser.GetCutSettingList().ToList().Where(x => x.GUID == steelAttr.GUID.Value).ToList();
+            foreach (SteelCutSetting item in csList)
+            {
+                switch (item.face)
+                {
+                    case FACE.TOP:
+                        steelAttr.PointTop.DL.X = item.DLX;
+                        steelAttr.PointTop.DL.Y = item.DLY;
+                        steelAttr.PointTop.UL.X = item.ULX;
+                        steelAttr.PointTop.UL.Y = item.ULY;
+                        steelAttr.PointTop.UR.X = item.URX;
+                        steelAttr.PointTop.UR.Y = item.URY;
+                        steelAttr.PointTop.DR.X = item.DRX;
+                        steelAttr.PointTop.DR.Y = item.DRY;
+                        break;
+                    case FACE.FRONT:
+                        steelAttr.PointFront.DL.X = item.DLX;
+                        steelAttr.PointFront.DL.Y = item.DLY;
+                        steelAttr.PointFront.UL.X = item.ULX;
+                        steelAttr.PointFront.UL.Y = item.ULY;
+                        steelAttr.PointFront.UR.X = item.URX;
+                        steelAttr.PointFront.UR.Y = item.URY;
+                        steelAttr.PointFront.DR.X = item.DRX;
+                        steelAttr.PointFront.DR.Y = item.DRY;
+                        break;
+                    case FACE.BACK:
+                        steelAttr.PointBack.DL.X = item.DLX;
+                        steelAttr.PointBack.DL.Y = item.DLY;
+                        steelAttr.PointBack.UL.X = item.ULX;
+                        steelAttr.PointBack.UL.Y = item.ULY;
+                        steelAttr.PointBack.UR.X = item.URX;
+                        steelAttr.PointBack.UR.Y = item.URY;
+                        steelAttr.PointBack.DR.X = item.DRX;
+                        steelAttr.PointBack.DR.Y = item.DRY;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
+
+
+
+
 }
