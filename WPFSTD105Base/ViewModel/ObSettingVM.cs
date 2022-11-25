@@ -1558,7 +1558,7 @@ namespace WPFSTD105.ViewModel
         /// 取得專案內零件資訊
         /// </summary>
         /// <returns></returns>
-        public static List<ProductSettingsPageViewModel> GetData(bool ShowProcessingScreenWin = true)
+        public static List<ProductSettingsPageViewModel> GetData()
         {
             STDSerialization ser = new STDSerialization();
             // 限制Grid出現之內容
@@ -1911,15 +1911,15 @@ namespace WPFSTD105.ViewModel
             //foreach (var item in source)
 
 
-            var ProcessingScreenWin = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
+            //var ProcessingScreenWin = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
 
-            if (ShowProcessingScreenWin)
-            {
-                ProcessingScreenWin.Show(inputBlock: InputBlockMode.Window, timeout: 700);
-                ProcessingScreenWin.ViewModel.Status = "取得專案內零件資訊";
-                ProcessingScreenWin.ViewModel.IsIndeterminate = false;
-            }
+            //if (ShowProcessingScreenWin)
+            //{
+            //    ProcessingScreenWin.Show(inputBlock: InputBlockMode.Window, timeout: 700);
+            //}
 
+            //ProcessingScreenWin.ViewModel.Status = "取得專案內零件資訊";
+            //ProcessingScreenWin.ViewModel.IsIndeterminate = false;
             int ItemCount = 0;
 
             foreach (var item in group)
@@ -2000,8 +2000,8 @@ namespace WPFSTD105.ViewModel
 
                 ItemCount++;
             }
-            ProcessingScreenWin.ViewModel.IsIndeterminate = true;
-            ProcessingScreenWin.Close();
+            //ProcessingScreenWin.ViewModel.IsIndeterminate = true;
+            //ProcessingScreenWin.Close();
             return list;
         }
         /// <summary>
