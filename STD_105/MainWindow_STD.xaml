@@ -737,14 +737,14 @@
                                               TitleText="{DynamicResource LANGUAGE_ImportFiles}"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <!--  製品設定(舊)  -->
-                    <local:MainFunctionButton Grid.Column="1" Grid.Row="5"
+                    <local:MainFunctionButton Grid.Column="1" Grid.Row="5" Visibility="Collapsed"
                                               ButtonCommand="{Binding ProductSettingCommand}"
                                               ButtonImageSource="{StaticResource NewProductSettings}"
                                               IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
                                               TitleText="舊製品"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <!--  排版設定(舊)  -->
-                    <local:MainFunctionButton Grid.Row="5"
+                    <local:MainFunctionButton Grid.Row="5" Visibility="Collapsed"
                                               Grid.Column="0"
                                               ButtonCommand="{Binding TypeSettingCommand}"
                                               ButtonImageSource="{StaticResource Layout}"
@@ -752,7 +752,8 @@
                                               TitleText="舊排版"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <!--  加工監控(舊)   -->
-                    <local:MainFunctionButton Grid.Row="4"
+                    <local:MainFunctionButton  Visibility="Collapsed"
+                        Grid.Row="4"
                                               Grid.Column="1"
                                               ButtonCommand="{Binding MonitorCommand}"
                                               ButtonImageSource="{StaticResource Monitor_New}"
@@ -833,15 +834,15 @@
                     <local:MainFunctionButton Grid.Row="1"
                                               ButtonCommand="{Binding LanguageCommand }"
                                               CommandParameter="{ Binding TitleText, RelativeSource={ x:Static RelativeSource.Self } }"
-                                              ButtonImageSource="{StaticResource Thailand}"
-                                              TitleText="Tiếng Việt"
+                                              ButtonImageSource="{StaticResource Vietnam}"
+                                              TitleText="ไทย"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <local:MainFunctionButton Grid.Row="1"
                                               Grid.Column="1"
                                               ButtonCommand="{Binding LanguageCommand }"
                                               CommandParameter="{ Binding TitleText, RelativeSource={ x:Static RelativeSource.Self } }"
-                                              ButtonImageSource="{StaticResource Vietnam}"
-                                              TitleText="ไทย"
+                                              ButtonImageSource="{StaticResource Thailand}"
+                                              TitleText="Tiếng Việt"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <!--關閉區域-->
                     <Button Grid.Column="1"
@@ -1087,7 +1088,14 @@
                                         Width="160" 
                                         Height="50" 
                                         FontSize="20" 
-                                    Style="{StaticResource SiegCustomButtonBlue}" />
+                                    Style="{StaticResource SiegCustomButtonBlue}" >
+                                    <Button.IsEnabled>
+                                        <MultiBinding Converter="{ local:MultiObjectArrayToBooleanConverter}">
+                                            <Binding ElementName="ResultPath" Path="Text" />
+                                            <Binding ElementName="InputTextBox1" Path="Text" />
+                                        </MultiBinding>
+                                    </Button.IsEnabled>
+                                </Button>
                                 <Button Grid.Column="1"
                                         x:Name="NoButton1"
                                         Command="{Binding CollapsedCommand}"

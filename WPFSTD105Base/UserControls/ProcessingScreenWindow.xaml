@@ -11,7 +11,6 @@
                        WindowStartupLocation="CenterScreen"
                        mc:Ignorable="d"
                        Background="Transparent"
-                      
                        DataContext="{x:Static dxmvvm:DXSplashScreenViewModel.DesignTimeData}">
     <Grid Width="500" Height="100">
         <Border

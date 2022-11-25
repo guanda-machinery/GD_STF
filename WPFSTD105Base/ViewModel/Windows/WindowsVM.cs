@@ -454,6 +454,126 @@ namespace WPFSTD105
             });
         }
         /// <inheritdoc/>
+        /// 
+        protected override WPFBase.RelayParameterizedCommand OpenProject()
+        {
+            return new WPFBase.RelayParameterizedCommand(e =>
+            {
+                string RCMProjectName = ReadCodesysMemor.GetProjectName();
+                //軟體端還沒開過
+                if (String.IsNullOrEmpty(ApplicationViewModel.ProjectName))
+                {
+                    //確認plc是否有專案 若無則直接開專案 若有則跳出訊息提示 
+                    if (String.IsNullOrEmpty(RCMProjectName))
+                    {
+                        base.OpenProject().Execute(e);
+                    }
+                    else
+                    {
+                        //比較目前要開啟的專案和plc內的專案名稱是否相同
+                        if(e.ToString() == RCMProjectName)
+                        {
+                            //若相同則問是否要續接
+
+                            var messageBoxResult = MessageBox.Show("請確認是否續接專案，\n不續接專案將會初始化所有工件的當前位置。", "通知", MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                       
+                            
+                            ApplicationViewModel.CurrentPage = ApplicationPage.Home;
+                            Task.Run(() =>
+                            {
+                                while (!ApplicationViewModel.IsHome)
+                                {
+                                    Task.Delay(300);
+                                }
+
+                                if (messageBoxResult == MessageBoxResult.No)
+                                {
+                                    int size = Marshal.SizeOf(typeof(GD_STD.Phone.MonitorWork));
+                                    using (WPFSTD105.Memor.MemorClient memory = new Memor.MemorClient())
+                                    {
+                                        memory.IniWork();
+                                    }
+                                }
+
+                            });
+                            base.OpenProject().Execute(e);
+                        }
+                        else
+                        {
+                            //若不同則問是否要換成這一個專案並洗掉紀錄
+                            var RBoxResult = MessageBox.Show($"機台上次加工的專案為「{RCMProjectName}」，\n是否要切換成「{e.ToString()}」?\n切換後會初始化所有工件的當前位置", "通知", MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                            if (RBoxResult == MessageBoxResult.No)
+                            {
+                                return;
+                            }
+                            else
+                            {
+                                ApplicationViewModel.CurrentPage = ApplicationPage.Home;
+                                Task.Run(() =>
+                                {
+                                    while (!ApplicationViewModel.IsHome)
+                                    {
+                                        Task.Delay(300);
+                                    }
+
+                                    int size = Marshal.SizeOf(typeof(GD_STD.Phone.MonitorWork));
+                                    using (WPFSTD105.Memor.MemorClient memory = new Memor.MemorClient())
+                                    {
+                                        memory.IniWork();
+                                    }
+                                });
+                                base.OpenProject().Execute(e);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    //先確認是否為相同專案 若同一個則不動作
+                    if (e.ToString() == ApplicationViewModel.ProjectName)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        //若專案不同則確認plc是否有資料，若無資料則直接打開
+                        //若有資料 須提示後詢問是否要切換到該專案並清洗掉資料
+                        if (String.IsNullOrEmpty(RCMProjectName))
+                        {
+                            base.OpenProject().Execute(e);
+                        }
+                        else
+                        {
+                            var RBoxResult = MessageBox.Show($"機台上次加工的專案為「{RCMProjectName}」，\n是否要切換成「{e.ToString()}」?\n切換後會初始化所有工件的當前位置", "通知", MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                            if (RBoxResult == MessageBoxResult.No)
+                            {
+                                return;
+                            }
+                            else
+                            {
+                                ApplicationViewModel.CurrentPage = ApplicationPage.Home;
+                                Task.Run(() =>
+                                {
+                                    while (!ApplicationViewModel.IsHome)
+                                    {
+                                        Task.Delay(300);
+                                    }
+
+                                    int size = Marshal.SizeOf(typeof(GD_STD.Phone.MonitorWork));
+                                    using (WPFSTD105.Memor.MemorClient memory = new Memor.MemorClient())
+                                    {
+                                        memory.IniWork();
+                                    }
+                                });
+                                base.OpenProject().Execute(e);
+                            }
+                        }
+                    }
+                }
+                OpenProjectControl = true;
+            });
+        }
+        /*
         protected override WPFBase.RelayParameterizedCommand OpenProject()
         {
             return new WPFBase.RelayParameterizedCommand(e =>
@@ -499,6 +619,9 @@ namespace WPFSTD105
                 //OpenProjectControl = true;
             });
         }
+
+        */
+
         /// <inheritdoc/>
         protected override WPFBase.RelayParameterizedCommand OutProjectName()
         {

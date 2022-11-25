@@ -3,7 +3,6 @@
     x:Class="STD_105.MachineFunction"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:GD_STD="clr-namespace:GD_STD.Properties;assembly=GD_STD"
-
     xmlns:STDEnum="clr-namespace:GD_STD.Enum;assembly=GD_STD.Enum"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -660,10 +659,10 @@
                                         <ColumnDefinition Width="350"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Button Command="{Binding}">
-                                        <Image Source="{StaticResource Conveyor_BlockedDrawingImage}" Width="100"/>
+                                    <Button Command="{Binding}" IsEnabled="False">
+                                        <Image Source="{StaticResource Conveyor_BlockedDrawingImage}" Width="100" Visibility="Collapsed"/>
                                     </Button>
-                                    <Button Grid.Column="1" Margin="10,0">
+                                    <Button Grid.Column="1" Margin="10,0" Command="{Binding PostRiseCommand}">
                                         <Image Source="{StaticResource Conveyor_RedDrawingImage}" Width="100"/>
 
                                     </Button>
@@ -982,8 +981,8 @@
                                         <ColumnDefinition Width="350"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Button Command="{Binding PostRiseCommand}">
-                                       <Image Source="{StaticResource Conveyor_BlockedDrawingImage}" Width="100"/>
+                                    <Button Command="{Binding}" Cursor="Hand" IsEnabled="False">
+                                       <Image Source="{StaticResource Conveyor_BlockedDrawingImage}" Width="100" Visibility="Collapsed"/>
                                     </Button>
                                     <Button Grid.Column="1" Margin="10,0" IsEnabled="False"/>
                                     <Button Grid.Column="2" IsEnabled="False"/>

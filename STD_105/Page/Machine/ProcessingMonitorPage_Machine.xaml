@@ -507,7 +507,7 @@ AllowEditing="False"
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>
-                                        <ProgressBar Value="{c:Binding Value*0.01}" Height="auto" Minimum="0" Maximum="100" Background="White" />
+                                        <ProgressBar Value="{c:Binding Value}" Height="auto" Minimum="0" Maximum="100" Background="Transparent" />
                                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" >
                                             <TextBlock Text="{c:Binding Value*0.01, StringFormat={}{0:P1}}"   />
                                         </StackPanel>

@@ -452,6 +452,9 @@
     <Compile Include="Attribute\SteelAttrInExcel.cs" />
     <Compile Include="Attribute\SteelAttr.cs" />
     <Compile Include="BarcodeGenerator.cs" />
+    <Compile Include="DMFileGeneratorScreenWindow.xaml.cs">
+      <DependentUpon>DMFileGeneratorScreenWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ExcelAmountService.cs" />
     <Compile Include="Connected Services\MonitorDuplex\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -841,6 +844,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="DMFileGeneratorScreenWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\ProcessingScreenWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
