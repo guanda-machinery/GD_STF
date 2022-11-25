@@ -16,9 +16,7 @@
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
     xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
-    
     xmlns:ee="http://schemas.microsoft.com/expression/2010/effects"
-    
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
     xmlns:STD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105" 
@@ -523,7 +521,7 @@
                         MouseDown="TableView_MouseDown"
                         SelectedItemChanged="Material_List_GridControl_SelectedItemChanged"
                         Grid.Row="2"    
-                        ItemsSource="{Binding MaterialDataViews, Mode=TwoWay , NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"
+                        ItemsSource="{Binding MaterialDataViews, Mode=TwoWay, NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"
                         MinHeight="200"  MaxHeight="1000">
                 <dxg:GridControl.View >
                     <dxg:TableView         

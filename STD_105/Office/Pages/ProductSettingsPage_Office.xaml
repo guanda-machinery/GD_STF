@@ -146,7 +146,7 @@
                                  SelectionMode="None"
                                  MaxHeight="2000"
                                  AllowLiveDataShaping="True"
-                                 ItemsSource="{Binding ProductSettingsPageViewModel.DataViews, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange" MouseDown="Button_PreviewMouseLeftButtonDown">
+                                 ItemsSource="{Binding DataViews, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange" MouseDown="Button_PreviewMouseLeftButtonDown">
                     <dxg:GridControl.View >
                     <dxg:TableView VerticalScrollbarVisibility="Visible"
                                         HighlightItemOnHover="True"
@@ -171,7 +171,7 @@
                     </dxg:TableView>
                 </dxg:GridControl.View>
 
-                    <dxg:GridColumn Name="Exc_GridColumn" Binding="{Binding steelAttr.ExclamationMark}" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
+                    <dxg:GridColumn Name="Exc_GridColumn" Binding="{Binding steelAttr.ExclamationMark, UpdateSourceTrigger=PropertyChanged}" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                     <dxg:GridColumn.HeaderImageStyle>
                         <Style TargetType="Image">
                             <Setter Property="Width" Value="20"></Setter>
@@ -180,7 +180,7 @@
                     </dxg:GridColumn.HeaderImageStyle>
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
-                            <dxe:CheckEdit x:Name="PART_Editor" IsChecked="{Binding Row.steelAttr.ExclamationMark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <dxe:CheckEdit x:Name="PART_Editor" IsChecked="{Binding steelAttr.ExclamationMark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <dxe:CheckEdit.Style>
                                     <Style TargetType="{x:Type dxe:CheckEdit}">
                                         <Setter Property="Template">
@@ -254,7 +254,7 @@
                     </dxg:GridColumn.CellStyle>
                 </dxg:GridColumn>
 
-                    <!--<dxg:GridColumn Binding="{Binding steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="{StaticResource visible}"/>-->
+                    <dxg:GridColumn Binding="{Binding steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="60"/>
                 <dxg:GridColumn Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="60" />
                 <dxg:GridColumn Binding="{Binding steelAttr.Name,UpdateSourceTrigger=PropertyChanged}" IsSmart="True" Header="名稱" Width="80"/>
@@ -797,7 +797,7 @@
 
                     </Grid>
 
-                    <Button Grid.Column="3" Grid.Row="6" Grid.ColumnSpan="2" x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}"  Style="{StaticResource SiegCustomButtonGold}" Width="90" HorizontalAlignment="Left" Visibility="Collapsed" />
+                    <Button Grid.Column="3" Grid.Row="6" Grid.ColumnSpan="2" x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}"  Style="{StaticResource SiegCustomButtonGold}" Width="90" HorizontalAlignment="Left" Visibility="Visible" />
 
                     <StackPanel Grid.Row="13" Margin="2" Orientation="Horizontal" Grid.ColumnSpan="5">
                         <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Style="{StaticResource SiegCustomButtonGold}" Width="80" Margin="0,0,6,0" Click="OKtoConfirmChanges"/>
@@ -1127,7 +1127,7 @@
                                                 <RowDefinition Height="*"/>
                                             </Grid.RowDefinitions>
 
-                                            <RadioButton  Margin="0,0,0,0" Grid.Row="0" GroupName="CutLinePosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=1}">
+                                            <RadioButton  Margin="0,0,0,0" Grid.Row="0" GroupName="CutLinePosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=1}" Command="{Binding rb_CutLinePosition_Command}">
                                                 <RadioButton.Content>
                                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,0" >
                                                         <Label Content="前面"/>
@@ -1136,7 +1136,7 @@
                                                 </RadioButton.Content>
                                             </RadioButton>
 
-                                            <RadioButton Margin="0,-10,0,0" Grid.Row="1" VerticalAlignment="Center" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=0}">
+                                            <RadioButton Margin="0,-10,0,0" Grid.Row="1" VerticalAlignment="Center" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=0}" Command="{Binding rb_CutLinePosition_Command}">
                                                 <RadioButton.Content>
                                                     <StackPanel Orientation="Horizontal" Margin="0,6,0,0" >
                                                         <Label Content="頂面"/>
@@ -1145,7 +1145,7 @@
                                                 </RadioButton.Content>
                                             </RadioButton>
 
-                                            <RadioButton  Margin="0,-10,0,0" Grid.Row="2" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=2}">
+                                            <RadioButton  Margin="0,-10,0,0" Grid.Row="2" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=2}" Command="{Binding rb_CutLinePosition_Command}">
                                                 <RadioButton.Content>
                                                     <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                                         <Label Content="後面"/>
@@ -1193,7 +1193,7 @@
                                                      Canvas.Left="81"
                                                      Canvas.Top="0">
                                                 <TextBox.Text>
-                                                    <Binding Path="ULPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding Path="ULPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                                         <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                         </Binding.ValidationRules>
@@ -1203,20 +1203,21 @@
                                             <TextBox Grid.Row="3"
                                                      Width="50"
                                                      Canvas.Left="149"
-                                                     Canvas.Top="0">
-                                                <TextBox.Text>
-                                                    <Binding Path="URPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                     Canvas.Top="0"
+                                                     Text="{Binding URPoint.X,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                                <!--<TextBox.Text>
+                                                    <Binding Path="URPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                                         <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                         </Binding.ValidationRules>
                                                     </Binding>
-                                                </TextBox.Text>
+                                                </TextBox.Text>-->
                                             </TextBox>
                                             <TextBox Width="50"
                                                      Canvas.Left="10"
                                                      Canvas.Top="55">
                                                 <TextBox.Text>
-                                                    <Binding Path="ULPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding Path="ULPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                                         <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                         </Binding.ValidationRules>
@@ -1227,7 +1228,7 @@
                                                      Canvas.Left="10"
                                                      Canvas.Top="139">
                                                 <TextBox.Text>
-                                                    <Binding Path="DLPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding Path="DLPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                                         <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                         </Binding.ValidationRules>
@@ -1238,7 +1239,7 @@
                                                      Canvas.Left="220"
                                                      Canvas.Top="55">
                                                 <TextBox.Text>
-                                                    <Binding Path="URPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding Path="URPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                                         <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                         </Binding.ValidationRules>
@@ -1249,7 +1250,7 @@
                                                      Canvas.Left="220"
                                                      Canvas.Top="139">
                                                 <TextBox.Text>
-                                                    <Binding Path="DRPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding Path="DRPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                                         <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                         </Binding.ValidationRules>
@@ -1260,7 +1261,7 @@
                                                      Canvas.Left="81"
                                                      Canvas.Top="195">
                                                 <TextBox.Text>
-                                                    <Binding Path="DLPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding Path="DLPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                                         <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                         </Binding.ValidationRules>
@@ -1271,7 +1272,7 @@
                                                      Canvas.Left="149"
                                                      Canvas.Top="195">
                                                 <TextBox.Text>
-                                                    <Binding Path="DRPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding Path="DRPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                                         <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                         </Binding.ValidationRules>

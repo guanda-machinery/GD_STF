@@ -1284,6 +1284,12 @@ namespace STD_105
                         guid = dataName;
                         ModelExt modelExt = new ModelExt();
                         modelExt = GetFinalModel(dataName);
+
+
+
+
+
+
                         Entity[] entities = new Entity[model.Entities.Count];
                         Block[] blocks = new Block[model.Blocks.Count];
                         model.Entities.CopyTo(entities, 0);
@@ -1806,6 +1812,7 @@ namespace STD_105
                 ((SteelAttr)model.Blocks[1].Entities[0].EntityData).PointFront = ViewModel.SteelAttr.PointFront;
                 SaveModel(false, false);
                 isNewPart = false;//fasle不產生新GUID
+                ViewModel.WriteCutAttr((SteelAttr)model.Blocks[1].Entities[0].EntityData);
                 ViewModel.ModifyPart.Execute(null);
                 isNewPart = true;//還原零件狀態
 
@@ -5411,26 +5418,31 @@ namespace STD_105
                     //cbx_SectionTypeComboBox.Text = profile;
                     //this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
 
-                    Steel3DBlock result = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);
-                    //Steel3DBlock result = new Steel3DBlock(Steel3DBlock.GetProfile((SteelAttr)model.Blocks[1].Entities[0].EntityData));
-                    if (model.Blocks.Count > 1)
-                    {
-                        model.Blocks.Remove(model.Blocks[1]);
-                    }
-                    model.Blocks.Insert(1, result);//加入鋼構圖塊到模型
-                    BlockReference blockReference = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);
-                    blockReference.EntityData = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
-                    blockReference.Selectable = false;//關閉用戶選擇
-                    blockReference.Attributes.Add("steel", new AttributeReference(0, 0, 0));
-                    //if (model.Entities.Count > 0)
+                    //Steel3DBlock result = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);
+                    ////Steel3DBlock result = new Steel3DBlock(Steel3DBlock.GetProfile((SteelAttr)model.Blocks[1].Entities[0].EntityData));
+                    //if (model.Blocks.Count > 1)
                     //{
-                    //    model.Entities.RemoveAt(model.Entities.Count - 1);
+                    //    model.Blocks.Remove(model.Blocks[1]);
                     //}
-                    model.Entities.Insert(model.Entities.Count, blockReference);//加入參考圖塊到模型
-                    model.Entities.Regen();
-                    drawing.Blocks.Clear();
-                    drawing.Entities.Clear();
+                    //model.Blocks.Insert(1, result);//加入鋼構圖塊到模型
+                    //BlockReference blockReference = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);
+                    //blockReference.EntityData = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
+                    //blockReference.Selectable = false;//關閉用戶選擇
+                    //blockReference.Attributes.Add("steel", new AttributeReference(0, 0, 0));
+                    ////if (model.Entities.Count > 0)
+                    ////{
+                    ////    model.Entities.RemoveAt(model.Entities.Count - 1);
+                    ////}
+                    //model.Entities.Insert(model.Entities.Count, blockReference);//加入參考圖塊到模型
+                    //model.Entities.Regen();
+                    //drawing.Blocks.Clear();
+                    //drawing.Entities.Clear();
+                    
+                    
+                    
+                    model.LoadNcToModel(focuseGUID, ObSettingVM.allowType, 0, null, sa, groups);
                     SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
+
                     CuttingGroupBox.IsEnabled = true;
                     CuttingGroupPosition.IsEnabled = true;
                     ManHypotenusePoint((FACE)ViewModel.rbtn_CutFace);

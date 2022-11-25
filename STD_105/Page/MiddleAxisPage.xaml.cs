@@ -47,7 +47,6 @@ namespace STD_105
             panelButton.AxisRotation = false;
             panelButton.AxisStop = false;
             panelButton.MainAxisMode = false;
-            panelButton.Hand = false;
             panelButton.ClampDown = false;
             panelButton.SideClamp = false;
             panelButton.Volume = false;
