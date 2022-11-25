@@ -1916,10 +1916,10 @@ namespace WPFSTD105.ViewModel
             if (ShowProcessingScreenWin)
             {
                 ProcessingScreenWin.Show(inputBlock: InputBlockMode.Window, timeout: 700);
+                ProcessingScreenWin.ViewModel.Status = "取得專案內零件資訊";
+                ProcessingScreenWin.ViewModel.IsIndeterminate = false;
             }
 
-            ProcessingScreenWin.ViewModel.Status = "取得專案內零件資訊";
-            ProcessingScreenWin.ViewModel.IsIndeterminate = false;
             int ItemCount = 0;
 
             foreach (var item in group)

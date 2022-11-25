@@ -392,7 +392,8 @@ namespace WPFSTD105
             ScreenManager.ViewModel.Status = $"取得資訊中 ...";
             //Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
             STDSerialization ser = new STDSerialization();
-            // 取得dm檔與零件之對應
+            TypeSettingVM tsVM = new TypeSettingVM();
+                // 取得dm檔與零件之對應
             ObservableCollection<DataCorrespond> dataCorrespond = ser.GetDataCorrespond();
             // 取得構件資訊
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();
@@ -405,7 +406,10 @@ namespace WPFSTD105
 
             // 取得排版資訊
              ObservableCollection<MaterialDataView> materialDataViews = ser.GetMaterialDataView();
-            
+
+            // 取得排版零件資訊
+            ObservableCollection<TypeSettingDataView> DataViews = tsVM.LoadDataViews();
+
             ScreenManager.ViewModel.Status = $"資訊已取得 ...";
             //Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
             #endregion
@@ -1047,26 +1051,105 @@ namespace WPFSTD105
                 #endregion
                 #endregion
 
-                #region Material
-                //sheet = book.Worksheets.Add("Material file"); //創建一個新工作表並將其附加到集合的末尾
-                //book.Worksheets.ActiveWorksheet = sheet;
-                //row = 0;
-                //column = 0;
+                #region 排版零件
+                sheet = book.Worksheets.Add("排版零件 file"); //創建一個新工作表並將其附加到集合的末尾
+                book.Worksheets.ActiveWorksheet = sheet;
+                row = 0;
+                column = 0;
                 #region 欄位名稱
-                //sheet.Cells[row, column++].Value = "來源列表";
-                //sheet.Cells[row, column++].Value = "素材編號";
-                //sheet.Cells[row, column++].Value = "斷面規格";
-                //sheet.Cells[row, column++].Value = "索引值";
-                //sheet.Cells[row, column++].Value = "購料長";
-                //sheet.Cells[row, column++].Value = "材質";
-                //sheet.Cells[row, column++].Value = "建立日期";
-                //sheet.Cells[row, column++].Value = "修改日期";
-                //sheet.Cells[row++, column++].Value = "歸屬購件";
+                sheet.Cells[row, column++].Value = "零件編號";
+                sheet.Cells[row, column++].Value = "構件編號";
+                sheet.Cells[row, column++].Value = "建立日期";
+                sheet.Cells[row, column++].Value = "長度";
+                sheet.Cells[row, column++].Value = "零件鎖定";
+                sheet.Cells[row, column++].Value = "材質";
+                sheet.Cells[row, column++].Value = "斷面規格";
+                sheet.Cells[row, column++].Value = "修改日期";
+                sheet.Cells[row, column++].Value = "圖面狀態";
+                sheet.Cells[row, column++].Value = "型鋼類型";
+                sheet.Cells[row, column++].Value = "高";
+                sheet.Cells[row, column++].Value = "寬";
+                sheet.Cells[row, column++].Value = "腹板厚度";
+                sheet.Cells[row, column++].Value = "重量";
+                sheet.Cells[row, column++].Value = "數量";
+
+                sheet.Cells[row, column++].Value = "零件ID";
+                sheet.Cells[row++, column++].Value = "可批配料單";
                 #endregion
-                //foreach (MaterialDataView item in materialDataViews)
-                //{
-                //   
-                //}
+                #region 塞值
+                foreach (TypeSettingDataView mdv in DataViews)
+                {
+                    column = 0;
+                    sheet.Cells[row, column++].Value = mdv.PartNumber;
+                    sheet.Cells[row, column++].Value = mdv.AssemblyNumber;
+                    sheet.Cells[row, column++].Value = mdv.Creation;
+                    sheet.Cells[row, column++].Value = mdv.Length;
+                    sheet.Cells[row, column++].Value = mdv.Lock;
+                    sheet.Cells[row, column++].Value = mdv.Material;
+                    sheet.Cells[row, column++].Value = mdv.Profile;
+                    sheet.Cells[row, column++].Value = mdv.Revise;
+                    sheet.Cells[row, column++].Value = mdv.State.ToString();
+                    sheet.Cells[row, column++].Value = mdv.SteelType;
+                    sheet.Cells[row, column++].Value = mdv.H;
+                    sheet.Cells[row, column++].Value = mdv.W;
+                    sheet.Cells[row, column++].Value = mdv.t1;
+                    sheet.Cells[row, column++].Value = mdv.t2;
+                    sheet.Cells[row, column++].Value = mdv.Weigth;
+                    int tempRow = row;
+                    foreach (double id in mdv.ID)
+                    {
+                        sheet.Cells[row++, column].Value = id;
+                    }
+                    rowList.Add(row);
+                    row = tempRow;
+                    column++;
+                    foreach (bool match in mdv.Match)
+                    {
+                        sheet.Cells[row++, column].Value = match;
+                    }
+                    rowList.Add(row);
+                    column = 0;
+                    row = rowList.Max() + 1;
+                }
+                #endregion
+                #endregion
+
+                #region Material
+                sheet = book.Worksheets.Add("排版 file"); //創建一個新工作表並將其附加到集合的末尾
+                book.Worksheets.ActiveWorksheet = sheet;
+                row = 0;
+                column = 0;
+                #region 欄位名稱
+                sheet.Cells[row, column++].Value = "來源列表";
+                sheet.Cells[row, column++].Value = "素材編號";
+                sheet.Cells[row, column++].Value = "斷面規格";
+                sheet.Cells[row, column++].Value = "索引值";
+                sheet.Cells[row, column++].Value = "購料長";
+                sheet.Cells[row, column++].Value = "材質";
+                sheet.Cells[row, column++].Value = "廠商";
+                sheet.Cells[row, column++].Value = "修改日期";
+                sheet.Cells[row++, column++].Value = "歸屬購件";
+                #endregion
+                #region 塞值
+                foreach (MaterialDataView mdv in materialDataViews) 
+                {
+                    column = 0;
+                    sheet.Cells[row, column++].Value = mdv.Sources;
+                    sheet.Cells[row, column++].Value = mdv.MaterialNumber;
+                    sheet.Cells[row, column++].Value = mdv.Profile;
+                    sheet.Cells[row, column++].Value = mdv.LengthIndex;
+                    sheet.Cells[row, column++].Value = mdv.LengthStr;
+                    sheet.Cells[row, column++].Value = mdv.Material;
+                    int tempRow = row;
+                    foreach (double length in mdv.LengthList)
+                    {
+                        sheet.Cells[row++, column].Value = length;
+                    }
+                    rowList.Add(row);
+                    row = tempRow;
+                    column++;
+                }
+                #endregion
                 #endregion
 
                 #region Grid Data
