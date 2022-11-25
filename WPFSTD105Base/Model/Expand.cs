@@ -635,7 +635,7 @@ namespace WPFSTD105.Model
 
             
             double midX = (nc.SteelAttr.Length+diffLength) / 2;
-            // opoint個代表原點經四點再回原點，Group X及Y只會有兩個數字，一般正常型鋼，可切斜邊，所以要讀斜邊設定檔 將斜邊寫回
+            // vpoint個代表原點經四點再回原點，Group X及Y只會有兩個數字，一般正常型鋼，可切斜邊，所以要讀斜邊設定檔 將斜邊寫回
             if ((nc.SteelAttr.vPoint.Count == 5 && nc.SteelAttr.vPoint.GroupBy(x => x.X).Count() == 2 && nc.SteelAttr.vPoint.GroupBy(x => x.Y).Count() == 2)
 
                 )
