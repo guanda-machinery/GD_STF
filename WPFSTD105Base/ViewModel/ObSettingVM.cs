@@ -1015,7 +1015,7 @@ namespace WPFSTD105.ViewModel
         public void WriteCutAttr(SteelAttr steelAttr)
         {
             int temp_CutFace;
-            if (OfficeViewModel.CurrentPage == OfficePage.ProductSettings)//若為新版製品設定頁面
+            if (OfficeViewModel.CurrentPage == OfficePage.ProductSettings || ViewLocator.ApplicationViewModel.CurrentPage == ApplicationPage.MachineProductSetting)//若為新版製品設定頁面
             {
                 temp_CutFace = rbtn_CutFace;
             }
@@ -1110,6 +1110,44 @@ namespace WPFSTD105.ViewModel
                     default:
                         throw new Exception("找不到面");
                 }
+
+                // 讀取切割線設定檔
+                STDSerialization ser = new STDSerialization(); //序列化處理器
+                ObservableCollection<SteelCutSetting> steelcutSettings = new ObservableCollection<SteelCutSetting>();
+                steelcutSettings = ser.GetCutSettingList();
+                steelcutSettings = steelcutSettings ?? new ObservableCollection<SteelCutSetting>();
+                if (steelcutSettings.Any(x => x.GUID == this.GuidProperty && x.face == (FACE)temp_CutFace))
+                {
+                    SteelCutSetting cs = steelcutSettings.FirstOrDefault(x => x.GUID == this.GuidProperty && x.face == (FACE)temp_CutFace);
+                    cs.face = (FACE)temp_CutFace;
+                    cs.DLX = this.DLPoint.X;
+                    cs.DLY = this.DLPoint.Y;
+                    cs.ULX = this.ULPoint.X;
+                    cs.ULY = this.ULPoint.Y;
+                    cs.DRX = this.DRPoint.X;
+                    cs.DRY = this.DRPoint.Y;
+                    cs.URX = this.URPoint.X;
+                    cs.URY = this.URPoint.Y;
+                    ser.SetCutSettingList(steelcutSettings);
+                }
+                else 
+                {
+                    SteelCutSetting cs = new SteelCutSetting()
+                    {
+                        GUID = this.GuidProperty,
+                        face = (FACE)temp_CutFace,
+                        DLX = this.DLPoint.X,
+                        DLY = this.DLPoint.Y,
+                        ULX = this.ULPoint.X,
+                        ULY = this.ULPoint.Y,
+                        DRX = this.DRPoint.X,
+                        DRY = this.DRPoint.Y,
+                        URX = this.URPoint.X,
+                        URY = this.URPoint.Y,
+                    };
+                    steelcutSettings.Add(cs);
+                    ser.SetCutSettingList(steelcutSettings);
+                }
             }
             catch (Exception e)
             {
@@ -1137,15 +1175,15 @@ namespace WPFSTD105.ViewModel
         #endregion
 
         #region 新版屬性
-        private ObservableCollection<ProductSettingsPageViewModel> _dataviews = new ObservableCollection<ProductSettingsPageViewModel>();
+        private ObservableCollection<ProductSettingsPageViewModel> _dataviews { get; set; } = new ObservableCollection<ProductSettingsPageViewModel>();
 
         /// <summary>
         /// 零件資訊
         /// </summary>
         public ObservableCollection<ProductSettingsPageViewModel> DataViews
         {
-            get { return _dataviews; }
-            set { _dataviews = value; }
+            get => _dataviews;
+            set => _dataviews = value;
         }
         /// <summary>
         /// 所選到斷面規格在其斷面規格list中的index
