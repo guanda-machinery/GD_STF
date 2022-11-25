@@ -97,7 +97,6 @@ namespace STD_105
             ProcessingScreenWin.ViewModel.Status = "正在讀取3D模型...";
             try
             {
-                (this.DataContext as ProcessingMonitor_MachineVM)._DrawModel = model;
                 #region Model 初始化
                 //model.InitialView = viewType.Top;
                 /*旋轉軸中心設定當前的鼠標光標位置。 如果模型全部位於相機視錐內部，
@@ -124,11 +123,11 @@ namespace STD_105
             }
 
             ProcessingScreenWin.ViewModel.Status = "正在產生dm...";
-            (this.DataContext as ProcessingMonitor_MachineVM).SetSerializationInit(model);
+
+            (this.DataContext as ProcessingMonitor_MachineVM).SetSerializationInit(model)/*, model);*/;
             //載入dm
             //(this.DataContext as ProcessingMonitor_MachineVM).CreateFile();
             ProcessingScreenWin.Close();
-
             model.Loaded -= Model3D_Loaded;
         }
 

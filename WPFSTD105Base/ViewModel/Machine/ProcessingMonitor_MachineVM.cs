@@ -1973,9 +1973,6 @@ namespace WPFSTD105.ViewModel
         }
 
 
-
-
-
         private void ClearPButtonModeValue(ref GD_STD.PanelButton PButton)
         {
             PButton.ClampDown = false;

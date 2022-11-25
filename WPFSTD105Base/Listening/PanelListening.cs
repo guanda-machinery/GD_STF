@@ -475,7 +475,7 @@ namespace WPFSTD105
         /// <summary>
         /// 按下實體面板緊急停止提示
         /// </summary>
-        /// <returns>如果有觸發急停止回傳 treu，沒有則回傳 false</returns>
+        /// <returns>如果有觸發急停止回傳 true，沒有則回傳 false</returns>
         public static bool SLPEMS()
         {
             if (ApplicationViewModel.PanelButton.EMS)
