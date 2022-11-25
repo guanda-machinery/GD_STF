@@ -3615,7 +3615,8 @@ namespace STD_105.Office
                 return;
 
             //SteelAttr CSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
-            SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+            //SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+            SteelAttr TmpSteelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
             //var a = GetverticesFromFile(CSteelAttr.PartNumber,ref TmpSteelAttr);
 
 
