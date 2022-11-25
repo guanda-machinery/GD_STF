@@ -513,7 +513,7 @@ namespace WPFSTD105.ViewModel
                             ser.SetSectionTypeProcessingData(listSectionData);//加入到H型鋼的斷面加工資料檔案
 
                             WinUIMessageBox.Show(null,
-                                                 $"新建完成",
+                                                 $"新建完成(不符限制條件的數值將不儲存)",
                                                  "通知",
                                                  MessageBoxButton.OK,
                                                  MessageBoxImage.Exclamation,
@@ -569,7 +569,7 @@ namespace WPFSTD105.ViewModel
                             ser.SetSectionTypeProcessingData(listSectionData);//加入到BOX的斷面加工資料檔案
 
                             WinUIMessageBox.Show(null,
-                                                 $"新建完成",
+                                                 $"新建完成(不符限制條件的數值將不儲存)",
                                                  "通知",
                                                  MessageBoxButton.OK,
                                                  MessageBoxImage.Exclamation,
@@ -624,7 +624,7 @@ namespace WPFSTD105.ViewModel
                             ser.SetSectionTypeProcessingData(listSectionData);//加入到CH的斷面加工資料檔案
 
                             WinUIMessageBox.Show(null,
-                                                 $"新建完成",
+                                                 $"新建完成(不符限制條件的數值將不儲存)",
                                                  "通知",
                                                  MessageBoxButton.OK,
                                                  MessageBoxImage.Exclamation,
@@ -1239,7 +1239,7 @@ namespace WPFSTD105.ViewModel
                     ser.SetSplitLineData(listSplitLineData);
 
                     WinUIMessageBox.Show(null,
-                                         $"新建完成",
+                                         $"新建完成(不符限制條件的數值將不儲存)",
                                          "通知",
                                          MessageBoxButton.OK,
                                          MessageBoxImage.Exclamation,
