@@ -438,12 +438,12 @@
                                                         <TextBox.Text>
                                                             <Binding Path="ProcessingZone_B" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                                                 <Binding.ValidationRules>
-                                                                    <STD105ValidRule:CheckNumberRule NumberMin="14"/>
+                                                                    <STD105ValidRule:CheckNumberRule NumberMin="10"/>
                                                                 </Binding.ValidationRules>
                                                             </Binding>
                                                         </TextBox.Text>
                                                     </TextBox>
-                                                    <Label Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於14mm)" Foreground="DarkRed" Margin="5,0"/>
+                                                    <Label Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於10mm)" Foreground="DarkRed" Margin="5,0"/>
 
                                                     <CheckBox IsChecked="{Binding chb_H_Cvalue}" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" />
                                                     <Label Content="C值："  Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" />
