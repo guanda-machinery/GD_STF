@@ -3674,9 +3674,6 @@ namespace STD_105.Office
                     //}
 
 
-
-
-
                     var tmp3 = TmpSteelAttr.vPoint.GroupBy(uu => uu.Y).Select(q => new
                     {
                         key = q.Key,
@@ -3684,18 +3681,56 @@ namespace STD_105.Office
                         min = q.Min(f => f.X)
                     }).ToList();
 
-                    if (tmp3[0].key > tmp3[1].key)
+
+
+
+
+
+                    double GetYmax = 0.0;
+                    int YmaxIndex=0;
+
+                    double GetYmin = 0.0;
+                    int YminIndex = 0;
+
+
+                    for (int i = 0; i < tmp3.Count; i++)
+                    {
+                        GetYmax = tmp3[i].key;
+                        if (GetYmax >= tmp3[i].key)
+                        {
+                            GetYmax = tmp3[i].key;
+                            YmaxIndex = i;
+
+
+                        }
+                    }
+  
+                    for (int i = 0; i < tmp3.Count; i++)
                     {
 
-                        var swap = tmp3[0];
-                        tmp3[0] = tmp3[1];
-                        tmp3[1] = swap;
+                        if (Math.Abs(GetYmax - tmp3[i].key)<= TmpSteelAttr.t2 && i!= YmaxIndex)
+                        {
+                            GetYmax = tmp3[i].key;
+                            YmaxIndex = i;
+                        }
+
+
                     }
 
-                    TmpDL = new Point3D(tmp3[0].key, tmp3[0].min );
-                    TmpDR = new Point3D(tmp3[1].key, tmp3[0].min );
-                    TmpUL = new Point3D(tmp3[0].key, tmp3[0].max );
-                    TmpUR = new Point3D(tmp3[1].key, tmp3[1].max );
+  
+
+                    //if (tmp3[0].key > tmp3[1].key)
+                    //{
+
+                    //    var swap = tmp3[0];
+                    //    tmp3[0] = tmp3[1];
+                    //    tmp3[1] = swap;
+                    //}
+
+                    //TmpDL = new Point3D(tmp3[0].key, tmp3[0].min );
+                    //TmpDR = new Point3D(tmp3[1].key, tmp3[0].min );
+                    //TmpUL = new Point3D(tmp3[0].key, tmp3[0].max );
+                    //TmpUR = new Point3D(tmp3[1].key, tmp3[1].max );
 
                     if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
                         return;
