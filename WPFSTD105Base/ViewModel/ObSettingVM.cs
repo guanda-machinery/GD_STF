@@ -340,6 +340,11 @@ namespace WPFSTD105.ViewModel
         /// 取得原點符號
         /// </summary>
         public OriginSymbol OriginSymbol { get => OriginSymbols[0]; }
+
+        /// <summary>
+        /// 編輯已選擇，可視性
+        /// </summary>
+        public bool EditObjectVisibility { get; set; } //= Visibility.Collapsed;
         /// <summary>
         /// 用戶設定檔案
         /// </summary>

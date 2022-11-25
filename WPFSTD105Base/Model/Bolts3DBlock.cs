@@ -465,7 +465,8 @@ namespace WPFSTD105.Model
                         if (bolt.Mode != AXIS_MODE.POINT && bolt.Mode != AXIS_MODE.HypotenusePOINT)
                         {
                             Point3D checkPoint3D = new Point3D(bolt.X, bolt.Y, bolt.Z);
-                            var testPoint = Coordinates(bolt.Face, checkPoint3D);
+                            var testPoint = checkPoint3D;
+                            //var testPoint = Coordinates(bolt.Face, checkPoint3D);
 
                             if (!((Mesh)model.Blocks[1].Entities[0]).IsPointInside(testPoint))
                             // if (!((Mesh)model.Entities[model.Entities.Count - 1]).IsPointInside(testPoint))

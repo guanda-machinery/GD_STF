@@ -72,7 +72,10 @@ namespace STD_105.Office
 
         public ObservableCollection<DataCorrespond> DataCorrespond { get; set; } = new ObservableCollection<DataCorrespond>();
 
-
+        /// <summary>
+        /// 是否為首次匯入NC&BOM的falg
+        /// </summary>
+        private bool fAfterFirstImportTeklaData { get; set; } = true;
 
         /// <summary>
         /// 20220823 蘇冠綸 製品設定
@@ -4168,7 +4171,11 @@ namespace STD_105.Office
             if (!Bolts3DBlock.CheckBolts(model))
             {
                 ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
-                ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
+                if (model.Entities.Count >= 1)
+                {
+                    ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
+                }
+                //((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
                 exclamationMark = true;
             }
             else
@@ -4739,6 +4746,15 @@ namespace STD_105.Office
                     }
                 }
             }
+
+            if (ViewModel.EditObjectVisibility)
+            {
+                edit2D.Visibility = Visibility.Visible;
+            }
+            else {
+                edit2D.Visibility = Visibility.Collapsed;
+            }
+        
         }
 
         /// <summary>
@@ -4775,6 +4791,12 @@ namespace STD_105.Office
             appVM.CreateDMFile(model);
             //appVM.CreateDMFileSync(model);
 
+            //首次匯入tekla資料後執行GridReload來更新驚嘆號顯示
+            if (fAfterFirstImportTeklaData)
+            {
+                GridReload();
+                fAfterFirstImportTeklaData = false;
+            }
         }
 
         public BlockReference SteelTriangulation(Mesh mesh)
@@ -5739,12 +5761,14 @@ namespace STD_105.Office
                         ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
                         item.steelAttr.ExclamationMark = true;
                         item.ExclamationMark = true;
+                        PieceListGridControl.RefreshRow(PieceListGridControl.View.FocusedRowHandle);
                     }
                     else
                     {
                         ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
                         item.steelAttr.ExclamationMark = false;
                         item.ExclamationMark = false;
+                        PieceListGridControl.RefreshRow(PieceListGridControl.View.FocusedRowHandle);
                     }
 
                     Dictionary<string, ObservableCollection<SteelAttr>> saFile = ser.GetSteelAttr();
@@ -6083,8 +6107,9 @@ namespace STD_105.Office
             }
             else
             {
-                ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(ObSettingVM.GetData());
-                ViewModel.DataViews = collection;
+                //ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(ObSettingVM.GetData());
+                //ViewModel.DataViews = collection;
+                ObservableCollection<ProductSettingsPageViewModel> collection = ViewModel.DataViews;
                 if (collection.Count > 0)
                 {
                     this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);

@@ -74,7 +74,7 @@ namespace WPFSTD105
                         {
                             for (int i = 0; i < item.Father.Count; i++)  //逐步展開零件  id or match
                             {
-                                int index = assemblies.FindIndex(el => el.ID.Contains(item.Father[i]) && el.Length == item.Length); //找出構件列表內是零件的 Father 位置
+                                int index = assemblies.FindIndex(el => el.ID.Contains(item.Father[i])); //找出構件列表內是零件的 Father 位置
                                 if (index == -1) //找不到物件
                                 {
                                     //throw new Exception("index 不可以是 -1");
