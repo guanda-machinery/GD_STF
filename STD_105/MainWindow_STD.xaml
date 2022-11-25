@@ -834,14 +834,14 @@
                                               ButtonCommand="{Binding LanguageCommand }"
                                               CommandParameter="{ Binding TitleText, RelativeSource={ x:Static RelativeSource.Self } }"
                                               ButtonImageSource="{StaticResource Thailand}"
-                                              TitleText="Tiếng Việt"
+                                              TitleText="ไทย"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <local:MainFunctionButton Grid.Row="1"
                                               Grid.Column="1"
                                               ButtonCommand="{Binding LanguageCommand }"
                                               CommandParameter="{ Binding TitleText, RelativeSource={ x:Static RelativeSource.Self } }"
                                               ButtonImageSource="{StaticResource Vietnam}"
-                                              TitleText="ไทย"
+                                              TitleText="Tiếng Việt"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <!--關閉區域-->
                     <Button Grid.Column="1"

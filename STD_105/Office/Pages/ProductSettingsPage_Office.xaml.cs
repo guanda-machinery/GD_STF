@@ -4244,7 +4244,7 @@ namespace STD_105.Office
                 Phase = new List<int>(new int[sa.Number]),
 
                 //Number = ViewModel.SteelAttr.AsseNumber,
-                ///Length = ViewModel.SteelAttr.Length,
+                //Length = ViewModel.SteelAttr.Length,
                 //ShippingDescription = new List<string>(new string[ViewModel.SteelAttr.Number]),
                 //ShippingNumber = new List<int>(new int[ViewModel.SteelAttr.Number]),
                 //Phase = new List<int>(new int[ViewModel.SteelAttr.Number]),
