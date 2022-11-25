@@ -5265,6 +5265,55 @@ namespace STD_105.Office
             ViewModel.CurrentPartSteelAttr.PointBack.UL = CuurentSelectedPart.steelAttr.PointBack.UL;
             ViewModel.CurrentPartSteelAttr.PointBack.UR = CuurentSelectedPart.steelAttr.PointBack.UR;
 
+            // 讀取切割線設定檔，並顯示TOP上的值
+            STDSerialization ser = new STDSerialization(); //序列化處理器
+            ObservableCollection<SteelCutSetting> steelcutSettings = new ObservableCollection<SteelCutSetting>();
+            steelcutSettings = ser.GetCutSettingList();
+            steelcutSettings = steelcutSettings ?? new ObservableCollection<SteelCutSetting>();
+            if (steelcutSettings.Any(x => x.GUID == ViewModel.GuidProperty))
+            {
+                SteelCutSetting cs = steelcutSettings.FirstOrDefault(x => x.GUID == ViewModel.GuidProperty);
+
+                ViewModel.rbtn_CutFace = (int)cs.face;
+                ViewModel.DLPoint.X = cs.DLX;
+                ViewModel.DLPoint.Y = cs.DLY;
+                ViewModel.ULPoint.X = cs.ULX;
+                ViewModel.ULPoint.Y = cs.ULY;
+                ViewModel.DRPoint.X = cs.DRX;
+                ViewModel.DRPoint.Y = cs.DRY;
+                ViewModel.URPoint.X = cs.URX;
+                ViewModel.URPoint.Y = cs.URY;
+            }
+            else
+            {
+                SteelCutSetting cs = new SteelCutSetting()
+                {
+                    GUID = ViewModel.GuidProperty,
+                    face = (FACE)ViewModel.rbtn_CutFace,
+                    DLX = 0,
+                    DLY = 0,
+                    ULX = 0,
+                    ULY = 0,
+                    DRX = 0,
+                    DRY = 0,
+                    URX = 0,
+                    URY = 0,
+                };
+                steelcutSettings.Add(cs);
+                ser.SetCutSettingList(steelcutSettings);
+
+                ViewModel.DLPoint.X = 0;
+                ViewModel.DLPoint.Y = 0;
+                ViewModel.ULPoint.X = 0;
+                ViewModel.ULPoint.Y = 0;
+                ViewModel.DRPoint.X = 0;
+                ViewModel.DRPoint.Y = 0;
+                ViewModel.URPoint.X = 0;
+                ViewModel.URPoint.Y = 0;
+            }
+
+            //ViewModel.rbtn_CutFace = (int)FACE.TOP;
+
             //ViewModel.SteelAttr.GUID =CuurentSelectedPart.steelAttr.GUID;//1110 暫時註解掉，避免 e.OldItem, e.NewItem 間同時指向VM層連動導致(因為有binding到)e.OldItem資料被變更 CYH
 
 
