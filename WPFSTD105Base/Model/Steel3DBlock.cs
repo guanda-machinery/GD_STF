@@ -632,8 +632,9 @@ namespace WPFSTD105.Model
         public static void FillCutSetting(SteelAttr steelAttr)
         {
             STDSerialization ser = new STDSerialization();
-            List<SteelCutSetting> csList = ser.GetCutSettingList().ToList().Where(x => x.GUID == steelAttr.GUID.Value).ToList();
-            foreach (SteelCutSetting item in csList)
+            ObservableCollection<SteelCutSetting> csList = ser.GetCutSettingList();
+            List<SteelCutSetting> list = csList.ToList().Where(x => x.GUID == steelAttr.GUID.Value).ToList();
+            foreach (SteelCutSetting item in list)
             {
                 switch (item.face)
                 {
