@@ -2643,8 +2643,6 @@ namespace WPFSTD105.ViewModel
                         _WriteCodesysTask = Task.Factory.StartNew(WriteCodesys, _Token);
                     }
 
-                   
-
                     //如有備份檔就寫回給 Codesys
                     for (int i = synIndex; i < Finish_UndoneDataViews.Count; i++)
                     {
