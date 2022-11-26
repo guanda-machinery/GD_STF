@@ -1,6 +1,7 @@
 ﻿using GD_STD.Base;
 using GD_STD.IBase;
 using System;
+using System.ComponentModel;
 using WPFSTD105.Surrogate;
 
 namespace WPFSTD105.Model
@@ -9,7 +10,7 @@ namespace WPFSTD105.Model
     /// 切割點
     /// </summary>
     [Serializable]
-    public class CutPoint : IAxis2D
+    public class CutPoint : IAxis2D ,INotifyPropertyChanged
     {
         /// <summary>
         ///  預設
@@ -33,6 +34,9 @@ namespace WPFSTD105.Model
 #pragma warning restore CS1591 // 遺漏公用可見類型或成員 'CutPoint.X' 的 XML 註解
 #pragma warning disable CS1591 // 遺漏公用可見類型或成員 'CutPoint.Y' 的 XML 註解
         public double Y { get; set; }
+
+        [field: NonSerialized()]
+        public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
 #pragma warning restore CS1591 // 遺漏公用可見類型或成員 'CutPoint.Y' 的 XML 註解
         /// <summary>
         /// <see cref="CutPoint"/> 轉換 <see cref="CutPointSurrogate"/>

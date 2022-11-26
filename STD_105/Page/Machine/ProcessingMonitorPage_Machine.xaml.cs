@@ -38,6 +38,7 @@ using System.Collections.ObjectModel;
 using DevExpress.Mvvm;
 using static DevExpress.XtraEditors.Mask.MaskSettings;
 using DevExpress.Dialogs.Core.View;
+using DevExpress.Charts.Model;
 
 namespace STD_105
 {
@@ -46,8 +47,9 @@ namespace STD_105
     /// </summary>
     public partial class ProcessingMonitorPage_Machine : BasePage<ProcessingMonitor_MachineVM>
     {
-     //   public SplashScreenManager ScreenManager { get; set; } = SplashScreenManager.Create(() => new WaitIndicator(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
-
+        //   public SplashScreenManager ScreenManager { get; set; } = SplashScreenManager.Create(() => new WaitIndicator(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
+        private DevExpress.Xpf.Core.SplashScreenManager ProcessingScreenWin = DevExpress.Xpf.Core.SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
+      
         public ObSettingVM ViewModel { get; set; } = new ObSettingVM();
         /// <summary>
         /// nc 設定檔
@@ -55,7 +57,7 @@ namespace STD_105
         //public NcTemp NcTemp { get; set; }
         //public string DataPath { get; set; }
         //public List<List<object>> DataList { get; set; }
-
+    
         public ProcessingMonitorPage_Machine()
         {
             InitializeComponent();
@@ -69,7 +71,6 @@ namespace STD_105
             model.Secondary = drawing;
             drawing.Secondary = model;
 
-            (this.DataContext as ProcessingMonitor_MachineVM).Combinational_List_GridControl = MachiningCombinational_List_GridControl;
 
         }
         private void BasePage_Unloaded(object sender, RoutedEventArgs e)
@@ -91,29 +92,43 @@ namespace STD_105
 
         private void Model3D_Loaded(object sender, RoutedEventArgs e)
         {
-            #region Model 初始化
-            //model.InitialView = viewType.Top;
-            /*旋轉軸中心設定當前的鼠標光標位置。 如果模型全部位於相機視錐內部，
-             * 它圍繞其邊界框中心旋轉。 否則它繞著下點旋轉鼠標。 如果在鼠標下方沒有深度，則旋轉發生在
-             * 視口中心位於當前可見場景的平均深度處。*/
-            //model.Rotate.RotationCenter = rotationCenterType.CursorLocation;
-            //旋轉視圖 滑鼠中鍵 + Ctrl
-            model.Rotate.MouseButton = new MouseButton(mouseButtonsZPR.Middle, modifierKeys.Ctrl);
-            //平移滑鼠中鍵
-            model.Pan.MouseButton = new MouseButton(mouseButtonsZPR.Middle, modifierKeys.None);
-            model.ActionMode = actionType.SelectByBox;
-            if (ViewModel.Reductions == null)
+          
+            ProcessingScreenWin.Show();
+            ProcessingScreenWin.ViewModel.Status = "正在讀取3D模型...";
+            try
             {
-                ViewModel.Reductions = new ReductionList(model, drawing); //紀錄使用找操作
+                #region Model 初始化
+                //model.InitialView = viewType.Top;
+                /*旋轉軸中心設定當前的鼠標光標位置。 如果模型全部位於相機視錐內部，
+                 * 它圍繞其邊界框中心旋轉。 否則它繞著下點旋轉鼠標。 如果在鼠標下方沒有深度，則旋轉發生在
+                 * 視口中心位於當前可見場景的平均深度處。*/
+                //model.Rotate.RotationCenter = rotationCenterType.CursorLocation;
+                //旋轉視圖 滑鼠中鍵 + Ctrl
+                model.Rotate.MouseButton = new MouseButton(mouseButtonsZPR.Middle, modifierKeys.Ctrl);
+                //平移滑鼠中鍵
+                model.Pan.MouseButton = new MouseButton(mouseButtonsZPR.Middle, modifierKeys.None);
+                model.ActionMode = actionType.SelectByBox;
+                if (ViewModel.Reductions == null)
+                {
+                    ViewModel.Reductions = new ReductionList(model, drawing); //紀錄使用找操作
+                }
+
+                #endregion
+                //初始化相關物件 以後要重構
+
+            }
+            catch (Exception ex)
+            {
+
             }
 
-            #endregion
+            ProcessingScreenWin.ViewModel.Status = "正在產生dm...";
 
-            //非同步初始化相關物件 以後要重構
-            (this.DataContext as ProcessingMonitor_MachineVM).SetModel(model);
-
+            (this.DataContext as ProcessingMonitor_MachineVM).SetSerializationInit(model)/*, model);*/;
+            //載入dm
+            //(this.DataContext as ProcessingMonitor_MachineVM).CreateFile();
+            ProcessingScreenWin.Close();
             model.Loaded -= Model3D_Loaded;
-
         }
 
 

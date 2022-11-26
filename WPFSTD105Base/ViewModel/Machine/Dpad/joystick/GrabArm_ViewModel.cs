@@ -192,25 +192,6 @@ namespace WPFSTD105.ViewModel
 
 
 
-        /// <summary>
-        /// 下方按鈕1
-        /// </summary>
-        public WPFWindowsBase.RelayCommand PostRiseCommand
-        {
-            get
-            {
-                return new WPFWindowsBase.RelayCommand(() =>
-                {
-                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
-                        return;
-
-                    GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    //相反訊號
-                    PButton.PostRise = !PButton.PostRise;
-                    CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                });
-            }
-        }
 
 
     }

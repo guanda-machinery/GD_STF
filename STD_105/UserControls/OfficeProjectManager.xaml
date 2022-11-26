@@ -235,14 +235,14 @@
                     <TextBlock Grid.Column="1" Grid.Row="14"  Text="修改日期：" />
                     <TextBox Grid.Column="1" Grid.Row="15" Text="{Binding OfficeViewModel.ProjectProperty.Revise, Source={x:Static WPFSTD:ViewLocator.Instance}, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}" IsEnabled="False"
                                  IsReadOnly="True" />
+                <Label Grid.Row="16" Content="③" Visibility="{Binding ElementName=CreateDescriptionExpander,Path=IsExpanded,Converter={dx:BooleanToVisibilityConverter}}" />
                 <StackPanel Grid.Column="1" Grid.Row="16"  
                                 Orientation="Horizontal"
-                                HorizontalAlignment="Right">
-                    <Label Content="③" Visibility="{Binding ElementName=CreateDescriptionExpander,Path=IsExpanded,Converter={dx:BooleanToVisibilityConverter}}" />
-                        <Button x:Name="YesButton1"     Margin="5,10"
+                                HorizontalAlignment="Left">
+                        <Button x:Name="YesButton1"     Margin="0,10"
                                 Content="載入"
                                 Command="{ Binding OpenProjectCommand }"
-                                CommandParameter="{Binding SelectedItem  ,ElementName=InputTextBox1}" >
+                                CommandParameter="{Binding SelectedItem  ,ElementName=InputTextBox1}" Cursor="Hand" >
                             <Button.IsEnabled>
                                 <MultiBinding Converter="{ local:MultiObjectArrayToBooleanConverter}">
                                     <Binding ElementName="tbx_ProjectSearchPath" Path="Text" />
@@ -250,7 +250,7 @@
                                 </MultiBinding>
                             </Button.IsEnabled>
                         </Button>
-                        <Button x:Name="NoButton1"   Margin="5,10"
+                        <Button x:Name="NoButton1"   Margin="10,10"
                                 Content="{ DynamicResource LANGUAGE_Cancel }"
                                 Command="{ Binding CloseProjectManagerCommand }" >
                             <Button.IsEnabled>
