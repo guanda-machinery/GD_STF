@@ -49,6 +49,8 @@ namespace WPFSTD105.Model
                     throw new Exception($"mesh EntityData type is not {typeof(SteelAttr)}");
 
                 this.Units = linearUnitsType.Millimeters;
+
+                FillCutSetting((SteelAttr)mesh.EntityData);
             }
             catch (Exception e)
             {
@@ -134,6 +136,7 @@ namespace WPFSTD105.Model
 #if DEBUG
             log4net.LogManager.GetLogger("GetProfile").Debug("");
 #endif
+            FillCutSetting(steelAttr);
             List<ICurve> curves = new List<ICurve>() { BaseProfile(steelAttr.H, steelAttr.W, 0, 0) };
             try
             {
@@ -552,7 +555,7 @@ namespace WPFSTD105.Model
                     }
                 }
             }
-
+            FillCutSetting(steelAttr);
             result = new Steel3DBlock(GetProfile(steelAttr));
             model.Blocks.Add(result);//加入鋼構圖塊到模型
             blockReference = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);

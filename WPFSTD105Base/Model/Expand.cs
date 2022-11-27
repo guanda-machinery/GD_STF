@@ -632,16 +632,13 @@ namespace WPFSTD105.Model
             model.Clear();//清除模型內物件
             string blockName = string.Empty;
 
-
-
-            
             double midX = (nc.SteelAttr.Length+diffLength) / 2;
-            // vpoint個代表原點經四點再回原點，Group X及Y只會有兩個數字，一般正常型鋼，可切斜邊，所以要讀斜邊設定檔 將斜邊寫回
-            if ((nc.SteelAttr.vPoint.Count == 5 && nc.SteelAttr.vPoint.GroupBy(x => x.X).Count() == 2 && nc.SteelAttr.vPoint.GroupBy(x => x.Y).Count() == 2)
-
-                )
+            // vpoint個代表原點經四點再回原點，Group X及Y只會有兩個數字，一般正常矩形型鋼，可切斜邊，所以要讀斜邊設定檔 將斜邊寫回
+            if ((nc.SteelAttr.vPoint.Count == 5 && 
+                nc.SteelAttr.vPoint.GroupBy(x => x.X).Count() == 2 && 
+                nc.SteelAttr.vPoint.GroupBy(x => x.Y).Count() == 2))
             {
-                Steel3DBlock.FillCutSetting(nc.SteelAttr);
+                //Steel3DBlock.FillCutSetting(nc.SteelAttr);
                 Steel3DBlock.AddSteel(nc.SteelAttr, model, out BlockReference steelBlock); //加入 3d 鋼構參考圖塊
                 blockName = steelBlock.BlockName;
             }
@@ -723,7 +720,7 @@ namespace WPFSTD105.Model
 
                 vMesh.MergeWith(oMesh);                
                 vMesh.MergeWith(uMesh);
-                //vMesh = uMesh;
+
                 vMesh.EntityData = nc.SteelAttr;
                 vMesh.Regen(1E3);
                 
@@ -883,11 +880,18 @@ namespace WPFSTD105.Model
             obvm.SteelAttr = (SteelAttr)TmpSteelAttr.DeepClone();
 
             // 移除斜邊打點
-            List<GroupBoltsAttr> delList = model.Blocks.SelectMany(x => x.Entities).Where(y => y.GetType() == typeof(BlockReference) && y.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)y.EntityData).Mode == AXIS_MODE.HypotenusePOINT).Select(y => (GroupBoltsAttr)y.EntityData).ToList();
-            foreach (GroupBoltsAttr del in delList)
-            {
-                model.Blocks.Remove(model.Blocks[del.GUID.Value.ToString()]);
-            }
+            obvm.RemoveHypotenusePoint(model);
+            //List<GroupBoltsAttr> delList = model.Blocks
+            //    .SelectMany(x => x.Entities)
+            //    .Where(y =>
+            //    y.GetType() == typeof(BlockReference) && 
+            //    y.EntityData.GetType() == typeof(GroupBoltsAttr) && 
+            //    ((GroupBoltsAttr)y.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
+            //    .Select(y => (GroupBoltsAttr)y.EntityData).ToList();
+            //foreach (GroupBoltsAttr del in delList)
+            //{
+            //    model.Blocks.Remove(model.Blocks[del.GUID.Value.ToString()]);
+            //}
             if (TmpSteelAttr.vPoint.Count != 0)     //  頂面斜邊
             {
                 AutoHypotenusePoint(FACE.TOP, model, obvm,diffLength);
