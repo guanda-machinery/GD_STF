@@ -1122,6 +1122,7 @@ namespace WPFSTD105.ViewModel
                 steelcutSettings = steelcutSettings ?? new ObservableCollection<SteelCutSetting>();
                 if (steelcutSettings.Any(x => x.GUID == this.GuidProperty && x.face == (FACE)temp_CutFace))
                 {
+                    // 有該零件 該面之斜邊資訊 更新資料
                     SteelCutSetting cs = steelcutSettings.FirstOrDefault(x => x.GUID == this.GuidProperty && x.face == (FACE)temp_CutFace);
                     cs.face = (FACE)temp_CutFace;
                     cs.DLX = this.DLPoint.X;
@@ -1136,6 +1137,7 @@ namespace WPFSTD105.ViewModel
                 }
                 else 
                 {
+                    // 沒有該零件 該面之斜邊資訊 新增資料
                     SteelCutSetting cs = new SteelCutSetting()
                     {
                         GUID = this.GuidProperty,
@@ -2105,6 +2107,125 @@ namespace WPFSTD105.ViewModel
                 }
             }
             return count + 1;
+        }
+        /// <summary>
+        /// 從model移除斜邊打點
+        /// </summary>
+        /// <param name="model"></param>
+        public void RemoveHypotenusePoint(devDept.Eyeshot.Model model)
+        {
+            List<GroupBoltsAttr> delList = model.Blocks
+                    .SelectMany(x => x.Entities)
+                    .Where(y =>
+                    y.GetType() == typeof(BlockReference) &&
+                    y.EntityData.GetType() == typeof(GroupBoltsAttr) &&
+                    ((GroupBoltsAttr)y.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
+                    .Select(y => (GroupBoltsAttr)y.EntityData).ToList();
+            foreach (GroupBoltsAttr del in delList)
+            {
+                model.Blocks.Remove(model.Blocks[del.GUID.Value.ToString()]);
+            }
+        }
+
+        /// <summary>
+        /// 取得斜邊打點清單
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="modelAllBoltList"></param>
+        public void GetHypotenusePoint(devDept.Eyeshot.Model model, List<GroupBoltsAttr> modelAllBoltList) 
+        {
+            var hb = model.Blocks.SelectMany(x => x.Entities.Select(y => y.EntityData));
+            foreach (GroupBoltsAttr item in hb.Where(x => x.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x).Mode == AXIS_MODE.HypotenusePOINT))
+            {
+                modelAllBoltList.Add((GroupBoltsAttr)item);
+            }
+        }
+
+        /// <summary>
+        /// 加入3D/2D孔
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="drawing"></param>
+        /// <param name="modelAllBoltList"></param>
+        /// <param name="hasOutSteel"></param>
+        public void AddBolts(devDept.Eyeshot.Model model, devDept.Eyeshot.Model drawing, List<GroupBoltsAttr> modelAllBoltList,ref bool hasOutSteel) 
+        {
+            hasOutSteel = false;
+            foreach (GroupBoltsAttr bolt in modelAllBoltList)
+            {
+                Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts(bolt, model, out BlockReference blockRef, out bool checkRef);
+                if (bolts3DBlock.hasOutSteel)
+                {
+                    hasOutSteel = true;
+                }
+                this.Add2DHole(drawing,bolts3DBlock);//加入孔位到2D
+            }
+        }
+
+        /// <summary>
+        /// 加入2d 孔位
+        /// </summary>
+        /// <param name="drawing">2D畫布</param>
+        /// <param name="bolts">3D螺栓</param>
+        /// <param name="refresh">是否更新2D畫布</param>
+        /// <returns></returns>
+        public BlockReference Add2DHole(devDept.Eyeshot.Model drawing,Bolts3DBlock bolts, bool refresh = true)
+        {
+            try
+            {
+                /*2D螺栓*/
+                BlockReference referenceMain = (BlockReference)drawing.Entities[drawing.Entities.Count - 1]; //主件圖形
+                                                                                                             //BlockReference referenceMain = (BlockReference)drawing.Entities.Where(x=>x is BlockReference).LastOrDefault(); //主件圖形
+                Steel2DBlock steel2DBlock = (Steel2DBlock)drawing.Blocks[referenceMain.BlockName]; //取得鋼構圖塊
+#if DEBUG
+                log4net.LogManager.GetLogger($"產生 {bolts.Name} 2D螺栓圖塊").Debug($"開始");
+
+#endif
+                string blockName = string.Empty; //圖塊名稱
+#if DEBUG
+                //log4net.LogManager.GetLogger($"產生2D螺栓圖塊").Debug($"開始");
+#endif
+
+                Bolts2DBlock bolts2DBlock = new Bolts2DBlock(bolts, steel2DBlock); //產生螺栓圖塊
+#if DEBUG
+                log4net.LogManager.GetLogger($"產生2D螺栓圖塊").Debug($"結束");
+                log4net.LogManager.GetLogger($"2D畫布加入螺栓圖塊").Debug($"");
+#endif
+                bolts2DBlock.Entities.Regen();
+                //if (drawing.Blocks.Any(x => x.Name == bolts2DBlock.Name))
+                //{
+                //    var a = drawing.Blocks.FirstOrDefault(x => x.Name == bolts2DBlock.Name);
+                //    a = bolts2DBlock;
+                //}
+                //else {
+                drawing.Blocks.Add(bolts2DBlock); //加入螺栓圖塊
+                //}
+                foreach (var block in drawing.Blocks)
+                {
+                    block.Entities.Regen();
+                }
+                blockName = bolts2DBlock.Name;
+                BlockReference result = new BlockReference(0, 0, 0, bolts2DBlock.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+                                                                                                   // 將孔位加入到TOP FRONT BACK圖塊中
+                drawing.Entities.Insert(0, result);
+
+#if DEBUG
+                log4net.LogManager.GetLogger($"2D畫布加入TOP FRONT BACK圖塊").Debug($"");
+                log4net.LogManager.GetLogger($"產生 {bolts.Name} 2D螺栓圖塊").Debug($"結束");
+#endif
+
+                if (refresh)
+                {
+                    drawing.Entities.Regen();
+                    drawing.Refresh();//刷新模型
+                }
+
+                return result;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }
