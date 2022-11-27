@@ -1449,21 +1449,95 @@ namespace WPFSTD105.Model
                         min = q.Min(f => f.X)
                     }).ToList();
 
-                    if (tmp3[0].key > tmp3[1].key)
-                    {
 
-                        var swap = tmp3[0];
-                        tmp3[0] = tmp3[1];
-                        tmp3[1] = swap;
+                    double GetY_UpPos = -99999.0;
+                    int YUpPosIndex = 0;
+
+                    double GetY_DownPos = 99999.0;
+                    int YDownPosIndex = 0;
+
+
+                    double TmpPos = 0;
+                    int tmpindex = 0;
+                    // 取上Y
+                    for (int i = 0; i < tmp3.Count; i++)
+                    {
+                        if (tmp3[i].key >= GetY_UpPos)
+                        {
+                            GetY_UpPos = tmp3[i].key;
+                            YUpPosIndex = i;
+                        }
                     }
 
-                    TmpDL = new Point3D(tmp3[0].min, tmp3[0].key);
-                    TmpDR = new Point3D(tmp3[0].max, tmp3[0].key);
-                    TmpUL = new Point3D(tmp3[1].min, tmp3[1].key);
-                    TmpUR = new Point3D(tmp3[1].max, tmp3[1].key);
+                    tmpindex = YUpPosIndex;
+                    TmpPos = tmp3[YUpPosIndex].key;
+
+                    for (int i = 0; i < tmp3.Count; i++)
+                    {
+                        if (Math.Abs(TmpPos - tmp3[i].key) <= TmpSteelAttr.t2 && i != tmpindex)
+                        {
+                            GetY_UpPos = tmp3[i].key;
+                            YUpPosIndex = i;
+                        }
+                    }
+
+
+
+                    // 取下Y
+                    for (int i = 0; i < tmp3.Count; i++)
+                    {
+                        if (tmp3[i].key <= GetY_DownPos)
+                        {
+                            GetY_DownPos = tmp3[i].key;
+                            YDownPosIndex = i;
+                        }
+                    }
+
+                    tmpindex = YDownPosIndex;
+                    TmpPos = tmp3[YDownPosIndex].key;
+
+                    for (int i = 0; i < tmp3.Count; i++)
+                    {
+
+                        if (Math.Abs(TmpPos + tmp3[i].key) <= TmpSteelAttr.t2 && i != tmpindex)
+                        {
+                            GetY_DownPos = tmp3[i].key;
+                            YDownPosIndex = i;
+                        }
+
+                    }
+
+                    TmpDL = new Point3D(tmp3[YDownPosIndex].min, tmp3[YDownPosIndex].key);
+                    TmpDR = new Point3D(tmp3[YDownPosIndex].max, tmp3[YDownPosIndex].key);
+                    TmpUL = new Point3D(tmp3[YUpPosIndex].min, tmp3[YUpPosIndex].key);
+                    TmpUR = new Point3D(tmp3[YUpPosIndex].max, tmp3[YUpPosIndex].key);
+
+
+
+
+
+                    //if (tmp3[0].key > tmp3[1].key)
+                    //{
+
+                    //    var swap = tmp3[0];
+                    //    tmp3[0] = tmp3[1];
+                    //    tmp3[1] = swap;
+                    //}
+
+                    //TmpDL = new Point3D(tmp3[0].min, tmp3[0].key);
+                    //TmpDR = new Point3D(tmp3[0].max, tmp3[0].key);
+                    //TmpUL = new Point3D(tmp3[1].min, tmp3[1].key);
+                    //TmpUR = new Point3D(tmp3[1].max, tmp3[1].key);
+
+
+
+
+
+
 
                     if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
                         return;
+
 
 
                     
