@@ -375,7 +375,7 @@ namespace WPFSTD105
             book.BeginUpdate();
             book.SaveDocument(path, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
         }
-
+        
         /// <summary>
         /// 檔案總覽
         /// </summary>
@@ -1217,15 +1217,34 @@ namespace WPFSTD105
                     _BufferModel.Clear();
                     readFile.DoWork();
                     readFile.AddToScene(_BufferModel);
-                    //int index = 0;
-                    //_BufferModel.Blocks.ForEach(b =>
-                    //{
-                    //    
-                    //    Block block = (Block)b;
-                    //    sheet.Cells[row, column++].Value = $"Block[{index}]";
-                    //    sheet.Cells[row, column++].Value = block.GetType().Name;
-                    //    
-                    //});
+                    int index_Block = 0, index_Entities = 0, index_EntityData = 0;
+                    _BufferModel.Blocks.ForEach(b =>
+                    {
+                        Block block = (Block)b;
+                        sheet.Cells[row, column++].Value = $"Block[{index_Block++}]";
+                        sheet.Cells[row++, column++].Value = block.GetType().Name;
+                        index_Entities = 0;
+                        block.Entities.ForEach(e =>
+                        {
+                            sheet.Cells[row, column++].Value = $"Block[{index_Block}].Entities[{index_Entities++}]";
+                            sheet.Cells[row++, column++].Value = e.GetType().Name;
+                            sheet.Cells[row, column++].Value = $"Block[{index_Block}].Entities[{index_Entities++}].EntityData";
+                            sheet.Cells[row++, column++].Value = (e.EntityData).GetType().Name;
+                        });
+
+                    });
+                    index_Entities = 0;
+                    _BufferModel.Entities.ForEach(e =>
+                    {
+                        sheet.Cells[row, column++].Value = $"Entities[{index_Entities++}]";
+                        sheet.Cells[row++, column++].Value = e.GetType().Name;
+                        index_EntityData = 0;
+                        column = 0;
+                        sheet.Cells[row, column++].Value = $"Entities[{index_Entities++}].EntityData";
+                        sheet.Cells[row++, column++].Value = (e.EntityData).GetType().Name;
+                    });
+                    row++;
+                    column = 0;
                 }
                 #endregion
 

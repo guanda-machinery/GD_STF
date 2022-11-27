@@ -77,6 +77,7 @@ namespace STD_105.Office
         /// </summary>
         private bool fAfterFirstImportTeklaData { get; set; } = true;
 
+        private devDept.Eyeshot.Model _BufferModel { get; set; }
         /// <summary>
         /// 20220823 蘇冠綸 製品設定
         /// </summary>                                                                                                                                          
@@ -1332,6 +1333,12 @@ namespace STD_105.Office
                 List<string> wrongGUIDList = new List<string>();
                 Thread.Sleep(1000);
                 int i = 1;
+
+                        _BufferModel = new devDept.Eyeshot.Model();
+                        _BufferModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
+                        _BufferModel.InitializeViewports();
+                        _BufferModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
+
                 foreach (var dataName in dmList)
                 {
                     try
@@ -1339,13 +1346,25 @@ namespace STD_105.Office
                         ProcessingScreenWin.ViewModel.Status = $"讀取{dataName}中 ..{i}/{dmList.Count()}";
                         ProcessingScreenWin.ViewModel.Progress = (i * 100) / dmList.Count;
                         //Thread.Sleep(500); //暫停兩秒為了要顯示 ScreenManager
-                        guid = dataName;
-                        ModelExt modelExt = new ModelExt();
-                        modelExt = GetFinalModel(dataName);
+                        //guid = dataName;
+                        //ModelExt modelExt = new ModelExt();
+                        //modelExt = GetFinalModel(dataName);
+                        //Entity[] entities = new Entity[model.Entities.Count];
+                        //Block[] blocks = new Block[model.Blocks.Count];
+                        //model.Entities.CopyTo(entities, 0);
+                        //model.Blocks.CopyTo(blocks, 0);
+
+                        ReadFile readFile = new ReadFile($@"{ApplicationVM.DirectoryDevPart()}\{dataName}.dm", devDept.Serialization.contentType.GeometryAndTessellation);
+                        readFile.DoWork();
+                        readFile.AddToScene(model);
+                        model.Invalidate();
+
                         Entity[] entities = new Entity[model.Entities.Count];
                         Block[] blocks = new Block[model.Blocks.Count];
                         model.Entities.CopyTo(entities, 0);
                         model.Blocks.CopyTo(blocks, 0);
+
+
                         modelBlockList.Add(blocks);
                         modelEntityList.Add(entities);
                         //modelBlockList.Add(model.Blocks);

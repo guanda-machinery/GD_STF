@@ -318,6 +318,7 @@ namespace WPFSTD105.Model
             //EntityList result =  entities.Where(el => !((BlockReference)el).Attributes.ContainsKey("Cut")).ToList();
             model.Entities.AddRange(entities);
             model.Entities.AddRange(resultSolid);
+            //ser.TransHypotenusePOINTtoPoint(model);
             ser.SetMaterialModel(materialNumber, model); //儲存素材
         }
 
