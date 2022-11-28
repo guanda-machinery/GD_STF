@@ -1445,14 +1445,14 @@ namespace WPFSTD105.Model
                 #region TOP
                 case FACE.TOP:
 
-                    if (TmpSteelAttr.vPoint.Count == 0) return;
+                    var Vertices = model.Blocks[1].Entities[0].Vertices.Where(z => z.Z == 0).ToList();
 
-                    var tmp3 = TmpSteelAttr.vPoint.GroupBy(uu => uu.Y).Select(q => new
+                    var tmp3 = Vertices.GroupBy(uu => uu.Y).Select(q => new
                     {
                         key = q.Key,
                         max = q.Max(x => x.X),
                         min = q.Min(f => f.X)
-                    }).ToList();
+                    }).OrderByDescending(aa => aa.key).ToList();
 
 
                     double GetY_UpPos = -99999.0;
@@ -1464,58 +1464,83 @@ namespace WPFSTD105.Model
 
                     double TmpPos = 0;
                     int tmpindex = 0;
-                    // 取上Y
-                    for (int i = 0; i < tmp3.Count; i++)
-                    {
-                        if (tmp3[i].key >= GetY_UpPos)
-                        {
-                            GetY_UpPos = tmp3[i].key;
-                            YUpPosIndex = i;
-                        }
-                    }
 
-                    tmpindex = YUpPosIndex;
-                    TmpPos = tmp3[YUpPosIndex].key;
 
-                    for (int i = 0; i < tmp3.Count; i++)
-                    {
-                        if (Math.Abs(TmpPos - tmp3[i].key) <= TmpSteelAttr.t2 && i != tmpindex)
-                        {
-                            GetY_UpPos = tmp3[i].key;
-                            YUpPosIndex = i;
-                        }
-                    }
+                    var YUP2List = tmp3.Where(aa => (aa.key == tmp3[0].key || aa.key == tmp3[0].key - TmpSteelAttr.t2)).OrderByDescending(a => a.key).ToList();
+                    if (YUP2List[0].max >= YUP2List[1].max)
+                        TmpUR = new Point3D(YUP2List[0].max, YUP2List[0].key);
+                    else
+                        TmpUR = new Point3D(YUP2List[1].max, YUP2List[1].key);
+
+
+                    if (YUP2List[0].min <= YUP2List[1].min)
+                        TmpUL = new Point3D(YUP2List[0].min, YUP2List[0].key);
+                    else
+                        TmpUL = new Point3D(YUP2List[1].min, YUP2List[1].key);
 
 
 
-                    // 取下Y
-                    for (int i = 0; i < tmp3.Count; i++)
-                    {
-                        if (tmp3[i].key <= GetY_DownPos)
-                        {
-                            GetY_DownPos = tmp3[i].key;
-                            YDownPosIndex = i;
-                        }
-                    }
 
-                    tmpindex = YDownPosIndex;
-                    TmpPos = tmp3[YDownPosIndex].key;
 
-                    for (int i = 0; i < tmp3.Count; i++)
-                    {
+                    var YDOWN2List = tmp3.Where(aa => (aa.key == tmp3[tmp3.Count - 1].key || aa.key == tmp3[tmp3.Count - 1].key + TmpSteelAttr.t2)).OrderBy(a => a.key).Take(2).ToList();
+                    if (YDOWN2List[0].max >= YDOWN2List[1].max)
+                        TmpDR = new Point3D(YDOWN2List[0].max, YDOWN2List[0].key);
+                    else
+                        TmpDR = new Point3D(YDOWN2List[1].max, YDOWN2List[1].key);
 
-                        if (Math.Abs(TmpPos + tmp3[i].key) <= TmpSteelAttr.t2 && i != tmpindex)
-                        {
-                            GetY_DownPos = tmp3[i].key;
-                            YDownPosIndex = i;
-                        }
 
-                    }
+                    if (YDOWN2List[0].min <= YDOWN2List[1].min)
+                        TmpDL = new Point3D(YDOWN2List[0].min, YDOWN2List[0].key);
+                    else
+                        TmpDL = new Point3D(YDOWN2List[1].min, YDOWN2List[1].key);
+                    //// 取上Y
+                    //for (int i = 0; i < tmp3.Count; i++)
+                    //{
+                    //    if (tmp3[i].key >= GetY_UpPos)
+                    //    {
+                    //        GetY_UpPos = tmp3[i].key;
+                    //        YUpPosIndex = i;
+                    //    }
+                    //}
 
-                    TmpDL = new Point3D(tmp3[YDownPosIndex].min, tmp3[YDownPosIndex].key);
-                    TmpDR = new Point3D(tmp3[YDownPosIndex].max, tmp3[YDownPosIndex].key);
-                    TmpUL = new Point3D(tmp3[YUpPosIndex].min, tmp3[YUpPosIndex].key);
-                    TmpUR = new Point3D(tmp3[YUpPosIndex].max, tmp3[YUpPosIndex].key);
+                    //tmpindex = YUpPosIndex;
+                    //TmpPos = tmp3[YUpPosIndex].key;
+
+                    //for (int i = 0; i < tmp3.Count; i++)
+                    //{
+                    //    if (Math.Abs(TmpPos - tmp3[i].key) == TmpSteelAttr.t2 && i != tmpindex && (tmp3[i].min < tmp3[tmpindex].min))
+                    //    {
+                    //        GetY_UpPos = tmp3[i].key;
+                    //        YUpPosIndex = i;
+                    //    }
+                    //}
+
+                    //// 取下Y
+                    //for (int i = 0; i < tmp3.Count; i++)
+                    //{
+                    //    if (tmp3[i].key <= GetY_DownPos)
+                    //    {
+                    //        GetY_DownPos = tmp3[i].key;
+                    //        YDownPosIndex = i;
+                    //    }
+                    //}
+
+                    //tmpindex = YDownPosIndex;
+                    //TmpPos = tmp3[YDownPosIndex].key;
+
+                    //for (int i = 0; i < tmp3.Count; i++)
+                    //{
+                    //    if (Math.Abs(TmpPos + tmp3[i].key) == TmpSteelAttr.t2 && i != tmpindex && (tmp3[i].min < tmp3[tmpindex].min))
+                    //    {
+                    //        GetY_DownPos = tmp3[i].key;
+                    //        YDownPosIndex = i;
+                    //    }
+                    //}
+
+                    //TmpDL = new Point3D(tmp3[YDownPosIndex].min, tmp3[YDownPosIndex].key);
+                    //TmpDR = new Point3D(tmp3[YDownPosIndex].max, tmp3[YDownPosIndex].key);
+                    //TmpUL = new Point3D(tmp3[YUpPosIndex].min, tmp3[YUpPosIndex].key);
+                    //TmpUR = new Point3D(tmp3[YUpPosIndex].max, tmp3[YUpPosIndex].key);
 
 
 
