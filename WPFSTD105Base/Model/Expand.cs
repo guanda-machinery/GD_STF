@@ -607,7 +607,9 @@ namespace WPFSTD105.Model
         /// <param name="vm"></param>
         /// <param name="steelAttr">指定鋼構資訊</param>
         /// <param name="groups">既有型鋼孔</param>
-        public static void LoadNcToModel(this devDept.Eyeshot.Model model, string dataName, List<OBJECT_TYPE> allowType,double diffLength=0, DXSplashScreenViewModel vm = null,SteelAttr steelAttr = null,List<GroupBoltsAttr> groups = null)
+        /// <param name="blocks">model.Block...若有已編輯的孔，要傳block進去</param>
+        public static void LoadNcToModel(this devDept.Eyeshot.Model model, string dataName, List<OBJECT_TYPE> allowType,double diffLength=0, 
+            DXSplashScreenViewModel vm = null,SteelAttr steelAttr = null,List<GroupBoltsAttr> groups = null,List<Block> blocks=null)
         {
             STDSerialization ser = new STDSerialization(); //序列化處理器
             NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
@@ -791,21 +793,26 @@ namespace WPFSTD105.Model
                     {
                         BlockName = bolt.BlockName,
                         Dia = bolt.Dia,
-                        dX = "0",
-                        dY = "0",
+                        dX = groups != null ? bolt.dX : "0",
+                        dY = groups != null ? bolt.dY : "0",
                         Face = bolt.Face,
                         GUID = bolt.GUID,
-                        Mode = AXIS_MODE.PIERCE,
+                        Mode = groups != null ? bolt.Mode : AXIS_MODE.PIERCE,
                         StartHole = bolt.StartHole,
                         t = bolt.t,
                         Type = bolt.Type,
-                        xCount = 1,
-                        yCount = 1,
+                        xCount = groups != null ? bolt.xCount : 1,
+                        yCount = groups != null ? bolt.yCount : 1,
                         X = bolt.X,
                         Y = bolt.Y,
                         Z = bolt.Z,
                     };
-                    Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out bool check); //加入到 3d 視圖
+                    List<Mesh> meshes = null;
+                   if(blocks != null && blocks.Any(x=>x.Name== bolt.GUID.Value.ToString())) 
+                    {
+                        meshes = blocks.FirstOrDefault(x => x.Name == bolt.GUID.Value.ToString()).Entities.Select(x=>(Mesh)x).ToList();
+                    }
+                    Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out bool check, meshes); //加入到 3d 視圖
                 });
             }
 
