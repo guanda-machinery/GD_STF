@@ -128,15 +128,24 @@ namespace WPFSTD105.Model
                         entities.Add(cut1);
                     }
 
-                    var SteelCut1 = (SteelAttr)cut1.EntityData;
-                      
 
+                    MyCs myCs = new MyCs();
+                    ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();//備份當前加工區域數值
+                    double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].A);     //  腹板斜邊打點比列(短)
+                    double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].B);     //  腹板斜邊打點比列(長)
+
+                    var SteelCut1 = (SteelAttr)cut1.EntityData;
                     List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
-                    double YOffset = SteelCut1.H;
+                    
                     for (int z = 0; z < 2; z++)
                     {
+                        double YOffset = SteelCut1.H;
+                        if (z == 0)
+                            YOffset = YOffset * PosRatioA;
+                        else
+                            YOffset = YOffset * PosRatioB;
+
                         GroupBoltsAttr TmpBoltsArr = new GroupBoltsAttr();
-                        YOffset = YOffset * 0.33;
                         TmpBoltsArr.Face = FACE.TOP;
                         TmpBoltsArr.StartHole = START_HOLE.START;
                         TmpBoltsArr.dX = "0";
