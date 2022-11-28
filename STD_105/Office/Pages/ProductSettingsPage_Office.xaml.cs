@@ -3191,7 +3191,10 @@ namespace STD_105.Office
             {
                 RoutedEvent = Keyboard.KeyDownEvent
             };
-            InputManager.Current.ProcessInput(c);            
+            InputManager.Current.ProcessInput(c);
+
+
+
         }
 
         /// <summary>
@@ -3630,6 +3633,8 @@ namespace STD_105.Office
 
         }
 
+
+
         /// <summary>
         /// 自動斜邊判斷(切割線區塊)
         /// </summary>
@@ -3662,7 +3667,7 @@ namespace STD_105.Office
 
                     if (TmpSteelAttr.oPoint.Count == 0) return;
 
-                    if (TmpSteelAttr.oPoint.Select(x=>x.X).Distinct().Count()>2)
+                    if (TmpSteelAttr.oPoint.Select(x => x.X).Distinct().Count() > 2)
                     {
                         ScrollViewbox.IsEnabled = false;
                         break;
@@ -3733,31 +3738,47 @@ namespace STD_105.Office
 
                     if (TmpSteelAttr.vPoint.Count == 0) return;
 
-                    if (TmpSteelAttr.vPoint.Select(x => x.X).Distinct().Count() > 2)
-                    {
-                        ScrollViewbox.IsEnabled = false;
-                        break;
-                    }
+                    //if (TmpSteelAttr.vPoint.Select(x => x.X).Distinct().Count() > 2)
+                    //{
+                    //    ScrollViewbox.IsEnabled = false;
+                    //    break;
+                    //}
+                   var Vertices = model.Blocks[1].Entities[0].Vertices.Where(z=>z.Z==0).ToList();   
 
-                    var tmp3 = TmpSteelAttr.vPoint.GroupBy(uu => uu.Y).Select(q => new
+                   var tmp3 = Vertices.GroupBy(uu => uu.Y).Select(q => new
                     {
                         key = q.Key,
                         max = q.Max(x => x.X),
                         min = q.Min(f => f.X)
-                    }).ToList();
+                    }).OrderByDescending(aa=>aa.key).ToList();
 
-                    if (tmp3[0].key > tmp3[1].key)
-                    {
 
-                        var swap = tmp3[0];
-                        tmp3[0] = tmp3[1];
-                        tmp3[1] = swap;
-                    }
+                    var YUP2List = tmp3.Where(aa => (aa.key == tmp3[0].key || aa.key == tmp3[0].key- TmpSteelAttr.t2)).OrderByDescending(a => a.key).ToList();
+                    if (YUP2List[0].max >= YUP2List[1].max)
+                        TmpUR = new Point3D(YUP2List[0].max, YUP2List[0].key);
+                    else
+                        TmpUR = new Point3D(YUP2List[1].max, YUP2List[1].key);
 
-                    TmpDL = new Point3D(tmp3[0].min, tmp3[0].key);
-                    TmpDR = new Point3D(tmp3[0].max, tmp3[0].key);
-                    TmpUL = new Point3D(tmp3[1].min, tmp3[1].key);
-                    TmpUR = new Point3D(tmp3[1].max, tmp3[1].key);
+
+                    if (YUP2List[0].min <= YUP2List[1].min)
+                        TmpUL = new Point3D(YUP2List[0].min, YUP2List[0].key);
+                    else
+                        TmpUL = new Point3D(YUP2List[1].min, YUP2List[1].key);
+
+
+                    var YDOWN2List = tmp3.Where(aa => (aa.key == tmp3[tmp3.Count-1].key || aa.key == tmp3[tmp3.Count - 1].key + TmpSteelAttr.t2)).OrderBy(a => a.key).Take(2).ToList();
+                    if (YDOWN2List[0].max >= YDOWN2List[1].max)
+                        TmpDR = new Point3D(YDOWN2List[0].max, YDOWN2List[0].key);
+                    else
+                        TmpDR = new Point3D(YDOWN2List[1].max, YDOWN2List[1].key);
+
+
+                    if (YDOWN2List[0].min <= YDOWN2List[1].min)
+                        TmpDL = new Point3D(YDOWN2List[0].min, YDOWN2List[0].key);
+                    else
+                        TmpDL = new Point3D(YDOWN2List[1].min, YDOWN2List[1].key);
+
+
 
                     if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
                         return;
@@ -3766,6 +3787,155 @@ namespace STD_105.Office
                     break;
             }
         }
+
+
+
+
+        #region  // 自動打點註解
+
+
+        ///// <summary>
+        ///// 自動斜邊判斷(切割線區塊)
+        ///// </summary>
+        //public void AutoHypotenuseEnable(FACE face)
+        //{
+        //    MyCs myCs = new MyCs();
+
+        //    STDSerialization ser = new STDSerialization();
+
+        //    Point3D TmpDL = new Point3D();
+        //    Point3D TmpDR = new Point3D();
+        //    Point3D TmpUL = new Point3D();
+        //    Point3D TmpUR = new Point3D();
+
+        //    if (model.Entities[model.Entities.Count - 1].EntityData is null)
+        //        return;
+
+        //    //SteelAttr CSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+        //    SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+        //    //GetverticesFromFile(CSteelAttr.PartNumber,ref TmpSteelAttr);
+
+
+        //    bool hasOutSteel = false;
+
+        //    switch (face)
+        //    {
+
+        //        case FACE.BACK:
+
+        //            if (TmpSteelAttr.oPoint.Count == 0) return;
+
+        //            if (TmpSteelAttr.oPoint.Select(x=>x.X).Distinct().Count()>2)
+        //            {
+        //                ScrollViewbox.IsEnabled = false;
+        //                break;
+        //            }
+
+        //            var tmp1 = TmpSteelAttr.oPoint.GroupBy(uu => uu.Y).Select(q => new
+        //            {
+        //                key = q.Key,
+        //                max = q.Max(x => x.X),
+        //                min = q.Min(f => f.X)
+        //            }).ToList();
+
+        //            if (tmp1[0].key > tmp1[1].key)
+        //            {
+        //                var swap = tmp1[0];
+        //                tmp1[0] = tmp1[1];
+        //                tmp1[1] = swap;
+        //            }
+
+        //            TmpDL = new Point3D(tmp1[0].min, tmp1[0].key);
+        //            TmpDR = new Point3D(tmp1[0].max, tmp1[0].key);
+        //            TmpUL = new Point3D(tmp1[1].min, tmp1[1].key);
+        //            TmpUR = new Point3D(tmp1[1].max, tmp1[1].key);
+
+        //            if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
+        //                return;
+
+        //            ScrollViewbox.IsEnabled = false;
+        //            break;
+
+        //        case FACE.FRONT:
+
+        //            if (TmpSteelAttr.uPoint.Count == 0) return;
+
+        //            if (TmpSteelAttr.uPoint.Select(x => x.X).Distinct().Count() > 2)
+        //            {
+        //                ScrollViewbox.IsEnabled = false;
+        //                break;
+        //            }
+
+        //            var tmp2 = TmpSteelAttr.uPoint.GroupBy(uu => uu.Y).Select(q => new
+        //            {
+        //                key = q.Key,
+        //                max = q.Max(x => x.X),
+        //                min = q.Min(f => f.X)
+        //            }).ToList();
+
+        //            if (tmp2[0].key > tmp2[1].key)
+        //            {
+        //                var swap = tmp2[0];
+        //                tmp2[0] = tmp2[1];
+        //                tmp2[1] = swap;
+        //            }
+
+        //            TmpDL = new Point3D(tmp2[0].min, tmp2[0].key);
+        //            TmpDR = new Point3D(tmp2[0].max, tmp2[0].key);
+        //            TmpUL = new Point3D(tmp2[1].min, tmp2[1].key);
+        //            TmpUR = new Point3D(tmp2[1].max, tmp2[1].key);
+
+        //            if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
+        //                return;
+
+        //            ScrollViewbox.IsEnabled = false;
+        //            break;
+
+
+        //        case FACE.TOP:
+
+        //            if (TmpSteelAttr.vPoint.Count == 0) return;
+
+        //            if (TmpSteelAttr.vPoint.Select(x => x.X).Distinct().Count() > 2)
+        //            {
+        //                ScrollViewbox.IsEnabled = false;
+        //                break;
+        //            }
+
+
+
+
+
+        //            var tmp3 = TmpSteelAttr.vPoint.GroupBy(uu => uu.Y).Select(q => new
+        //            {
+        //                key = q.Key,
+        //                max = q.Max(x => x.X),
+        //                min = q.Min(f => f.X)
+        //            }).ToList();
+
+        //            if (tmp3[0].key > tmp3[1].key)
+        //            {
+
+        //                var swap = tmp3[0];
+        //                tmp3[0] = tmp3[1];
+        //                tmp3[1] = swap;
+        //            }
+
+        //            TmpDL = new Point3D(tmp3[0].min, tmp3[0].key);
+        //            TmpDR = new Point3D(tmp3[0].max, tmp3[0].key);
+        //            TmpUL = new Point3D(tmp3[1].min, tmp3[1].key);
+        //            TmpUR = new Point3D(tmp3[1].max, tmp3[1].key);
+
+        //            if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
+        //                return;
+
+        //            ScrollViewbox.IsEnabled = false;
+        //            break;
+        //    }
+        //}
+
+
+        #endregion
 
         /// <summary>
         /// 手動斜邊打點

@@ -3581,25 +3581,44 @@ namespace STD_105
 
                     if (TmpSteelAttr.vPoint.Count == 0) return;
 
-                    var tmp3 = TmpSteelAttr.vPoint.GroupBy(uu => uu.Y).Select(q => new
+                    //if (TmpSteelAttr.vPoint.Select(x => x.X).Distinct().Count() > 2)
+                    //{
+                    //    ScrollViewbox.IsEnabled = false;
+                    //    break;
+                    //}
+                    var Vertices = model.Blocks[1].Entities[0].Vertices.Where(z => z.Z == 0).ToList();
+
+                    var tmp3 = Vertices.GroupBy(uu => uu.Y).Select(q => new
                     {
                         key = q.Key,
                         max = q.Max(x => x.X),
                         min = q.Min(f => f.X)
-                    }).ToList();
+                    }).OrderByDescending(aa => aa.key).ToList();
 
-                    if (tmp3[0].key > tmp3[1].key)
-                    {
 
-                        var swap = tmp3[0];
-                        tmp3[0] = tmp3[1];
-                        tmp3[1] = swap;
-                    }
+                    var YUP2List = tmp3.Where(aa => (aa.key == tmp3[0].key || aa.key == tmp3[0].key - TmpSteelAttr.t2)).OrderByDescending(a => a.key).ToList();
+                    if (YUP2List[0].max >= YUP2List[1].max)
+                        TmpUR = new Point3D(YUP2List[0].max, YUP2List[0].key);
+                    else
+                        TmpUR = new Point3D(YUP2List[1].max, YUP2List[1].key);
 
-                    TmpDL = new Point3D(tmp3[0].min, tmp3[0].key);
-                    TmpDR = new Point3D(tmp3[0].max, tmp3[0].key);
-                    TmpUL = new Point3D(tmp3[1].min, tmp3[1].key);
-                    TmpUR = new Point3D(tmp3[1].max, tmp3[1].key);
+
+                    if (YUP2List[0].min <= YUP2List[1].min)
+                        TmpUL = new Point3D(YUP2List[0].min, YUP2List[0].key);
+                    else
+                        TmpUL = new Point3D(YUP2List[1].min, YUP2List[1].key);
+
+                    var YDOWN2List = tmp3.Where(aa => (aa.key == tmp3[tmp3.Count - 1].key || aa.key == tmp3[tmp3.Count - 1].key + TmpSteelAttr.t2)).OrderBy(a => a.key).Take(2).ToList();
+                    if (YDOWN2List[0].max >= YDOWN2List[1].max)
+                        TmpDR = new Point3D(YDOWN2List[0].max, YDOWN2List[0].key);
+                    else
+                        TmpDR = new Point3D(YDOWN2List[1].max, YDOWN2List[1].key);
+
+
+                    if (YDOWN2List[0].min <= YDOWN2List[1].min)
+                        TmpDL = new Point3D(YDOWN2List[0].min, YDOWN2List[0].key);
+                    else
+                        TmpDL = new Point3D(YDOWN2List[1].min, YDOWN2List[1].key);
 
                     if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
                         return;

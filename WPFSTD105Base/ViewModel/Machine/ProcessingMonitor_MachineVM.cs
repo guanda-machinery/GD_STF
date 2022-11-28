@@ -1542,7 +1542,7 @@ namespace WPFSTD105.ViewModel
 
 
         /// <summary>
-        /// 產生 <see cref="MaterialDataView"/> 的3D檔案
+        /// 產生 <see cref="MaterialDataView"/> 所有dm檔
         /// </summary>
         public async void CreateFile(WPFSTD105.ModelExt _Model)
         {      
