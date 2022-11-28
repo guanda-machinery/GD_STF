@@ -1500,7 +1500,7 @@ namespace WPFSTD105.Model
                     for (int i = 0; i < tmp3.Count; i++)
                     {
 
-                        if (Math.Abs(TmpPos + tmp3[i].key) <= TmpSteelAttr.t2 && i != tmpindex)
+                        if (Math.Abs(TmpPos + tmp3[i].key) <= TmpSteelAttr.t2 && i != tmpindex　&& (tmp3[tmpindex].min> tmp3[i].min))
                         {
                             GetY_DownPos = tmp3[i].key;
                             YDownPosIndex = i;
