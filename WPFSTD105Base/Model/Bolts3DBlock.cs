@@ -169,7 +169,7 @@ namespace WPFSTD105.Model
                         // EntityData XYZ有值
                         // Vertices XY有值 Z=0
                         resultY[0].Rotate(Math.PI / 2, Vector3D.AxisX);
-                        // 此時Vertices與YZ皆轉換
+                        // 此時Vertices與YZ皆轉換Vertices
                         // EntityData XYZ有值(不變)
                         // Vertices X有值 YZ對調(Y=0)
 
@@ -445,16 +445,32 @@ namespace WPFSTD105.Model
                     // 加工區域計算
                     List<double> list = WorkingRange(type, bolt, steelAttr);
                     // 符合加工區域
-                    if (CheckWorkingRange(bolt.Mode, bolt.Face, type, bolt.Y, list))
+                    // 檢查座標依平面而有異動
+                    double checkValue = 0;
+                    switch (bolt.Face)
+                    {
+                        case FACE.TOP:
+                            checkValue = bolt.Y;
+                            break;
+                        case FACE.FRONT:
+                        case FACE.BACK:
+                            checkValue = bolt.Z;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    if (CheckWorkingRange(bolt.Mode, bolt.Face, type, checkValue, list))
                     {
                         if (bolt.Mode != AXIS_MODE.POINT && bolt.Mode != AXIS_MODE.HypotenusePOINT)
                         {
                             Point3D checkPoint3D = new Point3D(bolt.X, bolt.Y, bolt.Z);
-                            var testPoint = Coordinates(bolt.Face, checkPoint3D);
+                            var testPoint = checkPoint3D;
+                            //var testPoint = Coordinates(bolt.Face, checkPoint3D);
 
                             if (!((Mesh)model.Blocks[1].Entities[0]).IsPointInside(testPoint))
-                               // if (!((Mesh)model.Entities[model.Entities.Count - 1]).IsPointInside(testPoint))
-                                {
+                            // if (!((Mesh)model.Entities[model.Entities.Count - 1]).IsPointInside(testPoint))
+                            {
                                 return false;
                             }
                         }
@@ -562,8 +578,8 @@ namespace WPFSTD105.Model
                 //((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
             }
 
-            if (!result.hasOutSteel)
-            {
+            //if (!result.hasOutSteel)
+            //{
                 if (!model.Blocks.Contains(result.Name))
                 {
                     model.Blocks.Add(result);//加入孔位群組圖塊到模型
@@ -576,7 +592,7 @@ namespace WPFSTD105.Model
                 {
                     result.Entities.AddRange(model.Blocks[result.Name].Entities);
                 }
-            }
+            //}
            // else { result.Entities.AddRange(model.Blocks[result.Name].Entities); }
 
             return result;

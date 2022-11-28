@@ -36,7 +36,7 @@ namespace STD_105
         public delegate void EventHandle(bool isShow);
         public event EventHandle ShowClickEvent;
         //private static SplashScreenManager manager = SplashScreenManager.Create(()=> new WaitIndicator(), new DXSplashScreenViewModel { });
-        private static SplashScreenManager manager = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
+        //private static SplashScreenManager manager = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
         private readonly System.Windows.Threading.DispatcherTimer Timer = new System.Windows.Threading.DispatcherTimer();
 
         /// <summary>
@@ -259,24 +259,24 @@ namespace STD_105
             }
         }*/
 
-        public static void ActivateLoading()
+        /*public static void ActivateLoading()
         {
             switch (WPFSTD105.Properties.SofSetting.Default.Language)
             {
                 case 0:
-                    manager.ViewModel.Status = "讀取中...";
+                    manager.ViewModel.Status = "讀取中....";
                     break;
                 case 1:
-                    manager.ViewModel.Status = "Loading...";
+                    manager.ViewModel.Status = "Loading....";
                     break;
                 case 2:
-                    manager.ViewModel.Status = "Đang tải...";
+                    manager.ViewModel.Status = "Đang tải....";
                     break;
                 case 3:
-                    manager.ViewModel.Status = "กำลังโหลด...";
+                    manager.ViewModel.Status = "กำลังโหลด....";
                     break;
                 default:
-                    manager.ViewModel.Status = "讀取中...";
+                    manager.ViewModel.Status = "讀取中....";
                     break;
             }
             manager.Show();
@@ -305,7 +305,7 @@ namespace STD_105
             Thread.Sleep(500);
             manager.Close();
         }
-
+                                                             */
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();

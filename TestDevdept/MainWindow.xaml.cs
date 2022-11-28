@@ -116,7 +116,7 @@ namespace TestDevdept
         private SteelAttr SteelAttr = new SteelAttr()
         {
             H = 200,                /// 高
-            W=  100,                /// 寬
+            W = 100,                /// 寬
             t1 = (float)5.5,        /// 腹板厚度
             t2 = 8,                 /// 翼板厚度
             Length = 1089.76        ///長
@@ -219,6 +219,25 @@ namespace TestDevdept
            // Solid[] seccut = Solid.Difference(aaaaaaa.ConvertToSolid(), vMesh.ConvertToSolid());
 
                Solid[] resultSolid1 = Solid.Difference(ccc.ConvertToSolid(), vMesh.ConvertToSolid());
+
+
+
+            ////EntityList result =  entities.Where(el => !((BlockReference)el).Attributes.ContainsKey("Cut")).ToList();
+
+
+
+            //    model1.Entities.AddRange(resultSolid1,0, System.Drawing.Color.FromArgb(255, 0, 0));
+
+            model1.Entities.Add(ccc);
+
+
+            ccc.Color = ColorTranslator.FromHtml(WPFSTD105.Properties.SofSetting.Default.Surplus);
+
+
+
+            // Solid[] seccut = Solid.Difference(aaaaaaa.ConvertToSolid(), vMesh.ConvertToSolid());
+
+            Solid[] resultSolid1 = Solid.Difference(ccc.ConvertToSolid(), vMesh.ConvertToSolid());
 
 
 
@@ -337,7 +356,7 @@ namespace TestDevdept
 
         }
         /// <summary>
-        /// 返回一個網格，其中刪除了未使用的頂點，並且頂點引用在網格m的“三角形”列表中重新排序。
+        /// EG4YAup2hySgcimq8MkLuB6e34rNB2SF9h94LL1ryzzq
         /// </summary>
         /// <param name="m"></param>
         /// <returns></returns>
@@ -420,8 +439,8 @@ namespace TestDevdept
             int index = point3Ds.FindIndex(el => el == point);
             //int maxIndex = point3Ds.FindIndex(el => el == maxPoint);
             var center = point3Ds[index];
-            var p1 = point3Ds[CycleIndex(point3Ds, index -1)];
-            var p2 = point3Ds[CycleIndex(point3Ds, index +1)];
+            var p1 = point3Ds[CycleIndex(point3Ds, index - 1)];
+            var p2 = point3Ds[CycleIndex(point3Ds, index + 1)];
             angleP1 = WPFSTD105.Tekla.AK.Angle(center, p1, new Point3D(center.X + extendX, center.Y));
             angleP2 = WPFSTD105.Tekla.AK.Angle(center, p2, new Point3D(center.X + extendX, center.Y));
             if (angleP1 % 90 != 0 || angleP2 % 90 != 0)

@@ -10,30 +10,17 @@ namespace WPFSTD105.ViewModel
     {
         public MainSpindle_ViewModel()
         {
-            /*this.JoyStick_BorderButton4_Trigger = MachiningDirecationLeftCommand; //L
-            this.JoyStick_BorderButton5_Trigger = MachiningDirecationUpCommand;//U
+            this.JoyStick_BorderButton4_Trigger = MachiningDirecationLeftCommand; //L
+            this.JoyStick_BorderButton5_Trigger = MachiningDirecationMiddleCommand;//U
             this.JoyStick_BorderButton6_Trigger = MachiningDirecationRightCommand; //R
 
-            this.JoyStick_BorderButton4_Trigger = null; //L
-            this.JoyStick_BorderButton5_Trigger = null;//U
-            this.JoyStick_BorderButton6_Trigger = null; //R*/
-
-
-            /*  this.JoyStick_BorderButton1_Trigger = ZAxisPlusMoveCommand;
-              this.JoyStick_BorderButton1_Release = ZAxisPlusStopCommand;
-              this.JoyStick_BorderButton3_Trigger = ZAxisMinusMoveCommand;
-              this.JoyStick_BorderButton3_Release = ZAxisMinusStopCommand;*/
-
-            /*  this.Joystcik_Left_Trigger_Command = XAxisPlusMoveCommand;//X+
-              this.Joystcik_Left_Release_Command = XAxisPlusStopCommand;//X+
-              this.Joystcik_Right_Trigger_Command = XAxisMinusMoveCommand;//X-
-              this.Joystcik_Right_Release_Command = XAxisMinusStopCommand;//X-
-              this.Joystcik_Up_Trigger_Command = YAxisPlusMoveCommand;//Y+
-              this.Joystcik_Up_Release_Command = YAxisPlusStopCommand;//Y+
-              this.Joystcik_Down_Trigger_Command = YAxisMinusMoveCommand;//Y-
-              this.Joystcik_Down_Release_Command = YAxisMinusStopCommand; //Y-*/
+            this.JoyStick_BorderButton4_Release = null; //L
+            this.JoyStick_BorderButton5_Release = null;//U
+            this.JoyStick_BorderButton6_Release = null; //R
 
             GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+            PButton.AxisRotation = false;
+            PButton.AxisStop = true;
             PButton.ClampDown = false;
             PButton.SideClamp = false;
             PButton.EntranceRack = false;
@@ -52,261 +39,49 @@ namespace WPFSTD105.ViewModel
         }
 
 
-        /*
-
-        /// <summary>
-        /// 主軸移動Z+
-        /// </summary>
-        private WPFWindowsBase.RelayCommand ZAxisPlusMoveCommand
+        private WPFWindowsBase.RelayParameterizedCommand MachiningDirecationLeftCommand
         {
             get
             {
-                return new WPFWindowsBase.RelayCommand(() =>
+                return new WPFWindowsBase.RelayParameterizedCommand(el =>
                 {
                     if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
                         return;
 
-                    //GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    //CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                });
-            }
-        }
-        /// <summary>
-        /// 主軸移動Z+停止
-        /// </summary>
-        private WPFWindowsBase.RelayCommand ZAxisPlusStopCommand
-        {
-            get
-            {
-                return new WPFWindowsBase.RelayCommand(() =>
-                {
-                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
-                        return;
-
-                    //GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    //CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                });
-            }
-        }
-
-        /// <summary>
-        /// 主軸移動X+
-        /// </summary>
-        private WPFWindowsBase.RelayCommand XAxisPlusMoveCommand
-        {
-            get
-            {
-                return new WPFWindowsBase.RelayCommand(() =>
-                {
-                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
-                        return;
-
-                    //GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    //CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                });
-            }
-        }
-        /// <summary>
-        /// 主軸移動X+停止
-        /// </summary>
-        private WPFWindowsBase.RelayCommand XAxisPlusStopCommand
-        {
-            get
-            {
-                return new WPFWindowsBase.RelayCommand(() =>
-                {
-                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
-                        return;
-
-                    //GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    //CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                });
-            }
-        }
-
-        /// <summary>
-        /// 主軸移動Y+
-        /// </summary>
-        private WPFWindowsBase.RelayCommand YAxisPlusMoveCommand
-        {
-            get
-            {
-                return new WPFWindowsBase.RelayCommand(() =>
-                {
-                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
-                        return;
-
-                    //GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    //CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                });
-            }
-        }
-        /// <summary>
-        /// 主軸移動Y+停止
-        /// </summary>
-        private WPFWindowsBase.RelayCommand YAxisPlusStopCommand
-        {
-            get
-            {
-                return new WPFWindowsBase.RelayCommand(() =>
-                {
-                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
-                        return;
-
-                    //GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    //CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                });
-            }
-        }
-
-        /// <summary>
-        /// 主軸移動Z-
-        /// </summary>
-        private WPFWindowsBase.RelayCommand ZAxisMinusMoveCommand
-        {
-            get
-            {
-                return new WPFWindowsBase.RelayCommand(() =>
-                {
-                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
-                        return;
-
-                    //GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    //CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                });
-            }
-        }
-        /// <summary>
-        /// 主軸移動Z-停止
-        /// </summary>
-        private WPFWindowsBase.RelayCommand ZAxisMinusStopCommand
-        {
-            get
-            {
-                return new WPFWindowsBase.RelayCommand(() =>
-                {
-                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
-                        return;
-
-                    //GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    //CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                });
-            }
-        }
-
-        /// <summary>
-        /// 主軸移動X-
-        /// </summary>
-        private WPFWindowsBase.RelayCommand XAxisMinusMoveCommand
-        {
-            get
-            {
-                return new WPFWindowsBase.RelayCommand(() =>
-                {
-                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
-                        return;
-
-                    //GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    //CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                });
-            }
-        }
-        /// <summary>
-        /// 主軸移動X-停止
-        /// </summary>
-        private WPFWindowsBase.RelayCommand XAxisMinusStopCommand
-        {
-            get
-            {
-                return new WPFWindowsBase.RelayCommand(() =>
-                {
-                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
-                        return;
-
-                    //GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    //CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                });
-            }
-        }
-
-        /// <summary>
-        /// 主軸移動Y-
-        /// </summary>
-        private WPFWindowsBase.RelayCommand YAxisMinusMoveCommand
-        {
-            get
-            {
-                return new WPFWindowsBase.RelayCommand(() =>
-                {
-                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
-                        return;
-
-                    //GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    //CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                });
-            }
-        }
-        /// <summary>
-        /// 主軸移動Y-停止
-        /// </summary>
-        private WPFWindowsBase.RelayCommand YAxisMinusStopCommand
-        {
-            get
-            {
-                return new WPFWindowsBase.RelayCommand(() =>
-                {
-                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
-                        return;
-
-                    //GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    //CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                });
-            }
-        }
-        */
-
-
-        private WPFWindowsBase.RelayCommand MachiningDirecationLeftCommand
-        {
-            get
-            {
-                return new WPFWindowsBase.RelayCommand(() =>
-                {
-                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
-                        return;
-
-                    //GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    //CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                    GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+                    PButton.AxisSelect = GD_STD.Enum.AXIS_SELECTED.Left;
+                    CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
                 });
             }
 
         }
-        private WPFWindowsBase.RelayCommand MachiningDirecationUpCommand
+        private WPFWindowsBase.RelayParameterizedCommand MachiningDirecationMiddleCommand
         {
             get
             {
-                return new WPFWindowsBase.RelayCommand(() =>
+                return new WPFWindowsBase.RelayParameterizedCommand(el =>
                 {
                     if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
                         return;
-
-                    //GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    //CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                    GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+                    PButton.AxisSelect = GD_STD.Enum.AXIS_SELECTED.Middle;
+                    CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
                 });
             }
 
         }
-        private WPFWindowsBase.RelayCommand MachiningDirecationRightCommand
+        private WPFWindowsBase.RelayParameterizedCommand MachiningDirecationRightCommand
         {
             get
             {
-                return new WPFWindowsBase.RelayCommand(() =>
+                return new WPFWindowsBase.RelayParameterizedCommand(el =>
                 {
                     if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
                         return;
 
-                    //GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    //CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                    GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+                    PButton.AxisSelect = GD_STD.Enum.AXIS_SELECTED.Right;
+                    CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
                 });
             }
 
@@ -339,7 +114,7 @@ namespace WPFSTD105.ViewModel
                     if (PanelListening.IsAxisLooseKnife())
                         return;
 
-                    GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;  
+                    GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
                     PButton.AxisRotation = true;
                     PButton.AxisStop = false;
                     PButton.AxisLooseKnife = false;

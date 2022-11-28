@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.IO.Compression;
 using DevExpress.Xpf.WindowsUI;
 using DevExpress.Xpf.Core;
+using System.Threading;
 
 namespace GD_STD
 {
@@ -23,12 +24,27 @@ namespace GD_STD
         /// <param name="path">存放路徑</param>
         public static void GZipSerializeBinary(object obj, string path)
         {
-            using (FileStream fileStream = new FileStream(path, FileMode.OpenOrCreate))
+            while (true)
             {
-                using (GZipStream zip = new GZipStream(fileStream, CompressionMode.Compress))
+                try
                 {
-                    BinaryFormatter binaryFormatter = new BinaryFormatter();
-                    binaryFormatter.Serialize(zip, obj);
+                    using (FileStream fileStream = new FileStream(path, FileMode.OpenOrCreate))
+                    {
+                        using (GZipStream zip = new GZipStream(fileStream, CompressionMode.Compress))
+                        {
+                            BinaryFormatter binaryFormatter = new BinaryFormatter();
+                            binaryFormatter.Serialize(zip, obj);
+                        }
+                    }
+                    break;
+                }
+                catch (System.IO.IOException iOException)
+                {
+                    Thread.Sleep(100);
+                }
+                catch(Exception e)
+                {
+                    throw e;
                 }
             }
         }

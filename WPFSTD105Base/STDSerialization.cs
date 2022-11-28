@@ -19,6 +19,8 @@ using static GD_STD.SerializationHelper;
 using SectionData;
 using SplitLineSettingData;
 using DevExpress.XtraRichEdit.Import.OpenXml;
+using devDept.Eyeshot.Entities;
+using devDept.Eyeshot;
 
 namespace WPFSTD105
 {
@@ -141,9 +143,10 @@ namespace WPFSTD105
             string dataName = values.MaterialNumber
                                                             .Where(el => el != 0)
                                                             .Select(el => Convert.ToChar(el).ToString())
-                                                            .Aggregate((str1, str2) => str1+ str2);
+                                                            .Aggregate((str1, str2) => str1 + str2);
 
             GZipSerializeBinary(values, $@"{ApplicationVM.DirectoryWorkMaterialBackup()}\{dataName}.db");
+
         }
         /// <summary>
         /// 讀取工作陣列列表 (壓縮)
@@ -217,6 +220,24 @@ namespace WPFSTD105
         {
             GZipSerializeBinary(bolts, $@"{ApplicationVM.DirectorySteelBolts()}\{profile}.lis");
         }
+
+        /// <summary>
+        ///  儲存序列化切割線資料
+        /// </summary>
+        /// <param name="SteelCutSetting"></param>
+        public void SetCutSettingList(ObservableCollection<SteelCutSetting> cutSettingList)
+        {
+            GZipSerializeBinary(cutSettingList, ApplicationVM.FileCutSettingList());
+        }
+        /// <summary>
+        ///  取得序列化切割線資料
+        /// </summary>
+        public ObservableCollection<SteelCutSetting> GetCutSettingList()
+        {
+            ObservableCollection<SteelCutSetting> temp_corr = GZipDeserialize<ObservableCollection<SteelCutSetting>>(ApplicationVM.FileCutSettingList());
+            return GZipDeserialize<ObservableCollection<SteelCutSetting>>(ApplicationVM.FileCutSettingList());
+        }
+
         /// <summary>
         /// 取得目前模型訊息斷面規格列表
         /// </summary>
@@ -360,7 +381,40 @@ namespace WPFSTD105
         /// </summary>
         /// <param name="dataName"></param>
         /// <param name="model"></param>
-        public void SetMaterialModel(string dataName, devDept.Eyeshot.Model model) => SetModel(ApplicationVM.DirectoryMaterial(), dataName, model);
+        public void SetMaterialModel(string dataName, devDept.Eyeshot.Model model)
+        {
+            TransHypotenusePOINTtoPoint(model);
+            SetModel(ApplicationVM.DirectoryMaterial(), dataName, model);
+        }
+        /// <summary>
+        /// 異動孔及孔群的鑽孔類型:斜邊打點(HypotenusePOINT)改為打點(Point)
+        /// </summary>
+        /// <param name="model"></param>
+        public void TransHypotenusePOINTtoPoint(devDept.Eyeshot.Model model)
+        {
+            var gbaList_Entities = model.Entities.Where(x => x.EntityData.GetType() == typeof(GroupBoltsAttr)).ToList();
+            gbaList_Entities.ForEach(x => ((GroupBoltsAttr)x.EntityData).Mode = GD_STD.Enum.AXIS_MODE.POINT);
+
+
+            List<Block> gbaList_Block_Mesh = model.Blocks.Where(x => x.Entities.GetType() == typeof(Mesh)).ToList();
+            gbaList_Block_Mesh.ForEach(x =>
+            {
+                x.Entities.ForEach(y =>
+                {
+                    if (y.GetType() == typeof(BoltAttr) && ((BoltAttr)y.EntityData).Mode == GD_STD.Enum.AXIS_MODE.HypotenusePOINT)
+                    { ((BoltAttr)y.EntityData).Mode = GD_STD.Enum.AXIS_MODE.POINT; }
+                });
+            });
+            var gbaList_Block_BlockReference = model.Blocks.Where(x => x.Entities.GetType() == typeof(BlockReference)).ToList();
+            gbaList_Block_BlockReference.ForEach(x =>
+            {
+                x.Entities.ForEach(y =>
+                {
+                    if (y.GetType() == typeof(BlockReference) && ((GroupBoltsAttr)y.EntityData).Mode == GD_STD.Enum.AXIS_MODE.HypotenusePOINT)
+                    { ((GroupBoltsAttr)y.EntityData).Mode = GD_STD.Enum.AXIS_MODE.POINT; }
+                });
+            });
+        }
 
         /// <summary>
         /// 讀取 <see cref="devDept.Eyeshot.Model"/>

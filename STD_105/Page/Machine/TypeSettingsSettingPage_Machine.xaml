@@ -16,9 +16,7 @@
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
     xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
-    
     xmlns:ee="http://schemas.microsoft.com/expression/2010/effects"
-    
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
     xmlns:STD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105" 
@@ -176,7 +174,7 @@
                 </GroupBox.Header>
                 <Grid>
                     <Grid.Resources>
-                        <Style TargetType="dxg:GridColumn" >
+                        <Style TargetType="dxg:GridColumn">
                             <Setter Property="MinWidth" Value="35"/>
                             <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
                             <Setter Property="AllowGrouping" Value="false"/>
@@ -194,16 +192,16 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <dxg:GridControl   
+                    <dxg:GridControl Style="{StaticResource SiegCustomGridControl}"  
                                 Name="PartsGridControl"
-                  
                                 AutoGenerateColumns="None"
                                 SelectionMode="Row"
                                 SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                 Height="365"
                                 ItemsSource="{Binding DataViews}">
                         <dxg:GridControl.View >
-                            <dxg:TableView            
+                            <dxg:TableView                           
+                                AllowEditing="False"  
                                 PageSize="30"
                                 AllowPaging="True"
                                 IsColumnMenuEnabled ="False"
@@ -297,7 +295,7 @@
                         </Button>
                  
                     </StackPanel>
-                    <dxg:GridControl   Grid.Column="2"
+                    <dxg:GridControl   Grid.Column="2" Style="{StaticResource SiegCustomGridControl}"  
                                 Name="SoftGridControl"
                                 AutoGenerateColumns="None"
                                 SelectionMode="Row"
@@ -306,7 +304,8 @@
                                 ItemsSource="{Binding DataViews}">
                         <dxg:GridControl.View >
                             <dxg:TableView  
-                                                                        
+                                         
+                                AllowEditing="False"  
                                         AllowPaging ="True"    
                                         PageSize="{Binding PageSize, ElementName=PartListTableView}"    
                                         CurrentPageIndex="{Binding CurrentPageIndex,ElementName=PartListTableView,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -516,13 +515,13 @@
                     <Setter Property="HorizontalHeaderContentAlignment"  Value="Center"/>
                 </Style>
             </GroupBox.Resources>
-            <dxg:GridControl 
+            <dxg:GridControl  Style="{StaticResource SiegCustomGridControl}"  
                         Name="Material_List_GridControl"    
                         AutoGenerateColumns="None" 
                         MouseDown="TableView_MouseDown"
                         SelectedItemChanged="Material_List_GridControl_SelectedItemChanged"
                         Grid.Row="2"    
-                        ItemsSource="{Binding MaterialDataViews, Mode=TwoWay , NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"
+                        ItemsSource="{Binding MaterialDataViews, Mode=TwoWay, NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"
                         MinHeight="200"  MaxHeight="1000">
                 <dxg:GridControl.View >
                     <dxg:TableView         

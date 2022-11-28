@@ -498,7 +498,7 @@ namespace WPFSTD105.ViewModel
                     //若型鋼型態&加工行為&數值checkbox皆無勾選, 需提示錯誤
                     if (chb_SteelType && chb_ProcessingBehavior && chb_H_Avalue && chb_H_Bvalue && chb_H_Cvalue == true)
                     {
-                        if (ProcessingZone_A >= 25 && ProcessingZone_B >= 15 && ProcessingZone_C >= 3)
+                        if (ProcessingZone_A >= 25 && ProcessingZone_B >= 10 && ProcessingZone_C >= 3)
                         {
                             STDSerialization ser = new STDSerialization(); //序列化處理器
                             ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
@@ -513,7 +513,7 @@ namespace WPFSTD105.ViewModel
                             ser.SetSectionTypeProcessingData(listSectionData);//加入到H型鋼的斷面加工資料檔案
 
                             WinUIMessageBox.Show(null,
-                                                 $"新建完成",
+                                                 $"新建完成(不符限制條件的數值將不儲存)",
                                                  "通知",
                                                  MessageBoxButton.OK,
                                                  MessageBoxImage.Exclamation,
@@ -569,7 +569,7 @@ namespace WPFSTD105.ViewModel
                             ser.SetSectionTypeProcessingData(listSectionData);//加入到BOX的斷面加工資料檔案
 
                             WinUIMessageBox.Show(null,
-                                                 $"新建完成",
+                                                 $"新建完成(不符限制條件的數值將不儲存)",
                                                  "通知",
                                                  MessageBoxButton.OK,
                                                  MessageBoxImage.Exclamation,
@@ -624,7 +624,7 @@ namespace WPFSTD105.ViewModel
                             ser.SetSectionTypeProcessingData(listSectionData);//加入到CH的斷面加工資料檔案
 
                             WinUIMessageBox.Show(null,
-                                                 $"新建完成",
+                                                 $"新建完成(不符限制條件的數值將不儲存)",
                                                  "通知",
                                                  MessageBoxButton.OK,
                                                  MessageBoxImage.Exclamation,
@@ -768,7 +768,7 @@ namespace WPFSTD105.ViewModel
                         if ((chb_SteelType && chb_ProcessingBehavior) == true && (chb_H_Avalue || chb_H_Bvalue || chb_H_Cvalue) == true)
                         {
                             if (chb_H_Avalue == true && ProcessingZone_A < 25) f_ChbChecked_ValueError = true;
-                            if (chb_H_Bvalue == true && ProcessingZone_B < 15) f_ChbChecked_ValueError = true;
+                            if (chb_H_Bvalue == true && ProcessingZone_B < 10) f_ChbChecked_ValueError = true;
                             if (chb_H_Cvalue == true && ProcessingZone_C < 3)  f_ChbChecked_ValueError = true;
 
                             if (f_ChbChecked_ValueError == false)
@@ -804,7 +804,7 @@ namespace WPFSTD105.ViewModel
                                 GoBackButtonEnabled = true;
 
                                 WinUIMessageBox.Show(null,
-                                                     $"修改完成",
+                                                     $"修改完成(不符限制條件的數值將不儲存)",
                                                      "通知",
                                                      MessageBoxButton.OK,
                                                      MessageBoxImage.Exclamation,
@@ -874,7 +874,7 @@ namespace WPFSTD105.ViewModel
                                 GoBackButtonEnabled = true;
 
                                 WinUIMessageBox.Show(null,
-                                                     $"修改完成",
+                                                     $"修改完成(不符限制條件的數值將不儲存)",
                                                      "通知",
                                                      MessageBoxButton.OK,
                                                      MessageBoxImage.Exclamation,
@@ -944,7 +944,7 @@ namespace WPFSTD105.ViewModel
                                 GoBackButtonEnabled = true;
 
                                 WinUIMessageBox.Show(null,
-                                                     $"修改完成",
+                                                     $"修改完成(不符限制條件的數值將不儲存)",
                                                      "通知",
                                                      MessageBoxButton.OK,
                                                      MessageBoxImage.Exclamation,
@@ -1239,7 +1239,7 @@ namespace WPFSTD105.ViewModel
                     ser.SetSplitLineData(listSplitLineData);
 
                     WinUIMessageBox.Show(null,
-                                         $"新建完成",
+                                         $"新建完成(不符限制條件的數值將不儲存)",
                                          "通知",
                                          MessageBoxButton.OK,
                                          MessageBoxImage.Exclamation,

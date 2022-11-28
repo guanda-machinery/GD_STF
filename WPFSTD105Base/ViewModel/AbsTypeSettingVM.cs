@@ -20,6 +20,7 @@ using System.Text.RegularExpressions;
 using WPFSTD105.ViewModel;
 using DevExpress.Xpf.WindowsUI;
 using DevExpress.Xpf.Core;
+using WPFSTD105.Model;
 
 namespace WPFSTD105
 {
@@ -38,13 +39,14 @@ namespace WPFSTD105
         /// </summary>
         public AbsTypeSettingVM()
         {
-            DataViews = LoadDataViews(); 
+            DataViews = LoadDataViews();
             STDSerialization ser = new STDSerialization();
             MaterialDataViews = ser.GetMaterialDataView();
             AllSelectedGridCommand = AllSelectedGrid();// 選擇報表全部物件命令
             ReverseSelectedGridCommand = ReverseSelectedGrid();//反向選取命令
             UnselectSelectedGridCommand = UnselectSelectedGrid();//取消選取命令
             SaveMatchCommand = SaveMatch();
+
         }
 
         /// <summary>
@@ -72,7 +74,7 @@ namespace WPFSTD105
                         {
                             for (int i = 0; i < item.Father.Count; i++)  //逐步展開零件  id or match
                             {
-                                int index = assemblies.FindIndex(el => el.ID.Contains(item.Father[i]) && el.Length == item.Length); //找出構件列表內是零件的 Father 位置
+                                int index = assemblies.FindIndex(el => el.ID.Contains(item.Father[i])); //找出構件列表內是零件的 Father 位置
                                 if (index == -1) //找不到物件
                                 {
                                     //throw new Exception("index 不可以是 -1");
@@ -517,11 +519,11 @@ namespace WPFSTD105
                                 PartGridColumn.SortCount++;
                         }
                         //需要重整才能更新data binding 
+
                         PartGirdControl.Dispatcher.Invoke(() =>
                         {
                             PartGirdControl.RefreshData();
-                        }); 
-
+                        });
 
                     }
                 }

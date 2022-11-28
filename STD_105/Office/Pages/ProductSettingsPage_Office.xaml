@@ -130,16 +130,7 @@
             <RowDefinition Height="480" MaxHeight="915" MinHeight="51"/>
         </Grid.RowDefinitions>
         <Grid Margin="5">
-            <!--<Grid.DataContext>
-                <STD105VM:ObSettingVM/>
-            </Grid.DataContext>-->
-            <dxg:GridControl Name="PieceListGridControl"
-                                 AutoGenerateColumns="None"
-                                 SelectionMode="None"
-                                 MaxHeight="2000"
-                                 AllowLiveDataShaping="True"
-                                 ItemsSource="{Binding ProductSettingsPageViewModel.DataViews, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange" MouseDown="Button_PreviewMouseLeftButtonDown">
-                <dxg:GridControl.Resources>
+                <Grid.Resources>
                     <Style TargetType="dxg:GridColumn" >
                         <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
                         <Setter Property="AllowGrouping" Value="false"/>
@@ -147,9 +138,16 @@
                     <Style TargetType="dxe:TextEditSettings">
                         <Setter Property="HorizontalContentAlignment" Value="Center"/>
                     </Style>
-                    <SolidColorBrush x:Key="{dxgt:TableViewThemeKey ResourceKey=SearchPanelBackground, IsThemeIndependent=True}" Color="#f0f0f0" />
-                </dxg:GridControl.Resources>
-                <dxg:GridControl.View >
+                 <!--   <SolidColorBrush x:Key="{dxgt:TableViewThemeKey ResourceKey=SearchPanelBackground, IsThemeIndependent=True}" Color="#f0f0f0" />-->
+                </Grid.Resources>
+                <dxg:GridControl Name="PieceListGridControl" 
+                                 Style="{StaticResource SiegCustom_CompactGridControl}"
+                                 AutoGenerateColumns="None"
+                                 SelectionMode="None"
+                                 MaxHeight="2000"
+                                 AllowLiveDataShaping="True"
+                                 ItemsSource="{Binding DataViews, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange" MouseDown="Button_PreviewMouseLeftButtonDown">
+                    <dxg:GridControl.View >
                     <dxg:TableView VerticalScrollbarVisibility="Visible"
                                         HighlightItemOnHover="True"
                                        IsColumnMenuEnabled ="False"
@@ -166,23 +164,14 @@
                                        AllowEditing="False"
                                        EnableImmediatePosting="True"
                                        FocusedRow="">
-                        <dxg:TableView.RowStyle>
-                            <Style TargetType="dxg:RowControl">
-                                <Setter Property="Height" Value="20"/>
-                            </Style>
-                        </dxg:TableView.RowStyle>
-                        <dxg:TableView.CellStyle>
-                            <Style>
-                                <Setter Property="TextBlock.FontSize" Value="12"/>
-                            </Style>
-                        </dxg:TableView.CellStyle>
+
                         <dxg:TableView.Header>
                             <TextBlock Text="零件清單" FontSize="16" Foreground="Black"/>
                         </dxg:TableView.Header>
                     </dxg:TableView>
                 </dxg:GridControl.View>
 
-                <dxg:GridColumn Name="Exc_GridColumn" FieldName="ExclamationMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
+                    <dxg:GridColumn Name="Exc_GridColumn" Binding="{Binding steelAttr.ExclamationMark, UpdateSourceTrigger=PropertyChanged}" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                     <dxg:GridColumn.HeaderImageStyle>
                         <Style TargetType="Image">
                             <Setter Property="Width" Value="20"></Setter>
@@ -191,7 +180,7 @@
                     </dxg:GridColumn.HeaderImageStyle>
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
-                            <dxe:CheckEdit x:Name="PART_Editor" IsChecked="{Binding Row.steelAttr.ExclamationMark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <dxe:CheckEdit x:Name="PART_Editor" IsChecked="{Binding steelAttr.ExclamationMark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <dxe:CheckEdit.Style>
                                     <Style TargetType="{x:Type dxe:CheckEdit}">
                                         <Setter Property="Template">
@@ -216,9 +205,9 @@
                     </dxg:GridColumn.CellTemplate>
                 </dxg:GridColumn>
 
-                    <dxg:GridColumn FieldName="ExclamationMark" Binding="{Binding Row.steelAttr.ExclamationMark}" IsSmart="True"   Header="構件編號" Width="auto" Visible="false"/>
-
-                <dxg:GridColumn FieldName="LockMark"  IsSmart="True" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True" Visible="false">
+                    <!--<dxg:GridColumn Binding="{Binding steelAttr.ExclamationMark}" IsSmart="True"   Header="構件編號111" Width="auto" Visible="true"/>-->
+                    
+                    <dxg:GridColumn FieldName="LockMark"  IsSmart="True" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True" Visible="false">
                     <dxg:GridColumn.HeaderImageStyle>
                         <Style TargetType="Image">
                             <Setter Property="Width" Value="20"></Setter>
@@ -249,14 +238,15 @@
                     </dxg:GridColumn.CellTemplate>
                 </dxg:GridColumn>
                 <!--<dxg:GridColumn FieldName="{Binding Creation, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="建立日期"  >-->
-                <dxg:GridColumn FieldName="Creation" IsSmart="True" Header="建立日期"  Width="80">
+                <dxg:GridColumn FieldName="Creation" IsSmart="True" Header="建立日期"  Width="90">
                     <dxg:GridColumn.CellStyle>
                         <Style>
                             <Setter Property="TextBlock.Foreground" Value="Gray"/>
                         </Style>
                     </dxg:GridColumn.CellStyle>
                 </dxg:GridColumn>
-                <dxg:GridColumn FieldName="{Binding Revise, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="修改日期" Width="80">
+                <!--<dxg:GridColumn FieldName="{Binding steelAttr.Revise, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="修改日期" Width="80">-->
+                    <dxg:GridColumn FieldName="Revise" IsSmart="True" Header="修改日期"  Width="90">
                     <dxg:GridColumn.CellStyle>
                         <Style>
                             <Setter Property="TextBlock.Foreground" Value="Gray"/>
@@ -264,16 +254,16 @@
                     </dxg:GridColumn.CellStyle>
                 </dxg:GridColumn>
 
-                <dxg:GridColumn Binding="{Binding steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="{StaticResource visible}"/>
-                <dxg:GridColumn Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="60"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="60"/>
                 <dxg:GridColumn Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="60" />
                 <dxg:GridColumn Binding="{Binding steelAttr.Name,UpdateSourceTrigger=PropertyChanged}" IsSmart="True" Header="名稱" Width="80"/>
-                <dxg:GridColumn Binding="{Binding TypeDesc}" IsSmart="True" Header="鋼材類型" Visible="{StaticResource visible}"/>
+                    <!--<dxg:GridColumn Binding="{Binding TypeDesc}" IsSmart="True" Header="鋼材類別" Visible="{StaticResource visible}"/>-->
                 <!--FieldName="TypeDesc"-->
-                <dxg:GridColumn Binding="{Binding Path=SteelType, Converter={STD105:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類型" Width="60"/>
+                    <dxg:GridColumn Binding="{Binding Path=SteelType, Converter={STD105:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類別" Width="60"/>
                 <dxg:GridColumn Binding="{Binding steelAttr.Profile}"  IsSmart="True" Header="斷面規格"  Width="140"/>
                 <!--FieldName="Profile"-->
-                <dxg:GridColumn Binding="{Binding SteelType}"   IsSmart="True" Header="鋼材類型(Index)" Visible="{StaticResource visible}"/>
+                <!--<dxg:GridColumn Binding="{Binding SteelType}"   IsSmart="True" Header="鋼材類型(Index)" Visible="{StaticResource visible}"/>-->
                 <!--FieldName="SteelType"-->
                 <dxg:GridColumn Binding="{Binding steelAttr.Material}"  IsSmart="True"  Header="材質"  Width="80"/>
                 <!--FieldName="Material"-->
@@ -290,10 +280,10 @@
                         <dxe:TextEditSettings Mask="f1" MaskType="Numeric" MaskUseAsDisplayFormat="true"/>
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
-                <dxg:GridColumn Binding="{Binding steelAttr.H}" IsSmart="True"  Header="高度" Width="auto" Visible="{StaticResource visible}"/>
-                <dxg:GridColumn Binding="{Binding steelAttr.W}" IsSmart="True"  Header="寬度" Width="auto" Visible="{StaticResource visible}"/>
-                <dxg:GridColumn Binding="{Binding steelAttr.t1}" IsSmart="True"  Header="腹板厚度" Width="auto" Visible="{StaticResource visible}"/>
-                <dxg:GridColumn Binding="{Binding steelAttr.t2}" IsSmart="True"  Header="翼板厚度" Width="auto" Visible="{StaticResource visible}"/>
+                    <!--<dxg:GridColumn Binding="{Binding steelAttr.H}" IsSmart="True"  Header="高度" Width="auto" Visible="{StaticResource visible}"/>-->
+                    <!--<dxg:GridColumn Binding="{Binding steelAttr.W}" IsSmart="True"  Header="寬度" Width="auto" Visible="{StaticResource visible}"/>-->
+                <!--<dxg:GridColumn Binding="{Binding steelAttr.t1}" IsSmart="True"  Header="腹板厚度" Width="auto" Visible="{StaticResource visible}"/>-->
+                <!--<dxg:GridColumn Binding="{Binding steelAttr.t2}" IsSmart="True"  Header="翼板厚度" Width="auto" Visible="{StaticResource visible}"/>-->
 
                 <dxg:GridColumn Binding="{Binding steelAttr.Phase}"  IsSmart="True"  Width="40" Header="Phase" />
                 <dxg:GridColumn Binding="{Binding steelAttr.ShippingNumber}"  IsSmart="True"  Width="40" Header="拆運"  />
@@ -341,6 +331,7 @@
                 <Grid >
                     <!--新增3D模型處-->
                             <WPFSTD:ModelExt x:Name="model" 
+                                  
                                   SelectionChanged="model_SelectionChanged"
                                   Loaded="Model3D_Loaded"
                                   AutoRefresh="True"
@@ -376,8 +367,8 @@
                                           Header="編輯已選擇"
                                           Style="{StaticResource BaseStyle}"
                                           Command="{Binding EditObject}"
-                                          Visibility="Collapsed" />
-                                <MenuItem x:Name="delete"
+                                          Visibility="Collapsed" /> 
+                                        <MenuItem x:Name="delete"
                                           Header="刪除已選擇"
                                           Style="{StaticResource BaseStyle}"
                                           Command="{Binding Delete}"
@@ -483,8 +474,9 @@
                                 <MenuItem x:Name="delete2D" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}" Visibility="Collapsed"/>
                                 <MenuItem Header="清除標註" Command="{Binding ClearDim}" Style="{StaticResource BaseStyle}"/>
                                 <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
-                                <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
-                            </ContextMenu>
+                                        <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
+                                        <!--<MenuItem Header="{Binding EditObjectVisibility, UpdateSourceTrigger=PropertyChanged}" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>-->
+                                    </ContextMenu>
                         </WPFSTD:ModelExt.ContextMenu>
                         <ddes:Model.ProgressBar>
                             <ddes:ProgressBar Lighting="False"/>
@@ -595,6 +587,15 @@
                             </Binding>
                         </TextBox.Text>
                     </TextBox>
+                    <!--<TextBox Name="EditObjectVisibility111" Grid.Column="1" Grid.Row="1">
+                        <TextBox.Text>
+                            <Binding Path="EditObjectVisibility" UpdateSourceTrigger="PropertyChanged" >
+                                <Binding.ValidationRules>
+                                    <STD105ValidRule:CheckStringEmptyRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>-->
                     <Label Grid.Column="0"  Grid.Row="2"
                            Content="製品長度：" />
                     <Grid  Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" >
@@ -627,8 +628,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Name="Weight" Text="{Binding ProductWeightProperty, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N1}}" Margin="6,0,0,0"/>
-                        <TextBlock Grid.Column="1"  Text="Kg"   Margin="3,0,0,0"/>
+                        <TextBox Grid.Column="0" Name="Weight" Text="{Binding ProductWeightProperty, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N1}}" IsEnabled="False" Margin="6,0,0,0"/>
+                        <TextBlock Grid.Column="1"  Text="Kg"   Margin="3,5,0,0"/>
 
                     </Grid>
 
@@ -796,7 +797,7 @@
 
                     </Grid>
 
-                    <Button Grid.Column="3" Grid.Row="6" Grid.ColumnSpan="2" x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}"  Style="{StaticResource SiegCustomButtonGold}" Width="90" HorizontalAlignment="Left" />
+                    <Button Grid.Column="3" Grid.Row="6" Grid.ColumnSpan="2" x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}"  Style="{StaticResource SiegCustomButtonGold}" Width="90" HorizontalAlignment="Left" Visibility="Visible" />
 
                     <StackPanel Grid.Row="13" Margin="2" Orientation="Horizontal" Grid.ColumnSpan="5">
                         <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Style="{StaticResource SiegCustomButtonGold}" Width="80" Margin="0,0,6,0" Click="OKtoConfirmChanges"/>
@@ -806,7 +807,7 @@
                                                Add="{Binding AddPart}"
                                                ReadVisibility="Collapsed"
                                                DeleteVisibility="Collapsed"/>
-                        <Button x:Name="btn_AddNewOne" Content="另存" Command="{Binding AddNewOne}" DockPanel.Dock="Left" Width="76" Margin="0,0,0,0" Visibility="Visible"/>
+                        <Button x:Name="btn_AddNewOne" Content="另存" Command="{Binding AddNewOne}" DockPanel.Dock="Left" Width="76" Margin="0,0,0,0" Visibility="Collapsed"/>
 
                         <!--鎖頭的行為要與按鈕的開啟關閉binding 0902-->
                     </StackPanel>
@@ -1126,7 +1127,7 @@
                                                 <RowDefinition Height="*"/>
                                             </Grid.RowDefinitions>
 
-                                            <RadioButton  Margin="0,0,0,0" Grid.Row="0" GroupName="CutLinePosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=1}">
+                                            <RadioButton  Margin="0,0,0,0" Grid.Row="0" GroupName="CutLinePosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=1}" Command="{Binding rb_CutLinePosition_Command}">
                                                 <RadioButton.Content>
                                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,0" >
                                                         <Label Content="前面"/>
@@ -1135,7 +1136,7 @@
                                                 </RadioButton.Content>
                                             </RadioButton>
 
-                                            <RadioButton Margin="0,-10,0,0" Grid.Row="1" VerticalAlignment="Center" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=0}">
+                                            <RadioButton Margin="0,-10,0,0" Grid.Row="1" VerticalAlignment="Center" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=0}" Command="{Binding rb_CutLinePosition_Command}">
                                                 <RadioButton.Content>
                                                     <StackPanel Orientation="Horizontal" Margin="0,6,0,0" >
                                                         <Label Content="頂面"/>
@@ -1144,7 +1145,7 @@
                                                 </RadioButton.Content>
                                             </RadioButton>
 
-                                            <RadioButton  Margin="0,-10,0,0" Grid.Row="2" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=2}">
+                                            <RadioButton  Margin="0,-10,0,0" Grid.Row="2" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=2}" Command="{Binding rb_CutLinePosition_Command}">
                                                 <RadioButton.Content>
                                                     <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                                         <Label Content="後面"/>
@@ -1192,7 +1193,7 @@
                                                      Canvas.Left="81"
                                                      Canvas.Top="0">
                                                 <TextBox.Text>
-                                                    <Binding Path="ULPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding Path="ULPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                                         <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                         </Binding.ValidationRules>
@@ -1202,20 +1203,21 @@
                                             <TextBox Grid.Row="3"
                                                      Width="50"
                                                      Canvas.Left="149"
-                                                     Canvas.Top="0">
-                                                <TextBox.Text>
-                                                    <Binding Path="URPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                     Canvas.Top="0"
+                                                     Text="{Binding URPoint.X,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                                <!--<TextBox.Text>
+                                                    <Binding Path="URPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                                         <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                         </Binding.ValidationRules>
                                                     </Binding>
-                                                </TextBox.Text>
+                                                </TextBox.Text>-->
                                             </TextBox>
                                             <TextBox Width="50"
                                                      Canvas.Left="10"
                                                      Canvas.Top="55">
                                                 <TextBox.Text>
-                                                    <Binding Path="ULPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding Path="ULPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                                         <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                         </Binding.ValidationRules>
@@ -1226,7 +1228,7 @@
                                                      Canvas.Left="10"
                                                      Canvas.Top="139">
                                                 <TextBox.Text>
-                                                    <Binding Path="DLPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding Path="DLPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                                         <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                         </Binding.ValidationRules>
@@ -1237,7 +1239,7 @@
                                                      Canvas.Left="220"
                                                      Canvas.Top="55">
                                                 <TextBox.Text>
-                                                    <Binding Path="URPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding Path="URPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                                         <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                         </Binding.ValidationRules>
@@ -1248,7 +1250,7 @@
                                                      Canvas.Left="220"
                                                      Canvas.Top="139">
                                                 <TextBox.Text>
-                                                    <Binding Path="DRPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding Path="DRPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                                         <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                         </Binding.ValidationRules>
@@ -1259,7 +1261,7 @@
                                                      Canvas.Left="81"
                                                      Canvas.Top="195">
                                                 <TextBox.Text>
-                                                    <Binding Path="DLPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding Path="DLPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                                         <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                         </Binding.ValidationRules>
@@ -1270,7 +1272,7 @@
                                                      Canvas.Left="149"
                                                      Canvas.Top="195">
                                                 <TextBox.Text>
-                                                    <Binding Path="DRPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding Path="DRPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                                                         <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                         </Binding.ValidationRules>

@@ -335,6 +335,10 @@
     <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
     </Reference>
+    <Reference Include="OFFICE, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\OFFICE.DLL</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="PropertyChanged, Version=3.2.8.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
@@ -448,6 +452,9 @@
     <Compile Include="Attribute\SteelAttrInExcel.cs" />
     <Compile Include="Attribute\SteelAttr.cs" />
     <Compile Include="BarcodeGenerator.cs" />
+    <Compile Include="DMFileGeneratorScreenWindow.xaml.cs">
+      <DependentUpon>DMFileGeneratorScreenWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ExcelAmountService.cs" />
     <Compile Include="Connected Services\MonitorDuplex\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -464,6 +471,7 @@
     <Compile Include="MachineAndPhoneAPI\Models\EnableAppPairing.cs" />
     <Compile Include="MachineAndPhoneAPI\Models\RegisterAssembly.cs" />
     <Compile Include="MachineAndPhoneAPI\Models\UnreigisterAssembly.cs" />
+    <Compile Include="Model\DrillBolts.cs" />
     <Compile Include="Model\OperatingLog.cs" />
     <Compile Include="UserControls\ProcessingScreenWindow.xaml.cs">
       <DependentUpon>ProcessingScreenWindow.xaml</DependentUpon>
@@ -473,7 +481,7 @@
     <Compile Include="ViewModel\Machine\Dpad\joystick\Dpad_Joystick_ViewModel.cs" />
     <Compile Include="ViewModel\Machine\Dpad\joystick\ToolMagazineControl_ViewModel.cs" />
     <Compile Include="ViewModel\Machine\MachineFunctionVM.cs" />
-    <Compile Include="ViewModel\ProcessingMonitor_MachineVM.cs" />
+    <Compile Include="ViewModel\Machine\ProcessingMonitor_MachineVM.cs" />
     <Compile Include="WordToPdfService.cs" />
     <Compile Include="WordCutService.cs" />
     <Compile Include="WordBuyService.cs" />
@@ -644,6 +652,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CodesysIIS\CodesysIIS.csproj">
+      <Project>{3E7AA2C5-871D-4C77-A798-85CDF57A96BC}</Project>
+      <Name>CodesysIIS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GD_STD.Data\GD_STD.Data.csproj">
       <Project>{390C0859-C722-45E8-9B21-5FA41CA5C18C}</Project>
       <Name>GD_STD.Data</Name>
@@ -832,22 +844,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="DMFileGeneratorScreenWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\ProcessingScreenWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="Microsoft.Office.Core">
-      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>8</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <Private>True</Private>
-    </COMReference>
     <COMReference Include="Microsoft.Office.Interop.MSProject">
       <Guid>{A7107640-94DF-1068-855E-00DD01075445}</Guid>
       <VersionMajor>4</VersionMajor>

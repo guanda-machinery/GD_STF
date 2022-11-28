@@ -173,6 +173,10 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public ICommand CalculateWeightCommand { get; set; }
         /// <summary>
+        /// 20221125 張燕華 根據型鋼位置載入切割線數值
+        /// </summary>
+        public ICommand rb_CutLinePosition_Command { get; set; }
+        /// <summary>
         /// 20220906 張燕華 鑽孔rbtn測試
         /// </summary>
         public ICommand CmdShowMessage { get; set; }
@@ -340,6 +344,11 @@ namespace WPFSTD105.ViewModel
         /// 取得原點符號
         /// </summary>
         public OriginSymbol OriginSymbol { get => OriginSymbols[0]; }
+
+        /// <summary>
+        /// 編輯已選擇，可視性
+        /// </summary>
+        public bool EditObjectVisibility { get; set; } //= Visibility.Collapsed;
         /// <summary>
         /// 用戶設定檔案
         /// </summary>
@@ -1010,7 +1019,7 @@ namespace WPFSTD105.ViewModel
         public void WriteCutAttr(SteelAttr steelAttr)
         {
             int temp_CutFace;
-            if (OfficeViewModel.CurrentPage == OfficePage.ProductSettings)//若為新版製品設定頁面
+            if (OfficeViewModel.CurrentPage == OfficePage.ProductSettings || ViewLocator.ApplicationViewModel.CurrentPage == ApplicationPage.MachineProductSetting)//若為新版製品設定頁面
             {
                 temp_CutFace = rbtn_CutFace;
             }
@@ -1105,6 +1114,44 @@ namespace WPFSTD105.ViewModel
                     default:
                         throw new Exception("找不到面");
                 }
+
+                // 讀取切割線設定檔
+                STDSerialization ser = new STDSerialization(); //序列化處理器
+                ObservableCollection<SteelCutSetting> steelcutSettings = new ObservableCollection<SteelCutSetting>();
+                steelcutSettings = ser.GetCutSettingList();
+                steelcutSettings = steelcutSettings ?? new ObservableCollection<SteelCutSetting>();
+                if (steelcutSettings.Any(x => x.GUID == this.GuidProperty && x.face == (FACE)temp_CutFace))
+                {
+                    SteelCutSetting cs = steelcutSettings.FirstOrDefault(x => x.GUID == this.GuidProperty && x.face == (FACE)temp_CutFace);
+                    cs.face = (FACE)temp_CutFace;
+                    cs.DLX = this.DLPoint.X;
+                    cs.DLY = this.DLPoint.Y;
+                    cs.ULX = this.ULPoint.X;
+                    cs.ULY = this.ULPoint.Y;
+                    cs.DRX = this.DRPoint.X;
+                    cs.DRY = this.DRPoint.Y;
+                    cs.URX = this.URPoint.X;
+                    cs.URY = this.URPoint.Y;
+                    ser.SetCutSettingList(steelcutSettings);
+                }
+                else 
+                {
+                    SteelCutSetting cs = new SteelCutSetting()
+                    {
+                        GUID = this.GuidProperty,
+                        face = (FACE)temp_CutFace,
+                        DLX = this.DLPoint.X,
+                        DLY = this.DLPoint.Y,
+                        ULX = this.ULPoint.X,
+                        ULY = this.ULPoint.Y,
+                        DRX = this.DRPoint.X,
+                        DRY = this.DRPoint.Y,
+                        URX = this.URPoint.X,
+                        URY = this.URPoint.Y,
+                    };
+                    steelcutSettings.Add(cs);
+                    ser.SetCutSettingList(steelcutSettings);
+                }
             }
             catch (Exception e)
             {
@@ -1132,15 +1179,15 @@ namespace WPFSTD105.ViewModel
         #endregion
 
         #region 新版屬性
-        private ObservableCollection<ProductSettingsPageViewModel> _dataviews = new ObservableCollection<ProductSettingsPageViewModel>();
+        private ObservableCollection<ProductSettingsPageViewModel> _dataviews { get; set; } = new ObservableCollection<ProductSettingsPageViewModel>();
 
         /// <summary>
         /// 零件資訊
         /// </summary>
         public ObservableCollection<ProductSettingsPageViewModel> DataViews
         {
-            get { return _dataviews; }
-            set { _dataviews = value; }
+            get => _dataviews;
+            set => _dataviews = value;
         }
         /// <summary>
         /// 所選到斷面規格在其斷面規格list中的index
@@ -1180,7 +1227,14 @@ namespace WPFSTD105.ViewModel
             //如果模型有材質設定
             if (!File.Exists(ApplicationVM.FileMaterial()))
             {
-                Materials.AddRange(SerializationHelper.GZipDeserialize<ObservableCollection<SteelMaterial>>(ApplicationVM.FileMaterial())); //材質序列化檔案
+                try
+                {
+                    Materials.AddRange(SerializationHelper.GZipDeserialize<ObservableCollection<SteelMaterial>>(ApplicationVM.FileMaterial())); //材質序列化檔案
+                }
+                catch
+                {
+
+                }
             }
             DicSteelPart = ser.GetPart();
             Materials = ser.GetMaterial(); //材質序列化檔案
@@ -1208,6 +1262,7 @@ namespace WPFSTD105.ViewModel
 
             ShowSteelTypeCommand = ShowSteelType(); //20220829 張燕華 選擇型鋼型態
             CalculateWeightCommand = CalculateWeight();
+            rb_CutLinePosition_Command = rb_CutLinePosition();
 
             InitializeSteelAttr();
         }
@@ -1438,6 +1493,64 @@ namespace WPFSTD105.ViewModel
                 }
             });
         }
+        /// <summary>
+        /// 20221125 張燕華 根據型鋼位置載入切割線數值
+        /// </summary>
+        private WPFBase.RelayCommand rb_CutLinePosition()
+        {
+            return new WPFBase.RelayCommand(() =>
+            {
+                // 讀取切割線設定檔
+                STDSerialization ser = new STDSerialization(); //序列化處理器
+                ObservableCollection<SteelCutSetting> steelcutSettings = new ObservableCollection<SteelCutSetting>();
+                steelcutSettings = ser.GetCutSettingList();
+                steelcutSettings = steelcutSettings ?? new ObservableCollection<SteelCutSetting>();
+
+                
+                if (steelcutSettings.Any(x => x.GUID == this.GuidProperty && x.face == (FACE)rbtn_CutFace))
+                {
+                    SteelCutSetting cs = steelcutSettings.FirstOrDefault(x => x.GUID == this.GuidProperty && x.face == (FACE)rbtn_CutFace);
+
+                    DLPoint.X = cs.DLX;
+                    DLPoint.Y = cs.DLY;
+                    ULPoint.X = cs.ULX;
+                    ULPoint.Y = cs.ULY;
+                    DRPoint.X = cs.DRX;
+                    DRPoint.Y = cs.DRY;
+                    URPoint.X = cs.URX;
+                    URPoint.Y = cs.URY;
+                }
+                else
+                {
+                    SteelCutSetting cs = new SteelCutSetting()
+                    {
+                        GUID = this.GuidProperty,
+                        face = (FACE)rbtn_CutFace,
+                        DLX = 0,
+                        DLY = 0,
+                        ULX = 0,
+                        ULY = 0,
+                        DRX = 0,
+                        DRY = 0,
+                        URX = 0,
+                        URY = 0,
+                    };
+                    steelcutSettings.Add(cs);
+                    ser.SetCutSettingList(steelcutSettings);
+
+                    DLPoint.X = 0;
+                    DLPoint.Y = 0;
+                    ULPoint.X = 0;
+                    ULPoint.Y = 0;
+                    DRPoint.X = 0;
+                    DRPoint.Y = 0;
+                    URPoint.X = 0;
+                    URPoint.Y = 0;
+                }
+                        
+                
+            });
+        }
         #endregion
         public void GetNoNCPart()
         {
@@ -1508,7 +1621,7 @@ namespace WPFSTD105.ViewModel
         /// 取得專案內零件資訊
         /// </summary>
         /// <returns></returns>
-        public static List<ProductSettingsPageViewModel> GetData(bool ShowProcessingScreenWin = true)
+        public static List<ProductSettingsPageViewModel> GetData()
         {
             STDSerialization ser = new STDSerialization();
             // 限制Grid出現之內容
@@ -1516,15 +1629,7 @@ namespace WPFSTD105.ViewModel
 
             // 取得dm檔與零件之對應
             ObservableCollection<DataCorrespond> DataCorrespond = ser.GetDataCorrespond();
-#if DEBUG
-            // 將字串寫入TXT檔
-            StreamWriter str = new StreamWriter(@"DEBUG_PartList.txt");
-            foreach (DataCorrespond se in DataCorrespond)
-            {
-                str.WriteLine($"{se.DataName} {se.Profile} {se.Number}");
-            }
-            str.Close();
-#endif
+
             // 取得構件資訊
             ObservableCollection<SteelAssembly> assemblies = ser.GetGZipAssemblies();
             if (assemblies == null)
@@ -1588,15 +1693,6 @@ namespace WPFSTD105.ViewModel
                         }
                         saList.Add(saTemp);
                     }
-#if DEBUG
-                    else
-                    {
-                        // 將字串寫入TXT檔
-                        StreamWriter str2 = File.AppendText(@"Debug_NcCannotToDM.txt");
-                        str2.WriteLine($"{item.Profile.GetHashCode()}.lis {item.Number} {item.Profile}");
-                        str2.Close();
-                    }
-#endif
                 }
                 NcSA.Add(key, saList);
             }
@@ -1878,15 +1974,15 @@ namespace WPFSTD105.ViewModel
             //foreach (var item in source)
 
 
-            var ProcessingScreenWin = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
+            //var ProcessingScreenWin = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
 
-            if (ShowProcessingScreenWin)
-            {
-                ProcessingScreenWin.Show(inputBlock: InputBlockMode.Window, timeout: 700);
-            }
+            //if (ShowProcessingScreenWin)
+            //{
+            //    ProcessingScreenWin.Show(inputBlock: InputBlockMode.Window, timeout: 700);
+            //}
 
-            ProcessingScreenWin.ViewModel.Status = "取得專案內零件資訊";
-            ProcessingScreenWin.ViewModel.IsIndeterminate = false;
+            //ProcessingScreenWin.ViewModel.Status = "取得專案內零件資訊";
+            //ProcessingScreenWin.ViewModel.IsIndeterminate = false;
             int ItemCount = 0;
 
             foreach (var item in group)
@@ -1917,7 +2013,7 @@ namespace WPFSTD105.ViewModel
                     t1 = item.t1,
                     t2 = item.t2,
                     ExclamationMark = item.ExclamationMark == null ? false : item.ExclamationMark,
-
+                     
                 };
                 //// source專用
                 //aa.steelAttr.GUID = item.steelAttr.GUID;
@@ -1945,7 +2041,7 @@ namespace WPFSTD105.ViewModel
                 aa.steelAttr.Title2 = item.Title2;
                 aa.steelAttr.Phase = item.Phase;
                 aa.steelAttr.ShippingNumber = item.ShippingNumber;
-                aa.steelAttr.ExclamationMark = item.ExclamationMark;
+                aa.steelAttr.ExclamationMark = item.ExclamationMark == null ? false : item.ExclamationMark;
 
                 if (NcSA[aa.steelAttr.Profile.GetHashCode().ToString() + ".lis"].Any())
                 {
@@ -1967,8 +2063,8 @@ namespace WPFSTD105.ViewModel
 
                 ItemCount++;
             }
-            ProcessingScreenWin.ViewModel.IsIndeterminate = true;
-            ProcessingScreenWin.Close();
+            //ProcessingScreenWin.ViewModel.IsIndeterminate = true;
+            //ProcessingScreenWin.Close();
             return list;
         }
         /// <summary>

@@ -117,13 +117,26 @@ namespace STD_105
             base.OnStartup(e);
 #if DEBUG                        
             MessageBoxResult messageBoxResult = MessageBox.Show($"測試環境是否要選擇工廠模式 ?", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+            /* var messageBoxResult = WinUIMessageBox.Show(null,
+            $"是否要選擇工廠模式 ?",
+            "通知",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Information,
+            MessageBoxResult.None,
+            MessageBoxOptions.ServiceNotification,
+            FloatingMode.Window);*/
+
             if (messageBoxResult == MessageBoxResult.Yes)//如果是工廠模式
             {
                 WPFSTD105.Properties.SofSetting.Default.OfficeMode = false;
             }
-            else
+            else if(messageBoxResult == MessageBoxResult.No)
             {
                 WPFSTD105.Properties.SofSetting.Default.OfficeMode = true;
+            }
+            else
+            {
+                Environment.Exit(0);
             }
             //WPFSTD105.Properties.SofSetting.Default.Save();
 #endif
