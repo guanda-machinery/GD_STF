@@ -956,6 +956,7 @@
     <Compile Include="ValueConverters\MultiValueConverters\BooleanArrayUnionToBooleanConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\MultiObjectArrayToBooleanConverter.cs" />
     <Compile Include="ValueConverters\ObjectIsNullToBooleanConverter.cs" />
+    <Compile Include="ValueConverters\SectionSpecificationToEnabledConverter.cs" />
     <Compile Include="ValueConverters\SteelPartWeightConverter.cs" />
     <Compile Include="ValueConverters\DrillingFaceConverter.cs" />
     <Compile Include="ValueConverters\SteelTypeToStringConverter.cs" />

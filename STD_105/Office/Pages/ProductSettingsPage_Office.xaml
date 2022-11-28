@@ -741,7 +741,21 @@
                                   DisplayMemberPath="Profile" 
                                   Text="{Binding SteelSectionProperty, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="CBOX_SectionTypeChanged"
                                  IsSynchronizedWithCurrentItem="True"
-                              > 
+                              >
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=Content, 
+                        RelativeSource={RelativeSource Self}, 
+                            Converter={STD105:SectionSpecificationToEnabledConverter}}" 
+                            Value="true">
+                                        <Setter Property="IsEnabled" 
+                            Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionTypeComboBox">
                                 <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
