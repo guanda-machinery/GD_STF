@@ -145,13 +145,14 @@
                         Style="{StaticResource SiegCustom_CompactGridControl}"
                         FilterGroupSortChanging="GridControl_FilterGroupSortChanging"
                         Name="PartsGridControl"
+                 
                         AutoGenerateColumns="None"
                         SelectionMode="row"
                        SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                         MaxHeight="10000" 
                         ItemsSource="{Binding DataViews}">
                         <dxg:GridControl.View >
-                            <dxg:TableView       
+                            <dxg:TableView      
                                 AllowPaging="True"
                                 PageSize="30"
                                 HighlightItemOnHover="True"
@@ -163,18 +164,15 @@
                                 AllowColumnMoving="False"       
                                 AllowSorting="True"
                            
-                                
                                 IsColumnChooserVisible="False"     
                                 AllowEditing="False"
                                 Name="PartListTableView"
                                 Loaded="PartListTableView_Loaded"  
-                             
                                     SearchString="{Binding PartsSearchString, Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}"
                                     VerticalScrollbarVisibility="Disabled"
                                     HorizontalScrollbarVisibility="Auto"
                                     ShowGroupPanel="False"
                                     ShowSearchPanelMode="Never"
-                            
                                     ScrollViewer.ScrollChanged="ScrollOwner_ScrollChanged"
                                     SearchPanelNullText="Search Tasks(Ctrl + F)" 
                                     SearchPanelFindMode="Always" ShowIndicator="True"  
@@ -183,6 +181,7 @@
                                     <Style>
                                         <Setter Property="TextBlock.FontSize" Value="12"/>
                                     </Style>
+
                                 </dxg:TableView.CellStyle>
 
                                 <dxg:TableView.RowIndicatorContentTemplate>
@@ -199,9 +198,6 @@
                                         </Grid>
                                     </DataTemplate>
                                 </dxg:TableView.RowIndicatorContentTemplate>
-
-
-
                             </dxg:TableView>
                         </dxg:GridControl.View>
                         <dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"    Header="構件編號" Width="120"/>
