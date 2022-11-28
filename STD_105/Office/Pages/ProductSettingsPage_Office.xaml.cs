@@ -3132,6 +3132,21 @@ namespace STD_105.Office
                         return false;
                     }
 
+                    ProductSettingsPageViewModel current_item = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
+                    if (current_item.Profile != ViewModel.SteelSectionProperty)
+                    {
+                        // 修改到斷面規格時
+                        WinUIMessageBox.Show(null,
+                           $"若需修改斷面規格時，請用新增按紐來建立新零件",
+                           "通知",
+                           MessageBoxButton.OK,
+                           MessageBoxImage.Exclamation,
+                           MessageBoxResult.None,
+                           MessageBoxOptions.None,
+                           FloatingMode.Popup);
+                        return false;
+                    }
+
                     break;
             }
             return true;
