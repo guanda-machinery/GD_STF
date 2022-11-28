@@ -827,6 +827,9 @@ namespace STD_105.Office
                 //ProductSettingsPageViewModel row = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
                 //ConfirmCurrentSteelSection(row);
                 //GetViewToViewModel(false, ViewModel.GuidProperty);
+                //規格不對 不可修改?
+
+
                 if (!DataCheck("edit"))
                 {
                     fclickOK = true;

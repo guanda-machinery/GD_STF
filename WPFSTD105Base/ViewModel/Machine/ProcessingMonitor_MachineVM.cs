@@ -206,25 +206,6 @@ namespace WPFSTD105.ViewModel
 
 
 
-
-        //private ObservableCollection<MaterialDataView> _undoneDataView = new ObservableCollection<MaterialDataView>();
-        /// <summary>
-        /// 未加工的清單
-        /// </summary>
-        //public ObservableCollection<MaterialDataView> UndoneDataView { get { return _undoneDataView; } } 
-        /// <summary>
-        /// 配料清單
-        /// </summary>
-        //public ObservableCollection<MaterialDataView> DataViews { get; set; }
-
-        //private ObservableCollection<MaterialDataView> _finishDataViews = new ObservableCollection<MaterialDataView>();
-        /// <summary>
-        /// 已完成的清單
-        /// </summary>
-        //public ObservableCollection<MaterialDataView> FinishDataViews { get { return _finishDataViews; } }
-
-
-
         private ObservableCollection<MaterialDataView> _finish_UndoneDataViews = new ObservableCollection<MaterialDataView>();
         /// <summary>
         /// 未加工-已完成合併清單
@@ -276,7 +257,6 @@ namespace WPFSTD105.ViewModel
                     AssemblyNumberList.Add(M_part.AssemblyNumber);
                 }
                 MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(AssemblyNumberList);
-
 
                 _finish_UndoneDataViews_SelectedItem = value;
 
@@ -376,7 +356,7 @@ namespace WPFSTD105.ViewModel
         private bool GetMaterialdataDrillBoltsInfo(string DataName, out List<DrillBolts> DrillBoltsList)
         {
             DrillBoltsList = new List<DrillBolts>();
-            devDept.Eyeshot.Model _BufferModel = new devDept.Eyeshot.Model();
+            var _BufferModel = new devDept.Eyeshot.Model();
             _BufferModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             _BufferModel.InitializeViewports();
             _BufferModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
@@ -624,7 +604,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 暫存模型
         /// </summary>
-        private devDept.Eyeshot.Model _BufferModel { get; set; }
+        //private devDept.Eyeshot.Model _BufferModel { get; set; }
         #region 偏移量
         //int _WorkIndex = 0;//加工陣列索引
         private long _WorkOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.WorkMaterial)).ToInt64();
@@ -823,23 +803,12 @@ namespace WPFSTD105.ViewModel
             Display3DViewerCommand = Display3DViewer();
             Finish_UndoneDataViews = _Ser.GetMaterialDataView();
             Finish_UndoneDataViews.ForEach(el => el.Position = PositionStatusEnum.初始化.ToString());
-            //UndoneDataView = new ObservableCollection<MaterialDataView>(DataViews);
-            //Finish_UndoneDataViews = new ObservableCollection<MaterialDataView>(DataViews);
             _SynchronizationContext = SynchronizationContext.Current;
             _WorkMaterials = new WorkMaterial[Finish_UndoneDataViews.Count];
 
-            _BufferModel = new devDept.Eyeshot.Model();
-            _BufferModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
-            _BufferModel.InitializeViewports();
-            _BufferModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
-            
-            //清單初始化
-
-
-
             //啟動一執行序持續掃描是否有錯誤訊息
 
-            ReadErrorInfoTask = Task.Factory.StartNew(() =>
+            var ReadErrorInfoTask = Task.Factory.StartNew(() =>
             {
                 string Local_ErrorInfo = string.Empty;
                 while (ReadTaskBoolean)
@@ -1202,15 +1171,7 @@ namespace WPFSTD105.ViewModel
             return result;
         }
 
-
-
-
         private bool ReadTaskBoolean = true;
-        private Task ReadErrorInfoTask;
-        private Task NewSerializationTask;
-        private Task HostTask;
-
-
 
         /// <summary>
         /// 寫入加工參數到 Codesys <see cref="GD_STD.Phone.MonitorWork"/>
@@ -1387,14 +1348,13 @@ namespace WPFSTD105.ViewModel
 
         private void SendDrill(int index)
         {
+            var _BufferModel = new devDept.Eyeshot.Model();
+            _BufferModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
+            _BufferModel.InitializeViewports();
+            _BufferModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
 
-            
             _CreateFileTask?.Wait(); //等待 Task CreateFile 完成 link:ProcessingMonitorVM.cs:CreateFile()
-                                     //_SynchronizationContext.Wait();
-                                     //_SynchronizationContext.Send(t =>
-                                     //{
-
-            _BufferModel.Dispatcher.Invoke(() =>
+            _SynchronizationContext.Send(t =>
             {
                 try
                 {
@@ -1406,8 +1366,6 @@ namespace WPFSTD105.ViewModel
                     if (File.Exists($@"{ApplicationVM.DirectoryMaterial()}\{view.MaterialNumber}.dm"))
                     {
                         ReadFile readFile = _Ser.ReadMaterialModel(view.MaterialNumber);
-                        //_SynchronizationContext.Send(t =>
-                        //{
                         _BufferModel.Clear();
                         readFile.DoWork();
                         readFile.AddToScene(_BufferModel);
@@ -1462,12 +1420,11 @@ namespace WPFSTD105.ViewModel
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
 
                 }
-            });
-            //}, null);
+            }, null);
         }
 
 
@@ -1607,48 +1564,11 @@ namespace WPFSTD105.ViewModel
 
 
         /// <summary>
-        /// 產生 <see cref="MaterialDataView"/> 的3D檔案 old
-        /// </summary>
-        /*public async void CreateFile(WPFSTD105.ModelExt _Model)
-        {
-            Finish_UndoneDataViews.ForEach(el => //產生素材3D視圖
-            {
-                if (!File.Exists($@"{ApplicationVM.DirectoryMaterial()}\{el.MaterialNumber}.dm"))
-                {
-                    _SynchronizationContext.Send(t =>
-                    {
-                        int RetryCount = 0;
-                        while (RetryCount < 10)
-                        {
-                            try
-                            {
-                                _Model.Clear();
-                                _Model.AssemblyPart(el.MaterialNumber);
-                                _Ser.SetMaterialModel(el.MaterialNumber, _Model);//儲存 3d 視圖
-                                break;
-                            }
-                            catch (Exception ex)
-                            {
-                                RetryCount++;
-                            }
-                        }
-                    }, null);
-                }
-            });
-            _SynchronizationContext.Send(t => _Model.Clear(), null);
-            await Task.Yield();
-            _Ser.SetMaterialDataView(Finish_UndoneDataViews);
-        }*/
-
-
-        /// <summary>
         /// 執行與釋放 (Free)、釋放 (Release) 或重設 Unmanaged 資源相關聯之應用程式定義的工作。
         /// </summary>
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {
-
-
             if (!_DsposedValue)
             {
                 if (disposing)
@@ -1663,52 +1583,8 @@ namespace WPFSTD105.ViewModel
                     }
                     _CreateFileTask?.Dispose();
                     _WriteCodesysTask?.Dispose();
-                    if (_BufferModel != null)
-                    {
-                        try
-                        {
-                            //_BufferModel.Dispose();
-                        }
-                        catch (Exception ex)
-                        {
-                        }
-                    }
 
                     ReadTaskBoolean = false;
-
-                    try
-                    {
-                        if (ReadErrorInfoTask != null)
-                        {
-                            ReadErrorInfoTask.Dispose();
-                        }
-                    }
-                    catch
-                    {
-
-                    }
-                    try
-                    {
-                        if (NewSerializationTask != null)
-                        {
-                            NewSerializationTask.Dispose();
-                        }
-                    }
-                    catch
-                    {
-
-                    }
-                    try
-                    {
-                        if (HostTask != null)
-                        {
-                            HostTask.Dispose();
-                        }
-                    }
-                    catch
-                    {
-
-                    }
                 }
                 // TODO: 釋出非受控資源 (非受控物件) 並覆寫完成項
                 // TODO: 將大型欄位設為 Null
@@ -2242,7 +2118,7 @@ namespace WPFSTD105.ViewModel
 
                             while (Finish_UndoneDataViews[MaterialIndex].Position == PositionStatusEnum.初始化.ToString())
                             {
-                                Thread.Sleep(100);
+                                Thread.Sleep(1);
                             }
 
                             if (Finish_UndoneDataViews[MaterialIndex].Position == PositionStatusEnum.等待配對.ToString())
@@ -2317,6 +2193,12 @@ namespace WPFSTD105.ViewModel
             {
                 try
                 {
+                    if(errorCount == 0)
+                    {
+                        NewSerializationThread();
+                        NewHostThread();
+                    }
+
                     int synIndex = 0;
                     if (ApplicationViewModel.PanelButton.Key != KEY_HOLE.AUTO) //如果沒有在自動狀況下
                     {
@@ -2393,12 +2275,9 @@ namespace WPFSTD105.ViewModel
                     }
                 }
             }
-            NewSerializationThread();
-            NewHostThread();
 
             _SerializationThread.Start();
             _HostThread.Start();
-
             using (Memor.WriteMemorClient Write = new Memor.WriteMemorClient())
             {
                 long ImportProjectOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.ImportProject)).ToInt64();
