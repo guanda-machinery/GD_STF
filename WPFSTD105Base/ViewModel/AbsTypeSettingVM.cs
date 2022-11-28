@@ -508,6 +508,18 @@ namespace WPFSTD105
                     {
                         foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl.SelectedItems)
                         {
+                            //將不正確的H及W排除
+                            //PartGridColumn.H > 150;
+                            if (PartGridColumn.W > WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMaxWidth
+                            || PartGridColumn.W < WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMinWidth)
+                                continue;
+
+                            if (PartGridColumn.H > WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMaxHeight
+                              || PartGridColumn.H < WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMinHeight)
+                                continue;
+
+
+
                             //數量 -已配對 >= 預排數量
 
                             //數量
@@ -517,6 +529,17 @@ namespace WPFSTD105
                             var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
                             if (PartGridColumn.SortCount < IDCount - alreadyMatchCount)
                                 PartGridColumn.SortCount++;
+
+
+
+                            var PGIndex = (PartGirdControl.ItemsSource as ObservableCollection<GD_STD.Data.TypeSettingDataView>).ToList().FindIndex(x => x == PartGridColumn);
+                            if(PGIndex != -1)
+                            {
+                                PartGirdControl.Dispatcher.Invoke(() =>
+                                {
+                                    PartGirdControl.RefreshRow(PGIndex);
+                                });
+                            }
                         }
                         //需要重整才能更新data binding 
 
@@ -583,6 +606,14 @@ namespace WPFSTD105
                     {
                         foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl.SelectedItems)
                         {
+                            if (PartGridColumn.W > WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMaxWidth
+                            || PartGridColumn.W < WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMinWidth)
+                                continue;
+
+                            if (PartGridColumn.H > WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMaxHeight
+                              || PartGridColumn.H < WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMinHeight)
+                                continue;
+
                             //數量 -已配對 >= 預排數量
 
                             //數量
