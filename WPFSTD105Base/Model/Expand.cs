@@ -969,16 +969,13 @@ namespace WPFSTD105.Model
             model.Clear();//清除模型內物件
             string blockName = string.Empty;
 
-
-
-            
             double midX = (nc.SteelAttr.Length+diffLength) / 2;
-            // vpoint個代表原點經四點再回原點，Group X及Y只會有兩個數字，一般正常型鋼，可切斜邊，所以要讀斜邊設定檔 將斜邊寫回
-            if ((nc.SteelAttr.vPoint.Count == 5 && nc.SteelAttr.vPoint.GroupBy(x => x.X).Count() == 2 && nc.SteelAttr.vPoint.GroupBy(x => x.Y).Count() == 2)
-
-                )
+            // vpoint個代表原點經四點再回原點，Group X及Y只會有兩個數字，一般正常矩形型鋼，可切斜邊，所以要讀斜邊設定檔 將斜邊寫回
+            if ((nc.SteelAttr.vPoint.Count == 5 && 
+                nc.SteelAttr.vPoint.GroupBy(x => x.X).Count() == 2 && 
+                nc.SteelAttr.vPoint.GroupBy(x => x.Y).Count() == 2))
             {
-                Steel3DBlock.FillCutSetting(nc.SteelAttr);
+                //Steel3DBlock.FillCutSetting(nc.SteelAttr);
                 Steel3DBlock.AddSteel(nc.SteelAttr, model, out BlockReference steelBlock); //加入 3d 鋼構參考圖塊
                 blockName = steelBlock.BlockName;
             }
@@ -1060,7 +1057,7 @@ namespace WPFSTD105.Model
 
                 vMesh.MergeWith(oMesh);                
                 vMesh.MergeWith(uMesh);
-                //vMesh = uMesh;
+
                 vMesh.EntityData = nc.SteelAttr;
                 vMesh.Regen(1E3);
                 
@@ -1220,11 +1217,18 @@ namespace WPFSTD105.Model
             obvm.SteelAttr = (SteelAttr)TmpSteelAttr.DeepClone();
 
             // 移除斜邊打點
-            List<GroupBoltsAttr> delList = model.Blocks.SelectMany(x => x.Entities).Where(y => y.GetType() == typeof(BlockReference) && y.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)y.EntityData).Mode == AXIS_MODE.HypotenusePOINT).Select(y => (GroupBoltsAttr)y.EntityData).ToList();
-            foreach (GroupBoltsAttr del in delList)
-            {
-                model.Blocks.Remove(model.Blocks[del.GUID.Value.ToString()]);
-            }
+            obvm.RemoveHypotenusePoint(model);
+            //List<GroupBoltsAttr> delList = model.Blocks
+            //    .SelectMany(x => x.Entities)
+            //    .Where(y =>
+            //    y.GetType() == typeof(BlockReference) && 
+            //    y.EntityData.GetType() == typeof(GroupBoltsAttr) && 
+            //    ((GroupBoltsAttr)y.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
+            //    .Select(y => (GroupBoltsAttr)y.EntityData).ToList();
+            //foreach (GroupBoltsAttr del in delList)
+            //{
+            //    model.Blocks.Remove(model.Blocks[del.GUID.Value.ToString()]);
+            //}
             if (TmpSteelAttr.vPoint.Count != 0)     //  頂面斜邊
             {
                 AutoHypotenusePoint(FACE.TOP, model, obvm,diffLength);
@@ -1441,99 +1445,40 @@ namespace WPFSTD105.Model
                 #region TOP
                 case FACE.TOP:
 
-                    if (TmpSteelAttr.vPoint.Count == 0) return;
+                    var Vertices = model.Blocks[1].Entities[0].Vertices.Where(z => z.Z == 0).ToList();
 
-                    var tmp3 = TmpSteelAttr.vPoint.GroupBy(uu => uu.Y).Select(q => new
+                    var tmp3 = Vertices.GroupBy(uu => uu.Y).Select(q => new
                     {
                         key = q.Key,
                         max = q.Max(x => x.X),
                         min = q.Min(f => f.X)
-                    }).ToList();
+                    }).OrderByDescending(aa => aa.key).ToList();
 
 
-                    double GetY_UpPos = -99999.0;
-                    int YUpPosIndex = 0;
-
-                    double GetY_DownPos = 99999.0;
-                    int YDownPosIndex = 0;
-
-
-                    double TmpPos = 0;
-                    int tmpindex = 0;
-                    // 取上Y
-                    for (int i = 0; i < tmp3.Count; i++)
-                    {
-                        if (tmp3[i].key >= GetY_UpPos)
-                        {
-                            GetY_UpPos = tmp3[i].key;
-                            YUpPosIndex = i;
-                        }
-                    }
-
-                    tmpindex = YUpPosIndex;
-                    TmpPos = tmp3[YUpPosIndex].key;
-
-                    for (int i = 0; i < tmp3.Count; i++)
-                    {
-                        if (Math.Abs(TmpPos - tmp3[i].key) <= TmpSteelAttr.t2 && i != tmpindex)
-                        {
-                            GetY_UpPos = tmp3[i].key;
-                            YUpPosIndex = i;
-                        }
-                    }
+                    var YUP2List = tmp3.Where(aa => (aa.key == tmp3[0].key || aa.key == tmp3[0].key - TmpSteelAttr.t2)).OrderByDescending(a => a.key).ToList();
+                    if (YUP2List[0].max >= YUP2List[1].max)
+                        TmpUR = new Point3D(YUP2List[0].max, YUP2List[0].key);
+                    else
+                        TmpUR = new Point3D(YUP2List[1].max, YUP2List[1].key);
 
 
-
-                    // 取下Y
-                    for (int i = 0; i < tmp3.Count; i++)
-                    {
-                        if (tmp3[i].key <= GetY_DownPos)
-                        {
-                            GetY_DownPos = tmp3[i].key;
-                            YDownPosIndex = i;
-                        }
-                    }
-
-                    tmpindex = YDownPosIndex;
-                    TmpPos = tmp3[YDownPosIndex].key;
-
-                    for (int i = 0; i < tmp3.Count; i++)
-                    {
-
-                        if (Math.Abs(TmpPos + tmp3[i].key) <= TmpSteelAttr.t2 && i != tmpindex　&& (tmp3[tmpindex].min> tmp3[i].min))
-                        {
-                            GetY_DownPos = tmp3[i].key;
-                            YDownPosIndex = i;
-                        }
-
-                    }
-
-                    TmpDL = new Point3D(tmp3[YDownPosIndex].min, tmp3[YDownPosIndex].key);
-                    TmpDR = new Point3D(tmp3[YDownPosIndex].max, tmp3[YDownPosIndex].key);
-                    TmpUL = new Point3D(tmp3[YUpPosIndex].min, tmp3[YUpPosIndex].key);
-                    TmpUR = new Point3D(tmp3[YUpPosIndex].max, tmp3[YUpPosIndex].key);
+                    if (YUP2List[0].min <= YUP2List[1].min)
+                        TmpUL = new Point3D(YUP2List[0].min, YUP2List[0].key);
+                    else
+                        TmpUL = new Point3D(YUP2List[1].min, YUP2List[1].key);
 
 
+                    var YDOWN2List = tmp3.Where(aa => (aa.key == tmp3[tmp3.Count - 1].key || aa.key == tmp3[tmp3.Count - 1].key + TmpSteelAttr.t2)).OrderBy(a => a.key).Take(2).ToList();
+                    if (YDOWN2List[0].max >= YDOWN2List[1].max)
+                        TmpDR = new Point3D(YDOWN2List[0].max, YDOWN2List[0].key);
+                    else
+                        TmpDR = new Point3D(YDOWN2List[1].max, YDOWN2List[1].key);
 
 
-
-                    //if (tmp3[0].key > tmp3[1].key)
-                    //{
-
-                    //    var swap = tmp3[0];
-                    //    tmp3[0] = tmp3[1];
-                    //    tmp3[1] = swap;
-                    //}
-
-                    //TmpDL = new Point3D(tmp3[0].min, tmp3[0].key);
-                    //TmpDR = new Point3D(tmp3[0].max, tmp3[0].key);
-                    //TmpUL = new Point3D(tmp3[1].min, tmp3[1].key);
-                    //TmpUR = new Point3D(tmp3[1].max, tmp3[1].key);
-
-
-
-
-
+                    if (YDOWN2List[0].min <= YDOWN2List[1].min)
+                        TmpDL = new Point3D(YDOWN2List[0].min, YDOWN2List[0].key);
+                    else
+                        TmpDL = new Point3D(YDOWN2List[1].min, YDOWN2List[1].key);
 
 
                     if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
