@@ -105,7 +105,7 @@ namespace WPFSTD105.Model
         /// <summary>
         /// 創建螺栓群組
         /// </summary>
-        public void CreateBolts(devDept.Eyeshot.Model model, ref bool check)
+        public void CreateBolts(devDept.Eyeshot.Model model, ref bool check, List<Mesh> meshes = null)
         {
             check = true;
             SteelAttr steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
@@ -129,7 +129,7 @@ namespace WPFSTD105.Model
                 Y = Info.Y,
                 Z = Info.Z,
                 GUID = Guid.NewGuid(),
-                BlockName=Info.BlockName,
+                BlockName = Info.BlockName,
             };
 
             // 若起始座標小於半徑，不可加入
@@ -328,7 +328,12 @@ namespace WPFSTD105.Model
 
                         resultY = BoltsX(resultY, valueX);
                         this.Entities.AddRange(resultY);
-                    }               
+                    }
+                if (meshes != null)
+                {
+                    this.Entities.Clear();
+                    this.Entities.AddRange(meshes);
+                }
             }
         }
 
@@ -493,7 +498,7 @@ namespace WPFSTD105.Model
         /// <param name="model">要被加入的模型</param>
         /// <param name="block">加入到模型的參考圖塊</param>
         /// <returns>加入到模型的圖塊</returns>
-        public static Bolts3DBlock AddBolts(GroupBoltsAttr attr, devDept.Eyeshot.Model model, out BlockReference block,out bool check)
+        public static Bolts3DBlock AddBolts(GroupBoltsAttr attr, devDept.Eyeshot.Model model, out BlockReference block,out bool check,List<Mesh> meshes = null)
         {
             check = true;
             block = null;
@@ -503,7 +508,7 @@ namespace WPFSTD105.Model
             result.steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
             if (!model.Blocks.Contains(result.Name))
             {
-              result.CreateBolts(model, ref check);//創建孔位群組
+              result.CreateBolts(model, ref check,meshes);//創建孔位群組
             }
             else if(CheckBolts(model, result.Name))
             {
