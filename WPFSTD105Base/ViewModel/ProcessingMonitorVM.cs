@@ -188,12 +188,19 @@ namespace WPFSTD105.ViewModel
             {
                 //將資料表重新排列
                 var FUDataList = _finish_UndoneDataViews.ToList();
-                FUDataList.Sort((x, y) =>
+                if (FUDataList != null)
                 {
-                    return x.Position.CompareTo(y.Position);
-                });
-                //_finish_UndoneDataViews
-                return new ObservableCollection<MaterialDataView>(FUDataList);
+                    /*FUDataList.Sort((x, y) =>
+                    {
+                        return x.Position.CompareTo(y.Position);
+                    });*/
+                    return new ObservableCollection<MaterialDataView>(FUDataList);
+                }
+                else
+                {
+                    return _finish_UndoneDataViews;
+                }
+
             }
             set
             {
@@ -1369,7 +1376,7 @@ namespace WPFSTD105.ViewModel
                                      //_SynchronizationContext.Wait();
                                      //沒必要使用占用主執行序 
                                      // _SynchronizationContext.Send(t =>
-            lock (balanceLock)
+           // lock (balanceLock)
             {
                 SplashScreenManager manager = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
 
@@ -1543,9 +1550,7 @@ namespace WPFSTD105.ViewModel
                     {
                         _Model = mdoel;
                     }
-
                     await Task.Yield();
-
                     if (ApplicationViewModel.PanelButton.Key != KEY_HOLE.AUTO)
                     {
                         if (errorCount == 0) //如果沒有發送失敗
@@ -1639,7 +1644,6 @@ namespace WPFSTD105.ViewModel
                 long ImportProjectOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.ImportProject)).ToInt64();
                 Write.SetMonitorWorkOffset(new byte[1] { 1 }, ImportProjectOffset);//寫入匯入專案完成
             }
-
 
         }
 
@@ -2284,7 +2288,7 @@ namespace WPFSTD105.ViewModel
                             var ProjectNameBase64 = MachineAndPhoneAPI.AppServerCommunicate.StringToBase64Converter(ApplicationViewModel.ProjectName);
                             if (EachPair.id.Contains(ProjectNameBase64))
                             {
-                                Finish_UndoneDataViews[MaterialIndex].Position = "手機配對";
+                                Finish_UndoneDataViews[MaterialIndex].Position = "軟體配對";
                                 AddOperatingLog(LogSourceEnum.Phone, $"素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}從軟體配料", false);
                             }
                             else

@@ -264,7 +264,7 @@ namespace STD_105
             switch (WPFSTD105.Properties.SofSetting.Default.Language)
             {
                 case 0:
-                    manager.ViewModel.Status = "讀取中...";
+                    manager.ViewModel.Status = "讀取中....";
                     break;
                 case 1:
                     manager.ViewModel.Status = "Loading...";
@@ -276,7 +276,7 @@ namespace STD_105
                     manager.ViewModel.Status = "กำลังโหลด...";
                     break;
                 default:
-                    manager.ViewModel.Status = "讀取中...";
+                    manager.ViewModel.Status = "讀取中.....";
                     break;
             }
             manager.Show();
