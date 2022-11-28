@@ -5947,6 +5947,12 @@ namespace STD_105.Office
                     SteelAttr steelAttrNC = new SteelAttr();
                     SteelAttr saT = new SteelAttr() { Profile = sa.Profile, Type = sa.Type, t1 = sa.t1, t2 = sa.t2, H = sa.H, W = sa.W };
                     List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
+                    List<GroupBoltsAttr> modelAllBoltList =  model.Entities.Where(x => x.EntityData.GetType() == typeof(GroupBoltsAttr)).Select(x=>(GroupBoltsAttr)x.EntityData).ToList();//孔群
+                    List<Block> blocks = model.Blocks.ToList();
+                    List<Mesh> meshes = null;
+                    // 孔群
+                    var aa = model.Blocks.Select(x => new { x.Name, TypeName = x.GetType().Name, x.Entities }).ToList();
+                    List<Bolts3DBlock> b3d = model.Blocks.Where(x => x.GetType() == typeof(Bolts3DBlock)).Select(x => (Bolts3DBlock)x).ToList();
                     s3Db.ReadNcFile($@"{allPath}", profile, saT, ref steelAttrNC, ref groups);
                     if (File.Exists(allPath))
                     {
@@ -6003,29 +6009,69 @@ namespace STD_105.Office
                     //////////model.Entities.Regen();
                     //////////drawing.Blocks.Clear();
                     //////////drawing.Entities.Clear();
-                    model.LoadNcToModel(focuseGUID, ObSettingVM.allowType, 0, null, sa, groups);
+                    model.LoadNcToModel(focuseGUID, ObSettingVM.allowType, 0, null, sa, modelAllBoltList,blocks);
                     SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
                     ScrollViewbox.IsEnabled = true;
-                    ManHypotenusePoint(FACE.FRONT);
-                    ManHypotenusePoint(FACE.BACK);
-                    ManHypotenusePoint(FACE.TOP);
+                    //ManHypotenusePoint(FACE.FRONT);
+                    //ManHypotenusePoint(FACE.BACK);
+                    //ManHypotenusePoint(FACE.TOP);
                     AutoHypotenuseEnable(FACE.TOP);
                     AutoHypotenuseEnable(FACE.FRONT);
                     AutoHypotenuseEnable(FACE.BACK);                    
                     List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
                     bool hasOutSteel = false;
                     //SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
+                    //sr.AddBolts(model, drawing, modelAllBoltList, ref hasOutSteel);
+
+                    //model.Entities.RemoveRange(0, model.Entities.Count - 1);
+                    
+                   //for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
+                   //{
+                       //if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
+                       //{
+                           //BlockReference blockReference1 = (BlockReference)model.Entities[i]; //取得參考圖塊
+                           //Block block = model.Blocks[blockReference1.BlockName]; //取得圖塊
+                           ////Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts((GroupBoltsAttr)model.Entities[i].EntityData, model, out BlockReference blockRef, out bool checkRef);
+                           //Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference1.EntityData); //產生螺栓圖塊                            
+                           //Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖                        
+                       //}
+                   //}
+
                     for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
                     {
                         if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
                         {
                             BlockReference blockReference1 = (BlockReference)model.Entities[i]; //取得參考圖塊
-                            Block block = model.Blocks[blockReference1.BlockName]; //取得圖塊
-                            //Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts((GroupBoltsAttr)model.Entities[i].EntityData, model, out BlockReference blockRef, out bool checkRef);
-                            Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference1.EntityData); //產生螺栓圖塊                            
-                            Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
+                            int index = blocks.FindIndex(x => x.Name == blockReference1.BlockName);
+                            if (index!=-1)// -1 斜邊打點
+                            {
+                                Block block = blocks[index]; //取得圖塊
+                                Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference1.EntityData); //產生螺栓圖塊                            
+                                Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖          
+                            }
+                                      
                         }
                     }
+
+
+
+
+
+
+                    //if (meshes != null)
+                    //{
+                    //    //model.Entities.RemoveRange(0, model.Entities.Count - 1);
+                    //    //foreach (var b in meshes)
+                    //    //{
+                    //    //    model.Entities.Insert(1, b);
+                               
+                    //    //}
+                    //    //foreach (var item1 in b3d)
+                    //    //{
+                    //    //    Add2DHole(item1, false);//加入孔位不刷新 2d 視圖       
+                    //    //}
+                    //}
+                    
 
 
 
@@ -6053,16 +6099,16 @@ namespace STD_105.Office
                     //}
                     if (!Bolts3DBlock.CheckBolts(model))
                     {
-                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
-                        item.steelAttr.ExclamationMark = true;
-                        item.ExclamationMark = true;
+                        //((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                        //item.steelAttr.ExclamationMark = true;
+                        //item.ExclamationMark = true;
                         PieceListGridControl.RefreshRow(PieceListGridControl.View.FocusedRowHandle);
                     }
                     else
                     {
-                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
-                        item.steelAttr.ExclamationMark = false;
-                        item.ExclamationMark = false;
+                        //((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+                        //item.steelAttr.ExclamationMark = false;
+                        //item.ExclamationMark = false;
                         PieceListGridControl.RefreshRow(PieceListGridControl.View.FocusedRowHandle);
                     }
 
