@@ -128,6 +128,35 @@ namespace WPFSTD105.Model
                         entities.Add(cut1);
                     }
 
+                    var SteelCut1 = (SteelAttr)cut1.EntityData;
+                      
+
+                    List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
+                    double YOffset = SteelCut1.H;
+                    for (int z = 0; z < 2; z++)
+                    {
+                        GroupBoltsAttr TmpBoltsArr = new GroupBoltsAttr();
+                        YOffset = YOffset * 0.33;
+                        TmpBoltsArr.Face = FACE.TOP;
+                        TmpBoltsArr.StartHole = START_HOLE.START;
+                        TmpBoltsArr.dX = "0";
+                        TmpBoltsArr.dY = "0";
+                        TmpBoltsArr.xCount = 1;
+                        TmpBoltsArr.yCount = 1;
+                        TmpBoltsArr.Mode = AXIS_MODE.POINT;
+                        TmpBoltsArr.X = place[i].Start;
+                        TmpBoltsArr.Y = YOffset;
+                        TmpBoltsArr.Z = SteelCut1.W / 2-((SteelCut1.t1)/2);
+                        TmpBoltsArr.t = SteelCut1.t1;
+                        TmpBoltsArr.GUID = Guid.NewGuid();
+                        TmpBoltsArr.BlockName = "TopCutPoint";
+                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool check);
+                        B3DB.Add(bolts);
+                        entities.Add(blockReference);
+                        //BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                        //Add2DHole(bolts, false);//加入孔位不刷新 2d 視圖
+                    }
+
 
 
 
@@ -287,6 +316,10 @@ namespace WPFSTD105.Model
                     }
                 }
             }
+
+
+
+
             //model.AssemblySelectionMode = devDept.Eyeshot.Environment.assemblySelectionType.Leaf;
             model.Refresh();
             model.Entities.Clear();
@@ -797,7 +830,7 @@ namespace WPFSTD105.Model
             result.Translate(start, 0);
 
 
-            CutPoint(model, part,start);
+        //    CutPoint(model, part,start);
 
             return result;
         }
@@ -810,15 +843,15 @@ namespace WPFSTD105.Model
             var ob = new ObSettingVM();
             List<(double, double)> HypotenusePoint = new List<(double, double)>();
             List<Point3D> result = null;
-
             List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
 
             B3DB = new List<Bolts3DBlock>();
+            double YOffset = 10.0;
             for (int z = 0; z < 2; z++)
             {
-               
-                GroupBoltsAttr TmpBoltsArr = new GroupBoltsAttr();
 
+                GroupBoltsAttr TmpBoltsArr = new GroupBoltsAttr();
+                
                 TmpBoltsArr.Face = FACE.TOP;
                 TmpBoltsArr.StartHole = START_HOLE.START;
                 TmpBoltsArr.dX = "0";
@@ -827,13 +860,13 @@ namespace WPFSTD105.Model
                 TmpBoltsArr.yCount = 1;
                 TmpBoltsArr.Mode = AXIS_MODE.POINT;
                 TmpBoltsArr.X = start;
-                TmpBoltsArr.Y += 10;
+                TmpBoltsArr.Y = YOffset;
                 TmpBoltsArr.GUID = Guid.NewGuid();
-                TmpBoltsArr.BlockName = "TopCutPoint";
+              //  TmpBoltsArr.BlockName = "TopCutPoint";
                 Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool check);
                 B3DB.Add(bolts);
-                
-                 
+                YOffset += 10;
+
                 //BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                 //Add2DHole(bolts, false);//加入孔位不刷新 2d 視圖
             }
@@ -841,7 +874,7 @@ namespace WPFSTD105.Model
             //{
             //    BlockReference referenceBolts = Add2DHole(item);//加入孔位到2D
             //}
-
+          
 
         }
 

@@ -98,12 +98,11 @@
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="60" />
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <!--左方快捷鍵欄-->
         <Grid Grid.Row="1"
-              Grid.ColumnSpan="2"
               x:Name="grid_LeftHotKey"
               HorizontalAlignment="Left"
               VerticalAlignment="Top"
@@ -236,7 +235,7 @@
             </Grid.Triggers>
         </Grid>
         <!--上方快捷鍵列-->
-        <Grid Grid.ColumnSpan="2"
+        <Grid  Grid.Column="1"
               x:Name="grid_TopHotKey"
               Background="Transparent"
               Opacity="0.75"
@@ -251,7 +250,7 @@
                            Foreground="{ StaticResource solidclr_DimGray }"
                            FontWeight="Bold"
                            Style="{ StaticResource tbk_Title }"
-                           Margin="70,0,10,0" />
+                           Margin="10,0,10,0" />
                 <Grid MaxWidth="350" Height="40"
                         Visibility="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToVisibilityConverter}}">
                     <!--  專案名稱  -->
@@ -421,8 +420,6 @@
             <Border x:Name="bor_SpindleFunction"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Height="200"
-                    Width="150"
                     Background="{ StaticResource solidclr_DarkGray }"
                     CornerRadius="10"
                     Margin="20,85,0,0"
@@ -497,7 +494,6 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Height="300"
-                    Width="150"
                     Background="{ StaticResource solidclr_DarkGray }"
                     CornerRadius="10"
                     Margin="20,315,0,0"
@@ -663,7 +659,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Height="200"
-                    Width="80"
+
                     Background="{ StaticResource solidclr_DarkGray }"
                     CornerRadius="10"
                     Margin="20,390,0,0"
@@ -699,13 +695,13 @@
             <Border x:Name="bor_ProjectManager"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Width="150"
+
                     Background="{ StaticResource solidclr_DarkGray }"
                     CornerRadius="10"
                     Margin="20,540,0,0"
                     Panel.ZIndex="10000"
                     Visibility="{ Binding ProjectManagerControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter } }">
-                <Grid>
+                <Grid Margin="0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
@@ -713,9 +709,6 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <!--  新建專案  -->
@@ -805,7 +798,6 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Height="200"
-                    Width="150"
                     Background="{ StaticResource solidclr_DarkGray }"
                     CornerRadius="10"
                     Margin="20,465,0,0"
