@@ -1455,17 +1455,6 @@ namespace WPFSTD105.Model
                     }).OrderByDescending(aa => aa.key).ToList();
 
 
-                    double GetY_UpPos = -99999.0;
-                    int YUpPosIndex = 0;
-
-                    double GetY_DownPos = 99999.0;
-                    int YDownPosIndex = 0;
-
-
-                    double TmpPos = 0;
-                    int tmpindex = 0;
-
-
                     var YUP2List = tmp3.Where(aa => (aa.key == tmp3[0].key || aa.key == tmp3[0].key - TmpSteelAttr.t2)).OrderByDescending(a => a.key).ToList();
                     if (YUP2List[0].max >= YUP2List[1].max)
                         TmpUR = new Point3D(YUP2List[0].max, YUP2List[0].key);
@@ -1479,9 +1468,6 @@ namespace WPFSTD105.Model
                         TmpUL = new Point3D(YUP2List[1].min, YUP2List[1].key);
 
 
-
-
-
                     var YDOWN2List = tmp3.Where(aa => (aa.key == tmp3[tmp3.Count - 1].key || aa.key == tmp3[tmp3.Count - 1].key + TmpSteelAttr.t2)).OrderBy(a => a.key).Take(2).ToList();
                     if (YDOWN2List[0].max >= YDOWN2List[1].max)
                         TmpDR = new Point3D(YDOWN2List[0].max, YDOWN2List[0].key);
@@ -1493,76 +1479,6 @@ namespace WPFSTD105.Model
                         TmpDL = new Point3D(YDOWN2List[0].min, YDOWN2List[0].key);
                     else
                         TmpDL = new Point3D(YDOWN2List[1].min, YDOWN2List[1].key);
-                    //// 取上Y
-                    //for (int i = 0; i < tmp3.Count; i++)
-                    //{
-                    //    if (tmp3[i].key >= GetY_UpPos)
-                    //    {
-                    //        GetY_UpPos = tmp3[i].key;
-                    //        YUpPosIndex = i;
-                    //    }
-                    //}
-
-                    //tmpindex = YUpPosIndex;
-                    //TmpPos = tmp3[YUpPosIndex].key;
-
-                    //for (int i = 0; i < tmp3.Count; i++)
-                    //{
-                    //    if (Math.Abs(TmpPos - tmp3[i].key) == TmpSteelAttr.t2 && i != tmpindex && (tmp3[i].min < tmp3[tmpindex].min))
-                    //    {
-                    //        GetY_UpPos = tmp3[i].key;
-                    //        YUpPosIndex = i;
-                    //    }
-                    //}
-
-                    //// 取下Y
-                    //for (int i = 0; i < tmp3.Count; i++)
-                    //{
-                    //    if (tmp3[i].key <= GetY_DownPos)
-                    //    {
-                    //        GetY_DownPos = tmp3[i].key;
-                    //        YDownPosIndex = i;
-                    //    }
-                    //}
-
-                    //tmpindex = YDownPosIndex;
-                    //TmpPos = tmp3[YDownPosIndex].key;
-
-                    //for (int i = 0; i < tmp3.Count; i++)
-                    //{
-                    //    if (Math.Abs(TmpPos + tmp3[i].key) == TmpSteelAttr.t2 && i != tmpindex && (tmp3[i].min < tmp3[tmpindex].min))
-                    //    {
-                    //        GetY_DownPos = tmp3[i].key;
-                    //        YDownPosIndex = i;
-                    //    }
-                    //}
-
-                    //TmpDL = new Point3D(tmp3[YDownPosIndex].min, tmp3[YDownPosIndex].key);
-                    //TmpDR = new Point3D(tmp3[YDownPosIndex].max, tmp3[YDownPosIndex].key);
-                    //TmpUL = new Point3D(tmp3[YUpPosIndex].min, tmp3[YUpPosIndex].key);
-                    //TmpUR = new Point3D(tmp3[YUpPosIndex].max, tmp3[YUpPosIndex].key);
-
-
-
-
-
-                    //if (tmp3[0].key > tmp3[1].key)
-                    //{
-
-                    //    var swap = tmp3[0];
-                    //    tmp3[0] = tmp3[1];
-                    //    tmp3[1] = swap;
-                    //}
-
-                    //TmpDL = new Point3D(tmp3[0].min, tmp3[0].key);
-                    //TmpDR = new Point3D(tmp3[0].max, tmp3[0].key);
-                    //TmpUL = new Point3D(tmp3[1].min, tmp3[1].key);
-                    //TmpUR = new Point3D(tmp3[1].max, tmp3[1].key);
-
-
-
-
-
 
 
                     if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
