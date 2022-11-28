@@ -826,14 +826,14 @@
                     <local:MainFunctionButton Grid.Row="1"
                                               ButtonCommand="{Binding LanguageCommand }"
                                               CommandParameter="{ Binding TitleText, RelativeSource={ x:Static RelativeSource.Self } }"
-                                              ButtonImageSource="{StaticResource Vietnam}"
+                                              ButtonImageSource="{StaticResource Thailand}"
                                               TitleText="ไทย"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <local:MainFunctionButton Grid.Row="1"
                                               Grid.Column="1"
                                               ButtonCommand="{Binding LanguageCommand }"
                                               CommandParameter="{ Binding TitleText, RelativeSource={ x:Static RelativeSource.Self } }"
-                                              ButtonImageSource="{StaticResource Thailand}"
+                                              ButtonImageSource="{StaticResource Vietnam}"
                                               TitleText="Tiếng Việt"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <!--關閉區域-->
