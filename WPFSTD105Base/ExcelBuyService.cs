@@ -33,6 +33,7 @@ namespace WPFSTD105
         {
         }
         #region 私有屬性
+        private devDept.Eyeshot.Model _BufferModel { get; set; }
         #endregion
 
         /// <summary>
@@ -374,7 +375,7 @@ namespace WPFSTD105
             book.BeginUpdate();
             book.SaveDocument(path, DevExpress.Spreadsheet.DocumentFormat.Xlsx);
         }
-
+        
         /// <summary>
         /// 檔案總覽
         /// </summary>
@@ -391,7 +392,9 @@ namespace WPFSTD105
             #region 資料取得
             ScreenManager.ViewModel.Status = $"取得資訊中 ...";
             //Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
+            ApplicationVM appVM = new ApplicationVM();
             STDSerialization ser = new STDSerialization();
+            TypeSettingVM tsVM = new TypeSettingVM();
             // 取得dm檔與零件之對應
             ObservableCollection<DataCorrespond> dataCorrespond = ser.GetDataCorrespond();
             // 取得構件資訊
@@ -404,8 +407,22 @@ namespace WPFSTD105
             Dictionary<string, ObservableCollection<SteelBolts>> steelBolts = ser.GeBolts();
 
             // 取得排版資訊
-             ObservableCollection<MaterialDataView> materialDataViews = ser.GetMaterialDataView();
-            
+            ObservableCollection<MaterialDataView> materialDataViews = ser.GetMaterialDataView();
+
+            // 取得排版零件資訊
+            _BufferModel = new devDept.Eyeshot.Model();
+            _BufferModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
+            _BufferModel.InitializeViewports();
+            _BufferModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
+            ObservableCollection<TypeSettingDataView> DataViews = tsVM.LoadDataViews();
+
+            // 取得切割線設定資訊
+            ObservableCollection<SteelCutSetting> cutSettingList = ser.GetCutSettingList();
+
+            // 排版DM
+
+
+
             ScreenManager.ViewModel.Status = $"資訊已取得 ...";
             //Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
             #endregion
@@ -415,6 +432,7 @@ namespace WPFSTD105
             IWorkbook book = spreadSheet.Document; //提供對控件中加載的工作簿的訪問
             try
             {
+                #region MyRegion
                 ScreenManager.ViewModel.Status = $"產生文件 ...DataCorrespond";
                 //Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
                 #region DataCorrespond
@@ -573,6 +591,7 @@ namespace WPFSTD105
                 sheet.Cells[row, column++].Value = "腹板厚度";
                 sheet.Cells[row, column++].Value = "翼板厚度";
                 sheet.Cells[row, column++].Value = "型鋼類型";
+                sheet.Cells[row, column++].Value = "排版";
                 sheet.Cells[row, column++].Value = "零件ID";
                 sheet.Cells[row++, column++].Value = "構件ID";
                 #endregion
@@ -601,6 +620,13 @@ namespace WPFSTD105
                         sheet.Cells[row, column++].Value = part.t2;
                         sheet.Cells[row, column++].Value = part.Type.ToString();
                         int tempRow = row;
+                        foreach (bool match in part.Match)
+                        {
+                            sheet.Cells[row++, column].Value = match;
+                        }
+                        rowList.Add(row);
+                        row = tempRow;
+                        column++;
                         foreach (int id in part.ID)
                         {
                             sheet.Cells[row++, column].Value = id;
@@ -614,7 +640,7 @@ namespace WPFSTD105
                         }
                         rowList.Add(row);
                         row = rowList.Max() + 1;
-                    }                    
+                    }
                 }
                 #endregion
                 sheet.Cells.AutoFitColumns();
@@ -662,6 +688,44 @@ namespace WPFSTD105
                 sheet.Rows.AutoOutline();
                 #endregion
 
+                #region SteelAttrCutSetting
+                sheet = book.Worksheets.Add("SteelAttrCutSetting"); //創建一個新工作表並將其附加到集合的末尾
+                book.Worksheets.ActiveWorksheet = sheet;
+                row = 0;
+                column = 0;
+                rowList = new List<int>();
+                #region 欄位名稱
+                sheet.Cells[row, column++].Value = "零件GUID";
+                sheet.Cells[row, column++].Value = "Face";
+                sheet.Cells[row, column++].Value = "左上X";
+                sheet.Cells[row, column++].Value = "左上Y";
+                sheet.Cells[row, column++].Value = "右上X";
+                sheet.Cells[row, column++].Value = "右上Y";
+                sheet.Cells[row, column++].Value = "右下X";
+                sheet.Cells[row, column++].Value = "右下Y";
+                sheet.Cells[row, column++].Value = "左下X";
+                sheet.Cells[row++, column++].Value = "左下Y";
+                #endregion
+                #region 欄位塞值
+                foreach (SteelCutSetting item in cutSettingList)
+                {
+                    column = 0;
+                    sheet.Cells[row, column++].Value = $"{item.GUID}";
+                    sheet.Cells[row, column++].Value = $"{item.face}";
+                    sheet.Cells[row, column++].Value = $"{item.ULX}";
+                    sheet.Cells[row, column++].Value = $"{item.ULY}";
+                    sheet.Cells[row, column++].Value = $"{item.URX}";
+                    sheet.Cells[row, column++].Value = $"{item.URY}";
+                    sheet.Cells[row, column++].Value = $"{item.DRX}";
+                    sheet.Cells[row, column++].Value = $"{item.DRY}";
+                    sheet.Cells[row, column++].Value = $"{item.DLX}";
+                    sheet.Cells[row++, column++].Value = $"{item.DLY}";
+                }
+                #endregion
+                sheet.Cells.AutoFitColumns();
+                sheet.Rows.AutoOutline();
+                #endregion
+
                 #region ErrorDataName
                 sheet = book.Worksheets.Add("Wrong DM File"); //創建一個新工作表並將其附加到集合的末尾
                 book.Worksheets.ActiveWorksheet = sheet;
@@ -671,15 +735,70 @@ namespace WPFSTD105
                 {
                     sheet.Cells[row++, column].Value = $"{item}]";
                 }
-                
+
                 sheet.Cells.AutoFitColumns();
                 sheet.Rows.AutoOutline();
                 #endregion
 
+                #region 製品設定-零件清單
+                sheet = book.Worksheets.Add("製品設定-零件清單"); //創建一個新工作表並將其附加到集合的末尾
+                book.Worksheets.ActiveWorksheet = sheet;
+                row = 0;
+                column = 0;
+                rowList = new List<int>();
+                #region 欄位名稱
+                sheet.Cells[row, column++].Value = "dm檔名";
+                sheet.Cells[row, column++].Value = "構件編號";
+                sheet.Cells[row, column++].Value = "零件編號";
+                sheet.Cells[row, column++].Value = "名稱";
+                sheet.Cells[row, column++].Value = "鋼材類型";
+                sheet.Cells[row, column++].Value = "斷面規格";
+                sheet.Cells[row, column++].Value = "鋼材類型(Index)";
+                sheet.Cells[row, column++].Value = "材質";
+                sheet.Cells[row, column++].Value = "數量";
+                sheet.Cells[row, column++].Value = "零件長";
+                sheet.Cells[row, column++].Value = "零件重";
+                sheet.Cells[row, column++].Value = "高度";
+                sheet.Cells[row, column++].Value = "寬度";
+                sheet.Cells[row, column++].Value = "腹板厚度";
+                sheet.Cells[row, column++].Value = "Phase";
+                sheet.Cells[row, column++].Value = "拆運";
+                sheet.Cells[row, column++].Value = "標題一";
+                sheet.Cells[row++, column++].Value = "標題二";
+                #endregion
+                #region 欄位塞值
+                foreach (ProductSettingsPageViewModel item in ObSettingVM.GetData())
+                {
+                    column = 0;
+                    sheet.Cells[row, column++].Value = item.steelAttr.GUID.Value.ToString();
+                    sheet.Cells[row, column++].Value = item.steelAttr.AsseNumber;
+                    sheet.Cells[row, column++].Value = item.steelAttr.PartNumber;
+                    sheet.Cells[row, column++].Value = item.steelAttr.Name;
+                    sheet.Cells[row, column++].Value = item.TypeDesc;
+                    sheet.Cells[row, column++].Value = item.steelAttr.Profile;
+                    sheet.Cells[row, column++].Value = item.SteelType;
+                    sheet.Cells[row, column++].Value = item.steelAttr.Material;
+                    sheet.Cells[row, column++].Value = item.Count;
+                    sheet.Cells[row, column++].Value = item.steelAttr.Length;
+                    sheet.Cells[row, column++].Value = item.steelAttr.Weight;
+                    sheet.Cells[row, column++].Value = item.steelAttr.H;
+                    sheet.Cells[row, column++].Value = item.steelAttr.W;
+                    sheet.Cells[row, column++].Value = item.steelAttr.t1;
+                    sheet.Cells[row, column++].Value = item.steelAttr.t2;
+                    sheet.Cells[row, column++].Value = item.steelAttr.Phase;
+                    sheet.Cells[row, column++].Value = item.steelAttr.ShippingNumber;
+                    sheet.Cells[row, column++].Value = item.steelAttr.Title1;
+                    sheet.Cells[row++, column++].Value = item.steelAttr.Title2;
+                }
+                #endregion
+                sheet.Cells.AutoFitColumns();
+                sheet.Rows.AutoOutline();
+                #endregion
+
+                #region  零件DM檔   
                 ScreenManager.ViewModel.Status = $"產生文件 ...model";
                 //Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
-                #region  model              
-                sheet = book.Worksheets.Add("dm file"); //創建一個新工作表並將其附加到集合的末尾
+                sheet = book.Worksheets.Add("零件DM檔"); //創建一個新工作表並將其附加到集合的末尾
                 book.Worksheets.ActiveWorksheet = sheet;
                 row = 0;
                 column = 0;
@@ -781,7 +900,7 @@ namespace WPFSTD105
                                         sheet.Cells[row, column++].Value = $"{block.GetType().Name}";
                                         sheet.Cells[row += 2, column++].Value = $"{entities.GetType().Name}";
                                         column = 0;
-                                        break; 
+                                        break;
                                     default:
                                         sheet.Cells[row, column++].Value = $"*1-3model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData = null";
                                         sheet.Cells[row, column++].Value = $"例外型別";
@@ -842,7 +961,7 @@ namespace WPFSTD105
                                     case "Mesh":
                                         Mesh mesh = (Mesh)entities.EntityData;
                                         break;
-                                    case "GroupBoltsAttr":                                        
+                                    case "GroupBoltsAttr":
                                         GroupBoltsAttr gba = (GroupBoltsAttr)entities.EntityData;
                                         sheet.Cells[row, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData";
                                         sheet.Cells[row, column++].Value = $"{gba.GetType().Name}";
@@ -871,7 +990,7 @@ namespace WPFSTD105
                             secondIndex++;
                         }
                         #endregion
-                    firstIndex++;
+                        firstIndex++;
                     }
                     #endregion
                 }
@@ -895,7 +1014,7 @@ namespace WPFSTD105
                                 sheet.Cells[row++, column++].Value = $"{br.BlockName}";
                                 column = 0;
                                 break;
-                            default:                                
+                            default:
                                 sheet.Cells[row, column++].Value = $"*2-1-0model.Entities[{firstIndex}]";
                                 sheet.Cells[row++, column++].Value = $"例外型別";
                                 sheet.Cells[row++, column++].Value = $"{entity.GetType().Name}";
@@ -929,7 +1048,7 @@ namespace WPFSTD105
                             {
                                 case "GroupBoltsAttr":
                                     GroupBoltsAttr gba = (GroupBoltsAttr)entity.EntityData;
-                                    sheet.Cells[row, column++].Value = $"2-2-0model.Entities[{firstIndex}].EntityData"; 
+                                    sheet.Cells[row, column++].Value = $"2-2-0model.Entities[{firstIndex}].EntityData";
                                     sheet.Cells[row, column++].Value = $"{gba.GetType().Name}";
                                     sheet.Cells[row, column++].Value = gba.GUID.ToString();
                                     sheet.Cells[row, column++].Value = $"{gba.Face}";
@@ -1037,84 +1156,368 @@ namespace WPFSTD105
                 //    //    break; 
                 //    #endregion
                 #endregion
+                sheet.Cells.AutoFitColumns();
+                sheet.Rows.AutoOutline();
                 #endregion
 
-                #region Material
-                sheet = book.Worksheets.Add("Material file"); //創建一個新工作表並將其附加到集合的末尾
+                #region 排版零件
+                sheet = book.Worksheets.Add("排版零件檔"); //創建一個新工作表並將其附加到集合的末尾
                 book.Worksheets.ActiveWorksheet = sheet;
                 row = 0;
                 column = 0;
                 #region 欄位名稱
-                sheet.Cells[row, column++].Value = "是否為Tekla文件";
-                sheet.Cells[row, column++].Value = "數量";
-                sheet.Cells[row, column++].Value = "材質";
-                sheet.Cells[row, column++].Value = "斷面規格";
-                sheet.Cells[row, column++].Value = "圖面狀態";
-                sheet.Cells[row, column++].Value = "螺栓類型";
-                sheet.Cells[row, column++].Value = "建立日期";
-                sheet.Cells[row, column++].Value = "修改日期";
-                sheet.Cells[row++, column++].Value = "歸屬購件";
-                #endregion
-                foreach (MaterialDataView item in materialDataViews)
-                {
-                    //item.MaterialNumber;
-                }
-                #endregion
-
-                #region Grid Data
-                sheet = book.Worksheets.Add("Grid Data"); //創建一個新工作表並將其附加到集合的末尾
-                book.Worksheets.ActiveWorksheet = sheet;
-                row = 0;
-                column = 0;
-                rowList = new List<int>();
-                #region 欄位名稱
-                sheet.Cells[row, column++].Value = "dm檔名";
-                sheet.Cells[row, column++].Value = "構件編號";
                 sheet.Cells[row, column++].Value = "零件編號";
-                sheet.Cells[row, column++].Value = "名稱";
-                sheet.Cells[row, column++].Value = "鋼材類型";
-                sheet.Cells[row, column++].Value = "斷面規格";
-                sheet.Cells[row, column++].Value = "鋼材類型(Index)";
+                sheet.Cells[row, column++].Value = "構件編號";
+                sheet.Cells[row, column++].Value = "建立日期";
+                sheet.Cells[row, column++].Value = "長度";
+                sheet.Cells[row, column++].Value = "零件鎖定";
                 sheet.Cells[row, column++].Value = "材質";
-                sheet.Cells[row, column++].Value = "數量";
-                sheet.Cells[row, column++].Value = "零件長";
-                sheet.Cells[row, column++].Value = "零件重";
-                sheet.Cells[row, column++].Value = "高度";
-                sheet.Cells[row, column++].Value = "寬度";
+                sheet.Cells[row, column++].Value = "斷面規格";
+                sheet.Cells[row, column++].Value = "修改日期";
+                sheet.Cells[row, column++].Value = "圖面狀態";
+                sheet.Cells[row, column++].Value = "型鋼類型";
+                sheet.Cells[row, column++].Value = "高";
+                sheet.Cells[row, column++].Value = "寬";
                 sheet.Cells[row, column++].Value = "腹板厚度";
-                sheet.Cells[row, column++].Value = "Phase";
-                sheet.Cells[row, column++].Value = "拆運";
-                sheet.Cells[row, column++].Value = "標題一";
-                sheet.Cells[row++, column++].Value = "標題二";
+                sheet.Cells[row, column++].Value = "重量";
+                sheet.Cells[row, column++].Value = "數量";
+
+                sheet.Cells[row, column++].Value = "零件ID";
+                sheet.Cells[row++, column++].Value = "可批配料單";
                 #endregion
-                #region 欄位塞值
-                foreach (ProductSettingsPageViewModel item in ObSettingVM.GetData())
+                #region 塞值
+                foreach (TypeSettingDataView mdv in DataViews)
                 {
                     column = 0;
-                    sheet.Cells[row, column++].Value = item.steelAttr.GUID.Value.ToString();
-                    sheet.Cells[row, column++].Value = item.steelAttr.AsseNumber;
-                    sheet.Cells[row, column++].Value = item.steelAttr.PartNumber;
-                    sheet.Cells[row, column++].Value = item.steelAttr.Name;
-                    sheet.Cells[row, column++].Value = item.TypeDesc;
-                    sheet.Cells[row, column++].Value = item.steelAttr.Profile;
-                    sheet.Cells[row, column++].Value = item.SteelType;
-                    sheet.Cells[row, column++].Value = item.steelAttr.Material;
-                    sheet.Cells[row, column++].Value = item.Count;
-                    sheet.Cells[row, column++].Value = item.steelAttr.Length;
-                    sheet.Cells[row, column++].Value = item.steelAttr.Weight;
-                    sheet.Cells[row, column++].Value = item.steelAttr.H;
-                    sheet.Cells[row, column++].Value = item.steelAttr.W;
-                    sheet.Cells[row, column++].Value = item.steelAttr.t1;
-                    sheet.Cells[row, column++].Value = item.steelAttr.t2;
-                    sheet.Cells[row, column++].Value = item.steelAttr.Phase;
-                    sheet.Cells[row, column++].Value = item.steelAttr.ShippingNumber;
-                    sheet.Cells[row, column++].Value = item.steelAttr.Title1;
-                    sheet.Cells[row++, column++].Value = item.steelAttr.Title2;
+                    sheet.Cells[row, column++].Value = mdv.PartNumber;
+                    sheet.Cells[row, column++].Value = mdv.AssemblyNumber;
+                    sheet.Cells[row, column++].Value = mdv.Creation;
+                    sheet.Cells[row, column++].Value = mdv.Length;
+                    sheet.Cells[row, column++].Value = mdv.Lock;
+                    sheet.Cells[row, column++].Value = mdv.Material;
+                    sheet.Cells[row, column++].Value = mdv.Profile;
+                    sheet.Cells[row, column++].Value = mdv.Revise;
+                    sheet.Cells[row, column++].Value = mdv.State.ToString();
+                    sheet.Cells[row, column++].Value = mdv.SteelType;
+                    sheet.Cells[row, column++].Value = mdv.H;
+                    sheet.Cells[row, column++].Value = mdv.W;
+                    sheet.Cells[row, column++].Value = mdv.t1;
+                    sheet.Cells[row, column++].Value = mdv.t2;
+                    sheet.Cells[row, column++].Value = mdv.Weigth;
+                    int tempRow = row;
+                    foreach (double id in mdv.ID)
+                    {
+                        sheet.Cells[row++, column].Value = id;
+                    }
+                    rowList.Add(row);
+                    row = tempRow;
+                    column++;
+                    foreach (bool match in mdv.Match)
+                    {
+                        sheet.Cells[row++, column].Value = match;
+                    }
+                    rowList.Add(row);
+                    column = 0;
+                    row = rowList.Max() + 1;
                 }
                 #endregion
                 sheet.Cells.AutoFitColumns();
                 sheet.Rows.AutoOutline();
                 #endregion
+
+                #region Material
+                sheet = book.Worksheets.Add("排版 file"); //創建一個新工作表並將其附加到集合的末尾
+                book.Worksheets.ActiveWorksheet = sheet;
+                row = 0;
+                column = 0;
+                #region 欄位名稱
+                sheet.Cells[row, column++].Value = "來源列表";
+                sheet.Cells[row, column++].Value = "素材編號";
+                sheet.Cells[row, column++].Value = "斷面規格";
+                sheet.Cells[row, column++].Value = "索引值";
+                sheet.Cells[row, column++].Value = "購料長";
+                sheet.Cells[row, column++].Value = "材質";
+                sheet.Cells[row, column++].Value = "廠商";
+                sheet.Cells[row, column++].Value = "修改日期";
+                sheet.Cells[row++, column++].Value = "歸屬購件";
+                #endregion
+                #region 塞值
+                foreach (MaterialDataView mdv in materialDataViews)
+                {
+                    column = 0;
+                    sheet.Cells[row, column++].Value = mdv.Sources;
+                    sheet.Cells[row, column++].Value = mdv.MaterialNumber;
+                    sheet.Cells[row, column++].Value = mdv.Profile;
+                    sheet.Cells[row, column++].Value = mdv.LengthIndex;
+                    sheet.Cells[row, column++].Value = mdv.LengthStr;
+                    sheet.Cells[row, column++].Value = mdv.Material;
+                    int tempRow = row;
+                    foreach (double length in mdv.LengthList)
+                    {
+                        sheet.Cells[row++, column].Value = length;
+                    }
+                    rowList.Add(row);
+                    row = tempRow;
+                    column++;
+                }
+                #endregion
+                sheet.Cells.AutoFitColumns();
+                sheet.Rows.AutoOutline();
+                #endregion 
+                #endregion
+
+                #region 排版DM
+                sheet = book.Worksheets.Add("Mateial dm file"); //創建一個新工作表並將其附加到集合的末尾
+                book.Worksheets.ActiveWorksheet = sheet;
+                row = 0;
+                column = 0;
+                var mateialList = appVM.GetAllDevMateialPart();
+                foreach (string materialNumber in mateialList)
+                {
+                    ReadFile readFile = ser.ReadMaterialModel(materialNumber);
+                    _BufferModel.Clear();
+                    readFile.DoWork();
+                    readFile.AddToScene(_BufferModel);
+                    int index_Block = 0, index_Entities = 0, index_EntityData = 0;
+                    #region Block
+                    _BufferModel.Blocks.ForEach(block =>
+                                {
+                                    column = 0;
+                                    sheet.Cells[row, column++].Value = $"model.Block[{index_Block}]";
+                                    switch (block.GetType().Name)
+                                    {
+                                        case "Block":
+                                            Block item = (Block)block;
+                                            sheet.Cells[row, column++].Value = $"{item.GetType().Name}";
+                                            sheet.Cells[row++, column].Value = $"{item.Name}";
+                                            column = 0;
+                                            break;
+                                        case "Steel3DBlock":
+                                            Steel3DBlock sdb = (Steel3DBlock)block;
+                                            sheet.Cells[row, column++].Value = $"{block.GetType().Name}";
+                                            sheet.Cells[row, column++].Value = $"{sdb.Name}";
+                                            sheet.Cells[row++, column++].Value = $"{sdb.Units}";
+                                            column = 0;
+                                            break;
+                                        default:
+                                            sheet.Cells[row, column++].Value = $"{block.GetType().Name}";
+                                            sheet.Cells[row++, column++].Value = $"未歸類";
+                                            column = 0;
+                                            break;
+                                    }
+                                    #region Block.Entities
+                                    index_Entities = 0;
+                                    block.Entities.ForEach(e =>
+                                    {
+                                        column = 0;
+                                        sheet.Cells[row, column++].Value = $"model.Block[{index_Block}].Entities[{index_Entities}]";
+                                        switch (e.GetType().Name)
+                                        {
+                                            case "BlockReference":
+                                                BlockReference item = (BlockReference)e;
+                                                sheet.Cells[row, column++].Value = item.GetType().Name;
+                                                sheet.Cells[row++, column++].Value = $"{item.BlockName}";
+                                                column = 0;
+                                                break;
+                                            case "Line":
+                                                Line line = (Line)e;
+                                                sheet.Cells[row, column++].Value = line.GetType().Name;
+                                                sheet.Cells[row, column++].Value = $"StartPoint:{line.StartPoint.X},{line.StartPoint.Y},{line.StartPoint.Z}";
+                                                sheet.Cells[row++, column++].Value = $"EndPoint:{line.EndPoint.X},{line.EndPoint.Y},{line.EndPoint.Z}";
+                                                column = 0;
+                                                break;
+                                            case "Circle":
+                                                Circle circle = (Circle)e;
+                                                sheet.Cells[row, column++].Value = circle.GetType().Name;
+                                                sheet.Cells[row++, column++].Value = $"{circle.Diameter}";
+                                                column = 0;
+                                                break;
+                                            case "Mesh":
+                                                Mesh mesh = (Mesh)e;
+                                                sheet.Cells[row, column++].Value = $"{mesh.GetType().Name}";
+                                                sheet.Cells[row, column++].Value = (mesh.Vertices.Count() > 0 ? "有Vertices" : "無Vertices");
+                                                sheet.Cells[row, column++].Value = $"{mesh.MaterialName}";
+                                                sheet.Cells[row, column++].Value = $"{mesh.Faces}";
+                                                sheet.Cells[row++, column++].Value = $"{mesh.LineTypeName}";
+                                                column = 0;
+                                                break;
+                                            default:
+                                                sheet.Cells[row, column++].Value = $"{e.GetType().Name}";
+                                                sheet.Cells[row++, column++].Value = $"未歸類";
+                                                column = 0;
+                                                break;
+                                        }
+                                        column = 0;
+                                        #region Block.Entities.EntityData
+                                        sheet.Cells[row, column++].Value = $"model.Block[{index_Block}].Entities[{index_Entities}].EntityData";
+                                        switch ((e.EntityData).GetType().Name)
+                                        {
+                                            #region SteelAttr
+                                            case "SteelAttr":
+                                                SteelAttr item = (SteelAttr)(e.EntityData);
+                                                sheet.Cells[row, column++].Value = item.GetType().Name;
+                                                sheet.Cells[row, column++].Value = item.GUID.ToString();
+                                                sheet.Cells[row, column++].Value = item.AsseNumber;
+                                                sheet.Cells[row, column++].Value = item.PartNumber;
+                                                sheet.Cells[row, column++].Value = ((OBJECT_TYPE)item.Type).ToString();
+                                                sheet.Cells[row, column++].Value = item.Profile;
+                                                sheet.Cells[row, column++].Value = item.Material;
+                                                sheet.Cells[row, column++].Value = item.Number;
+                                                sheet.Cells[row, column++].Value = item.Creation;
+                                                sheet.Cells[row, column++].Value = item.Revise;
+                                                sheet.Cells[row, column++].Value = item.ExclamationMark;
+                                                sheet.Cells[row, column++].Value = item.Lock;
+                                                sheet.Cells[row, column++].Value = item.H;
+                                                sheet.Cells[row, column++].Value = item.W;
+                                                sheet.Cells[row, column++].Value = item.Kg;
+                                                sheet.Cells[row, column++].Value = item.Length;
+                                                sheet.Cells[row, column++].Value = item.Weight;
+                                                sheet.Cells[row, column++].Value = item.t1;
+                                                sheet.Cells[row, column++].Value = item.t2;
+                                                sheet.Cells[row, column++].Value = item.Phase;
+                                                sheet.Cells[row, column++].Value = item.ShippingNumber;
+                                                sheet.Cells[row, column++].Value = item.Title1;
+                                                sheet.Cells[row++, column++].Value = item.Title2;
+                                                break;
+                                            #endregion
+                                            #region BoltAttr
+                                            case "BoltAttr":
+                                                BoltAttr bolt = (BoltAttr)(e.EntityData);
+                                                sheet.Cells[row, column++].Value = bolt.GetType().Name;
+                                                sheet.Cells[row, column++].Value = bolt.GUID.ToString();
+                                                sheet.Cells[row, column++].Value = bolt.BlockName;
+                                                sheet.Cells[row, column++].Value = bolt.X;
+                                                sheet.Cells[row, column++].Value = bolt.Y;
+                                                sheet.Cells[row, column++].Value = bolt.Z;
+                                                sheet.Cells[row, column++].Value = bolt.Dia;
+                                                sheet.Cells[row, column++].Value = $"{bolt.Mode}";
+                                                sheet.Cells[row++, column++].Value = bolt.Type.ToString();
+                                                column = 0;
+                                                break;
+                                            #endregion
+                                            #region GroupBoltsAttr
+                                            case "GroupBoltsAttr":
+                                                GroupBoltsAttr gba = (GroupBoltsAttr)(e.EntityData);
+                                                sheet.Cells[row, column++].Value = $"{gba.GetType().Name}";
+                                                sheet.Cells[row, column++].Value = gba.GUID.ToString();
+                                                sheet.Cells[row, column++].Value = $"{gba.Face}";
+                                                sheet.Cells[row, column++].Value = $"{gba.Type}";
+                                                sheet.Cells[row, column++].Value = gba.X.ToString();
+                                                sheet.Cells[row, column++].Value = gba.Y.ToString();
+                                                sheet.Cells[row, column++].Value = gba.Z.ToString();
+                                                sheet.Cells[row, column++].Value = gba.dX;
+                                                sheet.Cells[row, column++].Value = String.Join(" ", gba.dXs.ToArray());
+                                                sheet.Cells[row, column++].Value = gba.dY;
+                                                sheet.Cells[row, column++].Value = String.Join(" ", gba.dYs.ToArray());
+                                                sheet.Cells[row, column++].Value = $"{gba.Count}";
+                                                sheet.Cells[row, column++].Value = gba.Dia.ToString();
+                                                sheet.Cells[row, column++].Value = gba.StartHole.ToString();
+                                                sheet.Cells[row++, column++].Value = ((AXIS_MODE)gba.Mode).ToString();//Count
+                                                column = 0;
+                                                break;
+                                            #endregion
+                                            default:
+                                                sheet.Cells[row, column++].Value = $"{(e.EntityData).GetType().Name}";
+                                                sheet.Cells[row++, column++].Value = $"未歸類";
+                                                column = 0;
+                                                break;
+                                        }
+                                        index_Entities++;
+                                        #endregion
+                                    });
+                                    #endregion
+                                    index_Block++;
+                                });
+                    #endregion
+                    index_Entities = 0;
+                    _BufferModel.Entities.ForEach(e =>
+                    {
+                        column = 0;
+                        sheet.Cells[row, column++].Value = $"model.Entities[{index_Entities++}]";
+                        switch (e.GetType().Name)
+                        {
+                            case "BlockReference":
+                                BlockReference br = (BlockReference)e;
+                                sheet.Cells[row, column++].Value = $"{br.GetType().Name}";
+                                sheet.Cells[row++, column++].Value = $"{br.BlockName}";
+                                column = 0;
+                                break;
+                            default:
+                                sheet.Cells[row, column++].Value = $"例外型別";
+                                sheet.Cells[row++, column++].Value = $"{e.GetType().Name}";
+                                column = 0;
+                                break;
+                        }
+                        column = 0;
+                        sheet.Cells[row, column++].Value = $"model.Entities[{index_Entities}].EntityData";
+                        switch (e.EntityData.GetType().Name)
+                        {
+                            case "GroupBoltsAttr":
+                                GroupBoltsAttr gba = (GroupBoltsAttr)e.EntityData;
+                                sheet.Cells[row, column++].Value = $"{gba.GetType().Name}";
+                                sheet.Cells[row, column++].Value = gba.GUID.ToString();
+                                sheet.Cells[row, column++].Value = $"{gba.Face}";
+                                sheet.Cells[row, column++].Value = $"{gba.Type}";
+                                sheet.Cells[row, column++].Value = gba.X.ToString();
+                                sheet.Cells[row, column++].Value = gba.Y.ToString();
+                                sheet.Cells[row, column++].Value = gba.Z.ToString();
+                                sheet.Cells[row, column++].Value = gba.dX;
+                                sheet.Cells[row, column++].Value = String.Join(" ", gba.dXs.ToArray());
+                                sheet.Cells[row, column++].Value = gba.dY;
+                                sheet.Cells[row, column++].Value = String.Join(" ", gba.dYs.ToArray());
+                                sheet.Cells[row, column++].Value = $"{gba.Count}";
+                                sheet.Cells[row, column++].Value = gba.Dia.ToString();
+                                sheet.Cells[row, column++].Value = gba.StartHole.ToString();
+                                sheet.Cells[row++, column++].Value = ((AXIS_MODE)gba.Mode).ToString();//Count
+                                column = 0;
+                                break;
+                            case "BlockReference":
+                                break;
+                            case "SteelAttr":
+                                SteelAttr sa = (SteelAttr)e.EntityData;
+                                sheet.Cells[row, column++].Value = sa.GetType().Name;
+                                sheet.Cells[row, column++].Value = sa.GUID.ToString();
+                                sheet.Cells[row, column++].Value = sa.AsseNumber;
+                                sheet.Cells[row, column++].Value = sa.PartNumber;
+                                sheet.Cells[row, column++].Value = ((OBJECT_TYPE)sa.Type).ToString();
+                                sheet.Cells[row, column++].Value = sa.Profile;
+                                sheet.Cells[row, column++].Value = sa.Material;
+                                sheet.Cells[row, column++].Value = sa.Number;
+                                sheet.Cells[row, column++].Value = sa.Creation;
+                                sheet.Cells[row, column++].Value = sa.Revise;
+                                sheet.Cells[row, column++].Value = sa.ExclamationMark;
+                                sheet.Cells[row, column++].Value = sa.Lock;
+                                sheet.Cells[row, column++].Value = sa.H;
+                                sheet.Cells[row, column++].Value = sa.W;
+                                sheet.Cells[row, column++].Value = sa.Kg;
+                                sheet.Cells[row, column++].Value = sa.Length;
+                                sheet.Cells[row, column++].Value = sa.Weight;
+                                sheet.Cells[row, column++].Value = sa.t1;
+                                sheet.Cells[row, column++].Value = sa.t2;
+                                sheet.Cells[row, column++].Value = sa.Phase;
+                                sheet.Cells[row, column++].Value = sa.ShippingNumber;
+                                sheet.Cells[row, column++].Value = sa.Title1;
+                                sheet.Cells[row++, column++].Value = sa.Title2;
+                                column = 0;
+                                break;
+                            default:
+                                sheet.Cells[row, column++].Value = $"例外型別";
+                                sheet.Cells[row, column++].Value = e.GetType().Name;
+                                sheet.Cells[row++, column++].Value = e.EntityData.GetType().Name;
+                                column = 0;
+                                break;
+                        }
+                        row++;
+                        index_Entities++;
+                    });
+                    row++;
+                    column = 0;
+                }
+                sheet.Cells.AutoFitColumns();
+                sheet.Rows.AutoOutline();
+                #endregion
+
+
 
                 book.BeginUpdate();
                 book.SaveDocument(path, DevExpress.Spreadsheet.DocumentFormat.Xlsx);

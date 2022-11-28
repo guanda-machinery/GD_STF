@@ -196,7 +196,7 @@ namespace WPFSTD105
         /// </summary>
         public bool EngineeringMode { get; set; } = false;
         /// <inheritdoc/>
-        public string ProjectName { get; set; } = string.Empty;
+        public string ProjectName { get; set; } = null;
         /// <inheritdoc/>
         public string GetNowDate { get; set; } = "1970/01/01";
         /// <inheritdoc/>
@@ -464,6 +464,23 @@ namespace WPFSTD105
             }
             return dmlist;
         }
+        public List<string> GetAllDevMateialPart()
+        {
+            List<string> dmlist = new List<string>();
+            foreach (string d in Directory.GetFileSystemEntries(ApplicationVM.DirectoryMaterial()))
+            {
+                if (File.Exists(d))
+                {
+                    string dataName = Path.GetFileName(d);//檔案名稱
+                    string ext = Path.GetExtension(d);//副檔名
+                    if (ext == ".dm") //如果是 dm 檔案
+                    {
+                        dmlist.Add(dataName.Replace(ext, ""));
+                    }
+                }
+            }
+            return dmlist;
+        }
 
         private SynchronizationContext _SynchronizationContext;
         public async void CreateDMFileSync(ModelExt model, string guid = "")
@@ -499,7 +516,7 @@ namespace WPFSTD105
                         ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔中{nc.SteelAttr.PartNumber}";
                         //Thread.Sleep(1000);
                         model.Clear(); //清除目前模型
-                        model.LoadNcToModel(nc.SteelAttr.GUID.ToString(), ObSettingVM.allowType, ProcessingScreenWin.ViewModel);
+                        model.LoadNcToModel(nc.SteelAttr.GUID.ToString(), ObSettingVM.allowType,0, ProcessingScreenWin.ViewModel);
                     }
                 }
                 else
@@ -512,7 +529,7 @@ namespace WPFSTD105
                             ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔中{i++}/{ncTemps.Count}\n{nc.SteelAttr.PartNumber} ";
                             //Thread.Sleep(1000);
                             model.Clear(); //清除目前模型
-                            model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), ObSettingVM.allowType, ProcessingScreenWin.ViewModel);
+                            model.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), ObSettingVM.allowType,0, ProcessingScreenWin.ViewModel);
                         }
                     }
                 }
@@ -566,7 +583,7 @@ namespace WPFSTD105
                     ProcessingScreenWin.ViewModel.Status = $"建立3D/2D圖檔中{nc.SteelAttr.PartNumber}";
                     //Thread.Sleep(1000);
                     _BufferModel.Clear(); //清除目前模型
-                    _BufferModel.LoadNcToModel(nc.SteelAttr.GUID.ToString(), ObSettingVM.allowType, ProcessingScreenWin.ViewModel);
+                    _BufferModel.LoadNcToModel(nc.SteelAttr.GUID.ToString(), ObSettingVM.allowType,0, ProcessingScreenWin.ViewModel);
                 }
             }
             else
@@ -610,7 +627,7 @@ namespace WPFSTD105
 
                                 //Thread.Sleep(1000);
                                 _BufferModel.Clear(); //清除目前模型
-                                _BufferModel.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), ObSettingVM.allowType, ProcessingScreenWin.ViewModel);
+                                _BufferModel.LoadNcToModel(nc.SteelAttr.GUID.Value.ToString(), ObSettingVM.allowType,0, ProcessingScreenWin.ViewModel);
                             }
                         }
                     }
@@ -736,6 +753,7 @@ namespace WPFSTD105
 
             throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }
+
         /// <summary>
         /// 目前模型有使用的斷面規格資料表路徑。
         /// </summary>
@@ -1056,6 +1074,20 @@ namespace WPFSTD105
 
             if (projectName != null)
                 return $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\part.lis";
+
+            throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
+        }
+        /// <summary>
+        /// 切割設定檔
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public static string FileCutSettingList()
+        {
+            string projectName = CommonViewModel.ProjectName; //專案名稱
+
+            if (projectName != null)
+                return $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\cutSetting.lis";
 
             throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }

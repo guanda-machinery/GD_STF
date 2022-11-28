@@ -1,32 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Diagnostics;
-using devDept.Geometry;
+﻿using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
-using WPFSTD105.Model;
-using WPFSTD105;
-using WPFWindowsBase;
-using WPFSTD105.Tekla;
-using devDept.Eyeshot;
-using WPFSTD105.Attribute;
-using static WPFSTD105.Model.Expand;
+using devDept.Geometry;
+using DevExpress.Xpf.CodeView;
+using System;
 using System.Collections.Generic;
-using DevExpress.Data.Extensions;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Input;
+using WPFSTD105;
+using WPFSTD105.Attribute;
+using WPFSTD105.Model;
+using WPFSTD105.Tekla;
+using WPFWindowsBase;
+using static WPFSTD105.Model.Expand;
 
 namespace TestDevdept
 {
@@ -125,7 +116,7 @@ namespace TestDevdept
         private SteelAttr SteelAttr = new SteelAttr()
         {
             H = 200,                /// 高
-            W=  100,                /// 寬
+            W = 100,                /// 寬
             t1 = (float)5.5,        /// 腹板厚度
             t2 = 8,                 /// 翼板厚度
             Length = 1089.76        ///長
@@ -136,11 +127,11 @@ namespace TestDevdept
 
 
             //model.Clear();//清除模型內物件
-          //  model1.Blocks[steelBlock.BlockName].Entities.Clear();//清除圖塊
-                                                                //前視圖
-            Mesh vMesh = ConvertNcPointToMesh(SteelAttr.vPoint, SteelAttr.t1);
-            List<Mesh> vCut = GetCutMesh(SteelAttr.vPoint, SteelAttr.t1);
-            Mesh cut1 = Mesh.CreateBox(SteelAttr.Length + 10, SteelAttr.t2, SteelAttr.t1);//切割前視圖翼板輪廓
+            //  model1.Blocks[steelBlock.BlockName].Entities.Clear();//清除圖塊
+            //vMesh 頂視圖
+            Mesh vMesh = ConvertNcPointToMesh(SteelAttr.vPoint, SteelAttr.t1); //將 nc 座標轉實體
+            List<Mesh> vCut = GetCutMesh(SteelAttr.vPoint, SteelAttr.t1); //取得切割物件
+            Mesh cut1 = Mesh.CreateBox(SteelAttr.Length + 10, SteelAttr.t2, SteelAttr.t1);//建一立方體  切割前視圖翼板輪廓
             cut1.Translate(-5, 0);
             Mesh otherCut1 = (Mesh)cut1.Clone();
             Mesh cut2 = (Mesh)cut1.Clone();
@@ -175,7 +166,7 @@ namespace TestDevdept
             vMesh.ColorMethod = colorMethodType.byEntity;
             vMesh.Translate(0, 0, SteelAttr.W * 0.5 - SteelAttr.t1 * 0.5);
 
-            //頂視圖
+            //oMesh 後視圖
             Mesh oMesh = ConvertNcPointToMesh(SteelAttr.oPoint, SteelAttr.t2);
             List<Mesh> oCut = GetCutMesh(SteelAttr.oPoint, SteelAttr.t2);
             Solid oSolid = oMesh.ConvertToSolid();
@@ -188,7 +179,7 @@ namespace TestDevdept
             oMesh.Color = ColorTranslator.FromHtml(WPFSTD105.Properties.SofSetting.Default.Part);
             oMesh.ColorMethod = colorMethodType.byEntity;
 
-            //底視圖
+            //uMesh 前視圖
             Mesh uMesh = ConvertNcPointToMesh(SteelAttr.uPoint, SteelAttr.t2);
             List<Mesh> uCut = GetCutMesh(SteelAttr.uPoint, SteelAttr.t2);
             Solid uSolid = uMesh.ConvertToSolid();
@@ -200,12 +191,64 @@ namespace TestDevdept
             uMesh.Color = ColorTranslator.FromHtml(WPFSTD105.Properties.SofSetting.Default.Part);
             uMesh.ColorMethod = colorMethodType.byEntity;
 
-            vMesh.MergeWith(oMesh);
 
-            vMesh.MergeWith(uMesh);
+
             vMesh.EntityData = SteelAttr;
-            model1.Entities.Add(vMesh);
-            //    model1.Blocks[steelBlock.BlockName].Entities.Add(vMesh);
+
+            vMesh.MergeWith(oMesh);
+            vMesh.MergeWith(uMesh);
+            //model1.Entities.Add(vMesh);
+           //     model1.Blocks[steelBlock.BlockName].Entities.Add(vMesh);
+
+            
+
+
+
+            SteelAttr.Type = GD_STD.Enum.OBJECT_TYPE.BH;
+
+           Steel3DBlock asd = new Steel3DBlock(Steel3DBlock.GetProfile(SteelAttr));
+            Mesh ccc = Steel3DBlock.GetProfile(SteelAttr);
+
+
+             
+
+            ccc.Color = ColorTranslator.FromHtml(WPFSTD105.Properties.SofSetting.Default.Surplus);
+
+          
+                 
+           // Solid[] seccut = Solid.Difference(aaaaaaa.ConvertToSolid(), vMesh.ConvertToSolid());
+
+               Solid[] resultSolid1 = Solid.Difference(ccc.ConvertToSolid(), vMesh.ConvertToSolid());
+
+
+
+            ////EntityList result =  entities.Where(el => !((BlockReference)el).Attributes.ContainsKey("Cut")).ToList();
+
+
+
+            //    model1.Entities.AddRange(resultSolid1,0, System.Drawing.Color.FromArgb(255, 0, 0));
+
+            model1.Entities.Add(ccc);
+
+
+            ccc.Color = ColorTranslator.FromHtml(WPFSTD105.Properties.SofSetting.Default.Surplus);
+
+
+
+            // Solid[] seccut = Solid.Difference(aaaaaaa.ConvertToSolid(), vMesh.ConvertToSolid());
+
+            Solid[] resultSolid1 = Solid.Difference(ccc.ConvertToSolid(), vMesh.ConvertToSolid());
+
+
+
+            ////EntityList result =  entities.Where(el => !((BlockReference)el).Attributes.ContainsKey("Cut")).ToList();
+
+
+
+            //    model1.Entities.AddRange(resultSolid1,0, System.Drawing.Color.FromArgb(255, 0, 0));
+
+            model1.Entities.Add(ccc);
+
             model1.ZoomFit();
             model1.Refresh();
 
@@ -313,7 +356,7 @@ namespace TestDevdept
 
         }
         /// <summary>
-        /// 返回一個網格，其中刪除了未使用的頂點，並且頂點引用在網格m的“三角形”列表中重新排序。
+        /// EG4YAup2hySgcimq8MkLuB6e34rNB2SF9h94LL1ryzzq
         /// </summary>
         /// <param name="m"></param>
         /// <returns></returns>
@@ -396,8 +439,8 @@ namespace TestDevdept
             int index = point3Ds.FindIndex(el => el == point);
             //int maxIndex = point3Ds.FindIndex(el => el == maxPoint);
             var center = point3Ds[index];
-            var p1 = point3Ds[CycleIndex(point3Ds, index -1)];
-            var p2 = point3Ds[CycleIndex(point3Ds, index +1)];
+            var p1 = point3Ds[CycleIndex(point3Ds, index - 1)];
+            var p2 = point3Ds[CycleIndex(point3Ds, index + 1)];
             angleP1 = WPFSTD105.Tekla.AK.Angle(center, p1, new Point3D(center.X + extendX, center.Y));
             angleP2 = WPFSTD105.Tekla.AK.Angle(center, p2, new Point3D(center.X + extendX, center.Y));
             if (angleP1 % 90 != 0 || angleP2 % 90 != 0)

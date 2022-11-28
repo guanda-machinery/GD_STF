@@ -20,16 +20,7 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public Dpad_ViewModel()
         {
-            //上下左右按鍵預設值 可在後續繼承時被修改
-            Joystcik_Up_Trigger_Command = JoystickCommand(JOYSTICK.UP_DESC);
-            Joystcik_Down_Trigger_Command = JoystickCommand(JOYSTICK.DOWN_DESC);
-            Joystcik_Left_Trigger_Command = JoystickCommand(JOYSTICK.LEFT_DESC);
-            Joystcik_Right_Trigger_Command = JoystickCommand(JOYSTICK.RIGHT_DESC);
 
-            Joystcik_Up_Release_Command = JoystickCommand(JOYSTICK.NULL);
-            Joystcik_Down_Release_Command = JoystickCommand(JOYSTICK.NULL);
-            Joystcik_Left_Release_Command = JoystickCommand(JOYSTICK.NULL);
-            Joystcik_Right_Release_Command = JoystickCommand(JOYSTICK.NULL);
         }
 
         /// <summary>
@@ -70,132 +61,60 @@ namespace WPFSTD105.ViewModel
 
 
 
-
-
         #region 命令處理方法
-
-        private WPFWindowsBase.RelayParameterizedCommand _joystick_Command = null;
         /// <summary>
-        /// 搖桿操作命令 含parameter
+        /// 滑鼠指標在箭頭向上元素上方且按下滑鼠左按鈕時處理方法。
         /// </summary>
-        public WPFWindowsBase.RelayParameterizedCommand Joystick_Command
+        /// 
+
+
+        public WPFWindowsBase.RelayParameterizedCommand LeftButtonCommand
         {
             get
             {
-                if(_joystick_Command == null)
+                return new WPFWindowsBase.RelayParameterizedCommand(el =>
                 {
-                    _joystick_Command = new WPFWindowsBase.RelayParameterizedCommand(el =>
+                    if (el is JOYSTICK)
                     {
-                        if (el is JOYSTICK _joystick)
-                        {
-                            PanelButton PButton = ApplicationViewModel.PanelButton;
-                            PButton.Joystick = _joystick;
-                            CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                        }
-                    });
-                }
-                return _joystick_Command;
-            }
-            set
-            {
-                _joystick_Command = value;
+                        JOYSTICK select = (JOYSTICK)el;
+                        PanelButton _ = ApplicationViewModel.PanelButton;
+                        _.Joystick = select;
+                        CodesysIIS.WriteCodesysMemor.SetPanel(_);
+                    }
+                    if (el is GD_STD.Enum.AXIS_SELECTED)
+                    {
+                        AXIS_SELECTED select = (AXIS_SELECTED)el;
+                        PanelButton _ = ApplicationViewModel.PanelButton;
+                        _.AxisSelect = select;
+                        CodesysIIS.WriteCodesysMemor.SetPanel(_);
+                    }
+                });
             }
         }
 
 
-        /// <summary>
-        /// 搖桿操作命令 取消
-        /// </summary>
-        /* public WPFWindowsBase.RelayCommand ButtonCancelCommand
-         {
-             get
-             {
-                 return new WPFWindowsBase.RelayCommand(() =>
-                 {
-                     PanelButton PButton = ApplicationViewModel.PanelButton;
-                     PButton.Joystick = JOYSTICK.NULL;
-                     CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                 });
-             }
-         }*/
-
-
-
-
-
-
 
         /// <summary>
-        /// 搖桿操作命令 parameter
+        /// 定位柱
         /// </summary>
-        private WPFWindowsBase.RelayCommand JoystickCommand(JOYSTICK _joystick = JOYSTICK.NULL)
+        public WPFWindowsBase.RelayCommand PostRiseCommand
         {
+            get
+            {
                 return new WPFWindowsBase.RelayCommand(() =>
                 {
-                    PanelButton PButton = ApplicationViewModel.PanelButton;
-                    PButton.Joystick = _joystick;
+                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
+                        return;
+
+                    GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+                    //相反訊號
+                    PButton.PostRise = !PButton.PostRise;
                     CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
                 });
+            }
         }
 
-
-
         #endregion
-
-
-        /// <summary>
-        /// 上按鈕
-        /// </summary>
-        public WPFWindowsBase.RelayCommand Joystcik_Up_Trigger_Command { get; set; }
-
-        /// <summary>
-        /// 上按鈕釋放
-        /// </summary>
-       public WPFWindowsBase.RelayCommand Joystcik_Up_Release_Command { get; set; }
-
-        /// <summary>
-        /// 下按鈕
-        /// </summary>
-        public WPFWindowsBase.RelayCommand Joystcik_Down_Trigger_Command { get; set; }
-        /// <summary>
-        /// 下按鈕釋放
-        /// </summary>
-        public WPFWindowsBase.RelayCommand Joystcik_Down_Release_Command { get; set; }
-
-        /// <summary>
-        /// 左按鈕
-        /// </summary>
-        public WPFWindowsBase.RelayCommand Joystcik_Left_Trigger_Command { get; set; }
-
-        /// <summary>
-        /// 左按鈕釋放
-        /// </summary>
-        public WPFWindowsBase.RelayCommand Joystcik_Left_Release_Command { get; set; }
-
-        /// <summary>
-        /// 右按鈕
-        /// </summary>
-        public WPFWindowsBase.RelayCommand Joystcik_Right_Trigger_Command { get; set; }
-        /// <summary>
-        /// 右按鈕釋放
-        /// </summary>
-        public WPFWindowsBase.RelayCommand Joystcik_Right_Release_Command { get; set; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
 }

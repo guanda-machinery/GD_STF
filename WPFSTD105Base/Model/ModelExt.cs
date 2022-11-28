@@ -45,7 +45,6 @@ namespace WPFSTD105
         }
 
 
-
         private List<Entity> selectionEntities = new List<Entity>();
 
         /// <summary>
@@ -60,7 +59,7 @@ namespace WPFSTD105
                 return;
 
             ObSettingVM vm = (ObSettingVM)DataContext;
-
+                        
             if (ActionMode != actionType.SelectVisibleByPick)
             {
                 if (Name == "model")
@@ -165,6 +164,13 @@ namespace WPFSTD105
             else
             {
 
+            }
+            if (vm.Select2DItem.Count > 1)
+            {
+                vm.EditObjectVisibility = false;// Visibility.Collapsed;
+            }
+            else {
+                vm.EditObjectVisibility = true;//  Visibility.Visible;
             }
         }
 

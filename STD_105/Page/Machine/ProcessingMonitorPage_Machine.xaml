@@ -24,7 +24,7 @@
                    xmlns:GD_STD_Enum="clr-namespace:GD_STD.Enum;assembly=GD_STD.Enum"
                    xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
                    Title="加工監控"
-                   x:TypeArguments="STD105VM:ProcessingMonitorVM"
+                   x:TypeArguments="STD105VM:ProcessingMonitor_MachineVM"
                   KeepAlive="True"
                   Unloaded="BasePage_Unloaded"
                   mc:Ignorable="d">
@@ -125,7 +125,7 @@
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
     <WPFBase:BasePage.DataContext>
-        <STD105VM:ProcessingMonitorVM/>
+        <STD105VM:ProcessingMonitor_MachineVM/>
     </WPFBase:BasePage.DataContext>
     <Grid dx:ThemeManager.ThemeName="Win10Light" Background="#292929">
         <Grid.Resources>
@@ -507,7 +507,7 @@ AllowEditing="False"
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>
-                                        <ProgressBar Value="{c:Binding Value*0.01}" Height="auto" Minimum="0" Maximum="100" Background="White" />
+                                        <ProgressBar Value="{c:Binding Value}" Height="auto" Minimum="0" Maximum="100" Background="Transparent" />
                                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" >
                                             <TextBlock Text="{c:Binding Value*0.01, StringFormat={}{0:P1}}"   />
                                         </StackPanel>

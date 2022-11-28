@@ -1,8 +1,11 @@
 ﻿using DevExpress.Xpf.Core;
 using DevExpress.Xpf.WindowsUI;
 using GD_STD;
+using GD_STD.Base;
 using GD_STD.Enum;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.ServiceModel;
 using System.Threading;
@@ -123,8 +126,42 @@ namespace WPFSTD105
         /// <param name="panelButton"></param>
         private void ChangePage(PanelButton panelButton)
         {
-            ApplicationPage currentPage = ApplicationViewModel.CurrentPage;
-            if (currentPage != ApplicationPage.ObSetting && currentPage != ApplicationPage.Monitor) //如果頁面不再製品設定或是加工監控
+           ApplicationPage currentPage = ApplicationViewModel.CurrentPage;
+            //22221124 若正在加工且現在畫面在機台監控模式 當企圖離開頁面時會被阻擋且跳出提示
+            if (currentPage == ApplicationPage.Monitor || currentPage == ApplicationPage.MachineMonitor)
+            {
+                if (ReadCodesysMemor.GetHost().CodesysStatus == CODESYS_STATUS.RUN)
+                {
+                    MessageBoxResult messageBoxResult = MessageBox.Show($"機台運行中下不可離開加工監控頁面。", "通知", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                }
+           
+                //鑰匙孔在自動情況下不可離開
+                if (ApplicationViewModel.PanelButton.Key == KEY_HOLE.AUTO)
+                {
+                    MessageBoxResult messageBoxResult = MessageBox.Show($"鑰匙孔在自動情況下不可離開加工監控頁面。", "通知", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                }
+
+                //讀取記憶體是否有待加工之物件
+
+                //若有觸碰機台功能按鈕則使無效
+                if (panelButton.MainAxisMode ||
+                    panelButton.ClampDown ||
+                    panelButton.SideClamp ||
+                    panelButton.Volume ||
+                    panelButton.DrillWarehouse ||
+                    panelButton.Hand )
+                { 
+                    panelButton.MainAxisMode = false;
+                    panelButton.ClampDown = false;
+                    panelButton.SideClamp = false;
+                    panelButton.Volume = false;
+                    panelButton.DrillWarehouse = false;
+                    panelButton.Hand = false;
+                    WriteCodesysMemor.SetPanel(panelButton);
+                }
+            }
+
+            if (currentPage != ApplicationPage.ObSetting && currentPage != ApplicationPage.Monitor && currentPage != ApplicationPage.MachineMonitor) //如果頁面不再製品設定或是加工監控
             {
                 //如果按下，下壓夾具
                 if (panelButton.ClampDown)
@@ -133,30 +170,36 @@ namespace WPFSTD105
                     if (panelButton.ClampDownSelected == CLAMP_DOWN.Entrance && currentPage != ApplicationPage.EnClampDown)
                     {
                         if (IsReplacePage(currentPage))
-                            ApplicationViewModel.CurrentPage = ApplicationPage.EnClampDown;
+                            ApplicationViewModel.CurrentPage = ApplicationPage.MachineFunction;
+                        //ApplicationViewModel.CurrentPage = ApplicationPage.EnClampDown;
                     }
                     //如果下壓夾具選擇是出料口處，但是頁面不在出口下壓夾具畫面，就換到對應畫面
                     else if (panelButton.ClampDownSelected == CLAMP_DOWN.Export && currentPage != ApplicationPage.ExClampDown)
                     {
                         if (IsReplacePage(currentPage))
-                            ApplicationViewModel.CurrentPage = ApplicationPage.ExClampDown;
+                            ApplicationViewModel.CurrentPage = ApplicationPage.MachineFunction;
+                        //ApplicationViewModel.CurrentPage = ApplicationPage.ExClampDown;
                     }
                 }
                 //如果按下側壓夾具，但是頁面不在側壓夾具畫面，就換到對應畫面
                 else if (panelButton.SideClamp && currentPage != ApplicationPage.SideClamp)
                 {
                     if (IsReplacePage(currentPage))
-                        ApplicationViewModel.CurrentPage = ApplicationPage.SideClamp;
+                        ApplicationViewModel.CurrentPage = ApplicationPage.MachineFunction;
+                    //ApplicationViewModel.CurrentPage = ApplicationPage.SideClamp;
                 }
                 //如果按下送料手臂，但是頁面不在送料手臂畫面，就換到對應畫面
                 else if (panelButton.Hand && currentPage != ApplicationPage.Hand)
                 {
                     if (IsReplacePage(currentPage))
-                        ApplicationViewModel.CurrentPage = ApplicationPage.Hand;
+                        ApplicationViewModel.CurrentPage = ApplicationPage.MachineFunction;
+                        //ApplicationViewModel.CurrentPage = ApplicationPage.Hand;
                 }
                 //如果按下，主軸模式
                 else if (panelButton.MainAxisMode)
-                {
+                {    
+                    //舊頁面
+                    /*
                     //如果下壓夾具選擇是左軸，但是頁面不在左軸畫面，就換到對應畫面
                     if (panelButton.AxisSelect == AXIS_SELECTED.Left && currentPage != ApplicationPage.LeftAxis)
                     {
@@ -175,18 +218,30 @@ namespace WPFSTD105
                         if (IsReplacePage(currentPage))
                             ApplicationViewModel.CurrentPage = ApplicationPage.RightAxis;
                     }
+                         */
+                    
+                    //新頁面
+                    if (currentPage != ApplicationPage.MainSpindleMode)
+                    {
+                        if (IsReplacePage(currentPage))
+                            ApplicationViewModel.CurrentPage = ApplicationPage.MainSpindleMode;
+                    }
+                    
+
                 }
                 //如果選擇出入口料架，但是頁面不在料架頁面，就換到對應畫面
                 else if ((panelButton.EntranceRack || panelButton.ExportRack) && currentPage != ApplicationPage.RackOperation)
                 {
                     if (IsReplacePage(currentPage))
-                        ApplicationViewModel.CurrentPage = ApplicationPage.RackOperation;
+                        ApplicationViewModel.CurrentPage = ApplicationPage.MachineFunction;
+                        //ApplicationViewModel.CurrentPage = ApplicationPage.RackOperation;
+
                 }
                 //如果按下，刀庫
                 else if (panelButton.DrillWarehouse)
                 {
                     //如果刀庫選擇是左軸出料口，但是頁面不在左軸出料口畫面，就換到對應畫面
-                    if (panelButton.DrillSelected == DRILL_POSITION.ENTRANCE_L && currentPage != ApplicationPage.DrillEntrance_L)
+                    /*if (panelButton.DrillSelected == DRILL_POSITION.ENTRANCE_L && currentPage != ApplicationPage.DrillEntrance_L)
                     {
                         if (IsReplacePage(currentPage))
                             ApplicationViewModel.CurrentPage = ApplicationPage.DrillEntrance_L;
@@ -214,12 +269,14 @@ namespace WPFSTD105
                     {
                         if (IsReplacePage(currentPage))
                             ApplicationViewModel.CurrentPage = ApplicationPage.DrillMiddle;
-                    }
+                    }  */
+                    ApplicationViewModel.CurrentPage = ApplicationPage.MachineFunction;
                 }
                 else if (panelButton.Volume && currentPage != ApplicationPage.Volume)
                 {
                     if (IsReplacePage(currentPage))
-                        ApplicationViewModel.CurrentPage = ApplicationPage.Volume;
+                        ApplicationViewModel.CurrentPage = ApplicationPage.MachineFunction;
+                    //ApplicationViewModel.CurrentPage = ApplicationPage.Volume;
                 }
                 //如果沒有選擇主軸模式，但是目前頁面是在主軸模式相關的畫面，就返回首頁
                 else if (!panelButton.MainAxisMode &&
@@ -398,6 +455,13 @@ namespace WPFSTD105
         }
         #endregion
 
+
+        private List<short> _SendIndex { get; set; } = new List<short>();
+        private short[] _LastTime { get; set; } = new short[0];
+
+
+
+
         #region 私有欄位
         /// <summary>
         /// 變更過監聽內容
@@ -411,7 +475,7 @@ namespace WPFSTD105
         /// <summary>
         /// 按下實體面板緊急停止提示
         /// </summary>
-        /// <returns>如果有觸發急停止回傳 treu，沒有則回傳 false</returns>
+        /// <returns>如果有觸發急停止回傳 true，沒有則回傳 false</returns>
         public static bool SLPEMS()
         {
             if (ApplicationViewModel.PanelButton.EMS)

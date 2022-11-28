@@ -137,13 +137,43 @@
                 <local:MainFunctionButton ButtonCommand="{Binding MainSpindleCommand }"
                                           ButtonImageSource="{StaticResource Spindle}"
                                           TitleText="{ DynamicResource LANGUAGE_SpindleMode }"
-                                          FontColor="{ StaticResource solidclr_DimGray }" />
+                                          FontColor="{ StaticResource solidclr_DimGray }" >
+                    <local:MainFunctionButton.IsEnabled>
+                        <MultiBinding Converter="{local:DoubleConditionToIsEnabledConerter}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="ApplicationViewModel.PanelButton.Key"
+                                         Source="{x:Static WPFSTD:ViewLocator.Instance}" />
+                                <Binding Path="ApplicationViewModel.PanelButton.Alarm"
+                                         Source="{x:Static WPFSTD:ViewLocator.Instance}" />
+                                <Binding Path="ApplicationViewModel.AppManualConnect"
+                                         Source="{x:Static WPFSTD:ViewLocator.Instance}" />
+                                <Binding Path="ApplicationViewModel.FirstOrigin"
+                                         Source="{x:Static WPFSTD:ViewLocator.Instance}" />
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </local:MainFunctionButton.IsEnabled>
+                </local:MainFunctionButton>
 
                 <!--機台其他功能-->
                 <local:MainFunctionButton ButtonCommand="{Binding MachineFunctionCommand }"
                                           ButtonImageSource="{StaticResource Apps}"
                                           TitleText="{ DynamicResource LANGUAGE_MachineFuctions }"
-                                          FontColor="{ StaticResource solidclr_DimGray }" />
+                                          FontColor="{ StaticResource solidclr_DimGray }" >
+                    <local:MainFunctionButton.IsEnabled>
+                        <MultiBinding Converter="{local:DoubleConditionToIsEnabledConerter}">
+                            <MultiBinding.Bindings>
+                                <Binding Path="ApplicationViewModel.PanelButton.Key"
+                                         Source="{x:Static WPFSTD:ViewLocator.Instance}" />
+                                <Binding Path="ApplicationViewModel.PanelButton.Alarm"
+                                         Source="{x:Static WPFSTD:ViewLocator.Instance}" />
+                                <Binding Path="ApplicationViewModel.AppManualConnect"
+                                         Source="{x:Static WPFSTD:ViewLocator.Instance}" />
+                                <Binding Path="ApplicationViewModel.FirstOrigin"
+                                         Source="{x:Static WPFSTD:ViewLocator.Instance}" />
+                            </MultiBinding.Bindings>
+                        </MultiBinding>
+                    </local:MainFunctionButton.IsEnabled>
+                </local:MainFunctionButton>
                 <!--參數設定-->
                 <local:MainFunctionButton ButtonCommand="{Binding SettingParCommand}"
                                           ButtonImageSource="{StaticResource SoftwareSettings}"
@@ -161,7 +191,8 @@
                                           TitleText="{ DynamicResource LANGUAGE_ProjectManagement }"
                                           FontColor="{ StaticResource solidclr_DimGray }" />
                 <!--舊主軸模式-->
-                <local:MainFunctionButton x:Name="mainSpindle"
+                <local:MainFunctionButton Visibility="Collapsed"
+                    x:Name="mainSpindle"
                                           Badged=""
                                           ButtonCommand="{Binding MainAxisModeCommand}"
                                           ButtonImageSource="{StaticResource Spindle}"
@@ -185,7 +216,8 @@
                 </local:MainFunctionButton>
 
                 <!--機台舊功能-->
-                <local:MainFunctionButton ButtonCommand="{Binding MachineFuctionCommand }"
+                <local:MainFunctionButton Visibility="Collapsed"
+                    ButtonCommand="{Binding MachineFuctionCommand }"
                                           ButtonImageSource="{StaticResource Apps}"
                                           IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
                                           TitleText="舊功能"
@@ -223,6 +255,7 @@
                 <Grid MaxWidth="350" Height="40"
                         Visibility="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToVisibilityConverter}}">
                     <!--  專案名稱  -->
+                    <!--跑馬燈
                     <WPFBase:Marquee x:Name="projectName"
                                      Tag="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, TargetNullValue=尚未載入專案 }"
                                      Foreground="{ StaticResource solidclr_DimGray }"
@@ -230,7 +263,15 @@
                                      TextDecorations="Underline"
                                      FontWeight="Bold"
                                      FontSize="22" 
-                                     VerticalAlignment="Center"/>
+                                     VerticalAlignment="Center"/>-->
+
+                    <TextBlock x:Name="projectName" Text="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, TargetNullValue=尚未載入專案 }"
+                     Foreground="{ StaticResource solidclr_DimGray }"
+                      FontFamily="{ Binding FontFamily, Source={ x:Static SofSetting:SofSetting.Default } }"
+                       TextDecorations="Underline"
+                      FontWeight="Bold"
+                       FontSize="22" 
+                       VerticalAlignment="Center"/>
                     <!--
                     <TextBlock x:Name="projectName"
                                FontWeight="Bold"
@@ -696,14 +737,14 @@
                                               TitleText="{DynamicResource LANGUAGE_ImportFiles}"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <!--  製品設定(舊)  -->
-                    <local:MainFunctionButton Grid.Column="1" Grid.Row="5"
+                    <local:MainFunctionButton Grid.Column="1" Grid.Row="5" Visibility="Collapsed"
                                               ButtonCommand="{Binding ProductSettingCommand}"
                                               ButtonImageSource="{StaticResource NewProductSettings}"
                                               IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
                                               TitleText="舊製品"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <!--  排版設定(舊)  -->
-                    <local:MainFunctionButton Grid.Row="5"
+                    <local:MainFunctionButton Grid.Row="5" Visibility="Collapsed"
                                               Grid.Column="0"
                                               ButtonCommand="{Binding TypeSettingCommand}"
                                               ButtonImageSource="{StaticResource Layout}"
@@ -711,7 +752,8 @@
                                               TitleText="舊排版"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <!--  加工監控(舊)   -->
-                    <local:MainFunctionButton Grid.Row="4"
+                    <local:MainFunctionButton  Visibility="Collapsed"
+                        Grid.Row="4"
                                               Grid.Column="1"
                                               ButtonCommand="{Binding MonitorCommand}"
                                               ButtonImageSource="{StaticResource Monitor_New}"
@@ -792,15 +834,15 @@
                     <local:MainFunctionButton Grid.Row="1"
                                               ButtonCommand="{Binding LanguageCommand }"
                                               CommandParameter="{ Binding TitleText, RelativeSource={ x:Static RelativeSource.Self } }"
-                                              ButtonImageSource="{StaticResource Thailand}"
-                                              TitleText="Tiếng Việt"
+                                              ButtonImageSource="{StaticResource Vietnam}"
+                                              TitleText="ไทย"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <local:MainFunctionButton Grid.Row="1"
                                               Grid.Column="1"
                                               ButtonCommand="{Binding LanguageCommand }"
                                               CommandParameter="{ Binding TitleText, RelativeSource={ x:Static RelativeSource.Self } }"
-                                              ButtonImageSource="{StaticResource Vietnam}"
-                                              TitleText="ไทย"
+                                              ButtonImageSource="{StaticResource Thailand}"
+                                              TitleText="Tiếng Việt"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <!--關閉區域-->
                     <Button Grid.Column="1"
@@ -1046,7 +1088,14 @@
                                         Width="160" 
                                         Height="50" 
                                         FontSize="20" 
-                                    Style="{StaticResource SiegCustomButtonBlue}" />
+                                    Style="{StaticResource SiegCustomButtonBlue}" >
+                                    <Button.IsEnabled>
+                                        <MultiBinding Converter="{ local:MultiObjectArrayToBooleanConverter}">
+                                            <Binding ElementName="ResultPath" Path="Text" />
+                                            <Binding ElementName="InputTextBox1" Path="Text" />
+                                        </MultiBinding>
+                                    </Button.IsEnabled>
+                                </Button>
                                 <Button Grid.Column="1"
                                         x:Name="NoButton1"
                                         Command="{Binding CollapsedCommand}"
