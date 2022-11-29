@@ -3981,8 +3981,8 @@ namespace STD_105.Office
                     if (result.Count > 0)
                     {
                         DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
-                        a = DRPoint[0].Item1;
-                        b = DRPoint[0].Item2;
+                        a = DRPoint[DRPoint.Count-1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
                         HypotenusePoint.Add(((PosRatioC * a) + result[0].X, (PosRatioC * b) + result[0].Y));
                         HypotenusePoint.Add(((PosRatioD * a) + result[0].X, (PosRatioD * b) + result[0].Y));
                     }
@@ -3992,8 +3992,8 @@ namespace STD_105.Office
                     if (result.Count > 0)
                     {
                         DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
-                        a = DRPoint[0].Item1;
-                        b = DRPoint[0].Item2;
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
                         HypotenusePoint.Add(((PosRatioC * a) + result[0].X, result[1].Y - (PosRatioC * b)));
                         HypotenusePoint.Add(((PosRatioD * a) + result[0].X, result[1].Y - (PosRatioD * b)));
                     }
@@ -4003,8 +4003,8 @@ namespace STD_105.Office
                     if (result.Count > 0)
                     {
                         DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
-                        a = DRPoint[0].Item1;
-                        b = DRPoint[0].Item2;
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
                         HypotenusePoint.Add(((PosRatioC * a), result[2].Y - (PosRatioC * b)));
                         HypotenusePoint.Add(((PosRatioD * a), result[2].Y - (PosRatioD * b)));
                     }
@@ -4014,8 +4014,8 @@ namespace STD_105.Office
                     if (result.Count > 0)
                     {
                         DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
-                        a = DRPoint[0].Item1;
-                        b = DRPoint[0].Item2;
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
                         HypotenusePoint.Add(((PosRatioC * a) + result[0].X, (PosRatioC * b) + result[1].Y));
                         HypotenusePoint.Add(((PosRatioD * a) + result[0].X, (PosRatioD * b) + result[1].Y));
                     }
@@ -4057,8 +4057,8 @@ namespace STD_105.Office
                     if (result.Count > 0)
                     {
                         DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
-                        a = DRPoint[0].Item1;
-                        b = DRPoint[0].Item2;
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
                         HypotenusePoint.Add(((PosRatioA * a) + result[0].X, (PosRatioA * b) + result[0].Y));
                         HypotenusePoint.Add(((PosRatioB * a) + result[0].X, (PosRatioB * b) + result[0].Y));
                     }
@@ -4068,8 +4068,8 @@ namespace STD_105.Office
                     if (result.Count > 0)
                     {
                         DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
-                        a = DRPoint[0].Item1;
-                        b = DRPoint[0].Item2;
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
                         HypotenusePoint.Add(((PosRatioA * a) + result[0].X, result[1].Y - (PosRatioA * b)));
                         HypotenusePoint.Add(((PosRatioB * a) + result[0].X, result[1].Y - (PosRatioB * b)));
                     }
@@ -4079,8 +4079,8 @@ namespace STD_105.Office
                     if (result.Count > 0)
                     {
                         DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
-                        a = DRPoint[0].Item1;
-                        b = DRPoint[0].Item2;
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
                         HypotenusePoint.Add(((PosRatioA * a), result[2].Y - (PosRatioA * b)));
                         HypotenusePoint.Add(((PosRatioB * a), result[2].Y - (PosRatioB * b)));
                     }
@@ -4090,8 +4090,8 @@ namespace STD_105.Office
                     if (result.Count > 0)
                     {
                         DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
-                        a = DRPoint[0].Item1;
-                        b = DRPoint[0].Item2;
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
                         HypotenusePoint.Add(((PosRatioA * a) + result[0].X, (PosRatioA * b) + result[1].Y));
                         HypotenusePoint.Add(((PosRatioB * a) + result[0].X, (PosRatioB * b) + result[1].Y));
                     }
@@ -4134,8 +4134,8 @@ namespace STD_105.Office
                     if (result.Count > 0)
                     {
                         DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
-                        a = DRPoint[0].Item1;
-                        b = DRPoint[0].Item2;
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
                         HypotenusePoint.Add(((PosRatioC * a) + result[0].X, (PosRatioC * b) + result[0].Y));
                         HypotenusePoint.Add(((PosRatioD * a) + result[0].X, (PosRatioD * b) + result[0].Y));
                     }
@@ -4145,8 +4145,8 @@ namespace STD_105.Office
                     if (result.Count > 0)
                     {
                         DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
-                        a = DRPoint[0].Item1;
-                        b = DRPoint[0].Item2;
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
                         HypotenusePoint.Add(((PosRatioC * a) + result[0].X, result[1].Y - (PosRatioC * b)));
                         HypotenusePoint.Add(((PosRatioD * a) + result[0].X, result[1].Y - (PosRatioD * b)));
                     }
@@ -4156,8 +4156,8 @@ namespace STD_105.Office
                     if (result.Count > 0)
                     {
                         DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
-                        a = DRPoint[0].Item1;
-                        b = DRPoint[0].Item2;
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
                         HypotenusePoint.Add(((PosRatioC * a), result[2].Y - (PosRatioC * b)));
                         HypotenusePoint.Add(((PosRatioD * a), result[2].Y - (PosRatioD * b)));
                     }
@@ -4167,8 +4167,8 @@ namespace STD_105.Office
                     if (result.Count > 0)
                     {
                         DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
-                        a = DRPoint[0].Item1;
-                        b = DRPoint[0].Item2;
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
                         HypotenusePoint.Add(((PosRatioC * a) + result[0].X, (PosRatioC * b) + result[1].Y));
                         HypotenusePoint.Add(((PosRatioD * a) + result[0].X, (PosRatioD * b) + result[1].Y));
                     }
