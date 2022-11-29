@@ -492,7 +492,7 @@ namespace WPFSTD105
                             //若相同則問是否要續接
 
                             var messageBoxResult = WinUIMessageBox.Show(null,
-                                "請確認是否續接專案，\n不續接專案將會初始化所有工件的當前位置。", 
+                                $"本次開啟專案「{e.ToString()}」與PLC內專案名稱相同\n請確認是否續接專案，\n選是為續接專案\n選否將會初始化所有工件的當前位置。", 
                                 "通知", MessageBoxButton.YesNo, 
                                 MessageBoxImage.Exclamation, 
                                 MessageBoxResult.None, 
@@ -527,7 +527,7 @@ namespace WPFSTD105
                             var RBoxResult = WinUIMessageBox.Show(null,
                                 $"機台上次加工的專案為「{RCMProjectName}」，\n是否要切換成「{e.ToString()}」?\n切換後會初始化所有工件的當前位置",
                                 "通知",
-                                MessageBoxButton.OK,
+                                MessageBoxButton.YesNo,
                                 MessageBoxImage.Exclamation,
                                 MessageBoxResult.None,
                                 MessageBoxOptions.ServiceNotification,
