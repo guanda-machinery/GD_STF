@@ -218,7 +218,7 @@ namespace TestDevdept
                  
            // Solid[] seccut = Solid.Difference(aaaaaaa.ConvertToSolid(), vMesh.ConvertToSolid());
 
-               Solid[] resultSolid1 = Solid.Difference(ccc.ConvertToSolid(), vMesh.ConvertToSolid());
+            //Solid[] resultSolid1 = Solid.Difference(ccc.ConvertToSolid(), vMesh.ConvertToSolid());
 
 
 

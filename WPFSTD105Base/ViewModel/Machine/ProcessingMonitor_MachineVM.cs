@@ -2359,6 +2359,7 @@ namespace WPFSTD105.ViewModel
                 var noInfo = index.Except(_SendIndex).ToArray(); //查詢尚未發送加工孔位的 index 
                 for (int i = 0; i < noInfo.Length; i++) //找出沒發送過的工作陣列
                 {
+                    AddOperatingLog(LogSourceEnum.Machine, $"發送加工訊息：{noInfo[i]}", false);
                     SendDrill(noInfo[i]); //發送
                 }
                 _SendIndex.AddRange(noInfo); //存取已經發送過的列表
@@ -2379,7 +2380,7 @@ namespace WPFSTD105.ViewModel
                 else
                 {
                     log4net.LogManager.GetLogger("同步失敗").Debug($"同步失敗");
-                    Debugger.Break();
+                    //Debugger.Break();
                     //throw new Exception("伺服器無法連線 ....");
                 }
             }
