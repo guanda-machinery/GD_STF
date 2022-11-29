@@ -130,16 +130,6 @@ namespace WPFSTD105
             //22221124 若正在加工且現在畫面在機台監控模式 當企圖離開頁面時會被阻擋且跳出提示
             if (currentPage == ApplicationPage.Monitor || currentPage == ApplicationPage.MachineMonitor)
             {
-                if (ReadCodesysMemor.GetHost().CodesysStatus == CODESYS_STATUS.RUN)
-                {
-                    MessageBoxResult messageBoxResult = MessageBox.Show($"機台運行中下不可離開加工監控頁面。", "通知", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
-                }
-           
-                //鑰匙孔在自動情況下不可離開
-                if (ApplicationViewModel.PanelButton.Key == KEY_HOLE.AUTO)
-                {
-                    MessageBoxResult messageBoxResult = MessageBox.Show($"鑰匙孔在自動情況下不可離開加工監控頁面。", "通知", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
-                }
 
                 //讀取記憶體是否有待加工之物件
 
@@ -336,6 +326,13 @@ namespace WPFSTD105
             }
 
         }
+
+
+
+
+
+
+
         /// <summary>
         /// 如果是在設定頁面
         /// </summary>
