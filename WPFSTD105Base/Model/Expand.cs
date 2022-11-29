@@ -1186,6 +1186,7 @@ namespace WPFSTD105.Model
                         Y = bolt.Y,
                         Z = bolt.Z,
                     };
+                    // 再Blocks中找尋是否有此孔群的資料，若孔群已編輯，需從此塞資料
                     List<Mesh> meshes = null;
                    if(blocks != null && blocks.Any(x=>x.Name== bolt.GUID.Value.ToString())) 
                     {
