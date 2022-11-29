@@ -390,31 +390,7 @@ namespace WPFSTD105
         /// 異動孔及孔群的鑽孔類型:斜邊打點(HypotenusePOINT)改為打點(Point)
         /// </summary>
         /// <param name="model"></param>
-        public void TransHypotenusePOINTtoPoint(devDept.Eyeshot.Model model)
-        {
-            var gbaList_Entities = model.Entities.Where(x => x.EntityData.GetType() == typeof(GroupBoltsAttr)).ToList();
-            gbaList_Entities.ForEach(x => ((GroupBoltsAttr)x.EntityData).Mode = GD_STD.Enum.AXIS_MODE.POINT);
 
-
-            List<Block> gbaList_Block_Mesh = model.Blocks.Where(x => x.Entities.GetType() == typeof(Mesh)).ToList();
-            gbaList_Block_Mesh.ForEach(x =>
-            {
-                x.Entities.ForEach(y =>
-                {
-                    if (y.GetType() == typeof(BoltAttr) && ((BoltAttr)y.EntityData).Mode == GD_STD.Enum.AXIS_MODE.HypotenusePOINT)
-                    { ((BoltAttr)y.EntityData).Mode = GD_STD.Enum.AXIS_MODE.POINT; }
-                });
-            });
-            var gbaList_Block_BlockReference = model.Blocks.Where(x => x.Entities.GetType() == typeof(BlockReference)).ToList();
-            gbaList_Block_BlockReference.ForEach(x =>
-            {
-                x.Entities.ForEach(y =>
-                {
-                    if (y.GetType() == typeof(BlockReference) && ((GroupBoltsAttr)y.EntityData).Mode == GD_STD.Enum.AXIS_MODE.HypotenusePOINT)
-                    { ((GroupBoltsAttr)y.EntityData).Mode = GD_STD.Enum.AXIS_MODE.POINT; }
-                });
-            });
-        }
 
         /// <summary>
         /// 讀取 <see cref="devDept.Eyeshot.Model"/>
