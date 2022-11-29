@@ -976,12 +976,12 @@ namespace WPFSTD105.Tekla
                                         }
 
                                         Bolts.ForEach(el => groups.Add(BO(el, steelAttr)));
-                                        NcTemp nc = new NcTemp { SteelAttr = steelAttr, GroupBoltsAttrs = groups };
                                         oAK.t = uAK.t = steelAttr.t2 == 0 ? steelAttr.t1 : steelAttr.t2;
                                         vAK.t = steelAttr.t1;
                                         steelAttr.oPoint = oAK.GetNcPoint(steelAttr.Type);
                                         steelAttr.vPoint = vAK.GetNcPoint(steelAttr.Type);
                                         steelAttr.uPoint = uAK.GetNcPoint(steelAttr.Type);
+                                        NcTemp nc = new NcTemp { SteelAttr = steelAttr, GroupBoltsAttrs = groups };
                                         //加入未實體化NC檔
                                         this.ncTemps.Add(nc);
                                         DataCorrespond data = new DataCorrespond()
