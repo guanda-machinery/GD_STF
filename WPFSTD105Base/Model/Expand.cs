@@ -112,6 +112,7 @@ namespace WPFSTD105.Model
                 }
             }
             EntityList entities = new EntityList();
+            // 依序取出素材零件位置
             for (int i = 0; i < place.Count; i++)
             {
                 if (place.Count==1) // count=1表素材沒有零件組成,只有(前端切除)程序紀錄
@@ -128,49 +129,55 @@ namespace WPFSTD105.Model
                         entities.Add(cut1);
                     }
 
-
                     MyCs myCs = new MyCs();
-                    ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();//備份當前加工區域數值
-                    double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].A);     //  腹板斜邊打點比列(短)
-                    double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].B);     //  腹板斜邊打點比列(長)
+                    ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();                          //  備份當前加工區域數值
+                    double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].A);       //  腹板斜邊打點比列(短)
+                    double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].B);       //  腹板斜邊打點比列(長)
 
                     var SteelCut1 = (SteelAttr)cut1.EntityData;
                     List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
-                    
-                    for (int z = 0; z < 2; z++)
-                    {
-                        double YOffset = SteelCut1.H;
-                        if (z == 0)
-                            YOffset = YOffset * PosRatioA;
-                        else
-                            YOffset = YOffset * PosRatioB;
+                    double tmpXPos = place[i].Start;                            // X 位置座標
+                    if (i==0)
+                    tmpXPos = place[i].End - (material.Cut) / 2;                // 判斷是否為第一切割線,是 =>打點位置
+                    else
+                    tmpXPos = place[i].Start + (material.Cut) / 2;   
 
-                        GroupBoltsAttr TmpBoltsArr = new GroupBoltsAttr();
-                        TmpBoltsArr.Face = FACE.TOP;
-                        TmpBoltsArr.StartHole = START_HOLE.START;
-                        TmpBoltsArr.dX = "0";
-                        TmpBoltsArr.dY = "0";
-                        TmpBoltsArr.xCount = 1;
-                        TmpBoltsArr.yCount = 1;
-                        TmpBoltsArr.Mode = AXIS_MODE.POINT;
-                        TmpBoltsArr.X = place[i].Start;
-                        TmpBoltsArr.Y = YOffset;
-                        TmpBoltsArr.Z = SteelCut1.W / 2-((SteelCut1.t1)/2);
-                        TmpBoltsArr.t = SteelCut1.t1;
-                        TmpBoltsArr.GUID = Guid.NewGuid();
-                        TmpBoltsArr.BlockName = "TopCutPoint";
-                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool check);
+                    for (int z = 0; z < 2; z++)                                 // 於零件連接打點2孔 
+                    {
+
+                        double YOffset = SteelCut1.H;                           // 設定Y軸位置
+                        if (z == 0)
+                            YOffset = YOffset * PosRatioA;                      // 依設定比例打點, 1/3 處
+                        else
+                            YOffset = YOffset * PosRatioB;                      // 依設定比例打點, 2/3 處
+                        //建立孔群
+                        GroupBoltsAttr TmpBoltsArr = new GroupBoltsAttr();      // 螺栓群組設定
+                        TmpBoltsArr.Face = FACE.TOP;                            // 腹板
+                        TmpBoltsArr.StartHole = START_HOLE.START;               // 起始位置
+                        TmpBoltsArr.dX = "0";                                   // X 無間距
+                        TmpBoltsArr.dY = "0";                                   // Y 無間距
+                        TmpBoltsArr.xCount = 1;                                 // X 方向數量1
+                        TmpBoltsArr.yCount = 1;                                 // Y 方向數量1
+                        TmpBoltsArr.Mode = AXIS_MODE.POINT;                     // 打點
+                        TmpBoltsArr.X = tmpXPos;                                // X 位置座標
+                        TmpBoltsArr.Y = YOffset;                                // Y 位置座標    
+                        TmpBoltsArr.Z = SteelCut1.W / 2 - ((SteelCut1.t1)/2);   // Z 位置座標  腹板中心位置
+                        TmpBoltsArr.t = SteelCut1.t1;                           // 圓柱
+                        TmpBoltsArr.GUID = Guid.NewGuid();                      // 孔群編號
+                        TmpBoltsArr.BlockName = "TopCutPoint";                  // 孔群名稱
+                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool check);  // 依孔群列別設定資訊 建立孔群
                         B3DB.Add(bolts);
-                        entities.Add(blockReference);
+                        entities.Add(blockReference);                           // 孔群加入model.entities
                         //BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                         //Add2DHole(bolts, false);//加入孔位不刷新 2d 視圖
                     }
 
-
-
-
-                    continue;
+                   continue;
                 }
+
+
+
+
                 int placeIndex = place.FindIndex(el => el.Number == place[i].Number); //如果有重複的編號只會回傳第一個，以這個下去做比較。
                 if (placeIndex != i) //如果 i != 第一次出現的 index 代表需要使用複製
                 {
