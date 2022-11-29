@@ -6024,19 +6024,22 @@ namespace STD_105.Office
                     //sr.AddBolts(model, drawing, modelAllBoltList, ref hasOutSteel);
 
                     //model.Entities.RemoveRange(0, model.Entities.Count - 1);
-                    
-                   //for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
-                   //{
-                       //if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
-                       //{
-                           //BlockReference blockReference1 = (BlockReference)model.Entities[i]; //取得參考圖塊
-                           //Block block = model.Blocks[blockReference1.BlockName]; //取得圖塊
-                           ////Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts((GroupBoltsAttr)model.Entities[i].EntityData, model, out BlockReference blockRef, out bool checkRef);
-                           //Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference1.EntityData); //產生螺栓圖塊                            
-                           //Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖                        
-                       //}
-                   //}
 
+                    //for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
+                    //{
+                    //if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
+                    //{
+                    //BlockReference blockReference1 = (BlockReference)model.Entities[i]; //取得參考圖塊
+                    //Block block = model.Blocks[blockReference1.BlockName]; //取得圖塊
+                    ////Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts((GroupBoltsAttr)model.Entities[i].EntityData, model, out BlockReference blockRef, out bool checkRef);
+                    //Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference1.EntityData); //產生螺栓圖塊                            
+                    //Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖                        
+                    //}
+                    //}
+
+                    var HPoint = blocks.SelectMany(x => x.Entities).Where(x => x.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
+                        .Select(x => (Mesh)x).ToList();
+                    int Hindex = 0;
                     for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
                     {
                         if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
@@ -6049,7 +6052,19 @@ namespace STD_105.Office
                                 Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference1.EntityData); //產生螺栓圖塊                            
                                 Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖          
                             }
-                                      
+                            else
+                            {
+                                double X = ((GroupBoltsAttr)model.Entities[i].EntityData).X;
+                                double Y = ((GroupBoltsAttr)model.Entities[i].EntityData).Y;
+                                double Z = ((GroupBoltsAttr)model.Entities[i].EntityData).Z;
+                                blockReference1 = (BlockReference)model.Entities[i]; //取得參考圖塊
+                                Block a = new Block();
+                                a.Entities.AddRange(blocks.SelectMany(x => x.Entities).Where(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
+                                ((GroupBoltsAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT && ((GroupBoltsAttr)x.EntityData).X == X && ((GroupBoltsAttr)x.EntityData).Y == Y && ((GroupBoltsAttr)x.EntityData).Z == Z).ToList());
+                                Bolts3DBlock bolts3DBlock = new Bolts3DBlock(a.Entities, (GroupBoltsAttr)blockReference1.EntityData); //產生螺栓圖塊
+                                Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖 
+                            }
+
                         }
                     }
 
