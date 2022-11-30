@@ -160,9 +160,8 @@ namespace WPFSTD105
             {
                 return new WPFWindowsBase.RelayCommand(() =>
                 {
-                    ProcessingScreenWin.Show(inputBlock: InputBlockMode.Window, timeout: 100);
-                    ProcessingScreenWin.ViewModel.Status = "";
-                    ProcessingScreenWin.ViewModel.IsIndeterminate = true;
+                    //ProcessingScreenWin.ViewModel.Status = "";
+                    // ProcessingScreenWin.ViewModel.IsIndeterminate = true;
 
 
                     //測試用 顯示1->100
@@ -177,16 +176,12 @@ namespace WPFSTD105
 
 
                     //ProcessingScreenW.Show();
-
-                //ScreenManagerWaitIndicator.Show(inputBlock: InputBlockMode.None, timeout: 100);
-                STDSerialization ser = new STDSerialization();//序列化處理器
-                //ObSettingVM obvm = new ObSettingVM();
-                Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
                 if (IsNcLoad || IsBomLoad) //如果有載入過報表
                 //if (false) //如果有載入過報表
                 {
-                    // 2022/08/22 呂宗霖 因螺栓無法找到其歸屬零件編號，故架構師與副總討論後，決議先讓使用者只能匯入一次檔案，若要再次匯入，必須重新新增專案
-                    WinUIMessageBox.Show(null,
+                        ProcessingScreenWin.Close();
+                        // 2022/08/22 呂宗霖 因螺栓無法找到其歸屬零件編號，故架構師與副總討論後，決議先讓使用者只能匯入一次檔案，若要再次匯入，必須重新新增專案
+                        WinUIMessageBox.Show(null,
                     $"已匯入專案，請重新建立專案",
                     "通知",
                     MessageBoxButton.OK,
@@ -194,7 +189,7 @@ namespace WPFSTD105
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
                     FloatingMode.Popup);
-                    return;
+                        return;
                     //MessageBoxResult saveAsResult = MessageBox.Show($"請問是否要備份之前載入的檔案", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                     //if (saveAsResult == MessageBoxResult.Yes) //如果要備份檔案
                     //{
@@ -227,6 +222,13 @@ namespace WPFSTD105
                     //    File.Delete(ApplicationVM.FileTeklaBom());//刪除既有的報表
                 }
 
+
+                    ProcessingScreenWin.Show(inputBlock: InputBlockMode.Window, timeout: 100);
+                    ProcessingScreenWin.ViewModel.IsIndeterminate = true;
+                    //ScreenManagerWaitIndicator.Show(inputBlock: InputBlockMode.None, timeout: 100);
+                    STDSerialization ser = new STDSerialization();//序列化處理器
+                                                                  //ObSettingVM obvm = new ObSettingVM();
+                    //Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
                     //ProcessingScreenWin.ViewModel.Status = "複製文件到 Model 中 ...";
                     //ScreenManagerWaitIndicator.ViewModel.Status = "複製文件到 Model 中 ...";
                     Thread.Sleep(500); //暫停兩秒為了要顯示 ScreenManager

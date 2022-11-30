@@ -521,7 +521,7 @@ namespace WPFSTD105.Model
             bool fCreateBolt = false;
             if (!model.Blocks.Contains(result.Name))
             {//出來的座標無翻轉
-              result.CreateBolts(model, ref check,meshes, isRotate);//創建孔位群組
+                result.CreateBolts(model, ref check, meshes, isRotate);//創建孔位群組
                 fCreateBolt = true;
             }
             
