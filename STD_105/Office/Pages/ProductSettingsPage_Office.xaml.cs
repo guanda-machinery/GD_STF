@@ -3140,7 +3140,7 @@ namespace STD_105.Office
                     {
                         // 修改到斷面規格時
                         WinUIMessageBox.Show(null,
-                           $"若需修改斷面規格時，請用新增按紐來建立新零件",
+                           $"若需修改斷面規格時，請用新增按鈕來建立新零件",
                            "通知",
                            MessageBoxButton.OK,
                            MessageBoxImage.Exclamation,
