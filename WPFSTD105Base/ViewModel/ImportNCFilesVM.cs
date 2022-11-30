@@ -327,7 +327,7 @@ namespace WPFSTD105
                     // 取得NC檔之檔名(零件)
                     List<String> hasNCPart = GetAllNcPath(path).Select(x => x.Substring(x.LastIndexOf("\\") + 1, x.LastIndexOf(".nc1") - x.LastIndexOf("\\") - 1)).ToList();
                     // 取得無NC之零件
-                    List<SteelPart> hasNoNCPart = part.SelectMany(x => x.Value).Where(x => !hasNCPart.Contains(x.Number)).ToList();
+                    List<SteelPart> hasNoNCPart = part.SelectMany(x => x.Value).Where(x => !hasNCPart.Contains($"{x.Number}.nc1")).ToList();
                     ObservableCollection<DataCorrespond> dc = new ObservableCollection<DataCorrespond>();
                     //ModelExt model = new ModelExt();
                     //devDept.Eyeshot.Model model = new devDept.Eyeshot.Model();

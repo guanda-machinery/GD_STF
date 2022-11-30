@@ -32,6 +32,7 @@ using WPFSTD105;
 using DevExpress.Diagram.Core.Shapes;
 using Line = devDept.Eyeshot.Entities.Line;
 using DocumentFormat.OpenXml.Wordprocessing;
+using System.IO;
 //using TriangleNet;
 
 namespace WPFSTD105.Model
@@ -164,7 +165,7 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.Z = SteelCut1.W / 2 - ((SteelCut1.t1)/2);   // Z 位置座標  腹板中心位置
                         TmpBoltsArr.t = SteelCut1.t1;                           // 圓柱
                         TmpBoltsArr.GUID = Guid.NewGuid();                      // 孔群編號
-                        TmpBoltsArr.BlockName = "TopCutPoint";                  // 孔群名稱
+                        TmpBoltsArr.BlockName =  "TopCutPoint";                  // 孔群名稱
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool check);  // 依孔群列別設定資訊 建立孔群
                         B3DB.Add(bolts);
                         entities.Add(blockReference);                           // 孔群加入model.entities
@@ -940,7 +941,7 @@ namespace WPFSTD105.Model
             SteelPart part = parts.FirstOrDefault(x => x.GUID == nc.SteelAttr.GUID);
             if (parts.Any(x => x.GUID == nc.SteelAttr.GUID))
             {
-                if (!Bolts3DBlock.CheckBolts(model))
+                if (!Bolts3DBlock.CheckBolts(model,true))
                 {
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
                     ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
@@ -1215,14 +1216,17 @@ namespace WPFSTD105.Model
             ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).uPoint = nc.SteelAttr.uPoint;
 
             ObSettingVM obvm = new ObSettingVM();
-            obvm.RemoveHypotenusePoint(model);
+            obvm.RemoveHypotenusePoint(model, "ManHypotenuse");
+
+            //HypotenuseEnable 可用(True) 表示 無斜邊
+            if (ViewLocator.OfficeViewModel.isHypotenuse)
             RunHypotenusePoint(model, obvm, diffLength);
 
             // 取得該零件並更新驚嘆號Loading
             ObservableCollection<SteelPart> parts = ser.GetPart(nc.SteelAttr.Profile.GetHashCode().ToString());//零件列表
             SteelPart part = parts.FirstOrDefault(x => x.GUID == nc.SteelAttr.GUID);
 
-            if (!Bolts3DBlock.CheckBolts(model))
+            if (!Bolts3DBlock.CheckBolts(model,false))
             {
                 ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
                 ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
@@ -1274,14 +1278,13 @@ namespace WPFSTD105.Model
             if (model.Entities[model.Entities.Count - 1].EntityData is null)
                 return;
 
+            obvm.RemoveHypotenusePoint(model, "AutoHypotenuse");
 
             // 斜邊自動執行程式
             SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
             //GetViewToViewModel(false, TmpSteelAttr.GUID);
             obvm.SteelAttr = (SteelAttr)TmpSteelAttr.DeepClone();
 
-            // 移除斜邊打點
-            obvm.RemoveHypotenusePoint(model);
             //List<GroupBoltsAttr> delList = model.Blocks
             //    .SelectMany(x => x.Entities)
             //    .Where(y =>
@@ -1423,7 +1426,7 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
                         TmpBoltsArr.X = tmplist1[z].X;
                         TmpBoltsArr.Y = tmplist1[z].Y;
-                        TmpBoltsArr.BlockName = "BackHypotenuse";
+                        TmpBoltsArr.BlockName = "AutoHypotenuse";
                         TmpBoltsArr.GUID = Guid.NewGuid();
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
                     }
@@ -1498,13 +1501,12 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
                         TmpBoltsArr.X = tmplist1[z].X;
                         TmpBoltsArr.Y = tmplist1[z].Y;
-                        TmpBoltsArr.BlockName = "FRONTHypotenuse";
+                        TmpBoltsArr.BlockName = "AutoHypotenuse";
                         TmpBoltsArr.GUID = Guid.NewGuid();
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
                     }
                     break;
                 #endregion
-
 
                 #region TOP
                 case FACE.TOP:
@@ -1589,7 +1591,7 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.xCount = 1;
                         TmpBoltsArr.yCount = 1;
                         TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
-                        TmpBoltsArr.BlockName = "TopHypotenuse";
+                        TmpBoltsArr.BlockName = "AutoHypotenuse";
                         TmpBoltsArr.X = tmplist1[z].X;
                         TmpBoltsArr.Y = tmplist1[z].Y;
                         TmpBoltsArr.GUID = Guid.NewGuid();

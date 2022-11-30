@@ -460,9 +460,10 @@ namespace STD_105.Office
                             ManHypotenusePoint(FACE.TOP);
                             ManHypotenusePoint(FACE.FRONT);
                             ManHypotenusePoint(FACE.BACK);
-                            AutoHypotenuseEnable(FACE.TOP);
-                            AutoHypotenuseEnable(FACE.FRONT);
-                            AutoHypotenuseEnable(FACE.BACK);
+                            RunHypotenuseEnable();
+                            //AutoHypotenuseEnable(FACE.TOP);
+                            //AutoHypotenuseEnable(FACE.FRONT);
+                            //AutoHypotenuseEnable(FACE.BACK);
 
                             fAddSteelPart = false; // hank 新設 新增零件旗號,暫不儲存
 
@@ -548,9 +549,10 @@ namespace STD_105.Office
                             ManHypotenusePoint(FACE.TOP);
                             ManHypotenusePoint(FACE.FRONT);
                             ManHypotenusePoint(FACE.BACK);
-                            AutoHypotenuseEnable(FACE.TOP);
-                            AutoHypotenuseEnable(FACE.FRONT);
-                            AutoHypotenuseEnable(FACE.BACK);
+                            RunHypotenuseEnable();
+                            //AutoHypotenuseEnable(FACE.TOP);
+                            //AutoHypotenuseEnable(FACE.FRONT);
+                            //AutoHypotenuseEnable(FACE.BACK);
 
                             SaveModel(true, true);
 
@@ -1664,7 +1666,8 @@ namespace STD_105.Office
 
                 SteelAttr steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
 
-                if (bolts.hasOutSteel)
+                //if (bolts.hasOutSteel)
+                if (!check)
                 {
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
                     ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
@@ -1682,7 +1685,7 @@ namespace STD_105.Office
                 else
                 {
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
-                    ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = false;                   
+                    ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = false;
 
                     fclickOK = false;
                 }
@@ -1867,7 +1870,7 @@ namespace STD_105.Office
                 ViewModel.GetSteelAttr();
                 ViewModel.ReadPart.Execute(null);
                 // 移除斜邊打點
-                sr.RemoveHypotenusePoint(model);
+                sr.RemoveHypotenusePoint(model, "ManHypotenuse");
                 //List<GroupBoltsAttr> delList = model.Blocks
                 //.SelectMany(x => x.Entities)
                 //.Where(y =>
@@ -3600,7 +3603,7 @@ namespace STD_105.Office
         /// <summary>
         /// 自動斜邊打點
         /// </summary>
-        public async void RunHypotenusePoint()
+        public async void RunHypotenuseEnable()
         {
             lstBoltsCutPoint = new List<Bolts3DBlock>();
             ScrollViewbox.IsEnabled = true;
@@ -3611,18 +3614,34 @@ namespace STD_105.Office
             SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
             //GetViewToViewModel(false, TmpSteelAttr.GUID);
 
+            // 
+            bool isHypotenuse = false;
+
             if (TmpSteelAttr.vPoint.Count != 0)         //  頂面斜邊
             {
-                AutoHypotenuseEnable(FACE.TOP);
+                isHypotenuse= isHypotenuse || AutoHypotenuseEnable(FACE.TOP);
             }
             if (TmpSteelAttr.uPoint.Count != 0)     //  前面斜邊
             {
-                AutoHypotenuseEnable(FACE.FRONT);
+                isHypotenuse = isHypotenuse || AutoHypotenuseEnable(FACE.FRONT);
             }
             if (TmpSteelAttr.oPoint.Count != 0)    //  後面斜邊
             {
-                AutoHypotenuseEnable(FACE.BACK);
+                isHypotenuse = isHypotenuse || AutoHypotenuseEnable(FACE.BACK);
             }
+
+            // 有斜邊，切割線不可用
+            if (isHypotenuse)
+            {
+                ViewLocator.OfficeViewModel.isHypotenuse = true;
+                ScrollViewbox.IsEnabled = false;
+            }
+            else
+            {
+                ViewLocator.OfficeViewModel.isHypotenuse = false;
+                ScrollViewbox.IsEnabled = true;
+            }
+
 
             //// 只有既有零件(NC/BOM匯入)才有斜邊
             //if (!fNewPart.Value)
@@ -3642,8 +3661,11 @@ namespace STD_105.Office
 
         /// <summary>
         /// 自動斜邊判斷(切割線區塊)
+        /// 可使用切割線，代表其頂視角為矩形，非特殊形狀
         /// </summary>
-        public void AutoHypotenuseEnable(FACE face)
+        /// <param name="face"></param>
+        /// <returns>true = 有斜邊 false = 無斜邊</returns>
+        public bool AutoHypotenuseEnable(FACE face)
         {
             MyCs myCs = new MyCs();
 
@@ -3654,8 +3676,14 @@ namespace STD_105.Office
             Point3D TmpUL = new Point3D();
             Point3D TmpUR = new Point3D();
 
-            if (model.Entities[model.Entities.Count - 1].EntityData is null)
-                return;
+            // 是否有斜邊
+            bool isHypotenuse = false;
+
+            //if (model.Entities[model.Entities.Count - 1].EntityData is null)
+            //{
+            //    //ViewLocator.OfficeViewModel.HypotenuseEnable = true;
+            //    return isHypotenuse;
+            //}
 
             //SteelAttr CSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
             //SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
@@ -3670,127 +3698,135 @@ namespace STD_105.Office
 
                 case FACE.BACK:
 
-                    if (TmpSteelAttr.oPoint.Count == 0) return;
+                    if (TmpSteelAttr.oPoint.Count == 0)return isHypotenuse;
 
                     if (TmpSteelAttr.oPoint.Select(x => x.X).Distinct().Count() > 2)
                     {
-                        ScrollViewbox.IsEnabled = false;
-                        break;
+                        //ScrollViewbox.IsEnabled = false;
+                        //ViewLocator.OfficeViewModel.HypotenuseEnable = ViewLocator.OfficeViewModel.HypotenuseEnable || false;
+                        return !isHypotenuse;
                     }
 
-                    var tmp1 = TmpSteelAttr.oPoint.GroupBy(uu => uu.Y).Select(q => new
-                    {
-                        key = q.Key,
-                        max = q.Max(x => x.X),
-                        min = q.Min(f => f.X)
-                    }).ToList();
+                    //var tmp1 = TmpSteelAttr.oPoint.GroupBy(uu => uu.Y).Select(q => new
+                    //{
+                    //    key = q.Key,
+                    //    max = q.Max(x => x.X),
+                    //    min = q.Min(f => f.X)
+                    //}).ToList();
 
-                    if (tmp1[0].key > tmp1[1].key)
-                    {
-                        var swap = tmp1[0];
-                        tmp1[0] = tmp1[1];
-                        tmp1[1] = swap;
-                    }
+                    //if (tmp1[0].key > tmp1[1].key)
+                    //{
+                    //    var swap = tmp1[0];
+                    //    tmp1[0] = tmp1[1];
+                    //    tmp1[1] = swap;
+                    //}
 
-                    TmpDL = new Point3D(tmp1[0].min, tmp1[0].key);
-                    TmpDR = new Point3D(tmp1[0].max, tmp1[0].key);
-                    TmpUL = new Point3D(tmp1[1].min, tmp1[1].key);
-                    TmpUR = new Point3D(tmp1[1].max, tmp1[1].key);
+                    //TmpDL = new Point3D(tmp1[0].min, tmp1[0].key);
+                    //TmpDR = new Point3D(tmp1[0].max, tmp1[0].key);
+                    //TmpUL = new Point3D(tmp1[1].min, tmp1[1].key);
+                    //TmpUR = new Point3D(tmp1[1].max, tmp1[1].key);
 
-                    if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
-                        return;
+                    //if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
+                    //    return isHypotenuse;
 
-                    ScrollViewbox.IsEnabled = false;
+                    //ViewLocator.OfficeViewModel.HypotenuseEnable = ViewLocator.OfficeViewModel.HypotenuseEnable || true;
+                    //ScrollViewbox.IsEnabled = ViewLocator.OfficeViewModel.HypotenuseEnable;
                     break;
 
                 case FACE.FRONT:
 
-                    if (TmpSteelAttr.uPoint.Count == 0) return;
+                    if (TmpSteelAttr.uPoint.Count == 0) return isHypotenuse;
 
                     if (TmpSteelAttr.uPoint.Select(x => x.X).Distinct().Count() > 2)
                     {
-                        ScrollViewbox.IsEnabled = false;
-                        break;
+                        //ScrollViewbox.IsEnabled = false;
+                        //ViewLocator.OfficeViewModel.HypotenuseEnable = false;
+                        return !isHypotenuse;
                     }
 
-                    var tmp2 = TmpSteelAttr.uPoint.GroupBy(uu => uu.Y).Select(q => new
-                    {
-                        key = q.Key,
-                        max = q.Max(x => x.X),
-                        min = q.Min(f => f.X)
-                    }).ToList();
+                    //var tmp2 = TmpSteelAttr.uPoint.GroupBy(uu => uu.Y).Select(q => new
+                    //{
+                    //    key = q.Key,
+                    //    max = q.Max(x => x.X),
+                    //    min = q.Min(f => f.X)
+                    //}).ToList();
 
-                    if (tmp2[0].key > tmp2[1].key)
-                    {
-                        var swap = tmp2[0];
-                        tmp2[0] = tmp2[1];
-                        tmp2[1] = swap;
-                    }
+                    //if (tmp2[0].key > tmp2[1].key)
+                    //{
+                    //    var swap = tmp2[0];
+                    //    tmp2[0] = tmp2[1];
+                    //    tmp2[1] = swap;
+                    //}
 
-                    TmpDL = new Point3D(tmp2[0].min, tmp2[0].key);
-                    TmpDR = new Point3D(tmp2[0].max, tmp2[0].key);
-                    TmpUL = new Point3D(tmp2[1].min, tmp2[1].key);
-                    TmpUR = new Point3D(tmp2[1].max, tmp2[1].key);
+                    //TmpDL = new Point3D(tmp2[0].min, tmp2[0].key);
+                    //TmpDR = new Point3D(tmp2[0].max, tmp2[0].key);
+                    //TmpUL = new Point3D(tmp2[1].min, tmp2[1].key);
+                    //TmpUR = new Point3D(tmp2[1].max, tmp2[1].key);
 
-                    if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
-                        return;
+                    //if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X)) {
+                    //    //ViewLocator.OfficeViewModel.HypotenuseEnable = true;
+                    //    return isHypotenuse; }
 
-                    ScrollViewbox.IsEnabled = false;
+                    //ScrollViewbox.IsEnabled = true;
+                    //ViewLocator.OfficeViewModel.HypotenuseEnable = true;
                     break;
 
 
                 case FACE.TOP:
 
-                    if (TmpSteelAttr.vPoint.Count == 0) return;
+                    if (TmpSteelAttr.vPoint.Count == 0)return isHypotenuse;
 
-                    //if (TmpSteelAttr.vPoint.Select(x => x.X).Distinct().Count() > 2)
-                    //{
-                    //    ScrollViewbox.IsEnabled = false;
-                    //    break;
-                    //}
-                   var Vertices = model.Blocks[1].Entities[0].Vertices.Where(z=>z.Z==0).ToList();   
-
-                   var tmp3 = Vertices.GroupBy(uu => uu.Y).Select(q => new
+                    if (TmpSteelAttr.vPoint.Select(x => x.X).Distinct().Count() > 2)
                     {
-                        key = q.Key,
-                        max = q.Max(x => x.X),
-                        min = q.Min(f => f.X)
-                    }).OrderByDescending(aa=>aa.key).ToList();
+                        //ScrollViewbox.IsEnabled = false;
+                        //ViewLocator.OfficeViewModel.HypotenuseEnable = false;
+                        return !isHypotenuse;
+                    }
+                    //var Vertices = model.Blocks[1].Entities[0].Vertices.Where(z=>z.Z==0).ToList();   
+
+                    //var tmp3 = Vertices.GroupBy(uu => uu.Y).Select(q => new
+                    // {
+                    //     key = q.Key,
+                    //     max = q.Max(x => x.X),
+                    //     min = q.Min(f => f.X)
+                    // }).OrderByDescending(aa=>aa.key).ToList();
 
 
-                    var YUP2List = tmp3.Where(aa => (aa.key == tmp3[0].key || aa.key == tmp3[0].key- TmpSteelAttr.t2)).OrderByDescending(a => a.key).ToList();
-                    if (YUP2List[0].max >= YUP2List[1].max)
-                        TmpUR = new Point3D(YUP2List[0].max, YUP2List[0].key);
-                    else
-                        TmpUR = new Point3D(YUP2List[1].max, YUP2List[1].key);
+                    // var YUP2List = tmp3.Where(aa => (aa.key == tmp3[0].key || aa.key == tmp3[0].key- TmpSteelAttr.t2)).OrderByDescending(a => a.key).ToList();
+                    // if (YUP2List[0].max >= YUP2List[1].max)
+                    //     TmpUR = new Point3D(YUP2List[0].max, YUP2List[0].key);
+                    // else
+                    //     TmpUR = new Point3D(YUP2List[1].max, YUP2List[1].key);
 
 
-                    if (YUP2List[0].min <= YUP2List[1].min)
-                        TmpUL = new Point3D(YUP2List[0].min, YUP2List[0].key);
-                    else
-                        TmpUL = new Point3D(YUP2List[1].min, YUP2List[1].key);
+                    // if (YUP2List[0].min <= YUP2List[1].min)
+                    //     TmpUL = new Point3D(YUP2List[0].min, YUP2List[0].key);
+                    // else
+                    //     TmpUL = new Point3D(YUP2List[1].min, YUP2List[1].key);
 
 
-                    var YDOWN2List = tmp3.Where(aa => (aa.key == tmp3[tmp3.Count-1].key || aa.key == tmp3[tmp3.Count - 1].key + TmpSteelAttr.t2)).OrderBy(a => a.key).Take(2).ToList();
-                    if (YDOWN2List[0].max >= YDOWN2List[1].max)
-                        TmpDR = new Point3D(YDOWN2List[0].max, YDOWN2List[0].key);
-                    else
-                        TmpDR = new Point3D(YDOWN2List[1].max, YDOWN2List[1].key);
+                    // var YDOWN2List = tmp3.Where(aa => (aa.key == tmp3[tmp3.Count-1].key || aa.key == tmp3[tmp3.Count - 1].key + TmpSteelAttr.t2)).OrderBy(a => a.key).Take(2).ToList();
+                    // if (YDOWN2List[0].max >= YDOWN2List[1].max)
+                    //     TmpDR = new Point3D(YDOWN2List[0].max, YDOWN2List[0].key);
+                    // else
+                    //     TmpDR = new Point3D(YDOWN2List[1].max, YDOWN2List[1].key);
 
 
-                    if (YDOWN2List[0].min <= YDOWN2List[1].min)
-                        TmpDL = new Point3D(YDOWN2List[0].min, YDOWN2List[0].key);
-                    else
-                        TmpDL = new Point3D(YDOWN2List[1].min, YDOWN2List[1].key);
+                    // if (YDOWN2List[0].min <= YDOWN2List[1].min)
+                    //     TmpDL = new Point3D(YDOWN2List[0].min, YDOWN2List[0].key);
+                    // else
+                    //     TmpDL = new Point3D(YDOWN2List[1].min, YDOWN2List[1].key);
 
+                    //if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X)) {
+                    //    ViewLocator.OfficeViewModel.HypotenuseEnable = true;
+                    //    return true; }
 
-
-                    if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
-                        return;
-
-                    ScrollViewbox.IsEnabled = false;
+                    //ScrollViewbox.IsEnabled = true;
+                    //ViewLocator.OfficeViewModel.HypotenuseEnable = true;
                     break;
             }
+            //ViewLocator.OfficeViewModel.HypotenuseEnable = true;
+            return isHypotenuse;
         }
 
 
@@ -4031,11 +4067,11 @@ namespace STD_105.Office
                         TmpBoltsArr.dY = "0";
                         TmpBoltsArr.xCount = 1;
                         TmpBoltsArr.yCount = 1;
-                        TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
+                        TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT; 
                         TmpBoltsArr.X = HypotenusePoint[z].Item1;
                         TmpBoltsArr.Y = HypotenusePoint[z].Item2;
                         TmpBoltsArr.GUID = Guid.NewGuid();
-                        TmpBoltsArr.BlockName = "BackHypotenuse";
+                        TmpBoltsArr.BlockName = "ManHypotenuse";
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
                         if (bolts.hasOutSteel)
                         {
@@ -4111,7 +4147,7 @@ namespace STD_105.Office
                         TmpBoltsArr.X = HypotenusePoint[z].Item1;
                         TmpBoltsArr.Y = HypotenusePoint[z].Item2;
                         TmpBoltsArr.GUID = Guid.NewGuid();
-                        TmpBoltsArr.BlockName = "TopHypotenuse";
+                        TmpBoltsArr.BlockName = "ManHypotenuse";
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool check);
                         if (bolts.hasOutSteel)
                         {
@@ -4187,7 +4223,7 @@ namespace STD_105.Office
                         TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
                         TmpBoltsArr.X = HypotenusePoint[z].Item1;
                         TmpBoltsArr.Y = HypotenusePoint[z].Item2;
-                        TmpBoltsArr.BlockName = "FrontHypotenuse";
+                        TmpBoltsArr.BlockName = "ManHypotenuse";
                         TmpBoltsArr.GUID = Guid.NewGuid();
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
                         if (bolts.hasOutSteel)
@@ -4409,7 +4445,7 @@ namespace STD_105.Office
             //ExcelBuyService.CreateModelOverView(stringFilePath, model);
             bool exclamationMark = true;
             // 取得該零件並更新驚嘆號            
-            if (!Bolts3DBlock.CheckBolts(model))
+            if (!Bolts3DBlock.CheckBolts(model,false))
             {
                 ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
                 if (model.Entities.Count >= 1)
@@ -6018,9 +6054,10 @@ namespace STD_105.Office
                     //ManHypotenusePoint(FACE.FRONT);
                     //ManHypotenusePoint(FACE.BACK);
                     //ManHypotenusePoint(FACE.TOP);
-                    AutoHypotenuseEnable(FACE.TOP);
-                    AutoHypotenuseEnable(FACE.FRONT);
-                    AutoHypotenuseEnable(FACE.BACK);                    
+                    RunHypotenuseEnable();
+                    //AutoHypotenuseEnable(FACE.TOP);
+                    //AutoHypotenuseEnable(FACE.FRONT);
+                    //AutoHypotenuseEnable(FACE.BACK);                    
                     List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
                     bool hasOutSteel = false;
                     //SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
@@ -6116,16 +6153,16 @@ namespace STD_105.Office
                     //         B3DB.Add(bolts3DBlock); 
                     //    }
                     //}
-                    if (!Bolts3DBlock.CheckBolts(model))
+                    if (!Bolts3DBlock.CheckBolts(model,false))
                     {
-                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                        //((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
                         item.steelAttr.ExclamationMark = true;
                         item.ExclamationMark = true;
                         PieceListGridControl.RefreshRow(PieceListGridControl.View.FocusedRowHandle);
                     }
                     else
                     {
-                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+                        //((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
                         item.steelAttr.ExclamationMark = false;
                         item.ExclamationMark = false;
                         PieceListGridControl.RefreshRow(PieceListGridControl.View.FocusedRowHandle);

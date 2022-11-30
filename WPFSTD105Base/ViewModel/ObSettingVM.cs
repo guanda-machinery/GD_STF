@@ -2109,17 +2109,18 @@ namespace WPFSTD105.ViewModel
             return count + 1;
         }
         /// <summary>
-        /// 從model移除斜邊打點
+        /// 從model移除斜邊打點(BlockName)
         /// </summary>
         /// <param name="model"></param>
-        public void RemoveHypotenusePoint(devDept.Eyeshot.Model model)
+        public void RemoveHypotenusePoint(devDept.Eyeshot.Model model,string RemoveType)
         {
             List<GroupBoltsAttr> delList = model.Blocks
                     .SelectMany(x => x.Entities)
                     .Where(y =>
                     y.GetType() == typeof(BlockReference) &&
                     y.EntityData.GetType() == typeof(GroupBoltsAttr) &&
-                    ((GroupBoltsAttr)y.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
+                    //((GroupBoltsAttr)y.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
+                    ((GroupBoltsAttr)y.EntityData).BlockName == RemoveType)
                     .Select(y => (GroupBoltsAttr)y.EntityData).ToList();
             foreach (GroupBoltsAttr del in delList)
             {
@@ -2189,12 +2190,12 @@ namespace WPFSTD105.ViewModel
                             a.Entities.AddRange(blocks.SelectMany(x => x.Entities).Where(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
                             ((GroupBoltsAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT && ((GroupBoltsAttr)x.EntityData).X == X && ((GroupBoltsAttr)x.EntityData).Y == Y && ((GroupBoltsAttr)x.EntityData).Z == Z).ToList());
                             Bolts3DBlock bolts3DBlock = new Bolts3DBlock(a.Entities, (GroupBoltsAttr)blockReference1.EntityData); //產生螺栓圖塊
-                            Add2DHole(model, bolts3DBlock, false);//加入孔位不刷新 2d 視圖 
+                            Add2DHole(drawing, bolts3DBlock, false);//加入孔位不刷新 2d 視圖 
                             a = new Block();
                             a.Entities.AddRange(blocks.SelectMany(x => x.Entities).Where(x => x.EntityData.GetType() == typeof(BoltAttr) &&
                             ((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT && ((BoltAttr)x.EntityData).X == X && ((BoltAttr)x.EntityData).Y == Y && ((BoltAttr)x.EntityData).Z == Z).ToList());
                             bolts3DBlock = new Bolts3DBlock(a.Entities, (GroupBoltsAttr)blockReference1.EntityData); //產生螺栓圖塊
-                            Add2DHole(model, bolts3DBlock, false);//加入孔位不刷新 2d 視圖 
+                            Add2DHole(drawing, bolts3DBlock, false);//加入孔位不刷新 2d 視圖 
                         }
                     }
                     else
@@ -2207,23 +2208,25 @@ namespace WPFSTD105.ViewModel
                         {
                             hasOutSteel = true;
                         }
-                        Add2DHole(model, bolts3DBlock, false);//加入孔位不刷新 2d 視圖 
+                        Add2DHole(drawing, bolts3DBlock, false);//加入孔位不刷新 2d 視圖 
                     }
                 }
             }
-            WPFSTD105.Model.Expand.RunHypotenusePoint(model, this, 0);
 
-
-
-
-            model.Blocks.Where(x => x.GetType() == typeof(Bolts3DBlock)).ForEach(a =>
+            // 移除斜邊打點
+            if (ViewLocator.OfficeViewModel.isHypotenuse)
             {
-                a.Entities.Where(x => x.EntityData.GetType() == typeof(BoltAttr) && ((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT).ForEach(b =>
+                RemoveHypotenusePoint(model, "AutoHypotenuse");
+                WPFSTD105.Model.Expand.RunHypotenusePoint(model, this, 0);
+                model.Blocks.Where(x => x.GetType() == typeof(Bolts3DBlock)).ForEach(a =>
                 {
-                    Add2DHole(drawing, (Bolts3DBlock)a, false);//加入孔位不刷新 2d 視圖 
-                });
+                    a.Entities.Where(x => x.EntityData.GetType() == typeof(BoltAttr) && ((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT).ForEach(b =>
+                    {
+                        Add2DHole(drawing, (Bolts3DBlock)a, false);//加入孔位不刷新 2d 視圖 
+                    });
 
-            });
+                });
+            }
             drawing.Refresh();
         }
 
