@@ -397,8 +397,14 @@ namespace WPFSTD105
         /// 異動孔及孔群的鑽孔類型:斜邊打點(HypotenusePOINT)改為打點(Point)
         /// </summary>
         /// <param name="model"></param>
+        public void TransHypotenusePOINTtoPoint(devDept.Eyeshot.Model model)
+        {
+            List<GroupBoltsAttr> GBA = model.Entities.Where(x => x.EntityData.GetType() == typeof(GroupBoltsAttr)).Select(x => (GroupBoltsAttr)x.EntityData).Where(x => x.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x).Mode == GD_STD.Enum.AXIS_MODE.HypotenusePOINT).ToList(); ;
+            List<BoltAttr> bolck = model.Blocks.SelectMany(x => x.Entities).Where(x => x.EntityData.GetType() == typeof(BoltAttr)).Select(y => (BoltAttr)y.EntityData).Where(x => x.GetType() == typeof(BoltAttr) && ((BoltAttr)x).Mode == GD_STD.Enum.AXIS_MODE.HypotenusePOINT).ToList();
 
-
+            GBA.ForEach(x => { x.Mode = GD_STD.Enum.AXIS_MODE.POINT; });
+            bolck.ForEach(x => { x.Mode = GD_STD.Enum.AXIS_MODE.POINT; });
+        }
         /// <summary>
         /// 讀取 <see cref="devDept.Eyeshot.Model"/>
         /// </summary>

@@ -1213,8 +1213,16 @@ namespace WPFSTD105.Model
             ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).vPoint = nc.SteelAttr.vPoint;
             ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).uPoint = nc.SteelAttr.uPoint;
 
+
+
+            //防止執行手動斜邊,重複執行自斜動邊
+            
+            { 
             ObSettingVM obvm = new ObSettingVM();
             RunHypotenusePoint(model, obvm,diffLength);
+            }
+
+
 
             // 取得該零件並更新驚嘆號Loading
             ObservableCollection<SteelPart> parts = ser.GetPart(nc.SteelAttr.Profile.GetHashCode().ToString());//零件列表
