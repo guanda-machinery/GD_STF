@@ -1266,7 +1266,7 @@ namespace WPFSTD105.Model
             catch (Exception ex)
             {
                 ncTemps.Add(reduceNC);
-            } 
+            }
             #endregion
 
             ser.SetNcTempList(ncTemps);//儲存檔案

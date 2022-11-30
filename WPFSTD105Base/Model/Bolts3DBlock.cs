@@ -453,6 +453,8 @@ namespace WPFSTD105.Model
                     // 符合加工區域
                     // 檢查座標依平面而有異動
                     double checkValue = 0;
+                    
+                    //checkValue = bolt.Y;
                     switch (bolt.Face)
                     {
                         case FACE.TOP:
