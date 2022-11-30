@@ -1188,10 +1188,11 @@ namespace WPFSTD105.Model
                     };
                     // 再Blocks中找尋是否有此孔群的資料，若孔群已編輯，需從此塞資料
                     List<Mesh> meshes = null;
-                   if(blocks != null && blocks.Any(x=>x.Name== bolt.GUID.Value.ToString())) 
-                    {
-                        meshes = blocks.FirstOrDefault(x => x.Name == bolt.GUID.Value.ToString()).Entities.Select(x=>(Mesh)x).ToList();
-                    }
+                    if(blocks != null && blocks.Any(x=>x.Name== bolt.GUID.Value.ToString())) 
+                     {
+                         meshes = blocks.FirstOrDefault(x => x.Name == bolt.GUID.Value.ToString()).Entities.Select(x=>(Mesh)x).ToList();
+                     }
+
                     Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out bool check, meshes); //加入到 3d 視圖
                 });
             }
@@ -1237,10 +1238,15 @@ namespace WPFSTD105.Model
             #region 檢測是否成功，失敗則將NC檔寫回
             ReadFile readFile = ser.ReadPartModel(dataName); //讀取檔案內容
             readFile.DoWork();//開始工作
+            devDept.Eyeshot.Model tempModel = new devDept.Eyeshot.Model();
+            tempModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
+            tempModel.InitializeViewports();
+            tempModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
+
             try
             {
-                readFile.AddToScene(model);//將讀取完的檔案放入到模型
-                if (model.Blocks.Count() <= 1)
+                readFile.AddToScene(tempModel);//將讀取完的檔案放入到模型
+                if (tempModel.Blocks.Count() <= 1)
                 {
                     ncTemps.Add(reduceNC);
                 }
@@ -1248,7 +1254,7 @@ namespace WPFSTD105.Model
             catch (Exception ex)
             {
                 ncTemps.Add(reduceNC);
-            } 
+            }
             #endregion
 
             ser.SetNcTempList(ncTemps);//儲存檔案

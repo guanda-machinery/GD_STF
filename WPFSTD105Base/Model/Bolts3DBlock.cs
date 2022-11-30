@@ -452,6 +452,8 @@ namespace WPFSTD105.Model
                     // 符合加工區域
                     // 檢查座標依平面而有異動
                     double checkValue = 0;
+                    
+                    //checkValue = bolt.Y;
                     switch (bolt.Face)
                     {
                         case FACE.TOP:
@@ -471,6 +473,7 @@ namespace WPFSTD105.Model
                         {
                             Point3D checkPoint3D = new Point3D(bolt.X, bolt.Y, bolt.Z);
                             var testPoint = checkPoint3D;
+                            
                             //var testPoint = Coordinates(bolt.Face, checkPoint3D);
 
                             if (!((Mesh)model.Blocks[1].Entities[0]).IsPointInside(testPoint))
