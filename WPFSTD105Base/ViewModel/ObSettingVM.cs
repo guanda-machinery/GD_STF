@@ -2112,14 +2112,15 @@ namespace WPFSTD105.ViewModel
         /// 從model移除斜邊打點
         /// </summary>
         /// <param name="model"></param>
-        public void RemoveHypotenusePoint(devDept.Eyeshot.Model model)
+        public void RemoveHypotenusePoint(devDept.Eyeshot.Model model,string RemoveType)
         {
             List<GroupBoltsAttr> delList = model.Blocks
                     .SelectMany(x => x.Entities)
                     .Where(y =>
                     y.GetType() == typeof(BlockReference) &&
                     y.EntityData.GetType() == typeof(GroupBoltsAttr) &&
-                    ((GroupBoltsAttr)y.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
+                    //((GroupBoltsAttr)y.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
+                    ((GroupBoltsAttr)y.EntityData).BlockName == RemoveType)
                     .Select(y => (GroupBoltsAttr)y.EntityData).ToList();
             foreach (GroupBoltsAttr del in delList)
             {

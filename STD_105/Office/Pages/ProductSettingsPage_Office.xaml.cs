@@ -54,6 +54,7 @@ namespace STD_105.Office
         ApplicationVM appVM = new ApplicationVM();
         public ObSettingVM sr = new ObSettingVM();
 
+     
         /// <summary>
         /// 是否產生新零件
         /// 新增.修改為true
@@ -1865,7 +1866,7 @@ namespace STD_105.Office
                 ViewModel.GetSteelAttr();
                 ViewModel.ReadPart.Execute(null);
                 // 移除斜邊打點
-                sr.RemoveHypotenusePoint(model);
+                sr.RemoveHypotenusePoint(model, "ManHypotenuse");
                 //List<GroupBoltsAttr> delList = model.Blocks
                 //.SelectMany(x => x.Entities)
                 //.Where(y =>
@@ -1885,10 +1886,11 @@ namespace STD_105.Office
                 //((SteelAttr)model.Blocks[1].Entities[0].EntityData).PointFront = ViewModel.SteelAttr.PointFront;
                 SaveModel(false, false);
                 isNewPart = false;//fasle不產生新GUID
+                ViewLocator.OfficeViewModel.isPressAddCutKey = true;
                 ViewModel.WriteCutAttr((SteelAttr)model.Blocks[1].Entities[0].EntityData);
                 ViewModel.ModifyPart.Execute(null);
                 isNewPart = true;//還原零件狀態
-
+                ViewLocator.OfficeViewModel.isPressAddCutKey = false;
                 //SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D三視圖
                 //bool hasOutSteel = false;
                 //List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
@@ -4032,7 +4034,7 @@ namespace STD_105.Office
                         TmpBoltsArr.X = HypotenusePoint[z].Item1;
                         TmpBoltsArr.Y = HypotenusePoint[z].Item2;
                         TmpBoltsArr.GUID = Guid.NewGuid();
-                        TmpBoltsArr.BlockName = "BackHypotenuse";
+                        TmpBoltsArr.BlockName = "ManHypotenuse";
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
                         if (bolts.hasOutSteel)
                         {
@@ -4108,7 +4110,7 @@ namespace STD_105.Office
                         TmpBoltsArr.X = HypotenusePoint[z].Item1;
                         TmpBoltsArr.Y = HypotenusePoint[z].Item2;
                         TmpBoltsArr.GUID = Guid.NewGuid();
-                        TmpBoltsArr.BlockName = "TopHypotenuse";
+                        TmpBoltsArr.BlockName = "ManHypotenuse";
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool check);
                         if (bolts.hasOutSteel)
                         {
@@ -4184,7 +4186,7 @@ namespace STD_105.Office
                         TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
                         TmpBoltsArr.X = HypotenusePoint[z].Item1;
                         TmpBoltsArr.Y = HypotenusePoint[z].Item2;
-                        TmpBoltsArr.BlockName = "FrontHypotenuse";
+                        TmpBoltsArr.BlockName = "ManHypotenuse";
                         TmpBoltsArr.GUID = Guid.NewGuid();
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
                         if (bolts.hasOutSteel)
