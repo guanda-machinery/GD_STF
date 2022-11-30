@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using static WPFSTD105.ViewLocator;
 using static WPFSTD105.CodesysIIS;
+using System.Threading;
+
 namespace WPFSTD105.ViewModel
 {
     /// <summary>
@@ -22,25 +24,15 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public RacksOperationVM()
         {
-            //this.Button_Down_IsEnabled = false;
+            //重新對應搖桿上下到搖桿上的右上及右下按鈕
+            //this.Dpad_Button_Up_Trigger = CIRCLE_TOP_DESC_ButtonCommand;
+            //this.Dpad_Button_Down_Trigger = CIRCLE_BOTTOM_DESC_ButtonCommand;
+            this.Joystick_UP_DESC_Trigger_Parameter = JOYSTICK.CIRCLE_TOP_DESC;
+            this.Joystick_DOWN_DESC_Trigger_Parameter = JOYSTICK.CIRCLE_BOTTOM_DESC;
 
-            /*PanelButton panelButton = ApplicationViewModel.PanelButton;
-            //如果都沒有選擇出入或口料架
-
-            if (!panelButton.EntranceRack && !panelButton.ExportRack)
-            {
-                //如果出口料架不是唯讀
-                if (EntranceReadOnly)
-                {
-                    panelButton.EntranceRack = true;
-                }
-                else
-                {
-                    panelButton.ExportRack = true;
-                }
-                WriteCodesysMemor.SetPanel(panelButton);
-            }  */
         }
+
+
 
         #region 公開屬性
 
@@ -217,7 +209,7 @@ namespace WPFSTD105.ViewModel
         }
 
         /// <summary>
-        /// 橫移料架上升
+        /// 橫移料架上升(舊)
         /// </summary>
         public WPFWindowsBase.RelayParameterizedCommand RiseCommand
         {
@@ -238,7 +230,7 @@ namespace WPFSTD105.ViewModel
             }
         }
         /// <summary>
-        /// 橫移料架往前移動
+        /// 橫移料架往前移動(舊)
         /// </summary>
         public WPFWindowsBase.RelayParameterizedCommand MoveCommand
         {
@@ -319,6 +311,11 @@ namespace WPFSTD105.ViewModel
                 return Convert.ToInt16(count + 1);                
             }
         }
+
+
+
+
+
         #endregion
     }
 }

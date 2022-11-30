@@ -187,12 +187,11 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public Dpad_Joystick_ViewModel DpadConveyor_VM { get; set; } = new Dpad_Joystick_ViewModel()
         {
-            JoyStickButton1_isEnabled = false,
-            JoyStickButton2_isEnabled = false,
-            JoyStickButton3_isEnabled = false,
-            JoyStickButton4_isEnabled = false,
-            JoyStickButton5_isEnabled = false,
-            JoyStickButton6_isEnabled = false,
+            JoyStick_ELLIPSE_TOP_isEnabled = false,
+            JoyStick_ELLIPSE_BOTTOM_isEnabled = false,
+            JoyStick_CIRCLE_TOP_isEnabled = false,
+            JoyStick_CIRCLE_MIDDLE_isEnabled = false,
+            JoyStick_CIRCLE_BOTTOM_isEnabled = false,
             Button_Up_IsEnabled = false,
             Button_Down_IsEnabled = false
         };

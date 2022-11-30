@@ -148,7 +148,7 @@
 
                 <Style.Triggers>
                     <Trigger Property="IsEnabled" Value="False">
-                        <Setter Property="Opacity" Value="0.8"/>
+                        <Setter Property="Opacity" Value="0.9"/>
                     </Trigger>
                 </Style.Triggers>
 
@@ -257,7 +257,7 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <Border  Margin="5" Background="#f0f0f0" IsEnabled="{Binding Input_by_Computer_RadioButtonIsChecked}">
+            <Border  Margin="5" Background="#f0f0f0" >
                 <TabControl BorderThickness="0,1,0,0" Margin="0,0,0,0" >
                     <TabControl.Resources>
                         <ResourceDictionary>
@@ -312,8 +312,8 @@
                             </Style>
                         </ResourceDictionary>
                     </TabControl.Resources>
-                    <TabItem Header="加工組合清單" Name="MachiningCombinationalTabItem">
-                        <dxg:GridControl Margin="-11"  Cursor="Arrow" 
+                    <TabItem Header="加工組合清單" Name="MachiningCombinationalTabItem" >
+                        <dxg:GridControl Margin="-11"  Cursor="Arrow"  IsEnabled="{Binding Input_by_Computer_RadioButtonIsChecked}"
                                              Name="MachiningCombinational_List_GridControl"    
                                              AutoGenerateColumns="None" 
                                          Style="{StaticResource SiegCustomGridControl}"
@@ -403,8 +403,8 @@
                             <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題二"   Width="auto" />
                         </dxg:GridControl>
                     </TabItem>
-                    <TabItem Header="加工細項" Name="MachiningDetailTabItem">
-                        <dxg:GridControl Margin="-11" Cursor="Arrow"
+                    <TabItem Header="加工細項" Name="MachiningDetailTabItem" >
+                        <dxg:GridControl Margin="-11" Cursor="Arrow" IsEnabled="{Binding Input_by_Computer_RadioButtonIsChecked}"
                          Name="MachiningDetail_List_GridControl"    
                         AutoGenerateColumns="None" 
                        SelectionMode="Row"

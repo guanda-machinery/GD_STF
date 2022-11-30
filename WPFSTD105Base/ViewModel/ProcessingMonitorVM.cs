@@ -63,24 +63,6 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public ObservableCollection<MaterialDataView> FinishDataViews { get; set; } = new ObservableCollection<MaterialDataView>();
 
-        /// <summary>
-        /// 未加工-已完成合併清單
-        /// </summary>
-        public ObservableCollection<MaterialDataView> Finish_UndoneDataViews
-        {
-            get
-            {
-                var DViews = new List<MaterialDataView>();
-                DViews.AddRange(FinishDataViews);
-                DViews.AddRange(UndoneDataView);
-
-                return new ObservableCollection<MaterialDataView>(DViews); ;
-            }
-        }
-
-        public MaterialDataView Finish_UndoneDataViews_Selected { get; set; }
-
-
 
 
         /// <summary>
@@ -115,33 +97,6 @@ namespace WPFSTD105.ViewModel
         /// 搜尋字串
         /// </summary>
         public string MaterialGridControlSearchString { get; set; }
-
-        private bool _MachiningCombinationl_List_GridControl_IsSelected = false;
-        /// <summary>
-        /// 已選擇MachiningCombinationl_List_GridControl
-        /// </summary>
-        public bool MachiningCombinationl_List_GridControl_IsSelected
-        {
-            get
-            {
-                return _MachiningCombinationl_List_GridControl_IsSelected;
-            }
-            set
-            {
-                if (_MachiningCombinationl_List_GridControl_IsSelected != value)
-                {
-                    _MachiningCombinationl_List_GridControl_IsSelected = value;
-                    //↓可即時反應
-                    OnPropertyChanged("MachiningCombinationl_List_GridControl_IsSelected");
-                }
-            }
-        }
-
-
-
-
-
-
 
         #endregion
 
@@ -405,7 +360,7 @@ namespace WPFSTD105.ViewModel
             InsertCommand = Insert();
             FinishCommand = Finish();
             ContinueCommand = Continue();
-                                                                              
+
 
             int synIndex = 0;
             if (ApplicationViewModel.PanelButton.Key != KEY_HOLE.AUTO) //如果沒有在自動狀況下
@@ -1058,7 +1013,7 @@ namespace WPFSTD105.ViewModel
                         {
                             _BufferModel.Dispose();
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                         }
                     }

@@ -42,6 +42,7 @@ using DocumentFormat.OpenXml.Drawing.Charts;
 using DevExpress.Charts.Model;
 using ProtoBuf.Meta;
 using DocumentFormat.OpenXml.EMMA;
+using DevExpress.Xpf.Core.FilteringUI;
 
 //using DevExpress.Utils.Extensions;
 namespace WPFSTD105.ViewModel
@@ -805,6 +806,74 @@ namespace WPFSTD105.ViewModel
             Finish_UndoneDataViews.ForEach(el => el.Position = PositionStatusEnum.初始化.ToString());
             _SynchronizationContext = SynchronizationContext.Current;
             _WorkMaterials = new WorkMaterial[Finish_UndoneDataViews.Count];
+
+
+
+
+            int synIndex = 0;
+            if (ApplicationViewModel.PanelButton.Key != KEY_HOLE.AUTO) //如果沒有在自動狀況下
+            {
+                //如有備份檔就寫回給 Codesys
+
+                for (int i = synIndex; i < Finish_UndoneDataViews.Count; i++)
+                {
+                    //葉:需要比對衝突
+                    WorkMaterial? work = _Ser.GetWorkMaterialBackup(Finish_UndoneDataViews[i].MaterialNumber);
+                    if (work != null)
+                    {
+                        long workOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.WorkMaterial)).ToInt64();
+                        int workSize = Marshal.SizeOf(typeof(WorkMaterial));
+                        if (work.Value.AssemblyNumber != null && work.Value.MaterialNumber != null)
+                        {
+                            WriteCodesysMemor.SetMonitorWorkOffset(work.Value.ToByteArray(), workOffset + (workSize * i)); //發送加工陣列
+                            _SendIndex.Add(Convert.ToInt16(i));
+                            if (work.Value.Position == -2) //如果是完成的狀態
+                            {
+                                Finish_UndoneDataViews[i].Position = "完成";
+                                _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
+                            }
+                            synIndex = i;
+                        }
+                    }
+                }
+
+            }   //如果是在自動狀況下
+            else //如果有在自動狀況下
+            {
+                using (Memor.ReadMemorClient client = new Memor.ReadMemorClient())
+                {
+                    //同步列表
+                    for (int i = synIndex; i < Finish_UndoneDataViews.Count; i++)
+                    {
+                        _WorkMaterials[i] = client.GetWorkMaterial(Convert.ToUInt16(i));
+                        if (_WorkMaterials[i].BoltsCountL != 0 || _WorkMaterials[i].BoltsCountR != 0 || _WorkMaterials[i].IndexBoltsM != 0)
+                        {
+                            _SendIndex.Add(Convert.ToInt16(i));
+                        }
+                        synIndex = i;
+                    }
+                }
+            }
+
+            using (Memor.WriteMemorClient Write = new Memor.WriteMemorClient())
+            {
+                long ImportProjectOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.ImportProject)).ToInt64();
+                Write.SetMonitorWorkOffset(new byte[1] { 1 }, ImportProjectOffset);//寫入匯入專案完成
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             //啟動一執行序持續掃描是否有錯誤訊息
 
@@ -1610,7 +1679,7 @@ namespace WPFSTD105.ViewModel
         #region app server 溝通按鈕
 
         /// <summary>
-        /// 切換到橫移料架
+        /// 切換到橫移料架-台車
         /// </summary>
         public ICommand ChangeTransportModeCommand
         {
@@ -1627,8 +1696,6 @@ namespace WPFSTD105.ViewModel
 
                     Task.Run(() =>
                     {
-
-
                         Thread.Sleep(500);
                         try
                         {
@@ -1793,7 +1860,7 @@ namespace WPFSTD105.ViewModel
                                 if (optionSettings.HandAuto)
                                 {
                                     Transport_by_Hand_RadioButtonIsChecked = false;
-                                    AddOperatingLog(LogSourceEnum.Software, "手臂切換到自動模式");
+                                    AddOperatingLog(LogSourceEnum.Software, "手臂切換到自動模式，需再選擇台車或續接模式");
                                 }
                                 else
                                 {
@@ -1834,18 +1901,23 @@ namespace WPFSTD105.ViewModel
 
         private void ShowMessageBox(UIElement _element, string Message)
         {
-            _element.Dispatcher.BeginInvoke(new Action(delegate
+            if (_element != null)
             {
-                Thread.Sleep(100);
-                WinUIMessageBox.Show(null,
-                    $"{Message}",
-                    $"通知",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Exclamation,
-                    MessageBoxResult.None,
-                    MessageBoxOptions.None,
-                    FloatingMode.Adorner);
-            }));
+                _element.Dispatcher.BeginInvoke(new Action(delegate
+                {
+                    Thread.Sleep(100);
+                    WinUIMessageBox.Show(null,
+                        $"{Message}",
+                        $"通知",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                        FloatingMode.Adorner);
+                }));
+            }
+            else
+                Debugger.Break();
         }
 
 
@@ -2200,7 +2272,7 @@ namespace WPFSTD105.ViewModel
                     }
 
                     int synIndex = 0;
-                    if (ApplicationViewModel.PanelButton.Key != KEY_HOLE.AUTO) //如果沒有在自動狀況下
+                    if (ApplicationViewModel.PanelButton.Key == KEY_HOLE.MANUAL) //如果沒有在自動狀況下
                     {
                         if (errorCount == 0) //如果沒有發送失敗
                         {
@@ -2240,7 +2312,7 @@ namespace WPFSTD105.ViewModel
                                     FNDV.Position  = PositionStatusEnum.等待配對.ToString();
                         }
                     }   //如果是在自動狀況下
-                    else //如果有在自動狀況下
+                    else if (ApplicationViewModel.PanelButton.Key == KEY_HOLE.AUTO) //如果有在自動狀況下
                     {
                         using (Memor.ReadMemorClient client = new Memor.ReadMemorClient())
                         {
@@ -2256,6 +2328,13 @@ namespace WPFSTD105.ViewModel
                             }
                         }
                     }
+
+                    using (Memor.WriteMemorClient Write = new Memor.WriteMemorClient())
+                    {
+                        long ImportProjectOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.ImportProject)).ToInt64();
+                        Write.SetMonitorWorkOffset(new byte[1] { 1 }, ImportProjectOffset);//寫入匯入專案完成
+                    }
+
                     break;
                 }
                 catch (Exception ex)
@@ -2278,11 +2357,7 @@ namespace WPFSTD105.ViewModel
 
             _SerializationThread.Start();
             _HostThread.Start();
-            using (Memor.WriteMemorClient Write = new Memor.WriteMemorClient())
-            {
-                long ImportProjectOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.ImportProject)).ToInt64();
-                Write.SetMonitorWorkOffset(new byte[1] { 1 }, ImportProjectOffset);//寫入匯入專案完成
-            }
+
         }
 
         /// <summary>
@@ -2306,9 +2381,27 @@ namespace WPFSTD105.ViewModel
             _SerializationThread = new Thread(new ThreadStart(() =>
             {
                 _WriteCodesysTask?.Wait();
+                int count = 0;
                 while (true)
                 {
-                    ContinuedSerialization();
+                    try
+                    {
+                        ContinuedSerialization();
+                        count = 0;
+                    }
+                    catch (Exception ex)
+                    {
+                        if (count < 30)
+                        {
+                            Debug.WriteLine($"序列化失敗第 {count} 次 ...");
+                        }
+                        else
+                        {
+                            log4net.LogManager.GetLogger("同步失敗").Debug($"同步失敗");
+                            //Debugger.Break();
+                            //throw new Exception("伺服器無法連線 ....");
+                        }
+                    }
                 }
             }));
             _SerializationThread.IsBackground = true;
@@ -2326,9 +2419,25 @@ namespace WPFSTD105.ViewModel
             _HostThread = new Thread(new ThreadStart(() =>
             {
                 _WriteCodesysTask?.Wait();
+                int count = 0;
                 while (true)
                 {
-                    ContinuedHost();
+                    try
+                    {
+                        ContinuedHost();
+                        count = 0;
+                    }
+                    catch (Exception ex)
+                    {
+                        if (count < 30)
+                        {
+                            Debug.WriteLine($"Host讀取失敗第 {count} 次 ...");
+                        }
+                        else
+                        {
+                            log4net.LogManager.GetLogger("Host同步失敗").Debug($"同步失敗");
+                        }
+                    }
                 }
             }));
             _HostThread.IsBackground = true;
@@ -2339,51 +2448,35 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 持續序列化
         /// </summary>
-        private void ContinuedSerialization(int count = 0)
+        private void ContinuedSerialization()
         {
-            try
+            short[] index = null;
+            WorkOther workOther = null;
+            Host host;
+            using (Memor.ReadMemorClient read = new Memor.ReadMemorClient())
             {
-                short[] index = null;
-                WorkOther workOther = null;
-                Host host;
-                using (Memor.ReadMemorClient read = new Memor.ReadMemorClient())
-                {
-                    index = read.GetIndex();
-                    workOther = read.GetWorkOther();
-                    host = read.GetHost();
-                }
-                Current = workOther.Current;
+                index = read.GetIndex();
+                workOther = read.GetWorkOther();
+                host = read.GetHost();
+            }
+            Current = workOther.Current;
 
-                _Ser.SetWorkMaterialOtherBackup(workOther);
-                _Ser.SetWorkMaterialIndexBackup(index); //備份 Index
-                var noInfo = index.Except(_SendIndex).ToArray(); //查詢尚未發送加工孔位的 index 
-                for (int i = 0; i < noInfo.Length; i++) //找出沒發送過的工作陣列
-                {
-                    AddOperatingLog(LogSourceEnum.Machine, $"發送加工訊息：{noInfo[i]}", false);
-                    SendDrill(noInfo[i]); //發送
-                }
-                _SendIndex.AddRange(noInfo); //存取已經發送過的列表
-                List<short> SerializationValue = new List<short>(index);
-                List<short> delete = _LastTime.Except(SerializationValue).ToList(); //找出上次有序列化的文件
-                SerializationValue.AddRange(delete);
-                Serialization(SerializationValue);
-                _LastTime = index.ToArray();
-                Thread.Sleep(2000); //等待 1 秒後執行
-            }
-            catch (Exception ex)
+            _Ser.SetWorkMaterialOtherBackup(workOther);
+            _Ser.SetWorkMaterialIndexBackup(index); //備份 Index
+            var noInfo = index.Except(_SendIndex).ToArray(); //查詢尚未發送加工孔位的 index 
+            for (int i = 0; i < noInfo.Length; i++) //找出沒發送過的工作陣列
             {
-                if (count < 30)
-                {
-                    ContinuedSerialization(count + 1);
-                    Debug.WriteLine($"讀取失敗第 {count} 次 ...");
-                }
-                else
-                {
-                    log4net.LogManager.GetLogger("同步失敗").Debug($"同步失敗");
-                    //Debugger.Break();
-                    //throw new Exception("伺服器無法連線 ....");
-                }
+                AddOperatingLog(LogSourceEnum.Machine, $"發送加工訊息：{noInfo[i]}", false);
+                SendDrill(noInfo[i]); //發送
             }
+            _SendIndex.AddRange(noInfo); //存取已經發送過的列表
+            List<short> SerializationValue = new List<short>(index);
+            List<short> delete = _LastTime.Except(SerializationValue).ToList(); //找出上次有序列化的文件
+            SerializationValue.AddRange(delete);
+            Serialization(SerializationValue);
+            _LastTime = index.ToArray();
+            Thread.Sleep(2000); //等待 1 秒後執行
+
 
         }
 
@@ -2401,7 +2494,7 @@ namespace WPFSTD105.ViewModel
         /// 持續監看 Host
         /// </summary>
         /// <param name="count"></param>
-        private void ContinuedHost(int count = 0)
+        private void ContinuedHost()
         {
             Thread.Sleep(1333);//等待 1.333 秒後執行
             Host host;

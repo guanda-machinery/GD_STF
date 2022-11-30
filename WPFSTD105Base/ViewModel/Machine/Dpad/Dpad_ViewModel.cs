@@ -1,4 +1,5 @@
-﻿using GD_STD;
+﻿using DevExpress.Mvvm;
+using GD_STD;
 using GD_STD.Enum;
 using System;
 using System.Collections.Generic;
@@ -59,6 +60,26 @@ namespace WPFSTD105.ViewModel
 
 
 
+        public object Joystick_LEFT_DESC_Trigger_Parameter { get; set; } = JOYSTICK.LEFT_DESC;
+        public object Joystick_RIGHT_DESC_Trigger_Parameter { get; set; } = JOYSTICK.RIGHT_DESC;
+        public object Joystick_UP_DESC_Trigger_Parameter { get; set; } = JOYSTICK.UP_DESC;
+        public object Joystick_DOWN_DESC_Trigger_Parameter { get; set; } = JOYSTICK.DOWN_DESC;
+
+        public object Joystick_LEFT_DESC_Release_Parameter { get; set; } = JOYSTICK.NULL;
+        public object Joystick_RIGHT_DESC_Release_Parameter { get; set; } = JOYSTICK.NULL;
+        public object Joystick_UP_DESC_Release_Parameter { get; set; } = JOYSTICK.NULL;
+        public object Joystick_DOWN_DESC_Release_Parameter{ get; set; } = JOYSTICK.NULL;
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -69,30 +90,26 @@ namespace WPFSTD105.ViewModel
         /// 
 
 
-        public WPFWindowsBase.RelayParameterizedCommand LeftButtonCommand
+        public ICommand LeftButtonCommand
         {
             get
             {
                 return new WPFWindowsBase.RelayParameterizedCommand(el =>
                 {
+                    PanelButton PButton = ApplicationViewModel.PanelButton;
                     if (el is JOYSTICK)
                     {
                         JOYSTICK select = (JOYSTICK)el;
-                        PanelButton _ = ApplicationViewModel.PanelButton;
-                        _.Joystick = select;
-                        CodesysIIS.WriteCodesysMemor.SetPanel(_);
+                        PButton.Joystick = select;
+                        CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
                     }
                     if (el is GD_STD.Enum.AXIS_SELECTED)
                     {
-                        AXIS_SELECTED select = (AXIS_SELECTED)el;
-                        PanelButton _ = ApplicationViewModel.PanelButton;
-                        _.AxisSelect = select;
-                        CodesysIIS.WriteCodesysMemor.SetPanel(_);
+                        var  select = (AXIS_SELECTED)el;
+                        PButton.AxisSelect = select;
+                        CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
                     }
-                    if(el is null)
-                    {
-                        Thread.Sleep(10);
-                    }
+
 
 
 
@@ -105,7 +122,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 定位柱
         /// </summary>
-        public WPFWindowsBase.RelayCommand PostRiseCommand
+        public ICommand PostRiseCommand
         {
             get
             {
