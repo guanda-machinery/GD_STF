@@ -987,8 +987,9 @@ namespace WPFSTD105.Model
         /// <param name="steelAttr">指定鋼構資訊</param>
         /// <param name="groups">既有型鋼孔</param>
         /// <param name="blocks">model.Block...若有已編輯的孔，要傳block進去</param>
+        /// <param name="isRotate">新增孔群時是否翻轉(只有新增時需翻轉，grid查詢時不須翻轉)</param>
         public static void LoadNcToModel(this devDept.Eyeshot.Model model, string dataName, List<OBJECT_TYPE> allowType,double diffLength=0, 
-            DXSplashScreenViewModel vm = null,SteelAttr steelAttr = null,List<GroupBoltsAttr> groups = null,List<Block> blocks=null)
+            DXSplashScreenViewModel vm = null,SteelAttr steelAttr = null,List<GroupBoltsAttr> groups = null,List<Block> blocks=null,bool isRotate=true)
         {
             STDSerialization ser = new STDSerialization(); //序列化處理器
             NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
@@ -1188,11 +1189,11 @@ namespace WPFSTD105.Model
                     };
                     // 再Blocks中找尋是否有此孔群的資料，若孔群已編輯，需從此塞資料
                     List<Mesh> meshes = null;
-                   if(blocks != null && blocks.Any(x=>x.Name== bolt.GUID.Value.ToString())) 
+                    if (blocks != null && blocks.Any(x => x.Name == bolt.GUID.Value.ToString()))
                     {
-                        meshes = blocks.FirstOrDefault(x => x.Name == bolt.GUID.Value.ToString()).Entities.Select(x=>(Mesh)x).ToList();
+                        meshes = blocks.FirstOrDefault(x => x.Name == bolt.GUID.Value.ToString()).Entities.Select(x => (Mesh)x).ToList();
                     }
-                    Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out bool check, meshes); //加入到 3d 視圖
+                    Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out bool check, meshes, isRotate); //加入到 3d 視圖
                 });
             }
 
@@ -1207,7 +1208,8 @@ namespace WPFSTD105.Model
             ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).uPoint = nc.SteelAttr.uPoint;
 
             ObSettingVM obvm = new ObSettingVM();
-            RunHypotenusePoint(model, obvm,diffLength);
+            obvm.RemoveHypotenusePoint(model);
+            RunHypotenusePoint(model, obvm, diffLength);
 
             // 取得該零件並更新驚嘆號Loading
             ObservableCollection<SteelPart> parts = ser.GetPart(nc.SteelAttr.Profile.GetHashCode().ToString());//零件列表
@@ -1237,10 +1239,15 @@ namespace WPFSTD105.Model
             #region 檢測是否成功，失敗則將NC檔寫回
             ReadFile readFile = ser.ReadPartModel(dataName); //讀取檔案內容
             readFile.DoWork();//開始工作
+            devDept.Eyeshot.Model tempModel = new devDept.Eyeshot.Model();
+            tempModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
+            tempModel.InitializeViewports();
+            tempModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
+
             try
             {
-                readFile.AddToScene(model);//將讀取完的檔案放入到模型
-                if (model.Blocks.Count() <= 1)
+                readFile.AddToScene(tempModel);//將讀取完的檔案放入到模型
+                if (tempModel.Blocks.Count() <= 1)
                 {
                     ncTemps.Add(reduceNC);
                 }

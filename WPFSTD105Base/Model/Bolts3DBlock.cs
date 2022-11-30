@@ -105,7 +105,7 @@ namespace WPFSTD105.Model
         /// <summary>
         /// 創建螺栓群組
         /// </summary>
-        public void CreateBolts(devDept.Eyeshot.Model model, ref bool check, List<Mesh> meshes = null)
+        public void CreateBolts(devDept.Eyeshot.Model model, ref bool check, List<Mesh> meshes = null,bool isRotate = true)
         {
             check = true;
             SteelAttr steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
@@ -139,7 +139,7 @@ namespace WPFSTD105.Model
             }
             else
             {
-                if (Info.Face == GD_STD.Enum.FACE.BACK || Info.Face == GD_STD.Enum.FACE.FRONT)
+                if ((Info.Face == GD_STD.Enum.FACE.BACK || Info.Face == GD_STD.Enum.FACE.FRONT) && isRotate)
                 {
                     // 原孔群資訊依照條件算出之視角為TOP視角，需轉成前後視角，y=z,z=y(only XYZ)
                     this.Rotate(Math.PI / 2, Vector3D.AxisX);
@@ -497,8 +497,13 @@ namespace WPFSTD105.Model
         /// <param name="attr">螺栓設定檔</param>
         /// <param name="model">要被加入的模型</param>
         /// <param name="block">加入到模型的參考圖塊</param>
+        /// <param name="check">規則檢查結果</param>
+        /// <param name="meshes">產生已存在的孔</param>
+        /// <param name="isRotate">孔是否翻轉(產生時需要，查詢時不需要)</param>
         /// <returns>加入到模型的圖塊</returns>
-        public static Bolts3DBlock AddBolts(GroupBoltsAttr attr, devDept.Eyeshot.Model model, out BlockReference block,out bool check,List<Mesh> meshes = null)
+        public static Bolts3DBlock AddBolts(GroupBoltsAttr attr, devDept.Eyeshot.Model model,
+            out BlockReference block,out bool check,
+            List<Mesh> meshes = null,bool isRotate = true)
         {
             check = true;
             block = null;
@@ -508,7 +513,7 @@ namespace WPFSTD105.Model
             result.steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
             if (!model.Blocks.Contains(result.Name))
             {
-              result.CreateBolts(model, ref check,meshes);//創建孔位群組
+              result.CreateBolts(model, ref check,meshes, isRotate);//創建孔位群組
             }
             else if(CheckBolts(model, result.Name))
             {

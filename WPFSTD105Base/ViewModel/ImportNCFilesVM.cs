@@ -182,8 +182,8 @@ namespace WPFSTD105
                 STDSerialization ser = new STDSerialization();//序列化處理器
                 //ObSettingVM obvm = new ObSettingVM();
                 Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
-                                    //if (IsNcLoad || IsBomLoad) //如果有載入過報表
-                if (false) //如果有載入過報表
+                if (IsNcLoad || IsBomLoad) //如果有載入過報表
+                //if (false) //如果有載入過報表
                 {
                     // 2022/08/22 呂宗霖 因螺栓無法找到其歸屬零件編號，故架構師與副總討論後，決議先讓使用者只能匯入一次檔案，若要再次匯入，必須重新新增專案
                     WinUIMessageBox.Show(null,
