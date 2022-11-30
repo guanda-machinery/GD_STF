@@ -78,7 +78,7 @@ namespace WPFSTD105.Surrogate
             obj.X = X;
             obj.Y = Y;
             obj.Z = Z;
-            obj.BlockName = BlockName;
+            obj.BlockName =  BlockName;
         }
         /// <summary>
         /// 在反序列化過程中將代理轉換為相關對象。
