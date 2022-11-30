@@ -78,6 +78,27 @@ namespace WPFSTD105
             {
                 PreviousPage = _CurrentPage;//紀錄上一頁
 
+                //如果目前是機台監控，且在自動模式下企圖離開時，跳出提示並阻擋動作
+
+                //有換頁需求
+                if (PreviousPage != value)
+                {
+                    if (WPFSTD105.CodesysIIS.ReadCodesysMemor.GetHost().CodesysStatus == CODESYS_STATUS.RUN)
+                    {
+                        MessageBoxResult messageBoxResult = MessageBox.Show($"機台運行中下不可離開加工監控頁面。", "通知", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                        return;
+                    }
+                    //鑰匙孔在自動情況下不可離開
+                    if (ApplicationViewModel.PanelButton.Key == KEY_HOLE.AUTO)
+                    {
+                        MessageBoxResult messageBoxResult = MessageBox.Show($"鑰匙孔在自動情況下不可離開加工監控頁面。", "通知", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                        return;
+                    }
+                }
+                
+
+
+
                 //判斷是否為選擇機器模式
                 //if (value == ApplicationPage.ModeSelected)
                 //    UserMode = MachineMode.NULL;

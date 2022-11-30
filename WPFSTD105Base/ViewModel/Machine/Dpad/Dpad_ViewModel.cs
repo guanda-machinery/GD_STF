@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using static WPFSTD105.ViewLocator;
@@ -88,6 +89,13 @@ namespace WPFSTD105.ViewModel
                         _.AxisSelect = select;
                         CodesysIIS.WriteCodesysMemor.SetPanel(_);
                     }
+                    if(el is null)
+                    {
+                        Thread.Sleep(10);
+                    }
+
+
+
                 });
             }
         }
@@ -113,6 +121,41 @@ namespace WPFSTD105.ViewModel
                 });
             }
         }
+
+
+
+
+        /// <summary>
+        /// 下壓夾具 入口命令
+        /// </summary>
+        /*public WPFWindowsBase.RelayCommand SelectClampDownEntranceCommand
+        {
+            get
+            {
+                return new WPFWindowsBase.RelayCommand(() =>
+                {
+                    PanelButton panelButton = ApplicationViewModel.PanelButton;
+                    panelButton.ClampDownSelected = CLAMP_DOWN.Entrance;
+                    CodesysIIS.WriteCodesysMemor.SetPanel(panelButton);
+                });
+            }
+        }*/
+
+        /// <summary>
+        /// 下壓夾具 出口命令
+        /// </summary>
+        /*public WPFWindowsBase.RelayCommand SelectClampDownExportCommand
+        {
+            get
+            {
+                return new WPFWindowsBase.RelayCommand(() =>
+                {
+                    PanelButton panelButton = ApplicationViewModel.PanelButton;
+                    panelButton.ClampDownSelected = CLAMP_DOWN.Export;
+                    CodesysIIS.WriteCodesysMemor.SetPanel(panelButton);
+                });
+            }
+        }*/
 
         #endregion
     }

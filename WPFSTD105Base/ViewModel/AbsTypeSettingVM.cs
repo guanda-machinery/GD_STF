@@ -532,7 +532,7 @@ namespace WPFSTD105
 
 
 
-                            var PGIndex = (PartGirdControl.ItemsSource as ObservableCollection<GD_STD.Data.TypeSettingDataView>).ToList().FindIndex(x => x == PartGridColumn);
+                            var PGIndex = (PartGirdControl.ItemsSource as IEnumerable<GD_STD.Data.TypeSettingDataView>).ToList().FindIndex(x => x == PartGridColumn);
                             if(PGIndex != -1)
                             {
                                 PartGirdControl.Dispatcher.Invoke(() =>
