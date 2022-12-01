@@ -937,6 +937,7 @@
     <Compile Include="ValueConverters\ConverterToPartNumber.cs" />
     <Compile Include="ValueConverters\DateTimeConverter.cs" />
     <Compile Include="ValueConverters\ListCountToVisibilityConverter.cs" />
+    <Compile Include="ValueConverters\MultiValueConverters\BooleanArrayIntersectToBooleanConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\DatetimeArrayToLastestDatetimeConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\DoubleConditionToIsEnabledConerter.cs" />
     <Compile Include="ValueConverters\DrillBrandGetPropertyConverter.cs" />

@@ -201,11 +201,11 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                             <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.UP_DESC}" />
+                                            CommandParameter="{Binding Joystick_UP_DESC_Trigger_Parameter}" />
                         </i:EventTrigger>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
                             <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                                            CommandParameter="{Binding Joystick_UP_DESC_Release_Parameter}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
 
@@ -237,11 +237,11 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                             <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.LEFT_DESC}" />
+                                            CommandParameter="{Binding Joystick_LEFT_DESC_Trigger_Parameter}" />
                         </i:EventTrigger>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
                             <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                                            CommandParameter="{Binding Joystick_LEFT_DESC_Release_Parameter}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <Button.Triggers>
@@ -281,11 +281,11 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                             <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.RIGHT_DESC}" />
+                                            CommandParameter="{Binding Joystick_RIGHT_DESC_Trigger_Parameter}" />
                         </i:EventTrigger>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
                             <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                                            CommandParameter="{Binding Joystick_RIGHT_DESC_Release_Parameter}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
 
@@ -328,11 +328,11 @@
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                             <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.DOWN_DESC}" />
+                                            CommandParameter="{Binding Joystick_DOWN_DESC_Trigger_Parameter}" />
                         </i:EventTrigger>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
                             <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                                            CommandParameter="{Binding Joystick_DOWN_DESC_Release_Parameter}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <Button.Triggers>
@@ -358,11 +358,11 @@
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                     <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.LEFT_DESC}" />
+                                            CommandParameter="{Binding Joystick_LEFT_DESC_Trigger_Parameter}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
                     <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                                            CommandParameter="{Binding Joystick_LEFT_DESC_Release_Parameter}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>
@@ -374,11 +374,11 @@
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                     <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.RIGHT_DESC}" />
+                                            CommandParameter="{Binding Joystick_RIGHT_DESC_Trigger_Parameter}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
                     <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                                            CommandParameter="{Binding Joystick_RIGHT_DESC_Release_Parameter}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
 
@@ -393,11 +393,11 @@
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                     <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.UP_DESC}" />
+                                            CommandParameter="{Binding Joystick_UP_DESC_Trigger_Parameter}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
                     <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                                            CommandParameter="{Binding Joystick_UP_DESC_Release_Parameter}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
 
@@ -413,11 +413,11 @@
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                     <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.DOWN_DESC}" />
+                                            CommandParameter="{Binding Joystick_DOWN_DESC_Trigger_Parameter}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
                     <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                            CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                                            CommandParameter="{Binding Joystick_DOWN_DESC_Release_Parameter}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>

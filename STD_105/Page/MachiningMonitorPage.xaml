@@ -58,9 +58,10 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <!--  3D圖形  -->
-        <Grid Grid.RowSpan="3"
-              Panel.ZIndex="10000"
-              Visibility="{Binding ThreeDimensionalDisplayControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+        <!--  Visibility="{Binding ThreeDimensionalDisplayControl, Converter={WPFBase:BooleanToVisiblityConverter}}"-->
+        <Grid Grid.RowSpan="3" 
+              Panel.ZIndex="10000" Visibility="Hidden"
+            >
             <GroupBox Header="3D視圖"
                       Style="{StaticResource gbx_WithBorder}">
                 <spa:ModelExt x:Name="model"
