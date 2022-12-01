@@ -24,12 +24,6 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public RacksOperationVM()
         {
-            //重新對應搖桿上下到搖桿上的右上及右下按鈕
-            //this.Dpad_Button_Up_Trigger = CIRCLE_TOP_DESC_ButtonCommand;
-            //this.Dpad_Button_Down_Trigger = CIRCLE_BOTTOM_DESC_ButtonCommand;
-            this.Joystick_UP_DESC_Trigger_Parameter = JOYSTICK.CIRCLE_TOP_DESC;
-            this.Joystick_DOWN_DESC_Trigger_Parameter = JOYSTICK.CIRCLE_BOTTOM_DESC;
-
         }
 
 

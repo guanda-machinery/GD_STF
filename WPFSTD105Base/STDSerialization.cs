@@ -21,6 +21,7 @@ using SplitLineSettingData;
 using DevExpress.XtraRichEdit.Import.OpenXml;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot;
+using System.Diagnostics;
 
 namespace WPFSTD105
 {
@@ -140,13 +141,19 @@ namespace WPFSTD105
         /// <param name="values">加工列表</param>
         public void SetWorkMaterialBackup(WorkMaterial values)
         {
-            string dataName = values.MaterialNumber
-                                                            .Where(el => el != 0)
-                                                            .Select(el => Convert.ToChar(el).ToString())
-                                                            .Aggregate((str1, str2) => str1 + str2);
+            try
+            {
+                string dataName = values.MaterialNumber
+                                                                .Where(el => el != 0)
+                                                                .Select(el => Convert.ToChar(el).ToString())
+                                                                .Aggregate((str1, str2) => str1 + str2);
 
-            GZipSerializeBinary(values, $@"{ApplicationVM.DirectoryWorkMaterialBackup()}\{dataName}.db");
-
+                GZipSerializeBinary(values, $@"{ApplicationVM.DirectoryWorkMaterialBackup()}\{dataName}.db");
+            }
+            catch(Exception ex)
+            {
+                Debugger.Break();
+            }
         }
         /// <summary>
         /// 讀取工作陣列列表 (壓縮)
@@ -398,7 +405,6 @@ namespace WPFSTD105
             GBA.ForEach(x => { x.Mode = GD_STD.Enum.AXIS_MODE.POINT; });
             bolck.ForEach(x => { x.Mode = GD_STD.Enum.AXIS_MODE.POINT; });
         }
-
         /// <summary>
         /// 讀取 <see cref="devDept.Eyeshot.Model"/>
         /// </summary>

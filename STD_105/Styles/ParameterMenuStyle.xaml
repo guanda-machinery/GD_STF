@@ -227,7 +227,7 @@
                         </Trigger>
 
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Background" Value="Green"/>
+                            <Setter Property="Background" Value="#4CFF00"/>
                             <Setter Property="Foreground" Value="White"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
