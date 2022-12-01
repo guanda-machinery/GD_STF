@@ -516,13 +516,13 @@
                         <Button x:Name="YesButton3" 
                                 Content="匯入"
                                 Command="{ Binding ImportCommand }" >
-                            <Button.IsEnabled>
-                                <MultiBinding Converter="{ local:MultiObjectArrayToBooleanConverter}" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding Path="NcPath"/>
-                                    <Binding Path="BomPath"/>
-                                </MultiBinding>
-                            </Button.IsEnabled>
-                        </Button>
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{ local:MultiObjectArrayToBooleanConverter}" UpdateSourceTrigger="PropertyChanged">
+                                <Binding Path="NcPath"/>
+                                <Binding Path="BomPath"/>
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                    </Button>
                         <Button x:Name="NoButton3"
                                 Content="{ DynamicResource LANGUAGE_Cancel }"
                                 Command="{ Binding CloseProjectManagerCommand }" >

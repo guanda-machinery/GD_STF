@@ -391,6 +391,10 @@ namespace WPFSTD105
 
             #region 資料取得
             ScreenManager.ViewModel.Status = $"取得資訊中 ...";
+            _BufferModel = new devDept.Eyeshot.Model();
+            _BufferModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
+            _BufferModel.InitializeViewports();
+            _BufferModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
             //Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
             ApplicationVM appVM = new ApplicationVM();
             STDSerialization ser = new STDSerialization();
@@ -409,11 +413,7 @@ namespace WPFSTD105
             // 取得排版資訊
             ObservableCollection<MaterialDataView> materialDataViews = ser.GetMaterialDataView();
 
-            // 取得排版零件資訊
-            _BufferModel = new devDept.Eyeshot.Model();
-            _BufferModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
-            _BufferModel.InitializeViewports();
-            _BufferModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
+            // 取得排版零件資訊           
             ObservableCollection<TypeSettingDataView> DataViews = tsVM.LoadDataViews();
 
             // 取得切割線設定資訊
