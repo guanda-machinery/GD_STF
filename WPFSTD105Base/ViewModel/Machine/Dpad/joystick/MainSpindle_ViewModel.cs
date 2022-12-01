@@ -110,7 +110,7 @@ namespace WPFSTD105.ViewModel
                         return;
 
                     //鬆刀狀態下不可旋轉
-                    if (PanelListening.IsAxisLooseKnife())
+                    if (!PanelListening.IsAxisLooseKnife())
                         return;
 
                     GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
