@@ -1219,7 +1219,8 @@ namespace WPFSTD105.Model
             ObSettingVM obvm = new ObSettingVM();
             obvm.RemoveHypotenusePoint(model, "ManHypotenuse");
 
-            //HypotenuseEnable 可用(True) 表示 無斜邊
+
+            //isHypotenuse 可用(True) 表示 斜邊
             if (ViewLocator.OfficeViewModel.isHypotenuse)
             RunHypotenusePoint(model, obvm, diffLength);
 
