@@ -384,6 +384,7 @@ namespace WPFSTD105.ViewModel
                                 {
                                     keyValuePairs.Add(attr.Face, new List<Drill>());
                                 }
+
                                 if (attr.Face == FACE.TOP)
                                 {
                                     keyValuePairs[attr.Face].AddRange(BoltAsDrill(entities, new Transformation(new Point3D(0, steelPart.H, 0), Vector3D.AxisX, new Vector3D(0, -1), Vector3D.AxisZ)));
