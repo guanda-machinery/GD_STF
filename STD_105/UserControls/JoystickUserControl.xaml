@@ -43,7 +43,7 @@
                             To="Lime"
                             Duration="0:0:0.1" />
             </Storyboard>-->
-            
+
             <Storyboard x:Key="CircleTopButton">
                 <ColorAnimation Storyboard.TargetName="btn_CircleTop"
                             Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
@@ -137,7 +137,7 @@
             </Style>
             <Style TargetType="Button" BasedOn="{StaticResource SiegCustomButtonGreenBorder}"/>
         </Grid.Resources>
-    <Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" MinWidth="50"/>
             <ColumnDefinition Width="350"/>
             <ColumnDefinition Width="*" MinWidth="50"/>
@@ -156,7 +156,11 @@
 
 
             </Grid.Resources>
-            <Grid Visibility="{Binding DescriptionDisplayBoolen , Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}" Panel.ZIndex="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="13*"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
+            <Grid Visibility="{Binding DescriptionDisplayBoolen , Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}" Panel.ZIndex="1" Grid.RowSpan="2" >
                 <Line X1="0" X2="127" Y1="70" Y2="70"  />
                 <Line X1="126" X2="126" Y1="70" Y2="125" />
 
@@ -172,8 +176,8 @@
                 <Line X1="202" X2="202" Y1="320" Y2="280" />
 
             </Grid>
-            
-            <Grid  Width="230" Height="230" Panel.ZIndex="0">
+
+            <Grid  Width="230" Height="230" Panel.ZIndex="0" Margin="60,77,60,5">
                 <Viewbox Grid.Row="1"  
                  Grid.Column="1"
                  Height="Auto"
@@ -263,7 +267,7 @@
                         </Path>
                         <!--左橢圓上按鈕-->
                         <Button x:Name="btn_EllipseTop"  
-                        IsEnabled="{Binding JoyStickButton1_isEnabled }"
+                        IsEnabled="{Binding JoyStick_ELLIPSE_TOP_isEnabled }"
                         Canvas.Top="110"
                         Canvas.Left="85"
                         Height="105"
@@ -271,12 +275,12 @@
                         Style="{ StaticResource btn_3D_EllipseKeyUp }">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton1_Trigger}"
-                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.ELLIPSE_TOP_DESC}" />
+                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                                    CommandParameter="{Binding JoyStick_ELLIPSE_TOP_Trigger_CommandParameter}" />
                                 </i:EventTrigger>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton1_Release}"
-                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                                    CommandParameter="{Binding JoyStick_ELLIPSE_TOP_Release_CommandParameter}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                             <Button.Triggers>
@@ -300,7 +304,7 @@
                         </Button>
                         <!--左橢圓下按鈕-->
                         <Button x:Name="btn_EllipseBottom"
-                                IsEnabled="{Binding JoyStickButton3_isEnabled }"
+                                IsEnabled="{Binding JoyStick_ELLIPSE_BOTTOM_isEnabled }"
                         Canvas.Top="235"
                         Canvas.Left="85"
                         Height="125"
@@ -308,12 +312,12 @@
                         Style="{ StaticResource btn_3D_EllipseKeyDown }">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton3_Trigger}"
-                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.ELLIPSE_BOTTOM_DESC}" />
+                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                                    CommandParameter="{Binding JoyStick_ELLIPSE_BOTTOM_Trigger_CommandParameter}" />
                                 </i:EventTrigger>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton3_Release}"
-                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                                    CommandParameter="{Binding JoyStick_ELLIPSE_BOTTOM_Release_CommandParameter}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                             <Button.Triggers>
@@ -619,16 +623,16 @@
                         Canvas.Top="46"
                         Height="107"
                         Width="107"
-                        IsEnabled="{Binding JoyStickButton4_isEnabled}"
+                        IsEnabled="{Binding JoyStick_CIRCLE_TOP_isEnabled}"
                         Style="{ StaticResource btn_JoystickCircleButton }">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton4_Trigger}"
-                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.CIRCLE_TOP_DESC}" />
+                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                                    CommandParameter="{Binding JoyStick_CIRCLE_TOP_Trigger_CommandParameter}" />
                                 </i:EventTrigger>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton4_Release}"
-                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                                    CommandParameter="{Binding JoyStick_CIRCLE_TOP_Release_CommandParameter}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                             <Button.Triggers>
@@ -639,7 +643,7 @@
                                     <BeginStoryboard Storyboard="{ StaticResource AllTextBlockColorRecover }" />
                                 </EventTrigger>
                             </Button.Triggers>
-                            
+
                         </Button>
                         <!--右中圓按鈕-->
                         <Button x:Name="btn_CircleMiddle"  Content="U" Foreground="White" FontSize="90"
@@ -647,16 +651,16 @@
                         Canvas.Top="191"
                         Height="107"
                         Width="107"
-                        IsEnabled="{Binding JoyStickButton5_isEnabled}"
+                        IsEnabled="{Binding JoyStick_CIRCLE_MIDDLE_isEnabled}"
                         Style="{ StaticResource btn_JoystickCircleButton }">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton5_Trigger}"
-                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.CIRCLE_MIDDLE_DESC}" />
+                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                                    CommandParameter="{Binding JoyStick_CIRCLE_MIDDLE_Trigger_CommandParameter}" />
                                 </i:EventTrigger>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton5_Release}"
-                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                                    CommandParameter="{Binding JoyStick_CIRCLE_MIDDLE_Release_CommandParameter}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                             <Button.Triggers>
@@ -674,16 +678,16 @@
                         Canvas.Top="324"
                         Height="107"
                         Width="107"
-                        IsEnabled="{Binding JoyStickButton6_isEnabled}"
+                        IsEnabled="{Binding JoyStick_CIRCLE_BOTTOM_isEnabled}"
                         Style="{ StaticResource btn_JoystickCircleButton }">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton6_Trigger}"
-                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.CIRCLE_BOTTOM_DESC}" />
+                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                                    CommandParameter="{Binding JoyStick_CIRCLE_BOTTOM_Trigger_CommandParameter}" />
                                 </i:EventTrigger>
                                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton6_Release}"
-                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                                    CommandParameter="{Binding JoyStick_CIRCLE_BOTTOM_Release_CommandParameter}" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                             <Button.Triggers>
@@ -695,22 +699,22 @@
                                 </EventTrigger>
                             </Button.Triggers>
                         </Button>
-                        
+
                     </Canvas>
                 </Viewbox>
             </Grid>
         </Grid>
 
 
-        <Button Name="Joystick_Button1"    Margin="0,0" IsEnabled="{Binding JoyStickButton1_isEnabled }" Cursor="Hand" >
+        <Button Name="Joystick_Button1"    Margin="0,0" IsEnabled="{Binding JoyStick_ELLIPSE_TOP_isEnabled }" Cursor="Hand" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                     <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.ELLIPSE_TOP_DESC}" />
+                                                    CommandParameter="{Binding JoyStick_ELLIPSE_TOP_Trigger_CommandParameter}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
                     <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
-                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                                                    CommandParameter="{Binding JoyStick_ELLIPSE_TOP_Release_CommandParameter}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>
@@ -721,11 +725,11 @@
                             Grid.Row="1" Cursor="Hand">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton2_Trigger}"
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
                                                     CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton2_Release}"
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
                                                     CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
@@ -733,60 +737,60 @@
 
 
 
-        <Button    Name="Joystick_Button3" Margin="0,0"  IsEnabled="{Binding JoyStickButton3_isEnabled }"
+        <Button    Name="Joystick_Button3" Margin="0,0"  IsEnabled="{Binding JoyStick_ELLIPSE_BOTTOM_isEnabled }"
                             Grid.Column="0"
                             Grid.Row="2">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton3_Trigger}"
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
                                                     CommandParameter="{x:Static STDEnum:JOYSTICK.ELLIPSE_BOTTOM_DESC}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton3_Release}"
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
                                                     CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>
 
-        <Button  Name="Joystick_Button4" Margin="0,0" IsEnabled="{Binding JoyStickButton4_isEnabled }"
+        <Button  Name="Joystick_Button4" Margin="0,0" IsEnabled="{Binding JoyStick_CIRCLE_TOP_isEnabled }"
                             Grid.Column="2"
                             Grid.Row="0">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton4_Trigger}"
-                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.CIRCLE_TOP_DESC}" />
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                                    CommandParameter="{Binding JoyStick_CIRCLE_TOP_Trigger_CommandParameter}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton4_Release}"
-                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                                    CommandParameter="{Binding JoyStick_CIRCLE_TOP_Release_CommandParameter}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>
-        <Button  Name="Joystick_Button5" Margin="0,0"  IsEnabled="{Binding JoyStickButton5_isEnabled }"
+        <Button  Name="Joystick_Button5" Margin="0,0"  IsEnabled="{Binding JoyStick_CIRCLE_MIDDLE_isEnabled }"
                             Grid.Column="2"
                             Grid.Row="1">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton5_Trigger}"
-                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.CIRCLE_MIDDLE_DESC}" />
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                                    CommandParameter="{Binding JoyStick_CIRCLE_MIDDLE_Trigger_CommandParameter}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton5_Release}"
-                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                                    CommandParameter="{Binding JoyStick_CIRCLE_MIDDLE_Release_CommandParameter}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>
-        <Button Name="Joystick_Button6" Margin="0,0"  IsEnabled="{Binding JoyStickButton6_isEnabled }"
+        <Button Name="Joystick_Button6" Margin="0,0"  IsEnabled="{Binding JoyStick_CIRCLE_BOTTOM_isEnabled }"
                             Grid.Column="2"
                             Grid.Row="2" Cursor="Hand">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton6_Trigger}"
-                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.CIRCLE_BOTTOM_DESC}" />
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                                    CommandParameter="{Binding  JoyStick_CIRCLE_BOTTOM_Trigger_CommandParameter}" />
                 </i:EventTrigger>
                 <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
-                    <i:InvokeCommandAction  Command="{Binding JoyStick_BorderButton6_Release}"
-                                                    CommandParameter="{x:Static STDEnum:JOYSTICK.NULL}" />
+                    <i:InvokeCommandAction  Command="{Binding LeftButtonCommand}"
+                                                    CommandParameter="{Binding JoyStick_CIRCLE_BOTTOM_Release_CommandParameter}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>

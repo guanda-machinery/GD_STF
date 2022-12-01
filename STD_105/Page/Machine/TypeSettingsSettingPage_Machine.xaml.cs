@@ -1115,5 +1115,83 @@ namespace STD_105
 
         }
 
+        private void DeleteAllPartButtonClick(object sender, RoutedEventArgs e)
+        {
+            var SelectedDataView = Material_List_GridControl.SelectedItem as GD_STD.Data.MaterialDataView;
+
+            //ComponentGridControl
+            if (SelectedDataView.Parts.Count == 0)
+            {
+                WinUIMessageBox.Show(null,
+                    $"本素材不存在可刪除之零件",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Window);
+                return;
+            }
+
+            var MessageBoxReturn = WinUIMessageBox.Show(null,
+                        $"是否要刪除素材編號:{SelectedDataView.MaterialNumber}內的所有零件：\r\n" +
+                        $"按下「YES」會立即刪除",
+                        "通知",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                        FloatingMode.Window);
+
+            if (MessageBoxReturn == MessageBoxResult.Yes)
+            {
+                STDSerialization ser = new STDSerialization(); //序列化處理器
+
+                var OTS_VM = this.DataContext as WPFSTD105.OfficeTypeSettingVM;
+                //以下代碼在第二階段需要重構
+                ObservableCollection<SteelPart> steelParts = ser.GetPart(SelectedDataView.Profile.GetHashCode().ToString());
+                SelectedDataView.Parts.ForEach(DelPart =>
+                {
+                    int index = OTS_VM.DataViews.FindIndex(x => x == DelPart);
+                    if (index != -1)
+                    {
+                        int m = OTS_VM.DataViews[index].Match.FindLastIndex(x => x == false);
+                        if (m != -1)
+                            OTS_VM.DataViews[index].Match[m] = true;
+
+                        OTS_VM.DataViews[index].Revise = DateTime.Now;
+                    }
+
+                    int steelIndex = steelParts.FindIndex(x => x.Number == DelPart.PartNumber);
+                    if (steelIndex != -1)
+                    {
+                        int partMatch = steelParts[steelIndex].Match.FindLastIndex(x => x == false);
+                        if (partMatch != -1)
+                            steelParts[steelIndex].Match[partMatch] = true;
+                    }
+                    ser.SetPart(SelectedDataView.Profile.GetHashCode().ToString(), new ObservableCollection<object>(steelParts));
+                });
+                SelectedDataView.Parts.Clear();
+                //存檔
+                ser.SetMaterialDataView(Material_List_GridControl.ItemsSource as ObservableCollection<MaterialDataView>);
+
+                ScreenManager.ViewModel.Status = "刪除零件中...";
+                ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
+                ReloadMaterialGrid();
+                ScreenManager.ViewModel.Status = "完成...";
+                System.Threading.Thread.Sleep(100);
+                ScreenManager.Close();
+                WinUIMessageBox.Show(null,
+                    $"刪除成功！",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Window);
+
+            }
+
+        }
     }
 }

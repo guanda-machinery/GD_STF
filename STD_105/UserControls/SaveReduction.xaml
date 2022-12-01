@@ -7,9 +7,22 @@
              mc:Ignorable="d"
              xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105" Style="{StaticResource btn_CommonFunctionKey_UserControl_STD }">
     
-    <StackPanel Orientation="Horizontal">
-        <Button x:Name="reduction" Content="還原" />
-        <Button x:Name="save" Content="存檔" />
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="Button" BasedOn="{StaticResource SiegCustomButtonGray}">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="Width" Value="120"/>
+                <Setter Property="Height" Value="45"/>
+                <Setter Property="Margin" Value="5,15"/>
+                <Setter Property="BorderBrush" Value="Gray"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="reduction" Content="還原" Grid.Column="0"/>
+        <Button x:Name="save" Content="存檔"  Grid.Column="1" />
         <!--<local:BaseButton ButtonImageSource="{StaticResource Reduction}" TitleText="還原" x:Name="reduction" FontSize="{ Binding ParameterFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"/>
         <local:BaseButton Grid.Column="2" ButtonImageSource="{StaticResource Save}" TitleText="存檔" x:Name="save" FontSize="{ Binding ParameterFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"/>
     </Grid>
@@ -18,5 +31,5 @@
         <Border Width="10"/>
         <local:BaseButton ButtonImageSource="{StaticResource Save}" TitleText="存檔" Height="80" x:Name="save" FontSize="{ Binding ParameterFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"/>
     </StackPanel>-->
-    </StackPanel>
+    </Grid>
 </UserControl>
