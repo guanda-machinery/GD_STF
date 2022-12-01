@@ -858,12 +858,12 @@
 
 
                         <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="0"
-                        Margin="20"
+                                Style="{StaticResource SiegCustomButtonGold}"
+                             Margin="20"
                               Content="安裝"
                               Command="{Binding SoftwareVersionInstallCommand}"
                               FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
                               VerticalContentAlignment="Center"
-                              Background="Gold"
                               Foreground="Black"
                               BorderBrush="Gray"
                               Height="25"
