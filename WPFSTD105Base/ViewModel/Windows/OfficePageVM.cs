@@ -36,7 +36,7 @@ namespace WPFSTD105
         /// <summary>
         /// 是否有斜邊，有斜邊(True)，切割線不可用
         /// </summary>
-        public bool isHypotenuse { get; set; } = false;
+        //public bool isHypotenuse { get; set; } = false;
 
         /// <summary>
         /// 辦公室當前頁面

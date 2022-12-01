@@ -3632,17 +3632,17 @@ namespace STD_105.Office
                 isHypotenuse = isHypotenuse || AutoHypotenuseEnable(FACE.BACK);
             }
 
-            // 有斜邊，切割線不可用
-            if (isHypotenuse)
-            {
-                ViewLocator.OfficeViewModel.isHypotenuse = true;
-                ScrollViewbox.IsEnabled = false;
-            }
-            else
-            {
-                ViewLocator.OfficeViewModel.isHypotenuse = false;
-                ScrollViewbox.IsEnabled = true;
-            }
+            //// 有斜邊，切割線不可用
+            //if (isHypotenuse)
+            //{
+            //    //ViewLocator.OfficeViewModel.isHypotenuse = true;
+            //    //ScrollViewbox.IsEnabled = false;
+            //}
+            //else
+            //{
+            //    //ViewLocator.OfficeViewModel.isHypotenuse = false;
+            //    //ScrollViewbox.IsEnabled = true;
+            //}
 
 
             //// 只有既有零件(NC/BOM匯入)才有斜邊
@@ -3700,7 +3700,7 @@ namespace STD_105.Office
 
                 case FACE.BACK:
 
-                    if (TmpSteelAttr.oPoint.Count == 0)return isHypotenuse;
+                    if (TmpSteelAttr.oPoint.Count == 0) return isHypotenuse;
 
                     if (TmpSteelAttr.oPoint.Select(x => x.X).Distinct().Count() > 2)
                     {
@@ -3830,9 +3830,6 @@ namespace STD_105.Office
             //ViewLocator.OfficeViewModel.HypotenuseEnable = true;
             return isHypotenuse;
         }
-
-
-
 
         #region 
         ///自動打點註解
@@ -6052,11 +6049,17 @@ namespace STD_105.Office
                     //////////drawing.Entities.Clear();
                     model.LoadNcToModel(focuseGUID, ObSettingVM.allowType, 0, null, sa, modelAllBoltList,blocks,false);
                     SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
-                    ScrollViewbox.IsEnabled = true;
+                    //ScrollViewbox.IsEnabled = true;
                     //ManHypotenusePoint(FACE.FRONT);
                     //ManHypotenusePoint(FACE.BACK);
                     //ManHypotenusePoint(FACE.TOP);
-                    RunHypotenuseEnable();
+
+                    //if (model.RunHypotenuseEnable())
+                    //{
+                        //RunHypotenuseEnable();
+                    // false表示沒有斜邊 可使用切割線
+                    ScrollViewbox.IsEnabled = !model.RunHypotenuseEnable();
+                    //}
                     //AutoHypotenuseEnable(FACE.TOP);
                     //AutoHypotenuseEnable(FACE.FRONT);
                     //AutoHypotenuseEnable(FACE.BACK);                    

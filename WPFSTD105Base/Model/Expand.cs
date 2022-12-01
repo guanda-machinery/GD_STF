@@ -1219,11 +1219,10 @@ namespace WPFSTD105.Model
             ObSettingVM obvm = new ObSettingVM();
             obvm.RemoveHypotenusePoint(model, "ManHypotenuse");
 
-
-            //isHypotenuse 可用(True) 表示 斜邊
-            if (ViewLocator.OfficeViewModel.isHypotenuse)
+            //isHypotenuse 可用(True) 表示 有斜邊
+            if (RunHypotenuseEnable(model))
             RunHypotenusePoint(model, obvm, diffLength);
-
+            
             // 取得該零件並更新驚嘆號Loading
             ObservableCollection<SteelPart> parts = ser.GetPart(nc.SteelAttr.Profile.GetHashCode().ToString());//零件列表
             SteelPart part = parts.FirstOrDefault(x => x.GUID == nc.SteelAttr.GUID);
@@ -1613,7 +1612,124 @@ namespace WPFSTD105.Model
             //    ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
             //}
         }
+        /// <summary>
+        /// 自動斜邊打點
+        /// </summary>
+        public static bool RunHypotenuseEnable(this devDept.Eyeshot.Model model)
+        {
+            //lstBoltsCutPoint = new List<Bolts3DBlock>();
+            //ScrollViewbox.IsEnabled = true;
 
+            if (model.Entities[model.Entities.Count - 1].EntityData is null)
+                return false;
+
+            SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+            //GetViewToViewModel(false, TmpSteelAttr.GUID);
+
+            // 沒有斜邊 
+            bool isHypotenuse = false;
+
+            if (TmpSteelAttr.vPoint.Count != 0)         //  頂面斜邊
+            {
+                isHypotenuse = isHypotenuse || AutoHypotenuseEnable(model,FACE.TOP);
+            }
+            if (TmpSteelAttr.uPoint.Count != 0)     //  前面斜邊
+            {
+                isHypotenuse = isHypotenuse || AutoHypotenuseEnable(model, FACE.FRONT);
+            }
+            if (TmpSteelAttr.oPoint.Count != 0)    //  後面斜邊
+            {
+                isHypotenuse = isHypotenuse || AutoHypotenuseEnable(model, FACE.BACK);
+            }
+
+            //// 有斜邊，切割線不可用
+            //if (isHypotenuse)
+            //{
+            //    ViewLocator.OfficeViewModel.isHypotenuse = true;
+            //}
+            //else
+            //{
+            //    ViewLocator.OfficeViewModel.isHypotenuse = false;
+            //}
+
+            return isHypotenuse;
+
+            //// 只有既有零件(NC/BOM匯入)才有斜邊
+            //if (!fNewPart.Value)
+            //    //if (!fAddSteelPart)   //  新建孔群是否於新增零件  : false 直接存檔
+            //    SaveModel(false, false);//存取檔案 
+            ////await SaveModelAsync(false, false);
+
+            //model.ZoomFit();
+            //drawing.ZoomFit();
+            //刷新模型
+            //model.Refresh();
+            //drawing.Refresh();
+
+        }
+
+
+
+        /// <summary>
+        /// 自動斜邊判斷(切割線區塊)
+        /// 可使用切割線，代表其頂視角為矩形，非特殊形狀
+        /// </summary>
+        /// <param name="face"></param>
+        /// <returns>true = 有斜邊 false = 無斜邊</returns>
+        public static bool AutoHypotenuseEnable(this devDept.Eyeshot.Model model, FACE face)
+        {
+            MyCs myCs = new MyCs();
+
+            STDSerialization ser = new STDSerialization();
+
+            Point3D TmpDL = new Point3D();
+            Point3D TmpDR = new Point3D();
+            Point3D TmpUL = new Point3D();
+            Point3D TmpUR = new Point3D();
+
+            // 是否有斜邊
+            bool isHypotenuse = false;
+            SteelAttr TmpSteelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
+
+
+            bool hasOutSteel = false;
+
+            switch (face)
+            {
+
+                case FACE.BACK:
+
+                    if (TmpSteelAttr.oPoint.Count == 0) return isHypotenuse;
+
+                    if (TmpSteelAttr.oPoint.Select(x => x.X).Distinct().Count() > 2)
+                    {
+                        return !isHypotenuse;
+                    }
+                    break;
+
+                case FACE.FRONT:
+
+                    if (TmpSteelAttr.uPoint.Count == 0) return isHypotenuse;
+
+                    if (TmpSteelAttr.uPoint.Select(x => x.X).Distinct().Count() > 2)
+                    {
+                        return !isHypotenuse;
+                    }
+                    break;
+
+
+                case FACE.TOP:
+
+                    if (TmpSteelAttr.vPoint.Count == 0) return isHypotenuse;
+
+                    if (TmpSteelAttr.vPoint.Select(x => x.X).Distinct().Count() > 2)
+                    {
+                        return !isHypotenuse;
+                    }
+                    break;
+            }
+            return isHypotenuse;
+        }
         /// <summary>
         /// 切割線轉換差集實體列表
         /// </summary>
