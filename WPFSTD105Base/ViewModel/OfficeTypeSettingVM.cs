@@ -193,7 +193,8 @@ namespace WPFSTD105
                     ActivateLoading();
                     try
                     {
-                        word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", MaterialDataViews, TotalLoss_BothSide);
+                        string startup_path = System.Windows.Forms.Application.StartupPath;
+                        word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{startup_path}\AllFileTemplate\CutDocTemp.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", MaterialDataViews, TotalLoss_BothSide);
                     }
                     catch (Exception ex)
                     {
@@ -249,7 +250,7 @@ namespace WPFSTD105
                     //刪除已產生的報表WORD檔&目前所有的WINWORD程序
                     try
                     {
-                        DeleteWordFileAfterDelay(3000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf");
+                        DeleteWordFileAfterDelay(1000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf");
                     }
                     catch (Exception ex) { Console.WriteLine(ex.ToString()); }
 
@@ -320,7 +321,8 @@ namespace WPFSTD105
                     ActivateLoading();
                     try
                     {
-                        word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", MaterialDataViews, TotalLoss_BothSide);
+                        string startup_path = System.Windows.Forms.Application.StartupPath;
+                        word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{startup_path}\AllFileTemplate\BuyDocTemp.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", MaterialDataViews, TotalLoss_BothSide);
                     }
                     catch (Exception ex)
                     {
@@ -376,7 +378,7 @@ namespace WPFSTD105
                     //刪除已產生的報表WORD檔&目前所有的WINWORD程序
                     try
                     {
-                        DeleteWordFileAfterDelay(3000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf");
+                        DeleteWordFileAfterDelay(1000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf");
                     }
                     catch (Exception ex) { Console.WriteLine(ex.ToString()); }
 
