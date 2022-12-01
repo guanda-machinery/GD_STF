@@ -1120,7 +1120,8 @@ namespace STD_105.Office
         {
             string dirPath = ApplicationVM.FileReportLogo();
             string FilePath = ApplicationVM.FileReportLogo() + @"\ReportLogo.png";
-            string GDLOGOPath = "Logo/GD_ReportLogo.png";
+            string startup_path = System.AppDomain.CurrentDomain.BaseDirectory;
+            string GDLOGOPath = $@"{startup_path}\Logo\GD_ReportLogo.png";
             if (Directory.Exists(dirPath))
             {
                 Console.WriteLine("The directory {0} exists.", dirPath);
