@@ -184,7 +184,7 @@ namespace WPFSTD105.Model
                         break;
                     case FACE.FRONT:
                         circle.Translate(0, MoveFront);
-                        meshes = new[] { (Mesh)meshWeb.Clone() };
+                        meshes = new[] { (Mesh)meshFlange.Clone() };
                         meshes[0].Translate(circle.Center.X - boltAttr.Dia / 2, 0);
                         meshes[0].EntityData = boltAttr;
                         //高度    中心點 物件boltAttr

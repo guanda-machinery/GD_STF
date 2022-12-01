@@ -643,15 +643,21 @@
                                 VerticalAlignment="Bottom">
 
                         <Button Name="profile"
+                                FontSize="16"
+                                Style="{ StaticResource SiegCustomButtonGray }"
                                 Width="80" Height="30" Margin="10"
                                 Content="新增"
                                 Command="{Binding NewCommand}"
                                 CommandParameter="{ Binding RelativeSource={ x:Static RelativeSource.Self }, Path=Name}" />
                         <Button Content="刪除"
                                 Width="80" Height="30" Margin="10"
+                                                                FontSize="16"
+                                Style="{ StaticResource SiegCustomButtonGray }"
                                 Command="{Binding DeleteMaterialCommand}"
                                 CommandParameter="{Binding SelectedItem, ElementName=Materials}" />
                         <Button Content="更新"
+                                                                FontSize="16"
+                                Style="{ StaticResource SiegCustomButtonGray }"
                                 Width="80" Height="30" Margin="10"
                                 Command="{ Binding UpdateMaterialCommand }"
                                 CommandParameter="{Binding SelectedItem, ElementName=Materials}" />
@@ -720,12 +726,18 @@
 
                             </Style>
                         </StackPanel.Resources>
-                        <Button Content="新增" 
+                        <Button Content="新增"                         
+                                Width="100" Height="30" Margin="5" FontSize="18"
+                                Style="{ StaticResource SiegCustomButtonGray }"
                                 Command="{Binding NewDrillBrandsCommand}" />
-                        <Button Content="刪除"
+                        <Button Content="刪除"         
+                                Width="100" Height="30" Margin="5" FontSize="18"
+                                Style="{ StaticResource SiegCustomButtonGray }"
                                 Command="{Binding DeleteDrillBrandsCommand}"
                                 CommandParameter="{Binding SelectedItem, ElementName=gridControl}" />
                         <Button Content="儲存"
+                                                                Width="100" Height="30" Margin="5" FontSize="18"
+                                Style="{ StaticResource SiegCustomButtonGray }"
                                 Command="{Binding SaveDrillBrandsCommand}" />
                     </StackPanel>
                 </Grid>
@@ -1597,13 +1609,14 @@
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Right"
                                 Margin="10,0">
-                        <Button Content="恢復出廠設定"
-                                Width="160"
-                                Style="{ StaticResource btn_CommonFunctionKey_STD }"
+                        <Button Content="恢復出廠設定"                              
+                                Width="160" Height="40"
+                                Style="{ StaticResource SiegCustomButtonGray }"
                                 Command="{Binding SaveMecSettingCommand}"
                                 Margin="10" />
-                        <Button Content="存檔"
-                                Style="{ StaticResource btn_CommonFunctionKey_STD }"
+                        <Button Content="存檔"                                
+                                Width="100" Height="40"
+                                Style="{ StaticResource SiegCustomButtonGray }"
                                 Command="{Binding SaveMecSettingCommand}" />
                     </StackPanel>
                 </Grid>
@@ -1652,7 +1665,7 @@
                         </dxlc:DataLayoutControl>
                     </dxlc:LayoutControl>
                     <!--強制更改頁面-->
-                    <GroupBox Grid.Row="1"
+                    <GroupBox Grid.Row="1" Visibility="Collapsed"
                               Header="測試"
                               VerticalAlignment="Bottom"
                               HorizontalAlignment="Left"
@@ -1676,12 +1689,13 @@
                                 HorizontalAlignment="Right"
                                 Margin="10,0">
                         <Button Content="恢復出廠設定"
-                                Width="160"
-                                Style="{ StaticResource btn_CommonFunctionKey_STD }"
+                                Width="160" Height="40"
+                                Style="{ StaticResource SiegCustomButtonGray }"
                                 Command="{Binding }"
                                 Margin="10" />
-                        <Button Content="存檔"
-                                Style="{ StaticResource btn_CommonFunctionKey_STD }"
+                        <Button Content="存檔"  
+                                Width="100" Height="40"
+                                Style="{ StaticResource SiegCustomButtonGray }"
                                 Command="{Binding SaveOptionSettingCommand }" />
                     </StackPanel>
                 </Grid>

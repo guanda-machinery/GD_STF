@@ -32,6 +32,7 @@ using WPFSTD105;
 using DevExpress.Diagram.Core.Shapes;
 using Line = devDept.Eyeshot.Entities.Line;
 using DocumentFormat.OpenXml.Wordprocessing;
+using System.IO;
 //using TriangleNet;
 
 namespace WPFSTD105.Model
@@ -164,7 +165,7 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.Z = SteelCut1.W / 2 - ((SteelCut1.t1)/2);   // Z 位置座標  腹板中心位置
                         TmpBoltsArr.t = SteelCut1.t1;                           // 圓柱
                         TmpBoltsArr.GUID = Guid.NewGuid();                      // 孔群編號
-                        TmpBoltsArr.BlockName = "TopCutPoint";                  // 孔群名稱
+                        TmpBoltsArr.BlockName =  "TopCutPoint";                  // 孔群名稱
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool check);  // 依孔群列別設定資訊 建立孔群
                         B3DB.Add(bolts);
                         entities.Add(blockReference);                           // 孔群加入model.entities
@@ -940,7 +941,7 @@ namespace WPFSTD105.Model
             SteelPart part = parts.FirstOrDefault(x => x.GUID == nc.SteelAttr.GUID);
             if (parts.Any(x => x.GUID == nc.SteelAttr.GUID))
             {
-                if (!Bolts3DBlock.CheckBolts(model))
+                if (!Bolts3DBlock.CheckBolts(model,true))
                 {
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
                     ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
@@ -994,8 +995,9 @@ namespace WPFSTD105.Model
         /// <param name="steelAttr">指定鋼構資訊</param>
         /// <param name="groups">既有型鋼孔</param>
         /// <param name="blocks">model.Block...若有已編輯的孔，要傳block進去</param>
+        /// <param name="isRotate">新增孔群時是否翻轉(只有新增時需翻轉，grid查詢時不須翻轉)</param>
         public static void LoadNcToModel(this devDept.Eyeshot.Model model, string dataName, List<OBJECT_TYPE> allowType,double diffLength=0, 
-            DXSplashScreenViewModel vm = null,SteelAttr steelAttr = null,List<GroupBoltsAttr> groups = null,List<Block> blocks=null)
+            DXSplashScreenViewModel vm = null,SteelAttr steelAttr = null,List<GroupBoltsAttr> groups = null,List<Block> blocks=null,bool isRotate=true)
         {
             STDSerialization ser = new STDSerialization(); //序列化處理器
             NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
@@ -1195,11 +1197,11 @@ namespace WPFSTD105.Model
                     };
                     // 再Blocks中找尋是否有此孔群的資料，若孔群已編輯，需從此塞資料
                     List<Mesh> meshes = null;
-                   if(blocks != null && blocks.Any(x=>x.Name== bolt.GUID.Value.ToString())) 
+                    if (blocks != null && blocks.Any(x => x.Name == bolt.GUID.Value.ToString()))
                     {
-                        meshes = blocks.FirstOrDefault(x => x.Name == bolt.GUID.Value.ToString()).Entities.Select(x=>(Mesh)x).ToList();
+                        meshes = blocks.FirstOrDefault(x => x.Name == bolt.GUID.Value.ToString()).Entities.Select(x => (Mesh)x).ToList();
                     }
-                    Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out bool check, meshes); //加入到 3d 視圖
+                    Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out bool check, meshes, isRotate); //加入到 3d 視圖
                 });
             }
 
@@ -1214,13 +1216,17 @@ namespace WPFSTD105.Model
             ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).uPoint = nc.SteelAttr.uPoint;
 
             ObSettingVM obvm = new ObSettingVM();
-            RunHypotenusePoint(model, obvm,diffLength);
+            obvm.RemoveHypotenusePoint(model, "ManHypotenuse");
 
+            //isHypotenuse 可用(True) 表示 有斜邊
+            if (RunHypotenuseEnable(model))
+            RunHypotenusePoint(model, obvm, diffLength);
+            
             // 取得該零件並更新驚嘆號Loading
             ObservableCollection<SteelPart> parts = ser.GetPart(nc.SteelAttr.Profile.GetHashCode().ToString());//零件列表
             SteelPart part = parts.FirstOrDefault(x => x.GUID == nc.SteelAttr.GUID);
 
-            if (!Bolts3DBlock.CheckBolts(model))
+            if (!Bolts3DBlock.CheckBolts(model,false))
             {
                 ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
                 ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
@@ -1244,10 +1250,15 @@ namespace WPFSTD105.Model
             #region 檢測是否成功，失敗則將NC檔寫回
             ReadFile readFile = ser.ReadPartModel(dataName); //讀取檔案內容
             readFile.DoWork();//開始工作
+            devDept.Eyeshot.Model tempModel = new devDept.Eyeshot.Model();
+            tempModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
+            tempModel.InitializeViewports();
+            tempModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
+
             try
             {
-                readFile.AddToScene(model);//將讀取完的檔案放入到模型
-                if (model.Blocks.Count() <= 1)
+                readFile.AddToScene(tempModel);//將讀取完的檔案放入到模型
+                if (tempModel.Blocks.Count() <= 1)
                 {
                     ncTemps.Add(reduceNC);
                 }
@@ -1255,7 +1266,7 @@ namespace WPFSTD105.Model
             catch (Exception ex)
             {
                 ncTemps.Add(reduceNC);
-            } 
+            }
             #endregion
 
             ser.SetNcTempList(ncTemps);//儲存檔案
@@ -1267,14 +1278,13 @@ namespace WPFSTD105.Model
             if (model.Entities[model.Entities.Count - 1].EntityData is null)
                 return;
 
+            obvm.RemoveHypotenusePoint(model, "AutoHypotenuse");
 
             // 斜邊自動執行程式
             SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
             //GetViewToViewModel(false, TmpSteelAttr.GUID);
             obvm.SteelAttr = (SteelAttr)TmpSteelAttr.DeepClone();
 
-            // 移除斜邊打點
-            obvm.RemoveHypotenusePoint(model);
             //List<GroupBoltsAttr> delList = model.Blocks
             //    .SelectMany(x => x.Entities)
             //    .Where(y =>
@@ -1416,7 +1426,7 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
                         TmpBoltsArr.X = tmplist1[z].X;
                         TmpBoltsArr.Y = tmplist1[z].Y;
-                        TmpBoltsArr.BlockName = "BackHypotenuse";
+                        TmpBoltsArr.BlockName = "AutoHypotenuse";
                         TmpBoltsArr.GUID = Guid.NewGuid();
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
                     }
@@ -1491,13 +1501,12 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
                         TmpBoltsArr.X = tmplist1[z].X;
                         TmpBoltsArr.Y = tmplist1[z].Y;
-                        TmpBoltsArr.BlockName = "FRONTHypotenuse";
+                        TmpBoltsArr.BlockName = "AutoHypotenuse";
                         TmpBoltsArr.GUID = Guid.NewGuid();
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
                     }
                     break;
                 #endregion
-
 
                 #region TOP
                 case FACE.TOP:
@@ -1582,7 +1591,7 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.xCount = 1;
                         TmpBoltsArr.yCount = 1;
                         TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
-                        TmpBoltsArr.BlockName = "TopHypotenuse";
+                        TmpBoltsArr.BlockName = "AutoHypotenuse";
                         TmpBoltsArr.X = tmplist1[z].X;
                         TmpBoltsArr.Y = tmplist1[z].Y;
                         TmpBoltsArr.GUID = Guid.NewGuid();
@@ -1602,7 +1611,124 @@ namespace WPFSTD105.Model
             //    ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
             //}
         }
+        /// <summary>
+        /// 自動斜邊打點
+        /// </summary>
+        public static bool RunHypotenuseEnable(this devDept.Eyeshot.Model model)
+        {
+            //lstBoltsCutPoint = new List<Bolts3DBlock>();
+            //ScrollViewbox.IsEnabled = true;
 
+            if (model.Entities[model.Entities.Count - 1].EntityData is null)
+                return false;
+
+            SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+            //GetViewToViewModel(false, TmpSteelAttr.GUID);
+
+            // 沒有斜邊 
+            bool isHypotenuse = false;
+
+            if (TmpSteelAttr.vPoint.Count != 0)         //  頂面斜邊
+            {
+                isHypotenuse = isHypotenuse || AutoHypotenuseEnable(model,FACE.TOP);
+            }
+            if (TmpSteelAttr.uPoint.Count != 0)     //  前面斜邊
+            {
+                isHypotenuse = isHypotenuse || AutoHypotenuseEnable(model, FACE.FRONT);
+            }
+            if (TmpSteelAttr.oPoint.Count != 0)    //  後面斜邊
+            {
+                isHypotenuse = isHypotenuse || AutoHypotenuseEnable(model, FACE.BACK);
+            }
+
+            //// 有斜邊，切割線不可用
+            //if (isHypotenuse)
+            //{
+            //    ViewLocator.OfficeViewModel.isHypotenuse = true;
+            //}
+            //else
+            //{
+            //    ViewLocator.OfficeViewModel.isHypotenuse = false;
+            //}
+
+            return isHypotenuse;
+
+            //// 只有既有零件(NC/BOM匯入)才有斜邊
+            //if (!fNewPart.Value)
+            //    //if (!fAddSteelPart)   //  新建孔群是否於新增零件  : false 直接存檔
+            //    SaveModel(false, false);//存取檔案 
+            ////await SaveModelAsync(false, false);
+
+            //model.ZoomFit();
+            //drawing.ZoomFit();
+            //刷新模型
+            //model.Refresh();
+            //drawing.Refresh();
+
+        }
+
+
+
+        /// <summary>
+        /// 自動斜邊判斷(切割線區塊)
+        /// 可使用切割線，代表其頂視角為矩形，非特殊形狀
+        /// </summary>
+        /// <param name="face"></param>
+        /// <returns>true = 有斜邊 false = 無斜邊</returns>
+        public static bool AutoHypotenuseEnable(this devDept.Eyeshot.Model model, FACE face)
+        {
+            MyCs myCs = new MyCs();
+
+            STDSerialization ser = new STDSerialization();
+
+            Point3D TmpDL = new Point3D();
+            Point3D TmpDR = new Point3D();
+            Point3D TmpUL = new Point3D();
+            Point3D TmpUR = new Point3D();
+
+            // 是否有斜邊
+            bool isHypotenuse = false;
+            SteelAttr TmpSteelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
+
+
+            bool hasOutSteel = false;
+
+            switch (face)
+            {
+
+                case FACE.BACK:
+
+                    if (TmpSteelAttr.oPoint.Count == 0) return isHypotenuse;
+
+                    if (TmpSteelAttr.oPoint.Select(x => x.X).Distinct().Count() > 2)
+                    {
+                        return !isHypotenuse;
+                    }
+                    break;
+
+                case FACE.FRONT:
+
+                    if (TmpSteelAttr.uPoint.Count == 0) return isHypotenuse;
+
+                    if (TmpSteelAttr.uPoint.Select(x => x.X).Distinct().Count() > 2)
+                    {
+                        return !isHypotenuse;
+                    }
+                    break;
+
+
+                case FACE.TOP:
+
+                    if (TmpSteelAttr.vPoint.Count == 0) return isHypotenuse;
+
+                    if (TmpSteelAttr.vPoint.Select(x => x.X).Distinct().Count() > 2)
+                    {
+                        return !isHypotenuse;
+                    }
+                    break;
+            }
+            return isHypotenuse;
+        }
         /// <summary>
         /// 切割線轉換差集實體列表
         /// </summary>

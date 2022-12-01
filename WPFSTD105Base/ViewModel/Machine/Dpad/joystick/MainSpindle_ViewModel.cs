@@ -10,13 +10,12 @@ namespace WPFSTD105.ViewModel
     {
         public MainSpindle_ViewModel()
         {
-            this.JoyStick_BorderButton4_Trigger = MachiningDirecationLeftCommand; //L
-            this.JoyStick_BorderButton5_Trigger = MachiningDirecationMiddleCommand;//U
-            this.JoyStick_BorderButton6_Trigger = MachiningDirecationRightCommand; //R
-
-            this.JoyStick_BorderButton4_Release = null; //L
-            this.JoyStick_BorderButton5_Release = null;//U
-            this.JoyStick_BorderButton6_Release = null; //R
+           //  this.JoyStick_BorderButton4_Trigger = MachiningDirecationLeftCommand; //L
+           // this.JoyStick_BorderButton5_Trigger = MachiningDirecationMiddleCommand;//U
+           //  this.JoyStick_BorderButton6_Trigger = MachiningDirecationRightCommand; //R
+            this.JoyStick_CIRCLE_TOP_Trigger_CommandParameter= GD_STD.Enum.AXIS_SELECTED.Left;
+            this.JoyStick_CIRCLE_MIDDLE_Trigger_CommandParameter = GD_STD.Enum.AXIS_SELECTED.Middle;
+            this.JoyStick_CIRCLE_BOTTOM_Trigger_CommandParameter = GD_STD.Enum.AXIS_SELECTED.Right;
 
             GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
             PButton.AxisRotation = false;
@@ -39,7 +38,7 @@ namespace WPFSTD105.ViewModel
         }
 
 
-        private WPFWindowsBase.RelayParameterizedCommand MachiningDirecationLeftCommand
+        /*private WPFWindowsBase.RelayParameterizedCommand MachiningDirecationLeftCommand
         {
             get
             {
@@ -85,7 +84,7 @@ namespace WPFSTD105.ViewModel
                 });
             }
 
-        }
+        }*/
 
 
 
