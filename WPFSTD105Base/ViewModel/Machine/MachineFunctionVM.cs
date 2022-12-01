@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GD_STD.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -169,11 +170,34 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 輸送帶VM
         /// </summary>
-        public RacksOperationVM _RacksOperationVM { get; set; } = new RacksOperationVM();
+        public RacksOperationVM _RacksOperationVM { get; set; } = new RacksOperationVM()
+        {
+            //Joystick_UP_DESC_Trigger_Parameter = JOYSTICK.,
+            //Joystick_DOWN_DESC_Trigger_Parameter = JOYSTICK.,
+            //Joystick_UP_DESC_Release_Parameter = JOYSTICK.,
+            //Joystick_DOWN_DESC_Release_Parameter = JOYSTICK.,
+
+            Joystick_LEFT_DESC_Trigger_Parameter = MOBILE_RACK.INSIDE,
+            Joystick_RIGHT_DESC_Trigger_Parameter = MOBILE_RACK.OUTER,
+            Joystick_LEFT_DESC_Release_Parameter = MOBILE_RACK.NULL,
+            Joystick_RIGHT_DESC_Release_Parameter = MOBILE_RACK.NULL,
+
+
+
+
+
+        };
         /// <summary>
         /// 手臂夾取VM
         /// </summary>
-        public GrabArm_ViewModel ArmGrab_Dpad_VM { get; set; } = new GrabArm_ViewModel();
+        public GrabArm_ViewModel ArmGrab_Dpad_VM { get; set; } = new GrabArm_ViewModel()
+        {
+            JoyStick_CIRCLE_TOP_Trigger_CommandParameter = GD_STD.Enum.AXIS_SELECTED.Left,
+            JoyStick_CIRCLE_MIDDLE_Trigger_CommandParameter = GD_STD.Enum.AXIS_SELECTED.Middle,
+            JoyStick_CIRCLE_BOTTOM_Trigger_CommandParameter = GD_STD.Enum.AXIS_SELECTED.Right
+
+
+        };
         /// <summary>
         /// 換刀VM
         /// </summary>
@@ -193,7 +217,7 @@ namespace WPFSTD105.ViewModel
             JoyStick_CIRCLE_MIDDLE_isEnabled = false,
             JoyStick_CIRCLE_BOTTOM_isEnabled = false,
             Button_Up_IsEnabled = false,
-            Button_Down_IsEnabled = false
+            Button_Down_IsEnabled = false,
         };
 
         private bool _descriptionDisplayBoolenAll = true;

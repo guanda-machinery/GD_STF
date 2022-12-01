@@ -96,11 +96,17 @@ namespace WPFSTD105.ViewModel
             {
                 return new WPFWindowsBase.RelayParameterizedCommand(el =>
                 {
+
+
+
                     PanelButton PButton = ApplicationViewModel.PanelButton;
                     if (el is JOYSTICK)
                     {
                         JOYSTICK select = (JOYSTICK)el;
-                        PButton.Joystick = select;
+                        PButton.Joystick = select; 
+                        
+                        if (PButton.Joystick == JOYSTICK.NULL)
+                            Thread.Sleep(100);
                         CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
                     }
                     if (el is GD_STD.Enum.AXIS_SELECTED)
@@ -109,7 +115,22 @@ namespace WPFSTD105.ViewModel
                         PButton.AxisSelect = select;
                         CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
                     }
+                    if (el is GD_STD.Enum.MOBILE_RACK)
+                    {
+                        var select = (MOBILE_RACK)el;
+                        PButton.RollMove = select;
+                        CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                    }
+                    if(el is GD_STD.Enum.SHELF)
+                    {
+                        var select = (SHELF)el;
+                        PButton.Traverse_Shelf_UP = select;
+                        CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                    }
 
+
+                    if (el == null)
+                        Thread.Sleep(100);
 
 
 
