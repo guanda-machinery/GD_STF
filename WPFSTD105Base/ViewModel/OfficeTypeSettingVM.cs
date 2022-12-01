@@ -18,6 +18,7 @@ using System.Diagnostics;
 using System.IO;
 using Microsoft.Office.Interop.Word;
 using WordApplication = Microsoft.Office.Interop.Word.Application;
+using DevExpress.Mvvm;
 
 //using GrapeCity.Documents.Word; //by GrapeCity
 //using System.Drawing;
@@ -49,6 +50,20 @@ namespace WPFSTD105
         {
 
         }
+        //1201 CYH
+        private static SplashScreenManager manager = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
+
+        public static void ActivateLoading()
+        {
+            manager.ViewModel.Status = "報表產生中";
+            manager.Show(null, WindowStartupLocation.CenterScreen, true, InputBlockMode.Window);
+        }
+
+        public static void DeactivateLoading()
+        {
+            manager.Close();
+        }
+
         ///// <inheritdoc/>
         //protected override RelayCommand Auto()
         //{
@@ -164,12 +179,15 @@ namespace WPFSTD105
                     //20220930 張燕華 改為word輸出報表
                     WordCutService word = new WordCutService();
                     double TotalLoss_BothSide = MatchSettingStartCut + MatchSettingEndCut;//素材前後端切割損耗
+
+                    ActivateLoading();
                     try
                     {
                         word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", MaterialDataViews, TotalLoss_BothSide);
                     }
                     catch (Exception ex)
                     {
+                        DeactivateLoading();
                         Console.WriteLine(ex.ToString());
 
                         WinUIMessageBox.Show(null,
@@ -192,7 +210,7 @@ namespace WPFSTD105
                         wordDocument.ExportAsFixedFormat($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf", WdExportFormat.wdExportFormatPDF);
                         wordDocument.Close(false);
 
-                        
+                        DeactivateLoading();
 
                         WinUIMessageBox.Show(null,
                         $"切割明細表已下載",
@@ -205,6 +223,7 @@ namespace WPFSTD105
                     }
                     catch (Exception ex)
                     {
+                        DeactivateLoading();
                         Console.WriteLine(ex.ToString());
 
                         WinUIMessageBox.Show(null,
@@ -277,12 +296,15 @@ namespace WPFSTD105
                     //20220928 張燕華 改為word輸出報表
                     WordBuyService word = new WordBuyService();
                     double TotalLoss_BothSide = MatchSettingStartCut + MatchSettingEndCut;//素材前後端切割損耗
+
+                    ActivateLoading();
                     try
                     {
                         word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", MaterialDataViews, TotalLoss_BothSide);
                     }
                     catch (Exception ex)
                     {
+                        DeactivateLoading();
                         Console.WriteLine(ex.ToString());
 
                         WinUIMessageBox.Show(null,
@@ -305,7 +327,7 @@ namespace WPFSTD105
                         wordDocument.ExportAsFixedFormat($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf", WdExportFormat.wdExportFormatPDF);
                         wordDocument.Close(false);
 
-                        
+                        DeactivateLoading();
 
                         WinUIMessageBox.Show(null,
                         $"採購明細單已下載",
@@ -318,6 +340,7 @@ namespace WPFSTD105
                     }
                     catch (Exception ex)
                     {
+                        DeactivateLoading();
                         Console.WriteLine(ex.ToString());
 
                         WinUIMessageBox.Show(null,
@@ -335,6 +358,7 @@ namespace WPFSTD105
                         DeleteWordFileAfterDelay(3000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf");
                     }
                     catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+                    
 
                     ////以python封裝exe執行轉檔                    
                     //try
