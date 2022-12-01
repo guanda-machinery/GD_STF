@@ -405,7 +405,6 @@ namespace WPFSTD105
             GBA.ForEach(x => { x.Mode = GD_STD.Enum.AXIS_MODE.POINT; });
             bolck.ForEach(x => { x.Mode = GD_STD.Enum.AXIS_MODE.POINT; });
         }
-
         /// <summary>
         /// 讀取 <see cref="devDept.Eyeshot.Model"/>
         /// </summary>
