@@ -528,7 +528,7 @@ namespace WPFSTD105
             //計算ProjectNumber-TwoSideCut, ProjectName-CutLoss這兩行各自需要的空格數目
             //ProjectNumber-TwoSideCut
             int NeedSpace_ProjectNumber2TwoSideCut = (70 - ProjectNumber.Length) / 2;
-            for (int i = 0; i < NeedSpace_ProjectNumber2TwoSideCut; i++) ProjectNumber += "  ";
+            for (int i = 1; i < NeedSpace_ProjectNumber2TwoSideCut; i++) ProjectNumber += "  ";
             ProjectNumber += "雙邊切除：";
             //ProjectName-CutLoss
             int NeedSpace_ProjectName2CutLoss = (70 - ProjectName.Length) / 2;
