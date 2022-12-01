@@ -1188,7 +1188,7 @@ namespace STD_105.Office
 
         private void DeletePartButtonClick(object sender, RoutedEventArgs e)
         {
-            var MDataView = Material_List_GridControl.SelectedItem as GD_STD.Data.MaterialDataView;
+            var MDataView = Material_List_GridControl.SelectedItems as GD_STD.Data.MaterialDataView;
             //var MDataView = (sender as System.Windows.Controls.Button).DataContext as GD_STD.Data.MaterialDataView;
             if (MDataView.Parts.Count == 0)
             {
