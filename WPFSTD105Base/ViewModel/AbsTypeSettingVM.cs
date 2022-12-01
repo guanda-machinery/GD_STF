@@ -21,6 +21,7 @@ using WPFSTD105.ViewModel;
 using DevExpress.Xpf.WindowsUI;
 using DevExpress.Xpf.Core;
 using WPFSTD105.Model;
+using System.Diagnostics;
 
 namespace WPFSTD105
 {
@@ -412,7 +413,7 @@ namespace WPFSTD105
         }
 
         /// <summary>
-        /// 確定配料
+        /// 自動配料
         /// </summary>
         public ICommand GoCommand
         {
@@ -450,14 +451,15 @@ namespace WPFSTD105
 
                     if(DataViews.ToList().Exists(x => (x.SortCount > 0 && x.Length > LengthList.Max())))
                     {
+                        var MaData=DataViews.ToList().Find(x => (x.SortCount > 0 && x.Length > LengthList.Max()));
                         WinUIMessageBox.Show(null,
-                            $"有預排零件長度超過素材最大長度！需更改素材長度以配合過長零件",
+                            $"預排零件：構件編號「{MaData.AssemblyNumber}」的長度「{MaData.Length}」超過素材最大長度「{LengthList.Max()}」！需更要更長的素材才能加工該零件",
                             "通知",
                             MessageBoxButton.OK,
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                            FloatingMode.Window);
                         return;
                     }
 
@@ -474,24 +476,98 @@ namespace WPFSTD105
                     {
                         foreach (var obj in (object[])objArray)
                         {
-                            //確認type為GridControl才進行重新整理，否則傳出例外
+                            //確認type為GridControl才進行重新整理
                             if (obj.GetType().Equals(typeof(DevExpress.Xpf.Grid.GridControl)))
                             {
                                 var GoCommandGridControl = (DevExpress.Xpf.Grid.GridControl)obj;
                                 GoCommandGridControl.Dispatcher.Invoke(() =>
                                 {
                                     GoCommandGridControl.RefreshData();
+                                    var GridControlItem = GoCommandGridControl.ItemsSource as IEnumerable<object>;
+                                    if (GridControlItem != null)
+                                    {
+                                        for(int i =0; i< GridControlItem.Count();i++)
+                                        GoCommandGridControl.RefreshRow(i);
+                                    }
                                 });
+                            }
+                            else
+                            {
+                               Debugger.Break();
                             }
                         }
                     }
                     else
                     {
-                        throw new Exception("傳入參數須為多重系結");
+                        //throw new Exception("傳入參數須為多重系結");
                     }
                 });
             }
         }
+
+
+        //1.只配一根素材時先檢查首個零件的斷面規格，並將不符合的規格忽略
+        //2.將待加工的素材接在一起，並檢查總長度是否超過素材長度
+        //3.產生素材和零件
+        /// <summary>
+        /// 只配一根素材 只取MainLength不取SecondaryLength
+        /// </summary>
+        public ICommand GoOneMaterialCommand
+        {
+            get
+            {
+                return new WPFBase.RelayParameterizedCommand(objArray =>
+                {
+                    List<double> LengthList = new List<double>();
+
+                    foreach (var MLength in MainLength.Split(' '))
+                    {
+                        if (double.TryParse(MLength, out var result))
+                            LengthList.Add(result);
+                    }
+                    /*foreach (var SLength in SecondaryLength.Split(' '))
+                    {
+                        if (double.TryParse(SLength, out var result))
+                            LengthList.Add(result);
+                    }*/
+                    if (!DataViews.ToList().Exists(x => (x.SortCount > 0)))
+                    {
+                        WinUIMessageBox.Show(null,
+                            $"需先預排零件才可進行素材分配",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Window);
+                        return;
+                    }
+                    //找出
+
+                    if (DataViews.ToList().Exists(x => (x.SortCount > 0 && x.Length > LengthList.Max())))
+                    {
+                        var MaData = DataViews.ToList().Find(x => (x.SortCount > 0 && x.Length > LengthList.Max()));
+                        WinUIMessageBox.Show(null,
+                            $"預排零件：構件編號「{MaData.AssemblyNumber}」的長度「{MaData.Length}」超過素材最大長度「{LengthList.Max()}」！需更要更長的素材才能加工該零件",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Window);
+                        return;
+                    }
+
+                    //MatchSetting.MainLengths = MainLength.Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(el => Convert.ToDouble(el)).ToList();
+
+
+
+                });
+            }
+        }
+
+
+
 
         /// <summary>
         /// 加入素材(單個)
@@ -771,6 +847,38 @@ namespace WPFSTD105
                 _mainLength = value;
             }
         }
+
+        /// <summary>
+        /// 預設長度 機台端用 純設定用
+        /// </summary>
+        public string MainLengthMachine
+        {
+            get
+            {
+                const string MainLengthDefault = "9000";
+                if (string.IsNullOrEmpty(_mainLength))
+                {
+                    _mainLength = MainLengthDefault;
+                    return _mainLength;
+                }
+
+                if (MainLengthCheckboxBoolen is true)
+                {
+                    return _mainLength;
+                }
+                else
+                {
+                    return MainLengthDefault;
+                }
+            }
+            set
+            {
+                _mainLength = value;
+            }
+        }
+
+
+
 
         /// <summary>
         /// 次要條件checkbox

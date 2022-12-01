@@ -19,6 +19,7 @@
     xmlns:ee="http://schemas.microsoft.com/expression/2010/effects"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+    d:DataContext="{d:DesignInstance Type=WPFSTD105:OfficeTypeSettingVM}"
     xmlns:STD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105" 
     xmlns:STD105ValidRule="clr-namespace:STD_105.ValidationRules" 
     xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding" xmlns:spa="clr-namespace:WPFSTD105;assembly=WPFSTD105" xmlns:ddes="http://schemas.devdept.com/winfx/2008/xaml/control" xmlns:ddgr="http://schemas.devdept.com/winfx/2008/xaml/graphics"
@@ -410,9 +411,9 @@
                             <CheckBox Content="預設長度："  Grid.Row="1" Grid.Column="0" IsChecked="{Binding MainLengthCheckboxBoolen}"/>
                             <TextBox Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center"  Padding="2">
                                 <TextBox.Text>
-                                    <Binding Path="MainLength"  UpdateSourceTrigger="PropertyChanged" >
+                                    <Binding Path="MainLengthMachine"  UpdateSourceTrigger="PropertyChanged" >
                                         <Binding.ValidationRules >
-                                            <STD105ValidRule:CheckNumberArrayRule/>
+                                            <STD105ValidRule:CheckNumberRule/>
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
@@ -432,7 +433,7 @@
                             <Label Content="mm" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
                             <CheckBox Grid.Row="3" Grid.Column="0" Content="素材後端切除：" IsChecked="{Binding EndCutCheckboxBoolen}" />
-                            <TextBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center"  Padding="2">
+                            <TextBox Name="MatchSettingEndCutTextBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center"  Padding="2">
                                 <TextBox.Text>
                                     <Binding Path="MatchSettingEndCut" StringFormat="{}{0:N2}"  UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
@@ -456,10 +457,10 @@
                         </Grid>
                     </GroupBox>
                     <DockPanel Margin="5" Grid.Row="1" >
-                        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Visibility="Collapsed">
+                        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Horizontal" >
 
                             <!--ElementName 綁定grid目標-->
-                            <Button Content="GO" Command="{Binding GoCommand}"   Background="Gold" Foreground="Black" Width="80" Margin="5" Cursor="Hand">
+                            <Button Content="GO" Command="{Binding GoCommand}"   Background="Gold" Foreground="Black" Width="80" Margin="3" Cursor="Hand">
                                 <Button.CommandParameter>
                                     <MultiBinding Converter="{local:ComParConverter}">
                                         <MultiBinding.Bindings>
@@ -468,10 +469,10 @@
                                         </MultiBinding.Bindings>
                                     </MultiBinding>
                                 </Button.CommandParameter>
+
+
                             </Button>
-                        </StackPanel >
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-                            <Button Width="80" Margin="5"  Background="#d8d8d8" Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=TypeSettingParameterGrid}" Cursor="Hand">
+                            <Button Width="80" Margin="3"  Background="#d8d8d8" Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=TypeSettingParameterGrid}" Cursor="Hand">
                                 <Button.Content >
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="CheckboxOutline" />
@@ -480,7 +481,7 @@
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
-                            <Button Content="清除" Command="{Binding CancelCommand}" Width="80" Margin="5"/>
+                            <Button Content="清除" Command="{Binding CancelCommand}" Width="80" Margin="3"/>
                         </StackPanel>
                     </DockPanel>
 
@@ -820,10 +821,28 @@
                                                 <TextBlock Text="刪除零件" VerticalAlignment="Center" Margin="10,0,0,0" Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"/>
                                                 <TextBlock Text="刪除素材" VerticalAlignment="Center" Margin="10,0,0,0" Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter Invert=True},UpdateSourceTrigger=PropertyChanged}"/>
                                             </StackPanel>
+                                            <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
+                                                <Button  Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter ListLimitCount=1},UpdateSourceTrigger=PropertyChanged}"
+                                                        Click="DeleteAllPartButtonClick"  
+                                                        IsEnabled="{Binding ButtonEnable}">
+                                                    <Button.Content>
+                                                        <materialDesign:PackIcon Kind="GarbageCanEmpty"  />
+                                                    </Button.Content>
+                                                </Button>
+
+                                                <TextBlock Text="刪除全部零件" VerticalAlignment="Center" Margin="10,0,0,0" Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter ListLimitCount=1},UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
                                         </StackPanel>
                                     </StackPanel>
 
-                                    <GridSplitter Style="{StaticResource MaterialDesignGridSplitter}" Background="LightGray" Grid.RowSpan="2" HorizontalAlignment="Right"  VerticalAlignment="Stretch" Width="4" Margin="0,0,-5,0"   />
+                                    <GridSplitter Style="{StaticResource MaterialDesignGridSplitter}" 
+                                                  IsEnabled="{Binding ButtonEnable}"
+                                                  Background="LightGray" 
+                                                  Grid.RowSpan="2"
+                                                  HorizontalAlignment="Right"  
+                                                  VerticalAlignment="Stretch" 
+                                                  Width="4" 
+                                                  Margin="0,0,-5,0"   />
                                     <!-- 可調整邊界拉柄(透明)-->
                                     <!--正逆轉功能 第一階段被關閉-->
                                     <Grid Grid.Column="1"  MinHeight="150" Margin="10,0,0,0" Visibility="Collapsed">

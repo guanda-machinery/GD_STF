@@ -318,19 +318,18 @@
                                              AutoGenerateColumns="None" 
                                          Style="{StaticResource SiegCustomGridControl}"
                                              SelectionMode="Row"
+                                         
                                              SelectedItem="{Binding Finish_UndoneDataViews_SelectedItem}"
+                                             SelectedItems="{Binding Finish_UndoneDataViews_SelectedItems}"
                                              ItemsSource="{Binding Finish_UndoneDataViews}"
                                              MinHeight="200"  MaxHeight="300">
                             <dxg:GridControl.View >
-                                <dxg:TableView
-                                                               
+                                <dxg:TableView                  
                                         IsColumnMenuEnabled ="False"
                                        AllowSorting="false"
                                        AllowColumnFiltering="False"
                                        AllowColumnMoving="False"
                                        
-                                        
-                                        
                                 RowDoubleClickCommand="{Binding RowDoubleClickCommand}"
                                 AllowEditing="False"
                         Name="MachiningCombinational_List_TableView"
@@ -357,6 +356,21 @@
                                     </dxg:TableView.Header>
                                 </dxg:TableView>
                             </dxg:GridControl.View>
+                            <dxg:GridControl.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Command="{Binding AddCommand}"
+                                              CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
+                                              Header="加入任務" />
+                                    <MenuItem Command="{Binding DeleteCommand}"
+                                              CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
+                                              Header="移除任務" />
+                                    <MenuItem Command="{Binding FinishCommand}"
+                                              CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
+                                              Header="設定為完成" />
+                                </ContextMenu>
+                            </dxg:GridControl.ContextMenu>
+
+
 
                             <dxg:GridColumn IsSmart="True" Name="LockGridCol" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                                 <dxg:GridColumn.HeaderImageStyle>
@@ -1074,24 +1088,7 @@ AllowEditing="False"
                             </Style>
                         </Grid.Resources>
 
-                        <Border Grid.Row="0" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
-                        <RadioButton  GroupName="Group_Transport" Name="Transport_RadioButton" Grid.Column="0"  IsEnabled="{Binding Transport_RadioButtonIsEnable}" IsChecked="{Binding Transport_RadioButtonIsChecked}" Command="{Binding ChangeTransportModeCommand}" Cursor="Hand" >
-                            <Image Source="{StaticResource TransportDrawingImage}" />
-                        </RadioButton>
-                        <ProgressBar Visibility="{Binding ProgressBar_Visible_Transport_Visibility,Converter={dx:BooleanToVisibilityConverter}}" />
-                        <RadioButton GroupName="Group_Transport" Name="Transport_by_Continue_RadioButton" Grid.Column="1" IsEnabled="{Binding Transport_by_Continue_RadioButtonIsEnable}"  IsChecked="{Binding Transport_by_Continue_RadioButtonIsChecked}" Command="{Binding ChangeTransportMode_To_Continue_Command}" >
-                            <Image Source="{StaticResource Transport_by_ConveyorDrawingImage}"/>
-                        </RadioButton>
-
-                        <ProgressBar  Grid.Column="1" Visibility="{Binding ProgressBar_Visible_Transport_by_Continue_Visibility,Converter={dx:BooleanToVisibilityConverter}}"/>
-
-                        <RadioButton GroupName="Group_Transport" Name="Transport_by_Hand_RadioButton" Grid.Column="2"  IsEnabled="{Binding Transport_by_Hand_RadioButtonIsEnable}"  IsChecked="{Binding Transport_by_Hand_RadioButtonIsChecked}" Command="{Binding ChangeTransportMode_To_Hand_Command}" CommandParameter="{Binding ElementName=Transport_by_Hand_RadioButton}">
-                            <Image Source="{StaticResource Transport_by_Robot_checkedDrawingImage}"/>
-                        </RadioButton>
-
-                        <ProgressBar  Grid.Column="2" Visibility="{Binding ProgressBar_Visible_Transport_by_Hand_Visibility,Converter={dx:BooleanToVisibilityConverter}}"/>
-
-                        <RadioButton GroupName="Group_Input" Name="Input_by_SmartPhone_RadioButton" Grid.Column="0" Grid.Row="1" 
+                        <RadioButton GroupName="Group_Input" Name="Input_by_SmartPhone_RadioButton" Grid.Column="0" Grid.Row="0" 
                                          IsChecked="{Binding Input_by_SmartPhone_RadioButtonIsChecked}"
                                          Command="{Binding Set_Input_by_SmartPhone_Command}"
                                          CommandParameter="{Binding ElementName=Input_by_SmartPhone_RadioButton}">
@@ -1099,18 +1096,13 @@ AllowEditing="False"
                                 <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
                                     <MultiBinding.Bindings>
                                         <Binding Path="Input_by_SmartPhone_RadioButtonVMEnable"/>
-                                        <Binding ElementName="Transport_RadioButton" Path="IsChecked" />
-                                        <Binding ElementName="Transport_by_Continue_RadioButton" Path="IsChecked" />
-                                        <Binding ElementName="Transport_by_Hand_RadioButton" Path="IsChecked" />
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
                             </RadioButton.IsEnabled>
                             <Image Source="{StaticResource Input_by_SmartPhoneDrawingImage}" Height="50" Width="50" />
                         </RadioButton>
-
-                        <ProgressBar  Grid.Column="0" Grid.Row="1" Visibility="{Binding ProgressBar_Visible_Input_by_SmartPhone,Converter={dx:BooleanToVisibilityConverter}}"/>
-
-                        <RadioButton  GroupName="Group_Input" Name="Input_by_Computer_RadioButton" Grid.Column="1" Grid.Row="1" 
+                        <ProgressBar  Grid.Column="0" Grid.Row="0" Visibility="{Binding ProgressBar_Visible_Input_by_SmartPhone,Converter={dx:BooleanToVisibilityConverter}}"/>
+                        <RadioButton  GroupName="Group_Input" Name="Input_by_Computer_RadioButton" Grid.Column="1" Grid.Row="0" 
                                           IsChecked="{Binding Input_by_Computer_RadioButtonIsChecked}"
                                           Command="{Binding Set_Input_by_Computer_Command}"
                                           CommandParameter="{Binding ElementName=Input_by_Computer_RadioButton}">
@@ -1118,16 +1110,56 @@ AllowEditing="False"
                                 <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
                                     <MultiBinding.Bindings>
                                         <Binding Path="Input_by_Computer_RadioButtonVMEnable"/>
-                                        <Binding ElementName="Transport_RadioButton" Path="IsChecked" />
-                                        <Binding ElementName="Transport_by_Continue_RadioButton" Path="IsChecked" />
-                                        <Binding ElementName="Transport_by_Hand_RadioButton" Path="IsChecked" />
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
                             </RadioButton.IsEnabled>
                             <Image Source="{StaticResource Input_by_ComputerDrawingImage}"  Height="50" Width="50" />
                         </RadioButton>
+                         <ProgressBar  Grid.Column="1" Grid.Row="0" Visibility="{Binding ProgressBar_Visible_Input_by_Computer,Converter={dx:BooleanToVisibilityConverter}}"/>
 
-                        <ProgressBar  Grid.Column="1" Grid.Row="1" Visibility="{Binding ProgressBar_Visible_Input_by_Computer,Converter={dx:BooleanToVisibilityConverter}}"/>
+                        <Button Grid.Column="2" Grid.Row="0" Background="Red" Content="TestButton" Foreground="Black" Command="{Binding  Test_Input_by_Computer_Command }"></Button>
+          
+                        <Border Grid.Row="0" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
+                        <RadioButton  GroupName="Group_Transport" Name="Transport_RadioButton" Grid.Column="0" Grid.Row="1"  
+                                       IsChecked="{Binding Transport_RadioButtonIsChecked}" Command="{Binding ChangeTransportModeCommand}" Cursor="Hand" >
+                            <RadioButton.IsEnabled>
+                                <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="Transport_RadioButtonIsEnable"/>
+                                        <Binding Path="Input_by_SmartPhone_RadioButtonIsChecked" />
+                                        <Binding Path="Input_by_Computer_RadioButtonIsChecked" />
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </RadioButton.IsEnabled>
+                            <Image Source="{StaticResource TransportDrawingImage}" />
+                        </RadioButton>
+                        <ProgressBar Grid.Row="1"  Visibility="{Binding ProgressBar_Visible_Transport_Visibility,Converter={dx:BooleanToVisibilityConverter}}" />
+                        <RadioButton GroupName="Group_Transport" Name="Transport_by_Continue_RadioButton" Grid.Column="1" Grid.Row="1" IsChecked="{Binding Transport_by_Continue_RadioButtonIsChecked}" Command="{Binding ChangeTransportMode_To_Continue_Command}" >
+                            <RadioButton.IsEnabled>
+                                <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="Transport_by_Continue_RadioButtonIsEnable"/>
+                                        <Binding Path="Input_by_SmartPhone_RadioButtonIsChecked" />
+                                        <Binding Path="Input_by_Computer_RadioButtonIsChecked" />
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </RadioButton.IsEnabled>
+                            <Image Source="{StaticResource Transport_by_ConveyorDrawingImage}"/>
+                        </RadioButton>
+                        <ProgressBar  Grid.Column="1" Grid.Row="1"  Visibility="{Binding ProgressBar_Visible_Transport_by_Continue_Visibility,Converter={dx:BooleanToVisibilityConverter}}"/>
+                        <RadioButton GroupName="Group_Transport" Name="Transport_by_Hand_RadioButton" Grid.Column="2" Grid.Row="1"  IsChecked="{Binding Transport_by_Hand_RadioButtonIsChecked}" Command="{Binding ChangeTransportMode_To_Hand_Command}" CommandParameter="{Binding ElementName=Transport_by_Hand_RadioButton}">
+                            <RadioButton.IsEnabled>
+                                <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="Transport_by_Hand_RadioButtonIsEnable"/>
+                                        <Binding Path="Input_by_SmartPhone_RadioButtonIsChecked" />
+                                        <Binding Path="Input_by_Computer_RadioButtonIsChecked" />
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </RadioButton.IsEnabled>
+                            <Image Source="{StaticResource Transport_by_Robot_checkedDrawingImage}"/>
+                        </RadioButton>
+                        <ProgressBar  Grid.Column="2" Grid.Row="1" Visibility="{Binding ProgressBar_Visible_Transport_by_Hand_Visibility,Converter={dx:BooleanToVisibilityConverter}}"/>
 
                         <Border Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
 

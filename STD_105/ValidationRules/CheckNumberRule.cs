@@ -69,7 +69,7 @@ namespace STD_105.ValidationRules
                         }
                         else
                         {
-                            return new ValidationResult(false, $"須為int!");
+                            return new ValidationResult(false, $"須為整數數字!");
                         }
                     }
                 }

@@ -562,21 +562,21 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
 
                             <!--ElementName 綁定grid目標-->
                             <Button Name="GoButton" Content="GO" Command="{Binding GoCommand}" Style="{StaticResource SiegCustomButtonGold}"  Foreground="Black" Width="80" Height="30" Margin="5,0" Cursor="Hand">
-                                <Button.CommandParameter>
-                                    <MultiBinding Converter="{STD105:ComParConverter}">
-                                        <MultiBinding.Bindings>
-                                            <Binding ElementName="Material_List_GridControl"  />
-                                            <Binding ElementName="SoftGridControl"  />
-                                            <Binding ElementName="PartsGridControl"/>
-                                        </MultiBinding.Bindings>
-                                    </MultiBinding>
-                                </Button.CommandParameter>
-                            </Button>
+                            <Button.CommandParameter>
+                                <MultiBinding Converter="{STD105:ComParConverter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding ElementName="Material_List_GridControl"  />
+                                        <Binding ElementName="SoftGridControl"  />
+                                        <Binding ElementName="PartsGridControl"/>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                        </Button>
 
 
                         <StackPanel Grid.Column="1" Margin="5,0"  VerticalAlignment="Center" Visibility="{Binding ElementName=GoButton ,Path=IsEnabled , Converter={dx:BooleanToVisibilityConverter Invert=True}}">
-                            <TextBlock  Text="加工之零件過長" TextWrapping="Wrap"   Foreground="{StaticResource solidclr_ButtonRed}" FontWeight="Bold"/>
-                            <TextBlock  Text="請修改素材長度設定！" TextWrapping="Wrap" Foreground="{StaticResource solidclr_ButtonRed}" FontWeight="Bold"/>
+                            <TextBlock  Text="排版參數錯誤" TextWrapping="Wrap"   Foreground="{StaticResource solidclr_ButtonRed}" FontWeight="Bold"/>
+                            <TextBlock  Text="" TextWrapping="Wrap" Foreground="{StaticResource solidclr_ButtonRed}" FontWeight="Bold"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Grid.Column="2">
                             <Button Width="80" Margin="5,0" Style="{StaticResource SiegCustomButtonGray}" Height="30"  Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=TypeSettingParameterGrid}" Cursor="Hand">
@@ -868,9 +868,9 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
                                         </Grid.RowDefinitions>
                                         <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,5,0" >
                                             <dxg:GridControl Name="ComponentGridControl" ItemsSource="{Binding Path =Parts}" 
-                                                         AutoGenerateColumns="None" 
-                                                             SelectedItem="{Binding SelectedPart}"
+                                                         AutoGenerateColumns="None"                                              
                                                          IsEnabled="{Binding ButtonEnable}"
+                                                         SelectedItem="{Binding SelectedPart,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                          MinHeight="40" 
                                                          MaxHeight="110" 
                                                          Height="auto"
@@ -892,7 +892,6 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
                                                 </dxg:GridControl.Resources>
                                                 <dxg:GridControl.View>
                                                     <dxg:TableView 
-                                                        
                                                             AllowEditing="False"
                                                             ShowTotalSummary="False" 
                                                             ShowGroupPanel="False"
@@ -961,11 +960,8 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
                                                 </StackPanel>
                                                 <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
                                                     <Button 
-                                                        Click="DeletePartButtonClick"
+                                                        Click="DeletePartButtonClick"  
                                                         IsEnabled="{Binding ButtonEnable}">
-                                                        <!-- Command="{Binding DeletePartCommand}" 
-                                                        CommandParameter="{Binding ElementName=ComponentGridControl}"-->
-
                                                         <Button.Content>
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>
@@ -982,10 +978,28 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
                                                     <TextBlock Text="刪除零件" VerticalAlignment="Center" Margin="10,0,0,0" Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"/>
                                                     <TextBlock Text="刪除素材" VerticalAlignment="Center" Margin="10,0,0,0" Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter Invert=True},UpdateSourceTrigger=PropertyChanged}"/>
                                                 </StackPanel>
+                                                <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
+                                                    <Button  Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter ListLimitCount=1},UpdateSourceTrigger=PropertyChanged}"
+                                                        Click="DeleteAllPartButtonClick"  
+                                                        IsEnabled="{Binding ButtonEnable}">
+                                                        <Button.Content>
+                                                            <materialDesign:PackIcon Kind="GarbageCanEmpty"  />
+                                                        </Button.Content>
+                                                    </Button>
+
+                                                    <TextBlock Text="刪除全部零件" VerticalAlignment="Center" Margin="10,0,0,0" Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter ListLimitCount=1},UpdateSourceTrigger=PropertyChanged}"/>
+                                                </StackPanel>
                                             </StackPanel>
                                         </StackPanel>
 
-                                        <GridSplitter Style="{StaticResource MaterialDesignGridSplitter}" Background="LightGray" Grid.RowSpan="2" HorizontalAlignment="Right"  VerticalAlignment="Stretch" Width="4" Margin="0,0,-5,0"   />
+                                        <GridSplitter Style="{StaticResource MaterialDesignGridSplitter}" 
+                                                      IsEnabled="{Binding ButtonEnable}"
+                                                      Background="LightGray" 
+                                                      Grid.RowSpan="2" 
+                                                      HorizontalAlignment="Right"  
+                                                      VerticalAlignment="Stretch" 
+                                                      Width="4" 
+                                                      Margin="0,0,-5,0"   />
                                         <!-- 可調整邊界拉柄(透明)-->
                                         <!--正逆轉功能 第一階段被關閉-->
                                         <Grid Grid.Column="1"  MinHeight="150" Margin="10,0,0,0" Visibility="Collapsed">
