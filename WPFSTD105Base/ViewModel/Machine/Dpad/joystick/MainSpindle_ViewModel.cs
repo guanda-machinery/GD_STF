@@ -1,7 +1,9 @@
-﻿using System;
+﻿using DevExpress.Xpf.Spreadsheet.UI.TypedStyles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WPFSTD105.ViewModel
@@ -16,7 +18,16 @@ namespace WPFSTD105.ViewModel
             this.JoyStick_CIRCLE_TOP_Trigger_CommandParameter= GD_STD.Enum.AXIS_SELECTED.Left;
             this.JoyStick_CIRCLE_MIDDLE_Trigger_CommandParameter = GD_STD.Enum.AXIS_SELECTED.Middle;
             this.JoyStick_CIRCLE_BOTTOM_Trigger_CommandParameter = GD_STD.Enum.AXIS_SELECTED.Right;
+           
+            this.JoyStick_CIRCLE_TOP_Release_CommandParameter = null;
+            this.JoyStick_CIRCLE_MIDDLE_Release_CommandParameter = null;
+            this.JoyStick_CIRCLE_BOTTOM_Release_CommandParameter = null;
 
+
+
+
+
+            this.IsMainSpindleMode= true;
             GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
             PButton.AxisRotation = false;
             PButton.AxisStop = true;
@@ -37,66 +48,6 @@ namespace WPFSTD105.ViewModel
             CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
         }
 
-
-        /*private WPFWindowsBase.RelayParameterizedCommand MachiningDirecationLeftCommand
-        {
-            get
-            {
-                return new WPFWindowsBase.RelayParameterizedCommand(el =>
-                {
-                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
-                        return;
-
-                    GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    PButton.AxisSelect = GD_STD.Enum.AXIS_SELECTED.Left;
-                    CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                });
-            }
-
-        }
-        private WPFWindowsBase.RelayParameterizedCommand MachiningDirecationMiddleCommand
-        {
-            get
-            {
-                return new WPFWindowsBase.RelayParameterizedCommand(el =>
-                {
-                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
-                        return;
-                    GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    PButton.AxisSelect = GD_STD.Enum.AXIS_SELECTED.Middle;
-                    CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                });
-            }
-
-        }
-        private WPFWindowsBase.RelayParameterizedCommand MachiningDirecationRightCommand
-        {
-            get
-            {
-                return new WPFWindowsBase.RelayParameterizedCommand(el =>
-                {
-                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
-                        return;
-
-                    GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    PButton.AxisSelect = GD_STD.Enum.AXIS_SELECTED.Right;
-                    CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                });
-            }
-
-        }*/
-
-
-
-
-
-
-
-
-
-
-
-
         /// <summary>
         /// 主軸旋轉
         /// </summary>
@@ -112,12 +63,21 @@ namespace WPFSTD105.ViewModel
                     //鬆刀狀態下不可旋轉
                     if (!PanelListening.IsAxisLooseKnife())
                         return;
+                    //先下停止再開始轉
 
                     GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+
+                    PButton.AxisRotation = false;
+                    PButton.AxisStop = true;
+                    PButton.AxisLooseKnife = false;
+                    CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+
                     PButton.AxisRotation = true;
                     PButton.AxisStop = false;
                     PButton.AxisLooseKnife = false;
                     CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+
+
                 });
             }
         }
@@ -133,10 +93,18 @@ namespace WPFSTD105.ViewModel
                     if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
                         return;
 
+                    //先下開始再停止轉
+
                     GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+                    PButton.AxisRotation = true;
+                    PButton.AxisStop = false;
+                    CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+
+                    Thread.Sleep(100);
                     PButton.AxisRotation = false;
                     PButton.AxisStop = true;
                     CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+
                 });
             }
         }

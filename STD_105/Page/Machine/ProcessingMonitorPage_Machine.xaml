@@ -358,15 +358,15 @@
                             </dxg:GridControl.View>
                             <dxg:GridControl.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Command="{Binding AddCommand}"
+                                    <MenuItem Command="{Binding RowAddCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                               Header="加入任務" />
-                                    <MenuItem Command="{Binding DeleteCommand}"
+                                   <!-- <MenuItem Command="{Binding DeleteCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                               Header="移除任務" />
                                     <MenuItem Command="{Binding FinishCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
-                                              Header="設定為完成" />
+                                              Header="設定為完成" />-->
                                 </ContextMenu>
                             </dxg:GridControl.ContextMenu>
 

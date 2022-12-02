@@ -24,32 +24,45 @@ namespace WPFSTD105.ViewModel
             {
                 while (Taskboolen)
                 {
+                    //捕捉按鈕信號
                     GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    if (PButton.ClampDown && TabControlSelectedIndex !=0)
+    
+                    if (PButton.ClampDown)
                     {
-                        TabControlSelectedIndex = 0;
+                        if (TabControlSelectedIndex != 0)
+                            TabControlSelectedIndex = 0;    
                     }
-                    else if (PButton.SideClamp && TabControlSelectedIndex != 1)
+                    else if (PButton.SideClamp)
                     {
-                        TabControlSelectedIndex = 1;
+                        if (TabControlSelectedIndex != 1)
+                            TabControlSelectedIndex = 1;
                     }
-                    else if((PButton.EntranceRack || PButton.ExportRack) && TabControlSelectedIndex != 2)
+                    else if((PButton.EntranceRack || PButton.ExportRack))
                     {
-                        TabControlSelectedIndex = 2;
+                        if (TabControlSelectedIndex != 2)
+                            TabControlSelectedIndex = 2;
                     }
-                    else if (PButton.Hand && TabControlSelectedIndex != 3)
+                    else if (PButton.Hand)
                     {
-                        TabControlSelectedIndex = 3;
+                        if (TabControlSelectedIndex != 3)
+                            TabControlSelectedIndex = 3;
                     }
-                    else if (PButton.DrillWarehouse && TabControlSelectedIndex != 4)
+                    else if (PButton.DrillWarehouse)
                     {
-                        TabControlSelectedIndex = 4;
+                        if (TabControlSelectedIndex != 4)
+                            TabControlSelectedIndex = 4;
                     }
-                    else if (PButton.Volume && TabControlSelectedIndex != 5)
+                    else if (PButton.Volume)
                     {
-                        TabControlSelectedIndex = 5;
+                        if (TabControlSelectedIndex != 5)
+                            TabControlSelectedIndex = 5;
                     }
-                    Thread.Sleep(100);
+                    else
+                    {
+                        TabControlSelectedIndex = -1;
+                    }
+                    //設定延遲避免閃爍的問題
+                    Thread.Sleep(1000);
                 }
 
             });
@@ -71,20 +84,19 @@ namespace WPFSTD105.ViewModel
             CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
         }
 
-        private int _tabControlSelectedIndex = -1;
+
+        private int _tabControlSelectedIndex = 0;
         public int TabControlSelectedIndex
         {
             get
             {
-                   return _tabControlSelectedIndex;
+                return _tabControlSelectedIndex;
             }
             set
             {
                 GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
                 var Exboolen = PButton.ExportRack;
-
                 ClearPButtonModeValue(ref PButton);
-
                 switch (value)
                 {
                     case 0:
@@ -116,6 +128,7 @@ namespace WPFSTD105.ViewModel
                     CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
                 
                 _tabControlSelectedIndex = value;
+
             }
         }
 
@@ -170,23 +183,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 輸送帶VM
         /// </summary>
-        public RacksOperationVM _RacksOperationVM { get; set; } = new RacksOperationVM()
-        {
-            //Joystick_UP_DESC_Trigger_Parameter = JOYSTICK.,
-            //Joystick_DOWN_DESC_Trigger_Parameter = JOYSTICK.,
-            //Joystick_UP_DESC_Release_Parameter = JOYSTICK.,
-            //Joystick_DOWN_DESC_Release_Parameter = JOYSTICK.,
-
-            Joystick_LEFT_DESC_Trigger_Parameter = MOBILE_RACK.INSIDE,
-            Joystick_RIGHT_DESC_Trigger_Parameter = MOBILE_RACK.OUTER,
-            Joystick_LEFT_DESC_Release_Parameter = MOBILE_RACK.NULL,
-            Joystick_RIGHT_DESC_Release_Parameter = MOBILE_RACK.NULL,
-
-
-
-
-
-        };
+        public RacksOperationVM _RacksOperationVM { get; set; } = new RacksOperationVM();
         /// <summary>
         /// 手臂夾取VM
         /// </summary>
@@ -203,8 +200,17 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public Dpad_Joystick_ViewModel ToolMagazineControl_VM { get; set; } = new Dpad_Joystick_ViewModel()
         {
+            JoyStick_CIRCLE_BOTTOM_isEnabled = false,
             Button_Up_IsEnabled = false,
             Button_Down_IsEnabled = false,
+            JoyStick_ELLIPSE_TOP_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.EXPORT_L,
+            JoyStick_ELLIPSE_BOTTOM_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.ENTRANCE_L,
+            JoyStick_CIRCLE_TOP_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.EXPORT_R,
+            JoyStick_CIRCLE_MIDDLE_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.ENTRANCE_R,
+            JoyStick_CIRCLE_BOTTOM_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.MIDDLE,
+
+
+
         };
         /// <summary>
         /// 捲屑機VM
