@@ -126,7 +126,7 @@ namespace WPFSTD105
         /// <param name="panelButton"></param>
         private void ChangePage(PanelButton panelButton)
         {
-           ApplicationPage currentPage = ApplicationViewModel.CurrentPage;
+            ApplicationPage currentPage = ApplicationViewModel.CurrentPage;
             //22221124 若正在加工且現在畫面在機台監控模式 當企圖離開頁面時會被阻擋且跳出提示
             if (currentPage == ApplicationPage.Monitor || currentPage == ApplicationPage.MachineMonitor)
             {
@@ -137,6 +137,8 @@ namespace WPFSTD105
                 if (panelButton.MainAxisMode ||
                     panelButton.ClampDown ||
                     panelButton.SideClamp ||
+                    panelButton.ExportRack ||
+                    panelButton.EntranceRack ||
                     panelButton.Volume ||
                     panelButton.DrillWarehouse ||
                     panelButton.Hand )
@@ -146,6 +148,8 @@ namespace WPFSTD105
                     panelButton.SideClamp = false;
                     panelButton.Volume = false;
                     panelButton.DrillWarehouse = false;
+                    panelButton.ExportRack = false;
+                    panelButton.EntranceRack = false;
                     panelButton.Hand = false;
                     WriteCodesysMemor.SetPanel(panelButton);
                 }
