@@ -21,6 +21,7 @@ using SplitLineSettingData;
 using DevExpress.XtraRichEdit.Import.OpenXml;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot;
+using System.Diagnostics;
 
 namespace WPFSTD105
 {
@@ -140,13 +141,19 @@ namespace WPFSTD105
         /// <param name="values">加工列表</param>
         public void SetWorkMaterialBackup(WorkMaterial values)
         {
-            string dataName = values.MaterialNumber
-                                                            .Where(el => el != 0)
-                                                            .Select(el => Convert.ToChar(el).ToString())
-                                                            .Aggregate((str1, str2) => str1 + str2);
+            try
+            {
+                string dataName = values.MaterialNumber
+                                                                .Where(el => el != 0)
+                                                                .Select(el => Convert.ToChar(el).ToString())
+                                                                .Aggregate((str1, str2) => str1 + str2);
 
-            GZipSerializeBinary(values, $@"{ApplicationVM.DirectoryWorkMaterialBackup()}\{dataName}.db");
-
+                GZipSerializeBinary(values, $@"{ApplicationVM.DirectoryWorkMaterialBackup()}\{dataName}.db");
+            }
+            catch(Exception ex)
+            {
+                Debugger.Break();
+            }
         }
         /// <summary>
         /// 讀取工作陣列列表 (壓縮)
@@ -392,30 +399,12 @@ namespace WPFSTD105
         /// <param name="model"></param>
         public void TransHypotenusePOINTtoPoint(devDept.Eyeshot.Model model)
         {
-            var gbaList_Entities = model.Entities.Where(x => x.EntityData.GetType() == typeof(GroupBoltsAttr)).ToList();
-            gbaList_Entities.ForEach(x => ((GroupBoltsAttr)x.EntityData).Mode = GD_STD.Enum.AXIS_MODE.POINT);
+            List<GroupBoltsAttr> GBA = model.Entities.Where(x=>x.EntityData.GetType()==typeof(GroupBoltsAttr)).Select(x => (GroupBoltsAttr)x.EntityData).Where(x => x.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x).Mode== GD_STD.Enum.AXIS_MODE.HypotenusePOINT).ToList(); ;
+            List<BoltAttr> bolck = model.Blocks.SelectMany(x => x.Entities).Where(x=>x.EntityData.GetType()==typeof(BoltAttr)).Select(y => (BoltAttr)y.EntityData).Where(x => x.GetType() == typeof(BoltAttr) && ((BoltAttr)x).Mode == GD_STD.Enum.AXIS_MODE.HypotenusePOINT).ToList();
 
-
-            List<Block> gbaList_Block_Mesh = model.Blocks.Where(x => x.Entities.GetType() == typeof(Mesh)).ToList();
-            gbaList_Block_Mesh.ForEach(x =>
-            {
-                x.Entities.ForEach(y =>
-                {
-                    if (y.GetType() == typeof(BoltAttr) && ((BoltAttr)y.EntityData).Mode == GD_STD.Enum.AXIS_MODE.HypotenusePOINT)
-                    { ((BoltAttr)y.EntityData).Mode = GD_STD.Enum.AXIS_MODE.POINT; }
-                });
-            });
-            var gbaList_Block_BlockReference = model.Blocks.Where(x => x.Entities.GetType() == typeof(BlockReference)).ToList();
-            gbaList_Block_BlockReference.ForEach(x =>
-            {
-                x.Entities.ForEach(y =>
-                {
-                    if (y.GetType() == typeof(BlockReference) && ((GroupBoltsAttr)y.EntityData).Mode == GD_STD.Enum.AXIS_MODE.HypotenusePOINT)
-                    { ((GroupBoltsAttr)y.EntityData).Mode = GD_STD.Enum.AXIS_MODE.POINT; }
-                });
-            });
+            GBA.ForEach(x => { x.Mode = GD_STD.Enum.AXIS_MODE.POINT; });
+            bolck.ForEach(x => { x.Mode = GD_STD.Enum.AXIS_MODE.POINT; });
         }
-
         /// <summary>
         /// 讀取 <see cref="devDept.Eyeshot.Model"/>
         /// </summary>

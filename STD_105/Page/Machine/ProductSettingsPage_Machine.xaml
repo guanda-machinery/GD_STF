@@ -1119,7 +1119,7 @@
                     </TabItem>
                  <TabItem Header="切割線" Name="CutTabItem"  >
                         <DockPanel Width="245" >
-                            <Grid  DockPanel.Dock="Top">
+                        <Grid  DockPanel.Dock="Top" Name="ScrollViewbox">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>

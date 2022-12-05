@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using static WPFSTD105.ViewLocator;
 using static WPFSTD105.CodesysIIS;
 using System.Threading;
+using System.Windows.Input;
 
 namespace WPFSTD105.ViewModel
 {
@@ -24,12 +25,18 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public RacksOperationVM()
         {
-            //重新對應搖桿上下到搖桿上的右上及右下按鈕
-            //this.Dpad_Button_Up_Trigger = CIRCLE_TOP_DESC_ButtonCommand;
-            //this.Dpad_Button_Down_Trigger = CIRCLE_BOTTOM_DESC_ButtonCommand;
-            this.Joystick_UP_DESC_Trigger_Parameter = JOYSTICK.CIRCLE_TOP_DESC;
-            this.Joystick_DOWN_DESC_Trigger_Parameter = JOYSTICK.CIRCLE_BOTTOM_DESC;
+            //手動操作時只需頂到最上面或最下面
+            Joystick_UP_DESC_Trigger_Parameter = SHELF.LEVEL2;
+            Joystick_UP_DESC_Release_Parameter = null;
 
+            Joystick_DOWN_DESC_Trigger_Parameter = SHELF.NULL;
+            Joystick_DOWN_DESC_Release_Parameter = null;
+
+            Joystick_LEFT_DESC_Trigger_Parameter = MOBILE_RACK.INSIDE;
+            Joystick_LEFT_DESC_Release_Parameter = MOBILE_RACK.NULL;
+
+            Joystick_RIGHT_DESC_Trigger_Parameter = MOBILE_RACK.OUTER;
+            Joystick_RIGHT_DESC_Release_Parameter = MOBILE_RACK.NULL;
         }
 
 
@@ -89,42 +96,7 @@ namespace WPFSTD105.ViewModel
             }
         }
 
-        ///// <summary>
-        ///// 移動料架上升或下降，控制開關。 (綁定VM)
-        ///// </summary>
-        //public bool RisePowr
-        //{
-        //    get => ApplicationViewModel.PanelButton.EntranceRack ? _EntranceRisePowr : _ExportRisePowr;
-        //    set
-        //    {
-        //        if (ApplicationViewModel.PanelButton.EntranceRack)
-        //        {
-        //            _EntranceRisePowr = value;
-        //        }
-        //        else
-        //        {
-        //            _ExportRisePowr = value;
-        //        }
-        //    }
-        //}
-        ///// <summary>
-        ///// 橫移料架移動，控制開關
-        ///// </summary>
-        //public bool MovePowr
-        //{
-        //    get => ApplicationViewModel.PanelButton.EntranceRack ? _EntranceMovePowr : _ExportMovePowr;
-        //    set
-        //    {
-        //        if (ApplicationViewModel.PanelButton.EntranceRack)
-        //        {
-        //            _EntranceMovePowr = value;
-        //        }
-        //        else
-        //        {
-        //            _ExportMovePowr = value;
-        //        }
-        //    }
-        //}
+
         /// <summary>
         /// 紀錄目前橫移是否再前進狀態。前進中回傳 true，沒有前進回傳false。
         /// </summary>
@@ -295,6 +267,28 @@ namespace WPFSTD105.ViewModel
                 });
             }
         }
+
+        /// <summary>
+        /// 定位柱
+        /// </summary>
+        public ICommand PostRiseCommand
+        {
+            get
+            {
+                return new WPFWindowsBase.RelayCommand(() =>
+                {
+                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
+                        return;
+
+                    GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+                    //相反訊號
+                    PButton.PostRise = !PButton.PostRise;
+                    CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                });
+            }
+        }
+
+
 
 
         #endregion

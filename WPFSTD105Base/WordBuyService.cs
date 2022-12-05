@@ -252,7 +252,7 @@ namespace WPFSTD105
         /// 建立採購明細單
         /// </summary>
         /// <param name="path">儲存路徑</param>
-        public void CreateFile(string ProjectName, string ProjectNumber, string DocPath, ObservableCollection<MaterialDataView> dataViews, double TotalLossBothSide, ObservableCollection<SteelAttr> steelAttrs = null)
+        public void CreateFile(string ProjectName, string ProjectNumber, string DocTmplatePath, string DocPath, ObservableCollection<MaterialDataView> dataViews, double TotalLossBothSide, ObservableCollection<SteelAttr> steelAttrs = null)
         {
             try
             {
@@ -289,7 +289,7 @@ namespace WPFSTD105
                 string[] DistinctSteelType = ListDistinctSteelType.ToArray();//要加多少空白型鋼圖片，可使"加工長度包含雙邊切除與切割損耗"文字貼齊外框
 
                 //產生word
-                string tmplPath = "AllFileTemplate/BuyDocTemp.docx"; //模板DOC路徑
+                string tmplPath = DocTmplatePath;//"AllFileTemplate/BuyDocTemp.docx"; //模板DOC路徑
                 //string aa = System.Environment.CurrentDirectory;
                 //string destPath = "../TestDoc_Output.docx"; //模板DOC路徑
                 //string destPath = @"D:\\0527-666瑞迪曼斯丙棟(斜角)\TestDoc_Output.docx"; //目標DOC路徑
@@ -474,27 +474,34 @@ namespace WPFSTD105
                     {
                         case "RH":
                         case "H":
-                            picture_path = "SteelSectionPng/RH.png";
+                            picture_path = @"SteelSectionPng\RH.png";
                             break;
                         case "BH":
-                            picture_path = "SteelSectionPng/BH.png";
+                            picture_path = @"SteelSectionPng\BH.png";
                             break;
                         case "L":
-                            picture_path = "SteelSectionPng/L.png";
+                            picture_path = @"SteelSectionPng\L.png";
                             break;
                         case "BOX":
-                            picture_path = "SteelSectionPng/BOX.png";
+                            picture_path = @"SteelSectionPng\BOX.png";
                             break;
                         case "C":
-                            picture_path = "SteelSectionPng/C.png";
+                            picture_path = @"SteelSectionPng\C.png";
                             break; 
                         case "ReportLogo":
                             picture_path = ApplicationVM.FileReportLogo() + @"\ReportLogo.png";
                             break; 
                         default:
-                            picture_path = "SteelSectionPng/Space.png";
+                            picture_path = @"SteelSectionPng\Space.png";
                             break;
                     }
+
+                    string startup_path = System.Windows.Forms.Application.StartupPath;
+                    if (target_string[j] != "ReportLogo")
+                    {
+                        picture_path = $@"{startup_path}\{picture_path}";
+                    }
+
                     var cat1Img = new ImageData(picture_path)
                     {
                         Width = PicWidth,
@@ -506,7 +513,7 @@ namespace WPFSTD105
 
                     if (SpaceList[j] == true)
                     {
-                        picture_path = "SteelSectionPng/Space.png";
+                        picture_path = @"SteelSectionPng\Space.png";
                         var SpaceImg = new ImageData(picture_path)
                         {
                             Width = 0.1m,
@@ -528,7 +535,7 @@ namespace WPFSTD105
             //計算ProjectNumber-TwoSideCut, ProjectName-CutLoss這兩行各自需要的空格數目
             //ProjectNumber-TwoSideCut
             int NeedSpace_ProjectNumber2TwoSideCut = (70 - ProjectNumber.Length) / 2;
-            for (int i = 0; i < NeedSpace_ProjectNumber2TwoSideCut; i++) ProjectNumber += "  ";
+            for (int i = 1; i < NeedSpace_ProjectNumber2TwoSideCut; i++) ProjectNumber += "  ";
             ProjectNumber += "雙邊切除：";
             //ProjectName-CutLoss
             int NeedSpace_ProjectName2CutLoss = (70 - ProjectName.Length) / 2;
