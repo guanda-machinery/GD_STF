@@ -221,6 +221,13 @@ namespace WPFSTD105
                         wordDocument.ExportAsFixedFormat($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf", WdExportFormat.wdExportFormatPDF);
                         wordDocument.Close(false);
 
+                        //刪除已產生的報表WORD檔&目前所有的WINWORD程序
+                        try
+                        {
+                            DeleteWordFileAfterDelay(1000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf");
+                        }
+                        catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+
                         DeactivateLoading();
 
                         WinUIMessageBox.Show(null,
@@ -247,12 +254,7 @@ namespace WPFSTD105
                         FloatingMode.Popup);
                     }
 
-                    //刪除已產生的報表WORD檔&目前所有的WINWORD程序
-                    try
-                    {
-                        DeleteWordFileAfterDelay(1000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf");
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+                    
 
                     ////以python封裝exe執行轉檔
                     //try
@@ -349,6 +351,13 @@ namespace WPFSTD105
                         wordDocument.ExportAsFixedFormat($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf", WdExportFormat.wdExportFormatPDF);
                         wordDocument.Close(false);
 
+                        //刪除已產生的報表WORD檔&目前所有的WINWORD程序
+                        try
+                        {
+                            DeleteWordFileAfterDelay(1000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf");
+                        }
+                        catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+
                         DeactivateLoading();
 
                         WinUIMessageBox.Show(null,
@@ -375,12 +384,7 @@ namespace WPFSTD105
                         FloatingMode.Popup);
                     }
 
-                    //刪除已產生的報表WORD檔&目前所有的WINWORD程序
-                    try
-                    {
-                        DeleteWordFileAfterDelay(1000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf");
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+                    
 
 
                     ////以python封裝exe執行轉檔                    
