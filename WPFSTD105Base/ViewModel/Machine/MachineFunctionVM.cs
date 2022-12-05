@@ -1,4 +1,5 @@
-﻿using GD_STD.Enum;
+﻿using DevExpress.Xpf.Spreadsheet.UI.TypedStyles;
+using GD_STD.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,21 +69,7 @@ namespace WPFSTD105.ViewModel
             });
         }
 
-        ~MachineFunctionVM()
-        {
-            Taskboolen = false;
-            //解構時清除狀態
-            GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-            PButton.ClampDown = false;
-            PButton.SideClamp = false;
-            PButton.EntranceRack = false;
-            PButton.ExportRack = false;
-            PButton.Hand = false;
-            PButton.DrillWarehouse = false;
-            PButton.Volume = false;
-            PButton.MainAxisMode = false;
-            CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-        }
+
 
 
         private int _tabControlSelectedIndex = 0;
@@ -159,7 +146,21 @@ namespace WPFSTD105.ViewModel
 
         }
 
+        /// <summary>
+        /// 刀庫設定可見/不可見
+        /// </summary>
+        public bool ChangeDrillVisable { get; set; } = false;
 
+        public ICommand ChangeDrillVisCommand
+        {
+            get 
+            {
+                return new WPFWindowsBase.RelayCommand(() =>
+                {
+                    ChangeDrillVisable = !ChangeDrillVisable;
+                });
+            } 
+        }
 
 
 
@@ -205,13 +206,19 @@ namespace WPFSTD105.ViewModel
             Button_Down_IsEnabled = false,
             JoyStick_ELLIPSE_TOP_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.EXPORT_L,
             JoyStick_ELLIPSE_BOTTOM_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.ENTRANCE_L,
-            JoyStick_CIRCLE_TOP_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.EXPORT_R,
-            JoyStick_CIRCLE_MIDDLE_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.ENTRANCE_R,
+
+            //有疑慮->CIRCLE_TOP實際上是對EXPORT_R動作
+            JoyStick_CIRCLE_TOP_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.ENTRANCE_R,
+            //有疑慮->CIRCLE_MIDDLE實際上是對ENTRANCE_R動作
+            JoyStick_CIRCLE_MIDDLE_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.EXPORT_R,
             JoyStick_CIRCLE_BOTTOM_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.MIDDLE,
-
-
-
         };
+
+        /// <summary>
+        /// 刀庫模型VM
+        /// </summary>
+        public ChangeDrillPageVM ChangeDrillVM { get; set; } = new ChangeDrillPageVM();
+
         /// <summary>
         /// 捲屑機VM
         /// </summary>

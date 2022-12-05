@@ -19,9 +19,13 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <dxg:GridControl ItemsSource="{Binding DataContext, ElementName=use }" dx:ThemeManager.ThemeName="Office2019DarkGray">
+        <dxg:GridControl Height="70" 
+            ItemsSource="{Binding DataContext, ElementName=use }" 
+            dx:ThemeManager.ThemeName="Office2019DarkGray">
             <dxg:GridControl.View>
-                <dxg:TableView ShowGroupPanel="False"/>
+                <dxg:TableView VerticalScrollbarVisibility="Hidden"
+                    ColumnHeaderContentStyle="{ StaticResource HeaderStyle }" 
+                    ShowGroupPanel="False"/>
             </dxg:GridControl.View>
             <dxg:GridControl.Columns>
                 <dxg:GridColumn Header="位置" FieldName="Index"/>

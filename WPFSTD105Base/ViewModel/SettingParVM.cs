@@ -1525,6 +1525,15 @@ namespace WPFSTD105.ViewModel
                 DrillBrands save = new DrillBrands(DrillBrands);
                 save.Insert(0, DrillBrand.GetNull());
                 ser.SetDrillBrands(save);
+                //跳出提示窗
+                WinUIMessageBox.Show(null,
+                    $"刀具設定已存檔",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Window);
             });
         }
         /// <summary>

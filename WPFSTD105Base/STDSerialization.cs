@@ -152,7 +152,7 @@ namespace WPFSTD105
             }
             catch(Exception ex)
             {
-                Debugger.Break();
+                //Debugger.Break();
             }
         }
         /// <summary>

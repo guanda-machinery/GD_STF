@@ -1163,29 +1163,15 @@ AllowEditing="False"
 
                         <Border Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
 
-                        <RadioButton Grid.Column="0" Grid.Row="2" GroupName="Group_Drill">
-                            <RadioButton.IsEnabled>
-                                <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
-                                    <MultiBinding.Bindings>
-                                        <Binding ElementName="Input_by_SmartPhone_RadioButton" Path="IsChecked" />
-                                        <Binding ElementName="Input_by_Computer_RadioButton" Path="IsChecked" />
-                                    </MultiBinding.Bindings>
-                                </MultiBinding>
-                            </RadioButton.IsEnabled>
-                            <Image Source="{StaticResource DrillPinDrawingImage}" />
-                        </RadioButton>
-                        <RadioButton Grid.Column="1"  Grid.Row="2" GroupName="Group_Drill">
-                            <RadioButton.IsEnabled>
-                                <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
-                                    <MultiBinding.Bindings>
-                                        <Binding ElementName="Input_by_SmartPhone_RadioButton" Path="IsChecked" />
-                                        <Binding ElementName="Input_by_Computer_RadioButton" Path="IsChecked" />
-                                    </MultiBinding.Bindings>
-                                </MultiBinding>
-                            </RadioButton.IsEnabled>
+
+                        <RadioButton Grid.Column="0"  Grid.Row="2" GroupName="Group_Drill" IsChecked="True">
+
                             <Image Source="{StaticResource DrillHoleDrawingImage}"   />
                         </RadioButton>
+                        <RadioButton Grid.Column="1" Grid.Row="2" GroupName="Group_Drill" IsEnabled="False">
 
+                            <Image Source="{StaticResource DrillPinDrawingImage}" />
+                        </RadioButton>
                         <Border Grid.Row="2" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
                     </Grid>
 

@@ -44,6 +44,8 @@ using ProtoBuf.Meta;
 using DocumentFormat.OpenXml.EMMA;
 using DevExpress.Xpf.Core.FilteringUI;
 using DocumentFormat.OpenXml.Vml.Spreadsheet;
+using GD_STD.Properties;
+using Newtonsoft.Json;
 
 //using DevExpress.Utils.Extensions;
 namespace WPFSTD105.ViewModel
@@ -88,6 +90,7 @@ namespace WPFSTD105.ViewModel
                             _SendIndex.Add(Convert.ToInt16(i));
                             if (work.Value.Position == -2) //如果是完成的狀態
                             {
+                                Finish_UndoneDataViews[i].Schedule = 100;
                                 Finish_UndoneDataViews[i].Position = "完成";
                                 _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
                             }
@@ -121,11 +124,10 @@ namespace WPFSTD105.ViewModel
             }*/
 
 
-            STDSerialization ser = new STDSerialization();
-            FluentAPI.OptionSettings optionSettings = ser.GetOptionSettings();//讀取記憶體
+           // STDSerialization ser = new STDSerialization();
+           // FluentAPI.OptionSettings optionSettings = ser.GetOptionSettings();//讀取記憶體
                                                                               //打開選配->自動模式->按鈕取消底線
-            Transport_by_Hand_RadioButtonIsEnable = !optionSettings.HandAuto;
-
+            Transport_by_Hand_RadioButtonIsEnable = GD_STD.Properties.Optional.Default.HandAuto;
 
 
 
@@ -2076,7 +2078,7 @@ namespace WPFSTD105.ViewModel
                             if (GD_STD.Properties.Optional.Default.HandAuto)
                             {
                                 STDSerialization ser = new STDSerialization();
-                                //FluentAPI.MecSetting mecSetting = ser.GetMecSetting();
+                                FluentAPI.MecSetting mecSetting = ser.GetMecSetting();
                                 FluentAPI.OptionSettings optionSettings = ser.GetOptionSettings();//讀取記憶體
                                 //打開選配->自動模式->按鈕取消底線
                                 
@@ -2098,7 +2100,10 @@ namespace WPFSTD105.ViewModel
 
                                 }
 
-                                ser.SetOptionSettings(optionSettings);//寫入記憶體
+                                ser.SetOptionSettings(optionSettings);//寫入記錄
+
+                                MecOptional mecOptional = JsonConvert.DeserializeObject<MecOptional>(optionSettings.ToString());
+                                WriteCodesysMemor.SetMecOptional(mecOptional);//寫入記憶體
                             }
                             else
                             {
@@ -2541,7 +2546,8 @@ namespace WPFSTD105.ViewModel
                                     _SendIndex.Add(Convert.ToInt16(i));
                                     if (work.Value.Position == -2) //如果是完成的狀態
                                     {
-                                        Finish_UndoneDataViews[i].Schedule = work.Value.Finish;
+                                        //Finish_UndoneDataViews[i].Schedule = work.Value.Finish;
+                                        Finish_UndoneDataViews[i].Schedule = 100;
                                         Finish_UndoneDataViews[i].Position = PositionStatusEnum.完成.ToString();       //"完成";
                                         _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
                                     }
@@ -2839,7 +2845,8 @@ namespace WPFSTD105.ViewModel
                                 {
                                     if (_WorkMaterials[value].Position == -2) //如果已經完成
                                     {
-                                        Finish_UndoneDataViews[MIndex].Schedule = _WorkMaterials[value].Finish;
+                                        //Finish_UndoneDataViews[MIndex].Schedule = _WorkMaterials[value].Finish;
+                                        Finish_UndoneDataViews[MIndex].Schedule = 100;
 
                                         Finish_UndoneDataViews[MIndex].Finish = true;
                                         Finish_UndoneDataViews[MIndex].Position = PositionStatusEnum.完成.ToString();
