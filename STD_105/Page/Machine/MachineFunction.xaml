@@ -10,7 +10,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:local="clr-namespace:STD_105" 
     xmlns:WPFSTD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
-    xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105" xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+    xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
+    xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     mc:Ignorable="d"    
     Title="MachineFunction"
     >
@@ -1068,101 +1072,327 @@
                     </TabItem.Header>
                     <Border Background="#c0c0c0" Padding="10">
                         <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.Resources>
-                                <Style TargetType="Image">
-                                    <Setter Property="Height" Value="80"/>
-                                </Style>
-                            </Grid.Resources>
-                            <CheckBox Grid.Column="0"  
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.Resources>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Height" Value="80"/>
+                                    </Style>
+                                </Grid.Resources>
+                                <CheckBox Grid.Column="0"  
                                   VerticalAlignment="Top"
                                   Margin="5"
                                   Width="100"
                                   IsChecked="{Binding DescriptionDisplayBoolenAll}"
                                   Style="{ StaticResource GreenSwitch }" />
-                            <local:JoystickUserControl Grid.Row="0" Margin="10" x:Name="ToolMagazineControl" DataContext="{Binding ToolMagazineControl_VM}">
-                                <local:JoystickUserControl.ButtonContent_1_Source>
-                                    <Grid Width="200" HorizontalAlignment="Center" VerticalAlignment="Center" >
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="Ｄ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
-                                        <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
-                                    </Grid>
-                                </local:JoystickUserControl.ButtonContent_1_Source>
-                                <local:JoystickUserControl.ButtonContent_3_Source>
-                                    <Grid Width="200">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="Ｂ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
+                                <local:JoystickUserControl Grid.Row="0" Margin="10" x:Name="ToolMagazineControl" DataContext="{Binding ToolMagazineControl_VM}">
+                                    <local:JoystickUserControl.ButtonContent_1_Source>
+                                        <Grid Width="200" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="Ｄ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
+                                            <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
+                                        </Grid>
+                                    </local:JoystickUserControl.ButtonContent_1_Source>
+                                    <local:JoystickUserControl.ButtonContent_3_Source>
+                                        <Grid Width="200">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="Ｂ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
 
-                                        <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
-                                    </Grid>
-                                </local:JoystickUserControl.ButtonContent_3_Source>
-                                <local:JoystickUserControl.ButtonContent_4_Source>
-                                    <Grid Width="200">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="Ｅ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
+                                            <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
+                                        </Grid>
+                                    </local:JoystickUserControl.ButtonContent_3_Source>
+                                    <local:JoystickUserControl.ButtonContent_4_Source>
+                                        <Grid Width="200">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="Ｅ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
 
-                                        <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
-                                    </Grid>
-                                </local:JoystickUserControl.ButtonContent_4_Source>
-                                <local:JoystickUserControl.ButtonContent_5_Source>
-                                    <Grid Width="200">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="Ｃ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
-                                        <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
-                                    </Grid>
-                                </local:JoystickUserControl.ButtonContent_5_Source>
-                                <local:JoystickUserControl.ButtonContent_6_Source>
-                                    <Grid Width="200" Visibility="Collapsed">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="Ｅ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
+                                            <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
+                                        </Grid>
+                                    </local:JoystickUserControl.ButtonContent_4_Source>
+                                    <local:JoystickUserControl.ButtonContent_5_Source>
+                                        <Grid Width="200">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="Ｃ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
+                                            <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
+                                        </Grid>
+                                    </local:JoystickUserControl.ButtonContent_5_Source>
+                                    <local:JoystickUserControl.ButtonContent_6_Source>
+                                        <Grid Width="200" Visibility="Collapsed">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="Ｅ"  Width="auto" TextAlignment="Right" Foreground ="Black" FontSize="50" Margin="20,0"  HorizontalAlignment="Right"/>
 
-                                        <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
-                                    </Grid>
-                                </local:JoystickUserControl.ButtonContent_6_Source>
-                            </local:JoystickUserControl >
+                                            <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" Margin="20,0" HorizontalAlignment="Left"/>
+                                        </Grid>
+                                    </local:JoystickUserControl.ButtonContent_6_Source>
+                                </local:JoystickUserControl >
+                                <local:DPadUserControl Grid.Row="1" Margin="10"  DataContext="{Binding ToolMagazineControl_VM}">
+                                    <local:DPadUserControl.ButtonContent_1_Source>
+                                        <Grid >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="OUT"  Width="auto" TextAlignment="Right" Margin="18,0" Foreground ="Black" FontSize="45"/>
+                                            <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" HorizontalAlignment="Left" Margin="20,0"/>
+                                        </Grid>
+                                    </local:DPadUserControl.ButtonContent_1_Source>
+                                    <local:DPadUserControl.ButtonContent_2_Source>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="IN"  Width="auto" TextAlignment="Right" Margin="18,0" Foreground ="Black" FontSize="45"/>
 
-                            <local:DPadUserControl Grid.Row="1" Margin="10"  DataContext="{Binding ToolMagazineControl_VM}">
-                                <local:DPadUserControl.ButtonContent_1_Source>
-                                    <Grid >
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="OUT"  Width="auto" TextAlignment="Right" Margin="18,0" Foreground ="Black" FontSize="45"/>
-                                        <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}" HorizontalAlignment="Left" Margin="20,0"/>
-                                    </Grid>
-                                </local:DPadUserControl.ButtonContent_1_Source>
-                                <local:DPadUserControl.ButtonContent_2_Source>
+                                            <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}"  HorizontalAlignment="Left" Margin="20,0"/>
+                                        </Grid>
+
+                                    </local:DPadUserControl.ButtonContent_2_Source>
+                                </local:DPadUserControl>
+                            </Grid>
+                            <Grid DataContext="{Binding ChangeDrillVM}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1.5*" />
+                                    <RowDefinition Height="5" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <!--  目前刀庫  -->
+                                <GroupBox Header="刀庫列表" Style="{StaticResource ParameterDarkGroupBox}">
                                     <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="IN"  Width="auto" TextAlignment="Right" Margin="18,0" Foreground ="Black" FontSize="45"/>
-
-                                        <Image  Grid.Column="1" Source="{StaticResource ToolMagazine}"  HorizontalAlignment="Left" Margin="20,0"/>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="2*" />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid>
+                                            <Border  Height="74"
+                                         Width="834"
+                                         Background="#FF242424"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Top"
+                                         CornerRadius="12"
+                                         BorderThickness="0,5,0,0"
+                                         BorderBrush="#FF1E1E1E" />
+                                            <Border  Height="74"
+                                         Width="834"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Top"
+                                         CornerRadius="12"
+                                         BorderThickness="0,0,0,5"
+                                         BorderBrush="#FF373737" />
+                                            <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Top"
+                                            Margin="0,8">
+                                                <local:ToolMagazineButton ButtonCommand="{Binding MiddleCommand}"
+                                                              ButtonImageSource="{StaticResource Clamping}"
+                                                              StartState="{Binding IsSelectdMiddle}"
+                                                              IsEnabled="{Binding MiddleIsEnabled}"
+                                                              TitleText="A刀庫"
+                                                              SubTitleText="上軸" />
+                                                <local:ToolMagazineButton ButtonCommand="{Binding LeftExportCommand}"
+                                                              ButtonImageSource="{StaticResource Clamping}"
+                                                              StartState="{Binding IsSelectdLeftExport}"
+                                                              IsEnabled="{Binding LeftExportIsEnabled}"
+                                                              TitleText="B刀庫"
+                                                              SubTitleText="左軸"
+                                                              Margin="1,0" />
+                                                <local:ToolMagazineButton ButtonCommand="{Binding RightExportCommand}"
+                                                              ButtonImageSource="{StaticResource Clamping}"
+                                                              StartState="{Binding IsSelectdRightExport}"
+                                                              IsEnabled="{Binding RightExportIsEnabled}"
+                                                              TitleText="C刀庫"
+                                                              SubTitleText="右軸" />
+                                                <local:ToolMagazineButton ButtonCommand="{Binding LeftEntranceCommand}"
+                                                              ButtonImageSource="{StaticResource Clamping}"
+                                                              IsEnabled="{Binding LeftEntranceIsEnabled}"
+                                                              StartState="{Binding IsSelectdLeftEntrance}"
+                                                              TitleText="D刀庫"
+                                                              SubTitleText="左軸"
+                                                              Margin="1,0" />
+                                                <local:ToolMagazineButton ButtonCommand="{Binding RightEntranceCommand}"
+                                                              ButtonImageSource="{StaticResource Clamping}"
+                                                              IsEnabled="{Binding RightEntranceIsEnabled}"
+                                                              StartState="{Binding IsSelectdRightEntrance}"
+                                                              TitleText="E刀庫"
+                                                              SubTitleText="右軸" />
+                                                
+                                            </StackPanel>
+                                        </Grid>
+                                        <dxg:GridControl Grid.Row="1"
+                                             MaxHeight="500"
+                                             dx:ThemeManager.ThemeName="Office2019DarkGray"
+                                             ItemsSource="{Binding UnusedSelected}">
+                                            <dxg:GridControl.View>
+                                                <dxg:TableView ShowGroupPanel="False"
+                                                   AllowEditing="{Binding DrillEditing}" />
+                                            </dxg:GridControl.View>
+                                            <dxg:GridControl.Columns>
+                                                <dxg:GridColumn FieldName="Index"
+                                                    Header="位置" />
+                                                <dxg:GridColumn FieldName="SettingName"
+                                                    Header="設定檔名稱">
+                                                    <dxg:GridColumn.EditSettings>
+                                                        <dxe:ComboBoxEditSettings DisplayMember="DataName"
+                                                                      ItemsSource="{Binding DrillBrands}"
+                                                                      ValueMember="DataName" />
+                                                    </dxg:GridColumn.EditSettings>
+                                                </dxg:GridColumn>
+                                                <dxg:GridColumn FieldName="Name"
+                                                    Header="品牌"
+                                                    ReadOnly="True" />
+                                                <dxg:GridColumn FieldName="Dia"
+                                                    Header="直徑&#x0a;(mm)"
+                                                    ReadOnly="True" />
+                                                <dxg:GridColumn FieldName="Rpm"
+                                                    Header="主軸轉速&#x0a;(RPM)"
+                                                    ReadOnly="True" />
+                                                <dxg:GridColumn FieldName="Length"
+                                                    Header="鑽頭長度&#x0a;(mm)"
+                                                    ReadOnly="True" />
+                                                <dxg:GridColumn FieldName="Limit"
+                                                    Header="極限設定&#x0a;(M)" />
+                                            </dxg:GridControl.Columns>
+                                        </dxg:GridControl>
+                                        <Grid Grid.Row="2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1.5*" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <local:DrillLevelTitleControl VerticalAlignment="Center"
+                                                              Visibility="Collapsed" />
+                                            <StackPanel Grid.Column="1"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Bottom"
+                                            Orientation="Horizontal">
+                                                <StackPanel.Resources>
+                                                    <Style BasedOn="{StaticResource SiegCustomButton}"
+                                               TargetType="{x:Type Button}">
+                                                        <Setter Property="Width" Value="100"/>
+                                                        <Setter Property="Margin" Value="10"/>
+                                                    </Style>
+                                                </StackPanel.Resources>
+                                                <Button Command="{Binding UpDateCommand}"
+                                            Content="重新讀取" />
+                                                <Button Command="{Binding UnusedSaveCommand}"
+                                            Content="存檔" />
+                                            </StackPanel>
+                                        </Grid>
                                     </Grid>
+                                </GroupBox>
+                                <!--  目前刀具  -->
+                                <GroupBox Grid.Row="2" Style="{StaticResource ParameterDarkGroupBox}"
+                              Header="目前刀具">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid>
+                                            <Border  Height="74"
+                                         Width="505"
+                                         Background="#FF242424"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Top"
+                                         CornerRadius="12"
+                                         BorderThickness="0,5,0,0"
+                                         BorderBrush="#FF1E1E1E" />
+                                            <Border  Height="74"
+                                         Width="505"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Top"
+                                         CornerRadius="12"
+                                         BorderThickness="0,0,0,5"
+                                         BorderBrush="#FF373737" />
+                                            <StackPanel HorizontalAlignment="Center"
+                                            VerticalAlignment="Top"
+                                            Orientation="Horizontal"
+                                            Margin="0,8">
+                                                <local:ToolMagazineButton ButtonCommand="{Binding CurrentLeftCommand}"
+                                                              ButtonImageSource="{StaticResource NewDrill}"
+                                                              StartState="{Binding IsCurrentLeft}"
+                                                              TitleText="左軸"
+                                                              SubTitleText="" />
+                                                <local:ToolMagazineButton ButtonCommand="{Binding CurrentMiddleCommand}"
+                                                              ButtonImageSource="{StaticResource NewDrill}"
+                                                              StartState="{Binding IsCurrentMiddle}"
+                                                              TitleText="中軸"
+                                                              SubTitleText=""
+                                                              Margin="1,0" />
+                                                <local:ToolMagazineButton ButtonCommand="{Binding CurrentRightCommand}"
+                                                              ButtonImageSource="{StaticResource NewDrill}"
+                                                              StartState="{Binding IsCurrentRight}"
+                                                              TitleText="右軸"
+                                                              SubTitleText="" />
+                                            </StackPanel>
+                                        </Grid>
+                                        <!--
+                                <local:MainFunctionButton
+                                    ButtonCommand="{Binding CurrentLeftCommand}"
+                                    ButtonImageSource="{StaticResource NewDrill}"
+                                    StartState="{Binding IsCurrentLeft}"
+                                    TitleText="左軸" />
+                                <local:MainFunctionButton
+                                    ButtonCommand="{Binding CurrentMiddleCommand}"
+                                    ButtonImageSource="{StaticResource NewDrill}"
+                                    StartState="{Binding IsCurrentMiddle}"
+                                    TitleText="中軸" />
+                                <local:MainFunctionButton
+                                    ButtonCommand="{Binding CurrentRightCommand}"
+                                    ButtonImageSource="{StaticResource NewDrill}"
+                                    StartState="{Binding IsCurrentRight}"
+                                    TitleText="右軸" />-->
+                                        <local:DrillListControl Grid.Row="1"
+                                                    VerticalAlignment="Top"
+                                                    DataContext="{Binding UseSelected}" />
+                                        <Grid Grid.Row="2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1.5*" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <local:DrillLevelTitleControl VerticalAlignment="Center"
+                                                              Visibility="Collapsed" />
+                                            <StackPanel Grid.Column="1"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Bottom"
+                                            Orientation="Horizontal">
+                                                <StackPanel.Resources>
+                                                    <Style BasedOn="{StaticResource SiegCustomButton}"
+                                               TargetType="{x:Type Button}">
+                                                        <Setter Property="Width" Value="100"/>
+                                                        <Setter Property="Margin" Value="10"/>
+                                                    </Style>
+                                                </StackPanel.Resources>
+                                                <Button Command="{Binding UpDateCommand}" 
+                                            Content="重新讀取" />
+                                                <Button Command="{Binding UnusedSaveCommand}"
+                                            Content="存檔" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                            <Button/>
 
-                                </local:DPadUserControl.ButtonContent_2_Source>
-                            </local:DPadUserControl>
                         </Grid>
                     </Border>
 
