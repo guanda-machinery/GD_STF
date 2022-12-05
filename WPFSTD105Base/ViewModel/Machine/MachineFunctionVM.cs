@@ -208,10 +208,13 @@ namespace WPFSTD105.ViewModel
             JoyStick_CIRCLE_TOP_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.EXPORT_R,
             JoyStick_CIRCLE_MIDDLE_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.ENTRANCE_R,
             JoyStick_CIRCLE_BOTTOM_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.MIDDLE,
-
-
-
         };
+
+        /// <summary>
+        /// 刀庫模型VM
+        /// </summary>
+        public ChangeDrillPageVM ChangeDrillVM { get; set; } = new ChangeDrillPageVM();
+
         /// <summary>
         /// 捲屑機VM
         /// </summary>
