@@ -71,6 +71,9 @@ namespace STD_105
             model.Secondary = drawing;
             drawing.Secondary = model;
 
+            (this.DataContext as ProcessingMonitor_MachineVM).ScheduleGridC = MachiningSchedule_List_GridControl;
+
+
 
         }
         private void BasePage_Unloaded(object sender, RoutedEventArgs e)
