@@ -46,6 +46,9 @@ using DevExpress.Xpf.Core.FilteringUI;
 using DocumentFormat.OpenXml.Vml.Spreadsheet;
 using GD_STD.Properties;
 using Newtonsoft.Json;
+using DevExpress.Xpf.Spreadsheet.UI.TypedStyles;
+using WPFSTD105.FluentAPI;
+using System.Windows.Threading;
 
 //using DevExpress.Utils.Extensions;
 namespace WPFSTD105.ViewModel
@@ -75,7 +78,6 @@ namespace WPFSTD105.ViewModel
             if (ApplicationViewModel.PanelButton.Key != KEY_HOLE.AUTO) //如果沒有在自動狀況下
             {
                 //如有備份檔就寫回給 Codesys
-
                 for (int i = synIndex; i < Finish_UndoneDataViews.Count; i++)
                 {
                     //葉:需要比對衝突
@@ -117,24 +119,20 @@ namespace WPFSTD105.ViewModel
                 }
             }
 
-            /*using (Memor.WriteMemorClient Write = new Memor.WriteMemorClient())
+            //將設定的手臂模式寫入記憶體
+            STDSerialization ser = new STDSerialization();
+            FluentAPI.OptionSettings optionSettings = ser.GetOptionSettings();//
+            Transport_by_Hand_RadioButtonIsChecked = !optionSettings.HandAuto;
+                //打開選配->自動模式->按鈕取消底線
+            ser.SetOptionSettings(optionSettings);//寫入記錄
+            MecOptional mecOptional = JsonConvert.DeserializeObject<MecOptional>(optionSettings.ToString());
+            WriteCodesysMemor.SetMecOptional(mecOptional);//寫入記憶體
+
+            if (ViewLocator.ApplicationViewModel.AppManualConnect)
             {
-                long ImportProjectOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.ImportProject)).ToInt64();
-                Write.SetMonitorWorkOffset(new byte[1] { 1 }, ImportProjectOffset);//寫入匯入專案完成
-            }*/
-
-
-           // STDSerialization ser = new STDSerialization();
-           // FluentAPI.OptionSettings optionSettings = ser.GetOptionSettings();//讀取記憶體
-                                                                              //打開選配->自動模式->按鈕取消底線
-            Transport_by_Hand_RadioButtonIsEnable = GD_STD.Properties.Optional.Default.HandAuto;
-
-
-
-
-
-
-
+                Input_by_SmartPhone_RadioButtonIsChecked = true;
+                Input_by_Computer_RadioButtonIsChecked = false;
+            }
 
 
 
@@ -143,6 +141,7 @@ namespace WPFSTD105.ViewModel
             var ReadErrorInfoTask = Task.Factory.StartNew(() =>
             {
                 string Local_ErrorInfo = string.Empty;
+                //bool WasConnected = false;
                 while (ReadTaskBoolean)
                 {
                     try
@@ -161,15 +160,9 @@ namespace WPFSTD105.ViewModel
                             Local_ErrorInfo = string.Empty;
                         }
 
-                        // if(ViewLocator.ApplicationViewModel.PanelButton.)
+                        //一般狀態下才檢查 若兩個都未點選則不檢查
 
-
-
-
-
-
-
-                        Thread.Sleep(100);
+                        Thread.Sleep(2000);
                     }
                     catch (Exception ex)
                     {
@@ -178,26 +171,42 @@ namespace WPFSTD105.ViewModel
                 }
             });
 
-            //初始化 並掃描是否有手機配對
+            Task.Factory.StartNew(() =>
+            {
+                string Local_ErrorInfo = string.Empty;
+                while (ReadTaskBoolean)
+                {
+                    if (Input_by_SmartPhone_RadioButtonVMEnable &&
+                         Input_by_Computer_RadioButtonVMEnable &&
+                         !Input_by_SmartPhone_RadioButtonIsChecked)
+                    {
+                        if (ViewLocator.ApplicationViewModel.AppManualConnect)
+                        {
+                            //核對兩次 確保狀態正確
+                            Thread.Sleep(1500);
+                            if (ViewLocator.ApplicationViewModel.AppManualConnect)
+                            {
+                                Input_by_SmartPhone_RadioButtonIsChecked = true;
+                                Input_by_Computer_RadioButtonIsChecked = false;
+                            }
+                        }
+                    }
+                    Thread.Sleep(50);
+                }
+            });
+
+
+
+                //初始化 並掃描是否有手機配對
             Task.Run(() =>
             {
-                try
-                {
-                    //SyncCodesysData();
-                }
-                catch (Exception ex)
-                {
-                    AddOperatingLog(LogSourceEnum.Init, "清單初始化失敗", true);
-                    AddOperatingLog(LogSourceEnum.Init, ex.Message, true);
-                }
-
                 int RetryCount = 5;
                 for (int i = 0; i < RetryCount; i++)
                 {
                     try
                     {
                         WriteTourData();
-                        if (MachineAndPhoneAPI.AppServerCommunicate.GetEnableAppPairing(out var Result))
+                        /*if (MachineAndPhoneAPI.AppServerCommunicate.GetEnableAppPairing(out var Result))
                         {
                             if (Result)
                             {
@@ -217,7 +226,7 @@ namespace WPFSTD105.ViewModel
                         {
                             AddOperatingLog(LogSourceEnum.Software, $"取得手機連線模式失敗，", false);
                             AddOperatingLog(LogSourceEnum.Software, $"正在重試({i + 1}/{RetryCount})", false);
-                        }
+                        }*/
                     }
                     catch (Exception ex)
                     {
@@ -823,7 +832,7 @@ namespace WPFSTD105.ViewModel
 
 
 
-
+        public GridControl ScheduleGridC { get; set; } = new GridControl();
         /// <summary>
         /// 未加工的控制項
         /// </summary>
@@ -1902,7 +1911,6 @@ namespace WPFSTD105.ViewModel
                             if (GD_STD.Properties.Optional.Default.HandAuto)
                             {
                                 STDSerialization ser = new STDSerialization();
-                                //FluentAPI.MecSetting mecSetting = ser.GetMecSetting();
                                 FluentAPI.OptionSettings optionSettings = ser.GetOptionSettings();//讀取記憶體
 
                                 if (!optionSettings.HandAuto)
@@ -1911,6 +1919,8 @@ namespace WPFSTD105.ViewModel
                                     optionSettings.HandAuto = true; //修改參數
                                     ser.SetOptionSettings(optionSettings);//寫入記憶體
                                     Thread.Sleep(500);
+                                    MecOptional mecOptional = JsonConvert.DeserializeObject<MecOptional>(optionSettings.ToString());
+                                    WriteCodesysMemor.SetMecOptional(mecOptional);//寫入記憶體
                                 }
                             }
                         }
@@ -2006,7 +2016,9 @@ namespace WPFSTD105.ViewModel
                                     AddOperatingLog(LogSourceEnum.Software, "手臂切換回自動模式");
                                     optionSettings.HandAuto = true; //修改參數
                                     ser.SetOptionSettings(optionSettings);//寫入記憶體
-                                    Thread.Sleep(500);
+                                    Thread.Sleep(500); 
+                                    MecOptional mecOptional = JsonConvert.DeserializeObject<MecOptional>(optionSettings.ToString());
+                                    WriteCodesysMemor.SetMecOptional(mecOptional);//寫入記憶體
                                 }
                             }
                         }
@@ -2078,7 +2090,7 @@ namespace WPFSTD105.ViewModel
                             if (GD_STD.Properties.Optional.Default.HandAuto)
                             {
                                 STDSerialization ser = new STDSerialization();
-                                FluentAPI.MecSetting mecSetting = ser.GetMecSetting();
+                                //FluentAPI.MecSetting mecSetting = ser.GetMecSetting();
                                 FluentAPI.OptionSettings optionSettings = ser.GetOptionSettings();//讀取記憶體
                                 //打開選配->自動模式->按鈕取消底線
                                 
@@ -2095,13 +2107,9 @@ namespace WPFSTD105.ViewModel
                                     //改為關閉自動
                                     Transport_by_Hand_RadioButtonIsChecked = true;
                                     AddOperatingLog(LogSourceEnum.Software, "手臂切換到手動模式");
-
                                     //插單
-
                                 }
-
                                 ser.SetOptionSettings(optionSettings);//寫入記錄
-
                                 MecOptional mecOptional = JsonConvert.DeserializeObject<MecOptional>(optionSettings.ToString());
                                 WriteCodesysMemor.SetMecOptional(mecOptional);//寫入記憶體
                             }
@@ -2223,6 +2231,15 @@ namespace WPFSTD105.ViewModel
                             Input_by_SmartPhone_RadioButtonVMEnable = false;
                             Input_by_Computer_RadioButtonVMEnable = false;
 
+
+                            GD_STD.Phone.Operating operating;
+                            using (Memor.ReadMemorClient read = new Memor.ReadMemorClient())
+                            {
+                                operating = read.GetOperating();
+                            }
+                            operating.Satus = PHONE_SATUS.REFUSE;
+                            CodesysIIS.WriteCodesysMemor.SetPhoneOperating(operating);
+                            //關閉連線
 
                             var Result = MachineAndPhoneAPI.AppServerCommunicate.SetMachineenableAppPairing();
 
@@ -2378,7 +2395,7 @@ namespace WPFSTD105.ViewModel
                 {
                     try
                     {
-                        if (MachineAndPhoneAPI.AppServerCommunicate.GetEnableAppPairing(out var Result))
+                        /*if (MachineAndPhoneAPI.AppServerCommunicate.GetEnableAppPairing(out var Result))
                         {
                             if (Result)
                             {
@@ -2395,7 +2412,7 @@ namespace WPFSTD105.ViewModel
                         else
                         {
                             AddOperatingLog(LogSourceEnum.Software, "取得手機連線模式失敗", false);
-                        }
+                        }*/
 
                         WriteTourData();
 
@@ -2558,7 +2575,7 @@ namespace WPFSTD105.ViewModel
 
                         foreach (var FNDV in Finish_UndoneDataViews)
                         {
-                           if( FNDV.Position != PositionStatusEnum.完成.ToString()) 
+                            if ( FNDV.Position != PositionStatusEnum.完成.ToString()) 
                                     FNDV.Position  = PositionStatusEnum.等待配對.ToString();
                         }
                     }   //如果是在自動狀況下
@@ -2843,6 +2860,9 @@ namespace WPFSTD105.ViewModel
                                 int MIndex = Finish_UndoneDataViews.ToList().FindIndex(el => el.MaterialNumber == number);
                                 if (MIndex != -1)
                                 {
+                                    var sch_temp = Finish_UndoneDataViews[MIndex].Schedule;
+
+
                                     if (_WorkMaterials[value].Position == -2) //如果已經完成
                                     {
                                         //Finish_UndoneDataViews[MIndex].Schedule = _WorkMaterials[value].Finish;
@@ -2851,6 +2871,9 @@ namespace WPFSTD105.ViewModel
                                         Finish_UndoneDataViews[MIndex].Finish = true;
                                         Finish_UndoneDataViews[MIndex].Position = PositionStatusEnum.完成.ToString();
                                         _Finish.Add(value); //加入到完成列表
+
+
+
                                     }
                                     else if (_WorkMaterials[value].Position == -1)
                                     {
@@ -2863,6 +2886,9 @@ namespace WPFSTD105.ViewModel
                                         // Finish_UndoneDataViews[MIndex].Schedule = Convert.ToDouble(finishCount) / Convert.ToDouble(count) * 100d; //完成趴數
                                         Finish_UndoneDataViews[MIndex].Schedule = _WorkMaterials[value].Finish;
                                         Finish_UndoneDataViews[MIndex].Position = PositionStatusEnum.加工中.ToString();
+
+
+
                                     }
                                     else if (_WorkMaterials[value].Position == 0)
                                     {
@@ -2871,23 +2897,30 @@ namespace WPFSTD105.ViewModel
                                             Finish_UndoneDataViews[MIndex].Position != PositionStatusEnum.手動配對.ToString() &&
                                             Finish_UndoneDataViews[MIndex].Position != PositionStatusEnum.等待配對.ToString())
                                             Finish_UndoneDataViews[MIndex].Position = PositionStatusEnum.等待配對.ToString();
+
+
                                     }
                                     else
                                     {
+
                                         if (_WorkMaterials[value].IsExport) //出口處
                                         {
+                                            Finish_UndoneDataViews[MIndex].Schedule = _WorkMaterials[value].Finish;
                                             Finish_UndoneDataViews[MIndex].Position = $"等待(出)-{exCount}";
+                                            exCount++;
                                         }
                                         else
                                         {
                                             Finish_UndoneDataViews[MIndex].Position = $"等待(入)-{enCount}";
+                                            enCount++;
                                         }
-                                        enCount++;
-                                        exCount++;
                                     }
 
-                                }
+                                    //有值變更才重整
+                                    if(sch_temp != Finish_UndoneDataViews[MIndex].Schedule)
+                                        RefreshRow(ScheduleGridC, MIndex);
 
+                                }
                             }
                         }
                         catch(Exception ex) 
@@ -2903,6 +2936,34 @@ namespace WPFSTD105.ViewModel
                Debugger.Break();
             }
         }
+
+        private void RefreshRow(GridControl grid , int Index)
+        {
+            try
+            {
+                grid.Dispatcher.Invoke(() =>
+                {
+                    try
+                    {
+                        grid.ItemsSource = null;
+                        grid.ItemsSource = Finish_UndoneDataViews;
+                        grid.RefreshData();
+                        grid.RefreshRow(Index);
+                    }
+                    catch(Exception ex)
+                    {
+
+                    }
+                });
+            }
+            catch(Exception ex)
+            {
+
+            }
+        }
+
+
+
 
 
     }

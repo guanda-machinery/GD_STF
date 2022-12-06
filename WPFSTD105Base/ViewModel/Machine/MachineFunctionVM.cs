@@ -1,4 +1,5 @@
 ﻿using DevExpress.Xpf.Spreadsheet.UI.TypedStyles;
+using GD_STD;
 using GD_STD.Enum;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using WPFWindowsBase;
 
 namespace WPFSTD105.ViewModel
 {
@@ -23,6 +25,9 @@ namespace WPFSTD105.ViewModel
             //是否可由其他方法代替? 需查證
             Task.Run(() =>
             {
+
+
+
                 while (Taskboolen)
                 {
                     //捕捉按鈕信號
@@ -83,6 +88,11 @@ namespace WPFSTD105.ViewModel
             {
                 GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
                 var Exboolen = PButton.ExportRack;
+                //離開頁面時 先關掉頂升柱
+                //相反訊號
+
+
+
                 ClearPButtonModeValue(ref PButton);
                 switch (value)
                 {
