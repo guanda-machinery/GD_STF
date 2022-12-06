@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Linq;
 using WPFSTD105.Attribute;
 using static WPFSTD105.Properties.SofSetting;
 
@@ -105,7 +106,8 @@ namespace WPFSTD105.Model
         /// <summary>
         /// 創建螺栓群組
         /// </summary>
-        public void CreateBolts(devDept.Eyeshot.Model model, ref bool check, List<Mesh> meshes = null,bool isRotate = true)
+        public void CreateBolts(devDept.Eyeshot.Model model, ref bool check, 
+            EntityList meshes = null,bool isRotate = true)
         {
             check = true;
             SteelAttr steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
@@ -342,7 +344,7 @@ namespace WPFSTD105.Model
         /// </summary>
         /// <param name="type"></param>
         /// <param name="face"></param>
-        /// <param name="checkValue"></param>
+        /// <param name="checkValue">Y座標</param>
         /// <param name="workingRange"></param>
         /// <returns></returns>
         public static bool CheckWorkingRange(AXIS_MODE Mode,FACE face,OBJECT_TYPE type, double checkValue, List<double> workingRange) 
@@ -455,6 +457,7 @@ namespace WPFSTD105.Model
                     double checkValue = 0;
                     
                     //checkValue = bolt.Y;
+                    double checkValueX = bolt.X;
                     switch (bolt.Face)
                     {
                         case FACE.TOP:
@@ -467,19 +470,22 @@ namespace WPFSTD105.Model
                         default:
                             break;
                     }
-
+                    // 取得各面Vertices
+                    List<Point3D> faceVertices = new List<Point3D>();
+                    //faceVertices = ((ModelExt)model).GetFaceBox(bolt.Face);
                     if (CheckWorkingRange(bolt.Mode, bolt.Face, type, checkValue, list))
                     {
                         if (bolt.Mode != AXIS_MODE.POINT && bolt.Mode != AXIS_MODE.HypotenusePOINT)
                         {
                             Point3D checkPoint3D = new Point3D(bolt.X, bolt.Y, bolt.Z);
                             var testPoint = checkPoint3D;
-                            // 前面步驟無CreateBolt 需翻轉
+                            // 前面步驟無CreateBolt(因為CreateBolt也是依照前後進行翻轉) 需翻轉
                             if (rotate)
                             {
                                 testPoint = Coordinates(bolt.Face, checkPoint3D);
                             }
 
+                            // 點是否在前後頂面上
                             if (!((Mesh)model.Blocks[1].Entities[0]).IsPointInside(testPoint))
                             // if (!((Mesh)model.Entities[model.Entities.Count - 1]).IsPointInside(testPoint))
                             {
@@ -496,6 +502,7 @@ namespace WPFSTD105.Model
             return true;
         }
 
+        
 
 
         /// <summary>
@@ -505,12 +512,12 @@ namespace WPFSTD105.Model
         /// <param name="model">要被加入的模型</param>
         /// <param name="block">加入到模型的參考圖塊</param>
         /// <param name="check">規則檢查結果</param>
-        /// <param name="meshes">產生已存在的孔</param>
+        /// <param name="meshes">產生已存在的孔(model.Blocks.Entities)</param>
         /// <param name="isRotate">孔是否翻轉(產生時需要，查詢時不需要)</param>
         /// <returns>加入到模型的圖塊</returns>
         public static Bolts3DBlock AddBolts(GroupBoltsAttr attr, devDept.Eyeshot.Model model,
             out BlockReference block,out bool check,
-            List<Mesh> meshes = null,bool isRotate = true)
+            EntityList meshes = null,bool isRotate = true)
         {
             check = true;
             block = null;
@@ -519,12 +526,44 @@ namespace WPFSTD105.Model
             //result.steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
             result.steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
             bool fCreateBolt = false;
+
+            // 若dm檔中無圖塊，新增圖塊(model.Blocks)及實體(model.Entity)
+            // 原判斷條件:圖塊GUID
+            // 
             if (!model.Blocks.Contains(result.Name))
-            {//出來的座標無翻轉
+            {
+                model.Blocks.Add(result);//加入孔位群組圖塊到模型
+                block = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+                block.EntityData = result.Info;
+                block.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
+                model.Entities.Insert(0, block);//加入參考圖塊到模型
+                if (meshes != null && meshes.Count>0)
+                {
+                    model.Blocks[result.Name].Entities.AddRange(meshes);
+                }
+                //出來的座標無翻轉
                 result.CreateBolts(model, ref check, meshes, isRotate);//創建孔位群組
+
                 fCreateBolt = true;
             }
-            
+            else
+            {
+                //// 將對應實體寫入
+                
+                //// 若有指定實體，複寫實體
+                //if (meshes.Count!=0)
+                //{                    
+                //    model.Blocks[result.Name].Entities.Clear();
+                //    model.Blocks[result.Name].Entities.AddRange(meshes);
+                //}
+                //else
+                //{
+                //    result.Entities.AddRange(model.Blocks[result.Name].Entities);
+                //}
+            }
+            // 檢查規則 不合格 回傳false
+            if (!CheckBolts(model, !fCreateBolt, result.Name)) check = false;
+
             //// 符合加工區域
             //if (check)
             //{
@@ -595,34 +634,28 @@ namespace WPFSTD105.Model
 
             //if (!result.hasOutSteel)
             //{
-                if (!model.Blocks.Contains(result.Name))
-                {
-                    model.Blocks.Add(result);//加入孔位群組圖塊到模型
-                    block = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
-                    block.EntityData = result.Info;
-                    block.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-                    model.Entities.Insert(0, block);//加入參考圖塊到模型
-                }
-                else
-                {
-                    result.Entities.AddRange(model.Blocks[result.Name].Entities);
-                }
-            if (CheckBolts(model, !fCreateBolt, result.Name))
-            {
-                check = true;
-            }
-            else { check = false; }
+            //model.Blocks.Where(x => x.Entities.GetType() == typeof(Mesh) &&
+            //((BoltAttr)(x.Entities.Select(y=>y.EntityData)).X == result.Info.X &&
+            //((BoltAttr)x.Entities).Y == result.Info.Y &&
+            //((BoltAttr)x.Entities).Z == result.Info.Z &&
+            //((BoltAttr)x.Entities).Mode == result.Info.Mode);
+            //if (!model.Blocks.Contains(result.Name))
+            //{
+            //    model.Blocks.Add(result);//加入孔位群組圖塊到模型
+            //    block = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+            //    block.EntityData = result.Info;
+            //    block.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
+            //    model.Entities.Insert(0, block);//加入參考圖塊到模型
+            //}
+            //else
+            //{
+            //    result.Entities.AddRange(model.Blocks[result.Name].Entities);
+            //}
+
             //}
             // else { result.Entities.AddRange(model.Blocks[result.Name].Entities); }
 
             return result;
-
-
-            
-
-
-
-
         }
 
         /// <summary>

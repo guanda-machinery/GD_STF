@@ -555,14 +555,15 @@ namespace WPFSTD105.Model
                     }
                 }
             }
+            // 手動斜邊設定值
             FillCutSetting(steelAttr);
             result = new Steel3DBlock(GetProfile(steelAttr));
-            model.Blocks.Add(result);//加入鋼構圖塊到模型
+            model.Blocks.Add((Block)result);//加入鋼構圖塊到模型
             blockReference = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);
             blockReference.EntityData = steelAttr;
             blockReference.Selectable = false;//關閉用戶選擇
             blockReference.Attributes.Add(dic, new AttributeReference(0, 0, 0));
-            model.Entities.Insert(0, blockReference);//加入參考圖塊到模型
+            model.Entities.Add(blockReference);//加入參考圖塊到模型
             model.Entities.Regen();
             return result;
         }
@@ -643,34 +644,37 @@ namespace WPFSTD105.Model
                 switch (item.face)
                 {
                     case FACE.TOP:
-                        steelAttr.PointTop.DL.X = item.DLX;
-                        steelAttr.PointTop.DL.Y = item.DLY;
-                        steelAttr.PointTop.UL.X = item.ULX;
-                        steelAttr.PointTop.UL.Y = item.ULY;
-                        steelAttr.PointTop.UR.X = item.URX;
-                        steelAttr.PointTop.UR.Y = item.URY;
-                        steelAttr.PointTop.DR.X = item.DRX;
-                        steelAttr.PointTop.DR.Y = item.DRY;
+                        steelAttr.PointTop = new CutList(new CutPoint() { X = item.URX, Y = item.URY }, new CutPoint() { X = item.DRX, Y = item.DRY }, new CutPoint() { X = item.ULX, Y = item.ULY }, new CutPoint() { X = item.DLX, Y = item.DLY });
+                        //steelAttr.PointTop.DL.X = item.DLX;
+                        //steelAttr.PointTop.DL.Y = item.DLY;
+                        //steelAttr.PointTop.UL.X = item.ULX;
+                        //steelAttr.PointTop.UL.Y = item.ULY;
+                        //steelAttr.PointTop.UR.X = item.URX;
+                        //steelAttr.PointTop.UR.Y = item.URY;
+                        //steelAttr.PointTop.DR.X = item.DRX;
+                        //steelAttr.PointTop.DR.Y = item.DRY;
                         break;
                     case FACE.FRONT:
-                        steelAttr.PointFront.DL.X = item.DLX;
-                        steelAttr.PointFront.DL.Y = item.DLY;
-                        steelAttr.PointFront.UL.X = item.ULX;
-                        steelAttr.PointFront.UL.Y = item.ULY;
-                        steelAttr.PointFront.UR.X = item.URX;
-                        steelAttr.PointFront.UR.Y = item.URY;
-                        steelAttr.PointFront.DR.X = item.DRX;
-                        steelAttr.PointFront.DR.Y = item.DRY;
+                        steelAttr.PointFront = new CutList(new CutPoint() { X = item.URX, Y = item.URY }, new CutPoint() { X = item.DRX, Y = item.DRY }, new CutPoint() { X = item.ULX, Y = item.ULY }, new CutPoint() { X = item.DLX, Y = item.DLY });
+                        //steelAttr.PointFront.DL.X = item.DLX;
+                        //steelAttr.PointFront.DL.Y = item.DLY;
+                        //steelAttr.PointFront.UL.X = item.ULX;
+                        //steelAttr.PointFront.UL.Y = item.ULY;
+                        //steelAttr.PointFront.UR.X = item.URX;
+                        //steelAttr.PointFront.UR.Y = item.URY;
+                        //steelAttr.PointFront.DR.X = item.DRX;
+                        //steelAttr.PointFront.DR.Y = item.DRY;
                         break;
                     case FACE.BACK:
-                        steelAttr.PointBack.DL.X = item.DLX;
-                        steelAttr.PointBack.DL.Y = item.DLY;
-                        steelAttr.PointBack.UL.X = item.ULX;
-                        steelAttr.PointBack.UL.Y = item.ULY;
-                        steelAttr.PointBack.UR.X = item.URX;
-                        steelAttr.PointBack.UR.Y = item.URY;
-                        steelAttr.PointBack.DR.X = item.DRX;
-                        steelAttr.PointBack.DR.Y = item.DRY;
+                        steelAttr.PointBack = new CutList(new CutPoint() { X = item.URX, Y = item.URY }, new CutPoint() { X = item.DRX, Y = item.DRY }, new CutPoint() { X = item.ULX, Y = item.ULY }, new CutPoint() { X = item.DLX, Y = item.DLY });
+                        //steelAttr.PointBack.DL.X = item.DLX;
+                        //steelAttr.PointBack.DL.Y = item.DLY;
+                        //steelAttr.PointBack.UL.X = item.ULX;
+                        //steelAttr.PointBack.UL.Y = item.ULY;
+                        //steelAttr.PointBack.UR.X = item.URX;
+                        //steelAttr.PointBack.UR.Y = item.URY;
+                        //steelAttr.PointBack.DR.X = item.DRX;
+                        //steelAttr.PointBack.DR.Y = item.DRY;
                         break;
                     default:
                         break;
