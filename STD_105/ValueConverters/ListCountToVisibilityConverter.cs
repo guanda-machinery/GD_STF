@@ -12,6 +12,7 @@ namespace STD_105
     internal class ListCountToVisibilityConverter : WPFWindowsBase.BaseValueConverter<ListCountToVisibilityConverter>
     {
         public bool Invert { get; set; }
+        public int ListLimitCount { get; set; } = 0;
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
@@ -22,10 +23,8 @@ namespace STD_105
             Visibility _visibility = Visibility.Collapsed;
             if (value is IEnumerable<object>)
             {
-
-
                 var ValueCount = (value as IEnumerable<object>).Count();
-                if(ValueCount !=0)
+                if(ValueCount > ListLimitCount)
                 {
                     return (Invert) ? _visibility : Visibility.Visible;
                 }

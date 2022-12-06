@@ -90,11 +90,20 @@ namespace WPFSTD105
                         MessageBoxResult messageBoxResult = MessageBox.Show($"機台運行中下不可離開加工監控頁面。", "通知", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                         return;
                     }
+
                     //鑰匙孔在自動情況下不可離開
                     if (ApplicationViewModel.PanelButton.Key == KEY_HOLE.AUTO)
                     {
-                        MessageBoxResult messageBoxResult = MessageBox.Show($"鑰匙孔在自動情況下不可離開加工監控頁面。", "通知", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
-                        return;
+                        //如果不在加工監控頁面 則進入
+                        if (value != ApplicationPage.MachineMonitor)
+                        {
+                            //除了警告頁面或上鎖之外
+                            if (value != ApplicationPage.Lock && value != ApplicationPage.Alarm)
+                            {
+                                MessageBoxResult messageBoxResult = MessageBox.Show($"鑰匙孔在自動情況下不可離開加工監控頁面。", "通知", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                                return;
+                            }
+                        }
                     }
                 }
                 

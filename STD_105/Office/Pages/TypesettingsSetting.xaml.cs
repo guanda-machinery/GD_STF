@@ -37,6 +37,7 @@ using Color = System.Drawing.Color;
 using static DevExpress.Utils.Menu.DXMenuItemPainter;
 using DevExpress.Utils.Serializing;
 using DevExpress.Pdf.ContentGeneration;
+using System.Web.UI.WebControls.WebParts;
 //using TriangleNet;
 
 namespace STD_105.Office
@@ -1098,14 +1099,12 @@ namespace STD_105.Office
             if ((sender as DevExpress.Xpf.Grid.TableView).Name == PartListTableView.Name)
             {
                 IScrollInfo SoftCountTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(SoftCountTableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
-                if (SoftCountTableView_ScrollElement != null)
-                    SoftCountTableView_ScrollElement.SetVerticalOffset(e.VerticalOffset);
+                SoftCountTableView_ScrollElement?.SetVerticalOffset(e.VerticalOffset);
             }
             if ((sender as DevExpress.Xpf.Grid.TableView).Name == SoftCountTableView.Name)
             {
                 IScrollInfo PartsTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(PartListTableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
-                if (PartsTableView_ScrollElement != null)
-                    PartsTableView_ScrollElement.SetVerticalOffset(e.VerticalOffset);
+                PartsTableView_ScrollElement?.SetVerticalOffset(e.VerticalOffset);
             }
         }
 
@@ -1119,7 +1118,8 @@ namespace STD_105.Office
         {
             string dirPath = ApplicationVM.FileReportLogo();
             string FilePath = ApplicationVM.FileReportLogo() + @"\ReportLogo.png";
-            string GDLOGOPath = "Logo/GD_ReportLogo.png";
+            string startup_path = System.AppDomain.CurrentDomain.BaseDirectory;
+            string GDLOGOPath = $@"{startup_path}\Logo\GD_ReportLogo.png";
             if (Directory.Exists(dirPath))
             {
                 Console.WriteLine("The directory {0} exists.", dirPath);
@@ -1188,8 +1188,10 @@ namespace STD_105.Office
 
         private void DeletePartButtonClick(object sender, RoutedEventArgs e)
         {
+            
             var MDataView = Material_List_GridControl.SelectedItem as GD_STD.Data.MaterialDataView;
-            //var MDataView = (sender as System.Windows.Controls.Button).DataContext as GD_STD.Data.MaterialDataView;
+
+            //ComponentGridControl
             if (MDataView.Parts.Count == 0)
             {
                 WinUIMessageBox.Show(null,
@@ -1221,7 +1223,6 @@ namespace STD_105.Office
             var MessageBoxReturn = MessageBoxResult.None;
             if (MDataView.Parts.Count != 0 )
             {
-
                 MessageBoxReturn = WinUIMessageBox.Show(null,
                         $"是否要刪除素材編號:{MDataView.MaterialNumber}內的零件：\r\n" +
                         $"構件編號：{MDataView.SelectedPart.AssemblyNumber}\r\n" +
@@ -1249,9 +1250,9 @@ namespace STD_105.Office
             if (MessageBoxReturn == MessageBoxResult.Yes)
             {
                 STDSerialization ser = new STDSerialization(); //序列化處理器
-
+                   
+                //以下代碼在第二階段需要重構->需放到VM層及讀取方式變更
                 var OTS_VM = this.DataContext as WPFSTD105.OfficeTypeSettingVM;
-                //以下代碼在第二階段需要重構
                 ObservableCollection<SteelPart> steelParts = ser.GetPart(MDataView.Profile.GetHashCode().ToString());
                 if (MDataView.Parts.Count != 0)
                 {
@@ -1260,9 +1261,10 @@ namespace STD_105.Office
                     {
                         int m = OTS_VM.DataViews[index].Match.FindLastIndex(x => x == false);
                         if (m != -1)
+                        {
                             OTS_VM.DataViews[index].Match[m] = true;
-
-                        OTS_VM.DataViews[index].Revise = DateTime.Now;
+                            OTS_VM.DataViews[index].Revise = DateTime.Now;
+                        }
                     }
 
                     int steelIndex = steelParts.FindIndex(x => x.Number == MDataView.SelectedPart.PartNumber);
@@ -1288,7 +1290,7 @@ namespace STD_105.Office
                 ScreenManager.ViewModel.Status = "刪除零件中...";
                 ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
                 ReloadMaterialGrid();
-                ScreenManager.ViewModel.Status = "完成...";
+                ScreenManager.ViewModel.Status = "完成....";
                 System.Threading.Thread.Sleep(100);
                 ScreenManager.Close();
                 WinUIMessageBox.Show(null,
@@ -1306,6 +1308,85 @@ namespace STD_105.Office
 
         }
             
+       private void DeleteAllPartButtonClick(object sender, RoutedEventArgs e)
+        {
+            var SelectedDataView = Material_List_GridControl.SelectedItem as GD_STD.Data.MaterialDataView;
+
+            if (SelectedDataView.Parts.Count == 0)
+            {
+                WinUIMessageBox.Show(null,
+                    $"本素材不存在可刪除之零件",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Popup);
+                return;
+            }
+
+            var MessageBoxReturn = WinUIMessageBox.Show(null,
+                        $"是否要刪除素材編號:{SelectedDataView.MaterialNumber}內的所有零件：\r\n" +
+                        $"按下「YES」會立即刪除",
+                        "通知",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                        FloatingMode.Popup);
+
+            if (MessageBoxReturn == MessageBoxResult.Yes)
+            {
+                STDSerialization ser = new STDSerialization(); //序列化處理器
+                                          
+                //需要重構
+                var OTS_VM = this.DataContext as WPFSTD105.OfficeTypeSettingVM;
+                ObservableCollection<SteelPart> steelParts = ser.GetPart(SelectedDataView.Profile.GetHashCode().ToString());
+                SelectedDataView.Parts.ForEach(DelPart =>
+                {
+                    int index = OTS_VM.DataViews.FindIndex(x => x == DelPart);
+                    if (index != -1)
+                    {
+                        int m = OTS_VM.DataViews[index].Match.FindLastIndex(x => x == false);
+                        if (m != -1)
+                            OTS_VM.DataViews[index].Match[m] = true;
+
+                        OTS_VM.DataViews[index].Revise = DateTime.Now;
+                    }
+
+                    int steelIndex = steelParts.FindIndex(x => x.Number == DelPart.PartNumber);
+                    if (steelIndex != -1)
+                    {
+                        int partMatch = steelParts[steelIndex].Match.FindLastIndex(x => x == false);
+                        if (partMatch != -1)
+                            steelParts[steelIndex].Match[partMatch] = true;
+                    }
+                    ser.SetPart(SelectedDataView.Profile.GetHashCode().ToString(), new ObservableCollection<object>(steelParts));
+                });
+                SelectedDataView.Parts.Clear();
+                //存檔
+                ser.SetMaterialDataView(Material_List_GridControl.ItemsSource as ObservableCollection<MaterialDataView>);
+
+                ScreenManager.ViewModel.Status = "刪除零件中...";
+                ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
+                ReloadMaterialGrid();
+                ScreenManager.ViewModel.Status = "完成...";
+                System.Threading.Thread.Sleep(100);
+                ScreenManager.Close();
+                WinUIMessageBox.Show(null,
+                    $"刪除成功！",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Popup);
+
+            }
+
+        }
+
+
         private void ReloadMaterialGrid()
         {
             //紀錄卷軸位置
@@ -1351,8 +1432,7 @@ namespace STD_105.Office
                 //素材區卷軸歸位
                 Material_TableView.Dispatcher.Invoke(() =>
                 {
-                    if (Material_TableView_ScrollElement != null)
-                        Material_TableView_ScrollElement.SetVerticalOffset(Material_TableView_VerticalOffset)   ;
+                    Material_TableView_ScrollElement?.SetVerticalOffset(Material_TableView_VerticalOffset)   ;
                 });
 
             }
@@ -1378,7 +1458,7 @@ namespace STD_105.Office
 
 
 
-
+ 
 
 
 

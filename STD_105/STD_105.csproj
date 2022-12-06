@@ -937,6 +937,8 @@
     <Compile Include="ValueConverters\ConverterToPartNumber.cs" />
     <Compile Include="ValueConverters\DateTimeConverter.cs" />
     <Compile Include="ValueConverters\ListCountToVisibilityConverter.cs" />
+    <Compile Include="ValueConverters\MultiValueConverters\BooleanArrayIntersectToBooleanConverter.cs" />
+    <Compile Include="ValueConverters\MultiValueConverters\BooleanArray_UnionToBooleanConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\DatetimeArrayToLastestDatetimeConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\DoubleConditionToIsEnabledConerter.cs" />
     <Compile Include="ValueConverters\DrillBrandGetPropertyConverter.cs" />
@@ -953,7 +955,7 @@
     <Compile Include="ValueConverters\GridControlWidthConvert.cs" />
     <Compile Include="ValueConverters\IListFilterToCountConverter.cs" />
     <Compile Include="ValueConverters\MaterialDesignPackIconToBitmapSourceConverter.cs" />
-    <Compile Include="ValueConverters\MultiValueConverters\BooleanArrayUnionToBooleanConverter.cs" />
+    <Compile Include="ValueConverters\MultiValueConverters\BooleanArray_In_UnionToBooleanConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\MultiObjectArrayToBooleanConverter.cs" />
     <Compile Include="ValueConverters\ObjectIsNullToBooleanConverter.cs" />
     <Compile Include="ValueConverters\SectionSpecificationToEnabledConverter.cs" />

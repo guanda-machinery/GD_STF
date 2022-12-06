@@ -498,7 +498,7 @@ namespace WPFSTD105.ViewModel
                     //若型鋼型態&加工行為&數值checkbox皆無勾選, 需提示錯誤
                     if (chb_SteelType && chb_ProcessingBehavior && chb_H_Avalue && chb_H_Bvalue && chb_H_Cvalue == true)
                     {
-                        if (ProcessingZone_A >= 25 && ProcessingZone_B >= 10 && ProcessingZone_C >= 3)
+                        if (ProcessingZone_A >= 40 && ProcessingZone_B >= 10 && ProcessingZone_C >= 3)
                         {
                             STDSerialization ser = new STDSerialization(); //序列化處理器
                             ObservableCollection<SectionTypeProcessingData> listSectionData = new ObservableCollection<SectionTypeProcessingData>();
@@ -767,7 +767,7 @@ namespace WPFSTD105.ViewModel
                     case (int)SectionProcessing_SteelType.H:
                         if ((chb_SteelType && chb_ProcessingBehavior) == true && (chb_H_Avalue || chb_H_Bvalue || chb_H_Cvalue) == true)
                         {
-                            if (chb_H_Avalue == true && ProcessingZone_A < 25) f_ChbChecked_ValueError = true;
+                            if (chb_H_Avalue == true && ProcessingZone_A < 40) f_ChbChecked_ValueError = true;
                             if (chb_H_Bvalue == true && ProcessingZone_B < 10) f_ChbChecked_ValueError = true;
                             if (chb_H_Cvalue == true && ProcessingZone_C < 3)  f_ChbChecked_ValueError = true;
 
@@ -1525,6 +1525,15 @@ namespace WPFSTD105.ViewModel
                 DrillBrands save = new DrillBrands(DrillBrands);
                 save.Insert(0, DrillBrand.GetNull());
                 ser.SetDrillBrands(save);
+                //跳出提示窗
+                WinUIMessageBox.Show(null,
+                    $"刀具設定已存檔",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Window);
             });
         }
         /// <summary>

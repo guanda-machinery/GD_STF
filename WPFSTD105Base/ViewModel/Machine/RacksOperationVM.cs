@@ -7,6 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using static WPFSTD105.ViewLocator;
 using static WPFSTD105.CodesysIIS;
+using System.Threading;
+using System.Windows.Input;
+
 namespace WPFSTD105.ViewModel
 {
     /// <summary>
@@ -22,31 +25,31 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public RacksOperationVM()
         {
-            //this.Button_Down_IsEnabled = false;
+            //手動操作時只需頂到最上面或最下面
+            Joystick_UP_DESC_Trigger_Parameter = SHELF.LEVEL2;
+            Joystick_UP_DESC_Release_Parameter = null;
 
-            /*PanelButton panelButton = ApplicationViewModel.PanelButton;
-            //如果都沒有選擇出入或口料架
+            Joystick_DOWN_DESC_Trigger_Parameter = SHELF.NULL;
+            Joystick_DOWN_DESC_Release_Parameter = null;
 
-            if (!panelButton.EntranceRack && !panelButton.ExportRack)
-            {
-                //如果出口料架不是唯讀
-                if (EntranceReadOnly)
-                {
-                    panelButton.EntranceRack = true;
-                }
-                else
-                {
-                    panelButton.ExportRack = true;
-                }
-                WriteCodesysMemor.SetPanel(panelButton);
-            }  */
+            Joystick_LEFT_DESC_Trigger_Parameter = MOBILE_RACK.INSIDE;
+            Joystick_LEFT_DESC_Release_Parameter = MOBILE_RACK.NULL;
+
+            Joystick_RIGHT_DESC_Trigger_Parameter = MOBILE_RACK.OUTER;
+            Joystick_RIGHT_DESC_Release_Parameter = MOBILE_RACK.NULL;
         }
+      
+      //解構
+
+
+
+
 
         #region 公開屬性
 
-        /// <summary>
-        /// 啟動動力滾輪
-        /// </summary>
+            /// <summary>
+            /// 啟動動力滾輪
+            /// </summary>
         public bool OpenRoll
         {
             get => _openRoll;
@@ -97,42 +100,7 @@ namespace WPFSTD105.ViewModel
             }
         }
 
-        ///// <summary>
-        ///// 移動料架上升或下降，控制開關。 (綁定VM)
-        ///// </summary>
-        //public bool RisePowr
-        //{
-        //    get => ApplicationViewModel.PanelButton.EntranceRack ? _EntranceRisePowr : _ExportRisePowr;
-        //    set
-        //    {
-        //        if (ApplicationViewModel.PanelButton.EntranceRack)
-        //        {
-        //            _EntranceRisePowr = value;
-        //        }
-        //        else
-        //        {
-        //            _ExportRisePowr = value;
-        //        }
-        //    }
-        //}
-        ///// <summary>
-        ///// 橫移料架移動，控制開關
-        ///// </summary>
-        //public bool MovePowr
-        //{
-        //    get => ApplicationViewModel.PanelButton.EntranceRack ? _EntranceMovePowr : _ExportMovePowr;
-        //    set
-        //    {
-        //        if (ApplicationViewModel.PanelButton.EntranceRack)
-        //        {
-        //            _EntranceMovePowr = value;
-        //        }
-        //        else
-        //        {
-        //            _ExportMovePowr = value;
-        //        }
-        //    }
-        //}
+
         /// <summary>
         /// 紀錄目前橫移是否再前進狀態。前進中回傳 true，沒有前進回傳false。
         /// </summary>
@@ -217,7 +185,7 @@ namespace WPFSTD105.ViewModel
         }
 
         /// <summary>
-        /// 橫移料架上升
+        /// 橫移料架上升(舊)
         /// </summary>
         public WPFWindowsBase.RelayParameterizedCommand RiseCommand
         {
@@ -238,7 +206,7 @@ namespace WPFSTD105.ViewModel
             }
         }
         /// <summary>
-        /// 橫移料架往前移動
+        /// 橫移料架往前移動(舊)
         /// </summary>
         public WPFWindowsBase.RelayParameterizedCommand MoveCommand
         {
@@ -304,6 +272,36 @@ namespace WPFSTD105.ViewModel
             }
         }
 
+        /// <summary>
+        /// 定位柱
+        /// </summary>
+        public ICommand PostRiseCommand
+        {
+            get
+            {
+                return new WPFWindowsBase.RelayCommand(() =>
+                {
+                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
+                        return;
+                    //PButton.postrise無法運作 原因不明
+                    PanelButton PButton = ApplicationViewModel.PanelButton;
+                    //相反訊號
+                    if(PButton.Joystick != JOYSTICK.ELLIPSE_BOTTOM_DESC)
+                    {
+                        PButton.Joystick = JOYSTICK.ELLIPSE_BOTTOM_DESC;
+                    }
+                    else
+                    {            
+                        PButton.Joystick = JOYSTICK.NULL;
+                    }
+
+                    WriteCodesysMemor.SetPanel(PButton);
+                });
+            }
+        }
+
+
+
 
         #endregion
 
@@ -319,6 +317,11 @@ namespace WPFSTD105.ViewModel
                 return Convert.ToInt16(count + 1);                
             }
         }
+
+
+
+
+
         #endregion
     }
 }

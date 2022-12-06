@@ -1,4 +1,6 @@
-﻿using GD_STD;
+﻿using DevExpress.Mvvm;
+using DocumentFormat.OpenXml.Vml.Spreadsheet;
+using GD_STD;
 using GD_STD.Enum;
 using System;
 using System.Collections.Generic;
@@ -7,8 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using static WPFSTD105.ViewLocator;
-
+using WPFWindowsBase;
 namespace WPFSTD105.ViewModel
 {
     /// <summary>   
@@ -59,6 +60,26 @@ namespace WPFSTD105.ViewModel
 
 
 
+        public object Joystick_LEFT_DESC_Trigger_Parameter { get; set; } = JOYSTICK.LEFT_DESC;
+        public object Joystick_RIGHT_DESC_Trigger_Parameter { get; set; } = JOYSTICK.RIGHT_DESC;
+        public object Joystick_UP_DESC_Trigger_Parameter { get; set; } = JOYSTICK.UP_DESC;
+        public object Joystick_DOWN_DESC_Trigger_Parameter { get; set; } = JOYSTICK.DOWN_DESC;
+
+        public object Joystick_LEFT_DESC_Release_Parameter { get; set; } = JOYSTICK.NULL;
+        public object Joystick_RIGHT_DESC_Release_Parameter { get; set; } = JOYSTICK.NULL;
+        public object Joystick_UP_DESC_Release_Parameter { get; set; } = JOYSTICK.NULL;
+        public object Joystick_DOWN_DESC_Release_Parameter{ get; set; } = JOYSTICK.NULL;
+
+
+
+
+
+
+
+        public bool IsMainSpindleMode { get; set; } = false;
+
+
+
 
 
 
@@ -69,58 +90,81 @@ namespace WPFSTD105.ViewModel
         /// 
 
 
-        public WPFWindowsBase.RelayParameterizedCommand LeftButtonCommand
+        public ICommand LeftButtonCommand
         {
             get
             {
                 return new WPFWindowsBase.RelayParameterizedCommand(el =>
                 {
-                    if (el is JOYSTICK)
+                    Task.Run(() =>
                     {
-                        JOYSTICK select = (JOYSTICK)el;
-                        PanelButton _ = ApplicationViewModel.PanelButton;
-                        _.Joystick = select;
-                        CodesysIIS.WriteCodesysMemor.SetPanel(_);
-                    }
-                    if (el is GD_STD.Enum.AXIS_SELECTED)
-                    {
-                        AXIS_SELECTED select = (AXIS_SELECTED)el;
-                        PanelButton _ = ApplicationViewModel.PanelButton;
-                        _.AxisSelect = select;
-                        CodesysIIS.WriteCodesysMemor.SetPanel(_);
-                    }
-                    if(el is null)
-                    {
-                        Thread.Sleep(10);
-                    }
+                        PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+                        //搖桿命令
+                        if (el is JOYSTICK)
+                        {
+                            PButton.Joystick = (JOYSTICK)el;
 
+                            if (PButton.Joystick == JOYSTICK.NULL)
+                                Thread.Sleep(100);
+                            CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                        }
+                        //軸向選擇
+                        if (el is GD_STD.Enum.AXIS_SELECTED)
+                        {
+                            PButton.AxisSelect = (AXIS_SELECTED)el;
+                            CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                        }
+                        //橫移料架移動
+                        if (el is GD_STD.Enum.MOBILE_RACK)
+                        {
+                            PButton.Move_OutSide = (MOBILE_RACK)el;
+                            if (PButton.Move_OutSide == MOBILE_RACK.NULL)
+                                Thread.Sleep(100);
+                            CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                        }
+                        if (el is GD_STD.Enum.SHELF)
+                        {
+                            var SetShelf = (SHELF)el;
 
+                            //上升命令
+                            if (SetShelf == SHELF.LEVEL2)
+                            {
+                                if (PButton.Traverse_Shelf_UP == SHELF.NULL)
+                                    PButton.Traverse_Shelf_UP = SHELF.LEVEL1;
+                                else if (PButton.Traverse_Shelf_UP == SHELF.LEVEL1)
+                                    PButton.Traverse_Shelf_UP = SHELF.LEVEL2;
+                                else
+                                    PButton.Traverse_Shelf_UP = SHELF.LEVEL2;
+                            }
+                            //下降命令
+                            if (SetShelf == SHELF.NULL)
+                            {
+                                if (PButton.Traverse_Shelf_UP == SHELF.LEVEL2)
+                                    PButton.Traverse_Shelf_UP = SHELF.LEVEL1;
+                                else if (PButton.Traverse_Shelf_UP == SHELF.LEVEL1)
+                                    PButton.Traverse_Shelf_UP = SHELF.NULL;
+                                else
+                                    PButton.Traverse_Shelf_UP = SHELF.NULL;
+                            }
+                            CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                        }
 
+                        if(el is GD_STD.Enum.DRILL_POSITION)
+                        {
+                            var Drill_P = (GD_STD.Enum.DRILL_POSITION)el;
+                            PButton.DrillSelected = Drill_P;
+                            CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                        }
+
+                        if (el == null)
+                            Thread.Sleep(100);
+                    });
                 });
             }
         }
 
 
 
-        /// <summary>
-        /// 定位柱
-        /// </summary>
-        public WPFWindowsBase.RelayCommand PostRiseCommand
-        {
-            get
-            {
-                return new WPFWindowsBase.RelayCommand(() =>
-                {
-                    if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
-                        return;
-
-                    GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    //相反訊號
-                    PButton.PostRise = !PButton.PostRise;
-                    CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                });
-            }
-        }
 
 
 
