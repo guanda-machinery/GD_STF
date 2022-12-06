@@ -9,6 +9,7 @@ using System.IO.Compression;
 using DevExpress.Xpf.WindowsUI;
 using DevExpress.Xpf.Core;
 using System.Threading;
+using System.Text;
 
 namespace GD_STD
 {
@@ -180,6 +181,8 @@ namespace GD_STD
                 return default(T);
             }
         }
+
+
 
     }
 }

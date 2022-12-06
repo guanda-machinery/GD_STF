@@ -198,6 +198,8 @@ namespace WPFSTD105.Tekla
                 result.Y = value[1];
                 result.Dia = value[2];
                 result.StartHole = START_HOLE.START;
+                result.dX = "0";
+                result.dY = "0";
                 result.xCount = 1;
                 result.yCount = 1;
                 result.Face = face;
@@ -1006,7 +1008,11 @@ namespace WPFSTD105.Tekla
                             }
 
                         }
-                        else { }
+                        else
+                        {
+                           ObSettingVM.SaveErrorString("NC_BOM匯入錯誤",$"{DateTime.Now} ,零件({steelAttr.PartNumber})斷面規格({steelAttr.Profile})有誤，請檢查NC/BOM之資料是否正確!");
+                            return;
+                        }
                     }
                 }
 
