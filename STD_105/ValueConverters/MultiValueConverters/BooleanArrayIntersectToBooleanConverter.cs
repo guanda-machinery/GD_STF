@@ -12,7 +12,7 @@ using System.Windows.Data;
 namespace STD_105
 {
     /// <summary>
-    /// 將ischecked轉換為isenable
+    /// 將boolean陣列交集為boolean
     /// </summary>
     public class BooleanArrayIntersectToBooleanConverter : WPFWindowsBase.BaseMultiValueConverter<BooleanArrayIntersectToBooleanConverter> 
     {
@@ -26,11 +26,11 @@ namespace STD_105
         /// <returns></returns>
         public override object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            for (int i = 0; i < values.Count(); i++)
+            foreach (var Val in values)
             {
-                if (values[i] is true)
+                if (Val is true)
                 {
-                    continue;
+
                 }
                 else
                 {

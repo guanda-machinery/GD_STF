@@ -98,7 +98,9 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public string MaterialGridControlSearchString { get; set; }
 
-        #endregion
+
+
+    #endregion
 
 
 
@@ -106,11 +108,11 @@ namespace WPFSTD105.ViewModel
 
 
 
-        #region 私有屬性
-        /// <summary>
-        /// 持續序列化
-        /// </summary>
-        private Thread _SerializationThread;
+    #region 私有屬性
+    /// <summary>
+    /// 持續序列化
+    /// </summary>
+    private Thread _SerializationThread;
         /// <summary>
         /// 持續監看Host狀態
         /// </summary>

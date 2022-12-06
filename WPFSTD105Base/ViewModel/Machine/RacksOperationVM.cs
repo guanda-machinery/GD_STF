@@ -38,14 +38,18 @@ namespace WPFSTD105.ViewModel
             Joystick_RIGHT_DESC_Trigger_Parameter = MOBILE_RACK.OUTER;
             Joystick_RIGHT_DESC_Release_Parameter = MOBILE_RACK.NULL;
         }
+      
+      //解構
+
+
 
 
 
         #region 公開屬性
 
-        /// <summary>
-        /// 啟動動力滾輪
-        /// </summary>
+            /// <summary>
+            /// 啟動動力滾輪
+            /// </summary>
         public bool OpenRoll
         {
             get => _openRoll;
@@ -279,11 +283,19 @@ namespace WPFSTD105.ViewModel
                 {
                     if (PanelListening.SLPEMS() || PanelListening.SLPAlarm())
                         return;
-
-                    GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+                    //PButton.postrise無法運作 原因不明
+                    PanelButton PButton = ApplicationViewModel.PanelButton;
                     //相反訊號
-                    PButton.PostRise = !PButton.PostRise;
-                    CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                    if(PButton.Joystick != JOYSTICK.ELLIPSE_BOTTOM_DESC)
+                    {
+                        PButton.Joystick = JOYSTICK.ELLIPSE_BOTTOM_DESC;
+                    }
+                    else
+                    {            
+                        PButton.Joystick = JOYSTICK.NULL;
+                    }
+
+                    WriteCodesysMemor.SetPanel(PButton);
                 });
             }
         }
