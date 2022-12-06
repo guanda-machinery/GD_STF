@@ -77,9 +77,9 @@ namespace WPFSTD105.Model
                 if (partIndex == -1)
                 {
                     // 未找到對應零件編號
-                    string tmp=material.Parts[i].PartNumber;
+                    string tmp = material.Parts[i].PartNumber;
                     WinUIMessageBox.Show(null,
-                    $"未找到對應零件編號"+ tmp,
+                    $"未找到對應零件編號" + tmp,
                     "通知",
                     MessageBoxButton.OK,
                     MessageBoxImage.Exclamation,
@@ -116,7 +116,7 @@ namespace WPFSTD105.Model
             // 依序取出素材零件位置
             for (int i = 0; i < place.Count; i++)
             {
-                if (place.Count==1) // count=1表素材沒有零件組成,只有(前端切除)程序紀錄
+                if (place.Count == 1) // count=1表素材沒有零件組成,只有(前端切除)程序紀錄
                 {
                     return;
                 }
@@ -138,10 +138,10 @@ namespace WPFSTD105.Model
                     var SteelCut1 = (SteelAttr)cut1.EntityData;
                     List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
                     double tmpXPos = place[i].Start;                            // X 位置座標
-                    if (i==0)
-                    tmpXPos = place[i].End - (material.Cut) / 2;                // 判斷是否為第一切割線,是 =>打點位置
+                    if (i == 0)
+                        tmpXPos = place[i].End - (material.Cut) / 2;                // 判斷是否為第一切割線,是 =>打點位置
                     else
-                    tmpXPos = place[i].Start + (material.Cut) / 2;   
+                        tmpXPos = place[i].Start + (material.Cut) / 2;
 
                     for (int z = 0; z < 2; z++)                                 // 於零件連接打點2孔 
                     {
@@ -162,10 +162,10 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.Mode = AXIS_MODE.POINT;                     // 打點
                         TmpBoltsArr.X = tmpXPos;                                // X 位置座標
                         TmpBoltsArr.Y = YOffset;                                // Y 位置座標    
-                        TmpBoltsArr.Z = SteelCut1.W / 2 - ((SteelCut1.t1)/2);   // Z 位置座標  腹板中心位置
+                        TmpBoltsArr.Z = SteelCut1.W / 2 - ((SteelCut1.t1) / 2);   // Z 位置座標  腹板中心位置
                         TmpBoltsArr.t = SteelCut1.t1;                           // 圓柱
                         TmpBoltsArr.GUID = Guid.NewGuid();                      // 孔群編號
-                        TmpBoltsArr.BlockName =  "TopCutPoint";                  // 孔群名稱
+                        TmpBoltsArr.BlockName = "TopCutPoint";                  // 孔群名稱
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool check);  // 依孔群列別設定資訊 建立孔群
                         B3DB.Add(bolts);
                         entities.Add(blockReference);                           // 孔群加入model.entities
@@ -173,7 +173,7 @@ namespace WPFSTD105.Model
                         //Add2DHole(bolts, false);//加入孔位不刷新 2d 視圖
                     }
 
-                   continue;
+                    continue;
                 }
 
 
@@ -205,9 +205,9 @@ namespace WPFSTD105.Model
                         {
                             var Path = ApplicationVM.DirectoryDevPart();
                             var _path = string.Empty;
-                            foreach(var p in Path)
+                            foreach (var p in Path)
                             {
-                                switch(p)
+                                switch (p)
                                 {
                                     case '/':
                                         break;
@@ -372,283 +372,283 @@ namespace WPFSTD105.Model
             ser.SetMaterialModel(materialNumber, model); //儲存素材
         }
 
-  //AssemblyPart程式碼備份
-///// <summary>
-///// 組合零件變成素材(3D)
-///// </summary>
-///// <param name="model"></param>
-///// <param name="materialNumber">素材編號</param>
-//public static void AssemblyPart(this devDept.Eyeshot.Model model, string materialNumber)
-//{
-//    ObSettingVM obvm = new ObSettingVM();
-//    model.Clear();
-//    STDSerialization ser = new STDSerialization(); //序列化處理器
-//    ObservableCollection<MaterialDataView> materialDataViews = ser.GetMaterialDataView(); //序列化列表
-//    int index = materialDataViews.FindIndex(el => el.MaterialNumber == materialNumber);//序列化的列表索引
-//    MaterialDataView material = materialDataViews[index];
-//    ObservableCollection<SteelPart> parts = ser.GetPart(material.Profile.GetHashCode().ToString());//零件列表
-//    NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
-//    var _ = material.Parts.Select(x => x.PartNumber); //選擇要使用的零件編號
-//    var guid = (from el in ncTemps
-//                where _.ToList().Contains(el.SteelAttr.PartNumber)
-//                select el.SteelAttr.GUID.ToString()).ToList();//選擇使用的NC文件
-//    //產生nc檔案圖檔
-//    for (int i = 0; i < guid.Count; i++)
-//    {
-//        model.LoadNcToModel(guid[i], ObSettingVM.allowType);
-//    }
+        //AssemblyPart程式碼備份
+        ///// <summary>
+        ///// 組合零件變成素材(3D)
+        ///// </summary>
+        ///// <param name="model"></param>
+        ///// <param name="materialNumber">素材編號</param>
+        //public static void AssemblyPart(this devDept.Eyeshot.Model model, string materialNumber)
+        //{
+        //    ObSettingVM obvm = new ObSettingVM();
+        //    model.Clear();
+        //    STDSerialization ser = new STDSerialization(); //序列化處理器
+        //    ObservableCollection<MaterialDataView> materialDataViews = ser.GetMaterialDataView(); //序列化列表
+        //    int index = materialDataViews.FindIndex(el => el.MaterialNumber == materialNumber);//序列化的列表索引
+        //    MaterialDataView material = materialDataViews[index];
+        //    ObservableCollection<SteelPart> parts = ser.GetPart(material.Profile.GetHashCode().ToString());//零件列表
+        //    NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
+        //    var _ = material.Parts.Select(x => x.PartNumber); //選擇要使用的零件編號
+        //    var guid = (from el in ncTemps
+        //                where _.ToList().Contains(el.SteelAttr.PartNumber)
+        //                select el.SteelAttr.GUID.ToString()).ToList();//選擇使用的NC文件
+        //    //產生nc檔案圖檔
+        //    for (int i = 0; i < guid.Count; i++)
+        //    {
+        //        model.LoadNcToModel(guid[i], ObSettingVM.allowType);
+        //    }
 
 
-//    var place = new List<(double Start, double End, bool IsCut, string Number)>();//放置位置參數
-//    place.Add((Start: 0, End: material.StartCut, IsCut: true, Number: "")); //素材起始切割物件
-//    Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
-//    for (int i = 0; i < material.Parts.Count; i++)
-//    {
-//        int partIndex = parts.FindIndex(el => el.Number == material.Parts[i].PartNumber); //回傳要使用的陣列位置
-//        if (partIndex == -1)
-//        {
-//            // 未找到對應零件編號
-//            string tmp = material.Parts[i].PartNumber;
-//            WinUIMessageBox.Show(null,
-//            $"未找到對應零件編號" + tmp,
-//            "通知",
-//            MessageBoxButton.OK,
-//            MessageBoxImage.Exclamation,
-//            MessageBoxResult.None,
-//            MessageBoxOptions.None,
-//            FloatingMode.Popup);
-//            return;
+        //    var place = new List<(double Start, double End, bool IsCut, string Number)>();//放置位置參數
+        //    place.Add((Start: 0, End: material.StartCut, IsCut: true, Number: "")); //素材起始切割物件
+        //    Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
+        //    for (int i = 0; i < material.Parts.Count; i++)
+        //    {
+        //        int partIndex = parts.FindIndex(el => el.Number == material.Parts[i].PartNumber); //回傳要使用的陣列位置
+        //        if (partIndex == -1)
+        //        {
+        //            // 未找到對應零件編號
+        //            string tmp = material.Parts[i].PartNumber;
+        //            WinUIMessageBox.Show(null,
+        //            $"未找到對應零件編號" + tmp,
+        //            "通知",
+        //            MessageBoxButton.OK,
+        //            MessageBoxImage.Exclamation,
+        //            MessageBoxResult.None,
+        //            MessageBoxOptions.None,
+        //            FloatingMode.Popup);
+        //            return;
 
-//            //throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
-//        }
-//        else
-//        {
-//            double startCurrent = place[place.Count - 1].End,//當前物件放置起始點的座標
-//                          endCurrent = startCurrent + parts[partIndex].Length;//當前物件放置結束點的座標
-//            place.Add((Start: startCurrent, End: endCurrent, IsCut: false, Number: parts[partIndex].Number));
-//            Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
-//            //計算切割物件
-//            double startCut = place[place.Count - 1].End, //當前切割物件放置起始點的座標
-//                          endCut;//當前切割物件放置結束點的座標
-//            if (i + 1 >= material.Parts.Count) //下一次迴圈結束
-//            {
-//                //endCut = material.LengthStr + material.StartCut + material.EndCut;//當前切割物件放置結束點的座標
-//                endCut = material.LengthStr;// - material.StartCut - material.EndCut;//當前切割物件放置結束點的座標
-//            }
-//            else //下一次迴圈尚未結束
-//            {
-//                endCut = startCut + material.Cut;//當前切割物件放置結束點的座標
-//            }
-//            place.Add((Start: startCut, End: endCut, IsCut: true, Number: "")); //素材零件位置
-//            Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
-//        }
-//    }
-//    EntityList entities = new EntityList();
-//    for (int i = 0; i < place.Count; i++)
-//    {
-//        if (place.Count == 1) // count=1表素材沒有零件組成,只有(前端切除)程序紀錄
-//        {
-//            return;
-//        }
-
-
-//        if (place[i].IsCut) //如果是切割物件
-//        {
-//            Entity cut1 = DrawCutMesh(parts[0], model, place[i].Start, place[i].End, "Cut");
-//            if (cut1 != null)
-//            {
-//                entities.Add(cut1);
-//            }
-
-//            continue;
-//        }
-//        int placeIndex = place.FindIndex(el => el.Number == place[i].Number); //如果有重複的編號只會回傳第一個，以這個下去做比較。
-//        if (placeIndex != i) //如果 i != 第一次出現的 index 代表需要使用複製
-//        {
-//            EntityList ent = new EntityList();
-//            entities.
-//                Where(el => el.GroupIndex == placeIndex).
-//                ForEach(el =>
-//                {
-//                    Entity copy = (Entity)el.Clone(); //複製物件
-//                    copy.GroupIndex = i;
-//                    copy.Translate(place[i].Start - place[placeIndex].Start, 0);
-//                    ent.Add(copy);
-//                });
-//            entities.AddRange(ent);
-//        }
-//        else
-//        {
-//            int partIndex = parts.FindIndex(el => el.Number == place[i].Number);
-//            if (parts[partIndex].GUID.ToString() != "") //如果圖面檔案
-//            {
-//                var DataName = parts[partIndex].GUID.ToString();
-//                ReadFile file = ser.ReadPartModel(DataName); //讀取檔案內容
-//                if (file == null)
-//                {
-//                    var Path = ApplicationVM.DirectoryDevPart();
-//                    var _path = string.Empty;
-//                    foreach (var p in Path)
-//                    {
-//                        switch (p)
-//                        {
-//                            case '/':
-//                                break;
-
-//                            default:
-//                                _path += p;
-//                                break;
-//                        }
-//                    }
-
-//                    WinUIMessageBox.Show(null,
-//                        $"Dev_Part資料:{_path}\\{DataName}.dm\r\n讀取失敗",
-//                        "通知",
-//                        MessageBoxButton.OK,
-//                        MessageBoxImage.Exclamation,
-//                        MessageBoxResult.None,
-//                        MessageBoxOptions.None,
-//                        FloatingMode.Popup);
-//                    return;
-//                }
-//                file.DoWork();
-//                file.AddToScene(model);
-//                Entity _entity = null;
-//                SteelAttr _steelAttr = null;
-//                model.Entities.ForEach(el =>
-//                {
-//                    if (el.GetType() != typeof(LinearDim))
-//                    {
-//                        model.Blocks[((BlockReference)el).BlockName].Entities.ForEach(entity =>
-//                        {
-//                            if (entity.EntityData is SteelAttr steelAttr)
-//                            {
-//                                _entity = entity;
-//                                _steelAttr = steelAttr;
-//                            }
-//                        });
-//                        el.GroupIndex = i;
-//                        el.Translate(place[i].Start, 0);
-//                        el.Selectable = false;
-//                        entities.Add(el);//加入到暫存列表
-//                    }
-//                });
-//                //Func<List<Point3D>, double> minFunc = (point3d) => point3d.Min(e => e.X);
-//                //Func<List<Point3D>, double> maxFunc = (point3d) => point3d.Max(e => e.X);
-//                //Transformation transformation = new Transformation(new Point3D(0, _steelAttr.H / 2, _steelAttr.W), Vector3D.AxisX, new Vector3D(0, 0, 1), new Vector3D(0, -1, 0));
-
-//                //var minTopFlip = Flip((Entity)_entity.Clone(), minFunc, _steelAttr, -100, out double minTopAngle1, out double minTopAngle2, out double topMinX);
-//                //var maxTopFlip = Flip((Entity)_entity.Clone(), maxFunc, _steelAttr, 100, out double maxTopAngle1, out double maxTopAngle2, out double topMaxX);
-//                //var minBackFlip = Flip((Entity)_entity.Clone(), minFunc, _steelAttr, -100, out double minBackAngle1, out double minBackAngle2, out double backMinX, transformation);
-//                //var maxBackFlip = Flip((Entity)_entity.Clone(), maxFunc, _steelAttr, 100, out double maxBackAngle1, out double maxBackAngle2, out double backMaxX, transformation);
-//                //var minFrontFlip = Flip((Entity)_entity.Clone(), minFunc, _steelAttr, -100, out double minFrontAngle1, out double minFrontAngle2, out double frontMinX, transformation);
-//                //var maxFrontFlip = Flip((Entity)_entity.Clone(), maxFunc, _steelAttr, 100, out double maxFrontAngle1, out double maxFrontAngle2, out double frontMaxX, transformation);
-//                //if ((minBackFlip && minFrontFlip) || (maxBackFlip && maxFrontFlip))
-//                //{
-//                //    if (minTopFlip || maxTopFlip)
-//                //    {
-//                //        _steelAttr.StartAngle = minTopAngle1 == 0 ? minTopAngle2 : minTopAngle1;
-//                //        _steelAttr.EndAngle = maxTopAngle1 == 0 ? maxTopAngle2 : maxTopAngle1;
-//                //        if (_steelAttr.StartAngle > 90 || _steelAttr.EndAngle > 90)
-//                //        {
-//                //            Rotate(entities.Where(el => el.GroupIndex == i), (_entity.BoxMin + _entity.BoxMax) / 2);
-//                //        }
-//                //    }
-//                //    else if (backMinX < frontMinX)
-//                //        _steelAttr.StartAngle = minBackAngle1 == 0 ? minBackAngle2 : minBackAngle1;
-//                //    else
-//                //        _steelAttr.StartAngle = minFrontAngle1 == 0 ? minFrontAngle2 : minFrontAngle1;
-
-//                //    if (backMaxX < frontMaxX)
-//                //    {
-//                //        _steelAttr.EndAngle = maxBackAngle1 == 0 ? maxBackAngle2 : maxBackAngle1;
-//                //    }
-//                //    else
-//                //    {
-//                //        _steelAttr.EndAngle = maxFrontAngle1 == 0 ? maxFrontAngle2 : maxFrontAngle1;
-//                //    }
-//                //}
-//                //else if (minBackFlip || maxBackFlip)
-//                //{
-//                //    _steelAttr.StartAngle = minBackAngle1 == 0 ? minBackAngle2 : minBackAngle1;
-//                //    _steelAttr.EndAngle = maxBackAngle1 == 0 ? maxBackAngle2 : maxBackAngle1;
-//                //}
-//                //else if (minFrontFlip || maxFrontFlip)
-//                //{
-//                //    _steelAttr.StartAngle = minFrontAngle1 == 0 ? minFrontAngle2 : minFrontAngle1;
-//                //    _steelAttr.EndAngle = maxFrontAngle1 == 0 ? maxFrontAngle2 : maxFrontAngle1;
-//                //}
-//                //else if (minTopFlip || maxTopFlip)
-//                //{
-//                //    _steelAttr.StartAngle = minTopAngle1 == 0 ? minTopAngle2 : minTopAngle1;
-//                //    _steelAttr.EndAngle = maxTopAngle1 == 0 ? maxTopAngle2 : maxTopAngle1;
-//                //    if (_steelAttr.StartAngle > 90 || _steelAttr.EndAngle > 90)
-//                //    {
-//                //        Rotate(entities.Where(el => el.GroupIndex == i), (_entity.BoxMin + _entity.BoxMax) / 2);
-//                //    }
-//                //}
-//            }
-//            else //如果沒有 NC 檔案
-//            {
-//                SteelAttr steelAttr = new SteelAttr(parts[partIndex]); //產生物件設定檔
-//                steelAttr.GUID = parts[partIndex].GUID = Guid.NewGuid(); //賦予新的guid
-//                Steel3DBlock steel = Steel3DBlock.AddSteel(steelAttr, model, out BlockReference blockReference); //加入鋼構物件到 Model
-//                blockReference.Translate(place[i].Start, 0);//移動目標
-//                blockReference.Selectable = true;
-//                entities.Add(blockReference); //加入到暫存列表
-//                ser.SetPart(material.Profile.GetHashCode().ToString(), new ObservableCollection<object>(parts));//存取
-//                ser.SetPartModel(steelAttr.GUID.ToString(), model);//儲存模型
-//                ObservableCollection<DataCorrespond> dataCorrespond = ser.GetDataCorrespond();//零件清單
-//                dataCorrespond.Add(new DataCorrespond()
-//                {
-//                    Number = steelAttr.PartNumber,
-//                    DataName = steelAttr.GUID.ToString(),
-//                    Profile = steelAttr.Profile,
-//                    Type = steelAttr.Type,
-//                    TP = false,
-
-//                    // 2022/09/08 彥谷
-//                    oPoint = steelAttr.oPoint.ToArray(),
-//                    vPoint = steelAttr.vPoint.ToArray(),
-//                    uPoint = steelAttr.uPoint.ToArray(),
-//                });
-//                ser.SetDataCorrespond(dataCorrespond);//加入到製品零件清單
-//            }
-//        }
-//    }
-//    //model.AssemblySelectionMode = devDept.Eyeshot.Environment.assemblySelectionType.Leaf;
-//    model.Refresh();
-//    model.Entities.Clear();
-//    SteelAttr attr = new SteelAttr(parts[0]);
-//    attr.Length = material.LengthStr;
-//    Mesh cut = Steel3DBlock.GetProfile(attr);
-//    Solid solid = cut.ConvertToSolid();
-//    List<Solid> resultSolid = new List<Solid>();
-//    //foreach (BlockReference item in entities)
-//    //{
-
-//    //    if (item.Attributes.ContainsKey("Steel"))
-//    //    {
-//    //        Mesh main = ((Mesh)model.Blocks[item.BlockName].Entities[0]);
-//    //        main.Weld();
-//    //        Solid[] solids = Solid.Difference(solid, ((Mesh)model.Blocks[item.BlockName].Entities[0]).ConvertToSolid());
-//    //        if (solids.Length > 0)
-//    //        {
-//    //            resultSolid.Add(solids[0]);
-//    //            if (solids.Length >= 2)
-//    //            {
-//    //                solid = solids[1];
-//    //            }
-//    //        }
-//    //    }
+        //            //throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
+        //        }
+        //        else
+        //        {
+        //            double startCurrent = place[place.Count - 1].End,//當前物件放置起始點的座標
+        //                          endCurrent = startCurrent + parts[partIndex].Length;//當前物件放置結束點的座標
+        //            place.Add((Start: startCurrent, End: endCurrent, IsCut: false, Number: parts[partIndex].Number));
+        //            Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
+        //            //計算切割物件
+        //            double startCut = place[place.Count - 1].End, //當前切割物件放置起始點的座標
+        //                          endCut;//當前切割物件放置結束點的座標
+        //            if (i + 1 >= material.Parts.Count) //下一次迴圈結束
+        //            {
+        //                //endCut = material.LengthStr + material.StartCut + material.EndCut;//當前切割物件放置結束點的座標
+        //                endCut = material.LengthStr;// - material.StartCut - material.EndCut;//當前切割物件放置結束點的座標
+        //            }
+        //            else //下一次迴圈尚未結束
+        //            {
+        //                endCut = startCut + material.Cut;//當前切割物件放置結束點的座標
+        //            }
+        //            place.Add((Start: startCut, End: endCut, IsCut: true, Number: "")); //素材零件位置
+        //            Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
+        //        }
+        //    }
+        //    EntityList entities = new EntityList();
+        //    for (int i = 0; i < place.Count; i++)
+        //    {
+        //        if (place.Count == 1) // count=1表素材沒有零件組成,只有(前端切除)程序紀錄
+        //        {
+        //            return;
+        //        }
 
 
-//    //}
-//    //EntityList result =  entities.Where(el => !((BlockReference)el).Attributes.ContainsKey("Cut")).ToList();
-//    model.Entities.AddRange(entities);
-//    model.Entities.AddRange(resultSolid);
-//    ser.SetMaterialModel(materialNumber, model); //儲存素材
-//}
+        //        if (place[i].IsCut) //如果是切割物件
+        //        {
+        //            Entity cut1 = DrawCutMesh(parts[0], model, place[i].Start, place[i].End, "Cut");
+        //            if (cut1 != null)
+        //            {
+        //                entities.Add(cut1);
+        //            }
+
+        //            continue;
+        //        }
+        //        int placeIndex = place.FindIndex(el => el.Number == place[i].Number); //如果有重複的編號只會回傳第一個，以這個下去做比較。
+        //        if (placeIndex != i) //如果 i != 第一次出現的 index 代表需要使用複製
+        //        {
+        //            EntityList ent = new EntityList();
+        //            entities.
+        //                Where(el => el.GroupIndex == placeIndex).
+        //                ForEach(el =>
+        //                {
+        //                    Entity copy = (Entity)el.Clone(); //複製物件
+        //                    copy.GroupIndex = i;
+        //                    copy.Translate(place[i].Start - place[placeIndex].Start, 0);
+        //                    ent.Add(copy);
+        //                });
+        //            entities.AddRange(ent);
+        //        }
+        //        else
+        //        {
+        //            int partIndex = parts.FindIndex(el => el.Number == place[i].Number);
+        //            if (parts[partIndex].GUID.ToString() != "") //如果圖面檔案
+        //            {
+        //                var DataName = parts[partIndex].GUID.ToString();
+        //                ReadFile file = ser.ReadPartModel(DataName); //讀取檔案內容
+        //                if (file == null)
+        //                {
+        //                    var Path = ApplicationVM.DirectoryDevPart();
+        //                    var _path = string.Empty;
+        //                    foreach (var p in Path)
+        //                    {
+        //                        switch (p)
+        //                        {
+        //                            case '/':
+        //                                break;
+
+        //                            default:
+        //                                _path += p;
+        //                                break;
+        //                        }
+        //                    }
+
+        //                    WinUIMessageBox.Show(null,
+        //                        $"Dev_Part資料:{_path}\\{DataName}.dm\r\n讀取失敗",
+        //                        "通知",
+        //                        MessageBoxButton.OK,
+        //                        MessageBoxImage.Exclamation,
+        //                        MessageBoxResult.None,
+        //                        MessageBoxOptions.None,
+        //                        FloatingMode.Popup);
+        //                    return;
+        //                }
+        //                file.DoWork();
+        //                file.AddToScene(model);
+        //                Entity _entity = null;
+        //                SteelAttr _steelAttr = null;
+        //                model.Entities.ForEach(el =>
+        //                {
+        //                    if (el.GetType() != typeof(LinearDim))
+        //                    {
+        //                        model.Blocks[((BlockReference)el).BlockName].Entities.ForEach(entity =>
+        //                        {
+        //                            if (entity.EntityData is SteelAttr steelAttr)
+        //                            {
+        //                                _entity = entity;
+        //                                _steelAttr = steelAttr;
+        //                            }
+        //                        });
+        //                        el.GroupIndex = i;
+        //                        el.Translate(place[i].Start, 0);
+        //                        el.Selectable = false;
+        //                        entities.Add(el);//加入到暫存列表
+        //                    }
+        //                });
+        //                //Func<List<Point3D>, double> minFunc = (point3d) => point3d.Min(e => e.X);
+        //                //Func<List<Point3D>, double> maxFunc = (point3d) => point3d.Max(e => e.X);
+        //                //Transformation transformation = new Transformation(new Point3D(0, _steelAttr.H / 2, _steelAttr.W), Vector3D.AxisX, new Vector3D(0, 0, 1), new Vector3D(0, -1, 0));
+
+        //                //var minTopFlip = Flip((Entity)_entity.Clone(), minFunc, _steelAttr, -100, out double minTopAngle1, out double minTopAngle2, out double topMinX);
+        //                //var maxTopFlip = Flip((Entity)_entity.Clone(), maxFunc, _steelAttr, 100, out double maxTopAngle1, out double maxTopAngle2, out double topMaxX);
+        //                //var minBackFlip = Flip((Entity)_entity.Clone(), minFunc, _steelAttr, -100, out double minBackAngle1, out double minBackAngle2, out double backMinX, transformation);
+        //                //var maxBackFlip = Flip((Entity)_entity.Clone(), maxFunc, _steelAttr, 100, out double maxBackAngle1, out double maxBackAngle2, out double backMaxX, transformation);
+        //                //var minFrontFlip = Flip((Entity)_entity.Clone(), minFunc, _steelAttr, -100, out double minFrontAngle1, out double minFrontAngle2, out double frontMinX, transformation);
+        //                //var maxFrontFlip = Flip((Entity)_entity.Clone(), maxFunc, _steelAttr, 100, out double maxFrontAngle1, out double maxFrontAngle2, out double frontMaxX, transformation);
+        //                //if ((minBackFlip && minFrontFlip) || (maxBackFlip && maxFrontFlip))
+        //                //{
+        //                //    if (minTopFlip || maxTopFlip)
+        //                //    {
+        //                //        _steelAttr.StartAngle = minTopAngle1 == 0 ? minTopAngle2 : minTopAngle1;
+        //                //        _steelAttr.EndAngle = maxTopAngle1 == 0 ? maxTopAngle2 : maxTopAngle1;
+        //                //        if (_steelAttr.StartAngle > 90 || _steelAttr.EndAngle > 90)
+        //                //        {
+        //                //            Rotate(entities.Where(el => el.GroupIndex == i), (_entity.BoxMin + _entity.BoxMax) / 2);
+        //                //        }
+        //                //    }
+        //                //    else if (backMinX < frontMinX)
+        //                //        _steelAttr.StartAngle = minBackAngle1 == 0 ? minBackAngle2 : minBackAngle1;
+        //                //    else
+        //                //        _steelAttr.StartAngle = minFrontAngle1 == 0 ? minFrontAngle2 : minFrontAngle1;
+
+        //                //    if (backMaxX < frontMaxX)
+        //                //    {
+        //                //        _steelAttr.EndAngle = maxBackAngle1 == 0 ? maxBackAngle2 : maxBackAngle1;
+        //                //    }
+        //                //    else
+        //                //    {
+        //                //        _steelAttr.EndAngle = maxFrontAngle1 == 0 ? maxFrontAngle2 : maxFrontAngle1;
+        //                //    }
+        //                //}
+        //                //else if (minBackFlip || maxBackFlip)
+        //                //{
+        //                //    _steelAttr.StartAngle = minBackAngle1 == 0 ? minBackAngle2 : minBackAngle1;
+        //                //    _steelAttr.EndAngle = maxBackAngle1 == 0 ? maxBackAngle2 : maxBackAngle1;
+        //                //}
+        //                //else if (minFrontFlip || maxFrontFlip)
+        //                //{
+        //                //    _steelAttr.StartAngle = minFrontAngle1 == 0 ? minFrontAngle2 : minFrontAngle1;
+        //                //    _steelAttr.EndAngle = maxFrontAngle1 == 0 ? maxFrontAngle2 : maxFrontAngle1;
+        //                //}
+        //                //else if (minTopFlip || maxTopFlip)
+        //                //{
+        //                //    _steelAttr.StartAngle = minTopAngle1 == 0 ? minTopAngle2 : minTopAngle1;
+        //                //    _steelAttr.EndAngle = maxTopAngle1 == 0 ? maxTopAngle2 : maxTopAngle1;
+        //                //    if (_steelAttr.StartAngle > 90 || _steelAttr.EndAngle > 90)
+        //                //    {
+        //                //        Rotate(entities.Where(el => el.GroupIndex == i), (_entity.BoxMin + _entity.BoxMax) / 2);
+        //                //    }
+        //                //}
+        //            }
+        //            else //如果沒有 NC 檔案
+        //            {
+        //                SteelAttr steelAttr = new SteelAttr(parts[partIndex]); //產生物件設定檔
+        //                steelAttr.GUID = parts[partIndex].GUID = Guid.NewGuid(); //賦予新的guid
+        //                Steel3DBlock steel = Steel3DBlock.AddSteel(steelAttr, model, out BlockReference blockReference); //加入鋼構物件到 Model
+        //                blockReference.Translate(place[i].Start, 0);//移動目標
+        //                blockReference.Selectable = true;
+        //                entities.Add(blockReference); //加入到暫存列表
+        //                ser.SetPart(material.Profile.GetHashCode().ToString(), new ObservableCollection<object>(parts));//存取
+        //                ser.SetPartModel(steelAttr.GUID.ToString(), model);//儲存模型
+        //                ObservableCollection<DataCorrespond> dataCorrespond = ser.GetDataCorrespond();//零件清單
+        //                dataCorrespond.Add(new DataCorrespond()
+        //                {
+        //                    Number = steelAttr.PartNumber,
+        //                    DataName = steelAttr.GUID.ToString(),
+        //                    Profile = steelAttr.Profile,
+        //                    Type = steelAttr.Type,
+        //                    TP = false,
+
+        //                    // 2022/09/08 彥谷
+        //                    oPoint = steelAttr.oPoint.ToArray(),
+        //                    vPoint = steelAttr.vPoint.ToArray(),
+        //                    uPoint = steelAttr.uPoint.ToArray(),
+        //                });
+        //                ser.SetDataCorrespond(dataCorrespond);//加入到製品零件清單
+        //            }
+        //        }
+        //    }
+        //    //model.AssemblySelectionMode = devDept.Eyeshot.Environment.assemblySelectionType.Leaf;
+        //    model.Refresh();
+        //    model.Entities.Clear();
+        //    SteelAttr attr = new SteelAttr(parts[0]);
+        //    attr.Length = material.LengthStr;
+        //    Mesh cut = Steel3DBlock.GetProfile(attr);
+        //    Solid solid = cut.ConvertToSolid();
+        //    List<Solid> resultSolid = new List<Solid>();
+        //    //foreach (BlockReference item in entities)
+        //    //{
+
+        //    //    if (item.Attributes.ContainsKey("Steel"))
+        //    //    {
+        //    //        Mesh main = ((Mesh)model.Blocks[item.BlockName].Entities[0]);
+        //    //        main.Weld();
+        //    //        Solid[] solids = Solid.Difference(solid, ((Mesh)model.Blocks[item.BlockName].Entities[0]).ConvertToSolid());
+        //    //        if (solids.Length > 0)
+        //    //        {
+        //    //            resultSolid.Add(solids[0]);
+        //    //            if (solids.Length >= 2)
+        //    //            {
+        //    //                solid = solids[1];
+        //    //            }
+        //    //        }
+        //    //    }
+
+
+        //    //}
+        //    //EntityList result =  entities.Where(el => !((BlockReference)el).Attributes.ContainsKey("Cut")).ToList();
+        //    model.Entities.AddRange(entities);
+        //    model.Entities.AddRange(resultSolid);
+        //    ser.SetMaterialModel(materialNumber, model); //儲存素材
+        //}
 
 
         private static void Rotate(IEnumerable<Entity> entities, Point3D origin)
@@ -685,19 +685,19 @@ namespace WPFSTD105.Model
             if (transformation != null)
                 point3Ds.ForEach(p => p.TransformBy(transformation));
             List<Point2D> point2Ds = point3Ds.Select(e => new Point2D(e.X, e.Y)).ToList();
-            point3Ds =  UtilityEx.ConvexHull2D(point2Ds, true).Select(e => new Point3D(e.X, e.Y)).ToList();
+            point3Ds = UtilityEx.ConvexHull2D(point2Ds, true).Select(e => new Point3D(e.X, e.Y)).ToList();
             double _x = func.Invoke(point3Ds);
             var point = point3Ds.Where(el => el.X == _x).OrderBy(el => el.Y).FirstOrDefault();
             int index = point3Ds.FindIndex(el => el == point);
             //int maxIndex = point3Ds.FindIndex(el => el == maxPoint);
             var origin = point3Ds[index];
-            var p1 = point3Ds[CycleIndex(point3Ds, index -1)];
-            var p2 = point3Ds[CycleIndex(point3Ds, index +1)];
-            x= origin.X;
-            angleP1 =AK.Angle(origin, p1, new Point3D(origin.X + extendX, origin.Y));
+            var p1 = point3Ds[CycleIndex(point3Ds, index - 1)];
+            var p2 = point3Ds[CycleIndex(point3Ds, index + 1)];
+            x = origin.X;
+            angleP1 = AK.Angle(origin, p1, new Point3D(origin.X + extendX, origin.Y));
             angleP2 = AK.Angle(origin, p2, new Point3D(origin.X + extendX, origin.Y));
-            angleP1 =Math.Abs(AK.SideLengthC(p1.Y - origin.Y, angleP1)) > 50 ? angleP1 : 0;
-            angleP2 =Math.Abs(AK.SideLengthC(p2.Y - origin.Y, angleP1)) > 50 ? angleP2 : 0;
+            angleP1 = Math.Abs(AK.SideLengthC(p1.Y - origin.Y, angleP1)) > 50 ? angleP1 : 0;
+            angleP2 = Math.Abs(AK.SideLengthC(p2.Y - origin.Y, angleP1)) > 50 ? angleP2 : 0;
             if (angleP1 % 90 != 0 || angleP2 % 90 != 0)
             {
                 return true;
@@ -729,7 +729,7 @@ namespace WPFSTD105.Model
             List<Mesh> result = new List<Mesh>();
             for (int i = 1; i < points.Count; i++)
             {
-                NcPoint3D p1 = (NcPoint3D)points[i -1].DeepClone();
+                NcPoint3D p1 = (NcPoint3D)points[i - 1].DeepClone();
                 NcPoint3D p2 = (NcPoint3D)points[i].DeepClone();
                 if (p1.Angle1 != 0 || p1.Angle2 != 0)
                 {
@@ -786,7 +786,7 @@ namespace WPFSTD105.Model
             //double start = p1.StartAngle1 != 0 ? p1.StartAngle1 : p1.StartAngle2;
             Line line1 = new Line(p1, p2);
             double radian = AK.ConvertToRadian(angle); //角度轉弧度
-            double a = angle >= 0 ? t- startAngle : startAngle; //邊長 A
+            double a = angle >= 0 ? t - startAngle : startAngle; //邊長 A
             double b = AK.SideLengthB(a, radian); //邊長 B
             double lineZ = angle >= 0 ? t : 0; //line2 and line3 的 Z 軸位置
             Line line2 = (Line)line1.Offset(b, Vector3D.AxisZ); //偏移線段
@@ -837,7 +837,7 @@ namespace WPFSTD105.Model
         {
             SteelAttr steelAttr = new SteelAttr(part);
             steelAttr.Length = end - start;
-            if (steelAttr.Length ==0)
+            if (steelAttr.Length == 0)
             {
                 return null;
             }
@@ -847,13 +847,13 @@ namespace WPFSTD105.Model
             result.Translate(start, 0);
 
 
-        //    CutPoint(model, part,start);
+            //    CutPoint(model, part,start);
 
             return result;
         }
 
 
-        private static void CutPoint(devDept.Eyeshot.Model model, SteelPart part,double start)
+        private static void CutPoint(devDept.Eyeshot.Model model, SteelPart part, double start)
         {
 
             //**************************************************************************
@@ -868,7 +868,7 @@ namespace WPFSTD105.Model
             {
 
                 GroupBoltsAttr TmpBoltsArr = new GroupBoltsAttr();
-                
+
                 TmpBoltsArr.Face = FACE.TOP;
                 TmpBoltsArr.StartHole = START_HOLE.START;
                 TmpBoltsArr.dX = "0";
@@ -879,7 +879,7 @@ namespace WPFSTD105.Model
                 TmpBoltsArr.X = start;
                 TmpBoltsArr.Y = YOffset;
                 TmpBoltsArr.GUID = Guid.NewGuid();
-              //  TmpBoltsArr.BlockName = "TopCutPoint";
+                //  TmpBoltsArr.BlockName = "TopCutPoint";
                 Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool check);
                 B3DB.Add(bolts);
                 YOffset += 10;
@@ -891,7 +891,7 @@ namespace WPFSTD105.Model
             //{
             //    BlockReference referenceBolts = Add2DHole(item);//加入孔位到2D
             //}
-          
+
 
         }
 
@@ -916,7 +916,7 @@ namespace WPFSTD105.Model
             ent.Add(reference);
         }
 
-        public static void LoadNoNCToModel(this devDept.Eyeshot.Model model,SteelAttr sa)
+        public static void LoadNoNCToModel(this devDept.Eyeshot.Model model, SteelAttr sa)
         {
             STDSerialization ser = new STDSerialization(); //序列化處理器
             NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
@@ -941,7 +941,7 @@ namespace WPFSTD105.Model
             SteelPart part = parts.FirstOrDefault(x => x.GUID == nc.SteelAttr.GUID);
             if (parts.Any(x => x.GUID == nc.SteelAttr.GUID))
             {
-                if (!Bolts3DBlock.CheckBolts(model,true))
+                if (!Bolts3DBlock.CheckBolts(model, true))
                 {
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
                     ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
@@ -1466,7 +1466,7 @@ namespace WPFSTD105.Model
             ser.SetNcTempList(ncTemps);//儲存檔案
         }
 
-        public static void RunHypotenusePoint(devDept.Eyeshot.Model model, ObSettingVM obvm,double diffLength)
+        public static void RunHypotenusePoint(devDept.Eyeshot.Model model, ObSettingVM obvm, double diffLength)
         {
             // 由選取零件判斷三面是否為斜邊
             if (model.Entities[model.Entities.Count - 1].EntityData is null)
@@ -1492,7 +1492,7 @@ namespace WPFSTD105.Model
             //}
             if (TmpSteelAttr.vPoint.Count != 0)     //  頂面斜邊
             {
-                AutoHypotenusePoint(FACE.TOP, model, obvm,diffLength);
+                AutoHypotenusePoint(FACE.TOP, model, obvm, diffLength);
             }
             if (TmpSteelAttr.uPoint.Count != 0)     //  前面斜邊
             {
@@ -1506,7 +1506,7 @@ namespace WPFSTD105.Model
         /// <summary>
         /// 自動斜邊打點
         /// </summary>
-        public static void AutoHypotenusePoint(FACE face, devDept.Eyeshot.Model model, ObSettingVM obvm,double diffLength)
+        public static void AutoHypotenusePoint(FACE face, devDept.Eyeshot.Model model, ObSettingVM obvm, double diffLength)
         {
             //ObSettingVM obvm = new ObSettingVM();
 
@@ -1546,8 +1546,8 @@ namespace WPFSTD105.Model
             double maxX = TmpSteelAttr.oPoint.Union(TmpSteelAttr.uPoint).Union(TmpSteelAttr.vPoint).Select(x => x.X).Max();
             double minX = TmpSteelAttr.oPoint.Union(TmpSteelAttr.uPoint).Union(TmpSteelAttr.vPoint).Select(x => x.X).Min();
             double midX = (minX + maxX) / 2;
-            TmpSteelAttr.vPoint.ForEach(x => {if (x.X>=midX) x.X = x.X - diffLength; });
-            TmpSteelAttr.uPoint.ForEach(x => {if (x.X>=midX) x.X = x.X - diffLength; });
+            TmpSteelAttr.vPoint.ForEach(x => { if (x.X >= midX) x.X = x.X - diffLength; });
+            TmpSteelAttr.uPoint.ForEach(x => { if (x.X >= midX) x.X = x.X - diffLength; });
             TmpSteelAttr.oPoint.ForEach(x => { if (x.X >= midX) x.X = x.X - diffLength; });
             switch (face)
             {
@@ -1609,7 +1609,7 @@ namespace WPFSTD105.Model
                         tmplist1.Add(PointUR2);
                     }
 
-                    
+
                     for (int z = 0; z < tmplist1.Count; z++)
                     {
                         TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.BACK, START_HOLE.START);
@@ -1746,7 +1746,7 @@ namespace WPFSTD105.Model
 
 
 
-                    
+
                     if (TmpUL.X > TmpDL.X)
                     {
                         PointDL1 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioA, (TmpUL.Y - TmpDL.Y) * PosRatioA) + TmpDL;
@@ -1795,7 +1795,7 @@ namespace WPFSTD105.Model
                     //((ProductSettingsPageViewModel)PieceListGridControl.SelectedItem).steelAttr.ExclamationMark = true;
                     //ViewModel.SteelAttr = TmpSteelAttr;
                     //model.Entities[model.Entities.Count - 1].EntityData = TmpSteelAttr;
-                    break; 
+                    break;
                     #endregion
             }
 
@@ -1949,7 +1949,7 @@ namespace WPFSTD105.Model
 
             if (TmpSteelAttr.vPoint.Count != 0)         //  頂面斜邊
             {
-                isHypotenuse = isHypotenuse || AutoHypotenuseEnable(model,FACE.TOP);
+                isHypotenuse = isHypotenuse || AutoHypotenuseEnable(model, FACE.TOP);
             }
             if (TmpSteelAttr.uPoint.Count != 0)     //  前面斜邊
             {
@@ -2108,7 +2108,7 @@ namespace WPFSTD105.Model
                 {
                     return solid;
                 }
-               
+
             }
             return solid;
         }
@@ -2124,7 +2124,7 @@ namespace WPFSTD105.Model
                 Solid[] _solids = Solid.Difference(solid, solids[i]);
                 if (solids != null)
                 {
-                    solid =  solids[0];
+                    solid = solids[0];
                 }
             }
             return solid;

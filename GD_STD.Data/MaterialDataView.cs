@@ -1,4 +1,6 @@
-﻿using DevExpress.Xpf.Core;
+﻿using DevExpress.Data.Extensions;
+using DevExpress.Mvvm;
+using DevExpress.Xpf.Core;
 using DevExpress.Xpf.WindowsUI;
 using GD_STD.Base;
 using System;
@@ -89,7 +91,6 @@ namespace GD_STD.Data
 
         public TypeSettingDataView SelectedPart { get; set; } 
 
-        // public ObservableCollection<TypeSettingDataView> SelectedPartsList { get; set; } 
 
         #region ButtonCommand
 
@@ -269,67 +270,6 @@ namespace GD_STD.Data
 
 
         }
-
-
-        /// <summary>
-        /// 刪除零件命令
-        /// </summary>
-        /*
-        public System.Windows.Input.ICommand DeletePartCommand
-        {
-            get
-            {
-                return new WPFWindowsBase.RelayParameterizedCommand(obj =>
-                {
-                    var MessageBoxReturn = WinUIMessageBox.Show(null,
-                            "是否要刪除零件\r\n按下是會立即刪除",
-                            "通知",
-                            MessageBoxButton.YesNo,
-                            MessageBoxImage.Exclamation,
-                            MessageBoxResult.None,
-                            MessageBoxOptions.None,
-                            FloatingMode.Popup);
-
-                    if (MessageBoxReturn == MessageBoxResult.Yes)
-                    {
-
-                        if (obj is DevExpress.Xpf.Grid.GridControl)
-                        {
-                            var GC = obj as DevExpress.Xpf.Grid.GridControl;
-                            var GC_SelectedItem = GC.SelectedItem as GD_STD.Data.TypeSettingDataView;
-                            if (Parts.Remove(GC_SelectedItem))
-                            {
-
-
-
-                                //將數量加回零件清單
-                                WinUIMessageBox.Show(null,
-                                    $"刪除成功！",
-                                    "通知",
-                                    MessageBoxButton.OK,
-                                    MessageBoxImage.Exclamation,
-                                    MessageBoxResult.None,
-                                    MessageBoxOptions.None,
-                                    FloatingMode.Popup);
-                            }
-                            else
-                            {
-                                throw new Exception("設定錯誤");
-                            }
-
-                        }
-
-                    }
-
-
-
-
-
-
-
-                });
-            }
-        }*/
 
 
 

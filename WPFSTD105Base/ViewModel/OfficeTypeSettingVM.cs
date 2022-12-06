@@ -18,6 +18,7 @@ using System.Diagnostics;
 using System.IO;
 using Microsoft.Office.Interop.Word;
 using WordApplication = Microsoft.Office.Interop.Word.Application;
+using DevExpress.Mvvm;
 
 //using GrapeCity.Documents.Word; //by GrapeCity
 //using System.Drawing;
@@ -49,6 +50,22 @@ namespace WPFSTD105
         {
 
         }
+        /// <summary>
+        /// 報表下載等待時間的提示
+        /// </summary>
+        private static SplashScreenManager manager = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
+
+        public static void ActivateLoading()
+        {
+            manager.ViewModel.Status = "報表產生中";
+            manager.Show(null, WindowStartupLocation.CenterScreen, true, InputBlockMode.Window);
+        }
+
+        public static void DeactivateLoading()
+        {
+            manager.Close();
+        }
+
         ///// <inheritdoc/>
         //protected override RelayCommand Auto()
         //{
@@ -153,6 +170,14 @@ namespace WPFSTD105
             {
                 return new RelayParameterizedCommand(el =>
                 {
+                    string current_time = DateTime.Now.ToString("yyyyMMdd");
+
+                    //刪除目前已有WINWORD程序, 以避免發生不可預期的錯誤
+                    try
+                    {
+                        DeleteWordFileAfterDelay(100, "", "");
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
                     //ExcelCutService execl = new ExcelCutService();
                     //execl.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.xls", MaterialDataViews);
 
@@ -164,12 +189,16 @@ namespace WPFSTD105
                     //20220930 張燕華 改為word輸出報表
                     WordCutService word = new WordCutService();
                     double TotalLoss_BothSide = MatchSettingStartCut + MatchSettingEndCut;//素材前後端切割損耗
+
+                    ActivateLoading();
                     try
                     {
-                        word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", MaterialDataViews, TotalLoss_BothSide);
+                        string startup_path = System.Windows.Forms.Application.StartupPath;
+                        word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{startup_path}\AllFileTemplate\CutDocTemp.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", MaterialDataViews, TotalLoss_BothSide);
                     }
                     catch (Exception ex)
                     {
+                        DeactivateLoading();
                         Console.WriteLine(ex.ToString());
 
                         WinUIMessageBox.Show(null,
@@ -182,7 +211,7 @@ namespace WPFSTD105
                         FloatingMode.Popup);
                     }
 
-                    string current_time = DateTime.Now.ToString("yyyyMMdd");
+                    //string current_time = DateTime.Now.ToString("yyyyMMdd");
 
                     try 
                     { 
@@ -192,7 +221,14 @@ namespace WPFSTD105
                         wordDocument.ExportAsFixedFormat($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf", WdExportFormat.wdExportFormatPDF);
                         wordDocument.Close(false);
 
-                        
+                        //刪除已產生的報表WORD檔&目前所有的WINWORD程序
+                        try
+                        {
+                            DeleteWordFileAfterDelay(1000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf");
+                        }
+                        catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+
+                        DeactivateLoading();
 
                         WinUIMessageBox.Show(null,
                         $"切割明細表已下載",
@@ -205,6 +241,7 @@ namespace WPFSTD105
                     }
                     catch (Exception ex)
                     {
+                        DeactivateLoading();
                         Console.WriteLine(ex.ToString());
 
                         WinUIMessageBox.Show(null,
@@ -217,11 +254,7 @@ namespace WPFSTD105
                         FloatingMode.Popup);
                     }
 
-                    try 
-                    {
-                        DeleteWordFileAfterDelay(3000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf");
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+                    
 
                     ////以python封裝exe執行轉檔
                     //try
@@ -266,6 +299,15 @@ namespace WPFSTD105
             {
                 return new RelayParameterizedCommand(el =>
                 {
+                    string current_time = DateTime.Now.ToString("yyyyMMdd");
+
+                    //刪除目前已有WINWORD程序, 以避免發生不可預期的錯誤
+                    try
+                    {
+                        DeleteWordFileAfterDelay(100, "", "");
+                    }
+                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+
                     //ExcelBuyService execl = new ExcelBuyService();
                     //execl.CreateFile($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.xls", MaterialDataViews);
 
@@ -277,12 +319,16 @@ namespace WPFSTD105
                     //20220928 張燕華 改為word輸出報表
                     WordBuyService word = new WordBuyService();
                     double TotalLoss_BothSide = MatchSettingStartCut + MatchSettingEndCut;//素材前後端切割損耗
+
+                    ActivateLoading();
                     try
                     {
-                        word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", MaterialDataViews, TotalLoss_BothSide);
+                        string startup_path = System.Windows.Forms.Application.StartupPath;
+                        word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{startup_path}\AllFileTemplate\BuyDocTemp.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", MaterialDataViews, TotalLoss_BothSide);
                     }
                     catch (Exception ex)
                     {
+                        DeactivateLoading();
                         Console.WriteLine(ex.ToString());
 
                         WinUIMessageBox.Show(null,
@@ -295,7 +341,7 @@ namespace WPFSTD105
                         FloatingMode.Popup);
                     }
 
-                    string current_time = DateTime.Now.ToString("yyyyMMdd");
+                    //string current_time = DateTime.Now.ToString("yyyyMMdd");
 
                     try
                     {
@@ -305,7 +351,14 @@ namespace WPFSTD105
                         wordDocument.ExportAsFixedFormat($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf", WdExportFormat.wdExportFormatPDF);
                         wordDocument.Close(false);
 
-                        
+                        //刪除已產生的報表WORD檔&目前所有的WINWORD程序
+                        try
+                        {
+                            DeleteWordFileAfterDelay(1000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf");
+                        }
+                        catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+
+                        DeactivateLoading();
 
                         WinUIMessageBox.Show(null,
                         $"採購明細單已下載",
@@ -318,6 +371,7 @@ namespace WPFSTD105
                     }
                     catch (Exception ex)
                     {
+                        DeactivateLoading();
                         Console.WriteLine(ex.ToString());
 
                         WinUIMessageBox.Show(null,
@@ -330,11 +384,8 @@ namespace WPFSTD105
                         FloatingMode.Popup);
                     }
 
-                    try
-                    {
-                        DeleteWordFileAfterDelay(3000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\採購明細單_{current_time}.pdf");
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+                    
+
 
                     ////以python封裝exe執行轉檔                    
                     //try
@@ -405,33 +456,35 @@ namespace WPFSTD105
             //底線的寫法代表使用lambda時，如果不使用到傳入參數，就要打一個底線。
             System.Threading.Tasks.Task.Delay(Delay_ms).ContinueWith(_ => 
             {
-                if (File.Exists(PdfFilePath))
+                if (WordFilePath != "")
                 {
-                    //刪除word檔案
-                    try 
-                    { 
-                        File.Delete(WordFilePath);
-                    }
-                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
-
-                    //刪除存留的word程序
-                    try
+                    if (File.Exists(PdfFilePath))
                     {
-                        Process[] processes = System.Diagnostics.Process.GetProcessesByName("WINWORD");
-
-                        foreach (System.Diagnostics.Process process in processes)
+                        //刪除word檔案
+                        try
                         {
-                            if (process.MainWindowTitle == "")
-                            {
-                                process.Kill();
-
-                                System.Threading.Thread.Sleep(500);
-                            }
-                            GC.Collect();
+                            File.Delete(WordFilePath);
                         }
+                        catch (Exception ex) { Console.WriteLine(ex.ToString()); }
                     }
-                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
                 }
+                //刪除存留的word程序
+                try
+                {
+                    Process[] processes = System.Diagnostics.Process.GetProcessesByName("WINWORD");
+
+                    foreach (System.Diagnostics.Process process in processes)
+                    {
+                        if (process.MainWindowTitle == "")
+                        {
+                            process.Kill();
+
+                            System.Threading.Thread.Sleep(500);
+                        }
+                        GC.Collect();
+                    }
+                }
+                catch (Exception ex) { Console.WriteLine(ex.ToString()); }
             });  
         }
     }

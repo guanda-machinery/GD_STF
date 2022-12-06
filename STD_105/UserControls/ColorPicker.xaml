@@ -41,8 +41,10 @@
                             Margin="20" />
                     <Button Grid.Row="2"
                             Width="100"
+                            Height="40"
+                            FontSize="16"
                             Content="{ DynamicResource LANGUAGE_Save }"
-                            Style="{ StaticResource btn_CommonFunctionKey_STD }"
+                            Style="{ StaticResource SiegCustomButtonGray }"
                             HorizontalAlignment="Right"
                             Margin="5"
                             Command="{ Binding GetCustomColorCommand}"
