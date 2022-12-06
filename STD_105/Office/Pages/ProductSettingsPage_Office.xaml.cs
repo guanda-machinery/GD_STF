@@ -53,8 +53,7 @@ namespace STD_105.Office
 
         ApplicationVM appVM = new ApplicationVM();
         public ObSettingVM sr = new ObSettingVM();
-
-     
+                   
         /// <summary>
         /// 是否產生新零件
         /// 新增.修改為true
@@ -2444,7 +2443,6 @@ namespace STD_105.Office
                                 baList.Add(ba);
                                 et.EntityData = ba;
                             }
-
 
 
 
