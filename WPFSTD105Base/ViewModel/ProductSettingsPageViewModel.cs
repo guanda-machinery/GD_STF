@@ -137,6 +137,8 @@ namespace WPFSTD105.ViewModel
         public ProductSettingsPageViewModel()
         {
             steelAttr = new SteelAttr();
+            if (!string.IsNullOrEmpty(this.DataName)) {
+            steelAttr.GUID = Guid.Parse(this.DataName); }
         }
 
 
