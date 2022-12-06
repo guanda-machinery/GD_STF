@@ -4,6 +4,7 @@ using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using devDept.Graphics;
 using DevExpress.DataProcessing.InMemoryDataProcessor;
+using GD_STD.Enum;
 //using DocumentFormat.OpenXml.Spreadsheet;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using WPFSTD105.Attribute;
+using WPFSTD105.Model;
 using WPFSTD105.Surrogate;
 using WPFSTD105.ViewModel;
 
@@ -1498,6 +1500,226 @@ namespace WPFSTD105
             Plane plane = new Plane(points[0], xAxis, yAxis);
 
             return plane;
+        }
+
+        /// <summary>
+        /// 取得有孔群及孔的Block
+        /// 目前孔群及孔位的架構有兩種
+        /// 1.BlockReference→GroupBoltsAttr
+        /// 2.mesh→BoltAttr
+        /// 3.若原始型鋼無孔，則加入NC檔的孔
+        /// </summary>
+        /// <param name="ncGBA"></param>
+        /// <returns></returns>
+        public List<Block> GetBoltFromBlock(List<GroupBoltsAttr> ncGBA=null) 
+        {
+            //model.Entities.Where(x=>x.GetType()==typeof(Mesh)).Select(x=>(BoltAttr)x.EntityData)
+            //model.Entities.Where(x=>x.GetType()==typeof(BlockReference)).Select(x=>x.EntityData).Where(x=>x.GetType()==typeof(GroupBoltsAttr))
+            //List<Block> Block_BlockReference = this.Entities.Where(x => x.GetType() == typeof(Mesh)).Select(x => (BoltAttr)x.EntityData).ToList();
+
+            // 因為重抓NC檔，孔位的GUID會不同，同步dm檔與NC檔之孔位GUID，以dm檔為主
+
+
+
+
+
+
+
+            sycnModelBoltandNewBolt(ncGBA);
+            //this.Entities.ForEach(x =>
+            //{
+            //    if (x.GetType() == typeof(BlockReference) && x.EntityData.GetType() == typeof(GroupBoltsAttr))
+            //    {
+            //        GroupBoltsAttr gba = (GroupBoltsAttr)x.EntityData;
+            //        GroupBoltsAttr gbaTemp = ncGBA.FirstOrDefault(y => y.X == gba.X && y.Y == gba.Y && y.Z == gba.Z && y.Mode == gba.Mode && y.Face==gba.Face);
+            //        if (gbaTemp != null) gbaTemp.GUID = gba.GUID;
+            //    }
+            //    if (x.GetType() == typeof(Mesh) && x.EntityData.GetType()==typeof(BoltAttr))
+            //    {
+            //        BoltAttr ba = (BoltAttr)x.EntityData;
+            //        BoltAttr gbaTemp = ncGBA.FirstOrDefault(y => y.X == ba.X && y.Y == ba.Y && y.Z == ba.Z && y.Mode == ba.Mode && y.Face == ba.Face);
+            //        if (gbaTemp != null) gbaTemp.GUID = ba.GUID;
+            //    }
+            //});
+
+            List<Block> Block_mesh = new List<Block>();
+            List<Block> Block_BlockReference = new List<Block>();
+            List<Block> Block_OldBolt = new List<Block>();
+            int i = 0;
+            this.Blocks.ToList().ForEach(x =>
+            {
+                if (i > 0)
+                {
+                    if (x.Entities[0].GetType() == typeof(Mesh) &&
+                    x.Entities[0].EntityData.GetType() == typeof(BoltAttr) && ((BoltAttr)x.Entities[0].EntityData).Mode != AXIS_MODE.HypotenusePOINT
+                    )
+                    {
+                        Block_OldBolt.Add(x);
+                    }
+                    if (x.Entities[0].GetType() == typeof(BlockReference) && 
+                    x.Entities[0].EntityData.GetType() == typeof(GroupBoltsAttr) && ((BoltAttr)x.Entities[0].EntityData).Mode != AXIS_MODE.HypotenusePOINT
+                    )
+                    {
+                        Block_OldBolt.Add(x);
+                    }
+                }
+                i++;
+            });
+
+
+            //// 舊有形鋼上的孔群:目前有兩種
+            //Block_BlockReference = this.Blocks.Where(x => x.Entities.GetType() == typeof(BlockReference) && x.Entities[0].EntityData.GetType() == typeof(GroupBoltsAttr)).ToList();
+            //Block_mesh = this.Blocks.Where(x => x.Entities.GetType() == typeof(Mesh) && x.Entities[0].EntityData.GetType() == typeof(BoltAttr)).Select(x => (Block)x).ToList();
+            //List<Block> Block_boltAttr = this.Blocks.Where(x => x.Entities[0].GetType() == typeof(Mesh) && x.Entities[0].EntityData.GetType() == typeof(BoltAttr) && ((BoltAttr)x.Entities[0].EntityData).Mode != AXIS_MODE.HypotenusePOINT).Select(x => (Block)x).ToList();
+            //List<Block> blocks = new List<Block>();
+            //Block_BlockReference.AddRange(Block_mesh);
+            //Block_BlockReference.AddRange(Block_boltAttr);
+            if (Block_OldBolt.Count == 0 && ncGBA!=null)
+            {               
+                ncGBA.ForEach(x =>
+                {
+                    // 將NC檔孔轉圖塊
+                    Block b = new Block();
+                    BlockReference blockReference = new BlockReference(0, 0, 0, Guid.NewGuid().ToString(), 1, 1, 1, 0);//產生孔位群組參考圖塊
+                    blockReference.EntityData = x;
+                    blockReference.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
+                    b.Entities.Add(blockReference);
+                    Block_OldBolt.Add(b);
+                });
+            }
+
+            return Block_OldBolt;
+        }
+        /// <summary>
+        /// 同步原孔群及新孔群的GUID
+        /// </summary>
+        /// <param name="ncGBA"></param>
+        public void sycnModelBoltandNewBolt(List<GroupBoltsAttr> ncGBA) 
+        {
+            if (ncGBA.Count > 0)
+            {
+                this.Entities.ForEach(x =>
+                {
+                    if (x.GetType() == typeof(BlockReference) && x.EntityData.GetType() == typeof(GroupBoltsAttr))
+                    {
+                        GroupBoltsAttr gba = (GroupBoltsAttr)x.EntityData;
+                        GroupBoltsAttr gbaTemp = ncGBA.FirstOrDefault(y => y.X == gba.X && y.Y == gba.Y && y.Z == gba.Z && y.Mode == gba.Mode && y.Face == gba.Face);
+                        if (gbaTemp != null) gbaTemp.GUID = gba.GUID;
+                    }
+                    if (x.GetType() == typeof(Mesh) && x.EntityData.GetType() == typeof(BoltAttr))
+                    {
+                        BoltAttr ba = (BoltAttr)x.EntityData;
+                        BoltAttr gbaTemp = ncGBA.FirstOrDefault(y => y.X == ba.X && y.Y == ba.Y && y.Z == ba.Z && y.Mode == ba.Mode && y.Face == ba.Face);
+                        if (gbaTemp != null) gbaTemp.GUID = ba.GUID;
+                    }
+                });
+            }
+        }
+
+        public void sycnModelEntitiesAndNewBolt(List<Block> block)
+        {
+                 
+            this.Entities.ForEach(x =>
+            {
+                bool change = false;
+                if (x.GetType() == typeof(BlockReference) && x.EntityData.GetType() == typeof(GroupBoltsAttr))
+                {
+                    GroupBoltsAttr ed = (GroupBoltsAttr)x.EntityData;
+                    block.ForEach(b => 
+                    {
+                        b.Entities.ForEach(e =>
+                        {
+                            BoltAttr gbaTemp = (BoltAttr)e.EntityData;
+                            if (
+                            gbaTemp.X == ed.X && gbaTemp.Y == ed.Y && gbaTemp.Z == ed.Z && 
+                            gbaTemp.Mode == ed.Mode && gbaTemp.Face == ed.Face)
+                            {
+                                change = true;
+                                return;
+                            }
+                        });
+                        if (change)
+                        {
+                            b.Name = ((GroupBoltsAttr)x.EntityData).GUID.ToString();
+                            change = false;
+                            return;
+                        }
+
+
+                    });
+                }
+                if (x.GetType() == typeof(BlockReference) && x.EntityData.GetType() == typeof(BoltAttr))
+                {
+                    BoltAttr ed = (BoltAttr)x.EntityData;
+                    block.ForEach(b =>
+                    {
+                        b.Entities.ForEach(e =>
+                        {
+                            BoltAttr gbaTemp = (BoltAttr)e.EntityData;
+                            if (
+                            gbaTemp.X == ed.X && gbaTemp.Y == ed.Y && gbaTemp.Z == ed.Z &&
+                            gbaTemp.Mode == ed.Mode && gbaTemp.Face == ed.Face)
+                            {
+                                change = true;
+                                return;
+                            }
+                        });
+                        if (change)
+                        {
+                            b.Name = ((BoltAttr)x.EntityData).GUID.ToString();
+                            change = false;
+                            return;
+                        }
+
+
+                    });
+                }
+            });
+        }
+
+        public void AddModelSteelAttr(SteelAttr steelAttr, Steel3DBlock steel3D)
+        {
+            this.Blocks[1] = steel3D;//加入鋼構圖塊到模型
+            BlockReference blockReference = new BlockReference(0, 0, 0, steel3D.Name, 1, 1, 1, 0);
+            blockReference.EntityData = steelAttr;
+            blockReference.Selectable = false;//關閉用戶選擇
+            blockReference.Attributes.Add("steel", new AttributeReference(0, 0, 0));
+            Entities[Entities.Count - 1] = blockReference;//加入參考圖塊到模型
+        }
+
+        /// <summary>
+        /// 由Vertices取得平面座標空間
+        /// </summary>
+        public List<Point3D> GetFaceBox(FACE face)
+        {
+            SteelAttr steelAttr = (SteelAttr)this.Blocks[0].Entities[1].EntityData;
+            double t1 = steelAttr.t1;
+            Point3D[] vertices = this.Blocks[0].Entities[1].Vertices;
+            double maxZ = 0, minZ = 0, maxY = 0, minY = 0;
+            List<Point3D> returnVertices = new List<Point3D>();
+            // 取得各面xyz起訖值
+            switch (face)
+            {
+                case FACE.TOP:
+                    // 腹板中心位置:翼板高度/2+-腹板厚度
+                    maxZ = (steelAttr.H / 2) + (steelAttr.t1/2);
+                    minZ = (steelAttr.H / 2) - (steelAttr.t1/2);
+                    returnVertices = vertices.Where(x => x.Z <= maxZ && x.Z >= minZ).Select(x=>new Point3D(x.X,x.Y,x.Z)).ToList();                    
+                    break;
+                case FACE.FRONT:
+                    // 前翼板y值最大:0+翼板厚度
+                    maxY = steelAttr.t2;
+                    returnVertices = vertices.Where(x => x.Y == 0 || x.X >= maxY).Select(x => new Point3D(x.X, x.Y, x.Z)).ToList();
+                    break;
+                case FACE.BACK:
+                    // 後翼板y值最小:型鋼寬度-翼板厚度
+                    minY = steelAttr.W - steelAttr.t1;
+                    returnVertices = vertices.Where(x => x.X == steelAttr.W || x.X >= minY).Select(x => new Point3D(x.X, x.Y, x.Z)).ToList();
+                    break;
+                default:
+                    break;
+            }
+            return returnVertices;
         }
         /// <summary>
         /// 繪製屏幕曲線
