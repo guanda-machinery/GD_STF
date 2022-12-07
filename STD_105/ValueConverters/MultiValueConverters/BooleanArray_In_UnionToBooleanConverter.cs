@@ -11,8 +11,9 @@ namespace STD_105
     /// <summary>
     /// 將ischecked轉換為isenable
     /// </summary>
-    public class BooleanArrayUnionToBooleanConverter : WPFWindowsBase.BaseMultiValueConverter<BooleanArrayUnionToBooleanConverter> 
+    public class BooleanArray_In_UnionToBooleanConverter : WPFWindowsBase.BaseMultiValueConverter<BooleanArray_In_UnionToBooleanConverter> 
     {
+
         public override object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             //特殊Convert:當第一項為false時直接回傳false ，為true時則找有沒有其他項，若存在其他項則回傳其他項的聯集，沒有其他項則回傳true
@@ -37,7 +38,6 @@ namespace STD_105
                     return true;
                 }
             }
-
             return false;
         }
 
