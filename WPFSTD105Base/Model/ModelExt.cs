@@ -61,7 +61,7 @@ namespace WPFSTD105
                 return;
 
             ObSettingVM vm = (ObSettingVM)DataContext;
-                        
+
             if (ActionMode != actionType.SelectVisibleByPick)
             {
                 if (Name == "model")
@@ -122,8 +122,8 @@ namespace WPFSTD105
                 {
                     if (this.CurrentBlockReference == null)
                     {
-                        
-                        int i=0;
+
+                        int i = 0;
                         foreach (var item in e.AddedItems)
                         {
 
@@ -171,7 +171,8 @@ namespace WPFSTD105
             {
                 vm.EditObjectVisibility = false;// Visibility.Collapsed;
             }
-            else {
+            else
+            {
                 vm.EditObjectVisibility = true;//  Visibility.Visible;
             }
         }
@@ -649,7 +650,7 @@ namespace WPFSTD105
         /// <param name="e"></param>
         protected override void OnMouseEnter(EventArgs e)
         {
-   
+
             base.OnMouseEnter(e);
             cursorOutside = false;
             base.OnMouseEnter(e);
@@ -976,7 +977,7 @@ namespace WPFSTD105
                     double angleAMB = Math.Acos(cosM) * 180 / Math.PI;
 
                     DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10,
-                       $"選擇第三點。目前角度 : {Math.Round(angleAMB, 2, MidpointRounding.AwayFromZero) }", new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
+                       $"選擇第三點。目前角度 : {Math.Round(angleAMB, 2, MidpointRounding.AwayFromZero)}", new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
 
                     DrawInteractiveArc();
                 }
@@ -1432,7 +1433,7 @@ namespace WPFSTD105
 
             if (current != null)
             {
-                titel += $"{current.X.ToString("f1") }, {current.Y.ToString("f1")}, {current.Z.ToString("f1")}";
+                titel += $"{current.X.ToString("f1")}, {current.Y.ToString("f1")}, {current.Z.ToString("f1")}";
             }
             DrawText(mouseLocation.X, (int)Size.Height - mouseLocation.Y + 10,
                 titel, new Font("Tahoma", 8.25f), DrawingColor_White, ContentAlignment.BottomLeft);
@@ -1511,7 +1512,7 @@ namespace WPFSTD105
         /// </summary>
         /// <param name="ncGBA"></param>
         /// <returns></returns>
-        public List<Block> GetBoltFromBlock(List<GroupBoltsAttr> ncGBA=null) 
+        public List<Block> GetBoltFromBlock(List<GroupBoltsAttr> ncGBA = null)
         {
             //model.Entities.Where(x=>x.GetType()==typeof(Mesh)).Select(x=>(BoltAttr)x.EntityData)
             //model.Entities.Where(x=>x.GetType()==typeof(BlockReference)).Select(x=>x.EntityData).Where(x=>x.GetType()==typeof(GroupBoltsAttr))
@@ -1556,7 +1557,7 @@ namespace WPFSTD105
                     {
                         Block_OldBolt.Add(x);
                     }
-                    if (x.Entities[0].GetType() == typeof(BlockReference) && 
+                    if (x.Entities[0].GetType() == typeof(BlockReference) &&
                     x.Entities[0].EntityData.GetType() == typeof(GroupBoltsAttr) && ((BoltAttr)x.Entities[0].EntityData).Mode != AXIS_MODE.HypotenusePOINT
                     )
                     {
@@ -1574,8 +1575,8 @@ namespace WPFSTD105
             //List<Block> blocks = new List<Block>();
             //Block_BlockReference.AddRange(Block_mesh);
             //Block_BlockReference.AddRange(Block_boltAttr);
-            if (Block_OldBolt.Count == 0 && ncGBA!=null)
-            {               
+            if (Block_OldBolt.Count == 0 && ncGBA != null)
+            {
                 ncGBA.ForEach(x =>
                 {
                     // 將NC檔孔轉圖塊
@@ -1594,9 +1595,9 @@ namespace WPFSTD105
         /// 同步原孔群及新孔群的GUID
         /// </summary>
         /// <param name="ncGBA"></param>
-        public void sycnModelBoltandNewBolt(List<GroupBoltsAttr> ncGBA) 
+        public void sycnModelBoltandNewBolt(List<GroupBoltsAttr> ncGBA)
         {
-            if (ncGBA.Count > 0)
+            if (ncGBA != null && ncGBA.Count > 0)
             {
                 this.Entities.ForEach(x =>
                 {
@@ -1615,42 +1616,20 @@ namespace WPFSTD105
                 });
             }
         }
-
+        /// <summary>
+        /// 同步Entities及對照孔的GUID
+        /// </summary>
+        /// <param name="block"></param>
         public void sycnModelEntitiesAndNewBolt(List<Block> block)
         {
-                 
+
             this.Entities.ForEach(x =>
             {
                 bool change = false;
                 if (x.GetType() == typeof(BlockReference) && x.EntityData.GetType() == typeof(GroupBoltsAttr))
                 {
                     GroupBoltsAttr ed = (GroupBoltsAttr)x.EntityData;
-                    block.ForEach(b => 
-                    {
-                        b.Entities.ForEach(e =>
-                        {
-                            BoltAttr gbaTemp = (BoltAttr)e.EntityData;
-                            if (
-                            gbaTemp.X == ed.X && gbaTemp.Y == ed.Y && gbaTemp.Z == ed.Z && 
-                            gbaTemp.Mode == ed.Mode && gbaTemp.Face == ed.Face)
-                            {
-                                change = true;
-                                return;
-                            }
-                        });
-                        if (change)
-                        {
-                            b.Name = ((GroupBoltsAttr)x.EntityData).GUID.ToString();
-                            change = false;
-                            return;
-                        }
-
-
-                    });
-                }
-                if (x.GetType() == typeof(BlockReference) && x.EntityData.GetType() == typeof(BoltAttr))
-                {
-                    BoltAttr ed = (BoltAttr)x.EntityData;
+                    string guid = ((GroupBoltsAttr)x.EntityData).GUID.ToString();
                     block.ForEach(b =>
                     {
                         b.Entities.ForEach(e =>
@@ -1664,7 +1643,34 @@ namespace WPFSTD105
                                 return;
                             }
                         });
-                        if (change)
+                        if (change && !block.Select(bl => bl.Name).Contains(guid))
+                        {
+                            b.Name = ((GroupBoltsAttr)x.EntityData).GUID.ToString();
+                            change = false;
+                            return;
+                        }
+
+
+                    });
+                }
+                if (x.GetType() == typeof(BlockReference) && x.EntityData.GetType() == typeof(BoltAttr))
+                {
+                    BoltAttr ed = (BoltAttr)x.EntityData;
+                    string guid = ((GroupBoltsAttr)x.EntityData).GUID.ToString();
+                    block.ForEach(b =>
+                    {
+                        b.Entities.ForEach(e =>
+                        {
+                            BoltAttr gbaTemp = (BoltAttr)e.EntityData;
+                            if (
+                            gbaTemp.X == ed.X && gbaTemp.Y == ed.Y && gbaTemp.Z == ed.Z &&
+                            gbaTemp.Mode == ed.Mode && gbaTemp.Face == ed.Face)
+                            {
+                                change = true;
+                                return;
+                            }
+                        });
+                        if (change && !block.Select(bl => bl.Name).Contains(guid))
                         {
                             b.Name = ((BoltAttr)x.EntityData).GUID.ToString();
                             change = false;
@@ -1702,9 +1708,9 @@ namespace WPFSTD105
             {
                 case FACE.TOP:
                     // 腹板中心位置:翼板高度/2+-腹板厚度
-                    maxZ = (steelAttr.H / 2) + (steelAttr.t1/2);
-                    minZ = (steelAttr.H / 2) - (steelAttr.t1/2);
-                    returnVertices = vertices.Where(x => x.Z <= maxZ && x.Z >= minZ).Select(x=>new Point3D(x.X,x.Y,x.Z)).ToList();                    
+                    maxZ = (steelAttr.H / 2) + (steelAttr.t1 / 2);
+                    minZ = (steelAttr.H / 2) - (steelAttr.t1 / 2);
+                    returnVertices = vertices.Where(x => x.Z <= maxZ && x.Z >= minZ).Select(x => new Point3D(x.X, x.Y, x.Z)).ToList();
                     break;
                 case FACE.FRONT:
                     // 前翼板y值最大:0+翼板厚度
@@ -1963,8 +1969,6 @@ namespace WPFSTD105
             ActionMode = actionType.SelectByBox;
             Entities.ClearSelection();
             ObjectManipulator.Cancel();
-
         }
-
     }
 }
