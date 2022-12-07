@@ -85,7 +85,7 @@ namespace WPFSTD105.Model
                     el.EntityData = boltAttr;
                     this.Entities.Add(el);
                 });
-                Circle circle = new Circle(Plane.XY, new Point3D(boltAttr.X, boltAttr.Y), boltAttr.Dia / 2)
+                Circle circle = new Circle(Plane.XY, new Point3D(center.X, center.Y), boltAttr.Dia / 2)
                 {
                     Color = System.Drawing.ColorTranslator.FromHtml(Default.Point),
                     ColorMethod = colorMethodType.byEntity,

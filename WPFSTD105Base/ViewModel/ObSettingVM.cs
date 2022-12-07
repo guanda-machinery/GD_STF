@@ -1090,16 +1090,16 @@ namespace WPFSTD105.ViewModel
                 switch ((GD_STD.Enum.FACE)temp_CutFace)
                 {
                     case GD_STD.Enum.FACE.BACK:
-                        //bufferCutList = new CutList
-                        //  (URCheck ? URPoint : Steelbuffer.PointBack.UR,
-                        //   DRCheck ? DRPoint : Steelbuffer.PointBack.DR,
-                        //   ULCheck ? ULPoint : SteelAttr.PointBack.UL,
-                        //   DLCheck ? DLPoint : SteelAttr.PointBack.DL);
-                        //if (CutLogic(bufferCutList, SteelAttr.W))
-                        //{
-                        //    SteelAttr.PointBack = bufferCutList;
-                        //}
-                        //break;
+                    //bufferCutList = new CutList
+                    //  (URCheck ? URPoint : Steelbuffer.PointBack.UR,
+                    //   DRCheck ? DRPoint : Steelbuffer.PointBack.DR,
+                    //   ULCheck ? ULPoint : SteelAttr.PointBack.UL,
+                    //   DLCheck ? DLPoint : SteelAttr.PointBack.DL);
+                    //if (CutLogic(bufferCutList, SteelAttr.W))
+                    //{
+                    //    SteelAttr.PointBack = bufferCutList;
+                    //}
+                    //break;
                     case GD_STD.Enum.FACE.FRONT:
                         //SteelAttr.PointFront = new CutList(URPoint, DRPoint, ULPoint, DLPoint);
                         bufferCutList = new CutList
@@ -1928,7 +1928,7 @@ namespace WPFSTD105.ViewModel
                             {
                                 #region Grid零件內容
                                 steelAttrVM = new ProductSettingsPageViewModel();
-                                
+
                                 // 建立日期
                                 steelAttrVM.Creation = item.Creation;
                                 steelAttrVM.steelAttr.Creation = item.Creation;
@@ -2276,7 +2276,7 @@ namespace WPFSTD105.ViewModel
         /// <param name="blocks"></param>
         /// <param name="isAdd3D"></param>
         public void AddBolts(devDept.Eyeshot.Model model, devDept.Eyeshot.Model drawing,
-            out bool checkRef, List<Block> blocks,bool isAdd3D = true)
+            out bool checkRef, List<Block> blocks, bool isAdd3D = true)
         {
             checkRef = true;
             // 步驟. 取得螺栓EntityData
@@ -2343,7 +2343,7 @@ namespace WPFSTD105.ViewModel
                         Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts((GroupBoltsAttr)model.Entities[i].EntityData, model, out BlockReference blockRef, out checkRef);
                         Add2DHole(drawing, bolts3DBlock, false);//加入孔位不刷新 2d 視圖 
                     }
-                }                
+                }
             }
             #endregion
 
@@ -2364,7 +2364,7 @@ namespace WPFSTD105.ViewModel
             #endregion
 
             #region 檢查孔位
-            checkRef = Bolts3DBlock.CheckBolts(model); 
+            checkRef = Bolts3DBlock.CheckBolts(model);
             #endregion
 
             drawing.Refresh();
@@ -2436,10 +2436,10 @@ namespace WPFSTD105.ViewModel
             }
         }
 
-        public void AddSteel(ModelExt model,SteelAttr steelAttr) 
+        public void AddSteel(ModelExt model, SteelAttr steelAttr)
         {
             Steel3DBlock steel = Steel3DBlock.AddSteel(steelAttr, model, out BlockReference blockReference);
-            BlockReference steel2D = SteelTriangulation(model, model.Blocks[1].Name,((Mesh)steel.Entities[0]));
+            BlockReference steel2D = SteelTriangulation(model, model.Blocks[1].Name, ((Mesh)steel.Entities[0]));
             Reductions.Add(new Reduction()
             {
                 Recycle = new List<List<Entity>>() { new List<Entity>() { blockReference } },
@@ -2460,7 +2460,7 @@ namespace WPFSTD105.ViewModel
         /// <param name="blockName">圖塊名稱</param>
         /// <param name="mesh">型鋼mesh((Mesh)model.Blocks[1].Entities[0])</param>
         /// <returns></returns>
-        public BlockReference SteelTriangulation(devDept.Eyeshot.Model drawing,string blockName,Mesh mesh)
+        public BlockReference SteelTriangulation(devDept.Eyeshot.Model drawing, string blockName, Mesh mesh)
         {
 #if DEBUG
             log4net.LogManager.GetLogger("SteelTriangulation").Debug("");
@@ -2493,7 +2493,7 @@ namespace WPFSTD105.ViewModel
         /// <param name="path"></param>
         /// <param name="oldPartNumber"></param>
         /// <param name="newPartNumber"></param>
-        public void CopyNCFile(string path,string oldPartNumber,string newPartNumber) 
+        public void CopyNCFile(string path, string oldPartNumber, string newPartNumber)
         {
             string dataName = Path.GetFileName($"{path}");//檔案名稱
             if (File.Exists($@"{path}")) //檔案存在
@@ -2535,5 +2535,225 @@ namespace WPFSTD105.ViewModel
             sw.Flush();
             sw.Close();
         }
+
+        public bool CheckData_AddHole(String partNumber,ModelExt model)
+        {
+            STDSerialization ser = new STDSerialization();
+            Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
+
+            if (!part.Any(x => x.Value.Any(y => y.Number == partNumber)))
+            {
+                WinUIMessageBox.Show(null,
+               $"零件編號尚未點擊OK",
+               "通知",
+               MessageBoxButton.OK,
+               MessageBoxImage.Exclamation,
+               MessageBoxResult.None,
+               MessageBoxOptions.None,
+               FloatingMode.Popup);
+                fNewPart = true;
+                fclickOK = false;
+                return false;
+            }
+
+            if (model.Entities.Count <= 0)
+            {
+                WinUIMessageBox.Show(null,
+                $"模型內找不到主件",
+                "通知",
+                MessageBoxButton.OK,
+                MessageBoxImage.Exclamation,
+                MessageBoxResult.None,
+                MessageBoxOptions.None,
+                FloatingMode.Popup);
+                fNewPart = false;
+                fclickOK = false;
+                return false;
+            }
+
+            if (ComparisonBolts(model))  // 欲新增孔位重複比對
+            {
+                WinUIMessageBox.Show(null,
+                $"新增孔位重複，請重新輸入",
+                "通知",
+                MessageBoxButton.OK,
+                MessageBoxImage.Exclamation,
+                MessageBoxResult.None,
+                MessageBoxOptions.None,
+                FloatingMode.Popup);
+                fclickOK = true;
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 新增孔位比對
+        /// </summary>
+        public bool ComparisonBolts(ModelExt model)
+        {
+            GroupBoltsAttr TmpBoltsArr = new GroupBoltsAttr();
+            TmpBoltsArr = GetGroupBoltsAttr();
+            double valueX = 0d;
+            double valueY = 0d;
+            double TmpXPos = 0d;
+            double TmpYPos = 0d;
+            bool bFindSamePos = false;
+            List<(double, double)> AddBoltsList = new List<(double, double)>();
+
+            TmpXPos = TmpBoltsArr.X;
+            TmpYPos = TmpBoltsArr.Y;
+
+            // 分解與儲存預建立之孔群各孔座標於LIST
+            for (int i = 1; i <= TmpBoltsArr.xCount; i++)
+            {
+                AddBoltsList.Add((TmpXPos, TmpYPos));
+
+                for (int j = 1; j < TmpBoltsArr.yCount; j++)
+                {
+                    if (j < TmpBoltsArr.dYs.Count) //判斷孔位Y向矩陣列表是否有超出長度,超過都取最後一位偏移量
+                        valueY = TmpBoltsArr.dYs[j - 1];
+                    else
+                        valueY = TmpBoltsArr.dYs[TmpBoltsArr.dYs.Count - 1];
+
+                    TmpYPos = TmpYPos + valueY;
+
+                    AddBoltsList.Add((TmpXPos, TmpYPos));
+                }
+
+                if (i < TmpBoltsArr.dXs.Count) //判斷孔位X向矩陣列表是否有超出長度,超過都取最後一位偏移量
+                    valueX = TmpBoltsArr.dXs[i - 1];
+                else
+                    valueX = TmpBoltsArr.dXs[TmpBoltsArr.dXs.Count - 1];
+
+                TmpXPos = TmpXPos + valueX;
+
+                TmpYPos = TmpBoltsArr.Y;
+            }
+            TmpXPos = 0d;
+            TmpYPos = 0d;
+
+            // 原3D模組各孔位座標存於各LIST
+            List<(double, double)> AllBoltsAddList = new List<(double, double)>();
+            List<(double, double)> TopBoltsAddList = new List<(double, double)>();
+            List<(double, double)> FRONTBoltsAddList = new List<(double, double)>();
+            List<(double, double)> BACKBoltsAddList = new List<(double, double)>();
+
+            for (int i = 0; i < model.Entities.Count; i++)//逐步展開孔群資訊
+            {
+                if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //判斷孔群
+                {
+                    BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
+                    Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
+                    Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生孔群圖塊
+
+                    for (int j = 0; j < bolts3DBlock.Entities.Count; j++)
+                    {
+                        TmpXPos = ((BoltAttr)bolts3DBlock.Entities[j].EntityData).X;
+                        TmpYPos = ((BoltAttr)bolts3DBlock.Entities[j].EntityData).Y;
+
+                        switch (boltsAttr.Face)
+                        {
+                            case GD_STD.Enum.FACE.TOP:
+                                TopBoltsAddList.Add((TmpXPos, TmpYPos));
+                                break;
+                            case GD_STD.Enum.FACE.FRONT:
+                                FRONTBoltsAddList.Add((TmpXPos, TmpYPos));
+                                break;
+                            case GD_STD.Enum.FACE.BACK:
+                                BACKBoltsAddList.Add((TmpXPos, TmpYPos));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+
+            // 將原3D各孔群座標存於共用LIST
+            switch (TmpBoltsArr.Face)
+            {
+                case GD_STD.Enum.FACE.TOP:
+                    AllBoltsAddList = TopBoltsAddList;
+                    break;
+                case GD_STD.Enum.FACE.FRONT:
+                    AllBoltsAddList = FRONTBoltsAddList;
+                    break;
+                case GD_STD.Enum.FACE.BACK:
+                    AllBoltsAddList = BACKBoltsAddList;
+                    break;
+                default:
+                    break;
+            }
+
+            // 指定LIST比對是否有相同座標
+            foreach (var x in AddBoltsList)
+            {
+                if (AllBoltsAddList.Contains(x))
+                {
+                    bFindSamePos = true;
+                    break;
+                }
+                else
+                    bFindSamePos = false;
+            }
+            return bFindSamePos;
+        }
+
+        #region 功能可用實績判斷參數
+        /// <summary>
+        /// 是否第一次按新增 點擊OK true
+        /// </summary>
+        public bool? fFirstAdd = true;
+        /// <summary>
+        /// 是否為新零件 dm
+        /// </summary>
+        public bool? fNewPart = true;
+        /// <summary>
+        /// 是否點擊Grid 新增 修改後為false
+        /// </summary>
+        public bool? fGrid = false;// 
+        /// <summary>
+        /// 是否直接點擊OK
+        /// </summary>
+        public bool? fclickOK = true; // 
+        /// <summary>
+        /// 判斷執行新增零件及孔位
+        /// </summary>
+        public bool fAddSteelPart = false;       //  
+        /// <summary>
+        /// 判斷執行斜邊打點
+        /// </summary>
+        public bool fAddHypotenusePoint = false;   //  
+        #endregion
+
+        /// <summary>
+        /// 流程參數設定(全null為初始值)
+        /// </summary>
+        /// <param name="firstAdd">是否第一次按新增</param>
+        /// <param name="newPart">是否為新零件</param>
+        /// <param name="grid">是否從Grid開始動作</param>
+        public void StateParaSetting(bool? firstAdd, bool? newPart, bool? grid)
+        {
+            // 初始值
+            if (firstAdd == null && newPart == null && grid == null)
+            {
+                fFirstAdd = true;
+                fNewPart = true;
+                fGrid = false;
+            }
+            else
+            {
+                // 第一次按新增
+                fFirstAdd = firstAdd;
+                // 是否為新零件
+                fNewPart = newPart;
+                // 是否在Grid進行動作
+                fGrid = grid;
+            }
+        }
+
     }
+
+
 }

@@ -1465,7 +1465,12 @@ namespace WPFSTD105.Model
             #endregion
             ser.SetNcTempList(ncTemps);//儲存檔案
         }
-
+        /// <summary>
+        /// 斜邊打點(三面)
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="obvm"></param>
+        /// <param name="diffLength"></param>
         public static void RunHypotenusePoint(devDept.Eyeshot.Model model, ObSettingVM obvm, double diffLength)
         {
             // 由選取零件判斷三面是否為斜邊
@@ -1805,133 +1810,287 @@ namespace WPFSTD105.Model
             //    ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
             //}
         }
-
         /// <summary>
-        /// 
+        /// 手動斜邊打點
         /// </summary>
-        /// <param name="model"></param>
-        /// <param name="blocks">已編輯過的孔</param>
-        /// <param name="groupBoltsAttr"></param>
-        public static void GroupBoltsAttrDouble(devDept.Eyeshot.Model model, List<Block> blocks, GroupBoltsAttr groupBoltsAttr)
+        /// <param name="face"></param>
+        public static void ManHypotenusePoint(devDept.Eyeshot.Model model, devDept.Eyeshot.Model drawing, FACE face)
         {
-            if (blocks != null && blocks.SelectMany(x => x.Entities)
-                .Any(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
-                ((GroupBoltsAttr)x.EntityData).X == groupBoltsAttr.X &&
-                ((GroupBoltsAttr)x.EntityData).Y == groupBoltsAttr.Y &&
-                ((GroupBoltsAttr)x.EntityData).Z == groupBoltsAttr.Z &&
-                ((GroupBoltsAttr)x.EntityData).Face == groupBoltsAttr.Face &&
-                ((GroupBoltsAttr)x.EntityData).Mode == groupBoltsAttr.Mode))
+#if DEBUG
+            log4net.LogManager.GetLogger("ManHypotenusePoint").Debug("");
+#endif
+
+            double a, b;
+            List<(double, double)> DRPoint = new List<(double, double)>();
+            List<(double, double)> HypotenusePoint = new List<(double, double)>();
+            List<Point3D> result = null;
+            MyCs myCs = new MyCs();
+            ObSettingVM obvm = new ObSettingVM();
+            STDSerialization ser = new STDSerialization();
+            ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();//備份當前加工區域數值
+
+            double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].A);   //  腹板斜邊打點比列(短)
+            double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].B);    //  腹板斜邊打點比列(長)
+            double PosRatioC = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].C);    //  翼板斜邊打點比列(短)
+            double PosRatioD = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].D);     //  翼板斜邊打點比列(長)
+
+            // 因為GetHypotenuseBoltsAttr需使用ViewModel.SteelAttr
+            obvm.SteelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
+            SteelAttr steelAttr = obvm.SteelAttr;
+            bool hasOutSteel = false;
+            List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
+            switch (face)
             {
-                blocks.ForEach(b =>
-                {
-                    bool exist = false;
-                    b.Entities.ForEach(e =>
-                    {
-                        if (
-                        ((GroupBoltsAttr)e.EntityData).X == groupBoltsAttr.X &&
-                        ((GroupBoltsAttr)e.EntityData).Y == groupBoltsAttr.Y &&
-                        ((GroupBoltsAttr)e.EntityData).Z == groupBoltsAttr.Z &&
-                        ((GroupBoltsAttr)e.EntityData).Face == groupBoltsAttr.Face &&
-                        ((GroupBoltsAttr)e.EntityData).Mode == groupBoltsAttr.Mode)
-                        {
-                            exist = true;
-                            return;
-                        }
-                    });
-                    if (exist)
-                    {
-                        // 舊有形鋼中 若存在此孔/孔群 則將Block/Entities加入model
-                        model.Blocks.Add(b);
-                        BlockReference block = new BlockReference(0, 0, 0, b.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
-                        block.EntityData = b.Entities;
-                        block.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-                        model.Entities.Insert(0, block);//加入參考圖塊到模型
-                        //model.Entities.InsertRange(0, b.Entities);
+                #region TOP
+                case FACE.TOP:
+
+                    if (steelAttr.Top == null)
                         return;
-                    }
-                });
-            }
-            else if (blocks != null && blocks.SelectMany(x => x.Entities).Any(x => x.EntityData.GetType() == typeof(BoltAttr) &&
-                ((BoltAttr)x.EntityData).X == groupBoltsAttr.X &&
-                ((BoltAttr)x.EntityData).Y == groupBoltsAttr.Y &&
-                ((BoltAttr)x.EntityData).Z == groupBoltsAttr.Z &&
-                ((BoltAttr)x.EntityData).Face == groupBoltsAttr.Face &&
-                ((BoltAttr)x.EntityData).Mode == groupBoltsAttr.Mode))
-            {
-                blocks.ForEach(b =>
-                {
-                    bool exist = false;
-                    b.Entities.ForEach(e =>
+
+                    //UL
+                    result = steelAttr.Top.UL;
+                    if (result.Count > 0)
                     {
-                        if (e.EntityData.GetType() == typeof(BoltAttr) &&
-                        ((BoltAttr)e.EntityData).X == groupBoltsAttr.X &&
-                        ((BoltAttr)e.EntityData).Y == groupBoltsAttr.Y &&
-                        ((BoltAttr)e.EntityData).Z == groupBoltsAttr.Z &&
-                        ((BoltAttr)e.EntityData).Face == groupBoltsAttr.Face &&
-                        ((BoltAttr)e.EntityData).Mode == groupBoltsAttr.Mode)
+                        DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
+                        HypotenusePoint.Add(((PosRatioA * a) + result[0].X, (PosRatioA * b) + result[0].Y));
+                        HypotenusePoint.Add(((PosRatioB * a) + result[0].X, (PosRatioB * b) + result[0].Y));
+                    }
+
+                    //UR
+                    result = steelAttr.Top.UR;
+                    if (result.Count > 0)
+                    {
+                        DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
+                        HypotenusePoint.Add(((PosRatioA * a) + result[0].X, result[1].Y - (PosRatioA * b)));
+                        HypotenusePoint.Add(((PosRatioB * a) + result[0].X, result[1].Y - (PosRatioB * b)));
+                    }
+
+                    //DL
+                    result = steelAttr.Top.DL;
+                    if (result.Count > 0)
+                    {
+                        DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
+                        HypotenusePoint.Add(((PosRatioA * a), result[2].Y - (PosRatioA * b)));
+                        HypotenusePoint.Add(((PosRatioB * a), result[2].Y - (PosRatioB * b)));
+                    }
+
+                    //DR
+                    result = steelAttr.Top.DR;
+                    if (result.Count > 0)
+                    {
+                        DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
+                        HypotenusePoint.Add(((PosRatioA * a) + result[0].X, (PosRatioA * b) + result[1].Y));
+                        HypotenusePoint.Add(((PosRatioB * a) + result[0].X, (PosRatioB * b) + result[1].Y));
+                    }
+
+                    B3DB = new List<Bolts3DBlock>();
+                    for (int z = 0; z < HypotenusePoint.Count; z++)
+                    {
+                        GroupBoltsAttr TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.TOP, START_HOLE.START);
+                        TmpBoltsArr.dX = "0";
+                        TmpBoltsArr.dY = "0";
+                        TmpBoltsArr.xCount = 1;
+                        TmpBoltsArr.yCount = 1;
+                        TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
+                        TmpBoltsArr.X = HypotenusePoint[z].Item1;
+                        TmpBoltsArr.Y = HypotenusePoint[z].Item2;
+                        TmpBoltsArr.GUID = Guid.NewGuid();
+                        TmpBoltsArr.BlockName = "ManHypotenuse";
+                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool check);
+                        if (bolts.hasOutSteel)
                         {
-                            exist = true; return;
+                            hasOutSteel = true;
                         }
-                    });
-                    if (exist)
-                    {
-                        // 舊有形鋼中 若存在此孔/孔群 則將Block/Entities加入model
-                        model.Blocks.Add(b);
-                        BlockReference block = new BlockReference(0, 0, 0, b.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
-                        block.EntityData = groupBoltsAttr;
-                        block.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-                        model.Entities.Insert(0, block);//加入參考圖塊到模型
-                        //model.Entities.InsertRange(0, (BlockReference)b.Entities);
-                        return;
+                        B3DB.Add(bolts);
+                        //BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                        //Add2DHole(bolts, false);//加入孔位不刷新 2d 視圖
                     }
-                });
-            }
-            else if (blocks != null && blocks.SelectMany(x => x.Entities).Select(x => (Mesh)x).Select(x => (BoltAttr)x.EntityData)
-                .Any(x => x.GetType() == typeof(BoltAttr) &&
-                ((BoltAttr)x).X == groupBoltsAttr.X &&
-                ((BoltAttr)x).Y == groupBoltsAttr.Y &&
-                ((BoltAttr)x).Z == groupBoltsAttr.Z &&
-                ((BoltAttr)x).Face == groupBoltsAttr.Face &&
-                ((BoltAttr)x).Mode == groupBoltsAttr.Mode))
-            {
-                blocks.ForEach(b =>
-                {
-                    bool exist = false;
-                    b.Entities.ForEach(e =>
+                    foreach (Bolts3DBlock item in B3DB)
                     {
-                        if (e.EntityData.GetType() == typeof(BoltAttr) &&
-                        ((BoltAttr)e.EntityData).X == groupBoltsAttr.X &&
-                        ((BoltAttr)e.EntityData).Y == groupBoltsAttr.Y &&
-                        ((BoltAttr)e.EntityData).Z == groupBoltsAttr.Z &&
-                        ((BoltAttr)e.EntityData).Face == groupBoltsAttr.Face &&
-                        ((BoltAttr)e.EntityData).Mode == groupBoltsAttr.Mode)
+                        BlockReference referenceBolts = obvm.Add2DHole(drawing,item);//加入孔位到2D
+                    }
+                    break;
+                #endregion
+
+                #region BACK
+                case FACE.BACK:
+
+                    if (steelAttr.Back == null)
+                        return;
+
+                    //UL
+                    result = steelAttr.Back.UL;
+                    if (result.Count > 0)
+                    {
+                        DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
+                        HypotenusePoint.Add(((PosRatioC * a) + result[0].X, (PosRatioC * b) + result[0].Y));
+                        HypotenusePoint.Add(((PosRatioD * a) + result[0].X, (PosRatioD * b) + result[0].Y));
+                    }
+
+                    //UR
+                    result = steelAttr.Back.UR;
+                    if (result.Count > 0)
+                    {
+                        DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
+                        HypotenusePoint.Add(((PosRatioC * a) + result[0].X, result[1].Y - (PosRatioC * b)));
+                        HypotenusePoint.Add(((PosRatioD * a) + result[0].X, result[1].Y - (PosRatioD * b)));
+                    }
+
+                    //DL
+                    result = steelAttr.Back.DL;
+                    if (result.Count > 0)
+                    {
+                        DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
+                        HypotenusePoint.Add(((PosRatioC * a), result[2].Y - (PosRatioC * b)));
+                        HypotenusePoint.Add(((PosRatioD * a), result[2].Y - (PosRatioD * b)));
+                    }
+
+                    //DR
+                    result = steelAttr.Back.DR;
+                    if (result.Count > 0)
+                    {
+                        DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
+                        HypotenusePoint.Add(((PosRatioC * a) + result[0].X, (PosRatioC * b) + result[1].Y));
+                        HypotenusePoint.Add(((PosRatioD * a) + result[0].X, (PosRatioD * b) + result[1].Y));
+                    }
+
+                    B3DB = new List<Bolts3DBlock>();
+                    for (int z = 0; z < HypotenusePoint.Count; z++)
+                    {
+                        GroupBoltsAttr TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.BACK, START_HOLE.START);
+                        TmpBoltsArr.dX = "0";
+                        TmpBoltsArr.dY = "0";
+                        TmpBoltsArr.xCount = 1;
+                        TmpBoltsArr.yCount = 1;
+                        TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
+                        TmpBoltsArr.X = HypotenusePoint[z].Item1;
+                        TmpBoltsArr.Y = HypotenusePoint[z].Item2;
+                        TmpBoltsArr.GUID = Guid.NewGuid();
+                        TmpBoltsArr.BlockName = "ManHypotenuse";
+                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+                        if (bolts.hasOutSteel)
                         {
-                            exist = true; return;
+                            hasOutSteel = true;
                         }
-                    });
-                    if (exist)
-                    {
-                        // 舊有形鋼中 若存在此孔/孔群 則將Block/Entities加入model
-                        model.Blocks.Add(b);
-                        BlockReference block = new BlockReference(0, 0, 0, b.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
-                        block.EntityData = groupBoltsAttr;
-                        block.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-                        model.Entities.Insert(0, block);//加入參考圖塊到模型
-                        //model.Entities.InsertRange(0, b.Entities);
-                        return;
+                        B3DB.Add(bolts);
+
                     }
-                });
+                    foreach (Bolts3DBlock item in B3DB)
+                    {
+                        BlockReference referenceBolts = obvm.Add2DHole(drawing, item);//加入孔位到2D
+                    }
+                    break;
+                #endregion
+
+                #region FRONT
+                case FACE.FRONT:
+                    if (steelAttr.Front == null)
+                        return;
+
+                    //UL
+                    result = steelAttr.Front.UL;
+                    if (result.Count > 0)
+                    {
+                        DRPoint.Add((result[2].X - result[1].X, result[1].Y - result[0].Y));
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
+                        HypotenusePoint.Add(((PosRatioC * a) + result[0].X, (PosRatioC * b) + result[0].Y));
+                        HypotenusePoint.Add(((PosRatioD * a) + result[0].X, (PosRatioD * b) + result[0].Y));
+                    }
+
+                    //UR                    
+                    result = steelAttr.Front.UR;
+                    if (result.Count > 0)
+                    {
+                        DRPoint.Add((result[1].X - result[0].X, result[1].Y - result[2].Y));
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
+                        HypotenusePoint.Add(((PosRatioC * a) + result[0].X, result[1].Y - (PosRatioC * b)));
+                        HypotenusePoint.Add(((PosRatioD * a) + result[0].X, result[1].Y - (PosRatioD * b)));
+                    }
+
+                    //DL
+                    result = steelAttr.Front.DL;
+                    if (result.Count > 0)
+                    {
+                        DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[0].Y));
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
+                        HypotenusePoint.Add(((PosRatioC * a), result[2].Y - (PosRatioC * b)));
+                        HypotenusePoint.Add(((PosRatioD * a), result[2].Y - (PosRatioD * b)));
+                    }
+
+                    //DR
+                    result = steelAttr.Front.DR;
+                    if (result.Count > 0)
+                    {
+                        DRPoint.Add((result[1].X - result[0].X, result[2].Y - result[1].Y));
+                        a = DRPoint[DRPoint.Count - 1].Item1;
+                        b = DRPoint[DRPoint.Count - 1].Item2;
+                        HypotenusePoint.Add(((PosRatioC * a) + result[0].X, (PosRatioC * b) + result[1].Y));
+                        HypotenusePoint.Add(((PosRatioD * a) + result[0].X, (PosRatioD * b) + result[1].Y));
+                    }
+
+                    B3DB = new List<Bolts3DBlock>();
+                    for (int z = 0; z < HypotenusePoint.Count; z++)
+                    {
+                        GroupBoltsAttr TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.FRONT, START_HOLE.START);
+                        TmpBoltsArr.dX = "0";
+                        TmpBoltsArr.dY = "0";
+                        TmpBoltsArr.xCount = 1;
+                        TmpBoltsArr.yCount = 1;
+                        TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
+                        TmpBoltsArr.X = HypotenusePoint[z].Item1;
+                        TmpBoltsArr.Y = HypotenusePoint[z].Item2;
+                        TmpBoltsArr.BlockName = "ManHypotenuse";
+                        TmpBoltsArr.GUID = Guid.NewGuid();
+                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+                        if (bolts.hasOutSteel)
+                        {
+                            hasOutSteel = true;
+                        }
+                        B3DB.Add(bolts);
+                        //BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                    }
+                    foreach (Bolts3DBlock item in B3DB)
+                    {
+                        BlockReference referenceBolts = obvm.Add2DHole(drawing, item);//加入孔位到2D
+                    }
+                    break;
+                    #endregion
             }
-            else
+
+            steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
+
+            if (hasOutSteel)
             {
-                Bolts3DBlock bolts = new Bolts3DBlock(groupBoltsAttr);
-                Bolts3DBlock.AddBolts(groupBoltsAttr, model, out BlockReference blockReference1, out bool check);
+                steelAttr.ExclamationMark = true;
             }
+
+            ////刷新模型
+            //model.Refresh();
+            //drawing.Refresh();
+
+            obvm.fAddHypotenusePoint = true; //  執行斜邊打點功能
         }
-
-
         /// <summary>
-        /// 自動斜邊打點
+        /// 判斷是否可用斜邊
         /// </summary>
         public static bool RunHypotenuseEnable(this devDept.Eyeshot.Model model)
         {
@@ -1985,6 +2144,145 @@ namespace WPFSTD105.Model
             //drawing.Refresh();
 
         }
+
+
+
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="blocks">已編輯過的孔</param>
+        /// <param name="groupBoltsAttr"></param>
+        public static void GroupBoltsAttrDouble(devDept.Eyeshot.Model model, List<Block> blocks, GroupBoltsAttr groupBoltsAttr)
+        {
+            if (blocks != null && blocks.SelectMany(x => x.Entities)
+                .Any(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
+                ((GroupBoltsAttr)x.EntityData).X == groupBoltsAttr.X &&
+                ((GroupBoltsAttr)x.EntityData).Y == groupBoltsAttr.Y &&
+                ((GroupBoltsAttr)x.EntityData).Z == groupBoltsAttr.Z &&
+                ((GroupBoltsAttr)x.EntityData).Face == groupBoltsAttr.Face &&
+                ((GroupBoltsAttr)x.EntityData).Mode == groupBoltsAttr.Mode))
+            {
+                blocks.ForEach(b =>
+                {
+                    bool exist = false;
+                    b.Entities.ForEach(e =>
+                    {
+                        if (
+                        ((GroupBoltsAttr)e.EntityData).X == groupBoltsAttr.X &&
+                        ((GroupBoltsAttr)e.EntityData).Y == groupBoltsAttr.Y &&
+                        ((GroupBoltsAttr)e.EntityData).Z == groupBoltsAttr.Z &&
+                        ((GroupBoltsAttr)e.EntityData).Face == groupBoltsAttr.Face &&
+                        ((GroupBoltsAttr)e.EntityData).Mode == groupBoltsAttr.Mode)
+                        {
+                            exist = true;
+                            return;
+                        }
+                    });
+                    if (exist)
+                    {
+                        if (!model.Blocks.Contains(b.Name))
+                        {
+                            // 舊有形鋼中 若存在此孔/孔群 則將Block/Entities加入model
+                            model.Blocks.Add(b);
+                            BlockReference block = new BlockReference(0, 0, 0, b.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+                            block.EntityData = b.Entities;
+                            block.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
+                            model.Entities.Insert(0, block);//加入參考圖塊到模型
+                        }
+                        //model.Entities.InsertRange(0, b.Entities);
+                        return;
+                    }
+                });
+            }
+            else if (blocks != null && blocks.SelectMany(x => x.Entities).Any(x => x.EntityData.GetType() == typeof(BoltAttr) &&
+                ((BoltAttr)x.EntityData).X == groupBoltsAttr.X &&
+                ((BoltAttr)x.EntityData).Y == groupBoltsAttr.Y &&
+                ((BoltAttr)x.EntityData).Z == groupBoltsAttr.Z &&
+                ((BoltAttr)x.EntityData).Face == groupBoltsAttr.Face &&
+                ((BoltAttr)x.EntityData).Mode == groupBoltsAttr.Mode))
+            {
+                blocks.ForEach(b =>
+                {
+                    bool exist = false;
+                    b.Entities.ForEach(e =>
+                    {
+                        if (e.EntityData.GetType() == typeof(BoltAttr) &&
+                        ((BoltAttr)e.EntityData).X == groupBoltsAttr.X &&
+                        ((BoltAttr)e.EntityData).Y == groupBoltsAttr.Y &&
+                        ((BoltAttr)e.EntityData).Z == groupBoltsAttr.Z &&
+                        ((BoltAttr)e.EntityData).Face == groupBoltsAttr.Face &&
+                        ((BoltAttr)e.EntityData).Mode == groupBoltsAttr.Mode)
+                        {
+                            exist = true; return;
+                        }
+                    });
+                    if (exist)
+                    {
+                        if (!model.Blocks.Contains(b.Name))
+                        {
+                            // 舊有形鋼中 若存在此孔/孔群 則將Block/Entities加入model
+                            model.Blocks.Add(b);
+                            BlockReference block = new BlockReference(0, 0, 0, b.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+                            block.EntityData = groupBoltsAttr;
+                            block.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
+                            model.Entities.Insert(0, block);//加入參考圖塊到模型
+                        }
+                        //model.Entities.InsertRange(0, (BlockReference)b.Entities);
+                        return;
+                    }
+                });
+            }
+            else if (blocks != null && blocks.SelectMany(x => x.Entities).Select(x => (Mesh)x).Select(x => (BoltAttr)x.EntityData)
+                .Any(x => x.GetType() == typeof(BoltAttr) &&
+                ((BoltAttr)x).X == groupBoltsAttr.X &&
+                ((BoltAttr)x).Y == groupBoltsAttr.Y &&
+                ((BoltAttr)x).Z == groupBoltsAttr.Z &&
+                ((BoltAttr)x).Face == groupBoltsAttr.Face &&
+                ((BoltAttr)x).Mode == groupBoltsAttr.Mode))
+            {
+                blocks.ForEach(b =>
+                {
+                    bool exist = false;
+                    b.Entities.ForEach(e =>
+                    {
+                        if (e.EntityData.GetType() == typeof(BoltAttr) &&
+                        ((BoltAttr)e.EntityData).X == groupBoltsAttr.X &&
+                        ((BoltAttr)e.EntityData).Y == groupBoltsAttr.Y &&
+                        ((BoltAttr)e.EntityData).Z == groupBoltsAttr.Z &&
+                        ((BoltAttr)e.EntityData).Face == groupBoltsAttr.Face &&
+                        ((BoltAttr)e.EntityData).Mode == groupBoltsAttr.Mode)
+                        {
+                            exist = true; return;
+                        }
+                    });
+                    if (exist)
+                    {
+                        if (!model.Blocks.Contains(b.Name))
+                        {
+                            // 舊有形鋼中 若存在此孔/孔群 則將Block/Entities加入model
+                            model.Blocks.Add(b);
+                            BlockReference block = new BlockReference(0, 0, 0, b.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+                            block.EntityData = groupBoltsAttr;
+                            block.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
+                            model.Entities.Insert(0, block);//加入參考圖塊到模型
+                        }
+                        //model.Entities.InsertRange(0, b.Entities);
+                        return;
+                    }
+                });
+            }
+            else
+            {
+                Bolts3DBlock bolts = new Bolts3DBlock(groupBoltsAttr);
+                Bolts3DBlock.AddBolts(groupBoltsAttr, model, out BlockReference blockReference1, out bool check);
+            }
+        }
+
+
 
 
 
