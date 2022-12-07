@@ -70,7 +70,7 @@
             </Grid.ColumnDefinitions>
 
             <!--查看警告-->
-            <Button Grid.Column="0" 
+            <Button Grid.Column="0"  Visibility="Collapsed"
                     Margin="0">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">

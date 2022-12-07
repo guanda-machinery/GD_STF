@@ -288,7 +288,7 @@
             </Grid>
             </TabItem>
             <!--專案修改-->
-            <TabItem Header="專案修改"
+            <TabItem Header="專案修改" Visibility="Collapsed"
                      IsEnabled="{Binding OfficeViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance},Converter={local:NullToEnabledConverter}}">
                 <Grid x:Name="grid_ModifyProject">
                     <Grid.RowDefinitions>

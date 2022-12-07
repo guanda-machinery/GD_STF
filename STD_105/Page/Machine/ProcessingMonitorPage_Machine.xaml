@@ -1229,7 +1229,7 @@ AllowEditing="False"
 
 
                         <RadioButton Grid.Column="0"  Grid.Row="2" GroupName="Group_Drill">
-                            <Image Source="{StaticResource DrillHoleDrawingImage}" Margin="0,0,0,-13"  />
+                            <Image Source="{StaticResource DrillHoleDrawingImage}" Height="60" Width="auto"  />
                             <RadioButton.IsEnabled>
                                 <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
                                     <MultiBinding.Bindings>
@@ -1248,14 +1248,11 @@ AllowEditing="False"
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
                             </RadioButton.IsChecked>
-
-
-
                         </RadioButton>
-                        <RadioButton Grid.Column="1" Grid.Row="2" GroupName="Group_Drill" IsEnabled="False">
-
-                            <Image Source="{StaticResource DrillPinDrawingImage}" />
+                        <RadioButton Grid.Column="1" Grid.Row="2" GroupName="Group_Drill" IsEnabled="False" >
+                            <Image Source="{StaticResource DrillPinDrawingImage}" Height="60" Width="auto"/>
                         </RadioButton>
+                        
                         <Border Grid.Row="2" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
                     </Grid>
 

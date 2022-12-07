@@ -2241,27 +2241,31 @@ namespace WPFSTD105.ViewModel
                             CodesysIIS.WriteCodesysMemor.SetPhoneOperating(operating);
                             //關閉連線
 
-                            var Result = MachineAndPhoneAPI.AppServerCommunicate.SetMachineenableAppPairing();
+                            //var Result = MachineAndPhoneAPI.AppServerCommunicate.SetMachineenableAppPairing();
 
                             //不管成功或失敗 都使按鈕恢復可用
                             Input_by_SmartPhone_RadioButtonVMEnable = true;
                             Input_by_Computer_RadioButtonVMEnable = true;
 
                             ProgressBar_Visible_Input_by_Computer = false;
-                            if (Result)
+
+                            AddOperatingLog(LogSourceEnum.Software, "切換到機台模式");
+                            Input_by_Computer_RadioButtonIsChecked = true;
+                            TourTaskBoolean = false;
+                            /*if (Result)
                             {
-                                AddOperatingLog(LogSourceEnum.Software, "切換到機台模式");
+                             AddOperatingLog(LogSourceEnum.Software, "切換到機台模式");
                                 Input_by_Computer_RadioButtonIsChecked = true;
                                 TourTaskBoolean = false;
                             }
-                            else
+                            /*else
                             {
                                 if (obj is UIElement)
                                 {
                                     ShowMessageBox(obj as UIElement, "無法切換到機台模式，需檢查伺服器連線是否正常");
                                 }
                                 AddOperatingLog(LogSourceEnum.Software, "無法切換到機台模式", true);
-                            }
+                            }*/
 
                         });
                     }

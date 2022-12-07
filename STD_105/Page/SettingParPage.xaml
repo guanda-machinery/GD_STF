@@ -673,7 +673,7 @@
                         <RowDefinition />
                         <RowDefinition Height="100" />
                     </Grid.RowDefinitions>
-                    <dxg:GridControl x:Name="gridControl"  Margin="4"
+                    <dxg:GridControl x:Name="gridControl"  Margin="4" Style="{StaticResource SiegCustomGridControl}"
                                          MaxHeight="2000"
                                          dx:ThemeManager.ThemeName="Office2019DarkGray"
                                          ItemsSource="{Binding DrillBrands}">
@@ -1247,7 +1247,7 @@
                 </Grid>
             </TabItem>
             <!--軟體設定-->
-            <TabItem Header="{DynamicResource LANGUAGE_SoftSettings}">
+            <TabItem Header="{DynamicResource LANGUAGE_SoftSettings}" Visibility="Collapsed">
                 <TabItem.DataContext>
                     <STD105VM:SofSettingVM />
                 </TabItem.DataContext>
