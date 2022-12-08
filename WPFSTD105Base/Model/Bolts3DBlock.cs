@@ -548,6 +548,10 @@ namespace WPFSTD105.Model
             }
             else
             {
+                if (meshes != null)
+                {
+                    result.Entities.AddRange(meshes);
+                }
                 //// 將對應實體寫入
                 
                 //// 若有指定實體，複寫實體
