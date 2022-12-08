@@ -1171,9 +1171,11 @@
                                         </Grid>
                                     </GroupBox>
                                     <GroupBox Style="{StaticResource BaseStyle}" Margin="5,0">
+                                        
                                     <Button Width="60" Height="60">
                                         <materialDesign:PackIcon Kind="Eraser" Width="45" Height="45"  />
                                     </Button>
+                                     
                                     </GroupBox>
                                     
                                 </StackPanel>
