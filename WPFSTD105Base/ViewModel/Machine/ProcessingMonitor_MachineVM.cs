@@ -2277,6 +2277,7 @@ namespace WPFSTD105.ViewModel
             {
                 return new WPFBase.RelayCommand(() =>
                 {
+                    AddOperatingLog(LogSourceEnum.Software, "切換到一般加工模式");
                     GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem);
                     HintStep1 = true;
                 });
@@ -2285,8 +2286,9 @@ namespace WPFSTD105.ViewModel
 
         public ICommand DrillPin_ModeCommand 
         {
-            get => new WPFBase.RelayCommand(() => 
+            get => new WPFBase.RelayCommand(() =>
             {
+                AddOperatingLog(LogSourceEnum.Software, "切換到測試打孔模式");
                 GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem); 
                 set_Input_by_Computer();
             });
