@@ -284,7 +284,7 @@
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,40,0,0">
                             <TextBlock Text="加入素材" Margin="0,0,0,2.5" Foreground="White"/>
                         </StackPanel>
-                        <Button MouseMove="Add_Reduce_Button_MouseMove" Margin="10,5" Command="{Binding AddMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}">
+                        <Button  MouseMove="Add_Reduce_Button_MouseMove" Margin="10,5" Command="{Binding AddMaterial}"  CommandParameter="{Binding ElementName=SoftGridControl}">
                             <Button.Content>
                                 <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Arrow1Right.svg'}" Width="28"/>
                             </Button.Content>
@@ -467,13 +467,13 @@
                         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Horizontal" Grid.Row="2"  >
 
                             <!--ElementName 綁定grid目標-->
-                            <Button Content="GO" Command="{Binding GoCommand}" MouseMove="Add_Reduce_Button_MouseMove"   Background="Gold" Foreground="Black" Width="80" Margin="3" Cursor="Hand">
+                        <Button Content="GO" Command="{Binding GoOneMaterialCommand}" MouseMove="Add_Reduce_Button_MouseMove"   Background="Gold" Foreground="Black" Width="80" Margin="3" Cursor="Hand">
                                 <Button.CommandParameter>
                                     <MultiBinding Converter="{local:ComParConverter}">
                                         <MultiBinding.Bindings>
                                         <Binding ElementName="Material_List_GridControl"  />
+                                        <Binding ElementName="SoftGridControl"  />
                                         <Binding ElementName="PartsGridControl"/>
-
                                     </MultiBinding.Bindings>
                                     </MultiBinding>
                                 </Button.CommandParameter>

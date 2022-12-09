@@ -423,20 +423,20 @@ namespace WPFSTD105
                 {
                     //檢查數值 若最長零件比素材還長 中斷命令並跳出提示框
 
-                        List<double> LengthList = new List<double>();
+                    List<double> LengthList = new List<double>();
 
-                        foreach (var MLength in MainLength.Split(' '))
-                        {
-                            if (double.TryParse(MLength, out var result))
-                                LengthList.Add(result);
-                        }
-                        foreach (var SLength in SecondaryLength.Split(' '))
-                        {
-                            if (double.TryParse(SLength, out var result))
-                                LengthList.Add(result);
-                        }
+                    foreach (var MLength in MainLength.Split(' '))
+                    {
+                        if (double.TryParse(MLength, out var result))
+                            LengthList.Add(result);
+                    }
+                    foreach (var SLength in SecondaryLength.Split(' '))
+                    {
+                        if (double.TryParse(SLength, out var result))
+                            LengthList.Add(result);
+                    }
 
-                   if (!DataViews.ToList().Exists(x => (x.SortCount > 0)))
+                    if (!DataViews.ToList().Exists(x => (x.SortCount > 0)))
                     {
                         WinUIMessageBox.Show(null,
                             $"需先於左側表格預排零件才可進行素材分配",
@@ -449,9 +449,9 @@ namespace WPFSTD105
                         return;
                     }
 
-                    if(DataViews.ToList().Exists(x => (x.SortCount > 0 && x.Length > LengthList.Max())))
+                    if (DataViews.ToList().Exists(x => (x.SortCount > 0 && x.Length > LengthList.Max())))
                     {
-                        var MaData=DataViews.ToList().Find(x => (x.SortCount > 0 && x.Length > LengthList.Max()));
+                        var MaData = DataViews.ToList().Find(x => (x.SortCount > 0 && x.Length > LengthList.Max()));
                         WinUIMessageBox.Show(null,
                             $"預排零件：構件編號「{MaData.AssemblyNumber}」的長度「{MaData.Length}」超過素材最大長度「{LengthList.Max()}」！需更要更長的素材才能加工該零件",
                             "通知",
@@ -486,14 +486,14 @@ namespace WPFSTD105
                                     var GridControlItem = GoCommandGridControl.ItemsSource as IEnumerable<object>;
                                     if (GridControlItem != null)
                                     {
-                                        for(int i =0; i< GridControlItem.Count();i++)
-                                        GoCommandGridControl.RefreshRow(i);
+                                        for (int i = 0; i < GridControlItem.Count(); i++)
+                                            GoCommandGridControl.RefreshRow(i);
                                     }
                                 });
                             }
                             else
                             {
-                               Debugger.Break();
+                                Debugger.Break();
                             }
                         }
                     }
@@ -512,24 +512,13 @@ namespace WPFSTD105
         /// <summary>
         /// 只配一根素材 只取MainLength不取SecondaryLength
         /// </summary>
+        
         public ICommand GoOneMaterialCommand
         {
             get
             {
                 return new WPFBase.RelayParameterizedCommand(objArray =>
                 {
-                    List<double> LengthList = new List<double>();
-
-                    foreach (var MLength in MainLength.Split(' '))
-                    {
-                        if (double.TryParse(MLength, out var result))
-                            LengthList.Add(result);
-                    }
-                    /*foreach (var SLength in SecondaryLength.Split(' '))
-                    {
-                        if (double.TryParse(SLength, out var result))
-                            LengthList.Add(result);
-                    }*/
                     if (!DataViews.ToList().Exists(x => (x.SortCount > 0)))
                     {
                         WinUIMessageBox.Show(null,
@@ -542,13 +531,12 @@ namespace WPFSTD105
                             FloatingMode.Window);
                         return;
                     }
-                    //找出
 
-                    if (DataViews.ToList().Exists(x => (x.SortCount > 0 && x.Length > LengthList.Max())))
+                    if (DataViews.ToList().Exists(x => (x.SortCount > 0 && x.Length > _MainLengthMachine)))
                     {
-                        var MaData = DataViews.ToList().Find(x => (x.SortCount > 0 && x.Length > LengthList.Max()));
+                        var MaData = DataViews.ToList().Find(x => (x.SortCount > 0 && x.Length > _MainLengthMachine));
                         WinUIMessageBox.Show(null,
-                            $"預排零件：構件編號「{MaData.AssemblyNumber}」的長度「{MaData.Length}」超過素材最大長度「{LengthList.Max()}」！需更要更長的素材才能加工該零件",
+                            $"預排零件：構件編號「{MaData.AssemblyNumber}」的長度「{MaData.Length}」超過素材長度「{_MainLengthMachine}」！需更要更長的素材才能加工該零件",
                             "通知",
                             MessageBoxButton.OK,
                             MessageBoxImage.Exclamation,
@@ -558,7 +546,45 @@ namespace WPFSTD105
                         return;
                     }
 
-                    //MatchSetting.MainLengths = MainLength.Split(' ').Where(x => !string.IsNullOrEmpty(x)).Select(el => Convert.ToDouble(el)).ToList();
+                    MainLength = _MainLengthMachine.ToString();
+                   SecondaryLength= MainLength;
+                    AutoMatchAsyncV2();
+
+                    foreach (var Data in DataViews)
+                    {
+                        Data.SortCount = 0;
+                    }
+
+                    //確保多重系結objArray為陣列，否則傳出例外
+                    if (objArray.GetType().Equals(typeof(object[])))
+                    {
+                        foreach (var obj in (object[])objArray)
+                        {
+                            //確認type為GridControl才進行重新整理
+                            if (obj.GetType().Equals(typeof(DevExpress.Xpf.Grid.GridControl)))
+                            {
+                                var GoCommandGridControl = (DevExpress.Xpf.Grid.GridControl)obj;
+                                GoCommandGridControl.Dispatcher.Invoke(() =>
+                                {
+                                    GoCommandGridControl.RefreshData();
+                                    var GridControlItem = GoCommandGridControl.ItemsSource as IEnumerable<object>;
+                                    if (GridControlItem != null)
+                                    {
+                                        for (int i = 0; i < GridControlItem.Count(); i++)
+                                            GoCommandGridControl.RefreshRow(i);
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                Debugger.Break();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //throw new Exception("傳入參數須為多重系結");
+                    }
 
 
 
@@ -566,7 +592,7 @@ namespace WPFSTD105
             }
         }
 
-
+        
 
 
         /// <summary>
@@ -848,23 +874,28 @@ namespace WPFSTD105
             }
         }
 
+
+
+
+        private double _MainLengthMachine = 0;
         /// <summary>
         /// 預設長度 機台端用 純設定用
         /// </summary>
-        public string MainLengthMachine
+        public double MainLengthMachine
         {
             get
             {
-                const string MainLengthDefault = "9000";
-                if (string.IsNullOrEmpty(_mainLength))
+                SecondaryLength = "";
+                const double MainLengthDefault = 9000;
+                if (_MainLengthMachine == 0)
                 {
-                    _mainLength = MainLengthDefault;
-                    return _mainLength;
+                    _MainLengthMachine = MainLengthDefault;
+                    return MainLengthDefault;
                 }
 
                 if (MainLengthCheckboxBoolen is true)
                 {
-                    return _mainLength;
+                    return _MainLengthMachine;
                 }
                 else
                 {
@@ -873,7 +904,8 @@ namespace WPFSTD105
             }
             set
             {
-                _mainLength = value;
+                _MainLengthMachine = value;
+                //只使用_mainLength
             }
         }
 

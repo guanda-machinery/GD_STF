@@ -1203,6 +1203,8 @@ namespace STD_105
 
         private void Add_Reduce_Button_MouseMove(object sender, MouseEventArgs e)
         {
+            (this.DataContext as OfficeTypeSettingVM).SecondaryLength = "";
+
             //長度計算
             //var SoftList = ((this.DataContext as OfficeTypeSettingVM).DataViews).ToList().FindAll(x => (x.SortCount > 0));
             //將配料>0的所有零件 用斷面規格做分類
@@ -1241,7 +1243,7 @@ namespace STD_105
                 UsedLengthDictMax = UsedLengthDict.Max(x => x.Value);
 
             ScheduleLengthLabel.Content = Math.Round(UsedLengthDictMax, 2);
-            if (UsedLengthDictMax > (this.DataContext as OfficeTypeSettingVM).MatchSetting.MainLengths.Max())
+            if (UsedLengthDictMax > (this.DataContext as OfficeTypeSettingVM).MainLengthMachine)
             {
                 UsedMaterialTooLongWarningLabel.Visibility = Visibility.Visible;
             }
