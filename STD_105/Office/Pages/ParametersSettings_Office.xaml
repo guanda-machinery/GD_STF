@@ -845,9 +845,9 @@
                             <TextBlock Text="G" Foreground="Crimson"/>
                             <TextBlock Text="D" Foreground="{ StaticResource solidclr_DarkGray }"/>
                             <TextBlock Text="-"  Foreground="{ StaticResource solidclr_DarkGray }"/>
-                            <TextBlock Text="P"  Foreground="{ StaticResource solidclr_DarkGray }"/>
-                            <TextBlock Text="L"  Foreground="Crimson"/>
-                            <TextBlock Text="M" Foreground="{ StaticResource solidclr_DarkGray }"/>
+                            <TextBlock Text="S"  Foreground="{ StaticResource solidclr_DarkGray }"/>
+                            <TextBlock Text="T"  Foreground="Crimson"/>
+                            <TextBlock Text="D" Foreground="{ StaticResource solidclr_DarkGray }"/>
                         </StackPanel>
 
                         <StackPanel Grid.Row="1" Grid.Column="0" Margin="20">

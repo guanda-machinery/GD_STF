@@ -383,7 +383,7 @@
                                 </Grid.ColumnDefinitions>
                                 <!--斷面規格類型-->
                                 <GroupBox Header="{ DynamicResource LANGUAGE_SectionSpecificationType }" FontSize="14">
-                                    <ComboBox SelectedIndex="{Binding SelectType}"
+                                    <ComboBox SelectedIndex="{Binding SelectType}" Name="CbbComboBox"
                                           Style="{ StaticResource cbb_ParaSecType }"
                                           ItemsSource="{Binding Source={StaticResource obType} , Path=Strings}"
                                           FontSize="14"
@@ -591,32 +591,54 @@
 
                             <StackPanel Orientation="Horizontal" Grid.Row="4" VerticalAlignment="Bottom"
                                 HorizontalAlignment="Center" >
-                                <Button Name="btn_material"
+                            <Button Name="btn_material"
                                       Content="{ DynamicResource LANGUAGE_New }"
                                       FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
                                       Command="{Binding NewCommand}"
                                       CommandParameter="{ Binding RelativeSource={ x:Static RelativeSource.Self }, Path=Name}" 
-  
                                       Height="30"
                                       Width="80"
-                                      Margin="10"/>
-                                <Button Content="{ DynamicResource LANGUAGE_Delete }"
+                                      Margin="10">
+                                <Button.IsEnabled>
+                                    <MultiBinding Converter="{ STD:MultiObjectArrayToBooleanConverter}">
+                                        <Binding ElementName="tbx_SectionName" Path="Text" />
+                                        <Binding ElementName="CbbComboBox" Path="Text" />
+                                    </MultiBinding>
+                                </Button.IsEnabled>
+
+
+                            </Button>
+                            <Button Content="{ DynamicResource LANGUAGE_Delete }"
                                     
                                       Command="{Binding DeleteCommand}"
                                       CommandParameter="{ Binding ElementName=tree, Path=SelectedItem }" 
 
                                       Height="30"
                                       Width="80"
-                                      Margin="10"/>
-                                <Button Content="{ DynamicResource LANGUAGE_Update }"
+                                      Margin="10">
+                                <Button.IsEnabled>
+                                    <MultiBinding Converter="{ STD:MultiObjectArrayToBooleanConverter}">
+                                        <Binding ElementName="tbx_SectionName" Path="Text" />
+                                        <Binding ElementName="CbbComboBox" Path="Text" />
+                                    </MultiBinding>
+                                </Button.IsEnabled>
+                            </Button>
+                            <Button Content="{ DynamicResource LANGUAGE_Update }"
                                       FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
                                       Command="{Binding UpdateTreeCommand}"
                                       CommandParameter="{ Binding ElementName=tree, Path=SelectedItem }" 
 
                                       Height="30"
                                       Width="80"
-                                      Margin="10"/>
-                            </StackPanel>
+                                      Margin="10">
+                                <Button.IsEnabled>
+                                    <MultiBinding Converter="{ STD:MultiObjectArrayToBooleanConverter}">
+                                        <Binding ElementName="tbx_SectionName" Path="Text" />
+                                        <Binding ElementName="CbbComboBox" Path="Text" />
+                                    </MultiBinding>
+                                </Button.IsEnabled>
+                            </Button>
+                        </StackPanel>
 
                         </Grid>
                     </GroupBox>

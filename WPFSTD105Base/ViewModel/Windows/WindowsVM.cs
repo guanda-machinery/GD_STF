@@ -666,7 +666,18 @@ namespace WPFSTD105
             return new WPFBase.RelayParameterizedCommand(e =>
             {
                 string path = ((FolderBrowserDialogViewModel)e).ResultPath;
-                this.NewProjectControl = ApplicationVM.CreateModel(path); //創建模型
+                var CreateBool = ApplicationVM.CreateModel(path); //創建模型
+                this.NewProjectControl = CreateBool;
+                if (CreateBool)
+                {
+                    //新專案建立成功就直接直接初始化機台
+                    int size = Marshal.SizeOf(typeof(GD_STD.Phone.MonitorWork));
+                    using (WPFSTD105.Memor.MemorClient memory = new Memor.MemorClient())
+                    {
+                        memory.IniWork();
+                    }
+                }
+
             });
         }
         ///// <summary>

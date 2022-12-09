@@ -85,7 +85,7 @@ namespace STD_105
         private static void ModifyPropertyChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             DataButton _ = (DataButton)d;
-            _.modify.Command = (ICommand)e.NewValue;
+            _.modify.Command = (ICommand)e.NewValue; 
         }
 
         /// <summary>

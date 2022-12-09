@@ -408,6 +408,41 @@ namespace WPFSTD105
                 });
             }
         }
+
+
+        /// <summary>
+        /// 呼叫列印預覽視窗
+        /// </summary>
+        //public ICommand BuyControlCommand { get; set; }
+        public RelayParameterizedCommand OpenCurrentProjectFolder
+        {
+            get
+            {
+                return new RelayParameterizedCommand(el =>
+                {
+                    var FolderPath = ApplicationVM.DirectoryModel();
+                    if (Directory.Exists(FolderPath))
+                    {
+                        System.Diagnostics.Process.Start("Explorer.exe", $"/e ,{FolderPath}");
+                    }
+                    else
+                    {
+                        WinUIMessageBox.Show(null,
+                            $"找不到{FolderPath}路徑",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Window);
+                    }
+
+                });
+            }
+        }
+
+
+
         /// <summary>
         /// 呼叫列印預覽視窗
         /// </summary>
