@@ -1463,6 +1463,15 @@ namespace WPFSTD105.ViewModel
             return new WPFBase.RelayParameterizedCommand(e =>
             {
                 DrillBrand drillBrand = (DrillBrand)e;
+                if(drillBrand is null)
+                {
+                    Debugger.Break();
+                    //無刀具資料
+                    return;
+                }
+
+
+
                 GD_STD.DrillWarehouse drillWarehouse = ReadCodesysMemor.GetDrillWarehouse();
                 var _ = drillWarehouse.Middle
                                       .Union(drillWarehouse.LeftEntrance)
@@ -2362,6 +2371,19 @@ namespace WPFSTD105.ViewModel
             {
                 if (IsProfile)
                 {
+                    if (_SelectType == -1)
+                    {
+                        //未選擇斷面規格
+                        WinUIMessageBox.Show(null,
+                            $"需選擇斷面規格",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Window);
+                        return;
+                    }
                     string str = el.ToString();
                     string strType = ((OBJECT_TYPE)_SelectType).ToString();
                     PropertyInfo showPropertyInfo = this.GetType().GetProperty(strType);//反射在畫面顯示的資料列表
@@ -2395,7 +2417,7 @@ namespace WPFSTD105.ViewModel
                         _Materials.Add(SerializationHelper.Clone<SteelMaterial>(SelectMaterial));//加入到背景
                         Materials = SerializationHelper.Clone(_Materials);//加入到顯示畫面
                         std.SetMaterial(Materials);//存入在模型設定檔
-                        if (str == "系統")//如果要變更系統材質
+                        if (str.Contains("系統"))//如果要變更系統材質
                         {
                             ObservableCollection<SteelMaterial> system = std.GetMaterial(ModelPath.Material); //系統內設定的材質
                             if (system.IndexOf(e => e.Name == SelectMaterial.Name) == -1) //如果系統內沒有這材質
@@ -2415,7 +2437,7 @@ namespace WPFSTD105.ViewModel
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                            FloatingMode.Window);
                     }
                 }
 

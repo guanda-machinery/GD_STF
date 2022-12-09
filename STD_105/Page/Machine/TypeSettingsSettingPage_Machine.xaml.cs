@@ -67,7 +67,9 @@ namespace STD_105
             //ControlDraw3D();
             //CheckReportLogoExist();
 
-            ScheduleLengthLabel.Visibility = Visibility.Collapsed;
+            //ScheduleLengthLabel.Visibility = Visibility.Collapsed;
+            SteelChannelMachiningHint.Visibility = Visibility.Collapsed;
+            UsedMaterialTooLongWarningLabel.Visibility = Visibility.Collapsed;
             SectionTypeTooManyWarningLabel.Visibility = Visibility.Collapsed;
         }
 
@@ -1205,8 +1207,8 @@ namespace STD_105
             //var SoftList = ((this.DataContext as OfficeTypeSettingVM).DataViews).ToList().FindAll(x => (x.SortCount > 0));
             //將配料>0的所有零件 用斷面規格做分類
             //var SoftGroup = SoftList.GroupBy(x => x.Profile);
-            var UsedLengthDict =  new Dictionary<string, double>();
-            ((this.DataContext as OfficeTypeSettingVM).DataViews).ToList().FindAll(x=>(x.SortCount>0)).GroupBy(x => x.Profile).ForEach(sg=>
+            var UsedLengthDict = new Dictionary<string, double>();
+            ((this.DataContext as OfficeTypeSettingVM).DataViews).ToList().FindAll(x => (x.SortCount > 0)).GroupBy(x => x.Profile).ForEach(sg =>
             {
                 //素材切掉兩端
                 double UsedLength = 0 + (this.DataContext as OfficeTypeSettingVM).MatchSetting.StartCut + (this.DataContext as OfficeTypeSettingVM).MatchSetting.EndCut;
@@ -1214,15 +1216,15 @@ namespace STD_105
                 {
                     //配料>0的所有零件 長度加總(包含不同斷面規格)
 
-                        UsedLength += (el.Length + (this.DataContext as OfficeTypeSettingVM).MatchSetting.Cut) * el.SortCount;
+                    UsedLength += (el.Length + (this.DataContext as OfficeTypeSettingVM).MatchSetting.Cut) * el.SortCount;
                 });
 
-                 if(UsedLength > 0)
+                if (UsedLength > 0)
                     UsedLengthDict.Add(sg.Key, UsedLength);
             });
 
             //超過兩種規格
-            if(UsedLengthDict.Count>=2)
+            if (UsedLengthDict.Count >= 2)
             {
                 ScheduleLengthLabel.Visibility = Visibility.Collapsed;
                 SectionTypeTooManyWarningLabel.Visibility = Visibility.Visible;
@@ -1238,7 +1240,7 @@ namespace STD_105
             if (UsedLengthDict.Count > 0)
                 UsedLengthDictMax = UsedLengthDict.Max(x => x.Value);
 
-            ScheduleLengthLabel.Content = Math.Round(UsedLengthDictMax,2);
+            ScheduleLengthLabel.Content = Math.Round(UsedLengthDictMax, 2);
             if (UsedLengthDictMax > (this.DataContext as OfficeTypeSettingVM).MatchSetting.MainLengths.Max())
             {
                 UsedMaterialTooLongWarningLabel.Visibility = Visibility.Visible;
@@ -1247,24 +1249,21 @@ namespace STD_105
             {
                 UsedMaterialTooLongWarningLabel.Visibility = Visibility.Collapsed;
             }
-            //比較最長零件和素材長度
 
 
-            //如果消耗量比原素材還長，則鎖定確認按鈕使其不可按
-            /*UsedMateriaLengthLabel.Content = UsedLength.ToString("f1");
-            RemainingMateriaLengthLabel.Content = (SelectedMaterial.LengthStr - UsedLength).ToString("f1");
-            if (SelectedMaterial.LengthStr - UsedLength >= 0)
+            //尋找是否存在槽鐵
+            var SteelChannelIsExisted = ((this.DataContext as OfficeTypeSettingVM).DataViews).ToList().Exists(x =>
+             x.SortCount > 0 && x.SteelType == (int)GD_STD.Enum.OBJECT_TYPE.CH);
+            
+            if (SteelChannelIsExisted)
             {
-                UsedMateriaLengthLabel.Foreground = Brushes.Black;
-                RemainingMateriaLengthLabel.Foreground = Brushes.Black;
-                CheckButton.IsEnabled = true;
+                SteelChannelMachiningHint.Visibility = Visibility.Visible;
             }
             else
             {
-                UsedMateriaLengthLabel.Foreground = Brushes.Red;
-                RemainingMateriaLengthLabel.Foreground = Brushes.Red;
-                CheckButton.IsEnabled = false;
-            }*/
+                SteelChannelMachiningHint.Visibility = Visibility.Collapsed;
+
+            }
         }
 
 

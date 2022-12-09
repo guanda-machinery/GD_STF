@@ -49,6 +49,7 @@ using Newtonsoft.Json;
 using DevExpress.Xpf.Spreadsheet.UI.TypedStyles;
 using WPFSTD105.FluentAPI;
 using System.Windows.Threading;
+using GrapeCity.Documents.Pdf.Structure;
 
 //using DevExpress.Utils.Extensions;
 namespace WPFSTD105.ViewModel
@@ -348,6 +349,9 @@ namespace WPFSTD105.ViewModel
                                         break;
                                     }
                                 }
+
+                                HintStep3 = true;
+
                                 AddOperatingLog(LogSourceEnum.Machine, $"加入素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}成功", false);
                                 WinUIMessageBox.Show(null,
                                     $"加入素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}成功",
@@ -480,7 +484,6 @@ namespace WPFSTD105.ViewModel
             set
             {
                 _finish_UndoneDataViews_SelectedItem = value;
-
                 if (_finish_UndoneDataViews_SelectedItem != null)
                 {
                     var AssemblyNumberList = new List<string>();
@@ -577,6 +580,11 @@ namespace WPFSTD105.ViewModel
 
         private void GetDrillBoltsItemCollection(MaterialDataView view)
         {
+            if(view == null)
+            {
+                MachiningCombinational_DrillBoltsItemSource = new ObservableCollection<DrillBolts>();
+            }
+
             var DrillBoltsListInfo = new List<DrillBolts>();
             _CreateFileTask?.Wait(); //等待 Task CreateFile 完成 link:ProcessingMonitorVM.cs:CreateFile()
             _SynchronizationContext.Send(t =>
@@ -589,9 +597,6 @@ namespace WPFSTD105.ViewModel
                     _BufferModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
 
                     _BufferModel.Clear();
-                    //List<double> cutPointX = new List<double>();
-                    //產生加工陣列
-                    //var view = Finish_UndoneDataViews[index];
                     Dictionary<FACE, List<Drill>> keyValuePairs = new Dictionary<FACE, List<Drill>>();
                     if (File.Exists($@"{ApplicationVM.DirectoryMaterial()}\{view.MaterialNumber}.dm"))
                     {
@@ -635,21 +640,21 @@ namespace WPFSTD105.ViewModel
                             }
                         });
 
-                        //long cWork = _WorkOffset + _WorkSize * index;
+
 
                         keyValuePairs.ForEach(keyValuePair =>
                         {
                             keyValuePair.Value.ForEach(DrillData =>
                             {
-                                if (DrillBoltsListInfo.Exists(x => (x.WorkType == "孔" && x.Face == keyValuePair.Key && x.DrillHoleDiameter == DrillData.Dia)))
+                                if (DrillBoltsListInfo.Exists(x => (x.WorkAXIS_MODE == DrillData.AXIS_MODE && x.Face == keyValuePair.Key && x.DrillHoleDiameter == DrillData.Dia)))
                                 {
-                                    DrillBoltsListInfo.Find(x => (x.WorkType == "孔" && x.Face == keyValuePair.Key && x.DrillHoleDiameter == DrillData.Dia)).DrillHoleCount++;
+                                    DrillBoltsListInfo.Find(x => (x.WorkAXIS_MODE == DrillData.AXIS_MODE && x.Face == keyValuePair.Key && x.DrillHoleDiameter == DrillData.Dia)).DrillHoleCount++;
                                 }
                                 else
                                 {
                                     DrillBoltsListInfo.Add(new DrillBolts()
                                     {
-                                        WorkType = "孔",
+                                        WorkAXIS_MODE = DrillData.AXIS_MODE,
                                         Face = keyValuePair.Key,
                                         DrillHoleCount = 1,
                                         DrillHoleDiameter = DrillData.Dia
@@ -1658,6 +1663,7 @@ namespace WPFSTD105.ViewModel
                                 {
                                     keyValuePairs.Add(attr.Face, new List<Drill>());
                                 }
+
                                 if (attr.Face == FACE.TOP)
                                 {
                                     keyValuePairs[attr.Face].AddRange(BoltAsDrill(entities, new Transformation(new Point3D(0, steelPart.H, 0), Vector3D.AxisX, new Vector3D(0, -1), Vector3D.AxisZ)));
@@ -1680,6 +1686,13 @@ namespace WPFSTD105.ViewModel
                         });
 
                         long cWork = _WorkOffset + _WorkSize * index;
+
+                        //將孔轉成點
+                        if (true)
+                        {
+                            Debugger.Break();
+                        }
+
 
                         if (keyValuePairs.ContainsKey(FACE.FRONT))
                         {
@@ -1729,19 +1742,17 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// <see cref="devDept.Eyeshot.Entities.Entity"/> 轉換 <see cref="GD_STD.Drill"/>
         /// </summary>
+        /// <param name="IsTrialProcessing">試加工模式下會將孔轉換成點 並丟棄其他加工方法</param>
         /// <param name="entities">3D 模型物件列表</param>
-        private static Drill[] BoltAsDrill(Entity[] entities, Transformation transformation = null)
+        private List<Drill> BoltAsDrill(Entity[] entities, Transformation transformation = null)
         {
-
             if (!entities.Any(el => el.EntityData is BoltAttr))
                 throw new Exception("entities.EntityData 有查詢到非 BoltAttr 的類型。");
 
-
-            Drill[] drills = new Drill[entities.Length];
+            var drills = new Drill[entities.Length];
             Parallel.For(0, entities.Length, i =>
             {
                 BoltAttr attr = (BoltAttr)entities[i].EntityData;
-
                 Utility.ComputeBoundingBox(transformation, entities[i].Vertices, out Point3D boxMin, out Point3D boxMax);
                 Point3D center = (boxMin + boxMax) / 2;
 
@@ -1762,7 +1773,31 @@ namespace WPFSTD105.ViewModel
                 drills[i].Dia = attr.Dia;
                 drills[i].AXIS_MODE = attr.Mode;
             });
-            return drills;
+
+            if (DrillPin_Mode_RadioButtonIsEnable)
+            {
+                var DrillList = new List<Drill>();
+
+                drills.ForEach(el =>
+                {
+                    if (el.AXIS_MODE == AXIS_MODE.PIERCE)
+                    {
+                        el.AXIS_MODE = AXIS_MODE.POINT;
+                       
+                    }
+                   
+                    if (el.AXIS_MODE == AXIS_MODE.POINT)
+                    {
+                        DrillList.Add(el);
+                    }
+                });
+                //將孔加工轉換成點 並丟棄其他加工方式
+                return DrillList; 
+            }
+            else
+            {
+                return drills.ToList();
+            }
         }
 
 
@@ -1894,6 +1929,7 @@ namespace WPFSTD105.ViewModel
             {
                 return new WPFBase.RelayParameterizedCommand(obj =>
                 {
+                    HintStep4 = false;
                     Transport_RadioButtonIsChecked = false;
 
                     ProgressBar_Visible_Transport_Visibility = true;
@@ -1923,6 +1959,7 @@ namespace WPFSTD105.ViewModel
                                     WriteCodesysMemor.SetMecOptional(mecOptional);//寫入記憶體
                                 }
                             }
+
                         }
                         catch (Exception Ex)
                         {
@@ -1957,6 +1994,7 @@ namespace WPFSTD105.ViewModel
                             AddOperatingLog(LogSourceEnum.Software, "切換到橫移料架");
                             //失敗時跳出提示 成功時則繼續執行
                             Transport_RadioButtonIsChecked = true;
+                            HintStep4 = true;
                         }
                         catch (Exception ex)
                         {
@@ -1990,6 +2028,7 @@ namespace WPFSTD105.ViewModel
             {
                 return new WPFBase.RelayParameterizedCommand(obj =>
                 {
+                    HintStep4 = false;
                     ProgressBar_Visible_Transport_by_Continue_Visibility = true;
                     Transport_by_Continue_RadioButtonIsChecked = false;
                     Transport_RadioButtonIsEnable = false;
@@ -2056,7 +2095,7 @@ namespace WPFSTD105.ViewModel
                         Transport_by_Continue_RadioButtonIsEnable = true;
                         Transport_by_Hand_RadioButtonIsEnable = true;
 
-
+                        HintStep4 = true;
                     });
 
 
@@ -2073,6 +2112,7 @@ namespace WPFSTD105.ViewModel
             {
                 return new WPFBase.RelayParameterizedCommand(obj =>
                 {
+                    HintStep4 = false;
                     Transport_by_Hand_RadioButtonIsChecked = false;
                     ProgressBar_Visible_Transport_by_Hand_Visibility = true;
 
@@ -2098,6 +2138,7 @@ namespace WPFSTD105.ViewModel
                                 if (optionSettings.HandAuto)
                                 {
                                     //改為開啟自動
+                                    HintStep4 = false;
                                     Transport_by_Hand_RadioButtonIsChecked = false;
                                     AddOperatingLog(LogSourceEnum.Software, "手臂切換回自動模式，");
                                     AddOperatingLog(LogSourceEnum.Software, "需再選擇台車或續接模式");
@@ -2105,6 +2146,7 @@ namespace WPFSTD105.ViewModel
                                 else
                                 {
                                     //改為關閉自動
+                                    HintStep4 = true;
                                     Transport_by_Hand_RadioButtonIsChecked = true;
                                     AddOperatingLog(LogSourceEnum.Software, "手臂切換到手動模式");
                                     //插單
@@ -2177,6 +2219,20 @@ namespace WPFSTD105.ViewModel
             PButton.MainAxisMode = false;
         }
 
+        //註解燈號
+        public bool HintStep1 { get; set; } = false;
+        public bool HintStep2 { get; set; } = false;
+        public bool HintStep3 { get; set; } = false;
+        public bool HintStep4 { get; set; } = false;
+
+
+
+
+
+        public bool DrillHole_Mode_RadioButtonIsEnable { get; set; } = false;
+        public bool DrillPin_Mode_RadioButtonIsEnable {get;set; } = false;
+
+
 
         public bool Transport_RadioButtonIsEnable { get; set; } = true;
         public bool Transport_by_Continue_RadioButtonIsEnable { get; set; } = true;
@@ -2208,7 +2264,6 @@ namespace WPFSTD105.ViewModel
         public bool Transport_by_Continue_RadioButtonIsChecked { get; set; }
         public bool Transport_by_Hand_RadioButtonIsChecked { get; set; }
 
-
         public bool ProgressBar_Visible_Transport_Visibility { get; set; } = false;
 
         public bool ProgressBar_Visible_Transport_by_Continue_Visibility { get; set; } = false;
@@ -2216,66 +2271,80 @@ namespace WPFSTD105.ViewModel
         public bool ProgressBar_Visible_Transport_by_Hand_Visibility { get; set; } = false;
 
 
-        public ICommand Set_Input_by_Computer_Command
+        public ICommand DrillHole_ModeCommand
         {
             get
             {
-                return new WPFBase.RelayParameterizedCommand(obj =>
+                return new WPFBase.RelayCommand(() =>
                 {
-                    try
-                    {
-                        Input_by_Computer_RadioButtonIsChecked = false;
-                        ProgressBar_Visible_Input_by_Computer = true;
-                        Task.Run(() =>
-                        {
-                            Input_by_SmartPhone_RadioButtonVMEnable = false;
-                            Input_by_Computer_RadioButtonVMEnable = false;
-
-
-                            GD_STD.Phone.Operating operating;
-                            using (Memor.ReadMemorClient read = new Memor.ReadMemorClient())
-                            {
-                                operating = read.GetOperating();
-                            }
-                            operating.Satus = PHONE_SATUS.REFUSE;
-                            CodesysIIS.WriteCodesysMemor.SetPhoneOperating(operating);
-                            //關閉連線
-
-                            //var Result = MachineAndPhoneAPI.AppServerCommunicate.SetMachineenableAppPairing();
-
-                            //不管成功或失敗 都使按鈕恢復可用
-                            Input_by_SmartPhone_RadioButtonVMEnable = true;
-                            Input_by_Computer_RadioButtonVMEnable = true;
-
-                            ProgressBar_Visible_Input_by_Computer = false;
-
-                            AddOperatingLog(LogSourceEnum.Software, "切換到機台模式");
-                            Input_by_Computer_RadioButtonIsChecked = true;
-                            TourTaskBoolean = false;
-                            /*if (Result)
-                            {
-                             AddOperatingLog(LogSourceEnum.Software, "切換到機台模式");
-                                Input_by_Computer_RadioButtonIsChecked = true;
-                                TourTaskBoolean = false;
-                            }
-                            /*else
-                            {
-                                if (obj is UIElement)
-                                {
-                                    ShowMessageBox(obj as UIElement, "無法切換到機台模式，需檢查伺服器連線是否正常");
-                                }
-                                AddOperatingLog(LogSourceEnum.Software, "無法切換到機台模式", true);
-                            }*/
-
-                        });
-                    }
-                    catch
-                    {
-
-                    }
+                    GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem);
+                    HintStep1 = true;
                 });
             }
         }
+
+        public ICommand DrillPin_ModeCommand 
+        {
+            get => new WPFBase.RelayCommand(() => 
+            {
+                GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem); 
+                set_Input_by_Computer();
+            });
+        }
+        /// <summary>
+        /// 點選電腦模式
+        /// </summary>
+        public ICommand Set_Input_by_Computer_Command { get => new WPFBase.RelayCommand(() => set_Input_by_Computer()); }
+
+        private void set_Input_by_Computer()
+        {
+            
+
+            HintStep1 = true;
+            HintStep2 = false;
+            try
+            {
+                Input_by_Computer_RadioButtonIsChecked = false;
+                ProgressBar_Visible_Input_by_Computer = true;
+                Task.Run(() =>
+                {
+                    Input_by_SmartPhone_RadioButtonVMEnable = false;
+                    Input_by_Computer_RadioButtonVMEnable = false;
+
+                    GD_STD.Phone.Operating operating;
+                    using (Memor.ReadMemorClient read = new Memor.ReadMemorClient())
+                    {
+                        operating = read.GetOperating();
+                    }
+                    operating.Satus = PHONE_SATUS.REFUSE;
+                    CodesysIIS.WriteCodesysMemor.SetPhoneOperating(operating);
+                    //關閉連線
+
+                    //var Result = MachineAndPhoneAPI.AppServerCommunicate.SetMachineenableAppPairing();
+
+                    //不管成功或失敗 都使按鈕恢復可用
+                    Input_by_SmartPhone_RadioButtonVMEnable = true;
+                    Input_by_Computer_RadioButtonVMEnable = true;
+
+                    ProgressBar_Visible_Input_by_Computer = false;
+
+                    AddOperatingLog(LogSourceEnum.Software, "切換到機台模式");
+                    Input_by_Computer_RadioButtonIsChecked = true;
+
+                    TourTaskStart();
+                    //TourTaskBoolean = false;
+                    HintStep2 = true;
+                });
+            }
+            catch
+            {
+
+            }
+        }
+
+
+
+
 
         public ICommand Set_Input_by_SmartPhone_Command
         {
@@ -2283,7 +2352,7 @@ namespace WPFSTD105.ViewModel
             {
                 return new WPFBase.RelayParameterizedCommand(obj =>
                 {
-
+                    HintStep2 = false;
                     Input_by_SmartPhone_RadioButtonIsChecked = false;
                     ProgressBar_Visible_Input_by_SmartPhone = true;
                     Task.Run(() =>
@@ -2304,6 +2373,7 @@ namespace WPFSTD105.ViewModel
                             AddOperatingLog(LogSourceEnum.Software, "切換到手機模式");
                             Input_by_SmartPhone_RadioButtonIsChecked = true;
 
+                            HintStep2 = true;
                             TourTaskStart();
                         }
                         else
@@ -2319,17 +2389,6 @@ namespace WPFSTD105.ViewModel
                     });
 
 
-                });
-            }
-        }
-        public ICommand Test_Input_by_Computer_Command
-        {
-            get
-            {
-                return new WPFBase.RelayParameterizedCommand(obj =>
-                {
-                    Input_by_Computer_RadioButtonIsChecked = true;
-                    AddOperatingLog(LogSourceEnum.Software, "測試模式", true);
                 });
             }
         }

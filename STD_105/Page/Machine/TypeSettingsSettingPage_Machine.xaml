@@ -387,7 +387,7 @@
                         <Label Content="0" Name="ScheduleLengthLabel" ContentStringFormat="目前預排素材長度：{0} mm" Visibility="{Binding ElementName=SectionTypeTooManyWarningLabel ,Path=Visibility ,Converter={dx:VisibilityInverseConverter}}"/>
                         <Label Name="SectionTypeTooManyWarningLabel" Content="斷面規格一次只能選擇一種！"  Foreground="Red" />
                         <Label Name="UsedMaterialTooLongWarningLabel" Content="預排零件所需的素材長度超過預設長度！"   Foreground="Red" />
-                        <Label  Content="槽鐵加工建議不要超過9000mm"   Foreground="Red" />
+                        <Label Name="SteelChannelMachiningHint"  Content="槽鐵加工建議不要超過9000mm"   Foreground="OrangeRed" />
                     </StackPanel>
                     <GroupBox Grid.Row="0" Grid.Column="0" Header="排版編號設定"  Margin="5">
                         <Grid>
@@ -473,8 +473,7 @@
                                         <MultiBinding.Bindings>
                                         <Binding ElementName="Material_List_GridControl"  />
                                         <Binding ElementName="PartsGridControl"/>
-                                        <Binding ElementName="SectionTypeTooManyWarningLabel" Path="Visibility" Converter="{dx:VisibilityInverseConverter}"/>
-                                        <Binding ElementName="UsedMaterialTooLongWarningLabel" Path="Visibility"/>
+
                                     </MultiBinding.Bindings>
                                     </MultiBinding>
                                 </Button.CommandParameter>
@@ -484,7 +483,8 @@
                                             <Binding ElementName="MainLengthTextBox"  Path="(Validation.HasError)" Converter="{local:AntiLogicConverter}"/>
                                             <Binding ElementName="MatchSettingStartCutTextBox"  Path="(Validation.HasError)" Converter="{local:AntiLogicConverter}"/>
                                             <Binding ElementName="MatchSettingEndCutTextBox"  Path="(Validation.HasError)" Converter="{local:AntiLogicConverter}"/>
-
+                                        <Binding ElementName="SectionTypeTooManyWarningLabel" Path="Visibility" Converter="{local:VisibilityToBooleanConverter Invert=True}"/>
+                                        <Binding ElementName="UsedMaterialTooLongWarningLabel" Path="Visibility" Converter="{local:VisibilityToBooleanConverter Invert=True}"/>
                                         </MultiBinding.Bindings>
                                     </MultiBinding>
                                 </Button.IsEnabled>

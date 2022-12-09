@@ -115,12 +115,6 @@
             </Style>
 
 
-            
-            
-            
-            
-            
-            
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
     <WPFBase:BasePage.DataContext>
@@ -256,6 +250,8 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
+
+
             <Border  Margin="5" Background="#f0f0f0" >
                 <TabControl BorderThickness="0,1,0,0" Margin="0,0,0,0" >
                     <TabControl.Resources>
@@ -315,7 +311,7 @@
                         <dxg:GridControl Margin="-11"  Cursor="Arrow" 
                                              Name="MachiningCombinational_List_GridControl"    
                                              AutoGenerateColumns="None" 
-                                         Style="{StaticResource SiegCustomGridControl}"
+                                             Style="{StaticResource SiegCustomGridControl}"
                                              SelectionMode="Row"
                                              SelectedItem="{Binding Finish_UndoneDataViews_SelectedItem}"
                                              SelectedItems="{Binding Finish_UndoneDataViews_SelectedItems}"
@@ -339,7 +335,6 @@
                                        AllowSorting="false"
                                        AllowColumnFiltering="False"
                                        AllowColumnMoving="False"
-                                       
                                 RowDoubleClickCommand="{Binding RowDoubleClickCommand}"
                                 AllowEditing="False"
                         Name="MachiningCombinational_List_TableView"
@@ -353,7 +348,6 @@
                                     SearchPanelNullText="Search Tasks(Ctrl + F)"
                                 ShowIndicator="False" 
                                     SearchPanelFindMode="Always"         
-
                                     SearchDelay="0" MouseDown="MachiningCombinational_List_TableView_MouseDown">
                                     <dxg:TableView.CellStyle>
                                         <Style>
@@ -581,6 +575,19 @@ AllowEditing="False"
 
                 </GroupBox>
             </Border>
+            <TextBlock Text="❸"  Style="{StaticResource HintTextBlock}" Margin="5" Grid.Row="1"                       
+                       IsEnabled="{Binding HintStep3}">
+                <TextBlock.Visibility>
+                    <MultiBinding Converter="{local:BooleanArrayUnionToVisableConverter}">
+                        <MultiBinding.Bindings>
+                            <Binding ElementName="ShowHintBlockCheckBox" Path="IsChecked"  />
+                            <Binding Path="ApplicationViewModel.AppManualConnect"
+                                                 Source="{x:Static spa:ViewLocator.Instance}"
+                                                 Converter="{local:AntiLogicConverter}"/>
+                        </MultiBinding.Bindings>
+                    </MultiBinding>
+                </TextBlock.Visibility>
+            </TextBlock>
         </Grid>
         <TabControl Grid.Row="1" Margin="5"
                         BorderThickness="0"
@@ -792,8 +799,8 @@ AllowEditing="False"
                                                                      />
                                             <ddes:ToolBarButton ToolTipText="角度標註" Click="AngleDim" StyleMode="PushButton" 
                                                 Image="{Binding Source={materialDesign:PackIcon Kind=AngleAcute},Converter={local:MaterialDesignPackIconToBitmapSourceConverter}}"/>
-                                            <ddes:ToolBarButton ToolTipText="絕對座標" StyleMode="PushButton"
-                                                Image="{Binding Source={materialDesign:PackIcon Kind=AxisArrow},Converter={local:MaterialDesignPackIconToBitmapSourceConverter}}"/>
+                                            <!--  <ddes:ToolBarButton ToolTipText="絕對座標" StyleMode="PushButton"
+                                                Image="{Binding Source={materialDesign:PackIcon Kind=AxisArrow},Converter={local:MaterialDesignPackIconToBitmapSourceConverter}}"/>-->
                                         </ddes:ToolBar.Buttons>
                                     </ddes:ToolBar>
                                 </ddes:Viewport.ToolBars>
@@ -1095,25 +1102,17 @@ AllowEditing="False"
             </Border>
 
             <Border Background="White" Grid.Column="2" Grid.Row="2" Margin="2,2,5,2">
-                <GroupBox FontSize="20">
-                    <GroupBox.Header>
-                        <TextBlock Margin="5" Text="Ready Go" FontSize="16" Foreground="White"/>
-                    </GroupBox.Header>
-                    <GroupBox.Style>
-                        <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignHeaderedContentControl }">
-                            <Setter Property="Background" Value="White"/>
-                            <Style.Resources>
-                                <Style TargetType="materialDesign:ColorZone">
-                                    <Setter Property="TextBlock.Foreground" Value="White"/>
-                                    <Setter Property="TextBlock.FontWeight" Value="UltraBlack"/>
-                                    <Setter Property="Background" Value="#67b32c"/>
-                                    <Setter Property="BorderBrush" Value="#cfcfcf"/>
-                                    <Setter Property="TextBlock.Padding" Value="10"/>
-                                </Style>
-                            </Style.Resources>
-                        </Style>
-                    </GroupBox.Style>
-                    <Grid>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Background="#67b32c"/>
+                    <TextBlock Margin="5" Text="Ready Go" FontSize="16" Foreground="White"/>
+                    <CheckBox  Style="{StaticResource GreenSwitch}" HorizontalAlignment="Right" Name="ShowHintBlockCheckBox" IsChecked="True" Height="16" Margin="5,0"/>
+
+
+                    <Grid Grid.Row="1">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -1126,11 +1125,12 @@ AllowEditing="False"
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Grid.Resources>
-                            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                            <Style TargetType="Button" BasedOn="{StaticResource SiegCustomButton}">
                                 <Setter Property="Margin" Value="2"/>
                             </Style>
-                            <Style TargetType="RadioButton" BasedOn="{StaticResource MaterialDesignTabRadioButton}">
-                                <Setter Property="Width" Value="60"/>
+                            <Style TargetType="RadioButton" BasedOn="{StaticResource SiegRadioButton}">
+                                <Setter Property="Background" Value="Transparent"/>
+
                                 <Setter Property="Height" Value="60"/>
                                 <Setter Property="Padding" Value="0"/>
                                 <Setter Property="Margin" Value="5"/>
@@ -1142,6 +1142,8 @@ AllowEditing="False"
                                     </Style>
                                 </Style.Resources>
                             </Style>
+                            
+                            
                             <SolidColorBrush x:Key="SecondaryHueMidBrush" Color="#67b32c"/>
 
                             <Style TargetType="ProgressBar" BasedOn="{StaticResource MaterialDesignCircularProgressBar}">
@@ -1152,7 +1154,30 @@ AllowEditing="False"
                             </Style>
                         </Grid.Resources>
 
-                        <RadioButton GroupName="Group_Input" Name="Input_by_SmartPhone_RadioButton" Grid.Column="0" Grid.Row="0" 
+
+                        
+                        <Border Grid.Row="0" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
+                        <RadioButton Grid.Column="0"  Grid.Row="0" 
+                                     Name="DrillHole_RadioButton"  
+                                     GroupName="Group_Drill"
+                                     IsChecked="{Binding DrillHole_Mode_RadioButtonIsEnable}"
+                                     Command="{Binding DrillHole_ModeCommand}">
+                        <Image Source="{StaticResource DrillHoleDrawingImage}" Height="60" Width="auto"  />
+                        </RadioButton>
+
+                        <RadioButton Grid.Column="1" Grid.Row="0" 
+                                     Name="DrillPin_RadioButton" 
+                                     GroupName="Group_Drill"
+                                     IsChecked="{Binding DrillPin_Mode_RadioButtonIsEnable}" 
+                                     Command="{Binding DrillPin_ModeCommand}">
+                            <Image Source="{StaticResource DrillPinDrawingImage}" Height="60" Width="auto"/>
+                        </RadioButton>
+
+                        <Button Grid.Column="2" Grid.Row="0" Background="Red" Content="TestButton" Foreground="Black" Command="{Binding  Test_Input_by_Computer_Command }" Visibility="Collapsed"></Button>
+
+                        <Border Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
+
+                        <RadioButton GroupName="Group_Input" Name="Input_by_SmartPhone_RadioButton" Grid.Column="0" Grid.Row="1" 
                                          IsChecked="{Binding Input_by_SmartPhone_RadioButtonIsChecked}"
                                          Command="{Binding Set_Input_by_SmartPhone_Command}"
                                          CommandParameter="{Binding ElementName=Input_by_SmartPhone_RadioButton}">
@@ -1160,13 +1185,14 @@ AllowEditing="False"
                                 <MultiBinding Converter="{local:BooleanArray_In_UnionToBooleanConverter}">
                                     <MultiBinding.Bindings>
                                         <Binding Path="Input_by_SmartPhone_RadioButtonVMEnable"/>
+                                        <Binding ElementName="DrillHole_RadioButton" Path="IsChecked"/>
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
                             </RadioButton.IsEnabled>
-                            <Image Source="{StaticResource Input_by_SmartPhoneDrawingImage}" Height="50" Width="50" />
+                            <Image Source="{StaticResource Input_by_SmartPhoneDrawingImage}" Height="45" Width="45" />
                         </RadioButton>
-                        <ProgressBar  Grid.Column="0" Grid.Row="0" Visibility="{Binding ProgressBar_Visible_Input_by_SmartPhone,Converter={dx:BooleanToVisibilityConverter}}"/>
-                        <RadioButton  GroupName="Group_Input" Name="Input_by_Computer_RadioButton" Grid.Column="1" Grid.Row="0" 
+                        <ProgressBar  Grid.Column="0" Grid.Row="1" Visibility="{Binding ProgressBar_Visible_Input_by_SmartPhone,Converter={dx:BooleanToVisibilityConverter}}"/>
+                        <RadioButton  GroupName="Group_Input" Name="Input_by_Computer_RadioButton" Grid.Column="1" Grid.Row="1" 
                                           IsChecked="{Binding Input_by_Computer_RadioButtonIsChecked}"
                                           Command="{Binding Set_Input_by_Computer_Command}"
                                           CommandParameter="{Binding ElementName=Input_by_Computer_RadioButton}">
@@ -1174,17 +1200,19 @@ AllowEditing="False"
                                 <MultiBinding Converter="{local:BooleanArray_In_UnionToBooleanConverter}">
                                     <MultiBinding.Bindings>
                                         <Binding Path="Input_by_Computer_RadioButtonVMEnable"/>
+                                        <Binding ElementName="DrillHole_RadioButton" Path="IsChecked"/>
+                                        <Binding ElementName="DrillPin_RadioButton" Path="IsChecked"/>
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
                             </RadioButton.IsEnabled>
                             <Image Source="{StaticResource Input_by_ComputerDrawingImage}"  Height="50" Width="50" />
                         </RadioButton>
-                         <ProgressBar  Grid.Column="1" Grid.Row="0" Visibility="{Binding ProgressBar_Visible_Input_by_Computer,Converter={dx:BooleanToVisibilityConverter}}"/>
+                         <ProgressBar  Grid.Column="1" Grid.Row="1" Visibility="{Binding ProgressBar_Visible_Input_by_Computer,Converter={dx:BooleanToVisibilityConverter}}"/>
 
-                        <Button Grid.Column="2" Grid.Row="0" Background="Red" Content="TestButton" Foreground="Black" Command="{Binding  Test_Input_by_Computer_Command }" Visibility="Collapsed"></Button>
-          
-                        <Border Grid.Row="0" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
-                        <RadioButton  GroupName="Group_Transport" Name="Transport_RadioButton" Grid.Column="0" Grid.Row="1"  
+
+                        <Border Grid.Row="2" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
+
+                        <RadioButton  GroupName="Group_Transport" Name="Transport_RadioButton" Grid.Column="0" Grid.Row="2"  
                                        IsChecked="{Binding Transport_RadioButtonIsChecked}" Command="{Binding ChangeTransportModeCommand}" Cursor="Hand" >
                             <RadioButton.IsEnabled>
                                 <MultiBinding Converter="{local:BooleanArray_In_UnionToBooleanConverter}">
@@ -1197,8 +1225,8 @@ AllowEditing="False"
                             </RadioButton.IsEnabled>
                             <Image Source="{StaticResource TransportDrawingImage}" />
                         </RadioButton>
-                        <ProgressBar Grid.Row="1"  Visibility="{Binding ProgressBar_Visible_Transport_Visibility,Converter={dx:BooleanToVisibilityConverter}}" />
-                        <RadioButton GroupName="Group_Transport" Name="Transport_by_Continue_RadioButton" Grid.Column="1" Grid.Row="1" IsChecked="{Binding Transport_by_Continue_RadioButtonIsChecked}" Command="{Binding ChangeTransportMode_To_Continue_Command}" >
+                        <ProgressBar Grid.Row="2"  Visibility="{Binding ProgressBar_Visible_Transport_Visibility,Converter={dx:BooleanToVisibilityConverter}}" />
+                        <RadioButton GroupName="Group_Transport" Name="Transport_by_Continue_RadioButton" Grid.Column="1" Grid.Row="2" IsChecked="{Binding Transport_by_Continue_RadioButtonIsChecked}" Command="{Binding ChangeTransportMode_To_Continue_Command}" >
                             <RadioButton.IsEnabled>
                                 <MultiBinding Converter="{local:BooleanArray_In_UnionToBooleanConverter}">
                                     <MultiBinding.Bindings>
@@ -1210,8 +1238,8 @@ AllowEditing="False"
                             </RadioButton.IsEnabled>
                             <Image Source="{StaticResource Transport_by_ConveyorDrawingImage}"/>
                         </RadioButton>
-                        <ProgressBar  Grid.Column="1" Grid.Row="1"  Visibility="{Binding ProgressBar_Visible_Transport_by_Continue_Visibility,Converter={dx:BooleanToVisibilityConverter}}"/>
-                        <RadioButton GroupName="Group_Transport" Name="Transport_by_Hand_RadioButton" Grid.Column="2" Grid.Row="1"  IsChecked="{Binding Transport_by_Hand_RadioButtonIsChecked}" Command="{Binding ChangeTransportMode_To_Hand_Command}" CommandParameter="{Binding ElementName=Transport_by_Hand_RadioButton}">
+                        <ProgressBar  Grid.Column="1" Grid.Row="2"  Visibility="{Binding ProgressBar_Visible_Transport_by_Continue_Visibility,Converter={dx:BooleanToVisibilityConverter}}"/>
+                        <RadioButton GroupName="Group_Transport" Name="Transport_by_Hand_RadioButton" Grid.Column="2" Grid.Row="2"  IsChecked="{Binding Transport_by_Hand_RadioButtonIsChecked}" Command="{Binding ChangeTransportMode_To_Hand_Command}" CommandParameter="{Binding ElementName=Transport_by_Hand_RadioButton}">
                             <RadioButton.IsEnabled>
                                 <MultiBinding Converter="{local:BooleanArray_In_UnionToBooleanConverter}">
                                     <MultiBinding.Bindings>
@@ -1223,40 +1251,48 @@ AllowEditing="False"
                             </RadioButton.IsEnabled>
                             <Image Source="{StaticResource Transport_by_Robot_checkedDrawingImage}"/>
                         </RadioButton>
-                        <ProgressBar  Grid.Column="2" Grid.Row="1" Visibility="{Binding ProgressBar_Visible_Transport_by_Hand_Visibility,Converter={dx:BooleanToVisibilityConverter}}"/>
+                        <ProgressBar  Grid.Column="2" Grid.Row="2" Visibility="{Binding ProgressBar_Visible_Transport_by_Hand_Visibility,Converter={dx:BooleanToVisibilityConverter}}"/>
 
-                        <Border Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
+                        <TextBlock Text="❶" Style="{StaticResource HintTextBlock}" Margin="5" 
+                                   IsEnabled="{Binding HintStep1}"
+                                   Visibility="{Binding ElementName=ShowHintBlockCheckBox , Path=IsChecked , Converter={dx:BooleanToVisibilityConverter}}"/>
+
+                        <TextBlock Text="❷"  Style="{StaticResource HintTextBlock}" Margin="5" Grid.Row="1"
+                                   IsEnabled="{Binding HintStep2}"
+                                   Visibility="{Binding ElementName=ShowHintBlockCheckBox , Path=IsChecked , Converter={dx:BooleanToVisibilityConverter}}"/>
 
 
-                        <RadioButton Grid.Column="0"  Grid.Row="2" GroupName="Group_Drill">
-                            <Image Source="{StaticResource DrillHoleDrawingImage}" Height="60" Width="auto"  />
-                            <RadioButton.IsEnabled>
-                                <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
+                        <TextBlock Text="❹" Style="{StaticResource HintTextBlock}" Margin="5" Grid.Row="2"
+                                   IsEnabled="{Binding HintStep4}">
+                            <TextBlock.Visibility>
+                                <MultiBinding Converter="{local:BooleanArrayUnionToVisableConverter}">
                                     <MultiBinding.Bindings>
-                                        <Binding Path="Transport_RadioButtonIsChecked"/>
-                                        <Binding Path="Transport_by_Continue_RadioButtonIsChecked" />
-                                        <Binding Path="Transport_by_Hand_RadioButtonIsChecked" />
+                                        <Binding ElementName="ShowHintBlockCheckBox" Path="IsChecked"   />
+                                        <Binding Path="ApplicationViewModel.AppManualConnect"
+                                                 Source="{x:Static spa:ViewLocator.Instance}" Converter="{local:AntiLogicConverter}"/>
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
-                            </RadioButton.IsEnabled>
-                            <RadioButton.IsChecked>
-                                <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
-                                    <MultiBinding.Bindings>
-                                        <Binding Path="Transport_RadioButtonIsChecked"/>
-                                        <Binding Path="Transport_by_Continue_RadioButtonIsChecked" />
-                                        <Binding Path="Transport_by_Hand_RadioButtonIsChecked" />
-                                    </MultiBinding.Bindings>
-                                </MultiBinding>
-                            </RadioButton.IsChecked>
-                        </RadioButton>
-                        <RadioButton Grid.Column="1" Grid.Row="2" GroupName="Group_Drill" IsEnabled="False" >
-                            <Image Source="{StaticResource DrillPinDrawingImage}" Height="60" Width="auto"/>
-                        </RadioButton>
+                            </TextBlock.Visibility>
+                        </TextBlock>
                         
-                        <Border Grid.Row="2" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
+                        <!--自動連線時改為三-->
+                        <TextBlock Text="❸" Style="{StaticResource HintTextBlock}" Margin="5" Grid.Row="2"
+                                   IsEnabled="{Binding HintStep4}">
+                            <TextBlock.Visibility>
+                                <MultiBinding Converter="{local:BooleanArrayUnionToVisableConverter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding ElementName="ShowHintBlockCheckBox" Path="IsChecked"   />
+                                        <Binding Path="ApplicationViewModel.AppManualConnect"
+                                                 Source="{x:Static spa:ViewLocator.Instance}" />
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </TextBlock.Visibility>
+                        </TextBlock>
+
+
                     </Grid>
 
-                </GroupBox>
+                </Grid>
             </Border>
 
         </Grid>

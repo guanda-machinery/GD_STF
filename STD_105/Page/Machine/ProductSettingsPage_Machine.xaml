@@ -827,8 +827,8 @@
 
                                                 <ddes:ToolBarButton ToolTipText="角度標註" Click="AngleDim" StyleMode="PushButton"
                                                 Image="{Binding Source={materialDesign:PackIcon Kind=AngleAcute},Converter={local:MaterialDesignPackIconToBitmapSourceConverter}}"/>
-                                                <ddes:ToolBarButton ToolTipText="絕對座標" StyleMode="PushButton"
-                                                Image="{Binding Source={materialDesign:PackIcon Kind=AxisArrow},Converter={local:MaterialDesignPackIconToBitmapSourceConverter}}"/>
+                                            <!--    <ddes:ToolBarButton ToolTipText="絕對座標" StyleMode="PushButton"
+                                                Image="{Binding Source={materialDesign:PackIcon Kind=AxisArrow},Converter={local:MaterialDesignPackIconToBitmapSourceConverter}}"/>-->
                                             </ddes:ToolBar.Buttons>
                                         </ddes:ToolBar>
                                     </ddes:Viewport.ToolBars>

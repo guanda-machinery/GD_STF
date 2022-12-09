@@ -1157,17 +1157,17 @@
     <DrawingImage x:Key="HSteel_quadDrawingImage">
         <DrawingImage.Drawing>
             <DrawingGroup ClipGeometry="M0,0 V70 H90 V0 H0 Z">
-                <GeometryDrawing Brush="#FF3B3B3B">
+                <GeometryDrawing Brush="#777777">
                     <GeometryDrawing.Geometry>
                         <RectangleGeometry RadiusX="0" RadiusY="0" Rect="5,5,10,60" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
-                <GeometryDrawing Brush="#FF3B3B3B">
+                <GeometryDrawing Brush="#777777">
                     <GeometryDrawing.Geometry>
                         <RectangleGeometry RadiusX="0" RadiusY="0" Rect="75,5,10,60" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
-                <GeometryDrawing Brush="#FF3B3B3B">
+                <GeometryDrawing Brush="#777777">
                     <GeometryDrawing.Geometry>
                         <RectangleGeometry RadiusX="0" RadiusY="0" Rect="5,30,80,10" />
                     </GeometryDrawing.Geometry>

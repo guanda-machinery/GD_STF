@@ -60,7 +60,9 @@
         </Style.Resources>
     </Style>
 
-
+    <Style x:Key="SiegCustomGridControlHeaderStyle" TargetType="dxg:HeaderContentControl">
+        <Setter Property="TextBlock.FontSize" Value="12" />
+    </Style>
 
 
     <!--  GridControl Style 字體小的版本  -->

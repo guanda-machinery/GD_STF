@@ -611,24 +611,93 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
 
                 </StackPanel.Resources>
                 <Button  Command="{Binding CutControlCommand}"  Width="60" >
-                    <Border>
-                        <materialDesign:PackIcon Kind="CalendarCheck" Width="45" Height="45" />
-                      <!--  <dx:DXImage Source="{dx:DXImage 'SvgImages/Outlook Inspired/TaskList.svg'}"/>-->
-                    </Border>
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource SiegCustomButton}">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <materialDesign:PackIcon Kind="CalendarCheck" Width="45" Height="45" />
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <materialDesign:PackIcon Kind="CalendarCursor" Width="45" Height="45"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <materialDesign:PackIcon Kind="CalendarExport" Width="45" Height="45"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
                 </Button>
                 <Label Content="切割明細表" Foreground="Black"/>
-
-                <Button Command="{Binding BuyControlCommand}" Margin="0,10,0,0" >
-                    <Border>
-                        <materialDesign:PackIcon Kind="CartOutline" Width="45" Height="45" />
-                    </Border>
+                <Button Command="{Binding BuyControlCommand}" Margin="0,10,0,0" Width="60" Height="60" >
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource SiegCustomButton}">
+                             <Setter Property="Content">
+                                   <Setter.Value>
+                                            <materialDesign:PackIcon Kind="CartOutline"  Width="45" Height="45"/>
+                                        </Setter.Value>
+                                    </Setter>  
+                             <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <materialDesign:PackIcon Kind="CartArrowUp" Width="45" Height="45"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <materialDesign:PackIcon Kind="CartCheck" Width="45" Height="45"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
                 </Button>
                 <Label Content="採購明細單" Foreground="Black"/>
 
-                <Button Command="{Binding OpenCurrentProjectFolder}" Margin="0,10,0,0">
-                    <Border>
-                        <materialDesign:PackIcon Kind="FolderOpen" Width="45" Height="45"/>
-                    </Border>
+
+
+
+                <Button Command="{Binding OpenCurrentProjectFolder}" Margin="0,10,0,0" Width="60" Height="60">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource SiegCustomButton}">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <materialDesign:PackIcon Kind="Folder" Width="45" Height="45"/>
+                                </Setter.Value>
+                            </Setter>
+                            
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <materialDesign:PackIcon Kind="FolderOpen" Width="45" Height="45"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <materialDesign:PackIcon Kind="FolderUpload" Width="45" Height="45"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
                 </Button>
                 <Label Content="專案資料夾" Foreground="Black"/>
 
@@ -711,7 +780,7 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
 
                         </dxg:TableView>
                     </dxg:GridControl.View>
-                    <dxg:GridColumn FieldName="ExclamationMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" Width="40" FixedWidth="True">
+                    <dxg:GridColumn Visible="False" FieldName="ExclamationMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" Width="40" FixedWidth="True">
                         <dxg:GridColumn.HeaderImageStyle>
                             <Style TargetType="Image">
                                 <Setter Property="Width" Value="16"></Setter>
@@ -743,7 +812,7 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
-                    <dxg:GridColumn IsSmart="True" Name="LockGridCol" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
+                    <dxg:GridColumn Visible="False" IsSmart="True" Name="LockGridCol" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                         <dxg:GridColumn.HeaderImageStyle>
                             <Style TargetType="Image">
                                 <Setter Property="Width" Value="16"></Setter>
@@ -774,7 +843,7 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
-                    <dxg:GridColumn FieldName="GearMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Dashboards/ScatterChartLabelOptions.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
+                    <dxg:GridColumn Visible="False"  FieldName="GearMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Dashboards/ScatterChartLabelOptions.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                         <dxg:GridColumn.HeaderImageStyle>
                             <Style TargetType="Image">
                                 <Setter Property="Width" Value="16"></Setter>
@@ -935,7 +1004,7 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
                                                         <dxe:TextEditSettings DisplayFormat="F2"/>
                                                     </dxg:GridColumn.EditSettings>
                                                 </dxg:GridColumn>
-                                                <dxg:GridColumn FieldName="" Header="數量"  MinWidth="40" Width="40" />
+                                                <dxg:GridColumn Visible="False"  FieldName="" Header="數量"  MinWidth="40" Width="40" />
                                                 <dxg:GridColumn FieldName="" Header="Phase"   MinWidth="40" Width="40"/>
                                                 <dxg:GridColumn FieldName="" Header="拆運"   MinWidth="40" Width="40" />
                                             </dxg:GridControl>
@@ -1358,8 +1427,8 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
                                                                      />
                                                 <ddes:ToolBarButton ToolTipText="角度標註" Click="AngleDim" StyleMode="PushButton" 
                                                 Image="{Binding Source={materialDesign:PackIcon Kind=AngleAcute},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"/>
-                                                <ddes:ToolBarButton ToolTipText="絕對座標" StyleMode="PushButton"
-                                                Image="{Binding Source={materialDesign:PackIcon Kind=AxisArrow},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"/>
+                                          <!--      <ddes:ToolBarButton ToolTipText="絕對座標" StyleMode="PushButton" 
+                                                Image="{Binding Source={materialDesign:PackIcon Kind=AxisArrow},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"/>-->
                                             </ddes:ToolBar.Buttons>
                                         </ddes:ToolBar>
                                     </ddes:Viewport.ToolBars>

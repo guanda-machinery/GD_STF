@@ -506,8 +506,8 @@
                                                                      />
                                             <ddes:ToolBarButton ToolTipText="角度標註" Click="AngleDim" StyleMode="PushButton"
                                                 Image="{Binding Source={materialDesign:PackIcon Kind=AngleAcute},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"/>
-                                            <ddes:ToolBarButton ToolTipText="絕對座標" StyleMode="PushButton"
-                                                Image="{Binding Source={materialDesign:PackIcon Kind=AxisArrow},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"/>
+                                            <!--<ddes:ToolBarButton ToolTipText="絕對座標" StyleMode="PushButton"
+                                                Image="{Binding Source={materialDesign:PackIcon Kind=AxisArrow},Converter={STD105:MaterialDesignPackIconToBitmapSourceConverter}}"/>-->
                                         </ddes:ToolBar.Buttons>
                                     </ddes:ToolBar>
                                 </ddes:Viewport.ToolBars>
@@ -1170,18 +1170,30 @@
 
                                         </Grid>
                                     </GroupBox>
-                                    <GroupBox Style="{StaticResource BaseStyle}" Margin="5,0">
-                                        
-                                    <Button Width="60" Height="60">
-                                        <materialDesign:PackIcon Kind="Eraser" Width="45" Height="45"  />
-                                    </Button>
-                                     
-                                    </GroupBox>
+                                    <StackPanel Margin="5,8,0,0">
+                                        <StackPanel Orientation="Horizontal">
+                                         <StackPanel>
+                                            <Button Width="60" Height="60">
+                                                    <Grid >
+                                                        <materialDesign:PackIcon Kind="PenPlus" Width="15" Height="15" Margin="8,0"/>
+                                                        <Image Source="{StaticResource HSteel_quadDrawingImage}"  Width="40"/>
+                                                    </Grid>
+                                                </Button>
+                                                <Label Content="新增打點" Foreground="Black"  HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                            <StackPanel Margin="5,0">
+                                            <Button Width="60" Height="60">
+                                                <materialDesign:PackIcon Kind="Eraser" Width="45" Height="45"  />
+                                            </Button>
+                                            <Label Content="打點刪除" Foreground="Black"  HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                </StackPanel>
+                                </StackPanel>
                                     
                                 </StackPanel>
                                 <StackPanel Grid.Row="1" Background="#303030" Height="0.5" Margin="0,5,0,0"/>
-                                <GroupBox Header="切割位置" Style="{StaticResource BaseStyle}" Grid.Row="2" Margin="5" Padding="0">
-                                    <StackPanel Background="#c0c0c0">
+                                <GroupBox Header="切割位置" Style="{StaticResource BaseStyle}" Grid.Row="2" Margin="5" Padding="0" Height="255">
+                                    <StackPanel Background="#c0c0c0" >
                                         <Canvas Width="280">
                                             <Canvas.Resources>
                                                 <Style TargetType="TextBlock" BasedOn="{StaticResource fileNameStyle}"></Style>

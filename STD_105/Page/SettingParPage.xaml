@@ -596,7 +596,7 @@
                             </Grid>
                         </GroupBox>
                         <GroupBox Header="材質名稱">
-                            <TextBox Text="{Binding SelectMaterial.Name}" />
+                            <TextBox Text="{Binding SelectMaterial.Name}" Name="SelectMaterialNameTextBox" />
                         </GroupBox>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -609,7 +609,7 @@
                                         <ColumnDefinition Width="5*" />
                                         <ColumnDefinition Width="2*" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0"
+                                    <TextBox Grid.Column="0" Name="SelectMaterialPlateDensityTextBox"
                                              Height="30"
                                              Text="{Binding SelectMaterial.PlateDensity}" />
                                     <Label Grid.Column="1"
@@ -626,7 +626,7 @@
                                         <ColumnDefinition Width="5*" />
                                         <ColumnDefinition Width="2*" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0"
+                                    <TextBox Grid.Column="0" Name="SelectMaterialProfileDensityTextBox"
                                              Height="30"
                                              Text="{Binding SelectMaterial.ProfileDensity}" />
                                     <Label Grid.Column="1"
@@ -642,25 +642,49 @@
                                 Margin="5"
                                 VerticalAlignment="Bottom">
 
-                        <Button Name="profile"
+                        <Button Name="btn_matrial"
                                 FontSize="16"
                                 Style="{ StaticResource SiegCustomButtonGray }"
                                 Width="80" Height="30" Margin="10"
                                 Content="新增"
                                 Command="{Binding NewCommand}"
-                                CommandParameter="{ Binding RelativeSource={ x:Static RelativeSource.Self }, Path=Name}" />
+                                CommandParameter="{ Binding RelativeSource={ x:Static RelativeSource.Self }, Path=Name}" >
+                            <Button.IsEnabled>
+                                <MultiBinding Converter="{ local:MultiObjectArrayToBooleanConverter}">
+                                    <Binding ElementName="SelectMaterialNameTextBox" Path="Text"/>
+                                    <Binding ElementName="SelectMaterialPlateDensityTextBox" Path="Text"/>
+                                    <Binding ElementName="SelectMaterialProfileDensityTextBox" Path="Text"/>
+                                </MultiBinding>
+                            </Button.IsEnabled>
+                        </Button>
                         <Button Content="刪除"
                                 Width="80" Height="30" Margin="10"
                                                                 FontSize="16"
                                 Style="{ StaticResource SiegCustomButtonGray }"
                                 Command="{Binding DeleteMaterialCommand}"
-                                CommandParameter="{Binding SelectedItem, ElementName=Materials}" />
+                                CommandParameter="{Binding SelectedItem, ElementName=Materials}" >
+                            <Button.IsEnabled>
+                                <MultiBinding Converter="{ local:MultiObjectArrayToBooleanConverter}">
+                                    <Binding ElementName="SelectMaterialNameTextBox" Path="Text"/>
+                                    <Binding ElementName="SelectMaterialPlateDensityTextBox" Path="Text"/>
+                                    <Binding ElementName="SelectMaterialProfileDensityTextBox" Path="Text"/>
+                                </MultiBinding>
+                            </Button.IsEnabled>
+                        </Button>
                         <Button Content="更新"
                                                                 FontSize="16"
                                 Style="{ StaticResource SiegCustomButtonGray }"
                                 Width="80" Height="30" Margin="10"
                                 Command="{ Binding UpdateMaterialCommand }"
-                                CommandParameter="{Binding SelectedItem, ElementName=Materials}" />
+                                CommandParameter="{Binding SelectedItem, ElementName=Materials}" >
+                            <Button.IsEnabled>
+                                <MultiBinding Converter="{ local:MultiObjectArrayToBooleanConverter}">
+                                    <Binding ElementName="SelectMaterialNameTextBox" Path="Text"/>
+                                    <Binding ElementName="SelectMaterialPlateDensityTextBox" Path="Text"/>
+                                    <Binding ElementName="SelectMaterialProfileDensityTextBox" Path="Text"/>
+                                </MultiBinding>
+                            </Button.IsEnabled>
+                        </Button>
                     </StackPanel>
                 </StackPanel>
             </TabItem>
@@ -673,43 +697,57 @@
                         <RowDefinition />
                         <RowDefinition Height="100" />
                     </Grid.RowDefinitions>
-                    <dxg:GridControl x:Name="gridControl"  Margin="4" Style="{StaticResource SiegCustomGridControl}"
+                    <dxg:GridControl x:Name="gridControl"  Margin="4"
+                                     Style="{StaticResource SiegCustomGridControl}"
                                          MaxHeight="2000"
-                                         dx:ThemeManager.ThemeName="Office2019DarkGray"
+                                         dx:ThemeManager.ThemeName="Win10Light"
                                          ItemsSource="{Binding DrillBrands}">
                             <dxg:GridControl.View>
-                                <dxg:TableView ShowGroupPanel="False"
-                                               AllowFixedColumnMenu="True"
-                                               ColumnHeaderContentStyle="{ StaticResource HeaderStyle }" />
-                            </dxg:GridControl.View>
+                            <dxg:TableView 
+                                IsColumnMenuEnabled ="False"
+                                AllowSorting="false"
+                                AllowColumnFiltering="False"
+                                AllowColumnMoving="False"
+                                ShowGroupPanel="False"
+                                AllowFixedColumnMenu="True"
+                                ColumnHeaderContentStyle="{ StaticResource SiegCustomGridControlHeaderStyle }" >
+                                <dxg:TableView.CellStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.FontSize" Value="14"/>
+                                        <Setter Property="TextBlock.Foreground" Value="Black"/>
+                                    </Style>
+                                </dxg:TableView.CellStyle>
+                            </dxg:TableView>
+                                
+                        </dxg:GridControl.View>
                             <dxg:GridControl.Columns>
-                            <dxg:GridColumn Header="設定檔名稱" Width="auto" HorizontalHeaderContentAlignment="Center"
+                            <dxg:GridColumn Header="設定檔名稱" Width="80" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="DataName" />
-                            <dxg:GridColumn Header="品牌" Width="auto" HorizontalHeaderContentAlignment="Center"
+                            <dxg:GridColumn Header="品牌" Width="auto" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="Name" />
-                            <dxg:GridColumn Header="刀徑&#x0a;(mm)" Width="auto" HorizontalHeaderContentAlignment="Center"
+                            <dxg:GridColumn Header="刀徑&#x0a;(mm)" Width="auto" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="Dia" />
-                                <dxg:GridColumn Header="刀具類型" Width="90" HorizontalHeaderContentAlignment="Center"
+                            <dxg:GridColumn Header="刀具類型" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="DrilTypeStr">
                                     <dxg:GridColumn.EditSettings>
                                         <dxe:ComboBoxEditSettings ItemsSource="{Binding Source={StaticResource DrillType}, Path=Strings}" />
                                     </dxg:GridColumn.EditSettings>
                                 </dxg:GridColumn>
-                            <dxg:GridColumn Header="主軸轉速&#x0a;(RPM)" Width="90" HorizontalHeaderContentAlignment="Center"
+                            <dxg:GridColumn Header="主軸轉速&#x0a;(RPM)" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="Rpm" />
-                            <dxg:GridColumn Header="切削速度&#x0a;(mm/min)" Width="90" HorizontalHeaderContentAlignment="Center"
+                            <dxg:GridColumn Header="切削速度&#x0a;(mm/min)" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="Vc" />
-                            <dxg:GridColumn Header="f&#x0a;(mm/rev)" Width="90" HorizontalHeaderContentAlignment="Center"
+                            <dxg:GridColumn Header="f&#x0a;(mm/rev)" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="f" />
-                            <dxg:GridColumn Header="F&#x0a;(mm/min)" Width="90" HorizontalHeaderContentAlignment="Center"
+                            <dxg:GridColumn Header="F&#x0a;(mm/min)" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="F" />
-                            <dxg:GridColumn Header="刀具長度&#x0a;(mm)" Width="90" HorizontalHeaderContentAlignment="Center"
+                            <dxg:GridColumn Header="刀具長度&#x0a;(mm)" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="DrillLength" />
-                            <dxg:GridColumn Header="刀柄長度&#x0a;(mm)" Width="90" HorizontalHeaderContentAlignment="Center"
+                            <dxg:GridColumn Header="刀柄長度&#x0a;(mm)" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="HolderLength" />
-                            <dxg:GridColumn Header="L4長度&#x0a;(mm)" Width="75" HorizontalHeaderContentAlignment="Center"
+                            <dxg:GridColumn Header="L4長度&#x0a;(mm)" Width="50" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="L4Length" />
-                            <dxg:GridColumn Header="刀具總長&#x0a;(mm)" Width="90" HorizontalHeaderContentAlignment="Center"
+                            <dxg:GridColumn Header="刀具總長&#x0a;(mm)" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="SumLength" />
                             </dxg:GridControl.Columns>
                         </dxg:GridControl>
