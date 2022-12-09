@@ -419,6 +419,11 @@
                             </dxg:GridColumn>
                             <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題一"  Width="auto"  />
                             <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題二"   Width="auto" />
+                            <dxg:GridColumn FieldName="MachiningSpanTime"  IsSmart="True" Header="加工時間"   Width="auto" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings Mask="HH:mm:ss" MaskType="DateTime" MaskUseAsDisplayFormat="True"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
                         </dxg:GridControl>
                     </TabItem>
                     <TabItem Header="加工細項" Name="MachiningDetailTabItem" >
@@ -1211,8 +1216,8 @@ AllowEditing="False"
 
 
                         <Border Grid.Row="2" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
-
-                        <RadioButton  GroupName="Group_Transport" Name="Transport_RadioButton" Grid.Column="0" Grid.Row="2"  
+                        <StackPanel Grid.Column="0" Grid.Row="2" IsEnabled="False">
+                        <RadioButton  GroupName="Group_Transport" Name="Transport_RadioButton" 
                                        IsChecked="{Binding Transport_RadioButtonIsChecked}" Command="{Binding ChangeTransportModeCommand}" Cursor="Hand" >
                             <RadioButton.IsEnabled>
                                 <MultiBinding Converter="{local:BooleanArray_In_UnionToBooleanConverter}">
@@ -1224,7 +1229,8 @@ AllowEditing="False"
                                 </MultiBinding>
                             </RadioButton.IsEnabled>
                             <Image Source="{StaticResource TransportDrawingImage}" />
-                        </RadioButton>
+                            </RadioButton>
+                        </StackPanel>
                         <ProgressBar Grid.Row="2"  Visibility="{Binding ProgressBar_Visible_Transport_Visibility,Converter={dx:BooleanToVisibilityConverter}}" />
                         <RadioButton GroupName="Group_Transport" Name="Transport_by_Continue_RadioButton" Grid.Column="1" Grid.Row="2" IsChecked="{Binding Transport_by_Continue_RadioButtonIsChecked}" Command="{Binding ChangeTransportMode_To_Continue_Command}" >
                             <RadioButton.IsEnabled>

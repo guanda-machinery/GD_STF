@@ -322,7 +322,6 @@ namespace WPFSTD105.ViewModel
             var MaterialIndex = Finish_UndoneDataViews.FindIndex(x => (x == MaterialData));
             if (MaterialIndex != -1)
             {
-                // var argsMaterial = args.Item as MaterialDataView;
                 if (Finish_UndoneDataViews[MaterialIndex].Position == PositionStatusEnum.等待配對.ToString())
                 {
                     var Result = MachineAndPhoneAPI.AppServerCommunicate.SetRegisterAssembly(
@@ -351,6 +350,8 @@ namespace WPFSTD105.ViewModel
                                 }
 
                                 HintStep3 = true;
+                                Finish_UndoneDataViews[MaterialIndex].MachiningStartTime = null;
+                                Finish_UndoneDataViews[MaterialIndex].MachiningEndTime = null;
 
                                 AddOperatingLog(LogSourceEnum.Machine, $"加入素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}成功", false);
                                 WinUIMessageBox.Show(null,
@@ -415,12 +416,6 @@ namespace WPFSTD105.ViewModel
 
 
 
-    //private const string InitPairString = "初始化";
-    //private const string FinishString = "完成";
-    //private const string MachiningString = "加工中";
-    //private const string WaitBePairString = "等待配對";
-    //private const string PhonePairString = "手機配對";
-    //private const string SoftwarePairString = "機台配對";
     //機台配對:使用api完成之配對
     //手動配對:使用codesys完成之配對
     private enum PositionStatusEnum
@@ -448,26 +443,14 @@ namespace WPFSTD105.ViewModel
             {
                 //將資料表重新排列
                 var FUDataList = _finish_UndoneDataViews.ToList();
-                /*FUDataList.Sort((x, y) =>
-                {
-                    return x.Position.CompareTo(y.Position);
-                });     */
-                //_finish_UndoneDataViews
                 return new ObservableCollection<MaterialDataView>(FUDataList);
             }
             set
             {
-
-                //_undoneDataView = new ObservableCollection<MaterialDataView>(value.ToList().FindAll(x => (x.Position != FinishString)));
-                //_finishDataViews = new ObservableCollection<MaterialDataView>(value.ToList().FindAll(x => (x.Position == FinishString)));
                 _finish_UndoneDataViews = value;
                 OnPropertyChanged("Finish_UndoneDataViews");
             }
         }
-
-
-
-
 
 
 
@@ -486,11 +469,6 @@ namespace WPFSTD105.ViewModel
                 _finish_UndoneDataViews_SelectedItem = value;
                 if (_finish_UndoneDataViews_SelectedItem != null)
                 {
-                    var AssemblyNumberList = new List<string>();
-                    foreach (var M_part in _finish_UndoneDataViews_SelectedItem.Parts)
-                    {
-                        AssemblyNumberList.Add(M_part.AssemblyNumber);
-                    }
                     GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem);
                     AddOperatingLog(LogSourceEnum.Software, $"已選擇素材編號：{_finish_UndoneDataViews_SelectedItem.MaterialNumber}");
                 }
@@ -540,43 +518,6 @@ namespace WPFSTD105.ViewModel
         /// 單一零件加工孔位表
         /// </summary>
         public ObservableCollection<DrillBolts> MachiningDetail_DrillBoltsItemSource { get; set; }
-
-
-        /*
-        private ObservableCollection<DrillBolts> GetDrillBoltsItemCollection(List<string> NumberList)
-        {
-            var PartsDataViews = WPFSTD105.ViewModel.ObSettingVM.GetData();
-            //var PartsDataViews = new ObservableCollection<WPFSTD105.ViewModel.ProductSettingsPageViewModel>(WPFSTD105.ViewModel.ObSettingVM.GetData(false)).ToList();
-            //選擇單一素材
-            //取得專案內所有資料 並找出符合本零件的dataname(dm名) 
-            //有可能會有複數個(選擇素材/單一零件的差別)
-            var PartsList = new List<ProductSettingsPageViewModel>();
-            foreach (var AssemblyNum in NumberList)
-            {
-                PartsList.AddRange(PartsDataViews.FindAll(x => x.AssemblyNumber == AssemblyNum));
-            }
-
-            var DrillBoltsListInfo = new List<DrillBolts>();
-            foreach (var _part in PartsList)
-            {
-                GetMaterialdataDrillBoltsInfo(_part.DataName, out var MaterialDrillBolts);
-                //複數零件時須將相同之加工資料合併
-                //會將不同零件上但孔徑相同的孔數量做加總
-                foreach (var MDrill in MaterialDrillBolts)
-                {
-                    if (DrillBoltsListInfo.Exists(x => (x.WorkType == MDrill.WorkType && x.Face == MDrill.Face && x.DrillHoleDiameter == MDrill.DrillHoleDiameter)))
-                    {
-                        DrillBoltsListInfo.Find(x => (x.WorkType == MDrill.WorkType && x.Face == MDrill.Face && x.DrillHoleDiameter == MDrill.DrillHoleDiameter)).DrillHoleCount += MDrill.DrillHoleCount;
-                    }
-                    else
-                    {
-                        DrillBoltsListInfo.Add(MDrill);
-                    }
-                }
-            }
-            return new ObservableCollection<DrillBolts>(DrillBoltsListInfo);
-        }
-        */
 
         private void GetDrillBoltsItemCollection(MaterialDataView view)
         {
@@ -675,63 +616,97 @@ namespace WPFSTD105.ViewModel
         }
 
 
-
-
-        /// <summary>
-        /// 給定DataName 回傳該零件所有的孔位及位置
-        /// </summary>
-        /// <param name="DataName"></param>
-        /// <param name="DrillBoltsList"></param>
-        /// <returns></returns>
-        private bool GetMaterialdataDrillBoltsInfo(string DataName, out List<DrillBolts> DrillBoltsList)
+        private void GetDrillBoltsItemCollection(MaterialPartDetail view)
         {
-            DrillBoltsList = new List<DrillBolts>();
-            var _BufferModel = new devDept.Eyeshot.Model();
-            _BufferModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
-            _BufferModel.InitializeViewports();
-            _BufferModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
-
-            var ser = new STDSerialization();
-            var readFile = ser.ReadPartModel(DataName); //讀取檔案內容
-            if (readFile == null)
+            if (view == null)
             {
-                return false;
-                //continue;
+                MachiningCombinational_DrillBoltsItemSource = new ObservableCollection<DrillBolts>();
             }
 
-            readFile.DoWork();//開始工作
-            readFile.AddToScene(_BufferModel);//將讀取完的檔案放入到模型
-            if (_BufferModel.Entities[_BufferModel.Entities.Count - 1].EntityData is null)
+            var DrillBoltsListInfo = new List<DrillBolts>();
+            _CreateFileTask?.Wait(); //等待 Task CreateFile 完成 link:ProcessingMonitorVM.cs:CreateFile()
+            _SynchronizationContext.Send(t =>
             {
-                return false;
-                //continue;
-            }
-            //ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
-            //WriteSteelAttr((SteelAttr)_BufferModel.Blocks[1].Entities[0].EntityData);//寫入到設定檔內
-            //ViewModel.GetSteelAttr();
-            //_BufferModel.Blocks[1] = new Steel3DBlock((Mesh)_BufferModel.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式(零件)
-
-            for (int i = 0; i < _BufferModel.Entities.Count; i++)//逐步展開 3d 模型實體
-            {
-                if (_BufferModel.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
+                try
                 {
-                    BlockReference blockReference = (BlockReference)_BufferModel.Entities[i]; //取得參考圖塊
-                    var BoltsAttr = blockReference.EntityData as GroupBoltsAttr;
-                    //BoltsList.Add(BoltsAttr);
+                    var _BufferModel = new devDept.Eyeshot.Model();
+                    _BufferModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
+                    _BufferModel.InitializeViewports();
+                    _BufferModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
 
-                    //如果直徑和面已經存在 則加入舊的 否則建立新的資料
-                    if (DrillBoltsList.Exists(x => (x.DrillHoleDiameter == BoltsAttr.Dia && x.Face == BoltsAttr.Face)))
+                    _BufferModel.Clear();
+                    Dictionary<FACE, List<Drill>> keyValuePairs = new Dictionary<FACE, List<Drill>>();
+                    if (File.Exists($@"{ApplicationVM.DirectoryMaterial()}\{view.MaterialNumber}.dm"))
                     {
-                        DrillBoltsList.Find(x => x.DrillHoleDiameter == BoltsAttr.Dia).DrillHoleCount += BoltsAttr.Count;
-                    }
-                    else
-                    {
-                        DrillBoltsList.Add(new DrillBolts { DrillHoleDiameter = BoltsAttr.Dia, DrillHoleCount = BoltsAttr.Count, Face = BoltsAttr.Face });
+                        ReadFile readFile = _Ser.ReadMaterialModel(view.MaterialNumber);
+                        _BufferModel.Clear();
+                        readFile.DoWork();
+                        readFile.AddToScene(_BufferModel);
+                        //}, null);
+                        FACE face = FACE.TOP;
+                        var steelPart = _Ser.GetPart($"{view.Profile.GetHashCode()}")[0];
+
+                        _BufferModel.Entities.ForEach(el =>
+                        {
+                            BlockReference blockReference = (BlockReference)el;
+                            if (blockReference.Attributes.ContainsKey("Bolts"))
+                            {
+                                Entity[] entities = blockReference.Explode(_BufferModel.Blocks); //返回圖塊引用單個實體列表
+                                BoltAttr attr = (BoltAttr)entities[0].EntityData;
+
+
+                                if (!keyValuePairs.ContainsKey(attr.Face))
+                                {
+                                    keyValuePairs.Add(attr.Face, new List<Drill>());
+                                }
+
+                                if (attr.Face == FACE.TOP)
+                                {
+                                    keyValuePairs[attr.Face].AddRange(BoltAsDrill(entities, new Transformation(new Point3D(0, steelPart.H, 0), Vector3D.AxisX, new Vector3D(0, -1), Vector3D.AxisZ)));
+                                }
+                                else
+                                {
+                                    keyValuePairs[attr.Face].AddRange(BoltAsDrill(entities));
+                                }
+                            }
+                            else if (blockReference.Attributes.ContainsKey("Steel"))
+                            {
+                                SteelAttr steelAttr = (SteelAttr)blockReference.EntityData;
+                            }
+                        });
+
+
+
+                        keyValuePairs.ForEach(keyValuePair =>
+                        {
+                            keyValuePair.Value.ForEach(DrillData =>
+                            {
+                                if (DrillBoltsListInfo.Exists(x => (x.WorkAXIS_MODE == DrillData.AXIS_MODE && x.Face == keyValuePair.Key && x.DrillHoleDiameter == DrillData.Dia)))
+                                {
+                                    DrillBoltsListInfo.Find(x => (x.WorkAXIS_MODE == DrillData.AXIS_MODE && x.Face == keyValuePair.Key && x.DrillHoleDiameter == DrillData.Dia)).DrillHoleCount++;
+                                }
+                                else
+                                {
+                                    DrillBoltsListInfo.Add(new DrillBolts()
+                                    {
+                                        WorkAXIS_MODE = DrillData.AXIS_MODE,
+                                        Face = keyValuePair.Key,
+                                        DrillHoleCount = 1,
+                                        DrillHoleDiameter = DrillData.Dia
+                                    });
+                                }
+                            });
+                        });
+
+                        MachiningDetail_DrillBoltsItemSource = new ObservableCollection<DrillBolts>(DrillBoltsListInfo);
+                        //MachiningCombinational_DrillBoltsItemSource = new ObservableCollection<DrillBolts>(DrillBoltsListInfo);
                     }
                 }
-            }
+                catch (Exception ex)
+                {
 
-            return true;
+                }
+            }, null);
         }
 
 
@@ -789,13 +764,19 @@ namespace WPFSTD105.ViewModel
             set
             {
                 _finish_UndoneDataViewsDetail_SelectedItem = value;
+
+                if (_finish_UndoneDataViewsDetail_SelectedItem != null)
+                {
+                    GetDrillBoltsItemCollection(_finish_UndoneDataViewsDetail_SelectedItem);
+                    AddOperatingLog(LogSourceEnum.Software, $"已選擇零件編號：{_finish_UndoneDataViewsDetail_SelectedItem.PartNumber}");
+                }
             }
         }
 
         /// <summary>
         /// 展開素材內的零件所使用的資料表
         /// </summary>
-        public struct MaterialPartDetail
+        public class MaterialPartDetail
         {
             /// <summary>
             /// /// 排版編號
@@ -894,10 +875,6 @@ namespace WPFSTD105.ViewModel
                 }
             }
         }
-
-
-
-
 
 
 
@@ -2939,6 +2916,8 @@ namespace WPFSTD105.ViewModel
 
 
 
+                                        if (Finish_UndoneDataViews[MIndex].MachiningEndTime == null)
+                                            Finish_UndoneDataViews[MIndex].MachiningEndTime = DateTime.Now;
                                     }
                                     else if (_WorkMaterials[value].Position == -1)
                                     {
@@ -2952,8 +2931,8 @@ namespace WPFSTD105.ViewModel
                                         Finish_UndoneDataViews[MIndex].Schedule = _WorkMaterials[value].Finish;
                                         Finish_UndoneDataViews[MIndex].Position = PositionStatusEnum.加工中.ToString();
 
-
-
+                                        if (Finish_UndoneDataViews[MIndex].MachiningStartTime == null)
+                                            Finish_UndoneDataViews[MIndex].MachiningStartTime = DateTime.Now;
                                     }
                                     else if (_WorkMaterials[value].Position == 0)
                                     {
@@ -2967,15 +2946,21 @@ namespace WPFSTD105.ViewModel
                                     }
                                     else
                                     {
-
                                         if (_WorkMaterials[value].IsExport) //出口處
                                         {
+                                            //以防完成時沒加到
+                                            if (Finish_UndoneDataViews[MIndex].MachiningEndTime == null)
+                                                Finish_UndoneDataViews[MIndex].MachiningEndTime = DateTime.Now;
+
                                             Finish_UndoneDataViews[MIndex].Schedule = _WorkMaterials[value].Finish;
                                             Finish_UndoneDataViews[MIndex].Position = $"等待(出)-{exCount}";
                                             exCount++;
                                         }
                                         else
                                         {
+                                            Finish_UndoneDataViews[MIndex].MachiningStartTime = null;
+                                            Finish_UndoneDataViews[MIndex].MachiningEndTime = null;
+
                                             Finish_UndoneDataViews[MIndex].Position = $"等待(入)-{enCount}";
                                             enCount++;
                                         }

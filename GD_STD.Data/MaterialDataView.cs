@@ -111,11 +111,6 @@ namespace GD_STD.Data
                 }
             }
         }
-
-
-
-
-
         private enum CRotation
         {
             Clockwise,
@@ -270,10 +265,6 @@ namespace GD_STD.Data
 
 
         }
-
-
-
-
         private bool objArrayComponentCorrespond(object objArray, out GD_STD.Data.TypeSettingDataView SelectedComponent, out object TabControl)
         {
             SelectedComponent = null;
@@ -316,8 +307,6 @@ namespace GD_STD.Data
             }
             return false;
         }
-
-
         #endregion
 
 
@@ -362,8 +351,6 @@ namespace GD_STD.Data
         
 
 
-
-
         /// <summary>
         /// 素材消耗
         /// </summary>
@@ -396,6 +383,38 @@ namespace GD_STD.Data
         /// 素材數量
         /// </summary>
         public double MeterialCount { get; set; }
+
+        public DateTime? MachiningStartTime { get; set; } = null;
+
+        public DateTime? _machiningEndTime;
+        public DateTime? MachiningEndTime 
+        { 
+            get 
+            {
+                return _machiningEndTime;
+            }
+            set 
+            {
+                _machiningEndTime = value;
+                if (MachiningStartTime != null && MachiningEndTime != null)
+                    MachiningSpanTime =(DateTime)MachiningEndTime - (DateTime)MachiningStartTime;
+                else
+                    MachiningSpanTime = null;
+
+                OnPropertyChanged("MachiningEndTime");
+            }
+         }
+        private TimeSpan? _machiningSpanTime;
+        public TimeSpan? MachiningSpanTime 
+        { 
+            get => _machiningSpanTime; 
+            set { 
+                _machiningSpanTime = value; 
+                OnPropertyChanged("MachiningSpanTime"); 
+            } 
+        } 
+
+
 
 
 
