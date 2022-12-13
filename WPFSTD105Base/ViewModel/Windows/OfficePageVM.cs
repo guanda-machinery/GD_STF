@@ -125,7 +125,10 @@ namespace WPFSTD105
         /// </summary>
         public bool LengthDodageControl { get; set; }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool isPressAddCutKey { get; set; }
 
         /// <summary>
         /// 斷面規格最大高度

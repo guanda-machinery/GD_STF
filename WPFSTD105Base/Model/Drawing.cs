@@ -170,6 +170,10 @@ namespace WPFSTD105
         /// 繪製多邊形
         /// </summary>
         public bool drawingPolyLine;
+        /// <summary>
+        /// 繪製斜邊打點功能
+        /// </summary>
+        public bool drawingHypotenusePoint;
 
         #endregion
     }

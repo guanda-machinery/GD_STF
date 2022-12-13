@@ -116,11 +116,13 @@ namespace WPFSTD105.Model
             // 依序取出素材零件位置
             for (int i = 0; i < place.Count; i++)
             {
-                if (place.Count == 1) // count=1表素材沒有零件組成,只有(前端切除)程序紀錄
+                if (place.Count == 1) // count=1表示素材沒有零件組成,只有(前端切除)程序紀錄
                 {
                     return;
                 }
 
+                if (place[i].End == 0) // 素材前端切除設為0時 ,不打點
+                    continue;
 
                 if (place[i].IsCut) //如果是切割物件
                 {
@@ -130,10 +132,13 @@ namespace WPFSTD105.Model
                         entities.Add(cut1);
                     }
 
+
+
+
                     MyCs myCs = new MyCs();
                     ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();                          //  備份當前加工區域數值
-                    double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].A);       //  腹板斜邊打點比列(短)
-                    double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].B);       //  腹板斜邊打點比列(長)
+                    double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].A);       //  依照腹板斜邊打點比列(短)
+                    double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].B);       //  依照腹板斜邊打點比列(長)
 
                     var SteelCut1 = (SteelAttr)cut1.EntityData;
                     List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
