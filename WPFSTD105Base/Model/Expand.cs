@@ -1124,7 +1124,7 @@ namespace WPFSTD105.Model
                             else
                             {
                                 Bolts3DBlock bolts3DBlock = new Bolts3DBlock(meshes, temp);
-                                model.Blocks.Remove(model.Blocks[bolt.GUID.Value.ToString()]);
+                                model.Blocks.Remove(model.Blocks[temp.GUID.Value.ToString()]);
                                 model.Blocks.Add(bolts3DBlock);
                                 //// 原型鋼有孔，更新Entities
                                 //model.Blocks[bolt.GUID.Value.ToString()].Entities.Clear();
