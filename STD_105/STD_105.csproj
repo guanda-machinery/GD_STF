@@ -938,6 +938,7 @@
     <Compile Include="ValueConverters\DateTimeConverter.cs" />
     <Compile Include="ValueConverters\ListCountToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\MaterialGridControlDataCheckConverter.cs" />
+    <Compile Include="ValueConverters\MenuItem_FUDataViewsToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\BooleanArrayIntersectToBooleanConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\BooleanArray_UnionToVisableConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\BooleanArray_UnionToBooleanConverter.cs" />

@@ -347,12 +347,19 @@
                                    <MenuItem Command="{Binding DeleteCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                               Header="移除任務" />-->
-                                    <MenuItem Command="{Binding}"
+                                    <MenuItem Command="{Binding RecoverCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
+                                              Visibility="{Binding Finish_UndoneDataViews_SelectedItems,ConverterParameter='Recover' ,Converter={local:MenuItem_FUDataViewsToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                              Header="狀態復原" />
+                                    
+                                    <MenuItem Command="{Binding UnregisterCommand}"
+                                              CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
+                                              Visibility="{Binding Finish_UndoneDataViews_SelectedItems,ConverterParameter='Paired' ,Converter={local:MenuItem_FUDataViewsToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
                                               Header="解除綁定" /> 
                                     <MenuItem Command="{Binding FinishCommand}"
+                                               Visibility="{Binding Finish_UndoneDataViews_SelectedItems,ConverterParameter='Finish' ,Converter={local:MenuItem_FUDataViewsToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
-                                              Header="設定為完成" />
+                                              Header="強制完成" />
                                 </ContextMenu>
                             </dxg:GridControl.ContextMenu>
 

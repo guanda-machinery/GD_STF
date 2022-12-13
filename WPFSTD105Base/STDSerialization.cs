@@ -171,6 +171,37 @@ namespace WPFSTD105
             }
         }
         /// <summary>
+        /// 刪除工作陣列列表 (壓縮)
+        /// </summary>
+        /// <param name="materialNumber"></param>
+        /// <returns></returns>
+        public bool DeleteWorkMaterialBackup(string materialNumber)
+        {
+            string dataPath = $@"{ApplicationVM.DirectoryWorkMaterialBackup()}\{materialNumber}.db";
+            if (File.Exists(dataPath))
+            {
+                try
+                {
+                    File.Delete(dataPath);
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+
+
+
+
+
+        /// <summary>
         /// 存取工作索引列表 (壓縮)
         /// </summary>
         /// <param name="values">陣列索引列表</param>
