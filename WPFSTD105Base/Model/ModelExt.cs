@@ -597,7 +597,7 @@ namespace WPFSTD105
                 {
 
                     Point3D p1 = points[0], p2 = points[1];
-                    if (p1.X > p2.X || p1.Y > p2.Y)
+                    if (p1.Y > p2.Y)
                     {
                         p1 = points[1];
                         p2 = points[0];

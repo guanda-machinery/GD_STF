@@ -537,27 +537,29 @@ namespace WPFSTD105
             double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].B);       //  依照腹板斜邊打點比列(長)
             double XOffset;
             double YOffset;
-            double Xdistance = Math.Abs(p2.X - p1.X);
-            double Ydistance = Math.Abs(p2.Y - p1.Y);
+            double Xdistance = Math.Abs(p1.X - p2.X);
+            double Ydistance = Math.Abs(p1.Y - p2.Y);
             SteelAttr steelAttr = (SteelAttr)Secondary.Blocks[1].Entities[0].EntityData;
 
+            if (p1.X > p2.X)                    // P1 點座標於P2 右邊
+                Xdistance = Xdistance * (-1);
 
 
-            if (p1.Y < 0 || p2.Y < 0)
+            if (p1.Y < 0 || p2.Y < 0)    //  判斷Y位置落在哪一面  ( 前面 )
             {
                 p1.Y = p1.Y + steelAttr.W + 150;
                 p2.Y = p2.Y + steelAttr.W + 150;
                 TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.FRONT, START_HOLE.START);
 
             }
-            else if (p1.Y>= steelAttr.W + 150)
+            else if (p1.Y>= steelAttr.W + 150)  //  判斷Y位置落在哪一面  ( 背面 )
             {
 
                 p1.Y = p1.Y - steelAttr.H - steelAttr.W - 150;
                 p2.Y = p2.Y - steelAttr.H - steelAttr.W - 150;
                 TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.BACK, START_HOLE.START);
-            } 
-            else
+            }
+            else  //  判斷Y位置落在哪一面  ( 頂面 )
             {
                 TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.TOP, START_HOLE.START);
             }
@@ -579,7 +581,7 @@ namespace WPFSTD105
                 TmpBoltsArr.dY = "0";
                 TmpBoltsArr.xCount = 1;
                 TmpBoltsArr.yCount = 1;
-                TmpBoltsArr.Mode = AXIS_MODE.POINT;
+                TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
                 TmpBoltsArr.BlockName = "ManHypotenuse";
                 TmpBoltsArr.X = XOffset;
                 TmpBoltsArr.Y = YOffset;

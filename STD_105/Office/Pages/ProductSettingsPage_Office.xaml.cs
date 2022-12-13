@@ -4457,58 +4457,27 @@ namespace STD_105.Office
         /// <param name="e"></param>
         private void DelHypotenuseLinearPoint(object sender, EventArgs e)
         {
-#if DEBUG
-            log4net.LogManager.GetLogger("觸發刪除線段打點").Debug("");
-#endif
+            //開啟Model焦點
+            bool mFocus = model.Focus();
 
-            ModelExt modelExt = null;
-
-            if (tabControl.SelectedIndex == 0)
+            if (!mFocus)
             {
-                //  modelExt = model;  // 因只能於2D操作, 取消此3D 
+                drawing.Focus();
             }
-            else
-            {
-                modelExt = drawing;
-                modelExt.TmpStreelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
-            }
-            try
-            {
-                if (model.Entities.Count > 0 && modelExt != null)
-                {
-#if DEBUG
-                    log4net.LogManager.GetLogger("層級 To 要主件的BlockReference").Debug("成功");
-#endif
-                    modelExt.Entities[0].Selectable = true;
-                    modelExt.ClearAllPreviousCommandData();
-                    modelExt.ActionMode = actionType.None;
-                    modelExt.objectSnapEnabled = true;
-                    modelExt.drawingHypotenusePoint = true;
-                    return;
-                }
-#if DEBUG
-                else
-                {
-                    throw new Exception("層級 To 主件的BlockReference 失敗，找不到主件");
-                }
-#endif
-            }
-            catch (Exception ex)
-            {
-                log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(ex.Message, ex.StackTrace);
-            }
-#if DEBUG
-            log4net.LogManager.GetLogger("觸發線段打點").Debug("");
-#endif
+            SimulationDelete();
+            Esc();
+            SaveModel(false);
+            model.Invalidate();
+            drawing.Invalidate();
 
         }
 
 
 
-        /// <summary>
-        /// 標註動作
-        /// </summary>
-        private void Dim(out ModelExt modelExt)
+    /// <summary>
+    /// 標註動作
+    /// </summary>
+    private void Dim(out ModelExt modelExt)
         {
             //ModelExt modelExt = null;
             if (tabControl.SelectedIndex == 0)
