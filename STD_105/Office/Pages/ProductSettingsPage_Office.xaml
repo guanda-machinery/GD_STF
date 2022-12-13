@@ -245,8 +245,8 @@
                         </Style>
                     </dxg:GridColumn.CellStyle>
                 </dxg:GridColumn>
-                <!--<dxg:GridColumn FieldName="{Binding steelAttr.Revise, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="修改日期" Width="80">-->
-                    <dxg:GridColumn FieldName="Revise" IsSmart="True" Header="修改日期"  Width="90">
+                    <dxg:GridColumn Binding="{Binding Revise, Converter={STD105:DateTimeConverter} }"  IsSmart="True" Header="修改日期" Width="90">
+                    <!--<dxg:GridColumn FieldName="Revise" IsSmart="True" Header="修改日期"  Width="90">-->
                     <dxg:GridColumn.CellStyle>
                         <Style>
                             <Setter Property="TextBlock.Foreground" Value="Gray"/>

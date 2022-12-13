@@ -445,7 +445,6 @@ namespace WPFSTD105
                 //線性標註
                 else if (drawingLinearDim && points.Count == 3)
                 {
-
                     LinearDim linearDim = new LinearDim(drawingPlane, points[0], points[1], current, dimTextHeight);
                     linearDim.Selectable = false;
                     AddAndRefresh(linearDim, ActiveLayerName);
@@ -1551,13 +1550,13 @@ namespace WPFSTD105
             {
                 if (i > 0)
                 {
-                    if (x.Entities[0].GetType() == typeof(Mesh) &&
+                    if (x.Entities.Count>0 && x.Entities[0].GetType() == typeof(Mesh) &&
                     x.Entities[0].EntityData.GetType() == typeof(BoltAttr) && ((BoltAttr)x.Entities[0].EntityData).Mode != AXIS_MODE.HypotenusePOINT
                     )
                     {
                         Block_OldBolt.Add(x);
                     }
-                    if (x.Entities[0].GetType() == typeof(BlockReference) &&
+                    if (x.Entities.Count > 0 && x.Entities[0].GetType() == typeof(BlockReference) &&
                     x.Entities[0].EntityData.GetType() == typeof(GroupBoltsAttr) && ((BoltAttr)x.Entities[0].EntityData).Mode != AXIS_MODE.HypotenusePOINT
                     )
                     {
@@ -1601,17 +1600,20 @@ namespace WPFSTD105
             {
                 this.Entities.ForEach(x =>
                 {
-                    if (x.GetType() == typeof(BlockReference) && x.EntityData.GetType() == typeof(GroupBoltsAttr))
+                    if (x.EntityData != null)
                     {
-                        GroupBoltsAttr gba = (GroupBoltsAttr)x.EntityData;
-                        GroupBoltsAttr gbaTemp = ncGBA.FirstOrDefault(y => y.X == gba.X && y.Y == gba.Y && y.Z == gba.Z && y.Mode == gba.Mode && y.Face == gba.Face);
-                        if (gbaTemp != null) gbaTemp.GUID = gba.GUID;
-                    }
-                    if (x.GetType() == typeof(Mesh) && x.EntityData.GetType() == typeof(BoltAttr))
-                    {
-                        BoltAttr ba = (BoltAttr)x.EntityData;
-                        BoltAttr gbaTemp = ncGBA.FirstOrDefault(y => y.X == ba.X && y.Y == ba.Y && y.Z == ba.Z && y.Mode == ba.Mode && y.Face == ba.Face);
-                        if (gbaTemp != null) gbaTemp.GUID = ba.GUID;
+                        if (x.GetType() == typeof(BlockReference) && x.EntityData.GetType() == typeof(GroupBoltsAttr))
+                        {
+                            GroupBoltsAttr gba = (GroupBoltsAttr)x.EntityData;
+                            GroupBoltsAttr gbaTemp = ncGBA.FirstOrDefault(y => y.X == gba.X && y.Y == gba.Y && y.Z == gba.Z && y.Mode == gba.Mode && y.Face == gba.Face);
+                            if (gbaTemp != null) gbaTemp.GUID = gba.GUID;
+                        }
+                        if (x.GetType() == typeof(Mesh) && x.EntityData.GetType() == typeof(BoltAttr))
+                        {
+                            BoltAttr ba = (BoltAttr)x.EntityData;
+                            BoltAttr gbaTemp = ncGBA.FirstOrDefault(y => y.X == ba.X && y.Y == ba.Y && y.Z == ba.Z && y.Mode == ba.Mode && y.Face == ba.Face);
+                            if (gbaTemp != null) gbaTemp.GUID = ba.GUID;
+                        }
                     }
                 });
             }
@@ -1622,6 +1624,7 @@ namespace WPFSTD105
         /// <param name="block"></param>
         public void sycnModelEntitiesAndNewBolt(List<Block> block)
         {
+            return;
 
             this.Entities.ForEach(x =>
             {
@@ -1780,8 +1783,10 @@ namespace WPFSTD105
                     if (obSettingVM.Select3DItem.Count > 0 && CurrentBlockReference == null) //判斷是否有選擇到物件
                     {
                         List<Entity> sele3D = new List<Entity>(), sele2D = new List<Entity>();
-                        obSettingVM.Select3DItem.ForEach(el => sele3D.Add((BlockReference)el.Item));
-                        obSettingVM.Select2DItem.ForEach(el => sele2D.Add((BlockReference)el.Item));
+                        obSettingVM.Select3DItem.Where(x => x.Item.GetType() == typeof(BlockReference)).ToList().ForEach(el => sele3D.Add((BlockReference)el.Item));
+                        obSettingVM.Select3DItem.Where(x => x.Item.GetType() == typeof(Mesh)).ToList().ForEach(el => sele3D.Add((Mesh)el.Item));
+                        obSettingVM.Select2DItem.Where(x => x.Item.GetType() == typeof(BlockReference)).ToList().ForEach(el => sele2D.Add((BlockReference)el.Item));
+                        obSettingVM.Select2DItem.Where(x => x.Item.GetType() == typeof(Mesh)).ToList().ForEach(el => sele2D.Add((Mesh)el.Item));
                         obSettingVM.Reductions.Add(new Reduction() //加入到垃圾桶內
                         {
                             SelectReference = null,
@@ -1796,11 +1801,27 @@ namespace WPFSTD105
 
                         if (Name == "model")
                         {
-                            obSettingVM.Select2DItem.ForEach(el => Secondary.Entities.Remove((BlockReference)el.Item));
+                            obSettingVM.Select2DItem.Where(x => x.Item.GetType() == typeof(BlockReference)).ToList().ForEach(el =>
+                            {
+                                Secondary.Entities.Remove((BlockReference)el.Item);
+                                if (((BlockReference)el.Item) != null && Blocks.Any(x => x.Name == ((BlockReference)el.Item).BlockName))
+                                {
+                                    Blocks.Remove(Blocks.FirstOrDefault(x => x.Name == ((BlockReference)el.Item).BlockName));
+                                }
+                            });
+                            obSettingVM.Select2DItem.Where(x => x.Item.GetType() == typeof(Mesh)).ToList().ForEach(el => Secondary.Entities.Remove((Mesh)el.Item));
                         }
                         else
                         {
-                            obSettingVM.Select3DItem.ForEach(el => Secondary.Entities.Remove((BlockReference)el.Item));
+                            obSettingVM.Select3DItem.Where(x => x.Item.GetType() == typeof(BlockReference)).ToList().ForEach(el =>
+                            {
+                                Secondary.Entities.Remove((BlockReference)el.Item);
+                                if (((BlockReference)el.Item) != null && Secondary.Blocks.Any(x => x.Name == ((BlockReference)el.Item).BlockName))
+                                {
+                                    Secondary.Blocks.Remove(Secondary.Blocks.FirstOrDefault(x => x.Name == ((BlockReference)el.Item).BlockName));
+                                }
+                            });
+                            obSettingVM.Select3DItem.Where(x => x.Item.GetType() == typeof(Mesh)).ToList().ForEach(el => Secondary.Entities.Remove((Mesh)el.Item));
                         }
                         //STDSerialization ser = new STDSerialization();
                         //ser.SetPartModel(obSettingVM.SteelAttr.GUID.ToString(), this);

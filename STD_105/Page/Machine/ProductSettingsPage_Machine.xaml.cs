@@ -1017,7 +1017,7 @@ namespace STD_105
                     double diffLength = maxX - ViewModel.ProductLengthProperty;
                     #endregion
 
-                    #region 產生模型方式一(有凹槽)
+                    #region 產生模型(有凹槽)
                     model.LoadNcToModel(gridItem.DataName, ObSettingVM.allowType, diffLength, null, steelAttr, modelAllBoltList, blocks);
                     sr.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊 
                     #endregion
