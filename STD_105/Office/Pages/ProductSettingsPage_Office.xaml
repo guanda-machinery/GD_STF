@@ -823,6 +823,18 @@
                                                DeleteVisibility="Collapsed"/>
                         <Button x:Name="btn_AddNewOne" Content="另存" Command="{Binding AddNewOne}" DockPanel.Dock="Left" Width="76" Margin="0,0,0,0" Visibility="Collapsed"/>
 
+
+                      
+                            <Button Content="新增打點" Click="HypotenuseLinearPoint">
+
+                            </Button>
+                            <Button Content="刪除打點"  >
+
+                            </Button>
+                  
+
+
+
                         <!--鎖頭的行為要與按鈕的開啟關閉binding 0902-->
                     </StackPanel>
                 </Grid>
@@ -1169,7 +1181,11 @@
                                             </RadioButton>
 
                                         </Grid>
+
+                                        
+
                                     </GroupBox>
+
                                 </StackPanel>
                                 <StackPanel Grid.Row="1" Background="#303030" Height="0.5" Margin="0,5"/>
                                 <GroupBox Header="切割位置" Style="{StaticResource BaseStyle}" Grid.Row="2" Margin="5" Padding="0">

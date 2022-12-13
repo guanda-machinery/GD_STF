@@ -137,8 +137,8 @@ namespace WPFSTD105.Model
 
                     MyCs myCs = new MyCs();
                     ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();                          //  備份當前加工區域數值
-                    double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].A);       //  腹板斜邊打點比列(短)
-                    double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].B);       //  腹板斜邊打點比列(長)
+                    double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].A);       //  依照腹板斜邊打點比列(短)
+                    double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].B);       //  依照腹板斜邊打點比列(長)
 
                     var SteelCut1 = (SteelAttr)cut1.EntityData;
                     List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
@@ -1015,7 +1015,8 @@ namespace WPFSTD105.Model
                 List<GroupBoltsAttr> groupBoltsAttr = new List<GroupBoltsAttr>();
                 if (blockNameList.Count>0)
                 {
-                    groupBoltsAttr = model.Entities.Where(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && blockNameList.Contains(((GroupBoltsAttr)x.EntityData).GUID.ToString())).Select(x => (GroupBoltsAttr)x.EntityData).ToList();
+                    
+                    groupBoltsAttr = model.Entities.Where(x =>x.EntityData!=null && x.EntityData.GetType() == typeof(GroupBoltsAttr) && blockNameList.Contains(((GroupBoltsAttr)x.EntityData).GUID.ToString())).Select(x => (GroupBoltsAttr)x.EntityData).ToList();
                 }
                 
                 nc = nc ?? new NcTemp() { SteelAttr = new SteelAttr(), GroupBoltsAttrs = new List<GroupBoltsAttr>() };

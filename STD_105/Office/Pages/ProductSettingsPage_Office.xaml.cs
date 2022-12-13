@@ -2,6 +2,7 @@ using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
+using DevExpress.Charts.Model;
 using DevExpress.Data.Extensions;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Core;
@@ -11,6 +12,7 @@ using DevExpress.Xpf.WindowsUI;
 using GD_STD;
 using GD_STD.Data;
 using GD_STD.Enum;
+using ProtoBuf.Meta;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -4376,6 +4378,68 @@ namespace STD_105.Office
 
         }
 
+
+        /// <summary>
+        /// 線段打點
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void HypotenuseLinearPoint(object sender, EventArgs e)
+        {
+#if DEBUG
+            ScrollViewbox.IsEnabled = true;
+            log4net.LogManager.GetLogger("觸發線段打點").Debug("");
+#endif
+
+            ModelExt modelExt = null;
+            
+            if (tabControl.SelectedIndex == 0)
+            {
+              //  modelExt = model;  // 取消此3D ,因只能於2D操作
+            }
+            else
+            {
+                modelExt = drawing;
+                modelExt.TmpStreelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+            }
+            try
+            {
+                if (model.Entities.Count > 0 && modelExt!=null)
+                {
+#if DEBUG
+                    log4net.LogManager.GetLogger("層級 To 要主件的BlockReference").Debug("成功");
+#endif
+                    modelExt.Entities[0].Selectable = true;
+                    modelExt.ClearAllPreviousCommandData();
+                    modelExt.ActionMode = actionType.None;
+                    modelExt.objectSnapEnabled = true;
+                    modelExt.drawingHypotenusePoint = true;
+                     
+                    return;
+                }
+#if DEBUG
+                else
+                {
+                    throw new Exception("層級 To 主件的BlockReference 失敗，找不到主件");
+                }
+#endif
+            }
+            catch (Exception ex)
+            {
+                log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(ex.Message, ex.StackTrace);
+            }
+#if DEBUG
+            log4net.LogManager.GetLogger("觸發線段打點").Debug("");
+#endif
+            //Dim(out modelExt);
+            //modelExt.drawingHypotenusePoint = true;
+
+        }
+
+
+
+
+
         /// <summary>
         /// 標註動作
         /// </summary>
@@ -6256,6 +6320,15 @@ namespace STD_105.Office
             return rtn;
         }
 
-       
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+
+            if (drawing.drawingHypotenusePoint && drawing.points.Count == 2)
+            {
+                SaveModel(false, false);
+                drawing.drawingHypotenusePoint = false;
+            }
+        }
+
     }
 }
