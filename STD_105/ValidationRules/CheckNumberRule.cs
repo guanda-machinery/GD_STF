@@ -75,7 +75,7 @@ namespace STD_105.ValidationRules
                 }
                 else
                 {
-                    return new ValidationResult(false, $"請輸入數字!");
+                    return new ValidationResult(false, $"不可有數字以外的文字");
                 }
             }
             else

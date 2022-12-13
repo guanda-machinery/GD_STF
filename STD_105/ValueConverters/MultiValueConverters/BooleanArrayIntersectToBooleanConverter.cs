@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 
 namespace STD_105
@@ -32,6 +33,10 @@ namespace STD_105
                 {
 
                 }
+                else if (Val == DependencyProperty.UnsetValue)
+                {
+                    return false;
+                }
                 else
                 {
                     return false;
@@ -44,5 +49,7 @@ namespace STD_105
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

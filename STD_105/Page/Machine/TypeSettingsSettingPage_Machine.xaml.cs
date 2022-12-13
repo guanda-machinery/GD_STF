@@ -5,6 +5,7 @@ using DevExpress.Data.Extensions;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Grid;
+using DevExpress.Xpf.Spreadsheet.UI.TypedStyles;
 using DevExpress.Xpf.WindowsUI;
 using GD_STD.Data;
 using System;
@@ -66,6 +67,10 @@ namespace STD_105
             //ControlDraw3D();
             //CheckReportLogoExist();
 
+            //ScheduleLengthLabel.Visibility = Visibility.Collapsed;
+            SteelChannelMachiningHint.Visibility = Visibility.Collapsed;
+            UsedMaterialTooLongWarningLabel.Visibility = Visibility.Collapsed;
+            SectionTypeTooManyWarningLabel.Visibility = Visibility.Collapsed;
         }
 
         private void Model3D_Loaded(object sender, RoutedEventArgs e)
@@ -1193,5 +1198,79 @@ namespace STD_105
             }
 
         }
+
+
+
+        private void Add_Reduce_Button_MouseMove(object sender, MouseEventArgs e)
+        {
+            (this.DataContext as OfficeTypeSettingVM).SecondaryLength = "";
+
+            //長度計算
+            //var SoftList = ((this.DataContext as OfficeTypeSettingVM).DataViews).ToList().FindAll(x => (x.SortCount > 0));
+            //將配料>0的所有零件 用斷面規格做分類
+            //var SoftGroup = SoftList.GroupBy(x => x.Profile);
+            var UsedLengthDict = new Dictionary<string, double>();
+            ((this.DataContext as OfficeTypeSettingVM).DataViews).ToList().FindAll(x => (x.SortCount > 0)).GroupBy(x => x.Profile).ForEach(sg =>
+            {
+                //素材切掉兩端
+                double UsedLength = 0 + (this.DataContext as OfficeTypeSettingVM).MatchSetting.StartCut + (this.DataContext as OfficeTypeSettingVM).MatchSetting.EndCut;
+                sg.ForEach(el =>
+                {
+                    //配料>0的所有零件 長度加總(包含不同斷面規格)
+
+                    UsedLength += (el.Length + (this.DataContext as OfficeTypeSettingVM).MatchSetting.Cut) * el.SortCount;
+                });
+
+                if (UsedLength > 0)
+                    UsedLengthDict.Add(sg.Key, UsedLength);
+            });
+
+            //超過兩種規格
+            if (UsedLengthDict.Count >= 2)
+            {
+                ScheduleLengthLabel.Visibility = Visibility.Collapsed;
+                SectionTypeTooManyWarningLabel.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ScheduleLengthLabel.Visibility = Visibility.Visible;
+                SectionTypeTooManyWarningLabel.Visibility = Visibility.Collapsed;
+            }
+
+            //找出各種斷面規格內零件組合後最長長度 只取MainLengths
+            double UsedLengthDictMax = 0;
+            if (UsedLengthDict.Count > 0)
+                UsedLengthDictMax = UsedLengthDict.Max(x => x.Value);
+
+            ScheduleLengthLabel.Content = Math.Round(UsedLengthDictMax, 2);
+            if (UsedLengthDictMax > (this.DataContext as OfficeTypeSettingVM).MainLengthMachine)
+            {
+                UsedMaterialTooLongWarningLabel.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                UsedMaterialTooLongWarningLabel.Visibility = Visibility.Collapsed;
+            }
+
+
+            //尋找是否存在槽鐵
+            var SteelChannelIsExisted = ((this.DataContext as OfficeTypeSettingVM).DataViews).ToList().Exists(x =>
+             x.SortCount > 0 && x.SteelType == (int)GD_STD.Enum.OBJECT_TYPE.CH);
+            
+            if (SteelChannelIsExisted)
+            {
+                SteelChannelMachiningHint.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                SteelChannelMachiningHint.Visibility = Visibility.Collapsed;
+
+            }
+        }
+
+
+
+
+
     }
 }

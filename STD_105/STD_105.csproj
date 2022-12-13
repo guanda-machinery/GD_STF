@@ -936,8 +936,11 @@
     <Compile Include="ValueConverters\ConverterAssemblyNumber.cs" />
     <Compile Include="ValueConverters\ConverterToPartNumber.cs" />
     <Compile Include="ValueConverters\DateTimeConverter.cs" />
+    <Compile Include="ValueConverters\MaterialDataViewHasPairToBooleanConverter.cs" />
     <Compile Include="ValueConverters\ListCountToVisibilityConverter.cs" />
+    <Compile Include="ValueConverters\MaterialGridControlDataCheckConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\BooleanArrayIntersectToBooleanConverter.cs" />
+    <Compile Include="ValueConverters\MultiValueConverters\BooleanArray_UnionToVisableConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\BooleanArray_UnionToBooleanConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\DatetimeArrayToLastestDatetimeConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\DoubleConditionToIsEnabledConerter.cs" />
@@ -993,6 +996,7 @@
     <Compile Include="ValueConverters\PageEnumToBoolConverter.cs" />
     <Compile Include="ValueConverters\PerformanceToConverter.cs" />
     <Compile Include="ValueConverters\TypesettingsSettingsToDrillDataConverter.cs" />
+    <Compile Include="ValueConverters\VisibilityToBooleanConverter.cs" />
     <Compile Include="ZoomControls.cs" />
     <Page Include="GraphWin.xaml">
       <SubType>Designer</SubType>
