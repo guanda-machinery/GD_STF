@@ -245,8 +245,8 @@
                         </Style>
                     </dxg:GridColumn.CellStyle>
                 </dxg:GridColumn>
-                <!--<dxg:GridColumn FieldName="{Binding steelAttr.Revise, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="修改日期" Width="80">-->
-                    <dxg:GridColumn FieldName="Revise" IsSmart="True" Header="修改日期"  Width="90">
+                    <dxg:GridColumn Binding="{Binding Revise, Converter={STD105:DateTimeConverter} }"  IsSmart="True" Header="修改日期" Width="90">
+                    <!--<dxg:GridColumn FieldName="Revise" IsSmart="True" Header="修改日期"  Width="90">-->
                     <dxg:GridColumn.CellStyle>
                         <Style>
                             <Setter Property="TextBlock.Foreground" Value="Gray"/>
@@ -811,7 +811,7 @@
 
                     </Grid>
 
-                    <Button Grid.Column="3" Grid.Row="6" Grid.ColumnSpan="2" x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}"  Style="{StaticResource SiegCustomButtonGold}" Width="90" HorizontalAlignment="Left" Visibility="Visible" />
+                    <Button Grid.Column="3" Grid.Row="6" Grid.ColumnSpan="2" x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}"  Style="{StaticResource SiegCustomButtonGold}" Width="90" HorizontalAlignment="Left" Visibility="Collapsed" />
 
                     <StackPanel Grid.Row="13" Margin="2" Orientation="Horizontal" Grid.ColumnSpan="5">
                         <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Style="{StaticResource SiegCustomButtonGold}" Width="80" Margin="0,0,6,0" Click="OKtoConfirmChanges"/>
@@ -1169,27 +1169,29 @@
                                             </RadioButton>
 
                                         </Grid>
+
+                                        
+
                                     </GroupBox>
                                     <StackPanel Margin="5,8,0,0">
                                         <StackPanel Orientation="Horizontal">
-                                         <StackPanel>
-                                            <Button Width="60" Height="60">
+                                            <StackPanel>
+                                                <Button Width="60" Height="60" Click="HypotenuseLinearPoint">
                                                     <Grid >
                                                         <materialDesign:PackIcon Kind="PenPlus" Width="15" Height="15" Margin="8,0"/>
                                                         <Image Source="{StaticResource HSteel_quadDrawingImage}"  Width="40"/>
                                                     </Grid>
                                                 </Button>
                                                 <Label Content="新增打點" Foreground="Black"  HorizontalAlignment="Center"/>
-                                        </StackPanel>
+                                            </StackPanel>
                                             <StackPanel Margin="5,0">
-                                            <Button Width="60" Height="60">
-                                                <materialDesign:PackIcon Kind="Eraser" Width="45" Height="45"  />
-                                            </Button>
-                                            <Label Content="打點刪除" Foreground="Black"  HorizontalAlignment="Center"/>
+                                                <Button Width="60" Height="60" Click="DelHypotenuseLinearPoint">
+                                                    <materialDesign:PackIcon Kind="Eraser" Width="45" Height="45"  />
+                                                </Button>
+                                                <Label Content="打點刪除" Foreground="Black"  HorizontalAlignment="Center"/>
+                                            </StackPanel>
                                         </StackPanel>
-                                </StackPanel>
-                                </StackPanel>
-                                    
+                                    </StackPanel>
                                 </StackPanel>
                                 <StackPanel Grid.Row="1" Background="#303030" Height="0.5" Margin="0,5,0,0"/>
                                 <GroupBox Header="切割位置" Style="{StaticResource BaseStyle}" Grid.Row="2" Margin="5" Padding="0" Height="255">

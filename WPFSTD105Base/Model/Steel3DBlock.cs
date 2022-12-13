@@ -558,7 +558,19 @@ namespace WPFSTD105.Model
             // 手動斜邊設定值
             FillCutSetting(steelAttr);
             result = new Steel3DBlock(GetProfile(steelAttr));
-            model.Blocks.Add((Block)result);//加入鋼構圖塊到模型
+            if (model.Blocks.Any(x => x.Name == steelAttr.GUID.Value.ToString() ))
+            {
+                model.Blocks.Remove(model.Blocks.FirstOrDefault(x => x.Name == steelAttr.GUID.Value.ToString()));
+                if (model.Entities.Count>0)
+                {
+                    model.Entities.Remove(model.Entities.FirstOrDefault(x => x.EntityData.GetType() == typeof(SteelAttr) && ((SteelAttr)x.EntityData).GUID == steelAttr.GUID));
+                }                
+                model.Blocks.Insert(1,result);//加入鋼構圖塊到模型
+            }
+            else
+            {
+                model.Blocks.Add(result);//加入鋼構圖塊到模型
+            }
             blockReference = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);
             blockReference.EntityData = steelAttr;
             blockReference.Selectable = false;//關閉用戶選擇

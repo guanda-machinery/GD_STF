@@ -43,7 +43,7 @@ namespace GD_STD.Enum
         [Description("[")]
         LB,
         /// <summary>
-        /// 曹鐵, U or CH
+        /// 槽鐵, U or CH
         /// </summary>
         [Description("CH")]
         CH,

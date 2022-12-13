@@ -26,7 +26,7 @@ namespace STD_105
     public partial class App : Application
     {
         System.Threading.Mutex mutex;
-        public App()
+       public App()
         {
             //TODO : 組態檔尚未修復
             //Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None); //組態檔

@@ -1,9 +1,18 @@
 ﻿using devDept.Eyeshot.Entities;
 using devDept.Geometry;
+using DevExpress.Xpf.Gauges;
+using GD_STD.Enum;
+using GrapeCity.Documents.Pdf;
+using SplitLineSettingData;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
+using WPFSTD105.Attribute;
+using WPFSTD105.Model;
+using WPFSTD105.ViewModel;
+
 
 namespace WPFSTD105
 {
@@ -451,6 +460,7 @@ namespace WPFSTD105
         /// <summary>
         /// 嘗試在所選位置（偏移距離）和側面為所選實體創建偏移實體。
         /// </summary>
+        /// 
         public void CreateOffsetEntity()
         {
             if (selEntity != null && selEntity is ICurve selCurve)
@@ -503,6 +513,99 @@ namespace WPFSTD105
                 DrawInteractiveLines();
             }
         }
+
+        /// <summary>
+        /// 新建兩點間線段打點
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        public void CreateHypotenusePoint(SteelAttr TmpStreelAttr, Point3D p1, Point3D p2)
+        {
+
+
+            // MoveBack { get => SteelAttr.H + SteelAttr.W + 150; }
+            // MoveFront { get => -SteelAttr.W - 150; }
+
+
+            ObSettingVM obvm = new ObSettingVM();
+            GroupBoltsAttr TmpBoltsArr = new GroupBoltsAttr();
+            List<Point3D> tmplist1 = new List<Point3D>() { };
+            STDSerialization ser = new STDSerialization(); //序列化處理器
+            MyCs myCs = new MyCs();
+            ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();                          //  備份當前加工區域數值
+            double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].A);       //  依照腹板斜邊打點比列(短)
+            double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].B);       //  依照腹板斜邊打點比列(長)
+            double XOffset;
+            double YOffset;
+            double Xdistance = Math.Abs(p1.X - p2.X);
+            double Ydistance = Math.Abs(p1.Y - p2.Y);
+            SteelAttr steelAttr = (SteelAttr)Secondary.Blocks[1].Entities[0].EntityData;
+
+            if (p1.X > p2.X)                    // P1 點座標於P2 右邊
+                Xdistance = Xdistance * (-1);
+
+
+            if (p1.Y < 0 || p2.Y < 0)    //  判斷Y位置落在哪一面  ( 前面 )
+            {
+                p1.Y = p1.Y + steelAttr.W + 150;
+                p2.Y = p2.Y + steelAttr.W + 150;
+                TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.FRONT, START_HOLE.START);
+
+            }
+            else if (p1.Y>= steelAttr.W + 150)  //  判斷Y位置落在哪一面  ( 背面 )
+            {
+
+                p1.Y = p1.Y - steelAttr.H - steelAttr.W - 150;
+                p2.Y = p2.Y - steelAttr.H - steelAttr.W - 150;
+                TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.BACK, START_HOLE.START);
+            }
+            else  //  判斷Y位置落在哪一面  ( 頂面 )
+            {
+                TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.TOP, START_HOLE.START);
+            }
+
+            for (int z = 0; z < 2; z++)
+            {
+                if (z == 0)
+                {
+                  XOffset = p1.X + (Xdistance * PosRatioA);                             // 依設定比例打點, 1/3 處
+                  YOffset = p1.Y + (Ydistance * PosRatioA);                             // 依設定比例打點, 1/3 處
+                }
+                else
+                {
+                  XOffset = p1.X + (Xdistance * PosRatioB);                             // 依設定比例打點, 2/3 處
+                  YOffset = p1.Y + (Ydistance * PosRatioB);                             // 依設定比例打點, 2/3 處
+                }
+
+                TmpBoltsArr.dX = "0";
+                TmpBoltsArr.dY = "0";
+                TmpBoltsArr.xCount = 1;
+                TmpBoltsArr.yCount = 1;
+                TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
+                TmpBoltsArr.BlockName = "ManHypotenuse";
+                TmpBoltsArr.X = XOffset;
+                TmpBoltsArr.Y = YOffset;
+                TmpBoltsArr.Z = TmpStreelAttr.W / 2 - ((TmpStreelAttr.t1) / 2);         // Z位置座標  腹板中心位置
+                TmpBoltsArr.t = TmpStreelAttr.t1;                                       // 圓柱高度
+                TmpBoltsArr.GUID = Guid.NewGuid();
+                Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr,Secondary , out BlockReference blockReference, out bool CheckArea);
+                obvm.Add2DHole(this, bolts, false);//加入孔位不刷新 2d 視圖       
+                
+                
+            }
+
+        }
+                                                                           
+
+
+
+
+
+
+
+
+
+
         /// <summary>
         /// 第二個選定實體
         /// </summary>

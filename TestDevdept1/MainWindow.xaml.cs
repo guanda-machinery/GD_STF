@@ -12,14 +12,12 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
-using TriangleNet;
 using WPFSTD105;
 using WPFSTD105.Attribute;
 using WPFSTD105.Model;
 using WPFSTD105.Tekla;
 using WPFWindowsBase;
 using static WPFSTD105.Model.Expand;
-using Mesh = devDept.Eyeshot.Entities.Mesh;
 
 namespace TestDevdept
 {
@@ -36,14 +34,12 @@ namespace TestDevdept
 
         private void button_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            string path = @"M166.nc1";
+            string path = @"SG14.nc1";
             using (StreamReader stream = new StreamReader(path))
             {
-
-                SteelAttr.vPoint = null;
-                SteelAttr.oPoint = null;
-                SteelAttr.uPoint = null;
-
+                //vAK.t = 13;
+                //oAK.t = 24;
+                //uAK.t = 24;
                 string line; //資料行
                 string blockName = string.Empty; //資料行的標示區塊，例如AK or BO
                 string face = null; //形狀輪廓的面
@@ -99,8 +95,6 @@ namespace TestDevdept
                         }
                     }
                 }
-
-                TestAK(vAK.Parameter);
                 SteelAttr.vPoint = vAK.GetNcPoint();
                 SteelAttr.uPoint = uAK.GetNcPoint();
                 SteelAttr.oPoint = oAK.GetNcPoint();
@@ -121,65 +115,12 @@ namespace TestDevdept
         private AK uAK { get; set; } = new AK();
         private SteelAttr SteelAttr = new SteelAttr()
         {
-            H = 300,                /// 高
-            W = 150,                /// 寬
-            t1 = (float)6  ,        /// 腹板厚度
-            t2 = 9,                 /// 翼板厚度
-            Length = 3674.65        ///長
+            H = 200,                /// 高
+            W = 100,                /// 寬
+            t1 = (float)5.5,        /// 腹板厚度
+            t2 = 8,                 /// 翼板厚度
+            Length = 1089.76        ///長
         };
-
-        List<NcPoint3D> VKGetPoint = new List<NcPoint3D>();
-
-        public void TestAK(List<string> VKGetPoint)
-        {
-
-
-            List<NcPoint3D> result = new List<NcPoint3D>();
-            foreach (var item in VKGetPoint)
-            {
-                //將 string 轉換 double
-                List<double> values = GetValues(item);
-                NcPoint3D point3D = new NcPoint3D(values[0],
-                                                    values[1],
-                                                    r: values[2],
-                                                    angle1: values[3],
-                                                    startAngle1: values[4],
-                                                    angle2: values[5],
-                                                    startAngle2: values[6]);
-
-            }
-
-
-                // List<NcPoint3D> VKGetPoint = new List<NcPoint3D>();
-
-
-
-
-            }
-
-
-        public List<double> GetValues(string para)
-        {
-            string[] str = para.Split(' ');
-            List<double> result = new List<double>();
-            for (int i = 0; i < str.Length; i++)
-            {
-                double? _ = GetValue(str[i]);
-                if (_ != null)
-                {
-                    result.Add(_.Value);
-                }
-            }
-            return result;
-        }
-
-
-
-
-
-
-
-
         public void AK()
         {
 
@@ -256,14 +197,57 @@ namespace TestDevdept
 
             vMesh.MergeWith(oMesh);
             vMesh.MergeWith(uMesh);
+            //model1.Entities.Add(vMesh);
+           //     model1.Blocks[steelBlock.BlockName].Entities.Add(vMesh);
+
+            
 
 
 
             SteelAttr.Type = GD_STD.Enum.OBJECT_TYPE.BH;
-            model1.Entities.Add(vMesh);//加入物件到圖塊內
+
+           Steel3DBlock asd = new Steel3DBlock(Steel3DBlock.GetProfile(SteelAttr));
+            Mesh ccc = Steel3DBlock.GetProfile(SteelAttr);
+
+
+             
+
+            ccc.Color = ColorTranslator.FromHtml(WPFSTD105.Properties.SofSetting.Default.Surplus);
+
+          
+                 
+           // Solid[] seccut = Solid.Difference(aaaaaaa.ConvertToSolid(), vMesh.ConvertToSolid());
+
+            //Solid[] resultSolid1 = Solid.Difference(ccc.ConvertToSolid(), vMesh.ConvertToSolid());
 
 
 
+            ////EntityList result =  entities.Where(el => !((BlockReference)el).Attributes.ContainsKey("Cut")).ToList();
+
+
+
+            //    model1.Entities.AddRange(resultSolid1,0, System.Drawing.Color.FromArgb(255, 0, 0));
+
+            model1.Entities.Add(ccc);
+
+
+            ccc.Color = ColorTranslator.FromHtml(WPFSTD105.Properties.SofSetting.Default.Surplus);
+
+
+
+            // Solid[] seccut = Solid.Difference(aaaaaaa.ConvertToSolid(), vMesh.ConvertToSolid());
+
+            Solid[] resultSolid1 = Solid.Difference(ccc.ConvertToSolid(), vMesh.ConvertToSolid());
+
+
+
+            ////EntityList result =  entities.Where(el => !((BlockReference)el).Attributes.ContainsKey("Cut")).ToList();
+
+
+
+            //    model1.Entities.AddRange(resultSolid1,0, System.Drawing.Color.FromArgb(255, 0, 0));
+
+            model1.Entities.Add(ccc);
 
             model1.ZoomFit();
             model1.Refresh();
@@ -273,6 +257,76 @@ namespace TestDevdept
 
 
 
+
+
+            // //前視圖
+            // Mesh vMesh = ConvertNcPointToMesh(SteelAttr.vPoint, SteelAttr.t1);          // 將 nc 座標轉實體
+            // List<Mesh> vCut = GetCutMesh(SteelAttr.vPoint, SteelAttr.t1);               // 取得切割物件
+            // Mesh cut1 = Mesh.CreateBox(SteelAttr.Length, SteelAttr.t2, SteelAttr.t1);   // 切割前視圖翼板輪廓
+            // //cut1.Translate(-5, 0);
+            // Mesh otherCut1 = (Mesh)cut1.Clone();
+            // Mesh cut2 = (Mesh)cut1.Clone();
+            // cut2.Translate(0, SteelAttr.H - SteelAttr.t2);
+            // Mesh otherCut2 = (Mesh)cut2.Clone();
+            // List<Solid> solids = new List<Solid>();
+            // solids.AddRange(Solid.Difference(otherCut1.ConvertToSolid(), vMesh.ConvertToSolid()).Where(el => el != null));
+            // solids.AddRange(Solid.Difference(otherCut2.ConvertToSolid(), vMesh.ConvertToSolid()).Where(el => el != null));
+            // //solids.ForEach(el => el.Portions.Where(el => el.)
+            // var cutMeshs = solids.Select(el => el.ConvertToMesh()).ToList();
+            // cutMeshs.ForEach(mesh =>
+            // {
+            //     mesh.Vertices.ForEach(el =>
+            //     {
+            //         if (el.Z == SteelAttr.t1)
+            //         {
+            //             el.Z  = SteelAttr.W;
+            //         }
+            //     });
+            //     mesh.Regen(1E3);
+            // });
+            // vCut.Add(cut1);
+            // vCut.Add(cut2);
+            // Solid vSolid = vMesh.ConvertToSolid();
+            // vSolid = vSolid.Difference(vCut);
+            // vMesh = vSolid.ConvertToMesh();
+            // vMesh.Color = System.Drawing.Color.Gray;
+            // vMesh.ColorMethod = colorMethodType.byEntity;
+            // vMesh.Translate(0, 0, SteelAttr.W * 0.5 - SteelAttr.t1 * 0.5);
+
+            // //頂視圖
+            // Mesh oMesh = ConvertNcPointToMesh(SteelAttr.oPoint, SteelAttr.t2);
+            // List<Mesh> oCut = GetCutMesh(SteelAttr.oPoint, SteelAttr.t2);
+            // Solid oSolid = oMesh.ConvertToSolid();
+            // oSolid = oSolid.Difference(oCut);
+            // oSolid.Mirror(Vector3D.AxisY, new Point3D(-10, 0, SteelAttr.t2*0.5), new Point3D(10, 0, SteelAttr.t2*0.5));
+            // oSolid.Rotate(Math.PI / 2, Vector3D.AxisX);
+            // oSolid.Translate(0, SteelAttr.H);
+            // //oSolid = oSolid.Difference(cutMeshs);
+            // oMesh = oSolid.ConvertToMesh();
+            // oMesh.Color = System.Drawing.Color.Gray;
+            // oMesh.ColorMethod = colorMethodType.byEntity;
+
+            // //底視圖
+            // Mesh uMesh = ConvertNcPointToMesh(SteelAttr.uPoint, SteelAttr.t2);
+            // List<Mesh> uCut = GetCutMesh(SteelAttr.uPoint, SteelAttr.t2);
+            // Solid uSolid = uMesh.ConvertToSolid();
+            // uSolid = uSolid.Difference(uCut);
+            // uSolid.Rotate(Math.PI / 2, Vector3D.AxisX);
+            // uSolid.Translate(0, SteelAttr.t2);
+
+            // //uSolid = uSolid.Difference(cutMeshs);
+            // uMesh = uSolid.ConvertToMesh();
+            // uMesh.Color = System.Drawing.Color.Gray;
+            // uMesh.ColorMethod = colorMethodType.byEntity;
+            // vMesh.MergeWith(uMesh);
+            // vMesh.MergeWith(oMesh);
+            // model1.Entities.Add(vMesh);
+
+            ////model1.Entities.Add(new LinearPath(ds));
+            ////model1.Entities.Add(oMesh);
+            ////model1.Entities.Add(uMesh);
+            ////model1.Entities.Add(vMesh);
+            // model1.Refresh();
         }
         /// <summary>
         /// 刪除未使用的三角面
@@ -427,7 +481,7 @@ namespace TestDevdept
             }
             else
             {
-                Debugger.Break();   
+                Debugger.Break();
             }
             return result;
         }
