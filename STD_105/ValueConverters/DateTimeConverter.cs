@@ -12,7 +12,17 @@ namespace STD_105
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return null;
+            if (value == null) return string.Empty;
+
+            if (value is DateTime )
+            {
+                if ((DateTime)value == DateTime.MinValue)
+                {
+                    return "";
+                }
+                return ((DateTime)value).ToString("yyyy/MM/dd");
+            }
+
             return (DateTime)value == DateTime.MinValue ? null :(object) ((DateTime)value).Date;
         }
 
