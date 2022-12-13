@@ -237,10 +237,12 @@ namespace WPFSTD105.Model
                         file.AddToScene(model);
                         Entity _entity = null;
                         SteelAttr _steelAttr = null;
+                        //.Where(x=>x.EntityData.GetType()==typeof(SteelAttr))
                         model.Entities.ForEach(el =>
                         {
                             if (el.GetType() != typeof(LinearDim))
                             {
+                                //model.Blocks.Where(x => x.GetType() == typeof(SteelAttr)).Select(x => (BlockReference)x.Entities[0]).ForEach(entity =>
                                 model.Blocks[((BlockReference)el).BlockName].Entities.ForEach(entity =>
                                 {
                                     if (entity.EntityData is SteelAttr steelAttr)
@@ -841,6 +843,7 @@ namespace WPFSTD105.Model
         private static Entity DrawCutMesh(SteelPart part, devDept.Eyeshot.Model model, double end, double start, string dic)
         {
             SteelAttr steelAttr = new SteelAttr(part);
+            //steelAttr.PartNumber = part.Number;
             steelAttr.Length = end - start;
             if (steelAttr.Length == 0)
             {
@@ -1015,8 +1018,7 @@ namespace WPFSTD105.Model
                 List<GroupBoltsAttr> groupBoltsAttr = new List<GroupBoltsAttr>();
                 if (blockNameList.Count>0)
                 {
-                    
-                    groupBoltsAttr = model.Entities.Where(x =>x.EntityData!=null && x.EntityData.GetType() == typeof(GroupBoltsAttr) && blockNameList.Contains(((GroupBoltsAttr)x.EntityData).GUID.ToString())).Select(x => (GroupBoltsAttr)x.EntityData).ToList();
+                    groupBoltsAttr = model.Entities.Where(x => x.EntityData!=null && x.EntityData.GetType() == typeof(GroupBoltsAttr) && blockNameList.Contains(((GroupBoltsAttr)x.EntityData).GUID.ToString())).Select(x => (GroupBoltsAttr)x.EntityData).ToList();
                 }
                 
                 nc = nc ?? new NcTemp() { SteelAttr = new SteelAttr(), GroupBoltsAttrs = new List<GroupBoltsAttr>() };
@@ -1039,7 +1041,7 @@ namespace WPFSTD105.Model
                 }
                 return;
             }
-            model.Clear();//清除模型內物件
+            //model.Clear();//清除模型內物件
             string blockName = string.Empty;
 
             double midX = (nc.SteelAttr.Length + diffLength) / 2;
@@ -1049,15 +1051,16 @@ namespace WPFSTD105.Model
                    nc.SteelAttr.vPoint.GroupBy(x => x.X).Count() == 2 &&
                    nc.SteelAttr.vPoint.GroupBy(x => x.Y).Count() == 2) || nc.SteelAttr.vPoint.Count==0)
             {
+                #region 新增型鋼
                 //Steel3DBlock.FillCutSetting(nc.SteelAttr);
                 Steel3DBlock result = new Steel3DBlock(Steel3DBlock.GetProfile(nc.SteelAttr));
                 if (model.Blocks.Count == 1)
                 {
-                    model.Blocks.Add((Block)result);
+                    model.Blocks.Add(result);
                 }
                 else
                 {
-                    model.Blocks[1] = (Block)result;//加入鋼構圖塊到模型
+                    model.Blocks[1] = result;//加入鋼構圖塊到模型
                 }
                 BlockReference blockReference = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);
                 blockReference.EntityData = steelAttr;
@@ -1072,49 +1075,9 @@ namespace WPFSTD105.Model
                     model.Entities[model.Entities.Count - 1] = blockReference;//加入參考圖塊到模型
                 }
                 //Steel3DBlock.AddSteel(nc.SteelAttr, model, out BlockReference steelBlock); //加入 3d 鋼構參考圖塊
-                    blockName = result.Name;
+                blockName = result.Name; 
+                #endregion
 
-
-                //if (blocks!=null)
-                //{
-                //    bool hasOutSteel = false;
-                //    blocks.ForEach(b =>
-                //    {
-                //        b.Entities.ForEach(entities =>
-                //        {
-                //            if (entities.GetType() == typeof(Mesh))
-                //            {
-                //                GroupBoltsAttr temp = new GroupBoltsAttr()
-                //                {
-                //                    BlockName = bolt.BlockName,
-                //                    Dia = bolt.Dia,
-                //                    dX = oldBolts != null ? bolt.dX : "0",
-                //                    dY = oldBolts != null ? bolt.dY : "0",
-                //                    Face = bolt.Face,
-                //                    GUID = bolt.GUID,
-                //                    Mode = oldBolts != null ? bolt.Mode : AXIS_MODE.PIERCE,
-                //                    StartHole = bolt.StartHole,
-                //                    t = bolt.t,
-                //                    Type = bolt.Type,
-                //                    xCount = oldBolts != null ? bolt.xCount : 1,
-                //                    yCount = oldBolts != null ? bolt.yCount : 1,
-                //                    X = bolt.X,
-                //                    Y = bolt.Y,
-                //                    Z = bolt.Z,
-                //                };
-                //            }
-                //            if (b.Entities.GetType() == typeof(GroupBoltsAttr))
-                //            {
-
-                //            }
-                //        })
-                        
-                        
-                
-                
-                
-                
-                
                 if (nc.GroupBoltsAttrs != null)
                 {
                     bool hasOutSteel = false;
@@ -1138,67 +1101,59 @@ namespace WPFSTD105.Model
                             Y = bolt.Y,
                             Z = bolt.Z,
                         };
+                        bool check = true;
                         EntityList meshes = new EntityList();
+                        Block blockTemp = new Block();
                         if (blocks != null)
                         {
-                            // meshes孔群底下的所有孔的資料
-                            meshes = blocks.FirstOrDefault(x => x.Name == bolt.GUID.Value.ToString()).Entities;
+                            // blockTemp 此孔群的所屬Block
+                            blockTemp = blocks.FirstOrDefault(x => x.Name == temp.GUID.Value.ToString());
+                            // meshes 此孔群底下的所有孔的資料
+                            meshes = new EntityList();
+                            var entities = blocks.FirstOrDefault(x => x.Name == temp.GUID.Value.ToString()).Entities;
+                            meshes.AddRange(entities);
                         }
+                        else { meshes = null; }
                         //Bolts3DBlock.CreateBolts(model, ref check, meshes);
                         // 加入孔
-                        GroupBoltsAttrDouble(model, blocks, bolt);
-                        bool check = true;
-                        Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out check, meshes, isRotate); //加入到 3d 視
-                        //if (blocks.Any(x =>
-                        // ((GroupBoltsAttr)x.Entities[0].EntityData).X == temp.X &&
-                        // ((GroupBoltsAttr)x.Entities[0].EntityData).Y == temp.Y &&
-                        // ((GroupBoltsAttr)x.Entities[0].EntityData).Z == temp.Z &&
-                        // ((GroupBoltsAttr)x.Entities[0].EntityData).Mode == temp.Mode))
-                        //{
-                        //    Block tempBlock = blocks.FirstOrDefault(x =>
-                        // ((GroupBoltsAttr)x.Entities[0].EntityData).X == temp.X &&
-                        // ((GroupBoltsAttr)x.Entities[0].EntityData).Y == temp.Y &&
-                        // ((GroupBoltsAttr)x.Entities[0].EntityData).Z == temp.Z &&
-                        // ((GroupBoltsAttr)x.Entities[0].EntityData).Mode == temp.Mode);
-                        //    // meshes孔群底下的所有孔的資料
-                        //    EntityList meshes = tempBlock.Entities;
-                        //    if (meshes != null)
-                        //    {
-                        //        model.Blocks[tempBlock.Name].Entities.Clear();
-                        //        model.Blocks[tempBlock.Name].Entities.AddRange(meshes);
-                        //    }
-                        //}
-                        //else
-                        //{
-                        //    EntityList meshes = blocks.FirstOrDefault(x => x.Name == bolt.GUID.Value.ToString()).Entities;
-                        //    Bolts3DBlock bolts = new Bolts3DBlock(meshes, temp);
-                        //    Bolts3DBlock.AddBolts(temp, model, out BlockReference blockReference1, out bool check, meshes);
-                        //}
-
-
-
-
-                        //// 再Blocks中找尋是否有此孔群的資料，若孔群已編輯，需從此塞資料
-                        //List<Mesh> meshes = null;
-                        ////if (blocks != null && blocks.Any(x => x.Name == bolt.GUID.Value.ToString()))
-                        ////{
-                        ////    meshes = blocks.FirstOrDefault(x => x.Name == bolt.GUID.Value.ToString()).Entities.Select(x => (Mesh)x).ToList();
-                        ////}
-
-                        //// 如果舊有孔群找的到此孔的話 就不加入
-                        //if (!blocks.Select(x => x.Entities[0]).Any(x => x.EntityData.GetType() == typeof(BoltAttr) &&
-                        //((BoltAttr)(x.EntityData)).X == temp.X &&
-                        //((BoltAttr)(x.EntityData)).Y == temp.Y && 
-                        //((BoltAttr)(x.EntityData)).Z == temp.Z &&
-                        //((BoltAttr)(x.EntityData)).Mode == temp.Mode))
-                        //{
-                        //    //meshes = blocks.Select(x => x.Entities[0]).Where(x => x.EntityData.GetType() == typeof(BoltAttr)).Select(x => (Mesh)x.EntityData).ToList();
-                        //    Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out bool check, meshes, isRotate); //加入到 3d 視圖
-                        //    if (!check)
-                        //    {
-                        //        hasOutSteel = true;
-                        //    }
-                        //}
+                        if (blockTemp != null && meshes != null)
+                        {
+                            // 更新此孔群的GUID 以model.Entities為主
+                            ObSettingVM.UpdateNewGroupBoltsAttrGUID(model, blocks, temp);
+                            if (!model.Blocks.Any(x => x.Name == temp.GUID.Value.ToString()))
+                            {
+                                Bolts3DBlock bolts3DBlock = new Bolts3DBlock(meshes, temp);
+                                model.Blocks.Add(bolts3DBlock);
+                                //model.Blocks.Add(blockTemp);
+                            }
+                            else
+                            {
+                                Bolts3DBlock bolts3DBlock = new Bolts3DBlock(meshes, temp);
+                                model.Blocks.Remove(model.Blocks[bolt.GUID.Value.ToString()]);
+                                model.Blocks.Add(bolts3DBlock);
+                                //// 原型鋼有孔，更新Entities
+                                //model.Blocks[bolt.GUID.Value.ToString()].Entities.Clear();
+                                //model.Blocks[bolt.GUID.Value.ToString()].Entities.AddRange(meshes);
+                                //model.Blocks[bolt.GUID.Value.ToString()].Entities.Regen();
+                            }
+                            if (!model.Entities.Any(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID == temp.GUID))
+                            {
+                                BlockReference b = new BlockReference(0, 0, 0, temp.GUID.Value.ToString(), 1, 1, 1, 0);
+                                b.EntityData = temp;
+                                b.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
+                                model.Entities.Insert(0, b);//加入參考圖塊到模型
+                            }
+                            else
+                            {
+                                var entities = model.Entities.FirstOrDefault(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID == temp.GUID);
+                                entities.EntityData = temp;
+                            }
+                        }
+                        else
+                        {
+                            // 原型鋼無孔 則加入
+                            Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out check, meshes, true); //加入到 3d 視圖// XYZ翻前 Vertices翻後
+                        }
                     });
                 }
             }
@@ -1207,6 +1162,7 @@ namespace WPFSTD105.Model
             else if (nc.SteelAttr.oPoint.Count != 0)
             {
                 #region 繪製型鋼
+                
                 Steel3DBlock.AddSteel(nc.SteelAttr, model, out BlockReference steelBlock); //加入 3d 鋼構參考圖塊
                 blockName = steelBlock.BlockName;
                 //model.Clear();//清除模型內物件
@@ -1286,11 +1242,12 @@ namespace WPFSTD105.Model
 
                 vMesh.EntityData = nc.SteelAttr;
                 vMesh.Regen(1E3);
+                #endregion
 
+                #region 修改長度
                 double maxX = nc.SteelAttr.oPoint.Union(nc.SteelAttr.uPoint).Union(nc.SteelAttr.vPoint).Select(x => x.X).Max();
                 double minX = nc.SteelAttr.oPoint.Union(nc.SteelAttr.uPoint).Union(nc.SteelAttr.vPoint).Select(x => x.X).Min();
                 midX = (minX + maxX) / 2;
-                #region 修改長度
                 // 將X座標大於中間座標視為右邊座標，長度伸縮時須跟著伸縮
                 vMesh.Vertices.ForEach(x =>
                 {
@@ -1302,73 +1259,14 @@ namespace WPFSTD105.Model
                 #endregion
                 model.Blocks[blockName].Entities.Add(vMesh);
                 model.Refresh(); 
-                #endregion
-                //////前視圖
-                ////Mesh vMesh = ConvertNcPointToMesh(nc.SteelAttr.vPoint, nc.SteelAttr.t1);
-                ////List<Mesh> vCut = GetCutMesh(nc.SteelAttr.vPoint, nc.SteelAttr.t1);
-                ////Mesh cut1 = Mesh.CreateBox(nc.SteelAttr.Length +10, nc.SteelAttr.t2, nc.SteelAttr.t2 +10);//切割前視圖翼板輪廓
-                ////cut1.Translate(-5, 0);
-                ////Mesh cut2 = (Mesh)cut1.Clone();
-                ////cut2.Translate(0, nc.SteelAttr.H - nc.SteelAttr.t2);
-                ////vCut.Add(cut1);
-                ////vCut.Add(cut2);
-                ////Solid vSolid = vMesh.ConvertToSolid();
-                ////vSolid = vSolid.Difference(vCut);
-                ////vMesh = vSolid.ConvertToMesh();
-                ////vMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
-                ////vMesh.ColorMethod = colorMethodType.byEntity;
-                ////vMesh.Translate(0, 0, nc.SteelAttr.W * 0.5 - nc.SteelAttr.t1 * 0.5);
-
-                //////頂視圖
-                ////Mesh oMesh = ConvertNcPointToMesh(nc.SteelAttr.oPoint, nc.SteelAttr.t2);
-                ////List<Mesh> oCut = GetCutMesh(nc.SteelAttr.oPoint, nc.SteelAttr.t2);
-                ////Solid oSolid = oMesh.ConvertToSolid();
-                ////oSolid = oSolid.Difference(oCut);
-                ////oMesh = oSolid.ConvertToMesh();
-                ////oMesh.Mirror(Vector3D.AxisY, new Point3D(-10, 0, nc.SteelAttr.t2*0.5), new Point3D(10, 0, nc.SteelAttr.t2*0.5));
-                ////oMesh.Rotate(Math.PI / 2, Vector3D.AxisX);
-                ////oMesh.Translate(0, nc.SteelAttr.H);
-                ////oMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
-                ////oMesh.ColorMethod = colorMethodType.byEntity;
-
-                //////底視圖
-                ////Mesh uMesh = ConvertNcPointToMesh(nc.SteelAttr.uPoint, nc.SteelAttr.t2);
-                ////List<Mesh> uCut = GetCutMesh(nc.SteelAttr.uPoint, nc.SteelAttr.t2);
-                ////Solid uSolid = uMesh.ConvertToSolid();
-                ////uSolid = uSolid.Difference(uCut);
-                ////uMesh = uSolid.ConvertToMesh();
-                ////uMesh.Rotate(Math.PI / 2, Vector3D.AxisX);
-                ////uMesh.Translate(0, nc.SteelAttr.t2);
-                ////uMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
-                ////uMesh.ColorMethod = colorMethodType.byEntity;
-
-                ////vMesh.MergeWith(oMesh);
-                ////vMesh.MergeWith(uMesh);
-                ////vMesh.EntityData = nc.SteelAttr;
-                ////model.Blocks[steelBlock.BlockName].Entities.Add(vMesh);
-                ////model.Refresh();
-
-                //// Block中 移除groupBoltsAttr的孔
-                //var ncBolt = model.Blocks.Where(y => y.Entities[0].GetType() == typeof(Mesh)).SelectMany(x => x.Entities).Where(y => y.EntityData.GetType() == typeof(BoltAttr)).Select(x => x.EntityData).ToList();
-
-                //foreach (BoltAttr item in ncBolt.Where(x=>x.GetType()==typeof(BoltAttr)))
-                //{
-                //    if (nc.GroupBoltsAttrs.Any(x=>x.X==item.X && x.Y==item.Y && item.Z == item.Z && x.Face==item.Face && x.Mode==item.Mode))
-                //    {
-                //        var remove = nc.GroupBoltsAttrs.Where(x => x.X == item.X && x.Y == item.Y && item.Z == item.Z && x.Face == item.Face && x.Mode == item.Mode).First();
-                //        nc.GroupBoltsAttrs.Remove(remove);
-                //    }
-                //}
-
-                //.Where(x=>((BoltAttr)x).GUID.ToString()=="X15144ffb-7f2b-4658-b53f-c8a33b98d54d")
-                //15144ffb-7f2b-4658-b53f-c8a33b98d54d
-
+                
                 // 如果有舊有圖塊，加入孔
                 if (nc.GroupBoltsAttrs != null)
                 {
                     bool check = true;
                     nc.GroupBoltsAttrs.ForEach(bolt =>
                     {
+                        // 原型鋼的孔oldBolts
                         GroupBoltsAttr temp = new GroupBoltsAttr()
                         {
                             BlockName = bolt.BlockName,
@@ -1388,15 +1286,57 @@ namespace WPFSTD105.Model
                             Z = bolt.Z,
                         };
                         EntityList meshes = new EntityList();
+                        Block blockTemp = new Block();
                         if (blocks != null)
                         {
-                            // meshes孔群底下的所有孔的資料
-                            meshes = blocks.FirstOrDefault(x => x.Name == bolt.GUID.Value.ToString()).Entities;
+                            // blockTemp 此孔群的所屬Block
+                            blockTemp = blocks.FirstOrDefault(x => x.Name == temp.GUID.Value.ToString());
+                            // meshes 此孔群底下的所有孔的資料
+                            meshes = new EntityList();
+                            var entities = blocks.FirstOrDefault(x => x.Name == temp.GUID.Value.ToString()).Entities;
+                            meshes.AddRange(entities);
                         }
+                        else { meshes = null; }
                         //Bolts3DBlock.CreateBolts(model, ref check, meshes);
                         // 加入孔
-                        GroupBoltsAttrDouble(model, blocks, bolt);
-                        Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out check, meshes, isRotate); //加入到 3d 視圖
+                        if (blockTemp != null && meshes != null)
+                        {
+                            // 更新此孔群的GUID 以model.Entities為主
+                            ObSettingVM.UpdateNewGroupBoltsAttrGUID(model, blocks, temp);
+                            if (!model.Blocks.Any(x => x.Name == temp.GUID.Value.ToString()))
+                            {
+                                Bolts3DBlock bolts3DBlock = new Bolts3DBlock(meshes, temp);
+                                model.Blocks.Add(bolts3DBlock);
+                                //model.Blocks.Add(blockTemp);
+                            }
+                            else
+                            {
+                                Bolts3DBlock bolts3DBlock = new Bolts3DBlock(meshes, temp);
+                                model.Blocks.Remove(model.Blocks[bolt.GUID.Value.ToString()]);
+                                model.Blocks.Add(bolts3DBlock);
+                                //// 原型鋼有孔，更新Entities
+                                //model.Blocks[bolt.GUID.Value.ToString()].Entities.Clear();
+                                //model.Blocks[bolt.GUID.Value.ToString()].Entities.AddRange(meshes);
+                                //model.Blocks[bolt.GUID.Value.ToString()].Entities.Regen();
+                            }
+                            if (!model.Entities.Any(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID == temp.GUID))
+                            {
+                                BlockReference b = new BlockReference(0, 0, 0, temp.GUID.Value.ToString(), 1, 1, 1, 0);
+                                b.EntityData = temp;
+                                b.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
+                                model.Entities.Insert(0, b);//加入參考圖塊到模型
+                            }
+                            else
+                            {
+                                var entities = model.Entities.FirstOrDefault(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID == temp.GUID);
+                                entities.EntityData = temp;
+                            }
+                        }
+                        else
+                        {
+                            // 原型鋼無孔 則加入
+                            Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out check, meshes, true); //加入到 3d 視圖// XYZ翻前 Vertices翻後
+                        }
                     });
                 }
                 // 寫入oPoint,vPoint,uPoint
@@ -1406,6 +1346,20 @@ namespace WPFSTD105.Model
                 ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).oPoint = nc.SteelAttr.oPoint;
                 ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).vPoint = nc.SteelAttr.vPoint;
                 ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).uPoint = nc.SteelAttr.uPoint;
+
+               //var a =  model.Blocks.Select(x => x.Entities.Select(y => y.EntityData));
+               //model.Blocks.ForEach(x =>
+               //{
+               //    x.Entities.Where(z=>z.GetType()==typeof(BlockReference) && z.EntityData.GetType()==typeof(GroupBoltsAttr)).ForEach(y =>
+               //    {
+               //        if (y.EntityData!= null && y.EntityData.GetType()==typeof(BoltAttr) && 
+               //        ((GroupBoltsAttr)y.EntityData).Face== FACE.FRONT || ((GroupBoltsAttr)y.EntityData).Face == FACE.BACK)
+               //        {
+               //            y.Rotate(Math.PI / 2, Vector3D.AxisX);
+               //        }
+               //
+               //    });
+               //});
 
                 //
                 ObSettingVM obvm = new ObSettingVM();
@@ -1620,20 +1574,26 @@ namespace WPFSTD105.Model
                         tmplist1.Add(PointUR2);
                     }
 
-
-                    for (int z = 0; z < tmplist1.Count; z++)
+                    if (!model.Entities.Any(x => ((x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
+                    ((GroupBoltsAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT && 
+                    ((GroupBoltsAttr)x.EntityData).Face == FACE.BACK &&
+                    tmplist1.Select(y => y.X).ToList().Contains(((GroupBoltsAttr)x.EntityData).X) &&
+                    tmplist1.Select(y => y.Y).ToList().Contains(((GroupBoltsAttr)x.EntityData).Y)))))
                     {
-                        TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.BACK, START_HOLE.START);
-                        TmpBoltsArr.dX = "0";
-                        TmpBoltsArr.dY = "0";
-                        TmpBoltsArr.xCount = 1;
-                        TmpBoltsArr.yCount = 1;
-                        TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
-                        TmpBoltsArr.X = tmplist1[z].X;
-                        TmpBoltsArr.Y = tmplist1[z].Y;
-                        TmpBoltsArr.BlockName = "AutoHypotenuse";
-                        TmpBoltsArr.GUID = Guid.NewGuid();
-                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+                        for (int z = 0; z < tmplist1.Count; z++)
+                        {
+                            TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.BACK, START_HOLE.START);
+                            TmpBoltsArr.dX = "0";
+                            TmpBoltsArr.dY = "0";
+                            TmpBoltsArr.xCount = 1;
+                            TmpBoltsArr.yCount = 1;
+                            TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
+                            TmpBoltsArr.X = tmplist1[z].X;
+                            TmpBoltsArr.Y = tmplist1[z].Y;
+                            TmpBoltsArr.BlockName = "AutoHypotenuse";
+                            TmpBoltsArr.GUID = Guid.NewGuid();
+                            Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+                        }
                     }
                     break;
                 #endregion
@@ -1695,20 +1655,26 @@ namespace WPFSTD105.Model
                         tmplist1.Add(PointUR1);
                         tmplist1.Add(PointUR2);
                     }
-
-                    for (int z = 0; z < tmplist1.Count; z++)
+                    if (!model.Entities.Any(x => (x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
+                    ((GroupBoltsAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT &&
+                    ((GroupBoltsAttr)x.EntityData).Face == FACE.FRONT &&
+                    tmplist1.Select(y => y.X).ToList().Contains(((GroupBoltsAttr)x.EntityData).X) &&
+                    tmplist1.Select(y => y.Y).ToList().Contains(((GroupBoltsAttr)x.EntityData).Y))))
                     {
-                        TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.FRONT, START_HOLE.START);
-                        TmpBoltsArr.dX = "0";
-                        TmpBoltsArr.dY = "0";
-                        TmpBoltsArr.xCount = 1;
-                        TmpBoltsArr.yCount = 1;
-                        TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
-                        TmpBoltsArr.X = tmplist1[z].X;
-                        TmpBoltsArr.Y = tmplist1[z].Y;
-                        TmpBoltsArr.BlockName = "AutoHypotenuse";
-                        TmpBoltsArr.GUID = Guid.NewGuid();
-                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+                        for (int z = 0; z < tmplist1.Count; z++)
+                        {
+                            TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.FRONT, START_HOLE.START);
+                            TmpBoltsArr.dX = "0";
+                            TmpBoltsArr.dY = "0";
+                            TmpBoltsArr.xCount = 1;
+                            TmpBoltsArr.yCount = 1;
+                            TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
+                            TmpBoltsArr.X = tmplist1[z].X;
+                            TmpBoltsArr.Y = tmplist1[z].Y;
+                            TmpBoltsArr.BlockName = "AutoHypotenuse";
+                            TmpBoltsArr.GUID = Guid.NewGuid();
+                            Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+                        }
                     }
                     break;
                 #endregion
@@ -1787,20 +1753,25 @@ namespace WPFSTD105.Model
                         tmplist1.Add(PointUR1);
                         tmplist1.Add(PointUR2);
                     }
-
-                    for (int z = 0; z < tmplist1.Count; z++)
+                    if (!model.Entities.Any(x => (x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
+                    ((GroupBoltsAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT &&
+                    ((GroupBoltsAttr)x.EntityData).Face == FACE.TOP &&
+                    tmplist1.Contains(new Point3D { X = ((GroupBoltsAttr)x.EntityData).X, Y = ((GroupBoltsAttr)x.EntityData).Y }))))
                     {
-                        TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.TOP, START_HOLE.START);
-                        TmpBoltsArr.dX = "0";
-                        TmpBoltsArr.dY = "0";
-                        TmpBoltsArr.xCount = 1;
-                        TmpBoltsArr.yCount = 1;
-                        TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
-                        TmpBoltsArr.BlockName = "AutoHypotenuse";
-                        TmpBoltsArr.X = tmplist1[z].X;
-                        TmpBoltsArr.Y = tmplist1[z].Y;
-                        TmpBoltsArr.GUID = Guid.NewGuid();
-                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+                        for (int z = 0; z < tmplist1.Count; z++)
+                        {
+                            TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.TOP, START_HOLE.START);
+                            TmpBoltsArr.dX = "0";
+                            TmpBoltsArr.dY = "0";
+                            TmpBoltsArr.xCount = 1;
+                            TmpBoltsArr.yCount = 1;
+                            TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
+                            TmpBoltsArr.BlockName = "AutoHypotenuse";
+                            TmpBoltsArr.X = tmplist1[z].X;
+                            TmpBoltsArr.Y = tmplist1[z].Y;
+                            TmpBoltsArr.GUID = Guid.NewGuid();
+                            Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+                        }
                     }
                     // 2022/09/16 呂宗霖 暫時給true 待前端可即時顯示調整後再拿掉
                     //((ProductSettingsPageViewModel)PieceListGridControl.SelectedItem).steelAttr.ExclamationMark = true;
@@ -2155,138 +2126,6 @@ namespace WPFSTD105.Model
 
 
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="blocks">已編輯過的孔</param>
-        /// <param name="groupBoltsAttr"></param>
-        public static void GroupBoltsAttrDouble(devDept.Eyeshot.Model model, List<Block> blocks, GroupBoltsAttr groupBoltsAttr)
-        {
-            if (blocks != null && blocks.SelectMany(x => x.Entities)
-                .Any(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
-                ((GroupBoltsAttr)x.EntityData).X == groupBoltsAttr.X &&
-                ((GroupBoltsAttr)x.EntityData).Y == groupBoltsAttr.Y &&
-                ((GroupBoltsAttr)x.EntityData).Z == groupBoltsAttr.Z &&
-                ((GroupBoltsAttr)x.EntityData).Face == groupBoltsAttr.Face &&
-                ((GroupBoltsAttr)x.EntityData).Mode == groupBoltsAttr.Mode))
-            {
-                blocks.ForEach(b =>
-                {
-                    bool exist = false;
-                    b.Entities.ForEach(e =>
-                    {
-                        if (
-                        ((GroupBoltsAttr)e.EntityData).X == groupBoltsAttr.X &&
-                        ((GroupBoltsAttr)e.EntityData).Y == groupBoltsAttr.Y &&
-                        ((GroupBoltsAttr)e.EntityData).Z == groupBoltsAttr.Z &&
-                        ((GroupBoltsAttr)e.EntityData).Face == groupBoltsAttr.Face &&
-                        ((GroupBoltsAttr)e.EntityData).Mode == groupBoltsAttr.Mode)
-                        {
-                            exist = true;
-                            return;
-                        }
-                    });
-                    if (exist)
-                    {
-                        if (!model.Blocks.Contains(b.Name))
-                        {
-                            // 舊有形鋼中 若存在此孔/孔群 則將Block/Entities加入model
-                            model.Blocks.Add(b);
-                            BlockReference block = new BlockReference(0, 0, 0, b.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
-                            block.EntityData = b.Entities;
-                            block.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-                            model.Entities.Insert(0, block);//加入參考圖塊到模型
-                        }
-                        //model.Entities.InsertRange(0, b.Entities);
-                        return;
-                    }
-                });
-            }
-            else if (blocks != null && blocks.SelectMany(x => x.Entities).Any(x => x.EntityData.GetType() == typeof(BoltAttr) &&
-                ((BoltAttr)x.EntityData).X == groupBoltsAttr.X &&
-                ((BoltAttr)x.EntityData).Y == groupBoltsAttr.Y &&
-                ((BoltAttr)x.EntityData).Z == groupBoltsAttr.Z &&
-                ((BoltAttr)x.EntityData).Face == groupBoltsAttr.Face &&
-                ((BoltAttr)x.EntityData).Mode == groupBoltsAttr.Mode))
-            {
-                blocks.ForEach(b =>
-                {
-                    bool exist = false;
-                    b.Entities.ForEach(e =>
-                    {
-                        if (e.EntityData.GetType() == typeof(BoltAttr) &&
-                        ((BoltAttr)e.EntityData).X == groupBoltsAttr.X &&
-                        ((BoltAttr)e.EntityData).Y == groupBoltsAttr.Y &&
-                        ((BoltAttr)e.EntityData).Z == groupBoltsAttr.Z &&
-                        ((BoltAttr)e.EntityData).Face == groupBoltsAttr.Face &&
-                        ((BoltAttr)e.EntityData).Mode == groupBoltsAttr.Mode)
-                        {
-                            exist = true; return;
-                        }
-                    });
-                    if (exist)
-                    {
-                        if (!model.Blocks.Contains(b.Name))
-                        {
-                            // 舊有形鋼中 若存在此孔/孔群 則將Block/Entities加入model
-                            model.Blocks.Add(b);
-                            BlockReference block = new BlockReference(0, 0, 0, b.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
-                            block.EntityData = groupBoltsAttr;
-                            block.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-                            model.Entities.Insert(0, block);//加入參考圖塊到模型
-                        }
-                        //model.Entities.InsertRange(0, (BlockReference)b.Entities);
-                        return;
-                    }
-                });
-            }
-            else if (blocks != null && blocks.SelectMany(x => x.Entities).Select(x => (Mesh)x).Select(x => (BoltAttr)x.EntityData)
-                .Any(x => x.GetType() == typeof(BoltAttr) &&
-                ((BoltAttr)x).X == groupBoltsAttr.X &&
-                ((BoltAttr)x).Y == groupBoltsAttr.Y &&
-                ((BoltAttr)x).Z == groupBoltsAttr.Z &&
-                ((BoltAttr)x).Face == groupBoltsAttr.Face &&
-                ((BoltAttr)x).Mode == groupBoltsAttr.Mode))
-            {
-                blocks.ForEach(b =>
-                {
-                    bool exist = false;
-                    b.Entities.ForEach(e =>
-                    {
-                        if (e.EntityData.GetType() == typeof(BoltAttr) &&
-                        ((BoltAttr)e.EntityData).X == groupBoltsAttr.X &&
-                        ((BoltAttr)e.EntityData).Y == groupBoltsAttr.Y &&
-                        ((BoltAttr)e.EntityData).Z == groupBoltsAttr.Z &&
-                        ((BoltAttr)e.EntityData).Face == groupBoltsAttr.Face &&
-                        ((BoltAttr)e.EntityData).Mode == groupBoltsAttr.Mode)
-                        {
-                            exist = true; return;
-                        }
-                    });
-                    if (exist)
-                    {
-                        if (!model.Blocks.Contains(b.Name))
-                        {
-                            // 舊有形鋼中 若存在此孔/孔群 則將Block/Entities加入model
-                            model.Blocks.Add(b);
-                            BlockReference block = new BlockReference(0, 0, 0, b.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
-                            block.EntityData = groupBoltsAttr;
-                            block.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-                            model.Entities.Insert(0, block);//加入參考圖塊到模型
-                        }
-                        //model.Entities.InsertRange(0, b.Entities);
-                        return;
-                    }
-                });
-            }
-            else
-            {
-                Bolts3DBlock bolts = new Bolts3DBlock(groupBoltsAttr);
-                Bolts3DBlock.AddBolts(groupBoltsAttr, model, out BlockReference blockReference1, out bool check);
-            }
-        }
 
 
 

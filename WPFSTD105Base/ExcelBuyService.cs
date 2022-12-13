@@ -808,9 +808,9 @@ namespace WPFSTD105
                 firstIndex = 0;
                 for (int i = 0; i < modelBlockList.Count; i++)
                 {
-                    var blocks = (Block[])modelBlockList[i];
+                    Block[] blocks = (Block[])modelBlockList[i];
                     #region 第一層
-                    foreach (Block block in blocks)
+                    foreach (var block in blocks)
                     {
                         switch (block.GetType().Name)
                         {
@@ -827,6 +827,14 @@ namespace WPFSTD105
                                 sheet.Cells[row, column++].Value = $"{block.GetType().Name}";
                                 sheet.Cells[row, column++].Value = $"{sdb.Name}";
                                 sheet.Cells[row++, column++].Value = $"{sdb.Units}";
+                                column = 0;
+                                break;
+                            case "Bolts3DBlock":
+                                Bolts3DBlock bdb = (Bolts3DBlock)block;
+                                sheet.Cells[row, column++].Value = $"1-1-0model.Blocks[{firstIndex}]";
+                                sheet.Cells[row, column++].Value = $"{block.GetType().Name}";
+                                sheet.Cells[row, column++].Value = $"{bdb.Name}";
+                                sheet.Cells[row++, column++].Value = $"{bdb.Units}";
                                 column = 0;
                                 break;
                             default:
@@ -871,6 +879,7 @@ namespace WPFSTD105
                                     Mesh mesh = (Mesh)entities;
                                     sheet.Cells[row, column++].Value = $"1-2model.Blocks[{firstIndex}].Entities[{secondIndex}]";
                                     sheet.Cells[row, column++].Value = $"{entities.GetType().Name}";
+                                    sheet.Cells[row, column++].Value = $"{entities.EntityData.GetType().Name}";
                                     sheet.Cells[row, column++].Value = (mesh.Vertices.Count() > 0 ? "有Vertices" : "無Vertices");
                                     sheet.Cells[row, column++].Value = $"{mesh.MaterialName}";
                                     sheet.Cells[row, column++].Value = $"{mesh.Faces}";
@@ -896,16 +905,18 @@ namespace WPFSTD105
                                     case "SteelAttr":
                                     case "BoltAttr":
                                     case "BlockReference":
+                                    case "Mesh":
                                         sheet.Cells[row, column++].Value = $"1-3model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData = null";
                                         sheet.Cells[row, column++].Value = $"{block.GetType().Name}";
-                                        sheet.Cells[row += 2, column++].Value = $"{entities.GetType().Name}";
+                                        sheet.Cells[row++, column++].Value = $"{entities.GetType().Name}";
+                                        sheet.Cells[row++, column++].Value = $"{entities.EntityData.GetType().Name}";
                                         column = 0;
                                         break;
                                     default:
                                         sheet.Cells[row, column++].Value = $"*1-3model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData = null";
                                         sheet.Cells[row, column++].Value = $"例外型別";
                                         sheet.Cells[row, column++].Value = $"{block.GetType().Name}";
-                                        sheet.Cells[row += 2, column++].Value = $"{entities.GetType().Name}";
+                                        sheet.Cells[row++, column++].Value = $"{entities.GetType().Name}";
                                         column = 0;
                                         break;
                                 }
@@ -927,7 +938,7 @@ namespace WPFSTD105
                                         sheet.Cells[row, column++].Value = ba.Z;
                                         sheet.Cells[row, column++].Value = ba.Dia;
                                         sheet.Cells[row, column++].Value = $"{ba.Mode}";
-                                        sheet.Cells[row += 2, column++].Value = ba.Type.ToString();
+                                        sheet.Cells[row ++, column++].Value = ba.Type.ToString();
                                         column = 0;
                                         break;
                                     case "SteelAttr":
@@ -955,7 +966,7 @@ namespace WPFSTD105
                                         sheet.Cells[row, column++].Value = sa.Phase;
                                         sheet.Cells[row, column++].Value = sa.ShippingNumber;
                                         sheet.Cells[row, column++].Value = sa.Title1;
-                                        sheet.Cells[row += 2, column++].Value = sa.Title2;
+                                        sheet.Cells[row ++, column++].Value = sa.Title2;
                                         column = 0;
                                         break;
                                     case "Mesh":
@@ -972,7 +983,7 @@ namespace WPFSTD105
                                         sheet.Cells[row, column++].Value = gba.Dia.ToString();
                                         sheet.Cells[row, column++].Value = gba.StartHole.ToString();
                                         sheet.Cells[row, column++].Value = ((AXIS_MODE)gba.Mode).ToString();
-                                        sheet.Cells[row += 2, column++].Value = gba.Count.ToString();
+                                        sheet.Cells[row ++, column++].Value = gba.Count.ToString();
                                         column = 0;
                                         break;
                                     default:
@@ -980,7 +991,7 @@ namespace WPFSTD105
                                         sheet.Cells[row, column++].Value = $"例外型別";
                                         sheet.Cells[row, column++].Value = $"{block.GetType().Name}+";
                                         sheet.Cells[row, column++].Value = $"{entities.GetType().Name}+";
-                                        sheet.Cells[row += 2, column++].Value = $"{entities.EntityData.GetType().Name}";
+                                        sheet.Cells[row++, column++].Value = $"{entities.EntityData.GetType().Name}";
                                         column = 0;
                                         break;
                                 }

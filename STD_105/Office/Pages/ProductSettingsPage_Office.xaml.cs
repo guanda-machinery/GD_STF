@@ -489,7 +489,6 @@ namespace STD_105.Office
                             sa.Creation = DateTime.Now;
                             #endregion
 
-
                             #region 建模(以舊有形鋼為底新增)
                             // 建立型鋼
                             Steel3DBlock result = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);// 修改型鋼資訊
@@ -1018,7 +1017,7 @@ namespace STD_105.Office
                     double diffLength = maxX - ViewModel.ProductLengthProperty;
                     #endregion
 
-                    #region 產生模型方式一(有凹槽)
+                    #region 產生模型(有凹槽)
                     model.LoadNcToModel(gridItem.DataName, ObSettingVM.allowType, diffLength, null, steelAttr, modelAllBoltList, blocks);
                     sr.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊 
                     #endregion
@@ -1361,8 +1360,8 @@ namespace STD_105.Office
                     {
                         ProcessingScreenWin.ViewModel.Status = $"讀取{dataName}中 ..{i}/{dmList.Count()}";
                         ProcessingScreenWin.ViewModel.Progress = (i * 100) / dmList.Count;
-                        //Thread.Sleep(500); //暫停兩秒為了要顯示 ScreenManager
-                        //guid = dataName;
+                        Thread.Sleep(500); //暫停兩秒為了要顯示 ScreenManager
+                        guid = dataName;
                         ModelExt modelExt = new ModelExt();
                         modelExt = GetFinalModel(dataName);
                         Entity[] entities = new Entity[model.Entities.Count];
@@ -1374,7 +1373,7 @@ namespace STD_105.Office
                         //readFile.DoWork();
                         //readFile.AddToScene(_BufferModel);
                         //_BufferModel.Invalidate();
-
+                        //
                         //Entity[] entities = new Entity[_BufferModel.Entities.Count];
                         //Block[] blocks = new Block[_BufferModel.Blocks.Count];
                         //_BufferModel.Entities.CopyTo(entities, 0);
@@ -1440,11 +1439,22 @@ namespace STD_105.Office
                     return;
                 }
 
-                
 
 
 
-                
+
+                if (PieceListGridControl.SelectedItem==null)
+                {
+                    WinUIMessageBox.Show(null,
+                        $"請選擇清單中欲執行之項目",
+                        "通知",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                        FloatingMode.Popup);
+                    return;
+                }
 
 
                 #region 取得目前選取列的GUID
@@ -1635,8 +1645,10 @@ namespace STD_105.Office
 #if DEBUG
                 log4net.LogManager.GetLogger("加入孔位").Debug("產生圖塊");
 #endif
-                
-                if (!sr.CheckData_AddHole(ViewModel.PartNumberProperty,model))
+
+
+
+                if (!sr.CheckData_AddHole(ViewModel.PartNumberProperty, model))
                 {
                     return;
                 }
@@ -1679,7 +1691,7 @@ namespace STD_105.Office
                 Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference, out bool check);
 
                 //if (bolts.hasOutSteel)
-                if (!check)
+                if (!check && ViewModel.showMessage)
                 {
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
                     ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
@@ -1708,7 +1720,7 @@ namespace STD_105.Office
                     SaveModel(false, true);//存取檔案
 
                 //不是修改孔位狀態
-                if (!modifyHole)
+                if (!ViewModel.modifyHole)
                 {
                     ViewModel.Reductions.Add(new Reduction()
                     {
@@ -1751,14 +1763,19 @@ namespace STD_105.Office
                 //查看用戶是否有選擇圖塊
                 if (ViewModel.Select3DItem.Count > 0)
                 {
+                    ViewModel.showMessage = true;
                     List<SelectedItem> selectItem = ViewModel.Select3DItem.ToList();//暫存容器
                     GroupBoltsAttr original = (GroupBoltsAttr)ViewModel.GroupBoltsAttr.DeepClone(); //原有設定檔
                     selectItem.ForEach(el => el.Item.Selected = false);//取消選取
                     for (int i = 0; i < selectItem.Count; i++)
                     {
+                        if (i == selectItem.Count - 1)
+                        {
+                            ViewModel.showMessage = true;
+                        }
                         BlockReference blockReference = (BlockReference)selectItem[i].Item;
                         //如果在編輯模式
-                        if (model.CurrentBlockReference != null)
+                        if (model.CurrentBlockReference != null && ViewModel.showMessage)
                         {
                             WinUIMessageBox.Show(null,
                                 $"出編輯模式，才可修改孔",
@@ -1771,7 +1788,7 @@ namespace STD_105.Office
                             return;
                         }
                         //如果選擇的物件不是孔位
-                        else if (blockReference == null || blockReference.EntityData.Equals(typeof(GroupBoltsAttr)))
+                        else if ((blockReference == null || blockReference.EntityData.Equals(typeof(GroupBoltsAttr))) && ViewModel.showMessage)
                         {
                             WinUIMessageBox.Show(null,
                                 $"選擇類型必須是孔，才可修改",
@@ -1800,13 +1817,13 @@ namespace STD_105.Office
                         ViewModel.GroupBoltsAttr = ViewModel.GetGroupBoltsAttr(groupBoltsAttr);
                         ViewModel.Select3DItem.Add(selectItem[i]);//模擬選擇
                         SimulationDelete();//模擬按下 delete 鍵
-                        modifyHole = true;
+                        ViewModel.modifyHole = true;
                         ViewModel.AddHole.Execute(null);
                     }
                     Esc();
-                    modifyHole = false;
+                    ViewModel.modifyHole = false;
                     ViewModel.GroupBoltsAttr = original;
-
+                    ViewModel.showMessage = false;
                     model.Invalidate();//刷新模型
                     //if (!ViewModel.fAddSteelPart)
                     if (!ViewModel.fNewPart.Value)
@@ -2783,7 +2800,7 @@ namespace STD_105.Office
                 }
                 SimulationDelete();
                 Esc();
-                if (!ViewModel.fAddSteelPart)
+                //if (!ViewModel.fAddSteelPart)
                     SaveModel(false);
             });
             #endregion
@@ -3167,10 +3184,7 @@ namespace STD_105.Office
             return true;
         }
 
-        /// <summary>
-        /// 修改螺栓狀態
-        /// </summary>
-        public bool modifyHole { get; set; } = false;
+
 
         /// <summary>
         /// 3D Model 載入
@@ -3216,7 +3230,7 @@ namespace STD_105.Office
         /// 在模型視圖按下鍵盤
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="e"></param>import
         private void model_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape) //取消所有功能
@@ -5204,41 +5218,63 @@ namespace STD_105.Office
                 ViewModel.GetSteelAttr();
             }
             SteelAttr steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
-            Steel3DBlock result =  new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
-            model.AddModelSteelAttr(steelAttr, result);
-            sr.SteelTriangulation(drawing,result.Name,(Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
 
-            bool hasOutSteel = false;
-            List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
-            for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
-            {
-                if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
-                {
-                    BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
-                    Block block = model.Blocks[blockReference.BlockName]; //取得圖塊
-                    Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts((GroupBoltsAttr)model.Entities[i].EntityData, model, out BlockReference blockRef, out bool checkRef);
-                    //Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生螺栓圖塊
-                    if (bolts3DBlock.hasOutSteel)
-                    {
-                        hasOutSteel = true;
-                    }
-                    B3DB.Add(bolts3DBlock);
-                    //Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
-                }
-            }
-            if (hasOutSteel)
-            {
-                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
-            }
-            else
-            {
-                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+            SteelAttr saDeepClone = (SteelAttr)steelAttr.DeepClone();
+            List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
+            steelAttr = sr.ReadNCInfo(saDeepClone, ref groups, false);
+            ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = steelAttr.oPoint;
+            ((SteelAttr)model.Blocks[1].Entities[0].EntityData).vPoint = steelAttr.vPoint;
+            ((SteelAttr)model.Blocks[1].Entities[0].EntityData).uPoint = steelAttr.uPoint;
+            ((SteelAttr)model.Blocks[1].Entities[0].EntityData).CutList = steelAttr.CutList;
 
-            }
-            foreach (Bolts3DBlock item in B3DB)
-            {
-                BlockReference referenceBolts = Add2DHole(item);//加入孔位到2D
-            }
+            // 舊有形鋼上的孔群
+            List<Block> blocks = model.GetBoltFromBlock(groups);
+            model.LoadNcToModel(dataName, ObSettingVM.allowType, 0, null, steelAttr, null, blocks, true);
+            // 步驟5.產生2D模型
+            BlockReference steel2D = sr.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
+            model.sycnModelEntitiesAndNewBolt(blocks);
+            sr.AddBolts(model, drawing, out bool hasOutSteel, blocks, false, false);
+            // 切割線打點
+            ScrollViewbox.IsEnabled = !model.RunHypotenuseEnable();
+            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
+            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
+            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
+
+            //Steel3DBlock result =  new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
+            //model.AddModelSteelAttr(steelAttr, result);
+            //sr.SteelTriangulation(drawing,result.Name,(Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
+
+            //bool hasOutSteel = false;
+            //List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
+            //for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
+            //{
+            //    if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
+            //    {
+            //        BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
+            //        Block block = model.Blocks[blockReference.BlockName]; //取得圖塊
+            //        Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts((GroupBoltsAttr)model.Entities[i].EntityData, model, out BlockReference blockRef, out bool checkRef);
+            //        //Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生螺栓圖塊
+            //        if (bolts3DBlock.hasOutSteel)
+            //        {
+            //            hasOutSteel = true;
+            //        }
+            //        B3DB.Add(bolts3DBlock);
+            //        //Add2DHole(bolts3DBlock, false);//加入孔位不刷新 2d 視圖
+            //    }
+            //}
+            //if (hasOutSteel)
+            //{
+            //    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+            //}
+            //else
+            //{
+            //    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+
+            //}
+            //foreach (Bolts3DBlock item in B3DB)
+            //{
+            //    BlockReference referenceBolts = Add2DHole(item);//加入孔位到2D
+            //}
             ModelExt newModel = new ModelExt();
             newModel = model;
             return newModel;
@@ -5562,7 +5598,7 @@ namespace STD_105.Office
                     //Steel3DBlock s3Db = new Steel3DBlock();
                     //SteelAttr steelAttrNC = new SteelAttr();
                     //SteelAttr saT = new SteelAttr() { Profile = sa.Profile, Type = sa.Type, t1 = sa.t1, t2 = sa.t2, H = sa.H, W = sa.W };
-                    
+
                     //List<Bolts3DBlock> b3d = model.Blocks.Where(x => x.GetType() == typeof(Bolts3DBlock)).Select(x => (Bolts3DBlock)x).ToList();
                     //// groups NC上的孔
                     //s3Db.ReadNcFile($@"{allPath}", profile, saT, ref steelAttrNC, ref groups);
@@ -5585,11 +5621,27 @@ namespace STD_105.Office
                     //    modelAllBoltList = groups;
                     //}
                     // 步驟3.產生鋼構模型
-                    model.LoadNcToModel(focuseGUID, ObSettingVM.allowType, 0, null, sa, null, blocks, false);
+                    model.LoadNcToModel(focuseGUID, ObSettingVM.allowType, 0, null, sa, null, blocks, true);
                     // 步驟5.產生2D模型
                     BlockReference steel2D = sr.SteelTriangulation(drawing, model.Blocks[1].Name,(Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
                     model.sycnModelEntitiesAndNewBolt(blocks);
-                    sr.AddBolts(model, drawing, out bool hasOutSteel, blocks,false);
+                    sr.AddBolts(model, drawing, out bool hasOutSteel, blocks,false,false);
+
+                    //model.Blocks.ForEach(x =>
+                    //{
+                    //    bool turn = false;
+                    //    x.Entities.Where(z => z.GetType() == typeof(BlockReference) && z.EntityData.GetType() == typeof(GroupBoltsAttr)).ForEach(y =>
+                    //    {
+                    //        if (y.EntityData != null && y.EntityData.GetType() == typeof(GroupBoltsAttr) &&
+                    //        ((GroupBoltsAttr)y.EntityData).Face == FACE.FRONT || ((GroupBoltsAttr)y.EntityData).Face == FACE.BACK)
+                    //        {
+                    //            y.Rotate(Math.PI / 2, Vector3D.AxisX);
+                    //        }
+
+                    //    });
+                    //});
+
+
                     // 切割線打點
                     //ScrollViewbox.IsEnabled = !model.RunHypotenuseEnable(); 
                     WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
