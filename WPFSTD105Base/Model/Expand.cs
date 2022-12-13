@@ -1102,6 +1102,8 @@ namespace WPFSTD105.Model
                             Z = bolt.Z,
                         };
                         bool check = true;
+                            // 更新此孔群的GUID 以model.Entities為主
+                            ObSettingVM.UpdateNewGroupBoltsAttrGUID(model,temp);
                         EntityList meshes = new EntityList();
                         Block blockTemp = new Block();
                         if (blocks != null)
@@ -1118,8 +1120,6 @@ namespace WPFSTD105.Model
                         // 加入孔
                         if (blockTemp != null && meshes != null)
                         {
-                            // 更新此孔群的GUID 以model.Entities為主
-                            ObSettingVM.UpdateNewGroupBoltsAttrGUID(model, blocks, temp);
                             if (!model.Blocks.Any(x => x.Name == temp.GUID.Value.ToString()))
                             {
                                 Bolts3DBlock bolts3DBlock = new Bolts3DBlock(meshes, temp);
@@ -1285,8 +1285,15 @@ namespace WPFSTD105.Model
                             Y = bolt.Y,
                             Z = bolt.Z,
                         };
+
+
+
+
+
+
                         EntityList meshes = new EntityList();
                         Block blockTemp = new Block();
+                        ObSettingVM.UpdateNewGroupBoltsAttrGUID(model, temp);
                         if (blocks != null)
                         {
                             // blockTemp 此孔群的所屬Block
@@ -1302,7 +1309,6 @@ namespace WPFSTD105.Model
                         if (blockTemp != null && meshes != null)
                         {
                             // 更新此孔群的GUID 以model.Entities為主
-                            ObSettingVM.UpdateNewGroupBoltsAttrGUID(model, blocks, temp);
                             if (!model.Blocks.Any(x => x.Name == temp.GUID.Value.ToString()))
                             {
                                 Bolts3DBlock bolts3DBlock = new Bolts3DBlock(meshes, temp);

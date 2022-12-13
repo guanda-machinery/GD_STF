@@ -2245,17 +2245,42 @@ namespace WPFSTD105.ViewModel
         /// <param name="model"></param>
         public void RemoveHypotenusePoint(devDept.Eyeshot.Model model, string RemoveType)
         {
-            List<GroupBoltsAttr> delList = model.Blocks
-                    .SelectMany(x => x.Entities)
-                    .Where(y =>
-                    y.GetType() == typeof(BlockReference) &&
-                    y.EntityData.GetType() == typeof(GroupBoltsAttr) &&
-                    //((GroupBoltsAttr)y.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
-                    ((GroupBoltsAttr)y.EntityData).BlockName == RemoveType)
-                    .Select(y => (GroupBoltsAttr)y.EntityData).ToList();
-            foreach (GroupBoltsAttr del in delList)
+            //List<GroupBoltsAttr> delList = model.Blocks
+            //        .SelectMany(x => x.Entities)
+            //        .Where(y =>
+            //        y.GetType() == typeof(BlockReference) &&
+            //        y.EntityData.GetType() == typeof(GroupBoltsAttr) &&
+            //        //((GroupBoltsAttr)y.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
+            //        ((GroupBoltsAttr)y.EntityData).BlockName == RemoveType)
+            //        .Select(y => (GroupBoltsAttr)y.EntityData).ToList();
+            List<Block> delList = new List<Block>();
+            for (int i = 1; i < model.Blocks.Count; i++)
             {
-                model.Blocks.Remove(model.Blocks[del.GUID.Value.ToString()]);
+                Block b = model.Blocks[i];
+                for (int j = 0; j < model.Blocks[i].Entities.Count; j++)
+                {
+                    var a = model.Blocks[i].Entities[j];
+                    if (a.EntityData is BoltAttr && ((BoltAttr)a.EntityData).BlockName == RemoveType)
+                    {
+                        delList.Add(b);
+                        break;
+                    }
+                }
+            }         
+           
+
+            foreach (Block del in delList)
+            {
+                model.Blocks.Remove(del);
+            }
+            var entitiesList = model.Entities                    
+                    .Where(y =>
+                    y.EntityData.GetType() == typeof(GroupBoltsAttr) &&
+                    ((GroupBoltsAttr)y.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
+                    .Select(y => y).ToList();
+            foreach (var entities in entitiesList)
+            {
+                model.Entities.Remove(entities);
             }
         }
 
@@ -2356,7 +2381,7 @@ namespace WPFSTD105.ViewModel
                     if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr && boltsAttr.Mode == AXIS_MODE.HypotenusePOINT) //是螺栓
                     {
                         // 指定加入孔位
-                        if (blocks != null)
+                        if (blocks.Any() )
                         {
                             BlockReference blockReference1 = (BlockReference)model.Entities[i]; //取得參考圖塊
                                                                                                 // 產生3D螺栓
@@ -2368,21 +2393,38 @@ namespace WPFSTD105.ViewModel
                                 Bolts3DBlock bolts3DBlock = new Bolts3DBlock(meshes, (GroupBoltsAttr)model.Entities[i].EntityData);
                                 Add2DHole(drawing, bolts3DBlock, false);//加入孔位不刷新 2d 視圖
                             }
+                            else
+                            {
+                                // 無中生有
+                                Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts(boltsAttr, model, out BlockReference blockRef, out checkRef, null, isRotate);
+                                if (drawing != null)
+                                {
+                                    Add2DHole(drawing, bolts3DBlock, false);//加入孔位不刷新 2d 視圖   
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // 無指定孔位 則為一般加孔
+                            BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
+                            Block block = model.Blocks[blockReference.BlockName]; //取得圖塊
+                            Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts((GroupBoltsAttr)model.Entities[i].EntityData, model, out BlockReference blockRef, out checkRef, block.Entities, isRotate);
+                            Add2DHole(drawing, bolts3DBlock, false);//加入孔位不刷新 2d 視圖
                         }
                     }
 
 
 
 
-                    //                model.Blocks.Where(x => x.GetType() == typeof(Bolts3DBlock)).ForEach(a =>
-                    //{
-                    //    a.Entities.Where(x => x.EntityData.GetType() == typeof(BoltAttr) && ((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT).ForEach(b =>
-                    //    {
-                    //        BoltAttr bolt = (BoltAttr)b.EntityData;
-                    //        Add2DHole(drawing, (Bolts3DBlock)a, false);//加入孔位不刷新 2d 視圖 
-                    //    });
-                    //});
-                }
+                //                model.Blocks.Where(x => x.GetType() == typeof(Bolts3DBlock)).ForEach(a =>
+                //{
+                //    a.Entities.Where(x => x.EntityData.GetType() == typeof(BoltAttr) && ((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT).ForEach(b =>
+                //    {
+                //        BoltAttr bolt = (BoltAttr)b.EntityData;
+                //        Add2DHole(drawing, (Bolts3DBlock)a, false);//加入孔位不刷新 2d 視圖 
+                //    });
+                //});
+            } 
                 #endregion
 
                 #region 檢查孔位
@@ -2402,7 +2444,7 @@ namespace WPFSTD105.ViewModel
         /// <param name="model"></param>
         /// <param name="blocks">已編輯過的孔</param>
         /// <param name="groupBoltsAttr"></param>
-        public static void UpdateNewGroupBoltsAttrGUID(devDept.Eyeshot.Model model, List<Block> blocks, GroupBoltsAttr groupBoltsAttr)
+        public static void UpdateNewGroupBoltsAttrGUID(devDept.Eyeshot.Model model, GroupBoltsAttr groupBoltsAttr)
         {
             // 若在Entities中找到此孔群資訊，取得原圖塊之GUID
             Guid? guid = null;

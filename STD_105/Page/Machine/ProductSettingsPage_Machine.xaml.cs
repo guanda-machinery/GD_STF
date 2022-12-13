@@ -1801,6 +1801,7 @@ namespace STD_105
                         ViewModel.Select3DItem.Add(selectItem[i]);//模擬選擇
                         SimulationDelete();//模擬按下 delete 鍵
                         modifyHole = true;
+                        model.Refresh();
                         ViewModel.AddHole.Execute(null);
                     }
                     Esc();
