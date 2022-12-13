@@ -49,70 +49,6 @@
             <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="#FFFFFF"/>
             <!-- accent -->
             <SolidColorBrush x:Key="SecondaryHueMidForegroundBrush" Color="#FFFFFF"/>
-            <Style x:Key="ColorRow" TargetType="dxg:GridColumn">
-                <Setter Property="HorizontalHeaderContentAlignment"  Value="Center"/>
-                <Style.Resources>
-                    <Style TargetType="dxg:RowControl">
-                        <Style.Triggers>
-                            <Trigger Property="SelectionState" Value="None">
-                                <Setter Property="Background"
-                                        Value="{Binding Row.Position, Converter={local:RowValueToBackgroundConverter}}" />
-                                <Setter Property="Foreground"
-                                        Value="{Binding Row.Position, Converter={local:RowValueToForegroundConverter}}" />
-                            </Trigger>
-                            <Trigger Property="dxg:GridViewBase.IsFocusedRow"
-                                     Value="True">
-                                <Setter Property="Background"
-                                Value="{Binding Row.Position, Converter={local:RowValueToBackgroundConverter}}" />
-                                <Setter Property="Foreground"
-                                Value="{ StaticResource solidclr_DarkGray }" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Style.Resources>
-            </Style>
-
-            <Style x:Key="SiegCustomBlackMessageGridControl" TargetType="dxg:GridControl">
-                <Style.Resources>
-                    <Style TargetType="dxg:TableView">
-                        <Setter Property="CellStyle">
-                            <Setter.Value>
-                                <Style TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
-                                    <Setter Property="TextBlock.FontSize" Value="14"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
-                                            <Setter Property="Background" Value="Transparent"/>
-                                            <Setter Property="Foreground" Value="{Binding Row.IsAlert , Converter={local:BooleanToForefroundConverter} ,ConverterParameter={StaticResource solidclr_WhiteSmoke}}"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Setter.Value>
-                        </Setter>
-                        <Setter Property="RowStyle">
-                            <Setter.Value>
-                                <Style TargetType="{x:Type dxg:RowControl}">
-                                    <Setter Property="Foreground" Value="{Binding Row.IsAlert , Converter={local:BooleanToForefroundConverter} ,ConverterParameter={StaticResource solidclr_White}}"/>
-                                    <Style.Triggers>
-                                        <!--IsSelected只在複選時有效 會和IsFocusedRow互相覆蓋-->
-                                        <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
-                                            <Setter Property="Background" Value="DimGray" />
-                                            <Setter Property="Foreground" Value="{Binding Row.IsAlert , Converter={local:BooleanToForefroundConverter} ,ConverterParameter={StaticResource solidclr_White}}" />
-                                        </DataTrigger>
-                                        <!--   <Trigger Property="dxg:GridViewBase.IsFocusedRow" Value="True">
-                                                <Setter Property="Foreground" Value="LightYellow"/>
-                                                <Setter Property="Background" Value="Blue" />
-                                            </Trigger>-->
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#67b32c" />
-                                            <Setter Property="Foreground" Value="{Binding Row.IsAlert , Converter={local:BooleanToForefroundConverter} ,ConverterParameter={StaticResource solidclr_White}}" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Style.Resources>
-            </Style>
 
 
         </ResourceDictionary>
@@ -235,6 +171,48 @@
             <Style TargetType="dxe:TextEditSettings">
                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
             </Style>
+            <Style TargetType="dxg:GridControl" BasedOn="{StaticResource SiegCustomGridControl}" x:Key="MachiningGridControl">
+                <Style.Resources>
+                    <Style TargetType="dxg:TableView">
+                        <Setter Property="CellStyle">
+                            <Setter.Value>
+                                <Style TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
+                                    <Setter Property="TextBlock.FontSize" Value="14"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
+                                            <Setter Property="Background" Value="Transparent"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="RowStyle">
+                            <Setter.Value>
+                                <Style TargetType="{x:Type dxg:RowControl}">
+                                    <Setter Property="Foreground" Value="Black"/>
+                                    <Setter Property="Background"
+                                                            Value="{Binding Row.PositionEnum, Converter={local:TypeSettingDataViewToSolidColorBrushConverter}}" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="LightSlateGray" />
+                                        </Trigger>
+                                        <Trigger Property="dxg:GridViewBase.IsFocusedRow" Value="True">
+                                            <Setter Property="Background"
+                                                            Value="{Binding Row.PositionEnum, Converter={local:TypeSettingDataViewToSolidColorBrushConverter} ,ConverterParameter='IsSelected' }" />
+                                            <Setter Property="Foreground"
+                                                            Value="{ StaticResource solidclr_DarkGray }" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Style.Resources>
+            </Style>
+
+
+
+
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -355,26 +333,28 @@
                                             <Setter Property="TextBlock.Foreground" Value="Black"/>
                                         </Style>
                                     </dxg:TableView.CellStyle>
+
                                     <dxg:TableView.Header>
                                         <TextBlock Text="零件清單" FontSize="16" Foreground="Black"/>
                                     </dxg:TableView.Header>
                                 </dxg:TableView>
                             </dxg:GridControl.View>
-                           <!--  <dxg:GridControl.ContextMenu>
+                           <dxg:GridControl.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Command="{Binding RowAddCommand}"
+                                    <!--<MenuItem Command="{Binding RowAddCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                               Header="加入任務" />
                                    <MenuItem Command="{Binding DeleteCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
-                                              Header="移除任務" />
+                                              Header="移除任務" />-->
+                                    <MenuItem Command="{Binding}"
+                                              CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
+                                              Header="解除綁定" /> 
                                     <MenuItem Command="{Binding FinishCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                               Header="設定為完成" />
                                 </ContextMenu>
-                            </dxg:GridControl.ContextMenu>-->
-
-
+                            </dxg:GridControl.ContextMenu>
 
                             <dxg:GridColumn IsSmart="True" Name="LockGridCol" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                                 <dxg:GridColumn.HeaderImageStyle>
@@ -476,7 +456,7 @@ AllowEditing="False"
                             <dxg:GridColumn FieldName="Material"  IsSmart="True" Header="材質" Width="60"   />
                             <dxg:GridColumn FieldName="Length"  IsSmart="True" Header="長度" Width="60"   />
 
-                            <dxg:GridColumn FieldName="Position"
+                            <dxg:GridColumn FieldName="PositionStatusEnum"
                                                 Width="100"
                                                 Header="位置" />
                         </dxg:GridControl>
@@ -494,11 +474,10 @@ AllowEditing="False"
                     
                     
                     <dxg:GridControl Margin="0,-1,0,-1" 
-                        Style="{StaticResource SiegCustomGridControl}"
+                        Style="{StaticResource MachiningGridControl}"
                         Name="MachiningSchedule_List_GridControl"    
                         AutoGenerateColumns="None" 
                         Grid.Row="2"  Width="159"
-                       
                         ItemsSource="{Binding ElementName=MachiningCombinational_List_GridControl,Path=ItemsSource}"
                         SelectionMode="Row"
                         MinHeight="200"  MaxHeight="300">
@@ -513,8 +492,8 @@ AllowEditing="False"
                             </MultiBinding>
                         </dxg:GridControl.IsEnabled>
                         <dxg:GridControl.View >
-                            <dxg:TableView           
-                                                                                 AllowEditing="False"              
+                            <dxg:TableView     
+                                AllowEditing="False"              
                                         IsColumnMenuEnabled ="False"
                                        AllowSorting="false"
                                        AllowColumnFiltering="False"
@@ -540,8 +519,10 @@ AllowEditing="False"
                             </dxg:TableView>
                         </dxg:GridControl.View>
                        <!-- <dxg:GridColumn FieldName=""  MaxWidth="40" MinWidth="40"  FixedWidth="True" Header="狀態" />-->
-                        <dxg:GridColumn FieldName="Position" MaxWidth="70" MinWidth="70"  FixedWidth="True" Header="位置"
-                                        Style="{StaticResource ColorRow}"  />
+                        <dxg:GridColumn FieldName="PositionEnum"  Binding="{Binding PositionEnum, Converter={local:PositionStatusEnumToStringConverter}}"
+                                        MaxWidth="70" MinWidth="70"  FixedWidth="True" Header="位置"/>
+
+
 
 
                         <dxg:GridColumn MaxWidth="70" MinWidth="70" Header="進度(%)" >
@@ -661,8 +642,6 @@ AllowEditing="False"
             </TabControl.Resources>
             <TabItem Header="3D">
                 <Grid>
-
-
                     <!--新增3D模型處-->
                     <spa:ModelExt
                             Loaded="Model3D_Loaded"
@@ -742,16 +721,15 @@ AllowEditing="False"
                             </ddes:Viewport>
                         </ddes:Model.Viewports>
                     </spa:ModelExt>
-
-
-
                 </Grid>
             </TabItem>
             <TabItem Header="2D">
-                <Grid>
-
-
-                    <Border Style="{StaticResource bro}"/>
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="26"/>
+                    </Grid.RowDefinitions>
+                    <Border Style="{StaticResource bro}" Grid.RowSpan="2"/>
                     <spa:ModelExt x:Name="drawing" 
                             Loaded="drawing_Loaded"
                             AutoRefresh ="True"
@@ -812,9 +790,19 @@ AllowEditing="False"
                             </ddes:Viewport>
                         </ddes:Model.Viewports>
                     </spa:ModelExt>
-
-
-
+                    <Grid Grid.Row="1" Margin="5,5,5,-0" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions >
+                        <Image Grid.Column="0" Source="{StaticResource Logo}"/>
+                        <Grid Grid.Column="1" VerticalAlignment="Top">
+                            <TextBlock Text="←機台方向" Foreground="White" FontSize="16" Margin="5,0"/>
+                            <TextBlock  Text="手臂方向→" Foreground="White" FontSize="16" HorizontalAlignment="Right"  Margin="5,0"/>
+                        </Grid>
+                        <Image Grid.Column="2"  Source="{StaticResource Transport_by_RobotDrawingImage}" />
+                    </Grid>
                 </Grid>
             </TabItem>
         </TabControl>
@@ -1182,92 +1170,103 @@ AllowEditing="False"
 
                         <Border Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
 
-                        <RadioButton GroupName="Group_Input" Name="Input_by_SmartPhone_RadioButton" Grid.Column="0" Grid.Row="1" 
+                        <StackPanel Grid.Column="0" Grid.Row="1" IsEnabled="{Binding Input_by_SmartPhone_RadioButtonVMEnable}">
+                            <RadioButton GroupName="Group_Input" Name="Input_by_SmartPhone_RadioButton" Grid.Column="0" Grid.Row="1" 
                                          IsChecked="{Binding Input_by_SmartPhone_RadioButtonIsChecked}"
+                                         IsEnabled="{Binding ElementName=DrillHole_RadioButton, Path=IsChecked}"
                                          Command="{Binding Set_Input_by_SmartPhone_Command}"
                                          CommandParameter="{Binding ElementName=Input_by_SmartPhone_RadioButton}">
-                            <RadioButton.IsEnabled>
-                                <MultiBinding Converter="{local:BooleanArray_In_UnionToBooleanConverter}">
-                                    <MultiBinding.Bindings>
-                                        <Binding Path="Input_by_SmartPhone_RadioButtonVMEnable"/>
-                                        <Binding ElementName="DrillHole_RadioButton" Path="IsChecked"/>
-                                    </MultiBinding.Bindings>
-                                </MultiBinding>
-                            </RadioButton.IsEnabled>
-                            <Image Source="{StaticResource Input_by_SmartPhoneDrawingImage}" Height="45" Width="45" />
+                                <Image Source="{StaticResource Input_by_SmartPhoneDrawingImage}" Height="45" Width="45" />
                         </RadioButton>
+                        </StackPanel>
                         <ProgressBar  Grid.Column="0" Grid.Row="1" Visibility="{Binding ProgressBar_Visible_Input_by_SmartPhone,Converter={dx:BooleanToVisibilityConverter}}"/>
-                        <RadioButton  GroupName="Group_Input" Name="Input_by_Computer_RadioButton" Grid.Column="1" Grid.Row="1" 
+
+                        <StackPanel  Grid.Column="1" Grid.Row="1" IsEnabled="{Binding Input_by_Computer_RadioButtonVMEnable}" >
+                        <RadioButton  GroupName="Group_Input" Name="Input_by_Computer_RadioButton"
                                           IsChecked="{Binding Input_by_Computer_RadioButtonIsChecked}"
                                           Command="{Binding Set_Input_by_Computer_Command}"
                                           CommandParameter="{Binding ElementName=Input_by_Computer_RadioButton}">
                             <RadioButton.IsEnabled>
-                                <MultiBinding Converter="{local:BooleanArray_In_UnionToBooleanConverter}">
-                                    <MultiBinding.Bindings>
-                                        <Binding Path="Input_by_Computer_RadioButtonVMEnable"/>
-                                        <Binding ElementName="DrillHole_RadioButton" Path="IsChecked"/>
+                                <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
+                                        <MultiBinding.Bindings>
+                                            <Binding ElementName="DrillHole_RadioButton" Path="IsChecked"/>
                                         <Binding ElementName="DrillPin_RadioButton" Path="IsChecked"/>
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
                             </RadioButton.IsEnabled>
                             <Image Source="{StaticResource Input_by_ComputerDrawingImage}"  Height="50" Width="50" />
                         </RadioButton>
+                        </StackPanel>
                          <ProgressBar  Grid.Column="1" Grid.Row="1" Visibility="{Binding ProgressBar_Visible_Input_by_Computer,Converter={dx:BooleanToVisibilityConverter}}"/>
 
-
-                        <Border Grid.Row="2" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
-                        <StackPanel Grid.Column="0" Grid.Row="2" IsEnabled="False">
-                        <RadioButton  GroupName="Group_Transport" Name="Transport_RadioButton" 
-                                       IsChecked="{Binding Transport_RadioButtonIsChecked}" Command="{Binding ChangeTransportModeCommand}" Cursor="Hand" >
-                            <RadioButton.IsEnabled>
-                                <MultiBinding Converter="{local:BooleanArray_In_UnionToBooleanConverter}">
-                                    <MultiBinding.Bindings>
-                                        <Binding Path="Transport_RadioButtonIsEnable"/>
-                                        <Binding Path="Input_by_SmartPhone_RadioButtonIsChecked" />
-                                        <Binding Path="Input_by_Computer_RadioButtonIsChecked" />
-                                    </MultiBinding.Bindings>
-                                </MultiBinding>
-                            </RadioButton.IsEnabled>
-                            <Image Source="{StaticResource TransportDrawingImage}" />
-                            </RadioButton>
-                        </StackPanel>
-                        <ProgressBar Grid.Row="2"  Visibility="{Binding ProgressBar_Visible_Transport_Visibility,Converter={dx:BooleanToVisibilityConverter}}" />
-                        <RadioButton GroupName="Group_Transport" Name="Transport_by_Continue_RadioButton" Grid.Column="1" Grid.Row="2" IsChecked="{Binding Transport_by_Continue_RadioButtonIsChecked}" Command="{Binding ChangeTransportMode_To_Continue_Command}" >
-                            <RadioButton.IsEnabled>
-                                <MultiBinding Converter="{local:BooleanArray_In_UnionToBooleanConverter}">
-                                    <MultiBinding.Bindings>
-                                        <Binding Path="Transport_by_Continue_RadioButtonIsEnable"/>
-                                        <Binding Path="Input_by_SmartPhone_RadioButtonIsChecked" />
-                                        <Binding Path="Input_by_Computer_RadioButtonIsChecked" />
-                                    </MultiBinding.Bindings>
-                                </MultiBinding>
-                            </RadioButton.IsEnabled>
-                            <Image Source="{StaticResource Transport_by_ConveyorDrawingImage}"/>
-                        </RadioButton>
-                        <ProgressBar  Grid.Column="1" Grid.Row="2"  Visibility="{Binding ProgressBar_Visible_Transport_by_Continue_Visibility,Converter={dx:BooleanToVisibilityConverter}}"/>
-                        <RadioButton GroupName="Group_Transport" Name="Transport_by_Hand_RadioButton" Grid.Column="2" Grid.Row="2"  IsChecked="{Binding Transport_by_Hand_RadioButtonIsChecked}" Command="{Binding ChangeTransportMode_To_Hand_Command}" CommandParameter="{Binding ElementName=Transport_by_Hand_RadioButton}">
-                            <RadioButton.IsEnabled>
-                                <MultiBinding Converter="{local:BooleanArray_In_UnionToBooleanConverter}">
-                                    <MultiBinding.Bindings>
-                                        <Binding Path="Transport_by_Hand_RadioButtonIsEnable"/>
-                                        <Binding Path="Input_by_SmartPhone_RadioButtonIsChecked" />
-                                        <Binding Path="Input_by_Computer_RadioButtonIsChecked" />
-                                    </MultiBinding.Bindings>
-                                </MultiBinding>
-                            </RadioButton.IsEnabled>
-                            <Image Source="{StaticResource Transport_by_Robot_checkedDrawingImage}"/>
-                        </RadioButton>
-                        <ProgressBar  Grid.Column="2" Grid.Row="2" Visibility="{Binding ProgressBar_Visible_Transport_by_Hand_Visibility,Converter={dx:BooleanToVisibilityConverter}}"/>
+                        <Grid Grid.Row="2" Grid.ColumnSpan="3" IsEnabled="{Binding PostageEnable}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Border  Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
+                            <StackPanel Grid.Column="0">
+                                <StackPanel.IsEnabled>
+                                    <MultiBinding Converter="{local:BooleanArrayIntersectToBooleanConverter}">
+                                        <MultiBinding.Bindings>
+                                            <Binding Path="TrolleyEnable"/>
+                                            <Binding Path="Transport_RadioButtonIsEnable" />
+                                        </MultiBinding.Bindings>
+                                    </MultiBinding>
+                                </StackPanel.IsEnabled>
+                                <RadioButton GroupName="Group_Transport" Name="Transport_RadioButton" 
+                                             IsChecked="{Binding Transport_RadioButtonIsChecked}" Command="{Binding ChangeTransportModeCommand}" Cursor="Hand" >
+                                    <RadioButton.IsEnabled>
+                                        <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
+                                            <MultiBinding.Bindings>
+                                                <Binding Path="Input_by_SmartPhone_RadioButtonIsChecked" />
+                                                <Binding Path="Input_by_Computer_RadioButtonIsChecked" />
+                                            </MultiBinding.Bindings>
+                                        </MultiBinding>
+                                    </RadioButton.IsEnabled>
+                                    <Image Source="{StaticResource TransportDrawingImage}" />
+                                </RadioButton>
+                                
+                            </StackPanel>
+                            <ProgressBar  Visibility="{Binding ProgressBar_Visible_Transport_Visibility,Converter={dx:BooleanToVisibilityConverter}}" />
+                        
+                            <StackPanel Grid.Column="1" IsEnabled="{Binding Transport_by_Continue_RadioButtonIsEnable}">
+                                <RadioButton GroupName="Group_Transport" Name="Transport_by_Continue_RadioButton" IsChecked="{Binding Transport_by_Continue_RadioButtonIsChecked}" Command="{Binding ChangeTransportMode_To_Continue_Command}" >
+                                    <RadioButton.IsEnabled>
+                                        <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
+                                            <MultiBinding.Bindings>
+                                                <Binding Path="Input_by_SmartPhone_RadioButtonIsChecked" />
+                                                <Binding Path="Input_by_Computer_RadioButtonIsChecked" />
+                                            </MultiBinding.Bindings>
+                                        </MultiBinding>
+                                    </RadioButton.IsEnabled>
+                                    <Image Source="{StaticResource Transport_by_ConveyorDrawingImage}"/>
+                                </RadioButton>
+                            </StackPanel>
+                            <ProgressBar  Grid.Column="1" Visibility="{Binding ProgressBar_Visible_Transport_by_Continue_Visibility,Converter={dx:BooleanToVisibilityConverter}}"/>
+                            <StackPanel Grid.Column="2" IsEnabled="{Binding Transport_by_Hand_RadioButtonIsEnable}">
+                                <RadioButton GroupName="Group_Transport" Name="Transport_by_Hand_RadioButton"   IsChecked="{Binding Transport_by_Hand_RadioButtonIsChecked}" Command="{Binding ChangeTransportMode_To_Hand_Command}" CommandParameter="{Binding ElementName=Transport_by_Hand_RadioButton}">
+                                    <RadioButton.IsEnabled>
+                                        <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
+                                            <MultiBinding.Bindings>
+                                                <Binding Path="Input_by_SmartPhone_RadioButtonIsChecked" />
+                                                <Binding Path="Input_by_Computer_RadioButtonIsChecked" />
+                                            </MultiBinding.Bindings>
+                                        </MultiBinding>
+                                    </RadioButton.IsEnabled>
+                                    <Image Source="{StaticResource Transport_by_Robot_checkedDrawingImage}"/>
+                                </RadioButton>
+                            </StackPanel>
+                            <ProgressBar  Grid.Column="2" Grid.Row="2" Visibility="{Binding ProgressBar_Visible_Transport_by_Hand_Visibility,Converter={dx:BooleanToVisibilityConverter}}"/>
+                        </Grid>
 
                         <TextBlock Text="❶" Style="{StaticResource HintTextBlock}" Margin="5" 
                                    IsEnabled="{Binding HintStep1}"
                                    Visibility="{Binding ElementName=ShowHintBlockCheckBox , Path=IsChecked , Converter={dx:BooleanToVisibilityConverter}}"/>
-
                         <TextBlock Text="❷"  Style="{StaticResource HintTextBlock}" Margin="5" Grid.Row="1"
                                    IsEnabled="{Binding HintStep2}"
                                    Visibility="{Binding ElementName=ShowHintBlockCheckBox , Path=IsChecked , Converter={dx:BooleanToVisibilityConverter}}"/>
-
-
                         <TextBlock Text="❹" Style="{StaticResource HintTextBlock}" Margin="5" Grid.Row="2"
                                    IsEnabled="{Binding HintStep4}">
                             <TextBlock.Visibility>

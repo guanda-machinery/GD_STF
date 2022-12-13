@@ -3,6 +3,7 @@ using DevExpress.Mvvm;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.WindowsUI;
 using GD_STD.Base;
+using GD_STD.Enum;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -31,7 +32,7 @@ namespace GD_STD.Data
     /// 素材組合
     /// </summary>
     [Serializable]
-    public class MaterialDataView : WPFWindowsBase.BaseViewModel, IProfile, IMatchSetting 
+    public class MaterialDataView : WPFWindowsBase.BaseViewModel, IProfile, IMatchSetting
     {
         /// <summary>
         /// 長度列表
@@ -72,9 +73,9 @@ namespace GD_STD.Data
         private ObservableCollection<TypeSettingDataView> _parts = new ObservableCollection<TypeSettingDataView>();
         /// 零件列表
         /// </summary>
-        public ObservableCollection<TypeSettingDataView> Parts 
+        public ObservableCollection<TypeSettingDataView> Parts
         {
-            get 
+            get
             {
                 if (_parts == null)
                 {
@@ -88,6 +89,17 @@ namespace GD_STD.Data
             }
         }
 
+        public GD_STD.Enum.OBJECT_TYPE ObjectType 
+        { 
+            get 
+            {
+                if(Parts.Count >0)
+                {
+                    return (GD_STD.Enum.OBJECT_TYPE)Parts[0].SteelType;
+                }
+                return GD_STD.Enum.OBJECT_TYPE.Unknown;
+            } 
+        }
 
         public TypeSettingDataView SelectedPart { get; set; } 
 
@@ -330,11 +342,11 @@ namespace GD_STD.Data
         public float CurrentCoordinate { get; set; }
 
 
-
         private string _position;
         /// <summary>
         /// 目前位置
         /// </summary>        
+        [Obsolete]
         public string Position
         {
             get
@@ -348,7 +360,29 @@ namespace GD_STD.Data
             }
         }
 
-        
+
+        private PositionStatusEnum _positionEnum;
+
+        /// <summary>
+        /// 新版位置
+        /// </summary>
+
+        public PositionStatusEnum PositionEnum
+        {
+            get
+            {
+                return _positionEnum;
+            }
+            set
+            {
+                _positionEnum = value;
+                OnPropertyChanged("Position");
+            }
+        }
+
+
+
+
 
 
         /// <summary>

@@ -241,12 +241,14 @@ namespace STD_105
 
             if (!_)
             {
-                image_Disable.Visibility = Visibility.Visible;
+                Viewport3DImage.Opacity = 0.20;
+                //image_Disable.Visibility = Visibility.Visible;
                 //bor.Background = Brushes.Gray;
             }
             else
             {
-                image_Disable.Visibility = Visibility.Hidden;
+                Viewport3DImage.Opacity = 1.00;
+               // image_Disable.Visibility = Visibility.Hidden;
                 //bor.Background = Brushes.Transparent;
             }
         }

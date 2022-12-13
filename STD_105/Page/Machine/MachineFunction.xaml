@@ -1232,9 +1232,9 @@
                                                     <local:ToolMagazineButton ButtonCommand="{Binding MiddleCommand}"
                                                               ButtonImageSource="{StaticResource Clamping}"
                                                               StartState="{Binding IsSelectdMiddle}"
-                                                              IsEnabled="{Binding MiddleIsEnabled}"
                                                               TitleText="A刀庫"
                                                               SubTitleText="上軸" />
+                                                    <!--  IsEnabled="{Binding MiddleIsEnabled}"-->
                                                     <local:ToolMagazineButton ButtonCommand="{Binding LeftExportCommand}"
                                                               ButtonImageSource="{StaticResource Clamping}"
                                                               StartState="{Binding IsSelectdLeftExport}"
@@ -1336,6 +1336,7 @@
                                                             <Setter Property="Margin" Value="10"/>
                                                         </Style>
                                                     </StackPanel.Resources>
+                                                    <Button Content="關閉刀庫功能" />
                                                     <Button Command="{Binding UpDateCommand}"
                                             Content="重新讀取" />
                                                     <Button Command="{Binding UnusedSaveCommand}"

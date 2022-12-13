@@ -189,7 +189,7 @@ namespace WPFSTD105.ViewModel
             {
                 ClearSelectd();
                 this.IsSelectdMiddle = true;
-                DrillEditing = _MecOptional.Middle;
+                //DrillEditing = _MecOptional.Middle;
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.Middle));
                 UseSelected = DrillTools(_DrillWarehouse.Middle, true);
             });
@@ -205,7 +205,7 @@ namespace WPFSTD105.ViewModel
             {
                 ClearSelectd();
                 this.IsSelectdLeftExport = true;
-                DrillEditing = _MecOptional.LeftExport;
+                //DrillEditing = _MecOptional.LeftExport;
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.LeftExport));
                 UseSelected = DrillTools(_DrillWarehouse.LeftExport, true);
             });
@@ -221,7 +221,7 @@ namespace WPFSTD105.ViewModel
             {
                 ClearSelectd();
                 this.IsSelectdRightExport = true;
-                DrillEditing = _MecOptional.RightExport;
+                //DrillEditing = _MecOptional.RightExport;
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.RightExport));
                 UseSelected = DrillTools(_DrillWarehouse.RightExport, true);
             });
@@ -252,7 +252,7 @@ namespace WPFSTD105.ViewModel
             {
                 ClearSelectd();
                 this.IsSelectdLeftEntrance = true;
-                DrillEditing = _MecOptional.LeftEntrance;
+                //DrillEditing = _MecOptional.LeftEntrance;
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.LeftEntrance));
                 UseSelected = DrillTools(_DrillWarehouse.LeftEntrance, true);
             });
@@ -268,7 +268,7 @@ namespace WPFSTD105.ViewModel
             {
                 ClearSelectd();
                 this.IsSelectdRightEntrance = true;
-                DrillEditing = _MecOptional.RightEntrance;
+                //DrillEditing = _MecOptional.RightEntrance;
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.RightEntrance));
                 UseSelected = DrillTools(_DrillWarehouse.RightEntrance, true);
             });
@@ -372,7 +372,7 @@ namespace WPFSTD105.ViewModel
             }
             if (!_MecOptional.Middle)
             {
-                DrillEditing = false;
+                //DrillEditing = false;
                 DrillSetting drill = _DrillWarehouse.Middle[0];
                 drill.IsCurrent = true;
                 _DrillWarehouse.Middle = new DrillSetting[1] { drill };
