@@ -1169,27 +1169,29 @@
                                             </RadioButton>
 
                                         </Grid>
+
+                                        
+
                                     </GroupBox>
                                     <StackPanel Margin="5,8,0,0">
                                         <StackPanel Orientation="Horizontal">
-                                         <StackPanel>
-                                            <Button Width="60" Height="60">
+                                            <StackPanel>
+                                                <Button Width="60" Height="60" Click="HypotenuseLinearPoint">
                                                     <Grid >
                                                         <materialDesign:PackIcon Kind="PenPlus" Width="15" Height="15" Margin="8,0"/>
                                                         <Image Source="{StaticResource HSteel_quadDrawingImage}"  Width="40"/>
                                                     </Grid>
                                                 </Button>
                                                 <Label Content="新增打點" Foreground="Black"  HorizontalAlignment="Center"/>
-                                        </StackPanel>
+                                            </StackPanel>
                                             <StackPanel Margin="5,0">
-                                            <Button Width="60" Height="60">
-                                                <materialDesign:PackIcon Kind="Eraser" Width="45" Height="45"  />
-                                            </Button>
-                                            <Label Content="打點刪除" Foreground="Black"  HorizontalAlignment="Center"/>
+                                                <Button Width="60" Height="60" Click="DelHypotenuseLinearPoint">
+                                                    <materialDesign:PackIcon Kind="Eraser" Width="45" Height="45"  />
+                                                </Button>
+                                                <Label Content="打點刪除" Foreground="Black"  HorizontalAlignment="Center"/>
+                                            </StackPanel>
                                         </StackPanel>
-                                </StackPanel>
-                                </StackPanel>
-                                    
+                                    </StackPanel>
                                 </StackPanel>
                                 <StackPanel Grid.Row="1" Background="#303030" Height="0.5" Margin="0,5,0,0"/>
                                 <GroupBox Header="切割位置" Style="{StaticResource BaseStyle}" Grid.Row="2" Margin="5" Padding="0" Height="255">

@@ -29,6 +29,7 @@ using WPFSTD105;
 using WPFSTD105.Attribute;
 using WPFSTD105.Model;
 using WPFSTD105.ViewModel;
+using STD_105.Office;
 using WPFWindowsBase;
 using static devDept.Eyeshot.Entities.Mesh;
 using static devDept.Eyeshot.Environment;

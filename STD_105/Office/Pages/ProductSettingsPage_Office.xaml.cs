@@ -2,6 +2,7 @@ using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
+using DevExpress.Charts.Model;
 using DevExpress.Data.Extensions;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Core;
@@ -11,6 +12,7 @@ using DevExpress.Xpf.WindowsUI;
 using GD_STD;
 using GD_STD.Data;
 using GD_STD.Enum;
+using ProtoBuf.Meta;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -420,10 +422,10 @@ namespace STD_105.Office
                             #endregion
 
                             ScrollViewbox.IsEnabled = true;
-                            if (model.RunHypotenuseEnable()) { ScrollViewbox.IsEnabled = false; } else { ScrollViewbox.IsEnabled = true; }
-                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
-                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
-                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
+                            if (model.RunHypotenuseEnable()) { /*ScrollViewbox.IsEnabled = false;*/ } else { ScrollViewbox.IsEnabled = true; }
+                            WPFSTD105.Model.Expand.ManHypotenusePoint(model,drawing,FACE.TOP);
+                            WPFSTD105.Model.Expand.ManHypotenusePoint(model,drawing,FACE.FRONT);
+                            WPFSTD105.Model.Expand.ManHypotenusePoint(model,drawing,FACE.BACK);
                             SaveModel(true, true);
 
                             ViewModel.fAddSteelPart = false; // hank 新設 新增零件旗號,暫不儲存
@@ -503,10 +505,10 @@ namespace STD_105.Office
                             #endregion
 
                             ScrollViewbox.IsEnabled = true;
-                            if (model.RunHypotenuseEnable()) { ScrollViewbox.IsEnabled = false; } else { ScrollViewbox.IsEnabled = true; }
-                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
-                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
-                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
+                            if (model.RunHypotenuseEnable()) { /*ScrollViewbox.IsEnabled = false;*/ } else { ScrollViewbox.IsEnabled = true; }
+                            WPFSTD105.Model.Expand.ManHypotenusePoint(model,drawing,FACE.TOP);
+                            WPFSTD105.Model.Expand.ManHypotenusePoint(model,drawing,FACE.FRONT);
+                            WPFSTD105.Model.Expand.ManHypotenusePoint(model,drawing,FACE.BACK);
 
                             SaveModel(true, true);
                             #endregion
@@ -932,7 +934,7 @@ namespace STD_105.Office
                     sr.AddBolts(model, drawing, out bool hasOutSteel, block);
 
                     // 切割線打點
-                    ScrollViewbox.IsEnabled = !model.RunHypotenuseEnable();
+                    //ScrollViewbox.IsEnabled = !model.RunHypotenuseEnable();
                     WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
                     WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
                     WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
@@ -1027,7 +1029,7 @@ namespace STD_105.Office
                     sr.AddBolts(model, drawing, out bool checkRef, blocks);
 
                     // 切割線打點
-                    ScrollViewbox.IsEnabled = !model.RunHypotenuseEnable();
+                    //ScrollViewbox.IsEnabled = !model.RunHypotenuseEnable();
                     WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
                     WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
                     WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
@@ -1900,10 +1902,11 @@ namespace STD_105.Office
                 ViewModel.SaveCut();
                 SaveModel(false, false);
                 isNewPart = false;//fasle不產生新GUID
+                ViewLocator.OfficeViewModel.isPressAddCutKey = true;
                 ViewModel.WriteCutAttr((SteelAttr)model.Blocks[1].Entities[0].EntityData);
                 ViewModel.ModifyPart.Execute(null);
                 isNewPart = true;//還原零件狀態
-
+                ViewLocator.OfficeViewModel.isPressAddCutKey = false;
                 //SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D三視圖
                 //bool hasOutSteel = false;
                 //List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
@@ -2452,7 +2455,6 @@ namespace STD_105.Office
                                 baList.Add(ba);
                                 et.EntityData = ba;
                             }
-
 
 
 
@@ -3620,7 +3622,7 @@ namespace STD_105.Office
             }
 
             // 有斜邊，切割線不可用
-            if (isHypotenuse) ScrollViewbox.IsEnabled = false;
+            //if (isHypotenuse) ScrollViewbox.IsEnabled = false;
 
             model.ZoomFit();
             drawing.ZoomFit();
@@ -4372,10 +4374,92 @@ namespace STD_105.Office
 
         }
 
+
         /// <summary>
-        /// 標註動作
+        /// 線段打點
         /// </summary>
-        private void Dim(out ModelExt modelExt)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void HypotenuseLinearPoint(object sender, EventArgs e)
+        {
+#if DEBUG
+            ScrollViewbox.IsEnabled = true;
+            log4net.LogManager.GetLogger("觸發線段打點").Debug("");
+#endif
+
+            ModelExt modelExt = null;
+            
+            if (tabControl.SelectedIndex == 0)
+            {
+                //  modelExt = model;  // 因只能於2D操作, 取消此3D 
+            }
+            else
+            {
+                modelExt = drawing;
+                modelExt.TmpStreelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
+            }
+            try
+            {
+                if (model.Entities.Count > 0 && modelExt!=null)
+                {
+#if DEBUG
+                    log4net.LogManager.GetLogger("層級 To 要主件的BlockReference").Debug("成功");
+#endif
+                    modelExt.Entities[0].Selectable = true;
+                    modelExt.ClearAllPreviousCommandData();
+                    modelExt.ActionMode = actionType.None;
+                    modelExt.objectSnapEnabled = true;
+                    modelExt.drawingHypotenusePoint = true;
+                    return;
+                }
+#if DEBUG
+                else
+                {
+                    throw new Exception("層級 To 主件的BlockReference 失敗，找不到主件");
+                }
+#endif
+            }
+            catch (Exception ex)
+            {
+                log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(ex.Message, ex.StackTrace);
+            }
+#if DEBUG
+            log4net.LogManager.GetLogger("觸發線段打點").Debug("");
+#endif
+            //Dim(out modelExt);
+            //modelExt.drawingHypotenusePoint = true;
+
+        }
+
+
+        /// <summary>
+        /// 刪除線段打點
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DelHypotenuseLinearPoint(object sender, EventArgs e)
+        {
+            //開啟Model焦點
+            bool mFocus = model.Focus();
+
+            if (!mFocus)
+            {
+                drawing.Focus();
+            }
+            SimulationDelete();
+            Esc();
+            SaveModel(false);
+            model.Invalidate();
+            drawing.Invalidate();
+
+        }
+
+
+
+    /// <summary>
+    /// 標註動作
+    /// </summary>
+    private void Dim(out ModelExt modelExt)
         {
             //ModelExt modelExt = null;
             if (tabControl.SelectedIndex == 0)
@@ -5473,7 +5557,7 @@ namespace STD_105.Office
                     model.sycnModelEntitiesAndNewBolt(blocks);
                     sr.AddBolts(model, drawing, out bool hasOutSteel, blocks, false);
                     // 切割線打點
-                    ScrollViewbox.IsEnabled = !model.RunHypotenuseEnable();
+                    //ScrollViewbox.IsEnabled = !model.RunHypotenuseEnable(); 
                     WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
                     WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
                     WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
@@ -5763,10 +5847,10 @@ namespace STD_105.Office
             sr.AddBolts(model, drawing, out bool hasOutSteel, blocks);
             // 切割線打點
             ScrollViewbox.IsEnabled = true;
-            if (model.RunHypotenuseEnable()) { ScrollViewbox.IsEnabled = false; } else { ScrollViewbox.IsEnabled = true; }
-            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
-            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
-            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
+            if (model.RunHypotenuseEnable()) { /*ScrollViewbox.IsEnabled = false;*/ } else { ScrollViewbox.IsEnabled = true; }
+            WPFSTD105.Model.Expand.ManHypotenusePoint(model,drawing,FACE.TOP);
+            WPFSTD105.Model.Expand.ManHypotenusePoint(model,drawing,FACE.FRONT);
+            WPFSTD105.Model.Expand.ManHypotenusePoint(model,drawing,FACE.BACK);
             #endregion
 
 
@@ -6251,7 +6335,15 @@ namespace STD_105.Office
             return rtn;
         }
 
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
 
+            if (drawing.drawingHypotenusePoint && drawing.points.Count == 2)
+            {
+                SaveModel(false, false);
+                drawing.drawingHypotenusePoint = false;
+            }
+        }
 
     }
 }

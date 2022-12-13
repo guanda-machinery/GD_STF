@@ -45,6 +45,8 @@ namespace WPFSTD105
         /// </summary>
         private SplashScreenManager ProcessingScreenWin = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
 
+
+
         ///// <summary>
         ///// 接續專案
         ///// </summary>

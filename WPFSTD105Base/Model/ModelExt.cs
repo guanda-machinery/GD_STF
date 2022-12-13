@@ -3,6 +3,7 @@ using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using devDept.Graphics;
+using DevExpress.Charts.Model;
 using DevExpress.DataProcessing.InMemoryDataProcessor;
 using GD_STD.Enum;
 //using DocumentFormat.OpenXml.Spreadsheet;
@@ -25,6 +26,9 @@ namespace WPFSTD105
     /// </summary>
     public partial class ModelExt : devDept.Eyeshot.Model
     {
+
+        public SteelAttr TmpStreelAttr { get; set; }
+
         /// <summary>
         /// 次要模型
         /// </summary>
@@ -210,7 +214,7 @@ namespace WPFSTD105
         /// <summary>
         /// 鼠標左鍵選擇或選取的點的列表
         /// </summary>
-        private List<Point3D> points { get; set; } = new List<Point3D>();
+        public List<Point3D> points { get; set; } = new List<Point3D>();
         /// <summary>
         /// 目前鼠標位置
         /// </summary>
@@ -357,6 +361,11 @@ namespace WPFSTD105
                         points.Add(current);
                 }
                 firstClick = false;
+
+
+
+
+
                 if (drawingPoints)//如果要繪製點，請在每個滑鼠左鍵點擊上創建並添加新的點實體
                 {
                     devDept.Eyeshot.Entities.Point point;
@@ -582,6 +591,22 @@ namespace WPFSTD105
                 {
                     ExtendEntity();
                     ClearAllPreviousCommandData();
+                }
+                //兩點選取完成，兩點直線上創建兩點位並添加到模型中
+                else if (drawingHypotenusePoint && points.Count == 2)
+                {
+
+                    Point3D p1 = points[0], p2 = points[1];
+                    if (p1.Y > p2.Y)
+                    {
+                        p1 = points[1];
+                        p2 = points[0];
+                    }
+
+
+                    CreateHypotenusePoint(TmpStreelAttr, p1, p2);
+                    objectSnapEnabled = false;
+                    this.ActionMode = actionType.SelectByBox;
                 }
             }
             #endregion
@@ -819,7 +844,7 @@ namespace WPFSTD105
             {
                 //DrawInteractiveLeader();
             }
-            else if (drawingLinearDim || drawingAlignedDim)
+            else if (drawingLinearDim || drawingAlignedDim || drawingHypotenusePoint)
             {
                 if (points.Count < 2)
                 {
@@ -828,9 +853,14 @@ namespace WPFSTD105
                         DrawInteractiveLines();
                         DrawSelectionMark(mouseLocation);
                         if (!firstClick)
+                        {
                             ActionPrompt("第二點標註");
+                   
+                        }
                         else
+                        {
                             ActionPrompt("第一點標註");
+                        }
 
                     }
                 }
