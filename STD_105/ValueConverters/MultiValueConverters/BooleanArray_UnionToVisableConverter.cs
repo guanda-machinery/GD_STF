@@ -18,14 +18,15 @@ namespace STD_105
     /// <summary>
     /// 聯集布林
     /// </summary>
-    public class BooleanArrayUnionToBooleanConverter : WPFWindowsBase.BaseMultiValueConverter<BooleanArrayUnionToBooleanConverter>
+    public class BooleanArrayUnionToVisableConverter : WPFWindowsBase.BaseMultiValueConverter<BooleanArrayUnionToVisableConverter>
     {
+        //只要出現false就不顯示
         public override object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             var BooleanList = values.ToList();
-            bool ReturnBoolean = BooleanList.Exists(x =>x is true);
+            bool ReturnBoolean = BooleanList.Exists(x =>x is false);
 
-            return ReturnBoolean;
+            return ReturnBoolean? Visibility.Collapsed : Visibility.Visible;
         }
 
         public override object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

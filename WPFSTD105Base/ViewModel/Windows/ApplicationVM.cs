@@ -366,8 +366,16 @@ namespace WPFSTD105
         {
             string projectName = CommonViewModel.ProjectName; //專案名稱
 
+            //20221207 修改
+            //if (projectName != null)
+            //   return $"{Properties.SofSetting.Default.LoadPath}\\{CommonViewModel.ProjectName}";
+
             if (projectName != null)
-                return $"{Properties.SofSetting.Default.LoadPath}\\{CommonViewModel.ProjectName}";
+            {
+                return Path.Combine(Properties.SofSetting.Default.LoadPath, CommonViewModel.ProjectName).Replace("/","\\");
+
+
+            }
 
             throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }

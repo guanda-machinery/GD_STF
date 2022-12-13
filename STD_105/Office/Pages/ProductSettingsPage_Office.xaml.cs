@@ -46,8 +46,8 @@ namespace STD_105.Office
     {
         #region 變數宣告
         ApplicationVM appVM = new ApplicationVM();
-        public ObSettingVM sr = new ObSettingVM();
-                   
+        ObSettingVM sr = new ObSettingVM();
+
         /// <summary>
         /// 是否產生新零件
         /// 新增.修改為true

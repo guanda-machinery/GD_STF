@@ -1419,7 +1419,6 @@ namespace STD_105.Office
                     {
                         if (Exp.Value == true)
                         {
-                       
                             Material_List_GridControl.ExpandMasterRow(Exp.Key);
                         }
                         else
