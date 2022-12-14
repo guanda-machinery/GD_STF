@@ -207,7 +207,7 @@ namespace WPFSTD105.ViewModel
         /// 限制Grid出現之內容
         /// </summary>
         public static List<OBJECT_TYPE> allowType = new List<OBJECT_TYPE> {
-            OBJECT_TYPE.RH, OBJECT_TYPE.BH};
+            OBJECT_TYPE.RH, OBJECT_TYPE.BH,OBJECT_TYPE.CH};
         //, OBJECT_TYPE.H,
         //OBJECT_TYPE.BOX, OBJECT_TYPE.TUBE,
         //OBJECT_TYPE.LB, OBJECT_TYPE.CH
@@ -2310,27 +2310,8 @@ namespace WPFSTD105.ViewModel
             out bool checkRef, List<Block> blocks, bool isAdd3D = true, bool isRotate = true)
         {
             checkRef = true;
-            // 步驟. 取得螺栓EntityData
-            // 步驟. 依照有無指定孔位，取得圖塊(Mesh)
-            // 步驟. 產生2D/3D圖塊
-            //foreach (GroupBoltsAttr bolt in modelAllBoltList)
-            //{
-            //    Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts(bolt, model, out BlockReference blockRef, out bool checkRef);
-            //    if (bolts3DBlock.hasOutSteel)
-            //    {
-            //        hasOutSteel = true;
-            //    }
-            //    this.Add2DHole(drawing,bolts3DBlock);//加入孔位到2D
-            //}
-            // 從Block中取得斜邊打點的孔，以便變更
-            //var HPoint = blocks.SelectMany(x => x.Entities)
-            //    .Where(x => x.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
-            //    .Select(x => (Mesh)x).ToList();
-            //int Hindex = 0;
+
             #region 一般孔位
-
-
-
             for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
             {
                 if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr && boltsAttr.Mode != AXIS_MODE.HypotenusePOINT) //是螺栓
@@ -2350,7 +2331,6 @@ namespace WPFSTD105.ViewModel
                         }
                         else
                         {
-                            // 無中生有
                             Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts(boltsAttr, model, out BlockReference blockRef, out checkRef, null, isRotate);
                             if (drawing != null)
                             {

@@ -585,7 +585,6 @@ namespace WPFSTD105.Model
             check = true;
             blockOut = null;            
             Bolts3DBlock result = new Bolts3DBlock(attr); //產生孔位圖塊
-            //result.steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
             result.steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
             bool fCreateBolt = false;
             string BlockName = result.Name;
@@ -593,12 +592,63 @@ namespace WPFSTD105.Model
             Block block = model.Blocks.FirstOrDefault(x => x.Entities == meshes);
             List<Block> bl = model.Blocks.ToList().Where(x=>x.Name != "RootBlock").ToList();
 
+
+
+            //// 無孔(修改前後)
+            //if (meshes == null)
+            //{
+            //    result.CreateBolts(model, ref check, null, isRotate);
+            //    meshes = result.Entities;
+            //}
+            //else
+            //{
+            //    result.Entities.Clear();
+            //    result.Entities.AddRange(meshes);
+            //}
+
+            //if (!model.Blocks.Any(x => x.Name == result.Name))
+            //{
+            //    model.Blocks.Add(result);
+            //}
+            //else
+            //{
+            //    model.Blocks.Remove(model.Blocks[result.Name]);
+            //    model.Blocks.Add(result);
+            //}
+
+            //blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+            //blockOut.EntityData = result.Info;
+            //blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
+            //if (!model.Entities.Any(x => x.EntityData != null && x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID == Guid.Parse(result.Name)))
+            //{
+            //    model.Entities.Insert(0, blockOut);//加入參考圖塊到模型
+            //}
+
+
+
+
+
             // model有無此BlockName
             // 無 創建
             if (!model.Blocks.Any(x => x.Name == result.Name))
             {
                 if (block != null)
                 {
+                    //result.Entities.Clear();
+                    //result.Entities.AddRange(meshes);
+                    ////產生孔位群組參考圖塊      
+                    //blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+                    //blockOut.EntityData = result.Info;
+                    //blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
+                    //
+                    //model.Blocks.Add(result);
+                    //model.Entities.Insert(0, blockOut);//加入參考圖塊到模型
+
+
+
+
+
+
                     block.Name = result.Name;
                     model.Blocks.Add(block);
                     //產生孔位群組參考圖塊      
@@ -607,8 +657,19 @@ namespace WPFSTD105.Model
                     blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
                     model.Entities.Insert(0, blockOut);//加入參考圖塊到模型
                 }
-                else 
+                else
                 {
+                    ////創建孔位群組
+                    //result.CreateBolts(model, ref check, null, isRotate);
+                    ////產生孔位群組參考圖塊      
+                    //blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+                    //blockOut.EntityData = result.Info;
+                    //blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
+
+                    //model.Blocks.Add(result);
+                    //model.Entities.Insert(0, blockOut);//加入參考圖塊到模型
+
+
                     //創建孔位群組
                     result.CreateBolts(model, ref check, null, isRotate);
                     Bolts3DBlock bolts3DBlock = new Bolts3DBlock(result.Entities, result.Info);
@@ -619,17 +680,29 @@ namespace WPFSTD105.Model
                     blockOut.EntityData = result.Info;
                     blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
                     model.Entities.Insert(0, blockOut);//加入參考圖塊到模型                
-                } 
+                }
             }
             else
             {
                 // 有圖塊 有meshes 無對應凸塊 
                 if (block != null)
                 {
+                    //result.Entities.Clear();
+                    //result.Entities.AddRange(meshes);
+                    ////產生孔位群組參考圖塊      
+                    //blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+                    //blockOut.EntityData = result.Info;
+                    //blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
+                    //
+                    //model.Blocks.Remove(model.Blocks[result.Name]);
+                    //model.Blocks.Add(result);
+                    //model.Entities.Insert(0, blockOut);//加入參考圖塊到模型
+
+
                     block.Name = result.Name;
                     var blocktemp = model.Blocks.FirstOrDefault(x => x.Name == result.Name);
                     blocktemp = block;
-                    if (model.Entities.Any(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).BlockName != result.Name))
+                    if (!model.Entities.Any(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID != Guid.Parse(result.Name)))
                     {
                         //產生孔位群組參考圖塊      
                         blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
@@ -652,7 +725,7 @@ namespace WPFSTD105.Model
                     blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
                     blockOut.EntityData = result.Info;
                     blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-                    if (model.Entities.Any(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID != result.Info.GUID))
+                    if (!model.Entities.Any(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID != result.Info.GUID))
                     {
                         //產生孔位群組參考圖塊      
                         blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
