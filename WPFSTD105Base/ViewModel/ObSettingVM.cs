@@ -210,7 +210,7 @@ namespace WPFSTD105.ViewModel
             OBJECT_TYPE.RH, OBJECT_TYPE.BH,OBJECT_TYPE.CH};
         //, OBJECT_TYPE.H,
         //OBJECT_TYPE.BOX, OBJECT_TYPE.TUBE,
-        //OBJECT_TYPE.LB, OBJECT_TYPE.CH
+        //OBJECT_TYPE.LB, 
 
         /// <summary>
         /// 構件資訊列表

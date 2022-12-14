@@ -1095,7 +1095,7 @@
                                     <Button Content="rbtn choice" Command="{Binding Path=CmdShowMessage}" Margin="5" Width="80" Height="24" Visibility="Collapsed"/>
                                 </StackPanel>-->
 
-                                <StackPanel  Grid.Row="3"     Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                <StackPanel  Grid.Row="3"   Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
 
                                     <Button Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=DrillTabItem}"  Width="80" Margin="0,0,-7,0"   Style="{StaticResource SiegCustomButtonGray}" Cursor="Hand" >
                                         <Button.Content >
