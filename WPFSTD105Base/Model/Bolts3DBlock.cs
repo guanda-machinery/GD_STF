@@ -702,7 +702,7 @@ namespace WPFSTD105.Model
                     block.Name = result.Name;
                     var blocktemp = model.Blocks.FirstOrDefault(x => x.Name == result.Name);
                     blocktemp = block;
-                    if (model.Entities.Any(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID != Guid.Parse(result.Name)))
+                    if (!model.Entities.Any(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID != Guid.Parse(result.Name)))
                     {
                         //產生孔位群組參考圖塊      
                         blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
@@ -725,7 +725,7 @@ namespace WPFSTD105.Model
                     blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
                     blockOut.EntityData = result.Info;
                     blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-                    if (model.Entities.Any(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID != result.Info.GUID))
+                    if (!model.Entities.Any(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID != result.Info.GUID))
                     {
                         //產生孔位群組參考圖塊      
                         blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
