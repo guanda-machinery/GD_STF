@@ -585,7 +585,6 @@ namespace WPFSTD105.Model
             check = true;
             blockOut = null;            
             Bolts3DBlock result = new Bolts3DBlock(attr); //產生孔位圖塊
-            //result.steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
             result.steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
             bool fCreateBolt = false;
             string BlockName = result.Name;
@@ -593,69 +592,41 @@ namespace WPFSTD105.Model
             Block block = model.Blocks.FirstOrDefault(x => x.Entities == meshes);
             List<Block> bl = model.Blocks.ToList().Where(x=>x.Name != "RootBlock").ToList();
 
-            // 有meshes的話，Bolt往上找到其對應Block，針對其Block加入
-            if (meshes != null)
-            {
-                var meshesBlock = model.Blocks.FirstOrDefault(x => x.Entities == meshes);
-                if (meshesBlock != null)
-                {
-                    //BlockName = meshesBlock.Name;
-                }
 
 
-                //for (int i = 0; i < bl.Count; i++)
-                //{
-                //    BlockName = "";
-                //    // 如果Block屬於BlockReference
-                //    if (bl[i].GetType() == typeof(Block))
-                //    {
-                //        var etities = bl[i].Entities.Where(x => x.GetType() == typeof(BlockReference) && x.EntityData.GetType() == typeof(GroupBoltsAttr)).ToList();
-                //        for (int j = 0; j < etities.Count(x => x.GetType() == typeof(BlockReference) && x.EntityData.GetType() == typeof(GroupBoltsAttr)); j++)
-                //        {
-                //            var EntityData = etities[j].EntityData;
-                //            GroupBoltsAttr gba = (GroupBoltsAttr)etities[j].EntityData;
-                //            for (int k = 0; k < meshes.Count; k++)
-                //            {
-                //                if (gba.X == ((BoltAttr)meshes[k].EntityData).X &&
-                //                    gba.Y == ((BoltAttr)meshes[k].EntityData).Y &&
-                //                    gba.Z == ((BoltAttr)meshes[k].EntityData).Z &&
-                //                    gba.Face == ((BoltAttr)meshes[k].EntityData).Face)
-                //                {
-                //                    // meshes對應的BolckName
-                //                    BlockName = bl[i].Name;
-                //                    break;
-                //                }
-                //            }
-                //        }
-                //    }
-                //    if (bl[i].GetType() == typeof(Bolts3DBlock)) 
-                //    {
-                //        var etities = bl[i].Entities.Where(x => x.GetType() == typeof(Mesh) && x.EntityData.GetType() == typeof(BoltAttr)).ToList();
-                //        for (int j = 0; j < etities.Count(x => x.GetType() == typeof(Mesh) && x.EntityData.GetType() == typeof(BoltAttr)); j++)
-                //        {
-                //            var EntityData = etities[j].EntityData;
-                //            BoltAttr gba = (BoltAttr)etities[j].EntityData;
-                //            for (int k = 0; k < meshes.Count; k++)
-                //            {
-                //                if (gba.X == ((BoltAttr)meshes[k].EntityData).X &&
-                //                    gba.Y == ((BoltAttr)meshes[k].EntityData).Y &&
-                //                    gba.Z == ((BoltAttr)meshes[k].EntityData).Z &&
-                //                    gba.Face == ((BoltAttr)meshes[k].EntityData).Face)
-                //                {
-                //                    // meshes對應的BolckName
-                //                    BlockName = bl[i].Name;
-                //                    break;
-                //                }
-                //            }
-                //        }
-                //    }
-                //    if (string.IsNullOrEmpty(BlockName))
-                //    {
-                //        BlockName = attr.GUID.ToString();
-                //        break;
-                //    }
-                //}
-            }
+            //// 無孔(修改前後)
+            //if (meshes == null)
+            //{
+            //    result.CreateBolts(model, ref check, null, isRotate);
+            //    meshes = result.Entities;
+            //}
+            //else
+            //{
+            //    result.Entities.Clear();
+            //    result.Entities.AddRange(meshes);
+            //}
+
+            //if (!model.Blocks.Any(x => x.Name == result.Name))
+            //{
+            //    model.Blocks.Add(result);
+            //}
+            //else
+            //{
+            //    model.Blocks.Remove(model.Blocks[result.Name]);
+            //    model.Blocks.Add(result);
+            //}
+
+            //blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+            //blockOut.EntityData = result.Info;
+            //blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
+            //if (!model.Entities.Any(x => x.EntityData != null && x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID == Guid.Parse(result.Name)))
+            //{
+            //    model.Entities.Insert(0, blockOut);//加入參考圖塊到模型
+            //}
+
+
+
+
 
             // model有無此BlockName
             // 無 創建
@@ -663,6 +634,21 @@ namespace WPFSTD105.Model
             {
                 if (block != null)
                 {
+                    //result.Entities.Clear();
+                    //result.Entities.AddRange(meshes);
+                    ////產生孔位群組參考圖塊      
+                    //blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+                    //blockOut.EntityData = result.Info;
+                    //blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
+                    //
+                    //model.Blocks.Add(result);
+                    //model.Entities.Insert(0, blockOut);//加入參考圖塊到模型
+
+
+
+
+
+
                     block.Name = result.Name;
                     model.Blocks.Add(block);
                     //產生孔位群組參考圖塊      
@@ -671,8 +657,19 @@ namespace WPFSTD105.Model
                     blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
                     model.Entities.Insert(0, blockOut);//加入參考圖塊到模型
                 }
-                else 
+                else
                 {
+                    ////創建孔位群組
+                    //result.CreateBolts(model, ref check, null, isRotate);
+                    ////產生孔位群組參考圖塊      
+                    //blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+                    //blockOut.EntityData = result.Info;
+                    //blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
+
+                    //model.Blocks.Add(result);
+                    //model.Entities.Insert(0, blockOut);//加入參考圖塊到模型
+
+
                     //創建孔位群組
                     result.CreateBolts(model, ref check, null, isRotate);
                     Bolts3DBlock bolts3DBlock = new Bolts3DBlock(result.Entities, result.Info);
@@ -683,17 +680,29 @@ namespace WPFSTD105.Model
                     blockOut.EntityData = result.Info;
                     blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
                     model.Entities.Insert(0, blockOut);//加入參考圖塊到模型                
-                } 
+                }
             }
             else
             {
                 // 有圖塊 有meshes 無對應凸塊 
                 if (block != null)
                 {
+                    //result.Entities.Clear();
+                    //result.Entities.AddRange(meshes);
+                    ////產生孔位群組參考圖塊      
+                    //blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
+                    //blockOut.EntityData = result.Info;
+                    //blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
+                    //
+                    //model.Blocks.Remove(model.Blocks[result.Name]);
+                    //model.Blocks.Add(result);
+                    //model.Entities.Insert(0, blockOut);//加入參考圖塊到模型
+
+
                     block.Name = result.Name;
                     var blocktemp = model.Blocks.FirstOrDefault(x => x.Name == result.Name);
                     blocktemp = block;
-                    if (model.Entities.Any(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).BlockName != result.Name))
+                    if (!model.Entities.Any(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID != Guid.Parse(result.Name)))
                     {
                         //產生孔位群組參考圖塊      
                         blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
@@ -716,7 +725,7 @@ namespace WPFSTD105.Model
                     blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
                     blockOut.EntityData = result.Info;
                     blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-                    if (model.Entities.Any(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID != result.Info.GUID))
+                    if (!model.Entities.Any(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID != result.Info.GUID))
                     {
                         //產生孔位群組參考圖塊      
                         blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
@@ -742,262 +751,12 @@ namespace WPFSTD105.Model
                         blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
                         model.Entities.Insert(0, blockOut);//加入參考圖塊到模型
                     }
-
                 }
-
             }
-
-        
-
-
-
-
-            //    if (!model.Blocks.Any(x => x.Name == result.Name))
-            //{
-            //    //創建孔位群組
-            //    result.CreateBolts(model, ref check, null, isRotate);
-            //    Bolts3DBlock bolts3DBlock = new Bolts3DBlock(result.Entities ,result.Info);
-            //    //加入孔位群組圖塊到模型 
-            //    model.Blocks.Add(bolts3DBlock);
-            //    //產生孔位群組參考圖塊      
-            //    blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
-            //    blockOut.EntityData = result.Info;
-            //    blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-            //    model.Entities.Insert(0,blockOut);//加入參考圖塊到模型
-            //}
-            //else
-            //{
-            //    if (block != null)
-            //    {
-            //        // 若是NC/BOM匯入之孔群，GUID會不同，需還原
-            //        attr.GUID = Guid.Parse(BlockName);
-            //        result = new Bolts3DBlock(meshes, attr);
-            //        //產生孔位群組參考圖塊
-            //        blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);
-            //        blockOut.EntityData = result.Info;
-            //        blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-            //        //model.Entities.Insert(0, blockOut);
-            //        // 異動孔群下的孔
-            //        model.Blocks[BlockName].Entities.Clear();
-            //        model.Blocks[BlockName].Entities.AddRange(result.Entities);
-            //    }
-            //    else 
-            //    {
-            //        //創建孔位群組
-            //        result = new Bolts3DBlock(attr);
-            //        //產生孔位群組參考圖塊      
-            //        blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
-            //        blockOut.EntityData = result.Info;
-            //        blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-            //        model.Entities.Insert(0, blockOut);//加入參考圖塊到模型
-            //    }
-                
-            //    //創建孔位群組
-            //    // new Bolts3D時已給定
-            //    //result.CreateBolts(model, ref check, meshes, isRotate);
-            //}
             fCreateBolt = true;
-
-            // Bugs暫解:移除沒有Entities的Blocks
-            //var delBlock = model.Entities.Select(x => ((BlockReference)x).BlockName).ToList();
-            //List<Block> btemp = new List<Block>();
-            //foreach (var item in model.Blocks)
-            //{
-            //    if (item.Name != "RootBlock")
-            //    {
-            //        btemp.Add(item);
-            //    }
-            //}
-            //model.Blocks.ToList().ForEach(x =>
-            //{
-            //    if (!delBlock.Contains(x.Name) && x.Name != "RootBlock")
-            //    {
-            //        btemp.Remove(btemp.FirstOrDefault(y => y.Name == x.Name));
-            //    }
-            //});
-            //List<BlockReference> entitiesTemp = new List<BlockReference>();
-            //model.Entities.ForEach(x => { entitiesTemp.Add((BlockReference)x); });
-            //model.Blocks.Clear();
-            //model.Blocks.AddRange(btemp);
-            //model.Entities.AddRange(entitiesTemp);
 
             // 檢查規則 不合格 回傳false
             if (model.Blocks[result.Name] != null && !CheckBolts(model, !fCreateBolt, result.Name)) check = false;
-
-            //// 若dm檔中無圖塊，新增圖塊(model.Blocks)及實體(model.Entity)
-            //// 原判斷條件:圖塊GUID 
-            //if (!((model
-            //    .Blocks
-            //    .SelectMany(x => x.Entities)
-            //    .Select(z => (z.EntityData)))
-            //    .Any(j => j != null && j.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)j).GUID.ToString() == result.Name)) &&
-            //    !((model
-            //    .Blocks
-            //    .SelectMany(x => x.Entities)
-            //    .Select(z => (z.EntityData)))
-            //    .Any(j => j != null && j.GetType() == typeof(BoltAttr) && ((BoltAttr)j).GUID.ToString() == result.Name))
-            //    )
-            //{
-            //    model.Blocks.Add(result);//加入孔位群組圖塊到模型                
-            //    blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
-            //    blockOut.EntityData = result.Info;
-            //    blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-            //    model.Entities.Insert(0, blockOut);//加入參考圖塊到模型
-            //    if (meshes != null && meshes.Count > 0)
-            //    {   
-            //        //if ((result.Info.Face == GD_STD.Enum.FACE.BACK || result.Info.Face == GD_STD.Enum.FACE.FRONT))
-            //        //{
-            //        //    result.Info.Coordinates();
-            //        //}
-            //        // 同步mashes的name，因為選取時需與Block一樣
-
-            //        model.Blocks[result.Name].Entities.AddRange(meshes);
-            //        //isRotate = false;
-            //    }
-            //    //出來的座標無翻轉
-            //    result.CreateBolts(model, ref check, meshes, isRotate);//創建孔位群組
-            //    //if ((result.Info.Face == GD_STD.Enum.FACE.BACK || result.Info.Face == GD_STD.Enum.FACE.FRONT))
-            //    //{
-            //    //    result.Info.Coordinates();
-            //    //}
-            //    fCreateBolt = true;
-            //}
-            //else
-            //{
-            //    if (meshes != null)
-            //    {
-            //        result.Entities.AddRange(meshes);
-            //        //if ((attr.Face== FACE.FRONT || attr.Face == FACE.BACK) && isRotate)
-            //        //{
-            //        //    //result.Entities.Rotate(Math.PI / 2, Vector3D.AxisX);
-            //        //    meshes.ForEach(x =>
-            //        //    {
-            //        //        double y = 0;
-            //        //        double z = 0;
-            //        //        y = ((BoltAttr)x.EntityData).Y;
-            //        //        z = ((BoltAttr)x.EntityData).Z;
-            //        //        ((BoltAttr)x.EntityData).Y = z;
-            //        //        ((BoltAttr)x.EntityData).Z = y;
-            //        //        
-            //        //        //x.Translate(attr.X, attr.Y + h, attr.Z);// 平移Vertices
-            //        //    });
-            //        //result.Rotate(Math.PI / 2, Vector3D.AxisX);
-
-
-            //    }
-            //    else
-            //    {
-            //        if (model.Blocks.Any(x=>x.Name==result.Name))
-            //        {
-            //            meshes = model.Blocks[result.Name].Entities;
-            //            result.Entities.AddRange(meshes);
-            //        }
-            //    }
-            //    //// 將對應實體寫入
-
-            //    //// 若有指定實體，複寫實體
-            //    //if (meshes.Count!=0)
-            //    //{                    
-            //    //    model.Blocks[result.Name].Entities.Clear();
-            //    //    model.Blocks[result.Name].Entities.AddRange(meshes);
-            //    //}
-            //    //else
-            //    //{
-            //    //    result.Entities.AddRange(model.Blocks[result.Name].Entities);
-            //    //}
-            //}
-            
-
-            ////// 符合加工區域
-            ////if (check)
-            ////{
-            ////    if (attr.Mode != AXIS_MODE.POINT && attr.Mode != AXIS_MODE.HypotenusePOINT)
-            ////    {
-            ////        bool inSteel = true;
-            ////        if (result.Entities.Count == 0)
-            ////        {
-            ////            Point3D checkPoint3D = new Point3D(attr.X, attr.Y, attr.Z);
-            ////            var testPoint = Coordinates(attr.Face, checkPoint3D);
-
-            ////            if (((Mesh)model.Blocks[1].Entities[0]).IsPointInside(testPoint))
-            ////            //if (((Mesh)model.Entities[model.Entities.Count - 1]).IsPointInside(testPoint))
-            ////            {
-            ////                inSteel = true;
-            ////            }
-            ////            else
-            ////            {
-            ////                result.hasOutSteel = true;
-            ////                inSteel = false;
-            ////            }
-            ////        }
-            ////        else
-            ////        {
-            ////            foreach (var item in result.Entities)
-            ////            {
-            ////                // 檢查產生之孔位是否在鋼體內
-            ////                //if (((Mesh)model.Entities[model.Entities.Count - 1].EntityData).IsPointInside(
-            ////                Point3D checkPoint3D = new Point3D(((BoltAttr)item.EntityData).X, ((BoltAttr)item.EntityData).Y, ((BoltAttr)item.EntityData).Z);
-            ////                var testPoint = Coordinates(((BoltAttr)item.EntityData).Face, checkPoint3D);
-
-            ////                if (((Mesh)model.Blocks[1].Entities[0]).IsPointInside(testPoint))
-            ////                //if (((Mesh)model.Entities[model.Entities.Count-1]).IsPointInside(testPoint))
-            ////                {
-            ////                    inSteel = true;
-            ////                }
-            ////                else
-            ////                {
-            ////                    result.hasOutSteel = true;
-            ////                    inSteel = false;
-            ////                    // 驚嘆號
-            ////                    //((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
-            ////                    break;
-            ////                }
-
-            ////                //if (!(inSteel || ((Mesh)model.Entities[model.Entities.Count - 1].EntityData).IsPointInside(
-            ////                //    new Point3D()
-            ////                //    {
-            ////                //        X = ((BoltAttr)item.EntityData).X,
-            ////                //        Y = ((BoltAttr)item.EntityData).Y,
-            ////                //        Z = ((BoltAttr)item.EntityData).Z
-            ////                //    })))//鋼構外
-            ////                //{
-            ////                //    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
-            ////                //}
-            ////            }
-            ////            // 在鋼體中
-            ////            //if (inSteel) { ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false; }
-            ////        }
-            ////    }
-            ////}
-            ////else
-            ////{
-            ////    // 不在工作區域中
-            ////    result.hasOutSteel = true;
-            ////    //((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
-            ////}
-
-            ////if (!result.hasOutSteel)
-            ////{
-            ////model.Blocks.Where(x => x.Entities.GetType() == typeof(Mesh) &&
-            ////((BoltAttr)(x.Entities.Select(y=>y.EntityData)).X == result.Info.X &&
-            ////((BoltAttr)x.Entities).Y == result.Info.Y &&
-            ////((BoltAttr)x.Entities).Z == result.Info.Z &&
-            ////((BoltAttr)x.Entities).Mode == result.Info.Mode);
-            ////if (!model.Blocks.Contains(result.Name))
-            ////{
-            ////    model.Blocks.Add(result);//加入孔位群組圖塊到模型
-            ////    block = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
-            ////    block.EntityData = result.Info;
-            ////    block.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-            ////    model.Entities.Insert(0, block);//加入參考圖塊到模型
-            ////}
-            ////else
-            ////{
-            ////    result.Entities.AddRange(model.Blocks[result.Name].Entities);
-            ////}
-
-            ////}
-            //// else { result.Entities.AddRange(model.Blocks[result.Name].Entities); }
 
             return result;
         }

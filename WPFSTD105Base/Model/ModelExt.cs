@@ -595,13 +595,24 @@ namespace WPFSTD105
                 //兩點選取完成，兩點直線上創建兩點位並添加到模型中
                 else if (drawingHypotenusePoint && points.Count == 2)
                 {
+                    Point3D p1 = new Point3D();
+                    Point3D p2 = new Point3D();
 
-                    Point3D p1 = points[0], p2 = points[1];
-                    if (p1.Y > p2.Y)
-                    {
-                        p1 = points[1];
-                        p2 = points[0];
-                    }
+                    //if (points[0].Y < points[1].Y)
+                    //{ p1 = points[0]; p2 = points[1]; }
+                    // else
+                    //{ p1 = points[1]; p2 = points[0]; }
+
+                     p1 = points[0]; 
+                    p2 = points[1];
+          
+
+
+                    //if (p1.Y < p2.Y)
+                    //{
+                    //    p1 = points[1];
+                    //    p2 = points[0];
+                    //}
 
 
                     CreateHypotenusePoint(TmpStreelAttr, p1, p2);

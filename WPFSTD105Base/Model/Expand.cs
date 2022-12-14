@@ -1103,7 +1103,7 @@ namespace WPFSTD105.Model
                         };
                         bool check = true;
                             // 更新此孔群的GUID 以model.Entities為主
-                            ObSettingVM.UpdateNewGroupBoltsAttrGUID(model,temp);
+                        ObSettingVM.UpdateNewGroupBoltsAttrGUID(model,temp);
                         EntityList meshes = new EntityList();
                         Block blockTemp = new Block();
                         if (blocks != null)
@@ -1129,7 +1129,7 @@ namespace WPFSTD105.Model
                             else
                             {
                                 Bolts3DBlock bolts3DBlock = new Bolts3DBlock(meshes, temp);
-                                model.Blocks.Remove(model.Blocks[bolt.GUID.Value.ToString()]);
+                                model.Blocks.Remove(model.Blocks[temp.GUID.Value.ToString()]);
                                 model.Blocks.Add(bolts3DBlock);
                                 //// 原型鋼有孔，更新Entities
                                 //model.Blocks[bolt.GUID.Value.ToString()].Entities.Clear();
@@ -1151,7 +1151,7 @@ namespace WPFSTD105.Model
                         }
                         else
                         {
-                            // 原型鋼無孔 則加入
+                            //原型鋼無孔 則加入
                             Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out check, meshes, true); //加入到 3d 視圖// XYZ翻前 Vertices翻後
                         }
                     });
@@ -1340,7 +1340,7 @@ namespace WPFSTD105.Model
                         }
                         else
                         {
-                            // 原型鋼無孔 則加入
+                            //原型鋼無孔 則加入
                             Bolts3DBlock.AddBolts(temp, model, out BlockReference botsBlock, out check, meshes, true); //加入到 3d 視圖// XYZ翻前 Vertices翻後
                         }
                     });
