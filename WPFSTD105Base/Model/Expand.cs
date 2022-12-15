@@ -1089,16 +1089,16 @@ namespace WPFSTD105.Model
                             {
                                 BlockName = bolt.BlockName,
                                 Dia = bolt.Dia,
-                                dX = oldBolts != null ? bolt.dX : "0",
-                                dY = oldBolts != null ? bolt.dY : "0",
+                                dX = bolt.dX,
+                                dY = bolt.dY,
                                 Face = bolt.Face,
                                 GUID = bolt.GUID,
-                                Mode = oldBolts != null ? bolt.Mode : AXIS_MODE.PIERCE,
+                                Mode = bolt.Mode,
                                 StartHole = bolt.StartHole,
                                 t = bolt.t,
                                 Type = bolt.Type,
-                                xCount = oldBolts != null ? bolt.xCount : 1,
-                                yCount = oldBolts != null ? bolt.yCount : 1,
+                                xCount = bolt.xCount,
+                                yCount = bolt.yCount,
                                 X = bolt.X,
                                 Y = bolt.Y,
                                 Z = bolt.Z,
@@ -1284,25 +1284,20 @@ namespace WPFSTD105.Model
                             {
                                 BlockName = bolt.BlockName,
                                 Dia = bolt.Dia,
-                                dX = oldBolts != null ? bolt.dX : "0",
-                                dY = oldBolts != null ? bolt.dY : "0",
+                                dX = bolt.dX,
+                                dY = bolt.dY,
                                 Face = bolt.Face,
                                 GUID = bolt.GUID,
-                                Mode = oldBolts != null ? bolt.Mode : AXIS_MODE.PIERCE,
+                                Mode = bolt.Mode,
                                 StartHole = bolt.StartHole,
                                 t = bolt.t,
                                 Type = bolt.Type,
-                                xCount = oldBolts != null ? bolt.xCount : 1,
-                                yCount = oldBolts != null ? bolt.yCount : 1,
+                                xCount = bolt.xCount,
+                                yCount = bolt.yCount,
                                 X = bolt.X,
                                 Y = bolt.Y,
                                 Z = bolt.Z,
                             };
-
-
-
-
-
 
                             EntityList meshes = new EntityList();
                             Block blockTemp = new Block();

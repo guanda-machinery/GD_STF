@@ -5770,7 +5770,7 @@ namespace STD_105
                 if (PreIndex != -1)
                 {
                     this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
-                    //PieceListGridControl.ItemsSource = ViewModel.DataViews;
+                    PieceListGridControl.ItemsSource = ViewModel.DataViews;
                     PieceListGridControl.RefreshData();
                     var rowHandle = PieceListGridControl.GetRowHandleByVisibleIndex(PreIndex);
                     //PieceListGridControl.View.FocusedRowHandle = PreIndex;
