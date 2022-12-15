@@ -400,7 +400,7 @@ namespace WPFSTD105
         public void TransHypotenusePOINTtoPoint(devDept.Eyeshot.Model model)
         {
             List<GroupBoltsAttr> GBA = model.Entities.Where(x=> x.EntityData != null && x.EntityData.GetType()==typeof(GroupBoltsAttr)).Select(x => (GroupBoltsAttr)x.EntityData).Where(x => x.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x).Mode== GD_STD.Enum.AXIS_MODE.HypotenusePOINT).ToList(); ;
-            List<BoltAttr> bolck = model.Blocks.SelectMany(x => x.Entities).Where(x => x.EntityData != null &&  x.EntityData.GetType()==typeof(BoltAttr)).Select(y => (BoltAttr)y.EntityData).Where(x => x.GetType() == typeof(BoltAttr) && ((BoltAttr)x).Mode == GD_STD.Enum.AXIS_MODE.HypotenusePOINT).ToList();
+            List<BoltAttr> bolck = model.Blocks.SelectMany(x => x.Entities).Where(x => x.EntityData != null && x.EntityData.GetType()==typeof(BoltAttr)).Select(y => (BoltAttr)y.EntityData).Where(x => x.GetType() == typeof(BoltAttr) && ((BoltAttr)x).Mode == GD_STD.Enum.AXIS_MODE.HypotenusePOINT).ToList();
 
             GBA.ForEach(x => { x.Mode = GD_STD.Enum.AXIS_MODE.POINT; });
             bolck.ForEach(x => { x.Mode = GD_STD.Enum.AXIS_MODE.POINT; });
