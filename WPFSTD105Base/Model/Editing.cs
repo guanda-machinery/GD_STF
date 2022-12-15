@@ -548,7 +548,7 @@ namespace WPFSTD105
                 p1.Y = p1.Y + steelAttr.W + 150;
                 p2.Y = p2.Y + steelAttr.W + 150;
             }
-            else if (p1.Y >= steelAttr.W + 150)  //  判斷Y位置落在哪一面  ( 背面 )
+            else if (p1.Y >= steelAttr.W + 150 + steelAttr.H)  //  判斷Y位置落在哪一面  ( 背面 )
             {
                 return; // 
                 bback = true; 
