@@ -132,19 +132,16 @@ namespace WPFSTD105.Model
                         entities.Add(cut1);
                     }
 
-
-
-
                     MyCs myCs = new MyCs();
                     ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();                          //  備份當前加工區域數值
                     double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].A);       //  依照腹板斜邊打點比列(短)
                     double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].B);       //  依照腹板斜邊打點比列(長)
 
                     var SteelCut1 = (SteelAttr)cut1.EntityData;
-                    List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
+                    obvm.WriteSteelAttr(SteelCut1);
                     double tmpXPos = place[i].Start;                            // X 位置座標
                     if (i == 0)
-                        tmpXPos = place[i].End - (material.Cut) / 2;                // 判斷是否為第一切割線,是 =>打點位置
+                        tmpXPos = place[i].End - (material.Cut) / 2;            // 判斷是否為第一切割線,是 =>打點位置
                     else
                         tmpXPos = place[i].Start + (material.Cut) / 2;
 
@@ -157,9 +154,8 @@ namespace WPFSTD105.Model
                         else
                             YOffset = YOffset * PosRatioB;                      // 依設定比例打點, 2/3 處
                         //建立孔群
-                        GroupBoltsAttr TmpBoltsArr = new GroupBoltsAttr();      // 螺栓群組設定
-                        TmpBoltsArr.Face = FACE.TOP;                            // 腹板
-                        TmpBoltsArr.StartHole = START_HOLE.START;               // 起始位置
+                        GroupBoltsAttr TmpBoltsArr=new GroupBoltsAttr();    
+                        TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.TOP, START_HOLE.START); // 螺栓群組設定
                         TmpBoltsArr.dX = "0";                                   // X 無間距
                         TmpBoltsArr.dY = "0";                                   // Y 無間距
                         TmpBoltsArr.xCount = 1;                                 // X 方向數量1
@@ -167,15 +163,10 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.Mode = AXIS_MODE.POINT;                     // 打點
                         TmpBoltsArr.X = tmpXPos;                                // X 位置座標
                         TmpBoltsArr.Y = YOffset;                                // Y 位置座標    
-                        TmpBoltsArr.Z = SteelCut1.W / 2 - ((SteelCut1.t1) / 2);   // Z 位置座標  腹板中心位置
-                        TmpBoltsArr.t = SteelCut1.t1;                           // 圓柱
                         TmpBoltsArr.GUID = Guid.NewGuid();                      // 孔群編號
                         TmpBoltsArr.BlockName = "TopCutPoint";                  // 孔群名稱
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool check);  // 依孔群列別設定資訊 建立孔群
-                        B3DB.Add(bolts);
                         entities.Add(blockReference);                           // 孔群加入model.entities
-                        //BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
-                        //Add2DHole(bolts, false);//加入孔位不刷新 2d 視圖
                     }
 
                     continue;
@@ -237,12 +228,10 @@ namespace WPFSTD105.Model
                         file.AddToScene(model);
                         Entity _entity = null;
                         SteelAttr _steelAttr = null;
-                        //.Where(x=>x.EntityData.GetType()==typeof(SteelAttr))
                         model.Entities.ForEach(el =>
                         {
                             if (el.GetType() != typeof(LinearDim))
                             {
-                                //model.Blocks.Where(x => x.GetType() == typeof(SteelAttr)).Select(x => (BlockReference)x.Entities[0]).ForEach(entity =>
                                 model.Blocks[((BlockReference)el).BlockName].Entities.ForEach(entity =>
                                 {
                                     if (entity.EntityData is SteelAttr steelAttr)
@@ -340,9 +329,6 @@ namespace WPFSTD105.Model
                     }
                 }
             }
-
-
-
 
             //model.AssemblySelectionMode = devDept.Eyeshot.Environment.assemblySelectionType.Leaf;
             model.Refresh();
@@ -1442,6 +1428,24 @@ namespace WPFSTD105.Model
             // 由選取零件判斷三面是否為斜邊
             if (model.Entities[model.Entities.Count - 1].EntityData is null)
                 return;
+
+
+
+            // 判斷如果有手動打點則返回  不再繼續做自動斜邊
+            List<Block> delList = new List<Block>();
+            for (int i = 1; i < model.Blocks.Count; i++)
+            {
+                for (int j = 0; j < model.Blocks[i].Entities.Count; j++)
+                {
+                    var a = model.Blocks[i].Entities[j];
+                    if (a.EntityData is BoltAttr && ((BoltAttr)a.EntityData).BlockName == "ManHypotenuse")
+                        return;
+                }
+            }
+
+
+
+
 
             obvm.RemoveHypotenusePoint(model, "AutoHypotenuse");
 

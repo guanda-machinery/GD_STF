@@ -207,14 +207,14 @@ namespace WPFSTD105.ViewModel
         /// 限制Grid出現之內容
         /// </summary>
         public static List<OBJECT_TYPE> allowType = new List<OBJECT_TYPE> {
-            OBJECT_TYPE.RH, OBJECT_TYPE.BH,OBJECT_TYPE.CH};
+            OBJECT_TYPE.RH, OBJECT_TYPE.BH,OBJECT_TYPE.CH,OBJECT_TYPE.LB};
         //, OBJECT_TYPE.H,
         //OBJECT_TYPE.BOX, OBJECT_TYPE.TUBE,
         //OBJECT_TYPE.LB, 
 
-        /// <summary>
-        /// 構件資訊列表
-        /// </summary>
+            /// <summary>
+            /// 構件資訊列表
+            /// </summary>
         public ObservableCollection<SteelAssembly> SteelAssemblies { get; private set; } = new ObservableCollection<SteelAssembly>();
         /// <summary>
         /// 零件字典檔
@@ -766,6 +766,7 @@ namespace WPFSTD105.ViewModel
                                 Boltsbuffer.Z = Steelbuffer.W * 0.5 - Steelbuffer.t1 * 0.5;
                                 break;
                             case OBJECT_TYPE.BOX:
+                            case OBJECT_TYPE.LB:
                             case OBJECT_TYPE.CH:
                                 Boltsbuffer.Z = Steelbuffer.W - Steelbuffer.t1;
                                 break;
@@ -898,6 +899,7 @@ namespace WPFSTD105.ViewModel
                             case OBJECT_TYPE.TUBE:
                             case OBJECT_TYPE.BOX:
                             case OBJECT_TYPE.CH:
+                            case OBJECT_TYPE.LB:
                             case OBJECT_TYPE.H:
                                 Boltsbuffer.Z = Steelbuffer.W - Steelbuffer.t1;
                                 break;
