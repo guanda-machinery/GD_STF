@@ -50,6 +50,9 @@ using DevExpress.Xpf.Spreadsheet.UI.TypedStyles;
 using WPFSTD105.FluentAPI;
 using System.Windows.Threading;
 using GrapeCity.Documents.Pdf.Structure;
+using DocumentFormat.OpenXml.InkML;
+using DevExpress.CodeParser;
+using CodesysIIS;
 
 //using DevExpress.Utils.Extensions;
 namespace WPFSTD105.ViewModel
@@ -66,65 +69,76 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public ProcessingMonitor_MachineVM()
         {
+            STDSerialization ser = new STDSerialization();
             Display3DViewerCommand = Display3DViewer();
-            Finish_UndoneDataViews = _Ser.GetMaterialDataView();
-            Finish_UndoneDataViews.ForEach(el => el.Position = PositionStatusEnum.初始化.ToString());
+            Finish_UndoneDataViews = ser.GetMaterialDataView();
+            Finish_UndoneDataViews.ForEach(el => el.PositionEnum = PositionStatusEnum.初始化);
             _SynchronizationContext = SynchronizationContext.Current;
             _WorkMaterials = new WorkMaterial[Finish_UndoneDataViews.Count];
+            SelectedMaterial_Info_Button_Visibility = Visibility.Collapsed;
 
-
-
-
-            int synIndex = 0;
-            if (ApplicationViewModel.PanelButton.Key != KEY_HOLE.AUTO) //如果沒有在自動狀況下
-            {
-                //如有備份檔就寫回給 Codesys
-                for (int i = synIndex; i < Finish_UndoneDataViews.Count; i++)
+            //初始化後載入備份檔案
+            //AllDrillBoltsDict
+            Finish_UndoneDataViews.ForEach(el =>
+            { 
+                var DrillBData = ser.GetDrillBolts(el.MaterialNumber);
+                if(DrillBData != null)
                 {
-                    //葉:需要比對衝突
-                    WorkMaterial? work = _Ser.GetWorkMaterialBackup(Finish_UndoneDataViews[i].MaterialNumber);
-                    if (work != null)
-                    {
-                        long workOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.WorkMaterial)).ToInt64();
-                        int workSize = Marshal.SizeOf(typeof(WorkMaterial));
-                        if (work.Value.AssemblyNumber != null && work.Value.MaterialNumber != null)
-                        {
-                            WriteCodesysMemor.SetMonitorWorkOffset(work.Value.ToByteArray(), workOffset + (workSize * i)); //發送加工陣列
-                            _SendIndex.Add(Convert.ToInt16(i));
-                            if (work.Value.Position == -2) //如果是完成的狀態
-                            {
-                                Finish_UndoneDataViews[i].Schedule = 100;
-                                Finish_UndoneDataViews[i].Position = "完成";
-                                _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
-                            }
-                            synIndex = i;
-                        }
-                    }
+                    AllDrillBoltsDict[el.MaterialNumber] = DrillBData;
                 }
+            });
 
-            }   //如果是在自動狀況下
-            else //如果有在自動狀況下
-            {
-                using (Memor.ReadMemorClient client = new Memor.ReadMemorClient())
-                {
-                    //同步列表
-                    for (int i = synIndex; i < Finish_UndoneDataViews.Count; i++)
-                    {
-                        _WorkMaterials[i] = client.GetWorkMaterial(Convert.ToUInt16(i));
-                        if (_WorkMaterials[i].BoltsCountL != 0 || _WorkMaterials[i].BoltsCountR != 0 || _WorkMaterials[i].IndexBoltsM != 0)
-                        {
-                            _SendIndex.Add(Convert.ToInt16(i));
-                        }
-                        synIndex = i;
-                    }
-                }
-            }
+
+            //如果有問題再開啟
+            /* int synIndex = 0;
+             if (ApplicationViewModel.PanelButton.Key != KEY_HOLE.AUTO) //如果沒有在自動狀況下
+             {
+                 //如有備份檔就寫回給 Codesys
+                 for (int i = synIndex; i < Finish_UndoneDataViews.Count; i++)
+                 {
+                     //葉:需要比對衝突
+                     WorkMaterial? work = ser.GetWorkMaterialBackup(Finish_UndoneDataViews[i].MaterialNumber);
+                     if (work != null)
+                     {
+                         long workOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.WorkMaterial)).ToInt64();
+                         int workSize = Marshal.SizeOf(typeof(WorkMaterial));
+                         if (work.Value.AssemblyNumber != null && work.Value.MaterialNumber != null)
+                         {
+                             WriteCodesysMemor.SetMonitorWorkOffset(work.Value.ToByteArray(), workOffset + (workSize * i)); //發送加工陣列
+                             _SendIndex.Add(Convert.ToInt16(i));
+                             if (work.Value.Position == -2) //如果是完成的狀態
+                             {
+                                 Finish_UndoneDataViews[i].Schedule = 100;
+                                 Finish_UndoneDataViews[i].PositionEnum = PositionStatusEnum.完成;
+                                 _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
+                             }
+                             synIndex = i;
+                         }
+                     }
+                 }
+
+             }   //如果是在自動狀況下
+             else //如果有在自動狀況下
+             {
+                 using (Memor.ReadMemorClient client = new Memor.ReadMemorClient())
+                 {
+                     //同步列表
+                     for (int i = synIndex; i < Finish_UndoneDataViews.Count; i++)
+                     {
+                         _WorkMaterials[i] = client.GetWorkMaterial(Convert.ToUInt16(i));
+                         if (_WorkMaterials[i].BoltsCountL != 0 || _WorkMaterials[i].BoltsCountR != 0 || _WorkMaterials[i].IndexBoltsM != 0)
+                         {
+                             _SendIndex.Add(Convert.ToInt16(i));
+                         }
+                         synIndex = i;
+                     }
+                 }
+             }*/
 
             //將設定的手臂模式寫入記憶體
-            STDSerialization ser = new STDSerialization();
             FluentAPI.OptionSettings optionSettings = ser.GetOptionSettings();//
             Transport_by_Hand_RadioButtonIsChecked = !optionSettings.HandAuto;
-                //打開選配->自動模式->按鈕取消底線
+            //打開選配->自動模式->按鈕取消底線
             ser.SetOptionSettings(optionSettings);//寫入記錄
             MecOptional mecOptional = JsonConvert.DeserializeObject<MecOptional>(optionSettings.ToString());
             WriteCodesysMemor.SetMecOptional(mecOptional);//寫入記憶體
@@ -143,7 +157,7 @@ namespace WPFSTD105.ViewModel
             {
                 string Local_ErrorInfo = string.Empty;
                 //bool WasConnected = false;
-                while (ReadTaskBoolean)
+                while (TaskBoolean)
                 {
                     try
                     {
@@ -175,7 +189,8 @@ namespace WPFSTD105.ViewModel
             Task.Factory.StartNew(() =>
             {
                 string Local_ErrorInfo = string.Empty;
-                while (ReadTaskBoolean)
+                //掃描是否有手機連線
+                while (TaskBoolean)
                 {
                     if (Input_by_SmartPhone_RadioButtonVMEnable &&
                          Input_by_Computer_RadioButtonVMEnable &&
@@ -192,13 +207,34 @@ namespace WPFSTD105.ViewModel
                             }
                         }
                     }
+
+                    //監視是否有完成配對的 有配對才可點選台車選項
+
+                    var PairIndex = Finish_UndoneDataViews.FindIndex(x => (x.PositionEnum == PositionStatusEnum.軟體配對 ||
+                    x.PositionEnum == PositionStatusEnum.手機配對 ||
+                    x.PositionEnum == PositionStatusEnum.手動配對));
+                    //存在配對
+                    if (PairIndex != -1)
+                        PostageEnable = true;
+                    else
+                        PostageEnable = false;
+
+                    var Channel_Index = Finish_UndoneDataViews.FindIndex(x => (x.PositionEnum == PositionStatusEnum.軟體配對 ||
+                    x.PositionEnum == PositionStatusEnum.手機配對 ||
+                    x.PositionEnum == PositionStatusEnum.手動配對 ||
+                    x.ObjectType == OBJECT_TYPE.CH));
+                    //如果槽鐵配對完成 禁用台車
+                    if (Channel_Index != -1)
+                        TrolleyEnable = false;
+                    else
+                        TrolleyEnable = true;
+
+
                     Thread.Sleep(50);
                 }
             });
 
-
-
-                //初始化 並掃描是否有手機配對
+            //初始化 並掃描是否有手機配對(僅一次)
             Task.Run(() =>
             {
                 int RetryCount = 5;
@@ -207,27 +243,6 @@ namespace WPFSTD105.ViewModel
                     try
                     {
                         WriteTourData();
-                        /*if (MachineAndPhoneAPI.AppServerCommunicate.GetEnableAppPairing(out var Result))
-                        {
-                            if (Result)
-                            {
-                                //若為手機連線模式
-                                Input_by_SmartPhone_RadioButtonIsChecked = true;
-                                Input_by_Computer_RadioButtonIsChecked = false;
-                                TourTaskStart();
-                            }
-                            else
-                            {
-                                Input_by_Computer_RadioButtonIsChecked = true;
-                                Input_by_SmartPhone_RadioButtonIsChecked = false;
-                            }
-                            break;
-                        }
-                        else
-                        {
-                            AddOperatingLog(LogSourceEnum.Software, $"取得手機連線模式失敗，", false);
-                            AddOperatingLog(LogSourceEnum.Software, $"正在重試({i + 1}/{RetryCount})", false);
-                        }*/
                     }
                     catch (Exception ex)
                     {
@@ -237,6 +252,24 @@ namespace WPFSTD105.ViewModel
                     }
                 }
             });
+
+            //定期存檔素材編輯孔位
+            Task.Run(() =>
+            {
+                while(TaskBoolean)
+                {
+                    //如果值不一樣才存檔
+                    AllDrillBoltsDict.ForEach(el =>
+                    {
+                        if (el.Value != ser.GetDrillBolts(el.Key))
+                            ser.SetDrillBolts(el.Key, el.Value);
+                    }); 
+                    Thread.Sleep(100);
+                }
+
+            });
+
+
         }
 
 
@@ -254,6 +287,18 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public int Current { get; set; } = -1;
 
+        /// <summary>
+        /// 送料許可(最上層)
+        /// </summary>
+        public bool PostageEnable { get; set; } = false;
+
+        /// <summary>
+        /// 台車許可(最上層)
+        /// </summary>
+        public bool TrolleyEnable { get; set; } = false;
+
+
+
 
 
         public WPFBase.RelayParameterizedCommand RowAddCommand
@@ -262,7 +307,7 @@ namespace WPFSTD105.ViewModel
             {
                 return new WPFBase.RelayParameterizedCommand(el =>
                 {
-                    if(el is IEnumerable<GD_STD.Data.MaterialDataView>)
+                    if (el is IEnumerable<GD_STD.Data.MaterialDataView>)
                     {
                         foreach (var EachMaterial in el as IEnumerable<GD_STD.Data.MaterialDataView>)
                         {
@@ -300,10 +345,9 @@ namespace WPFSTD105.ViewModel
                 return;
             }
             //若是則可開始加入零件
-            //若選擇已完成零件則顯示該零件已完成
+            //電腦模式下才可加入零件
             if (Input_by_Computer_RadioButtonIsChecked)
             {
-                //這裡要放歷程記錄 -> 加入list                        ClearPButtonModeValue(ref PButton);
                 if (args.Item is MaterialDataView)
                 {
                     InsertMaterial(args.Item as MaterialDataView);
@@ -312,7 +356,6 @@ namespace WPFSTD105.ViewModel
                 {
                     Debugger.Break();
                 }
-
             }
         }
 
@@ -322,81 +365,105 @@ namespace WPFSTD105.ViewModel
             var MaterialIndex = Finish_UndoneDataViews.FindIndex(x => (x == MaterialData));
             if (MaterialIndex != -1)
             {
-                // var argsMaterial = args.Item as MaterialDataView;
-                if (Finish_UndoneDataViews[MaterialIndex].Position == PositionStatusEnum.等待配對.ToString())
+                //若選擇等待配對以外的零件則顯示不可配對
+                if (Finish_UndoneDataViews[MaterialIndex].PositionEnum == PositionStatusEnum.等待配對)
                 {
-                    var Result = MachineAndPhoneAPI.AppServerCommunicate.SetRegisterAssembly(
-                        ApplicationViewModel.ProjectName,
-                        Finish_UndoneDataViews[MaterialIndex].MaterialNumber,
-                        Finish_UndoneDataViews[MaterialIndex].Material,
-                        Finish_UndoneDataViews[MaterialIndex].Profile,
-                        Finish_UndoneDataViews[MaterialIndex].LengthStr,
-                        out var RegisterResult);
-
-                    if (Result)
+                    //該素材沒有零件 跳出提示
+                    if (Finish_UndoneDataViews[MaterialIndex].Parts.Count == 0)
                     {
-                        //error202->Material not found 
-                        if (RegisterResult.data != null)
+                        AddOperatingLog(LogSourceEnum.Machine, $"素材編號：{MaterialData.MaterialNumber}內不包含可加工的零件", true);
+                        return false;
+                    }
+                    else
+                    {
+                        //使用api註冊
+                        var Result = MachineAndPhoneAPI.AppServerCommunicate.SetRegisterAssembly(
+                            ApplicationViewModel.ProjectName,
+                            Finish_UndoneDataViews[MaterialIndex].MaterialNumber,
+                            Finish_UndoneDataViews[MaterialIndex].Material,
+                            Finish_UndoneDataViews[MaterialIndex].Profile,
+                            Finish_UndoneDataViews[MaterialIndex].LengthStr,
+                            out var RegisterResult);
+
+                        if (Result)
                         {
-                            //一次只會加入一筆資料 所以回傳資料list行直接取取[0]
-                            if (RegisterResult.data[0].errorCode == 0)
+                            //error202->Material not found 
+                            if (RegisterResult.data != null)
                             {
-                                foreach (var Data in Finish_UndoneDataViews)
+                                //一次只會加入一筆資料 所以回傳資料list行直接取取[0]
+                                if (RegisterResult.data[0].errorCode == 0)
                                 {
-                                    if (Data.MaterialNumber == Finish_UndoneDataViews[MaterialIndex].MaterialNumber)
+                                    foreach (var Data in Finish_UndoneDataViews)
                                     {
-                                        Data.Position = PositionStatusEnum.軟體配對.ToString();
-                                        break;
+                                        if (Data.MaterialNumber == Finish_UndoneDataViews[MaterialIndex].MaterialNumber)
+                                        {
+                                            Data.PositionEnum = PositionStatusEnum.軟體配對;
+                                            break;
+                                        }
                                     }
+
+                                    HintStep3 = true;
+                                    Finish_UndoneDataViews[MaterialIndex].MachiningStartTime = null;
+                                    Finish_UndoneDataViews[MaterialIndex].MachiningEndTime = null;
+
+                                    AddOperatingLog(LogSourceEnum.Machine, $"加入素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}成功", false);
+                                    WinUIMessageBox.Show(null,
+                                        $"加入素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}成功",
+                                        $"通知",
+                                        MessageBoxButton.OK,
+                                        MessageBoxImage.Exclamation,
+                                        MessageBoxResult.None,
+                                        MessageBoxOptions.None,
+                                        FloatingMode.Adorner);
+                                    return true;
+                                }
+                                else
+                                {
+                                    AddOperatingLog(LogSourceEnum.Machine, $"加入素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}失敗", true);
+                                    Thread.Sleep(100);
+                                    AddOperatingLog(LogSourceEnum.Machine, $"錯誤資訊：{RegisterResult.data[0].errorCode},{RegisterResult.data[0].errorMessage}", true);
                                 }
 
-                                HintStep3 = true;
-
-                                AddOperatingLog(LogSourceEnum.Machine, $"加入素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}成功", false);
+                            }
+                            else
+                            {
                                 WinUIMessageBox.Show(null,
-                                    $"加入素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}成功",
+                                    $"與伺服器溝通成功，但加入素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}失敗",
                                     $"通知",
                                     MessageBoxButton.OK,
                                     MessageBoxImage.Exclamation,
                                     MessageBoxResult.None,
                                     MessageBoxOptions.None,
                                     FloatingMode.Adorner);
-                                return true;
-                            }
-                            else
-                            {
-                                AddOperatingLog(LogSourceEnum.Machine, $"加入素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}失敗", true);
-                                Thread.Sleep(100);
-                                AddOperatingLog(LogSourceEnum.Machine, $"錯誤資訊：{RegisterResult.data[0].errorCode},{RegisterResult.data[0].errorMessage}", true);
+                                AddOperatingLog(LogSourceEnum.Machine, $"與伺服器溝通成功，但加入素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}失敗", false);
                             }
 
                         }
                         else
                         {
                             WinUIMessageBox.Show(null,
-                                $"與伺服器溝通成功，但加入素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}失敗",
-                                $"通知",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Exclamation,
-                                MessageBoxResult.None,
-                                MessageBoxOptions.None,
-                                FloatingMode.Adorner);
-                            AddOperatingLog(LogSourceEnum.Machine, $"與伺服器溝通成功，但加入素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}失敗", false);
+                            $"素材加入失敗",
+                            $"通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Adorner);
+                            AddOperatingLog(LogSourceEnum.Machine, "加入素材失敗！", true);
                         }
-
                     }
-                    else
-                    {
-                        WinUIMessageBox.Show(null,
-                        $"素材加入失敗",
-                        $"通知",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Exclamation,
-                        MessageBoxResult.None,
-                        MessageBoxOptions.None,
-                        FloatingMode.Adorner);
-                        AddOperatingLog(LogSourceEnum.Machine, "加入素材失敗！", true);
-                    }
+                }
+                else if (Finish_UndoneDataViews[MaterialIndex].PositionEnum == PositionStatusEnum.不可配對)
+                {
+                    WinUIMessageBox.Show(null,
+                                        $"素材{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}因尺寸問題無法排入加工",
+                                        $"通知",
+                                        MessageBoxButton.OK,
+                                        MessageBoxImage.Exclamation,
+                                        MessageBoxResult.None,
+                                        MessageBoxOptions.None,
+                                        FloatingMode.Adorner);
+                    AddOperatingLog(LogSourceEnum.Machine, $"素材{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}因尺寸問題無法排入加工", true);
                 }
                 else
                 {
@@ -415,25 +482,7 @@ namespace WPFSTD105.ViewModel
 
 
 
-    //private const string InitPairString = "初始化";
-    //private const string FinishString = "完成";
-    //private const string MachiningString = "加工中";
-    //private const string WaitBePairString = "等待配對";
-    //private const string PhonePairString = "手機配對";
-    //private const string SoftwarePairString = "機台配對";
-    //機台配對:使用api完成之配對
-    //手動配對:使用codesys完成之配對
-    private enum PositionStatusEnum
-        {
-            初始化,
-            未取得狀態,
-            完成,
-            加工中,
-            等待配對,
-            手機配對,
-            軟體配對,
-            手動配對,
-        }
+
 
 
 
@@ -448,26 +497,14 @@ namespace WPFSTD105.ViewModel
             {
                 //將資料表重新排列
                 var FUDataList = _finish_UndoneDataViews.ToList();
-                /*FUDataList.Sort((x, y) =>
-                {
-                    return x.Position.CompareTo(y.Position);
-                });     */
-                //_finish_UndoneDataViews
                 return new ObservableCollection<MaterialDataView>(FUDataList);
             }
             set
             {
-
-                //_undoneDataView = new ObservableCollection<MaterialDataView>(value.ToList().FindAll(x => (x.Position != FinishString)));
-                //_finishDataViews = new ObservableCollection<MaterialDataView>(value.ToList().FindAll(x => (x.Position == FinishString)));
                 _finish_UndoneDataViews = value;
                 OnPropertyChanged("Finish_UndoneDataViews");
             }
         }
-
-
-
-
 
 
 
@@ -486,17 +523,22 @@ namespace WPFSTD105.ViewModel
                 _finish_UndoneDataViews_SelectedItem = value;
                 if (_finish_UndoneDataViews_SelectedItem != null)
                 {
-                    var AssemblyNumberList = new List<string>();
-                    foreach (var M_part in _finish_UndoneDataViews_SelectedItem.Parts)
-                    {
-                        AssemblyNumberList.Add(M_part.AssemblyNumber);
-                    }
                     GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem);
                     AddOperatingLog(LogSourceEnum.Software, $"已選擇素材編號：{_finish_UndoneDataViews_SelectedItem.MaterialNumber}");
                 }
             }
         }
         public ObservableCollection<MaterialDataView> Finish_UndoneDataViews_SelectedItems { get; } = new ObservableCollection<MaterialDataView>();
+
+
+        /// <summary>
+        /// 編輯後全部的加工總數都會存在這裡供比較 用素材編號<see cref="string"/>來分類
+        /// </summary>
+        private Dictionary<string, Dictionary<FACE, DrillBoltsBase>> AllDrillBoltsDict { get; set; } = new Dictionary<string, Dictionary<FACE, DrillBoltsBase>>();
+
+
+
+
 
 
 
@@ -535,57 +577,28 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 素材(多個零件)加工孔位表
         /// </summary>
-        public ObservableCollection<DrillBolts> MachiningCombinational_DrillBoltsItemSource { get; set; }
+        public Dictionary<FACE, DrillBoltsBase> MachiningCombinational_DrillBoltsItemSource { get; set; }
+
+
+
         /// <summary>
         /// 單一零件加工孔位表
         /// </summary>
-        public ObservableCollection<DrillBolts> MachiningDetail_DrillBoltsItemSource { get; set; }
-
-
-        /*
-        private ObservableCollection<DrillBolts> GetDrillBoltsItemCollection(List<string> NumberList)
-        {
-            var PartsDataViews = WPFSTD105.ViewModel.ObSettingVM.GetData();
-            //var PartsDataViews = new ObservableCollection<WPFSTD105.ViewModel.ProductSettingsPageViewModel>(WPFSTD105.ViewModel.ObSettingVM.GetData(false)).ToList();
-            //選擇單一素材
-            //取得專案內所有資料 並找出符合本零件的dataname(dm名) 
-            //有可能會有複數個(選擇素材/單一零件的差別)
-            var PartsList = new List<ProductSettingsPageViewModel>();
-            foreach (var AssemblyNum in NumberList)
-            {
-                PartsList.AddRange(PartsDataViews.FindAll(x => x.AssemblyNumber == AssemblyNum));
-            }
-
-            var DrillBoltsListInfo = new List<DrillBolts>();
-            foreach (var _part in PartsList)
-            {
-                GetMaterialdataDrillBoltsInfo(_part.DataName, out var MaterialDrillBolts);
-                //複數零件時須將相同之加工資料合併
-                //會將不同零件上但孔徑相同的孔數量做加總
-                foreach (var MDrill in MaterialDrillBolts)
-                {
-                    if (DrillBoltsListInfo.Exists(x => (x.WorkType == MDrill.WorkType && x.Face == MDrill.Face && x.DrillHoleDiameter == MDrill.DrillHoleDiameter)))
-                    {
-                        DrillBoltsListInfo.Find(x => (x.WorkType == MDrill.WorkType && x.Face == MDrill.Face && x.DrillHoleDiameter == MDrill.DrillHoleDiameter)).DrillHoleCount += MDrill.DrillHoleCount;
-                    }
-                    else
-                    {
-                        DrillBoltsListInfo.Add(MDrill);
-                    }
-                }
-            }
-            return new ObservableCollection<DrillBolts>(DrillBoltsListInfo);
-        }
-        */
+        public Dictionary<FACE, DrillBoltsBase> MachiningDetail_DrillBoltsItemSource { get; set; } 
 
         private void GetDrillBoltsItemCollection(MaterialDataView view)
         {
-            if(view == null)
+            if (view == null)
             {
-                MachiningCombinational_DrillBoltsItemSource = new ObservableCollection<DrillBolts>();
+                MachiningCombinational_DrillBoltsItemSource = new Dictionary<FACE, DrillBoltsBase>();
+                return;
             }
+            if (view.PositionEnum == PositionStatusEnum.等待配對)
+                SelectedMaterial_Info_Button_Visibility = Visibility.Visible;
+            else
+                SelectedMaterial_Info_Button_Visibility = Visibility.Collapsed;
 
-            var DrillBoltsListInfo = new List<DrillBolts>();
+
             _CreateFileTask?.Wait(); //等待 Task CreateFile 完成 link:ProcessingMonitorVM.cs:CreateFile()
             _SynchronizationContext.Send(t =>
             {
@@ -600,13 +613,14 @@ namespace WPFSTD105.ViewModel
                     Dictionary<FACE, List<Drill>> keyValuePairs = new Dictionary<FACE, List<Drill>>();
                     if (File.Exists($@"{ApplicationVM.DirectoryMaterial()}\{view.MaterialNumber}.dm"))
                     {
-                        ReadFile readFile = _Ser.ReadMaterialModel(view.MaterialNumber);
+                        STDSerialization ser = new STDSerialization();
+                        ReadFile readFile = ser.ReadMaterialModel(view.MaterialNumber);
                         _BufferModel.Clear();
                         readFile.DoWork();
                         readFile.AddToScene(_BufferModel);
                         //}, null);
-                        FACE face = FACE.TOP;
-                        var steelPart = _Ser.GetPart($"{view.Profile.GetHashCode()}")[0];
+                        //FACE face = FACE.TOP;
+                        var steelPart = ser.GetPart($"{view.Profile.GetHashCode()}")[0];
                         _BufferModel.Entities.ForEach(el =>
                         {
                             BlockReference blockReference = (BlockReference)el;
@@ -635,36 +649,67 @@ namespace WPFSTD105.ViewModel
                                 _BufferModel.Blocks[blockReference.BlockName].Entities.ForEach(steel =>
                                 {
 
-                                    //Point3D[] oCut = steel.Vertices.Select(el =>  )
                                 });
                             }
                         });
 
 
-
+                        var DrillBoltsListDict= new Dictionary<FACE, DrillBoltsBase>();
                         keyValuePairs.ForEach(keyValuePair =>
                         {
                             keyValuePair.Value.ForEach(DrillData =>
                             {
-                                if (DrillBoltsListInfo.Exists(x => (x.WorkAXIS_MODE == DrillData.AXIS_MODE && x.Face == keyValuePair.Key && x.DrillHoleDiameter == DrillData.Dia)))
+                                if (!DrillBoltsListDict.ContainsKey(keyValuePair.Key))
+                                    DrillBoltsListDict.Add(keyValuePair.Key, new DrillBoltsBase());
+
+                                var DrillBIndex = DrillBoltsListDict[keyValuePair.Key].DrillBoltList.FindIndex(x => (x.WorkAXIS_MODE == DrillData.AXIS_MODE  && x.DrillHoleDiameter == DrillData.Dia));
+                                if (DrillBIndex!=-1)
                                 {
-                                    DrillBoltsListInfo.Find(x => (x.WorkAXIS_MODE == DrillData.AXIS_MODE && x.Face == keyValuePair.Key && x.DrillHoleDiameter == DrillData.Dia)).DrillHoleCount++;
+                                    DrillBoltsListDict[keyValuePair.Key].DrillBoltList[DrillBIndex].DrillHoleCount++;
                                 }
                                 else
                                 {
-                                    DrillBoltsListInfo.Add(new DrillBolts()
+                                    DrillBoltsListDict[keyValuePair.Key].DrillBoltList.Add( new DrillBolt()
                                     {
+                                        DrillWork = true,
                                         WorkAXIS_MODE = DrillData.AXIS_MODE,
-                                        Face = keyValuePair.Key,
                                         DrillHoleCount = 1,
-                                        DrillHoleDiameter = DrillData.Dia
+                                        Origin_DrillHoleDiameter = DrillData.Dia
                                     });
                                 }
                             });
                         });
 
+                        //Debugger.Break();
+                        //先顯示差異 再加入空缺的
+                        if (AllDrillBoltsDict.ContainsKey(view.MaterialNumber))
+                        {
+                            //將舊的值取出修改DrillWork後 重新綁定
+                            AllDrillBoltsDict[view.MaterialNumber].ForEach(el =>
+                            {
+                                if(DrillBoltsListDict.ContainsKey(el.Key))
+                                {
+                                    DrillBoltsListDict[el.Key].Dia_Identification = el.Value.Dia_Identification;
+                                    DrillBoltsListDict[el.Key].UnitaryToolTop = el.Value.UnitaryToolTop;
+                                    el.Value.DrillBoltList.ForEach(Db =>
+                                    {
+                                        int DBIndex = DrillBoltsListDict[el.Key].DrillBoltList.FindIndex(x => (x.WorkAXIS_MODE == Db.WorkAXIS_MODE && x.DrillHoleDiameter == Db.DrillHoleDiameter));
+                                        if (DBIndex != -1)
+                                        {
+                                            DrillBoltsListDict[el.Key].DrillBoltList[DBIndex].DrillWork = Db.DrillWork;
+                                        }
+                                    });
+                                }
+                            });
+                        }
 
-                        MachiningCombinational_DrillBoltsItemSource = new ObservableCollection<DrillBolts>(DrillBoltsListInfo);
+                        //這樣指定後兩邊資料會產生繫結 後面的DrillBoltsListInfo值變更會影響到前面的AllDrillBoltsDict內的List
+                        //之後需要改資料時只需更動任一資料型
+                        //AllDrillBoltsDict[view.MaterialNumber].Dia_Identification;
+                        AllDrillBoltsDict[view.MaterialNumber] = DrillBoltsListDict;
+
+                        //如果有紀錄->查詢->變更DrillWork的值
+                        MachiningCombinational_DrillBoltsItemSource = DrillBoltsListDict;
                     }
                 }
                 catch (Exception ex)
@@ -674,64 +719,98 @@ namespace WPFSTD105.ViewModel
             }, null);
         }
 
-
-
-
-        /// <summary>
-        /// 給定DataName 回傳該零件所有的孔位及位置
-        /// </summary>
-        /// <param name="DataName"></param>
-        /// <param name="DrillBoltsList"></param>
-        /// <returns></returns>
-        private bool GetMaterialdataDrillBoltsInfo(string DataName, out List<DrillBolts> DrillBoltsList)
+        
+        private void GetDrillBoltsItemCollection(MaterialPartDetail view)
         {
-            DrillBoltsList = new List<DrillBolts>();
-            var _BufferModel = new devDept.Eyeshot.Model();
-            _BufferModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
-            _BufferModel.InitializeViewports();
-            _BufferModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
-
-            var ser = new STDSerialization();
-            var readFile = ser.ReadPartModel(DataName); //讀取檔案內容
-            if (readFile == null)
+            if (view == null)
             {
-                return false;
-                //continue;
+                MachiningCombinational_DrillBoltsItemSource = new Dictionary<FACE, DrillBoltsBase>();
             }
 
-            readFile.DoWork();//開始工作
-            readFile.AddToScene(_BufferModel);//將讀取完的檔案放入到模型
-            if (_BufferModel.Entities[_BufferModel.Entities.Count - 1].EntityData is null)
+            _CreateFileTask?.Wait(); //等待 Task CreateFile 完成 link:ProcessingMonitorVM.cs:CreateFile()
+            _SynchronizationContext.Send(t =>
             {
-                return false;
-                //continue;
-            }
-            //ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
-            //WriteSteelAttr((SteelAttr)_BufferModel.Blocks[1].Entities[0].EntityData);//寫入到設定檔內
-            //ViewModel.GetSteelAttr();
-            //_BufferModel.Blocks[1] = new Steel3DBlock((Mesh)_BufferModel.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式(零件)
-
-            for (int i = 0; i < _BufferModel.Entities.Count; i++)//逐步展開 3d 模型實體
-            {
-                if (_BufferModel.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //是螺栓
+                try
                 {
-                    BlockReference blockReference = (BlockReference)_BufferModel.Entities[i]; //取得參考圖塊
-                    var BoltsAttr = blockReference.EntityData as GroupBoltsAttr;
-                    //BoltsList.Add(BoltsAttr);
+                    var _BufferModel = new devDept.Eyeshot.Model();
+                    _BufferModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
+                    _BufferModel.InitializeViewports();
+                    _BufferModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
 
-                    //如果直徑和面已經存在 則加入舊的 否則建立新的資料
-                    if (DrillBoltsList.Exists(x => (x.DrillHoleDiameter == BoltsAttr.Dia && x.Face == BoltsAttr.Face)))
+                    _BufferModel.Clear();
+                    Dictionary<FACE, List<Drill>> keyValuePairs = new Dictionary<FACE, List<Drill>>();
+                    if (File.Exists($@"{ApplicationVM.DirectoryMaterial()}\{view.MaterialNumber}.dm"))
                     {
-                        DrillBoltsList.Find(x => x.DrillHoleDiameter == BoltsAttr.Dia).DrillHoleCount += BoltsAttr.Count;
-                    }
-                    else
-                    {
-                        DrillBoltsList.Add(new DrillBolts { DrillHoleDiameter = BoltsAttr.Dia, DrillHoleCount = BoltsAttr.Count, Face = BoltsAttr.Face });
+                        STDSerialization ser = new STDSerialization();
+
+                        ReadFile readFile = ser.ReadMaterialModel(view.MaterialNumber);
+                        _BufferModel.Clear();
+                        readFile.DoWork();
+                        readFile.AddToScene(_BufferModel);
+                        //}, null);
+                        //FACE face = FACE.TOP;
+                        var steelPart = ser.GetPart($"{view.Profile.GetHashCode()}")[0];
+
+                        _BufferModel.Entities.ForEach(el =>
+                        {
+                            BlockReference blockReference = (BlockReference)el;
+                            if (blockReference.Attributes.ContainsKey("Bolts"))
+                            {
+                                Entity[] entities = blockReference.Explode(_BufferModel.Blocks); //返回圖塊引用單個實體列表
+                                BoltAttr attr = (BoltAttr)entities[0].EntityData;
+
+
+                                if (!keyValuePairs.ContainsKey(attr.Face))
+                                {
+                                    keyValuePairs.Add(attr.Face, new List<Drill>());
+                                }
+
+                                if (attr.Face == FACE.TOP)
+                                {
+                                    keyValuePairs[attr.Face].AddRange(BoltAsDrill(entities, new Transformation(new Point3D(0, steelPart.H, 0), Vector3D.AxisX, new Vector3D(0, -1), Vector3D.AxisZ)));
+                                }
+                                else
+                                {
+                                    keyValuePairs[attr.Face].AddRange(BoltAsDrill(entities));
+                                }
+                            }
+                            else if (blockReference.Attributes.ContainsKey("Steel"))
+                            {
+                                SteelAttr steelAttr = (SteelAttr)blockReference.EntityData;
+                            }
+                        });
+
+
+
+                        var DrillBoltsListInfo = new DrillBoltsBase();
+                        keyValuePairs.ForEach(keyValuePair =>
+                        {
+                            keyValuePair.Value.ForEach(DrillData =>
+                            {
+                                if (DrillBoltsListInfo.DrillBoltList.Exists(x => (x.WorkAXIS_MODE == DrillData.AXIS_MODE && x.DrillHoleDiameter == DrillData.Dia)))
+                                {
+                                    DrillBoltsListInfo.DrillBoltList.Find(x => (x.WorkAXIS_MODE == DrillData.AXIS_MODE && x.DrillHoleDiameter == DrillData.Dia)).DrillHoleCount++;
+                                }
+                                else
+                                {
+                                    DrillBoltsListInfo.DrillBoltList.Add(new DrillBolt()
+                                    {
+                                        WorkAXIS_MODE = DrillData.AXIS_MODE,
+                                        DrillHoleCount = 1,
+                                        Origin_DrillHoleDiameter = DrillData.Dia
+                                    });
+                                }
+                            });
+
+                            MachiningDetail_DrillBoltsItemSource.Add(keyValuePair.Key, DrillBoltsListInfo);
+                        });
                     }
                 }
-            }
+                catch (Exception ex)
+                {
 
-            return true;
+                }
+            }, null);
         }
 
 
@@ -765,7 +844,7 @@ namespace WPFSTD105.ViewModel
                                     AssemblyNumber = FUPart.AssemblyNumber,
                                     PartNumber = FUPart.PartNumber,
                                     Length = FUPart.Length,
-                                    Position = FUdataviews.Position,
+                                    Position = FUdataviews.PositionEnum,
                                 });
                             }
                         }
@@ -789,13 +868,19 @@ namespace WPFSTD105.ViewModel
             set
             {
                 _finish_UndoneDataViewsDetail_SelectedItem = value;
+
+                if (_finish_UndoneDataViewsDetail_SelectedItem != null)
+                {
+                    GetDrillBoltsItemCollection(_finish_UndoneDataViewsDetail_SelectedItem);
+                    AddOperatingLog(LogSourceEnum.Software, $"已選擇零件編號：{_finish_UndoneDataViewsDetail_SelectedItem.PartNumber}");
+                }
             }
         }
 
         /// <summary>
         /// 展開素材內的零件所使用的資料表
         /// </summary>
-        public struct MaterialPartDetail
+        public class MaterialPartDetail
         {
             /// <summary>
             /// /// 排版編號
@@ -824,17 +909,8 @@ namespace WPFSTD105.ViewModel
             /// <summary>
             /// 位置
             /// </summary>
-            public string Position { get; set; }
+            public PositionStatusEnum Position { get; set; }
         }
-
-
-
-
-
-
-        //public GridControl Combinational_List_GridControl { get; set; } = new GridControl();
-
-
 
 
         public GridControl ScheduleGridC { get; set; } = new GridControl();
@@ -901,10 +977,6 @@ namespace WPFSTD105.ViewModel
 
 
 
-
-
-
-
         #endregion
 
         #region 私有屬性
@@ -912,7 +984,7 @@ namespace WPFSTD105.ViewModel
         private ManualResetEvent manualResetEvent = new ManualResetEvent(false);
         private MaterialDataView _SelectedItem;
         private bool _DsposedValue;
-        private STDSerialization _Ser = new STDSerialization();
+        //private STDSerialization _Ser = new STDSerialization();
         private Task _CreateFileTask;
         private Task _WriteCodesysTask;
         private SynchronizationContext _SynchronizationContext;
@@ -1059,11 +1131,9 @@ namespace WPFSTD105.ViewModel
                             {
                                 index = read.GetIndex();
                             }
-                            //MaterialDataView dataView = (MaterialDataView)el;
-                            int selected = Finish_UndoneDataViews.IndexOf(dataView);
                             short[] value = new short[index.Length + 1];
                             Array.Copy(index, value, index.Length);
-                            value[value.Length - 1] = Convert.ToInt16(selected);
+                            value[value.Length - 1] = Convert.ToInt16(Finish_UndoneDataViews.IndexOf(dataView));
                             long indexOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.Index)).ToInt64(); //index 偏移量
                             byte[] writeByte = value.ToByteArray();
                             using (Memor.WriteMemorClient write = new Memor.WriteMemorClient())
@@ -1073,7 +1143,7 @@ namespace WPFSTD105.ViewModel
                             var FIndex = Finish_UndoneDataViews.FindIndex(x => x == dataView);
                             if (FIndex != -1)
                             {
-                                Finish_UndoneDataViews[FIndex].Position = PositionStatusEnum.手動配對.ToString();
+                                Finish_UndoneDataViews[FIndex].PositionEnum = PositionStatusEnum.手動配對;
                             }
                         });
                     }
@@ -1087,19 +1157,17 @@ namespace WPFSTD105.ViewModel
             {
                 return new WPFBase.RelayParameterizedCommand(el =>
                 {
-                    var MDV_SelectedItems = el as IEnumerable<GD_STD.Data.MaterialDataView>;
+                    var MDV_SelectedItems =( el as IEnumerable<GD_STD.Data.MaterialDataView>).ToList();
+
+                    if (MDV_SelectedItems.Exists(e => (e.PositionEnum == PositionStatusEnum.加工中)))
+                    {
+                        MDV_SelectedItems.RemoveAll(e => (e.PositionEnum == PositionStatusEnum.加工中));
+                    }
+
                     if (MDV_SelectedItems != null)
                     {
                         MDV_SelectedItems.ForEach(dataView =>
                         {
-
-                            short[] index;
-                            using (Memor.ReadMemorClient read = new Memor.ReadMemorClient())
-                            {
-                                index = read.GetIndex();
-
-                            }
-                            //MaterialDataView dataView = (MaterialDataView)el;
                             int selected = Finish_UndoneDataViews.IndexOf(dataView);
                             if (selected != -1)
                             {
@@ -1109,7 +1177,6 @@ namespace WPFSTD105.ViewModel
                                 long cWork = _WorkOffset + (_WorkSize * selected);
                                 using (Memor.WriteMemorClient write = new Memor.WriteMemorClient())
                                 {
-
                                     WriteCodesysMemor.SetMonitorWorkOffset(_WorkMaterials[selected].ToByteArray(), cWork); //發送加工陣列
                                 }
                             }
@@ -1134,7 +1201,6 @@ namespace WPFSTD105.ViewModel
                              {
                                  index = read.GetIndex();
                              }
-                             //MaterialDataView dataView = el as MaterialDataView;
                              int selected = Finish_UndoneDataViews.IndexOf(dataView);
                              int iIndex = Array.IndexOf(index, selected);
                              if (iIndex != -1)
@@ -1153,7 +1219,87 @@ namespace WPFSTD105.ViewModel
 
             }
         }
-        #endregion
+
+        //復原素材狀態->會送資料給機台更改狀態 然後刪除備份檔案
+        public WPFBase.RelayParameterizedCommand RecoverCommand
+        {
+            get
+            {
+                return new WPFBase.RelayParameterizedCommand(el =>
+                {
+
+                    try
+                    {
+                        var MDV_SelectedItems = (el as IEnumerable<GD_STD.Data.MaterialDataView>).ToList();
+                        if (MDV_SelectedItems.Exists(e => (e.PositionEnum == PositionStatusEnum.加工中)))
+                        {
+                            //若有包含加工中的檔案 詢問後做動作
+                            MessageBoxResult messageBoxResult = WinUIMessageBox.Show(null,
+                                $"復原的素材有包含正在加工中的素材，請確認是否要移除加工中的素材", 
+                                "通知",
+                                MessageBoxButton.YesNoCancel,
+                                MessageBoxImage.Warning,
+                                MessageBoxResult.None,
+                                MessageBoxOptions.ServiceNotification,
+                                FloatingMode.Adorner);
+
+                            if (messageBoxResult == MessageBoxResult.Yes)
+                                MDV_SelectedItems.RemoveAll(e => (e.PositionEnum == PositionStatusEnum.加工中));
+               
+                            if (messageBoxResult == MessageBoxResult.Cancel)
+                                return;
+                        }
+
+                        if (MDV_SelectedItems != null)
+                        {
+                            ClearAppServerPairWorkList(MDV_SelectedItems.Select(x => (x.MaterialNumber)).ToList());
+                            MDV_SelectedItems.ForEach(Fu =>
+                            {
+                                var Xindex = Finish_UndoneDataViews.FindIndex(x => x == Fu);
+                                if (Xindex != -1)
+                                {
+                                    AddOperatingLog(LogSourceEnum.Machine, $"清除素材編號{Fu.MaterialNumber}的加工資料");
+                                    ClearMonitorWorkList(Xindex);
+                                }
+                            });
+
+                            WinUIMessageBox.Show(null,
+                                $"已清除選擇素材的加工資料",
+                                $"通知",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Exclamation,
+                                MessageBoxResult.None,
+                                MessageBoxOptions.None,
+                                FloatingMode.Adorner);
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+
+                    }
+
+                });
+             }
+        }
+
+
+
+        public WPFBase.RelayParameterizedCommand UnregisterCommand
+        {
+            get
+            {
+                return new WPFBase.RelayParameterizedCommand(el =>
+                {
+                    var MDV_SelectedItems = (el as IEnumerable<GD_STD.Data.MaterialDataView>).ToList();
+                    MDV_SelectedItems.RemoveAll(e => (e.PositionEnum == PositionStatusEnum.加工中));
+                    if (MDV_SelectedItems != null)
+                    {
+                        ClearAppServerPairWorkList(MDV_SelectedItems.Select(x => (x.MaterialNumber)).ToList());
+                    }
+                });
+            }
+        }
+                #endregion
 
 
         private void VM_AssemblyPart(devDept.Eyeshot.Model model, string materialNumber)
@@ -1444,7 +1590,7 @@ namespace WPFSTD105.ViewModel
             return result;
         }
 
-        private bool ReadTaskBoolean = true;
+        private bool TaskBoolean = true;
 
         /// <summary>
         /// 寫入加工參數到 Codesys <see cref="GD_STD.Phone.MonitorWork"/>
@@ -1474,7 +1620,8 @@ namespace WPFSTD105.ViewModel
                                                                         .ToArray();
                 if (File.Exists(ApplicationVM.WorkMaterialOtherBackup())) //如果有其他資訊備份檔
                 {
-                    workOther = _Ser.GetWorkMaterialOtherBackup();
+                    STDSerialization ser = new STDSerialization();
+                    workOther = ser.GetWorkMaterialOtherBackup();
                     if (workOther != null)
                     {
                         current = workOther.Current;
@@ -1485,7 +1632,8 @@ namespace WPFSTD105.ViewModel
                 }
                 if (File.Exists(ApplicationVM.WorkMaterialIndexBackup())) //如果有 index 備份檔
                 {
-                    short[] dataIndex = _Ser.GetWorkMaterialIndexBackup();
+                    STDSerialization ser = new STDSerialization();
+                    short[] dataIndex = ser.GetWorkMaterialIndexBackup();
 
                     if (ApplicationViewModel.ProjectName == read.GetProjectName()) //如果相同專案名稱
                     {
@@ -1495,7 +1643,6 @@ namespace WPFSTD105.ViewModel
                     {
                         if (dataIndex.Length != 0)
                             Array.Copy(dataIndex, index, current == -1 ? 0 : current + 1); //複製備份檔的 index 到要發送的 index
-
                     }
                 }
 
@@ -1532,8 +1679,8 @@ namespace WPFSTD105.ViewModel
                 long ct2 = cWork + _t2Offset;
                 long cGuid = cWork + _GuidOffset;
                 #endregion
-
-                var SteelPartCollection = _Ser.GetPart($"{view.Profile.GetHashCode()}");
+                STDSerialization ser = new STDSerialization();
+                var SteelPartCollection = ser.GetPart($"{view.Profile.GetHashCode()}");
                 if (SteelPartCollection != null && view.Parts.Count != 0)
                 {
                     var steelPart = SteelPartCollection[0];
@@ -1567,7 +1714,7 @@ namespace WPFSTD105.ViewModel
         /// <param name="cWork">目前陣列記憶體偏移量</param>
         /// <param name="cutPointX">切割點 X 座標</param>
         /// <param name="h">寬度</param>
-        private void SendDrill(long boltsCountOffset, long drOffset, List<Drill> drills, SteelPart steelPart, long cWork, double h, double length, double[] cutPointX = null)
+        private void SendDrillToMachine(long boltsCountOffset, long drOffset, List<Drill> drills, SteelPart steelPart, long cWork, double h, double length, double[] cutPointX = null)
         {
             List<Drill> dList = new List<Drill>();
             drills.ForEach(el =>
@@ -1620,10 +1767,8 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 發送加工訊息
         /// </summary>
-
-        private void SendDrill(int index)
+        private void SendDrill(int index, MaterialDataView view)
         {
-
             _CreateFileTask?.Wait(); //等待 Task CreateFile 完成 link:ProcessingMonitorVM.cs:CreateFile()
             _SynchronizationContext.Send(t =>
             {
@@ -1637,21 +1782,17 @@ namespace WPFSTD105.ViewModel
                     _BufferModel.Clear();
                     //List<double> cutPointX = new List<double>();
                     //產生加工陣列
-                    var view = Finish_UndoneDataViews[index];
-
-
-                    AddOperatingLog(LogSourceEnum.Machine, $"發送排版編號{view.MaterialNumber}的加工訊息", false);
-
                     Dictionary<FACE, List<Drill>> keyValuePairs = new Dictionary<FACE, List<Drill>>();
                     if (File.Exists($@"{ApplicationVM.DirectoryMaterial()}\{view.MaterialNumber}.dm"))
                     {
-                        ReadFile readFile = _Ser.ReadMaterialModel(view.MaterialNumber);
+                        STDSerialization ser = new STDSerialization();
+                        ReadFile readFile = ser.ReadMaterialModel(view.MaterialNumber);
                         _BufferModel.Clear();
                         readFile.DoWork();
                         readFile.AddToScene(_BufferModel);
                         //}, null);
                         FACE face = FACE.TOP;
-                        var steelPart = _Ser.GetPart($"{view.Profile.GetHashCode()}")[0];
+                        var steelPart = ser.GetPart($"{view.Profile.GetHashCode()}")[0];
                         _BufferModel.Entities.ForEach(el =>
                         {
                             BlockReference blockReference = (BlockReference)el;
@@ -1685,29 +1826,44 @@ namespace WPFSTD105.ViewModel
                             }
                         });
 
+                        //實際加工的資料 
+                        var ActualDrillDict = new Dictionary<FACE, List<Drill>>();
+                        //使用判斷式只保留要加工的孔位/加工方法
+                        if (AllDrillBoltsDict.TryGetValue(Finish_UndoneDataViews[index].MaterialNumber,out var DrillBoltC))
+                        {
+                            DrillBoltC.ForEach(el => 
+                            {
+                                el.Value.DrillBoltList.ForEach(DB =>
+                                {
+                                    //要加入的加工孔位
+                                    if (DB.DrillWork)
+                                    {
+                                        if (!ActualDrillDict.ContainsKey(el.Key))
+                                            ActualDrillDict[el.Key] = new List<Drill>();
+
+                                        //只保留相同工作模式和孔徑
+                                        ActualDrillDict[el.Key].AddRange(keyValuePairs[el.Key].FindAll(x => (x.Dia == DB.DrillHoleDiameter && x.AXIS_MODE == DB.WorkAXIS_MODE)));
+                                    }
+                                });
+                            });
+                        }
+                        else
+                        {
+                            ActualDrillDict = new Dictionary<FACE, List<Drill>>(keyValuePairs);
+                        }
+
                         long cWork = _WorkOffset + _WorkSize * index;
-
-                        //將孔轉成點
-                        if (true)
-                        {
-                            Debugger.Break();
-                        }
-
-
-                        if (keyValuePairs.ContainsKey(FACE.FRONT))
-                        {
-                            SendDrill(_BoltsCountLOffset, _DrLOffset, keyValuePairs[FACE.FRONT], steelPart, cWork, steelPart.W, Finish_UndoneDataViews[index].LengthStr, null);
-                        }
-                        if (keyValuePairs.ContainsKey(FACE.TOP))
-                        {
-                            SendDrill(_BoltsCountMOffset, DrMOffset, keyValuePairs[FACE.TOP], steelPart, cWork, steelPart.H, Finish_UndoneDataViews[index].LengthStr, null);
-                        }
-                        if (keyValuePairs.ContainsKey(FACE.BACK))
-                        {
-                            SendDrill(_BoltsCountROffset, _DrROffset, keyValuePairs[FACE.BACK], steelPart, cWork, steelPart.W, Finish_UndoneDataViews[index].LengthStr, null);
-                        }
+                        if (ActualDrillDict.ContainsKey(FACE.FRONT))
+                            SendDrillToMachine(_BoltsCountLOffset, _DrLOffset, ActualDrillDict[FACE.FRONT], steelPart, cWork, steelPart.W, Finish_UndoneDataViews[index].LengthStr, null);
+                        if (ActualDrillDict.ContainsKey(FACE.TOP))
+                            SendDrillToMachine(_BoltsCountMOffset, DrMOffset, ActualDrillDict[FACE.TOP], steelPart, cWork, steelPart.H, Finish_UndoneDataViews[index].LengthStr, null);
+                        if (ActualDrillDict.ContainsKey(FACE.BACK))
+                            SendDrillToMachine(_BoltsCountROffset, _DrROffset, ActualDrillDict[FACE.BACK], steelPart, cWork, steelPart.W, Finish_UndoneDataViews[index].LengthStr, null);
                     }
-
+                    else
+                    {
+                        AddOperatingLog(LogSourceEnum.Software, $"找不到{view.MaterialNumber}.dm", true);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -1774,6 +1930,30 @@ namespace WPFSTD105.ViewModel
                 drills[i].AXIS_MODE = attr.Mode;
             });
 
+            //只保留特定半徑之功能(只看刀徑 不管加工類型)
+            if (false)
+            {
+                var DrillList = new List<Drill>();
+
+                drills.ForEach(el =>
+                {
+                    //之後改成指定刀徑
+
+                    //鑽頭可對應鑽孔 打點等功能
+                    if ((el.AXIS_MODE == AXIS_MODE.PIERCE || el.AXIS_MODE == AXIS_MODE.POINT) && el.Dia == 10)
+                    {
+                        DrillList.Add(el);
+                    }
+                    else
+                    {
+
+                    }
+                });
+                drills = DrillList.ToArray();
+            }
+
+
+            //將孔轉換成點 功能
             if (DrillPin_Mode_RadioButtonIsEnable)
             {
                 var DrillList = new List<Drill>();
@@ -1783,16 +1963,15 @@ namespace WPFSTD105.ViewModel
                     if (el.AXIS_MODE == AXIS_MODE.PIERCE)
                     {
                         el.AXIS_MODE = AXIS_MODE.POINT;
-                       
                     }
-                   
+
                     if (el.AXIS_MODE == AXIS_MODE.POINT)
                     {
                         DrillList.Add(el);
                     }
                 });
                 //將孔加工轉換成點 並丟棄其他加工方式
-                return DrillList; 
+                return DrillList;
             }
             else
             {
@@ -1815,6 +1994,7 @@ namespace WPFSTD105.ViewModel
         public async void CreateFile(WPFSTD105.ModelExt _Model)
         {
 
+            STDSerialization ser = new STDSerialization();
 
             DevExpress.Xpf.Core.SplashScreenManager ProcessingScreenWin = DevExpress.Xpf.Core.SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
             ProcessingScreenWin.ViewModel.Status = "正在產生缺少的素材3D視圖";
@@ -1846,7 +2026,8 @@ namespace WPFSTD105.ViewModel
                             {
                                 _Model.Clear();
                                 _Model.AssemblyPart(el_MaterialNumber);
-                                _Ser.SetMaterialModel(el_MaterialNumber, _Model);//儲存 3d 視圖
+
+                                ser.SetMaterialModel(el_MaterialNumber, _Model);//儲存 3d 視圖
                                 break;
                             }
                             catch (Exception ex)
@@ -1868,7 +2049,7 @@ namespace WPFSTD105.ViewModel
 
             _SynchronizationContext.Send(t => _Model.Clear(), null);
             await Task.Yield();
-            _Ser.SetMaterialDataView(Finish_UndoneDataViews);
+            ser.SetMaterialDataView(Finish_UndoneDataViews);
         }
 
 
@@ -1895,7 +2076,7 @@ namespace WPFSTD105.ViewModel
                     _CreateFileTask?.Dispose();
                     _WriteCodesysTask?.Dispose();
 
-                    ReadTaskBoolean = false;
+                    TaskBoolean = false;
                 }
                 // TODO: 釋出非受控資源 (非受控物件) 並覆寫完成項
                 // TODO: 將大型欄位設為 Null
@@ -1977,9 +2158,7 @@ namespace WPFSTD105.ViewModel
                             using (Memor.ReadMemorClient read = new Memor.ReadMemorClient())
                             {
                                 Type type = typeof(MonitorWork);
-                                long moveOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.Move)).ToInt64(); //index 偏移量
-                                byte[] value = new byte[1] { 1 };
-                                write.SetMonitorWorkOffset(value, moveOffset);//呼叫台車
+                                write.SetMonitorWorkOffset(new byte[1] { 1 }, Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.Move)).ToInt64());//呼叫台車
                                 reply = read.GetInstantMessage();
                             }
                             var _ = reply.Where(el => el != 0); //Codesys 回復訊息
@@ -2055,7 +2234,7 @@ namespace WPFSTD105.ViewModel
                                     AddOperatingLog(LogSourceEnum.Software, "手臂切換回自動模式");
                                     optionSettings.HandAuto = true; //修改參數
                                     ser.SetOptionSettings(optionSettings);//寫入記憶體
-                                    Thread.Sleep(500); 
+                                    Thread.Sleep(500);
                                     MecOptional mecOptional = JsonConvert.DeserializeObject<MecOptional>(optionSettings.ToString());
                                     WriteCodesysMemor.SetMecOptional(mecOptional);//寫入記憶體
                                 }
@@ -2130,10 +2309,9 @@ namespace WPFSTD105.ViewModel
                             if (GD_STD.Properties.Optional.Default.HandAuto)
                             {
                                 STDSerialization ser = new STDSerialization();
-                                //FluentAPI.MecSetting mecSetting = ser.GetMecSetting();
                                 FluentAPI.OptionSettings optionSettings = ser.GetOptionSettings();//讀取記憶體
-                                //打開選配->自動模式->按鈕取消底線
-                                
+                                                                                                  //打開選配->自動模式->按鈕取消底線
+
                                 optionSettings.HandAuto = !optionSettings.HandAuto;
                                 if (optionSettings.HandAuto)
                                 {
@@ -2227,10 +2405,11 @@ namespace WPFSTD105.ViewModel
 
 
 
+        public Visibility SelectedMaterial_Info_Button_Visibility { get; set; } 
 
 
         public bool DrillHole_Mode_RadioButtonIsEnable { get; set; } = false;
-        public bool DrillPin_Mode_RadioButtonIsEnable {get;set; } = false;
+        public bool DrillPin_Mode_RadioButtonIsEnable { get; set; } = false;
 
 
 
@@ -2280,17 +2459,27 @@ namespace WPFSTD105.ViewModel
                     AddOperatingLog(LogSourceEnum.Software, "切換到一般加工模式");
                     GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem);
                     HintStep1 = true;
+                    //如果切換時有已排程但未加工的零件->清理掉狀態
+                    ClearPairedMachineData();
+
                 });
             }
         }
 
-        public ICommand DrillPin_ModeCommand 
+        public ICommand DrillPin_ModeCommand
         {
             get => new WPFBase.RelayCommand(() =>
             {
                 AddOperatingLog(LogSourceEnum.Software, "切換到測試打孔模式");
-                GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem); 
-                set_Input_by_Computer();
+                GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem);
+                //如果切換時有已排程但未加工的零件->清理掉狀態並重新上傳
+                ClearPairedMachineData();
+
+
+
+                //如果已在電腦模式 不跑這條
+                if (!Input_by_Computer_RadioButtonIsChecked)
+                    set_Input_by_Computer();
             });
         }
         /// <summary>
@@ -2300,8 +2489,6 @@ namespace WPFSTD105.ViewModel
 
         private void set_Input_by_Computer()
         {
-            
-
             HintStep1 = true;
             HintStep2 = false;
             try
@@ -2437,13 +2624,14 @@ namespace WPFSTD105.ViewModel
         {
             try
             {
-                TourTaskBoolean = false;
                 if (TourTask != null)
                 {
-                    TourTask.Wait();
+                    //正在執行中改為不打斷
+                    //TourTask.Wait();
                     if (TourTask.Status == TaskStatus.Running)
                     {
-                        TourTask.Dispose();
+                        return;
+                        // TourTask.Dispose();
                     }
                 }
             }
@@ -2513,32 +2701,29 @@ namespace WPFSTD105.ViewModel
                     var Index = Finish_UndoneDataViews.ToList().FindIndex(x => (x.MaterialNumber == EachPair.materialNumber));
                     if (Index != -1)
                     {
-                        //如果該零件為初始化，則等待他變成其他狀態才處理
-                        //TourTaskList.Add(Task.Run(() =>
                         Func<object, bool> action = (object obj) =>
                         {
                             int MaterialIndex = (int)obj;
 
-                            while (Finish_UndoneDataViews[MaterialIndex].Position == PositionStatusEnum.初始化.ToString())
+                            while (Finish_UndoneDataViews[MaterialIndex].PositionEnum == PositionStatusEnum.初始化)
                             {
                                 Thread.Sleep(1);
                             }
 
-                            if (Finish_UndoneDataViews[MaterialIndex].Position == PositionStatusEnum.等待配對.ToString())
+                            if (Finish_UndoneDataViews[MaterialIndex].PositionEnum == PositionStatusEnum.等待配對)
                             {
                                 //軟體配對 
                                 //區別手機與機台配料->如果id中有包含專案名稱->機台的 沒有的話則是手機
                                 var ProjectNameBase64 = MachineAndPhoneAPI.AppServerCommunicate.StringToBase64Converter(ApplicationViewModel.ProjectName);
                                 if (EachPair.id.Contains(ProjectNameBase64))
                                 {
-                                    Finish_UndoneDataViews[MaterialIndex].Position = PositionStatusEnum.軟體配對.ToString();
+                                    Finish_UndoneDataViews[MaterialIndex].PositionEnum = PositionStatusEnum.軟體配對;
                                     AddOperatingLog(LogSourceEnum.Phone, $"素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}從軟體配料", false);
-
                                 }
                                 else
                                 {
                                     //手機配對
-                                    Finish_UndoneDataViews[MaterialIndex].Position = PositionStatusEnum.手機配對.ToString();
+                                    Finish_UndoneDataViews[MaterialIndex].PositionEnum = PositionStatusEnum.手機配對;
                                     AddOperatingLog(LogSourceEnum.Phone, $"素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}從手機配料", false);
 
                                 }
@@ -2548,7 +2733,6 @@ namespace WPFSTD105.ViewModel
                         TourTaskList.Add(Task<bool>.Factory.StartNew(action, Index));
                     }
                 }
-
                 Task.WaitAll(TourTaskList.ToArray());
             }
 
@@ -2617,7 +2801,9 @@ namespace WPFSTD105.ViewModel
                         for (int i = synIndex; i < Finish_UndoneDataViews.Count; i++)
                         {
                             //葉:需要比對衝突
-                            WorkMaterial? work = _Ser.GetWorkMaterialBackup(Finish_UndoneDataViews[i].MaterialNumber);
+                            STDSerialization ser = new STDSerialization();
+                            
+                            WorkMaterial? work = ser.GetWorkMaterialBackup(Finish_UndoneDataViews[i].MaterialNumber);
                             if (work != null)
                             {
                                 long workOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.WorkMaterial)).ToInt64();
@@ -2628,9 +2814,8 @@ namespace WPFSTD105.ViewModel
                                     _SendIndex.Add(Convert.ToInt16(i));
                                     if (work.Value.Position == -2) //如果是完成的狀態
                                     {
-                                        //Finish_UndoneDataViews[i].Schedule = work.Value.Finish;
                                         Finish_UndoneDataViews[i].Schedule = 100;
-                                        Finish_UndoneDataViews[i].Position = PositionStatusEnum.完成.ToString();       //"完成";
+                                        Finish_UndoneDataViews[i].PositionEnum = PositionStatusEnum.完成;       //"完成";
                                         _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
                                     }
                                     synIndex = i;
@@ -2640,8 +2825,13 @@ namespace WPFSTD105.ViewModel
 
                         foreach (var FNDV in Finish_UndoneDataViews)
                         {
-                            if ( FNDV.Position != PositionStatusEnum.完成.ToString()) 
-                                    FNDV.Position  = PositionStatusEnum.等待配對.ToString();
+                            if (FNDV.PositionEnum != PositionStatusEnum.完成)
+                            {
+                                if (FNDV.ObjectType == GD_STD.Enum.OBJECT_TYPE.CH && FNDV.LengthStr > 9050)
+                                    FNDV.PositionEnum = PositionStatusEnum.不可配對;
+                                else
+                                    FNDV.PositionEnum = PositionStatusEnum.等待配對;
+                            }
                         }
                     }   //如果是在自動狀況下
                     else if (ApplicationViewModel.PanelButton.Key == KEY_HOLE.AUTO) //如果有在自動狀況下
@@ -2718,7 +2908,11 @@ namespace WPFSTD105.ViewModel
                 {
                     try
                     {
-                        ContinuedSerialization();
+                        //要有點選才序列化
+                        if (DrillPin_Mode_RadioButtonIsEnable || DrillHole_Mode_RadioButtonIsEnable)
+                        {
+                            ContinuedSerialization();
+                        }
                         count = 0;
                     }
                     catch (Exception ex)
@@ -2782,42 +2976,50 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         private void ContinuedSerialization()
         {
-            short[] index = null;
+            //將孔位編輯數據存檔
+
+            STDSerialization ser = new STDSerialization();
+
+            short[] indexArray = null;
             WorkOther workOther = null;
             Host host;
             using (Memor.ReadMemorClient read = new Memor.ReadMemorClient())
             {
-                index = read.GetIndex();
+                indexArray = read.GetIndex();
                 workOther = read.GetWorkOther();
                 host = read.GetHost();
             }
 
             if (Current != workOther.Current)
             {
-                if(workOther.Current!=-1)
+                if (workOther.Current != -1)
                     AddOperatingLog(LogSourceEnum.Machine, $"切換加工索引到：{workOther.Current}");
                 else
                     AddOperatingLog(LogSourceEnum.Machine, $"目前無等待加工之索引");
+
                 Current = workOther.Current;
             }
 
-            _Ser.SetWorkMaterialOtherBackup(workOther);
-            _Ser.SetWorkMaterialIndexBackup(index); //備份 Index
-            var noInfo = index.Except(_SendIndex).ToArray(); //查詢尚未發送加工孔位的 index 
+            ser.SetWorkMaterialOtherBackup(workOther);
+            ser.SetWorkMaterialIndexBackup(indexArray); //備份 indexArray
+
+            //解除配對時需把工作陣列全清除
+
+            var noInfo = indexArray.Except(_SendIndex).ToArray(); //查詢尚未發送加工孔位的 index 
             for (int i = 0; i < noInfo.Length; i++) //找出沒發送過的工作陣列
             {
-                AddOperatingLog(LogSourceEnum.Machine, $"發送加工訊息：{noInfo[i]}", false);
-                SendDrill(noInfo[i]); //發送
+                AddOperatingLog(LogSourceEnum.Machine, $"發送加工index：{noInfo[i]}");
+                AddOperatingLog(LogSourceEnum.Machine, $"發送排版編號{Finish_UndoneDataViews[i].MaterialNumber}的加工訊息", false);
+                SendDrill(noInfo[i], Finish_UndoneDataViews[i]); //發送
             }
             _SendIndex.AddRange(noInfo); //存取已經發送過的列表
-            List<short> SerializationValue = new List<short>(index);
+            List<short> SerializationValue = new List<short>(indexArray);
             List<short> delete = _LastTime.Except(SerializationValue).ToList(); //找出上次有序列化的文件
             SerializationValue.AddRange(delete);
             Serialization(SerializationValue);
-            _LastTime = index.ToArray();
+            _LastTime = indexArray.ToArray();
+
             Thread.Sleep(1000); //等待 1 秒後執行
-
-
         }
 
 
@@ -2894,7 +3096,7 @@ namespace WPFSTD105.ViewModel
         /// 序列化加工資訊
         /// </summary>
         /// <param name="index">序列化的陣列位置</param>
-        public void Serialization(List<short> index)
+        private void Serialization(List<short> index)
         {
             if (index.Count == 0)
             {
@@ -2914,9 +3116,10 @@ namespace WPFSTD105.ViewModel
                             var serIndex = index.Except(_Finish); //差集未完成的陣列數值
                             foreach (var value in serIndex)
                             {
-                                ushort q = Convert.ToUInt16(value);
-                                _WorkMaterials[value] = client.GetWorkMaterial(q);
-                                _Ser.SetWorkMaterialBackup(_WorkMaterials[value]);
+                                _WorkMaterials[value] = client.GetWorkMaterial(Convert.ToUInt16(value));
+
+                                STDSerialization ser = new STDSerialization();
+                                ser.SetWorkMaterialBackup(_WorkMaterials[value]);
                                 string number = _WorkMaterials[value].MaterialNumber
                                     .Where(el => el != 0)
                                     .Select(el => Convert.ToChar(el).ToString())
@@ -2930,79 +3133,74 @@ namespace WPFSTD105.ViewModel
 
                                     if (_WorkMaterials[value].Position == -2) //如果已經完成
                                     {
-                                        //Finish_UndoneDataViews[MIndex].Schedule = _WorkMaterials[value].Finish;
                                         Finish_UndoneDataViews[MIndex].Schedule = 100;
-
                                         Finish_UndoneDataViews[MIndex].Finish = true;
-                                        Finish_UndoneDataViews[MIndex].Position = PositionStatusEnum.完成.ToString();
+                                        Finish_UndoneDataViews[MIndex].PositionEnum = PositionStatusEnum.完成;
                                         _Finish.Add(value); //加入到完成列表
 
-
-
+                                        if (Finish_UndoneDataViews[MIndex].MachiningEndTime == null)
+                                            Finish_UndoneDataViews[MIndex].MachiningEndTime = DateTime.Now;
                                     }
                                     else if (_WorkMaterials[value].Position == -1)
                                     {
-                                        // int count = _WorkMaterials[value].BoltsCountL + _WorkMaterials[value].BoltsCountR + _WorkMaterials[value].BoltsCountM;
-                                        // int finishCount = _WorkMaterials[value].DrMiddle //完成的數量
-                                        //                                                                         .Union(_WorkMaterials[value].DrLeft)
-                                        //                                                                        .Union(_WorkMaterials[value].DrRight)
-                                        //                                                                         .Where(el => el.Finish)
-                                        //                                                                        .Count();
-                                        // Finish_UndoneDataViews[MIndex].Schedule = Convert.ToDouble(finishCount) / Convert.ToDouble(count) * 100d; //完成趴數
                                         Finish_UndoneDataViews[MIndex].Schedule = _WorkMaterials[value].Finish;
-                                        Finish_UndoneDataViews[MIndex].Position = PositionStatusEnum.加工中.ToString();
+                                        Finish_UndoneDataViews[MIndex].PositionEnum = PositionStatusEnum.加工中;
 
-
-
+                                        if (Finish_UndoneDataViews[MIndex].MachiningStartTime == null)
+                                            Finish_UndoneDataViews[MIndex].MachiningStartTime = DateTime.Now;
                                     }
                                     else if (_WorkMaterials[value].Position == 0)
                                     {
-                                        if (Finish_UndoneDataViews[MIndex].Position != PositionStatusEnum.軟體配對.ToString() &&
-                                            Finish_UndoneDataViews[MIndex].Position != PositionStatusEnum.手機配對.ToString() &&
-                                            Finish_UndoneDataViews[MIndex].Position != PositionStatusEnum.手動配對.ToString() &&
-                                            Finish_UndoneDataViews[MIndex].Position != PositionStatusEnum.等待配對.ToString())
-                                            Finish_UndoneDataViews[MIndex].Position = PositionStatusEnum.等待配對.ToString();
-
-
+                                        if (Finish_UndoneDataViews[MIndex].PositionEnum != PositionStatusEnum.軟體配對 &&
+                                            Finish_UndoneDataViews[MIndex].PositionEnum != PositionStatusEnum.手機配對 &&
+                                            Finish_UndoneDataViews[MIndex].PositionEnum != PositionStatusEnum.手動配對 &&
+                                            Finish_UndoneDataViews[MIndex].PositionEnum != PositionStatusEnum.等待配對)
+                                            Finish_UndoneDataViews[MIndex].PositionEnum = PositionStatusEnum.等待配對;
                                     }
                                     else
                                     {
-
                                         if (_WorkMaterials[value].IsExport) //出口處
                                         {
+                                            //以防完成時沒加到
+                                            if (Finish_UndoneDataViews[MIndex].MachiningEndTime == null)
+                                                Finish_UndoneDataViews[MIndex].MachiningEndTime = DateTime.Now;
+
                                             Finish_UndoneDataViews[MIndex].Schedule = _WorkMaterials[value].Finish;
-                                            Finish_UndoneDataViews[MIndex].Position = $"等待(出)-{exCount}";
-                                            exCount++;
+                                            Finish_UndoneDataViews[MIndex].PositionEnum = PositionStatusEnum.等待出料;//$"等待(出)-{exCount}";
+                                            //exCount++;
                                         }
                                         else
                                         {
-                                            Finish_UndoneDataViews[MIndex].Position = $"等待(入)-{enCount}";
-                                            enCount++;
+                                            Finish_UndoneDataViews[MIndex].MachiningStartTime = null;
+                                            Finish_UndoneDataViews[MIndex].MachiningEndTime = null;
+
+                                            Finish_UndoneDataViews[MIndex].PositionEnum = PositionStatusEnum.等待入料;//$"等待(入)-{enCount}";
+                                            //enCount++;
                                         }
                                     }
 
                                     //有值變更才重整
-                                    if(sch_temp != Finish_UndoneDataViews[MIndex].Schedule)
+                                    if (sch_temp != Finish_UndoneDataViews[MIndex].Schedule)
                                         RefreshRow(ScheduleGridC, MIndex);
 
                                 }
                             }
                         }
-                        catch(Exception ex) 
+                        catch (Exception ex)
                         {
-                            AddOperatingLog(LogSourceEnum.Software,ex.Message,true);
-                            
+                            AddOperatingLog(LogSourceEnum.Software, ex.Message, true);
+
                         }
                     }, null);
                 }
             }
             catch (Exception ex)
             {
-               Debugger.Break();
+                Debugger.Break();
             }
         }
 
-        private void RefreshRow(GridControl grid , int Index)
+        private void RefreshRow(GridControl grid, int Index)
         {
             try
             {
@@ -3015,20 +3213,118 @@ namespace WPFSTD105.ViewModel
                         grid.RefreshData();
                         grid.RefreshRow(Index);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
 
                     }
                 });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-
             }
         }
 
+        private void ClearPairedMachineData()
+        {
+            //找出list
+            var PositionStatusEnumArray = new List<PositionStatusEnum> { PositionStatusEnum.軟體配對, PositionStatusEnum.手機配對, PositionStatusEnum.手動配對 };
 
+            //當_finish_UndoneDataViews內的PositionEnum符合PositionStatusEnumArray中的任意一項時，將值取出
+            var FUDV_List = Finish_UndoneDataViews.ToList().FindAll(x => PositionStatusEnumArray.Exists(y => y == x.PositionEnum));
+            if (FUDV_List.Count == 0)
+                return;
 
+            //先清除手機伺服器 再清除機台
+            var UnregisterMaterialList = FUDV_List.Select(x => x.MaterialNumber).ToList();
+            ClearAppServerPairWorkList(UnregisterMaterialList);
+
+            FUDV_List.ForEach(Fu =>
+            {
+                var Xindex = Finish_UndoneDataViews.FindIndex(x => x == Fu);
+                if (Xindex != -1)
+                {
+                    AddOperatingLog(LogSourceEnum.Machine, $"清除素材編號{Fu.MaterialNumber}的加工資料");
+                    ClearMonitorWorkList(Xindex);
+                }
+            });
+
+            if (FUDV_List.Count > 0)
+            {
+                WinUIMessageBox.Show(null,
+                    $"加工內容有變化，請重新配對素材",
+                    $"通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Adorner);
+            }
+         }
+
+        private void ClearAppServerPairWorkList(List<string> MaterialList )
+        {
+            var ApiReturn = MachineAndPhoneAPI.AppServerCommunicate.UnregisterAssembly(ApplicationViewModel.ProjectName, MaterialList, out var result);
+            if (ApiReturn)
+            {
+                if (result.errorCode == 0)
+                {
+                    //會回傳註銷成功的id
+                    //比較送出的列表和返還的列表是否有不同
+                    if (result.data != null)
+                    {
+                        var UnregisterIDList = result.data.Select(x => x.id).ToList();
+                        UnregisterIDList.ForEach(el => AddOperatingLog(LogSourceEnum.Phone, $"素材編號{el}成功註銷"));
+                        MaterialList.Except(UnregisterIDList).ForEach(el => AddOperatingLog(LogSourceEnum.Phone, $"素材編號{el}無法註銷", true));
+                    }
+                }
+                else
+                {
+                    AddOperatingLog(LogSourceEnum.Phone, $"註銷命令失敗");
+                    AddOperatingLog(LogSourceEnum.Phone, $"ErrorCode = {result.errorCode}");
+                }
+            }
+            else
+            {
+                AddOperatingLog(LogSourceEnum.Phone, $"通訊失敗 無法執行註銷命令");
+            }
+        }
+
+        /// <summary>
+        /// 清除機台端已存在的加工陣列index (不管他是否有加工完成)
+        /// </summary>
+        /// <param name="dataViewIndex"></param>
+        private void ClearMonitorWorkList(int dataViewIndex)
+        {
+            short[] index;
+            using (Memor.ReadMemorClient read = new Memor.ReadMemorClient())
+            {
+                index = read.GetIndex();
+            }
+
+            int iIndex = Array.IndexOf(index, dataViewIndex);
+            if (iIndex != -1)
+            {
+                index[iIndex] = -1;
+                var value = index.Where(e => e != -1).ToArray();
+                var writeByte = value.ToByteArray();
+                using (Memor.WriteMemorClient write = new Memor.WriteMemorClient())
+                    write.SetMonitorWorkOffset(writeByte, Marshal.OffsetOf<MonitorWork>(nameof(MonitorWork.Index)).ToInt64()); //寫入準備加工的陣列
+
+                if (_Finish.Exists(x => (x == iIndex)))
+                    _Finish.Remove((short)iIndex);
+
+                if (_SendIndex.Exists(x => (x == iIndex)))
+                    _SendIndex.Remove((short)iIndex);
+
+                //復原加工資料
+                Finish_UndoneDataViews[iIndex].PositionEnum = PositionStatusEnum.等待配對;
+                Finish_UndoneDataViews[iIndex].Schedule = 0;
+
+                //如果有備份檔 把紀錄刪掉
+                STDSerialization ser = new STDSerialization();
+                ser.DeleteWorkMaterialBackup(Finish_UndoneDataViews[iIndex].MaterialNumber);
+            }
+        } 
 
 
     }

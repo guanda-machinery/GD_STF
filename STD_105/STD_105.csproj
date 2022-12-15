@@ -931,14 +931,16 @@
     </Compile>
     <Compile Include="ValueConverters\BAVTConverter.cs" />
     <Compile Include="ValueConverters\BooleanToForefroundConverter.cs" />
+    <Compile Include="ValueConverters\BooleanToOpacityConverter.cs" />
+    <Compile Include="ValueConverters\BooleanToSolidColorBrushConverter.cs" />
     <Compile Include="ValueConverters\ClampDownToBoolenConverter.cs" />
     <Compile Include="ValueConverters\ConditionToIsEnabledConerter.cs" />
     <Compile Include="ValueConverters\ConverterAssemblyNumber.cs" />
     <Compile Include="ValueConverters\ConverterToPartNumber.cs" />
     <Compile Include="ValueConverters\DateTimeConverter.cs" />
-    <Compile Include="ValueConverters\MaterialDataViewHasPairToBooleanConverter.cs" />
     <Compile Include="ValueConverters\ListCountToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\MaterialGridControlDataCheckConverter.cs" />
+    <Compile Include="ValueConverters\MenuItem_FUDataViewsToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\BooleanArrayIntersectToBooleanConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\BooleanArray_UnionToVisableConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\BooleanArray_UnionToBooleanConverter.cs" />
@@ -958,9 +960,9 @@
     <Compile Include="ValueConverters\GridControlWidthConvert.cs" />
     <Compile Include="ValueConverters\IListFilterToCountConverter.cs" />
     <Compile Include="ValueConverters\MaterialDesignPackIconToBitmapSourceConverter.cs" />
-    <Compile Include="ValueConverters\MultiValueConverters\BooleanArray_In_UnionToBooleanConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\MultiObjectArrayToBooleanConverter.cs" />
     <Compile Include="ValueConverters\ObjectIsNullToBooleanConverter.cs" />
+    <Compile Include="ValueConverters\PositionStatusEnumToStringConverter.cs" />
     <Compile Include="ValueConverters\SectionSpecificationToEnabledConverter.cs" />
     <Compile Include="ValueConverters\SteelPartWeightConverter.cs" />
     <Compile Include="ValueConverters\DrillingFaceConverter.cs" />
@@ -995,6 +997,7 @@
     <Compile Include="ValueConverters\OillBoolToImageSourceConverter.cs" />
     <Compile Include="ValueConverters\PageEnumToBoolConverter.cs" />
     <Compile Include="ValueConverters\PerformanceToConverter.cs" />
+    <Compile Include="ValueConverters\TypeSettingDataViewToSolidColorBrushConverter.cs" />
     <Compile Include="ValueConverters\TypesettingsSettingsToDrillDataConverter.cs" />
     <Compile Include="ValueConverters\VisibilityToBooleanConverter.cs" />
     <Compile Include="ZoomControls.cs" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GD_STD.Data;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace STD_105
             else if (rowValue.Contains("搬運中"))
                 return (SolidColorBrush)new BrushConverter().ConvertFrom(WPFSTD105.Properties.SofSetting.Default.Report_Moving);
             else
-                return (SolidColorBrush)new BrushConverter().ConvertFrom("#FFD4D4D4");
+                return (SolidColorBrush)new BrushConverter().ConvertFrom("#FFD4D4D4"); 
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -506,9 +506,6 @@ namespace WPFSTD105
         }
 
 
-        //1.只配一根素材時先檢查首個零件的斷面規格，並將不符合的規格忽略
-        //2.將待加工的素材接在一起，並檢查總長度是否超過素材長度
-        //3.產生素材和零件
         /// <summary>
         /// 只配一根素材 只取MainLength不取SecondaryLength
         /// </summary>

@@ -1,4 +1,6 @@
 ﻿using DevExpress.DocumentView;
+using GD_STD.Base;
+using GD_STD.Data;
 using GD_STD.Enum;
 using System;
 using System.Collections.Generic;
@@ -9,9 +11,62 @@ using System.Threading.Tasks;
 namespace WPFSTD105.Model
 {
     /// <summary>
-    /// 零件內加工之總數
+    /// 序列化專用
     /// </summary>
-    public class DrillBolts
+    [Serializable]
+    public class DrillBoltsModel
+    {
+        public Dictionary<FACE, DrillBoltsBase> DrillBoltsDict { get; set; } = new Dictionary<FACE, DrillBoltsBase>();
+    }
+
+    [Serializable]
+    public class DrillBoltsBase : WPFWindowsBase.BaseViewModel
+    {
+        private bool _dia_Identification = false;
+        /// <summary>
+        /// 當true時同一化
+        /// </summary>
+        public bool Dia_Identification
+        {
+            get
+            {
+                return _dia_Identification;
+            }
+            set
+            {
+                _dia_Identification = value;
+                DrillBoltList.ForEach(x => x.DrillHoleDiameterIsChangeBool = value);
+            }
+        }
+        /// <summary>
+        /// 加工資訊
+        /// </summary>
+        public List<DrillBolt> DrillBoltList { get; set; } = new List<DrillBolt>();
+
+        private double _unitaryToolTop = -1;
+        /// <summary>
+        /// 選擇刀具
+        /// </summary>
+        public double UnitaryToolTop
+        {
+            get
+            {
+                return _unitaryToolTop;
+            }
+            set
+            {
+                _unitaryToolTop = value;
+                DrillBoltList.ForEach(x =>
+                {
+                    x.Changed_DrillHoleDiameter = _unitaryToolTop;
+                });
+            }
+        }
+
+
+    }
+    [Serializable]
+    public class DrillBolt : WPFWindowsBase.BaseViewModel
     {
         private struct LangStruct
         {
@@ -73,7 +128,7 @@ namespace WPFSTD105.Model
                     EN = "HypotenusePOINT",
                     VN = "điểm huyền",
                     TH = "จุดด้านตรงข้ามมุมฉาก"
-                }; 
+                };
 
                 return LangDict;
             }
@@ -101,25 +156,92 @@ namespace WPFSTD105.Model
                     default:
                         break;
                 }
-
                 return WorkTypeName;
             }
         }
+
         /// <summary>
-        /// 
+        /// 素材編號(查詢用)
         /// </summary>
-        public AXIS_MODE WorkAXIS_MODE { get; set; } 
+        //public string MaterialNumber { get; set; }
+        /// <summary>
+        /// 為true時才進行加工
+        /// </summary>
+        public bool DrillWork { get; set; }
+
+        /// <summary>
+        /// 工作模式
+        /// </summary>
+        public AXIS_MODE WorkAXIS_MODE { get; set; }
         /// <summary>
         /// 面的方向
         /// </summary>
-        public GD_STD.Enum.FACE Face { get; set; }
+        //public GD_STD.Enum.FACE Face { get; set; }
         /// <summary>
         /// 孔位數
         /// </summary>
         public int DrillHoleCount { get; set; }
         /// <summary>
+        /// 孔直徑(原始)
+        /// </summary>
+        public double Origin_DrillHoleDiameter { get; set; }
+
+
+        private double? _changed_DrillHoleDiameter;
+        /// <summary>
+        /// 孔直徑(變更後)
+        /// </summary>
+        public double Changed_DrillHoleDiameter
+        {
+            get
+            {
+                if (_changed_DrillHoleDiameter == null)
+                    _changed_DrillHoleDiameter = Origin_DrillHoleDiameter;
+
+                return _changed_DrillHoleDiameter.Value;
+
+            }
+            set
+            {
+                _changed_DrillHoleDiameter = value;
+            }
+        }
+
+        /// <summary>
         /// 孔直徑
         /// </summary>
-        public double DrillHoleDiameter { get; set; }
+        public double DrillHoleDiameter
+        {
+            get
+            {
+                if (!DrillHoleDiameterIsChangeBool)
+                {
+                    return Origin_DrillHoleDiameter;
+                }
+                else
+                {
+                    return Changed_DrillHoleDiameter;
+                }
+            }
+        }
+
+        private bool _drillHoleDiameterIsChangeBool = false;
+        /// <summary>
+        /// 孔直徑被變更 -> 紀錄變更後的值來比較
+        /// 可切換true false來得到值
+        /// </summary>
+        public bool DrillHoleDiameterIsChangeBool
+        {
+            get
+            {
+                return (Origin_DrillHoleDiameter != Changed_DrillHoleDiameter) ? _drillHoleDiameterIsChangeBool : false;
+            }
+            set
+            {
+                _drillHoleDiameterIsChangeBool = value;
+                OnPropertyChanged("DrillHoleDiameter");
+            }
+        }
     }
+
 }
