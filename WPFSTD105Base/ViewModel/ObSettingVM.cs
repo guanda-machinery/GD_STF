@@ -2361,42 +2361,61 @@ namespace WPFSTD105.ViewModel
             {
                 RemoveHypotenusePoint(model, "AutoHypotenuse");
                 WPFSTD105.Model.Expand.RunHypotenusePoint(model, this, 0);
-                //    for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
+                var a = model.Blocks.Where(x => x.Name != "RootBlock")
+                    .SelectMany(x =>x.Entities, (entities, entityData) => new { Block = entities, entities.Entities, entityData.EntityData })
+                    .Where(x =>
+                    x.EntityData.GetType() == typeof(BoltAttr) &&
+                    ((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
+                    .ToList();
+                foreach (var item in a)
+                {
+                    var ed = model.Entities.FirstOrDefault(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID == Guid.Parse(item.Block.Name));
+                    GroupBoltsAttr aaaaa = new GroupBoltsAttr();
+                    if (ed != null)
+                    {
+                        aaaaa = (GroupBoltsAttr)ed.EntityData;
+                    }
+                    Bolts3DBlock bolts3DBlock = new Bolts3DBlock(item.Entities, aaaaa);
+                    Add2DHole(drawing, bolts3DBlock, false);//加入孔位不刷新 2d 視圖
+                }
+
+                
+                //for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
+                //{
+                //    if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr && boltsAttr.Mode == AXIS_MODE.HypotenusePOINT) //是螺栓
                 //    {
-                //        if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr && boltsAttr.Mode == AXIS_MODE.HypotenusePOINT) //是螺栓
+                //        // 指定加入孔位
+                //        if (blocks.Any())
                 //        {
-                //            // 指定加入孔位
-                //            if (blocks.Any() )
+                //            BlockReference blockReference1 = (BlockReference)model.Entities[i]; //取得參考圖塊
+                //                                                                                // 產生3D螺栓
+                //            int index = blocks.FindIndex(x => x.Name == blockReference1.BlockName);
+                //            if (index != -1)
                 //            {
-                //                BlockReference blockReference1 = (BlockReference)model.Entities[i]; //取得參考圖塊
-                //                                                                                    // 產生3D螺栓
-                //                int index = blocks.FindIndex(x => x.Name == blockReference1.BlockName);
-                //                if (index != -1)
-                //                {
-                //                    Block block = blocks[index]; //取得圖塊
-                //                    EntityList meshes = block.Entities;
-                //                    Bolts3DBlock bolts3DBlock = new Bolts3DBlock(meshes, (GroupBoltsAttr)model.Entities[i].EntityData);
-                //                    Add2DHole(drawing, bolts3DBlock, false);//加入孔位不刷新 2d 視圖
-                //                }
-                //                else
-                //                {
-                //                    // 無中生有
-                //                    Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts(boltsAttr, model, out BlockReference blockRef, out checkRef, null, isRotate);
-                //                    if (drawing != null)
-                //                    {
-                //                        Add2DHole(drawing, bolts3DBlock, false);//加入孔位不刷新 2d 視圖   
-                //                    }
-                //                }
+                //                Block block = blocks[index]; //取得圖塊
+                //                EntityList meshes = block.Entities;
+                //                Bolts3DBlock bolts3DBlock = new Bolts3DBlock(meshes, (GroupBoltsAttr)model.Entities[i].EntityData);
+                //                Add2DHole(drawing, bolts3DBlock, false);//加入孔位不刷新 2d 視圖
                 //            }
                 //            else
                 //            {
-                //                // 無指定孔位 則為一般加孔
-                //                BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
-                //                Block block = model.Blocks[blockReference.BlockName]; //取得圖塊
-                //                Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts((GroupBoltsAttr)model.Entities[i].EntityData, model, out BlockReference blockRef, out checkRef, block.Entities, isRotate);
-                //                Add2DHole(drawing, bolts3DBlock, false);//加入孔位不刷新 2d 視圖
+                //                // 無中生有
+                //                Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts(boltsAttr, model, out BlockReference blockRef, out checkRef, null, isRotate);
+                //                if (drawing != null)
+                //                {
+                //                    Add2DHole(drawing, bolts3DBlock, false);//加入孔位不刷新 2d 視圖   
+                //                }
                 //            }
                 //        }
+                //        else
+                //        {
+                //            // 無指定孔位 則為一般加孔
+                //            BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
+                //            Block block = model.Blocks[blockReference.BlockName]; //取得圖塊
+                //            Bolts3DBlock bolts3DBlock = Bolts3DBlock.AddBolts((GroupBoltsAttr)model.Entities[i].EntityData, model, out BlockReference blockRef, out checkRef, block.Entities, isRotate);
+                //            Add2DHole(drawing, bolts3DBlock, false);//加入孔位不刷新 2d 視圖
+                //        }
+                //    }
 
 
 
@@ -2409,7 +2428,7 @@ namespace WPFSTD105.ViewModel
                 //    //        Add2DHole(drawing, (Bolts3DBlock)a, false);//加入孔位不刷新 2d 視圖 
                 //    //    });
                 //    //});
-                //} 
+                //}
                 #endregion
             }
             #region 檢查孔位

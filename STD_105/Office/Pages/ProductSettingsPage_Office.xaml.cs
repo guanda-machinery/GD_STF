@@ -3,6 +3,7 @@ using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
 using DevExpress.Data.Extensions;
+using DevExpress.Data.Helpers;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Core.Native;
@@ -847,6 +848,7 @@ namespace STD_105.Office
 
                 //SteelAttr steelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
                 SteelAttr steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
+                // 所有一般孔位
                 List<GroupBoltsAttr> modelAllBoltList = model.Blocks.SelectMany(x => x.Entities).Where(y => y.GetType() == typeof(BlockReference) && y.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)y.EntityData).Mode == AXIS_MODE.PIERCE).Select(y => (GroupBoltsAttr)y.EntityData).ToList();
 
                 //// 2022/10/13 呂宗霖 編輯:零件編號須一致才可按編輯
@@ -5540,7 +5542,7 @@ namespace STD_105.Office
                     //model.sycnModelEntitiesAndNewBolt(blocks);
                     sr.AddBolts(model, drawing, out bool hasOutSteel, blocks, false);
                     // 切割線打點
-                    ScrollViewbox.IsEnabled = !model.RunHypotenuseEnable(); 
+                    //ScrollViewbox.IsEnabled = !model.RunHypotenuseEnable(); 
                     WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
                     WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
                     WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
@@ -5845,19 +5847,17 @@ namespace STD_105.Office
             ProductSettingsPageViewModel aa = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
             if (aa != null)
             {
-                //ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(ObSettingVM.GetData());
-                ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>();
+                ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(ObSettingVM.GetData());
+                ObservableCollection<ProductSettingsPageViewModel> collectionVisible = new ObservableCollection<ProductSettingsPageViewModel>();
                 foreach (var item in PieceListGridControl.VisibleItems)
                 {
-                    collection.Add((ProductSettingsPageViewModel)item);
+                    collectionVisible.Add((ProductSettingsPageViewModel)item);
                 } ;
-                ViewModel.DataViews = collection;
-
-                PreIndex = ViewModel.DataViews.FindIndex(x => x.DataName == aa.DataName);
+                //ViewModel.DataViews = collection;
+                PreIndex = collectionVisible.FindIndex(x => x.DataName == aa.DataName);
                 if (PreIndex != -1)
                 {
                     this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
-                    //PieceListGridControl.ItemsSource = ViewModel.DataViews;
                     PieceListGridControl.RefreshData();
                     var rowHandle = PieceListGridControl.GetRowHandleByVisibleIndex(PreIndex);
                     //PieceListGridControl.View.FocusedRowHandle = PreIndex;
