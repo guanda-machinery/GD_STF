@@ -20,7 +20,7 @@ namespace WPFWindowsBase
             string ParameterBackColor = "#FF303030";
             if ((bool)value)
             {
-                return (SolidColorBrush)new BrushConverter().ConvertFrom("#FF0099FF");
+                return (SolidColorBrush)new BrushConverter().ConvertFrom("#fa7070");
             }
             else
             {

@@ -115,6 +115,15 @@ namespace WPFSTD105 {
         }
         
         /// <summary>
+        ///   查詢類似 DrillBoltsEdited 的當地語系化字串。
+        /// </summary>
+        public static string DrillBoltsBackup {
+            get {
+                return ResourceManager.GetString("DrillBoltsBackup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 DrillBrand.lis 的當地語系化字串。
         /// </summary>
         public static string DrillBrand {

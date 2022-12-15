@@ -1,4 +1,5 @@
-﻿using MachineAndPhoneAPI;
+﻿using DevExpress.Xpf.Core.Native;
+using MachineAndPhoneAPI;
 using MachineAndPhoneAPI.Models;
 using Newtonsoft.Json;
 using RestSharp;
@@ -164,17 +165,38 @@ namespace MachineAndPhoneAPI
         /// <summary>
         /// 機台呼叫註銷配料
         /// </summary>
-        public static bool UnregisterAssembly(out UnreigisterAssembly result)
+        public static bool UnregisterAssembly(string ProjectName , List<string> MaterialNumberList, out UnreigisterAssembly result)
         {
-            result=new UnreigisterAssembly();
+            if(MaterialNumberList.Count ==0)
+            {
+                result = new UnreigisterAssembly();
+                return true;
+            }
+
+            var IDListString = "";
+            //@" ""0001"" + , +""0002"" + , +""0003"" "
+            for (int i = 0; i < MaterialNumberList.Count; i++)
+            {
+                //第二個開始才需要加上分隔號
+                if (i > 0)
+                {
+                    IDListString += "+ , +";
+                }
+                IDListString += $@" ""{StringToBase64Converter(ProjectName) + MaterialNumberList[i]}"" ";
+            }
+
+
+            result =new UnreigisterAssembly();
             var client = new RestClient($"http://{AppServerIP}:{AppServerPort}/api/pc/unregister-material");
             client.AddDefaultHeader("Authorization", $"Bearer {token_access}");
             var request = new RestRequest(Method.POST);
             var body = @"{
                              " + "\n" +
-                            @"  ""idList"": [ ""0001"" + , + ""0002"" + , + ""0003"" ]
+                            $@"  ""idList"": [ {IDListString} ]
                              " + "\n" +
                             @"}";
+
+            //$@"  ""idList"": [ ""0001"" + , + ""0002"" + , + ""0003"" ]
             var response = client.Execute(request);
             request.AddParameter("application/json", body, ParameterType.RequestBody);
             if (response.IsSuccessful)

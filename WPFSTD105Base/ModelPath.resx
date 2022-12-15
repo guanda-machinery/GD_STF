@@ -213,4 +213,10 @@
     <value>WorkMaterialOtherBackup.back</value>
     <comment>加工列表其他參數備份檔案</comment>
   </data>
+
+  <data name="DrillBoltsBackup" xml:space="preserve">
+    <value>DrillBoltsEdited</value>
+    <comment>在加工監控編輯孔位的備份檔案</comment>
+  </data>
+
 </root>

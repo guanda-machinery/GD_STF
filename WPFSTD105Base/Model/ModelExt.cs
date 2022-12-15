@@ -1821,10 +1821,10 @@ namespace WPFSTD105
                     if (obSettingVM.Select3DItem.Count > 0 && CurrentBlockReference == null) //判斷是否有選擇到物件
                     {
                         List<Entity> sele3D = new List<Entity>(), sele2D = new List<Entity>();
-                        obSettingVM.Select3DItem.Where(x => x.Item.GetType() == typeof(BlockReference)).ToList().ForEach(el => sele3D.Add((BlockReference)el.Item));
-                        obSettingVM.Select3DItem.Where(x => x.Item.GetType() == typeof(Mesh)).ToList().ForEach(el => sele3D.Add((Mesh)el.Item));
-                        obSettingVM.Select2DItem.Where(x => x.Item.GetType() == typeof(BlockReference)).ToList().ForEach(el => sele2D.Add((BlockReference)el.Item));
-                        obSettingVM.Select2DItem.Where(x => x.Item.GetType() == typeof(Mesh)).ToList().ForEach(el => sele2D.Add((Mesh)el.Item));
+                        obSettingVM.Select3DItem.Where(x =>x.Item != null && x.Item.GetType() == typeof(BlockReference)).ToList().ForEach(el => sele3D.Add((BlockReference)el.Item));
+                        obSettingVM.Select3DItem.Where(x =>x.Item != null && x.Item.GetType() == typeof(Mesh)).ToList().ForEach(el => sele3D.Add((Mesh)el.Item));
+                        obSettingVM.Select2DItem.Where(x =>x.Item != null && x.Item.GetType() == typeof(BlockReference)).ToList().ForEach(el => sele2D.Add((BlockReference)el.Item));
+                        obSettingVM.Select2DItem.Where(x =>x.Item != null && x.Item.GetType() == typeof(Mesh)).ToList().ForEach(el => sele2D.Add((Mesh)el.Item));
                         obSettingVM.Reductions.Add(new Reduction() //加入到垃圾桶內
                         {
                             SelectReference = null,
