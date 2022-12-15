@@ -44,9 +44,9 @@
             <Storyboard x:Key="distinctLeftHotKey">
                 <DoubleAnimation Storyboard.TargetName="grid_LeftHotKey"
                                  Storyboard.TargetProperty="(Grid.Opacity)"
-                                 From="0.75"
+                                 From="0.95"
                                  To="1"
-                                 Duration="0:0:0.5" />
+                                 Duration="0:0:0.25" />
             </Storyboard>
             <Storyboard x:Key="distinctBottomHotKey">
                 <DoubleAnimation Storyboard.TargetName="grid_BottomHotKey"
@@ -74,7 +74,7 @@
                 <DoubleAnimation Storyboard.TargetName="grid_LeftHotKey"
                                  Storyboard.TargetProperty="(Grid.Opacity)"
                                  From="1"
-                                 To="0.75"
+                                 To="0.95"
                                  Duration="0:0:0.5" />
             </Storyboard>
             <Storyboard x:Key="vagueBottomHotKey">
@@ -106,7 +106,7 @@
               x:Name="grid_LeftHotKey"
               HorizontalAlignment="Left"
               VerticalAlignment="Top"
-              Opacity="0.75"
+              Opacity="0.95"
               Panel.ZIndex="10000">
             <!--機台功能按鈕欄-->
             <StackPanel Margin="0,0,0,10">
@@ -158,7 +158,7 @@
                                           ButtonImageSource="{StaticResource Apps}"
                                           TitleText="{ DynamicResource LANGUAGE_MachineFuctions }"
                                           FontColor="{ StaticResource solidclr_DimGray }" >
-                    <local:MainFunctionButton.IsEnabled>
+                <!--    <local:MainFunctionButton.IsEnabled>
                         <MultiBinding Converter="{local:DoubleConditionToIsEnabledConerter}">
                             <MultiBinding.Bindings>
                                 <Binding Path="ApplicationViewModel.PanelButton.Key"
@@ -171,7 +171,7 @@
                                          Source="{x:Static WPFSTD:ViewLocator.Instance}" />
                             </MultiBinding.Bindings>
                         </MultiBinding>
-                    </local:MainFunctionButton.IsEnabled>
+                    </local:MainFunctionButton.IsEnabled>-->
                 </local:MainFunctionButton>
                 <!--參數設定-->
                 <local:MainFunctionButton ButtonCommand="{Binding SettingParCommand}"

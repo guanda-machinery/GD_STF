@@ -22,6 +22,7 @@ using DevExpress.Xpf.WindowsUI;
 using DevExpress.Xpf.Core;
 using WPFSTD105.Model;
 using System.Diagnostics;
+using DevExpress.Mvvm.Native;
 
 namespace WPFSTD105
 {
@@ -506,9 +507,6 @@ namespace WPFSTD105
         }
 
 
-        //1.只配一根素材時先檢查首個零件的斷面規格，並將不符合的規格忽略
-        //2.將待加工的素材接在一起，並檢查總長度是否超過素材長度
-        //3.產生素材和零件
         /// <summary>
         /// 只配一根素材 只取MainLength不取SecondaryLength
         /// </summary>
@@ -1173,6 +1171,8 @@ namespace WPFSTD105
             unsafe
             {
                 // 需排版之斷面規格
+                var sortSteelType = DataViews.Where(x => x.SortCount > 0).Select(x => new { x.SteelType, x.Profile }).Distinct().ToList();
+                
                 List<string> sortProfile = DataViews.Where(x => x.SortCount > 0).Select(x => x.Profile).Distinct().ToList();
                 // 需排版之零件
                 List<string> sortPartNumber = DataViews.Where(x => x.SortCount > 0).Select(x => x.PartNumber).Distinct().ToList();
@@ -1190,14 +1190,26 @@ namespace WPFSTD105
                 }
 
                 STDSerialization ser = new STDSerialization();//序列化處理器
-                // obvm.allowType.Contains((OBJECT_TYPE)System.Enum.Parse(typeof(OBJECT_TYPE), el.ToString()))
+                                                              // obvm.allowType.Contains((OBJECT_TYPE)System.Enum.Parse(typeof(OBJECT_TYPE), el.ToString()))
                 // 取得有開放且排版數>0之排版規格
                 var a = ser.GetProfile();
-                List<string> profiles = ser.GetProfile()
-                    .Where(el =>!string.IsNullOrEmpty(el) && el.Contains(
-                        ObSettingVM.allowType.Select(x => x.ToString()).ToArray()) &&
-                        sortProfile.Contains(el) 
-                    ).ToList();//模型有使用到的斷面規格
+                List<string> profiles = 
+                    sortSteelType
+                    .Where(el => !string.IsNullOrEmpty(el.Profile) &&
+                           ObSettingVM.allowType.Contains((OBJECT_TYPE)el.SteelType) &&
+                        sortProfile.Contains(el.Profile)
+                    ).Select(el=>el.Profile)
+                    
+                    .ToList();//模型有使用到的斷面規格
+
+                //改寫判斷式 由SteelType找斷面規格
+                //// 取得有開放且排版數>0之排版規格
+                //var a = ser.GetProfile();
+                //List<string> profiles = ser.GetProfile()
+                //    .Where(el =>!string.IsNullOrEmpty(el) && el.Contains(
+                //        ObSettingVM.allowType.Select(x => x.ToString()).ToArray()) &&
+                //        sortProfile.Contains(el) 
+                //    ).ToList();//模型有使用到的斷面規格
                 // 在素材中，屬於前置碼PreCode的有幾筆
                 string strNumber = MatchSetting.PreCode;
                 var strings = MaterialDataViews.Where(el => el.MaterialNumber.Contains(strNumber));

@@ -1232,32 +1232,29 @@
                                                     <local:ToolMagazineButton ButtonCommand="{Binding MiddleCommand}"
                                                               ButtonImageSource="{StaticResource Clamping}"
                                                               StartState="{Binding IsSelectdMiddle}"
-                                                              IsEnabled="{Binding MiddleIsEnabled}"
                                                               TitleText="A刀庫"
                                                               SubTitleText="上軸" />
+                                                    <!--  IsEnabled="{Binding MiddleIsEnabled}"-->
                                                     <local:ToolMagazineButton ButtonCommand="{Binding LeftExportCommand}"
                                                               ButtonImageSource="{StaticResource Clamping}"
                                                               StartState="{Binding IsSelectdLeftExport}"
-                                                              IsEnabled="{Binding LeftExportIsEnabled}"
+                                                        
                                                               TitleText="B刀庫"
                                                               SubTitleText="左軸"
                                                               Margin="1,0" />
                                                     <local:ToolMagazineButton ButtonCommand="{Binding RightExportCommand}"
                                                               ButtonImageSource="{StaticResource Clamping}"
                                                               StartState="{Binding IsSelectdRightExport}"
-                                                              IsEnabled="{Binding RightExportIsEnabled}"
                                                               TitleText="C刀庫"
                                                               SubTitleText="右軸" />
                                                     <local:ToolMagazineButton ButtonCommand="{Binding LeftEntranceCommand}"
                                                               ButtonImageSource="{StaticResource Clamping}"
-                                                              IsEnabled="{Binding LeftEntranceIsEnabled}"
                                                               StartState="{Binding IsSelectdLeftEntrance}"
                                                               TitleText="D刀庫"
                                                               SubTitleText="左軸"
                                                               Margin="1,0" />
                                                     <local:ToolMagazineButton ButtonCommand="{Binding RightEntranceCommand}"
                                                               ButtonImageSource="{StaticResource Clamping}"
-                                                              IsEnabled="{Binding RightEntranceIsEnabled}"
                                                               StartState="{Binding IsSelectdRightEntrance}"
                                                               TitleText="E刀庫"
                                                               SubTitleText="右軸" />
@@ -1336,6 +1333,7 @@
                                                             <Setter Property="Margin" Value="10"/>
                                                         </Style>
                                                     </StackPanel.Resources>
+                                                    <Button Content="關閉刀庫功能" Command="{Binding CloseToolMagazineCommand}"/>
                                                     <Button Command="{Binding UpDateCommand}"
                                             Content="重新讀取" />
                                                     <Button Command="{Binding UnusedSaveCommand}"

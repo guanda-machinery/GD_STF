@@ -96,8 +96,15 @@ namespace WPFSTD105
                         Thread.Sleep(1000);
                         using (Memor.ReadMemorClient read = new ReadMemorClient())
                         {
-                            bool origin = read.GetHost().Origin;
-                            ApplicationViewModel.FirstOrigin = origin;
+                            try
+                            {
+                                bool origin = read.GetHost().Origin;
+                                ApplicationViewModel.FirstOrigin = origin;
+                            }
+                            catch
+                            {
+
+                            }
                         }
                     }
                 });

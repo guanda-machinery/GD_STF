@@ -80,6 +80,7 @@
     <Compile Include="RACK_ROUTE.cs" />
     <Compile Include="SELECT_DEVICE.cs" />
     <Compile Include="SHELF.cs" />
+    <Compile Include="PositionStatusEnum.cs" />
     <Compile Include="STATUS_CODE.cs" />
     <Compile Include="TimelyPopup.cs" />
   </ItemGroup>

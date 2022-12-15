@@ -232,7 +232,6 @@ namespace WPFSTD105.ViewModel
                 mec.Middle = Optional.Default.Middle;
                 mec.RightEntrance = Optional.Default.RightEntrance;
                 mec.RightExport = Optional.Default.RightExport;
-                //host.Traverse = Optional.Default.Traverse;
                 WriteCodesysMemor.SetMecOptional(mec);//寫入記憶體
             });
         }
