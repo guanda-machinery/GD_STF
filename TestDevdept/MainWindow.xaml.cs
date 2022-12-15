@@ -100,7 +100,7 @@ namespace TestDevdept
                     }
                 }
 
-                TestAK(vAK.Parameter);
+               
                 SteelAttr.vPoint = vAK.GetNcPoint();
                 SteelAttr.uPoint = uAK.GetNcPoint();
                 SteelAttr.oPoint = oAK.GetNcPoint();

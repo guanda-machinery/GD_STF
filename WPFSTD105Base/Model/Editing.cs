@@ -1,5 +1,6 @@
 ﻿using devDept.Eyeshot.Entities;
 using devDept.Geometry;
+using DevExpress.CodeParser;
 using DevExpress.Xpf.Gauges;
 using GD_STD.Enum;
 using GrapeCity.Documents.Pdf;
@@ -9,6 +10,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
+using System.Web.UI.WebControls.WebParts;
 using WPFSTD105.Attribute;
 using WPFSTD105.Model;
 using WPFSTD105.ViewModel;
@@ -522,89 +525,81 @@ namespace WPFSTD105
         public void CreateHypotenusePoint(SteelAttr TmpStreelAttr, Point3D p1, Point3D p2)
         {
 
-
-            // MoveBack { get => SteelAttr.H + SteelAttr.W + 150; }
-            // MoveFront { get => -SteelAttr.W - 150; }
-
-
             ObSettingVM obvm = new ObSettingVM();
             GroupBoltsAttr TmpBoltsArr = new GroupBoltsAttr();
-            List<Point3D> tmplist1 = new List<Point3D>() { };
+            List<Point3D> tmplist = new List<Point3D>() { };
             STDSerialization ser = new STDSerialization(); //序列化處理器
             MyCs myCs = new MyCs();
             ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();                          //  備份當前加工區域數值
             double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].A);       //  依照腹板斜邊打點比列(短)
             double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].B);       //  依照腹板斜邊打點比列(長)
-            double XOffset;
-            double YOffset;
-            double Xdistance = Math.Abs(p1.X - p2.X);
-            double Ydistance = Math.Abs(p1.Y - p2.Y);
+            double tp1x,tpr1x, tpr2x;
+            double tp1y,tpr1y, tpr2y;
+            //double Xdistance = Math.Abs(p1.X - p2.X);
+            //double Ydistance = Math.Abs(p1.Y - p2.Y);
             SteelAttr steelAttr = (SteelAttr)Secondary.Blocks[1].Entities[0].EntityData;
+            obvm.WriteSteelAttr(steelAttr);
+            bool bfront=false;
+            bool btop = false;
+            bool bback = false;
 
-            if (p1.X > p2.X)                    // P1 點座標於P2 右邊
-                Xdistance = Xdistance * (-1);
-
-
+            // 還原點選面2D所產生的Y偏移量
             if (p1.Y < 0 || p2.Y < 0)    //  判斷Y位置落在哪一面  ( 前面 )
             {
+                bfront = true;
                 p1.Y = p1.Y + steelAttr.W + 150;
                 p2.Y = p2.Y + steelAttr.W + 150;
-                TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.FRONT, START_HOLE.START);
-
             }
-            else if (p1.Y>= steelAttr.W + 150)  //  判斷Y位置落在哪一面  ( 背面 )
+            else if (p1.Y >= steelAttr.W + 150)  //  判斷Y位置落在哪一面  ( 背面 )
             {
-
+                bback = true; 
                 p1.Y = p1.Y - steelAttr.H - steelAttr.W - 150;
                 p2.Y = p2.Y - steelAttr.H - steelAttr.W - 150;
-                TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.BACK, START_HOLE.START);
             }
             else  //  判斷Y位置落在哪一面  ( 頂面 )
             {
-                TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.TOP, START_HOLE.START);
+                btop= true;
             }
+
+            // 計算斜邊打點位置
+            tp1x = p1.X - p2.X;
+            tpr1x = p1.X - (tp1x * PosRatioA);
+            tpr2x = p1.X - (tp1x * PosRatioB);
+
+            tp1y = p1.Y - p2.Y;
+            tpr1y = p1.Y - (tp1y * PosRatioA);
+            tpr2y = p1.Y - (tp1y * PosRatioB);
+            //
+
+            // 紀錄2孔打點位置
+            Point3D PointH1 = new Point3D(tpr1x, tpr1y);
+            tmplist.Add(PointH1);
+            Point3D PointH2 = new Point3D(tpr2x, tpr2y);
+            tmplist.Add(PointH2);
 
             for (int z = 0; z < 2; z++)
             {
-                if (z == 0)
-                {
-                  XOffset = p1.X + (Xdistance * PosRatioA);                             // 依設定比例打點, 1/3 處
-                  YOffset = p1.Y + (Ydistance * PosRatioA);                             // 依設定比例打點, 1/3 處
-                }
-                else
-                {
-                  XOffset = p1.X + (Xdistance * PosRatioB);                             // 依設定比例打點, 2/3 處
-                  YOffset = p1.Y + (Ydistance * PosRatioB);                             // 依設定比例打點, 2/3 處
-                }
+               if (bfront)
+                    TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.FRONT, START_HOLE.START);
+               else if(bback)
+                    TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.BACK, START_HOLE.START);
+               else if (btop)
+                    TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.TOP, START_HOLE.START);
 
                 TmpBoltsArr.dX = "0";
                 TmpBoltsArr.dY = "0";
                 TmpBoltsArr.xCount = 1;
                 TmpBoltsArr.yCount = 1;
                 TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
-                TmpBoltsArr.BlockName = "ManHypotenuse";
-                TmpBoltsArr.X = XOffset;
-                TmpBoltsArr.Y = YOffset;
-                TmpBoltsArr.Z = TmpStreelAttr.W / 2 - ((TmpStreelAttr.t1) / 2);         // Z位置座標  腹板中心位置
-                TmpBoltsArr.t = TmpStreelAttr.t1;                                       // 圓柱高度
+                TmpBoltsArr.BlockName = "AutoHypotenuse";
+                TmpBoltsArr.X = tmplist[z].X;
+                TmpBoltsArr.Y = tmplist[z].Y;
                 TmpBoltsArr.GUID = Guid.NewGuid();
-                Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr,Secondary , out BlockReference blockReference, out bool CheckArea);
+                Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, Secondary, out BlockReference blockReference, out bool CheckArea);
                 obvm.Add2DHole(this, bolts, false);//加入孔位不刷新 2d 視圖       
-                
-                
             }
 
         }
-                                                                           
-
-
-
-
-
-
-
-
-
 
         /// <summary>
         /// 第二個選定實體
