@@ -931,6 +931,8 @@
     </Compile>
     <Compile Include="ValueConverters\BAVTConverter.cs" />
     <Compile Include="ValueConverters\BooleanToForefroundConverter.cs" />
+    <Compile Include="ValueConverters\BooleanToOpacityConverter.cs" />
+    <Compile Include="ValueConverters\BooleanToSolidColorBrushConverter.cs" />
     <Compile Include="ValueConverters\ClampDownToBoolenConverter.cs" />
     <Compile Include="ValueConverters\ConditionToIsEnabledConerter.cs" />
     <Compile Include="ValueConverters\ConverterAssemblyNumber.cs" />

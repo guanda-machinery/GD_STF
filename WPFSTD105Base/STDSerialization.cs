@@ -22,6 +22,7 @@ using DevExpress.XtraRichEdit.Import.OpenXml;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot;
 using System.Diagnostics;
+using static WPFSTD105.Model.DrillBoltsModel;
 
 namespace WPFSTD105
 {
@@ -124,7 +125,6 @@ namespace WPFSTD105
             {
                 return null;
             }
-           
         }
         /// <summary>
         /// 存取目前模型零件列表 (壓縮)
@@ -712,5 +712,50 @@ namespace WPFSTD105
             var result = directoryInfo.GetFiles($@"{ModelPath.OptionSettings}.db*").Select(el => el.Name);
             return result.ToArray();
         }
+
+
+
+
+        //
+        /// <summary>
+        /// 取得加工監控時編輯孔位資料<see cref="DrillBolts"/>
+        /// </summary>
+        /// <param name="dataName">是 <see cref="MaterialDataView.MaterialNumber"/></param>
+        /// <returns></returns>
+
+        public Dictionary<GD_STD.Enum.FACE, DrillBoltsBase> GetDrillBolts(string materialNumber)
+        {
+            try
+            {
+                string path = $@"{ApplicationVM.DirectoryDrillBoltsBackup()}\{materialNumber}.db"; //孔位路徑
+                return GZipDeserialize<DrillBoltsModel>(path).DrillBoltsDict;//解壓縮反序列化回傳資料
+                //return new ObservableCollection<DrillBolts>(GZipDeserialize<ObservableCollection<object>>(path).Select(el => (DrillBolts)el));//解壓縮反序列化回傳資料
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        //
+        /// <summary>
+        /// 儲存加工監控時編輯孔位資料<see cref="DrillBolts"/>
+        /// </summary>
+        /// <param name="materialNumber">是 <see cref="MaterialDataView.MaterialNumber"/></param>
+        /// <param name="values">是 <see cref="DrillBolts"/>的集合</param>
+        /// <returns></returns>
+        public void SetDrillBolts(string materialNumber, Dictionary<GD_STD.Enum.FACE, DrillBoltsBase> values)
+        {
+            if(!Directory.Exists(ApplicationVM.DirectoryDrillBoltsBackup()))
+                Directory.CreateDirectory(ApplicationVM.DirectoryDrillBoltsBackup());
+            GZipSerializeBinary(new DrillBoltsModel(){ DrillBoltsDict = values }, $@"{ApplicationVM.DirectoryDrillBoltsBackup()}\{materialNumber}.db");
+        }
+
+
+
+
+
+
+
+
     }
 }

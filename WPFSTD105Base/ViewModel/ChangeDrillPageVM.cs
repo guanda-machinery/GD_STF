@@ -27,6 +27,11 @@ using System.Reflection;
 using DevExpress.Data.Extensions;
 using System.Windows.Controls;
 using WPFWindowsBase;
+using DevExpress.XtraSpreadsheet.Model;
+using DocumentFormat.OpenXml.Wordprocessing;
+using Newtonsoft.Json;
+using log4net;
+using WPFSTD105.FluentAPI;
 
 namespace WPFSTD105.ViewModel
 {
@@ -170,7 +175,6 @@ namespace WPFSTD105.ViewModel
         {
             return new WPFBase.RelayCommand(() =>
             {
-
                 for (int i = 0; i < UnusedSelected.Count; i++)
                 {
                     DrillChange(UnusedSelected[i]);
@@ -342,6 +346,53 @@ namespace WPFSTD105.ViewModel
                 CancelEnabled();
             });
         }
+
+
+        public WPFBase.RelayCommand CloseToolMagazineCommand 
+        { 
+            get
+            {
+                return new WPFBase.RelayCommand(() =>
+                {
+                    //A  MiddleCommand = Middle(); this.IsSelectdMiddle = true;
+                    //B  LeftExportCommand = LeftExport(); this.IsSelectdLeftExport = true;
+                    //C  RightExportCommand = RightExport(); this.IsSelectdRightExport = true;
+                    //D  LeftEntranceCommand = LeftEntrance(); this.IsSelectdLeftEntrance = true;
+                    //E  RightEntranceCommand = RightEntrance(); this.IsSelectdRightEntrance = true;
+
+                    if (Optional.Default.Middle && this.IsSelectdMiddle)
+                        _MecOptional.Middle = !_MecOptional.Middle;
+
+                    if (Optional.Default.LeftExport && this.IsSelectdLeftExport)
+                        _MecOptional.LeftExport = !_MecOptional.LeftExport;
+
+                    if ( Optional.Default.LeftEntrance && this.IsSelectdLeftEntrance)
+                        _MecOptional.LeftEntrance = !_MecOptional.LeftEntrance;
+
+                    if( Optional.Default.RightEntrance && this.IsSelectdRightEntrance)
+                        _MecOptional.RightEntrance = !_MecOptional.RightEntrance;
+
+                    if ( Optional.Default.RightExport && this.IsSelectdRightExport)
+                        _MecOptional.RightExport = !_MecOptional.RightExport;
+
+
+                    new STDSerialization().SetOptionSettings(_MecOptional);
+
+                    MecOptional mecOptional = JsonConvert.DeserializeObject<MecOptional>(_MecOptional.ToString());
+                    WriteCodesysMemor.SetMecOptional(mecOptional);//寫入記憶體''
+                  
+                    //WriteCodesysMemor.SetDrillWarehouse();
+                    UpDate();
+                });
+            }
+        }
+
+
+
+
+
+
+
         #endregion
         #region 私有方法
         private void UpDate()

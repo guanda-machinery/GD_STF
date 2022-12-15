@@ -16,12 +16,12 @@ namespace STD_105
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool IsSelected = false;
-            if (parameter is string)
+            //bool IsSelected = false;
+           /* if (parameter is string)
             {
                 if ((string)parameter == "IsSelected")
                     IsSelected = true;
-            }
+            }*/
 
             if (value is PositionStatusEnum)
             {
@@ -32,24 +32,25 @@ namespace STD_105
                 switch(RowValue)
                 {
                     case PositionStatusEnum.完成:
-                        return (!IsSelected) ? (SolidColorBrush)Brushes.Transparent : (SolidColorBrush)new BrushConverter().ConvertFrom(WPFSTD105.Properties.SofSetting.Default.Report_Finish);
+                        return  (SolidColorBrush)new BrushConverter().ConvertFrom(WPFSTD105.Properties.SofSetting.Default.Report_Finish);
                     case PositionStatusEnum.加工中:
-                        return (!IsSelected) ? (SolidColorBrush)Brushes.Transparent : (SolidColorBrush)new BrushConverter().ConvertFrom(WPFSTD105.Properties.SofSetting.Default.Report_Processing);
+                        return  (SolidColorBrush)new BrushConverter().ConvertFrom(WPFSTD105.Properties.SofSetting.Default.Report_Processing);
                     case PositionStatusEnum.等待配對:
-                        return (!IsSelected) ? (SolidColorBrush)Brushes.Transparent : (SolidColorBrush)new BrushConverter().ConvertFrom(WPFSTD105.Properties.SofSetting.Default.Report_Waiting);
+                        return (SolidColorBrush)new BrushConverter().ConvertFrom(WPFSTD105.Properties.SofSetting.Default.Report_Waiting);
                     case PositionStatusEnum.等待入料:
-                        return (!IsSelected) ? (SolidColorBrush)Brushes.Transparent : (SolidColorBrush)new BrushConverter().ConvertFrom(WPFSTD105.Properties.SofSetting.Default.Report_Moving);
+                        return (SolidColorBrush)new BrushConverter().ConvertFrom(WPFSTD105.Properties.SofSetting.Default.Report_Moving);
                     case PositionStatusEnum.等待出料:
-                        return (!IsSelected) ? (SolidColorBrush)Brushes.Transparent : (SolidColorBrush)new BrushConverter().ConvertFrom(WPFSTD105.Properties.SofSetting.Default.Report_Moving);
+                        return (SolidColorBrush)new BrushConverter().ConvertFrom(WPFSTD105.Properties.SofSetting.Default.Report_Moving);
                     case PositionStatusEnum.不可配對:
-                        return (!IsSelected) ? (SolidColorBrush)new BrushConverter().ConvertFrom("#fa7070") : (SolidColorBrush)new BrushConverter().ConvertFrom("#ff4747");
+                        return (SolidColorBrush)new BrushConverter().ConvertFrom("#ff4747");
                     default:
-                        return (!IsSelected) ? Brushes.Transparent : (SolidColorBrush)new BrushConverter().ConvertFrom("#FFD4D4D4");
+                        return (SolidColorBrush)new BrushConverter().ConvertFrom("#FFD4D4D4");
+                        //(!IsSelected) ? Brushes.Transparent : 
                 }
             }
             else
             {
-                return (!IsSelected) ? (SolidColorBrush)Brushes.Transparent : (SolidColorBrush)new BrushConverter().ConvertFrom("#FFD4D4D4");
+                return (SolidColorBrush)new BrushConverter().ConvertFrom("#FFD4D4D4");
             }
         }
 

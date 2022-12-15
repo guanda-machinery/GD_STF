@@ -17,6 +17,11 @@
         <Setter Property="TextBlock.Foreground" Value="{StaticResource solidclr_CreamyGray}" />
     </Style>
     
+    
+    
+    
+    
+    
     <!--  GridControl Style  -->
     <Style x:Key="SiegCustomGridControl" TargetType="dxg:GridControl">
         <Style.Resources>
@@ -37,7 +42,7 @@
                 <Setter Property="RowStyle">
                     <Setter.Value>
                         <Style TargetType="{x:Type dxg:RowControl}">
-                            <Setter Property="Foreground" Value="{Binding Row.IsAlert , Converter={local:BooleanToForefroundConverter} ,ConverterParameter={StaticResource solidclr_White}}"/>
+                            <!--<Setter Property="Foreground" Value="{Binding Row.IsAlert , Converter={local:BooleanToForefroundConverter} ,ConverterParameter={StaticResource solidclr_White}}"/>-->
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
                                     <Setter Property="Background" Value="LightGray" />
@@ -57,10 +62,8 @@
         <Setter Property="TextBlock.FontSize" Value="12" />
     </Style>
 
-
-
     <Style TargetType="{x:Type dxg:RowControl}" x:Key="SiegRowControl">
-        <Setter Property="Foreground" Value="{StaticResource solidclr_White}"/>
+        <Setter Property="Foreground" Value="{StaticResource solidclr_Black}"/>
         <Style.Triggers>
             <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
                 <Setter Property="Background" Value="LightGray" />
@@ -70,6 +73,16 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    
+
+
+
+
+
+
+
+
+
     <!--  GridControl Style 字體小的版本  -->
     <Style x:Key="SiegCustom_CompactGridControl" TargetType="dxg:GridControl">
         <Style.Resources>
@@ -77,12 +90,12 @@
                 <Setter Property="CellStyle">
                     <Setter.Value>
                         <Style TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
+                            <Setter Property="TextBlock.Foreground" Value="Black"/>
                             <Setter Property="TextBlock.FontSize" Value="12"/>
                             <Setter Property="TextBlock.Height" Value="20"/>
                             <Style.Triggers>
                                 <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
                                     <Setter Property="Background" Value="Transparent"/>
-                                    <!--<Setter Property="Foreground" Value="{Binding Row.IsAlert , Converter={local:BooleanToForefroundConverter} ,ConverterParameter={StaticResource solidclr_White}}"/>-->
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -96,6 +109,62 @@
             </Style>
         </Style.Resources>
     </Style>
+
+
+
+    <Style x:Key="SiegCustomDrillWorkGridControl" TargetType="dxg:GridControl" BasedOn="{StaticResource SiegCustomGridControl}">
+        <Style.Resources>
+            <Style TargetType="dxg:TableView">
+                <Setter Property="Focusable" Value="False"/>
+                <Setter Property="IsColumnMenuEnabled" Value="False"/>
+        <Setter Property="AllowSorting" Value="false"/>
+        <Setter Property="AllowColumnFiltering" Value="False"/>
+        <Setter Property="AllowColumnMoving" Value="False"/>
+        <Setter Property="AllowEditing" Value="False"/>
+        <Setter Property="HeaderHorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalScrollbarVisibility" Value="Disabled"/>
+        <Setter Property="HorizontalScrollbarVisibility" Value="Disabled"/>
+        <Setter Property="ShowHorizontalLines" Value="True"/>
+        <Setter Property="ShowVerticalLines" Value="True"/>
+        <Setter Property="ShowGroupPanel" Value="False"/>
+        <Setter Property="ShowSearchPanelMode" Value="Never"/>
+        <Setter Property="SearchPanelNullText" Value="Search Tasks(Ctrl + F)" />
+        <Setter Property="SearchPanelFindMode" Value="Always"/>
+        <Setter Property="ShowIndicator" Value="False"/>
+         <Setter Property="SearchDelay" Value="0"/>
+                <Setter Property="CellStyle">
+                    <Setter.Value>
+                        <Style TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
+                            <Setter Property="TextBlock.FontSize" Value="14"/>
+                            <Style.Triggers>
+                                <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
+                                    <Setter Property="Background" Value="Transparent"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="RowStyle">
+                    <Setter.Value>
+                        <Style TargetType="{x:Type dxg:RowControl}">
+                            <Setter Property="Opacity" Value="{Binding Row.DrillWork,Converter={local:BooleanToOpacityConverter},ConverterParameter=0.2}"/>
+                            <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChangeBool,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
+                                    <Setter Property="Opacity" Value="{Binding Row.DrillWork,Converter={local:BooleanToOpacityConverter}}"/>
+                                    <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChangeBool,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTrigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="LightSlateGray" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Style.Resources>
+    </Style>
+
 
 
     <Style x:Key="SiegCustomBlackMessageGridControl" TargetType="dxg:GridControl">
@@ -135,5 +204,7 @@
         </Style.Resources>
     </Style>
 
+    
+    
 
 </ResourceDictionary>

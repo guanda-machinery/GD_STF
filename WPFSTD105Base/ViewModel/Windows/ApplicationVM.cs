@@ -106,7 +106,7 @@ namespace WPFSTD105
                         }
                     }
                 }
-                
+
 
 
 
@@ -372,7 +372,7 @@ namespace WPFSTD105
 
             if (projectName != null)
             {
-                return Path.Combine(Properties.SofSetting.Default.LoadPath, CommonViewModel.ProjectName).Replace("/","\\");
+                return Path.Combine(Properties.SofSetting.Default.LoadPath, CommonViewModel.ProjectName).Replace("/", "\\");
 
 
             }
@@ -391,6 +391,22 @@ namespace WPFSTD105
                 return $"{Properties.SofSetting.Default.LoadPath}\\{CommonViewModel.ProjectName}\\{ModelPath.WorkMaterialBackup}";
             throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }
+
+
+        /// <summary>
+        /// 孔位編輯資訊
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public static string DirectoryDrillBoltsBackup()
+        {
+            string projectName = CommonViewModel.ProjectName; //專案名稱
+
+            if (projectName != null)
+                return $"{Properties.SofSetting.Default.LoadPath}\\{CommonViewModel.ProjectName}\\{ModelPath.DrillBoltsBackup}";
+            throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
+        }
+
         ///// <summary>
         ///// 加工列表鑽孔參數備份檔案
         ///// </summary>
@@ -967,6 +983,9 @@ namespace WPFSTD105
                 Directory.CreateDirectory(ApplicationVM.DirectorySteelBolts());//存放螺栓資料序列化的資料夾
                 Directory.CreateDirectory(ApplicationVM.DirectoryPorfile());//存放螺栓資料序列化的資料夾
                 Directory.CreateDirectory(ApplicationVM.DirectoryWorkMaterialBackup());//存放螺栓資料序列化的資料夾
+                Directory.CreateDirectory(ApplicationVM.DirectoryDrillBoltsBackup());//存放加工監控編輯孔位資料序列化的資料夾
+
+
                 SerializationHelper.GZipSerializeBinary(new ObservableCollection<string>(), ApplicationVM.FileSteelAssembly()); //斷面規格列表
                 SerializationHelper.GZipSerializeBinary(new ObservableCollection<string>(), ApplicationVM.FileProfileList());//斷面規格列表
                 SerializationHelper.GZipSerializeBinary(new ObservableCollection<DataCorrespond>(), ApplicationVM.FilePartList());//斷面規格列表

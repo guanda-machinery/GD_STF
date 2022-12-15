@@ -171,6 +171,7 @@
             <Style TargetType="dxe:TextEditSettings">
                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
             </Style>
+            
             <Style TargetType="dxg:GridControl" BasedOn="{StaticResource SiegCustomGridControl}" x:Key="MachiningGridControl">
                 <Style.Resources>
                     <Style TargetType="dxg:TableView">
@@ -198,7 +199,7 @@
                                         </Trigger>
                                         <Trigger Property="dxg:GridViewBase.IsFocusedRow" Value="True">
                                             <Setter Property="Background"
-                                                            Value="{Binding Row.PositionEnum, Converter={local:TypeSettingDataViewToSolidColorBrushConverter} ,ConverterParameter='IsSelected' }" />
+                                                            Value="{Binding Row.PositionEnum, Converter={local:TypeSettingDataViewToSolidColorBrushConverter}}" />
                                             <Setter Property="Foreground"
                                                             Value="{ StaticResource solidclr_DarkGray }" />
                                         </Trigger>
@@ -350,7 +351,7 @@
                                     <MenuItem Command="{Binding RecoverCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                               Visibility="{Binding Finish_UndoneDataViews_SelectedItems,ConverterParameter='Recover' ,Converter={local:MenuItem_FUDataViewsToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-                                              Header="狀態復原" />
+                                              Header="狀態註銷" />
                                     
                                     <MenuItem Command="{Binding UnregisterCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
@@ -481,7 +482,7 @@ AllowEditing="False"
                     
                     
                     <dxg:GridControl Margin="0,-1,0,-1" 
-                        Style="{StaticResource MachiningGridControl}"
+                        Style="{StaticResource SiegCustomGridControl}"
                         Name="MachiningSchedule_List_GridControl"    
                         AutoGenerateColumns="None" 
                         Grid.Row="2"  Width="159"
@@ -527,17 +528,31 @@ AllowEditing="False"
                         </dxg:GridControl.View>
                        <!-- <dxg:GridColumn FieldName=""  MaxWidth="40" MinWidth="40"  FixedWidth="True" Header="狀態" />-->
                         <dxg:GridColumn FieldName="PositionEnum"  Binding="{Binding PositionEnum, Converter={local:PositionStatusEnumToStringConverter}}"
-                                        MaxWidth="70" MinWidth="70"  FixedWidth="True" Header="位置"/>
-
-
-
-
+                                        MaxWidth="70" MinWidth="70"  FixedWidth="True" Header="位置">
+                            <dxg:GridColumn.CellStyle>
+                                <Style TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
+                                    <Setter Property="Background"
+                                                            Value="{Binding Row.PositionEnum, Converter={local:TypeSettingDataViewToSolidColorBrushConverter}}" />
+                                    <Setter Property="TextBlock.FontSize" Value="14"/>
+                                    
+                                    <Style.Triggers>
+                                        <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
+                                            <Setter Property="Background"
+                                                            Value="{Binding Row.PositionEnum, Converter={local:TypeSettingDataViewToSolidColorBrushConverter}}" />
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="LightSlateGray" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </dxg:GridColumn.CellStyle>
+                        </dxg:GridColumn>
                         <dxg:GridColumn MaxWidth="70" MinWidth="70" Header="進度(%)" >
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid>
                                         <ProgressBar Value="{Binding Row.Schedule,UpdateSourceTrigger=PropertyChanged}" 
-                                                     Style="{StaticResource BaseStyle}" 
+                                                     Style="{StaticResource BaseStyle}"  Margin="-1"
                                                      Height="auto" Minimum="0" Maximum="100" Background="White" />
                                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" >
                                             <TextBlock Text="{Binding Row.Schedule,UpdateSourceTrigger=PropertyChanged}"   />
@@ -547,7 +562,6 @@ AllowEditing="False"
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
-
                         <dxg:GridColumn FieldName="MaterialNumber" FixedWidth="True" Width="0"  IsSmart="True" Header="排版編號" />
                         <dxg:GridColumn FieldName="Profile"  FixedWidth="True" Width="0"   IsSmart="True" Header="斷面規格"   />
                         <dxg:GridColumn FieldName="Material"  FixedWidth="True" Width="0"   IsSmart="True" Header="材質"    />
@@ -877,79 +891,385 @@ AllowEditing="False"
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <dxg:GridControl
-                                Grid.Column="0"
-                                AutoGenerateColumns="None"
-                                SelectionMode="MultipleRow"
-                                MaxHeight="2000"    
-                                ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource,
-                                ConverterParameter={x:Static GD_STD_Enum:FACE.FRONT}, 
-                                Converter={local:TypesettingsSettingsToDrillDataConverter}, 
-                                Mode=TwoWay , 
-                                UpdateSourceTrigger=PropertyChanged}">
-                                <dxg:GridControl.View >
-                                    <dxg:TableView  
-                                        Header="前面(右翼板)" >
-                                        <dxg:TableView.CellStyle>
-                                            <Style>
-                                                <Setter Property="TextBlock.FontSize" Value="12"/>
-                                            </Style>
-                                        </dxg:TableView.CellStyle>
-                                    </dxg:TableView>
-                                </dxg:GridControl.View>
-                                <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                            </dxg:GridControl>
-                            <dxg:GridControl
-                                Margin="0,0,0,0"
-                                Grid.Column="1"
-                    AutoGenerateColumns="None"
-                    SelectionMode="MultipleRow"
-                    MaxHeight="2000"    
-                    ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource,
-                                ConverterParameter={x:Static GD_STD_Enum:FACE.TOP}, 
-                                Converter={local:TypesettingsSettingsToDrillDataConverter}, 
-                                Mode=TwoWay , 
-                                UpdateSourceTrigger=PropertyChanged}">
-                                <dxg:GridControl.View >
-                                    <dxg:TableView  
+                            
+
+
+                            <materialDesign:DialogHost  Grid.Column="0"  DialogTheme="Inherit">
+                                <materialDesign:DialogHost.DialogContent>
+                                    <StackPanel Margin="8" >
+                                        <!--統一孔徑-->
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiFRONT"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                            ConverterParameter={x:Static GD_STD_Enum:FACE.FRONT}, 
+                                            Converter={local:TypesettingsSettingsToBooleanConverter}, 
+                                            Mode=TwoWay , 
+                                            UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBlock Text="統一刀徑" Margin="8,2"/>
+                                        </StackPanel>
+                                        
+                                        <ComboBox Margin="0,5"  Height="20" SelectedValue="{Binding MachiningCombinational_DrillBoltsItemSource, 
+                                            ConverterParameter={x:Static GD_STD_Enum:FACE.FRONT},
+                                            Converter={local:TypesettingsSettingsToUnitaryToolConverter}, 
+                                            Mode=TwoWay , 
+                                            UpdateSourceTrigger=PropertyChanged}"
+                                                  
+                                             Visibility="{Binding ElementName=IdentiFRONT , Path=IsChecked, Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                             ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource, 
+                                            ConverterParameter={x:Static GD_STD_Enum:FACE.FRONT},
+                                            Converter={local:TypesettingsSettingsToDrillDiaConverter}, 
+                                            Mode=OneWay , 
+                                            UpdateSourceTrigger=PropertyChanged}"/>
+
+                                        <dxg:GridControl  
+                                            HorizontalAlignment="Left" 
+                                                         Margin="0,0,0,0"
+                                                         AutoGenerateColumns="None"
+                                                         SelectionMode="None"           
+                                                         Focusable="False"
+                                                         MaxHeight="2000"    
+                                                         ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                            ConverterParameter={x:Static GD_STD_Enum:FACE.FRONT}, 
+                                            Converter={local:TypesettingsSettingsToDrillDataConverter}, 
+                                            Mode=TwoWay , 
+                                            UpdateSourceTrigger=PropertyChanged}">
+                                            <dxg:GridControl.View >
+                                                <dxg:TableView 
+                                Header="頂面加工選擇" >
+                                                    <dxg:TableView.CellStyle>
+                                                        <Style>
+                                                            <Setter Property="TextBlock.FontSize" Value="12"/>
+                                                        </Style>
+                                                    </dxg:TableView.CellStyle>
+                                                </dxg:TableView>
+                                            </dxg:GridControl.View>
+                                            <dxg:GridColumn FieldName="DrillWork" Header=""  Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                                <dxg:GridColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox IsChecked="{Binding Row.DrillWork}" HorizontalAlignment="Center" Margin="2,0,0,0" />
+                                                    </DataTemplate>
+                                                </dxg:GridColumn.CellTemplate>
+                                            </dxg:GridColumn>
+                                            <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
+                                            <dxg:GridColumn FieldName="Dia" Visible="False" Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                                <dxg:GridColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox IsChecked="{Binding Row.DrillHoleDiameterIsChangeBool}" HorizontalAlignment="Center" Margin="2,0,0,0" />
+                                                    </DataTemplate>
+                                                </dxg:GridColumn.CellTemplate>
+                                            </dxg:GridColumn>
+                                            <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                            <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                        </dxg:GridControl>
+
+
+                                        <Button Grid.Column="0" Width="80"  HorizontalAlignment="Center"
+                                                Style="{StaticResource SiegCustomButtonGray}"
+                                                IsDefault="True"
+                                                Margin="0,8,8,0"
+                                                Content="關閉"
+                                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                                        </Button>
+
+                                    </StackPanel>
+                                </materialDesign:DialogHost.DialogContent>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition  Height="*" />
+                                        <RowDefinition  Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <dxg:GridControl  Style="{StaticResource SiegCustomDrillWorkGridControl}"
+                                        Margin="0,0,0,0"
+                                        AutoGenerateColumns="None"
+                                        SelectionMode="None"           
+                                        Focusable="False"
+                                        MaxHeight="2000"    
+                                        ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                        ConverterParameter={x:Static GD_STD_Enum:FACE.FRONT}, 
+                                        Converter={local:TypesettingsSettingsToDrillDataConverter}, 
+                                        Mode=TwoWay , 
+                                        UpdateSourceTrigger=PropertyChanged}">
+                                        <dxg:GridControl.View >
+                                            <dxg:TableView
                                 Header="頂面(腹板)" >
-                                        <dxg:TableView.CellStyle>
-                                            <Style>
-                                                <Setter Property="TextBlock.FontSize" Value="12"/>
-                                            </Style>
-                                        </dxg:TableView.CellStyle>
-                                    </dxg:TableView>
-                                </dxg:GridControl.View>
-                                <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                            </dxg:GridControl>
-                            <dxg:GridControl
-                                Grid.Column="2"
-                    AutoGenerateColumns="None"
-                    SelectionMode="Row"
-                    MaxHeight="2000"    
-                    ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource,
-                                ConverterParameter={x:Static GD_STD_Enum:FACE.BACK}, 
-                                Converter={local:TypesettingsSettingsToDrillDataConverter}, 
-                                Mode=TwoWay , 
-                                UpdateSourceTrigger=PropertyChanged}">
-                                <dxg:GridControl.View >
-                                    <dxg:TableView  
-                                Header="後面(左翼板)" >
-                                        <dxg:TableView.CellStyle>
-                                            <Style>
-                                                <Setter Property="TextBlock.FontSize" Value="12"/>
-                                            </Style>
-                                        </dxg:TableView.CellStyle>
-                                    </dxg:TableView>
-                                </dxg:GridControl.View>
-                                <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                            </dxg:GridControl>
+                                                <dxg:TableView.CellStyle>
+                                                    <Style>
+                                                        <Setter Property="TextBlock.FontSize" Value="12"/>
+                                                    </Style>
+                                                </dxg:TableView.CellStyle>
+                                            </dxg:TableView>
+                                        </dxg:GridControl.View>
+                                        <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                        <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                        <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                    </dxg:GridControl>
+                                    <StackPanel Grid.Row="1" Visibility="{Binding SelectedMaterial_Info_Button_Visibility}">
+                                        <Button Height="30" Margin="5" 
+                                                Visibility="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                            ConverterParameter={x:Static GD_STD_Enum:FACE.FRONT}, 
+                                            Converter={local:TypesettingsSettingsToVisibilityConverter}, 
+                                            Mode=OneWay , 
+                                            UpdateSourceTrigger=PropertyChanged}"
+                                            Style="{StaticResource SiegCustomButtonGray}"
+                                            Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                            VerticalAlignment="Bottom"
+                                            
+                                            Content="{materialDesign:PackIcon Kind=Plus, Size=22}" />
+                                    </StackPanel>
+                                </Grid>
+                            </materialDesign:DialogHost>
+
+                            <materialDesign:DialogHost  Grid.Column="1"  DialogTheme="Inherit">
+                                <materialDesign:DialogHost.DialogContent>
+                                    <StackPanel Margin="8" >
+                                        <!--統一孔徑-->
+                                        <StackPanel Orientation="Horizontal">
+                                        <CheckBox Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiTop"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                            ConverterParameter={x:Static GD_STD_Enum:FACE.TOP}, 
+                                            Converter={local:TypesettingsSettingsToBooleanConverter}, 
+                                            Mode=TwoWay , 
+                                            UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBlock Text="統一刀徑" Margin="8,2"/>
+                                        </StackPanel>
+
+                                        <ComboBox Margin="0,0,0,5"  Height="20" SelectedValue="{Binding MachiningCombinational_DrillBoltsItemSource, 
+                                            ConverterParameter={x:Static GD_STD_Enum:FACE.TOP},
+                                            Converter={local:TypesettingsSettingsToUnitaryToolConverter}, 
+                                            Mode=TwoWay , 
+                                            UpdateSourceTrigger=PropertyChanged}"
+                                                  
+                                             Visibility="{Binding ElementName=IdentiTop , Path=IsChecked, Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                             ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource, 
+                                            ConverterParameter={x:Static GD_STD_Enum:FACE.TOP},
+                                            Converter={local:TypesettingsSettingsToDrillDiaConverter}, 
+                                            Mode=OneWay , 
+                                            UpdateSourceTrigger=PropertyChanged}"/>
+
+                                        <dxg:GridControl  
+                                            HorizontalAlignment="Left" 
+                                                         Margin="0,0,0,0"
+                                                         AutoGenerateColumns="None"
+                                                         SelectionMode="None"           
+                                                         Focusable="False"
+                                                         MaxHeight="2000"    
+                                                         ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                            ConverterParameter={x:Static GD_STD_Enum:FACE.TOP}, 
+                                            Converter={local:TypesettingsSettingsToDrillDataConverter}, 
+                                            Mode=TwoWay , 
+                                            UpdateSourceTrigger=PropertyChanged}">
+                                            <dxg:GridControl.View >
+                                                <dxg:TableView 
+                                Header="頂面加工選擇" >
+                                                    <dxg:TableView.CellStyle>
+                                                        <Style>
+                                                            <Setter Property="TextBlock.FontSize" Value="12"/>
+                                                        </Style>
+                                                    </dxg:TableView.CellStyle>
+                                                </dxg:TableView>
+                                            </dxg:GridControl.View>
+                                            <dxg:GridColumn FieldName="DrillWork" Header=""  Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                                <dxg:GridColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox IsChecked="{Binding Row.DrillWork}" HorizontalAlignment="Center" Margin="2,0,0,0" />
+                                                    </DataTemplate>
+                                                </dxg:GridColumn.CellTemplate>
+                                            </dxg:GridColumn>
+                                            <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
+                                            <dxg:GridColumn FieldName="Dia" Visible="False" Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                                <dxg:GridColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox IsChecked="{Binding Row.DrillHoleDiameterIsChangeBool}" HorizontalAlignment="Center" Margin="2,0,0,0" />
+                                                    </DataTemplate>
+                                                </dxg:GridColumn.CellTemplate>
+                                            </dxg:GridColumn>
+                                            <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                            <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                        </dxg:GridControl>
+                                        <Button Grid.Column="0" Width="80"  HorizontalAlignment="Center"
+                                                Style="{StaticResource SiegCustomButtonGray}"
+                                                IsDefault="True"
+                                                Margin="0,8,8,0"
+                                                Content="關閉"
+                                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                                        </Button>
+
+                                    </StackPanel>
+                                </materialDesign:DialogHost.DialogContent>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition  Height="*" />
+                                        <RowDefinition  Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <dxg:GridControl  Style="{StaticResource SiegCustomDrillWorkGridControl}"
+                                        Margin="0,0,0,0"
+                                        AutoGenerateColumns="None"
+                                        SelectionMode="None"           
+                                        Focusable="False"
+                                        MaxHeight="2000"    
+                                        ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                        ConverterParameter={x:Static GD_STD_Enum:FACE.TOP}, 
+                                        Converter={local:TypesettingsSettingsToDrillDataConverter}, 
+                                        Mode=TwoWay , 
+                                        UpdateSourceTrigger=PropertyChanged}">
+                                        <dxg:GridControl.View >
+                                            <dxg:TableView
+                                Header="頂面(腹板)" >
+                                                <dxg:TableView.CellStyle>
+                                                    <Style>
+                                                        <Setter Property="TextBlock.FontSize" Value="12"/>
+                                                    </Style>
+                                                </dxg:TableView.CellStyle>
+                                            </dxg:TableView>
+                                        </dxg:GridControl.View>
+                                        <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                        <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                        <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                    </dxg:GridControl>
+
+
+                                    <StackPanel Grid.Row="1" Visibility="{Binding SelectedMaterial_Info_Button_Visibility}">
+                                        <Button Height="30" Margin="5" 
+                                                Visibility="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                            ConverterParameter={x:Static GD_STD_Enum:FACE.TOP}, 
+                                            Converter={local:TypesettingsSettingsToVisibilityConverter}, 
+                                            Mode=OneWay , 
+                                            UpdateSourceTrigger=PropertyChanged}"
+                                            Style="{StaticResource SiegCustomButtonGray}"
+                                            Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                            VerticalAlignment="Bottom"
+                                            
+                                            Content="{materialDesign:PackIcon Kind=Plus, Size=22}" />
+                                    </StackPanel>
+                                </Grid>
+                            </materialDesign:DialogHost>
+
+                            <materialDesign:DialogHost  Grid.Column="2"  DialogTheme="Inherit">
+                                <materialDesign:DialogHost.DialogContent>
+                                    <StackPanel Margin="8" >
+                                        <!--統一孔徑-->
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiBACK"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                            ConverterParameter={x:Static GD_STD_Enum:FACE.BACK}, 
+                                            Converter={local:TypesettingsSettingsToBooleanConverter}, 
+                                            Mode=TwoWay , 
+                                            UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBlock Text="統一刀徑" Margin="8,2"/>
+                                        </StackPanel>
+
+                                        <ComboBox Margin="0,5"  Height="20" SelectedValue="{Binding MachiningCombinational_DrillBoltsItemSource, 
+                                            ConverterParameter={x:Static GD_STD_Enum:FACE.BACK},
+                                            Converter={local:TypesettingsSettingsToUnitaryToolConverter}, 
+                                            Mode=TwoWay , 
+                                            UpdateSourceTrigger=PropertyChanged}"
+                                                  
+                                             Visibility="{Binding ElementName=IdentiBACK , Path=IsChecked, Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                             ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource, 
+                                            ConverterParameter={x:Static GD_STD_Enum:FACE.BACK},
+                                            Converter={local:TypesettingsSettingsToDrillDiaConverter}, 
+                                            Mode=OneWay , 
+                                            UpdateSourceTrigger=PropertyChanged}"/>
+
+                                        <dxg:GridControl  
+                                            HorizontalAlignment="Left" 
+                                                         Margin="0,0,0,0"
+                                                         AutoGenerateColumns="None"
+                                                         SelectionMode="None"           
+                                                         Focusable="False"
+                                                         MaxHeight="2000"    
+                                                         ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                            ConverterParameter={x:Static GD_STD_Enum:FACE.BACK}, 
+                                            Converter={local:TypesettingsSettingsToDrillDataConverter}, 
+                                            Mode=TwoWay , 
+                                            UpdateSourceTrigger=PropertyChanged}">
+                                            <dxg:GridControl.View >
+                                                <dxg:TableView 
+                                Header="頂面加工選擇" >
+                                                    <dxg:TableView.CellStyle>
+                                                        <Style>
+                                                            <Setter Property="TextBlock.FontSize" Value="12"/>
+                                                        </Style>
+                                                    </dxg:TableView.CellStyle>
+                                                </dxg:TableView>
+                                            </dxg:GridControl.View>
+                                            <dxg:GridColumn FieldName="DrillWork" Header=""  Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                                <dxg:GridColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox IsChecked="{Binding Row.DrillWork}" HorizontalAlignment="Center" Margin="2,0,0,0" />
+                                                    </DataTemplate>
+                                                </dxg:GridColumn.CellTemplate>
+                                            </dxg:GridColumn>
+                                            <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
+                                            <dxg:GridColumn FieldName="Dia" Visible="False" Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                                <dxg:GridColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox IsChecked="{Binding Row.DrillHoleDiameterIsChangeBool}" HorizontalAlignment="Center" Margin="2,0,0,0" />
+                                                    </DataTemplate>
+                                                </dxg:GridColumn.CellTemplate>
+                                            </dxg:GridColumn>
+                                            <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                            <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                        </dxg:GridControl>
+
+
+                                        <Button Grid.Column="0" Width="80"  HorizontalAlignment="Center"
+                                                Style="{StaticResource SiegCustomButtonGray}"
+                                                IsDefault="True"
+                                                Margin="0,8,8,0"
+                                                Content="關閉"
+                                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                                        </Button>
+
+                                    </StackPanel>
+                                </materialDesign:DialogHost.DialogContent>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition  Height="*" />
+                                        <RowDefinition  Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <dxg:GridControl  Style="{StaticResource SiegCustomDrillWorkGridControl}"
+                                        Margin="0,0,0,0"
+                                        AutoGenerateColumns="None"
+                                        SelectionMode="None"           
+                                        Focusable="False"
+                                        MaxHeight="2000"    
+                                        ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                        ConverterParameter={x:Static GD_STD_Enum:FACE.BACK}, 
+                                        Converter={local:TypesettingsSettingsToDrillDataConverter}, 
+                                        Mode=TwoWay , 
+                                        UpdateSourceTrigger=PropertyChanged}">
+                                        <dxg:GridControl.View >
+                                            <dxg:TableView
+                                Header="頂面(腹板)" >
+                                                <dxg:TableView.CellStyle>
+                                                    <Style>
+                                                        <Setter Property="TextBlock.FontSize" Value="12"/>
+                                                    </Style>
+                                                </dxg:TableView.CellStyle>
+                                            </dxg:TableView>
+                                        </dxg:GridControl.View>
+                                        <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                        <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                        <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                    </dxg:GridControl>
+
+                                    <StackPanel Grid.Row="1" Visibility="{Binding SelectedMaterial_Info_Button_Visibility}">
+                                        <Button Height="30" Margin="5" 
+                                                Visibility="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                            ConverterParameter={x:Static GD_STD_Enum:FACE.BACK}, 
+                                            Converter={local:TypesettingsSettingsToVisibilityConverter}, 
+                                            Mode=OneWay , 
+                                            UpdateSourceTrigger=PropertyChanged}"
+                                            Style="{StaticResource SiegCustomButtonGray}"
+                                            Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                            VerticalAlignment="Bottom"
+                                            
+                                            Content="{materialDesign:PackIcon Kind=Plus, Size=22}" />
+                                    </StackPanel>
+
+                                </Grid>
+                            </materialDesign:DialogHost>
+
+
 
                         </Grid>
                     </GroupBox>
@@ -996,7 +1316,7 @@ AllowEditing="False"
                     AutoGenerateColumns="None"
                     SelectionMode="Row"
                     MaxHeight="2000"    
-                    ItemsSource="{Binding MachiningDetail_DrillBoltsItemSource,
+                    ItemsSource="{Binding MachiningDetail_DrillBoltsItemSource, 
                                 ConverterParameter={x:Static GD_STD_Enum:FACE.TOP}, 
                                 Converter={local:TypesettingsSettingsToDrillDataConverter}, 
                                 Mode=TwoWay , 
@@ -1051,11 +1371,11 @@ AllowEditing="False"
                  BorderThickness="2" 
                  BorderBrush="#595E60" >
                 <dxg:GridControl  Background="Transparent" 
-                                  Style="{StaticResource SiegCustomBlackMessageGridControl}"
+                    Style="{StaticResource SiegCustomBlackMessageGridControl}"
                     AutoGenerateColumns="None"
                     SelectionMode="Row"
                     ItemsSource="{Binding LogDataList , UpdateSourceTrigger=PropertyChanged ,NotifyOnSourceUpdated=True}"
-                        ItemsSourceChanged="MachineMessage_ItemsSourceChanged"
+                    ItemsSourceChanged="MachineMessage_ItemsSourceChanged"
                     MaxHeight="2000"    >
 
                     <dxg:GridControl.View >
