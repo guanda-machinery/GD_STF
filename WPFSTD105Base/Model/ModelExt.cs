@@ -26,6 +26,7 @@ namespace WPFSTD105
     /// </summary>
     public partial class ModelExt : devDept.Eyeshot.Model
     {
+        public SteelAttr TmpStreelAttr { get; set; }
         /// <summary>
         /// 次要模型
         /// </summary>
