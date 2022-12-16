@@ -4406,7 +4406,6 @@ namespace STD_105.Office
             else
             {
                 modelExt = drawing;
-                modelExt.TmpStreelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
             }
             try
             {

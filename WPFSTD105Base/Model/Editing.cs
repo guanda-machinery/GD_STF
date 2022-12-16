@@ -522,7 +522,7 @@ namespace WPFSTD105
         /// </summary>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
-        public void CreateHypotenusePoint(SteelAttr TmpStreelAttr, Point3D p1, Point3D p2)
+        public void CreateHypotenusePoint(Point3D p1, Point3D p2)
         {
 
             ObSettingVM obvm = new ObSettingVM();
@@ -535,26 +535,27 @@ namespace WPFSTD105
             double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].B);       //  依照腹板斜邊打點比列(長)
             double tp1x,tpr1x, tpr2x;
             double tp1y,tpr1y, tpr2y;
-            //double Xdistance = Math.Abs(p1.X - p2.X);
-            //double Ydistance = Math.Abs(p1.Y - p2.Y);
             SteelAttr steelAttr = (SteelAttr)Secondary.Blocks[1].Entities[0].EntityData;
             obvm.WriteSteelAttr(steelAttr);
             bool bfront=false;
             bool btop = false;
             bool bback = false;
 
-            // 還原點選面2D所產生的Y偏移量
+            
             if (p1.Y < 0 || p2.Y < 0)    //  判斷Y位置落在哪一面  ( 前面 )
             {
                 bfront = true;
                 p1.Y = p1.Y + steelAttr.W + 150;
                 p2.Y = p2.Y + steelAttr.W + 150;
             }
-            else if (p1.Y >= steelAttr.W + 150)  //  判斷Y位置落在哪一面  ( 背面 )
+            else if (p1.Y >= steelAttr.W + 150 + steelAttr.H)  //  判斷Y位置落在哪一面  ( 背面 )
             {
+                return; // 
                 bback = true; 
-                p1.Y = p1.Y - steelAttr.H - steelAttr.W - 150;
-                p2.Y = p2.Y - steelAttr.H - steelAttr.W - 150;
+                //p1.Y = p1.Y - steelAttr.H - steelAttr.W - 150;
+                //p2.Y = p2.Y - steelAttr.H - steelAttr.W - 150;
+                p1.Y = p1.Y - steelAttr.H - 150;
+                p2.Y = p2.Y - steelAttr.H - 150;
             }
             else  //  判斷Y位置落在哪一面  ( 頂面 )
             {
@@ -590,8 +591,8 @@ namespace WPFSTD105
                 TmpBoltsArr.dY = "0";
                 TmpBoltsArr.xCount = 1;
                 TmpBoltsArr.yCount = 1;
-                TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
-                TmpBoltsArr.BlockName = "AutoHypotenuse";
+                TmpBoltsArr.Mode = AXIS_MODE.POINT;
+                TmpBoltsArr.BlockName = "ManHypotenuse";
                 TmpBoltsArr.X = tmplist[z].X;
                 TmpBoltsArr.Y = tmplist[z].Y;
                 TmpBoltsArr.GUID = Guid.NewGuid();

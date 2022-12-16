@@ -26,9 +26,6 @@ namespace WPFSTD105
     /// </summary>
     public partial class ModelExt : devDept.Eyeshot.Model
     {
-
-        public SteelAttr TmpStreelAttr { get; set; }
-
         /// <summary>
         /// 次要模型
         /// </summary>
@@ -603,7 +600,7 @@ namespace WPFSTD105
                     // else
                     //{ p1 = points[1]; p2 = points[0]; }
 
-                     p1 = points[0]; 
+                    p1 = points[0]; 
                     p2 = points[1];
           
 
@@ -615,7 +612,7 @@ namespace WPFSTD105
                     //}
 
 
-                    CreateHypotenusePoint(TmpStreelAttr, p1, p2);
+                    CreateHypotenusePoint(p1, p2);
                     objectSnapEnabled = false;
                     this.ActionMode = actionType.SelectByBox;
                 }
