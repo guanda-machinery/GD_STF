@@ -2431,8 +2431,8 @@ namespace WPFSTD105.ViewModel
                 //    //    });
                 //    //});
                 //}
-                #endregion
             }
+            #endregion
             #region 檢查孔位
             checkRef = Bolts3DBlock.CheckBolts(model);
             #endregion

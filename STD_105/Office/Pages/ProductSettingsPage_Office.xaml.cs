@@ -387,6 +387,10 @@ namespace STD_105.Office
                             List<GroupBoltsAttr> groupBolts = new List<GroupBoltsAttr>();
                             SteelAttr saDeepClone = (SteelAttr)sa.DeepClone();
                             sa = sr.ReadNCInfo(saDeepClone, ref groupBolts);
+                            ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = sa.oPoint;
+                            ((SteelAttr)model.Blocks[1].Entities[0].EntityData).vPoint = sa.vPoint;
+                            ((SteelAttr)model.Blocks[1].Entities[0].EntityData).uPoint = sa.uPoint;
+                            ((SteelAttr)model.Blocks[1].Entities[0].EntityData).CutList = sa.CutList;
                             #endregion
 
                             #region 孔位資訊
@@ -4174,11 +4178,11 @@ namespace STD_105.Office
             steelPart.Revise = (sa.Revise.HasValue ? sa.Revise.Value : DateTime.Now);
             steelPart.ExclamationMark = exclamationMark;
 
-            // 原零件之構建ID
+            // 原零件之構件ID
             // 取出所有零件
             Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
             // 所有零件攤平
-            var allPart = part.SelectMany(x => x.Value).ToList();
+            var allPart = part.SelectMany(x =>x.Value).ToList();
             // 原始零件
             var oldPart = allPart.FirstOrDefault(x => x.GUID == Guid.Parse(((ProductSettingsPageViewModel)this.PieceListGridControl.SelectedItem).DataName));
             if (allPart.Any(x => x.GUID == Guid.Parse(((ProductSettingsPageViewModel)this.PieceListGridControl.SelectedItem).DataName)))
