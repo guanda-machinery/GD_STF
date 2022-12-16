@@ -22,6 +22,9 @@ namespace WPFSTD105.Model
     [Serializable]
     public class DrillBoltsBase : WPFWindowsBase.BaseViewModel
     {
+
+
+
         private bool _dia_Identification = false;
         /// <summary>
         /// 當true時同一化
@@ -197,7 +200,6 @@ namespace WPFSTD105.Model
             {
                 if (_changed_DrillHoleDiameter == null)
                     _changed_DrillHoleDiameter = Origin_DrillHoleDiameter;
-
                 return _changed_DrillHoleDiameter.Value;
 
             }
