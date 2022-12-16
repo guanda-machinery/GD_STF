@@ -3,7 +3,6 @@ using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
 using DevExpress.Data.Extensions;
-using DevExpress.Data.Helpers;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Core.Native;
@@ -71,6 +70,7 @@ namespace STD_105.Office
 
         private devDept.Eyeshot.Model _BufferModel { get; set; }
         #endregion
+
 
         /// <summary>
         /// 20220823 蘇冠綸 製品設定
@@ -425,9 +425,9 @@ namespace STD_105.Office
 
                             ScrollViewbox.IsEnabled = true;
                             if (model.RunHypotenuseEnable()) { /*ScrollViewbox.IsEnabled = false;*/ } else { ScrollViewbox.IsEnabled = true; }
-                            WPFSTD105.Model.Expand.ManHypotenusePoint(model,drawing,FACE.TOP);
-                            WPFSTD105.Model.Expand.ManHypotenusePoint(model,drawing,FACE.FRONT);
-                            WPFSTD105.Model.Expand.ManHypotenusePoint(model,drawing,FACE.BACK);
+                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
+                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
+                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
                             SaveModel(true, true);
 
                             ViewModel.fAddSteelPart = false; // hank 新設 新增零件旗號,暫不儲存
@@ -508,9 +508,9 @@ namespace STD_105.Office
 
                             ScrollViewbox.IsEnabled = true;
                             if (model.RunHypotenuseEnable()) { /*ScrollViewbox.IsEnabled = false;*/ } else { ScrollViewbox.IsEnabled = true; }
-                            WPFSTD105.Model.Expand.ManHypotenusePoint(model,drawing,FACE.TOP);
-                            WPFSTD105.Model.Expand.ManHypotenusePoint(model,drawing,FACE.FRONT);
-                            WPFSTD105.Model.Expand.ManHypotenusePoint(model,drawing,FACE.BACK);
+                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
+                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
+                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
 
                             SaveModel(true, true);
                             #endregion
@@ -2806,7 +2806,7 @@ namespace STD_105.Office
                 SimulationDelete();
                 Esc();
                 //if (!ViewModel.fAddSteelPart)
-                    SaveModel(false);
+                SaveModel(false);
             });
             #endregion
 
@@ -3186,7 +3186,7 @@ namespace STD_105.Office
                     break;
             }
             return true;
-        }       
+        }
 
         /// <summary>
         /// 3D Model 載入
@@ -3382,7 +3382,7 @@ namespace STD_105.Office
                         PreIndex = tempNewSource.FindIndex(x => x.DataName == temp.steelAttr.GUID.ToString());
                         var tns = tempNewSource.FirstOrDefault(x => x.DataName == temp.steelAttr.GUID.ToString());
                         ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(tns.steelAttr.Type).ToString()}.inp");
-                       PieceListGridControl.View.FocusedRowHandle = PreIndex;
+                        PieceListGridControl.View.FocusedRowHandle = PreIndex;
                         PieceListGridControl.SelectItem(PreIndex);
                         this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
                         #endregion
@@ -4178,11 +4178,11 @@ namespace STD_105.Office
             steelPart.Revise = (sa.Revise.HasValue ? sa.Revise.Value : DateTime.Now);
             steelPart.ExclamationMark = exclamationMark;
 
-            // 原零件之構件ID
+            // 原零件之構建ID
             // 取出所有零件
             Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
             // 所有零件攤平
-            var allPart = part.SelectMany(x =>x.Value).ToList();
+            var allPart = part.SelectMany(x => x.Value).ToList();
             // 原始零件
             var oldPart = allPart.FirstOrDefault(x => x.GUID == Guid.Parse(((ProductSettingsPageViewModel)this.PieceListGridControl.SelectedItem).DataName));
             if (allPart.Any(x => x.GUID == Guid.Parse(((ProductSettingsPageViewModel)this.PieceListGridControl.SelectedItem).DataName)))
@@ -4322,7 +4322,6 @@ namespace STD_105.Office
             model.Invalidate();
         }
 
-
         /// <summary>
         /// 角度標註
         /// </summary>
@@ -4403,7 +4402,7 @@ namespace STD_105.Office
 #endif
 
             ModelExt modelExt = null;
-            
+
             if (tabControl.SelectedIndex == 0)
             {
                 //  modelExt = model;  // 因只能於2D操作, 取消此3D 
@@ -4415,7 +4414,7 @@ namespace STD_105.Office
             }
             try
             {
-                if (model.Entities.Count > 0 && modelExt!=null)
+                if (model.Entities.Count > 0 && modelExt != null)
                 {
 #if DEBUG
                     log4net.LogManager.GetLogger("層級 To 要主件的BlockReference").Debug("成功");
@@ -4469,12 +4468,10 @@ namespace STD_105.Office
 
         }
 
-
-
-    /// <summary>
-    /// 標註動作
-    /// </summary>
-    private void Dim(out ModelExt modelExt)
+        /// <summary>
+        /// 標註動作
+        /// </summary>
+        private void Dim(out ModelExt modelExt)
         {
             //ModelExt modelExt = null;
             if (tabControl.SelectedIndex == 0)
@@ -4606,6 +4603,7 @@ namespace STD_105.Office
                 fAfterFirstImportTeklaData = false;
             }
         }
+
 
         public BlockReference SteelTriangulation(Mesh mesh)
         {
@@ -4909,7 +4907,6 @@ namespace STD_105.Office
             points[0] = new Point3D() { X = p.X, Y = p.Y, Z = p.Z };
             return points;
         }
-
         private void SetPlane(object sender, EventArgs e)
         {
             model.ClearAllPreviousCommandData();
@@ -4990,7 +4987,7 @@ namespace STD_105.Office
             //ViewModel.ProfileType = 0;
             //ViewModel.SteelTypeProperty_int = 0;
             //ViewModel.ProfileIndex = 0;
-           //ViewModel.ProfileType = (int)CuurentSelectedPart.steelAttr.Type;
+            //ViewModel.ProfileType = (int)CuurentSelectedPart.steelAttr.Type;
             //ViewModel.SteelTypeProperty_int= (int)CuurentSelectedPart.steelAttr.Type;
             //ViewModel.ProfileIndex = ViewModel.ProfileList.FindIndex(x => x.Profile == profile);
             //this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
@@ -5541,7 +5538,7 @@ namespace STD_105.Office
                     //        Bolts3DBlock bolts3DBlock = new Bolts3DBlock(model.Blocks[gba.GUID.ToString()].Entities, gba);
                     //        sr.Add2DHole(drawing, bolts3DBlock, false);//加入孔位不刷新 2d 視圖
                     //    });
-            
+
 
 
                     //SteelAttr sa = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
@@ -5641,7 +5638,6 @@ namespace STD_105.Office
             }
         }
 
-
         /// <summary>
         /// Row Data to Model
         /// </summary>
@@ -5721,9 +5717,9 @@ namespace STD_105.Office
             // 切割線打點
             ScrollViewbox.IsEnabled = true;
             if (model.RunHypotenuseEnable()) { /*ScrollViewbox.IsEnabled = false;*/ } else { ScrollViewbox.IsEnabled = true; }
-            WPFSTD105.Model.Expand.ManHypotenusePoint(model,drawing,FACE.TOP);
-            WPFSTD105.Model.Expand.ManHypotenusePoint(model,drawing,FACE.FRONT);
-            WPFSTD105.Model.Expand.ManHypotenusePoint(model,drawing,FACE.BACK);
+            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
+            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
+            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
             #endregion
 
 
@@ -5983,9 +5979,6 @@ namespace STD_105.Office
             //}
             //}
         }
-
-
-
 
 
         bool TableViewLoadedBoolen = false;
