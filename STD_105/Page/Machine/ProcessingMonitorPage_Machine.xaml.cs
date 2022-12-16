@@ -145,9 +145,12 @@ namespace STD_105
             }
             if ((sender as DevExpress.Xpf.Grid.TableView).Name == MachiningSchedule_List_TableView.Name)
             {
-                IScrollInfo PartsTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningCombinational_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
-                if (PartsTableView_ScrollElement != null)
-                    PartsTableView_ScrollElement.SetVerticalOffset(e.VerticalOffset);
+                if (e.VerticalOffset != 0)
+                {
+                    IScrollInfo PartsTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningCombinational_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
+                    if (PartsTableView_ScrollElement != null)
+                        PartsTableView_ScrollElement.SetVerticalOffset(e.VerticalOffset);
+                }
             }
         }
 
@@ -164,7 +167,7 @@ namespace STD_105
                     //捲到最底下
                     Task.Run(() =>
                     {
-                        Thread.Sleep(100);
+                        Thread.Sleep(500);
                         MachineMessage_TableView.Dispatcher.Invoke(() =>
                         {
                             MachineMessage_TableView.TopRowIndex = ItemList.Count() - 1;

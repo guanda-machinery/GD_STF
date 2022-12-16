@@ -400,7 +400,7 @@ namespace WPFSTD105.ViewModel
             _DrillWarehouse = ReadCodesysMemor.GetDrillWarehouse(); //讀取記憶體目前的刀庫參數
 
             //查看刀庫
-            if (!_MecOptional.LeftExport) //沒有左軸出口刀庫
+            /*if (!_MecOptional.LeftExport) //沒有左軸出口刀庫
             {
                 DrillSetting drill = _DrillWarehouse.LeftExport[0];
                 drill.IsCurrent = true;
@@ -427,7 +427,7 @@ namespace WPFSTD105.ViewModel
                 DrillSetting drill = _DrillWarehouse.Middle[0];
                 drill.IsCurrent = true;
                 _DrillWarehouse.Middle = new DrillSetting[1] { drill };
-            }
+            }*/
             /*選擇刀庫的位置,並顯示在介面上(裝載在主軸上的刀具)*/
             //選擇中軸刀庫
             if (IsSelectdMiddle)
