@@ -3057,6 +3057,7 @@ namespace STD_105.Office
             else
             {
                 steelAttr.GUID = guid;
+                ViewModel.GuidProperty = steelAttr.GUID;
             }
             // 調整修改日期
             return steelAttr;
