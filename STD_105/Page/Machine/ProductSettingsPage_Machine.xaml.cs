@@ -5341,6 +5341,7 @@ namespace STD_105
                                 this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
 
                                 // 還原元件資訊
+                                FinalRow = (ProductSettingsPageViewModel)this.PieceListGridControl.GetRow(this.PieceListGridControl.VisibleRowCount - 1);
                                 RowToView(FinalRow);
                                 ConfirmCurrentSteelSection(FinalRow);
 
