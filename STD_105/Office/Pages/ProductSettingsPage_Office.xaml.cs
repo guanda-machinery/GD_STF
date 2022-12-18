@@ -23,6 +23,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using WPFSTD105;
 using WPFSTD105.Attribute;
 using WPFSTD105.Model;
@@ -929,12 +930,16 @@ namespace STD_105.Office
                     #region 建模
                     // 建立型鋼
                     //Steel3DBlock result = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);// 修改型鋼資訊
-                    Steel3DBlock result = new Steel3DBlock(Steel3DBlock.GetProfile((SteelAttr)model.Blocks[1].Entities[0].EntityData));// 修改型鋼資訊
+                    sr.RemoveHypotenusePoint(model, HypotenuseTYPE.HypotenuseMan.ToString());
+                    Steel3DBlock result = new Steel3DBlock(Steel3DBlock.GetProfile((SteelAttr)model.Blocks[1].Entities[0].EntityData));// 修改型鋼資訊                    
                     model.AddModelSteelAttr(steelAttr, result);
                     //Steel3DBlock.AddSteel(steelAttr, model, out BlockReference blockReference, "Steel");
                     // 建立2D模型
-                    steel2D = new Steel2DBlock((Mesh)result.Entities[0], "123").Entities.ToList();//EntityData
-                    drawing.Entities[model.Entities.Count - 1].EntityData = steel2D;
+                    //steel2D = new Steel2DBlock((Mesh)result.Entities[0], "123").Entities.ToList();//EntityData
+                    sr.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);
+                    //drawing.Entities.Clear();
+                    //drawing.Entities.AddRange(steel2D);
+                    //drawing.Entities[drawing.Entities.Count - 1].EntityData=(BlockReference)steel2D;
                     //sr.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);
                     // 建立2D/3D孔
                     sr.AddBolts(model, drawing, out bool hasOutSteel, block);
@@ -971,7 +976,7 @@ namespace STD_105.Office
                     //刪除指定物件
                     //model.Blocks[1].Entities[0] = modify;
                     //model.Entities.RemoveAt(model.Entities.Count() - 1);
-                    drawing.Entities.Clear();
+                    //drawing.Entities.Clear();
                     //清空選擇物件
                     ViewModel.Select2DItem.Clear();
                     ViewModel.Select3DItem.Clear();
@@ -981,7 +986,7 @@ namespace STD_105.Office
 
                     //ViewModel.Reductions.AddContinuous(new List<Entity>() { ViewModel.tem3DRecycle[0], drawing.Entities[drawing.Entities.Count - 1] });
                     //model.Entities.Add(modify);//SteelAttr上一層
-                    drawing.Entities.AddRange(steel2D);
+                    //drawing.Entities.AddRange(steel2D);
                     #endregion
                 }
                 else
@@ -1905,10 +1910,15 @@ namespace STD_105.Office
 #if DEBUG
                 log4net.LogManager.GetLogger("加入切割線").Debug("開始");
 #endif
+                if (!sr.CheckData_AddCutLine(ViewModel.PartNumberProperty, model))
+                {
+                    return;
+                }
+
                 ViewModel.GetSteelAttr();
                 ViewModel.ReadPart.Execute(null);
                 // 移除斜邊打點
-                sr.RemoveHypotenusePoint(model, "ManHypotenuse");
+                sr.RemoveHypotenusePoint(model, HypotenuseTYPE.HypotenuseMan.ToString());
                 //List<GroupBoltsAttr> delList = model.Blocks
                 //.SelectMany(x => x.Entities)
                 //.Where(y =>
@@ -5336,7 +5346,7 @@ namespace STD_105.Office
                     //ProductSettingsPageViewModel SelectRow = RowToEntity(item);
                     //ProductSettingsPageViewModel FinalRow = new ProductSettingsPageViewModel();
                     STDSerialization ser = new STDSerialization();
-                    DataCorrespond = ser.GetDataCorrespond();
+                    //DataCorrespond = ser.GetDataCorrespond();
 
                     string focuseGUID = item.DataName;
 
@@ -5363,12 +5373,10 @@ namespace STD_105.Office
 
                             if (ResultRtn == MessageBoxResult.Yes)
                             {
-                                //9999999
                                 //// 指向最後一列
                                 this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
                                 PieceListGridControl.View.FocusedRowHandle = this.PieceListGridControl.VisibleRowCount;
                                 ////this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
-                                ////999999999
                                 ////PieceListGridControl.SelectItem(this.PieceListGridControl.VisibleRowCount - 1);
                                 ////PieceListGridControl.View.FocusedRowHandle = this.PieceListGridControl.VisibleRowCount - 1;
                                 ////this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
@@ -5583,8 +5591,6 @@ namespace STD_105.Office
 
                     //SteelAttr sa = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
 
-                    SteelAttr sa = item.steelAttr;//1110 改由e.NewItem的steelAttr給值 CYH
-                    model.Blocks[1].Entities[0].EntityData = sa;
 
                     // 1.nc檔上的圖塊為一個孔為一個孔群
                     // 2.若NC檔上有5個孔 在無修改狀態下，須為五個孔
@@ -5599,6 +5605,8 @@ namespace STD_105.Office
                     //List<Block> oldBoltBlock = model.Blocks.Where(x => (modelAllBoltList.Select(z => z.GUID.ToString())).Contains(x.Name)).ToList();
                     // 步驟2.讀取nc檔，紀錄opoint.upoint.vpoint
 
+                    SteelAttr sa = item.steelAttr;//1110 改由e.NewItem的steelAttr給值 CYH
+                    model.Blocks[1].Entities[0].EntityData = sa;
                     SteelAttr saDeepClone = (SteelAttr)sa.DeepClone();
                     List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
                     sa = sr.ReadNCInfo(saDeepClone, ref groups, false);
@@ -5617,7 +5625,8 @@ namespace STD_105.Office
                     //model.sycnModelEntitiesAndNewBolt(blocks);
                     sr.AddBolts(model, drawing, out bool hasOutSteel, blocks, false);
                     // 切割線打點
-                    //ScrollViewbox.IsEnabled = !model.RunHypotenuseEnable(); 
+                    ScrollViewbox.IsEnabled = true;
+                    if (model.RunHypotenuseEnable()) { /*ScrollViewbox.IsEnabled = false;*/ } else { ScrollViewbox.IsEnabled = true; }
                     WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
                     WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
                     WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);

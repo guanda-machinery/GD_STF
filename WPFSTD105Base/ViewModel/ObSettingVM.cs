@@ -2257,33 +2257,44 @@ namespace WPFSTD105.ViewModel
             //        ((GroupBoltsAttr)y.EntityData).BlockName == RemoveType)
             //        .Select(y => (GroupBoltsAttr)y.EntityData).ToList();
             //model.Blocks.SelectMany(x=>x.Entities.Select(y=>y.EntityData)).ForEach(x=>x.)
-            
-            
-            
-            List<Block> delList = new List<Block>();
-            for (int i = 1; i < model.Blocks.Count; i++)
-            {
-                Block b = model.Blocks[i];
-                for (int j = 0; j < model.Blocks[i].Entities.Count; j++)
-                {
-                    var a = model.Blocks[i].Entities[j];
-                    if (a.EntityData is BoltAttr && ((BoltAttr)a.EntityData).BlockName == RemoveType)
-                    {
-                        delList.Add(b);
-                        break;
-                    }
-                }
-            }
 
+            List<Block> delList = model.Blocks
+                .Where(x => x.Name != "RootBlock")
+                .SelectMany(x =>
+                x.Entities, (a, b) => new { Block = a, a.Entities, b.EntityData })
+                .Where(x =>
+                (x.Block.GetType()==typeof(Bolts3DBlock) || x.Block.GetType() == typeof(Block)) &&
+                x.EntityData.GetType() == typeof(BoltAttr) &&
+                //((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
+                ((BoltAttr)x.EntityData).BlockName== RemoveType)
+                .Select(x => x.Block).ToList();
 
             foreach (Block del in delList)
             {
                 model.Blocks.Remove(del);
             }
+
+            //List<Block> delList = new List<Block>();
+            //for (int i = 1; i < model.Blocks.Count; i++)
+            //{
+            //    Block b = model.Blocks[i];
+            //    for (int j = 0; j < model.Blocks[i].Entities.Count; j++)
+            //    {
+            //        var a = model.Blocks[i].Entities[j];
+            //        if (a.EntityData is BoltAttr && ((BoltAttr)a.EntityData).BlockName == RemoveType)
+            //        {
+            //            delList.Add(b);
+            //            break;
+            //        }
+            //    }
+            //}
+
+
             var entitiesList = model.Entities
                     .Where(y =>
                     y.EntityData.GetType() == typeof(GroupBoltsAttr) &&
-                    ((GroupBoltsAttr)y.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
+                    //((GroupBoltsAttr)y.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
+                    ((GroupBoltsAttr)y.EntityData).BlockName== RemoveType)
                     .Select(y => y).ToList();
             foreach (var entities in entitiesList)
             {
@@ -2307,6 +2318,9 @@ namespace WPFSTD105.ViewModel
 
         /// <summary>
         /// 加入2D/3D孔
+        /// 1.取出非斜邊打點之孔位Entities
+        /// 2.取得BlockName與Entities相同之Bock
+        /// 3.建立3D/2D模型
         /// </summary>
         /// <param name="model"></param>
         /// <param name="drawing"></param>
@@ -2357,31 +2371,41 @@ namespace WPFSTD105.ViewModel
             }
             #endregion
 
-            #region 斜邊打點
-            // 移除斜邊打點 及 建立自動打點
-            if (model.RunHypotenuseEnable())
+            #region 斜邊打點(HypotenuseAuto)
+            //移除斜邊打點
+            RemoveHypotenusePoint(model, HypotenuseTYPE.HypotenuseAuto.ToString());
+            // 可建立自動打點 及 使用者自定義打點不存在，則可執行自動打點
+            if (model.RunHypotenuseEnable() && !WPFSTD105.Model.Expand.isHypotenuseCustomerExist(model))
             {
-                RemoveHypotenusePoint(model, "AutoHypotenuse");
+                
+                //執行斜邊打點3D
                 WPFSTD105.Model.Expand.RunHypotenusePoint(model, this, 0);
-                var a = model.Blocks.Where(x => x.Name != "RootBlock")
-                    .SelectMany(x =>x.Entities, (entities, entityData) => new { Block = entities, entities.Entities, entityData.EntityData })
+                //取出斜邊打點之Block
+                var HypotenuseBlock = model.Blocks.Where(x => x.Name != "RootBlock")
+                    .SelectMany(x => x.Entities, (entities, entityData) => new { Block = entities, entities.Entities, entityData.EntityData })
                     .Where(x =>
+                    x.Block.GetType() == typeof(Bolts3DBlock) &&
                     x.EntityData.GetType() == typeof(BoltAttr) &&
                     ((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
                     .ToList();
-                foreach (var item in a)
+                //執行斜邊打點2D
+                foreach (var item in HypotenuseBlock)
                 {
-                    var ed = model.Entities.FirstOrDefault(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID == Guid.Parse(item.Block.Name));
-                    GroupBoltsAttr aaaaa = new GroupBoltsAttr();
-                    if (ed != null)
+                    //取出相同BlockName的Entities(For GroupBoltsAttr)
+                    var entities = model.Entities.FirstOrDefault(x => 
+                    x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
+                    ((GroupBoltsAttr)x.EntityData).GUID == Guid.Parse(item.Block.Name));
+
+                    GroupBoltsAttr groupBoltsAttr = new GroupBoltsAttr();
+                    if (entities != null)
                     {
-                        aaaaa = (GroupBoltsAttr)ed.EntityData;
+                        groupBoltsAttr = (GroupBoltsAttr)entities.EntityData;
                     }
-                    Bolts3DBlock bolts3DBlock = new Bolts3DBlock(item.Entities, aaaaa);
+                    Bolts3DBlock bolts3DBlock = new Bolts3DBlock(item.Entities, groupBoltsAttr);
                     Add2DHole(drawing, bolts3DBlock, false);//加入孔位不刷新 2d 視圖
                 }
 
-                
+
                 //for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
                 //{
                 //    if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr && boltsAttr.Mode == AXIS_MODE.HypotenusePOINT) //是螺栓
@@ -2753,7 +2777,13 @@ namespace WPFSTD105.ViewModel
                 File.WriteAllText($@"{ApplicationVM.DirectoryNc()}\{newPartNumber}.nc1", text, System.Text.Encoding.Default);
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="steelAttr"></param>
+        /// <param name="groups"></param>
+        /// <param name="newGUID"></param>
+        /// <returns>與第一個參數的SteelAttr不同</returns>
         public SteelAttr ReadNCInfo(SteelAttr steelAttr, ref List<GroupBoltsAttr> groups, bool newGUID = true)
         {
             STDSerialization ser = new STDSerialization();
@@ -2784,6 +2814,43 @@ namespace WPFSTD105.ViewModel
             sw.Close();
         }
 
+        public bool CheckData_AddCutLine(String partNumber, ModelExt model)
+        {
+            STDSerialization ser = new STDSerialization();
+            Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
+
+            if (!part.Any(x => x.Value.Any(y => y.Number == partNumber)) && showMessage)
+            {
+                WinUIMessageBox.Show(null,
+               $"零件編號{partNumber}尚未點擊OK",
+               "通知",
+               MessageBoxButton.OK,
+               MessageBoxImage.Exclamation,
+               MessageBoxResult.None,
+               MessageBoxOptions.None,
+               FloatingMode.Popup);
+                fNewPart = true;
+                fclickOK = false;
+                return false;
+            }
+
+            if (model.Entities.Count <= 0 && showMessage)
+            {
+                WinUIMessageBox.Show(null,
+                $"模型內找不到主件",
+                "通知",
+                MessageBoxButton.OK,
+                MessageBoxImage.Exclamation,
+                MessageBoxResult.None,
+                MessageBoxOptions.None,
+                FloatingMode.Popup);
+                fNewPart = false;
+                fclickOK = false;
+                return false;
+            }
+            return true;
+        }
+
         public bool CheckData_AddHole(String partNumber, ModelExt model)
         {
             STDSerialization ser = new STDSerialization();
@@ -2792,7 +2859,7 @@ namespace WPFSTD105.ViewModel
             if (!part.Any(x => x.Value.Any(y => y.Number == partNumber)) && showMessage)
             {
                 WinUIMessageBox.Show(null,
-               $"零件編號尚未點擊OK",
+               $"零件編號{partNumber}尚未點擊OK",
                "通知",
                MessageBoxButton.OK,
                MessageBoxImage.Exclamation,
