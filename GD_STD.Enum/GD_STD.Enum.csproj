@@ -70,6 +70,7 @@
     <Compile Include="MAGNIFICATION.cs" />
     <Compile Include="MATERIAL.cs" />
     <Compile Include="MOBILE_RACK.cs" />
+    <Compile Include="HypotenuseTYPE.cs" />
     <Compile Include="OBJECT_TYPE.cs" />
     <Compile Include="OPERATOR.cs" />
     <Compile Include="ORIGIN.cs" />
