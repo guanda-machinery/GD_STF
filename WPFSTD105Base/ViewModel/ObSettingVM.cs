@@ -2902,6 +2902,44 @@ namespace WPFSTD105.ViewModel
             return true;
         }
 
+        public bool CheckData_DelHole(String partNumber, ModelExt model)
+        {
+            STDSerialization ser = new STDSerialization();
+            Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
+
+            if (!part.Any(x => x.Value.Any(y => y.Number == partNumber)) && showMessage)
+            {
+                WinUIMessageBox.Show(null,
+               $"零件編號{partNumber}尚未點擊OK",
+               "通知",
+               MessageBoxButton.OK,
+               MessageBoxImage.Exclamation,
+               MessageBoxResult.None,
+               MessageBoxOptions.None,
+               FloatingMode.Popup);
+                fNewPart = true;
+                fclickOK = false;
+                return false;
+            }
+
+            if (model.Entities.Count <= 0 && showMessage)
+            {
+                WinUIMessageBox.Show(null,
+                $"模型內找不到主件",
+                "通知",
+                MessageBoxButton.OK,
+                MessageBoxImage.Exclamation,
+                MessageBoxResult.None,
+                MessageBoxOptions.None,
+                FloatingMode.Popup);
+                fNewPart = false;
+                fclickOK = false;
+                return false;
+            }
+            
+            return true;
+        }
+
         /// <summary>
         /// 新增孔位比對
         /// </summary>

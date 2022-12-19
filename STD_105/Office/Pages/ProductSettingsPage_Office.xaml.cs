@@ -1774,6 +1774,11 @@ namespace STD_105.Office
                 //查看用戶是否有選擇圖塊
                 if (ViewModel.Select3DItem.Count > 0)
                 {
+                    if (!sr.CheckData_AddHole(ViewModel.PartNumberProperty, model))
+                    {
+                        return;
+                    }
+
                     ViewModel.showMessage = true;
                     List<SelectedItem> selectItem = ViewModel.Select3DItem.ToList();//暫存容器
                     GroupBoltsAttr original = (GroupBoltsAttr)ViewModel.GroupBoltsAttr.DeepClone(); //原有設定檔
@@ -2809,6 +2814,10 @@ namespace STD_105.Office
             //刪除孔位(孔群)
             ViewModel.DeleteHole = new RelayCommand(() =>
             {
+                if (!sr.CheckData_DelHole(ViewModel.PartNumberProperty, model))
+                {
+                    return;
+                }
                 //開啟Model焦點
                 bool mFocus = model.Focus();
 
@@ -5669,7 +5678,6 @@ namespace STD_105.Office
                 else
                 {
                     ProductSettingsPageViewModel item = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
-                    item.steelAttr.GUID = Guid.Parse(item.DataName);
                     //Grid_SelectedChange(sender, e);
 
 
@@ -5678,6 +5686,7 @@ namespace STD_105.Office
                         ViewModel.fclickOK = true;
                         return;
                     }
+                    item.steelAttr.GUID = Guid.Parse(item.DataName);
 
                     ConfirmCurrentSteelSection(item);
                 }
