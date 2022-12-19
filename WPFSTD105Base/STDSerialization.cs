@@ -728,10 +728,23 @@ namespace WPFSTD105
             try
             {
                 string path = $@"{ApplicationVM.DirectoryDrillBoltsBackup()}\{materialNumber}.db"; //孔位路徑
-                return GZipDeserialize<DrillBoltsModel>(path).DrillBoltsDict;//解壓縮反序列化回傳資料
-                //return new ObservableCollection<DrillBolts>(GZipDeserialize<ObservableCollection<object>>(path).Select(el => (DrillBolts)el));//解壓縮反序列化回傳資料
+                if (File.Exists(path))
+                {
+                    var DrillModel = GZipDeserialize<DrillBoltsModel>(path);
+                    if (DrillModel != null)
+                    {
+                        if (DrillModel.DrillBoltsDict != null)
+                            return DrillModel.DrillBoltsDict;//解壓縮反序列化回傳資料
+                        else
+                            return null;
+                    }
+                    else
+                        return null;
+                }
+                else
+                    return null;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return null;
             }

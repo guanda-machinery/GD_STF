@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using static MachineAndPhoneAPI.AppServerCommunicate;
 
 namespace MachineAndPhoneAPI
 {
@@ -142,12 +143,12 @@ namespace MachineAndPhoneAPI
             _preProcessing.insert = false;
             _preProcessing.data = new List<DataList>();
 
-            var ProjectNameBase64 =StringToBase64Converter(ProjectName);
+            var PID = StringToBase64Converter(ProjectName) + Register_MaterialNumber;
 
-            var ReadyToRegisterMaterialData = new DataList() { materialNumber = Register_MaterialNumber, smeltingNumber = "1", source = "1", length = Register_length.ToString(), id = ProjectNameBase64 + Register_MaterialNumber, material = Register_material, profile = Register_profile };
+            var ReadyToRegisterMaterialData = new DataList() { materialNumber = Register_MaterialNumber, smeltingNumber = "1", source = "1", length = Register_length.ToString(), id = PID, material = Register_material, profile = Register_profile };
             _preProcessing.data.Add(ReadyToRegisterMaterialData);
 
-           var body = JsonConvert.SerializeObject(_preProcessing);
+             var body = JsonConvert.SerializeObject(_preProcessing);
             request.AddParameter("application/json", body, ParameterType.RequestBody);
             var response = client.Execute(request);
 
@@ -173,37 +174,35 @@ namespace MachineAndPhoneAPI
                 return true;
             }
 
-            var IDListString = "";
+            var IDListStringList = new List<string>();
             //@" ""0001"" + , +""0002"" + , +""0003"" "
-            for (int i = 0; i < MaterialNumberList.Count; i++)
-            {
-                //第二個開始才需要加上分隔號
-                if (i > 0)
-                {
-                    IDListString += "+ , +";
-                }
-                IDListString += $@" ""{StringToBase64Converter(ProjectName) + MaterialNumberList[i]}"" ";
-            }
+            foreach (var _MNL in MaterialNumberList)
+                IDListStringList.Add(StringToBase64Converter(ProjectName) + _MNL);
+            
 
 
             result =new UnreigisterAssembly();
             var client = new RestClient($"http://{AppServerIP}:{AppServerPort}/api/pc/unregister-material");
             client.AddDefaultHeader("Authorization", $"Bearer {token_access}");
             var request = new RestRequest(Method.POST);
-            var body = @"{
+            var UNregClass = new UnregisterClass();
+            UNregClass.idList = IDListStringList;
+            var body = JsonConvert.SerializeObject(UNregClass);
+
+            /*var body = @"{
                              " + "\n" +
-                            $@"  ""idList"": [ {IDListString} ]
+                            $@" ""idList"": [{IDListString} + , + ""nulldata""]
                              " + "\n" +
-                            @"}";
+                            @"}";*/
 
             //$@"  ""idList"": [ ""0001"" + , + ""0002"" + , + ""0003"" ]
-            var response = client.Execute(request);
             request.AddParameter("application/json", body, ParameterType.RequestBody);
+            var response = client.Execute(request);
             if (response.IsSuccessful)
             {
                 result = JsonConvert.DeserializeObject<UnreigisterAssembly>(response.Content);
                 Console.WriteLine(result);
-                              if(result.errorCode == 0){return true;}else{ return false; }    ;
+                return true;
             }
             else
             {
@@ -256,23 +255,17 @@ namespace MachineAndPhoneAPI
             public string source { get; set; }
             public string length { get; set; }
         }
-        /*public class Polling
-        {
-            /// <summary>
-            /// 5秒執行輪詢一次
-            /// </summary>
-            public static void GetAppPairingDataEveryFiveSeconds()
-            {
-                Task.Factory.StartNew(() =>
-                {
-                    //if ()//進入加工監控畫面
-                    {
-                        Thread.Sleep(5000);
-                        GetAppPairingData(out var Result);
-                    }
-                });
-            }
 
-        }*/
+
+        public class UnregisterClass
+        {
+            public List<string> idList { get; set; }
+        }
+
+
+
+
+
+
     }
 }

@@ -9,10 +9,10 @@ namespace MachineAndPhoneAPI.Models
     public class UnreigisterAssembly
     {
         public int errorCode { get; set; }      ////0代表request成功且有response
-        public class Data
+        /*public class Data
         {
             public string id { get; set; }
-        }
-        public List<Data> data;
+        }*/
+        public List<string> data;
     }
 }

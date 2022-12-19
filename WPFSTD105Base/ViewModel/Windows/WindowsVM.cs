@@ -18,6 +18,8 @@ using WPFSTD105.Surrogate;
 using System.Runtime.InteropServices;
 using DevExpress.Xpf.WindowsUI;
 using DevExpress.Xpf.Core;
+using DocumentFormat.OpenXml.ExtendedProperties;
+using DevExpress.Mvvm;
 
 namespace WPFSTD105
 {
@@ -951,7 +953,11 @@ namespace WPFSTD105
             {
                 return new WPFBase.RelayCommand(() =>
                 {
+                    SplashScreenManager manager = DevExpress.Xpf.Core.SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
+                    manager.ViewModel.Status = "讀取中.";
+                    manager.Show(null, WindowStartupLocation.CenterScreen, true, InputBlockMode.Window);
                     ApplicationViewModel.CurrentPage = ApplicationPage.MachineMonitor;
+                    manager.Close();
                 });
             }
         }
