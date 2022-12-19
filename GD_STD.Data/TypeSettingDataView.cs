@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-//using WPFSTD105;
-//using WPFSTD105.Attribute;
 using GD_STD;
 using DevExpress.Xpf.Grid;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using DevExpress.Mvvm.UI;
+
 
 namespace GD_STD.Data
 {
@@ -193,6 +193,47 @@ namespace GD_STD.Data
                 _alreadyMatedMaterialCounts = value;
             }
         }
+
+
+
+
+        /// <summary>
+        /// 是否可排版(依長寬決定)
+        /// </summary>
+        public bool Sortable
+        {
+            get
+            {
+                if (W > SectionSpecificationMaxWidth || W < SectionSpecificationMinWidth)
+                    return false;
+                else if (H > SectionSpecificationMaxHeight || H < SectionSpecificationMinHeight)
+                    return false;
+                else
+                    return true;
+            }
+        }
+
+
+        /// <summary>
+        /// 斷面規格最大高度
+        /// </summary>
+        public double SectionSpecificationMaxHeight { get; set; } = 1050;
+        /// <summary>
+        /// 斷面規格最小高度
+        /// </summary>
+        public double SectionSpecificationMinHeight { get; set; } = 150;
+
+        /// <summary>
+        /// 斷面規格最大寬度
+        /// </summary>
+        public double SectionSpecificationMaxWidth { get; set; } = 500;
+        /// <summary>
+        /// 斷面規格最小寬度
+        /// </summary>
+        public double SectionSpecificationMinWidth { get; set; } = 75;
+
+
+
 
 
         /// <summary>

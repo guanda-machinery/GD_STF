@@ -59,20 +59,5 @@ namespace WPFSTD105
         MainAxisListening MainAxisListening { get; set; }
 
 
-        int SectionSpecificationMaxHeight { get; set; }
-        /// <summary>
-        /// 斷面規格最小高度
-        /// </summary>
-        int SectionSpecificationMinHeight { get; set; } 
-
-        /// <summary>
-        /// 斷面規格最大寬度
-        /// </summary>
-        int SectionSpecificationMaxWidth { get; set; } 
-        /// <summary>
-        /// 斷面規格最小寬度
-        /// </summary>
-        int SectionSpecificationMinWidth { get; set; } 
-
     }
 }

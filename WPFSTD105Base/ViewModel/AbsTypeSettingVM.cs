@@ -279,12 +279,14 @@ namespace WPFSTD105
         ///// 顯示在建立零件列表內的集合
         ///// </summary>
         //public ObservableCollection<SteelPart> SteelParts { get; set; } = new ObservableCollection<SteelPart>();
-       // public ObservableCollection<MaterialDataView> SelectedMaterial { get; set; } = new ObservableCollection<MaterialDataView>();
+        // public ObservableCollection<MaterialDataView> SelectedMaterial { get; set; } = new ObservableCollection<MaterialDataView>();
+
+
+        private ObservableCollection<TypeSettingDataView> dataViews = new ObservableCollection<TypeSettingDataView>();
         /// <summary>
         /// 報表視圖
         /// </summary>
-        public ObservableCollection<TypeSettingDataView> DataViews { get; set; } = new ObservableCollection<TypeSettingDataView>();
-
+        public ObservableCollection<TypeSettingDataView> DataViews { get { return dataViews; } set { dataViews = value; OnPropertyChanged(nameof(DataViews)); } } 
         public ObservableCollection<TypeSettingDataView> SelectedParts { get; set; } = new ObservableCollection<TypeSettingDataView>();
         /// <summary>
         /// 素材組合列表
@@ -608,37 +610,25 @@ namespace WPFSTD105
                     {
                         foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl.SelectedItems)
                         {
-                            //將不正確的H及W排除
-                            //PartGridColumn.H > 150;
-                            if (PartGridColumn.W > WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMaxWidth
-                            || PartGridColumn.W < WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMinWidth)
-                                continue;
-
-                            if (PartGridColumn.H > WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMaxHeight
-                              || PartGridColumn.H < WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMinHeight)
-                                continue;
-
-
-
-                            //數量 -已配對 >= 預排數量
-
-                            //數量
-                            var IDCount = PartGridColumn.ID.Count;
-                            //已配對
-                            //var MatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
-                            var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
-                            if (PartGridColumn.SortCount < IDCount - alreadyMatchCount)
-                                PartGridColumn.SortCount++;
-
-
-
-                            var PGIndex = (PartGirdControl.ItemsSource as IEnumerable<GD_STD.Data.TypeSettingDataView>).ToList().FindIndex(x => x == PartGridColumn);
-                            if(PGIndex != -1)
+                            //要是可預排的零件
+                            if (PartGridColumn.Sortable)
                             {
-                                PartGirdControl.Dispatcher.Invoke(() =>
+                                //數量
+                                var IDCount = PartGridColumn.ID.Count;
+                                //已配對
+                                //var MatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
+                                var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
+                                if (PartGridColumn.SortCount < IDCount - alreadyMatchCount)
+                                    PartGridColumn.SortCount++;
+
+                                var PGIndex = (PartGirdControl.ItemsSource as IEnumerable<GD_STD.Data.TypeSettingDataView>).ToList().FindIndex(x => x == PartGridColumn);
+                                if (PGIndex != -1)
                                 {
-                                    PartGirdControl.RefreshRow(PGIndex);
-                                });
+                                    PartGirdControl.Dispatcher.Invoke(() =>
+                                    {
+                                        PartGirdControl.RefreshRow(PGIndex);
+                                    });
+                                }
                             }
                         }
                         //需要重整才能更新data binding 
@@ -706,36 +696,28 @@ namespace WPFSTD105
                     {
                         foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl.SelectedItems)
                         {
-                            if (PartGridColumn.W > WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMaxWidth
-                            || PartGridColumn.W < WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMinWidth)
-                                continue;
+                            if (PartGridColumn.Sortable)
+                            {
+                                //數量
+                                var IDCount = PartGridColumn.ID.Count;
+                                //已配對
+                                var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
+                                //var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
 
-                            if (PartGridColumn.H > WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMaxHeight
-                              || PartGridColumn.H < WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMinHeight)
-                                continue;
+                                PartGridColumn.SortCount = IDCount - alreadyMatchCount;
+                                //已配對
+                                //  PartGridColumn.Match.FindAll(x => (x == true)).Count;
 
-                            //數量 -已配對 >= 預排數量
+                                // DataViews[];
+                                //取得構件編號，將資料寫入datagrid
 
-                            //數量
-                            var IDCount = PartGridColumn.ID.Count;
-                            //已配對
-                            var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
-                            //var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
-
-                            PartGridColumn.SortCount = IDCount - alreadyMatchCount;
-
-
-                            //已配對
-                            //  PartGridColumn.Match.FindAll(x => (x == true)).Count;
-
-                            // DataViews[];
-                            //取得構件編號，將資料寫入datagrid
-
-                        }                    //需要重整才能更新data binding 
-                        PartGirdControl.Dispatcher.Invoke(() =>
-                        {
-                            PartGirdControl.RefreshData();
-                        });
+                                //需要重整才能更新data binding 
+                                PartGirdControl.Dispatcher.Invoke(() =>
+                                {
+                                    PartGirdControl.RefreshData();
+                                });
+                            }
+                        }
                     }
                 }
                 );
@@ -1239,25 +1221,26 @@ namespace WPFSTD105
                         continue;
                     }
                     List<SinglePart> listPart = new List<SinglePart>();//配料列表
-                    foreach (var item in DataViews.Where(x => x.SortCount > 0))
+                    var softedDataviews= DataViews.Where(x => x.SortCount > 0).ToList();
+                    foreach (var item in softedDataviews)
                     {
+                        //同一零件排複數個 要跳兩次
                         //1110 排版計算前添加鋸床切割損耗，DataViews中Part的Length此時已被變動 CYH
                         item.Length += 3;
-
                         foreach (var steel in steels.Where(x => x.Number == item.PartNumber))
                         {
                             //1110 排版計算前添加鋸床切割損耗 CYH
                             steel.Length += 3;
 
-                            IEnumerable<int> _where = DataViews
+                           var _Findwhere = DataViews
                            .Where(el =>
                            el.Profile == steel.Profile &&
                            el.PartNumber == steel.Number &&
                            el.Length == steel.Length &&         // 2022/09/23 呂宗霖 新增
-                           el.SortCount > 0)                   // 2022/09/23 呂宗霖 新增
-                           .Select(el => el.SortCount);
+                           el.SortCount > 0);                 // 2022/09/23 呂宗霖 新增
+                        
+                           var _where = _Findwhere.Select(el => el.SortCount);
 
-                            //20221107 蘇冠綸加入條件式 防止在特定情況下_where陣列為0而導致崩潰的問題
                             if (_where.Count() > 0)
                             {
                                 var count = _where.Aggregate((total, next) => total + next);
