@@ -137,7 +137,25 @@ namespace STD_105
 
         private void ScrollOwner_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
+            IScrollInfo SoftCountTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningSchedule_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
+            IScrollInfo PartsTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningCombinational_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
             if ((sender as DevExpress.Xpf.Grid.TableView).Name == MachiningCombinational_List_TableView.Name)
+            {
+              
+                if (SoftCountTableView_ScrollElement != null)
+                    SoftCountTableView_ScrollElement.SetVerticalOffset(e.VerticalOffset);
+            }
+
+            if ((sender as DevExpress.Xpf.Grid.TableView).Name == MachiningSchedule_List_TableView.Name)
+            {
+                if (SoftCountTableView_ScrollElement != null && PartsTableView_ScrollElement!= null)
+                {
+                    SoftCountTableView_ScrollElement.SetVerticalOffset(PartsTableView_ScrollElement.VerticalOffset);
+                    //SoftCountTableView_ScrollElement.SetVerticalOffset(PartsTableView_ScrollElement.VerticalOffset);
+                }
+            }
+
+            /*if ((sender as DevExpress.Xpf.Grid.TableView).Name == MachiningCombinational_List_TableView.Name)
             {
                 IScrollInfo SoftCountTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningSchedule_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
                 if (SoftCountTableView_ScrollElement != null)
@@ -151,7 +169,7 @@ namespace STD_105
                     if (PartsTableView_ScrollElement != null)
                         PartsTableView_ScrollElement.SetVerticalOffset(e.VerticalOffset);
                 }
-            }
+            }*/
         }
 
         private void MachineMessage_ItemsSourceChanged(object sender, ItemsSourceChangedEventArgs e)

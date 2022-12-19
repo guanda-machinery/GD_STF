@@ -193,7 +193,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <dxg:GridControl Style="{StaticResource SiegCustomGridControl}"  
+                    <dxg:GridControl Style="{StaticResource SiegCustomGridControl_PartList}"  
                                 Name="PartsGridControl"
                                 AutoGenerateColumns="None"
                                 SelectionMode="Row"
@@ -209,7 +209,7 @@
                                AllowSorting="false"
                                AllowColumnFiltering="False"
                                AllowColumnMoving="False"
-                                
+                               ShowVerticalLines="False"
                                 
                                     Name="PartListTableView"
                                     Loaded="PartListTableView_Loaded"  
@@ -296,7 +296,7 @@
                         </Button>
                  
                     </StackPanel>
-                    <dxg:GridControl   Grid.Column="2" Style="{StaticResource SiegCustomGridControl}"  
+                    <dxg:GridControl   Grid.Column="2" Style="{StaticResource SiegCustomGridControl_PartList}"  
                                 Name="SoftGridControl"
                                 AutoGenerateColumns="None"
                                 SelectionMode="Row"
@@ -692,7 +692,7 @@
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
-                                <ProgressBar Value="{c:Binding Row.Loss/Row.LengthStr}" Height="auto" Minimum="0" Maximum="1" Background="White" />
+                                <ProgressBar Value="{c:Binding Row.Loss/Row.LengthStr}" Height="auto" Minimum="0" Maximum="1" Background="White" Style="{StaticResource BaseStyle}" Margin="-1" />
                                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" >
                                     <TextBlock Text="{c:Binding Row.Loss/Row.LengthStr, StringFormat={}{0:P1}}"   />
                                 </StackPanel>
