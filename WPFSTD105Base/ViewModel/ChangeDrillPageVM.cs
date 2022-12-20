@@ -73,6 +73,7 @@ namespace WPFSTD105.ViewModel
             RightEntranceIsEnabled = _MecOptional.RightEntrance;
             RightExportIsEnabled = _MecOptional.RightExport;
             UpDate();
+
         }
         #region 公開屬性
         /// <summary>
@@ -139,6 +140,39 @@ namespace WPFSTD105.ViewModel
         /// 是否顯示 <see cref="DrillWarehouse.LeftEntrance"/> 的按鈕 
         /// </summary>
         public bool LeftEntranceIsEnabled { get; set; }
+
+
+
+        //20221220
+        /// <summary>
+        /// 是否顯示中軸刀庫的按鈕
+        /// </summary>
+        public Visibility MiddleVisibility { get { return GD_STD.Properties.Optional.Default.Middle ? Visibility.Visible : Visibility.Collapsed; } }
+        /// <summary>
+        /// 是否顯示左軸出口刀庫的按鈕 
+        /// </summary>
+        public Visibility LeftExportVisibility { get { return GD_STD.Properties.Optional.Default.LeftExport ? Visibility.Visible : Visibility.Collapsed; } }
+        /// <summary>
+        /// 是否顯示右軸出口刀庫的按鈕 
+        /// </summary>
+        public Visibility RightExportVisibility { get { return GD_STD.Properties.Optional.Default.RightExport ? Visibility.Visible : Visibility.Collapsed; } }
+        /// <summary>
+        /// 是否顯示 <see cref="DrillWarehouse.RightEntrance"/> 的按鈕 
+        /// </summary>
+        public Visibility RightEntranceVisibility { get { return GD_STD.Properties.Optional.Default.RightEntrance ? Visibility.Visible : Visibility.Collapsed; } }
+        /// <summary>
+        /// 是否顯示 <see cref="DrillWarehouse.LeftEntrance"/> 的按鈕 
+        /// </summary>
+        public Visibility LeftEntranceVisibility { get { return GD_STD.Properties.Optional.Default.LeftEntrance ? Visibility.Visible : Visibility.Collapsed; } }
+
+
+
+
+
+
+
+
+
         /// <summary>
         /// 選擇<see cref="DrillWarehouse.Middle"/>
         /// </summary>

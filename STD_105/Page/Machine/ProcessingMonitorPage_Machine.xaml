@@ -482,10 +482,10 @@ AllowEditing="False"
                         <dxg:GridControl Margin="0,0.5,0,0" 
                         Style="{StaticResource SiegCustomGridControl}"
                         Name="MachiningSchedule_List_GridControl"    
-                                      
+                        
                         AutoGenerateColumns="None" 
                         Grid.Row="2"  Width="139"
-                        ItemsSource="{Binding Finish_UndoneDataViews}"
+                        ItemsSource="{Binding Finish_UndoneDataViews,UpdateSourceTrigger=PropertyChanged}"
                         SelectionMode="Row"
                         MinHeight="200"  MaxHeight="300">
                                 <dxg:GridControl.IsEnabled>
@@ -535,7 +535,7 @@ AllowEditing="False"
                                             <Style.Triggers>
                                                 <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
                                                     <Setter Property="Background"
-                                                            Value="{Binding Row.PositionEnum, Converter={local:TypeSettingDataViewToSolidColorBrushConverter}}" />
+                                                            Value="{Binding Row.PositionEnum, Converter={local:TypeSettingDataViewToSolidColorBrushConverter}, UpdateSourceTrigger=PropertyChanged}" />
                                                 </Trigger>
                                                 <Trigger Property="IsMouseOver" Value="True">
                                                     <Setter Property="Background" Value="LightSlateGray" />

@@ -850,15 +850,6 @@ namespace STD_105
             return block2D;
         }
 
-
-
-
-
-
-
-
-
-
         private void PartListTableView_Loaded(object sender, RoutedEventArgs e)
         {
             ((DevExpress.Xpf.Grid.TableView)sender).FocusedRowHandle = DevExpress.Xpf.Grid.GridControl.InvalidRowHandle;
