@@ -21,6 +21,13 @@ namespace STD_105.ValidationRules
 
                 if (IPString.Count(x => x == ':') == 1)
                 { 
+                    if(IPString.Last() == '/')
+                    {
+                        return new ValidationResult(false, $"IP格式不正確，不可以用'/'當結尾");
+                    }
+
+
+
                     var SplitedAddress =  IPString.Split(':');
                     if (SplitedAddress.Count() == 2)   //冗餘驗證，上面IPString.Count已確保只會出現兩個
                     {
@@ -36,6 +43,8 @@ namespace STD_105.ValidationRules
                         {
                             return new ValidationResult(false, $"IP格式不正確，須為xxx.xxx.xxx.xxx之型別");
                         }
+
+
 
                         //去掉後面的斜線值
                         var ValidPortString = SplitedAddress[1];
@@ -78,7 +87,14 @@ namespace STD_105.ValidationRules
                     }
                     else
                     {
-                        return new ValidationResult(false, $"字串格式不正確，分號只能出現一次！");
+                        if (IPString.Contains("http://"))
+                        {
+                            return new ValidationResult(false, $"字串格式不正確，通訊地址不是http://開頭");
+                        }
+                        else
+                        {
+                            return new ValidationResult(false, $"字串格式不正確，分號只能出現一次！");
+                        }
                     }
                 }
             }

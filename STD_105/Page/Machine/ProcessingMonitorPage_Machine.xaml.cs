@@ -48,8 +48,7 @@ namespace STD_105
     public partial class ProcessingMonitorPage_Machine : BasePage<ProcessingMonitor_MachineVM>
     {
         //   public SplashScreenManager ScreenManager { get; set; } = SplashScreenManager.Create(() => new WaitIndicator(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
-        private DevExpress.Xpf.Core.SplashScreenManager ProcessingScreenWin = DevExpress.Xpf.Core.SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
-      
+
         public ObSettingVM ViewModel { get; set; } = new ObSettingVM();
         /// <summary>
         /// nc 設定檔
@@ -95,9 +94,9 @@ namespace STD_105
 
         private void Model3D_Loaded(object sender, RoutedEventArgs e)
         {
-          
-            ProcessingScreenWin.Show();
-            ProcessingScreenWin.ViewModel.Status = "正在讀取3D模型...";
+            DevExpress.Xpf.Core.SplashScreenManager DProcessingScreenWin = DevExpress.Xpf.Core.SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
+            DProcessingScreenWin.Show();
+            DProcessingScreenWin.ViewModel.Status = "正在讀取3D模型...";
             try
             {
                 #region Model 初始化
@@ -125,51 +124,31 @@ namespace STD_105
 
             }
 
-            ProcessingScreenWin.ViewModel.Status = "正在產生dm...";
-
-            (this.DataContext as ProcessingMonitor_MachineVM).SetSerializationInit(model)/*, model);*/;
-            //載入dm
-            //(this.DataContext as ProcessingMonitor_MachineVM).CreateFile();
-            ProcessingScreenWin.Close();
+            (this.DataContext as ProcessingMonitor_MachineVM).SetSerializationInit(model);
+            DProcessingScreenWin.Close();
             model.Loaded -= Model3D_Loaded;
         }
 
 
         private void ScrollOwner_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            IScrollInfo SoftCountTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningSchedule_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
-            IScrollInfo PartsTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningCombinational_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
+            IScrollInfo MachiningCombinational_List_TableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningCombinational_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
+            IScrollInfo MachiningSchedule_List_TableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningSchedule_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
             if ((sender as DevExpress.Xpf.Grid.TableView).Name == MachiningCombinational_List_TableView.Name)
             {
-              
-                if (SoftCountTableView_ScrollElement != null)
-                    SoftCountTableView_ScrollElement.SetVerticalOffset(e.VerticalOffset);
-            }
-
-            if ((sender as DevExpress.Xpf.Grid.TableView).Name == MachiningSchedule_List_TableView.Name)
-            {
-                if (SoftCountTableView_ScrollElement != null && PartsTableView_ScrollElement!= null)
-                {
-                    SoftCountTableView_ScrollElement.SetVerticalOffset(PartsTableView_ScrollElement.VerticalOffset);
-                    //SoftCountTableView_ScrollElement.SetVerticalOffset(PartsTableView_ScrollElement.VerticalOffset);
-                }
-            }
-
-            /*if ((sender as DevExpress.Xpf.Grid.TableView).Name == MachiningCombinational_List_TableView.Name)
-            {
-                IScrollInfo SoftCountTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningSchedule_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
-                if (SoftCountTableView_ScrollElement != null)
-                    SoftCountTableView_ScrollElement.SetVerticalOffset(e.VerticalOffset);
+                if (MachiningSchedule_List_TableView_ScrollElement != null)
+                    MachiningSchedule_List_TableView_ScrollElement.SetVerticalOffset(MachiningCombinational_List_TableView_ScrollElement.VerticalOffset);
             }
             if ((sender as DevExpress.Xpf.Grid.TableView).Name == MachiningSchedule_List_TableView.Name)
             {
-                if (e.VerticalOffset != 0)
-                {
-                    IScrollInfo PartsTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningCombinational_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
-                    if (PartsTableView_ScrollElement != null)
-                        PartsTableView_ScrollElement.SetVerticalOffset(e.VerticalOffset);
-                }
-            }*/
+                if (MachiningSchedule_List_TableView_ScrollElement != null)
+                    MachiningSchedule_List_TableView_ScrollElement.SetVerticalOffset(MachiningCombinational_List_TableView_ScrollElement.VerticalOffset);
+                /*IScrollInfo PartsTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningCombinational_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
+                if (PartsTableView_ScrollElement != null)
+                    PartsTableView_ScrollElement.SetVerticalOffset(e.VerticalOffset);*/
+            }
+
+
         }
 
         private void MachineMessage_ItemsSourceChanged(object sender, ItemsSourceChangedEventArgs e)

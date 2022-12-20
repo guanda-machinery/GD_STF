@@ -1230,6 +1230,7 @@
                                             VerticalAlignment="Top"
                                             Margin="0,8">
                                                     <local:ToolMagazineButton ButtonCommand="{Binding MiddleCommand}"
+                                                                        Visibility="{Binding MiddleVisibility}"
                                                               ButtonImageSource="{StaticResource Clamping}"
                                                               StartState="{Binding IsSelectdMiddle}"
                                                               TitleText="A刀庫"
@@ -1238,26 +1239,29 @@
                                                     <local:ToolMagazineButton ButtonCommand="{Binding LeftExportCommand}"
                                                               ButtonImageSource="{StaticResource Clamping}"
                                                               StartState="{Binding IsSelectdLeftExport}"
-                                                        
+                                                                                                                                Visibility="{Binding LeftExportVisibility}"
                                                               TitleText="B刀庫"
                                                               SubTitleText="左軸"
                                                               Margin="1,0" />
                                                     <local:ToolMagazineButton ButtonCommand="{Binding RightExportCommand}"
-                                                              ButtonImageSource="{StaticResource Clamping}"
-                                                              StartState="{Binding IsSelectdRightExport}"
-                                                              TitleText="C刀庫"
-                                                              SubTitleText="右軸" />
+                                                                              Visibility="{Binding RightExportVisibility}"
+                                                                              ButtonImageSource="{StaticResource Clamping}"
+                                                                              StartState="{Binding IsSelectdRightExport}"
+                                                                              TitleText="C刀庫"
+                                                                              SubTitleText="右軸" />
                                                     <local:ToolMagazineButton ButtonCommand="{Binding LeftEntranceCommand}"
-                                                              ButtonImageSource="{StaticResource Clamping}"
-                                                              StartState="{Binding IsSelectdLeftEntrance}"
-                                                              TitleText="D刀庫"
-                                                              SubTitleText="左軸"
-                                                              Margin="1,0" />
+                                                                              Visibility="{Binding LeftEntranceVisibility}"
+                                                                              ButtonImageSource="{StaticResource Clamping}"
+                                                                              StartState="{Binding IsSelectdLeftEntrance}"
+                                                                              TitleText="D刀庫"
+                                                                              SubTitleText="左軸"
+                                                                              Margin="1,0" />
                                                     <local:ToolMagazineButton ButtonCommand="{Binding RightEntranceCommand}"
-                                                              ButtonImageSource="{StaticResource Clamping}"
-                                                              StartState="{Binding IsSelectdRightEntrance}"
-                                                              TitleText="E刀庫"
-                                                              SubTitleText="右軸" />
+                                                                              Visibility="{Binding RightEntranceVisibility}"
+                                                                              ButtonImageSource="{StaticResource Clamping}"
+                                                                              StartState="{Binding IsSelectdRightEntrance}"
+                                                                              TitleText="E刀庫"
+                                                                              SubTitleText="右軸" />
 
                                                 </StackPanel>
                                             </Grid>
