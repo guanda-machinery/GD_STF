@@ -608,7 +608,7 @@ namespace WPFSTD105.Model
 
             if (!model.Blocks.Any(x => x.Name == result.Name))
             {
-                model.Blocks.Add(result);
+                model.Blocks.Add(result);//B3D
             }
             else
             {
