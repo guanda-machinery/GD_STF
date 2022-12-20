@@ -873,7 +873,7 @@ namespace STD_105.Office
                 //    return;
                 //}
 
-                if (isNewPart)
+                if (ViewModel.fNewPart.Value)
                 {
                     GetViewToViewModel(true);
                     steelAttr = GetViewToSteelAttr(steelAttr, true);
@@ -1774,7 +1774,7 @@ namespace STD_105.Office
                 //查看用戶是否有選擇圖塊
                 if (ViewModel.Select3DItem.Count > 0)
                 {
-                    if (!sr.CheckData_AddHole(ViewModel.PartNumberProperty, model))
+                    if (!sr.CheckData_ModifyHole(ViewModel.PartNumberProperty, model))
                     {
                         return;
                     }
@@ -1939,11 +1939,11 @@ namespace STD_105.Office
                 // 因為ModifyPart會再讀檔，故儲存
                 ViewModel.SaveCut();
                 SaveModel(false, false);
-                isNewPart = false;//fasle不產生新GUID
+                ViewModel.fNewPart = false;//fasle不產生新GUID
                 ViewLocator.OfficeViewModel.isPressAddCutKey = true;
                 ViewModel.WriteCutAttr((SteelAttr)model.Blocks[1].Entities[0].EntityData);
                 ViewModel.ModifyPart.Execute(null);
-                isNewPart = true;//還原零件狀態
+                ViewModel.fNewPart = true;//還原零件狀態
                 ViewLocator.OfficeViewModel.isPressAddCutKey = false;
                 //SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D三視圖
                 //bool hasOutSteel = false;
@@ -5731,14 +5731,14 @@ namespace STD_105.Office
                 //((SteelAttr)model.Entities[0].EntityData).GUID = Guid.Parse(item.DataName);
                 ((SteelAttr)model.Entities[0].EntityData).GUID = Guid.Parse(item.DataName);
                 //BlockReference steel2D = SteelTriangulation((Mesh)steel.Entities[0]);
-                BlockReference steel2D = SteelTriangulation((Mesh)steel.Entities.Where(x => x.GetType().Name == "Mesh").FirstOrDefault());
+                //steel2D = SteelTriangulation((Mesh)steel.Entities.Where(x => x.GetType().Name == "Mesh").FirstOrDefault());
             }
             if (model.Blocks.Count == 1)
             {
                 ViewModel.SteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
                 Steel3DBlock steel = Steel3DBlock.AddSteel(ViewModel.GetSteelAttr(), model, out blockReference);
                 ((SteelAttr)model.Entities[0].EntityData).GUID = Guid.Parse(item.DataName);
-                BlockReference steel2D = SteelTriangulation((Mesh)steel.Entities.Where(x => x.GetType().Name == "Mesh").FirstOrDefault());
+                //steel2D = SteelTriangulation((Mesh)steel.Entities.Where(x => x.GetType().Name == "Mesh").FirstOrDefault());
             }
 
             ConfirmCurrentSteelSection(item);
@@ -5762,19 +5762,30 @@ namespace STD_105.Office
             List<Block> blocks = model.GetBoltFromBlock(groups);
 
             #region 建模
-            // 建立型鋼
-            Steel3DBlock result = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);
-            model.AddModelSteelAttr(sa, result);
-            // 建立2D模型
-            sr.SteelTriangulation(drawing, result.Name, (Mesh)model.Blocks[1].Entities[0]);
-            // 建立2D/3D孔
-            sr.AddBolts(model, drawing, out bool hasOutSteel, blocks);
+            model.LoadNcToModel(item.DataName, ObSettingVM.allowType, 0, null, sa, null, blocks, false);
+            // 步驟5.產生2D模型
+            BlockReference steel2D = sr.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
+            //model.sycnModelEntitiesAndNewBolt(blocks);
+            sr.AddBolts(model, drawing, out bool hasOutSteel, blocks, false);
             // 切割線打點
             ScrollViewbox.IsEnabled = true;
             if (model.RunHypotenuseEnable()) { /*ScrollViewbox.IsEnabled = false;*/ } else { ScrollViewbox.IsEnabled = true; }
             WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
             WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
             WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
+            //// 建立型鋼
+            //Steel3DBlock result = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);
+            //model.AddModelSteelAttr(sa, result);
+            //// 建立2D模型
+            //sr.SteelTriangulation(drawing, result.Name, (Mesh)model.Blocks[1].Entities[0]);
+            //// 建立2D/3D孔
+            //sr.AddBolts(model, drawing, out bool hasOutSteel, blocks);
+            //// 切割線打點
+            //ScrollViewbox.IsEnabled = true;
+            //if (model.RunHypotenuseEnable()) { /*ScrollViewbox.IsEnabled = false;*/ } else { ScrollViewbox.IsEnabled = true; }
+            //WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
+            //WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
+            //WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
             #endregion
 
 

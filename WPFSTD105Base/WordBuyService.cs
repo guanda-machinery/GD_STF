@@ -278,7 +278,14 @@ namespace WPFSTD105
                 var pattern = @"[A-Z]+";
                 for (int i = 0; i < materialDataViews.Count; i++)
                 {
-                    ListSteelType[i] = Regex.Match(materialDataViews[i].Profile, pattern).Value;
+                    if (Regex.Match(materialDataViews[i].Profile, pattern).Value != "X")
+                    {
+                        ListSteelType[i] = Regex.Match(materialDataViews[i].Profile, pattern).Value;
+                    }
+                    else
+                    {
+                        ListSteelType[i] = "CH"; //僅有槽鐵(CH)斷面規格不是英文字開始 ex:[200X80X7.5X11
+                    }
                 }
                 string[] temp_DistinctSteelType = ListSteelType.Distinct().ToArray();//找出有幾種型鋼
                 List<string> ListDistinctSteelType = temp_DistinctSteelType.ToList();
@@ -485,7 +492,7 @@ namespace WPFSTD105
                         case "BOX":
                             picture_path = @"SteelSectionPng\BOX.png";
                             break;
-                        case "C":
+                        case "CH":
                             picture_path = @"SteelSectionPng\C.png";
                             break; 
                         case "ReportLogo":
