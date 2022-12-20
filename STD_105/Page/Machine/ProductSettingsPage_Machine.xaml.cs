@@ -1701,28 +1701,55 @@ namespace STD_105
 
                 Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference, out bool check);
 
-                //if (bolts.hasOutSteel)
-                if (!check && ViewModel.showMessage)
+                if (ViewModel.fromModifyHole)
                 {
-                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
-                    ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
-                    WinUIMessageBox.Show(null,
-                                 $"孔群落入非加工區域，請再確認",
-                                 "通知",
-                                 MessageBoxButton.OK,
-                                 MessageBoxImage.Exclamation,
-                                 MessageBoxResult.None,
-                                 MessageBoxOptions.None,
-                                 FloatingMode.Popup);
-                    ViewModel.fclickOK = true;
-                    //return;
+                    if (!check && ViewModel.showMessage)
+                    {
+                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                        ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
+                        WinUIMessageBox.Show(null,
+                                     $"孔群落入非加工區域，請再確認",
+                                     "通知",
+                                     MessageBoxButton.OK,
+                                     MessageBoxImage.Exclamation,
+                                     MessageBoxResult.None,
+                                     MessageBoxOptions.None,
+                                     FloatingMode.Popup);
+                        ViewModel.fclickOK = true;
+                        //return;
+                    }
+                    else
+                    {
+                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+                        ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = false;
+
+                        ViewModel.fclickOK = false;
+                    }
                 }
                 else
                 {
-                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
-                    ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = false;
+                    if (!check)
+                    {
+                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                        ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
+                        WinUIMessageBox.Show(null,
+                                     $"孔群落入非加工區域，請再確認",
+                                     "通知",
+                                     MessageBoxButton.OK,
+                                     MessageBoxImage.Exclamation,
+                                     MessageBoxResult.None,
+                                     MessageBoxOptions.None,
+                                     FloatingMode.Popup);
+                        ViewModel.fclickOK = true;
+                        //return;
+                    }
+                    else
+                    {
+                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+                        ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = false;
 
-                    ViewModel.fclickOK = false;
+                        ViewModel.fclickOK = false;
+                    }
                 }
                 BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                                                                  //if (!ViewModel.fAddSteelPart)
@@ -1779,12 +1806,14 @@ namespace STD_105
                         return;
                     }
 
-                    ViewModel.showMessage = true;
+                    ViewModel.showMessage = false;
+                    ViewModel.fromModifyHole = true;
                     List<SelectedItem> selectItem = ViewModel.Select3DItem.ToList();//暫存容器
                     GroupBoltsAttr original = (GroupBoltsAttr)ViewModel.GroupBoltsAttr.DeepClone(); //原有設定檔
                     selectItem.ForEach(el => el.Item.Selected = false);//取消選取
                     for (int i = 0; i < selectItem.Count; i++)
                     {
+                        ViewModel.fromModifyHole = true;
                         if (i == selectItem.Count - 1)
                         {
                             ViewModel.showMessage = true;
@@ -1835,11 +1864,14 @@ namespace STD_105
                         SimulationDelete();//模擬按下 delete 鍵
                         ViewModel.modifyHole = true;
                         model.Refresh();
+                        //ViewModel.ignoreMessage = true;
                         ViewModel.AddHole.Execute(null);
+                        //ViewModel.ignoreMessage = false;
                     }
                     Esc();
                     ViewModel.modifyHole = false;
                     ViewModel.GroupBoltsAttr = original;
+                    ViewModel.fromModifyHole = false;
                     ViewModel.showMessage = false;
 
                     model.Invalidate();//刷新模型

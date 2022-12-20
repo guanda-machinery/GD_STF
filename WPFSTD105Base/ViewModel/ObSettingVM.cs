@@ -1311,7 +1311,11 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 是否顯示訊息
         /// </summary>
-        public bool showMessage { get; set; } = true;
+        public bool showMessage { get; set; } = false;
+        /// <summary>
+        /// 從編輯孔開始
+        /// </summary>
+        public bool fromModifyHole { get; set; } = false;
 
         private ObservableCollection<ProductSettingsPageViewModel> _dataviews { get; set; } = new ObservableCollection<ProductSettingsPageViewModel>();
 
