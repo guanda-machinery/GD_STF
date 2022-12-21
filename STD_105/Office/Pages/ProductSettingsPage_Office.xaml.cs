@@ -4235,7 +4235,7 @@ namespace STD_105.Office
             steelPart.Count = ass.ID.Count();
             steelPart.Revise = (sa.Revise.HasValue ? sa.Revise.Value : DateTime.Now);
             steelPart.ExclamationMark = exclamationMark;
-
+            oldGuid = (oldGuid == null ? steelPart.GUID : oldGuid);
             // 原零件之構建ID
             // 取出所有零件
             Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
@@ -5548,6 +5548,8 @@ namespace STD_105.Office
                     model.Entities.Clear();
                     drawing.Blocks.Clear();
                     drawing.Entities.Clear();
+                    model.Secondary = drawing;
+                    drawing.Secondary = model;
 
 
                     int steelType = 0;
@@ -5571,6 +5573,9 @@ namespace STD_105.Office
                     model.Entities.Clear();
                     drawing.Blocks.Clear();
                     drawing.Entities.Clear();
+                    model.Secondary.Clear();
+                    drawing.Secondary.Clear();
+                    model.RootBlock.Entities.Clear();
                     try
                     {
                         readFile.AddToScene(model);//將讀取完的檔案放入到模型
@@ -5649,6 +5654,7 @@ namespace STD_105.Office
                     // 步驟2.讀取nc檔，紀錄opoint.upoint.vpoint
 
                     SteelAttr sa = item.steelAttr;//1110 改由e.NewItem的steelAttr給值 CYH
+                    ViewModel.SteelAttr = item.steelAttr;
                     model.Blocks[1].Entities[0].EntityData = sa;
                     SteelAttr saDeepClone = (SteelAttr)sa.DeepClone();
                     List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();

@@ -63,7 +63,7 @@
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="BorderBrush" Value="Gray"/>
             </Style>
-            <System:Boolean x:Key="visible">true</System:Boolean>
+            <System:Boolean x:Key="visible">false</System:Boolean>
             <System:Boolean x:Key="TextBoxEnabled">false</System:Boolean>
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
