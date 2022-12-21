@@ -671,8 +671,10 @@
                     <TextBox x:Name="phase" Grid.Column="1" Grid.Row="7" >
                         <TextBox.Text>
                             <!--<Binding Path="SelectedItems[0].Phase" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >-->
-                            <Binding Path="PhaseProperty" UpdateSourceTrigger="PropertyChanged" >
-
+                            <Binding Path="PhaseProperty" UpdateSourceTrigger="PropertyChanged"  Converter="{STD105:NullableIntConverter}" >
+                                <Binding.ValidationRules>
+                                    <STD105ValidRule:CheckNumberRule NumberMin="0" IsNullable="True"/>
+                                </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>                        
                     </TextBox>                   
@@ -681,8 +683,10 @@
                     <TextBox x:Name="shippingNumber" Grid.Column="1" Grid.Row="8">
                         <TextBox.Text>
                             <!--<Binding Path="SelectedItems[0].ShippingNumber" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >-->
-                            <Binding Path="ShippingNumberProperty" UpdateSourceTrigger="PropertyChanged" >
-
+                            <Binding Path="ShippingNumberProperty" UpdateSourceTrigger="PropertyChanged"  Converter="{STD105:NullableIntConverter}">
+                                <Binding.ValidationRules>
+                                    <STD105ValidRule:CheckNumberRule NumberMin="0" IsNullable="True"/>
+                                </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
                     </TextBox>
