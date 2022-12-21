@@ -116,6 +116,7 @@
 
             <Style TargetType="GroupBox"
                    BasedOn="{ StaticResource gbx_WithBorder }"></Style>
+
             <local:DRILL_TYPE_ToStringConverter x:Key="DrillType" />
             <local:OBJECT_TYPE_ToStringConverter x:Key="obType" />
         </ResourceDictionary>
@@ -556,7 +557,7 @@
                                   Height="600">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="80" />
+                                    <RowDefinition Height="auto" />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <!--關鍵字過濾-->
@@ -694,15 +695,19 @@
                      FontSize="{ Binding TitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition Height="100" />
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <dxg:GridControl x:Name="gridControl"  Margin="4"
-                                     Style="{StaticResource SiegCustomGridControl}"
-                                         MaxHeight="2000"
+                    <dxg:GridControl x:Name="ToolgridControl"  Margin="4" 
+                                     Style="{StaticResource SiegCustomGridControl}" 
+                                         MaxHeight="10000"
                                          dx:ThemeManager.ThemeName="Win10Light"
                                          ItemsSource="{Binding DrillBrands}">
-                            <dxg:GridControl.View>
+                        <dxg:GridControl.Resources>
+                            <Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBar_Office}"/>
+                        </dxg:GridControl.Resources>
+
+                        <dxg:GridControl.View>
                             <dxg:TableView 
                                 IsColumnMenuEnabled ="False"
                                 AllowSorting="false"
@@ -718,28 +723,36 @@
                                     </Style>
                                 </dxg:TableView.CellStyle>
                             </dxg:TableView>
-                                
+
                         </dxg:GridControl.View>
-                            <dxg:GridControl.Columns>
-                            <dxg:GridColumn Header="設定檔名稱" Width="80" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn Header="設定檔名稱" Width="120" HorizontalHeaderContentAlignment="Center" AllowResizing="true" AllowMoving="false"
                                                 FieldName="DataName" />
-                            <dxg:GridColumn Header="品牌" Width="auto" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
+                            <dxg:GridColumn Header="品牌" Width="70" HorizontalHeaderContentAlignment="Center" AllowResizing="true" AllowMoving="false"
                                                 FieldName="Name" />
-                            <dxg:GridColumn Header="刀徑&#x0a;(mm)" Width="auto" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
-                                                FieldName="Dia" />
+                            <dxg:GridColumn Header="刀徑(mm)" Width="auto" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
+                                                FieldName="Dia" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings DisplayFormat="F1" HorizontalContentAlignment="Center"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
                             <dxg:GridColumn Header="刀具類型" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="DrilTypeStr">
-                                    <dxg:GridColumn.EditSettings>
-                                        <dxe:ComboBoxEditSettings ItemsSource="{Binding Source={StaticResource DrillType}, Path=Strings}" />
-                                    </dxg:GridColumn.EditSettings>
-                                </dxg:GridColumn>
-                            <dxg:GridColumn Header="主軸轉速&#x0a;(RPM)" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:ComboBoxEditSettings ItemsSource="{Binding Source={StaticResource DrillType}, Path=Strings}" HorizontalContentAlignment="Center" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn Header="主軸轉速&#x0a;  (RPM)" Width="65" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="Rpm" />
                             <dxg:GridColumn Header="切削速度&#x0a;(mm/min)" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="Vc" />
-                            <dxg:GridColumn Header="f&#x0a;(mm/rev)" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
-                                                FieldName="f" />
-                            <dxg:GridColumn Header="F&#x0a;(mm/min)" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
+                            <dxg:GridColumn Header="f (mm/rev)" Width="70" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
+                                                FieldName="f" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings DisplayFormat="F4" HorizontalContentAlignment="Center"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn Header="F (mm/min)" Width="70" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="F" />
                             <dxg:GridColumn Header="刀具長度&#x0a;(mm)" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="DrillLength" />
@@ -749,13 +762,13 @@
                                                 FieldName="L4Length" />
                             <dxg:GridColumn Header="刀具總長&#x0a;(mm)" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="SumLength" />
-                            </dxg:GridControl.Columns>
-                        </dxg:GridControl>
+                        </dxg:GridControl.Columns>
+                    </dxg:GridControl>
 
                     <StackPanel Grid.Row="1"
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Right"
-                                VerticalAlignment="Center">
+                                VerticalAlignment="Bottom">
                         <StackPanel.Resources>
                             <Style TargetType="Button"
                                    BasedOn="{ StaticResource ParameterButton }" >
@@ -772,7 +785,7 @@
                                 Width="100" Height="30" Margin="5" FontSize="18"
                                 Style="{ StaticResource SiegCustomButtonGray }"
                                 Command="{Binding DeleteDrillBrandsCommand}"
-                                CommandParameter="{Binding SelectedItem, ElementName=gridControl}" />
+                                CommandParameter="{Binding SelectedItem, ElementName=ToolgridControl}" />
                         <Button Content="儲存"
                                                                 Width="100" Height="30" Margin="5" FontSize="18"
                                 Style="{ StaticResource SiegCustomButtonGray }"

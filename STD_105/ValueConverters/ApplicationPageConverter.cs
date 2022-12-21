@@ -165,7 +165,6 @@ namespace STD_105
             public string VN { get; set; }
             public string TH { get; set; }
         }
-
         private Dictionary<ApplicationPage, LangStruct> Page_LanguageDict
         {
             get
@@ -288,8 +287,6 @@ namespace STD_105
                 return LangDict;
             }
         }
-
-
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             //找到合適的頁面
@@ -320,8 +317,6 @@ namespace STD_105
             }
             return null;
         }
-
-
         #region 舊版寫法
         /*
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -414,7 +409,6 @@ namespace STD_105
         }
         */
         #endregion
-
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
