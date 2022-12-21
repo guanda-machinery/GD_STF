@@ -11,13 +11,12 @@ namespace STD_105
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool _ = (bool)value;
-            return !_;
+            return !(bool)value;
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return !(bool)value;
         }
     }
 }

@@ -35,63 +35,6 @@ namespace WPFSTD105
         }
 
 
-        public void DMFileGenerate(List<string> MaterialNumbrLsit)
-        {
-            /*
-            (this.DataContext as DXSplashScreenViewModel).Status = "123";
-
-
-            Task.Run(() =>
-            {
-                STDSerialization _Ser = new STDSerialization();
-                model.Dispatcher.Invoke(new Action(() =>
-                {
-                    model.DataContext = new ObSettingVM();
-                    model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
-                    model.ActionMode = devDept.Eyeshot.actionType.None;
-                    model.Clear();
-                    MaterialNumbrLsit.ForEach(MNumber =>
-                    {
-                        (this.DataContext as DXSplashScreenViewModel).Status = $"正在產生檔案{MNumber}";
-                        try
-                        {
-                            if (!System.IO.File.Exists($@"{ApplicationVM.DirectoryMaterial()}\{MNumber}.dm"))
-                            {
-                                int RetryCount = 0;
-                                while (RetryCount < 10)
-                                {
-                                    try
-                                    {
-
-                                        model.AssemblyPart(MNumber);
-                                        _Ser.SetMaterialModel(MNumber, model);//儲存 3d 視圖
-                                        break;
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        RetryCount++;
-                                    }
-                                }
-                            }
-                            model.Clear();
-                        }
-                        catch (Exception ex)
-                        {
-
-                        }
-                    });
-
-                    //把自己關掉
-                    (this.DataContext as DXSplashScreenViewModel).Status = "完成 正在關閉視窗";
-                    System.Threading.Thread.Sleep(5000);
-                    this.Close();
-                }));
-            });
-
-            */
-        }
-
-
 
         private void Cancel_Button_Click(object sender, RoutedEventArgs e)
         {

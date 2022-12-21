@@ -99,10 +99,10 @@ namespace WPFSTD105
         {
             return new WPFBase.RelayCommand(() =>
             {
-                if (ApplicationViewModel.PanelButton.Alarm > ERROR_CODE.Null) //發生警報
-                {
+                //if (ApplicationViewModel.PanelButton.Alarm > ERROR_CODE.Null) //發生警報
+                //{
                     ApplicationViewModel.CurrentPage = ApplicationPage.Alarm;
-                }
+                //}
             });
         }
 

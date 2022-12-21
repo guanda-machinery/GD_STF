@@ -144,7 +144,6 @@
                         Style="{StaticResource SiegCustomGridControl_PartList}"
                         FilterGroupSortChanging="GridControl_FilterGroupSortChanging"
                         Name="PartsGridControl"
-                 
                         AutoGenerateColumns="None"
                         SelectionMode="row"
                        SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
@@ -215,9 +214,6 @@
                         </dxg:GridColumn>
                         <dxg:GridColumn FieldName="" Binding="{Binding ID,Converter={STD105:IListFilterToCountConverter} }"  IsSmart="True"  Width="45" Header="數量"  />
                         <dxg:GridColumn FieldName="AlreadyMatedMaterialCounts" IsSmart="True"  Width="45" Header="已配對"  />
-
-
-
                     </dxg:GridControl>
                     <StackPanel HorizontalAlignment="Center"  Margin="0"
                                         Grid.Column="1"
@@ -320,16 +316,16 @@
                         <dxg:GridColumn FieldName="Material"  IsSmart="True"  Header="材質"  Width="80"/>
                         <dxg:GridColumn FieldName="Length"  IsSmart="True"  Header="零件長" Width="70">
                             <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
+                                <dxe:TextEditSettings DisplayFormat="F0" HorizontalContentAlignment="Center"/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn  FieldName="PartWeight"  IsSmart="True"  Header="零件重"  Width="50" >
+                        <dxg:GridColumn FieldName="PartWeight" Binding="{c:Binding PartWeight/1000}"  IsSmart="True"  Header="零件重"  Width="50" >
                             <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
+                                <dxe:TextEditSettings DisplayFormat="F1" HorizontalContentAlignment="Center"/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn  FieldName="" Binding="{Binding ID , Converter={STD105:IListFilterToCountConverter} }"  IsSmart="True"  Width="45" Header="數量"  />
-                        <dxg:GridColumn  FieldName="AlreadyMatedMaterialCounts" IsSmart="True"  Width="45" Header="已配對"  />
+                        <dxg:GridColumn FieldName="" Binding="{Binding ID,Converter={STD105:IListFilterToCountConverter} }"  IsSmart="True"  Width="45" Header="數量"  />
+                        <dxg:GridColumn FieldName="AlreadyMatedMaterialCounts" IsSmart="True"  Width="45" Header="已配對"  />
 
 
                     </dxg:GridControl>
@@ -1374,6 +1370,10 @@
                 </TabItem>
                 <TabItem Header="2D"  x:Name="dr" >
                     <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
                         <Border Style="{StaticResource bro}"/>
                         <spa:ModelExt x:Name="drawing" 
                             Loaded="drawing_Loaded"
@@ -1435,6 +1435,7 @@
                                 </ddes:Viewport>
                             </ddes:Model.Viewports>
                         </spa:ModelExt>
+                        <local:DrawButtonBar Grid.Row="1"/>
                     </Grid>
 
                 </TabItem>
