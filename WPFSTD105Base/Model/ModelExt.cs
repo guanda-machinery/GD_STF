@@ -1849,6 +1849,7 @@ namespace WPFSTD105
                                 }
                             });
                             obSettingVM.Select2DItem.Where(x => x.Item != null && x.Item.GetType() == typeof(Mesh)).ToList().ForEach(el => Secondary.Entities.Remove((Mesh)el.Item));
+                            obSettingVM.Select2DItem.Where(x => x.Item != null && x.Item.GetType() == typeof(BlockReference)).ToList().ForEach(el => Secondary.Entities.Remove((BlockReference)el.Item));
                         }
                         else
                         {
@@ -1861,6 +1862,7 @@ namespace WPFSTD105
                                 }
                             });
                             obSettingVM.Select3DItem.Where(x => x.Item != null && x.Item.GetType() == typeof(Mesh)).ToList().ForEach(el => Secondary.Entities.Remove((Mesh)el.Item));
+                            obSettingVM.Select3DItem.Where(x => x.Item != null && x.Item.GetType() == typeof(BlockReference)).ToList().ForEach(el => Secondary.Entities.Remove((BlockReference)el.Item));
                         }
                         //STDSerialization ser = new STDSerialization();
                         //ser.SetPartModel(obSettingVM.SteelAttr.GUID.ToString(), this);

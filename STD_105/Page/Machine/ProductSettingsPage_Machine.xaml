@@ -704,10 +704,10 @@
                                           Style="{StaticResource BaseStyle}" />
                                     <MenuItem Header="恢復上一個動作"
                                           Command="{Binding Recovery}"
-                                          Style="{StaticResource BaseStyle}" />
+                                          Style="{StaticResource BaseStyle}" Visibility="Collapsed" />
                                     <MenuItem Header="恢復下一個動作"
                                           Command="{Binding Recovery}"
-                                          Style="{StaticResource BaseStyle}" />
+                                          Style="{StaticResource BaseStyle}" Visibility="Collapsed" />
                                 </ContextMenu>
                             </WPFSTD:ModelExt.ContextMenu>
                             <WPFSTD:ModelExt.ProgressBar>

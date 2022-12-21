@@ -800,7 +800,7 @@ namespace STD_105.Office
 
             bool findsteel = false;
 
-
+            // 一支素材裡的第i之零件
             for (int i = 0; i < place.Count; i++)
             {
 
@@ -840,7 +840,7 @@ namespace STD_105.Office
 
                 else  // 如果第一次出現零件,由3D model 建立2D Block與 Entities
                 {
-                    int partIndex = parts.FindIndex(el => el.Number == place[i].Number);
+                    int partIndex = parts.FindIndex(el => el.Number == place[i].Number);// 取得欲使用之第i之零件
                     findsteel = false;
 
 
