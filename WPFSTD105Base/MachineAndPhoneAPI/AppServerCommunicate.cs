@@ -217,6 +217,8 @@ namespace MachineAndPhoneAPI
         public static bool GetAppPairingData(out Assemblyinfo result)
         {
             result = new Assemblyinfo();
+            //            var client = new RestClient($"http://{AppServerIP}:{AppServerPort}/api/pc/pc-material-list"); 
+            //            var client = new RestClient($"http://{AppServerIP}:{AppServerPort}/api/pc/app-material-list");
             var client = new RestClient($"http://{AppServerIP}:{AppServerPort}/api/pc/material-list");
             client.AddDefaultHeader("Authorization", $"Bearer {token_access}");
             var request = new RestRequest(Method.GET);

@@ -342,23 +342,22 @@
                             </dxg:GridControl.View>
                            <dxg:GridControl.ContextMenu>
                                 <ContextMenu>
-                                    <!--<MenuItem Command="{Binding RowAddCommand}"
+                                    <MenuItem Command="{Binding RowAddCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
-                                              Header="加入任務" />
-                                   <MenuItem Command="{Binding DeleteCommand}"
+                                           
+                                              Header="加入任務到末端" />
+                                    <!--<MenuItem Command="{Binding DeleteCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                               Header="移除任務" />-->
                                     <MenuItem Command="{Binding RecoverCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
-                                              Visibility="{Binding Finish_UndoneDataViews_SelectedItems,ConverterParameter='Recover' ,Converter={local:MenuItem_FUDataViewsToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                            
                                               Header="狀態註銷" />
-                                    
-                                    <MenuItem Command="{Binding UnregisterCommand}"
+                                   <!-- <MenuItem Command="{Binding UnregisterCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
-                                             
-                                              Header="解除綁定" /> 
+                                              Header="解除綁定" /> -->
                                     <MenuItem Command="{Binding FinishCommand}"
-                                               Visibility="{Binding Finish_UndoneDataViews_SelectedItems,ConverterParameter='Finish' ,Converter={local:MenuItem_FUDataViewsToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                         
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                               Header="強制完成" />
                                 </ContextMenu>
@@ -483,9 +482,10 @@ AllowEditing="False"
                         <dxg:GridControl Margin="0,0.5,0,0" 
                         Style="{StaticResource SiegCustomGridControl}"
                         Name="MachiningSchedule_List_GridControl"    
+                        
                         AutoGenerateColumns="None" 
-                        Grid.Row="2"  Width="159"
-                        ItemsSource="{Binding Finish_UndoneDataViews}"
+                        Grid.Row="2"  Width="139"
+                        ItemsSource="{Binding Finish_UndoneDataViews,UpdateSourceTrigger=PropertyChanged}"
                         SelectionMode="Row"
                         MinHeight="200"  MaxHeight="300">
                                 <dxg:GridControl.IsEnabled>
@@ -508,7 +508,7 @@ AllowEditing="False"
                                 Name="MachiningSchedule_List_TableView"
                             ScrollViewer.ScrollChanged="ScrollOwner_ScrollChanged"
                             SearchString="{Binding MaterialGridControlSearchString,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged }"
-                                    VerticalScrollbarVisibility="Visible"
+                                    VerticalScrollbarVisibility="Hidden"
                                 HorizontalScrollbarVisibility="Disabled"
                                     HeaderPosition="SearchPanel"
                                     ShowGroupPanel="False"                             
@@ -535,7 +535,7 @@ AllowEditing="False"
                                             <Style.Triggers>
                                                 <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
                                                     <Setter Property="Background"
-                                                            Value="{Binding Row.PositionEnum, Converter={local:TypeSettingDataViewToSolidColorBrushConverter}}" />
+                                                            Value="{Binding Row.PositionEnum, Converter={local:TypeSettingDataViewToSolidColorBrushConverter}, UpdateSourceTrigger=PropertyChanged}" />
                                                 </Trigger>
                                                 <Trigger Property="IsMouseOver" Value="True">
                                                     <Setter Property="Background" Value="LightSlateGray" />

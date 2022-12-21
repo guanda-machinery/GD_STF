@@ -50,7 +50,7 @@ namespace WPFSTD105.Attribute
         /// <summary>
         /// 圖塊名稱
         /// </summary>
-        public string BlockName { get; set; }   
+        public string BlockName { get; set; } = ""; 
 
         /// <summary>
         /// <see cref="BoltAttr"/> 轉換 <see cref="BoltAttrSurrogate"/>

@@ -799,7 +799,7 @@ namespace STD_105.Office
 
             bool findsteel = false;
 
-
+            // 一支素材裡的第i之零件
             for (int i = 0; i < place.Count; i++)
             {
 
@@ -839,7 +839,7 @@ namespace STD_105.Office
 
                 else  // 如果第一次出現零件,由3D model 建立2D Block與 Entities
                 {
-                    int partIndex = parts.FindIndex(el => el.Number == place[i].Number);
+                    int partIndex = parts.FindIndex(el => el.Number == place[i].Number);// 取得欲使用之第i之零件
                     findsteel = false;
 
 
@@ -1178,7 +1178,11 @@ namespace STD_105.Office
             ScreenManager.ViewModel.Status = "加入零件中...";
             ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
             ReloadMaterialGrid();
-            
+
+           // var temp = PartsGridControl.ItemsSource;
+          //  (this.DataContext as OfficeTypeSettingVM).DataViews = null;
+           // (this.DataContext as OfficeTypeSettingVM).DataViews = temp as ObservableCollection<TypeSettingDataView>;
+
             ScreenManager.ViewModel.Status = "完成...";
             System.Threading.Thread.Sleep(100);
             ScreenManager.Close();
@@ -1246,11 +1250,9 @@ namespace STD_105.Office
                     MessageBoxOptions.None,
                     FloatingMode.Popup);
             }
-
             if (MessageBoxReturn == MessageBoxResult.Yes)
             {
-                STDSerialization ser = new STDSerialization(); //序列化處理器
-                   
+                STDSerialization ser = new STDSerialization(); //序列化處理器    
                 //以下代碼在第二階段需要重構->需放到VM層及讀取方式變更
                 var OTS_VM = this.DataContext as WPFSTD105.OfficeTypeSettingVM;
                 ObservableCollection<SteelPart> steelParts = ser.GetPart(MDataView.Profile.GetHashCode().ToString());
@@ -1305,7 +1307,6 @@ namespace STD_105.Office
 
 
             }
-
         }
             
        private void DeleteAllPartButtonClick(object sender, RoutedEventArgs e)

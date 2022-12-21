@@ -1311,7 +1311,11 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 是否顯示訊息
         /// </summary>
-        public bool showMessage { get; set; } = true;
+        public bool showMessage { get; set; } = false;
+        /// <summary>
+        /// 從編輯孔開始
+        /// </summary>
+        public bool fromModifyHole { get; set; } = false;
 
         private ObservableCollection<ProductSettingsPageViewModel> _dataviews { get; set; } = new ObservableCollection<ProductSettingsPageViewModel>();
 
@@ -2300,6 +2304,11 @@ namespace WPFSTD105.ViewModel
             {
                 model.Entities.Remove(entities);
             }
+
+
+
+
+            
         }
 
         /// <summary>
@@ -2897,6 +2906,43 @@ namespace WPFSTD105.ViewModel
                 MessageBoxOptions.None,
                 FloatingMode.Popup);
                 fclickOK = true;
+                return false;
+            }
+            return true;
+        }
+
+        public bool CheckData_ModifyHole(String partNumber, ModelExt model)
+        {
+            STDSerialization ser = new STDSerialization();
+            Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
+
+            if (!part.Any(x => x.Value.Any(y => y.Number == partNumber)) && showMessage)
+            {
+                WinUIMessageBox.Show(null,
+               $"零件編號{partNumber}尚未點擊OK",
+               "通知",
+               MessageBoxButton.OK,
+               MessageBoxImage.Exclamation,
+               MessageBoxResult.None,
+               MessageBoxOptions.None,
+               FloatingMode.Popup);
+                fNewPart = true;
+                fclickOK = false;
+                return false;
+            }
+
+            if (model.Entities.Count <= 0 && showMessage)
+            {
+                WinUIMessageBox.Show(null,
+                $"模型內找不到主件",
+                "通知",
+                MessageBoxButton.OK,
+                MessageBoxImage.Exclamation,
+                MessageBoxResult.None,
+                MessageBoxOptions.None,
+                FloatingMode.Popup);
+                fNewPart = false;
+                fclickOK = false;
                 return false;
             }
             return true;

@@ -948,7 +948,6 @@
     <Compile Include="ValueConverters\DateTimeConverter.cs" />
     <Compile Include="ValueConverters\ListCountToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\MaterialGridControlDataCheckConverter.cs" />
-    <Compile Include="ValueConverters\MenuItem_FUDataViewsToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\BooleanArrayIntersectToBooleanConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\BooleanArray_UnionToVisableConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\BooleanArray_UnionToBooleanConverter.cs" />
@@ -972,6 +971,8 @@
     <Compile Include="ValueConverters\ObjectIsNullToBooleanConverter.cs" />
     <Compile Include="ValueConverters\PositionStatusEnumToStringConverter.cs" />
     <Compile Include="ValueConverters\SectionSpecificationToEnabledConverter.cs" />
+    <Compile Include="ValueConverters\SortableToForegroundConverter.cs" />
+    <Compile Include="ValueConverters\SortableToBackgroundConverter.cs" />
     <Compile Include="ValueConverters\SteelPartWeightConverter.cs" />
     <Compile Include="ValueConverters\DrillingFaceConverter.cs" />
     <Compile Include="ValueConverters\SteelTypeToStringConverter.cs" />
@@ -1847,7 +1848,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GD_STD.Data\GD_STD.Data.csproj">
-      <Project>{390C0859-C722-45E8-9B21-5FA41CA5C18C}</Project>
+      <Project>{390c0859-c722-45e8-9b21-5fa41ca5c18c}</Project>
       <Name>GD_STD.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\GD_STD.Enum\GD_STD.Enum.csproj">

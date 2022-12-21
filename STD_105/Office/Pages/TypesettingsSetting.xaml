@@ -141,7 +141,7 @@
                         <RowDefinition Height="360"/>
                     </Grid.RowDefinitions>
                     <dxg:GridControl   
-                        Style="{StaticResource SiegCustom_CompactGridControl}"
+                        Style="{StaticResource SiegCustomGridControl_PartList}"
                         FilterGroupSortChanging="GridControl_FilterGroupSortChanging"
                         Name="PartsGridControl"
                  
@@ -149,7 +149,7 @@
                         SelectionMode="row"
                        SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                         MaxHeight="10000" 
-                        ItemsSource="{Binding DataViews}">
+                        ItemsSource="{Binding DataViews,UpdateSourceTrigger=PropertyChanged}">
                         <dxg:GridControl.View >
                             <dxg:TableView      
                                 AllowPaging="True"
@@ -265,7 +265,7 @@
                         </Button>
                     </StackPanel>
                     <dxg:GridControl   Grid.Column="2"
-Style="{StaticResource SiegCustom_CompactGridControl}"
+                                       Style="{StaticResource SiegCustomGridControl_PartList}"
                                 FilterGroupSortChanging="GridControl_FilterGroupSortChanging"
                                 Name="SoftGridControl"
                                 AutoGenerateColumns="None"
@@ -904,7 +904,7 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <ProgressBar Value="{c:Binding Row.Loss/Row.LengthStr}" Height="auto" Minimum="0" Maximum="1" Background="White" />
+                                    <ProgressBar Value="{c:Binding Row.Loss/Row.LengthStr}" Height="auto" Minimum="0" Maximum="1" Background="White"  Style="{StaticResource BaseStyle}" Margin="-1"/>
                                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" >
                                         <TextBlock Text="{c:Binding Row.Loss/Row.LengthStr, StringFormat={}{0:P1}}"   />
                                     </StackPanel>
