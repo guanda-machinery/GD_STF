@@ -63,7 +63,7 @@
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="BorderBrush" Value="Gray"/>
             </Style>
-            <System:Boolean x:Key="visible">true</System:Boolean>
+            <System:Boolean x:Key="visible">false</System:Boolean>
             <System:Boolean x:Key="TextBoxEnabled">false</System:Boolean>
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
@@ -811,7 +811,7 @@
 
                     </Grid>
 
-                    <Button Grid.Column="3" Grid.Row="6" Grid.ColumnSpan="2" x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}"  Style="{StaticResource SiegCustomButtonGold}" Width="90" HorizontalAlignment="Left" Visibility="Visible" />
+                    <Button Grid.Column="3" Grid.Row="6" Grid.ColumnSpan="2" x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}"  Style="{StaticResource SiegCustomButtonGold}" Width="90" HorizontalAlignment="Left" Visibility="Collapsed" />
 
                     <StackPanel Grid.Row="13" Margin="2" Orientation="Horizontal" Grid.ColumnSpan="5">
                         <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Style="{StaticResource SiegCustomButtonGold}" Width="80" Margin="0,0,6,0" Click="OKtoConfirmChanges"/>
