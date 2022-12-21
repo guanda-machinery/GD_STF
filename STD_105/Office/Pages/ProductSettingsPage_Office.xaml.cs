@@ -44,7 +44,7 @@ namespace STD_105.Office
     {
         #region 變數宣告
         ApplicationVM appVM = new ApplicationVM();
-        public ObSettingVM sr = new ObSettingVM();
+        //public ObSettingVM sr = new ObSettingVM();
 
         /// <summary>
         /// 是否產生新零件
@@ -288,7 +288,9 @@ namespace STD_105.Office
                     ViewModel.fNewPart = true;
                     ViewModel.fGrid = false;
                     ViewModel.fclickOK = false;
-                    sr.StateParaSetting(false, true, false);
+
+                    ViewModel.StateParaSetting(false, true, false);
+                    //ViewModel.StateParaSetting(false, true, false);
                 }
 
                 model.Entities.Clear();//清除模型物件
@@ -341,7 +343,7 @@ namespace STD_105.Office
                         if (File.Exists($@"{allPath}"))
                         {
                             #region 複製NC檔
-                            sr.CopyNCFile(allPath, g_partNumber, ViewModel.PartNumberProperty);
+                            ViewModel.CopyNCFile(allPath, g_partNumber, ViewModel.PartNumberProperty);
                             #endregion
 
                             #region 讀取dm檔
@@ -388,7 +390,7 @@ namespace STD_105.Office
                             #region 讀NC檔
                             List<GroupBoltsAttr> groupBolts = new List<GroupBoltsAttr>();
                             SteelAttr saDeepClone = (SteelAttr)sa.DeepClone();
-                            sa = sr.ReadNCInfo(saDeepClone, ref groupBolts);
+                            sa = ViewModel.ReadNCInfo(saDeepClone, ref groupBolts);
                             ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = sa.oPoint;
                             ((SteelAttr)model.Blocks[1].Entities[0].EntityData).vPoint = sa.vPoint;
                             ((SteelAttr)model.Blocks[1].Entities[0].EntityData).uPoint = sa.uPoint;
@@ -419,10 +421,10 @@ namespace STD_105.Office
                             //Steel3DBlock.AddSteel(sa, model, out BlockReference blockReference, "Steel");
                             //model.AddModelSteelAttr(sa, result);
                             // 建立2D模型
-                            BlockReference steel2D = sr.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);
+                            BlockReference steel2D = ViewModel.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);
                             drawing.Entities[drawing.Entities.Count - 1].EntityData = steel2D;
                             // 建立2D/3D孔
-                            sr.AddBolts(model, drawing, out bool hasOutSteel, block);
+                            ViewModel.AddBolts(model, drawing, out bool hasOutSteel, block);
                             #endregion
 
                             ScrollViewbox.IsEnabled = true;
@@ -434,7 +436,7 @@ namespace STD_105.Office
 
                             ViewModel.fAddSteelPart = false; // hank 新設 新增零件旗號,暫不儲存
                             ViewModel.fclickOK = false;
-                            sr.StateParaSetting(false, false, false);
+                            ViewModel.StateParaSetting(false, false, false);
                             model.ZoomFit();//設置道適合的視口
                             model.Refresh();//刷新模型
                             drawing.ZoomFit();
@@ -502,10 +504,10 @@ namespace STD_105.Office
                             //Steel3DBlock.AddSteel(sa, model, out BlockReference blockReference, "Steel");
                             //model.AddModelSteelAttr(sa, result);
                             // 建立2D模型
-                            BlockReference steel2D = sr.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);
+                            BlockReference steel2D = ViewModel.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);
                             drawing.Entities[drawing.Entities.Count - 1].EntityData = steel2D;
                             // 建立2D/3D孔
-                            sr.AddBolts(model, drawing, out bool hasOutSteel, block);
+                            ViewModel.AddBolts(model, drawing, out bool hasOutSteel, block);
                             #endregion
 
                             ScrollViewbox.IsEnabled = true;
@@ -518,7 +520,7 @@ namespace STD_105.Office
                             #endregion
                             ViewModel.fAddSteelPart = true; // hank 新設 新增零件旗號,暫不儲存
                             ViewModel.fclickOK = false;
-                            sr.StateParaSetting(false, false, false);
+                            ViewModel.StateParaSetting(false, false, false);
                             model.ZoomFit();//設置道適合的視口
                             model.Refresh();//刷新模型
                             drawing.ZoomFit();
@@ -557,9 +559,9 @@ namespace STD_105.Office
                         // 建立型鋼
                         Steel3DBlock.AddSteel(sa, model, out BlockReference blockReference, "Steel");
                         // 建立2D模型
-                        BlockReference steel2D = sr.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);
+                        BlockReference steel2D = ViewModel.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);
                         // 建立2D/3D孔
-                        sr.AddBolts(model, drawing, out bool hasOutSteel, null);
+                        ViewModel.AddBolts(model, drawing, out bool hasOutSteel, null);
                         #endregion
 
                         #region 回復動作
@@ -582,7 +584,7 @@ namespace STD_105.Office
 
                         ViewModel.fAddSteelPart = true; // hank 新設 新增零件旗號,暫不儲存
                         ViewModel.fclickOK = false;
-                        sr.StateParaSetting(true, true, false);
+                        ViewModel.StateParaSetting(true, true, false);
                         model.ZoomFit();//設置道適合的視口
                         model.Refresh();//刷新模型
                         drawing.ZoomFit();
@@ -623,9 +625,9 @@ namespace STD_105.Office
                     // 建立型鋼
                     Steel3DBlock.AddSteel(sa, model, out BlockReference blockReference, "Steel");
                     // 建立2D模型
-                    BlockReference steel2D = sr.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);
+                    BlockReference steel2D = ViewModel.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);
                     // 建立2D/3D孔
-                    sr.AddBolts(model, drawing, out bool hasOutSteel, null);
+                    ViewModel.AddBolts(model, drawing, out bool hasOutSteel, null);
                     #endregion
 
                     #region 回復動作
@@ -648,7 +650,7 @@ namespace STD_105.Office
 
                     ViewModel.fAddSteelPart = true; // hank 新設 新增零件旗號,暫不儲存
                     ViewModel.fclickOK = false;
-                    sr.StateParaSetting(true, true, false);
+                    ViewModel.StateParaSetting(true, true, false);
                     model.ZoomFit();//設置道適合的視口
                     model.Refresh();//刷新模型
                     drawing.ZoomFit();
@@ -930,19 +932,19 @@ namespace STD_105.Office
                     #region 建模
                     // 建立型鋼
                     //Steel3DBlock result = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);// 修改型鋼資訊
-                    sr.RemoveHypotenusePoint(model, HypotenuseTYPE.HypotenuseMan.ToString());
+                    ViewModel.RemoveHypotenusePoint(model, HypotenuseTYPE.HypotenuseMan.ToString());
                     Steel3DBlock result = new Steel3DBlock(Steel3DBlock.GetProfile((SteelAttr)model.Blocks[1].Entities[0].EntityData));// 修改型鋼資訊                    
                     model.AddModelSteelAttr(steelAttr, result);
                     //Steel3DBlock.AddSteel(steelAttr, model, out BlockReference blockReference, "Steel");
                     // 建立2D模型
                     //steel2D = new Steel2DBlock((Mesh)result.Entities[0], "123").Entities.ToList();//EntityData
-                    sr.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);
+                    ViewModel.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);
                     //drawing.Entities.Clear();
                     //drawing.Entities.AddRange(steel2D);
                     //drawing.Entities[drawing.Entities.Count - 1].EntityData=(BlockReference)steel2D;
-                    //sr.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);
+                    //ViewModel.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);
                     // 建立2D/3D孔
-                    sr.AddBolts(model, drawing, out bool hasOutSteel, block);
+                    ViewModel.AddBolts(model, drawing, out bool hasOutSteel, block);
 
                     // 切割線打點
                     //ScrollViewbox.IsEnabled = !model.RunHypotenuseEnable();
@@ -968,7 +970,7 @@ namespace STD_105.Office
                     //}
                     //model.Entities.Insert(model.Entities.Count, blockReference);//加入參考圖塊到模型
                     //List<Block> blocks = model.Blocks.ToList();
-                    //sr.AddBolts(model, drawing,  out bool hasOutSteel, blocks);
+                    //ViewModel.AddBolts(model, drawing,  out bool hasOutSteel, blocks);
 
                     //steel2D = new Steel2DBlock((Mesh)result.Entities[0], "123").Entities.ToList();//EntityData
 
@@ -1010,7 +1012,7 @@ namespace STD_105.Office
                     #region 讀NC檔
                     List<GroupBoltsAttr> groupBolts = new List<GroupBoltsAttr>();
                     SteelAttr saDeepClone = (SteelAttr)steelAttr.DeepClone();
-                    steelAttr = sr.ReadNCInfo(saDeepClone, ref groupBolts, false);
+                    steelAttr = ViewModel.ReadNCInfo(saDeepClone, ref groupBolts, false);
                     #endregion
 
                     #region 孔位資訊
@@ -1031,13 +1033,13 @@ namespace STD_105.Office
 
                     #region 產生模型(有凹槽)
                     model.LoadNcToModel(gridItem.DataName, ObSettingVM.allowType, diffLength, null, steelAttr, modelAllBoltList, blocks);
-                    sr.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊 
+                    ViewModel.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊 
                     #endregion
 
                     #region 孔
                     // 取出斜邊打點
-                    sr.GetHypotenusePoint(model, modelAllBoltList);
-                    sr.AddBolts(model, drawing, out bool checkRef, blocks);
+                    ViewModel.GetHypotenusePoint(model, modelAllBoltList);
+                    ViewModel.AddBolts(model, drawing, out bool checkRef, blocks);
 
                     // 切割線打點
                     //ScrollViewbox.IsEnabled = !model.RunHypotenuseEnable();
@@ -1146,13 +1148,13 @@ namespace STD_105.Office
                     // List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
 
                     // // 取出斜邊打點
-                    // sr.GetHypotenusePoint(model, modelAllBoltList);
+                    // ViewModel.GetHypotenusePoint(model, modelAllBoltList);
                     // //var hb = model.Blocks.SelectMany(x => x.Entities.Select(y => y.EntityData));
                     // //foreach (GroupBoltsAttr item in hb.Where(x => x.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x).Mode == AXIS_MODE.HypotenusePOINT))
                     // //{
                     // //    modelAllBoltList.Add((GroupBoltsAttr)item);
                     // //}
-                    // sr.AddBolts(model, drawing, out bool hasOutSteel, blocks);
+                    // ViewModel.AddBolts(model, drawing, out bool hasOutSteel, blocks);
 
                     // if (!Bolts3DBlock.CheckBolts(model))
                     // {
@@ -1227,7 +1229,7 @@ namespace STD_105.Office
 
                 #region tempNewSource = ItemSource + New Data
                 // 斜邊打點已存
-                //ObservableCollection<ProductSettingsPageViewModel> tempNewSource = new ObservableCollection<ProductSettingsPageViewModel>(sr.GetData());
+                //ObservableCollection<ProductSettingsPageViewModel> tempNewSource = new ObservableCollection<ProductSettingsPageViewModel>(ViewModel.GetData());
                 //int oriIndex = tempNewSource.FindIndex(x => x.DataName == row.DataName);
                 //tempNewSource.Remove(row);
                 //tempNewSource.Insert(oriIndex,tempSteelAttr);
@@ -1595,7 +1597,7 @@ namespace STD_105.Office
                         //fFirstAdd = true;
                         //fNewPart = false;
                         //fGrid = false;
-                        //sr.StateParaSetting(null, null, null);
+                        //ViewModel.StateParaSetting(null, null, null);
                         GridReload();
 
                         ViewModel.fclickOK = true;
@@ -1644,7 +1646,7 @@ namespace STD_105.Office
                         #endregion
                         this.PieceListGridControl.SelectItem(0);
                     }
-                    sr.StateParaSetting(null, null, null);
+                    ViewModel.StateParaSetting(null, null, null);
                 }
 
                 ViewModel.fclickOK = true;
@@ -1659,7 +1661,7 @@ namespace STD_105.Office
                 log4net.LogManager.GetLogger("加入孔位").Debug("產生圖塊");
 #endif
 
-                if (!sr.CheckData_AddHole(ViewModel.PartNumberProperty, model))
+                if (!ViewModel.CheckData_AddHole(ViewModel.PartNumberProperty, model))
                 {
                     return;
                 }
@@ -1774,7 +1776,7 @@ namespace STD_105.Office
                 //查看用戶是否有選擇圖塊
                 if (ViewModel.Select3DItem.Count > 0)
                 {
-                    if (!sr.CheckData_ModifyHole(ViewModel.PartNumberProperty, model))
+                    if (!ViewModel.CheckData_ModifyHole(ViewModel.PartNumberProperty, model))
                     {
                         return;
                     }
@@ -1915,7 +1917,7 @@ namespace STD_105.Office
 #if DEBUG
                 log4net.LogManager.GetLogger("加入切割線").Debug("開始");
 #endif
-                if (!sr.CheckData_AddCutLine(ViewModel.PartNumberProperty, model))
+                if (!ViewModel.CheckData_AddCutLine(ViewModel.PartNumberProperty, model))
                 {
                     return;
                 }
@@ -1923,7 +1925,7 @@ namespace STD_105.Office
                 ViewModel.GetSteelAttr();
                 ViewModel.ReadPart.Execute(null);
                 // 移除斜邊打點
-                sr.RemoveHypotenusePoint(model, HypotenuseTYPE.HypotenuseMan.ToString());
+                ViewModel.RemoveHypotenusePoint(model, HypotenuseTYPE.HypotenuseMan.ToString());
                 //List<GroupBoltsAttr> delList = model.Blocks
                 //.SelectMany(x => x.Entities)
                 //.Where(y =>
@@ -2814,7 +2816,7 @@ namespace STD_105.Office
             //刪除孔位(孔群)
             ViewModel.DeleteHole = new RelayCommand(() =>
             {
-                if (!sr.CheckData_DelHole(ViewModel.PartNumberProperty, model))
+                if (!ViewModel.CheckData_DelHole(ViewModel.PartNumberProperty, model))
                 {
                     return;
                 }
@@ -5212,7 +5214,7 @@ namespace STD_105.Office
 
             SteelAttr saDeepClone = (SteelAttr)steelAttr.DeepClone();
             List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
-            steelAttr = sr.ReadNCInfo(saDeepClone, ref groups, false);
+            steelAttr = ViewModel.ReadNCInfo(saDeepClone, ref groups, false);
             ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = steelAttr.oPoint;
             ((SteelAttr)model.Blocks[1].Entities[0].EntityData).vPoint = steelAttr.vPoint;
             ((SteelAttr)model.Blocks[1].Entities[0].EntityData).uPoint = steelAttr.uPoint;
@@ -5222,9 +5224,9 @@ namespace STD_105.Office
             List<Block> blocks = model.GetBoltFromBlock(groups);
             model.LoadNcToModel(dataName, ObSettingVM.allowType, 0, null, steelAttr, null, blocks, true);
             // 步驟5.產生2D模型
-            BlockReference steel2D = sr.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
+            BlockReference steel2D = ViewModel.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
             model.sycnModelEntitiesAndNewBolt(blocks);
-            sr.AddBolts(model, drawing, out bool hasOutSteel, blocks, false, false);
+            ViewModel.AddBolts(model, drawing, out bool hasOutSteel, blocks, false, false);
             // 切割線打點
             ScrollViewbox.IsEnabled = !model.RunHypotenuseEnable();
             WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
@@ -5235,7 +5237,7 @@ namespace STD_105.Office
 
             //Steel3DBlock result = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
             //model.AddModelSteelAttr(steelAttr, result);
-            //sr.SteelTriangulation(drawing, result.Name, (Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
+            //ViewModel.SteelTriangulation(drawing, result.Name, (Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
 
             //bool hasOutSteel = false;
             //List<Bolts3DBlock> B3DB = new List<Bolts3DBlock>();
@@ -5506,7 +5508,7 @@ namespace STD_105.Office
                     ViewModel.fFirstAdd = true;
                     ViewModel.fNewPart = false;
                     ViewModel.fGrid = true;
-                    sr.StateParaSetting(true, false, true);
+                    ViewModel.StateParaSetting(true, false, true);
 
 
 
@@ -5577,7 +5579,7 @@ namespace STD_105.Office
                     ConfirmCurrentSteelSection(item);
 
                     ////產生2D圖塊
-                    //BlockReference steel2D = sr.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);
+                    //BlockReference steel2D = ViewModel.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);
 
                     ////2D主件圖形
                     //BlockReference referenceMain = (BlockReference)drawing.Entities[drawing.Entities.Count - 1]; //主件圖形
@@ -5590,7 +5592,7 @@ namespace STD_105.Office
                     //    {
                     //        GroupBoltsAttr gba = (GroupBoltsAttr)x.EntityData;
                     //        Bolts3DBlock bolts3DBlock = new Bolts3DBlock(model.Blocks[gba.GUID.ToString()].Entities, gba);
-                    //        sr.Add2DHole(drawing, bolts3DBlock, false);//加入孔位不刷新 2d 視圖
+                    //        ViewModel.Add2DHole(drawing, bolts3DBlock, false);//加入孔位不刷新 2d 視圖
                     //    });
 
 
@@ -5618,7 +5620,7 @@ namespace STD_105.Office
                     model.Blocks[1].Entities[0].EntityData = sa;
                     SteelAttr saDeepClone = (SteelAttr)sa.DeepClone();
                     List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
-                    sa = sr.ReadNCInfo(saDeepClone, ref groups, false);
+                    sa = ViewModel.ReadNCInfo(saDeepClone, ref groups, false);
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = sa.oPoint;
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).vPoint = sa.vPoint;
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).uPoint = sa.uPoint;
@@ -5630,9 +5632,9 @@ namespace STD_105.Office
                     // 步驟3.產生鋼構模型
                     model.LoadNcToModel(focuseGUID, ObSettingVM.allowType, 0, null, sa, null, blocks, false);
                     // 步驟5.產生2D模型
-                    BlockReference steel2D = sr.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
+                    BlockReference steel2D = ViewModel.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
                     //model.sycnModelEntitiesAndNewBolt(blocks);
-                    sr.AddBolts(model, drawing, out bool hasOutSteel, blocks, false);
+                    ViewModel.AddBolts(model, drawing, out bool hasOutSteel, blocks, false);
                     // 切割線打點
                     ScrollViewbox.IsEnabled = true;
                     if (model.RunHypotenuseEnable()) { /*ScrollViewbox.IsEnabled = false;*/ } else { ScrollViewbox.IsEnabled = true; }
@@ -5753,7 +5755,7 @@ namespace STD_105.Office
             SteelAttr sa = GetViewToSteelAttr(new SteelAttr(), false, Guid.Parse(item.DataName));
             List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
             SteelAttr saDeepClone = (SteelAttr)sa.DeepClone();
-            sa = sr.ReadNCInfo(saDeepClone, ref groups, false);
+            sa = ViewModel.ReadNCInfo(saDeepClone, ref groups, false);
             ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = sa.oPoint;
             ((SteelAttr)model.Blocks[1].Entities[0].EntityData).uPoint = sa.vPoint;
             ((SteelAttr)model.Blocks[1].Entities[0].EntityData).vPoint = sa.uPoint;
@@ -5764,9 +5766,9 @@ namespace STD_105.Office
             #region 建模
             model.LoadNcToModel(item.DataName, ObSettingVM.allowType, 0, null, sa, null, blocks, false);
             // 步驟5.產生2D模型
-            BlockReference steel2D = sr.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
+            BlockReference steel2D = ViewModel.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
             //model.sycnModelEntitiesAndNewBolt(blocks);
-            sr.AddBolts(model, drawing, out bool hasOutSteel, blocks, false);
+            ViewModel.AddBolts(model, drawing, out bool hasOutSteel, blocks, false);
             // 切割線打點
             ScrollViewbox.IsEnabled = true;
             if (model.RunHypotenuseEnable()) { /*ScrollViewbox.IsEnabled = false;*/ } else { ScrollViewbox.IsEnabled = true; }
@@ -5777,9 +5779,9 @@ namespace STD_105.Office
             //Steel3DBlock result = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);
             //model.AddModelSteelAttr(sa, result);
             //// 建立2D模型
-            //sr.SteelTriangulation(drawing, result.Name, (Mesh)model.Blocks[1].Entities[0]);
+            //ViewModel.SteelTriangulation(drawing, result.Name, (Mesh)model.Blocks[1].Entities[0]);
             //// 建立2D/3D孔
-            //sr.AddBolts(model, drawing, out bool hasOutSteel, blocks);
+            //ViewModel.AddBolts(model, drawing, out bool hasOutSteel, blocks);
             //// 切割線打點
             //ScrollViewbox.IsEnabled = true;
             //if (model.RunHypotenuseEnable()) { /*ScrollViewbox.IsEnabled = false;*/ } else { ScrollViewbox.IsEnabled = true; }

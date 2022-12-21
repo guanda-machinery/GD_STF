@@ -457,6 +457,10 @@
             </TabItem>
             <TabItem Header="2D視圖"    Style="{StaticResource DrawTabItem}" Height="40" VerticalAlignment="Top">
                 <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
                     <WPFSTD:ModelExt x:Name="drawing"  
 
                                      SelectionChanged="model_SelectionChanged" Loaded="drawing_Loaded"
@@ -514,7 +518,8 @@
                             </ddes:Viewport>
                         </ddes:Model.Viewports>
                     </WPFSTD:ModelExt>
-                </Grid>
+                            <STD105:DrawButtonBar Grid.Row="1"/>
+                  </Grid>
             </TabItem>
         </TabControl>
             </Grid>

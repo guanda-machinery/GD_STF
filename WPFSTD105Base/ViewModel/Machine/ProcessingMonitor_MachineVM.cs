@@ -80,13 +80,15 @@ namespace WPFSTD105.ViewModel
             _WorkMaterials = new WorkMaterial[Finish_UndoneDataViews.Count];
             SelectedMaterial_Info_Button_Visibility = Visibility.Collapsed;
 
-            //初始化後載入備份檔案
+            //初始化後載入備份檔案 並產生
             //AllDrillBoltsDict
             Finish_UndoneDataViews.ForEach(el =>
             {
                 var DrillBData = ser.GetDrillBolts(el.MaterialNumber);
                 if (DrillBData != null)
                     AllDrillBoltsDict[el.MaterialNumber] = DrillBData;
+                else
+                    AllDrillBoltsDict[el.MaterialNumber] = GetDrillBoltsItemCollection(el);
             });
 
             //將設定的手臂模式寫入記憶體
@@ -453,6 +455,8 @@ namespace WPFSTD105.ViewModel
                                     Finish_UndoneDataViews[MaterialIndex].MachiningEndTime = null;
                                     RefreshRow(ScheduleGridC, MaterialIndex);
 
+                                    SelectedMaterial_Info_Button_Visibility = Visibility.Visible;
+
                                     DXviewmodel.Status = $"加入素材編號：{MaterialData.MaterialNumber}成功";
                                     AddOperatingLog(LogSourceEnum.Machine, $"加入素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}成功", false);
                                     ScheduleGridC.Dispatcher.Invoke(() =>
@@ -510,9 +514,7 @@ namespace WPFSTD105.ViewModel
                             FloatingMode.Adorner);
                             });
                             AddOperatingLog(LogSourceEnum.Machine, "與伺服器溝通失敗！", true);
-
                         }
-
                     }
                 }
                 else if (Finish_UndoneDataViews[MaterialIndex].PositionEnum == PositionStatusEnum.不可配對)
@@ -581,7 +583,7 @@ namespace WPFSTD105.ViewModel
                 if (_finish_UndoneDataViews_SelectedItem != null)
                 {
                     AddOperatingLog(LogSourceEnum.Software, $"已選擇素材編號：{_finish_UndoneDataViews_SelectedItem.MaterialNumber}");
-                    GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem);
+                    MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem);
                 }
             }
         }
@@ -639,90 +641,95 @@ namespace WPFSTD105.ViewModel
         /// 單一零件加工孔位表
         /// </summary>
         public Dictionary<FACE, DrillBoltsBase> MachiningDetail_DrillBoltsItemSource { get; set; } = new Dictionary<FACE, DrillBoltsBase>();
-
-        private async Task GetDrillBoltsItemCollection(MaterialDataView view)
+        
+        private Dictionary<FACE, DrillBoltsBase> GetDrillBoltsItemCollection(MaterialDataView view)
         {
+            var Dict = new Dictionary<FACE, DrillBoltsBase>();
             if (view == null)
             {
-                MachiningCombinational_DrillBoltsItemSource = new Dictionary<FACE, DrillBoltsBase>();
-                return;
+                return Dict;
             }
-            if (view.PositionEnum == PositionStatusEnum.等待配對)
-                SelectedMaterial_Info_Button_Visibility = Visibility.Visible;
             else
-                SelectedMaterial_Info_Button_Visibility = Visibility.Collapsed;
-
-            _CreateFileTask?.Wait(); //等待 Task CreateFile 完成 link:ProcessingMonitorVM.cs:CreateFile()
-            try
             {
-                if (File.Exists($@"{ApplicationVM.DirectoryMaterial()}\{view.MaterialNumber}.dm"))
-                {
-                    if (!MachineDrillkeyValueDict.ContainsKey(view.MaterialNumber))
-                    {
-                        MachineDrillkeyValueDict[view.MaterialNumber] = GeneratekeyValuePairs(view);
-                    }
-                    var DrillBoltsListDict = new Dictionary<FACE, DrillBoltsBase>();
-                    foreach(var keyValuePair in MachineDrillkeyValueDict[view.MaterialNumber])
-                    {
-                        foreach(var DrillData in keyValuePair.Value)
-                        {
-                            if (!DrillBoltsListDict.ContainsKey(keyValuePair.Key))
-                                DrillBoltsListDict.Add(keyValuePair.Key, new DrillBoltsBase());
+                if (view.PositionEnum == PositionStatusEnum.等待配對)
+                    SelectedMaterial_Info_Button_Visibility = Visibility.Visible;
+                else if(view.PositionEnum == PositionStatusEnum.初始化)
+                    SelectedMaterial_Info_Button_Visibility = Visibility.Visible;
+                else
+                    SelectedMaterial_Info_Button_Visibility = Visibility.Collapsed;
 
-                            var DrillBIndex = DrillBoltsListDict[keyValuePair.Key].DrillBoltList.FindIndex(x => (x.WorkAXIS_MODE == DrillData.AXIS_MODE && x.DrillHoleDiameter == DrillData.Dia));
-                            if (DrillBIndex != -1)
+                _CreateFileTask?.Wait(); //等待 Task CreateFile 完成 link:ProcessingMonitorVM.cs:CreateFile()
+                try
+                {
+                    if (File.Exists($@"{ApplicationVM.DirectoryMaterial()}\{view.MaterialNumber}.dm"))
+                    {
+                        if (!MachineDrillkeyValueDict.ContainsKey(view.MaterialNumber))
+                        {
+                            MachineDrillkeyValueDict[view.MaterialNumber] = GeneratekeyValuePairs(view);
+                        }
+
+
+                        var DrillBoltsListDict = new Dictionary<FACE, DrillBoltsBase>();
+                        foreach (var keyValuePair in MachineDrillkeyValueDict[view.MaterialNumber])
+                        {
+                            foreach (var DrillData in keyValuePair.Value)
                             {
-                                DrillBoltsListDict[keyValuePair.Key].DrillBoltList[DrillBIndex].DrillHoleCount++;
-                            }
-                            else
-                            {
-                                DrillBoltsListDict[keyValuePair.Key].DrillBoltList.Add(new DrillBolt()
+                                if (!DrillBoltsListDict.ContainsKey(keyValuePair.Key))
+                                    DrillBoltsListDict.Add(keyValuePair.Key, new DrillBoltsBase());
+
+                                var DrillBIndex = DrillBoltsListDict[keyValuePair.Key].DrillBoltList.FindIndex(x => (x.WorkAXIS_MODE == DrillData.AXIS_MODE && x.DrillHoleDiameter == DrillData.Dia));
+                                if (DrillBIndex != -1)
                                 {
-                                    DrillWork = true,
-                                    WorkAXIS_MODE = DrillData.AXIS_MODE,
-                                    DrillHoleCount = 1,
-                                    Origin_DrillHoleDiameter = DrillData.Dia
-                                });
+                                    DrillBoltsListDict[keyValuePair.Key].DrillBoltList[DrillBIndex].DrillHoleCount++;
+                                }
+                                else
+                                {
+                                    DrillBoltsListDict[keyValuePair.Key].DrillBoltList.Add(new DrillBolt()
+                                    {
+                                        DrillWork = true,
+                                        WorkAXIS_MODE = DrillData.AXIS_MODE,
+                                        DrillHoleCount = 1,
+                                        Origin_DrillHoleDiameter = DrillData.Dia
+                                    });
+                                }
                             }
                         }
-                    }
 
-                    //Debugger.Break();
-                    //先顯示差異 再加入空缺的
-                    if (AllDrillBoltsDict.ContainsKey(view.MaterialNumber))
-                    {
-                        //將舊的值取出修改DrillWork後 重新綁定
-                        foreach(var el in AllDrillBoltsDict[view.MaterialNumber])
+                        //Debugger.Break();
+                        //先顯示差異 再加入空缺的
+                        if (AllDrillBoltsDict.ContainsKey(view.MaterialNumber))
                         {
-                            if (DrillBoltsListDict.ContainsKey(el.Key))
+                            //將舊的值取出修改DrillWork後 重新綁定
+                            foreach (var el in AllDrillBoltsDict[view.MaterialNumber])
                             {
-                                DrillBoltsListDict[el.Key].Dia_Identification = el.Value.Dia_Identification;
-                                DrillBoltsListDict[el.Key].UnitaryToolTop = el.Value.UnitaryToolTop;
-                                foreach (var Db in el.Value.DrillBoltList)
+                                if (DrillBoltsListDict.ContainsKey(el.Key))
                                 {
-                                    int DBIndex = DrillBoltsListDict[el.Key].DrillBoltList.FindIndex(x => (x.WorkAXIS_MODE == Db.WorkAXIS_MODE && x.DrillHoleDiameter == Db.DrillHoleDiameter));
-                                    if (DBIndex != -1)
+                                    DrillBoltsListDict[el.Key].Dia_Identification = el.Value.Dia_Identification;
+                                    DrillBoltsListDict[el.Key].UnitaryToolTop = el.Value.UnitaryToolTop;
+                                    foreach (var Db in el.Value.DrillBoltList)
                                     {
-                                        DrillBoltsListDict[el.Key].DrillBoltList[DBIndex].DrillWork = Db.DrillWork;
+                                        int DBIndex = DrillBoltsListDict[el.Key].DrillBoltList.FindIndex(x => (x.WorkAXIS_MODE == Db.WorkAXIS_MODE && x.DrillHoleDiameter == Db.DrillHoleDiameter));
+                                        if (DBIndex != -1)
+                                        {
+                                            DrillBoltsListDict[el.Key].DrillBoltList[DBIndex].DrillWork = Db.DrillWork;
+                                        }
                                     }
                                 }
                             }
                         }
+                        //這樣指定後兩邊資料會產生繫結 後面的DrillBoltsListInfo值變更會影響到前面的AllDrillBoltsDict內的List
+                        //之後需要改資料時只需更動任一資料型
+                        //AllDrillBoltsDict[view.MaterialNumber].Dia_Identification;
+                        AllDrillBoltsDict[view.MaterialNumber] = DrillBoltsListDict;
+                        //如果有紀錄->查詢->變更DrillWork的值
+                        return DrillBoltsListDict;
                     }
-
-                    //這樣指定後兩邊資料會產生繫結 後面的DrillBoltsListInfo值變更會影響到前面的AllDrillBoltsDict內的List
-                    //之後需要改資料時只需更動任一資料型
-                    //AllDrillBoltsDict[view.MaterialNumber].Dia_Identification;
-                    AllDrillBoltsDict[view.MaterialNumber] = DrillBoltsListDict;
-
-                    //如果有紀錄->查詢->變更DrillWork的值
-                    MachiningCombinational_DrillBoltsItemSource = new Dictionary<FACE, DrillBoltsBase>(DrillBoltsListDict);
+                }
+                catch (Exception ex)
+                {
 
                 }
-            }
-            catch (Exception ex)
-            {
-
+                return Dict;
             }
         }
 
@@ -772,14 +779,7 @@ namespace WPFSTD105.ViewModel
                     else if (blockReference.Attributes.ContainsKey("Steel"))
                     {
                         SteelAttr steelAttr = (SteelAttr)blockReference.EntityData;
-
-                      /*  _BufferModel.Blocks[blockReference.BlockName].Entities.ForEach   (steel =>
-                        {
-
-                        });*/
                     }
-
-
 
                 });
 
@@ -2504,7 +2504,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                 return new WPFBase.RelayCommand(() =>
                 {
                     AddOperatingLog(LogSourceEnum.Software, "切換到一般加工模式");
-                    GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem);
+                    MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem);
                     HintStep1 = true;
                     //如果切換時有已排程但未加工的零件->清理掉狀態
                     ClearPairedMachineData();
@@ -2518,7 +2518,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
             get => new WPFBase.RelayCommand(() =>
             {
                 AddOperatingLog(LogSourceEnum.Software, "切換到測試打孔模式");
-                GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem);
+                MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem);
                 //如果切換時有已排程但未加工的零件->清理掉狀態並重新上傳
                 ClearPairedMachineData();
 

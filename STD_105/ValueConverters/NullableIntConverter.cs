@@ -14,11 +14,8 @@ namespace STD_105
         {
             var nullable = value as int?;
             var result = string.Empty;
-
             if (nullable.HasValue)
-            {
                 result = nullable.Value.ToString();
-            }
 
             return result;
         }
@@ -28,12 +25,9 @@ namespace STD_105
             var stringValue = value as string;
             int intValue;
             int? result = null;
-
             if (int.TryParse(stringValue, out intValue))
-            {
-                result = new Nullable<int>(intValue);
-            }
-
+                result = new int?(intValue);
+            
             return result;
         }
     }

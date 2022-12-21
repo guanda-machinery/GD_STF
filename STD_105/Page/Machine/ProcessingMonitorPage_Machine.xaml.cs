@@ -47,9 +47,9 @@ namespace STD_105
     /// </summary>
     public partial class ProcessingMonitorPage_Machine : BasePage<ProcessingMonitor_MachineVM>
     {
-        //   public SplashScreenManager ScreenManager { get; set; } = SplashScreenManager.Create(() => new WaitIndicator(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
+        //   public SplashScreenManager ScreenManager { get; set; } = SplashScreenManager.Create(() => new WaitIndicator(), new DevExpress.Mvvm.DXSplashScreenObViewModel { });
 
-        public ObSettingVM ViewModel { get; set; } = new ObSettingVM();
+        public ObSettingVM ObViewModel { get; set; } = new ObSettingVM();
         /// <summary>
         /// nc 設定檔
         /// </summary>
@@ -60,8 +60,8 @@ namespace STD_105
         public ProcessingMonitorPage_Machine()
         {
             InitializeComponent();
-            model.DataContext = ViewModel;
-            drawing.DataContext = ViewModel;
+            model.DataContext = ObViewModel;
+            drawing.DataContext = ObViewModel;
             model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             drawing.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             model.ActionMode = actionType.None;
@@ -70,7 +70,7 @@ namespace STD_105
             model.Secondary = drawing;
             drawing.Secondary = model;
 
-            (this.DataContext as ProcessingMonitor_MachineVM).ScheduleGridC = MachiningSchedule_List_GridControl;
+            ViewModel.ScheduleGridC = MachiningSchedule_List_GridControl;
 
 
 
@@ -110,9 +110,9 @@ namespace STD_105
                 //平移滑鼠中鍵
                 model.Pan.MouseButton = new MouseButton(mouseButtonsZPR.Middle, modifierKeys.None);
                 model.ActionMode = actionType.SelectByBox;
-                if (ViewModel.Reductions == null)
+                if (ObViewModel.Reductions == null)
                 {
-                    ViewModel.Reductions = new ReductionList(model, drawing); //紀錄使用找操作
+                    ObViewModel.Reductions = new ReductionList(model, drawing); //紀錄使用找操作
                 }
 
                 #endregion
@@ -124,7 +124,7 @@ namespace STD_105
 
             }
 
-            (this.DataContext as ProcessingMonitor_MachineVM).SetSerializationInit(model);
+            ViewModel.SetSerializationInit(model);
             DProcessingScreenWin.Close();
             model.Loaded -= Model3D_Loaded;
         }
@@ -189,7 +189,7 @@ namespace STD_105
             log4net.LogManager.GetLogger("在Model按下了右鍵").Debug("查看可用功能");
 #endif
             //開啟刪除功能
-            if (ViewModel.Select3DItem.Count >= 1 && ViewModel.Select3DItem[0].Item is BlockReference)
+            if (ObViewModel.Select3DItem.Count >= 1 && ObViewModel.Select3DItem[0].Item is BlockReference)
             {
 #if DEBUG
                 log4net.LogManager.GetLogger("啟用").Debug("刪除功能");
@@ -200,7 +200,7 @@ namespace STD_105
                 esc2D.Visibility = Visibility.Visible;
             }
             //開啟編輯功能
-            if (ViewModel.Select3DItem.Count == 1 && ViewModel.Select3DItem[0].Item is BlockReference)
+            if (ObViewModel.Select3DItem.Count == 1 && ObViewModel.Select3DItem[0].Item is BlockReference)
             {
 #if DEBUG
                 log4net.LogManager.GetLogger("啟用").Debug("編輯功能");
@@ -208,7 +208,7 @@ namespace STD_105
                 edit2D.Visibility = Visibility.Visible;
             }
             //關閉刪除功能與編輯功能
-            if (ViewModel.Select3DItem.Count == 0)
+            if (ObViewModel.Select3DItem.Count == 0)
             {
 #if DEBUG
                 log4net.LogManager.GetLogger("關閉").Debug("編輯功能、刪除功能、取消功能");
@@ -228,10 +228,10 @@ namespace STD_105
             model.ActionMode = actionType.SelectByBox;
             drawing.ActionMode = actionType.SelectByBox;
             model.Entities.ClearSelection();//清除全部選取的物件
-            ViewModel.Select3DItem.Clear();
-            ViewModel.tem3DRecycle.Clear();
-            ViewModel.Select2DItem.Clear();
-            ViewModel.tem2DRecycle.Clear();
+            ObViewModel.Select3DItem.Clear();
+            ObViewModel.tem3DRecycle.Clear();
+            ObViewModel.Select2DItem.Clear();
+            ObViewModel.tem2DRecycle.Clear();
             model.ClearAllPreviousCommandData();
             drawing.ClearAllPreviousCommandData();
             drawing.SetCurrent(null);
@@ -415,7 +415,7 @@ namespace STD_105
 //#if DEBUG
 //                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z");
 //#endif
-//                ViewModel.Reductions.Previous();
+//                ObViewModel.Reductions.Previous();
 //#if DEBUG
 //                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z 完成");
 //#endif
@@ -425,7 +425,7 @@ namespace STD_105
 //#if DEBUG
 //                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y");
 //#endif
-//                ViewModel.Reductions.Next();//回到上一個動作
+//                ObViewModel.Reductions.Next();//回到上一個動作
 //#if DEBUG
 //                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y 完成");
 //#endif

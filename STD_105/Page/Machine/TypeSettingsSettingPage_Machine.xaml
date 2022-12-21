@@ -1205,7 +1205,10 @@
             </TabItem>
             <TabItem Header="2D">
                 <Grid>
-
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
                     <Border Style="{StaticResource bro}"/>
                     <spa:ModelExt x:Name="drawing" 
                             Loaded="drawing_Loaded"
@@ -1267,7 +1270,7 @@
                             </ddes:Viewport>
                         </ddes:Model.Viewports>
                     </spa:ModelExt>
-
+                    <local:DrawButtonBar Grid.Row="1"/>
                 </Grid>
             </TabItem>
         </TabControl>
