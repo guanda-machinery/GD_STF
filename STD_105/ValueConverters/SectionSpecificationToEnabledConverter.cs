@@ -46,4 +46,30 @@ namespace STD_105
             throw new NotImplementedException();
         }
     }
+
+    internal class SectionTypeToEnabledConverter : BaseValueConverter<SectionTypeToEnabledConverter>
+    {
+        public int fSectionTypeTillBOX = 0;
+
+        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (fSectionTypeTillBOX == 0)
+            {
+                if ((string)value == "BOX") 
+                { fSectionTypeTillBOX = 1; }
+                return true;
+            }
+            else
+            {
+                if ((string)value == "CH") 
+                { fSectionTypeTillBOX = 0; }
+                return false;
+            }
+        }
+
+        public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
