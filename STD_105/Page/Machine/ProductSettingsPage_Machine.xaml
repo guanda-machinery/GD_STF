@@ -565,7 +565,21 @@
                                   ItemsSource="{Binding ProfileList}" 
                                   DisplayMemberPath="Profile" 
                                   Text="{Binding SteelSectionProperty}" SelectionChanged="CBOX_SectionTypeChanged">
-                        <i:Interaction.Triggers>
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Content, 
+                                        RelativeSource={RelativeSource Self}, 
+                                        Converter={local:SectionSpecificationToEnabledConverter}}" 
+                                                 Value="true">
+                                    <Setter Property="IsEnabled"  Value="False"/>
+                                    <Setter Property="Opacity" Value="0.3"/>
+
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                    <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionTypeComboBox">
                                 <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
                             </i:EventTrigger>

@@ -755,11 +755,11 @@
                             <Style TargetType="ComboBoxItem">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Path=Content, 
-                        RelativeSource={RelativeSource Self}, 
-                            Converter={STD105:SectionSpecificationToEnabledConverter}}" 
-                            Value="true">
-                                        <Setter Property="IsEnabled" 
-                            Value="False"/>
+                                        RelativeSource={RelativeSource Self}, 
+                                        Converter={STD105:SectionSpecificationToEnabledConverter}}" 
+                                                 Value="true">
+                                        <Setter Property="IsEnabled"  Value="False"/>
+                                        <Setter Property="Opacity" Value="0.3"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -769,10 +769,6 @@
                             <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionTypeComboBox">
                                 <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
                             </i:EventTrigger>
-                            <!--<i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionTypeComboBox">
-                                <i:InvokeCommandAction Command="{ Binding ShowSteelTypeFromPartListCommand }"
-                                                           CommandParameter="{ Binding ElementName=cbx_SectionTypeComboBox, Path=SelectedItem }"/>
-                            </i:EventTrigger>-->
                         </i:Interaction.Triggers>
                         
                     </ComboBox>

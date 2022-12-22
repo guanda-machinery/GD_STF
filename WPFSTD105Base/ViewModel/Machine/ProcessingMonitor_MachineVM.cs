@@ -658,7 +658,7 @@ namespace WPFSTD105.ViewModel
                 else
                     SelectedMaterial_Info_Button_Visibility = Visibility.Collapsed;
 
-                _CreateFileTask?.Wait(); //等待 Task CreateFile 完成 link:ProcessingMonitorVM.cs:CreateFile()
+                _CreateDMFileTask?.Wait(); //等待 Task CreateFile 完成 link:ProcessingMonitorVM.cs:CreateFile()
                 try
                 {
                     if (File.Exists($@"{ApplicationVM.DirectoryMaterial()}\{view.MaterialNumber}.dm"))
@@ -800,7 +800,7 @@ namespace WPFSTD105.ViewModel
                 MachiningCombinational_DrillBoltsItemSource = new Dictionary<FACE, DrillBoltsBase>();
             }
 
-            _CreateFileTask?.Wait(); //等待 Task CreateFile 完成 link:ProcessingMonitorVM.cs:CreateFile()
+            _CreateDMFileTask?.Wait(); //等待 Task CreateFile 完成 link:ProcessingMonitorVM.cs:CreateFile()
             _SynchronizationContext.Send(t =>
             {
                 try
@@ -1068,9 +1068,9 @@ namespace WPFSTD105.ViewModel
         private MaterialDataView _SelectedItem;
         private bool _DsposedValue;
         //private STDSerialization _Ser = new STDSerialization();
-        private Task _CreateFileTask;
+        private Task _CreateDMFileTask;
         private Task _WriteCodesysTask;
-        private SynchronizationContext _SynchronizationContext;
+        private SynchronizationContext _SynchronizationContext;//= SynchronizationContext.Current;
         /// <summary>
         /// 完成的 Index
         /// </summary>
@@ -1843,19 +1843,10 @@ public WPFBase.RelayParameterizedCommand FinishCommand
         /// </summary>
         private bool SendDrill(int index)
         {
-            _CreateFileTask?.Wait(); //等待 Task CreateFile 完成 link:ProcessingMonitorVM.cs:CreateFile()
+            _CreateDMFileTask?.Wait(); //等待 Task CreateFile 完成 link:ProcessingMonitorVM.cs:CreateFile()
             try
             {
                 var view = Finish_UndoneDataViews[index];
-                /*var _BufferModel = new devDept.Eyeshot.Model();
-                _BufferModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
-                _BufferModel.InitializeViewports();
-                _BufferModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
-
-                _BufferModel.Clear();*/
-                //List<double> cutPointX = new List<double>();
-                //產生加工陣列
-
                 if (File.Exists($@"{ApplicationVM.DirectoryMaterial()}\{view.MaterialNumber}.dm"))
                 {
                     if (!MachineDrillkeyValueDict.ContainsKey(view.MaterialNumber))
@@ -1877,13 +1868,10 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                                 {
                                     if (!ActualDrillDict.ContainsKey(el.Key))
                                         ActualDrillDict[el.Key] = new List<Drill>();
-                                    //只保留相同工作模式和孔徑
                                     try
                                     {
                                         //以db的原始孔位做比較
-                                        var Addrange = keyValuePairs[el.Key].FindAll(
-                                            x => (x.Dia == DB.Origin_DrillHoleDiameter
-                                            && x.AXIS_MODE == DB.WorkAXIS_MODE)).ToArray();
+                                        var Addrange = keyValuePairs[el.Key].FindAll(x => (x.Dia == DB.Origin_DrillHoleDiameter&& x.AXIS_MODE == DB.WorkAXIS_MODE)).ToArray();
                                         //如果有更改過孔位
                                         //保險起見 事實上DrillHoleDiameter已有切換孔的功能
                                         if (DB.DrillHoleDiameterIsChangeBool)
@@ -2049,7 +2037,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
         /// <summary>
         /// 產生 <see cref="MaterialDataView"/> 所有dm檔
         /// </summary>
-        public async void CreateFile(WPFSTD105.ModelExt _Model)
+         private async void CreateDMFile(WPFSTD105.ModelExt _Model)
         {
 
             STDSerialization ser = new STDSerialization();
@@ -2127,7 +2115,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                     {
                         _HostThread.Abort();
                     }
-                    _CreateFileTask?.Dispose();
+                    _CreateDMFileTask?.Dispose();
                     _WriteCodesysTask?.Dispose();
 
                     TaskBoolean = false;
@@ -2455,13 +2443,13 @@ public WPFBase.RelayParameterizedCommand FinishCommand
         public Visibility SelectedMaterial_Info_Button_Visibility { get; set; } 
 
 
-        public bool DrillHole_Mode_RadioButtonIsEnable { get; set; } = false;
-        public bool DrillPin_Mode_RadioButtonIsEnable { get; set; } = false;
+        public bool DrillHole_Mode_RadioButtonIsEnable { get; set; } 
+        public bool DrillPin_Mode_RadioButtonIsEnable { get; set; } 
 
 
 
         public bool Transport_RadioButtonIsEnable { get; set; } = true;
-        public bool Transport_by_Continue_RadioButtonIsEnable { get; set; } = true;
+        public bool Transport_by_Continue_RadioButtonIsEnable { get; set; } 
 
 
         private bool _transport_by_hand_RadioButtonIsEnable = true;
@@ -2831,7 +2819,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                         {
                             var _Cts = new CancellationTokenSource();
 
-                            _CreateFileTask = Task.Run(() => { CreateFile(_Model); }, _Cts.Token);
+                            _CreateDMFileTask = Task.Run(() => { CreateDMFile(_Model); }, _Cts.Token);
                             _WriteCodesysTask = Task.Run(() => { WriteCodesys(); }, _Cts.Token);
                         }
 
@@ -2945,10 +2933,9 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                     try
                     {
                         //要有點選才序列化
-                        if (DrillPin_Mode_RadioButtonIsEnable || DrillHole_Mode_RadioButtonIsEnable)
-                        {
-                            ContinuedSerialization();
-                        }
+
+                        ContinuedSerialization();
+                        
                         count = 0;
                     }
                     catch (Exception ex)
@@ -3066,6 +3053,9 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                 {
                     Finish_UndoneDataViews[i].PositionEnum = PositionStatusEnum.等待配對;
                 }
+
+
+                RefreshRow(ScheduleGridC, i);
             }
 
             IsSerializing = false;
@@ -3199,13 +3189,9 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                                 }
                                 else if (_WorkMaterials[value].Position == 0)
                                 {
-                                    if (Finish_UndoneDataViews[MIndex].PositionEnum != PositionStatusEnum.軟體配對 &&
-                                        Finish_UndoneDataViews[MIndex].PositionEnum != PositionStatusEnum.手機配對 &&
-                                        Finish_UndoneDataViews[MIndex].PositionEnum != PositionStatusEnum.手動配對 &&
-                                        Finish_UndoneDataViews[MIndex].PositionEnum == PositionStatusEnum.等待配對)
-                                    {
-                                        Finish_UndoneDataViews[MIndex].PositionEnum = PositionStatusEnum.軟體配對;
-                                    }
+                                    if (Finish_UndoneDataViews[MIndex].PositionEnum != PositionStatusEnum.手機配對 && Finish_UndoneDataViews[MIndex].PositionEnum != PositionStatusEnum.手動配對)
+                                        if (Finish_UndoneDataViews[MIndex].PositionEnum == PositionStatusEnum.等待配對 || Finish_UndoneDataViews[MIndex].PositionEnum == PositionStatusEnum.初始化 )
+                                                Finish_UndoneDataViews[MIndex].PositionEnum = PositionStatusEnum.軟體配對;
                                 }
                                 else
                                 {
