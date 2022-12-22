@@ -594,7 +594,7 @@
                                                ReadVisibility="Collapsed"
                                                DeleteVisibility="Collapsed"/>
                         <Button x:Name="btn_AddNewOne" Content="另存" Width="60" Command="{Binding AddNewOne}"  Visibility="Collapsed" Cursor="Hand"/>
-                    <Button  HorizontalAlignment="Right" Width="60" x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Background="Gold"  Click="OKtoConfirmChanges" />
+                    <Button Style="{StaticResource SiegCustomButtonGold}" HorizontalAlignment="Right" Width="60" x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}"  Click="OKtoConfirmChanges" />
                     <!--鎖頭的行為要與按鈕的開啟關閉binding 0902-->
                     </StackPanel>
 
@@ -1109,7 +1109,7 @@
                                 </StackPanel>
 
                                 <StackPanel  Grid.Row="3"     Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=DrillTabItem}" Width="60" Margin="0,0,0,0"  Background="#d8d8d8" Cursor="Hand" >
+                                <Button  Style="{StaticResource SiegCustomButtonGray}"  Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=DrillTabItem}" Width="60" Margin="0,0,0,0"  Cursor="Hand" >
                                     <Button.Content >
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="CheckboxOutline" />
@@ -1346,7 +1346,7 @@
                                 </GroupBox>
                             </Grid>
                             <StackPanel Margin="-5,0" DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                                <Button Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=CutTabItem}" Width="60"   Background="#d8d8d8" Cursor="Hand" >
+                                <Button Style="{StaticResource SiegCustomButtonGray}" Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=CutTabItem}" Width="60" Height="25"  Cursor="Hand" >
                                     <Button.Content >
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="CheckboxOutline" />
@@ -1355,7 +1355,8 @@
                                         </StackPanel>
                                     </Button.Content>
                                 </Button>
-                                <local:DataButtons_Office Style="{StaticResource BaseStyle}"
+                            <Button Content="輸入" Command="{Binding AddCut}" Margin="5,0" Style="{StaticResource SiegCustomButtonWhite}"  Width="60" />
+                            <local:DataButtons_Office Style="{StaticResource BaseStyle}" Visibility="Collapsed"
                                                            Modify="{Binding ModifyCut}"
                                                            Add="{Binding AddCut}"
                                                            Delete="{Binding DeleteCut}"

@@ -298,13 +298,14 @@
                     </Image.Effect>
                 </Image>
             </Button>
-            <StackPanel x:Name="WindowTools"
+            <StackPanel x:Name="WindowTools" 
                         DataContext="{Binding}"
                         Orientation="Horizontal"
+                        VerticalAlignment="Center"
                         HorizontalAlignment="Right"
-                        Margin="0,0,0,10">
+                        Margin="0,0,0,0">
                 <!--  時鐘  -->
-                <TextBlock HorizontalAlignment="Center"
+                <TextBlock HorizontalAlignment="Center"  
                            FontFamily="{StaticResource font_Clock}"
                            FontSize="18"
                            Foreground="{StaticResource solidclr_Gray}"

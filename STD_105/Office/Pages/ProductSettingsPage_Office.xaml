@@ -741,6 +741,7 @@
                                                                    Converter={STD105:SectionTypeToEnabledConverter}}" 
                                                  Value="true">
                                         <Setter Property="IsEnabled" Value="False"/>
+                                        <Setter Property="Opacity" Value="0.3"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -1178,7 +1179,7 @@
                                                 </RadioButton.Content>
                                             </RadioButton>
 
-                                            <RadioButton  Margin="0,-10,0,0" Grid.Row="2" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsEnabled="False" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=2}" Command="{Binding rb_CutLinePosition_Command}">
+                                            <RadioButton  Margin="0,-10,0,0" Grid.Row="2" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=2}" Command="{Binding rb_CutLinePosition_Command}">
                                                 <RadioButton.Content>
                                                     <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                                         <Label Content="後面"/>

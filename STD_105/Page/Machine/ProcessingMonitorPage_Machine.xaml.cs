@@ -45,7 +45,7 @@ namespace STD_105
     /// <summary>
     /// 新加工監控 ProcessingMonitorPage_Machine.xaml 的互動邏輯
     /// </summary>
-    public partial class ProcessingMonitorPage_Machine : BasePage<ProcessingMonitor_MachineVM>
+    public partial class ProcessingMonitorPage_Machine
     {
         //   public SplashScreenManager ScreenManager { get; set; } = SplashScreenManager.Create(() => new WaitIndicator(), new DevExpress.Mvvm.DXSplashScreenObViewModel { });
 
@@ -68,12 +68,7 @@ namespace STD_105
             //DataList = new List<List<object>>();
             drawing.LineTypes.Add(Steel2DBlock.LineTypeName, new float[] { 35, -35, 35, -35 });
             model.Secondary = drawing;
-            drawing.Secondary = model;
-
-            ViewModel.ScheduleGridC = MachiningSchedule_List_GridControl;
-
-
-
+            drawing.Secondary = model; 
         }
         private void BasePage_Unloaded(object sender, RoutedEventArgs e)
         {
@@ -94,6 +89,8 @@ namespace STD_105
 
         private void Model3D_Loaded(object sender, RoutedEventArgs e)
         {
+            (this.DataContext as ProcessingMonitor_MachineVM).ScheduleGridC = MachiningSchedule_List_GridControl;
+            (this.DataContext as ProcessingMonitor_MachineVM).LogGridC = LogGridControl;
             DevExpress.Xpf.Core.SplashScreenManager DProcessingScreenWin = DevExpress.Xpf.Core.SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
             DProcessingScreenWin.Show();
             DProcessingScreenWin.ViewModel.Status = "正在讀取3D模型...";
@@ -124,7 +121,7 @@ namespace STD_105
 
             }
 
-            ViewModel.SetSerializationInit(model);
+             (this.DataContext as ProcessingMonitor_MachineVM).SetSerializationInit(model);
             DProcessingScreenWin.Close();
             model.Loaded -= Model3D_Loaded;
         }
@@ -151,32 +148,6 @@ namespace STD_105
 
         }
 
-        private void MachineMessage_ItemsSourceChanged(object sender, ItemsSourceChangedEventArgs e)
-        {
-            var ItemList = ((sender as GridControl).ItemsSource as IEnumerable<OperatingLog>).ToList();
-
-            if (ItemList != null)
-            {
-               // var ItemList = ItemIEnum.ToList();
-                if (ItemList.Count() > 0)
-                {
-                    //等待0.1秒 等頁面刷新後再捲動
-                    //捲到最底下
-                    Task.Run(() =>
-                    {
-                        Thread.Sleep(500);
-                        MachineMessage_TableView.Dispatcher.Invoke(() =>
-                        {
-                            MachineMessage_TableView.TopRowIndex = ItemList.Count() - 1;
-                            (sender as GridControl).SelectedItem = ItemList[ItemList.Count() - 1];
-                        }
-                        ); 
-                    });
-                }
-            }
-
-
-        }
 
         /// <summary>
         /// 在模型內按下右鍵時觸發

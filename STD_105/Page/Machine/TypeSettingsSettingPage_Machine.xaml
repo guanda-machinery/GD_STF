@@ -145,8 +145,8 @@
     <Grid dx:ThemeManager.ThemeName="Win10Light" Background="#292929">
         <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto" MinHeight="200" MaxHeight="600"/>
-                    <RowDefinition Height="*" MinHeight="200" MaxHeight="400"/>
+                    <RowDefinition Height="auto" MinHeight="200" MaxHeight="400"/>
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
@@ -1274,7 +1274,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <GridSplitter Style="{StaticResource MaterialDesignGridSplitter}"  Grid.Column="0" Grid.Row="1"  Background="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"  Height="8"   />
+        <GridSplitter Style="{StaticResource MaterialDesignGridSplitter}"  Grid.Column="0" Grid.Row="1"  Background="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"  Height="4" Margin="0,-0"   />
     </Grid>
 
 </WPFBase:BasePage>
