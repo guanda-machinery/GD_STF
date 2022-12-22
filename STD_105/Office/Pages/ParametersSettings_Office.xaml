@@ -354,7 +354,7 @@
                                                     <Image Source="{ StaticResource H_TYPE }" Height="15" Width="15"/>
                                                 </ComboBoxItem>
                                                 <ComboBoxItem>
-                                                    <Image Source="{ StaticResource BOX_TYPE }" Height="15" Width="15"/>
+                                                    <Image Source="{ StaticResource BOX_TYPE }" Height="15" Width="15" Visibility="Collapsed"/>
                                                 </ComboBoxItem>
                                                 <ComboBoxItem>
                                                     <Image Source="{ StaticResource CH_TYPE }" Height="15" Width="15"/>

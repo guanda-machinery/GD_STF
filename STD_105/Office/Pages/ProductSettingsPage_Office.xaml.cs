@@ -6326,6 +6326,5 @@ namespace STD_105.Office
                 drawing.drawingHypotenusePoint = false;
             }
         }
-
     }
 }
