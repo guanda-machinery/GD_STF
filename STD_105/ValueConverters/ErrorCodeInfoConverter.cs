@@ -33,7 +33,8 @@ namespace STD_105
             }
             else
             {
-                result = error.GetType().GetField(error.ToString()).GetCustomAttribute<ErrorCodeAttribute>()?.Description;
+                if(error != ERROR_CODE.Null)
+                    result = error.GetType().GetField(error.ToString()).GetCustomAttribute<ErrorCodeAttribute>()?.Description;
             }
             return result;
         }

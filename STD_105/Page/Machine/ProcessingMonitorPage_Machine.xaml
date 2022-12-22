@@ -745,7 +745,7 @@ AllowEditing="False"
                 <Grid >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="26"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <Border Style="{StaticResource bro}" Grid.RowSpan="2"/>
                     <spa:ModelExt x:Name="drawing" 
@@ -808,24 +808,12 @@ AllowEditing="False"
                             </ddes:Viewport>
                         </ddes:Model.Viewports>
                     </spa:ModelExt>
-                    <Grid Grid.Row="1" Margin="5,5,5,-0" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions >
-                        <Image Grid.Column="0" Source="{StaticResource Logo}"/>
-                        <Grid Grid.Column="1" VerticalAlignment="Top">
-                            <TextBlock Text="←機台方向" Foreground="White" FontSize="16" Margin="5,0"/>
-                            <TextBlock  Text="手臂方向→" Foreground="White" FontSize="16" HorizontalAlignment="Right"  Margin="5,0"/>
-                        </Grid>
-                        <Image Grid.Column="2"  Source="{StaticResource Transport_by_RobotDrawingImage}" />
-                    </Grid>
+                    <local:DrawButtonBar Grid.Row="1"/>
                 </Grid>
             </TabItem>
         </TabControl>
       
-        <Grid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Width="159" Height="30" >
+        <Grid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Width="139" Height="30" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="auto" />
@@ -897,7 +885,7 @@ AllowEditing="False"
                                         <!--統一孔徑-->
 
                                         <StackPanel Orientation="Horizontal">
-                                            <CheckBox Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiFRONT"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                            <CheckBox IsThreeState="False" Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiFRONT"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
                                             ConverterParameter={x:Static GD_STD_Enum:FACE.FRONT}, 
                                             Converter={local:TypesettingsSettingsToBooleanConverter}, 
                                             Mode=TwoWay , 
@@ -1021,7 +1009,7 @@ AllowEditing="False"
                                     <StackPanel Margin="8" >
                                         <!--統一孔徑-->
                                         <StackPanel Orientation="Horizontal">
-                                        <CheckBox Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiTop"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                        <CheckBox IsThreeState="False" Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiTop"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
                                             ConverterParameter={x:Static GD_STD_Enum:FACE.TOP}, 
                                             Converter={local:TypesettingsSettingsToBooleanConverter}, 
                                             Mode=TwoWay , 
@@ -1035,7 +1023,7 @@ AllowEditing="False"
                                             Mode=TwoWay , 
                                             UpdateSourceTrigger=PropertyChanged}"
                                                   
-                                             Visibility="{Binding ElementName=IdentiTop , Path=IsChecked, Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                             Visibility="{Binding ElementName=IdentiTop , Path=IsChecked,Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
                                              ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource, 
                                             ConverterParameter={x:Static GD_STD_Enum:FACE.TOP},
                                             Converter={local:TypesettingsSettingsToDrillDiaConverter}, 
@@ -1145,7 +1133,7 @@ AllowEditing="False"
                                     <StackPanel Margin="8" >
                                         <!--統一孔徑-->
                                         <StackPanel Orientation="Horizontal">
-                                            <CheckBox Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiBACK"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                            <CheckBox IsThreeState="False" Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiBACK"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
                                             ConverterParameter={x:Static GD_STD_Enum:FACE.BACK}, 
                                             Converter={local:TypesettingsSettingsToBooleanConverter}, 
                                             Mode=TwoWay , 

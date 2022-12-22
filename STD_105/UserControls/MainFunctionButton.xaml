@@ -7,7 +7,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:STD_105"
              mc:Ignorable="d" 
-             Width="80" >
+             Width="70" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
@@ -47,7 +47,7 @@
                     <Grid>
                         <Border
                             Name="border"
-                            Width="66"
+                            Width="auto"
                             Height="{Binding ElementName=border, Path=Width}"
                             Background="{DynamicResource BrushBlueSky}"
                             CornerRadius="15"

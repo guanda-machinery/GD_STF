@@ -201,7 +201,7 @@ namespace WPFSTD105.Model
                         {
                             var Path = ApplicationVM.DirectoryDevPart();
                             var _path = string.Empty;
-                            foreach (var p in Path)
+                            /*foreach (var p in Path)
                             {
                                 switch (p)
                                 {
@@ -212,10 +212,10 @@ namespace WPFSTD105.Model
                                         _path += p;
                                         break;
                                 }
-                            }
+                            }*/
 
                             WinUIMessageBox.Show(null,
-                                $"Dev_Part資料:{_path}\\{DataName}.dm\r\n讀取失敗",
+                                $"Dev_Part資料:{Path}\\{DataName}.dm\r\n讀取失敗",
                                 "通知",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Exclamation,

@@ -69,10 +69,10 @@ namespace WPFSTD105.ViewModel
                     }
                     else
                     {
-                        if (PButtonCancelCount > 3)
+                        if (PButtonCancelCount > 10)
+                        {
                             TabControlSelectedIndex = -1;
-                        
-
+                        }
                         PButtonCancelCount++;
                     }
                     //設定延遲避免閃爍的問題

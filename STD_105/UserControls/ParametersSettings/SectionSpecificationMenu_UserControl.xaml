@@ -17,6 +17,9 @@
                   xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
                   mc:Ignorable="d" 
              Style="{StaticResource SectionSpecificationMenuWhiteStyle}">
+    <UserControl.DataContext>
+        <STD105VM:SettingParVM/>
+    </UserControl.DataContext>
     <!--
                   Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"-->
@@ -26,7 +29,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="350" />
-                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="10" />
                 <ColumnDefinition Width="450" />
             </Grid.ColumnDefinitions>
             <Grid>
@@ -85,6 +88,7 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <TreeView.Resources>
+                                    <!--內容物-->
                                     <Style TargetType="TreeViewItem">
                                         <Setter Property="HorizontalContentAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
                                         <Setter Property="VerticalContentAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
@@ -107,11 +111,11 @@
                                                         <!-- Connecting Lines -->
                                                         <!-- Horizontal line -->
                                                         <Rectangle x:Name="HorLn" Margin="9,1,0,0" Height="1"
-			Stroke="#DCDCDC" SnapsToDevicePixels="True"/>
+                                                                   Stroke="#DCDCDC" SnapsToDevicePixels="True"/>
                                                         <!-- Vertical line -->
                                                         <Rectangle x:Name="VerLn" Width="1" 
-                    Stroke="#DCDCDC" Margin="0,0,1,0" Grid.RowSpan="2" 
-                    SnapsToDevicePixels="true" StrokeDashArray="0.1"/>
+                                                                   Stroke="#DCDCDC" Margin="0,0,1,0" Grid.RowSpan="2" 
+                                                                   SnapsToDevicePixels="true" StrokeDashArray="0.1"/>
                                                         <!-- Insert Toggle Button -->
                                                         <ToggleButton
                             x:Name="Expander"
@@ -119,12 +123,13 @@
                             IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
                             Style="{StaticResource ExpandCollapseToggleWinFormStyle}" />
                                                         <Border
-                            x:Name="Bd"
-                            Grid.Column="1"
-                            Padding="{TemplateBinding Padding}"
-                            Background="Transparent"
-                            BorderBrush="Transparent"
-                            BorderThickness="2">
+                                                            x:Name="Bd"
+                                                            Grid.Column="1"
+                                                            Padding="{TemplateBinding Padding}"
+                                                            Background="Transparent"
+                                                            BorderBrush="Transparent"
+                                                            CornerRadius="2"
+                                                            BorderThickness="2">
                                                             <ContentPresenter
                                 x:Name="PART_Header"
                                 Margin="5"
@@ -133,17 +138,17 @@
                                 ContentSource="Header" />
                                                         </Border>
                                                         <ItemsPresenter
-                            x:Name="ItemsHost"
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Grid.ColumnSpan="2"
-                            Visibility="Collapsed" />
+                                                            x:Name="ItemsHost"
+                                                            Grid.Row="1"
+                                                            Grid.Column="1"
+                                                            Grid.ColumnSpan="2"
+                                                            Visibility="Collapsed" />
                                                         <VisualStateManager.VisualStateGroups>
                                                             <VisualStateGroup x:Name="SelectionStates">
                                                                 <VisualState x:Name="Selected">
                                                                     <Storyboard>
                                                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="Bd" Storyboard.TargetProperty="(Border.BorderBrush).Color">
-                                                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource clr_ButtonBlue}" />
+                                                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource clr_DarkGray}" />
                                                                         </ColorAnimationUsingKeyFrames>
                                                                     </Storyboard>
                                                                 </VisualState>
@@ -151,7 +156,7 @@
                                                                 <VisualState x:Name="SelectedInactive">
                                                                     <Storyboard>
                                                                         <ColorAnimationUsingKeyFrames Storyboard.TargetName="Bd" Storyboard.TargetProperty="(Border.BorderBrush).Color">
-                                                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource clr_ButtonBlue}" />
+                                                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource clr_DarkGray}" />
                                                                         </ColorAnimationUsingKeyFrames>
                                                                     </Storyboard>
                                                                 </VisualState>
@@ -173,7 +178,7 @@
                                                             <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
                                                         </Trigger>
                                                         <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter TargetName="Bd" Property="Background" Value="#FF808080" />
+                                                            <Setter TargetName="Bd" Property="Background" Value="#d4d4d4" />
                                                         </Trigger>
                                                         <MultiTrigger>
                                                             <MultiTrigger.Conditions>
@@ -194,18 +199,17 @@
                                             </Setter.Value>
                                         </Setter>
                                     </Style>
-
-
-
-
                                     <Style TargetType="Image">
                                         <Setter Property="Width"
                                             Value="20" />
                                     </Style>
+                                    <!--大標題-->
                                     <Style TargetType="TextBlock"
                                        BasedOn="{ StaticResource tbk_SubTitle }">
                                         <Setter Property="Foreground"
-                                            Value="{ StaticResource solidclr_DimGray }" />
+                                            Value="{ StaticResource solidclr_Black }" />
+                                        <Setter Property="FontWeight"
+                                            Value="Heavy" />
                                         <Setter Property="Margin"
                                             Value="10,0" />
                                         <Setter Property="FontSize" Value="14"/>
@@ -213,7 +217,7 @@
                                 </TreeView.Resources>
                                 <!--TreeView Test START-->
                                 <TreeViewItem ItemsSource="{Binding TUBE}"
-                                          DisplayMemberPath="Profile">
+                                          DisplayMemberPath="Profile" Visibility="Collapsed">
                                     <TreeViewItem.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Image Source="{ StaticResource BOX }" />
@@ -222,7 +226,7 @@
                                     </TreeViewItem.Header>
                                 </TreeViewItem>
                                 <TreeViewItem ItemsSource="{Binding BOX}"
-                                          DisplayMemberPath="Profile">
+                                          DisplayMemberPath="Profile" Visibility="Collapsed">
                                     <TreeViewItem.Header>
                                         <StackPanel Orientation="Horizontal">
                                             <Image Source="{ StaticResource BOX }" />
@@ -348,18 +352,15 @@
                 </Border>
             </Grid>
 
-                <Grid Grid.Column="2">
+            <Grid Grid.Column="2">
                     <Grid.Resources>
                         <STD:OBJECT_TYPE_ToStringConverter x:Key="obType" />
                     </Grid.Resources>
-                    <GroupBox Header="一般的" FontSize="14" Background="#ebebeb">
-
-                        <Grid>
+                <GroupBox Header="一般的" FontSize="14" Background="#ebebeb">
+                    <Grid>
                             <Grid.Resources>
-                                <Style TargetType="GroupBox" BasedOn="{StaticResource ParameterBaseStyleGroupBox}">
-
-                                </Style>
-                            </Grid.Resources>
+                            <Style TargetType="GroupBox" BasedOn="{StaticResource ParameterBaseStyleGroupBox}"/>
+                        </Grid.Resources>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="auto" />
@@ -374,7 +375,7 @@
                                      FontSize="14"
                                      Foreground="{StaticResource solidclr_DimGray}"
                                      BorderThickness="0,0,0,1"
-                                     Margin="5"
+                                     Margin="5,2"
                                      />
                             </GroupBox>
                             <Grid Grid.Row="1">
@@ -383,12 +384,28 @@
                                 </Grid.ColumnDefinitions>
                                 <!--斷面規格類型-->
                                 <GroupBox Header="{ DynamicResource LANGUAGE_SectionSpecificationType }" FontSize="14">
+                                <Border BorderBrush="Gray" BorderThickness="0,0,0,1" CornerRadius="0" Margin="5,0,0,2">
                                     <ComboBox SelectedIndex="{Binding SelectType}" Name="CbbComboBox"
                                           Style="{ StaticResource cbb_ParaSecType }"
                                           ItemsSource="{Binding Source={StaticResource obType} , Path=Strings}"
                                           FontSize="14"
-                                          Margin="5"/>
-                                </GroupBox>
+                                          Margin="5">
+
+                                        <ComboBox.ItemContainerStyle>
+                                            <Style TargetType="ComboBoxItem">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Path=Content, 
+                                                                   RelativeSource={RelativeSource Self}, 
+                                                                   Converter={STD:SectionTypeToEnabledConverter}}" 
+                                                 Value="true">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ComboBox.ItemContainerStyle>
+                                    </ComboBox>
+                                </Border>
+                            </GroupBox>
                                 <!--單位重量-->
                                 <GroupBox Grid.Column="2"
                                       Header="{ DynamicResource LANGUAGE_UnitWeight }"  Visibility="Collapsed">
@@ -540,26 +557,29 @@
                                         <Setter Property="ShowVerticalLines" Value="False"/>
                                     </Style>
                                 </GroupBox.Resources>
-                                <dxg:GridControl Name="gridControl"  
-                                                 MaxHeight="400"
-                                                 Background="Transparent"
-
-                                 dx:ThemeManager.ThemeName="Office2013LightGray"
-                                 ItemsSource="{Binding InsertionData}">
+                                <dxg:GridControl 
+                                    MaxHeight="600"
+                                    Background="Transparent"
+                                    dx:ThemeManager.ThemeName="Office2013LightGray"
+                                    ItemsSource="{Binding InsertionData}">
 
                                     <dxg:GridControl.View>
                                         <!--20220805 張燕華 隱藏TableView的ScrollBar, 同時使用GroupBox的Padding將ScrollBar遮住-->
                                         <!--20220930 蘇冠綸 排版修正-->
-                                        <dxg:TableView x:Name="TableView1"
+                                        <dxg:TableView x:Name="TableView1" 
                                                    ShowFixedTotalSummary="False" 
-
                                                    AllowEditing="True" 
                                                    VerticalScrollbarVisibility="Auto"
                                                    HorizontalScrollbarVisibility="Auto"
                                                    ShowGroupPanel="False"
-                                             ShowIndicator="False"
-                                                   ValidateCell="ValidateCurrentValue"
-                                                   EnableImmediatePosting="True">
+                                                       ShowIndicator="False"                   
+                                                       IsColumnMenuEnabled ="False"
+                                                       AllowSorting="false"
+                                                       AllowColumnFiltering="False"
+                                                       AllowColumnMoving="False"       
+                                                       ShowSearchPanelMode="Never"
+                                                       ValidateCell="ValidateCurrentValue"
+                                                       EnableImmediatePosting="True">
                                             <dxg:TableView.CellStyle>
                                                 <Style>
                                                     <Setter Property="TextBlock.FontSize" Value="14"/>
@@ -569,19 +589,19 @@
                                         </dxg:TableView>
                                     </dxg:GridControl.View>
                                     <dxg:GridControl.Columns>
-                                        <dxg:GridColumn FieldName="Property"
+                                    <dxg:GridColumn FieldName="Property" 
                                                     Header="性質"
                                                     Width="100"
                                                     ReadOnly="True"/>
-                                        <dxg:GridColumn FieldName="Symbol"
+                                    <dxg:GridColumn FieldName="Symbol"  
                                                     Header="符號" 
                                                     Width="80"
                                                     ReadOnly="True"/>
-                                        <dxg:GridColumn FieldName ="Value" 
+                                    <dxg:GridColumn FieldName ="Value" 
                                                     Header="數值" 
                                                     Width="176"
                                                     HorizontalHeaderContentAlignment="Right"/>
-                                        <dxg:GridColumn FieldName="Unit"
+                                    <dxg:GridColumn FieldName="Unit"
                                                     Header="單位" 
                                                     Width="70"
                                                     ReadOnly="True"/>
@@ -643,7 +663,8 @@
                         </Grid>
                     </GroupBox>
                 </Grid>
-                <!--材質設定-->
+
+            <!--材質設定-->
             <GroupBox Grid.Column="4"
                   Header="材質設定" Visibility="Collapsed">
                 <Grid>

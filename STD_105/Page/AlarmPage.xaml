@@ -27,22 +27,19 @@
                         Value="40,0,0,0" />
             </Style>
         </Grid.Resources>
-        <GroupBox Header="警報碼說明"
-                  Width="450"
-                  Height="600"
-                  Style="{ StaticResource gbx_WithBorder }"
-                  HorizontalAlignment="Center"
-                  VerticalAlignment="Center">
+        <GroupBox Header="警報碼說明" Margin="10"
+
+                  Style="{ StaticResource gbx_WithBorder}">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Vertical">
                     <Label Content="警報碼編號：" />
-                    <TextBlock Text="{Binding ApplicationViewModel.PanelButton.Alarm,Source={x:Static WPFSTD:ViewLocator.Instance},Converter={local:ErrorCodeNumberConverter}}" />
+                    <TextBlock Text="{Binding ApplicationViewModel.PanelButton.Alarm,Source={x:Static WPFSTD:ViewLocator.Instance},Converter={local:ErrorCodeNumberConverter},UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
                     <Label Content="警報說明：" />
                     <TextBlock 
                                Foreground="{ StaticResource solidclr_Crimson }"                               
-                               Text="{Binding ApplicationViewModel.PanelButton.Alarm,Source={x:Static WPFSTD:ViewLocator.Instance},Converter={local:ErrorCodeInfoConverter}}"/>
+                               Text="{Binding ApplicationViewModel.PanelButton.Alarm,Source={x:Static WPFSTD:ViewLocator.Instance},Converter={local:ErrorCodeInfoConverter},UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
                     <Label Content="解決方法：" />

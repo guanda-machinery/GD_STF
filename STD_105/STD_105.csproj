@@ -624,6 +624,9 @@
     <Compile Include="Page\Machine\MainSpindleMode.xaml.cs">
       <DependentUpon>MainSpindleMode.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\DrawButtonBar.xaml.cs">
+      <DependentUpon>DrawButtonBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\JoystickUserControl.xaml.cs">
       <DependentUpon>JoystickUserControl.xaml</DependentUpon>
     </Compile>
@@ -968,6 +971,7 @@
     <Compile Include="ValueConverters\IListFilterToCountConverter.cs" />
     <Compile Include="ValueConverters\MaterialDesignPackIconToBitmapSourceConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\MultiObjectArrayToBooleanConverter.cs" />
+    <Compile Include="ValueConverters\NullableIntConverter.cs" />
     <Compile Include="ValueConverters\ObjectIsNullToBooleanConverter.cs" />
     <Compile Include="ValueConverters\PositionStatusEnumToStringConverter.cs" />
     <Compile Include="ValueConverters\SectionSpecificationToEnabledConverter.cs" />
@@ -1123,6 +1127,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\ParameterMenuStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DrawButtonBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
