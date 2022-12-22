@@ -2,6 +2,7 @@
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DevExpress.Data.Extensions;
+using DevExpress.Dialogs.Core.View;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Grid;
@@ -44,7 +45,7 @@ namespace STD_105
 
         public SplashScreenManager ScreenManager { get; set; } = SplashScreenManager.Create(() => new WaitIndicator(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
 
-        public ObSettingVM ViewModel { get; set; } = new ObSettingVM();
+        private ObSettingVM ObViewModel = new ObSettingVM();
         /// <summary>
         /// nc 設定檔
         /// </summary>
@@ -55,8 +56,8 @@ namespace STD_105
         {
             InitializeComponent();
 
-            model.DataContext = ViewModel;
-            drawing.DataContext = ViewModel;
+            model.DataContext = ObViewModel;
+            drawing.DataContext = ObViewModel;
             model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             drawing.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             model.ActionMode = actionType.None;
@@ -86,9 +87,9 @@ namespace STD_105
             //平移滑鼠中鍵
             model.Pan.MouseButton = new MouseButton(mouseButtonsZPR.Middle, modifierKeys.None);
             model.ActionMode = actionType.SelectByBox;
-            if (ViewModel.Reductions == null)
+            if (ObViewModel.Reductions == null)
             {
-                ViewModel.Reductions = new ReductionList(model, drawing); //紀錄使用找操作
+                ObViewModel.Reductions = new ReductionList(model, drawing); //紀錄使用找操作
             }
 
             #endregion
@@ -105,7 +106,7 @@ namespace STD_105
             log4net.LogManager.GetLogger("在Model按下了右鍵").Debug("查看可用功能");
 #endif
             //開啟刪除功能
-            if (ViewModel.Select3DItem.Count >= 1 && ViewModel.Select3DItem[0].Item is BlockReference)
+            if (ObViewModel.Select3DItem.Count >= 1 && ObViewModel.Select3DItem[0].Item is BlockReference)
             {
 #if DEBUG
                 log4net.LogManager.GetLogger("啟用").Debug("刪除功能");
@@ -116,7 +117,7 @@ namespace STD_105
                 esc2D.Visibility = Visibility.Visible;
             }
             //開啟編輯功能
-            if (ViewModel.Select3DItem.Count == 1 && ViewModel.Select3DItem[0].Item is BlockReference)
+            if (ObViewModel.Select3DItem.Count == 1 && ObViewModel.Select3DItem[0].Item is BlockReference)
             {
 #if DEBUG
                 log4net.LogManager.GetLogger("啟用").Debug("編輯功能");
@@ -124,7 +125,7 @@ namespace STD_105
                 edit2D.Visibility = Visibility.Visible;
             }
             //關閉刪除功能與編輯功能
-            if (ViewModel.Select3DItem.Count == 0)
+            if (ObViewModel.Select3DItem.Count == 0)
             {
 #if DEBUG
                 log4net.LogManager.GetLogger("關閉").Debug("編輯功能、刪除功能、取消功能");
@@ -144,10 +145,10 @@ namespace STD_105
             model.ActionMode = actionType.SelectByBox;
             drawing.ActionMode = actionType.SelectByBox;
             model.Entities.ClearSelection();//清除全部選取的物件
-            ViewModel.Select3DItem.Clear();
-            ViewModel.tem3DRecycle.Clear();
-            ViewModel.Select2DItem.Clear();
-            ViewModel.tem2DRecycle.Clear();
+            ObViewModel.Select3DItem.Clear();
+            ObViewModel.tem3DRecycle.Clear();
+            ObViewModel.Select2DItem.Clear();
+            ObViewModel.tem2DRecycle.Clear();
             model.ClearAllPreviousCommandData();
             drawing.ClearAllPreviousCommandData();
             drawing.SetCurrent(null);
@@ -221,7 +222,7 @@ namespace STD_105
 #if DEBUG
             log4net.LogManager.GetLogger("加入物件").Debug("檢測用戶輸入");
 #endif
-            if (ViewModel.SteelAttr.PartNumber == "" || ViewModel.SteelAttr.PartNumber == null)//檢測用戶是否有輸入零件編號
+            if (ObViewModel.SteelAttr.PartNumber == "" || ObViewModel.SteelAttr.PartNumber == null)//檢測用戶是否有輸入零件編號
             {
                 //MessageBox.Show("請輸入零件編號", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,
@@ -235,7 +236,7 @@ namespace STD_105
 
                 return false;
             }
-            if (ViewModel.SteelAttr.Length <= 0)//檢測用戶長度是否有大於0
+            if (ObViewModel.SteelAttr.Length <= 0)//檢測用戶長度是否有大於0
             {
                 //MessageBox.Show("長度不可以小於等於 0", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,
@@ -248,7 +249,7 @@ namespace STD_105
                     FloatingMode.Window);
                 return false;
             }
-            if (ViewModel.SteelAttr.Number <= 0) //檢測用戶是否零件數量大於0
+            if (ObViewModel.SteelAttr.Number <= 0) //檢測用戶是否零件數量大於0
             {
                 //MessageBox.Show("數量不可以小於等於 0", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,
@@ -261,7 +262,7 @@ namespace STD_105
                     FloatingMode.Window);
                 return false;
             }
-            if (ViewModel.DataCorrespond.FindIndex(el => el.Number == ViewModel.SteelAttr.PartNumber) != -1)
+            if (ObViewModel.DataCorrespond.FindIndex(el => el.Number == ObViewModel.SteelAttr.PartNumber) != -1)
             {
                 //MessageBox.Show("重複編號", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,
@@ -985,19 +986,19 @@ namespace STD_105
             {
                 STDSerialization ser = new STDSerialization(); //序列化處理器
 
-                var OTS_VM = this.DataContext as WPFSTD105.OfficeTypeSettingVM;
+                //var OTS_VM = this. as WPFSTD105.OfficeTypeSettingVM;
                 //以下代碼在第二階段需要重構
                 ObservableCollection<SteelPart> steelParts = ser.GetPart(MDataView.Profile.GetHashCode().ToString());
                 if (MDataView.Parts.Count != 0)
                 {
-                    int index = OTS_VM.DataViews.FindIndex(x => x == MDataView.SelectedPart);
+                    int index = ViewModel.DataViews.FindIndex(x => x == MDataView.SelectedPart);
                     if (index != -1)
                     {
-                        int m = OTS_VM.DataViews[index].Match.FindLastIndex(x => x == false);
+                        int m = ViewModel.DataViews[index].Match.FindLastIndex(x => x == false);
                         if (m != -1)
-                            OTS_VM.DataViews[index].Match[m] = true;
+                            ViewModel.DataViews[index].Match[m] = true;
 
-                        OTS_VM.DataViews[index].Revise = DateTime.Now;
+                        ViewModel.DataViews[index].Revise = DateTime.Now;
                     }
 
                     int steelIndex = steelParts.FindIndex(x => x.Number == MDataView.SelectedPart.PartNumber);
@@ -1015,7 +1016,7 @@ namespace STD_105
                 else
                 {
                     //無零件時 刪除素材
-                    OTS_VM.MaterialDataViews.Remove(MDataView);
+                    ViewModel.MaterialDataViews.Remove(MDataView);
                 }
                 //存檔
                 ser.SetMaterialDataView(Material_List_GridControl.ItemsSource as ObservableCollection<MaterialDataView>);
@@ -1058,10 +1059,10 @@ namespace STD_105
             var Selected = Material_List_GridControl.SelectedItem as MaterialDataView;
             var Handle = (Material_List_GridControl.ItemsSource as ObservableCollection<MaterialDataView>).FindIndex(x => (x.MaterialNumber == Selected.MaterialNumber));
 
-            var OTS_VM = this.DataContext as WPFSTD105.OfficeTypeSettingVM;
-            OTS_VM.MaterialDataViews.Clear();
+            //var OTS_VM = this. as WPFSTD105.OfficeTypeSettingVM;
+            ViewModel.MaterialDataViews.Clear();
             STDSerialization ser = new STDSerialization(); //序列化處理器
-            OTS_VM.MaterialDataViews = ser.GetMaterialDataView();
+            ViewModel.MaterialDataViews = ser.GetMaterialDataView();
 
             if (Handle != -1)
             {
@@ -1095,7 +1096,7 @@ namespace STD_105
             PartsGridControl.Dispatcher.Invoke(() =>
             {
                 //↓不要這樣寫!會導致表格 icommand失靈！
-                //PartsGridControl.ItemsSource = (this.DataContext as OfficeTypeSettingVM).LoadDataViews(); 
+                //PartsGridControl.ItemsSource = (this.~ as OfficeTypeSettingVM).LoadDataViews(); 
 
                 for (int i = 0; i < (PartsGridControl.ItemsSource as ObservableCollection<TypeSettingDataView>).Count; i++)
                 {
@@ -1143,19 +1144,19 @@ namespace STD_105
             {
                 STDSerialization ser = new STDSerialization(); //序列化處理器
 
-                var OTS_VM = this.DataContext as WPFSTD105.OfficeTypeSettingVM;
+                //var OTS_VM = this. as WPFSTD105.OfficeTypeSettingVM;
                 //以下代碼在第二階段需要重構
                 ObservableCollection<SteelPart> steelParts = ser.GetPart(SelectedDataView.Profile.GetHashCode().ToString());
                 SelectedDataView.Parts.ForEach(DelPart =>
                 {
-                    int index = OTS_VM.DataViews.FindIndex(x => x == DelPart);
+                    int index = ViewModel.DataViews.FindIndex(x => x == DelPart);
                     if (index != -1)
                     {
-                        int m = OTS_VM.DataViews[index].Match.FindLastIndex(x => x == false);
+                        int m = ViewModel.DataViews[index].Match.FindLastIndex(x => x == false);
                         if (m != -1)
-                            OTS_VM.DataViews[index].Match[m] = true;
+                            ViewModel.DataViews[index].Match[m] = true;
 
-                        OTS_VM.DataViews[index].Revise = DateTime.Now;
+                        ViewModel.DataViews[index].Revise = DateTime.Now;
                     }
 
                     int steelIndex = steelParts.FindIndex(x => x.Number == DelPart.PartNumber);
@@ -1194,22 +1195,21 @@ namespace STD_105
 
         private void Add_Reduce_Button_MouseMove(object sender, MouseEventArgs e)
         {
-            (this.DataContext as OfficeTypeSettingVM).SecondaryLength = "";
-
+            ViewModel.SecondaryLength = "";
             //長度計算
-            //var SoftList = ((this.DataContext as OfficeTypeSettingVM).DataViews).ToList().FindAll(x => (x.SortCount > 0));
+            //var SoftList = ((this.~ as OfficeTypeSettingVM).DataViews).ToList().FindAll(x => (x.SortCount > 0));
             //將配料>0的所有零件 用斷面規格做分類
             //var SoftGroup = SoftList.GroupBy(x => x.Profile);
             var UsedLengthDict = new Dictionary<string, double>();
-            ((this.DataContext as OfficeTypeSettingVM).DataViews).ToList().FindAll(x => (x.SortCount > 0)).GroupBy(x => x.Profile).ForEach(sg =>
+            (ViewModel.DataViews).ToList().FindAll(x => (x.SortCount > 0)).GroupBy(x => x.Profile).ForEach(sg =>
             {
                 //素材切掉兩端
-                double UsedLength = 0 + (this.DataContext as OfficeTypeSettingVM).MatchSetting.StartCut + (this.DataContext as OfficeTypeSettingVM).MatchSetting.EndCut;
+                double UsedLength = 0 + ViewModel.MatchSetting.StartCut + ViewModel.MatchSetting.EndCut;
                 sg.ForEach(el =>
                 {
                     //配料>0的所有零件 長度加總(包含不同斷面規格)
 
-                    UsedLength += (el.Length + (this.DataContext as OfficeTypeSettingVM).MatchSetting.Cut) * el.SortCount;
+                    UsedLength += (el.Length + ViewModel.MatchSetting.Cut) * el.SortCount;
                 });
 
                 if (UsedLength > 0)
@@ -1234,7 +1234,7 @@ namespace STD_105
                 UsedLengthDictMax = UsedLengthDict.Max(x => x.Value);
 
             ScheduleLengthLabel.Content = Math.Round(UsedLengthDictMax, 2);
-            if (UsedLengthDictMax > (this.DataContext as OfficeTypeSettingVM).MainLengthMachine)
+            if (UsedLengthDictMax > ViewModel.MainLengthMachine)
             {
                 UsedMaterialTooLongWarningLabel.Visibility = Visibility.Visible;
             }
@@ -1243,9 +1243,9 @@ namespace STD_105
                 UsedMaterialTooLongWarningLabel.Visibility = Visibility.Collapsed;
             }
 
-
+            
             //尋找是否存在槽鐵
-            var SteelChannelIsExisted = ((this.DataContext as OfficeTypeSettingVM).DataViews).ToList().Exists(x =>
+            var SteelChannelIsExisted = ViewModel.DataViews.ToList().Exists(x =>
              x.SortCount > 0 && x.SteelType == (int)GD_STD.Enum.OBJECT_TYPE.CH);
             
             if (SteelChannelIsExisted)

@@ -1234,7 +1234,7 @@
                                                               ButtonImageSource="{StaticResource Clamping}"
                                                               StartState="{Binding IsSelectdMiddle}"
                                                               TitleText="A刀庫"
-                                                              SubTitleText="上軸" />
+                                                              SubTitleText="中軸" />
                                                     <!--  IsEnabled="{Binding MiddleIsEnabled}"-->
                                                     <local:ToolMagazineButton ButtonCommand="{Binding LeftExportCommand}"
                                                               ButtonImageSource="{StaticResource Clamping}"
@@ -1266,7 +1266,7 @@
                                                 </StackPanel>
                                             </Grid>
 
-                                            <dxg:GridControl Grid.Row="1" 
+                                            <dxg:GridControl Grid.Row="1"  Visibility="{Binding ToolMActivityButtonVisibilityBoolean,Converter={dx:BooleanToVisibilityConverter Invert=True},UpdateSourceTrigger=PropertyChanged}"
                                                              Style="{StaticResource SiegCustomGridControl}"
                                              MaxHeight="1000"
                                              dx:ThemeManager.ThemeName="Win10Light"
@@ -1317,18 +1317,75 @@
                                                     Header="極限設定(M)" />
                                                 </dxg:GridControl.Columns>
                                             </dxg:GridControl>
+                                            <dxg:GridControl Grid.Row="1"  Visibility="{Binding ToolMActivityButtonVisibilityBoolean,Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                                             Style="{StaticResource SiegCustomGridControl}"
+                                             MaxHeight="1000"
+                                             dx:ThemeManager.ThemeName="Win10Light"
+                                             ItemsSource="{Binding UseSelected}">
+                                                <dxg:GridControl.View>
+                                                    <dxg:TableView           
+                                                        IsColumnMenuEnabled ="False"
+                                                        AllowResizing="False"
+                                                        AllowSorting="false"
+                                                        AllowColumnFiltering="False"
+                                                        AllowColumnMoving="False"
+                                                        ShowGroupPanel="False" 
+                                                        VerticalScrollbarVisibility="Auto"
+                                                        ColumnHeaderContentStyle="{ StaticResource SiegCustomGridControlHeaderStyle }"  
+                                                        AllowEditing="{Binding DrillEditing}" >
+                                                        <dxg:TableView.CellStyle>
+                                                            <Style>
+                                                                <Setter Property="TextBlock.FontSize" Value="12"/>
+                                                                <Setter Property="TextBlock.Foreground" Value="Black"/>
+                                                            </Style>
+                                                        </dxg:TableView.CellStyle>
+                                                    </dxg:TableView>
+                                                </dxg:GridControl.View>
+                                                <dxg:GridControl.Columns>
+                                                    <dxg:GridColumn FieldName="Index" AllowResizing="false"  Width="50"
+                                                    Header="位置" />
+                                                    <dxg:GridColumn FieldName="SettingName" Width="100"
+                                                    Header="設定檔名稱">
+                                                        <dxg:GridColumn.EditSettings>
+                                                            <dxe:ComboBoxEditSettings DisplayMember="DataName"
+                                                                      ItemsSource="{Binding DrillBrands}"
+                                                                      ValueMember="DataName" />
+                                                        </dxg:GridColumn.EditSettings>
+                                                    </dxg:GridColumn>
+                                                    <dxg:GridColumn FieldName="Name" 
+                                                    Header="品牌"
+                                                    ReadOnly="True" />
+                                                    <dxg:GridColumn FieldName="Dia"
+                                                    Header="直徑(mm)"
+                                                    ReadOnly="True" />
+                                                    <dxg:GridColumn FieldName="Rpm"
+                                                    Header="主軸轉速(RPM)"
+                                                    ReadOnly="True" />
+                                                    <dxg:GridColumn FieldName="Length"
+                                                    Header="鑽頭長度(mm)"
+                                                    ReadOnly="True" />
+                                                    <dxg:GridColumn FieldName="Limit"
+                                                    Header="極限設定(M)" />
+                                                </dxg:GridControl.Columns>
+                                            </dxg:GridControl>
 
                                             <Border Grid.Row="1" BorderThickness="0.1" BorderBrush="Black" />
                                             <Grid Grid.Row="2">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition/>
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="1.5*" />
-                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="auto"/>
+
+                                                    <ColumnDefinition/>
                                                 </Grid.ColumnDefinitions>
-                                                <local:DrillLevelTitleControl VerticalAlignment="Center"
+                                                <local:DrillLevelTitleControl  Grid.Row="0"
                                                               Visibility="Collapsed" />
-                                                <StackPanel Grid.Column="1"
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Bottom"
+
+                                                <TextBlock  Grid.Row="1" Grid.Column="0"  Text="※本刀庫被關閉" FontSize="20" Foreground="DarkRed" FontWeight="UltraBold" HorizontalAlignment="Left"  Visibility="{Binding ToolMActivityButtonVisibilityBoolean , Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"/>
+                                                <StackPanel Grid.Row="1" Grid.Column="1"
+                                            VerticalAlignment="Bottom" HorizontalAlignment="Right"
                                             Orientation="Horizontal">
                                                     <StackPanel.Resources>
                                                         <Style BasedOn="{StaticResource SiegCustomButton}"
@@ -1337,11 +1394,13 @@
                                                             <Setter Property="Margin" Value="10"/>
                                                         </Style>
                                                     </StackPanel.Resources>
-                                                    <Button Content="關閉刀庫功能" Command="{Binding CloseToolMagazineCommand}"/>
+                                                    <Button Content="開啟刀庫功能" Command="{Binding ToolMagazineActiveCommand}" CommandParameter="{WPFBase:SystemType Bool=True}" Visibility="{Binding ToolMActivityButtonVisibilityBoolean , Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}" />
+                                                    <Button Style="{StaticResource SiegCustomButtonBlue}" Width="100" Margin="10" Content="關閉刀庫功能" Command="{Binding ToolMagazineActiveCommand }" CommandParameter="{WPFBase:SystemType Bool=False}"  Visibility="{Binding ToolMActivityButtonVisibilityBoolean ,Converter={dx:BooleanToVisibilityConverter Invert=True},UpdateSourceTrigger=PropertyChanged}"/>
+
                                                     <Button Command="{Binding UpDateCommand}"
                                             Content="重新讀取" />
                                                     <Button Command="{Binding UnusedSaveCommand}"
-                                            Content="存檔" />
+                                            Content="寫入機台" />
                                                 </StackPanel>
                                             </Grid>
                                         </Grid>
@@ -1435,7 +1494,7 @@
                                                     <Button Command="{Binding UpDateCommand}" 
                                             Content="重新讀取" />
                                                     <Button Command="{Binding UnusedSaveCommand}"
-                                            Content="存檔" />
+                                            Content="寫入機台" />
                                                 </StackPanel>
                                             </Grid>
                                         </Grid>

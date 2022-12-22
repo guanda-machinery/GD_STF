@@ -512,26 +512,28 @@
                     <TextBox x:Name="phase" Grid.Column="1" Grid.Row="7" >
                         <TextBox.Text>
                        <!-- <Binding Path="SelectedItems[0].Phase" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >-->
-                        <Binding Path="PhaseProperty" UpdateSourceTrigger="PropertyChanged" >
+                        <Binding Path="PhaseProperty" UpdateSourceTrigger="PropertyChanged"  Converter="{local:NullableIntConverter}">
                             <Binding.ValidationRules>
-                                    <STD105ValidRule:CheckStringEmptyRule/>
-                                </Binding.ValidationRules>
+                                <STD105ValidRule:CheckNumberRule NumberMin="0" IsNullable="True"/>
+                            </Binding.ValidationRules>
                         </Binding>
+
                     </TextBox.Text>
                     </TextBox>
 
                     <Label Grid.Column="0" Grid.Row="8" Content="拆運：" />
 
-                    <TextBox x:Name="shippingNumber" Grid.Column="1" Grid.Row="8">
-                        <TextBox.Text>
-                        <!-- <Binding Path="SelectedItems[0].ShippingNumber" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >-->
-                        <Binding Path="ShippingNumberProperty" UpdateSourceTrigger="PropertyChanged" >
+                <TextBox x:Name="shippingNumber" Grid.Column="1" Grid.Row="8">
+                    <TextBox.Text>
+                        <!--<Binding Path="SelectedItems[0].ShippingNumber" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >-->
+                        <Binding Path="ShippingNumberProperty" UpdateSourceTrigger="PropertyChanged"  Converter="{local:NullableIntConverter}">
                             <Binding.ValidationRules>
-                                    <STD105ValidRule:CheckStringEmptyRule></STD105ValidRule:CheckStringEmptyRule>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
+                                <STD105ValidRule:CheckNumberRule NumberMin="0" IsNullable="True"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+
+                </TextBox>
 
                     <!--<StackPanel Grid.Column="2"  Grid.Row="7" Grid.RowSpan="3" >
                         <TextBox Text="{Binding SelectedItems[0].Type, ElementName=PieceListGridControl}" BorderBrush="Black"/>

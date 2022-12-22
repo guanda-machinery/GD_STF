@@ -2267,7 +2267,7 @@ namespace WPFSTD105.ViewModel
                 .SelectMany(x =>
                 x.Entities, (a, b) => new { Block = a, a.Entities, b.EntityData })
                 .Where(x =>
-                (x.Block.GetType()==typeof(Bolts3DBlock) || x.Block.GetType() == typeof(Block)) &&
+                (x.Block.GetType()==typeof(Bolts3DBlock) || x.Block.GetType() == typeof(Block)) && x.EntityData != null &&
                 x.EntityData.GetType() == typeof(BoltAttr) &&
                 //((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
                 ((BoltAttr)x.EntityData).BlockName== RemoveType)
@@ -2295,10 +2295,10 @@ namespace WPFSTD105.ViewModel
 
 
             var entitiesList = model.Entities
-                    .Where(y =>
+                    .Where(y => y.EntityData != null &&
                     y.EntityData.GetType() == typeof(GroupBoltsAttr) &&
                     //((GroupBoltsAttr)y.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
-                    ((GroupBoltsAttr)y.EntityData).BlockName== RemoveType)
+                    ((GroupBoltsAttr)y.EntityData).BlockName == RemoveType)
                     .Select(y => y).ToList();
             foreach (var entities in entitiesList)
             {

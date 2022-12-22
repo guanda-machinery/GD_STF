@@ -10,6 +10,7 @@
         xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         xmlns:local="clr-namespace:STD_105"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowState="Maximized"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -21,7 +22,6 @@
         Height="1280"
         Width="1024">
     <Grid Background="{ StaticResource solidclr_LightGray }">
-
         <Grid.Resources>
             <!--  遮蔽背景  -->
             <Style x:Key="Fade"
@@ -109,7 +109,7 @@
               Opacity="0.95"
               Panel.ZIndex="10000">
             <!--機台功能按鈕欄-->
-            <StackPanel Margin="0,0,0,10">
+            <StackPanel Margin="5,0,0,10">
                 <!--警報-->
                 <local:MainFunctionButton x:Name="alert"
                                           ButtonCommand="{Binding AlarmCommand}"
@@ -247,10 +247,10 @@
                 <TextBlock   
                     Text="{Binding ApplicationViewModel.CurrentPage, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={ local:ApplicationPageNameConverter }}"
                     HorizontalAlignment="Left"
-                           Foreground="{ StaticResource solidclr_DimGray }"
-                           FontWeight="Bold"
-                           Style="{ StaticResource tbk_Title }"
-                           Margin="10,0,10,0" />
+                    Foreground="{ StaticResource solidclr_DimGray }"
+                    FontWeight="Bold"
+                    Style="{ StaticResource tbk_Title }"
+                    Margin="10,0,10,0" />
                 <Grid MaxWidth="350" Height="40"
                         Visibility="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToVisibilityConverter}}">
                     <!--  專案名稱  -->

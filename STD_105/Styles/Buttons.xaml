@@ -1093,7 +1093,7 @@
                             x:Name="Border"
                             Background="{TemplateBinding Background}"
                             BorderThickness="0"
-                            CornerRadius="20"
+                            CornerRadius="15"
                             TextBlock.Foreground="{TemplateBinding Foreground}">
                             <wpf:Ripple
                                 Padding="{TemplateBinding Padding}"

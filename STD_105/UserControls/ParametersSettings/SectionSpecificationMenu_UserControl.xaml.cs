@@ -26,13 +26,10 @@ namespace STD_105
         public SectionSpecificationMenu_UserControl()
         {
             InitializeComponent();
-            this.DataContext = new SettingParVM();
-
         }
 
         void ValidateCurrentValue(object sender, GridCellValidationEventArgs e)
         {
-  
             DataGridData temp = (this.DataContext as SettingParVM).InsertionData[0];
             if (e.Column.FieldName != nameof(temp.Value))
                 return;
