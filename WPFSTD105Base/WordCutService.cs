@@ -547,6 +547,7 @@ namespace WPFSTD105
                         case "BOX":
                             picture_path = @"SteelSectionPng\BOX.png";
                             break;
+                        case "U":
                         case "CH":
                             picture_path = @"SteelSectionPng\C.png";
                             break;

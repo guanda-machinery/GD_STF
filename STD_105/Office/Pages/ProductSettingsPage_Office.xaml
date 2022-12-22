@@ -63,7 +63,7 @@
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="BorderBrush" Value="Gray"/>
             </Style>
-            <System:Boolean x:Key="visible">true</System:Boolean>
+            <System:Boolean x:Key="visible">false</System:Boolean>
             <System:Boolean x:Key="TextBoxEnabled">false</System:Boolean>
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
@@ -732,6 +732,20 @@
                               ItemsSource="{Binding Source={StaticResource obType},Path=Strings}"
                               SelectedIndex="{Binding SteelTypeProperty_int}"
                               Padding="5,1,0,0">
+
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=Content, 
+                                                                   RelativeSource={RelativeSource Self}, 
+                                                                   Converter={STD105:SectionTypeToEnabledConverter}}" 
+                                                 Value="true">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+
                         <!--SelectedIndex="{Binding SelectedItems[0].SteelType, ElementName=PieceListGridControl, Mode=OneWay}"-->
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SteelTypeComboBox">
