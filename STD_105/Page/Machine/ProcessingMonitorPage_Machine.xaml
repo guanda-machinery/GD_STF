@@ -23,7 +23,6 @@
                    xmlns:GD_STD_Enum="clr-namespace:GD_STD.Enum;assembly=GD_STD.Enum"
                    xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
                    Title="加工監控"
-                   x:TypeArguments="STD105VM:ProcessingMonitor_MachineVM"
                   KeepAlive="True"
                   Unloaded="BasePage_Unloaded"
                   mc:Ignorable="d">
@@ -482,7 +481,6 @@ AllowEditing="False"
                         <dxg:GridControl Margin="0,0.5,0,0" 
                         Style="{StaticResource SiegCustomGridControl}"
                         Name="MachiningSchedule_List_GridControl"    
-                        
                         AutoGenerateColumns="None" 
                         Grid.Row="2"  Width="139"
                         ItemsSource="{Binding Finish_UndoneDataViews,UpdateSourceTrigger=PropertyChanged}"
@@ -820,7 +818,7 @@ AllowEditing="False"
             </Grid.ColumnDefinitions>
             <Border Background="White" Grid.ColumnSpan="2" CornerRadius="5" />
             <Label Content="目前加工索引" Margin="5,0"/>
-            <Label Grid.Column="1" Content="{Binding Current}" Margin="5,0"/>
+            <Label Grid.Column="1" Content="{Binding MCurrent,UpdateSourceTrigger=PropertyChanged}" Margin="5,0"/>
         </Grid>
 
 
@@ -1113,7 +1111,7 @@ AllowEditing="False"
 
 
                                     <StackPanel Grid.Row="1" Visibility="{Binding SelectedMaterial_Info_Button_Visibility}">
-                                        <Button Height="30" Margin="5" 
+                                        <Button Height="30" Margin="5"  
                                                 Visibility="{Binding MachiningCombinational_DrillBoltsItemSource,
                                             ConverterParameter={x:Static GD_STD_Enum:FACE.TOP}, 
                                             Converter={local:TypesettingsSettingsToVisibilityConverter}, 
@@ -1355,12 +1353,11 @@ AllowEditing="False"
                  Background="#292929" 
                  BorderThickness="2" 
                  BorderBrush="#595E60" >
-                <dxg:GridControl  Background="Transparent" 
+                <dxg:GridControl  Background="Transparent" Name="LogGridControl"
                     Style="{StaticResource SiegCustomBlackMessageGridControl}"
                     AutoGenerateColumns="None"
                     SelectionMode="Row"
-                    ItemsSource="{Binding LogDataList , UpdateSourceTrigger=PropertyChanged ,NotifyOnSourceUpdated=True}"
-                    ItemsSourceChanged="MachineMessage_ItemsSourceChanged"
+                    ItemsSource="{Binding LogDataList , UpdateSourceTrigger=PropertyChanged}"
                     MaxHeight="2000"    >
 
                     <dxg:GridControl.View >
@@ -1511,7 +1508,7 @@ AllowEditing="False"
                         </StackPanel>
                          <ProgressBar  Grid.Column="1" Grid.Row="1" Visibility="{Binding ProgressBar_Visible_Input_by_Computer,Converter={dx:BooleanToVisibilityConverter}}"/>
 
-                        <Grid Grid.Row="2" Grid.ColumnSpan="3">
+                        <Grid Grid.Row="2" Grid.ColumnSpan="3"  IsEnabled="{Binding TransportGridIsEnable,UpdateSourceTrigger=PropertyChanged}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
@@ -1541,7 +1538,6 @@ AllowEditing="False"
                                 
                             </StackPanel>
                             <ProgressBar  Visibility="{Binding ProgressBar_Visible_Transport_Visibility,Converter={dx:BooleanToVisibilityConverter}}" />
-                        
                             <StackPanel Grid.Column="1" IsEnabled="{Binding Transport_by_Continue_RadioButtonIsEnable}">
                                 <RadioButton GroupName="Group_Transport" Name="Transport_by_Continue_RadioButton" IsChecked="{Binding Transport_by_Continue_RadioButtonIsChecked}" Command="{Binding ChangeTransportMode_To_Continue_Command}" >
                                     <RadioButton.IsEnabled>

@@ -1181,7 +1181,6 @@ namespace WPFSTD105
                            ObSettingVM.allowType.Contains((OBJECT_TYPE)el.SteelType) &&
                         sortProfile.Contains(el.Profile)
                     ).Select(el=>el.Profile)
-                    
                     .ToList();//模型有使用到的斷面規格
 
                 //改寫判斷式 由SteelType找斷面規格
@@ -1292,8 +1291,10 @@ namespace WPFSTD105
                         List<Population> _ = new List<Population>() { uPopulation, wPopulation, aPopulation, umPopulation }; //存入到列表內
 
                         //尋找最優化
-                        double minValue = _[0].TotalSurplus(); //最少的餘料
-                        int minIndex = 0; //最小值索引
+
+
+                        //double minValue = _[0].TotalSurplus(); //最少的餘料
+                        /*int minIndex = 0; //最小值索引
                         for (int c = 1; c < _.Count; c++) //逐步展開配料結果的餘料
                         {
                             double value = _[c].TotalSurplus(); //餘料
@@ -1302,34 +1303,45 @@ namespace WPFSTD105
                                 minValue = value; //修改最小值
                                 minIndex = c;//紀錄最小於列的索引位置
                             }
-                        }
-                        for (int q = 0; q < _[minIndex].Count; q++)
+                        }*/
+
+                        var TotalSurplusMinValue= _.Min(x => x.TotalSurplus());
+                        var MinPop = _.Find(x => (x.TotalSurplus() == TotalSurplusMinValue));
+                        
+                        for (int q = 0; q < MinPop.Count; q++)
                         {
-                            MaterialDataViews.Add(new MaterialDataView
+                            var NewMaterial = new MaterialDataView
                             {
                                 MaterialNumber = strNumber + startNumber.ToString().PadLeft(4, '0'), // 不足補0
                                 Profile = profiles[i],
-                            });
-                            MaterialDataViews[MaterialDataViews.Count - 1].LengthList.AddRange(MatchSetting.MainLengths); //加入長度列表
-                            MaterialDataViews[MaterialDataViews.Count - 1].LengthList.AddRange(MatchSetting.SecondaryLengths); //加入長度列表
-                            MaterialDataViews[MaterialDataViews.Count - 1].LengthIndex = MaterialDataViews[MaterialDataViews.Count - 1].LengthList.FindIndex(el => _[minIndex][q].Length - MatchSetting.EndCut - MatchSetting.StartCut == el); //長度索引
-                            int index = MaterialDataViews[MaterialDataViews.Count - 1].LengthIndex;
-                            MaterialDataViews[MaterialDataViews.Count - 1].LengthStr = MaterialDataViews[MaterialDataViews.Count - 1].LengthList[index] + (MatchSetting.EndCut + MatchSetting.StartCut); //1110 加入動作:將素材長度加回MatchSettingStartCut+ MatchSettingEndCut CYH
-                            MaterialDataViews[MaterialDataViews.Count - 1].StartCut = MatchSetting.StartCut;
-                            MaterialDataViews[MaterialDataViews.Count - 1].EndCut = MatchSetting.EndCut;
-                            MaterialDataViews[MaterialDataViews.Count - 1].Cut = MatchSetting.Cut;
-                            for (int c = 0; c < _[minIndex][q].PartNumber.Length; c++)
+
+                                StartCut = MatchSetting.StartCut,
+                                EndCut = MatchSetting.EndCut,
+                                Cut = MatchSetting.Cut,
+                            };
+                            NewMaterial.LengthList.AddRange(MatchSetting.MainLengths); //加入長度列表
+                            NewMaterial.LengthList.AddRange(MatchSetting.SecondaryLengths); //加入長度列表
+                            NewMaterial.LengthIndex = NewMaterial.LengthList.FindIndex(el => MinPop[q].Length - MatchSetting.EndCut - MatchSetting.StartCut == el); //長度索引
+                            int index = NewMaterial.LengthIndex;
+                            NewMaterial.LengthStr = NewMaterial.LengthList[index] + (MatchSetting.EndCut + MatchSetting.StartCut); //1110 加入動作:將素材長度加回MatchSettingStartCut+ MatchSettingEndCut CYH
+
+                            for (int c = 0; c < MinPop[q].PartNumber.Length; c++)
                             {
                                 //1111 CYH dataViewIndex是從相同零件編號的零件群中找起，並不管零件與構件的對應關係，因此在排版設定中選擇的零件若在其同零件編號的後面，則配對後在排版設定中會顯示已配對的零件
                                 //會從同零件編號群中的第一個開始標記，而不是一開始所選擇的零件
-                                int dataViewIndex = DataViews.FindIndex(el => el.PartNumber == _[minIndex][q].PartNumber[c] && el.Match.FindIndex(el2 => el2 == true) != -1);
 
-                                MaterialDataViews[MaterialDataViews.Count - 1].Parts.Add(DataViews[dataViewIndex]);
-                                MaterialDataViews[MaterialDataViews.Count - 1].Material = DataViews[dataViewIndex].Material;
+                                //20221222追加el.SortCount > 0  避免配對時配對到相同零件編號但構件編號不同的零件
+                                int dataViewIndex = DataViews.FindIndex(el => el.SortCount > 0 && el.PartNumber == MinPop[q].PartNumber[c] && el.Match.Exists(el2 => el2 == true));
+                                NewMaterial.Parts.Add(DataViews[dataViewIndex]);
+                                NewMaterial.Material = DataViews[dataViewIndex].Material;
+
                                 int matchIndex = DataViews[dataViewIndex].Match.IndexOf(el => el == true);
-                                //bool aa = DataViews[dataViewIndex].Match[matchIndex];
                                 DataViews[dataViewIndex].Match[matchIndex] = false;
+                                //20221222追加SortCount--
+                                DataViews[dataViewIndex].SortCount--;
                             }
+
+                            MaterialDataViews.Add(NewMaterial);
                             startNumber++;
                         }
                     }
