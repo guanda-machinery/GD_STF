@@ -1502,7 +1502,7 @@
                                 </Grid>
                             </Grid>
                             <Grid  Grid.Row="1">
-                            <Button Width="220" Height="60" HorizontalAlignment="Right" Margin="20,10,20,0" FontSize="24"
+                            <Button Width="220" Height="60" HorizontalAlignment="Right" Margin="20,10" FontSize="24"
                                 Content="切換頁面" Style="{StaticResource SiegCustomButtonGold}" Command="{Binding ChangeDrillVisCommand}" />
                             </Grid>
                         </Grid>
