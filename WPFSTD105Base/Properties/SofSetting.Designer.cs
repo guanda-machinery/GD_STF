@@ -12,7 +12,7 @@ namespace WPFSTD105.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.2.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.4.0.0")]
     public sealed partial class SofSetting : global::System.Configuration.ApplicationSettingsBase {
         
         private static SofSetting defaultInstance = ((SofSetting)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new SofSetting())));
@@ -166,22 +166,7 @@ namespace WPFSTD105.Properties {
                 this["Null"] = value;
             }
         }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#808080")]
-        public string Surplus
-        {
-            get
-            {
-                return ((string)(this["Surplus"]));
-            }
-            set
-            {
-                this["Surplus"] = value;
-            }
-        }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("#FF303030")]
@@ -431,6 +416,18 @@ namespace WPFSTD105.Properties {
             }
             set {
                 this["Report_Moving"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#808080")]
+        public string Surplus {
+            get {
+                return ((string)(this["Surplus"]));
+            }
+            set {
+                this["Surplus"] = value;
             }
         }
     }

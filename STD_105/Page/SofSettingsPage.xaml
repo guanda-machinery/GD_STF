@@ -27,7 +27,7 @@
     mc:Ignorable="d">
     <WPFBase:BasePage.Resources>
         <ResourceDictionary>
-            <local:Language_ToStringConverter x:Key="Language" />          
+            <local:Language_ToStringConverter x:Key="Language" />
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
     <Grid x:Name="grid_Main">
@@ -353,12 +353,16 @@
             </TabItem>
             <TabItem Header="選配設定" Cursor="Arrow" Style="{StaticResource tabitem_STD}">
                 <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="18*"/>
+                        <ColumnDefinition Width="113*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <dxlc:LayoutControl Name="layoutControl1" dx:ThemeManager.ThemeName="VS2019Dark"
-                         Background="Transparent" Orientation="Vertical" StretchContentVertically="False" dx:ScrollBarExtensions.ScrollBarMode="Standard">
+                         Background="Transparent" Orientation="Vertical" StretchContentVertically="False" dx:ScrollBarExtensions.ScrollBarMode="Standard" Grid.ColumnSpan="2">
                         <dxlc:LayoutControl.Resources>
                             <Style TargetType="{ x:Type dxlc:DataLayoutItem }" BasedOn="{ StaticResource lab_LayoutControl_STD }">
                             </Style>
@@ -376,7 +380,7 @@
                             </dxmvvm:Interaction.Behaviors>
                         </dxlc:DataLayoutControl>
                     </dxlc:LayoutControl>
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10,0">
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="358,0,0,0" Grid.Column="1">
                         <Button Content="恢復出廠設定" Width="160" Style="{ StaticResource btn_CommonFunctionKey_STD }" Command="{Binding }" Margin="10"/>
                         <Button Content="存檔" Style="{ StaticResource btn_CommonFunctionKey_STD }" Command="{Binding SaveOptionSettingCommand }"/>
                     </StackPanel>
