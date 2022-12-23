@@ -286,6 +286,7 @@
                         </ResourceDictionary>
                     </TabControl.Resources>
                     <TabItem Header="加工組合清單" Name="MachiningCombinationalTabItem" >
+
                         <dxg:GridControl Margin="-11"  Cursor="Arrow" 
                                              Name="MachiningCombinational_List_GridControl"    
                                              AutoGenerateColumns="None" 
@@ -333,7 +334,6 @@
                                             <Setter Property="TextBlock.Foreground" Value="Black"/>
                                         </Style>
                                     </dxg:TableView.CellStyle>
-
                                     <dxg:TableView.Header>
                                         <TextBlock Text="零件清單" FontSize="16" Foreground="Black"/>
                                     </dxg:TableView.Header>
@@ -470,15 +470,14 @@ AllowEditing="False"
                 </TabControl>
             </Border>
             <Border  Grid.Column="1"  Margin="5" Background="#f0f0f0">
-                <GroupBox Grid.Column="1" Padding="0" 
-                          Visibility="{Binding ElementName=MachiningCombinationalTabItem,Path=IsSelected, Converter={dx:BooleanToVisibilityConverter}}">
-                    <GroupBox.Header>
-                        <Grid Margin="5" Height="35">
-                            <TextBlock Text="加工進度表"  FontSize="16" VerticalAlignment="Center" ></TextBlock>
-                        </Grid>
-                    </GroupBox.Header>
-
-                        <dxg:GridControl Margin="0,0.5,0,0" 
+                <Grid Visibility="{Binding ElementName=MachiningCombinationalTabItem,Path=IsSelected, Converter={dx:BooleanToVisibilityConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="46.2"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="加工進度表"  FontSize="16" VerticalAlignment="Center"  Margin="5"/>
+                    <Border VerticalAlignment="Bottom" Background="#ababab" Height="1"/>
+                    <dxg:GridControl Margin="0,0,0,0" 
                         Style="{StaticResource SiegCustomGridControl}"
                         Name="MachiningSchedule_List_GridControl"    
                         AutoGenerateColumns="None" 
@@ -486,18 +485,19 @@ AllowEditing="False"
                         ItemsSource="{Binding Finish_UndoneDataViews,UpdateSourceTrigger=PropertyChanged}"
                         SelectionMode="Row"
                         MinHeight="200"  MaxHeight="300">
-                                <dxg:GridControl.IsEnabled>
-                                    <MultiBinding Converter="{local:BooleanArrayIntersectToBooleanConverter}">
-                                        <MultiBinding.Bindings>
-                                            <Binding Path="Input_by_Computer_RadioButtonIsChecked"/>
-                                            <Binding Path="ApplicationViewModel.AppManualConnect"
+                        <dxg:GridControl.IsEnabled>
+                            <MultiBinding Converter="{local:BooleanArrayIntersectToBooleanConverter}">
+                                <MultiBinding.Bindings>
+                                    <Binding Path="Input_by_Computer_RadioButtonIsChecked"/>
+                                    <Binding Path="ApplicationViewModel.AppManualConnect"
                                                  Source="{x:Static spa:ViewLocator.Instance}"
                                                  Converter="{local:AntiLogicConverter}"/>
-                                        </MultiBinding.Bindings>
-                                    </MultiBinding>
-                                </dxg:GridControl.IsEnabled>
-                                <dxg:GridControl.View >
-                                    <dxg:TableView     
+                                </MultiBinding.Bindings>
+                            </MultiBinding>
+                        </dxg:GridControl.IsEnabled>
+                        <dxg:GridControl.View >
+                            <dxg:TableView     
+                            
                                 AllowEditing="False"              
                                         IsColumnMenuEnabled ="False"
                                        AllowSorting="false"
@@ -515,67 +515,66 @@ AllowEditing="False"
                                     SearchPanelFindMode="Always"    
                         ShowIndicator="False" 
                                     SearchDelay="0">
-                                        <dxg:TableView.CellStyle>
-                                            <Style>
-                                                <Setter Property="TextBlock.FontSize" Value="12"/>
-                                                <Setter Property="TextBlock.Foreground" Value="Black"/>
-                                            </Style>
-                                        </dxg:TableView.CellStyle>
-                                    </dxg:TableView>
-                                </dxg:GridControl.View>
-                                <!-- <dxg:GridColumn FieldName=""  MaxWidth="40" MinWidth="40"  FixedWidth="True" Header="狀態" />-->
-                                <dxg:GridColumn FieldName="PositionEnum"  Binding="{Binding PositionEnum, Converter={local:PositionStatusEnumToStringConverter},UpdateSourceTrigger=PropertyChanged}"
+                                <dxg:TableView.CellStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.FontSize" Value="12"/>
+                                        <Setter Property="TextBlock.Foreground" Value="Black"/>
+                                    </Style>
+                                </dxg:TableView.CellStyle>
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+                        <!-- <dxg:GridColumn FieldName=""  MaxWidth="40" MinWidth="40"  FixedWidth="True" Header="狀態" />-->
+                        <dxg:GridColumn FieldName="PositionEnum"  Binding="{Binding PositionEnum, Converter={local:PositionStatusEnumToStringConverter},UpdateSourceTrigger=PropertyChanged}"
                                         MaxWidth="70" MinWidth="70"  FixedWidth="True" Header="位置">
-                                    <dxg:GridColumn.CellStyle>
-                                        <Style TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
-                                            <Setter Property="Background" Value="{Binding Row.PositionEnum, Converter={local:TypeSettingDataViewToSolidColorBrushConverter}}" />
-                                            <Setter Property="TextBlock.FontSize" Value="12"/>
-                                            <Style.Triggers>
-                                                <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
-                                                    <Setter Property="Background"
+                            <dxg:GridColumn.CellStyle>
+                                <Style TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
+                                    <Setter Property="Background" Value="{Binding Row.PositionEnum, Converter={local:TypeSettingDataViewToSolidColorBrushConverter}}" />
+                                    <Setter Property="TextBlock.FontSize" Value="12"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
+                                            <Setter Property="Background"
                                                             Value="{Binding Row.PositionEnum, Converter={local:TypeSettingDataViewToSolidColorBrushConverter}, UpdateSourceTrigger=PropertyChanged}" />
-                                                </Trigger>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="LightSlateGray" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </dxg:GridColumn.CellStyle>
-                                </dxg:GridColumn>
-                                <dxg:GridColumn MaxWidth="70" MinWidth="70" Header="進度(%)" >
-                                    <dxg:GridColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Grid>
-                                                <ProgressBar Value="{Binding Row.Schedule,UpdateSourceTrigger=PropertyChanged}" 
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="LightSlateGray" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </dxg:GridColumn.CellStyle>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn MaxWidth="70" MinWidth="70" Header="進度(%)" >
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <ProgressBar Value="{Binding Row.Schedule,UpdateSourceTrigger=PropertyChanged}" 
                                                      Style="{StaticResource BaseStyle}"  Margin="-1"
                                                      Height="auto" Minimum="0" Maximum="100" Background="White" />
-                                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" >
-                                                    <TextBlock Text="{Binding Row.Schedule,UpdateSourceTrigger=PropertyChanged}"   />
-                                                    <TextBlock Text="%"/>
-                                                </StackPanel>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </dxg:GridColumn.CellTemplate>
-                                </dxg:GridColumn>
-                                <dxg:GridColumn FieldName="MaterialNumber" FixedWidth="True" Width="0"  IsSmart="True" Header="排版編號" />
-                                <dxg:GridColumn FieldName="Profile"  FixedWidth="True" Width="0"   IsSmart="True" Header="斷面規格"   />
-                                <dxg:GridColumn FieldName="Material"  FixedWidth="True" Width="0"   IsSmart="True" Header="材質"    />
-                                <dxg:GridColumn FieldName=""  IsSmart="True"  FixedWidth="True" Width="0"  Header="數量"  />
-                                <dxg:GridColumn FieldName=""  IsSmart="True"  FixedWidth="True" Width="0"  Header="已完成"  />
-                                <dxg:GridColumn FieldName="LengthStr"  FixedWidth="True" Width="0"   IsSmart="True" Header="素材長"   />
-                                <dxg:GridColumn  FixedWidth="True" Width="0"  Binding="{c:Binding LengthStr-Loss}"   IsSmart="True" Header="餘長"    >
-                                    <dxg:GridColumn.EditSettings>
-                                        <dxe:TextEditSettings DisplayFormat="F2"/>
-                                    </dxg:GridColumn.EditSettings>
-                                </dxg:GridColumn>
-                                <dxg:GridColumn FieldName=""  FixedWidth="True" Width="0"  IsSmart="True" Header="標題一"   />
-                                <dxg:GridColumn FieldName=""   FixedWidth="True" Width="0"  IsSmart="True" Header="標題二"   />
+                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" >
+                                            <TextBlock Text="{Binding Row.Schedule,UpdateSourceTrigger=PropertyChanged}"   />
+                                            <TextBlock Text="%"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="MaterialNumber" FixedWidth="True" Width="0"  IsSmart="True" Header="排版編號" />
+                        <dxg:GridColumn FieldName="Profile"  FixedWidth="True" Width="0"   IsSmart="True" Header="斷面規格"   />
+                        <dxg:GridColumn FieldName="Material"  FixedWidth="True" Width="0"   IsSmart="True" Header="材質"    />
+                        <dxg:GridColumn FieldName=""  IsSmart="True"  FixedWidth="True" Width="0"  Header="數量"  />
+                        <dxg:GridColumn FieldName=""  IsSmart="True"  FixedWidth="True" Width="0"  Header="已完成"  />
+                        <dxg:GridColumn FieldName="LengthStr"  FixedWidth="True" Width="0"   IsSmart="True" Header="素材長"   />
+                        <dxg:GridColumn  FixedWidth="True" Width="0"  Binding="{c:Binding LengthStr-Loss}"   IsSmart="True" Header="餘長"    >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings DisplayFormat="F2"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName=""  FixedWidth="True" Width="0"  IsSmart="True" Header="標題一"   />
+                        <dxg:GridColumn FieldName=""   FixedWidth="True" Width="0"  IsSmart="True" Header="標題二"   />
 
 
 
-                            </dxg:GridControl>
-
-                </GroupBox>
+                    </dxg:GridControl>
+                </Grid>
             </Border>
             <TextBlock Text="❸"  Style="{StaticResource HintTextBlock}" Margin="5" Grid.Row="1"                       
                        IsEnabled="{Binding HintStep3}">

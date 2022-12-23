@@ -12,9 +12,13 @@ namespace STD_105
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            //加工所在位置 第二階段需支援多語系
-            return value;
-            //throw new NotImplementedException();
+            if(value is GD_STD.Enum.PositionStatusEnum)
+            {
+                //加工所在位置 第二階段需支援多語系
+                return ((GD_STD.Enum.PositionStatusEnum)value).ToString();
+            }
+            else 
+                return value;
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

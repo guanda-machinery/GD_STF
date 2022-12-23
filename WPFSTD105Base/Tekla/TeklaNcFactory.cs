@@ -636,7 +636,7 @@ namespace WPFSTD105.Tekla
                     // MessageBoxImage.Error,
                     // MessageBoxResult.None,
                     // MessageBoxOptions.None,
-                    // FloatingMode.Popup);
+                    //  FloatingMode.Window);
                     //} 
                     #endregion
                     pathcount++;
@@ -714,7 +714,7 @@ namespace WPFSTD105.Tekla
                     MessageBoxImage.Error,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
         }
@@ -1026,7 +1026,7 @@ namespace WPFSTD105.Tekla
              MessageBoxImage.Error,
              MessageBoxResult.None,
              MessageBoxOptions.None,
-             FloatingMode.Popup);
+              FloatingMode.Window);
             }
             #endregion
         }

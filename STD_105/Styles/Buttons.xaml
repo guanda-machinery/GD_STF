@@ -4,6 +4,7 @@
     xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
     xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Texts.xaml" />
@@ -213,14 +214,14 @@
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 Text="{TemplateBinding Content}"
                                 Visibility="{TemplateBinding WPFBase:IsBusyProperty.Value,
-                                                             Converter={WPFBase:BooleanToVisiblityConverter}}" />
+                                                             Converter={dx:BooleanToVisibilityConverter}}" />
                             <TextBlock
                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                 Foreground="Black"
                                 Style="{StaticResource SpinningText}"
                                 Visibility="{TemplateBinding WPFBase:IsBusyProperty.Value,
-                                                             Converter={WPFBase:BooleanToVisiblityConverter},
+                                                             Converter={dx:BooleanToVisibilityConverter},
                                                              ConverterParameter=True}" />
                         </Grid>
                     </Border>
@@ -294,7 +295,7 @@
                                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                         Text="{TemplateBinding Content}"
                                         Visibility="{TemplateBinding WPFBase:IsBusyProperty.Value,
-                                                                     Converter={WPFBase:BooleanToVisiblityConverter}}" />
+                                                                     Converter={dx:BooleanToVisibilityConverter}}" />
                                 </Border>
                             </Viewbox>
                         </Grid>

@@ -227,7 +227,7 @@ namespace WPFSTD105.ViewModel
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
                 }
             });
         }

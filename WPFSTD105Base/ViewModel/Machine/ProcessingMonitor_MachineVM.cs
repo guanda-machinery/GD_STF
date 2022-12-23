@@ -1232,8 +1232,15 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                             int selected = Finish_UndoneDataViews.IndexOf(dataView);
                             if (selected != -1)
                             {
-                                /*if (_WorkMaterials[selected].MaterialNumber == null)
-                                    _WorkMaterials[selected].MaterialNumber = Finish_UndoneDataViews[selected].MaterialNumber;*/
+                                if (_WorkMaterials[selected].MaterialNumber == null)
+                                {
+                                    _WorkMaterials[selected].MaterialNumber = new ushort[20];
+                                    Array.Copy(Finish_UndoneDataViews[selected].MaterialNumber.ToCharArray(), _WorkMaterials[selected].MaterialNumber, Finish_UndoneDataViews[selected].MaterialNumber.Length);
+                                }
+                                if (_WorkMaterials[selected].AssemblyNumber == null)
+                                {
+                                    _WorkMaterials[selected].AssemblyNumber = new ushort[25];
+                                }
                                 _WorkMaterials[selected].Finish = 100;
                                 _WorkMaterials[selected].IsExport = true;
                                 _WorkMaterials[selected].Position = -2;
@@ -1244,11 +1251,19 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                                 }
                                 STDSerialization ser = new STDSerialization();
                                 ser.SetWorkMaterialBackup(_WorkMaterials[selected]);
-
                                 Finish_UndoneDataViews[selected].Schedule = 100;
                                 Finish_UndoneDataViews[selected].PositionEnum = PositionStatusEnum.完成;       //"完成";
                                 if (!_Finish.Exists(x => x == (short)selected))
+                                {
                                     _Finish.Add(Convert.ToInt16(selected));
+                                }
+
+                                if (!_SendIndex.Exists(x => x == (short)selected))
+                                {
+                                    _SendIndex.Add(Convert.ToInt16(selected));
+                                }
+
+                                AddOperatingLog(LogSourceEnum.Machine, $"將素材編號{Finish_UndoneDataViews[selected].MaterialNumber}設定為完成加工");
                             }
                             RefreshScheduleGridC();
                         }
@@ -1399,7 +1414,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                     return;
 
                     //throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
@@ -1491,7 +1506,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                                 MessageBoxImage.Exclamation,
                                 MessageBoxResult.None,
                                 MessageBoxOptions.None,
-                                FloatingMode.Popup);
+                                 FloatingMode.Window);
                             return;
                         }
                         file.DoWork();
@@ -2806,7 +2821,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
 
 
         /// <summary>
-        /// 頁面監聽
+        /// 初始化
         /// </summary>
         public void SetSerializationInit(WPFSTD105.ModelExt _Model)
         {
@@ -2822,7 +2837,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                         NewHostThread();
                     }
 
-                    int synIndex = 0;
+                    //int synIndex = 0;
                     if (ApplicationViewModel.PanelButton.Key == KEY_HOLE.MANUAL) //如果沒有在自動狀況下
                     {
                         if (errorCount == 0) //如果沒有發送失敗
@@ -2834,7 +2849,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                         }
 
                         //如有備份檔就寫回給 Codesys
-                        for (int i = synIndex; i < Finish_UndoneDataViews.Count; i++)
+                        for (int i = 0; i < Finish_UndoneDataViews.Count; i++)
                         {
                             //葉:需要比對衝突
                             STDSerialization ser = new STDSerialization();
@@ -2846,15 +2861,19 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                                 int workSize = Marshal.SizeOf(typeof(WorkMaterial));
                                 if (work.Value.AssemblyNumber != null && work.Value.MaterialNumber != null)
                                 {
-                                    WriteCodesysMemor.SetMonitorWorkOffset(work.Value.ToByteArray(), workOffset + (workSize * i)); //發送加工陣列
-                                    _SendIndex.Add(Convert.ToInt16(i));
-                                    if (work.Value.Position == -2) //如果是完成的狀態
+                                    if (work.Value.Position == -2 ) //如果是完成的狀態
                                     {
                                         Finish_UndoneDataViews[i].Schedule = 100;
                                         Finish_UndoneDataViews[i].PositionEnum = PositionStatusEnum.完成;       //"完成";
                                         _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
                                     }
-                                    synIndex = i;
+                                    else
+                                    {
+                                        WriteCodesysMemor.SetMonitorWorkOffset(work.Value.ToByteArray(), workOffset + (workSize * i)); //發送加工陣列
+
+                                    }
+                                    _SendIndex.Add(Convert.ToInt16(i));
+                                    // synIndex = i;
                                 }
                             }
                         }
@@ -2873,14 +2892,14 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                         using (Memor.ReadMemorClient client = new Memor.ReadMemorClient())
                         {
                             //同步列表
-                            for (int i = synIndex; i < Finish_UndoneDataViews.Count; i++)
+                            for (int i = 0; i < Finish_UndoneDataViews.Count; i++)
                             {
                                 _WorkMaterials[i] = client.GetWorkMaterial(Convert.ToUInt16(i));
                                 if (_WorkMaterials[i].BoltsCountL != 0 || _WorkMaterials[i].BoltsCountR != 0 || _WorkMaterials[i].IndexBoltsM != 0)
                                 {
                                     _SendIndex.Add(Convert.ToInt16(i));
                                 }
-                                synIndex = i;
+                              
                             }
                         }
                     }

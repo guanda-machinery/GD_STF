@@ -266,7 +266,7 @@
                                     </Style>
                                 </Grid.Resources>
                                 <!--BOX-->
-                                <Viewbox Visibility="{Binding VisibilityBOX, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                <Viewbox Visibility="{Binding VisibilityBOX, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
                                     <Canvas Name="can_BOX"
                                             Width="1280"
                                             Height="1024">
@@ -288,7 +288,7 @@
                                     </Canvas>
                                 </Viewbox>
                                 <!--Beam-->
-                                <Viewbox Visibility="{Binding VisibilityH, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                <Viewbox Visibility="{Binding VisibilityH, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
                                     <Canvas Name="can_Beam"
                                             Width="1280"
                                             Height="1024">
@@ -314,7 +314,7 @@
                                     </Canvas>
                                 </Viewbox>
                                 <!--CH-->
-                                <Viewbox Visibility="{Binding VisibilityCH, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                <Viewbox Visibility="{Binding VisibilityCH, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
                                     <Canvas Name="can_CH"
                                             Width="1280"
                                             Height="1024">
@@ -340,7 +340,7 @@
                                     </Canvas>
                                 </Viewbox>
                                 <!--L-->
-                                <Viewbox Visibility="{Binding VisibilityL, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                <Viewbox Visibility="{Binding VisibilityL, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
                                     <Canvas Name="can_L"
                                             Width="1280"
                                             Height="1024">
@@ -533,7 +533,7 @@
                   Visibility="Collapsed"/>
         <Grid Grid.ColumnSpan="5">
             <!--另存視窗-->
-            <Grid Visibility="{ Binding SaveAsWindowsControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+            <Grid Visibility="{Binding SaveAsWindowsControl, Converter={dx:BooleanToVisibilityConverter}}">
                 <STD:SaveAs SubmitButtonCommand="{Binding SaveModelRoSystemCommand}"
                             CancelButtonCommand="{ Binding CloseSaveAsWindowsCommand }" />
             </Grid>

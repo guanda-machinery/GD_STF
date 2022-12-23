@@ -114,7 +114,7 @@ namespace WPFSTD105
                 MessageBoxImage.Exclamation,
                 MessageBoxResult.None,
                 MessageBoxOptions.None,
-                FloatingMode.Popup);
+                 FloatingMode.Window);
             });
         }
         /// <inheritdoc/>
@@ -136,7 +136,7 @@ namespace WPFSTD105
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.DefaultDesktopOnly,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
                     //MessageBox.Show("請選擇專案", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                     return;
                 }

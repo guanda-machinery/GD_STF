@@ -590,7 +590,7 @@
                                         <WPFBase:KnobAddControl Style="{ StaticResource KnobStyle }"
                                     CurrentValue="{Binding EntranceRack_CurrentValue}"
                                     GaugeBackgroundColor="{StaticResource clr_DimGray}"
-                                    IsEnabled="{Binding ApplicationViewModel.PanelButton.EntranceRack, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}"
+                                    IsEnabled="{Binding ApplicationViewModel.PanelButton.EntranceRack, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={dx:BooleanToVisibilityConverter}}"
                                     KnobButtonCommand="{Binding SelectCount_EntranceRack_Command}"
                                     MajorDivisionsCount="{Binding EntranceTraverseNumber, Source={x:Static GD_STD:Optional.Default}, Converter={local:RackMajorDivisionsCountConverter}}"
                                     MajorTickColor="{StaticResource clr_LightGray}"
@@ -613,7 +613,7 @@
                                     ScaleRadius="95"
                                     ScaleStartAngle="160"
                                     ScaleSweepAngle="220" 
-                                     Visibility="{Binding ApplicationViewModel.PanelButton.EntranceRack, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}" />
+                                     Visibility="{Binding ApplicationViewModel.PanelButton.EntranceRack, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={dx:BooleanToVisibilityConverter}}" />
                                     </Viewbox>
                                     <!--  出口  -->
                                     <Viewbox Margin="20">
@@ -642,7 +642,7 @@
                                     ScaleRadius="95"
                                     ScaleStartAngle="160"
                                     ScaleSweepAngle="220"
-                                    Visibility="{Binding ApplicationViewModel.PanelButton.ExportRack, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}" />
+                                    Visibility="{Binding ApplicationViewModel.PanelButton.ExportRack, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={dx:BooleanToVisibilityConverter Invert=True}}" />
                                     </Viewbox>
                                 </Grid>
                             </Grid>
@@ -796,7 +796,7 @@
                 </GroupBox>-->
 
                                 <!--  上浮滾輪  -->
-                                <!--<GroupBox Grid.Row="1" Grid.ColumnSpan="2" Header="滾輪操作" Visibility="{ Binding ElementName=rad_Wheel, Path=IsChecked, Converter={ WPFBase:NoNullBooleanToVisibilityConverter }}">
+                                <!--<GroupBox Grid.Row="1" Grid.ColumnSpan="2" Header="滾輪操作" Visibility="{ Binding ElementName=rad_Wheel, Path=IsChecked, Converter={ dx:BooleanToVisibilityConverter Invert=True }}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>

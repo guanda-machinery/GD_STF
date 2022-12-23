@@ -85,7 +85,7 @@ namespace WPFSTD105.Model
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                     return;
 
                     //throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
@@ -221,7 +221,7 @@ namespace WPFSTD105.Model
                                 MessageBoxImage.Exclamation,
                                 MessageBoxResult.None,
                                 MessageBoxOptions.None,
-                                FloatingMode.Popup);
+                                 FloatingMode.Window);
                             return;
                         }
                         file.DoWork();
@@ -409,7 +409,7 @@ namespace WPFSTD105.Model
         //            MessageBoxImage.Exclamation,
         //            MessageBoxResult.None,
         //            MessageBoxOptions.None,
-        //            FloatingMode.Popup);
+        //             FloatingMode.Window);
         //            return;
 
         //            //throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
@@ -501,7 +501,7 @@ namespace WPFSTD105.Model
         //                        MessageBoxImage.Exclamation,
         //                        MessageBoxResult.None,
         //                        MessageBoxOptions.None,
-        //                        FloatingMode.Popup);
+        //                         FloatingMode.Window);
         //                    return;
         //                }
         //                file.DoWork();

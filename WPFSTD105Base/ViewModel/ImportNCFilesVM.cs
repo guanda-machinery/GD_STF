@@ -188,7 +188,7 @@ namespace WPFSTD105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                         return;
                     //MessageBoxResult saveAsResult = MessageBox.Show($"請問是否要備份之前載入的檔案", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                     //if (saveAsResult == MessageBoxResult.Yes) //如果要備份檔案
@@ -440,7 +440,7 @@ namespace WPFSTD105
                        MessageBoxImage.Exclamation,
                        MessageBoxResult.None,
                        MessageBoxOptions.None,
-                       FloatingMode.Popup);
+                        FloatingMode.Window);
 
 
                     //頁面跳轉
