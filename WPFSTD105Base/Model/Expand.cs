@@ -1908,20 +1908,30 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.Y = HypotenusePoint[z].Item2;
                         TmpBoltsArr.GUID = Guid.NewGuid();
                         TmpBoltsArr.BlockName = HypotenuseTYPE.HypotenuseMan.ToString();
-                        Bolts3DBlock bolts;
+                        Bolts3DBlock bolts = new Bolts3DBlock(new GroupBoltsAttr());
                         List<Point3D> list = new List<Point3D> ();
                         list.Add(new Point3D() { X = HypotenusePoint[z].Item1, Y = HypotenusePoint[z].Item2 });// HypotenusePoint[z].Select(x => new Point3D { X = x.Item1, Y = x.Item2 }).ToList();
-                        if (!isHypotenusePointExist(model, FACE.TOP, AXIS_MODE.HypotenusePOINT, list))
+                        if (isHypotenusePointExist(model, FACE.TOP, AXIS_MODE.HypotenusePOINT, list))
                         {
-                            var entities = model.Blocks.Where(x => x.Name != "RootBlock")
+                            if (model.Blocks.Where(x => x.Name != "RootBlock")
+                                .SelectMany(x => x.Entities, (aa, bb) => new { Block = aa, aa.Entities, bb.EntityData })
+                                .Any(x =>
+                                x.EntityData.GetType() == typeof(BoltAttr) &&
+                                ((BoltAttr)x.EntityData).Face == FACE.TOP &&
+                                ((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT &&
+                                list.Contains(new Point3D { X = ((BoltAttr)x.EntityData).X, Y = ((BoltAttr)x.EntityData).Y })
+                                ))
+                            {
+                                var entities = model.Blocks.Where(x => x.Name != "RootBlock")
                                 .SelectMany(x => x.Entities, (aa, bb) => new { Block = aa, aa.Entities, bb.EntityData })
                                 .FirstOrDefault(x =>
                                 x.EntityData.GetType() == typeof(BoltAttr) &&
-                                ((BoltAttr)x.EntityData).Face== FACE.TOP &&
-                                ((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT && 
+                                ((BoltAttr)x.EntityData).Face == FACE.TOP &&
+                                ((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT &&
                                 list.Contains(new Point3D { X = ((BoltAttr)x.EntityData).X, Y = ((BoltAttr)x.EntityData).Y })
                                 ).Entities;
-                            bolts = new Bolts3DBlock(entities, TmpBoltsArr);
+                                bolts = new Bolts3DBlock(entities, TmpBoltsArr);
+                            }
                         }
                         else
                         {

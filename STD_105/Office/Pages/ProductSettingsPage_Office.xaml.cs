@@ -62,8 +62,6 @@ namespace STD_105.Office
         /// </summary>
         public int PreIndex { get; set; }
 
-        public ObservableCollection<DataCorrespond> DataCorrespond { get; set; } = new ObservableCollection<DataCorrespond>();
-
         /// <summary>
         /// 是否為首次匯入NC&BOM的falg
         /// </summary>
@@ -104,6 +102,7 @@ namespace STD_105.Office
             //drawing.Unlock("UF20-HN12H-22P6C-71M1-FXP4");
             drawing.LineTypes.Add(Steel2DBlock.LineTypeName, new float[] { 35, -35, 35, -35 });
             drawing.Secondary = model;
+            //drawing.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
             #endregion
 
             tabControl.SelectedIndex = 1;
@@ -1874,7 +1873,7 @@ namespace STD_105.Office
                     ViewModel.modifyHole = false;
                     ViewModel.GroupBoltsAttr = original;
                     ViewModel.fromModifyHole = false;
-                    ViewModel.showMessage = false;
+                    ViewModel.showMessage = true;
 
                     model.Invalidate();//刷新模型
                     //if (!ViewModel.fAddSteelPart)
@@ -3065,7 +3064,7 @@ namespace STD_105.Office
             steelAttr.AsseNumber = ViewModel.AssemblyNumberProperty;
             steelAttr.PartNumber = ViewModel.PartNumberProperty;
             steelAttr.Length = ViewModel.ProductLengthProperty;
-            steelAttr.Kg = ViewModel.CurrentPartSteelAttr.Kg;
+            steelAttr.Kg = ViewModel.KGProperty;
             steelAttr.Weight = ViewModel.ProductWeightProperty;
             steelAttr.Name = ViewModel.ProductNameProperty;
             steelAttr.Material = ViewModel.ProductMaterialProperty;
@@ -5016,22 +5015,34 @@ namespace STD_105.Office
                 //ViewModel.ProfileIndex = cbx_SectionTypeComboBox.SelectedIndex;
                 ////cbx_SectionTypeComboBox.SelectedIndex = ViewModel.ProfileIndex;
                 //ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(cbx_SteelTypeComboBox.Text)}.inp");
-                var pf = ViewModel.ProfileList[cbx_SectionTypeComboBox.SelectedIndex];
+                var pf = ViewModel.ProfileList.FirstOrDefault(x => x.Profile == ViewModel.SteelSectionProperty);
+                if (pf == null)
+                {
+                    return;
+                }
                 ViewModel.SteelAttr.H = pf.H;
+                ViewModel.HProperty = pf.H;
                 ViewModel.SteelAttr.W = pf.W;
+                ViewModel.WProperty = pf.W;
                 ViewModel.SteelAttr.t1 = pf.t1;
+                ViewModel.t1Property = pf.t1;
                 ViewModel.SteelAttr.t2 = pf.t2;
+                ViewModel.t2Property = pf.t2;
                 ViewModel.SteelAttr.Kg = pf.Kg;
+                ViewModel.KGProperty = pf.Kg;
                 ViewModel.SteelAttr.Profile = pf.Profile;
-                ViewModel.CurrentPartSteelAttr = ViewModel.ProfileList[cbx_SectionTypeComboBox.SelectedIndex]; //ViewModel.SteelAttr;
+                //ViewModel.CurrentPartSteelAttr = pf; //ViewModel.SteelAttr;
                 ViewModel.SteelSectionProperty = pf.Profile;
                 cbx_SectionTypeComboBox.Text = pf.Profile;
+                if (ViewModel.CurrentPartSteelAttr != null)
+                {
+                    ViewModel.CurrentPartSteelAttr.H = pf.H;
+                    ViewModel.CurrentPartSteelAttr.W = pf.W;
+                    ViewModel.CurrentPartSteelAttr.t1 = pf.t1;
+                    ViewModel.CurrentPartSteelAttr.t2 = pf.t2;
+                    ViewModel.CurrentPartSteelAttr.Profile = pf.Profile;
+                }
 
-                ViewModel.CurrentPartSteelAttr.H = pf.H;
-                ViewModel.CurrentPartSteelAttr.W = pf.W;
-                ViewModel.CurrentPartSteelAttr.t1 = pf.t1;
-                ViewModel.CurrentPartSteelAttr.t2 = pf.t2;
-                ViewModel.CurrentPartSteelAttr.Profile = pf.Profile;
                 //this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
             }
         }
@@ -5056,20 +5067,30 @@ namespace STD_105.Office
             //cbx_SectionTypeComboBox.Text = CuurentSelectedPart.Profile;
             //this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
             //cbx_SectionTypeComboBox.Text = CuurentSelectedPart.Profile;
-
+            ViewModel.SteelAttr = CuurentSelectedPart.steelAttr;
             ViewModel.PartNumberProperty = CuurentSelectedPart.steelAttr.PartNumber;
             ViewModel.AssemblyNumberProperty = CuurentSelectedPart.steelAttr.AsseNumber;
             ViewModel.ProductLengthProperty = CuurentSelectedPart.steelAttr.Length;
-            if (CuurentSelectedPart.steelAttr.Kg != 0)
-            {
-                ViewModel.ProductWeightProperty = (CuurentSelectedPart.steelAttr.Length / 1000) * CuurentSelectedPart.steelAttr.Kg;
-            }
-            else
-            {
-                ViewModel.ProductWeightProperty = CuurentSelectedPart.steelAttr.Weight;
-                if (CuurentSelectedPart.steelAttr.Weight == 0) ViewModel.ProductWeightProperty = ViewModel.CalculateSinglePartWeight();
-            }
+            ViewModel.SteelAttr.Length = CuurentSelectedPart.steelAttr.Length;
+            ViewModel.KGProperty = CuurentSelectedPart.steelAttr.Kg;
+            ViewModel.SteelAttr.Kg = CuurentSelectedPart.steelAttr.Kg;
+            ViewModel.t1Property = CuurentSelectedPart.steelAttr.t1;
+            ViewModel.t2Property = CuurentSelectedPart.steelAttr.t2;
+            ViewModel.HProperty = CuurentSelectedPart.steelAttr.H;
+            ViewModel.WProperty = CuurentSelectedPart.steelAttr.W;
+            //if (CuurentSelectedPart.steelAttr.Kg != 0)
+            //{
+            //    ViewModel.ProductWeightProperty = (CuurentSelectedPart.steelAttr.Length / 1000) * CuurentSelectedPart.steelAttr.Kg;
+            //}
+            //else
+            //{
+            //    ViewModel.ProductWeightProperty = CuurentSelectedPart.steelAttr.Weight;
+            //    if (CuurentSelectedPart.steelAttr.Weight == 0) ViewModel.ProductWeightProperty = ViewModel.CalculateSinglePartWeight();
+            //}
+            ViewModel.ProductWeightProperty = (ViewModel.ProductLengthProperty / 1000) * ViewModel.KGProperty;
             ViewModel.SteelAttr.Weight = ViewModel.ProductWeightProperty;
+            CuurentSelectedPart.Weight = ViewModel.ProductWeightProperty;
+            CuurentSelectedPart.steelAttr.Weight = ViewModel.ProductWeightProperty;
             ViewModel.ProductCountProperty = CuurentSelectedPart.Count;
             ViewModel.ProductNameProperty = CuurentSelectedPart.steelAttr.Name;
             ViewModel.ProductMaterialProperty = CuurentSelectedPart.steelAttr.Material;
@@ -5087,18 +5108,22 @@ namespace STD_105.Office
             ViewModel.PointBackProperty = CuurentSelectedPart.steelAttr.PointBack;
             ViewModel.PointFrontProperty = CuurentSelectedPart.steelAttr.PointFront;
             ViewModel.PointTopProperty = CuurentSelectedPart.steelAttr.PointTop;
-            ViewModel.CurrentPartSteelAttr.PointTop.DL = CuurentSelectedPart.steelAttr.PointTop.DL;
-            ViewModel.CurrentPartSteelAttr.PointTop.DR = CuurentSelectedPart.steelAttr.PointTop.DR;
-            ViewModel.CurrentPartSteelAttr.PointTop.UL = CuurentSelectedPart.steelAttr.PointTop.UL;
-            ViewModel.CurrentPartSteelAttr.PointTop.UR = CuurentSelectedPart.steelAttr.PointTop.UR;
-            ViewModel.CurrentPartSteelAttr.PointFront.DL = CuurentSelectedPart.steelAttr.PointFront.DL;
-            ViewModel.CurrentPartSteelAttr.PointFront.DR = CuurentSelectedPart.steelAttr.PointFront.DR;
-            ViewModel.CurrentPartSteelAttr.PointFront.UL = CuurentSelectedPart.steelAttr.PointFront.UL;
-            ViewModel.CurrentPartSteelAttr.PointFront.UR = CuurentSelectedPart.steelAttr.PointFront.UR;
-            ViewModel.CurrentPartSteelAttr.PointBack.DL = CuurentSelectedPart.steelAttr.PointBack.DL;
-            ViewModel.CurrentPartSteelAttr.PointBack.DR = CuurentSelectedPart.steelAttr.PointBack.DR;
-            ViewModel.CurrentPartSteelAttr.PointBack.UL = CuurentSelectedPart.steelAttr.PointBack.UL;
-            ViewModel.CurrentPartSteelAttr.PointBack.UR = CuurentSelectedPart.steelAttr.PointBack.UR;
+            ViewModel.CurrentPartSteelAttr = ViewModel.ProfileList.FirstOrDefault(x => x.Profile == profile);
+            if (ViewModel.CurrentPartSteelAttr != null)
+            {
+                ViewModel.CurrentPartSteelAttr.PointTop.DL = CuurentSelectedPart.steelAttr.PointTop.DL;
+                ViewModel.CurrentPartSteelAttr.PointTop.DR = CuurentSelectedPart.steelAttr.PointTop.DR;
+                ViewModel.CurrentPartSteelAttr.PointTop.UL = CuurentSelectedPart.steelAttr.PointTop.UL;
+                ViewModel.CurrentPartSteelAttr.PointTop.UR = CuurentSelectedPart.steelAttr.PointTop.UR;
+                ViewModel.CurrentPartSteelAttr.PointFront.DL = CuurentSelectedPart.steelAttr.PointFront.DL;
+                ViewModel.CurrentPartSteelAttr.PointFront.DR = CuurentSelectedPart.steelAttr.PointFront.DR;
+                ViewModel.CurrentPartSteelAttr.PointFront.UL = CuurentSelectedPart.steelAttr.PointFront.UL;
+                ViewModel.CurrentPartSteelAttr.PointFront.UR = CuurentSelectedPart.steelAttr.PointFront.UR;
+                ViewModel.CurrentPartSteelAttr.PointBack.DL = CuurentSelectedPart.steelAttr.PointBack.DL;
+                ViewModel.CurrentPartSteelAttr.PointBack.DR = CuurentSelectedPart.steelAttr.PointBack.DR;
+                ViewModel.CurrentPartSteelAttr.PointBack.UL = CuurentSelectedPart.steelAttr.PointBack.UL;
+                ViewModel.CurrentPartSteelAttr.PointBack.UR = CuurentSelectedPart.steelAttr.PointBack.UR;
+            }
 
             // 讀取切割線設定檔，並顯示TOP上的值
             STDSerialization ser = new STDSerialization(); //序列化處理器
@@ -5526,11 +5551,12 @@ namespace STD_105.Office
                             //this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                             //PieceListGridControl.SelectItem(selectIndex);
                             PieceListGridControl.View.FocusedRowHandle = focusedRowHandle;
+                            this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
+
                             //this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                             //ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{item.Type}.inp");
                             cbx_SectionTypeComboBox.Text = item.Profile;
                             //ViewModel.SteelSectionProperty = item.Profile;
-                            this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
                         }
                     }
                     #endregion
@@ -5699,14 +5725,15 @@ namespace STD_105.Office
 
                     Dictionary<string, ObservableCollection<SteelAttr>> saFile = ser.GetSteelAttr();
 
-                    (sa).Weight = ObSettingVM.PartWeight(new ProductSettingsPageViewModel()
-                    {
-                        Length = sa.Length,
-                        SteelType = (int)sa.Type,
-                        Profile = sa.Profile,
-                    }, saFile);
-                    ViewModel.ProductWeightProperty = (sa).Weight;
-                    ViewModel.SteelAttr.Weight = (sa).Weight;
+                    //(sa).Weight = ObSettingVM.PartWeight(new ProductSettingsPageViewModel()
+                    //{
+                    //    steelAttr = sa,
+                    //    Length = sa.Length,
+                    //    SteelType = (int)sa.Type,
+                    //    Profile = sa.Profile,
+                    //}, saFile);
+                    //ViewModel.ProductWeightProperty = (sa).Weight;
+                    //ViewModel.SteelAttr.Weight = (sa).Weight;
 
                     model.Refresh();
                     model.ZoomFit();//設置道適合的視口
@@ -5993,8 +6020,9 @@ namespace STD_105.Office
             if (aa != null)
             {
                 ObservableCollection<ProductSettingsPageViewModel> collection = new ObservableCollection<ProductSettingsPageViewModel>(ObSettingVM.GetData());
-
+                this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
                 ViewModel.DataViews = collection;
+                this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
                 //PreIndex = collection.FindIndex(x => x.DataName == aa.DataName);
                 PreIndex = collection.FindIndex(x => x.DataName == ViewModel.GuidProperty.ToString() && x.AssemblyNumber== ViewModel.AssemblyNumberProperty);
                 if (PreIndex != -1)

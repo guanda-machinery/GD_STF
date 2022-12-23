@@ -26,96 +26,96 @@
     xmlns:ddes="http://schemas.devdept.com/winfx/2008/xaml/control"
     mc:Ignorable="d"
       Title="Product">
-        <WPFBase:BasePage.Resources>
-            <ResourceDictionary>
-                <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="White"/>
-                <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="#FFFFFF"/>
-                <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource WordBlue}"/>
-                <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="#FFFFFF"/>
-                <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="Green"/>
-                <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="#FFFFFF"/>
-                <!-- accent -->
-                <SolidColorBrush x:Key="SecondaryHueMidBrush" Color="#5C5B5E"/>
-                <SolidColorBrush x:Key="SecondaryHueMidForegroundBrush" Color="#FFFFFF"/>
+    <WPFBase:BasePage.Resources>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="White"/>
+            <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource WordBlue}"/>
+            <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="#FFFFFF"/>
+            <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="Green"/>
+            <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="#FFFFFF"/>
+            <!-- accent -->
+            <SolidColorBrush x:Key="SecondaryHueMidBrush" Color="#5C5B5E"/>
+            <SolidColorBrush x:Key="SecondaryHueMidForegroundBrush" Color="#FFFFFF"/>
 
             <local:OBJECT_TYPE_ToStringConverter x:Key="obType" />
-                <!--<local:MATERIAL_ToStringConverter x:Key="Material"/>-->
+            <!--<local:MATERIAL_ToStringConverter x:Key="Material"/>-->
             <local:FACE_ToStringConverter x:Key="Face" />
             <local:START_HOLE_ToStringConverter x:Key="StartHole" />
             <Style x:Key="MaterialDesignStyleCustomTextBox" TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBoxBase}">
-                    <Setter Property="Foreground" Value="{ StaticResource solidclr_DimGray }" />
-                    <Setter Property="FontSize" Value="12" />
-                    <Setter Property="Margin" Value="0" />
-                    <Setter Property="FontFamily" Value="Microsoft JhengHei"/>
-                    <Setter Property="Background" Value="White"/>
-                    <Setter Property="BorderThickness" Value="1"/>
-                    <Setter Property="BorderBrush" Value="Gray"/>
-                    <Setter Property="Height" Value="18"/>
-                    <Setter Property="Padding" Value="5,-5,5,0"/>
-                </Style>
+                <Setter Property="Foreground" Value="{ StaticResource solidclr_DimGray }" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="FontFamily" Value="Microsoft JhengHei"/>
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderBrush" Value="Gray"/>
+                <Setter Property="Height" Value="18"/>
+                <Setter Property="Padding" Value="5,-5,5,0"/>
+            </Style>
 
-                <System:Boolean x:Key="visible">false</System:Boolean>
-                <System:Boolean x:Key="TextBoxEnabled">false</System:Boolean>
+            <System:Boolean x:Key="visible">false</System:Boolean>
+            <System:Boolean x:Key="TextBoxEnabled">false</System:Boolean>
             <Visibility x:Key="BoxVisibilityCollapsed">Collapsed</Visibility>
         </ResourceDictionary>
-        </WPFBase:BasePage.Resources>
+    </WPFBase:BasePage.Resources>
 
-        <!--頁面框架-->
-        <!--物件設定與設定完成的物件列表-->
-            <Grid x:Name="DataGrid" dx:ThemeManager.ThemeName="Win10Light" 
+    <!--頁面框架-->
+    <!--物件設定與設定完成的物件列表-->
+    <Grid x:Name="DataGrid" dx:ThemeManager.ThemeName="Win10Light" 
                   Background="#292929">
-            <Grid.Resources>
-                <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }" >
-                    <Setter Property="BorderThickness" Value="1"/>
-                    <Setter Property="Background" Value="#F7F7F7"/>
-                    <Style.Resources>
-                        <Style TargetType="materialDesign:ColorZone" >
-                            <Setter Property="TextBlock.Foreground" Value="Black"/>
-                            <Setter Property="TextBlock.FontSize" Value="16"/>
-                            <Setter Property="Background" Value="#f0f0f0"/>
-                            <Setter Property="BorderBrush" Value="#cfcfcf"/>
-                            <Setter Property="BorderThickness" Value="0,0,0,1"/>
-                        </Style>
-                        <Style TargetType="Border">
-                            <Setter Property="BorderThickness" Value="5"/>
-                        </Style>
-                    </Style.Resources>
-                </Style>
+        <Grid.Resources>
+            <Style TargetType="GroupBox" BasedOn="{ StaticResource MaterialDesignGroupBox }" >
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Background" Value="#F7F7F7"/>
+                <Style.Resources>
+                    <Style TargetType="materialDesign:ColorZone" >
+                        <Setter Property="TextBlock.Foreground" Value="Black"/>
+                        <Setter Property="TextBlock.FontSize" Value="16"/>
+                        <Setter Property="Background" Value="#f0f0f0"/>
+                        <Setter Property="BorderBrush" Value="#cfcfcf"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    </Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderThickness" Value="5"/>
+                    </Style>
+                </Style.Resources>
+            </Style>
 
 
-                <Style TargetType="Button"  BasedOn="{StaticResource MaterialDesignFlatButton}"   >
-                    <Setter Property="Background" Value="White"/>
-                    <Setter Property="Foreground" Value="Black"/>
-                    <Setter Property="BorderBrush" Value="#CFCFCF"/>
-                    <Setter Property="BorderThickness" Value="1"/>
-                    <Setter Property="FontSize" Value="12"/>
-                    <Setter Property="Width" Value="40"/>
-                    <Setter Property="Height" Value="24"/>
-                    <Setter Property="Padding" Value="0"/>
-                    <Setter Property="Margin" Value="2,0"/>
-                </Style>
-                <Style TargetType="CheckBox"
+            <Style TargetType="Button"  BasedOn="{StaticResource MaterialDesignFlatButton}"   >
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="BorderBrush" Value="#CFCFCF"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Width" Value="40"/>
+                <Setter Property="Height" Value="24"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Margin" Value="2,0"/>
+            </Style>
+            <Style TargetType="CheckBox"
                    BasedOn="{ StaticResource BaseStyle }">
-                </Style>
-                <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignStyleCustomTextBox}"/>
+            </Style>
+            <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignStyleCustomTextBox}"/>
 
-                <Style TargetType="ComboBox"
+            <Style TargetType="ComboBox"
                    BasedOn="{ StaticResource BaseStyle }">
-                    <Setter Property="FontSize" Value="12"/>
-                    <Setter Property="Margin" Value="0"/>
-                    <Setter Property="Height" Value="17"/>
-                </Style>
-                <Style TargetType="Label"
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="Height" Value="17"/>
+            </Style>
+            <Style TargetType="Label"
                    BasedOn="{ StaticResource lab_SubTitle }">
-                    <Setter Property="FontSize" Value="12"/>
-                    <Setter Property="Foreground" Value="Black"/>
-                </Style>
-                <Style TargetType="TabItem" x:Key="DrawTabItem">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type TabItem}">
-                                <Grid x:Name="Root">
-                                    <Border x:Name="Border"
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Foreground" Value="Black"/>
+            </Style>
+            <Style TargetType="TabItem" x:Key="DrawTabItem">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TabItem}">
+                            <Grid x:Name="Root">
+                                <Border x:Name="Border"
                                         Width="{Binding ElementName=ContentSite, Path=Width}"
                                         Height="{Binding ElementName=ContentSite, Path=Height}"
                                         VerticalAlignment="Center"
@@ -124,7 +124,7 @@
                                         BorderThickness="1,1,1,0"
                                         CornerRadius="5,5,0,0"
                                         Margin="0,0,0,-1">
-                                        <ContentPresenter x:Name="ContentSite"
+                                    <ContentPresenter x:Name="ContentSite"
                                               Margin="40,10"
                                               HorizontalAlignment="Center"
                                               VerticalAlignment="Center"
@@ -132,67 +132,67 @@
                                               RecognizesAccessKey="True"
                                               TextBlock.FontSize="16"
                                               TextBlock.Foreground="#555555" />
-                                    </Border>
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup x:Name="CommonStates">
-                                            <VisualState x:Name="Normal" />
-                                            <VisualState x:Name="Selected">
-                                                <Storyboard>
-                                                    <ColorAnimation Storyboard.TargetName="Border"
+                                </Border>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal" />
+                                        <VisualState x:Name="Selected">
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetName="Border"
                                                         Storyboard.TargetProperty="(Border.Background).Color"
                                                         To="#303030"
                                                         Duration="0" />
-                                                    <ColorAnimation Storyboard.TargetName="ContentSite"
+                                                <ColorAnimation Storyboard.TargetName="ContentSite"
                                                         Storyboard.TargetProperty="(TextBlock.Foreground).Color"
                                                         To="#eeeeee"
                                                         Duration="0" />
-                                                    <ThicknessAnimation Storyboard.TargetName="Border"
+                                                <ThicknessAnimation Storyboard.TargetName="Border"
                                                             Storyboard.TargetProperty="BorderThickness"
                                                             To="1,1,1,0"
                                                             Duration="0" />
-                                                </Storyboard>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
-                                </Grid>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
-                <Style TargetType="dxg:GridColumnHeader">
-                    <Setter Property="FontWeight" Value="DemiBold"/>
-                    <Setter Property="FontSize" Value="12"/>
-                </Style>
+            <Style TargetType="dxg:GridColumnHeader">
+                <Setter Property="FontWeight" Value="DemiBold"/>
+                <Setter Property="FontSize" Value="12"/>
+            </Style>
 
-            </Grid.Resources>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="450"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="450"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <DockPanel >
-                <GroupBox Header="已建立的清單" Margin="5" DockPanel.Dock="Top" Visibility="Collapsed">
-                    <TreeView SelectedItemChanged="TreeView_SelectedItemChanged"
+        <DockPanel >
+            <GroupBox Header="已建立的清單" Margin="5" DockPanel.Dock="Top" Visibility="Collapsed">
+                <TreeView SelectedItemChanged="TreeView_SelectedItemChanged"
                           Style="{ StaticResource treeView_STD }"
                           ItemsSource="{Binding TreeNode}">
-                        <TreeView.Resources>
-                            <Style TargetType="TreeViewItem"
+                    <TreeView.Resources>
+                        <Style TargetType="TreeViewItem"
                                BasedOn="{ StaticResource treeViewItem_STD }" />
-                        </TreeView.Resources>
-                        <TreeView.ItemTemplate>
-                            <HierarchicalDataTemplate  ItemsSource="{Binding Children}">
-                                <TextBlock Text="{Binding ItemName}" />
-                            </HierarchicalDataTemplate>
-                        </TreeView.ItemTemplate>
-                    </TreeView>
-                </GroupBox>
+                    </TreeView.Resources>
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate  ItemsSource="{Binding Children}">
+                            <TextBlock Text="{Binding ItemName}" />
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+            </GroupBox>
 
-                <Grid Margin="5">
+            <Grid Margin="5">
                 <Grid.Resources>
                     <!--標題列背景-->
                     <SolidColorBrush x:Key="{dxgt:TableViewThemeKey ResourceKey=SearchPanelBackground, IsThemeIndependent=True}" Color="#f0f0f0" />
@@ -205,16 +205,16 @@
                     </Style>
 
                 </Grid.Resources>
+                <!--"20221222 呂宗霖 SelectionMode Row改None -->
                 <dxg:GridControl Name="PieceListGridControl"
                                  Style="{StaticResource SiegCustom_CompactGridControl}"  
                                  AutoGenerateColumns="None"
-                                 SelectionMode="Row"
+                                 SelectionMode="None" 
                                  MaxHeight="450"
                                  AllowLiveDataShaping="True"
-                                  ItemsSource="{Binding ProductSettingsPageViewModel.DataViews, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange"  MouseDown="Button_PreviewMouseLeftButtonDown">
+                                 ItemsSource="{Binding DataViews, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange"  MouseDown="Button_PreviewMouseLeftButtonDown">
                     <dxg:GridControl.View >
-                            <dxg:TableView VerticalScrollbarVisibility="Visible" Margin="0,-1"
-                                                                           
+                        <dxg:TableView VerticalScrollbarVisibility="Visible" Margin="0,-1"                          
                                        IsColumnMenuEnabled ="False"
                                        AllowSorting="false"
                                        AllowColumnFiltering="False"
@@ -228,130 +228,134 @@
                                        SearchDelay="0"
                                        AllowEditing="False"
                                        EnableImmediatePosting="True">
-                                <dxg:TableView.Header>
-                                    <TextBlock Text="零件清單" FontSize="16" Foreground="Black"/>
-                                </dxg:TableView.Header>
-
+                            <dxg:TableView.Header>
+                                <TextBlock Text="零件清單" FontSize="16" Foreground="Black"/>
+                            </dxg:TableView.Header>
                         </dxg:TableView>
-                        </dxg:GridControl.View>
-                        <dxg:GridColumn Name="Exc_GridColumn" FieldName="ExclamationMark" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
-                            <dxg:GridColumn.HeaderImageStyle>
-                                <Style TargetType="Image">
-                                    <Setter Property="Width" Value="20"></Setter>
-                                    <Setter Property="Margin" Value="-3"></Setter>
-                                </Style>
-                            </dxg:GridColumn.HeaderImageStyle>
-                            <dxg:GridColumn.CellTemplate>
-                                <DataTemplate>
-                                    <dxe:CheckEdit x:Name="PART_Editor" IsChecked="{Binding Row.steelAttr.ExclamationMark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                        <dxe:CheckEdit.Style>
-                                            <Style TargetType="{x:Type dxe:CheckEdit}">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
-                                                            <dx:DXImage x:Name="HighImportanceDX" Height="20" Width="20" Source="{dx:DXImage 'SvgImages/Outlook Inspired/HighImportance.svg'}" Opacity="1" />
-                                                            <ControlTemplate.Triggers>
-                                                                <Trigger Property="IsChecked" Value="False">
-                                                                    <Setter Property="Opacity" Value="0" TargetName="HighImportanceDX" />
-                                                                </Trigger>
-                                                                <Trigger Property="IsChecked"  Value="{x:Null}">
-                                                                    <Setter Property="Opacity" Value="0" TargetName="HighImportanceDX" />
-                                                                </Trigger>
-                                                            </ControlTemplate.Triggers>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </dxe:CheckEdit.Style>
-                                    </dxe:CheckEdit>
-                                </DataTemplate>
-                            </dxg:GridColumn.CellTemplate>
-                        </dxg:GridColumn>
+                    </dxg:GridControl.View>
 
-                      <!--  <dxg:GridColumn FieldName="ExclamationMark" Binding="{Binding Row.steelAttr.ExclamationMark}" IsSmart="True"   Header="構件編號" Width="auto"/>-->
+                    <dxg:GridColumn Name="Exc_GridColumn" Binding="{Binding steelAttr.ExclamationMark, UpdateSourceTrigger=PropertyChanged}" IsSmart="True" Image="{dx:DXImage 'SvgImages/Scheduling/HighImportance.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
+                        <dxg:GridColumn.HeaderImageStyle>
+                            <Style TargetType="Image">
+                                <Setter Property="Width" Value="20"></Setter>
+                                <Setter Property="Margin" Value="-3"></Setter>
+                            </Style>
+                        </dxg:GridColumn.HeaderImageStyle>
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <dxe:CheckEdit x:Name="PART_Editor" IsChecked="{Binding steelAttr.ExclamationMark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <dxe:CheckEdit.Style>
+                                        <Style TargetType="{x:Type dxe:CheckEdit}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
+                                                        <dx:DXImage x:Name="HighImportanceDX" Height="20" Width="20" Source="{dx:DXImage 'SvgImages/Outlook Inspired/HighImportance.svg'}" Opacity="1" />
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsChecked" Value="False">
+                                                                <Setter Property="Opacity" Value="0" TargetName="HighImportanceDX" />
+                                                            </Trigger>
+                                                            <Trigger Property="IsChecked"  Value="{x:Null}">
+                                                                <Setter Property="Opacity" Value="0" TargetName="HighImportanceDX" />
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </dxe:CheckEdit.Style>
+                                </dxe:CheckEdit>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                    </dxg:GridColumn>
 
-                        <dxg:GridColumn FieldName="LockMark"  IsSmart="True" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True" Visible="false">
-                            <dxg:GridColumn.HeaderImageStyle>
-                                <Style TargetType="Image">
-                                    <Setter Property="Width" Value="20"></Setter>
-                                    <Setter Property="Margin" Value="0"></Setter>
-                                </Style>
-                            </dxg:GridColumn.HeaderImageStyle>
-                            <dxg:GridColumn.CellTemplate>
-                                <DataTemplate>
-                                    <dxe:CheckEdit x:Name="PART_Edit" IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
-                                        <dxe:CheckEdit.Template>
-                                            <ControlTemplate>
-                                                <dx:DXImage  Width="25" Height="25">
-                                                    <dx:DXImage.Style>
-                                                        <Style TargetType="{x:Type Image}">
-                                                            <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Icon Builder/Security_Unlock.svg'}" />
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=dxe:CheckEdit}}" Value="true">
-                                                                    <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" />
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </dx:DXImage.Style>
-                                                </dx:DXImage>
-                                            </ControlTemplate>
-                                        </dxe:CheckEdit.Template>
-                                    </dxe:CheckEdit>
-                                </DataTemplate>
-                            </dxg:GridColumn.CellTemplate>
-                        </dxg:GridColumn>
-                      
-                    <dxg:GridColumn Binding="{Binding steelAttr.Creation, Converter={local:DateTimeConverter} }" IsSmart="True" Header="建立日期"  Width="80">
-                            <dxg:GridColumn.CellStyle>
-                                <Style>
-                                    <Setter Property="TextBlock.Foreground" Value="Black"/>
-                                </Style>
-                            </dxg:GridColumn.CellStyle>
-                        </dxg:GridColumn>
-                    <dxg:GridColumn Binding="{Binding steelAttr.Revise, Converter={local:DateTimeConverter} }" IsSmart="True" Header="修改日期" Width="80">
-                            <dxg:GridColumn.CellStyle>
-                                <Style>
+                    <!--  <dxg:GridColumn FieldName="ExclamationMark" Binding="{Binding Row.steelAttr.ExclamationMark}" IsSmart="True"   Header="構件編號" Width="auto"/>-->
+
+                    <dxg:GridColumn FieldName="LockMark"  IsSmart="True" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True" Visible="false">
+                        <dxg:GridColumn.HeaderImageStyle>
+                            <Style TargetType="Image">
+                                <Setter Property="Width" Value="20"></Setter>
+                                <Setter Property="Margin" Value="0"></Setter>
+                            </Style>
+                        </dxg:GridColumn.HeaderImageStyle>
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <dxe:CheckEdit x:Name="PART_Edit" IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                    <dxe:CheckEdit.Template>
+                                        <ControlTemplate>
+                                            <dx:DXImage  Width="25" Height="25">
+                                                <dx:DXImage.Style>
+                                                    <Style TargetType="{x:Type Image}">
+                                                        <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Icon Builder/Security_Unlock.svg'}" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource AncestorType=dxe:CheckEdit}}" Value="true">
+                                                                <Setter Property="Source" Value="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </dx:DXImage.Style>
+                                            </dx:DXImage>
+                                        </ControlTemplate>
+                                    </dxe:CheckEdit.Template>
+                                </dxe:CheckEdit>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                    </dxg:GridColumn>
+
+                    <dxg:GridColumn FieldName="Creation" IsSmart="True" Header="建立日期"  Width="90">
+                        <dxg:GridColumn.CellStyle>
+                            <Style>
                                 <Setter Property="TextBlock.Foreground" Value="Black"/>
-                                </Style>
-                            </dxg:GridColumn.CellStyle>
-                        </dxg:GridColumn>
+                            </Style>
+                        </dxg:GridColumn.CellStyle>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn Binding="{Binding Revise, Converter={local:DateTimeConverter} }"  IsSmart="True" Header="修改日期" Width="90">
+                        <dxg:GridColumn.CellStyle>
+                            <Style>
+                                <Setter Property="TextBlock.Foreground" Value="Black"/>
+                            </Style>
+                        </dxg:GridColumn.CellStyle>
+                    </dxg:GridColumn>
 
-                        <!--<dxg:GridColumn FieldName="GUID" Binding="{Binding steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="true"/>-->
-                        <!--Visible="{StaticResource visible}"/>-->
-                        <dxg:GridColumn FieldName="AssemblyNumber" Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="60"/>
-                        <dxg:GridColumn FieldName="PartNumber" Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="60" />
-                        <dxg:GridColumn FieldName="TeklaName" Binding="{Binding steelAttr.Name}" IsSmart="True" Header="名稱" Width="80"/>
-                    <dxg:GridColumn FieldName="TypeDesc" Binding="{Binding TypeDesc}" IsSmart="True" Header="鋼材類型" Visible="{StaticResource visible}"/>
-                        <dxg:GridColumn Binding="{Binding Path=SteelType, Converter={local:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類型" Width="60"/>
-                    <dxg:GridColumn FieldName="Profile" Binding="{Binding steelAttr.Profile}" IsSmart="True" Header="斷面規格"  Width="140"/>
-                    <dxg:GridColumn FieldName="SteelType"  Binding="{Binding steelAttr.Profile}"  IsSmart="True" Header="鋼材類型(Index)" Visible="{StaticResource visible}"/>
-                    <dxg:GridColumn FieldName="Material" Binding="{Binding steelAttr.Material}" IsSmart="True"  Header="材質"  Width="80"/>
-                    <dxg:GridColumn FieldName="Count" Binding="{Binding Count}" IsSmart="True"  Width="40" Header="數量"  />
-                    <dxg:GridColumn FieldName="Length" Binding="{Binding steelAttr.Length}" IsSmart="True" Header="零件長" Width="70">
-                            <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings Mask="f0" MaskType="Numeric" MaskUseAsDisplayFormat="true"/>
-                            </dxg:GridColumn.EditSettings>
-                        </dxg:GridColumn>
-                    <dxg:GridColumn FieldName="Weight" Binding="{Binding steelAttr.Weight}" IsSmart="True" Header="零件重" Width="70">
-                            <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings Mask="f1" MaskType="Numeric" MaskUseAsDisplayFormat="true"/>
-                            </dxg:GridColumn.EditSettings>
-                        </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="Height" Binding="{Binding steelAttr.H}" IsSmart="True"  Header="高度" Width="auto" Visible="{StaticResource visible}"/>
-                        <dxg:GridColumn FieldName="Weight" Binding="{Binding steelAttr.W}" IsSmart="True"  Header="寬度" Width="auto" Visible="{StaticResource visible}"/>
-                        <dxg:GridColumn FieldName="t1" Binding="{Binding steelAttr.t1}" IsSmart="True"  Header="腹板厚度" Width="auto" Visible="{StaticResource visible}"/>
-                        <dxg:GridColumn FieldName="t2" Binding="{Binding steelAttr.t2}" IsSmart="True"  Header="翼板厚度" Width="auto" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="False"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="60"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="60" />
+                    <dxg:GridColumn Binding="{Binding steelAttr.Name,UpdateSourceTrigger=PropertyChanged}" IsSmart="True" Header="名稱" Width="80"/>
+                    <!--<dxg:GridColumn Binding="{Binding TypeDesc}" IsSmart="True" Header="鋼材類別" Visible="{StaticResource visible}"/>-->
+                    <!--FieldName="TypeDesc"-->
+                    <dxg:GridColumn Binding="{Binding Path=SteelType, Converter={local:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類別" Width="60"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.Profile}"  IsSmart="True" Header="斷面規格"  Width="140"/>
+                    <!--FieldName="Profile"-->
+                    <!--<dxg:GridColumn Binding="{Binding SteelType}"   IsSmart="True" Header="鋼材類型(Index)" Visible="{StaticResource visible}"/>-->
+                    <!--FieldName="SteelType"-->
+                    <dxg:GridColumn Binding="{Binding steelAttr.Material}"  IsSmart="True"  Header="材質"  Width="80"/>
+                    <!--FieldName="Material"-->
+                    <dxg:GridColumn Binding="{Binding Count}"   IsSmart="True"  Width="40" Header="數量"  />
+                    <!--FieldName="Count"-->
+                    <dxg:GridColumn Binding="{Binding steelAttr.Length}" IsSmart="True" Header="零件長" Width="70">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings Mask="f0" MaskType="Numeric" MaskUseAsDisplayFormat="true"/>
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn Binding="{Binding steelAttr.Weight}" IsSmart="True" Header="零件重" Width="70">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:TextEditSettings Mask="f1" MaskType="Numeric" MaskUseAsDisplayFormat="true"/>
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="Height" Binding="{Binding steelAttr.H}" IsSmart="True"  Header="高度" Width="auto" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn FieldName="Weight" Binding="{Binding steelAttr.W}" IsSmart="True"  Header="寬度" Width="auto" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn FieldName="t1" Binding="{Binding steelAttr.t1}" IsSmart="True"  Header="腹板厚度" Width="auto" Visible="{StaticResource visible}"/>
+                    <dxg:GridColumn FieldName="t2" Binding="{Binding steelAttr.t2}" IsSmart="True"  Header="翼板厚度" Width="auto" Visible="{StaticResource visible}"/>
 
                     <dxg:GridColumn FieldName="Phase" Binding="{Binding steelAttr.Phase}" IsSmart="True"  Width="40" Header="Phase" />
                     <dxg:GridColumn FieldName="ShippingNumber" Binding="{Binding steelAttr.ShippingNumber}" IsSmart="True"  Width="40" Header="拆運"  />
                     <dxg:GridColumn FieldName="Title1" Binding="{Binding steelAttr.Title1}" IsSmart="True"  Width="45" Header="標題一"  />
                     <dxg:GridColumn FieldName="Title2" Binding="{Binding steelAttr.Title2}" IsSmart="True"  Width="45" Header="標題二"  />
 
-                        <!--<dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"   Header="構件編號" Width="auto"/>
+                    <!--<dxg:GridColumn FieldName="AssemblyNumber" IsSmart="True"   Header="構件編號" Width="auto"/>
                         <dxg:GridColumn FieldName="PartNumber" IsSmart="True"  Header="零件編號" Width="auto" />
                     <dxg:GridColumn IsSmart="True" Header="名稱" Width="auto"/>-->
-                        <!--資料沒有對應屬性-->
-                        <!--<dxg:GridColumn Binding="{Binding Path=SteelType, Converter={local:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類型"/>                          
+                    <!--資料沒有對應屬性-->
+                    <!--<dxg:GridColumn Binding="{Binding Path=SteelType, Converter={local:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類型"/>                          
                         <dxg:GridColumn FieldName="Profile" IsSmart="True"  Header="斷面規格"  Width="auto"/>
                         <dxg:GridColumn FieldName="Material"  IsSmart="True"  Header="材質"  Width="auto"/>
                         <dxg:GridColumn Binding="{Binding Match, Converter={local:IListToCountConerter}}" Header="數量"  />
@@ -361,8 +365,8 @@
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>       
                         <dxg:GridColumn FieldName="PieceWeight" IsSmart="True"  Header="零件重"  Width="auto" >-->
-                        <!--資料沒有對應屬性-->
-                        <!--
+                    <!--資料沒有對應屬性-->
+                    <!--
                             <dxg:GridColumn.EditSettings>
                                 <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
                             </dxg:GridColumn.EditSettings>
@@ -370,39 +374,39 @@
                         <dxg:GridColumn Binding="{Binding Phase}" IsSmart="True"  Width="auto" Header="Phase"  />
                         <dxg:GridColumn Binding="{Binding ShippingNumber}" IsSmart="True"  Width="auto" Header="拆運"  />
                         <dxg:GridColumn FieldName="" IsSmart="True"  Width="auto" Header="標題一"  />-->
-                        <!--資料沒有對應屬性-->
-                        <!--
+                    <!--資料沒有對應屬性-->
+                    <!--
                         <dxg:GridColumn FieldName="" IsSmart="True"  Width="auto" Header="標題二"  />-->
-                        <!--資料沒有對應屬性-->
+                    <!--資料沒有對應屬性-->
 
-                    </dxg:GridControl>
-                </Grid>
-            </DockPanel>
-            <!--零件屬性-->
-            <GroupBox Header="零件屬性" Grid.Column="1" Margin="0,5,5,5" >
-                <Grid>
-                    <Grid.Resources>
-                        <Style TargetType ="TextBlock">
-                            <Setter Property="FontSize" Value="12"/>
-                            <Setter  Property="Foreground" Value="Black" />
-                        </Style>
-                        <Style TargetType="Label"
+                </dxg:GridControl>
+            </Grid>
+        </DockPanel>
+        <!--零件屬性-->
+        <GroupBox Header="零件屬性" Grid.Column="1" Margin="0,5,5,5" >
+            <Grid>
+                <Grid.Resources>
+                    <Style TargetType ="TextBlock">
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter  Property="Foreground" Value="Black" />
+                    </Style>
+                    <Style TargetType="Label"
                                BasedOn="{ StaticResource lab_SubTitle }">
-                            <Setter Property="Foreground"
+                        <Setter Property="Foreground"
                                     Value="Black" />
-                            <Setter Property="FontSize" Value="12"/>
-                            <Setter Property="Margin" Value="4,4"/>
-                        </Style>
-                        <!--  <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignStyleCustomTextBox}">
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="Margin" Value="4,4"/>
+                    </Style>
+                    <!--  <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignStyleCustomTextBox}">
                             <Setter Property="IsEnabled" Value="{Binding ElementName=PieceListGridControl, Converter={local:GridControlIsSelectedItemToBoolen} , UpdateSourceTrigger=PropertyChanged}"/>
                         </Style>-->
-                    </Grid.Resources>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" MinWidth="80"/>
-                        <ColumnDefinition Width="*" MinWidth="80"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" MinWidth="80"/>
+                    <ColumnDefinition Width="*" MinWidth="80"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
@@ -417,101 +421,101 @@
                     <RowDefinition Height="auto" />
 
                 </Grid.RowDefinitions>
-                    <Label Content="零件編號："  />
-                    <TextBox  Grid.Column="1" Name="partNumber" InputMethod.IsInputMethodEnabled="False">
-                        <TextBox.Text>
-                            <Binding Path="PartNumberProperty" UpdateSourceTrigger="PropertyChanged" >
-                                <Binding.ValidationRules>
-                                    <STD105ValidRule:CheckStringEmptyRule/>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-                    <Label Grid.Column="0" Grid.Row="1" Content="構件編號：" />
-                    <TextBox Name="asseNumber" Grid.Column="1" Grid.Row="1">
-                        <TextBox.Text>
-                            <Binding Path="AssemblyNumberProperty" UpdateSourceTrigger="PropertyChanged" >
-                                <Binding.ValidationRules>
-                                    <STD105ValidRule:CheckStringEmptyRule/>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-                    <Label Grid.Column="0"  Grid.Row="2"
+                <Label Content="零件編號："  />
+                <TextBox  Grid.Column="1" Name="partNumber" InputMethod.IsInputMethodEnabled="False">
+                    <TextBox.Text>
+                        <Binding Path="PartNumberProperty" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding.ValidationRules>
+                                <STD105ValidRule:CheckStringEmptyRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <Label Grid.Column="0" Grid.Row="1" Content="構件編號：" />
+                <TextBox Name="asseNumber" Grid.Column="1" Grid.Row="1">
+                    <TextBox.Text>
+                        <Binding Path="AssemblyNumberProperty" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding.ValidationRules>
+                                <STD105ValidRule:CheckStringEmptyRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <Label Grid.Column="0"  Grid.Row="2"
                            Content="製品長度：" />
-                    <Grid  Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" Name="Length"  >
-                            <TextBox.Text>
-                                <Binding Path="ProductLengthProperty" StringFormat="{}{0:N0}" UpdateSourceTrigger="PropertyChanged" >
-                                    <Binding.ValidationRules>
-                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </TextBox.Text>
-
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="TextChanged" SourceName="Length">
-                                    <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </TextBox>
-                        <TextBlock Grid.Column="1" Text="mm" Margin="3,0,0,0"/>
-                    </Grid>
-
-
-                    <Label Grid.Column="0" Grid.Row="3" Content="製品重：" />
-                    <Grid Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Name="Weight" Text="{Binding ProductWeightProperty, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N1}}" Margin="3,0,0,0"/>
-                        <TextBlock Grid.Column="1"  Text="Kg"   Margin="3,0,0,0"/>
-
-                    </Grid>
-
-
-                    <Label Grid.Column="0" Grid.Row="4" Content="製品數量：" />
-
-                    <TextBox Grid.Column="1" Grid.Row="4" Name="PartCount">
+                <Grid  Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" Name="Length"  >
                         <TextBox.Text>
-                        <!--  <Binding Path="SteelAttr.Number" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >-->
-                        <Binding Path="ProductCountProperty" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding Path="ProductLengthProperty" StringFormat="{}{0:N0}" UpdateSourceTrigger="PropertyChanged" >
                                 <Binding.ValidationRules>
                                     <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
-                    </TextBox>
 
-                    <Label Grid.Column="0" Grid.Row="5" Content="名稱：" />
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="TextChanged" SourceName="Length">
+                                <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
+                    <TextBlock Grid.Column="1" Text="mm" Margin="3,0,0,0"/>
+                </Grid>
+
+
+                <Label Grid.Column="0" Grid.Row="3" Content="製品重：" />
+                <Grid Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Name="Weight" Text="{Binding ProductWeightProperty, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N1}}" Margin="3,0,0,0"/>
+                    <TextBlock Grid.Column="1"  Text="Kg"   Margin="3,0,0,0"/>
+
+                </Grid>
+
+
+                <Label Grid.Column="0" Grid.Row="4" Content="製品數量：" />
+
+                <TextBox Grid.Column="1" Grid.Row="4" Name="PartCount">
+                    <TextBox.Text>
+                        <!--  <Binding Path="SteelAttr.Number" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >-->
+                        <Binding Path="ProductCountProperty" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                            <Binding.ValidationRules>
+                                <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+
+                <Label Grid.Column="0" Grid.Row="5" Content="名稱：" />
 
                 <!-- <TextBox Name ="teklaName" Grid.Column="1" Grid.Row="5" Text="{Binding Path=SelectedItems[0].TeklaName , ElementName=PieceListGridControl , Mode=OneWay , UpdateSourceTrigger=PropertyChanged}" >-->
                 <TextBox Name ="teklaName" Grid.Column="1" Grid.Row="5" Text="{Binding Path=ProductNameProperty ,  UpdateSourceTrigger=PropertyChanged}" >
-                        <!--     <TextBox.Text>
+                    <!--     <TextBox.Text>
                                 <Binding Path="SelectedItems[0].TeklaName" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >
                                     <Binding.ValidationRules>
                                     <STD105ValidRule:CheckStringEmptyRule></STD105ValidRule:CheckStringEmptyRule>
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>-->
-                    </TextBox>
+                </TextBox>
 
-                    <Label Grid.Column="0"  Grid.Row="6" Content="材質：" />
+                <Label Grid.Column="0"  Grid.Row="6" Content="材質：" />
 
                 <!--<ComboBox Grid.Column="1" Grid.Row="6" Name="material" ItemsSource="{Binding Materials, Converter={local:MaterialToNameConverter}}" SelectedValue="{Binding ProductMaterialPropert, Mode=OneWay}" Padding="5,1,0,0" />-->
                 <ComboBox Grid.Column="1" Grid.Row="6" Name="material" ItemsSource="{Binding Materials, Converter={local:MaterialToNameConverter}}" SelectedValue="{Binding ProductMaterialProperty}" Padding="5,1,0,0" />
                 <!--   SelectedValue="{Binding SelectedItems[0].Material, ElementName=PieceListGridControl, Mode=OneWay}"-->
 
-                    <Label Grid.Column="0" Grid.Row="7" Content="Phase：" />
+                <Label Grid.Column="0" Grid.Row="7" Content="Phase：" />
 
-                    <TextBox x:Name="phase" Grid.Column="1" Grid.Row="7" >
-                        <TextBox.Text>
-                       <!-- <Binding Path="SelectedItems[0].Phase" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >-->
+                <TextBox x:Name="phase" Grid.Column="1" Grid.Row="7" >
+                    <TextBox.Text>
+                        <!-- <Binding Path="SelectedItems[0].Phase" ElementName="PieceListGridControl" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >-->
                         <Binding Path="PhaseProperty" UpdateSourceTrigger="PropertyChanged"  Converter="{local:NullableIntConverter}">
                             <Binding.ValidationRules>
                                 <STD105ValidRule:CheckNumberRule NumberMin="0" IsNullable="True"/>
@@ -519,9 +523,9 @@
                         </Binding>
 
                     </TextBox.Text>
-                    </TextBox>
+                </TextBox>
 
-                    <Label Grid.Column="0" Grid.Row="8" Content="拆運：" />
+                <Label Grid.Column="0" Grid.Row="8" Content="拆運：" />
 
                 <TextBox x:Name="shippingNumber" Grid.Column="1" Grid.Row="8">
                     <TextBox.Text>
@@ -535,13 +539,13 @@
 
                 </TextBox>
 
-                    <!--<StackPanel Grid.Column="2"  Grid.Row="7" Grid.RowSpan="3" >
+                <!--<StackPanel Grid.Column="2"  Grid.Row="7" Grid.RowSpan="3" >
                         <TextBox Text="{Binding SelectedItems[0].Type, ElementName=PieceListGridControl}" BorderBrush="Black"/>
                         <TextBox Text="{Binding SelectedItems[0].TypeDesc, ElementName=PieceListGridControl}" BorderBrush="Black"/>
                         <TextBox Text="{Binding SelectedItems[0].SteelType, ElementName=PieceListGridControl}" BorderBrush="Black"/>
                     </StackPanel>-->
 
-                    <Label Grid.Column="0" Grid.Row="9"
+                <Label Grid.Column="0" Grid.Row="9"
                            Content="型鋼類型：" />
 
                 <ComboBox x:Name="cbx_SteelTypeComboBox"
@@ -549,50 +553,51 @@
                               ItemsSource="{Binding Source={StaticResource obType},Path=Strings}"
                               SelectedIndex="{Binding SteelTypeProperty_int}"
                               Padding="5,1,0,0">
-                        <i:Interaction.Triggers>
+                    <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SteelTypeComboBox">
-                                <i:InvokeCommandAction Command="{ Binding ShowSteelTypeCommand }"
+                            <i:InvokeCommandAction Command="{ Binding ShowSteelTypeCommand }"
                                                            CommandParameter="{ Binding ElementName=cbx_SteelTypeComboBox, Path=SelectedIndex }"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </ComboBox>
-                    <Label Grid.Column="0" Grid.Row="10"
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+                <Label Grid.Column="0" Grid.Row="10"
                            Content="斷面規格：" />
 
                 <ComboBox x:Name="cbx_SectionTypeComboBox"
                                   Grid.Column="1" Grid.Row="10"
                                   Padding="5,1,0,0"
-                                  ItemsSource="{Binding ProfileList}" 
+                                  ItemsSource="{Binding ProfileList, UpdateSourceTrigger=PropertyChanged}" 
                                   DisplayMemberPath="Profile" 
-                                  Text="{Binding SteelSectionProperty}" SelectionChanged="CBOX_SectionTypeChanged">
-                        <i:Interaction.Triggers>
+                                  Text="{Binding SteelSectionProperty, UpdateSourceTrigger=PropertyChanged}"  SelectionChanged="CBOX_SectionTypeChanged"
+                                 IsSynchronizedWithCurrentItem="True">
+                    <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionTypeComboBox">
-                                <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </ComboBox>
+                            <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
                 <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="11" Margin="0,5" >
-                        <local:DataButtons_Office
+                    <local:DataButtons_Office
                                 AddButtonWidth="60"
                                 ModifyButtonWidth="60"
                                                Modify="{Binding ModifyPart}"
                                                Add="{Binding AddPart}"
                                                ReadVisibility="Collapsed"
                                                DeleteVisibility="Collapsed"/>
-                        <Button x:Name="btn_AddNewOne" Content="另存" Width="60" Command="{Binding AddNewOne}"  Visibility="Collapsed" Cursor="Hand"/>
+                    <Button x:Name="btn_AddNewOne" Content="另存" Width="60" Command="{Binding AddNewOne}"  Visibility="Collapsed" Cursor="Hand"/>
                     <Button  HorizontalAlignment="Right" Width="60" x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Background="Gold"  Click="OKtoConfirmChanges" />
                     <!--鎖頭的行為要與按鈕的開啟關閉binding 0902-->
-                    </StackPanel>
+                </StackPanel>
 
-                    <Label Grid.Column="0" Grid.Row="11" Content="標題一："  Visibility="{StaticResource BoxVisibilityCollapsed}"/>
-                    <TextBox Grid.Column="1" Grid.Row="11" Name="Title1" Visibility="{StaticResource BoxVisibilityCollapsed}">
-                        <TextBox.Text>
+                <Label Grid.Column="0" Grid.Row="11" Content="標題一："  Visibility="{StaticResource BoxVisibilityCollapsed}"/>
+                <TextBox Grid.Column="1" Grid.Row="11" Name="Title1" Visibility="{StaticResource BoxVisibilityCollapsed}">
+                    <TextBox.Text>
                         <!-- <Binding Path="SelectedItems[0].Title1" ElementName="PieceListGridControl" StringFormat="{}{0:N2}" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" >-->
-                            <Binding Path="Title1Property" UpdateSourceTrigger="PropertyChanged" >
-                               
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
+                        <Binding Path="Title1Property" UpdateSourceTrigger="PropertyChanged" >
+
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
                 <Label Grid.Column="0" Grid.Row="11" Content="標題二："  Visibility="{StaticResource BoxVisibilityCollapsed}"/>
                 <TextBox Grid.Column="1" Grid.Row="11" Name="Title2" Visibility="{StaticResource BoxVisibilityCollapsed}">
                     <TextBox.Text>
@@ -603,37 +608,37 @@
                     </TextBox.Text>
                 </TextBox>
                 <Label Grid.Column="0" Grid.Row="13" Content="高度(H)：" Visibility="{StaticResource BoxVisibilityCollapsed}" />
-                    <Grid Grid.Column="1" Grid.Row="13" Visibility="{StaticResource BoxVisibilityCollapsed}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" Name="H" Text="{Binding CurrentPartSteelAttr.H, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" />
-                        <TextBlock Grid.Column="1" Text="mm" VerticalAlignment="Center"/>
+                <Grid Grid.Column="1" Grid.Row="13" Visibility="{StaticResource BoxVisibilityCollapsed}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" Name="H" Text="{Binding CurrentPartSteelAttr.H, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" />
+                    <TextBlock Grid.Column="1" Text="mm" VerticalAlignment="Center"/>
 
-                    </Grid>
+                </Grid>
 
-                    <Label Grid.Column="0" Grid.Row="14" Content="寬度(B)：" Visibility="{StaticResource BoxVisibilityCollapsed}" />
-                    <Grid Grid.Column="1" Grid.Row="14" Visibility="{StaticResource BoxVisibilityCollapsed}" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" Name="W" Text="{Binding CurrentPartSteelAttr.W, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" />
-                        <TextBlock Grid.Column="1" Text="mm" VerticalAlignment="Center"/>
-                    </Grid>
+                <Label Grid.Column="0" Grid.Row="14" Content="寬度(B)：" Visibility="{StaticResource BoxVisibilityCollapsed}" />
+                <Grid Grid.Column="1" Grid.Row="14" Visibility="{StaticResource BoxVisibilityCollapsed}" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" Name="W" Text="{Binding CurrentPartSteelAttr.W, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False" />
+                    <TextBlock Grid.Column="1" Text="mm" VerticalAlignment="Center"/>
+                </Grid>
 
-                    <Label Grid.Column="0" Grid.Row="15" Content="腹板厚度(s)：" Visibility="{StaticResource BoxVisibilityCollapsed}"/>
-                    <Grid  VerticalAlignment="Center" Grid.Column="1" Grid.Row="15" Visibility="{StaticResource BoxVisibilityCollapsed}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBox Grid.Column="0" Name="t1" Text="{Binding CurrentPartSteelAttr.t1, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
-                        <TextBlock Grid.Column="1" Text="mm"  />
-                    </Grid>
+                <Label Grid.Column="0" Grid.Row="15" Content="腹板厚度(s)：" Visibility="{StaticResource BoxVisibilityCollapsed}"/>
+                <Grid  VerticalAlignment="Center" Grid.Column="1" Grid.Row="15" Visibility="{StaticResource BoxVisibilityCollapsed}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" Name="t1" Text="{Binding CurrentPartSteelAttr.t1, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
+                    <TextBlock Grid.Column="1" Text="mm"  />
+                </Grid>
 
-                    <Label Grid.Column="0" Grid.Row="16" Content="翼板厚度(t)：" Visibility="{StaticResource BoxVisibilityCollapsed}" />
+                <Label Grid.Column="0" Grid.Row="16" Content="翼板厚度(t)：" Visibility="{StaticResource BoxVisibilityCollapsed}" />
                 <Grid Grid.Column="1" Grid.Row="16" Visibility="{StaticResource BoxVisibilityCollapsed}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -644,19 +649,19 @@
 
                 </Grid>
 
-                </Grid>
-            </GroupBox>
-            <!--繪圖顯示模型-->
+            </Grid>
+        </GroupBox>
+        <!--繪圖顯示模型-->
         <TabControl Margin="5,0,5,5"  Style="{StaticResource DrawTabControl}"
                     Grid.Column="0" Grid.Row="1"
                     Background="#303030"
                     SelectionChanged="TabControlSelectedIndexChanged"
                     x:Name="tabControl"                              
                     SelectedIndex="0">
-                <TabItem Header="3D視圖">
-                    <Grid>
-                        <!--新增3D模型處-->
-                        <WPFSTD:ModelExt x:Name="model"
+            <TabItem Header="3D視圖">
+                <Grid>
+                    <!--新增3D模型處-->
+                    <WPFSTD:ModelExt x:Name="model"
                                   SelectionChanged="model_SelectionChanged"
                                   Loaded="Model3D_Loaded"
                                   AutoRefresh="True"
@@ -669,97 +674,97 @@
                                   AntiAliasingSamples="x16"
                                   Renderer="NativeExperimental"                                  
                                   ShowFps="True">
-                            <WPFSTD:ModelExt.ContextMenu>
-                                <ContextMenu Style="{StaticResource BaseStyle}"
+                        <WPFSTD:ModelExt.ContextMenu>
+                            <ContextMenu Style="{StaticResource BaseStyle}"
                                          FontSize="12">
-                                    <MenuItem Name="esc"
+                                <MenuItem Name="esc"
                                           Header="取消"
                                           Style="{StaticResource BaseStyle}"
                                           Command="{Binding Esc}" />
-                                    <MenuItem Header="放大選取範圍"
+                                <MenuItem Header="放大選取範圍"
                                           Style="{StaticResource BaseStyle}"
                                           Command="{Binding ZoomWindow}" />
-                                    <MenuItem Header="縮放"
+                                <MenuItem Header="縮放"
                                           Style="{StaticResource BaseStyle}"
                                           Command="{Binding Zoom}" />
-                                    <MenuItem Header="旋轉"
+                                <MenuItem Header="旋轉"
                                           Style="{StaticResource BaseStyle}"
                                           Command="{Binding Rotate}" />
-                                    <MenuItem Header="平移"
+                                <MenuItem Header="平移"
                                           Style="{StaticResource BaseStyle}"
                                           Command="{Binding Pan}" />
-                                    <MenuItem Name="edit"
+                                <MenuItem Name="edit"
                                           Header="編輯已選擇"
                                           Style="{StaticResource BaseStyle}"
                                           Command="{Binding EditObject}"
                                           Visibility="Collapsed" />
-                                    <MenuItem x:Name="delete"
+                                <MenuItem x:Name="delete"
                                           Header="刪除已選擇"
                                           Style="{StaticResource BaseStyle}"
                                           Command="{Binding Delete}"
                                           Visibility="Collapsed" />
-                                    <MenuItem Header="清除標註"
+                                <MenuItem Header="清除標註"
                                           Command="{Binding ClearDim}"
                                           CommandParameter="{Binding ElementName=model}"
                                           Style="{StaticResource BaseStyle}" />
-                                    <MenuItem Header="恢復上一個動作"
+                                <MenuItem Header="恢復上一個動作"
                                           Command="{Binding Recovery}"
                                           Style="{StaticResource BaseStyle}" Visibility="Collapsed" />
-                                    <MenuItem Header="恢復下一個動作"
+                                <MenuItem Header="恢復下一個動作"
                                           Command="{Binding Recovery}"
                                           Style="{StaticResource BaseStyle}" Visibility="Collapsed" />
-                                </ContextMenu>
-                            </WPFSTD:ModelExt.ContextMenu>
-                            <WPFSTD:ModelExt.ProgressBar>
-                                <ddes:ProgressBar Lighting="False" />
-                            </WPFSTD:ModelExt.ProgressBar>
-                            <WPFSTD:ModelExt.Viewports>
-                                <ddes:Viewport DisplayMode="Flat"
+                            </ContextMenu>
+                        </WPFSTD:ModelExt.ContextMenu>
+                        <WPFSTD:ModelExt.ProgressBar>
+                            <ddes:ProgressBar Lighting="False" />
+                        </WPFSTD:ModelExt.ProgressBar>
+                        <WPFSTD:ModelExt.Viewports>
+                            <ddes:Viewport DisplayMode="Flat"
                                            InitialView="vcFrontFaceTopLeft"
                                            OriginSymbols="{Binding OriginSymbols}"
                                            SmallSizeRatio="0.001">
-                                    <ddes:Viewport.Background>
-                                        <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#303030"/>
-                                    </ddes:Viewport.Background>
-                                    <ddes:Viewport.CoordinateSystemIcon>
-                                        <ddes:CoordinateSystemIcon Lighting="True"
+                                <ddes:Viewport.Background>
+                                    <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#303030"/>
+                                </ddes:Viewport.Background>
+                                <ddes:Viewport.CoordinateSystemIcon>
+                                    <ddes:CoordinateSystemIcon Lighting="True"
                                                                ArrowColorX="{Binding Setting.ArrowColorX, Converter={WPFBase:StringRGBToBrushConverter}}"
                                                                ArrowColorY="{Binding Setting.ArrowColorY, Converter={WPFBase:StringRGBToBrushConverter}}"
                                                                ArrowColorZ="{Binding Setting.ArrowColorZ, Converter={WPFBase:StringRGBToBrushConverter}}" />
-                                    </ddes:Viewport.CoordinateSystemIcon>
-                                    <ddes:Viewport.Camera>
-                                        <ddes:Camera Distance="380"
+                                </ddes:Viewport.CoordinateSystemIcon>
+                                <ddes:Viewport.Camera>
+                                    <ddes:Camera Distance="380"
                                                  ProjectionMode="Orthographic"
                                                  Target="0, 0, 45"
                                                  ZoomFactor="2" />
-                                    </ddes:Viewport.Camera>
-                                    <ddes:Viewport.Rotate>
-                                        <ddes:RotateSettings RotationCenter="CursorLocation" />
-                                    </ddes:Viewport.Rotate>
-                                    <ddes:Viewport.ToolBars>
-                                        <ddes:ToolBar>
-                                            <ddes:ToolBar.Buttons>
-                                                <ddes:HomeToolBarButton />
-                                                <ddes:ZoomWindowToolBarButton />
-                                                <ddes:ZoomToolBarButton />
-                                                <ddes:PanToolBarButton />
-                                                <ddes:RotateToolBarButton />
-                                                <ddes:ZoomFitToolBarButton />
-                                                <ddes:ToolBarButton ToolTipText="線性標註"
+                                </ddes:Viewport.Camera>
+                                <ddes:Viewport.Rotate>
+                                    <ddes:RotateSettings RotationCenter="CursorLocation" />
+                                </ddes:Viewport.Rotate>
+                                <ddes:Viewport.ToolBars>
+                                    <ddes:ToolBar>
+                                        <ddes:ToolBar.Buttons>
+                                            <ddes:HomeToolBarButton />
+                                            <ddes:ZoomWindowToolBarButton />
+                                            <ddes:ZoomToolBarButton />
+                                            <ddes:PanToolBarButton />
+                                            <ddes:RotateToolBarButton />
+                                            <ddes:ZoomFitToolBarButton />
+                                            <ddes:ToolBarButton ToolTipText="線性標註"
                                                                 Click="LinearDim"
                                                                 StyleMode="PushButton" Visible="False"
                                                                 Image="{Binding Source={StaticResource AngleDim},Converter={local:DrawingImageToBitmapSourceConverter}}" />
-                                                <ddes:ToolBarButton ToolTipText="角度標註"
+                                            <ddes:ToolBarButton ToolTipText="角度標註"
                                                                 StyleMode="PushButton" Visible="False"
                                                                 Image="{Binding Source={StaticResource AngleDim},Converter={local:DrawingImageToBitmapSourceConverter}}" />
-                                                <ddes:ToolBarButton ToolTipText="絕對座標"
+                                            <ddes:ToolBarButton ToolTipText="絕對座標"
                                                                 StyleMode="PushButton" Visible="False"
                                                                 Image="{Binding Source={StaticResource AbsDim},Converter={local:DrawingImageToBitmapSourceConverter}}" />
-                                            </ddes:ToolBar.Buttons>
-                                        </ddes:ToolBar>
-                                    </ddes:Viewport.ToolBars>
-                                    <ddes:Viewport.ViewCubeIcon>
-                                        <ddes:ViewCubeIcon Lighting="True"
+                                        </ddes:ToolBar.Buttons>
+                                    </ddes:ToolBar>
+                                </ddes:Viewport.ToolBars>
+                                <ddes:Viewport.ViewCubeIcon>
+                                    <ddes:ViewCubeIcon Lighting="True"
                                                        FrontColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
                                                        BackColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
                                                        TopColor="{Binding Setting.ViewCubeIconColor, Converter={WPFBase:StringRGBToBrushConverter}}"
@@ -774,75 +779,75 @@
                                                        RightRingColor="White"
                                                        FrontRingColor="White"
                                                        BackRingColor="White" />
-                                    </ddes:Viewport.ViewCubeIcon>
-                                </ddes:Viewport>
-                            </WPFSTD:ModelExt.Viewports>
-                        </WPFSTD:ModelExt>
-                    </Grid>
-                </TabItem>
+                                </ddes:Viewport.ViewCubeIcon>
+                            </ddes:Viewport>
+                        </WPFSTD:ModelExt.Viewports>
+                    </WPFSTD:ModelExt>
+                </Grid>
+            </TabItem>
 
-                <TabItem Header="2D視圖"  >
-                    <Grid>
-                        <WPFSTD:ModelExt x:Name="drawing" SelectionChanged="model_SelectionChanged" Loaded="drawing_Loaded"
+            <TabItem Header="2D視圖"  >
+                <Grid>
+                    <WPFSTD:ModelExt x:Name="drawing" SelectionChanged="model_SelectionChanged" Loaded="drawing_Loaded"
                         SelectionColor="{Binding Setting.SelectionColor, Converter={local:StringToDrawingColoConverter}}"
                         ActionMode="{Binding ActionMode}" DefaultColor="Beige" AutoRefresh ="True" KeyDown="model_KeyDown"
                         PreviewMouseRightButtonDown="model_PreviewMouseRightButtonDown"
                         Focusable="True" AntiAliasingSamples="x16" Renderer="NativeExperimental" ShowFps="True" Margin="0,0,0,0">
-                            <WPFSTD:ModelExt.ContextMenu>
-                                <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
-                                    <MenuItem Name="esc2D" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
-                                    <MenuItem Header="放大選取範圍" Style="{StaticResource BaseStyle}" Command="{Binding ZoomWindow}"/>
-                                    <MenuItem Header="縮放" Style="{StaticResource BaseStyle}" Command="{Binding Zoom}"/>
-                                    <MenuItem Header="平移" Style="{StaticResource BaseStyle}" Command="{Binding Pan}"/>
-                                    <MenuItem Name="edit2D" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}" Visibility="Collapsed"/>
-                                    <MenuItem x:Name="delete2D" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}" Visibility="Collapsed"/>
-                                    <MenuItem Header="清除標註" Command="{Binding ClearDim}" Style="{StaticResource BaseStyle}"/>
-                                    <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
-                                    <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
-                                </ContextMenu>
-                            </WPFSTD:ModelExt.ContextMenu>
-                            <ddes:Model.ProgressBar>
-                                <ddes:ProgressBar Lighting="False"/>
-                            </ddes:Model.ProgressBar>
-                            <ddes:Model.Viewports>
-                                <ddes:Viewport DisplayMode="Flat" InitialView="Top"  OriginSymbols="{Binding OriginSymbols}">
-                                    <ddes:Viewport.Background>
-                                        <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#303030"/>
-                                    </ddes:Viewport.Background>
-                                    <ddes:Viewport.Camera>
-                                        <ddes:Camera Distance="380" ProjectionMode="Orthographic" Target="0, 0, 45" ZoomFactor="2"/>
-                                    </ddes:Viewport.Camera>
-                                    <ddes:Viewport.Rotate>
-                                        <ddes:RotateSettings RotationCenter="CursorLocation" Enabled="False"/>
-                                    </ddes:Viewport.Rotate>
-                                    <ddes:Viewport.ToolBars>
-                                        <ddes:ToolBar>
-                                            <ddes:ToolBar.Buttons>
-                                                <ddes:HomeToolBarButton/>
-                                                <ddes:ZoomWindowToolBarButton/>
-                                                <ddes:ZoomToolBarButton/>
-                                                <ddes:PanToolBarButton/>
-                                                <ddes:ZoomFitToolBarButton/>
-                                                <ddes:ToolBarButton ToolTipText="線性標註" Click="LinearDim" StyleMode="PushButton"   
+                        <WPFSTD:ModelExt.ContextMenu>
+                            <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
+                                <MenuItem Name="esc2D" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
+                                <MenuItem Header="放大選取範圍" Style="{StaticResource BaseStyle}" Command="{Binding ZoomWindow}"/>
+                                <MenuItem Header="縮放" Style="{StaticResource BaseStyle}" Command="{Binding Zoom}"/>
+                                <MenuItem Header="平移" Style="{StaticResource BaseStyle}" Command="{Binding Pan}"/>
+                                <MenuItem Name="edit2D" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}" Visibility="Collapsed"/>
+                                <MenuItem x:Name="delete2D" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}" Visibility="Collapsed"/>
+                                <MenuItem Header="清除標註" Command="{Binding ClearDim}" Style="{StaticResource BaseStyle}"/>
+                                <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
+                                <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
+                            </ContextMenu>
+                        </WPFSTD:ModelExt.ContextMenu>
+                        <ddes:Model.ProgressBar>
+                            <ddes:ProgressBar Lighting="False"/>
+                        </ddes:Model.ProgressBar>
+                        <ddes:Model.Viewports>
+                            <ddes:Viewport DisplayMode="Flat" InitialView="Top"  OriginSymbols="{Binding OriginSymbols}">
+                                <ddes:Viewport.Background>
+                                    <ddgr:BackgroundSettings StyleMode="Solid" TopColor="#303030"/>
+                                </ddes:Viewport.Background>
+                                <ddes:Viewport.Camera>
+                                    <ddes:Camera Distance="380" ProjectionMode="Orthographic" Target="0, 0, 45" ZoomFactor="2"/>
+                                </ddes:Viewport.Camera>
+                                <ddes:Viewport.Rotate>
+                                    <ddes:RotateSettings RotationCenter="CursorLocation" Enabled="False"/>
+                                </ddes:Viewport.Rotate>
+                                <ddes:Viewport.ToolBars>
+                                    <ddes:ToolBar>
+                                        <ddes:ToolBar.Buttons>
+                                            <ddes:HomeToolBarButton/>
+                                            <ddes:ZoomWindowToolBarButton/>
+                                            <ddes:ZoomToolBarButton/>
+                                            <ddes:PanToolBarButton/>
+                                            <ddes:ZoomFitToolBarButton/>
+                                            <ddes:ToolBarButton ToolTipText="線性標註" Click="LinearDim" StyleMode="PushButton"   
                                                                 Image="{Binding Source={materialDesign:PackIcon Kind=Ruler},Converter={local:MaterialDesignPackIconToBitmapSourceConverter}}"
                                                                      />
 
-                                                <ddes:ToolBarButton ToolTipText="角度標註" Click="AngleDim" StyleMode="PushButton"
+                                            <ddes:ToolBarButton ToolTipText="角度標註" Click="AngleDim" StyleMode="PushButton"
                                                 Image="{Binding Source={materialDesign:PackIcon Kind=AngleAcute},Converter={local:MaterialDesignPackIconToBitmapSourceConverter}}"/>
                                             <!--    <ddes:ToolBarButton ToolTipText="絕對座標" StyleMode="PushButton"
                                                 Image="{Binding Source={materialDesign:PackIcon Kind=AxisArrow},Converter={local:MaterialDesignPackIconToBitmapSourceConverter}}"/>-->
-                                            </ddes:ToolBar.Buttons>
-                                        </ddes:ToolBar>
-                                    </ddes:Viewport.ToolBars>
-                                </ddes:Viewport>
-                            </ddes:Model.Viewports>
-                        </WPFSTD:ModelExt>
-                    </Grid>
-                </TabItem>
-            </TabControl>
-            <!--繪圖顯示模型-->
-            <Border Background="#F0F0F0" Margin="0,0,5,5"   Grid.Column="1" Grid.Row="1" >
-                <TabControl >
+                                        </ddes:ToolBar.Buttons>
+                                    </ddes:ToolBar>
+                                </ddes:Viewport.ToolBars>
+                            </ddes:Viewport>
+                        </ddes:Model.Viewports>
+                    </WPFSTD:ModelExt>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <!--繪圖顯示模型-->
+        <Border Background="#F0F0F0" Margin="0,0,5,5"   Grid.Column="1" Grid.Row="1" >
+            <TabControl >
                 <TabControl.Resources>
                     <ResourceDictionary>
                         <Style TargetType="TabItem">
@@ -894,174 +899,174 @@
                 </TabControl.Resources>
 
                 <TabItem Margin="0,0,0,0" Header="鑽孔" Name="DrillTabItem"  >
-                        <TabItem.Resources>
-                            <Style TargetType="GroupBox" BasedOn="{StaticResource BaseStyle}" >
-                                <Setter Property="Foreground" Value="#3b3b3b"/>
-                                <Setter Property="Margin" Value="5"/>
-                            </Style>
-                            <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignStyleCustomTextBox}">
-                                <Setter Property="Margin" Value="10,5"/>
+                    <TabItem.Resources>
+                        <Style TargetType="GroupBox" BasedOn="{StaticResource BaseStyle}" >
+                            <Setter Property="Foreground" Value="#3b3b3b"/>
+                            <Setter Property="Margin" Value="5"/>
+                        </Style>
+                        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignStyleCustomTextBox}">
+                            <Setter Property="Margin" Value="10,5"/>
 
-                            </Style>
-                        </TabItem.Resources>
+                        </Style>
+                    </TabItem.Resources>
                     <DockPanel Width="245">
-                            <Grid DockPanel.Dock="Top">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-                                <GroupBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" BorderThickness="0,0,0,1" >
-                                    <!--直徑設定-->
-                                    <Grid Margin="0,-30,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <CheckBox Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" IsChecked="{Binding CheckDia}" Content="孔直徑" />
-                                        <TextBox Grid.Column="1" Grid.Row="0" VerticalAlignment="Center">
-                                            <TextBox.Text>
-                                                <Binding Path="GroupBoltsAttr.Dia" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                    <Binding.ValidationRules>
-                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </TextBox.Text>
-                                        </TextBox>
-                                        <!--孔的起始位置-->
-                                        <CheckBox  Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"  IsChecked="{Binding CheckStartHole}" Content="位置"/>
+                        <Grid DockPanel.Dock="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <GroupBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" BorderThickness="0,0,0,1" >
+                                <!--直徑設定-->
+                                <Grid Margin="0,-30,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <CheckBox Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" IsChecked="{Binding CheckDia}" Content="孔直徑" />
+                                    <TextBox Grid.Column="1" Grid.Row="0" VerticalAlignment="Center">
+                                        <TextBox.Text>
+                                            <Binding Path="GroupBoltsAttr.Dia" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                <Binding.ValidationRules>
+                                                    <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                    <!--孔的起始位置-->
+                                    <CheckBox  Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"  IsChecked="{Binding CheckStartHole}" Content="位置"/>
 
-                                        <ComboBox SelectedIndex="{Binding StartHoleType}"  Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="10,0" 
+                                    <ComboBox SelectedIndex="{Binding StartHoleType}"  Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="10,0" 
                                                   ItemsSource="{Binding Source={StaticResource StartHole}, Path=Strings}"
                                                   Padding="5,1,0,0"/>
 
 
-                                        <CheckBox Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"  Content="孔輪廓" Visibility="Collapsed" Margin="10,0"/>
+                                    <CheckBox Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"  Content="孔輪廓" Visibility="Collapsed" Margin="10,0"/>
 
-                                        <ComboBox  Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,10,5" Visibility="Collapsed"
+                                    <ComboBox  Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" Margin="5,5,10,5" Visibility="Collapsed"
                                                   SelectedIndex="{Binding AxisModeType}" >
-                                            <ComboBoxItem Content="鑽孔" />
-                                            <ComboBoxItem Content="打點" />
-                                        </ComboBox>
+                                        <ComboBoxItem Content="鑽孔" />
+                                        <ComboBoxItem Content="打點" />
+                                    </ComboBox>
 
 
-                                        <CheckBox  Grid.Column="0" Grid.Row="2" IsChecked="False"  Content="孔X向起步點：" />
+                                    <CheckBox  Grid.Column="0" Grid.Row="2" IsChecked="False"  Content="孔X向起步點：" />
 
-                                        <TextBox Grid.Column="1" Grid.Row="2" VerticalAlignment="Center">
-                                            <TextBox.Text>
-                                                <Binding Path="GroupBoltsAttr.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                    <Binding.ValidationRules>
-                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </TextBox.Text>
-                                        </TextBox>
+                                    <TextBox Grid.Column="1" Grid.Row="2" VerticalAlignment="Center">
+                                        <TextBox.Text>
+                                            <Binding Path="GroupBoltsAttr.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                <Binding.ValidationRules>
+                                                    <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
 
-                                        <CheckBox Grid.Column="0" Grid.Row="3" IsChecked="False" Content="孔Y向起步點：" />
+                                    <CheckBox Grid.Column="0" Grid.Row="3" IsChecked="False" Content="孔Y向起步點：" />
 
-                                        <TextBox Grid.Column="1" Grid.Row="3" VerticalAlignment="Center">
-                                            <TextBox.Text>
-                                                <Binding Path="StartY" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                    <Binding.ValidationRules>
-                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </TextBox.Text>
-                                        </TextBox>
+                                    <TextBox Grid.Column="1" Grid.Row="3" VerticalAlignment="Center">
+                                        <TextBox.Text>
+                                            <Binding Path="StartY" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                <Binding.ValidationRules>
+                                                    <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
 
-                                    </Grid>
-                                </GroupBox>
-                                <GroupBox Header="位置" Grid.Column="1" Grid.Row="1">
-                                    <StackPanel >
-                                        <!--舊下拉式選單-->
-                                        <StackPanel Orientation="Horizontal" Visibility="Collapsed">
-                                            <CheckBox IsChecked="{Binding CheckFace}" />
-                                            <ComboBox ItemsSource="{Binding Source={StaticResource Face},Path=Strings}"
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Header="位置" Grid.Column="1" Grid.Row="1">
+                                <StackPanel >
+                                    <!--舊下拉式選單-->
+                                    <StackPanel Orientation="Horizontal" Visibility="Collapsed">
+                                        <CheckBox IsChecked="{Binding CheckFace}" />
+                                        <ComboBox ItemsSource="{Binding Source={StaticResource Face},Path=Strings}"
                                                       SelectedIndex="{Binding BoltsFaceType}" Width="50"/>
-                                        </StackPanel>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
+                                    </StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-                                            <RadioButton  Grid.Column="1" VerticalAlignment="Center" GroupName="DrillingPosition" Foreground="Black" HorizontalAlignment="Center"
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <RadioButton  Grid.Column="1" VerticalAlignment="Center" GroupName="DrillingPosition" Foreground="Black" HorizontalAlignment="Center"
                                                          Style="{StaticResource rad_Gray}"
                                                          IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={local:DrillingFaceConverter}, ConverterParameter=0}"
                                                          Content="頂面"/>
-                                            <RadioButton  Grid.Column="0" GroupName="DrillingPosition" Foreground="Black" HorizontalAlignment="Center"
+                                        <RadioButton  Grid.Column="0" GroupName="DrillingPosition" Foreground="Black" HorizontalAlignment="Center"
                                                           Style="{StaticResource rad_Gray}"
                                                           IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={local:DrillingFaceConverter}, ConverterParameter=1}"
                                                           Content="前面"/>
 
-                                            <RadioButton Grid.Column="2" GroupName="DrillingPosition" Foreground="Black" HorizontalAlignment="Center"
+                                        <RadioButton Grid.Column="2" GroupName="DrillingPosition" Foreground="Black" HorizontalAlignment="Center"
                                                           Style="{StaticResource rad_Gray}" 
                                                           IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={local:DrillingFaceConverter}, ConverterParameter=2}"
                                                            Content="後面"/>
 
 
-                                        </Grid>
-                                    </StackPanel>
-                                </GroupBox>
-                                <GroupBox Header="孔群設定" Grid.Column="0" Grid.Row="2">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
-
-                                        <CheckBox Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Content="形狀："/>
-
-                                        <ComboBox Grid.Column="2" Grid.Row="0" Margin="5" VerticalAlignment="Center" SelectedIndex="0" Padding="5,1,0,0">
-                                            <ComboBoxItem Content="陣列"/>
-                                        </ComboBox>
-
-                                        <CheckBox  Grid.Column="0" Grid.Row="1"  IsChecked="{Binding CheckX}" Content="孔X向間距："/>
-
-                                        <TextBox  Grid.Column="1" Grid.Row="1" MinWidth="40" VerticalAlignment="Center" >
-                                            <TextBox.Text>
-                                                <Binding Path="GroupBoltsAttr.dX" UpdateSourceTrigger="PropertyChanged" >
-                                                    <Binding.ValidationRules>
-                                                        <STD105ValidRule:CheckHoleGroupArrayStringRule/>
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </TextBox.Text>
-
-                                        </TextBox>
-
-                                        <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding CheckY}" Content="孔Y向間距：" />
-                                        <TextBox  Grid.Column="1" Grid.Row="2"  MinWidth="40" VerticalAlignment="Center">
-                                            <TextBox.Text>
-                                                <Binding Path="GroupBoltsAttr.dY" UpdateSourceTrigger="PropertyChanged" >
-                                                    <Binding.ValidationRules>
-                                                        <STD105ValidRule:CheckHoleGroupArrayStringRule/>
-                                                    </Binding.ValidationRules>
-                                                </Binding>
-                                            </TextBox.Text>
-                                        </TextBox>
-
                                     </Grid>
-                                </GroupBox>
+                                </StackPanel>
+                            </GroupBox>
+                            <GroupBox Header="孔群設定" Grid.Column="0" Grid.Row="2">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
 
-                                <!-- X軸數量-->
-                                <!--StackPanel Grid.Row="2"
+                                    <CheckBox Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Content="形狀："/>
+
+                                    <ComboBox Grid.Column="2" Grid.Row="0" Margin="5" VerticalAlignment="Center" SelectedIndex="0" Padding="5,1,0,0">
+                                        <ComboBoxItem Content="陣列"/>
+                                    </ComboBox>
+
+                                    <CheckBox  Grid.Column="0" Grid.Row="1"  IsChecked="{Binding CheckX}" Content="孔X向間距："/>
+
+                                    <TextBox  Grid.Column="1" Grid.Row="1" MinWidth="40" VerticalAlignment="Center" >
+                                        <TextBox.Text>
+                                            <Binding Path="GroupBoltsAttr.dX" UpdateSourceTrigger="PropertyChanged" >
+                                                <Binding.ValidationRules>
+                                                    <STD105ValidRule:CheckHoleGroupArrayStringRule/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+
+                                    </TextBox>
+
+                                    <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding CheckY}" Content="孔Y向間距：" />
+                                    <TextBox  Grid.Column="1" Grid.Row="2"  MinWidth="40" VerticalAlignment="Center">
+                                        <TextBox.Text>
+                                            <Binding Path="GroupBoltsAttr.dY" UpdateSourceTrigger="PropertyChanged" >
+                                                <Binding.ValidationRules>
+                                                    <STD105ValidRule:CheckHoleGroupArrayStringRule/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+
+                                </Grid>
+                            </GroupBox>
+
+                            <!-- X軸數量-->
+                            <!--StackPanel Grid.Row="2"
                                     Grid.Column="1"
                                     Orientation="Horizontal"
                                     HorizontalAlignment="Center">
@@ -1069,8 +1074,8 @@
                             <TextBox Text="{Binding GroupBoltsAttr.xCount}"
                                      Width="80" />
                         </StackPanel-->
-                                <!-- Y軸數量-->
-                                <!--
+                            <!-- Y軸數量-->
+                            <!--
                         <StackPanel Grid.Row="3"
                                     Grid.Column="1"
                                     Orientation="Horizontal"
@@ -1079,22 +1084,22 @@
                             <TextBox Text="{Binding GroupBoltsAttr.yCount}"
                                      Width="80" />
                         </StackPanel>-->
-                                <!--選擇面-->
-                                <!--鏡射-->
+                            <!--選擇面-->
+                            <!--鏡射-->
 
 
-                            </Grid>
+                        </Grid>
                         <StackPanel DockPanel.Dock="Bottom"  VerticalAlignment="Bottom">
-                                <StackPanel  Orientation="Horizontal"
+                            <StackPanel  Orientation="Horizontal"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Bottom"
                                          Margin="5">
-                                    <Button Content ="X軸鏡射" Command="{Binding MirrorX}" Margin="0,0,0,0" Width="80" Height="24" Visibility="Collapsed" />
-                                    <Button Content="Y軸鏡射" Command="{Binding MirrorY}" Margin="5,0,0,0" Width="80" Height="24" Visibility="Collapsed"   />
-                                    <Button Content="rbtn choice" Command="{Binding Path=CmdShowMessage}" Margin="5" Width="80" Height="24" Visibility="Collapsed"/>
-                                </StackPanel>
+                                <Button Content ="X軸鏡射" Command="{Binding MirrorX}" Margin="0,0,0,0" Width="80" Height="24" Visibility="Collapsed" />
+                                <Button Content="Y軸鏡射" Command="{Binding MirrorY}" Margin="5,0,0,0" Width="80" Height="24" Visibility="Collapsed"   />
+                                <Button Content="rbtn choice" Command="{Binding Path=CmdShowMessage}" Margin="5" Width="80" Height="24" Visibility="Collapsed"/>
+                            </StackPanel>
 
-                                <StackPanel  Grid.Row="3"     Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
+                            <StackPanel  Grid.Row="3"     Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Button Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=DrillTabItem}" Width="60" Margin="0,0,0,0"  Background="#d8d8d8" Cursor="Hand" >
                                     <Button.Content >
                                         <StackPanel Orientation="Horizontal">
@@ -1114,103 +1119,103 @@
                                         Add="{Binding AddHole}"
                                         Modify="{Binding ModifyHole}"
                                         Margin="2,0,-10,0"/>
-                                </StackPanel>
                             </StackPanel>
-                        </DockPanel>
+                        </StackPanel>
+                    </DockPanel>
 
-                    </TabItem>
-                 <TabItem Header="切割線" Name="CutTabItem"  >
-                        <DockPanel Width="245" >
+                </TabItem>
+                <TabItem Header="切割線" Name="CutTabItem"  >
+                    <DockPanel Width="245" >
                         <Grid  DockPanel.Dock="Top" Name="ScrollViewbox">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <GroupBox Header="位置" Style="{StaticResource BaseStyle}" Margin="5" Name="CuttingGroupPosition">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <RadioButton Content="頂面" Grid.Column="1" VerticalAlignment="Center" 
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <GroupBox Header="位置" Style="{StaticResource BaseStyle}" Margin="5" Name="CuttingGroupPosition">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <RadioButton Content="頂面" Grid.Column="1" VerticalAlignment="Center" 
                                                          GroupName="CutLinePosition" Foreground="Black"  
                                                          Style="{StaticResource rad_Gray}"
                                                          IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={local:CutFaceConverter}, ConverterParameter=0}"/>
-                                        <RadioButton Content="前面" Grid.Column="0" 
+                                    <RadioButton Content="前面" Grid.Column="0" 
                                                          GroupName="CutLinePosition" Foreground="Black" 
                                                          Style="{StaticResource rad_Gray}"
                                                          IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={local:CutFaceConverter}, ConverterParameter=1}"/>
 
-                                        <RadioButton Content="後面"  Grid.Column="2" 
+                                    <RadioButton Content="後面"  Grid.Column="2" 
                                                          GroupName="CutLinePosition" Foreground="Black"  
                                                          Style="{StaticResource rad_Gray}"
                                                          IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={local:CutFaceConverter}, ConverterParameter=2}"/>
 
-                                    </Grid>
-                                </GroupBox>
+                                </Grid>
+                            </GroupBox>
 
-                                <StackPanel Grid.Row="1" Background="#303030" Height="0.5" Margin="0,15,0,10" />
-                                <GroupBox Header="切割位置" Style="{StaticResource BaseStyle}" Grid.Row="2" Margin="5" Name="CuttingGroupBox" >
-                                    <Grid  Background="#c0c0c0">
-                                        <Grid>
-                                            <Grid.Resources>
+                            <StackPanel Grid.Row="1" Background="#303030" Height="0.5" Margin="0,15,0,10" />
+                            <GroupBox Header="切割位置" Style="{StaticResource BaseStyle}" Grid.Row="2" Margin="5" Name="CuttingGroupBox" >
+                                <Grid  Background="#c0c0c0">
+                                    <Grid>
+                                        <Grid.Resources>
 
-                                                <Style TargetType="Line">
-                                                    <Setter Property="Stroke" Value="#666666"/>
-                                                    <Setter Property="StrokeThickness" Value="1.1"/>
-                                                </Style>
-                                            </Grid.Resources>
+                                            <Style TargetType="Line">
+                                                <Setter Property="Stroke" Value="#666666"/>
+                                                <Setter Property="StrokeThickness" Value="1.1"/>
+                                            </Style>
+                                        </Grid.Resources>
                                         <Line X1="20" X2="60" Y1="30" Y2="30" Stroke="#888888"/>
                                         <Line X1="20" X2="20" Y1="29.5" Y2="110.5" Stroke="#888888"/>
                                         <Line X1="20" X2="30" Y1="110" Y2="110" Stroke="#888888"/>
 
-                                            <Line X1="-20" X2="-60" Y1="30" Y2="30" Stroke="#888888" HorizontalAlignment="Right" />
-                                            <Line X1="-20" X2="-20" Y1="29.5" Y2="110.5" Stroke="#888888" HorizontalAlignment="Right" />
-                                            <Line X1="-20" X2="-30" Y1="110" Y2="110" Stroke="#888888" HorizontalAlignment="Right" />
+                                        <Line X1="-20" X2="-60" Y1="30" Y2="30" Stroke="#888888" HorizontalAlignment="Right" />
+                                        <Line X1="-20" X2="-20" Y1="29.5" Y2="110.5" Stroke="#888888" HorizontalAlignment="Right" />
+                                        <Line X1="-20" X2="-30" Y1="110" Y2="110" Stroke="#888888" HorizontalAlignment="Right" />
 
-                                            <Line X1="20" X2="60" Y1="-30" Y2="-30" Stroke="#888888" VerticalAlignment="Bottom" />
-                                            <Line X1="20" X2="20" Y1="-29.5" Y2="-110.5" Stroke="#888888" VerticalAlignment="Bottom"  />
-                                            <Line X1="20" X2="30" Y1="-110" Y2="-110" Stroke="#888888" VerticalAlignment="Bottom" />
+                                        <Line X1="20" X2="60" Y1="-30" Y2="-30" Stroke="#888888" VerticalAlignment="Bottom" />
+                                        <Line X1="20" X2="20" Y1="-29.5" Y2="-110.5" Stroke="#888888" VerticalAlignment="Bottom"  />
+                                        <Line X1="20" X2="30" Y1="-110" Y2="-110" Stroke="#888888" VerticalAlignment="Bottom" />
 
-                                            <Line X1="-20" X2="-60" Y1="-30" Y2="-30" Stroke="#888888" VerticalAlignment="Bottom"  HorizontalAlignment="Right" />
-                                            <Line X1="-20" X2="-20" Y1="-29.5" Y2="-110.5" Stroke="#888888" VerticalAlignment="Bottom"  HorizontalAlignment="Right" />
-                                            <Line X1="-20" X2="-30" Y1="-110" Y2="-110" Stroke="#888888" VerticalAlignment="Bottom"  HorizontalAlignment="Right" />
+                                        <Line X1="-20" X2="-60" Y1="-30" Y2="-30" Stroke="#888888" VerticalAlignment="Bottom"  HorizontalAlignment="Right" />
+                                        <Line X1="-20" X2="-20" Y1="-29.5" Y2="-110.5" Stroke="#888888" VerticalAlignment="Bottom"  HorizontalAlignment="Right" />
+                                        <Line X1="-20" X2="-30" Y1="-110" Y2="-110" Stroke="#888888" VerticalAlignment="Bottom"  HorizontalAlignment="Right" />
 
 
-                                        </Grid>
-                                        <Grid HorizontalAlignment="Center" Margin="0,20">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="auto"/>
-                                                <RowDefinition Height="auto"/>
-                                                <RowDefinition Height="auto"/>
-                                                <RowDefinition Height="auto"/>
-                                                <RowDefinition Height="auto"/>
-                                                <RowDefinition Height="auto"/>
-                                            </Grid.RowDefinitions>
+                                    </Grid>
+                                    <Grid HorizontalAlignment="Center" Margin="0,20">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
 
-                                            <Grid.Resources>
-                                                <Style TargetType="TextBlock" BasedOn="{StaticResource fileNameStyle}"></Style>
-                                            </Grid.Resources>
-                                            <ComboBox Visibility="Hidden"
+                                        <Grid.Resources>
+                                            <Style TargetType="TextBlock" BasedOn="{StaticResource fileNameStyle}"></Style>
+                                        </Grid.Resources>
+                                        <ComboBox Visibility="Hidden"
                                                       Width="94"
                                                           Grid.Row="2"  Grid.ColumnSpan="2"
                                                       ItemsSource="{Binding Source={StaticResource Face},Path=Strings}"
                                                       SelectedIndex="{Binding CutFaceType}" />
-                                            <Path x:Name="pa"
+                                        <Path x:Name="pa"
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Center"
                                                       Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"
@@ -1228,120 +1233,120 @@
                                                   Width="160"
                                                   Stretch="Fill"
                                                   Stroke="{ StaticResource solidclr_DimGray }" />
-                                            <TextBox Grid.Row="1" HorizontalAlignment="Right" Margin="0,5,10,5"
+                                        <TextBox Grid.Row="1" HorizontalAlignment="Right" Margin="0,5,10,5"
                                                      Width="50">
-                                                <TextBox.Text>
-                                                    <Binding Path="ULPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                        <Binding.ValidationRules>
-                                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                        </Binding.ValidationRules>
-                                                    </Binding>
-                                                </TextBox.Text>
-                                            </TextBox>
-                                            <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="10,5,0,5"
+                                            <TextBox.Text>
+                                                <Binding Path="ULPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="10,5,0,5"
                                                      Width="50">
-                                                <TextBox.Text>
-                                                    <Binding Path="URPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                        <Binding.ValidationRules>
-                                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                        </Binding.ValidationRules>
-                                                    </Binding>
-                                                </TextBox.Text>
-                                            </TextBox>
-                                            <TextBox Width="50" Grid.Column="0" Grid.Row="0" Cursor="IBeam" HorizontalAlignment="Right" Margin="0,0,10,0">
-                                                <TextBox.Text>
-                                                    <Binding Path="ULPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                        <Binding.ValidationRules>
-                                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                        </Binding.ValidationRules>
-                                                    </Binding>
-                                                </TextBox.Text>
-                                            </TextBox>
-                                            <TextBox Width="50"  Grid.Column="0" Grid.Row="5" HorizontalAlignment="Right" Margin="0,0,10,0">
-                                                <TextBox.Text>
-                                                    <Binding Path="DLPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                        <Binding.ValidationRules>
-                                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                        </Binding.ValidationRules>
-                                                    </Binding>
-                                                </TextBox.Text>
-                                            </TextBox>
-                                            <TextBox Width="50" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="10,0,00,0">
-                                                <TextBox.Text>
-                                                    <Binding Path="URPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                        <Binding.ValidationRules>
-                                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                        </Binding.ValidationRules>
-                                                    </Binding>
-                                                </TextBox.Text>
-                                            </TextBox>
-                                            <TextBox Width="50" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" Margin="10,0,00,0">
-                                                <TextBox.Text>
-                                                    <Binding Path="DRPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                        <Binding.ValidationRules>
-                                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                        </Binding.ValidationRules>
-                                                    </Binding>
-                                                </TextBox.Text>
-                                            </TextBox>
-                                            <TextBox Width="50" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Right" Margin="0,5,10,5">
-                                                <TextBox.Text>
-                                                    <Binding Path="DLPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                        <Binding.ValidationRules>
-                                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                        </Binding.ValidationRules>
-                                                    </Binding>
-                                                </TextBox.Text>
-                                            </TextBox>
-                                            <TextBox Width="50" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Margin="10,5,00,5">
-                                                <TextBox.Text>
-                                                    <Binding Path="DRPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                        <Binding.ValidationRules>
-                                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
-                                                        </Binding.ValidationRules>
-                                                    </Binding>
-                                                </TextBox.Text>
-                                            </TextBox>
-                                            <CheckBox IsChecked="{Binding ULCheck}"  Grid.Column="0" Grid.Row="2"  Margin="23.5,29.5,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"
+                                            <TextBox.Text>
+                                                <Binding Path="URPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <TextBox Width="50" Grid.Column="0" Grid.Row="0" Cursor="IBeam" HorizontalAlignment="Right" Margin="0,0,10,0">
+                                            <TextBox.Text>
+                                                <Binding Path="ULPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <TextBox Width="50"  Grid.Column="0" Grid.Row="5" HorizontalAlignment="Right" Margin="0,0,10,0">
+                                            <TextBox.Text>
+                                                <Binding Path="DLPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <TextBox Width="50" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="10,0,00,0">
+                                            <TextBox.Text>
+                                                <Binding Path="URPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <TextBox Width="50" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" Margin="10,0,00,0">
+                                            <TextBox.Text>
+                                                <Binding Path="DRPoint.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <TextBox Width="50" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Right" Margin="0,5,10,5">
+                                            <TextBox.Text>
+                                                <Binding Path="DLPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <TextBox Width="50" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Margin="10,5,00,5">
+                                            <TextBox.Text>
+                                                <Binding Path="DRPoint.X" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                    <Binding.ValidationRules>
+                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                        <CheckBox IsChecked="{Binding ULCheck}"  Grid.Column="0" Grid.Row="2"  Margin="23.5,29.5,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"
                                                       Width="16"
                                                       Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
                                                       Style="{StaticResource CheckedStyle}"
                                                       Canvas.Left="86"
                                                       Canvas.Top="90" />
-                                            <CheckBox IsChecked="{Binding DLCheck}" Grid.Column="0" Grid.Row="3"  Margin="23.5,0,0,29.5" VerticalAlignment="Bottom" HorizontalAlignment="Left"
+                                        <CheckBox IsChecked="{Binding DLCheck}" Grid.Column="0" Grid.Row="3"  Margin="23.5,0,0,29.5" VerticalAlignment="Bottom" HorizontalAlignment="Left"
                                                       Width="16"
                                                       Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
                                                       Style="{StaticResource CheckedStyle}"
                                                       Canvas.Left="86"
                                                       Canvas.Top="172" Cursor="Hand" />
-                                            <CheckBox IsChecked="{Binding URCheck}" Grid.Column="1" Grid.Row="2"  Margin="0,29.5,23.5,0" VerticalAlignment="Top" HorizontalAlignment="Right"
+                                        <CheckBox IsChecked="{Binding URCheck}" Grid.Column="1" Grid.Row="2"  Margin="0,29.5,23.5,0" VerticalAlignment="Top" HorizontalAlignment="Right"
                                                       Width="16"
                                                       Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
                                                       Style="{StaticResource CheckedStyle}"
                                                       Canvas.Left="188"
                                                       Canvas.Top="90" />
-                                            <CheckBox IsChecked="{Binding DRCheck}" Grid.Column="1" Grid.Row="3" Margin="0,0,23.5,29.5" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                                        <CheckBox IsChecked="{Binding DRCheck}" Grid.Column="1" Grid.Row="3" Margin="0,0,23.5,29.5" VerticalAlignment="Bottom" HorizontalAlignment="Right"
                                                       Width="16"
                                                       Height="{ Binding RelativeSource={x:Static RelativeSource.Self}, Path=Width}"
                                                       Style="{StaticResource CheckedStyle}"
                                                       Canvas.Left="188"
                                                       Canvas.Top="172" />
-                                        </Grid>
-
                                     </Grid>
-                                </GroupBox>
-                            </Grid>
-                            <StackPanel Margin="-5,0" DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                                <Button Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=CutTabItem}" Width="60"   Background="#d8d8d8" Cursor="Hand" >
-                                    <Button.Content >
-                                        <StackPanel Orientation="Horizontal">
-                                            <materialDesign:PackIcon Kind="CheckboxOutline" />
-                                            <TextBlock Text="／"/>
-                                            <materialDesign:PackIcon Kind="CheckboxBlankOutline" />
-                                        </StackPanel>
-                                    </Button.Content>
-                                </Button>
-                                <local:DataButtons_Office Style="{StaticResource BaseStyle}"
+
+                                </Grid>
+                            </GroupBox>
+                        </Grid>
+                        <StackPanel Margin="-5,0" DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                            <Button Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=CutTabItem}" Width="60"   Background="#d8d8d8" Cursor="Hand" >
+                                <Button.Content >
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="CheckboxOutline" />
+                                        <TextBlock Text="／"/>
+                                        <materialDesign:PackIcon Kind="CheckboxBlankOutline" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                            <local:DataButtons_Office Style="{StaticResource BaseStyle}"
                                                            Modify="{Binding ModifyCut}"
                                                            Add="{Binding AddCut}"
                                                            Delete="{Binding DeleteCut}"
@@ -1351,14 +1356,14 @@
                                                            ReadVisibility="Collapsed" 
                                                            VerticalAlignment="Bottom"
                                                            Margin="0,0,-5,0" />
-                            </StackPanel>
+                        </StackPanel>
 
 
-                        </DockPanel>
-                    </TabItem>
-                </TabControl>
-            </Border>
+                    </DockPanel>
+                </TabItem>
+            </TabControl>
+        </Border>
 
-        </Grid>
+    </Grid>
 
 </WPFBase:BasePage>

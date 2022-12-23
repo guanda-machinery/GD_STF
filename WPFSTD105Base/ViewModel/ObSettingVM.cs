@@ -520,17 +520,21 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public float HProperty { get; set; }
         /// <summary>
+        /// 單位公斤
+        /// </summary>
+        public float KGProperty { get; set; }
+        /// <summary>
         /// 寬
         /// </summary>
         public float WProperty { get; set; }
         /// <summary>
         /// 腹板厚度
         /// </summary>
-        public int t1Property { get; set; }
+        public float t1Property { get; set; }
         /// <summary>
         /// 翼板厚度
         /// </summary>
-        public int t2Property { get; set; }
+        public float t2Property { get; set; }
         /// <summary>
         /// 驚嘆號
         /// </summary>
@@ -947,7 +951,7 @@ namespace WPFSTD105.ViewModel
             }
             else
             {
-                Boltsbuffer.Y = this.StartY;
+                Boltsbuffer.Y = this.StartY;// + (Boltsbuffer.Face == FACE.TOP ? SteelAttr.t2 : 0);
             }
 #if DEBUG
             log4net.LogManager.GetLogger("螺栓設定檔").Debug
@@ -1311,7 +1315,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 是否顯示訊息
         /// </summary>
-        public bool showMessage { get; set; } = false;
+        public bool showMessage { get; set; } = true;
         /// <summary>
         /// 從編輯孔開始
         /// </summary>
@@ -1786,7 +1790,7 @@ namespace WPFSTD105.ViewModel
                 // 所有該斷面規格的零件
                 List<SteelPart> sa1 = new List<SteelPart>();
                 sa1 = (from a in part[key].ToList()
-                       select new SteelPart() { t1 = a.t1, t2 = a.t2, H = a.H, W = a.W }).ToList();
+                       select new SteelPart() {Number = a.Number, t1 = a.t1, t2 = a.t2, H = a.H, W = a.W }).ToList();
                 // 紀錄零件資訊
                 List<SteelAttr> saList = new List<SteelAttr>();
                 foreach (var item in DataCorrespond.Where(x => x.Profile.GetHashCode().ToString() + ".lis" == key))
@@ -1804,6 +1808,8 @@ namespace WPFSTD105.ViewModel
                         {
                             saTemp = new SteelAttr()
                             {
+                                Profile= profileStr,
+                                PartNumber = sp.Number,
                                 t1 = sp.t1,
                                 t2 = sp.t2,
                                 H = sp.H,
@@ -1828,6 +1834,24 @@ namespace WPFSTD105.ViewModel
                             //saTemp.ShippingNumber = 0;
                             //saTemp.Title1 = "";
                             //saTemp.Title2 = "";
+                            saTemp.PartNumber = item.Number;
+                            saTemp.Profile = item.Profile;
+                            if (profileAll.SelectMany(x => x.Value).Any(x => x.Profile == saTemp.Profile))
+                            {
+                                saTemp.Kg = profileAll.SelectMany(x => x.Value).FirstOrDefault(x => x.Profile == saTemp.Profile).Kg;
+                                saTemp.W = profileAll.SelectMany(x => x.Value).FirstOrDefault(x => x.Profile == saTemp.Profile).W;
+                            }
+                        }
+                        saList.Add(saTemp);
+                    }
+                    else
+                    {
+                        saTemp.PartNumber = item.Number;
+                        saTemp.Profile = item.Profile;
+                        if (profileAll.SelectMany(x => x.Value).Any(x => x.Profile == saTemp.Profile))
+                        {
+                            saTemp.Kg = profileAll.SelectMany(x => x.Value).FirstOrDefault(x => x.Profile == saTemp.Profile).Kg;
+                            saTemp.W = profileAll.SelectMany(x => x.Value).FirstOrDefault(x => x.Profile == saTemp.Profile).W;
                         }
                         saList.Add(saTemp);
                     }
@@ -1996,6 +2020,7 @@ namespace WPFSTD105.ViewModel
                                 double weight = item.UnitWeight;
                                 steelAttrVM.steelAttr.Weight = weight;
                                 steelAttrVM.Weight = weight;
+
 
                                 steelAttrVM.steelAttr.H = item.H;
                                 steelAttrVM.steelAttr.W = item.W;
@@ -2171,8 +2196,6 @@ namespace WPFSTD105.ViewModel
                 aa.steelAttr.Profile = item.Profile;
                 aa.steelAttr.Material = item.Material;
                 aa.steelAttr.Length = item.Length;
-                aa.Weight = ObSettingVM.PartWeight(aa, saFile); //item.Weight,
-                aa.steelAttr.Weight = aa.Weight;
                 aa.steelAttr.Name = item.TeklaName;
                 aa.steelAttr.t1 = float.Parse(item.t1.ToString());
                 aa.steelAttr.t2 = float.Parse(item.t2.ToString());
@@ -2187,6 +2210,8 @@ namespace WPFSTD105.ViewModel
                     var NcSASingle = NcSA[aa.steelAttr.Profile.GetHashCode().ToString() + ".lis"].Where(x => x.PartNumber == aa.steelAttr.PartNumber).FirstOrDefault();
                     if (NcSASingle != null)
                     {
+                        aa.steelAttr.Kg = NcSASingle.Kg;
+                        aa.steelAttr.W = NcSASingle.W;
                         aa.oPoint = NcSASingle.oPoint;
                         aa.uPoint = NcSASingle.uPoint;
                         aa.vPoint = NcSASingle.vPoint;
@@ -2197,6 +2222,16 @@ namespace WPFSTD105.ViewModel
                         aa.steelAttr.CutList = NcSASingle.CutList;
                     }
                 }
+
+                if (profileAll.SelectMany(x => x.Value).Any(x => x.Profile == item.Profile))
+                {
+                    aa.steelAttr.Kg = profileAll.SelectMany(x => x.Value).FirstOrDefault(x => x.Profile == item.Profile).Kg;
+                    aa.steelAttr.W = profileAll.SelectMany(x => x.Value).FirstOrDefault(x => x.Profile == item.Profile).W;
+                }
+
+                aa.Weight = ObSettingVM.PartWeight(aa, saFile); //item.Weight,
+                aa.steelAttr.Weight = aa.Weight;
+
                 list.Add(aa);
 
 
@@ -2214,15 +2249,23 @@ namespace WPFSTD105.ViewModel
         /// <returns></returns>
         public static double PartWeight(ProductSettingsPageViewModel part_tekla, Dictionary<string, ObservableCollection<SteelAttr>> saFile)
         {
-            var profile = saFile[((OBJECT_TYPE)part_tekla.SteelType).ToString()]
-                .Where(x => x.Profile == part_tekla.Profile)
-                .FirstOrDefault();
+            double weight;
+            
+                weight = (part_tekla.steelAttr.Length / 1000) * part_tekla.steelAttr.Kg;
+           
+            return weight;
 
-            if (profile != null)
-            {
-                return (part_tekla.Length / 1000) * profile.Kg;
-            }
-            return part_tekla.Weight;
+
+
+            //var profile = saFile[((OBJECT_TYPE)part_tekla.SteelType).ToString()]
+            //    .Where(x => x.Profile == part_tekla.Profile)
+            //    .FirstOrDefault();
+            //
+            //if (profile != null)
+            //{
+            //    return (part_tekla.Length / 1000) * profile.Kg;
+            //}
+            //return part_tekla.Weight;
         }
         /// <summary>
         /// 由使用者提供之孔距計算數量
