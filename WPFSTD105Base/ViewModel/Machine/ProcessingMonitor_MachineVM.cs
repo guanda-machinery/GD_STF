@@ -1232,7 +1232,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                             int selected = Finish_UndoneDataViews.IndexOf(dataView);
                             if (selected != -1)
                             {
-                               /* if (_WorkMaterials[selected].MaterialNumber == null)
+                                /*if (_WorkMaterials[selected].MaterialNumber == null)
                                     _WorkMaterials[selected].MaterialNumber = Finish_UndoneDataViews[selected].MaterialNumber;*/
                                 _WorkMaterials[selected].Finish = 100;
                                 _WorkMaterials[selected].IsExport = true;
