@@ -222,7 +222,7 @@ namespace STD_105
 #if DEBUG
             log4net.LogManager.GetLogger("加入物件").Debug("檢測用戶輸入");
 #endif
-            if (ObViewModel.SteelAttr.PartNumber == "" || ObViewModel.SteelAttr.PartNumber == null)//檢測用戶是否有輸入零件編號
+            if (string.IsNullOrEmpty(ObViewModel.SteelAttr.PartNumber))//檢測用戶是否有輸入零件編號
             {
                 //MessageBox.Show("請輸入零件編號", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,

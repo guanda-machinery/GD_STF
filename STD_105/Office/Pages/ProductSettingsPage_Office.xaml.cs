@@ -182,7 +182,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 }
             });
             //還原上一個動作
@@ -356,7 +356,7 @@ namespace STD_105.Office
                             //        MessageBoxImage.Exclamation,
                             //        MessageBoxResult.None,
                             //        MessageBoxOptions.None,
-                            //        FloatingMode.Popup);
+                            //         FloatingMode.Window);
                             //    return;
                             //}
                             readFile.DoWork();//開始工作
@@ -468,7 +468,7 @@ namespace STD_105.Office
                                     MessageBoxImage.Exclamation,
                                     MessageBoxResult.None,
                                     MessageBoxOptions.None,
-                                    FloatingMode.Popup);
+                                     FloatingMode.Window);
                                 return;
                             }
                             readFile.DoWork();//開始工作
@@ -764,7 +764,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                     ViewModel.fclickOK = true;
                     return;
                 }
@@ -812,7 +812,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                     ViewModel.fclickOK = true;
                     return;
                 }
@@ -844,7 +844,7 @@ namespace STD_105.Office
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
                     return;
                 }
                 readFile.DoWork();//開始工作
@@ -870,7 +870,7 @@ namespace STD_105.Office
                 //   MessageBoxImage.Exclamation,
                 //   MessageBoxResult.None,
                 //   MessageBoxOptions.None,
-                //   FloatingMode.Popup);
+                //    FloatingMode.Window);
                 //    return;
                 //}
 
@@ -1057,7 +1057,7 @@ namespace STD_105.Office
                                      MessageBoxImage.Exclamation,
                                      MessageBoxResult.None,
                                      MessageBoxOptions.None,
-                                     FloatingMode.Popup);
+                                      FloatingMode.Window);
                     }
                     else
                     {
@@ -1166,7 +1166,7 @@ namespace STD_105.Office
                     //                  MessageBoxImage.Exclamation,
                     //                  MessageBoxResult.None,
                     //                  MessageBoxOptions.None,
-                    //                  FloatingMode.Popup);
+                    //                   FloatingMode.Window);
                     // }
                     // else
                     // {
@@ -1269,7 +1269,7 @@ namespace STD_105.Office
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
 
                 ViewModel.fclickOK = false;
 #if DEBUG
@@ -1292,7 +1292,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 }
                 //如果模型裡面有物件
                 else if (model.Entities.Count > 0)
@@ -1320,7 +1320,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 }
             });
             //另存加入零件 20220902 張燕華
@@ -1418,7 +1418,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
 
             });
             //OK鈕 20220902 張燕華
@@ -1433,7 +1433,7 @@ namespace STD_105.Office
                 //    MessageBoxImage.Exclamation,
                 //    MessageBoxResult.None,
                 //    MessageBoxOptions.None,
-                //    FloatingMode.Popup);
+                //     FloatingMode.Window);
 
                 //    SaveModel(true);//存取檔案OKtoConfirmChanges
                 //    fAddSteelPart=false;
@@ -1449,7 +1449,7 @@ namespace STD_105.Office
                          MessageBoxImage.Exclamation,
                          MessageBoxResult.None,
                          MessageBoxOptions.None,
-                         FloatingMode.Popup);
+                          FloatingMode.Window);
                     return;
                 }
 
@@ -1465,7 +1465,7 @@ namespace STD_105.Office
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
                     return;
                 }
 
@@ -1519,7 +1519,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                     if (ResultRtn == MessageBoxResult.Yes)
                     {
                         if (this.PieceListGridControl.VisibleRowCount > 0)
@@ -1592,7 +1592,7 @@ namespace STD_105.Office
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
                         //fFirstAdd = true;
                         //fNewPart = false;
                         //fGrid = false;
@@ -1677,7 +1677,7 @@ namespace STD_105.Office
                 //    MessageBoxImage.Exclamation,
                 //    MessageBoxResult.None,
                 //    MessageBoxOptions.None,
-                //    FloatingMode.Popup);
+                //     FloatingMode.Window);
                 //   ViewModel.fclickOK = true;
                 //    return;
                 //}
@@ -1715,7 +1715,7 @@ namespace STD_105.Office
                                      MessageBoxImage.Exclamation,
                                      MessageBoxResult.None,
                                      MessageBoxOptions.None,
-                                     FloatingMode.Popup);
+                                      FloatingMode.Window);
                         ViewModel.fclickOK = true;
                         //return;
                     }
@@ -1740,7 +1740,7 @@ namespace STD_105.Office
                                      MessageBoxImage.Exclamation,
                                      MessageBoxResult.None,
                                      MessageBoxOptions.None,
-                                     FloatingMode.Popup);
+                                      FloatingMode.Window);
                         ViewModel.fclickOK = true;
                         //return;
                     }
@@ -1830,7 +1830,7 @@ namespace STD_105.Office
                                 MessageBoxImage.Exclamation,
                                 MessageBoxResult.None,
                                 MessageBoxOptions.None,
-                                FloatingMode.Popup);
+                                 FloatingMode.Window);
                             return;
                         }
                         //如果選擇的物件不是孔位
@@ -1843,7 +1843,7 @@ namespace STD_105.Office
                                 MessageBoxImage.Exclamation,
                                 MessageBoxResult.None,
                                 MessageBoxOptions.None,
-                                FloatingMode.Popup);
+                                 FloatingMode.Window);
                             return;
 
                         }
@@ -1892,7 +1892,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 }
             });
             //讀取孔位
@@ -1913,7 +1913,7 @@ namespace STD_105.Office
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                             FloatingMode.Window);
                         return;
                     }
                     //如果選擇的物件不是孔位
@@ -1926,7 +1926,7 @@ namespace STD_105.Office
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                             FloatingMode.Window);
                     }
                     ViewModel.WriteGroupBoltsAttr((GroupBoltsAttr)blockReference.EntityData);
                 }
@@ -1939,7 +1939,7 @@ namespace STD_105.Office
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
                 }
             });
             //加入或修改切割線
@@ -2040,7 +2040,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 }
                 //如果模型裡面有物件
                 else if (model.Entities.Count > 0)
@@ -2058,7 +2058,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 }
             });
             //鏡射 X 軸
@@ -2088,7 +2088,7 @@ namespace STD_105.Office
                                     MessageBoxImage.Exclamation,
                                     MessageBoxResult.None,
                                     MessageBoxOptions.None,
-                                    FloatingMode.Popup);
+                                     FloatingMode.Window);
                                 return;
                             }
                             //如果選擇的物件不是孔位
@@ -2101,7 +2101,7 @@ namespace STD_105.Office
                                     MessageBoxImage.Exclamation,
                                     MessageBoxResult.None,
                                     MessageBoxOptions.None,
-                                    FloatingMode.Popup);
+                                     FloatingMode.Window);
                             }
 #if DEBUG
                             log4net.LogManager.GetLogger("鏡射孔位").Debug("開始");
@@ -2554,7 +2554,7 @@ namespace STD_105.Office
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                             FloatingMode.Window);
                     }
                 }
                 catch (Exception ex)
@@ -2591,7 +2591,7 @@ namespace STD_105.Office
                                     MessageBoxImage.Exclamation,
                                     MessageBoxResult.None,
                                     MessageBoxOptions.None,
-                                    FloatingMode.Popup);
+                                     FloatingMode.Window);
                                 return;
                             }
                             //如果選擇的物件不是孔位
@@ -2604,7 +2604,7 @@ namespace STD_105.Office
                                     MessageBoxImage.Exclamation,
                                     MessageBoxResult.None,
                                     MessageBoxOptions.None,
-                                    FloatingMode.Popup);
+                                     FloatingMode.Window);
                                 return;
                             }
 #if DEBUG
@@ -2835,7 +2835,7 @@ namespace STD_105.Office
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                             FloatingMode.Window);
                     }
                 }
                 catch (Exception ex)
@@ -3173,7 +3173,7 @@ namespace STD_105.Office
                        MessageBoxImage.Exclamation,
                        MessageBoxResult.None,
                        MessageBoxOptions.None,
-                       FloatingMode.Popup);
+                        FloatingMode.Window);
                         return false;
                     }
                     break;
@@ -3189,7 +3189,7 @@ namespace STD_105.Office
                       MessageBoxImage.Exclamation,
                       MessageBoxResult.None,
                       MessageBoxOptions.None,
-                      FloatingMode.Popup);
+                       FloatingMode.Window);
                         return false;
                     }
 
@@ -3207,7 +3207,7 @@ namespace STD_105.Office
                        MessageBoxImage.Exclamation,
                        MessageBoxResult.None,
                        MessageBoxOptions.None,
-                       FloatingMode.Popup);
+                        FloatingMode.Window);
                         return false;
                     }
                     ProductSettingsPageViewModel temp = RowToEntity(row);
@@ -3221,7 +3221,7 @@ namespace STD_105.Office
                            MessageBoxImage.Exclamation,
                            MessageBoxResult.None,
                            MessageBoxOptions.None,
-                           FloatingMode.Popup);
+                            FloatingMode.Window);
                         return false;
                     }
 
@@ -3236,7 +3236,7 @@ namespace STD_105.Office
                            MessageBoxImage.Exclamation,
                            MessageBoxResult.None,
                            MessageBoxOptions.None,
-                           FloatingMode.Popup);
+                            FloatingMode.Window);
                         return false;
                     }
 
@@ -3391,7 +3391,7 @@ namespace STD_105.Office
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
                     if (ResultRtn == MessageBoxResult.Yes)
                     {
                         // 放棄，刪除Grid Guid相同的資料列 並 return false
@@ -3448,7 +3448,7 @@ namespace STD_105.Office
                 }
             }
             //if (ViewModel.SteelAttr.PartNumber == "" || ViewModel.SteelAttr.PartNumber == null)//檢測用戶是否有輸入零件編號
-            if (ViewModel.PartNumberProperty == "" || ViewModel.PartNumberProperty == null)//檢測用戶是否有輸入零件編號
+            if (string.IsNullOrEmpty(ViewModel.PartNumberProperty))//檢測用戶是否有輸入零件編號
             {
                 WinUIMessageBox.Show(null,
                 $"請輸入零件編號",
@@ -3457,7 +3457,7 @@ namespace STD_105.Office
                 MessageBoxImage.Exclamation,
                 MessageBoxResult.None,
                 MessageBoxOptions.None,
-                FloatingMode.Popup);
+                FloatingMode.Window);
                 return false;
             }
             if (ViewModel.ProductLengthProperty <= 0)//檢測用戶長度是否有大於0
@@ -3469,7 +3469,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
             if (ViewModel.ProductCountProperty <= 0) //檢測用戶是否零件數量大於0
@@ -3481,7 +3481,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
 
@@ -3494,7 +3494,7 @@ namespace STD_105.Office
             //        MessageBoxImage.Exclamation,
             //        MessageBoxResult.None,
             //        MessageBoxOptions.None,
-            //        FloatingMode.Popup);
+            //         FloatingMode.Window);
             //    return false;
             //}
 #if DEBUG
@@ -4778,7 +4778,7 @@ namespace STD_105.Office
             //                     MessageBoxImage.Exclamation,
             //                     MessageBoxResult.None,
             //                     MessageBoxOptions.None,
-            //                     FloatingMode.Popup);
+            //                      FloatingMode.Window);
 
 
             //                if (ResultRtn == MessageBoxResult.OK)
@@ -4798,7 +4798,7 @@ namespace STD_105.Office
             //            //         MessageBoxImage.Exclamation,
             //            //         MessageBoxResult.None,
             //            //         MessageBoxOptions.None,
-            //            //         FloatingMode.Popup);
+            //            //          FloatingMode.Window);
 
 
             //            //    if (ResultRtn == MessageBoxResult.OK)
@@ -4830,7 +4830,7 @@ namespace STD_105.Office
             //                        MessageBoxImage.Exclamation,
             //                        MessageBoxResult.None,
             //                        MessageBoxOptions.None,
-            //                        FloatingMode.Popup);
+            //                         FloatingMode.Window);
             //                    return;
             //                }
             //                readFile.DoWork();//開始工作
@@ -5233,7 +5233,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return null;
             }
             readFile.DoWork();//開始工作
@@ -5437,7 +5437,7 @@ namespace STD_105.Office
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                             FloatingMode.Window);
 
                             if (ResultRtn == MessageBoxResult.Yes)
                             {
@@ -5482,7 +5482,7 @@ namespace STD_105.Office
                                 //               MessageBoxImage.Exclamation,
                                 //               MessageBoxResult.None,
                                 //               MessageBoxOptions.None,
-                                //               FloatingMode.Popup);
+                                //                FloatingMode.Window);
                                 //            return;
                                 //        }
                                 //    }
@@ -5495,7 +5495,7 @@ namespace STD_105.Office
                                 //            MessageBoxImage.Exclamation,
                                 //            MessageBoxResult.None,
                                 //            MessageBoxOptions.None,
-                                //            FloatingMode.Popup);
+                                //             FloatingMode.Window);
                                 //        return;
                                 //    }
                                 //}
@@ -5589,7 +5589,7 @@ namespace STD_105.Office
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                             FloatingMode.Window);
                         return;
                     }
                     readFile.DoWork();//開始工作
@@ -5616,7 +5616,7 @@ namespace STD_105.Office
                            MessageBoxImage.Exclamation,
                            MessageBoxResult.None,
                            MessageBoxOptions.None,
-                           FloatingMode.Popup);
+                            FloatingMode.Window);
                         return;
                     }
                     if (model.Blocks.Count == 1)
@@ -5634,7 +5634,7 @@ namespace STD_105.Office
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                             FloatingMode.Window);
                         return;
                     }
 
@@ -5778,7 +5778,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return;
             }
             readFile.DoWork();//開始工作
@@ -6084,7 +6084,7 @@ namespace STD_105.Office
             //             MessageBoxImage.Exclamation,
             //             MessageBoxResult.None,
             //             MessageBoxOptions.None,
-            //             FloatingMode.Popup);
+            //              FloatingMode.Window);
             //    if (ResultRtn == MessageBoxResult.Yes)
             //    { SaveModel(true,ViewModel.SteelAttr, true); }
             //    else
@@ -6118,7 +6118,7 @@ namespace STD_105.Office
             //             MessageBoxImage.Exclamation,
             //             MessageBoxResult.None,
             //             MessageBoxOptions.None,
-            //             FloatingMode.Popup);
+            //              FloatingMode.Window);
 
 
             //    if (ResultRtn == MessageBoxResult.OK)
@@ -6210,7 +6210,7 @@ namespace STD_105.Office
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
 
                         if (ResultRtn == MessageBoxResult.Yes)
                         {

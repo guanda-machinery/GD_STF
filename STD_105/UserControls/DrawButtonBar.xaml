@@ -15,11 +15,11 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Image Grid.Column="0" Source="{StaticResource SpindleColor_HorizonDrawingImage}" Height="50" Margin="-3,0,0,0"/>
-
-            <TextBlock Text="←機台方向" Foreground="White" FontSize="16" Margin="10,0" Grid.Column="1" VerticalAlignment="Center"/>
-
-
+        <Grid Margin="1,5">
+            <Image Grid.Column="0" Source="{StaticResource DrillMachineDrawingImage}" Height="40"/>
+            <Image Grid.Column="0" Source="{StaticResource Logo_colorchange}" Height="7" VerticalAlignment="Top" Margin="5"/>
+        </Grid>
+        <TextBlock Text="←機台方向" Foreground="White" FontSize="16" Margin="10,0" Grid.Column="1" VerticalAlignment="Center"/>
         <TextBlock  Text="手臂方向→" Foreground="White" FontSize="16" HorizontalAlignment="Right" Margin="10,0" Grid.Column="2" VerticalAlignment="Center"/>
 
         <Image Grid.Column="3"  Source="{StaticResource Transport_by_RobotDrawingImage}" Height="auto"  />

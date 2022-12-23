@@ -165,15 +165,15 @@
                 <Setter Property="FontSize" Value="12"/>
             </Style>
 
-        </Grid.Resources>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="auto" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="450"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="410"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
         <DockPanel >
             <GroupBox Header="已建立的清單" Margin="5" DockPanel.Dock="Top" Visibility="Collapsed">
@@ -1155,27 +1155,27 @@
                 <TabItem Header="切割線" Name="CutTabItem"  >
                     <DockPanel Width="245" >
                         <Grid  DockPanel.Dock="Top" Name="ScrollViewbox">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <GroupBox Header="位置" Style="{StaticResource BaseStyle}" Margin="5" Name="CuttingGroupPosition">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    <RadioButton Content="頂面" Grid.Column="1" VerticalAlignment="Center" 
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <GroupBox Header="位置" Style="{StaticResource BaseStyle}" Margin="5" Name="CuttingGroupPosition">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <RadioButton Content="頂面" Grid.Column="1" VerticalAlignment="Center" 
                                                          GroupName="CutLinePosition" Foreground="Black"  
                                                          Style="{StaticResource rad_Gray}"
                                                          IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={local:CutFaceConverter}, ConverterParameter=0}"/>
@@ -1192,11 +1192,30 @@
                                 </Grid>
                             </GroupBox>
 
-                            <StackPanel Grid.Row="1" Background="#303030" Height="0.5" Margin="0,15,0,10" />
-                            <GroupBox Header="切割位置" Style="{StaticResource BaseStyle}" Grid.Row="2" Margin="5" Name="CuttingGroupBox" >
-                                <Grid  Background="#c0c0c0">
-                                    <Grid>
-                                        <Grid.Resources>
+                                <StackPanel Grid.Row="1" Background="#303030" Height="0.5" Margin="0,0,0,5" />
+
+                            <StackPanel  Grid.Row="2" Margin="5,0" Orientation="Horizontal">
+                                <StackPanel>
+                                    <Button Width="40" Height="40" Click="HypotenuseLinearPoint">
+                                        <Grid >
+                                            <materialDesign:PackIcon Kind="PenPlus" Width="10" Height="10" Margin="8,0"/>
+                                            <Image Source="{StaticResource HSteel_quadDrawingImage}"  Width="30"/>
+                                        </Grid>
+                                    </Button>
+                                    <Label Content="新增打點" Foreground="Black"  HorizontalAlignment="Center"/>
+                                </StackPanel>
+
+                                <StackPanel Margin="10,0">
+                                    <Button Width="40" Height="40" Click="DelHypotenuseLinearPoint">
+                                        <materialDesign:PackIcon Kind="Eraser" Width="30" Height="30"  />
+                                    </Button>
+                                    <Label Content="打點刪除" Foreground="Black"  HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <GroupBox Header="切割位置" Style="{StaticResource BaseStyle}" Grid.Row="3" Margin="5" Name="CuttingGroupBox" >
+                                    <Grid  Background="#c0c0c0">
+                                        <Grid>
+                                            <Grid.Resources>
 
                                             <Style TargetType="Line">
                                                 <Setter Property="Stroke" Value="#666666"/>
@@ -1363,8 +1382,8 @@
 
                                     </Grid>
                                 </GroupBox>
-                            </Grid>
-                            <StackPanel Margin="-5,0" DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+
+                            <StackPanel Margin="0,5,0,0" Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                                 <Button Style="{StaticResource SiegCustomButtonGray}" Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=CutTabItem}" Width="60" Height="25"  Cursor="Hand" >
                                     <Button.Content >
                                         <StackPanel Orientation="Horizontal">
@@ -1385,13 +1404,13 @@
                                                            ReadVisibility="Collapsed" 
                                                            VerticalAlignment="Bottom"
                                                            Margin="0,0,-5,0" />
-                        </StackPanel>
-
+                            </StackPanel>
+                        </Grid>
 
                     </DockPanel>
-                </TabItem>
-            </TabControl>
-        </Border>
+                    </TabItem>
+                </TabControl>
+            </Border>
 
     </Grid>
 

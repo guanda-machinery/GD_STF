@@ -58,7 +58,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <!--  3D圖形  -->
-        <!--  Visibility="{Binding ThreeDimensionalDisplayControl, Converter={WPFBase:BooleanToVisiblityConverter}}"-->
+        <!--  Visibility="{Binding ThreeDimensionalDisplayControl, Converter={dx:BooleanToVisibilityConverter}}"-->
         <Grid Grid.RowSpan="3" 
               Panel.ZIndex="10000" Visibility="Hidden"
             >

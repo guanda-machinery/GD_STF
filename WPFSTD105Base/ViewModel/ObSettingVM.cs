@@ -1539,7 +1539,7 @@ namespace WPFSTD105.ViewModel
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
             else if (bufferCutList.UL.X + bufferCutList.UR.X > SteelAttr.Length || bufferCutList.DL.X + bufferCutList.DR.X > SteelAttr.Length)
@@ -1552,7 +1552,7 @@ namespace WPFSTD105.ViewModel
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
             return true;
@@ -2884,7 +2884,7 @@ namespace WPFSTD105.ViewModel
                MessageBoxImage.Exclamation,
                MessageBoxResult.None,
                MessageBoxOptions.None,
-               FloatingMode.Popup);
+                FloatingMode.Window);
                 fNewPart = true;
                 fclickOK = false;
                 return false;
@@ -2899,7 +2899,7 @@ namespace WPFSTD105.ViewModel
                 MessageBoxImage.Exclamation,
                 MessageBoxResult.None,
                 MessageBoxOptions.None,
-                FloatingMode.Popup);
+                 FloatingMode.Window);
                 fNewPart = false;
                 fclickOK = false;
                 return false;
@@ -2921,7 +2921,7 @@ namespace WPFSTD105.ViewModel
                MessageBoxImage.Exclamation,
                MessageBoxResult.None,
                MessageBoxOptions.None,
-               FloatingMode.Popup);
+                FloatingMode.Window);
                 fNewPart = true;
                 fclickOK = false;
                 return false;
@@ -2936,7 +2936,7 @@ namespace WPFSTD105.ViewModel
                 MessageBoxImage.Exclamation,
                 MessageBoxResult.None,
                 MessageBoxOptions.None,
-                FloatingMode.Popup);
+                 FloatingMode.Window);
                 fNewPart = false;
                 fclickOK = false;
                 return false;
@@ -2951,7 +2951,7 @@ namespace WPFSTD105.ViewModel
                 MessageBoxImage.Exclamation,
                 MessageBoxResult.None,
                 MessageBoxOptions.None,
-                FloatingMode.Popup);
+                 FloatingMode.Window);
                 fclickOK = true;
                 return false;
             }
@@ -2972,7 +2972,7 @@ namespace WPFSTD105.ViewModel
                MessageBoxImage.Exclamation,
                MessageBoxResult.None,
                MessageBoxOptions.None,
-               FloatingMode.Popup);
+                FloatingMode.Window);
                 fNewPart = true;
                 fclickOK = false;
                 return false;
@@ -2987,7 +2987,7 @@ namespace WPFSTD105.ViewModel
                 MessageBoxImage.Exclamation,
                 MessageBoxResult.None,
                 MessageBoxOptions.None,
-                FloatingMode.Popup);
+                 FloatingMode.Window);
                 fNewPart = false;
                 fclickOK = false;
                 return false;
@@ -3009,7 +3009,7 @@ namespace WPFSTD105.ViewModel
                MessageBoxImage.Exclamation,
                MessageBoxResult.None,
                MessageBoxOptions.None,
-               FloatingMode.Popup);
+                FloatingMode.Window);
                 fNewPart = true;
                 fclickOK = false;
                 return false;
@@ -3024,7 +3024,7 @@ namespace WPFSTD105.ViewModel
                 MessageBoxImage.Exclamation,
                 MessageBoxResult.None,
                 MessageBoxOptions.None,
-                FloatingMode.Popup);
+                 FloatingMode.Window);
                 fNewPart = false;
                 fclickOK = false;
                 return false;

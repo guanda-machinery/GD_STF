@@ -367,7 +367,7 @@ namespace WPFSTD105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 }
             });
         }
@@ -393,7 +393,7 @@ namespace WPFSTD105
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                             FloatingMode.Window);
                     }
                 }
             });
@@ -436,7 +436,7 @@ namespace WPFSTD105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
             });
         }
         /// <summary>

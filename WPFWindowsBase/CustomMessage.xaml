@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFWindowsBase"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -176,7 +177,7 @@
         <Button x:Name="btn_Refuse" Grid.Row="4" Content="{ Binding LeftButtonText ,FallbackValue=NO}" 
             PreviewMouseLeftButtonUp="btn_Refuse_PreviewMouseLeftButtonUp" Command="{ Binding }"/>
         <Border Grid.Row="5" BorderThickness="0,1,0,0" BorderBrush="#FFD3D3D3" HorizontalAlignment="Stretch">
-            <TextBlock Text="{Binding CloseSecond, StringFormat={}系統將 {0:D2} 秒後自動拒絕...}" Name="_reciprocal" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding AutoClose, Converter={local:NoNullBooleanToVisibilityConverter}}"/>
+            <TextBlock Text="{Binding CloseSecond, StringFormat={}系統將 {0:D2} 秒後自動拒絕...}" Name="_reciprocal" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding AutoClose, Converter={dx:BooleanToVisibilityConverter}}"/>
         </Border>
     </Grid>
 </Window>

@@ -122,7 +122,7 @@ namespace WPFSTD105
 
 
 
-    private GridControl _GridControl { get; set; }
+        private GridControl _GridControl { get; set; }
         #region 命令
         /// <summary>
         /// 手動排版命令
@@ -448,7 +448,7 @@ namespace WPFSTD105
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                             FloatingMode.Window);
                         return;
                     }
 
@@ -469,10 +469,10 @@ namespace WPFSTD105
 
                     AutoMatchAsyncV2();
 
-                    foreach (var Data in DataViews)
+                   /* foreach (var Data in DataViews)
                     {
                         Data.SortCount = 0;
-                    }
+                    }*/
 
                     //確保多重系結objArray為陣列，否則傳出例外
                     if (objArray.GetType().Equals(typeof(object[])))
@@ -771,55 +771,75 @@ namespace WPFSTD105
         public bool LengthDodageControl { get; set; } = false;
 
 
-
-
-
-
+        private bool? _startNumberCheckboxBoolen= true;
 
         #region 排版參數設定
-        /// <summary>
-        /// 前置字串
-        /// </summary>
-        public string PreCode { get; set; } = "";
-        /// <summary>
-        /// 排版編號checkbox
-        /// </summary>
-        public bool? StartNumberCheckboxBoolen { get; set; } = true;
-        private string _startNumber;
-        /// <summary>
-        /// 排版編號
-        /// </summary>
-        public string StartNumber
+        public bool? StartNumberCheckboxBoolen
         {
             get
             {
-                string StartNumberDefault = PreCode;
-                //  若起始號碼為空，前置字串為排版起始號碼
-                if (string.IsNullOrEmpty(_startNumber))
-                {
-                    //_startNumber = StartNumberDefault;
-                    MatchSetting.StartNumber = PreCode + "001";
-                    return _startNumber;
-                }
-                // 若排版編號有打勾，起始號碼 = 起始號碼
-                if (StartNumberCheckboxBoolen is true)
+                return _startNumberCheckboxBoolen;
+            }
+            set
+            {
+                _startNumberCheckboxBoolen = value;
+                if (value is true)
                 {
                     MatchSetting.StartNumber = PreCode + _startNumber;
                 }
                 else
                 {
-                    // 若無打勾，起始號碼 = 前置字串+001
-                    MatchSetting.StartNumber = StartNumberDefault+"001";
+                    // 若無打勾，起始號碼 = 001
+                    MatchSetting.StartNumber = "001";
                 }
+            }
+        }
 
-                return _startNumber;
+private string _preCode = "";
+        /// <summary>
+        /// 前置字串
+        /// </summary>
+        public string PreCode 
+        {
+            get
+            {
+                if (StartNumberCheckboxBoolen is true)
+                    return _preCode;
+                else
+                    return "";
+            }
+            set
+            {
+                _preCode = value;
+                StartNumberCheckboxBoolen = !string.IsNullOrEmpty(_preCode) || !string.IsNullOrEmpty(_startNumber);
+            }
+        } 
+        /// <summary>
+        /// 排版編號checkbox
+        /// </summary>
+
+        private string _startNumber;
+        /// <summary>
+        /// 起始編號
+        /// </summary>
+        public string StartNumber
+        {
+            get
+            {
+                if (StartNumberCheckboxBoolen is true)
+                    return _startNumber;
+                else
+                    return "";
             }
             set
             {
                 _startNumber = value;
+                StartNumberCheckboxBoolen = !string.IsNullOrEmpty(_startNumber);
             }
         }
 
+
+        const string MainLengthDefault = "9000 10000 12000";
         /// <summary>
         /// 預設長度checkbox
         /// </summary>
@@ -832,7 +852,6 @@ namespace WPFSTD105
         {
             get
             {
-                const string MainLengthDefault = "9000 10000 12000";
                 if (string.IsNullOrEmpty(_mainLength ))
                 {
                     _mainLength = MainLengthDefault;
@@ -851,12 +870,11 @@ namespace WPFSTD105
             set
             {
                 _mainLength = value;
+                MainLengthCheckboxBoolen = _mainLength != MainLengthDefault;
             }
         }
 
-
-
-
+        const double MainLengthMachineDefault = 9000;
         private double _MainLengthMachine = 0;
         /// <summary>
         /// 預設長度 機台端用 純設定用
@@ -866,32 +884,27 @@ namespace WPFSTD105
             get
             {
                 SecondaryLength = "";
-                const double MainLengthDefault = 9000;
                 if (_MainLengthMachine == 0)
                 {
-                    _MainLengthMachine = MainLengthDefault;
-                    return MainLengthDefault;
+                    _MainLengthMachine = MainLengthMachineDefault;
+                    return MainLengthMachineDefault;
                 }
-
                 if (MainLengthCheckboxBoolen is true)
-                {
                     return _MainLengthMachine;
-                }
                 else
-                {
-                    return MainLengthDefault;
-                }
+                    return MainLengthMachineDefault;
+                
             }
             set
             {
                 _MainLengthMachine = value;
-                //只使用_mainLength
+                MainLengthCheckboxBoolen = _MainLengthMachine != MainLengthMachineDefault;
             }
         }
 
 
 
-
+        const string SecondaryLengthDefault = "11000 13000 14000 15000";
         /// <summary>
         /// 次要條件checkbox
         /// </summary>
@@ -904,7 +917,6 @@ namespace WPFSTD105
         {
             get
             {
-                const string SecondaryLengthDefault = "11000 13000 14000 15000";
                 if (string.IsNullOrEmpty(_secondaryLength))
                 {
                     _secondaryLength = SecondaryLengthDefault;
@@ -923,9 +935,12 @@ namespace WPFSTD105
             set
             {
                 _secondaryLength = value;
+                SecondaryLengthCheckboxBoolen = _secondaryLength !=SecondaryLengthDefault;
             }
         }
 
+
+        const double StartCutDefault = 10;
         /// <summary>
         /// 前端切除Checkbox
         /// </summary>
@@ -938,7 +953,6 @@ namespace WPFSTD105
         {
             get
             {
-                const double StartCutDefault = 10;
                 if (StartCutCheckboxBoolen is true)
                 {
                     MatchSetting.StartCut = _matchSettingStartCut;
@@ -953,9 +967,13 @@ namespace WPFSTD105
             set
             {
                 _matchSettingStartCut = value;
+                StartCutCheckboxBoolen = _matchSettingStartCut != StartCutDefault;
             }
         }
 
+
+
+        const double EndCutDefault = 10;
         /// <summary>
         /// 後端切除Checkbox
         /// </summary>
@@ -968,7 +986,6 @@ namespace WPFSTD105
         {
             get
             {
-                const double EndCutDefault = 10;
                 if (EndCutCheckboxBoolen is true)
                 {
                     MatchSetting.EndCut = _matchSettingEndCut;
@@ -983,6 +1000,7 @@ namespace WPFSTD105
             set
             {
                 _matchSettingEndCut = value;
+                EndCutCheckboxBoolen = _matchSettingEndCut != EndCutDefault;
             }
         }
 
@@ -1113,7 +1131,7 @@ namespace WPFSTD105
                         {
                             MaterialDataViews.Add(new MaterialDataView
                             {
-                                MaterialNumber = strNumber + startNumber.ToString().PadLeft(4, '0'), // 不足補0
+                                MaterialNumber =  strNumber + startNumber.ToString().PadLeft(4, '0'), // 不足補0
                                 Profile = profiles[i],
                             });
                             MaterialDataViews[MaterialDataViews.Count - 1].LengthList.AddRange(MatchSetting.MainLengths); //加入長度列表
@@ -1167,7 +1185,7 @@ namespace WPFSTD105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                     return;
                 }
 

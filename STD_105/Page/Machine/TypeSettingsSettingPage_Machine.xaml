@@ -405,18 +405,18 @@
                             </Grid.RowDefinitions>
                             <CheckBox Grid.Column="0" Grid.Row="0"  Content="排版編號" IsChecked="{Binding StartNumberCheckboxBoolen}" />
 
-                            <TextBox Grid.Column="1" Grid.Row="0" VerticalAlignment="Center"  Padding="2" IsEnabled="{Binding StartNumberCheckboxBoolen}">
+                            <TextBox Grid.Column="1" Grid.Row="0" VerticalAlignment="Center"  Padding="2">
                                 <TextBox.Text>
                                     <Binding Path="StartNumber"  UpdateSourceTrigger="PropertyChanged" >
                                         <Binding.ValidationRules >
-                                            <STD105ValidRule:CheckStringEmptyRule/>
+                                            <STD105ValidRule:CheckStringEmptyRule IsNullable="True"/>
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
                             </TextBox>
 
                             <CheckBox Content="預設長度："  Grid.Row="1" Grid.Column="0" IsChecked="{Binding MainLengthCheckboxBoolen}"/>
-                            <TextBox Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center"  Padding="2" Name="MainLengthTextBox" IsEnabled="{Binding MainLengthCheckboxBoolen}">
+                            <TextBox Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center"  Padding="2" Name="MainLengthTextBox">
                                 <TextBox.Text>
                                     <Binding Path="MainLengthMachine"  UpdateSourceTrigger="PropertyChanged" >
                                         <Binding.ValidationRules >
@@ -428,7 +428,7 @@
                             <Label Content="mm" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
                             <CheckBox Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Content="素材前端切除："  IsChecked="{Binding StartCutCheckboxBoolen}"/>
-                            <TextBox Name="MatchSettingStartCutTextBox" InputMethod.IsInputMethodEnabled="False"  Grid.Row="2" Grid.Column="1"  VerticalAlignment="Center" Padding="2" IsEnabled="{Binding StartCutCheckboxBoolen}">
+                            <TextBox Name="MatchSettingStartCutTextBox" InputMethod.IsInputMethodEnabled="False"  Grid.Row="2" Grid.Column="1"  VerticalAlignment="Center" Padding="2">
                                 <TextBox.Text>
                                     <Binding Path="MatchSettingStartCut" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" >
                                         <Binding.ValidationRules >
@@ -440,7 +440,7 @@
                             <Label Content="mm" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
                             <CheckBox Grid.Row="3" Grid.Column="0" Content="素材後端切除：" IsChecked="{Binding EndCutCheckboxBoolen}" />
-                            <TextBox Name="MatchSettingEndCutTextBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center"  Padding="2" IsEnabled="{Binding EndCutCheckboxBoolen}" >
+                            <TextBox Name="MatchSettingEndCutTextBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center"  Padding="2">
                                 <TextBox.Text>
                                     <Binding Path="MatchSettingEndCut" StringFormat="{}{0:N2}"  UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>

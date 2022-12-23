@@ -9,7 +9,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
     xmlns:local="clr-namespace:STD_105"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     x:Name="AppWindows"
     Title="STD_105"
     Width="1024"
@@ -155,7 +155,7 @@
                                         <StackPanel
                                             Margin="10,5"
                                             Orientation="Horizontal"
-                                            Visibility="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToVisibilityConverter}}">
+                                            Visibility="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={dx:NullableToVisibilityConverter}}">
                                             <TextBlock
                                                 VerticalAlignment="Top"
                                                 FontWeight="Bold"
@@ -211,7 +211,7 @@
                                             <Button
                                                 Command="{Binding CloseCommand}"
                                                 Style="{StaticResource WindowCloseButton}"
-                                                Visibility="{Binding HMI, Source={x:Static MecSetting:MecSetting.Default}, Converter={WPFBase:OppositeBooleanToVisibilityConverter}}">
+                                                Visibility="{Binding HMI, Source={x:Static MecSetting:MecSetting.Default}, Converter={dx:BooleanToVisibilityConverter}}">
                                                 <Image Opacity="0.5" Source="{StaticResource Window_Close}" />
                                             </Button>
                                         </StackPanel>
@@ -298,7 +298,7 @@
             <Grid
                 x:Name="Fade"
                 Grid.Column="1"
-                Visibility="{Binding NewProjectControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                Visibility="{Binding NewProjectControl, Converter={dxmvvm:BooleanToVisibilityConverter}}">
                 <Grid Opacity="0.5" Style="{StaticResource Fade}" />
                 <Border
                     HorizontalAlignment="Center"
@@ -437,7 +437,7 @@
             <Grid
                 x:Name="Fade1"
                 Grid.Column="1"
-                Visibility="{Binding OpenProjectControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                Visibility="{Binding OpenProjectControl, Converter={dxmvvm:BooleanToVisibilityConverter}}">
                 <Grid Opacity="0.5" Style="{StaticResource Fade}" />
                 <Border
                     HorizontalAlignment="Center"
@@ -564,7 +564,7 @@
             <Grid
                 x:Name="Fade2"
                 Grid.Column="1"
-                Visibility="{Binding ImportFileControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                Visibility="{Binding ImportFileControl, Converter={dxmvvm:BooleanToVisibilityConverter}}">
                 <Grid Opacity="0.5" Style="{StaticResource Fade}" />
                 <Border
                     HorizontalAlignment="Center"
@@ -742,7 +742,7 @@
             <Grid
                 x:Name="Fade3"
                 Grid.Column="1"
-                Visibility="{Binding ModifyProjectControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                Visibility="{Binding ModifyProjectControl, Converter={dxmvvm:BooleanToVisibilityConverter}}">
                 <Grid Opacity="0.5" Style="{StaticResource Fade}" />
                 <Border
                     HorizontalAlignment="Center"
@@ -866,7 +866,7 @@
                 Grid.Column="1"
                 Height="{Binding ElementName=AppWindows, Path=Height}"
                 VerticalAlignment="Center"
-                Visibility="{Binding SaveAsProjectControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                Visibility="{Binding SaveAsProjectControl, Converter={dxmvvm:BooleanToVisibilityConverter}}">
                 <Grid Opacity="0.5" Style="{StaticResource Fade}" />
                 <Border
                     HorizontalAlignment="Center"
@@ -999,7 +999,7 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Bottom"
                             Source="{StaticResource NewLogoLine}"
-                            Visibility="{Binding ApplicationViewModel.SideMenuVisible, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}" />
+                            Visibility="{Binding ApplicationViewModel.SideMenuVisible, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={dx:BooleanToVisibilityConverter}}" />
                         <!--  油壓開關  -->
                         <local:BaseButton
                             Grid.Row="0"

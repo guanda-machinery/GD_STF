@@ -1006,7 +1006,6 @@
     <Compile Include="ValueConverters\KeyHoleToBoolConverter.cs" />
     <Compile Include="ValueConverters\MchineModeToStringConverter.cs" />
     <Compile Include="ValueConverters\NullToEnabledConverter.cs" />
-    <Compile Include="ValueConverters\NullToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\OillBoolToImageSourceConverter.cs" />
     <Compile Include="ValueConverters\PageEnumToBoolConverter.cs" />
     <Compile Include="ValueConverters\PerformanceToConverter.cs" />

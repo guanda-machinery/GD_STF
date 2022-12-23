@@ -126,7 +126,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 }
             });
             //還原上一個動作
@@ -263,7 +263,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                     return;
                 }
 #if DEBUG
@@ -339,7 +339,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 }
                 //如果模型裡面有物件
                 else if (model.Entities.Count > 0)
@@ -358,7 +358,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 }
             });
             //加入孔
@@ -377,7 +377,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                     return;
                 }
                 /*3D螺栓*/
@@ -454,7 +454,7 @@ namespace STD_105.Office
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                             FloatingMode.Window);
                             return;
                         }
                         //如果選擇的物件不是孔位
@@ -468,7 +468,7 @@ namespace STD_105.Office
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                             FloatingMode.Window);
                             return;
                         }
 
@@ -509,7 +509,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 }
             });
             //讀取孔位
@@ -531,7 +531,7 @@ namespace STD_105.Office
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
                         return;
                     }
                     //如果選擇的物件不是孔位
@@ -545,7 +545,7 @@ namespace STD_105.Office
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
                     }
                     ViewModel.WriteGroupBoltsAttr((GroupBoltsAttr)blockReference.EntityData);
                 }
@@ -559,7 +559,7 @@ namespace STD_105.Office
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
                 }
             });
             //加入或修改切割線
@@ -591,7 +591,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 }
                 //如果模型裡面有物件
                 else if (model.Entities.Count > 0)
@@ -610,7 +610,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 }
             });
             //鏡射 X 軸
@@ -641,7 +641,7 @@ namespace STD_105.Office
                                     MessageBoxImage.Exclamation,
                                     MessageBoxResult.None,
                                     MessageBoxOptions.None,
-                                    FloatingMode.Popup);
+                                     FloatingMode.Window);
                                 return;
                             }
                             //如果選擇的物件不是孔位
@@ -659,7 +659,7 @@ namespace STD_105.Office
                                 MessageBoxImage.Exclamation,
                                 MessageBoxResult.None,
                                 MessageBoxOptions.None,
-                                FloatingMode.Popup);
+                                 FloatingMode.Window);
                             }
 #if DEBUG
                             log4net.LogManager.GetLogger("鏡射孔位").Debug("開始");
@@ -812,7 +812,7 @@ namespace STD_105.Office
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
                     }
                 }
                 catch (Exception ex)
@@ -851,7 +851,7 @@ namespace STD_105.Office
                                 MessageBoxImage.Exclamation,
                                 MessageBoxResult.None,
                                 MessageBoxOptions.None,
-                                FloatingMode.Popup);
+                                 FloatingMode.Window);
                                 return;
                             }
                             //如果選擇的物件不是孔位
@@ -865,7 +865,7 @@ namespace STD_105.Office
                                 MessageBoxImage.Exclamation,
                                 MessageBoxResult.None,
                                 MessageBoxOptions.None,
-                                FloatingMode.Popup);
+                                 FloatingMode.Window);
                                 return;
                             }
 #if DEBUG
@@ -959,7 +959,7 @@ namespace STD_105.Office
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
                     }
                 }
                 catch (Exception ex)
@@ -1077,7 +1077,7 @@ namespace STD_105.Office
 #if DEBUG
             log4net.LogManager.GetLogger("加入物件").Debug("檢測用戶輸入");
 #endif
-            if (ViewModel.SteelAttr.PartNumber == "" || ViewModel.SteelAttr.PartNumber == null)//檢測用戶是否有輸入零件編號
+            if (string.IsNullOrEmpty(ViewModel.SteelAttr.PartNumber))//檢測用戶是否有輸入零件編號
             {
                 //MessageBox.Show("請輸入零件編號", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,
@@ -1087,7 +1087,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
                 return false;
             }
             if (ViewModel.SteelAttr.Length <= 0)//檢測用戶長度是否有大於0
@@ -1100,7 +1100,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
             if (ViewModel.SteelAttr.Number <= 0) //檢測用戶是否零件數量大於0
@@ -1113,7 +1113,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
             if (ViewModel.DataCorrespond.FindIndex(el => el.Number == ViewModel.SteelAttr.PartNumber) != -1)
@@ -1126,7 +1126,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
 #if DEBUG

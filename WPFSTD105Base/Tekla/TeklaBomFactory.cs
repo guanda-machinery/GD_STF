@@ -253,7 +253,7 @@ namespace WPFSTD105.Tekla
                     MessageBoxImage.Error,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                     error = true;
                     log4net.LogManager.GetLogger($"報表資料行在第 {number} 行轉換失敗").ErrorFormat(ex.Message + "\n" + DateTime.Now.ToString() + "\n", ex.StackTrace);
                     throw new Exception();
@@ -337,7 +337,7 @@ namespace WPFSTD105.Tekla
                                 MessageBoxImage.Error,
                                 MessageBoxResult.None,
                                 MessageBoxOptions.None,
-                                FloatingMode.Popup);
+                                 FloatingMode.Window);
                                 return false;//離開函式
                             }
                             object obj = Activator.CreateInstance(type); // 建立指定 type 物件
@@ -369,7 +369,7 @@ namespace WPFSTD105.Tekla
                                             MessageBoxImage.Error,
                                             MessageBoxResult.None,
                                             MessageBoxOptions.None,
-                                            FloatingMode.Popup);
+                                             FloatingMode.Window);
                                         return false;//離開函式
                                     }
                                 }
@@ -447,7 +447,7 @@ namespace WPFSTD105.Tekla
                                                 MessageBoxImage.Error,
                                                 MessageBoxResult.None,
                                                 MessageBoxOptions.None,
-                                                FloatingMode.Popup);
+                                                 FloatingMode.Window);
                                             return false;
                                         }
                                     }
@@ -490,7 +490,7 @@ namespace WPFSTD105.Tekla
                                                 MessageBoxImage.Error,
                                                 MessageBoxResult.None,
                                                 MessageBoxOptions.None,
-                                                FloatingMode.Popup);
+                                                 FloatingMode.Window);
                                             return false;
                                         }
                                     }
@@ -550,7 +550,7 @@ namespace WPFSTD105.Tekla
                     MessageBoxImage.Error,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
         }

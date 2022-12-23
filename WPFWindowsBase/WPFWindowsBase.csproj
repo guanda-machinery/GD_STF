@@ -398,7 +398,6 @@
     <Compile Include="ValueConverters\DatePickerToQueryStringConverter.cs" />
     <Compile Include="ValueConverters\FontSizeToHeightConverter.cs" />
     <Compile Include="ValueConverters\StringRGBToBrushConverter.cs" />
-    <Compile Include="ValueConverters\BooleanToVisiblityConverter.cs" />
     <Compile Include="Base\BaseViewModel.cs" />
     <Compile Include="Base\IHavePassword.cs" />
     <Compile Include="Base\RelayCommand.cs" />
