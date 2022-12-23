@@ -149,17 +149,17 @@
                                  ItemsSource="{Binding DataViews, UpdateSourceTrigger=PropertyChanged}" SelectedItemChanged="Grid_SelectedChange" MouseDown="Button_PreviewMouseLeftButtonDown">
                     <dxg:GridControl.View >
                     <dxg:TableView VerticalScrollbarVisibility="Visible"
-                                        HighlightItemOnHover="True"
                                        IsColumnMenuEnabled ="False"
+                                        HighlightItemOnHover="True"
                                        AllowSorting="false"
                                        AllowColumnFiltering="False"
                                        AllowColumnMoving="False"
                                        
+                                       HeaderPosition="SearchPanel"
                                        ShowGroupPanel="False"
                                        ShowSearchPanelMode="Always"
                                        SearchPanelNullText="Search Tasks(Ctrl + F)" 
                                        SearchPanelFindMode="Always" 
-                                       HeaderPosition="SearchPanel"
                                        SearchDelay="0"
                                        AllowEditing="False"
                                        EnableImmediatePosting="True"
@@ -256,16 +256,16 @@
 
                     <dxg:GridColumn Binding="{Binding steelAttr.GUID}" IsSmart="True" Header="dm檔名" Width="auto" Visible="{StaticResource visible}"/>
                     <dxg:GridColumn Binding="{Binding steelAttr.AsseNumber}" IsSmart="True"   Header="構件編號" Width="60"/>
-                <dxg:GridColumn Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="60" />
-                <dxg:GridColumn Binding="{Binding steelAttr.Name,UpdateSourceTrigger=PropertyChanged}" IsSmart="True" Header="名稱" Width="80"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.PartNumber}" IsSmart="True"  Header="零件編號" Width="60" />
+                    <dxg:GridColumn Binding="{Binding steelAttr.Name,UpdateSourceTrigger=PropertyChanged}" IsSmart="True" Header="名稱" Width="80"/>
                     <!--<dxg:GridColumn Binding="{Binding TypeDesc}" IsSmart="True" Header="鋼材類別" Visible="{StaticResource visible}"/>-->
-                <!--FieldName="TypeDesc"-->
+                    <!--FieldName="TypeDesc"-->
                     <dxg:GridColumn Binding="{Binding Path=SteelType, Converter={STD105:SteelTypeToStringConverter}, StringFormat={}}"  IsSmart="True" Header="鋼材類別" Width="60"/>
-                <dxg:GridColumn Binding="{Binding steelAttr.Profile}"  IsSmart="True" Header="斷面規格"  Width="140"/>
-                <!--FieldName="Profile"-->
-                <!--<dxg:GridColumn Binding="{Binding SteelType}"   IsSmart="True" Header="鋼材類型(Index)" Visible="{StaticResource visible}"/>-->
-                <!--FieldName="SteelType"-->
-                <dxg:GridColumn Binding="{Binding steelAttr.Material}"  IsSmart="True"  Header="材質"  Width="80"/>
+                    <dxg:GridColumn Binding="{Binding steelAttr.Profile}"  IsSmart="True" Header="斷面規格"  Width="140"/>
+                    <!--FieldName="Profile"-->
+                    <!--<dxg:GridColumn Binding="{Binding SteelType}"   IsSmart="True" Header="鋼材類型(Index)" Visible="{StaticResource visible}"/>-->
+                    <!--FieldName="SteelType"-->
+                    <dxg:GridColumn Binding="{Binding steelAttr.Material}"  IsSmart="True"  Header="材質"  Width="80"/>
                 <!--FieldName="Material"-->
                 <dxg:GridColumn Binding="{Binding Count}"   IsSmart="True"  Width="40" Header="數量"  />
                 <!--FieldName="Count"-->
@@ -285,8 +285,9 @@
                 <!--<dxg:GridColumn Binding="{Binding steelAttr.t1}" IsSmart="True"  Header="腹板厚度" Width="auto" Visible="{StaticResource visible}"/>-->
                 <!--<dxg:GridColumn Binding="{Binding steelAttr.t2}" IsSmart="True"  Header="翼板厚度" Width="auto" Visible="{StaticResource visible}"/>-->
 
-                <dxg:GridColumn Binding="{Binding steelAttr.Phase}"  IsSmart="True"  Width="40" Header="Phase" />
-                <dxg:GridColumn Binding="{Binding steelAttr.ShippingNumber}"  IsSmart="True"  Width="40" Header="拆運"  />
+                    <!--<dxg:GridColumn Binding="{Binding steelAttr.Kg}"  IsSmart="True"  Width="40" Header="Phase" />-->
+                    <dxg:GridColumn Binding="{Binding steelAttr.Phase}"  IsSmart="True"  Width="40" Header="Phase" />
+                    <dxg:GridColumn Binding="{Binding steelAttr.ShippingNumber}"  IsSmart="True"  Width="40" Header="拆運"  />
                 <dxg:GridColumn Binding="{Binding steelAttr.Title1}" IsSmart="True"  Width="45" Header="標題一"  />
                 <dxg:GridColumn Binding="{Binding steelAttr.Title2}" IsSmart="True"  Width="45" Header="標題二"  />
 
@@ -831,7 +832,7 @@
 
                     </Grid>
 
-                    <Button Grid.Column="3" Grid.Row="6" Grid.ColumnSpan="2" x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}"  Style="{StaticResource SiegCustomButtonGold}" Width="90" HorizontalAlignment="Left" Visibility="Visible" />
+                    <Button Grid.Column="3" Grid.Row="6" Grid.ColumnSpan="2" x:Name="btn_FileOverView" Content="FileOverView" Command="{Binding FileOverView}"  Style="{StaticResource SiegCustomButtonGold}" Width="90" HorizontalAlignment="Left" Visibility="Collapsed" />
 
                     <StackPanel Grid.Row="13" Margin="2" Orientation="Horizontal" Grid.ColumnSpan="5">
                         <Button x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Style="{StaticResource SiegCustomButtonGold}" Width="80" Margin="0,0,6,0" Click="OKtoConfirmChanges"/>

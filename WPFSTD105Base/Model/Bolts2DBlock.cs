@@ -126,7 +126,7 @@ namespace WPFSTD105.Model
 
                 // 圓心點
                 Point3D center = new Point3D(boltAttr.X, boltAttr.Y);
-                Point3D[] temp= bolts3DBlock.Entities[i].Vertices;
+                Point3D[] temp= bolts3DBlock.Entities[i].Vertices;//後翼板上的座標
                 Point3D a = new Point3D(temp[0].X, temp[0].Y, temp[0].Z);
                 Point3D b = new Point3D(temp[1].X, temp[1].Y, temp[1].Z);
                 Point3D c = new Point3D(temp[2].X, temp[2].Y, temp[2].Z);
@@ -206,7 +206,7 @@ namespace WPFSTD105.Model
                         circle.Rotate(Math.PI, Vector3D.AxisX);
                         circle.Translate(0, MoveBack);
                         meshes = new[] { (Mesh)meshWeb.Clone() };
-                        meshes[0].Translate(circle.Center.X - boltAttr.Dia / 2, yTop);
+                        meshes[0].Translate(circle.Center.X - boltAttr.Dia / 2, yTop);//[0] 腹板上的孔位
                         meshes[0].EntityData = boltAttr;
                         this.Entities.Add(Piercing(steelAttr.t2, new Point3D(circle.Center.X, yTop + steelAttr.t2 / 2), boltAttr));
 #if DEBUG
@@ -265,11 +265,11 @@ namespace WPFSTD105.Model
                     break;
                 case FACE.FRONT:
                 case FACE.BACK:
-                    // Y軸依樣
+                    // 空間中座標 Y軸一樣
                     fix = a.Y;
-                    a = new Point3D(a.X, a.Z, 0);
-                    b = new Point3D(b.X, b.Z, 0);
-                    c = new Point3D(c.X, c.Z, 0);
+                    a = new Point3D(a.X, a.Z, fix);
+                    b = new Point3D(b.X, b.Z, fix);
+                    c = new Point3D(c.X, c.Z, fix);
                     break;
                 default:
                     break;
@@ -303,12 +303,12 @@ namespace WPFSTD105.Model
                 case FACE.FRONT:
                 case FACE.BACK:
                     // 前後視角 Y軸不變
-                    Point3D r = new Point3D(X, fix, Y);
+                    Point3D r = new Point3D(X, Y, fix);
                     double z = 0, y = 0;
-                    y = r.Z;
-                    z = r.Y;
-                    r.Y = y;
-                    r.Z = z;
+                    //y = r.Z;
+                    //z = r.Y;
+                    //r.Y = y;
+                    //r.Z = z;
                     return r;
                 default:
                     return new Point3D();
@@ -322,7 +322,7 @@ namespace WPFSTD105.Model
 
 
 
-        const double extend = 10;
+        const double extend = 10;//穿過孔位多出來的線
         /// <summary>
         /// 取得圓形十字線
         /// </summary>

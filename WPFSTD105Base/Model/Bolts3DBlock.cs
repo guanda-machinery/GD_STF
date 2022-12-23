@@ -143,8 +143,8 @@ namespace WPFSTD105.Model
             {
                 check = false;
             }
-            else
-            {
+            //else
+            //{
                 if ((Info.Face == GD_STD.Enum.FACE.BACK || Info.Face == GD_STD.Enum.FACE.FRONT) && isRotate)
                 {
                     // 原孔群資訊依照條件算出之視角為TOP視角，需轉成前後視角，y=z,z=y(only XYZ)//此時尚未有頂點座標
@@ -249,7 +249,7 @@ namespace WPFSTD105.Model
                             boltAttrEach.Y = boltAttrEach.Y + valueY;
                             if (this.Info.yCount != 1)
                             {
-                                check = CheckWorkingRange(boltAttrEach.Mode,Info.Face, steelAttr.Type, boltAttrEach.Y, list);
+                                check = CheckWorkingRange(this.Info, steelAttr.Type, boltAttrEach.Y, list);
                             }
                             //if (boltAttrEach.Y < list[0] || boltAttrEach.Y > list[1])
                             //{
@@ -272,7 +272,7 @@ namespace WPFSTD105.Model
                             boltAttrEach.Y = boltAttrEach.Y + valueY;
                             if (this.Info.yCount != 1)
                             {
-                                check = CheckWorkingRange(boltAttrEach.Mode, Info.Face, steelAttr.Type, boltAttrEach.Y, list);
+                                check = CheckWorkingRange(this.Info, steelAttr.Type, boltAttrEach.Y, list);
                             }
                             //switch (steelAttr.Type)
                             //{
@@ -365,7 +365,7 @@ namespace WPFSTD105.Model
                 //        ((BoltAttr)x.EntityData).Z = yy;                        
                 //    });
                 //}
-            }
+            //}
         }
 
         /// <summary>
@@ -376,9 +376,16 @@ namespace WPFSTD105.Model
         /// <param name="checkValue">Y座標</param>
         /// <param name="workingRange"></param>
         /// <returns></returns>
-        public static bool CheckWorkingRange(AXIS_MODE Mode,FACE face,OBJECT_TYPE type, double checkValue, List<double> workingRange) 
+        public static bool CheckWorkingRange(GroupBoltsAttr gba,OBJECT_TYPE type, double checkValue, List<double> workingRange) 
         {
+            AXIS_MODE Mode = gba.Mode;
+            FACE face = gba.Face;
             bool check = true;
+            // 若起始座標小於半徑，不可加入
+            if ((gba.X < gba.Dia / 2 || gba.Y< gba.Dia / 2) && gba.dX != "0" && gba.Mode != AXIS_MODE.POINT && gba.Mode != AXIS_MODE.HypotenusePOINT)
+            {
+                check = false;
+            }
             // 無加工範圍設定或打點 不判斷
             if (workingRange.Count == 0 || (Mode == AXIS_MODE.POINT || Mode == AXIS_MODE.HypotenusePOINT) )
             {
@@ -466,14 +473,25 @@ namespace WPFSTD105.Model
             OBJECT_TYPE type = steelAttr.Type;
             // 取得所有孔
 
-            List<BoltAttr> boltCheck = model.Blocks.SelectMany(x => x.Entities).Select(y => y.EntityData).Where(y =>y!=null && y.GetType() == typeof(BoltAttr)).Select(g => (BoltAttr)g).ToList();
+            //List<BoltAttr> boltCheck = model.Blocks.SelectMany(x => x.Entities).Select(y => y.EntityData).Where(y =>y!=null && y.GetType() == typeof(BoltAttr)).Select(g => (BoltAttr)g).ToList();
+
+            var boltCheck = model.Blocks
+                .Where(x => x.Name != "RootBlock")
+                .SelectMany(x => x.Entities, (a, b) => new { Block = a, a.Entities, b.EntityData })
+                .Where(x => x.EntityData.GetType() == typeof(BoltAttr)).ToList();
+
             for (int i = 0; i < boltCheck.Count; i++)
             {
-                BoltAttr bolt = boltCheck[i];   
+                BoltAttr bolt = (BoltAttr)boltCheck[i].EntityData;
                 // 加工區域計算
                 List<double> list = WorkingRange(type, bolt, steelAttr);
                 double checkValue = bolt.Y;
-                if (CheckWorkingRange(bolt.Mode, bolt.Face, type, checkValue, list))
+                GroupBoltsAttr gba =
+                    (GroupBoltsAttr)model.Entities
+                    .FirstOrDefault(x => x.EntityData != null && 
+                    x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
+                   ((GroupBoltsAttr)(x.EntityData)).GUID.Value.ToString() == boltCheck[i].Block.Name).EntityData;
+                if (CheckWorkingRange(gba, type, checkValue, list))
                 {
                     if (bolt.Mode != AXIS_MODE.POINT && bolt.Mode != AXIS_MODE.HypotenusePOINT)
                     {
@@ -491,12 +509,47 @@ namespace WPFSTD105.Model
                             check = false;
                         }
                     }
-                }
-                else
-                {
-                    check = false;
+                    else
+                    {
+                        check = false;
+                    }
                 }
             }
+
+
+
+
+
+            //    for (int i = 0; i < boltCheck.Count; i++)
+            //{
+            //    BoltAttr bolt = boltCheck[i];   
+            //    // 加工區域計算
+            //    List<double> list = WorkingRange(type, bolt, steelAttr);
+            //    double checkValue = bolt.Y;
+            //    if (CheckWorkingRange(this.Info, type, checkValue, list))
+            //    {
+            //        if (bolt.Mode != AXIS_MODE.POINT && bolt.Mode != AXIS_MODE.HypotenusePOINT)
+            //        {
+            //            Point3D checkPoint3D = new Point3D(bolt.X, bolt.Y, bolt.Z);
+            //            var testPoint = checkPoint3D;
+            //            // 前面步驟無CreateBolt(因為CreateBolt也是依照前後進行翻轉) 需翻轉
+            //            if (rotate)
+            //            {
+            //                testPoint = Coordinates(bolt.Face, checkPoint3D);
+            //            }
+            //            // 點是否在前後頂面上
+            //            if (!((Mesh)model.Blocks[1].Entities[0]).IsPointInside(testPoint))
+            //            // if (!((Mesh)model.Entities[model.Entities.Count - 1]).IsPointInside(testPoint))
+            //            {
+            //                check = false;
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        check = false;
+            //    }
+            //}
             check = true;
 
             for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
@@ -536,7 +589,7 @@ namespace WPFSTD105.Model
                     // 取得各面Vertices
                     List<Point3D> faceVertices = new List<Point3D>();
                     //faceVertices = ((ModelExt)model).GetFaceBox(bolt.Face);
-                    if (CheckWorkingRange(bolt.Mode, bolt.Face, type, checkValue, list))
+                    if (CheckWorkingRange(boltsAttr, type, checkValue, list))
                     {
                         if (bolt.Mode != AXIS_MODE.POINT && bolt.Mode != AXIS_MODE.HypotenusePOINT)
                         {
