@@ -76,10 +76,13 @@
                 <Setter Property="RowStyle">
                     <Setter.Value>
                         <Style TargetType="{x:Type dxg:RowControl}">
-                            <Setter Property="Background" Value="{Binding Row.Sortable , Converter={local:SortableToBackgroundConverter} ,ConverterParameter={StaticResource solidclr_DarkRed}}"/>
-                            <Setter Property="Foreground" Value="{Binding Row.Sortable , Converter={local:SortableToForegroundConverter} ,ConverterParameter={StaticResource ColorBrushWhite}}"/>
-                            <Setter Property="Opacity" Value="{Binding Row.Sortable , Converter={local:BooleanToOpacityConverter} , ConverterParameter=0.8}"/>
                             <Style.Triggers>
+                                <DataTrigger Binding="{Binding Row.Sortable}" Value="False">
+                                    <Setter Property="Background" Value="{StaticResource solidclr_DarkRed}" />
+                                    <Setter Property="Foreground" Value="{StaticResource ColorBrushWhite}"/>
+                                    <Setter Property="Opacity" Value="0.8"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
                                 <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
                                     <Setter Property="Opacity" Value="1"/>
                                     <Setter Property="Background" Value="LightGray" />
@@ -90,6 +93,7 @@
                                     <Setter Property="Background" Value="LightSlateGray" />
                                     <Setter Property="Foreground" Value="Black"/>
                                 </Trigger>
+
                             </Style.Triggers>
                         </Style>
                     </Setter.Value>

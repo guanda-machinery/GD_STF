@@ -487,10 +487,14 @@ namespace WPFSTD105.ViewModel
         /// 標題二
         /// </summary>
         public string Title2Property { get; set; }
+
+
+
+        private int _steelTypeProperty_int = -1;
         /// <summary>
         /// 型鋼類型
         /// </summary>
-        public int SteelTypeProperty_int { get; set; }
+        public int SteelTypeProperty_int { get { return _steelTypeProperty_int; } set { _steelTypeProperty_int = value; } }
         /// <summary>
         /// 型鋼類型
         /// </summary>

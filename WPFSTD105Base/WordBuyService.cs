@@ -257,7 +257,7 @@ namespace WPFSTD105
             try
             {
                 ReadOnlyCollection<MaterialDataView> materialDataViews = new ReadOnlyCollection<MaterialDataView>(dataViews);
-                steelAttrs = steelAttrs == null ? SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\RH.inp") : steelAttrs;
+                
                 string a = ApplicationVM.DirectoryPorfile();
 
                 //計算每種profile的數量
@@ -335,6 +335,29 @@ namespace WPFSTD105
                     double SumPartWeight = 0.0;
                     foreach (var item in el)
                     {
+                        //steelAttrs = steelAttrs == null ? SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\RH.inp") : steelAttrs;
+                        switch(item.ObjectType.ToString())
+                        {
+                            case "RH":
+                                steelAttrs = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\RH.inp");
+                                break;
+                            case "H":
+                                steelAttrs = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\H.inp");
+                                break;
+                            case "BH":
+                                steelAttrs = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\BH.inp");
+                                break;
+                            case "LB":
+                                steelAttrs = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\LB.inp");
+                                break;
+                            case "CH":
+                                steelAttrs = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\CH.inp");
+                                break;
+                            default:
+                                steelAttrs = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\RH.inp");
+                                break;
+                        }
+
                         string[] CurrentSteelPart = new string[9];
                         int index = steelAttrs.FindIndex(steel => steel.Profile == item.Profile);
                         CurrentSteelPart[0] = Convert.ToString(item.LengthStr);
@@ -492,6 +515,7 @@ namespace WPFSTD105
                         case "BOX":
                             picture_path = @"SteelSectionPng\BOX.png";
                             break;
+                        case "U":
                         case "CH":
                             picture_path = @"SteelSectionPng\C.png";
                             break; 

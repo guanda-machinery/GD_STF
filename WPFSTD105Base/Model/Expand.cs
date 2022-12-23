@@ -1915,7 +1915,7 @@ namespace WPFSTD105.Model
                         {
                             if (model.Blocks.Where(x => x.Name != "RootBlock")
                                 .SelectMany(x => x.Entities, (aa, bb) => new { Block = aa, aa.Entities, bb.EntityData })
-                                .Any(x =>
+                                .Any(x => x.EntityData != null &&
                                 x.EntityData.GetType() == typeof(BoltAttr) &&
                                 ((BoltAttr)x.EntityData).Face == FACE.TOP &&
                                 ((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT &&
@@ -1924,7 +1924,7 @@ namespace WPFSTD105.Model
                             {
                                 var entities = model.Blocks.Where(x => x.Name != "RootBlock")
                                 .SelectMany(x => x.Entities, (aa, bb) => new { Block = aa, aa.Entities, bb.EntityData })
-                                .FirstOrDefault(x =>
+                                .FirstOrDefault(x => x.EntityData != null &&
                                 x.EntityData.GetType() == typeof(BoltAttr) &&
                                 ((BoltAttr)x.EntityData).Face == FACE.TOP &&
                                 ((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT &&
@@ -1936,14 +1936,17 @@ namespace WPFSTD105.Model
                         else
                         {
                             bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool check);
+                           
+                            if (bolts.hasOutSteel)
+                            {
+                                hasOutSteel = true;
+                            }
+                            B3DB.Add(bolts);
                         }
 
 
-                        if (bolts.hasOutSteel)
-                        {
-                            hasOutSteel = true;
-                        }
-                        B3DB.Add(bolts);
+
+
                         //BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                         //Add2DHole(bolts, false);//加入孔位不刷新 2d 視圖
 

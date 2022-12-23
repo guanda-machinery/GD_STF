@@ -467,14 +467,14 @@
                 </Grid>
 
 
-                <Label Grid.Column="0" Grid.Row="3" Content="製品重：" />
-                <Grid Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Name="Weight" Text="{Binding ProductWeightProperty, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N1}}" Margin="3,0,0,0"/>
-                    <TextBlock Grid.Column="1"  Text="Kg"   Margin="3,0,0,0"/>
+                    <Label Grid.Column="0" Grid.Row="3" Content="製品重：" />
+                    <Grid Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Name="Weight" Text="{Binding ProductWeightProperty, UpdateSourceTrigger=PropertyChanged, StringFormat='0.0'}" Margin="3,0,0,0"/>
+                        <TextBlock Grid.Column="1"  Text="Kg"   Margin="3,0,0,0"/>
 
                 </Grid>
 
@@ -553,6 +553,21 @@
                               ItemsSource="{Binding Source={StaticResource obType},Path=Strings}"
                               SelectedIndex="{Binding SteelTypeProperty_int}"
                               Padding="5,1,0,0">
+
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Content, 
+                                                                   RelativeSource={RelativeSource Self}, 
+                                                                   Converter={local:SectionTypeToEnabledConverter}}" 
+                                                 Value="true">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                    <Setter Property="Opacity" Value="0.3"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SteelTypeComboBox">
                             <i:InvokeCommandAction Command="{ Binding ShowSteelTypeCommand }"
@@ -568,8 +583,21 @@
                                   Padding="5,1,0,0"
                                   ItemsSource="{Binding ProfileList, UpdateSourceTrigger=PropertyChanged}" 
                                   DisplayMemberPath="Profile" 
-                                  Text="{Binding SteelSectionProperty, UpdateSourceTrigger=PropertyChanged}"  SelectionChanged="CBOX_SectionTypeChanged"
-                                 IsSynchronizedWithCurrentItem="True">
+                                  Text="{Binding SteelSectionProperty}" SelectionChanged="CBOX_SectionTypeChanged">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=Content, 
+                                        RelativeSource={RelativeSource Self}, 
+                                        Converter={local:SectionSpecificationToEnabledConverter}}" 
+                                                 Value="true">
+                                    <Setter Property="IsEnabled"  Value="False"/>
+                                    <Setter Property="Opacity" Value="0.3"/>
+
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged" SourceName="cbx_SectionTypeComboBox">
                             <i:InvokeCommandAction Command="{ Binding CalculateWeightCommand }"/>
@@ -584,8 +612,8 @@
                                                Add="{Binding AddPart}"
                                                ReadVisibility="Collapsed"
                                                DeleteVisibility="Collapsed"/>
-                    <Button x:Name="btn_AddNewOne" Content="另存" Width="60" Command="{Binding AddNewOne}"  Visibility="Collapsed" Cursor="Hand"/>
-                    <Button  HorizontalAlignment="Right" Width="60" x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}" Background="Gold"  Click="OKtoConfirmChanges" />
+                        <Button x:Name="btn_AddNewOne" Content="另存" Width="60" Command="{Binding AddNewOne}"  Visibility="Collapsed" Cursor="Hand"/>
+                    <Button Style="{StaticResource SiegCustomButtonGold}" HorizontalAlignment="Right" Width="60" x:Name="btn_OKtoConfirmChanges" Content="OK" Command="{Binding OKtoConfirmChanges}"  Click="OKtoConfirmChanges" />
                     <!--鎖頭的行為要與按鈕的開啟關閉binding 0902-->
                 </StackPanel>
 
@@ -1099,8 +1127,8 @@
                                 <Button Content="rbtn choice" Command="{Binding Path=CmdShowMessage}" Margin="5" Width="80" Height="24" Visibility="Collapsed"/>
                             </StackPanel>
 
-                            <StackPanel  Grid.Row="3"     Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=DrillTabItem}" Width="60" Margin="0,0,0,0"  Background="#d8d8d8" Cursor="Hand" >
+                                <StackPanel  Grid.Row="3"     Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button  Style="{StaticResource SiegCustomButtonGray}"  Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=DrillTabItem}" Width="60" Margin="0,0,0,0"  Cursor="Hand" >
                                     <Button.Content >
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="CheckboxOutline" />
@@ -1333,20 +1361,21 @@
                                                       Canvas.Top="172" />
                                     </Grid>
 
-                                </Grid>
-                            </GroupBox>
-                        </Grid>
-                        <StackPanel Margin="-5,0" DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                            <Button Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=CutTabItem}" Width="60"   Background="#d8d8d8" Cursor="Hand" >
-                                <Button.Content >
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Kind="CheckboxOutline" />
-                                        <TextBlock Text="／"/>
-                                        <materialDesign:PackIcon Kind="CheckboxBlankOutline" />
-                                    </StackPanel>
-                                </Button.Content>
-                            </Button>
-                            <local:DataButtons_Office Style="{StaticResource BaseStyle}"
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                            <StackPanel Margin="-5,0" DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                <Button Style="{StaticResource SiegCustomButtonGray}" Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=CutTabItem}" Width="60" Height="25"  Cursor="Hand" >
+                                    <Button.Content >
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="CheckboxOutline" />
+                                            <TextBlock Text="／"/>
+                                            <materialDesign:PackIcon Kind="CheckboxBlankOutline" />
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                            <Button Content="輸入" Command="{Binding AddCut}" Margin="5,0" Style="{StaticResource SiegCustomButtonWhite}"  Width="60" />
+                            <local:DataButtons_Office Style="{StaticResource BaseStyle}" Visibility="Collapsed"
                                                            Modify="{Binding ModifyCut}"
                                                            Add="{Binding AddCut}"
                                                            Delete="{Binding DeleteCut}"
