@@ -167,7 +167,8 @@ namespace WPFSTD105.Model
                         LinearPath linearPath = new LinearPath(point3Ds);
                         curves.Add(linearPath);
 #if DEBUG
-                        log4net.LogManager.GetLogger("產生CH型鋼").Debug($"H{steelAttr.H},W{steelAttr.W},t1{steelAttr.t1},t2{steelAttr.t2}");
+                        //log4net.LogManager.GetLogger("產生CH型鋼").Debug($"H{steelAttr.H},W{steelAttr.W},t1{steelAttr.t1},t2{steelAttr.t2}");
+                        log4net.LogManager.GetLogger("產生槽鐵").Debug($"H{steelAttr.H},W{steelAttr.W},t1{steelAttr.t1},t2{steelAttr.t2}");
 #endif
                         break;
                     case OBJECT_TYPE.L:

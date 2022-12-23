@@ -224,15 +224,6 @@ namespace WPFSTD105.ViewModel
                 //存取選配設定檔
                 Optional.Default.Save();
 
-                GD_STD.Phone.MecOptional mec = new GD_STD.Phone.MecOptional();//讀取記憶體
-                //修改參數
-                mec.HandAuto = Optional.Default.HandAuto;
-                mec.LeftEntrance = Optional.Default.LeftEntrance;
-                mec.LeftExport = Optional.Default.LeftExport;
-                mec.Middle = Optional.Default.Middle;
-                mec.RightEntrance = Optional.Default.RightEntrance;
-                mec.RightExport = Optional.Default.RightExport;
-                WriteCodesysMemor.SetMecOptional(mec);//寫入記憶體
             });
         }
         /// <summary>
