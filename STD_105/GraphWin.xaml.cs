@@ -262,7 +262,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 
                 return false;
             }
@@ -276,7 +276,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
             if (ObViewModel.SteelAttr.Number <= 0) //檢測用戶是否零件數量大於0
@@ -289,7 +289,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
             if (ObViewModel.DataCorrespond.FindIndex(el => el.Number == ObViewModel.SteelAttr.PartNumber) != -1)
@@ -302,7 +302,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
 #if DEBUG

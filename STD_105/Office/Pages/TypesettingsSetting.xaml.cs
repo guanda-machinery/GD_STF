@@ -238,7 +238,7 @@ namespace STD_105.Office
 #if DEBUG
             log4net.LogManager.GetLogger("加入物件").Debug("檢測用戶輸入");
 #endif
-            if (ObViewModel.SteelAttr.PartNumber == "" || ObViewModel.SteelAttr.PartNumber == null)//檢測用戶是否有輸入零件編號
+            if (string.IsNullOrEmpty(ObViewModel.SteelAttr.PartNumber))//檢測用戶是否有輸入零件編號
             {
                 //MessageBox.Show("請輸入零件編號", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,
@@ -248,7 +248,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                    FloatingMode.Window);
 
                 return false;
             }
@@ -262,7 +262,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
             if (ObViewModel.SteelAttr.Number <= 0) //檢測用戶是否零件數量大於0
@@ -275,7 +275,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
             if (ObViewModel.DataCorrespond.FindIndex(el => el.Number == ObViewModel.SteelAttr.PartNumber) != -1)
@@ -288,7 +288,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
 #if DEBUG
@@ -767,7 +767,7 @@ namespace STD_105.Office
                     //MessageBoxImage.Exclamation,
                     //MessageBoxResult.None,
                     //MessageBoxOptions.None,
-                    //FloatingMode.Popup);
+                    // FloatingMode.Window);
                     return;
                   // throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
                 }
@@ -1202,7 +1202,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
             }
             else if(MDataView.Parts.Count==1)
             {
@@ -1217,7 +1217,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return;
             }
 
@@ -1234,7 +1234,7 @@ namespace STD_105.Office
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
             }
             else
             {
@@ -1245,7 +1245,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
             }
             if (MessageBoxReturn == MessageBoxResult.Yes)
             {
@@ -1300,7 +1300,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
 
 
 
@@ -1320,7 +1320,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return;
             }
 
@@ -1332,7 +1332,7 @@ namespace STD_105.Office
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
 
             if (MessageBoxReturn == MessageBoxResult.Yes)
             {
@@ -1379,7 +1379,7 @@ namespace STD_105.Office
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
 
             }
 

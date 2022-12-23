@@ -132,7 +132,7 @@ namespace GD_STD
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return default(T);
             }
         }
@@ -177,7 +177,7 @@ namespace GD_STD
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return default(T);
             }
         }

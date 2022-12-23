@@ -137,7 +137,7 @@
                   Style="{ StaticResource gbxParameter }">
             <dxlc:ScrollBox Style="{ StaticResource sbx_Office }">
                 <!--排版報表-->
-                <Grid Visibility="{Binding ShowTypeResult, Converter={WPFBase:OppositeBooleanToVisibilityConverter}}">
+                <Grid Visibility="{Binding ShowTypeResult, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="5"/>
@@ -431,7 +431,7 @@
                 Height="600"
                 Background="{StaticResource solidclr_CreamyGray }"
                 CornerRadius="15"
-                Visibility="{Binding LengthDodageControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter}}">
+                Visibility="{Binding LengthDodageControl, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
             <Grid>
                 <Grid.Resources>
                     <Style TargetType="Label"

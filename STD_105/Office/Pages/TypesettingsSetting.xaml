@@ -375,11 +375,11 @@
                                         <Label Content="前置字串："/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
-                                        <TextBox IsEnabled="{Binding StartNumberCheckboxBoolen}">
+                                        <TextBox >
                                             <TextBox.Text>
                                                 <Binding Path="PreCode"  UpdateSourceTrigger="PropertyChanged" >
                                                     <Binding.ValidationRules >
-                                                        <STD105ValidRule:CheckStringEmptyRule/>
+                                                        <STD105ValidRule:CheckStringEmptyRule IsNullable="True"  StringLengthMax="16"/>
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </TextBox.Text>
@@ -389,11 +389,11 @@
                                         <Label Content="起始號碼：" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Grid.Row="3" VerticalAlignment="Center">
-                                        <TextBox IsEnabled="{Binding StartNumberCheckboxBoolen}">
+                                        <TextBox>
                                             <TextBox.Text>
                                                 <Binding Path="StartNumber"  UpdateSourceTrigger="PropertyChanged" >
                                                     <Binding.ValidationRules >
-                                                        <STD105ValidRule:CheckStringEmptyRule/>
+                                                        <STD105ValidRule:CheckStringEmptyRule IsNullable="True" />
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </TextBox.Text>
@@ -420,7 +420,7 @@
 
                                     <CheckBox Content="預設長度："  Grid.Row="1" Grid.Column="0" IsChecked="{Binding MainLengthCheckboxBoolen}"/>
 
-                                    <TextBox Name="MainLengthTextBox" Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center" IsEnabled="{Binding MainLengthCheckboxBoolen}">
+                                    <TextBox Name="MainLengthTextBox" Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center" >
                                         <TextBox.Text>
                                             <Binding Path="MainLength"  UpdateSourceTrigger="PropertyChanged" >
                                                 <Binding.ValidationRules >
@@ -433,7 +433,7 @@
                                     <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0">
                                         <Label Content="單位：m/m"/>
                                     </StackPanel>
-                                    <TextBox Name="SecondaryLengthTextBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" IsEnabled="{Binding SecondaryLengthCheckboxBoolen}">
+                                    <TextBox Name="SecondaryLengthTextBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">
                                             <TextBox.Text>
                                                 <Binding Path="SecondaryLength"  UpdateSourceTrigger="PropertyChanged" >
                                                     <Binding.ValidationRules >
@@ -502,7 +502,7 @@
                                     </StackPanel>
                                     <CheckBox Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="素材前端切除："  IsChecked="{Binding StartCutCheckboxBoolen}"/>
                                     <StackPanel Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center">
-                                        <TextBox Name="MatchSettingStartCutTextBox" InputMethod.IsInputMethodEnabled="False" IsEnabled="{Binding StartCutCheckboxBoolen}"
+                                        <TextBox Name="MatchSettingStartCutTextBox" InputMethod.IsInputMethodEnabled="False"
                                    MinWidth="100" >
                                             <TextBox.Text>
                                                 <Binding Path="MatchSettingStartCut" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" >
@@ -518,7 +518,7 @@
                                         <Label Content="單位：m/m" />
                                     </StackPanel>
                                     <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">
-                                        <TextBox MinWidth="100" Name="MatchSettingEndCutTextBox" IsEnabled="{Binding EndCutCheckboxBoolen}">
+                                        <TextBox MinWidth="100" Name="MatchSettingEndCutTextBox">
                                             <TextBox.Text>
                                                 <Binding Path="MatchSettingEndCut" StringFormat="{}{0:N2}"  UpdateSourceTrigger="PropertyChanged">
                                                     <Binding.ValidationRules>

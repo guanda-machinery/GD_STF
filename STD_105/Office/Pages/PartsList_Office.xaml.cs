@@ -87,7 +87,7 @@ namespace STD_105.Office
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                             FloatingMode.Window);
                         return;
                     }
                     readFile.DoWork();

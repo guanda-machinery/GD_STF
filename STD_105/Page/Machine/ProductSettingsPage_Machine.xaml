@@ -171,7 +171,7 @@
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="450"/>
+                <RowDefinition Height="410"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -1154,7 +1154,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
@@ -1188,8 +1188,27 @@
                                     </Grid>
                                 </GroupBox>
 
-                                <StackPanel Grid.Row="1" Background="#303030" Height="0.5" Margin="0,15,0,10" />
-                                <GroupBox Header="切割位置" Style="{StaticResource BaseStyle}" Grid.Row="2" Margin="5" Name="CuttingGroupBox" >
+                                <StackPanel Grid.Row="1" Background="#303030" Height="0.5" Margin="0,0,0,5" />
+
+                            <StackPanel  Grid.Row="2" Margin="5,0" Orientation="Horizontal">
+                                <StackPanel>
+                                    <Button Width="40" Height="40" Click="HypotenuseLinearPoint">
+                                        <Grid >
+                                            <materialDesign:PackIcon Kind="PenPlus" Width="10" Height="10" Margin="8,0"/>
+                                            <Image Source="{StaticResource HSteel_quadDrawingImage}"  Width="30"/>
+                                        </Grid>
+                                    </Button>
+                                    <Label Content="新增打點" Foreground="Black"  HorizontalAlignment="Center"/>
+                                </StackPanel>
+
+                                <StackPanel Margin="10,0">
+                                    <Button Width="40" Height="40" Click="DelHypotenuseLinearPoint">
+                                        <materialDesign:PackIcon Kind="Eraser" Width="30" Height="30"  />
+                                    </Button>
+                                    <Label Content="打點刪除" Foreground="Black"  HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <GroupBox Header="切割位置" Style="{StaticResource BaseStyle}" Grid.Row="3" Margin="5" Name="CuttingGroupBox" >
                                     <Grid  Background="#c0c0c0">
                                         <Grid>
                                             <Grid.Resources>
@@ -1359,8 +1378,8 @@
 
                                     </Grid>
                                 </GroupBox>
-                            </Grid>
-                            <StackPanel Margin="-5,0" DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+
+                            <StackPanel Margin="0,5,0,0" Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                                 <Button Style="{StaticResource SiegCustomButtonGray}" Command="{Binding SetAllCheckboxCheckedCommand}" CommandParameter="{Binding ElementName=CutTabItem}" Width="60" Height="25"  Cursor="Hand" >
                                     <Button.Content >
                                         <StackPanel Orientation="Horizontal">
@@ -1382,9 +1401,9 @@
                                                            VerticalAlignment="Bottom"
                                                            Margin="0,0,-5,0" />
                             </StackPanel>
+                        </Grid>
 
-
-                        </DockPanel>
+                    </DockPanel>
                     </TabItem>
                 </TabControl>
             </Border>

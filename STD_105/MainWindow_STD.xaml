@@ -21,6 +21,7 @@
         Title="頁面框架"
         Height="1280"
         Width="1024">
+
     <Grid Background="{ StaticResource solidclr_LightGray }">
         <Grid.Resources>
             <!--  遮蔽背景  -->
@@ -245,14 +246,14 @@
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Left">
                 <TextBlock   
-                    Text="{Binding ApplicationViewModel.CurrentPage, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={ local:ApplicationPageNameConverter }}"
+                    Text="{Binding ApplicationViewModel.CurrentPage, Source={x:Static WPFSTD:ViewLocator.Instance},Converter={local:ApplicationPageNameConverter}}"
                     HorizontalAlignment="Left"
                     Foreground="{ StaticResource solidclr_DimGray }"
                     FontWeight="Bold"
                     Style="{ StaticResource tbk_Title }"
                     Margin="10,0,10,0" />
                 <Grid MaxWidth="350" Height="40"
-                        Visibility="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToVisibilityConverter}}">
+                        Visibility="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={dx:NullableToVisibilityConverter}}">
                     <!--  專案名稱  -->
                     <!--跑馬燈
                     <WPFBase:Marquee x:Name="projectName"
@@ -345,7 +346,7 @@
                 <Button ToolTip="關閉程式"
                         Command="{Binding CloseCommand}"
                         Style="{StaticResource WindowCloseButton}"
-                        Visibility="{Binding HMI, Source={x:Static MecSetting:MecSetting.Default}, Converter={WPFBase:OppositeBooleanToVisibilityConverter}}">
+                        Visibility="{Binding HMI, Source={x:Static MecSetting:MecSetting.Default}, Converter={dx:BooleanToVisibilityConverter}}">
                     <Image Source="{StaticResource Window_Close}" />
                 </Button>
             </StackPanel>
@@ -427,7 +428,7 @@
                     Panel.ZIndex="10000"
                     Opacity="0.1"
                     Visibility="Collapsed">
-                <!-- Visibility="{ Binding ElementName=mainSpindle, Path=StartState, Converter={WPFBase:OppositeBooleanToVisibilityConverter } }"-->
+                <!-- Visibility="{ Binding ElementName=mainSpindle, Path=StartState, Converter={dx:BooleanToVisibilityConverter Invert=True} }"-->
                 
                 <Border.Triggers>
                     <EventTrigger RoutedEvent="Mouse.MouseEnter">
@@ -499,7 +500,7 @@
                     CornerRadius="10"
                     Margin="20,315,0,0"
                     Panel.ZIndex="10000"
-                    Visibility="{ Binding MachineFuctionControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter } }">
+                    Visibility="{ Binding MachineFuctionControl, Converter={dx:BooleanToVisibilityConverter} }">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -660,12 +661,11 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Height="200"
-
                     Background="{ StaticResource solidclr_DarkGray }"
                     CornerRadius="10"
                     Margin="20,390,0,0"
                     Panel.ZIndex="10000"
-                    Visibility="{Binding SettingsFuctionControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter}}">
+                    Visibility="{Binding SettingsFuctionControl, Converter={dx:BooleanToVisibilityConverter}}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition />
@@ -701,7 +701,7 @@
                     CornerRadius="10"
                     Margin="20,540,0,0"
                     Panel.ZIndex="10000"
-                    Visibility="{ Binding ProjectManagerControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter } }">
+                    Visibility="{ Binding ProjectManagerControl,Converter={dx:BooleanToVisibilityConverter}}">
                 <Grid Margin="0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -803,7 +803,7 @@
                     CornerRadius="10"
                     Margin="20,465,0,0"
                     Panel.ZIndex="10000"
-                    Visibility="{ Binding LanguageSwitchControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter } }">
+                    Visibility="{Binding LanguageSwitchControl, Converter={dx:BooleanToVisibilityConverter}}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -911,7 +911,7 @@
                 </Grid.Resources>
                 <!--  新建專案  -->
                 <Grid x:Name="Fade"
-                      Visibility="{Binding NewProjectControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                      Visibility="{Binding NewProjectControl, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
                     <Grid Opacity="0.5"
                           Style="{StaticResource Fade}" />
                     <Border Width="500"
@@ -1003,7 +1003,7 @@
                 </Grid>
                 <!--  專案瀏覽  -->
                 <Grid x:Name="Fade1"
-                      Visibility="{Binding OpenProjectControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                      Visibility="{Binding OpenProjectControl, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
                     <Grid Opacity="0.5"
                           Style="{StaticResource Fade}" />
                     <Border Width="500"
@@ -1103,7 +1103,7 @@
                 </Grid>
                 <!--  匯入檔案  -->
                 <Grid x:Name="Fade2"
-                      Visibility="{Binding ImportFileControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                      Visibility="{Binding ImportFileControl, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
                     <Grid Opacity="0.5"
                           Style="{StaticResource Fade}" />
                     <Border Width="500"
@@ -1238,7 +1238,7 @@
                 </Grid>
                 <!--  專案修改  -->
                 <Grid x:Name="Fade3"
-                      Visibility="{Binding ModifyProjectControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                      Visibility="{Binding ModifyProjectControl, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
                     <Grid Opacity="0.5"
                           Style="{StaticResource Fade}" />
                     <Border Width="500"

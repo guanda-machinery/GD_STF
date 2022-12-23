@@ -853,6 +853,7 @@
                     <TabControl.Resources>
                         <ResourceDictionary>
                             <Style TargetType="TabItem">
+                                <Setter Property="Cursor" Value="Hand"/>
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type TabItem}">
@@ -906,7 +907,6 @@
                                 <Setter Property="Foreground" Value="#3b3b3b"/>
                                 <Setter Property="Margin" Value="5"/>
                             </Style>
-
                         </TabItem.Resources>
                         <DockPanel >
                             <Grid DockPanel.Dock="Top">
@@ -1190,11 +1190,10 @@
 
                                         </Grid>
 
-                                        
+
 
                                     </GroupBox>
-                                    <StackPanel Margin="5,8,0,0">
-                                        <StackPanel Orientation="Horizontal">
+                                    <StackPanel Orientation="Horizontal"  Margin="5,8,0,0">
                                             <StackPanel>
                                                 <Button Width="60" Height="60" Click="HypotenuseLinearPoint">
                                                     <Grid >
@@ -1212,8 +1211,7 @@
                                             </StackPanel>
                                         </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
-                                <StackPanel Grid.Row="1" Background="#303030" Height="0.5" Margin="0,5,0,0"/>
+                                    <StackPanel Grid.Row="1" Background="#303030" Height="0.5" Margin="0,5,0,0"/>
                                 <GroupBox Header="切割位置" Style="{StaticResource BaseStyle}" Grid.Row="2" Margin="5" Padding="0" Height="255">
                                     <StackPanel Background="#c0c0c0" >
                                         <Canvas Width="280">
