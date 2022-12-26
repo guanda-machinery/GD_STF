@@ -1742,8 +1742,8 @@ namespace WPFSTD105.Model
                     else
                         TmpDL = new Point3D(YDOWN2List[1].min, YDOWN2List[1].key);
 
-
-                    if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
+                    // TmpUL.X == TmpDL.X && TmpUR.X == TmpDR.X && 
+                    if (( Math.Abs(TmpUL.X-TmpDL.X)<=0.5) && (Math.Abs(TmpUR.X - TmpDR.X) <= 0.5))
                         return;
 
 
