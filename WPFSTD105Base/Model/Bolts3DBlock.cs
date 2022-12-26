@@ -486,32 +486,38 @@ namespace WPFSTD105.Model
                 // 加工區域計算
                 List<double> list = WorkingRange(type, bolt, steelAttr);
                 double checkValue = bolt.Y;
-                GroupBoltsAttr gba =
-                    (GroupBoltsAttr)model.Entities
-                    .FirstOrDefault(x => x.EntityData != null && 
+                if (model.Entities
+                    .Any(x => x.EntityData != null &&
                     x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
-                   ((GroupBoltsAttr)(x.EntityData)).GUID.Value.ToString() == boltCheck[i].Block.Name).EntityData;
-                if (CheckWorkingRange(gba, type, checkValue, list))
+                   ((GroupBoltsAttr)(x.EntityData)).GUID.Value.ToString() == boltCheck[i].Block.Name))
                 {
-                    if (bolt.Mode != AXIS_MODE.POINT && bolt.Mode != AXIS_MODE.HypotenusePOINT)
+                    GroupBoltsAttr gba =
+    (GroupBoltsAttr)model.Entities
+    .FirstOrDefault(x => x.EntityData != null &&
+    x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
+   ((GroupBoltsAttr)(x.EntityData)).GUID.Value.ToString() == boltCheck[i].Block.Name).EntityData;
+                    if (CheckWorkingRange(gba, type, checkValue, list))
                     {
-                        Point3D checkPoint3D = new Point3D(bolt.X, bolt.Y, bolt.Z);
-                        var testPoint = checkPoint3D;
-                        // 前面步驟無CreateBolt(因為CreateBolt也是依照前後進行翻轉) 需翻轉
-                        if (rotate)
+                        if (bolt.Mode != AXIS_MODE.POINT && bolt.Mode != AXIS_MODE.HypotenusePOINT)
                         {
-                            testPoint = Coordinates(bolt.Face, checkPoint3D);
+                            Point3D checkPoint3D = new Point3D(bolt.X, bolt.Y, bolt.Z);
+                            var testPoint = checkPoint3D;
+                            // 前面步驟無CreateBolt(因為CreateBolt也是依照前後進行翻轉) 需翻轉
+                            if (rotate)
+                            {
+                                testPoint = Coordinates(bolt.Face, checkPoint3D);
+                            }
+                            // 點是否在前後頂面上
+                            if (!((Mesh)model.Blocks[1].Entities[0]).IsPointInside(testPoint))
+                            // if (!((Mesh)model.Entities[model.Entities.Count - 1]).IsPointInside(testPoint))
+                            {
+                                check = false;
+                            }
                         }
-                        // 點是否在前後頂面上
-                        if (!((Mesh)model.Blocks[1].Entities[0]).IsPointInside(testPoint))
-                        // if (!((Mesh)model.Entities[model.Entities.Count - 1]).IsPointInside(testPoint))
+                        else
                         {
                             check = false;
                         }
-                    }
-                    else
-                    {
-                        check = false;
                     }
                 }
             }
