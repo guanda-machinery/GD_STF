@@ -116,6 +116,7 @@
 
             <Style TargetType="GroupBox"
                    BasedOn="{ StaticResource gbx_WithBorder }"></Style>
+
             <local:DRILL_TYPE_ToStringConverter x:Key="DrillType" />
             <local:OBJECT_TYPE_ToStringConverter x:Key="obType" />
         </ResourceDictionary>
@@ -384,7 +385,7 @@
                                         </Style>
                                     </Grid.Resources>
                                     <!--BOX-->
-                                    <Viewbox Visibility="{Binding VisibilityBOX, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                    <Viewbox Visibility="{Binding VisibilityBOX, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
                                         <Canvas Name="can_BOX"
                                                 Width="1280"
                                                 Height="1024">
@@ -406,7 +407,7 @@
                                         </Canvas>
                                     </Viewbox>
                                     <!--Beam-->
-                                    <Viewbox Visibility="{Binding VisibilityH, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                    <Viewbox Visibility="{Binding VisibilityH, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
                                         <Canvas Name="can_Beam"
                                                 Width="1280"
                                                 Height="1024">
@@ -432,7 +433,7 @@
                                         </Canvas>
                                     </Viewbox>
                                     <!--CH-->
-                                    <Viewbox Visibility="{Binding VisibilityCH, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                    <Viewbox Visibility="{Binding VisibilityCH, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
                                         <Canvas Name="can_CH"
                                                 Width="1280"
                                                 Height="1024">
@@ -458,7 +459,7 @@
                                         </Canvas>
                                     </Viewbox>
                                     <!--L-->
-                                    <Viewbox Visibility="{Binding VisibilityL, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                    <Viewbox Visibility="{Binding VisibilityL, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
                                         <Canvas Name="can_L"
                                                 Width="1280"
                                                 Height="1024">
@@ -541,7 +542,7 @@
                     </Grid>
                     <!--選擇儲存修改位置-->
                     <!--
-                    <Grid Grid.ColumnSpan="2" Visibility="{ Binding DisplaySavePosition, Converter={ WPFBase:NoNullBooleanToVisibilityConverter }}">
+                    <Grid Grid.ColumnSpan="2" Visibility="{ Binding DisplaySavePosition, Converter={ dx:BooleanToVisibilityConverter Invert=True }}">
                         <local:SaveAs SubmitButtonCommand="{Binding SaveProfileCommand}" CancelButtonCommand="{ Binding CloseSavePosition }"/>
                     </Grid>-->
                 </Grid>
@@ -549,18 +550,17 @@
             <!--材質設定-->
             <TabItem Header="材質設定"
                      IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance},Converter={local:NullToEnabledConverter}}">
-                <StackPanel Width="500"  Style="{StaticResource PrameterStackPanelDarkStyle}" Margin="5"
-                            VerticalAlignment="Top" HorizontalAlignment="Left">
-                    <StackPanel>
-                        <GroupBox Header="材質列表"
+                <Grid>
+                <StackPanel  Style="{StaticResource PrameterStackPanelDarkStyle}" Width="500"  Margin="5"   VerticalAlignment="Top" HorizontalAlignment="Left" >
+                    <GroupBox Header="材質列表"
                                   Height="600">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="80" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <!--關鍵字過濾-->
-                                <TextBox x:Name="tbxFilter1"
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <!--關鍵字過濾-->
+                            <TextBox x:Name="tbxFilter1"
                                          DockPanel.Dock="Top"
                                          Margin="20,15,20,5"
                                          wpf:HintAssist.Hint="關鍵字過濾"
@@ -570,74 +570,73 @@
                                          wpf:TextFieldAssist.HasOutlinedTextField="True"
                                          wpf:TextFieldAssist.DecorationVisibility="Collapsed"
                                          wpf:TextFieldAssist.TextFieldCornerRadius="5">
-                                    <TextBox.InputBindings>
-                                        <KeyBinding Key="Enter"
+                                <TextBox.InputBindings>
+                                    <KeyBinding Key="Enter"
                                                     Command="{ Binding FilterMaterialCommand }"
                                                     CommandParameter="{ Binding ElementName=tbxFilter1, Path=Text }" />
-                                    </TextBox.InputBindings>
-                                </TextBox>
-                                <ListView Grid.Row="1"
+                                </TextBox.InputBindings>
+                            </TextBox>
+                            <ListView Grid.Row="1"
                                           x:Name="Materials"
                                           MaxHeight="1920"
                                           ItemsSource="{Binding Materials}"
                                           SelectedIndex="{Binding MatrialIndex}"
                                           Style="{ StaticResource list_STD }"
                                           HorizontalAlignment="Stretch">
-                                    <ListView.Resources>
-                                        <Style TargetType="ListViewItem"
+                                <ListView.Resources>
+                                    <Style TargetType="ListViewItem"
                                                BasedOn="{ StaticResource listViewItem_STD }" />
-                                    </ListView.Resources>
-                                    <ListView.View>
-                                        <GridView>
-                                            <GridViewColumn DisplayMemberBinding="{ Binding Name}" />
-                                        </GridView>
-                                    </ListView.View>
-                                </ListView>
-                            </Grid>
-                        </GroupBox>
-                        <GroupBox Header="材質名稱">
-                            <TextBox Text="{Binding SelectMaterial.Name}" Name="SelectMaterialNameTextBox" />
-                        </GroupBox>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <GroupBox Header="板密度">
-                                <Grid Height="30">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="5*" />
-                                        <ColumnDefinition Width="2*" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" Name="SelectMaterialPlateDensityTextBox"
+                                </ListView.Resources>
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn DisplayMemberBinding="{ Binding Name}" />
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="材質名稱">
+                        <TextBox Text="{Binding SelectMaterial.Name}" Name="SelectMaterialNameTextBox" />
+                    </GroupBox>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <GroupBox Header="板密度">
+                            <Grid Height="30">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5*" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" Name="SelectMaterialPlateDensityTextBox"
                                              Height="30"
                                              Text="{Binding SelectMaterial.PlateDensity}" />
-                                    <Label Grid.Column="1"
+                                <Label Grid.Column="1"
                                            Content="kg/m3"
                                            Foreground="{ StaticResource solidclr_DimGray }"
                                            Style="{ StaticResource lab_Description }"
                                            VerticalAlignment="Center" />
-                                </Grid>
-                            </GroupBox>
-                            <GroupBox Grid.Column="1"
+                            </Grid>
+                        </GroupBox>
+                        <GroupBox Grid.Column="1"
                                       Header="斷面積密度">
-                                <Grid Height="30">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="5*" />
-                                        <ColumnDefinition Width="2*" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" Name="SelectMaterialProfileDensityTextBox"
+                            <Grid Height="30">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5*" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" Name="SelectMaterialProfileDensityTextBox"
                                              Height="30"
                                              Text="{Binding SelectMaterial.ProfileDensity}" />
-                                    <Label Grid.Column="1"
+                                <Label Grid.Column="1"
                                            Content="kg/m3"
                                            Foreground="{ StaticResource solidclr_DimGray }"
                                            Style="{ StaticResource lab_Description }"
                                            VerticalAlignment="Center" />
-                                </Grid>
-                            </GroupBox>
-                        </Grid>
-                    </StackPanel>
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
                     <StackPanel Orientation="Horizontal"
                                 Margin="5"
                                 VerticalAlignment="Bottom">
@@ -687,6 +686,11 @@
                         </Button>
                     </StackPanel>
                 </StackPanel>
+                    <Grid Visibility="{Binding SaveAsWindowsControl, Converter={dx:BooleanToVisibilityConverter}}">
+                        <local:SaveAs SubmitButtonCommand="{Binding SaveModelRoSystemCommand}"
+                          CancelButtonCommand="{ Binding CloseSaveAsWindowsCommand }" />
+                    </Grid>
+                </Grid>
             </TabItem>
             <!--刀具設定-->
             <TabItem Header="刀具設定"
@@ -694,15 +698,19 @@
                      FontSize="{ Binding TitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition Height="100" />
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <dxg:GridControl x:Name="gridControl"  Margin="4"
-                                     Style="{StaticResource SiegCustomGridControl}"
-                                         MaxHeight="2000"
+                    <dxg:GridControl x:Name="ToolgridControl"  Margin="4" 
+                                     Style="{StaticResource SiegCustomGridControl}" 
+                                         MaxHeight="10000"
                                          dx:ThemeManager.ThemeName="Win10Light"
                                          ItemsSource="{Binding DrillBrands}">
-                            <dxg:GridControl.View>
+                        <dxg:GridControl.Resources>
+                            <Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBar_Office}"/>
+                        </dxg:GridControl.Resources>
+
+                        <dxg:GridControl.View>
                             <dxg:TableView 
                                 IsColumnMenuEnabled ="False"
                                 AllowSorting="false"
@@ -718,28 +726,36 @@
                                     </Style>
                                 </dxg:TableView.CellStyle>
                             </dxg:TableView>
-                                
+
                         </dxg:GridControl.View>
-                            <dxg:GridControl.Columns>
-                            <dxg:GridColumn Header="設定檔名稱" Width="80" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn Header="設定檔名稱" Width="120" HorizontalHeaderContentAlignment="Center" AllowResizing="true" AllowMoving="false"
                                                 FieldName="DataName" />
-                            <dxg:GridColumn Header="品牌" Width="auto" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
+                            <dxg:GridColumn Header="品牌" Width="70" HorizontalHeaderContentAlignment="Center" AllowResizing="true" AllowMoving="false"
                                                 FieldName="Name" />
-                            <dxg:GridColumn Header="刀徑&#x0a;(mm)" Width="auto" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
-                                                FieldName="Dia" />
+                            <dxg:GridColumn Header="刀徑(mm)" Width="auto" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
+                                                FieldName="Dia" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings DisplayFormat="F1" HorizontalContentAlignment="Center"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
                             <dxg:GridColumn Header="刀具類型" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="DrilTypeStr">
-                                    <dxg:GridColumn.EditSettings>
-                                        <dxe:ComboBoxEditSettings ItemsSource="{Binding Source={StaticResource DrillType}, Path=Strings}" />
-                                    </dxg:GridColumn.EditSettings>
-                                </dxg:GridColumn>
-                            <dxg:GridColumn Header="主軸轉速&#x0a;(RPM)" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:ComboBoxEditSettings ItemsSource="{Binding Source={StaticResource DrillType}, Path=Strings}" HorizontalContentAlignment="Center" />
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn Header="主軸轉速&#x0a;  (RPM)" Width="65" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="Rpm" />
                             <dxg:GridColumn Header="切削速度&#x0a;(mm/min)" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="Vc" />
-                            <dxg:GridColumn Header="f&#x0a;(mm/rev)" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
-                                                FieldName="f" />
-                            <dxg:GridColumn Header="F&#x0a;(mm/min)" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
+                            <dxg:GridColumn Header="f (mm/rev)" Width="70" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
+                                                FieldName="f" >
+                                <dxg:GridColumn.EditSettings>
+                                    <dxe:TextEditSettings DisplayFormat="F4" HorizontalContentAlignment="Center"/>
+                                </dxg:GridColumn.EditSettings>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn Header="F (mm/min)" Width="70" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="F" />
                             <dxg:GridColumn Header="刀具長度&#x0a;(mm)" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="DrillLength" />
@@ -749,13 +765,13 @@
                                                 FieldName="L4Length" />
                             <dxg:GridColumn Header="刀具總長&#x0a;(mm)" Width="60" HorizontalHeaderContentAlignment="Center" AllowResizing="false" AllowMoving="false"
                                                 FieldName="SumLength" />
-                            </dxg:GridControl.Columns>
-                        </dxg:GridControl>
+                        </dxg:GridControl.Columns>
+                    </dxg:GridControl>
 
                     <StackPanel Grid.Row="1"
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Right"
-                                VerticalAlignment="Center">
+                                VerticalAlignment="Bottom">
                         <StackPanel.Resources>
                             <Style TargetType="Button"
                                    BasedOn="{ StaticResource ParameterButton }" >
@@ -772,7 +788,7 @@
                                 Width="100" Height="30" Margin="5" FontSize="18"
                                 Style="{ StaticResource SiegCustomButtonGray }"
                                 Command="{Binding DeleteDrillBrandsCommand}"
-                                CommandParameter="{Binding SelectedItem, ElementName=gridControl}" />
+                                CommandParameter="{Binding SelectedItem, ElementName=ToolgridControl}" />
                         <Button Content="儲存"
                                                                 Width="100" Height="30" Margin="5" FontSize="18"
                                 Style="{ StaticResource SiegCustomButtonGray }"
@@ -1175,7 +1191,7 @@
                                           wpf:ColorZoneAssist.Mode="Dark"
                                           Margin="5 10 10 5"
                                           FontSize="16"
-                                          Visibility="{Binding InSensor, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                                          Visibility="{Binding InSensor, Converter={dx:BooleanToVisibilityConverter}}">
                                     <local:InputTitleControl DataContext="{Binding MiddleAxis}" />
                                 </GroupBox>
                                 <GroupBox Header="右軸"
@@ -1188,7 +1204,7 @@
                                           wpf:ColorZoneAssist.Mode="Dark"
                                           Margin="10 5 5 10"
                                           FontSize="16"
-                                          Visibility="{Binding InSensor, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                                          Visibility="{Binding InSensor, Converter={dx:BooleanToVisibilityConverter}}">
                                     <local:InputTitleControl DataContext="{Binding RightAxis}" />
                                 </GroupBox>
                             </Grid>
@@ -1263,7 +1279,7 @@
                                           wpf:ColorZoneAssist.Mode="Dark"
                                           Margin="5 10 10 5"
                                           FontSize="16"
-                                          Visibility="{Binding OutSensor, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                                          Visibility="{Binding OutSensor, Converter={dx:BooleanToVisibilityConverter}}">
                                     <local:InputTitleControl DataContext="{Binding MiddleAxis}" />
                                 </GroupBox>
                                 <GroupBox Header="右軸"
@@ -1276,7 +1292,7 @@
                                           wpf:ColorZoneAssist.Mode="Dark"
                                           Margin="10 5 5 10"
                                           FontSize="16"
-                                          Visibility="{Binding OutSensor, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                                          Visibility="{Binding OutSensor, Converter={dx:BooleanToVisibilityConverter}}">
                                     <local:InputTitleControl DataContext="{Binding RightAxis}" />
                                 </GroupBox>
                             </Grid>
@@ -1460,7 +1476,7 @@
             <!--  機械設定  -->
             <TabItem Header="{DynamicResource LANGUAGE_MachineSettings}"
                      Style="{StaticResource tabitem_STD}"
-                     Visibility="Collapsed">
+                     Visibility="Collapsed" Cursor="Arrow">
                 <Grid>
                     <Grid.DataContext>
                         <STD105VM:SofSettingVM />
@@ -1740,9 +1756,9 @@
             </TabItem>
         </TabControl>
         <!--另存視窗-->
-        <Grid Visibility="{ Binding SaveAsWindowsControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+       <!-- <Grid Visibility="{Binding SaveAsWindowsControl, Converter={dx:BooleanToVisibilityConverter}}">
             <local:SaveAs SubmitButtonCommand="{Binding SaveModelRoSystemCommand}"
                           CancelButtonCommand="{ Binding CloseSaveAsWindowsCommand }" />
-        </Grid>
+        </Grid>-->
     </Grid>
 </WPFBase:BasePage>

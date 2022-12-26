@@ -121,11 +121,11 @@ namespace TestDevdept
         private AK uAK { get; set; } = new AK();
         private SteelAttr SteelAttr = new SteelAttr()
         {
-            H = 300,                /// 高
-            W = 150,                /// 寬
-            t1 = (float)6  ,        /// 腹板厚度
-            t2 = 9,                 /// 翼板厚度
-            Length = 3674.65        ///長
+            H = 250,                /// 高
+            W = 125,                /// 寬
+            t1 = (float)9  ,        /// 腹板厚度
+            t2 = 6,                 /// 翼板厚度
+            Length = 1933.05        ///長
         };
 
         List<NcPoint3D> VKGetPoint = new List<NcPoint3D>();

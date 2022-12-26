@@ -16,20 +16,9 @@ namespace STD_105
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            //bool IsSelected = false;
-           /* if (parameter is string)
-            {
-                if ((string)parameter == "IsSelected")
-                    IsSelected = true;
-            }*/
-
             if (value is PositionStatusEnum)
             {
-                var RowValue = (PositionStatusEnum)value ;
-
-                //槽鐵標示
-
-                switch(RowValue)
+                switch((PositionStatusEnum)value)
                 {
                     case PositionStatusEnum.完成:
                         return  (SolidColorBrush)new BrushConverter().ConvertFrom(WPFSTD105.Properties.SofSetting.Default.Report_Finish);

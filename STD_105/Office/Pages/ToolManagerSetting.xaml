@@ -264,18 +264,6 @@
 
         </GroupBox>
 
-        <!--打點設定-->
-        <!--
-        <GroupBox Grid.Column="4"
-                  Header="打點設定" 
-                  Visibility="Collapsed"/>
-        <Grid Grid.ColumnSpan="5">-->
-            <!--另存視窗-->
-        <!--<Grid Visibility="{ Binding SaveAsWindowsControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
-                <STD:SaveAs SubmitButtonCommand="{Binding SaveModelRoSystemCommand}"
-                            CancelButtonCommand="{ Binding CloseSaveAsWindowsCommand }" />
-            </Grid>
-        </Grid>-->
         
         
     </Grid>

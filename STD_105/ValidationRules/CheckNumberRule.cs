@@ -27,6 +27,11 @@ namespace STD_105.ValidationRules
         public bool IsINTValidate { get; set; } = false;
 
         /// <summary>
+        /// 欄位是否可為空
+        /// </summary>
+        public bool IsNullable { get; set; } = false;
+
+        /// <summary>
         /// 驗證<paramref name="value"/>值
         /// </summary>
         /// <param name="value"></param>
@@ -41,7 +46,7 @@ namespace STD_105.ValidationRules
                     throw new Exception("驗證值設定錯誤，最大值不可小於最小值");
             }
 
-            if (((string)value).Length > 0)
+            if (!string.IsNullOrEmpty((string)value))
             {
                 if (double.TryParse((string)value, out var DoubleValue))
                 {
@@ -80,7 +85,8 @@ namespace STD_105.ValidationRules
             }
             else
             {
-                return new ValidationResult(false, $"欄位不可為空!");
+                if(!IsNullable)
+                    return new ValidationResult(false, $"欄位不可為空!");
             }
 
             return ValidationResult.ValidResult;

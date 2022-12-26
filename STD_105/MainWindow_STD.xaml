@@ -10,6 +10,7 @@
         xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         xmlns:local="clr-namespace:STD_105"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowState="Maximized"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -20,8 +21,8 @@
         Title="頁面框架"
         Height="1280"
         Width="1024">
-    <Grid Background="{ StaticResource solidclr_LightGray }">
 
+    <Grid Background="{ StaticResource solidclr_LightGray }">
         <Grid.Resources>
             <!--  遮蔽背景  -->
             <Style x:Key="Fade"
@@ -109,7 +110,7 @@
               Opacity="0.95"
               Panel.ZIndex="10000">
             <!--機台功能按鈕欄-->
-            <StackPanel Margin="0,0,0,10">
+            <StackPanel Margin="5,0,0,10">
                 <!--警報-->
                 <local:MainFunctionButton x:Name="alert"
                                           ButtonCommand="{Binding AlarmCommand}"
@@ -158,7 +159,7 @@
                                           ButtonImageSource="{StaticResource Apps}"
                                           TitleText="{ DynamicResource LANGUAGE_MachineFuctions }"
                                           FontColor="{ StaticResource solidclr_DimGray }" >
-                <!--    <local:MainFunctionButton.IsEnabled>
+                    <local:MainFunctionButton.IsEnabled>
                         <MultiBinding Converter="{local:DoubleConditionToIsEnabledConerter}">
                             <MultiBinding.Bindings>
                                 <Binding Path="ApplicationViewModel.PanelButton.Key"
@@ -171,7 +172,7 @@
                                          Source="{x:Static WPFSTD:ViewLocator.Instance}" />
                             </MultiBinding.Bindings>
                         </MultiBinding>
-                    </local:MainFunctionButton.IsEnabled>-->
+                    </local:MainFunctionButton.IsEnabled>
                 </local:MainFunctionButton>
                 <!--參數設定-->
                 <local:MainFunctionButton ButtonCommand="{Binding SettingParCommand}"
@@ -245,14 +246,14 @@
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Left">
                 <TextBlock   
-                    Text="{Binding ApplicationViewModel.CurrentPage, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={ local:ApplicationPageNameConverter }}"
+                    Text="{Binding ApplicationViewModel.CurrentPage, Source={x:Static WPFSTD:ViewLocator.Instance},Converter={local:ApplicationPageNameConverter}}"
                     HorizontalAlignment="Left"
-                           Foreground="{ StaticResource solidclr_DimGray }"
-                           FontWeight="Bold"
-                           Style="{ StaticResource tbk_Title }"
-                           Margin="10,0,10,0" />
+                    Foreground="{ StaticResource solidclr_DimGray }"
+                    FontWeight="Bold"
+                    Style="{ StaticResource tbk_Title }"
+                    Margin="10,0,10,0" />
                 <Grid MaxWidth="350" Height="40"
-                        Visibility="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToVisibilityConverter}}">
+                        Visibility="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={dx:NullableToVisibilityConverter}}">
                     <!--  專案名稱  -->
                     <!--跑馬燈
                     <WPFBase:Marquee x:Name="projectName"
@@ -298,13 +299,14 @@
                     </Image.Effect>
                 </Image>
             </Button>
-            <StackPanel x:Name="WindowTools"
+            <StackPanel x:Name="WindowTools" 
                         DataContext="{Binding}"
                         Orientation="Horizontal"
+                        VerticalAlignment="Center"
                         HorizontalAlignment="Right"
-                        Margin="0,0,0,10">
+                        Margin="0,0,0,0">
                 <!--  時鐘  -->
-                <TextBlock HorizontalAlignment="Center"
+                <TextBlock HorizontalAlignment="Center"  
                            FontFamily="{StaticResource font_Clock}"
                            FontSize="18"
                            Foreground="{StaticResource solidclr_Gray}"
@@ -344,7 +346,7 @@
                 <Button ToolTip="關閉程式"
                         Command="{Binding CloseCommand}"
                         Style="{StaticResource WindowCloseButton}"
-                        Visibility="{Binding HMI, Source={x:Static MecSetting:MecSetting.Default}, Converter={WPFBase:OppositeBooleanToVisibilityConverter}}">
+                        Visibility="{Binding HMI, Source={x:Static MecSetting:MecSetting.Default}, Converter={dx:BooleanToVisibilityConverter}}">
                     <Image Source="{StaticResource Window_Close}" />
                 </Button>
             </StackPanel>
@@ -426,7 +428,7 @@
                     Panel.ZIndex="10000"
                     Opacity="0.1"
                     Visibility="Collapsed">
-                <!-- Visibility="{ Binding ElementName=mainSpindle, Path=StartState, Converter={WPFBase:OppositeBooleanToVisibilityConverter } }"-->
+                <!-- Visibility="{ Binding ElementName=mainSpindle, Path=StartState, Converter={dx:BooleanToVisibilityConverter Invert=True} }"-->
                 
                 <Border.Triggers>
                     <EventTrigger RoutedEvent="Mouse.MouseEnter">
@@ -498,7 +500,7 @@
                     CornerRadius="10"
                     Margin="20,315,0,0"
                     Panel.ZIndex="10000"
-                    Visibility="{ Binding MachineFuctionControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter } }">
+                    Visibility="{ Binding MachineFuctionControl, Converter={dx:BooleanToVisibilityConverter} }">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -659,12 +661,11 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Height="200"
-
                     Background="{ StaticResource solidclr_DarkGray }"
                     CornerRadius="10"
                     Margin="20,390,0,0"
                     Panel.ZIndex="10000"
-                    Visibility="{Binding SettingsFuctionControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter}}">
+                    Visibility="{Binding SettingsFuctionControl, Converter={dx:BooleanToVisibilityConverter}}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition />
@@ -700,7 +701,7 @@
                     CornerRadius="10"
                     Margin="20,540,0,0"
                     Panel.ZIndex="10000"
-                    Visibility="{ Binding ProjectManagerControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter } }">
+                    Visibility="{ Binding ProjectManagerControl,Converter={dx:BooleanToVisibilityConverter}}">
                 <Grid Margin="0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -802,7 +803,7 @@
                     CornerRadius="10"
                     Margin="20,465,0,0"
                     Panel.ZIndex="10000"
-                    Visibility="{ Binding LanguageSwitchControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter } }">
+                    Visibility="{Binding LanguageSwitchControl, Converter={dx:BooleanToVisibilityConverter}}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -910,7 +911,7 @@
                 </Grid.Resources>
                 <!--  新建專案  -->
                 <Grid x:Name="Fade"
-                      Visibility="{Binding NewProjectControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                      Visibility="{Binding NewProjectControl, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
                     <Grid Opacity="0.5"
                           Style="{StaticResource Fade}" />
                     <Border Width="500"
@@ -1002,7 +1003,7 @@
                 </Grid>
                 <!--  專案瀏覽  -->
                 <Grid x:Name="Fade1"
-                      Visibility="{Binding OpenProjectControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                      Visibility="{Binding OpenProjectControl, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
                     <Grid Opacity="0.5"
                           Style="{StaticResource Fade}" />
                     <Border Width="500"
@@ -1102,7 +1103,7 @@
                 </Grid>
                 <!--  匯入檔案  -->
                 <Grid x:Name="Fade2"
-                      Visibility="{Binding ImportFileControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                      Visibility="{Binding ImportFileControl, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
                     <Grid Opacity="0.5"
                           Style="{StaticResource Fade}" />
                     <Border Width="500"
@@ -1237,7 +1238,7 @@
                 </Grid>
                 <!--  專案修改  -->
                 <Grid x:Name="Fade3"
-                      Visibility="{Binding ModifyProjectControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
+                      Visibility="{Binding ModifyProjectControl, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
                     <Grid Opacity="0.5"
                           Style="{StaticResource Fade}" />
                     <Border Width="500"

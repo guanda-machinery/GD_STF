@@ -82,6 +82,14 @@
   <PropertyGroup>
     <SignManifests>false</SignManifests>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CalcBinding, Version=2.5.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CalcBinding.2.5.2\lib\net45\CalcBinding.dll</HintPath>
@@ -616,6 +624,9 @@
     <Compile Include="Page\Machine\MainSpindleMode.xaml.cs">
       <DependentUpon>MainSpindleMode.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\DrawButtonBar.xaml.cs">
+      <DependentUpon>DrawButtonBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\JoystickUserControl.xaml.cs">
       <DependentUpon>JoystickUserControl.xaml</DependentUpon>
     </Compile>
@@ -940,7 +951,6 @@
     <Compile Include="ValueConverters\DateTimeConverter.cs" />
     <Compile Include="ValueConverters\ListCountToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\MaterialGridControlDataCheckConverter.cs" />
-    <Compile Include="ValueConverters\MenuItem_FUDataViewsToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\BooleanArrayIntersectToBooleanConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\BooleanArray_UnionToVisableConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\BooleanArray_UnionToBooleanConverter.cs" />
@@ -961,9 +971,12 @@
     <Compile Include="ValueConverters\IListFilterToCountConverter.cs" />
     <Compile Include="ValueConverters\MaterialDesignPackIconToBitmapSourceConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\MultiObjectArrayToBooleanConverter.cs" />
+    <Compile Include="ValueConverters\NullableIntConverter.cs" />
     <Compile Include="ValueConverters\ObjectIsNullToBooleanConverter.cs" />
     <Compile Include="ValueConverters\PositionStatusEnumToStringConverter.cs" />
     <Compile Include="ValueConverters\SectionSpecificationToEnabledConverter.cs" />
+    <Compile Include="ValueConverters\SortableToForegroundConverter.cs" />
+    <Compile Include="ValueConverters\SortableToBackgroundConverter.cs" />
     <Compile Include="ValueConverters\SteelPartWeightConverter.cs" />
     <Compile Include="ValueConverters\DrillingFaceConverter.cs" />
     <Compile Include="ValueConverters\SteelTypeToStringConverter.cs" />
@@ -993,7 +1006,6 @@
     <Compile Include="ValueConverters\KeyHoleToBoolConverter.cs" />
     <Compile Include="ValueConverters\MchineModeToStringConverter.cs" />
     <Compile Include="ValueConverters\NullToEnabledConverter.cs" />
-    <Compile Include="ValueConverters\NullToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\OillBoolToImageSourceConverter.cs" />
     <Compile Include="ValueConverters\PageEnumToBoolConverter.cs" />
     <Compile Include="ValueConverters\PerformanceToConverter.cs" />
@@ -1114,6 +1126,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\ParameterMenuStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DrawButtonBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1839,7 +1855,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GD_STD.Data\GD_STD.Data.csproj">
-      <Project>{390C0859-C722-45E8-9B21-5FA41CA5C18C}</Project>
+      <Project>{390c0859-c722-45e8-9b21-5fa41ca5c18c}</Project>
       <Name>GD_STD.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\GD_STD.Enum\GD_STD.Enum.csproj">

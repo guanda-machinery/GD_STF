@@ -519,7 +519,7 @@ namespace WPFSTD105.ViewModel
                                                  MessageBoxImage.Exclamation,
                                                  MessageBoxResult.None,
                                                  MessageBoxOptions.None,
-                                                 FloatingMode.Popup);
+                                                  FloatingMode.Window);
 
                             chb_SteelType = false;
                             chb_ProcessingBehavior = false;
@@ -536,7 +536,7 @@ namespace WPFSTD105.ViewModel
                                                  MessageBoxImage.Exclamation,
                                                  MessageBoxResult.None,
                                                  MessageBoxOptions.None,
-                                                 FloatingMode.Popup);
+                                                  FloatingMode.Window);
                         }
                     }
                     else
@@ -548,7 +548,7 @@ namespace WPFSTD105.ViewModel
                                              MessageBoxImage.Exclamation,
                                              MessageBoxResult.None,
                                              MessageBoxOptions.None,
-                                             FloatingMode.Popup);
+                                              FloatingMode.Window);
                     }
                     break;
                 case (int)SectionProcessing_SteelType.BOX:
@@ -575,7 +575,7 @@ namespace WPFSTD105.ViewModel
                                                  MessageBoxImage.Exclamation,
                                                  MessageBoxResult.None,
                                                  MessageBoxOptions.None,
-                                                 FloatingMode.Popup);
+                                                  FloatingMode.Window);
 
                             chb_SteelType = false;
                             chb_ProcessingBehavior = false;
@@ -591,7 +591,7 @@ namespace WPFSTD105.ViewModel
                                                  MessageBoxImage.Exclamation,
                                                  MessageBoxResult.None,
                                                  MessageBoxOptions.None,
-                                                 FloatingMode.Popup);
+                                                  FloatingMode.Window);
                         }
                     }
                     else
@@ -603,7 +603,7 @@ namespace WPFSTD105.ViewModel
                                              MessageBoxImage.Exclamation,
                                              MessageBoxResult.None,
                                              MessageBoxOptions.None,
-                                             FloatingMode.Popup);
+                                              FloatingMode.Window);
                     }
                     break;
                 case (int)SectionProcessing_SteelType.CH:
@@ -630,7 +630,7 @@ namespace WPFSTD105.ViewModel
                                                  MessageBoxImage.Exclamation,
                                                  MessageBoxResult.None,
                                                  MessageBoxOptions.None,
-                                                 FloatingMode.Popup);
+                                                  FloatingMode.Window);
 
                             chb_SteelType = false;
                             chb_ProcessingBehavior = false;
@@ -646,7 +646,7 @@ namespace WPFSTD105.ViewModel
                                                  MessageBoxImage.Exclamation,
                                                  MessageBoxResult.None,
                                                  MessageBoxOptions.None,
-                                                 FloatingMode.Popup);
+                                                  FloatingMode.Window);
                         }
                     }
                     else
@@ -658,7 +658,7 @@ namespace WPFSTD105.ViewModel
                                              MessageBoxImage.Exclamation,
                                              MessageBoxResult.None,
                                              MessageBoxOptions.None,
-                                             FloatingMode.Popup);
+                                              FloatingMode.Window);
                     }
                     break;
                 default:
@@ -669,7 +669,7 @@ namespace WPFSTD105.ViewModel
                                          MessageBoxImage.Exclamation,
                                          MessageBoxResult.None,
                                          MessageBoxOptions.None,
-                                         FloatingMode.Popup);
+                                          FloatingMode.Window);
                     break;
                 }
             });
@@ -742,7 +742,7 @@ namespace WPFSTD105.ViewModel
                                              MessageBoxImage.Exclamation,
                                              MessageBoxResult.None,
                                              MessageBoxOptions.None,
-                                             FloatingMode.Popup);
+                                              FloatingMode.Window);
 
                         break;
                 }
@@ -810,7 +810,7 @@ namespace WPFSTD105.ViewModel
                                                      MessageBoxImage.Exclamation,
                                                      MessageBoxResult.None,
                                                      MessageBoxOptions.None,
-                                                     FloatingMode.Popup);
+                                                      FloatingMode.Window);
                             }
                             else
                             {
@@ -821,7 +821,7 @@ namespace WPFSTD105.ViewModel
                                                      MessageBoxImage.Exclamation,
                                                      MessageBoxResult.None,
                                                      MessageBoxOptions.None,
-                                                     FloatingMode.Popup);
+                                                      FloatingMode.Window);
 
                                 f_ChbChecked_ValueError = false; //關閉檢查flag
                             }
@@ -835,7 +835,7 @@ namespace WPFSTD105.ViewModel
                                                  MessageBoxImage.Exclamation,
                                                  MessageBoxResult.None,
                                                  MessageBoxOptions.None,
-                                                 FloatingMode.Popup);
+                                                  FloatingMode.Window);
                         }
                         break;
                     case (int)SectionProcessing_SteelType.BOX:
@@ -880,7 +880,7 @@ namespace WPFSTD105.ViewModel
                                                      MessageBoxImage.Exclamation,
                                                      MessageBoxResult.None,
                                                      MessageBoxOptions.None,
-                                                     FloatingMode.Popup);
+                                                      FloatingMode.Window);
                             }
                             else
                             {
@@ -891,7 +891,7 @@ namespace WPFSTD105.ViewModel
                                                      MessageBoxImage.Exclamation,
                                                      MessageBoxResult.None,
                                                      MessageBoxOptions.None,
-                                                     FloatingMode.Popup);
+                                                      FloatingMode.Window);
 
                                 f_ChbChecked_ValueError = false; //關閉檢查flag
                             }
@@ -905,7 +905,7 @@ namespace WPFSTD105.ViewModel
                                                  MessageBoxImage.Exclamation,
                                                  MessageBoxResult.None,
                                                  MessageBoxOptions.None,
-                                                 FloatingMode.Popup);
+                                                  FloatingMode.Window);
                         }
                         break;
                     case (int)SectionProcessing_SteelType.CH:
@@ -950,7 +950,7 @@ namespace WPFSTD105.ViewModel
                                                      MessageBoxImage.Exclamation,
                                                      MessageBoxResult.None,
                                                      MessageBoxOptions.None,
-                                                     FloatingMode.Popup);
+                                                      FloatingMode.Window);
                             }
                             else
                             {
@@ -961,7 +961,7 @@ namespace WPFSTD105.ViewModel
                                                      MessageBoxImage.Exclamation,
                                                      MessageBoxResult.None,
                                                      MessageBoxOptions.None,
-                                                     FloatingMode.Popup);
+                                                      FloatingMode.Window);
 
                                 f_ChbChecked_ValueError = false; //關閉檢查flag
                             }
@@ -975,7 +975,7 @@ namespace WPFSTD105.ViewModel
                                                  MessageBoxImage.Exclamation,
                                                  MessageBoxResult.None,
                                                  MessageBoxOptions.None,
-                                                 FloatingMode.Popup);
+                                                  FloatingMode.Window);
                         }
                         break;
                     default:
@@ -986,7 +986,7 @@ namespace WPFSTD105.ViewModel
                                              MessageBoxImage.Exclamation,
                                              MessageBoxResult.None,
                                              MessageBoxOptions.None,
-                                             FloatingMode.Popup);
+                                              FloatingMode.Window);
 
                         break;
                 }
@@ -1058,7 +1058,7 @@ namespace WPFSTD105.ViewModel
                                      MessageBoxImage.Exclamation,
                                      MessageBoxResult.None,
                                      MessageBoxOptions.None,
-                                     FloatingMode.Popup);
+                                      FloatingMode.Window);
             });
         }
         /// <summary>
@@ -1175,7 +1175,7 @@ namespace WPFSTD105.ViewModel
                                              MessageBoxImage.Exclamation,
                                              MessageBoxResult.None,
                                              MessageBoxOptions.None,
-                                             FloatingMode.Popup);
+                                              FloatingMode.Window);
                     }
                     else
                     {
@@ -1192,7 +1192,7 @@ namespace WPFSTD105.ViewModel
                                          MessageBoxImage.Exclamation,
                                          MessageBoxResult.None,
                                          MessageBoxOptions.None,
-                                         FloatingMode.Popup);
+                                          FloatingMode.Window);
                 }
             });
         }
@@ -1245,7 +1245,7 @@ namespace WPFSTD105.ViewModel
                                          MessageBoxImage.Exclamation,
                                          MessageBoxResult.None,
                                          MessageBoxOptions.None,
-                                         FloatingMode.Popup);
+                                          FloatingMode.Window);
 
                     //儲存使用者到目前為止使用系統時所有新增的切割線資料
                     BackupSplitLineSettingData.Add(new SplitLineSettingClass()
@@ -1278,7 +1278,7 @@ namespace WPFSTD105.ViewModel
                                          MessageBoxImage.Exclamation,
                                          MessageBoxResult.None,
                                          MessageBoxOptions.None,
-                                         FloatingMode.Popup);
+                                          FloatingMode.Window);
                 }
             });
         }
@@ -1327,7 +1327,7 @@ namespace WPFSTD105.ViewModel
                                      MessageBoxImage.Exclamation,
                                      MessageBoxResult.None,
                                      MessageBoxOptions.None,
-                                     FloatingMode.Popup);
+                                      FloatingMode.Window);
                 }
                 else
                 {
@@ -1340,7 +1340,7 @@ namespace WPFSTD105.ViewModel
                                              MessageBoxImage.Exclamation,
                                              MessageBoxResult.None,
                                              MessageBoxOptions.None,
-                                             FloatingMode.Popup);
+                                              FloatingMode.Window);
                     }
                     else
                     {
@@ -1370,7 +1370,7 @@ namespace WPFSTD105.ViewModel
                                                  MessageBoxImage.Exclamation,
                                                  MessageBoxResult.None,
                                                  MessageBoxOptions.None,
-                                                 FloatingMode.Popup);
+                                                  FloatingMode.Window);
                         }
                         else //提示已復原到最初從檔案載入的值
                         {
@@ -1383,7 +1383,7 @@ namespace WPFSTD105.ViewModel
                                                  MessageBoxImage.Exclamation,
                                                  MessageBoxResult.None,
                                                  MessageBoxOptions.None,
-                                                 FloatingMode.Popup);
+                                                  FloatingMode.Window);
                         }
                     }
                     
@@ -1405,7 +1405,7 @@ namespace WPFSTD105.ViewModel
                                      MessageBoxImage.Exclamation,
                                      MessageBoxResult.None,
                                      MessageBoxOptions.None,
-                                     FloatingMode.Popup);
+                                      FloatingMode.Window);
             });
         }
         /// <summary>
@@ -1451,7 +1451,7 @@ namespace WPFSTD105.ViewModel
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
             });
         }
         /// <summary>
@@ -1493,7 +1493,7 @@ namespace WPFSTD105.ViewModel
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 }
             });
         }
@@ -2005,7 +2005,7 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public ICommand NewCommand { get; set; }
 
-#pragma warning disable CS1591 // 遺漏公用可見類型或成員 'SettingParVM.New()' 的 XML 註解
+#pragma warning disable CS1591 // 遺漏公用可見類型或成員 'SettingParVM.New()' 的 XML 註解SaveAsWindowsControl = false 
         public WPFBase.RelayParameterizedCommand New()
 #pragma warning restore CS1591 // 遺漏公用可見類型或成員 'SettingParVM.New()' 的 XML 註解
         {
@@ -2017,7 +2017,7 @@ namespace WPFSTD105.ViewModel
                 {
                     IsProfile = true;
                 }
-                SaveAsWindowsControl = false;
+                SaveAsWindowsControl = true;
             });
         }
         /// <summary>
@@ -2055,9 +2055,9 @@ namespace WPFSTD105.ViewModel
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 }
-                SaveAsWindowsControl = true;
+                SaveAsWindowsControl = false;
             });
         }
         /// <summary>
@@ -2068,7 +2068,7 @@ namespace WPFSTD105.ViewModel
         {
             return new WPFBase.RelayCommand(() =>
             {
-                SaveAsWindowsControl = true;
+                SaveAsWindowsControl = false;
             });
         }
 
@@ -2441,7 +2441,7 @@ namespace WPFSTD105.ViewModel
                     }
                 }
 
-                SaveAsWindowsControl = true;
+                SaveAsWindowsControl = false;
             });
         }
         /// <summary>
@@ -2474,7 +2474,7 @@ namespace WPFSTD105.ViewModel
                     SerializationHelper.SerializeBinary(system, $@"{ModelPath.Profile}\{strType}.inp"); //變更系統斷面規格檔案
                 }
                 SerializationHelper.SerializeBinary(value, $@"{ApplicationVM.DirectoryModel()}\{ModelPath.Profile}\{strType}.inp");//變更模型設定的斷面規格
-                SaveAsWindowsControl = true;
+                SaveAsWindowsControl = false;
             });
         }
 
@@ -2788,7 +2788,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 另存視窗控制
         /// </summary>
-        public bool SaveAsWindowsControl { get; set; } = true;
+        public bool SaveAsWindowsControl { get; set; } 
         /// <summary>
         /// 刀庫設定檔
         /// </summary>
@@ -3747,7 +3747,7 @@ namespace WPFSTD105.ViewModel
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return list;
             }
         }
@@ -3788,7 +3788,7 @@ namespace WPFSTD105.ViewModel
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return list;
             }
         }

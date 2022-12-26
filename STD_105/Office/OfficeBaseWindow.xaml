@@ -8,6 +8,7 @@
     xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
     xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105" 
     xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     mc:Ignorable="d" 
     Height="720" Width="1280"
     Background="{ StaticResource solidclr_CreamyWhite }"
@@ -96,12 +97,12 @@
             <!--頁面切換區域-->
             <std:OfficePageHost Grid.Row="2" Grid.Column="1" x:Name="pageHost" CurrentPage="{ Binding }"
                 Width="{ Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}" Height="{ Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
-                DataContext="{ Binding OfficeViewModel.CurrentPage, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={ local:OfficePageConverter } }"/>
+                DataContext="{ Binding OfficeViewModel.CurrentPage, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={local:OfficePageConverter}}"/>
         </Grid>
         <!--遮蔽底層物件-->
         <Grid x:Name="shadow" Grid.RowSpan="3" Background="{ StaticResource solidclr_Gray }"
               Height="{ Binding ElementName=MainWindows, Path=Height}"
-            Visibility="{ Binding OfficeViewModel.ProjectManagerControl, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={ WPFBase:BooleanToVisiblityConverter } }"/>
+            Visibility="{ Binding OfficeViewModel.ProjectManagerControl, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={dx:BooleanToVisibilityConverter } }"/>
         <!--至頂菜單區域-->
         <Grid Grid.Row="0" x:Name="grid_TopMenu" Tag="Max" Background="Black" Height="180">
             <Grid.InputBindings>
@@ -151,7 +152,7 @@
                     <!--專案名稱-->
                     <TextBlock Text="{Binding OfficeViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, StringFormat={}當前專案 : {0:d}}" 
                         HorizontalAlignment="Right" Foreground="{ StaticResource solidclr_CreamyWhite }" TextDecorations="Underline" Style="{ StaticResource tbk_Title }"
-                        Visibility="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={ std:NullToVisibilityConverter } }"/>
+                        Visibility="{ Binding OfficeViewModel.ProjectName, Source={ x:Static WPFSTD:ViewLocator.Instance }, Converter={dx:NullableToVisibilityConverter} }"/>
                     <!--
                     <TextBlock Text="{ Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}, StringFormat={}工作區域高度:{0} }" HorizontalAlignment="Right" Foreground="{ StaticResource solidclr_CreamyWhite }" Visibility="Visible"/>
                     <TextBlock Text="{ Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}, StringFormat={}工作區域寬度:{0} }" HorizontalAlignment="Right" Foreground="{ StaticResource solidclr_CreamyWhite }" Visibility="Visible"/>

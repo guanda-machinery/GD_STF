@@ -23,7 +23,6 @@
                    xmlns:GD_STD_Enum="clr-namespace:GD_STD.Enum;assembly=GD_STD.Enum"
                    xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
                    Title="加工監控"
-                   x:TypeArguments="STD105VM:ProcessingMonitor_MachineVM"
                   KeepAlive="True"
                   Unloaded="BasePage_Unloaded"
                   mc:Ignorable="d">
@@ -287,6 +286,7 @@
                         </ResourceDictionary>
                     </TabControl.Resources>
                     <TabItem Header="加工組合清單" Name="MachiningCombinationalTabItem" >
+
                         <dxg:GridControl Margin="-11"  Cursor="Arrow" 
                                              Name="MachiningCombinational_List_GridControl"    
                                              AutoGenerateColumns="None" 
@@ -334,7 +334,6 @@
                                             <Setter Property="TextBlock.Foreground" Value="Black"/>
                                         </Style>
                                     </dxg:TableView.CellStyle>
-
                                     <dxg:TableView.Header>
                                         <TextBlock Text="零件清單" FontSize="16" Foreground="Black"/>
                                     </dxg:TableView.Header>
@@ -342,23 +341,22 @@
                             </dxg:GridControl.View>
                            <dxg:GridControl.ContextMenu>
                                 <ContextMenu>
-                                 <MenuItem Command="{Binding RowAddCommand}"
+                                    <MenuItem Command="{Binding RowAddCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
-                                              Header="加入任務" />
-                                    <!-- <MenuItem Command="{Binding DeleteCommand}"
+                                           
+                                              Header="加入任務到末端" />
+                                    <!--<MenuItem Command="{Binding DeleteCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                               Header="移除任務" /> -->
                                     <MenuItem Command="{Binding RecoverCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
-                                              Visibility="{Binding Finish_UndoneDataViews_SelectedItems,ConverterParameter='Recover' ,Converter={local:MenuItem_FUDataViewsToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                            
                                               Header="狀態註銷" />
-                                    
-                                    <MenuItem Command="{Binding UnregisterCommand}"
+                                   <!-- <MenuItem Command="{Binding UnregisterCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
-                                             
-                                              Header="解除綁定" /> 
+                                              Header="解除綁定" /> -->
                                     <MenuItem Command="{Binding FinishCommand}"
-                                               Visibility="{Binding Finish_UndoneDataViews_SelectedItems,ConverterParameter='Finish' ,Converter={local:MenuItem_FUDataViewsToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                         
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                               Header="強制完成" />
                                 </ContextMenu>
@@ -472,34 +470,34 @@ AllowEditing="False"
                 </TabControl>
             </Border>
             <Border  Grid.Column="1"  Margin="5" Background="#f0f0f0">
-                <GroupBox Grid.Column="1" Padding="0" 
-                          Visibility="{Binding ElementName=MachiningCombinationalTabItem,Path=IsSelected, Converter={dx:BooleanToVisibilityConverter}}">
-                    <GroupBox.Header>
-                        <Grid Margin="5" Height="35">
-                            <TextBlock Text="加工進度表"  FontSize="16" VerticalAlignment="Center" ></TextBlock>
-                        </Grid>
-                    </GroupBox.Header>
-
-                        <dxg:GridControl Margin="0,0.5,0,0" 
+                <Grid Visibility="{Binding ElementName=MachiningCombinationalTabItem,Path=IsSelected, Converter={dx:BooleanToVisibilityConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="46.2"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="加工進度表"  FontSize="16" VerticalAlignment="Center"  Margin="5"/>
+                    <Border VerticalAlignment="Bottom" Background="#ababab" Height="1"/>
+                    <dxg:GridControl Margin="0,0,0,0" 
                         Style="{StaticResource SiegCustomGridControl}"
                         Name="MachiningSchedule_List_GridControl"    
                         AutoGenerateColumns="None" 
-                        Grid.Row="2"  Width="159"
-                        ItemsSource="{Binding Finish_UndoneDataViews}"
+                        Grid.Row="2"  Width="139"
+                        ItemsSource="{Binding Finish_UndoneDataViews,UpdateSourceTrigger=PropertyChanged}"
                         SelectionMode="Row"
                         MinHeight="200"  MaxHeight="300">
-                                <dxg:GridControl.IsEnabled>
-                                    <MultiBinding Converter="{local:BooleanArrayIntersectToBooleanConverter}">
-                                        <MultiBinding.Bindings>
-                                            <Binding Path="Input_by_Computer_RadioButtonIsChecked"/>
-                                            <Binding Path="ApplicationViewModel.AppManualConnect"
+                        <dxg:GridControl.IsEnabled>
+                            <MultiBinding Converter="{local:BooleanArrayIntersectToBooleanConverter}">
+                                <MultiBinding.Bindings>
+                                    <Binding Path="Input_by_Computer_RadioButtonIsChecked"/>
+                                    <Binding Path="ApplicationViewModel.AppManualConnect"
                                                  Source="{x:Static spa:ViewLocator.Instance}"
                                                  Converter="{local:AntiLogicConverter}"/>
-                                        </MultiBinding.Bindings>
-                                    </MultiBinding>
-                                </dxg:GridControl.IsEnabled>
-                                <dxg:GridControl.View >
-                                    <dxg:TableView     
+                                </MultiBinding.Bindings>
+                            </MultiBinding>
+                        </dxg:GridControl.IsEnabled>
+                        <dxg:GridControl.View >
+                            <dxg:TableView     
+                            
                                 AllowEditing="False"              
                                         IsColumnMenuEnabled ="False"
                                        AllowSorting="false"
@@ -508,7 +506,7 @@ AllowEditing="False"
                                 Name="MachiningSchedule_List_TableView"
                             ScrollViewer.ScrollChanged="ScrollOwner_ScrollChanged"
                             SearchString="{Binding MaterialGridControlSearchString,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged }"
-                                    VerticalScrollbarVisibility="Visible"
+                                    VerticalScrollbarVisibility="Hidden"
                                 HorizontalScrollbarVisibility="Disabled"
                                     HeaderPosition="SearchPanel"
                                     ShowGroupPanel="False"                             
@@ -517,67 +515,66 @@ AllowEditing="False"
                                     SearchPanelFindMode="Always"    
                         ShowIndicator="False" 
                                     SearchDelay="0">
-                                        <dxg:TableView.CellStyle>
-                                            <Style>
-                                                <Setter Property="TextBlock.FontSize" Value="12"/>
-                                                <Setter Property="TextBlock.Foreground" Value="Black"/>
-                                            </Style>
-                                        </dxg:TableView.CellStyle>
-                                    </dxg:TableView>
-                                </dxg:GridControl.View>
-                                <!-- <dxg:GridColumn FieldName=""  MaxWidth="40" MinWidth="40"  FixedWidth="True" Header="狀態" />-->
-                                <dxg:GridColumn FieldName="PositionEnum"  Binding="{Binding PositionEnum, Converter={local:PositionStatusEnumToStringConverter},UpdateSourceTrigger=PropertyChanged}"
+                                <dxg:TableView.CellStyle>
+                                    <Style>
+                                        <Setter Property="TextBlock.FontSize" Value="12"/>
+                                        <Setter Property="TextBlock.Foreground" Value="Black"/>
+                                    </Style>
+                                </dxg:TableView.CellStyle>
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+                        <!-- <dxg:GridColumn FieldName=""  MaxWidth="40" MinWidth="40"  FixedWidth="True" Header="狀態" />-->
+                        <dxg:GridColumn FieldName="PositionEnum"  Binding="{Binding PositionEnum, Converter={local:PositionStatusEnumToStringConverter},UpdateSourceTrigger=PropertyChanged}"
                                         MaxWidth="70" MinWidth="70"  FixedWidth="True" Header="位置">
-                                    <dxg:GridColumn.CellStyle>
-                                        <Style TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
-                                            <Setter Property="Background" Value="{Binding Row.PositionEnum, Converter={local:TypeSettingDataViewToSolidColorBrushConverter}}" />
-                                            <Setter Property="TextBlock.FontSize" Value="12"/>
-                                            <Style.Triggers>
-                                                <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
-                                                    <Setter Property="Background"
-                                                            Value="{Binding Row.PositionEnum, Converter={local:TypeSettingDataViewToSolidColorBrushConverter}}" />
-                                                </Trigger>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="LightSlateGray" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </dxg:GridColumn.CellStyle>
-                                </dxg:GridColumn>
-                                <dxg:GridColumn MaxWidth="70" MinWidth="70" Header="進度(%)" >
-                                    <dxg:GridColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Grid>
-                                                <ProgressBar Value="{Binding Row.Schedule,UpdateSourceTrigger=PropertyChanged}" 
+                            <dxg:GridColumn.CellStyle>
+                                <Style TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
+                                    <Setter Property="Background" Value="{Binding Row.PositionEnum, Converter={local:TypeSettingDataViewToSolidColorBrushConverter}}" />
+                                    <Setter Property="TextBlock.FontSize" Value="12"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
+                                            <Setter Property="Background"
+                                                            Value="{Binding Row.PositionEnum, Converter={local:TypeSettingDataViewToSolidColorBrushConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="LightSlateGray" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </dxg:GridColumn.CellStyle>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn MaxWidth="70" MinWidth="70" Header="進度(%)" >
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <ProgressBar Value="{Binding Row.Schedule,UpdateSourceTrigger=PropertyChanged}" 
                                                      Style="{StaticResource BaseStyle}"  Margin="-1"
                                                      Height="auto" Minimum="0" Maximum="100" Background="White" />
-                                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" >
-                                                    <TextBlock Text="{Binding Row.Schedule,UpdateSourceTrigger=PropertyChanged}"   />
-                                                    <TextBlock Text="%"/>
-                                                </StackPanel>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </dxg:GridColumn.CellTemplate>
-                                </dxg:GridColumn>
-                                <dxg:GridColumn FieldName="MaterialNumber" FixedWidth="True" Width="0"  IsSmart="True" Header="排版編號" />
-                                <dxg:GridColumn FieldName="Profile"  FixedWidth="True" Width="0"   IsSmart="True" Header="斷面規格"   />
-                                <dxg:GridColumn FieldName="Material"  FixedWidth="True" Width="0"   IsSmart="True" Header="材質"    />
-                                <dxg:GridColumn FieldName=""  IsSmart="True"  FixedWidth="True" Width="0"  Header="數量"  />
-                                <dxg:GridColumn FieldName=""  IsSmart="True"  FixedWidth="True" Width="0"  Header="已完成"  />
-                                <dxg:GridColumn FieldName="LengthStr"  FixedWidth="True" Width="0"   IsSmart="True" Header="素材長"   />
-                                <dxg:GridColumn  FixedWidth="True" Width="0"  Binding="{c:Binding LengthStr-Loss}"   IsSmart="True" Header="餘長"    >
-                                    <dxg:GridColumn.EditSettings>
-                                        <dxe:TextEditSettings DisplayFormat="F2"/>
-                                    </dxg:GridColumn.EditSettings>
-                                </dxg:GridColumn>
-                                <dxg:GridColumn FieldName=""  FixedWidth="True" Width="0"  IsSmart="True" Header="標題一"   />
-                                <dxg:GridColumn FieldName=""   FixedWidth="True" Width="0"  IsSmart="True" Header="標題二"   />
+                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" >
+                                            <TextBlock Text="{Binding Row.Schedule,UpdateSourceTrigger=PropertyChanged}"   />
+                                            <TextBlock Text="%"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="MaterialNumber" FixedWidth="True" Width="0"  IsSmart="True" Header="排版編號" />
+                        <dxg:GridColumn FieldName="Profile"  FixedWidth="True" Width="0"   IsSmart="True" Header="斷面規格"   />
+                        <dxg:GridColumn FieldName="Material"  FixedWidth="True" Width="0"   IsSmart="True" Header="材質"    />
+                        <dxg:GridColumn FieldName=""  IsSmart="True"  FixedWidth="True" Width="0"  Header="數量"  />
+                        <dxg:GridColumn FieldName=""  IsSmart="True"  FixedWidth="True" Width="0"  Header="已完成"  />
+                        <dxg:GridColumn FieldName="LengthStr"  FixedWidth="True" Width="0"   IsSmart="True" Header="素材長"   />
+                        <dxg:GridColumn  FixedWidth="True" Width="0"  Binding="{c:Binding LengthStr-Loss}"   IsSmart="True" Header="餘長"    >
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings DisplayFormat="F2"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName=""  FixedWidth="True" Width="0"  IsSmart="True" Header="標題一"   />
+                        <dxg:GridColumn FieldName=""   FixedWidth="True" Width="0"  IsSmart="True" Header="標題二"   />
 
 
 
-                            </dxg:GridControl>
-
-                </GroupBox>
+                    </dxg:GridControl>
+                </Grid>
             </Border>
             <TextBlock Text="❸"  Style="{StaticResource HintTextBlock}" Margin="5" Grid.Row="1"                       
                        IsEnabled="{Binding HintStep3}">
@@ -745,7 +742,7 @@ AllowEditing="False"
                 <Grid >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="26"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <Border Style="{StaticResource bro}" Grid.RowSpan="2"/>
                     <spa:ModelExt x:Name="drawing" 
@@ -808,31 +805,19 @@ AllowEditing="False"
                             </ddes:Viewport>
                         </ddes:Model.Viewports>
                     </spa:ModelExt>
-                    <Grid Grid.Row="1" Margin="5,5,5,-0" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions >
-                        <Image Grid.Column="0" Source="{StaticResource Logo}"/>
-                        <Grid Grid.Column="1" VerticalAlignment="Top">
-                            <TextBlock Text="←機台方向" Foreground="White" FontSize="16" Margin="5,0"/>
-                            <TextBlock  Text="手臂方向→" Foreground="White" FontSize="16" HorizontalAlignment="Right"  Margin="5,0"/>
-                        </Grid>
-                        <Image Grid.Column="2"  Source="{StaticResource Transport_by_RobotDrawingImage}" />
-                    </Grid>
+                    <local:DrawButtonBar Grid.Row="1"/>
                 </Grid>
             </TabItem>
         </TabControl>
       
-        <Grid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Width="159" Height="30" >
+        <Grid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Width="139" Height="30" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
             <Border Background="White" Grid.ColumnSpan="2" CornerRadius="5" />
             <Label Content="目前加工索引" Margin="5,0"/>
-            <Label Grid.Column="1" Content="{Binding Current}" Margin="5,0"/>
+            <Label Grid.Column="1" Content="{Binding MCurrent,UpdateSourceTrigger=PropertyChanged}" Margin="5,0"/>
         </Grid>
 
 
@@ -897,7 +882,7 @@ AllowEditing="False"
                                         <!--統一孔徑-->
 
                                         <StackPanel Orientation="Horizontal">
-                                            <CheckBox Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiFRONT"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                            <CheckBox IsThreeState="False" Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiFRONT"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
                                             ConverterParameter={x:Static GD_STD_Enum:FACE.FRONT}, 
                                             Converter={local:TypesettingsSettingsToBooleanConverter}, 
                                             Mode=TwoWay , 
@@ -1021,7 +1006,7 @@ AllowEditing="False"
                                     <StackPanel Margin="8" >
                                         <!--統一孔徑-->
                                         <StackPanel Orientation="Horizontal">
-                                        <CheckBox Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiTop"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                        <CheckBox IsThreeState="False" Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiTop"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
                                             ConverterParameter={x:Static GD_STD_Enum:FACE.TOP}, 
                                             Converter={local:TypesettingsSettingsToBooleanConverter}, 
                                             Mode=TwoWay , 
@@ -1035,7 +1020,7 @@ AllowEditing="False"
                                             Mode=TwoWay , 
                                             UpdateSourceTrigger=PropertyChanged}"
                                                   
-                                             Visibility="{Binding ElementName=IdentiTop , Path=IsChecked, Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
+                                             Visibility="{Binding ElementName=IdentiTop , Path=IsChecked,Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
                                              ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource, 
                                             ConverterParameter={x:Static GD_STD_Enum:FACE.TOP},
                                             Converter={local:TypesettingsSettingsToDrillDiaConverter}, 
@@ -1125,7 +1110,7 @@ AllowEditing="False"
 
 
                                     <StackPanel Grid.Row="1" Visibility="{Binding SelectedMaterial_Info_Button_Visibility}">
-                                        <Button Height="30" Margin="5" 
+                                        <Button Height="30" Margin="5"  
                                                 Visibility="{Binding MachiningCombinational_DrillBoltsItemSource,
                                             ConverterParameter={x:Static GD_STD_Enum:FACE.TOP}, 
                                             Converter={local:TypesettingsSettingsToVisibilityConverter}, 
@@ -1145,7 +1130,7 @@ AllowEditing="False"
                                     <StackPanel Margin="8" >
                                         <!--統一孔徑-->
                                         <StackPanel Orientation="Horizontal">
-                                            <CheckBox Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiBACK"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                            <CheckBox IsThreeState="False" Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiBACK"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
                                             ConverterParameter={x:Static GD_STD_Enum:FACE.BACK}, 
                                             Converter={local:TypesettingsSettingsToBooleanConverter}, 
                                             Mode=TwoWay , 
@@ -1367,12 +1352,11 @@ AllowEditing="False"
                  Background="#292929" 
                  BorderThickness="2" 
                  BorderBrush="#595E60" >
-                <dxg:GridControl  Background="Transparent" 
+                <dxg:GridControl  Background="Transparent" Name="LogGridControl"
                     Style="{StaticResource SiegCustomBlackMessageGridControl}"
                     AutoGenerateColumns="None"
                     SelectionMode="Row"
-                    ItemsSource="{Binding LogDataList , UpdateSourceTrigger=PropertyChanged ,NotifyOnSourceUpdated=True}"
-                    ItemsSourceChanged="MachineMessage_ItemsSourceChanged"
+                    ItemsSource="{Binding LogDataList , UpdateSourceTrigger=PropertyChanged}"
                     MaxHeight="2000"    >
 
                     <dxg:GridControl.View >
@@ -1523,7 +1507,7 @@ AllowEditing="False"
                         </StackPanel>
                          <ProgressBar  Grid.Column="1" Grid.Row="1" Visibility="{Binding ProgressBar_Visible_Input_by_Computer,Converter={dx:BooleanToVisibilityConverter}}"/>
 
-                        <Grid Grid.Row="2" Grid.ColumnSpan="3">
+                        <Grid Grid.Row="2" Grid.ColumnSpan="3"  IsEnabled="{Binding TransportGridIsEnable,UpdateSourceTrigger=PropertyChanged}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
@@ -1553,7 +1537,6 @@ AllowEditing="False"
                                 
                             </StackPanel>
                             <ProgressBar  Visibility="{Binding ProgressBar_Visible_Transport_Visibility,Converter={dx:BooleanToVisibilityConverter}}" />
-                        
                             <StackPanel Grid.Column="1" IsEnabled="{Binding Transport_by_Continue_RadioButtonIsEnable}">
                                 <RadioButton GroupName="Group_Transport" Name="Transport_by_Continue_RadioButton" IsChecked="{Binding Transport_by_Continue_RadioButtonIsChecked}" Command="{Binding ChangeTransportMode_To_Continue_Command}" >
                                     <RadioButton.IsEnabled>

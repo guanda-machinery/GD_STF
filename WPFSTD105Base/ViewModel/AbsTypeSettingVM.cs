@@ -122,7 +122,7 @@ namespace WPFSTD105
 
 
 
-    private GridControl _GridControl { get; set; }
+        private GridControl _GridControl { get; set; }
         #region 命令
         /// <summary>
         /// 手動排版命令
@@ -279,12 +279,14 @@ namespace WPFSTD105
         ///// 顯示在建立零件列表內的集合
         ///// </summary>
         //public ObservableCollection<SteelPart> SteelParts { get; set; } = new ObservableCollection<SteelPart>();
-       // public ObservableCollection<MaterialDataView> SelectedMaterial { get; set; } = new ObservableCollection<MaterialDataView>();
+        // public ObservableCollection<MaterialDataView> SelectedMaterial { get; set; } = new ObservableCollection<MaterialDataView>();
+
+
+        private ObservableCollection<TypeSettingDataView> dataViews = new ObservableCollection<TypeSettingDataView>();
         /// <summary>
         /// 報表視圖
         /// </summary>
-        public ObservableCollection<TypeSettingDataView> DataViews { get; set; } = new ObservableCollection<TypeSettingDataView>();
-
+        public ObservableCollection<TypeSettingDataView> DataViews { get { return dataViews; } set { dataViews = value; OnPropertyChanged(nameof(DataViews)); } } 
         public ObservableCollection<TypeSettingDataView> SelectedParts { get; set; } = new ObservableCollection<TypeSettingDataView>();
         /// <summary>
         /// 素材組合列表
@@ -446,7 +448,7 @@ namespace WPFSTD105
                             MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.None,
-                            FloatingMode.Popup);
+                             FloatingMode.Window);
                         return;
                     }
 
@@ -467,10 +469,10 @@ namespace WPFSTD105
 
                     AutoMatchAsyncV2();
 
-                    foreach (var Data in DataViews)
+                   /* foreach (var Data in DataViews)
                     {
                         Data.SortCount = 0;
-                    }
+                    }*/
 
                     //確保多重系結objArray為陣列，否則傳出例外
                     if (objArray.GetType().Equals(typeof(object[])))
@@ -608,37 +610,25 @@ namespace WPFSTD105
                     {
                         foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl.SelectedItems)
                         {
-                            //將不正確的H及W排除
-                            //PartGridColumn.H > 150;
-                            if (PartGridColumn.W > WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMaxWidth
-                            || PartGridColumn.W < WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMinWidth)
-                                continue;
-
-                            if (PartGridColumn.H > WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMaxHeight
-                              || PartGridColumn.H < WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMinHeight)
-                                continue;
-
-
-
-                            //數量 -已配對 >= 預排數量
-
-                            //數量
-                            var IDCount = PartGridColumn.ID.Count;
-                            //已配對
-                            //var MatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
-                            var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
-                            if (PartGridColumn.SortCount < IDCount - alreadyMatchCount)
-                                PartGridColumn.SortCount++;
-
-
-
-                            var PGIndex = (PartGirdControl.ItemsSource as IEnumerable<GD_STD.Data.TypeSettingDataView>).ToList().FindIndex(x => x == PartGridColumn);
-                            if(PGIndex != -1)
+                            //要是可預排的零件
+                            if (PartGridColumn.Sortable)
                             {
-                                PartGirdControl.Dispatcher.Invoke(() =>
+                                //數量
+                                var IDCount = PartGridColumn.ID.Count;
+                                //已配對
+                                //var MatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
+                                var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
+                                if (PartGridColumn.SortCount < IDCount - alreadyMatchCount)
+                                    PartGridColumn.SortCount++;
+
+                                var PGIndex = (PartGirdControl.ItemsSource as IEnumerable<GD_STD.Data.TypeSettingDataView>).ToList().FindIndex(x => x == PartGridColumn);
+                                if (PGIndex != -1)
                                 {
-                                    PartGirdControl.RefreshRow(PGIndex);
-                                });
+                                    PartGirdControl.Dispatcher.Invoke(() =>
+                                    {
+                                        PartGirdControl.RefreshRow(PGIndex);
+                                    });
+                                }
                             }
                         }
                         //需要重整才能更新data binding 
@@ -706,36 +696,28 @@ namespace WPFSTD105
                     {
                         foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in PartGirdControl.SelectedItems)
                         {
-                            if (PartGridColumn.W > WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMaxWidth
-                            || PartGridColumn.W < WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMinWidth)
-                                continue;
+                            if (PartGridColumn.Sortable)
+                            {
+                                //數量
+                                var IDCount = PartGridColumn.ID.Count;
+                                //已配對
+                                var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
+                                //var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
 
-                            if (PartGridColumn.H > WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMaxHeight
-                              || PartGridColumn.H < WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMinHeight)
-                                continue;
+                                PartGridColumn.SortCount = IDCount - alreadyMatchCount;
+                                //已配對
+                                //  PartGridColumn.Match.FindAll(x => (x == true)).Count;
 
-                            //數量 -已配對 >= 預排數量
+                                // DataViews[];
+                                //取得構件編號，將資料寫入datagrid
 
-                            //數量
-                            var IDCount = PartGridColumn.ID.Count;
-                            //已配對
-                            var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
-                            //var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
-
-                            PartGridColumn.SortCount = IDCount - alreadyMatchCount;
-
-
-                            //已配對
-                            //  PartGridColumn.Match.FindAll(x => (x == true)).Count;
-
-                            // DataViews[];
-                            //取得構件編號，將資料寫入datagrid
-
-                        }                    //需要重整才能更新data binding 
-                        PartGirdControl.Dispatcher.Invoke(() =>
-                        {
-                            PartGirdControl.RefreshData();
-                        });
+                                //需要重整才能更新data binding 
+                                PartGirdControl.Dispatcher.Invoke(() =>
+                                {
+                                    PartGirdControl.RefreshData();
+                                });
+                            }
+                        }
                     }
                 }
                 );
@@ -789,55 +771,75 @@ namespace WPFSTD105
         public bool LengthDodageControl { get; set; } = false;
 
 
-
-
-
-
+        private bool? _startNumberCheckboxBoolen= true;
 
         #region 排版參數設定
-        /// <summary>
-        /// 前置字串
-        /// </summary>
-        public string PreCode { get; set; } = "";
-        /// <summary>
-        /// 排版編號checkbox
-        /// </summary>
-        public bool? StartNumberCheckboxBoolen { get; set; } = true;
-        private string _startNumber;
-        /// <summary>
-        /// 排版編號
-        /// </summary>
-        public string StartNumber
+        public bool? StartNumberCheckboxBoolen
         {
             get
             {
-                string StartNumberDefault = PreCode;
-                //  若起始號碼為空，前置字串為排版起始號碼
-                if (string.IsNullOrEmpty(_startNumber))
-                {
-                    //_startNumber = StartNumberDefault;
-                    MatchSetting.StartNumber = PreCode + "001";
-                    return _startNumber;
-                }
-                // 若排版編號有打勾，起始號碼 = 起始號碼
-                if (StartNumberCheckboxBoolen is true)
+                return _startNumberCheckboxBoolen;
+            }
+            set
+            {
+                _startNumberCheckboxBoolen = value;
+                if (value is true)
                 {
                     MatchSetting.StartNumber = PreCode + _startNumber;
                 }
                 else
                 {
-                    // 若無打勾，起始號碼 = 前置字串+001
-                    MatchSetting.StartNumber = StartNumberDefault+"001";
+                    // 若無打勾，起始號碼 = 001
+                    MatchSetting.StartNumber = "001";
                 }
+            }
+        }
 
-                return _startNumber;
+private string _preCode = "";
+        /// <summary>
+        /// 前置字串
+        /// </summary>
+        public string PreCode 
+        {
+            get
+            {
+                if (StartNumberCheckboxBoolen is true)
+                    return _preCode;
+                else
+                    return "";
+            }
+            set
+            {
+                _preCode = value;
+                StartNumberCheckboxBoolen = !string.IsNullOrEmpty(_preCode) || !string.IsNullOrEmpty(_startNumber);
+            }
+        } 
+        /// <summary>
+        /// 排版編號checkbox
+        /// </summary>
+
+        private string _startNumber;
+        /// <summary>
+        /// 起始編號
+        /// </summary>
+        public string StartNumber
+        {
+            get
+            {
+                if (StartNumberCheckboxBoolen is true)
+                    return _startNumber;
+                else
+                    return "";
             }
             set
             {
                 _startNumber = value;
+                StartNumberCheckboxBoolen = !string.IsNullOrEmpty(_startNumber);
             }
         }
 
+
+        const string MainLengthDefault = "9000 10000 12000";
         /// <summary>
         /// 預設長度checkbox
         /// </summary>
@@ -850,7 +852,6 @@ namespace WPFSTD105
         {
             get
             {
-                const string MainLengthDefault = "9000 10000 12000";
                 if (string.IsNullOrEmpty(_mainLength ))
                 {
                     _mainLength = MainLengthDefault;
@@ -869,12 +870,11 @@ namespace WPFSTD105
             set
             {
                 _mainLength = value;
+                MainLengthCheckboxBoolen = _mainLength != MainLengthDefault;
             }
         }
 
-
-
-
+        const double MainLengthMachineDefault = 9000;
         private double _MainLengthMachine = 0;
         /// <summary>
         /// 預設長度 機台端用 純設定用
@@ -884,32 +884,27 @@ namespace WPFSTD105
             get
             {
                 SecondaryLength = "";
-                const double MainLengthDefault = 9000;
                 if (_MainLengthMachine == 0)
                 {
-                    _MainLengthMachine = MainLengthDefault;
-                    return MainLengthDefault;
+                    _MainLengthMachine = MainLengthMachineDefault;
+                    return MainLengthMachineDefault;
                 }
-
                 if (MainLengthCheckboxBoolen is true)
-                {
                     return _MainLengthMachine;
-                }
                 else
-                {
-                    return MainLengthDefault;
-                }
+                    return MainLengthMachineDefault;
+                
             }
             set
             {
                 _MainLengthMachine = value;
-                //只使用_mainLength
+                MainLengthCheckboxBoolen = _MainLengthMachine != MainLengthMachineDefault;
             }
         }
 
 
 
-
+        const string SecondaryLengthDefault = "11000 13000 14000 15000";
         /// <summary>
         /// 次要條件checkbox
         /// </summary>
@@ -922,7 +917,6 @@ namespace WPFSTD105
         {
             get
             {
-                const string SecondaryLengthDefault = "11000 13000 14000 15000";
                 if (string.IsNullOrEmpty(_secondaryLength))
                 {
                     _secondaryLength = SecondaryLengthDefault;
@@ -941,9 +935,12 @@ namespace WPFSTD105
             set
             {
                 _secondaryLength = value;
+                SecondaryLengthCheckboxBoolen = _secondaryLength !=SecondaryLengthDefault;
             }
         }
 
+
+        const double StartCutDefault = 10;
         /// <summary>
         /// 前端切除Checkbox
         /// </summary>
@@ -956,7 +953,6 @@ namespace WPFSTD105
         {
             get
             {
-                const double StartCutDefault = 10;
                 if (StartCutCheckboxBoolen is true)
                 {
                     MatchSetting.StartCut = _matchSettingStartCut;
@@ -971,9 +967,13 @@ namespace WPFSTD105
             set
             {
                 _matchSettingStartCut = value;
+                StartCutCheckboxBoolen = _matchSettingStartCut != StartCutDefault;
             }
         }
 
+
+
+        const double EndCutDefault = 10;
         /// <summary>
         /// 後端切除Checkbox
         /// </summary>
@@ -986,7 +986,6 @@ namespace WPFSTD105
         {
             get
             {
-                const double EndCutDefault = 10;
                 if (EndCutCheckboxBoolen is true)
                 {
                     MatchSetting.EndCut = _matchSettingEndCut;
@@ -1001,6 +1000,7 @@ namespace WPFSTD105
             set
             {
                 _matchSettingEndCut = value;
+                EndCutCheckboxBoolen = _matchSettingEndCut != EndCutDefault;
             }
         }
 
@@ -1131,7 +1131,7 @@ namespace WPFSTD105
                         {
                             MaterialDataViews.Add(new MaterialDataView
                             {
-                                MaterialNumber = strNumber + startNumber.ToString().PadLeft(4, '0'), // 不足補0
+                                MaterialNumber =  strNumber + startNumber.ToString().PadLeft(4, '0'), // 不足補0
                                 Profile = profiles[i],
                             });
                             MaterialDataViews[MaterialDataViews.Count - 1].LengthList.AddRange(MatchSetting.MainLengths); //加入長度列表
@@ -1185,7 +1185,7 @@ namespace WPFSTD105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                     return;
                 }
 
@@ -1199,7 +1199,6 @@ namespace WPFSTD105
                            ObSettingVM.allowType.Contains((OBJECT_TYPE)el.SteelType) &&
                         sortProfile.Contains(el.Profile)
                     ).Select(el=>el.Profile)
-                    
                     .ToList();//模型有使用到的斷面規格
 
                 //改寫判斷式 由SteelType找斷面規格
@@ -1239,25 +1238,26 @@ namespace WPFSTD105
                         continue;
                     }
                     List<SinglePart> listPart = new List<SinglePart>();//配料列表
-                    foreach (var item in DataViews.Where(x => x.SortCount > 0))
+                    var softedDataviews= DataViews.Where(x => x.SortCount > 0).ToList();
+                    foreach (var item in softedDataviews)
                     {
+                        //同一零件排複數個 要跳兩次
                         //1110 排版計算前添加鋸床切割損耗，DataViews中Part的Length此時已被變動 CYH
                         item.Length += 3;
-
                         foreach (var steel in steels.Where(x => x.Number == item.PartNumber))
                         {
                             //1110 排版計算前添加鋸床切割損耗 CYH
                             steel.Length += 3;
 
-                            IEnumerable<int> _where = DataViews
+                           var _Findwhere = DataViews
                            .Where(el =>
                            el.Profile == steel.Profile &&
                            el.PartNumber == steel.Number &&
                            el.Length == steel.Length &&         // 2022/09/23 呂宗霖 新增
-                           el.SortCount > 0)                   // 2022/09/23 呂宗霖 新增
-                           .Select(el => el.SortCount);
+                           el.SortCount > 0);                 // 2022/09/23 呂宗霖 新增
+                        
+                           var _where = _Findwhere.Select(el => el.SortCount);
 
-                            //20221107 蘇冠綸加入條件式 防止在特定情況下_where陣列為0而導致崩潰的問題
                             if (_where.Count() > 0)
                             {
                                 var count = _where.Aggregate((total, next) => total + next);
@@ -1309,8 +1309,10 @@ namespace WPFSTD105
                         List<Population> _ = new List<Population>() { uPopulation, wPopulation, aPopulation, umPopulation }; //存入到列表內
 
                         //尋找最優化
-                        double minValue = _[0].TotalSurplus(); //最少的餘料
-                        int minIndex = 0; //最小值索引
+
+
+                        //double minValue = _[0].TotalSurplus(); //最少的餘料
+                        /*int minIndex = 0; //最小值索引
                         for (int c = 1; c < _.Count; c++) //逐步展開配料結果的餘料
                         {
                             double value = _[c].TotalSurplus(); //餘料
@@ -1319,34 +1321,45 @@ namespace WPFSTD105
                                 minValue = value; //修改最小值
                                 minIndex = c;//紀錄最小於列的索引位置
                             }
-                        }
-                        for (int q = 0; q < _[minIndex].Count; q++)
+                        }*/
+
+                        var TotalSurplusMinValue= _.Min(x => x.TotalSurplus());
+                        var MinPop = _.Find(x => (x.TotalSurplus() == TotalSurplusMinValue));
+                        
+                        for (int q = 0; q < MinPop.Count; q++)
                         {
-                            MaterialDataViews.Add(new MaterialDataView
+                            var NewMaterial = new MaterialDataView
                             {
                                 MaterialNumber = strNumber + startNumber.ToString().PadLeft(4, '0'), // 不足補0
                                 Profile = profiles[i],
-                            });
-                            MaterialDataViews[MaterialDataViews.Count - 1].LengthList.AddRange(MatchSetting.MainLengths); //加入長度列表
-                            MaterialDataViews[MaterialDataViews.Count - 1].LengthList.AddRange(MatchSetting.SecondaryLengths); //加入長度列表
-                            MaterialDataViews[MaterialDataViews.Count - 1].LengthIndex = MaterialDataViews[MaterialDataViews.Count - 1].LengthList.FindIndex(el => _[minIndex][q].Length - MatchSetting.EndCut - MatchSetting.StartCut == el); //長度索引
-                            int index = MaterialDataViews[MaterialDataViews.Count - 1].LengthIndex;
-                            MaterialDataViews[MaterialDataViews.Count - 1].LengthStr = MaterialDataViews[MaterialDataViews.Count - 1].LengthList[index] + (MatchSetting.EndCut + MatchSetting.StartCut); //1110 加入動作:將素材長度加回MatchSettingStartCut+ MatchSettingEndCut CYH
-                            MaterialDataViews[MaterialDataViews.Count - 1].StartCut = MatchSetting.StartCut;
-                            MaterialDataViews[MaterialDataViews.Count - 1].EndCut = MatchSetting.EndCut;
-                            MaterialDataViews[MaterialDataViews.Count - 1].Cut = MatchSetting.Cut;
-                            for (int c = 0; c < _[minIndex][q].PartNumber.Length; c++)
+
+                                StartCut = MatchSetting.StartCut,
+                                EndCut = MatchSetting.EndCut,
+                                Cut = MatchSetting.Cut,
+                            };
+                            NewMaterial.LengthList.AddRange(MatchSetting.MainLengths); //加入長度列表
+                            NewMaterial.LengthList.AddRange(MatchSetting.SecondaryLengths); //加入長度列表
+                            NewMaterial.LengthIndex = NewMaterial.LengthList.FindIndex(el => MinPop[q].Length - MatchSetting.EndCut - MatchSetting.StartCut == el); //長度索引
+                            int index = NewMaterial.LengthIndex;
+                            NewMaterial.LengthStr = NewMaterial.LengthList[index] + (MatchSetting.EndCut + MatchSetting.StartCut); //1110 加入動作:將素材長度加回MatchSettingStartCut+ MatchSettingEndCut CYH
+
+                            for (int c = 0; c < MinPop[q].PartNumber.Length; c++)
                             {
                                 //1111 CYH dataViewIndex是從相同零件編號的零件群中找起，並不管零件與構件的對應關係，因此在排版設定中選擇的零件若在其同零件編號的後面，則配對後在排版設定中會顯示已配對的零件
                                 //會從同零件編號群中的第一個開始標記，而不是一開始所選擇的零件
-                                int dataViewIndex = DataViews.FindIndex(el => el.PartNumber == _[minIndex][q].PartNumber[c] && el.Match.FindIndex(el2 => el2 == true) != -1);
 
-                                MaterialDataViews[MaterialDataViews.Count - 1].Parts.Add(DataViews[dataViewIndex]);
-                                MaterialDataViews[MaterialDataViews.Count - 1].Material = DataViews[dataViewIndex].Material;
+                                //20221222追加el.SortCount > 0  避免配對時配對到相同零件編號但構件編號不同的零件
+                                int dataViewIndex = DataViews.FindIndex(el => el.SortCount > 0 && el.PartNumber == MinPop[q].PartNumber[c] && el.Match.Exists(el2 => el2 == true));
+                                NewMaterial.Parts.Add(DataViews[dataViewIndex]);
+                                NewMaterial.Material = DataViews[dataViewIndex].Material;
+
                                 int matchIndex = DataViews[dataViewIndex].Match.IndexOf(el => el == true);
-                                //bool aa = DataViews[dataViewIndex].Match[matchIndex];
                                 DataViews[dataViewIndex].Match[matchIndex] = false;
+                                //20221222追加SortCount--
+                                DataViews[dataViewIndex].SortCount--;
                             }
+
+                            MaterialDataViews.Add(NewMaterial);
                             startNumber++;
                         }
                     }

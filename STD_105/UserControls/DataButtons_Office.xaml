@@ -18,6 +18,7 @@
             <Setter Property="Padding" Value="0" />
         </Style>
     </UserControl.Resources>
+    
     <StackPanel dx:ThemeManager.ThemeName="Win10Light"
                 Orientation="Horizontal" 
                 HorizontalAlignment="Center"

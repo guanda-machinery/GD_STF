@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WPFSTD105.Model
 {
-    public class OperatingLog
+    public class OperatingLog: WPFWindowsBase.BaseViewModel
     {
         public string LogSource { get; set; }
         public DateTime LogDatetime { get; set; }

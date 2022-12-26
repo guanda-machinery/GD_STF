@@ -242,7 +242,14 @@ namespace WPFSTD105
                 var pattern = @"[A-Z]+";
                 for (int i = 0; i < materialDataViews.Count; i++)
                 {
-                    ListSteelType[i] = Regex.Match(materialDataViews[i].Profile, pattern).Value;
+                    if (Regex.Match(materialDataViews[i].Profile, pattern).Value != "X")
+                    {
+                        ListSteelType[i] = Regex.Match(materialDataViews[i].Profile, pattern).Value;
+                    }
+                    else 
+                    {
+                        ListSteelType[i] = "CH"; //僅有槽鐵(CH)斷面規格不是英文字開始 ex:[200X80X7.5X11
+                    }
                 }
                 string[] temp_DistinctSteelType = ListSteelType.Distinct().ToArray();//找出有幾種型鋼
                 List<string> ListDistinctSteelType = temp_DistinctSteelType.ToList();
@@ -279,11 +286,12 @@ namespace WPFSTD105
                 //ObservableCollection<MaterialDataView> Result_materialDataViews = FindSameMaterial(materialDataViews);
                 ObservableCollection<MaterialDataView> Result_materialDataViews = JsonConvert.DeserializeObject<ObservableCollection<MaterialDataView>>(JsonConvert.SerializeObject(materialDataViews));
 
+                AddHorizontalLine_Bottom(destPath);
                 foreach (string steel_type in temp_DistinctSteelType)//以型鋼型態分類
                 {
-                    AddHorizontalLine_Bottom(destPath);
+                    //AddHorizontalLine_Bottom(destPath);
                     OpenAndAddTextToWordDocument(destPath, "_", "2");
-                    OpenAndAddTextToWordDocument(destPath, $"型鋼型態：{steel_type}    材質型態：SN490B", "18");
+                    OpenAndAddTextToWordDocument(destPath, $"型鋼型態：{steel_type}", "18");
                     //將表格標題型鋼文字替換成圖片
                     //var document_HeaderAddPic = WordprocessingDocument.Open(destPath, true);
                     //string[] HeaderPiclist = { $"{steel_type}" };
@@ -299,7 +307,17 @@ namespace WPFSTD105
 
                     for (int i = 0; i < Result_materialDataViews.Count; i++)
                     {
-                        if (steel_type == (Regex.Match(Result_materialDataViews[i].Profile, pattern).Value))
+                        string current_steel_type = "";
+                        if (Regex.Match(Result_materialDataViews[i].Profile, pattern).Value != "X")
+                        {
+                            current_steel_type = Regex.Match(Result_materialDataViews[i].Profile, pattern).Value;
+                        }
+                        else 
+                        {
+                            current_steel_type = "CH"; //僅有槽鐵(CH)斷面規格不是英文字開始 ex:[200X80X7.5X11
+                        }
+
+                        if (steel_type == current_steel_type)
                         {
                             //單一素材資料
                             CurrentMaterial[0] = Convert.ToString(ItemCount);
@@ -529,7 +547,8 @@ namespace WPFSTD105
                         case "BOX":
                             picture_path = @"SteelSectionPng\BOX.png";
                             break;
-                        case "C":
+                        case "U":
+                        case "CH":
                             picture_path = @"SteelSectionPng\C.png";
                             break;
                         case "Bar_code":

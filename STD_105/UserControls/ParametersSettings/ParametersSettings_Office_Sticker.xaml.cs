@@ -69,7 +69,7 @@ namespace StickerDialog.ViewModel
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
             }
         }
 

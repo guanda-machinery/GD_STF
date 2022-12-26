@@ -1,6 +1,7 @@
 ﻿using DevExpress.Data.Extensions;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Grid;
+using DevExpress.XtraRichEdit.Model;
 using GD_STD.Data;
 using System;
 using System.Collections.Generic;
@@ -113,15 +114,14 @@ namespace STD_105
         private void Check_Button_Click(object sender, RoutedEventArgs e)
         {
             //將預排加入parts
-            var SortItems = (IEnumerable<GD_STD.Data.TypeSettingDataView>)SoftGridControl.ItemsSource;
-            var SoftList = SortItems.ToList().FindAll(x => (x.SortCount > 0));
-            foreach (var Softing in SoftList)
+            var SortItems = ((IEnumerable<GD_STD.Data.TypeSettingDataView>)SoftGridControl.ItemsSource).ToList().FindAll(x => (x.SortCount > 0));
+            for (int i =0; i< SortItems.Count(); i++)
             {
                 //有複數零件 重複加入
-                for (int i = 0; i < Softing.SortCount; i++)
+                for(int j =0;j< SortItems[i].SortCount;j++)
                 {
-                    Softing.Revise = DateTime.Now;
-                    SelectedMaterial.Parts.Add(Softing);
+                    SortItems[i].Revise = DateTime.Now;
+                    SelectedMaterial.Parts.Add(SortItems[i]);
                 }
             }
 
@@ -129,25 +129,32 @@ namespace STD_105
             var ser = new WPFSTD105.STDSerialization(); //序列化處理器
                                                         //零件存檔
             //素材存檔
-            ser.SetMaterialDataView(_materialListGridControl.ItemsSource as System.Collections.ObjectModel.ObservableCollection<GD_STD.Data.MaterialDataView>);
+            ser.SetMaterialDataView(_materialListGridControl.ItemsSource as ObservableCollection<GD_STD.Data.MaterialDataView>);
    
             //零件存檔
-            foreach (var _PartItem in SoftList)
+            foreach (var _PartItem in SortItems)
             {
                 ObservableCollection<SteelPart> steelParts = ser.GetPart(_PartItem.Profile.GetHashCode().ToString());
                 int steelIndex = steelParts.FindIndex(x => x.Number == _PartItem.PartNumber);
                 if (steelIndex != -1)
                 {
                     int partMatch = steelParts[steelIndex].Match.FindIndex(x => x == true);
-                     if (partMatch != -1)
-                         steelParts[steelIndex].Match[partMatch] = false;
-                     else
+                    if (partMatch != -1)
+                    {
+                        _PartItem.Match[partMatch] = false;
+                        steelParts[steelIndex].Match[partMatch] = false;
+                    }
+                    else
+                    {
+                        _PartItem.Match.Add(false);
                         steelParts[steelIndex].Match.Add(false);
-
+                    }
                 }
                 _PartItem.Revise = DateTime.Now;
                 ser.SetPart(_PartItem.Profile.GetHashCode().ToString(), new ObservableCollection<object>(steelParts));
             }
+
+
 
 
 

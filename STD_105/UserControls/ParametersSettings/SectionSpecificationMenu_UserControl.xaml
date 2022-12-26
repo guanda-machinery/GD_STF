@@ -14,52 +14,55 @@
                   xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
                   xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                   xmlns:local="clr-namespace:STD_105.Office"
+             d:DataContext="{d:DesignInstance Type=STD105VM:SettingParVM}"
                   xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
                   mc:Ignorable="d" 
              Style="{StaticResource SectionSpecificationMenuWhiteStyle}">
+    
     <!--
                   Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"-->
 
-    <!--斷面規格目錄-->
-    <GroupBox Header="斷面規格目錄" FontSize="14" HorizontalAlignment="Left">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="350" />
-                <ColumnDefinition Width="5" />
-                <ColumnDefinition Width="450" />
-            </Grid.ColumnDefinitions>
+    <!--斷面規格目錄-->        
+    <Grid>
+        <GroupBox Header="斷面規格目錄" FontSize="14" HorizontalAlignment="Left">
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid Margin="0,-10,-10,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <!--顯示所選斷面規格名稱-->
-                    <TextBlock Grid.Column="0" Text="斷面規格名稱：" VerticalAlignment="Center" Grid.ColumnSpan="2"/>
-                    <TextBox Style="{StaticResource BaseStyle}"  Background="White" Padding="0"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="350" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="450" />
+                </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid Margin="0,-10,-10,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <!--顯示所選斷面規格名稱-->
+                        <TextBlock Grid.Column="0" Text="斷面規格名稱：" VerticalAlignment="Center" Grid.ColumnSpan="2"/>
+                        <TextBox Style="{StaticResource BaseStyle}"  Background="White" Padding="0"
                                  Grid.Column="1" Text="{Binding Path=ProfileName , Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="10" FontSize="14" Foreground="{ StaticResource solidclr_DimGray }"/>
 
-                </Grid>
-                <Border Grid.Row="1" >
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <!--關鍵字過濾-->
-                        <Grid Margin="5,0,0,-5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="過濾器：" VerticalAlignment="Center"/>
-                            <TextBox Grid.Column="1" Margin="5"  Style="{StaticResource BaseStyle}"
+                    </Grid>
+                    <Border Grid.Row="1" >
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <!--關鍵字過濾-->
+                            <Grid Margin="5,0,0,-5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="過濾器：" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Margin="5"  Style="{StaticResource BaseStyle}"
                              x:Name="tbxFilter"
                              Foreground="{ StaticResource solidclr_DimGray }"
                              Background="White"
@@ -67,298 +70,295 @@
                              wpf:HintAssist.Hint="關鍵字過濾"
                              wpf:TextFieldAssist.HasClearButton="True"
                              wpf:TextFieldAssist.TextFieldCornerRadius="1"/>
-                            <Button Grid.Column="2"  Content="過濾(F)" Margin="5" Padding="20,0" FontSize="14"
+                                <Button Grid.Column="2"  Content="過濾(F)" Margin="5" Padding="20,0" FontSize="14"
                                     Command="{Binding FilterCommand}"  
                                     CommandParameter="{ Binding ElementName=tbxFilter, Path=Text }"/>
-                        </Grid>
-                        <!--樹狀圖-->
-                        <Border Grid.Row="1" Margin="5"
+                            </Grid>
+                            <!--樹狀圖-->
+                            <Border Grid.Row="1" Margin="5"
                             Background="White"
                             Style="{ StaticResource bor_DarkThinLine }"
                             CornerRadius="1">
-                            <TreeView x:Name="tree"
+                                <TreeView x:Name="tree"
                                   Style="{ StaticResource treeView_STD }" Margin="0,0,0,5">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="SelectedItemChanged">
-                                        <i:InvokeCommandAction Command="{ Binding SegmentString }"
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectedItemChanged">
+                                            <i:InvokeCommandAction Command="{ Binding SegmentString }"
                                                            CommandParameter="{ Binding ElementName=tree, Path=SelectedItem }" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                                <TreeView.Resources>
-                                    <Style TargetType="TreeViewItem">
-                                        <Setter Property="HorizontalContentAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-                                        <Setter Property="VerticalContentAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-                                        <Setter Property="Foreground" Value="{StaticResource solidclr_DarkGray}" />
-                                        <Setter Property="FocusVisualStyle" Value="{StaticResource TreeViewItemFocusVisual}" />
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="{x:Type TreeViewItem}">
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="Auto" MinWidth="20" />
-                                                            <ColumnDefinition Width="Auto" />
-                                                            <ColumnDefinition Width="*" />
-                                                        </Grid.ColumnDefinitions>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="Auto" />
-                                                            <RowDefinition />
-                                                        </Grid.RowDefinitions>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <TreeView.Resources>
+                                        <!--內容物-->
+                                        <Style TargetType="TreeViewItem">
+                                            <Setter Property="HorizontalContentAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+                                            <Setter Property="VerticalContentAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+                                            <Setter Property="Foreground" Value="{StaticResource solidclr_DarkGray}" />
+                                            <Setter Property="FocusVisualStyle" Value="{StaticResource TreeViewItemFocusVisual}" />
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto" MinWidth="20" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                                <ColumnDefinition Width="*" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition />
+                                                            </Grid.RowDefinitions>
 
-                                                        <!-- Connecting Lines -->
-                                                        <!-- Horizontal line -->
-                                                        <Rectangle x:Name="HorLn" Margin="9,1,0,0" Height="1"
-			Stroke="#DCDCDC" SnapsToDevicePixels="True"/>
-                                                        <!-- Vertical line -->
-                                                        <Rectangle x:Name="VerLn" Width="1" 
-                    Stroke="#DCDCDC" Margin="0,0,1,0" Grid.RowSpan="2" 
-                    SnapsToDevicePixels="true" StrokeDashArray="0.1"/>
-                                                        <!-- Insert Toggle Button -->
-                                                        <ToggleButton
+                                                            <!-- Connecting Lines -->
+                                                            <!-- Horizontal line -->
+                                                            <Rectangle x:Name="HorLn" Margin="9,1,0,0" Height="1"
+                                                                   Stroke="#DCDCDC" SnapsToDevicePixels="True"/>
+                                                            <!-- Vertical line -->
+                                                            <Rectangle x:Name="VerLn" Width="1" 
+                                                                   Stroke="#DCDCDC" Margin="0,0,1,0" Grid.RowSpan="2" 
+                                                                   SnapsToDevicePixels="true" StrokeDashArray="0.1"/>
+                                                            <!-- Insert Toggle Button -->
+                                                            <ToggleButton
                             x:Name="Expander"
                             ClickMode="Press"
                             IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
                             Style="{StaticResource ExpandCollapseToggleWinFormStyle}" />
-                                                        <Border
-                            x:Name="Bd"
-                            Grid.Column="1"
-                            Padding="{TemplateBinding Padding}"
-                            Background="Transparent"
-                            BorderBrush="Transparent"
-                            BorderThickness="2">
-                                                            <ContentPresenter
+                                                            <Border
+                                                            x:Name="Bd"
+                                                            Grid.Column="1"
+                                                            Padding="{TemplateBinding Padding}"
+                                                            Background="Transparent"
+                                                            BorderBrush="Transparent"
+                                                            CornerRadius="2"
+                                                            BorderThickness="2">
+                                                                <ContentPresenter
                                 x:Name="PART_Header"
                                 Margin="5"
                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                 VerticalAlignment="Center"
                                 ContentSource="Header" />
-                                                        </Border>
-                                                        <ItemsPresenter
-                            x:Name="ItemsHost"
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Grid.ColumnSpan="2"
-                            Visibility="Collapsed" />
-                                                        <VisualStateManager.VisualStateGroups>
-                                                            <VisualStateGroup x:Name="SelectionStates">
-                                                                <VisualState x:Name="Selected">
-                                                                    <Storyboard>
-                                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Bd" Storyboard.TargetProperty="(Border.BorderBrush).Color">
-                                                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource clr_ButtonBlue}" />
-                                                                        </ColorAnimationUsingKeyFrames>
-                                                                    </Storyboard>
-                                                                </VisualState>
-                                                                <VisualState x:Name="Unselected" />
-                                                                <VisualState x:Name="SelectedInactive">
-                                                                    <Storyboard>
-                                                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Bd" Storyboard.TargetProperty="(Border.BorderBrush).Color">
-                                                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource clr_ButtonBlue}" />
-                                                                        </ColorAnimationUsingKeyFrames>
-                                                                    </Storyboard>
-                                                                </VisualState>
-                                                            </VisualStateGroup>
-                                                            <VisualStateGroup x:Name="ExpansionStates">
-                                                                <VisualState x:Name="Expanded">
-                                                                    <Storyboard>
-                                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ItemsHost" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
-                                                                        </ObjectAnimationUsingKeyFrames>
-                                                                    </Storyboard>
-                                                                </VisualState>
-                                                                <VisualState x:Name="Collapsed" />
-                                                            </VisualStateGroup>
-                                                        </VisualStateManager.VisualStateGroups>
-                                                    </Grid>
-                                                    <ControlTemplate.Triggers>
-                                                        <Trigger Property="HasItems" Value="false">
-                                                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
-                                                        </Trigger>
-                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter TargetName="Bd" Property="Background" Value="#FF808080" />
-                                                        </Trigger>
-                                                        <MultiTrigger>
-                                                            <MultiTrigger.Conditions>
-                                                                <Condition Property="HasHeader" Value="false" />
-                                                                <Condition Property="Width" Value="Auto" />
-                                                            </MultiTrigger.Conditions>
-                                                            <Setter TargetName="PART_Header" Property="MinWidth" Value="75" />
-                                                        </MultiTrigger>
-                                                        <MultiTrigger>
-                                                            <MultiTrigger.Conditions>
-                                                                <Condition Property="HasHeader" Value="false" />
-                                                                <Condition Property="Height" Value="Auto" />
-                                                            </MultiTrigger.Conditions>
-                                                            <Setter TargetName="PART_Header" Property="MinHeight" Value="20" />
-                                                        </MultiTrigger>
-                                                    </ControlTemplate.Triggers>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-
-
-
-
-                                    <Style TargetType="Image">
-                                        <Setter Property="Width"
+                                                            </Border>
+                                                            <ItemsPresenter
+                                                            x:Name="ItemsHost"
+                                                            Grid.Row="1"
+                                                            Grid.Column="1"
+                                                            Grid.ColumnSpan="2"
+                                                            Visibility="Collapsed" />
+                                                            <VisualStateManager.VisualStateGroups>
+                                                                <VisualStateGroup x:Name="SelectionStates">
+                                                                    <VisualState x:Name="Selected">
+                                                                        <Storyboard>
+                                                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Bd" Storyboard.TargetProperty="(Border.BorderBrush).Color">
+                                                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource clr_DarkGray}" />
+                                                                            </ColorAnimationUsingKeyFrames>
+                                                                        </Storyboard>
+                                                                    </VisualState>
+                                                                    <VisualState x:Name="Unselected" />
+                                                                    <VisualState x:Name="SelectedInactive">
+                                                                        <Storyboard>
+                                                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Bd" Storyboard.TargetProperty="(Border.BorderBrush).Color">
+                                                                                <EasingColorKeyFrame KeyTime="0" Value="{StaticResource clr_DarkGray}" />
+                                                                            </ColorAnimationUsingKeyFrames>
+                                                                        </Storyboard>
+                                                                    </VisualState>
+                                                                </VisualStateGroup>
+                                                                <VisualStateGroup x:Name="ExpansionStates">
+                                                                    <VisualState x:Name="Expanded">
+                                                                        <Storyboard>
+                                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ItemsHost" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                                                                            </ObjectAnimationUsingKeyFrames>
+                                                                        </Storyboard>
+                                                                    </VisualState>
+                                                                    <VisualState x:Name="Collapsed" />
+                                                                </VisualStateGroup>
+                                                            </VisualStateManager.VisualStateGroups>
+                                                        </Grid>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="HasItems" Value="false">
+                                                                <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                                                            </Trigger>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="Bd" Property="Background" Value="#d4d4d4" />
+                                                            </Trigger>
+                                                            <MultiTrigger>
+                                                                <MultiTrigger.Conditions>
+                                                                    <Condition Property="HasHeader" Value="false" />
+                                                                    <Condition Property="Width" Value="Auto" />
+                                                                </MultiTrigger.Conditions>
+                                                                <Setter TargetName="PART_Header" Property="MinWidth" Value="75" />
+                                                            </MultiTrigger>
+                                                            <MultiTrigger>
+                                                                <MultiTrigger.Conditions>
+                                                                    <Condition Property="HasHeader" Value="false" />
+                                                                    <Condition Property="Height" Value="Auto" />
+                                                                </MultiTrigger.Conditions>
+                                                                <Setter TargetName="PART_Header" Property="MinHeight" Value="20" />
+                                                            </MultiTrigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Width"
                                             Value="20" />
-                                    </Style>
-                                    <Style TargetType="TextBlock"
+                                        </Style>
+                                        <!--大標題-->
+                                        <Style TargetType="TextBlock"
                                        BasedOn="{ StaticResource tbk_SubTitle }">
-                                        <Setter Property="Foreground"
-                                            Value="{ StaticResource solidclr_DimGray }" />
-                                        <Setter Property="Margin"
+                                            <Setter Property="Foreground"
+                                            Value="{ StaticResource solidclr_Black }" />
+                                            <Setter Property="FontWeight"
+                                            Value="Heavy" />
+                                            <Setter Property="Margin"
                                             Value="10,0" />
-                                        <Setter Property="FontSize" Value="14"/>
-                                    </Style>
-                                </TreeView.Resources>
-                                <!--TreeView Test START-->
-                                <TreeViewItem ItemsSource="{Binding TUBE}"
-                                          DisplayMemberPath="Profile">
-                                    <TreeViewItem.Header>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Source="{ StaticResource BOX }" />
-                                            <TextBlock Text="TUBE-->X"/>
-                                        </StackPanel>
-                                    </TreeViewItem.Header>
-                                </TreeViewItem>
-                                <TreeViewItem ItemsSource="{Binding BOX}"
-                                          DisplayMemberPath="Profile">
-                                    <TreeViewItem.Header>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Source="{ StaticResource BOX }" />
-                                            <TextBlock Text="BOX-->X"/>
-                                        </StackPanel>
-                                    </TreeViewItem.Header>
-                                </TreeViewItem>
+                                            <Setter Property="FontSize" Value="14"/>
+                                        </Style>
+                                    </TreeView.Resources>
+                                    <!--TreeView Test START-->
+                                    <TreeViewItem ItemsSource="{Binding TUBE}"
+                                          DisplayMemberPath="Profile" Visibility="Collapsed">
+                                        <TreeViewItem.Header>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{ StaticResource BOX }" />
+                                                <TextBlock Text="TUBE-->X"/>
+                                            </StackPanel>
+                                        </TreeViewItem.Header>
+                                    </TreeViewItem>
+                                    <TreeViewItem ItemsSource="{Binding BOX}"
+                                          DisplayMemberPath="Profile" Visibility="Collapsed">
+                                        <TreeViewItem.Header>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{ StaticResource BOX }" />
+                                                <TextBlock Text="BOX-->X"/>
+                                            </StackPanel>
+                                        </TreeViewItem.Header>
+                                    </TreeViewItem>
 
 
-                                <TreeViewItem ItemsSource="{Binding BH}"
+                                    <TreeViewItem ItemsSource="{Binding BH}"
                                           DisplayMemberPath="Profile">
-                                    <TreeViewItem.Header>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Source="{ StaticResource Beam }" />
-                                            <TextBlock Text="BH-->X"/>
-                                        </StackPanel>
-                                    </TreeViewItem.Header>
-                                </TreeViewItem>
-                                <TreeViewItem ItemsSource="{Binding H}"
+                                        <TreeViewItem.Header>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{ StaticResource Beam }" />
+                                                <TextBlock Text="BH-->X"/>
+                                            </StackPanel>
+                                        </TreeViewItem.Header>
+                                    </TreeViewItem>
+                                    <TreeViewItem ItemsSource="{Binding H}"
                                           DisplayMemberPath="Profile">
-                                    <TreeViewItem.Header>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Source="{ StaticResource Beam }" />
-                                            <TextBlock Text="H-->X"/>
-                                        </StackPanel>
-                                    </TreeViewItem.Header>
-                                </TreeViewItem>
-                                <TreeViewItem ItemsSource="{Binding RH}"
+                                        <TreeViewItem.Header>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{ StaticResource Beam }" />
+                                                <TextBlock Text="H-->X"/>
+                                            </StackPanel>
+                                        </TreeViewItem.Header>
+                                    </TreeViewItem>
+                                    <TreeViewItem ItemsSource="{Binding RH}"
                                           DisplayMemberPath="Profile">
-                                    <TreeViewItem.Header>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Source="{ StaticResource Beam }" />
-                                            <TextBlock Text="RH-->X"/>
-                                        </StackPanel>
-                                    </TreeViewItem.Header>
-                                </TreeViewItem>
+                                        <TreeViewItem.Header>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{ StaticResource Beam }" />
+                                                <TextBlock Text="RH-->X"/>
+                                            </StackPanel>
+                                        </TreeViewItem.Header>
+                                    </TreeViewItem>
 
-                                <TreeViewItem Header="I型鋼" Visibility="Collapsed">
-                                    <TreeViewItem Header="I-->X"
+                                    <TreeViewItem Header="I型鋼" Visibility="Collapsed">
+                                        <TreeViewItem Header="I-->X"
                                               ItemsSource="{Binding I}"
                                               DisplayMemberPath="Profile"/>
-                                </TreeViewItem>
-                                <TreeViewItem Header="L斷面規格" Visibility="Collapsed">
-                                    <TreeViewItem Header="L-->X" 
+                                    </TreeViewItem>
+                                    <TreeViewItem Header="L斷面規格" Visibility="Collapsed">
+                                        <TreeViewItem Header="L-->X" 
                                               ItemsSource="{Binding L}"
                                               DisplayMemberPath="Profile"/>
-                                </TreeViewItem>
+                                    </TreeViewItem>
 
-                                <TreeViewItem ItemsSource="{Binding LB}"
+                                    <TreeViewItem ItemsSource="{Binding LB}"
                                           DisplayMemberPath="Profile">
-                                    <TreeViewItem.Header>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Source="{ StaticResource CH }" />
-                                            <TextBlock Text="[-->X"/>
-                                        </StackPanel>
-                                    </TreeViewItem.Header>
-                                </TreeViewItem>
-                                <TreeViewItem ItemsSource="{Binding CH}"
+                                        <TreeViewItem.Header>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{ StaticResource CH }" />
+                                                <TextBlock Text="[-->X"/>
+                                            </StackPanel>
+                                        </TreeViewItem.Header>
+                                    </TreeViewItem>
+                                    <TreeViewItem ItemsSource="{Binding CH}"
                                           DisplayMemberPath="Profile">
-                                    <TreeViewItem.Header>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Source="{ StaticResource CH }" />
-                                            <TextBlock Text="U(CH)-->X"/>
-                                        </StackPanel>
-                                    </TreeViewItem.Header>
-                                </TreeViewItem>
+                                        <TreeViewItem.Header>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="{ StaticResource CH }" />
+                                                <TextBlock Text="U(CH)-->X"/>
+                                            </StackPanel>
+                                        </TreeViewItem.Header>
+                                    </TreeViewItem>
 
-                                <TreeViewItem Header="T斷面規格" Visibility="Collapsed">
-                                    <TreeViewItem Header="BT-->X"
+                                    <TreeViewItem Header="T斷面規格" Visibility="Collapsed">
+                                        <TreeViewItem Header="BT-->X"
                                               ItemsSource="{Binding BT}"
                                               DisplayMemberPath="Profile"/>
-                                    <TreeViewItem Header="CT-->X"
+                                        <TreeViewItem Header="CT-->X"
                                               ItemsSource="{Binding CT}"
                                               DisplayMemberPath="Profile"/>
-                                    <TreeViewItem Header="T-->X"
+                                        <TreeViewItem Header="T-->X"
                                               ItemsSource="{Binding T}"
                                               DisplayMemberPath="Profile"/>
-                                </TreeViewItem>
-                                <TreeViewItem Header="CC斷面規格" Visibility="Collapsed">
-                                    <TreeViewItem Header="C-->X"
+                                    </TreeViewItem>
+                                    <TreeViewItem Header="CC斷面規格" Visibility="Collapsed">
+                                        <TreeViewItem Header="C-->X"
                                               ItemsSource="{Binding C}"
                                               DisplayMemberPath="Profile"/>
-                                </TreeViewItem>
-                                <TreeViewItem Header="圓管" Visibility="Collapsed">
-                                    <TreeViewItem Header="PIPE-->X"
+                                    </TreeViewItem>
+                                    <TreeViewItem Header="圓管" Visibility="Collapsed">
+                                        <TreeViewItem Header="PIPE-->X"
                                               ItemsSource="{Binding PIPE}"
                                               DisplayMemberPath="Profile"/>
-                                </TreeViewItem>
-                                <TreeViewItem Header="TURN BUCKLE"
+                                    </TreeViewItem>
+                                    <TreeViewItem Header="TURN BUCKLE"
                                           ItemsSource="{Binding TURN_BUCKLE}"
                                           DisplayMemberPath="Profile" Visibility="Collapsed"/>
-                                <TreeViewItem Header="鋼筋接續器" Visibility="Collapsed">
-                                    <TreeViewItem Header="WELD"
+                                    <TreeViewItem Header="鋼筋接續器" Visibility="Collapsed">
+                                        <TreeViewItem Header="WELD"
                                               ItemsSource="{Binding WELD}"
                                               DisplayMemberPath="Profile"/>
-                                    <TreeViewItem Header="SA"
+                                        <TreeViewItem Header="SA"
                                               ItemsSource="{Binding SA}"
                                               DisplayMemberPath="Profile"/>
-                                </TreeViewItem>
-                                <TreeViewItem Header="格柵板踏階"
+                                    </TreeViewItem>
+                                    <TreeViewItem Header="格柵板踏階"
                                           ItemsSource="{Binding GRATING}"
                                           DisplayMemberPath="Profile" Visibility="Collapsed"/>
-                                <TreeViewItem Header="扁鐵FB" Visibility="Collapsed">
-                                    <TreeViewItem Header="FB-->X"
+                                    <TreeViewItem Header="扁鐵FB" Visibility="Collapsed">
+                                        <TreeViewItem Header="FB-->X"
                                               ItemsSource="{Binding FB}"
                                               DisplayMemberPath="Profile"/>
-                                </TreeViewItem>
-                                <TreeViewItem Header="圓棒" Visibility="Collapsed">
-                                    <TreeViewItem Header="RB-->X"
+                                    </TreeViewItem>
+                                    <TreeViewItem Header="圓棒" Visibility="Collapsed">
+                                        <TreeViewItem Header="RB-->X"
                                               ItemsSource="{Binding RB}"
                                               DisplayMemberPath="Profile"/>
-                                </TreeViewItem>
-                                <TreeViewItem Header="重型螺帽"
+                                    </TreeViewItem>
+                                    <TreeViewItem Header="重型螺帽"
                                           ItemsSource="{Binding HNUT}"
                                           DisplayMemberPath="Profile" Visibility="Collapsed"/>
-                                <TreeViewItem Header="螺帽"
+                                    <TreeViewItem Header="螺帽"
                                           ItemsSource="{Binding NUT}"
                                           DisplayMemberPath="Profile" Visibility="Collapsed"/>
-                                <!--TreeView Test END-->
-                            </TreeView>
-                        </Border>
-                    </Grid>
-                </Border>
-            </Grid>
-
+                                    <!--TreeView Test END-->
+                                </TreeView>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Grid>
                 <Grid Grid.Column="2">
                     <Grid.Resources>
                         <STD:OBJECT_TYPE_ToStringConverter x:Key="obType" />
                     </Grid.Resources>
                     <GroupBox Header="一般的" FontSize="14" Background="#ebebeb">
-
                         <Grid>
                             <Grid.Resources>
-                                <Style TargetType="GroupBox" BasedOn="{StaticResource ParameterBaseStyleGroupBox}">
-
-                                </Style>
+                                <Style TargetType="GroupBox" BasedOn="{StaticResource ParameterBaseStyleGroupBox}"/>
                             </Grid.Resources>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
@@ -374,7 +374,7 @@
                                      FontSize="14"
                                      Foreground="{StaticResource solidclr_DimGray}"
                                      BorderThickness="0,0,0,1"
-                                     Margin="5"
+                                     Margin="5,2"
                                      />
                             </GroupBox>
                             <Grid Grid.Row="1">
@@ -383,11 +383,28 @@
                                 </Grid.ColumnDefinitions>
                                 <!--斷面規格類型-->
                                 <GroupBox Header="{ DynamicResource LANGUAGE_SectionSpecificationType }" FontSize="14">
-                                    <ComboBox SelectedIndex="{Binding SelectType}" Name="CbbComboBox"
+                                    <Border BorderBrush="Gray" BorderThickness="0,0,0,1" CornerRadius="0" Margin="5,0,0,2">
+                                        <ComboBox SelectedIndex="{Binding SelectType}" Name="CbbComboBox"
                                           Style="{ StaticResource cbb_ParaSecType }"
                                           ItemsSource="{Binding Source={StaticResource obType} , Path=Strings}"
                                           FontSize="14"
-                                          Margin="5"/>
+                                          Margin="5">
+
+                                            <ComboBox.ItemContainerStyle>
+                                                <Style TargetType="ComboBoxItem">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Path=Content, 
+                                                                   RelativeSource={RelativeSource Self}, 
+                                                                   Converter={STD:SectionTypeToEnabledConverter}}" 
+                                                                 Value="true">
+                                                            <Setter Property="IsEnabled" Value="False"/>
+                                                            <Setter Property="Opacity" Value="0.2"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ComboBox.ItemContainerStyle>
+                                        </ComboBox>
+                                    </Border>
                                 </GroupBox>
                                 <!--單位重量-->
                                 <GroupBox Grid.Column="2"
@@ -429,7 +446,7 @@
                                         </Style>
                                     </Grid.Resources>
                                     <!--BOX-->
-                                    <Viewbox Visibility="{Binding VisibilityBOX, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                    <Viewbox Visibility="{Binding VisibilityBOX, Converter={dx:BooleanToVisibilityConverter}}">
                                         <Canvas Name="can_BOX"
                                             Width="1280"
                                             Height="1024">
@@ -451,7 +468,7 @@
                                         </Canvas>
                                     </Viewbox>
                                     <!--Beam-->
-                                    <Viewbox Visibility="{Binding VisibilityH, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                    <Viewbox Visibility="{Binding VisibilityH, Converter={dx:BooleanToVisibilityConverter}}">
                                         <Canvas Name="can_Beam"
                                             Width="1280"
                                             Height="1024">
@@ -477,7 +494,7 @@
                                         </Canvas>
                                     </Viewbox>
                                     <!--CH-->
-                                    <Viewbox Visibility="{Binding VisibilityCH, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                    <Viewbox Visibility="{Binding VisibilityCH, Converter={dx:BooleanToVisibilityConverter}}">
                                         <Canvas Name="can_CH"
                                             Width="1280"
                                             Height="1024">
@@ -503,7 +520,7 @@
                                         </Canvas>
                                     </Viewbox>
                                     <!--L-->
-                                    <Viewbox Visibility="{Binding VisibilityL, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                    <Viewbox Visibility="{Binding VisibilityL, Converter={dx:BooleanToVisibilityConverter}}">
                                         <Canvas Name="can_L"
                                             Width="1280"
                                             Height="1024">
@@ -540,26 +557,29 @@
                                         <Setter Property="ShowVerticalLines" Value="False"/>
                                     </Style>
                                 </GroupBox.Resources>
-                                <dxg:GridControl Name="gridControl"  
-                                                 MaxHeight="400"
-                                                 Background="Transparent"
-
-                                 dx:ThemeManager.ThemeName="Office2013LightGray"
-                                 ItemsSource="{Binding InsertionData}">
+                                <dxg:GridControl 
+                                    MaxHeight="600"
+                                    Background="Transparent"
+                                    dx:ThemeManager.ThemeName="Office2013LightGray"
+                                    ItemsSource="{Binding InsertionData}">
 
                                     <dxg:GridControl.View>
                                         <!--20220805 張燕華 隱藏TableView的ScrollBar, 同時使用GroupBox的Padding將ScrollBar遮住-->
                                         <!--20220930 蘇冠綸 排版修正-->
-                                        <dxg:TableView x:Name="TableView1"
+                                        <dxg:TableView x:Name="TableView1" 
                                                    ShowFixedTotalSummary="False" 
-
                                                    AllowEditing="True" 
                                                    VerticalScrollbarVisibility="Auto"
                                                    HorizontalScrollbarVisibility="Auto"
                                                    ShowGroupPanel="False"
-                                             ShowIndicator="False"
-                                                   ValidateCell="ValidateCurrentValue"
-                                                   EnableImmediatePosting="True">
+                                                       ShowIndicator="False"                   
+                                                       IsColumnMenuEnabled ="False"
+                                                       AllowSorting="false"
+                                                       AllowColumnFiltering="False"
+                                                       AllowColumnMoving="False"       
+                                                       ShowSearchPanelMode="Never"
+                                                       ValidateCell="ValidateCurrentValue"
+                                                       EnableImmediatePosting="True">
                                             <dxg:TableView.CellStyle>
                                                 <Style>
                                                     <Setter Property="TextBlock.FontSize" Value="14"/>
@@ -569,11 +589,11 @@
                                         </dxg:TableView>
                                     </dxg:GridControl.View>
                                     <dxg:GridControl.Columns>
-                                        <dxg:GridColumn FieldName="Property"
+                                        <dxg:GridColumn FieldName="Property" 
                                                     Header="性質"
                                                     Width="100"
                                                     ReadOnly="True"/>
-                                        <dxg:GridColumn FieldName="Symbol"
+                                        <dxg:GridColumn FieldName="Symbol"  
                                                     Header="符號" 
                                                     Width="80"
                                                     ReadOnly="True"/>
@@ -591,7 +611,7 @@
 
                             <StackPanel Orientation="Horizontal" Grid.Row="4" VerticalAlignment="Bottom"
                                 HorizontalAlignment="Center" >
-                            <Button Name="btn_material"
+                                <Button Name="btn_material"
                                       Content="{ DynamicResource LANGUAGE_New }"
                                       FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
                                       Command="{Binding NewCommand}"
@@ -599,16 +619,16 @@
                                       Height="30"
                                       Width="80"
                                       Margin="10">
-                                <Button.IsEnabled>
-                                    <MultiBinding Converter="{ STD:MultiObjectArrayToBooleanConverter}">
-                                        <Binding ElementName="tbx_SectionName" Path="Text" />
-                                        <Binding ElementName="CbbComboBox" Path="Text" />
-                                    </MultiBinding>
-                                </Button.IsEnabled>
+                                    <Button.IsEnabled>
+                                        <MultiBinding Converter="{ STD:MultiObjectArrayToBooleanConverter}">
+                                            <Binding ElementName="tbx_SectionName" Path="Text" />
+                                            <Binding ElementName="CbbComboBox" Path="Text" />
+                                        </MultiBinding>
+                                    </Button.IsEnabled>
 
 
-                            </Button>
-                            <Button Content="{ DynamicResource LANGUAGE_Delete }"
+                                </Button>
+                                <Button Content="{ DynamicResource LANGUAGE_Delete }"
                                     
                                       Command="{Binding DeleteCommand}"
                                       CommandParameter="{ Binding ElementName=tree, Path=SelectedItem }" 
@@ -616,14 +636,14 @@
                                       Height="30"
                                       Width="80"
                                       Margin="10">
-                                <Button.IsEnabled>
-                                    <MultiBinding Converter="{ STD:MultiObjectArrayToBooleanConverter}">
-                                        <Binding ElementName="tbx_SectionName" Path="Text" />
-                                        <Binding ElementName="CbbComboBox" Path="Text" />
-                                    </MultiBinding>
-                                </Button.IsEnabled>
-                            </Button>
-                            <Button Content="{ DynamicResource LANGUAGE_Update }"
+                                    <Button.IsEnabled>
+                                        <MultiBinding Converter="{ STD:MultiObjectArrayToBooleanConverter}">
+                                            <Binding ElementName="tbx_SectionName" Path="Text" />
+                                            <Binding ElementName="CbbComboBox" Path="Text" />
+                                        </MultiBinding>
+                                    </Button.IsEnabled>
+                                </Button>
+                                <Button Content="{ DynamicResource LANGUAGE_Update }"
                                       FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
                                       Command="{Binding UpdateTreeCommand}"
                                       CommandParameter="{ Binding ElementName=tree, Path=SelectedItem }" 
@@ -631,29 +651,30 @@
                                       Height="30"
                                       Width="80"
                                       Margin="10">
-                                <Button.IsEnabled>
-                                    <MultiBinding Converter="{ STD:MultiObjectArrayToBooleanConverter}">
-                                        <Binding ElementName="tbx_SectionName" Path="Text" />
-                                        <Binding ElementName="CbbComboBox" Path="Text" />
-                                    </MultiBinding>
-                                </Button.IsEnabled>
-                            </Button>
-                        </StackPanel>
+                                    <Button.IsEnabled>
+                                        <MultiBinding Converter="{ STD:MultiObjectArrayToBooleanConverter}">
+                                            <Binding ElementName="tbx_SectionName" Path="Text" />
+                                            <Binding ElementName="CbbComboBox" Path="Text" />
+                                        </MultiBinding>
+                                    </Button.IsEnabled>
+                                </Button>
+                            </StackPanel>
 
                         </Grid>
                     </GroupBox>
                 </Grid>
+
                 <!--材質設定-->
-            <GroupBox Grid.Column="4"
+                <GroupBox Grid.Column="4"
                   Header="材質設定" Visibility="Collapsed">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="80" />
-                        <RowDefinition />
-                        <RowDefinition Height="80" />
-                    </Grid.RowDefinitions>
-                    <!--關鍵字過濾-->
-                    <TextBox x:Name="tbxFilter1"
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="80" />
+                            <RowDefinition />
+                            <RowDefinition Height="80" />
+                        </Grid.RowDefinitions>
+                        <!--關鍵字過濾-->
+                        <TextBox x:Name="tbxFilter1"
                          Height="60"
                          DockPanel.Dock="Top"
                          Foreground="{ StaticResource solidclr_DimGray }"
@@ -667,106 +688,105 @@
                          wpf:TextFieldAssist.DecorationVisibility="Collapsed"
                          wpf:TextFieldAssist.TextFieldCornerRadius="5"
                          Margin="5">
-                        <TextBox.InputBindings>
-                            <KeyBinding Key="Enter"
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Enter"
                                     Command="{ Binding FilterMaterialCommand }"
                                     CommandParameter="{ Binding ElementName=tbxFilter1, Path=Text }" />
-                        </TextBox.InputBindings>
-                    </TextBox>
-                    <StackPanel Grid.Row="1">
-                        <ListView Name="Materials"
+                            </TextBox.InputBindings>
+                        </TextBox>
+                        <StackPanel Grid.Row="1">
+                            <ListView Name="Materials"
                               Height="600"
                               ItemsSource="{Binding Materials}"
                               SelectedIndex="{Binding MatrialIndex}"
                               Style="{ StaticResource list_STD }"
                               HorizontalAlignment="Stretch"
                               Margin="5">
-                            <ListView.Resources>
-                                <Style TargetType="ListViewItem"
+                                <ListView.Resources>
+                                    <Style TargetType="ListViewItem"
                                    BasedOn="{ StaticResource listViewItem_STD }" />
-                            </ListView.Resources>
-                            <ListView.View>
-                                <GridView ColumnHeaderContainerStyle="{ StaticResource gridViewHeader_Office }">
-                                    <GridViewColumn DisplayMemberBinding="{ Binding Name}">
-                                        <GridViewColumn.Header>
-                                            <GridViewColumnHeader Content="材質列表" />
-                                        </GridViewColumn.Header>
-                                    </GridViewColumn>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                        <StackPanel Grid.Row="2">
-                            <GroupBox Header="材質名稱"
+                                </ListView.Resources>
+                                <ListView.View>
+                                    <GridView ColumnHeaderContainerStyle="{ StaticResource gridViewHeader_Office }">
+                                        <GridViewColumn DisplayMemberBinding="{ Binding Name}">
+                                            <GridViewColumn.Header>
+                                                <GridViewColumnHeader Content="材質列表" />
+                                            </GridViewColumn.Header>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                            <StackPanel Grid.Row="2">
+                                <GroupBox Header="材質名稱"
                                   Margin="5">
-                                <TextBox Text="{Binding SelectMaterial.Name}" />
-                            </GroupBox>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <GroupBox Header="板密度"
+                                    <TextBox Text="{Binding SelectMaterial.Name}" />
+                                </GroupBox>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <GroupBox Header="板密度"
                                       Margin="5">
-                                    <Grid Height="30">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="55" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBox Grid.Column="0"
+                                        <Grid Height="30">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="55" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Grid.Column="0"
                                              Text="{Binding SelectMaterial.PlateDensity}" />
-                                        <Label Grid.Column="1"
+                                            <Label Grid.Column="1"
                                            Content="kg/m3"
                                            Foreground="{ StaticResource solidclr_DarkGray }"
                                            Style="{ StaticResource lab_SubTitle }" />
-                                    </Grid>
-                                </GroupBox>
-                                <GroupBox Grid.Column="1"
+                                        </Grid>
+                                    </GroupBox>
+                                    <GroupBox Grid.Column="1"
                                       Header="斷面積密度"
                                       Margin="5">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition Width="55" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBox Grid.Column="0"
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="55" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Grid.Column="0"
                                              Text="{Binding SelectMaterial.ProfileDensity}" />
-                                        <Label Grid.Column="1"
+                                            <Label Grid.Column="1"
                                            Content="kg/m3"
                                            Foreground="{ StaticResource solidclr_DarkGray }"
                                            Style="{ StaticResource lab_SubTitle }"
                                            VerticalAlignment="Center" />
-                                    </Grid>
-                                </GroupBox>
-                            </Grid>
+                                        </Grid>
+                                    </GroupBox>
+                                </Grid>
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                    <StackPanel Grid.Row="2"
+                        <StackPanel Grid.Row="2"
                             Orientation="Horizontal"
                             HorizontalAlignment="Center">
-                        <Button Name="btn_profile"
+                            <Button Name="btn_profile"
                             Content="新增"
                             Command="{Binding NewCommand}"
                             CommandParameter="{ Binding RelativeSource={ x:Static RelativeSource.Self }, Path=Name}" />
-                        <Button Content="刪除"
+                            <Button Content="刪除"
                             Command="{Binding DeleteMaterialCommand}"
                             CommandParameter="{Binding SelectedItem, ElementName=Materials}" />
-                        <Button Content="更新"
+                            <Button Content="更新"
                             Command="{ Binding UpdateMaterialCommand }"
                             CommandParameter="{Binding SelectedItem, ElementName=Materials}" />
-                    </StackPanel>
-                </Grid>
-            </GroupBox>
-            <!--打點設定-->
-            <GroupBox Grid.Column="4"
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+                <!--打點設定-->
+                <GroupBox Grid.Column="4"
                   Header="打點設定" 
                   Visibility="Collapsed"/>
-            <Grid Grid.ColumnSpan="5" Margin="0,4,0,-4">
                 <!--另存視窗-->
-                <Grid Visibility="{ Binding SaveAsWindowsControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
-                    <STD:SaveAs SubmitButtonCommand="{Binding SaveModelRoSystemCommand}"
-                            CancelButtonCommand="{ Binding CloseSaveAsWindowsCommand }" />
-                </Grid>
             </Grid>
+        </GroupBox>
+        <Grid Margin="0,4" Visibility="{ Binding SaveAsWindowsControl, Converter={dx:BooleanToVisibilityConverter}}">
+            <STD:SaveAs SubmitButtonCommand="{Binding SaveModelRoSystemCommand}"
+                            CancelButtonCommand="{ Binding CloseSaveAsWindowsCommand }" />
         </Grid>
-    </GroupBox>
+    </Grid>
 </UserControl>

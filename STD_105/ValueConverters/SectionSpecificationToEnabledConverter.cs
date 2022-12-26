@@ -26,19 +26,45 @@ namespace STD_105
 
                var SteelAttrHeight = (value as WPFSTD105.Attribute.SteelAttr).H  ;
 
-                if (SteelAttrHeight > WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMaxHeight
-                    || SteelAttrHeight < WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMinHeight)
+                if (SteelAttrHeight > 1050
+                    || SteelAttrHeight < 150)
                     return true;
 
                 var SteelAttrWidth = (value as WPFSTD105.Attribute.SteelAttr).W;
 
-                if (SteelAttrWidth > WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMaxWidth 
-                    || SteelAttrWidth < WPFSTD105.ViewLocator.CommonViewModel.SectionSpecificationMinWidth)
+                if (SteelAttrWidth > 500 
+                    || SteelAttrWidth < 75)
                     return true;
 
                 return false;
             }
             return false;
+        }
+
+        public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    internal class SectionTypeToEnabledConverter : BaseValueConverter<SectionTypeToEnabledConverter>
+    {
+        public int fSectionTypeTillBOX = 0;
+
+        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (fSectionTypeTillBOX == 0)
+            {
+                if ((string)value == "BOX") 
+                { fSectionTypeTillBOX = 1; }
+                return true;
+            }
+            else
+            {
+                if ((string)value == "CH") 
+                { fSectionTypeTillBOX = 0; }
+                return false;
+            }
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

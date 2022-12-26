@@ -487,10 +487,14 @@ namespace WPFSTD105.ViewModel
         /// 標題二
         /// </summary>
         public string Title2Property { get; set; }
+
+
+
+        private int _steelTypeProperty_int = -1;
         /// <summary>
         /// 型鋼類型
         /// </summary>
-        public int SteelTypeProperty_int { get; set; }
+        public int SteelTypeProperty_int { get { return _steelTypeProperty_int; } set { _steelTypeProperty_int = value; } }
         /// <summary>
         /// 型鋼類型
         /// </summary>
@@ -520,17 +524,21 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public float HProperty { get; set; }
         /// <summary>
+        /// 單位公斤
+        /// </summary>
+        public float KGProperty { get; set; }
+        /// <summary>
         /// 寬
         /// </summary>
         public float WProperty { get; set; }
         /// <summary>
         /// 腹板厚度
         /// </summary>
-        public int t1Property { get; set; }
+        public float t1Property { get; set; }
         /// <summary>
         /// 翼板厚度
         /// </summary>
-        public int t2Property { get; set; }
+        public float t2Property { get; set; }
         /// <summary>
         /// 驚嘆號
         /// </summary>
@@ -947,7 +955,7 @@ namespace WPFSTD105.ViewModel
             }
             else
             {
-                Boltsbuffer.Y = this.StartY;
+                Boltsbuffer.Y = this.StartY;// + (Boltsbuffer.Face == FACE.TOP ? SteelAttr.t2 : 0);
             }
 #if DEBUG
             log4net.LogManager.GetLogger("螺栓設定檔").Debug
@@ -1312,6 +1320,10 @@ namespace WPFSTD105.ViewModel
         /// 是否顯示訊息
         /// </summary>
         public bool showMessage { get; set; } = true;
+        /// <summary>
+        /// 從編輯孔開始
+        /// </summary>
+        public bool fromModifyHole { get; set; } = false;
 
         private ObservableCollection<ProductSettingsPageViewModel> _dataviews { get; set; } = new ObservableCollection<ProductSettingsPageViewModel>();
 
@@ -1527,7 +1539,7 @@ namespace WPFSTD105.ViewModel
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
             else if (bufferCutList.UL.X + bufferCutList.UR.X > SteelAttr.Length || bufferCutList.DL.X + bufferCutList.DR.X > SteelAttr.Length)
@@ -1540,7 +1552,7 @@ namespace WPFSTD105.ViewModel
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
             return true;
@@ -1782,7 +1794,7 @@ namespace WPFSTD105.ViewModel
                 // 所有該斷面規格的零件
                 List<SteelPart> sa1 = new List<SteelPart>();
                 sa1 = (from a in part[key].ToList()
-                       select new SteelPart() { t1 = a.t1, t2 = a.t2, H = a.H, W = a.W }).ToList();
+                       select new SteelPart() {Number = a.Number, t1 = a.t1, t2 = a.t2, H = a.H, W = a.W }).ToList();
                 // 紀錄零件資訊
                 List<SteelAttr> saList = new List<SteelAttr>();
                 foreach (var item in DataCorrespond.Where(x => x.Profile.GetHashCode().ToString() + ".lis" == key))
@@ -1800,6 +1812,8 @@ namespace WPFSTD105.ViewModel
                         {
                             saTemp = new SteelAttr()
                             {
+                                Profile= profileStr,
+                                PartNumber = sp.Number,
                                 t1 = sp.t1,
                                 t2 = sp.t2,
                                 H = sp.H,
@@ -1824,6 +1838,24 @@ namespace WPFSTD105.ViewModel
                             //saTemp.ShippingNumber = 0;
                             //saTemp.Title1 = "";
                             //saTemp.Title2 = "";
+                            saTemp.PartNumber = item.Number;
+                            saTemp.Profile = item.Profile;
+                            if (profileAll.SelectMany(x => x.Value).Any(x => x.Profile == saTemp.Profile))
+                            {
+                                saTemp.Kg = profileAll.SelectMany(x => x.Value).FirstOrDefault(x => x.Profile == saTemp.Profile).Kg;
+                                saTemp.W = profileAll.SelectMany(x => x.Value).FirstOrDefault(x => x.Profile == saTemp.Profile).W;
+                            }
+                        }
+                        saList.Add(saTemp);
+                    }
+                    else
+                    {
+                        saTemp.PartNumber = item.Number;
+                        saTemp.Profile = item.Profile;
+                        if (profileAll.SelectMany(x => x.Value).Any(x => x.Profile == saTemp.Profile))
+                        {
+                            saTemp.Kg = profileAll.SelectMany(x => x.Value).FirstOrDefault(x => x.Profile == saTemp.Profile).Kg;
+                            saTemp.W = profileAll.SelectMany(x => x.Value).FirstOrDefault(x => x.Profile == saTemp.Profile).W;
                         }
                         saList.Add(saTemp);
                     }
@@ -1992,6 +2024,7 @@ namespace WPFSTD105.ViewModel
                                 double weight = item.UnitWeight;
                                 steelAttrVM.steelAttr.Weight = weight;
                                 steelAttrVM.Weight = weight;
+
 
                                 steelAttrVM.steelAttr.H = item.H;
                                 steelAttrVM.steelAttr.W = item.W;
@@ -2167,8 +2200,6 @@ namespace WPFSTD105.ViewModel
                 aa.steelAttr.Profile = item.Profile;
                 aa.steelAttr.Material = item.Material;
                 aa.steelAttr.Length = item.Length;
-                aa.Weight = ObSettingVM.PartWeight(aa, saFile); //item.Weight,
-                aa.steelAttr.Weight = aa.Weight;
                 aa.steelAttr.Name = item.TeklaName;
                 aa.steelAttr.t1 = float.Parse(item.t1.ToString());
                 aa.steelAttr.t2 = float.Parse(item.t2.ToString());
@@ -2183,6 +2214,8 @@ namespace WPFSTD105.ViewModel
                     var NcSASingle = NcSA[aa.steelAttr.Profile.GetHashCode().ToString() + ".lis"].Where(x => x.PartNumber == aa.steelAttr.PartNumber).FirstOrDefault();
                     if (NcSASingle != null)
                     {
+                        aa.steelAttr.Kg = NcSASingle.Kg;
+                        aa.steelAttr.W = NcSASingle.W;
                         aa.oPoint = NcSASingle.oPoint;
                         aa.uPoint = NcSASingle.uPoint;
                         aa.vPoint = NcSASingle.vPoint;
@@ -2193,6 +2226,16 @@ namespace WPFSTD105.ViewModel
                         aa.steelAttr.CutList = NcSASingle.CutList;
                     }
                 }
+
+                if (profileAll.SelectMany(x => x.Value).Any(x => x.Profile == item.Profile))
+                {
+                    aa.steelAttr.Kg = profileAll.SelectMany(x => x.Value).FirstOrDefault(x => x.Profile == item.Profile).Kg;
+                    aa.steelAttr.W = profileAll.SelectMany(x => x.Value).FirstOrDefault(x => x.Profile == item.Profile).W;
+                }
+
+                aa.Weight = ObSettingVM.PartWeight(aa, saFile); //item.Weight,
+                aa.steelAttr.Weight = aa.Weight;
+
                 list.Add(aa);
 
 
@@ -2210,15 +2253,23 @@ namespace WPFSTD105.ViewModel
         /// <returns></returns>
         public static double PartWeight(ProductSettingsPageViewModel part_tekla, Dictionary<string, ObservableCollection<SteelAttr>> saFile)
         {
-            var profile = saFile[((OBJECT_TYPE)part_tekla.SteelType).ToString()]
-                .Where(x => x.Profile == part_tekla.Profile)
-                .FirstOrDefault();
+            double weight;
+            
+                weight = (part_tekla.steelAttr.Length / 1000) * part_tekla.steelAttr.Kg;
+           
+            return weight;
 
-            if (profile != null)
-            {
-                return (part_tekla.Length / 1000) * profile.Kg;
-            }
-            return part_tekla.Weight;
+
+
+            //var profile = saFile[((OBJECT_TYPE)part_tekla.SteelType).ToString()]
+            //    .Where(x => x.Profile == part_tekla.Profile)
+            //    .FirstOrDefault();
+            //
+            //if (profile != null)
+            //{
+            //    return (part_tekla.Length / 1000) * profile.Kg;
+            //}
+            //return part_tekla.Weight;
         }
         /// <summary>
         /// 由使用者提供之孔距計算數量
@@ -2257,38 +2308,54 @@ namespace WPFSTD105.ViewModel
             //        ((GroupBoltsAttr)y.EntityData).BlockName == RemoveType)
             //        .Select(y => (GroupBoltsAttr)y.EntityData).ToList();
             //model.Blocks.SelectMany(x=>x.Entities.Select(y=>y.EntityData)).ForEach(x=>x.)
-            
-            
-            
-            List<Block> delList = new List<Block>();
-            for (int i = 1; i < model.Blocks.Count; i++)
-            {
-                Block b = model.Blocks[i];
-                for (int j = 0; j < model.Blocks[i].Entities.Count; j++)
-                {
-                    var a = model.Blocks[i].Entities[j];
-                    if (a.EntityData is BoltAttr && ((BoltAttr)a.EntityData).BlockName == RemoveType)
-                    {
-                        delList.Add(b);
-                        break;
-                    }
-                }
-            }
 
+            List<Block> delList = model.Blocks
+                .Where(x => x.Name != "RootBlock")
+                .SelectMany(x =>
+                x.Entities, (a, b) => new { Block = a, a.Entities, b.EntityData })
+                .Where(x =>
+                (x.Block.GetType()==typeof(Bolts3DBlock) || x.Block.GetType() == typeof(Block)) && x.EntityData != null &&
+                x.EntityData.GetType() == typeof(BoltAttr) &&
+                //((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
+                ((BoltAttr)x.EntityData).BlockName== RemoveType)
+                .Select(x => x.Block).ToList();
 
             foreach (Block del in delList)
             {
                 model.Blocks.Remove(del);
             }
+
+            //List<Block> delList = new List<Block>();
+            //for (int i = 1; i < model.Blocks.Count; i++)
+            //{
+            //    Block b = model.Blocks[i];
+            //    for (int j = 0; j < model.Blocks[i].Entities.Count; j++)
+            //    {
+            //        var a = model.Blocks[i].Entities[j];
+            //        if (a.EntityData is BoltAttr && ((BoltAttr)a.EntityData).BlockName == RemoveType)
+            //        {
+            //            delList.Add(b);
+            //            break;
+            //        }
+            //    }
+            //}
+
+
             var entitiesList = model.Entities
-                    .Where(y =>
+                    .Where(y => y.EntityData != null &&
                     y.EntityData.GetType() == typeof(GroupBoltsAttr) &&
-                    ((GroupBoltsAttr)y.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
+                    //((GroupBoltsAttr)y.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
+                    ((GroupBoltsAttr)y.EntityData).BlockName == RemoveType)
                     .Select(y => y).ToList();
             foreach (var entities in entitiesList)
             {
                 model.Entities.Remove(entities);
             }
+
+
+
+
+            
         }
 
         /// <summary>
@@ -2307,6 +2374,9 @@ namespace WPFSTD105.ViewModel
 
         /// <summary>
         /// 加入2D/3D孔
+        /// 1.取出非斜邊打點之孔位Entities
+        /// 2.取得BlockName與Entities相同之Bock
+        /// 3.建立3D/2D模型
         /// </summary>
         /// <param name="model"></param>
         /// <param name="drawing"></param>
@@ -2357,31 +2427,41 @@ namespace WPFSTD105.ViewModel
             }
             #endregion
 
-            #region 斜邊打點
-            // 移除斜邊打點 及 建立自動打點
-            if (model.RunHypotenuseEnable())
+            #region 斜邊打點(HypotenuseAuto)
+            //移除斜邊打點
+            RemoveHypotenusePoint(model, HypotenuseTYPE.HypotenuseAuto.ToString());
+            // 可建立自動打點 及 使用者自定義打點不存在，則可執行自動打點
+            if (model.RunHypotenuseEnable() && !WPFSTD105.Model.Expand.isHypotenuseCustomerExist(model))
             {
-                RemoveHypotenusePoint(model, "AutoHypotenuse");
+                
+                //執行斜邊打點3D
                 WPFSTD105.Model.Expand.RunHypotenusePoint(model, this, 0);
-                var a = model.Blocks.Where(x => x.Name != "RootBlock")
-                    .SelectMany(x =>x.Entities, (entities, entityData) => new { Block = entities, entities.Entities, entityData.EntityData })
+                //取出斜邊打點之Block
+                var HypotenuseBlock = model.Blocks.Where(x => x.Name != "RootBlock")
+                    .SelectMany(x => x.Entities, (entities, entityData) => new { Block = entities, entities.Entities, entityData.EntityData })
                     .Where(x =>
+                    x.Block.GetType() == typeof(Bolts3DBlock) &&
                     x.EntityData.GetType() == typeof(BoltAttr) &&
                     ((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT)
                     .ToList();
-                foreach (var item in a)
+                //執行斜邊打點2D
+                foreach (var item in HypotenuseBlock)
                 {
-                    var ed = model.Entities.FirstOrDefault(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID == Guid.Parse(item.Block.Name));
-                    GroupBoltsAttr aaaaa = new GroupBoltsAttr();
-                    if (ed != null)
+                    //取出相同BlockName的Entities(For GroupBoltsAttr)
+                    var entities = model.Entities.FirstOrDefault(x => 
+                    x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
+                    ((GroupBoltsAttr)x.EntityData).GUID == Guid.Parse(item.Block.Name));
+
+                    GroupBoltsAttr groupBoltsAttr = new GroupBoltsAttr();
+                    if (entities != null)
                     {
-                        aaaaa = (GroupBoltsAttr)ed.EntityData;
+                        groupBoltsAttr = (GroupBoltsAttr)entities.EntityData;
                     }
-                    Bolts3DBlock bolts3DBlock = new Bolts3DBlock(item.Entities, aaaaa);
+                    Bolts3DBlock bolts3DBlock = new Bolts3DBlock(item.Entities, groupBoltsAttr);
                     Add2DHole(drawing, bolts3DBlock, false);//加入孔位不刷新 2d 視圖
                 }
 
-                
+
                 //for (int i = 0; i < model.Entities.Count; i++)//逐步產生 螺栓 3d 模型實體
                 //{
                 //    if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr && boltsAttr.Mode == AXIS_MODE.HypotenusePOINT) //是螺栓
@@ -2753,7 +2833,13 @@ namespace WPFSTD105.ViewModel
                 File.WriteAllText($@"{ApplicationVM.DirectoryNc()}\{newPartNumber}.nc1", text, System.Text.Encoding.Default);
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="steelAttr"></param>
+        /// <param name="groups"></param>
+        /// <param name="newGUID"></param>
+        /// <returns>與第一個參數的SteelAttr不同</returns>
         public SteelAttr ReadNCInfo(SteelAttr steelAttr, ref List<GroupBoltsAttr> groups, bool newGUID = true)
         {
             STDSerialization ser = new STDSerialization();
@@ -2784,7 +2870,7 @@ namespace WPFSTD105.ViewModel
             sw.Close();
         }
 
-        public bool CheckData_AddHole(String partNumber, ModelExt model)
+        public bool CheckData_AddCutLine(String partNumber, ModelExt model)
         {
             STDSerialization ser = new STDSerialization();
             Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
@@ -2792,13 +2878,13 @@ namespace WPFSTD105.ViewModel
             if (!part.Any(x => x.Value.Any(y => y.Number == partNumber)) && showMessage)
             {
                 WinUIMessageBox.Show(null,
-               $"零件編號尚未點擊OK",
+               $"零件編號{partNumber}尚未點擊OK",
                "通知",
                MessageBoxButton.OK,
                MessageBoxImage.Exclamation,
                MessageBoxResult.None,
                MessageBoxOptions.None,
-               FloatingMode.Popup);
+                FloatingMode.Window);
                 fNewPart = true;
                 fclickOK = false;
                 return false;
@@ -2813,7 +2899,44 @@ namespace WPFSTD105.ViewModel
                 MessageBoxImage.Exclamation,
                 MessageBoxResult.None,
                 MessageBoxOptions.None,
-                FloatingMode.Popup);
+                 FloatingMode.Window);
+                fNewPart = false;
+                fclickOK = false;
+                return false;
+            }
+            return true;
+        }
+
+        public bool CheckData_AddHole(String partNumber, ModelExt model)
+        {
+            STDSerialization ser = new STDSerialization();
+            Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
+
+            if (!part.Any(x => x.Value.Any(y => y.Number == partNumber)) && showMessage)
+            {
+                WinUIMessageBox.Show(null,
+               $"零件編號{partNumber}尚未點擊OK",
+               "通知",
+               MessageBoxButton.OK,
+               MessageBoxImage.Exclamation,
+               MessageBoxResult.None,
+               MessageBoxOptions.None,
+                FloatingMode.Window);
+                fNewPart = true;
+                fclickOK = false;
+                return false;
+            }
+
+            if (model.Entities.Count <= 0 && showMessage)
+            {
+                WinUIMessageBox.Show(null,
+                $"模型內找不到主件",
+                "通知",
+                MessageBoxButton.OK,
+                MessageBoxImage.Exclamation,
+                MessageBoxResult.None,
+                MessageBoxOptions.None,
+                 FloatingMode.Window);
                 fNewPart = false;
                 fclickOK = false;
                 return false;
@@ -2828,10 +2951,85 @@ namespace WPFSTD105.ViewModel
                 MessageBoxImage.Exclamation,
                 MessageBoxResult.None,
                 MessageBoxOptions.None,
-                FloatingMode.Popup);
+                 FloatingMode.Window);
                 fclickOK = true;
                 return false;
             }
+            return true;
+        }
+
+        public bool CheckData_ModifyHole(String partNumber, ModelExt model)
+        {
+            STDSerialization ser = new STDSerialization();
+            Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
+
+            if (!part.Any(x => x.Value.Any(y => y.Number == partNumber)) && showMessage)
+            {
+                WinUIMessageBox.Show(null,
+               $"零件編號{partNumber}尚未點擊OK",
+               "通知",
+               MessageBoxButton.OK,
+               MessageBoxImage.Exclamation,
+               MessageBoxResult.None,
+               MessageBoxOptions.None,
+                FloatingMode.Window);
+                fNewPart = true;
+                fclickOK = false;
+                return false;
+            }
+
+            if (model.Entities.Count <= 0 && showMessage)
+            {
+                WinUIMessageBox.Show(null,
+                $"模型內找不到主件",
+                "通知",
+                MessageBoxButton.OK,
+                MessageBoxImage.Exclamation,
+                MessageBoxResult.None,
+                MessageBoxOptions.None,
+                 FloatingMode.Window);
+                fNewPart = false;
+                fclickOK = false;
+                return false;
+            }
+            return true;
+        }
+
+        public bool CheckData_DelHole(String partNumber, ModelExt model)
+        {
+            STDSerialization ser = new STDSerialization();
+            Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
+
+            if (!part.Any(x => x.Value.Any(y => y.Number == partNumber)) && showMessage)
+            {
+                WinUIMessageBox.Show(null,
+               $"零件編號{partNumber}尚未點擊OK",
+               "通知",
+               MessageBoxButton.OK,
+               MessageBoxImage.Exclamation,
+               MessageBoxResult.None,
+               MessageBoxOptions.None,
+                FloatingMode.Window);
+                fNewPart = true;
+                fclickOK = false;
+                return false;
+            }
+
+            if (model.Entities.Count <= 0 && showMessage)
+            {
+                WinUIMessageBox.Show(null,
+                $"模型內找不到主件",
+                "通知",
+                MessageBoxButton.OK,
+                MessageBoxImage.Exclamation,
+                MessageBoxResult.None,
+                MessageBoxOptions.None,
+                 FloatingMode.Window);
+                fNewPart = false;
+                fclickOK = false;
+                return false;
+            }
+            
             return true;
         }
 
