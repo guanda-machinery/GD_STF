@@ -1058,6 +1058,8 @@ namespace WPFSTD105
                     CommonViewModel.ActionLoadProfile.Invoke(); //觸發委派
                     CommonViewModel.ActionLoadProfile = null;//清除委派
                 }
+                ApplicationViewModel.CurrentPage = ApplicationPage.Home;
+
                 return true;
             }
         }

@@ -1,4 +1,5 @@
 ﻿using DevExpress.Xpf.Core.Native;
+using DevExpress.XtraSpreadsheet.Forms;
 using MachineAndPhoneAPI;
 using MachineAndPhoneAPI.Models;
 using Newtonsoft.Json;
@@ -211,15 +212,41 @@ namespace MachineAndPhoneAPI
         }
 
 
+
+        public enum RegeditMaterialSource
+        {
+            All,PC,APP
+        }
+
+
         /// <summary>
         /// 輪詢加工進度表中手機掃描之配料
         /// </summary>
-        public static bool GetAppPairingData(out Assemblyinfo result)
+        public static bool GetAppPairingData(RegeditMaterialSource RMSource , out Assemblyinfo result)
         {
+            var InfoString = "material-list";
+            switch (RMSource)
+            {
+                case RegeditMaterialSource.All:
+                    InfoString = "material-list";
+                    break;
+                case RegeditMaterialSource.PC:
+                    InfoString = "pc-material-list";
+                    break;
+                case RegeditMaterialSource.APP:
+                    InfoString = "app-material-list";
+                    break;
+                default:
+                    InfoString = "material-list";
+                    break;
+            }
+
             result = new Assemblyinfo();
-            //            var client = new RestClient($"http://{AppServerIP}:{AppServerPort}/api/pc/pc-material-list"); 
-            //            var client = new RestClient($"http://{AppServerIP}:{AppServerPort}/api/pc/app-material-list");
-            var client = new RestClient($"http://{AppServerIP}:{AppServerPort}/api/pc/material-list");
+            //var client = new RestClient($"http://{AppServerIP}:{AppServerPort}/api/pc/pc-material-list"); 
+            //var client = new RestClient($"http://{AppServerIP}:{AppServerPort}/api/pc/app-material-list");
+            //var client = new RestClient($"http://{AppServerIP}:{AppServerPort}/api/pc/material-list");
+            var client = new RestClient($"http://{AppServerIP}:{AppServerPort}/api/pc/{InfoString}");
+       
             client.AddDefaultHeader("Authorization", $"Bearer {token_access}");
             var request = new RestRequest(Method.GET);
             var response = client.Execute(request);
