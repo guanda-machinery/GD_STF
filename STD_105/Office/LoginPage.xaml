@@ -12,7 +12,7 @@
     xmlns:std="clr-namespace:STD_105"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="登入頁面"
-    Width="400"
+    Width="350"
     Height="500"
     AllowsTransparency="True"
     Background="Transparent"
@@ -28,7 +28,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
-            <RowDefinition Height="70" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -57,31 +57,10 @@
                 Visibility="Collapsed" />
         </Border>-->
         <!--  Logo  -->
-        <Viewbox 
-            Name="viewBox"
-            Grid.Row="2"
-            Height="140"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center">
-            <Grid>
-                <Polygon
-                    x:Name="logo_Left"
-                    Fill="Red"
-                    Points="180.1,30.1 38.8,138.9 38.8,410.5 289.3,508.2 289.3,265.8 186.9,233.2 186.9,303.2 219.4,314.6 219.4,391 118.5,352 118.5,168.2 178.7,121" />
-                <Polygon
-                    x:Name="logo_Right"
-                    Fill="{StaticResource solidclr_Gray}"
-                    Points="398.3,165.4 398.3,352 330.3,402.1 330.3,493.2 473.2,376.4 473.2,106.8" />
-                <Polygon
-                    x:Name="logo_Top"
-                    Fill="{ StaticResource solidclr_SilverGray }"
-                    Points="473.2,106.3 216.1,3.8 216.1,143.8 289.3,164.9 289.3,124.2 398.3,164.9 398.3,165.4 " />
-                <Polygon Fill="{ StaticResource solidclr_SilverGray }" Points="216.1,174.7 216.1,212.1 289.3,234.9 289.3,195.8" />
-            </Grid>
-        </Viewbox>
+
         <!--  單機標題  -->
 
-        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="1">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Grid.Row="1">
             <StackPanel.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="FontSize" Value="60" />
@@ -101,10 +80,33 @@
             </TextBlock>
             <TextBlock Foreground="{StaticResource solidclr_Gray}" Text="D-105" />
         </StackPanel>
+           <Viewbox 
+            Name="viewBox"
+            Grid.Row="2"
+            Height="140"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <Grid>
+                <Image  Source="{StaticResource Logo}"></Image>
+                <!--<Polygon
+                    x:Name="logo_Left"
+                    Fill="Red"
+                    Points="180.1,30.1 38.8,138.9 38.8,410.5 289.3,508.2 289.3,265.8 186.9,233.2 186.9,303.2 219.4,314.6 219.4,391 118.5,352 118.5,168.2 178.7,121" />
+                <Polygon
+                    x:Name="logo_Right"
+                    Fill="{StaticResource solidclr_Gray}"
+                    Points="398.3,165.4 398.3,352 330.3,402.1 330.3,493.2 473.2,376.4 473.2,106.8" />
+                <Polygon
+                    x:Name="logo_Top"
+                    Fill="{ StaticResource solidclr_SilverGray }"
+                    Points="473.2,106.3 216.1,3.8 216.1,143.8 289.3,164.9 289.3,124.2 398.3,164.9 398.3,165.4 " />
+                <Polygon Fill="{ StaticResource solidclr_SilverGray }" Points="216.1,174.7 216.1,212.1 289.3,234.9 289.3,195.8" />-->
+            </Grid>
+        </Viewbox>
         <!--  單機登入按鈕  -->
-        <Button Margin="20"
+        <Button Margin="0,5,0,20" 
             Grid.Row="3"
-            Width="220"
+            Width="200"
             Height="40"
             Background="{ StaticResource solidclr_CreamyWhite }"
             Click="One_Click"

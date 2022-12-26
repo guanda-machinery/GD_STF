@@ -69,6 +69,11 @@ namespace STD_105
             return null;
         }
     }
+
+
+    /// <summary>
+    /// 產生刀具combobox
+    /// </summary>
     internal class TypesettingsSettingsToDrillDiaConverter : BaseValueConverter<TypesettingsSettingsToDrillDiaConverter>
     {
         //combobox用 回傳double
@@ -87,6 +92,9 @@ namespace STD_105
             throw new NotImplementedException();
         }
     }
+    /// <summary>
+    /// 選擇的統一刀徑
+    /// </summary>
     internal class TypesettingsSettingsToUnitaryToolConverter : BaseValueConverter<TypesettingsSettingsToUnitaryToolConverter>
     {
 

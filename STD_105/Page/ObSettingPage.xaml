@@ -4,6 +4,7 @@
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                    xmlns:local="clr-namespace:STD_105"
                    mc:Ignorable="d"
                    xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
@@ -43,7 +44,7 @@
               Grid.RowSpan="3"
               Panel.ZIndex="99999"
               Background="{ StaticResource solidclr_LightGray }">
-            <!--" Visibility="{Binding ThreeDimensionalDisplayControl, Converter={WPFBase:BooleanToVisiblityConverter}}">-->
+            <!--" Visibility="{Binding ThreeDimensionalDisplayControl, Converter={dx:BooleanToVisibilityConverter}}">-->
             <TabControl Name="tabControl"
                         SelectionChanged="TabControlSelectedIndexChanged"
                         Style="{StaticResource tabcontrol_STD}">
@@ -328,7 +329,7 @@
                   HorizontalAlignment="Left"
                   Panel.ZIndex="100001"
                   Style="{DynamicResource gbx_WithBorder}"
-                  Visibility="{ Binding DisplayCreatedListControl, Converter={ WPFBase:BooleanToVisiblityConverter } }"
+                  Visibility="{ Binding DisplayCreatedListControl, Converter={dx:BooleanToVisibilityConverter } }"
                   Margin="10">
             <Grid>
                 <TreeView x:Name="tree"
@@ -387,7 +388,7 @@
                   Header="零件"
                   Style="{StaticResource gbx_WithBorder }"
                   Panel.ZIndex="100001"
-                  Visibility="{Binding DisplayPartsControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter}}"
+                  Visibility="{Binding DisplayPartsControl, Converter={dx:BooleanToVisibilityConverter Invert=True}}"
                   Margin="10">
             <Grid>
                 <StackPanel>
@@ -466,7 +467,7 @@
               VerticalAlignment="Bottom"
               HorizontalAlignment="Right"
               Panel.ZIndex="100001"
-              Visibility="{Binding DisplayHoleControl, Converter={WPFBase:OppositeBooleanToVisibilityConverter}}"
+              Visibility="{Binding DisplayHoleControl, Converter={dx:BooleanToVisibilityConverter Invert=True}}"
               Margin="10">
             <TabControl Style="{StaticResource tabcontrol_STD}">
                 <TabControl.Resources>

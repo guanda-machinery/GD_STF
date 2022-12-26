@@ -145,8 +145,8 @@
     <Grid dx:ThemeManager.ThemeName="Win10Light" Background="#292929">
         <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto" MinHeight="200" MaxHeight="600"/>
-                    <RowDefinition Height="*" MinHeight="200" MaxHeight="400"/>
+                    <RowDefinition Height="auto" MinHeight="200" MaxHeight="400"/>
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
@@ -193,7 +193,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <dxg:GridControl Style="{StaticResource SiegCustomGridControl}"  
+                    <dxg:GridControl Style="{StaticResource SiegCustomGridControl_PartList}"  
                                 Name="PartsGridControl"
                                 AutoGenerateColumns="None"
                                 SelectionMode="Row"
@@ -209,7 +209,7 @@
                                AllowSorting="false"
                                AllowColumnFiltering="False"
                                AllowColumnMoving="False"
-                                
+                               ShowVerticalLines="False"
                                 
                                     Name="PartListTableView"
                                     Loaded="PartListTableView_Loaded"  
@@ -296,7 +296,7 @@
                         </Button>
                  
                     </StackPanel>
-                    <dxg:GridControl   Grid.Column="2" Style="{StaticResource SiegCustomGridControl}"  
+                    <dxg:GridControl   Grid.Column="2" Style="{StaticResource SiegCustomGridControl_PartList}"  
                                 Name="SoftGridControl"
                                 AutoGenerateColumns="None"
                                 SelectionMode="Row"
@@ -405,18 +405,18 @@
                             </Grid.RowDefinitions>
                             <CheckBox Grid.Column="0" Grid.Row="0"  Content="排版編號" IsChecked="{Binding StartNumberCheckboxBoolen}" />
 
-                            <TextBox Grid.Column="1" Grid.Row="0" VerticalAlignment="Center"  Padding="2" IsEnabled="{Binding StartNumberCheckboxBoolen}">
+                            <TextBox Grid.Column="1" Grid.Row="0" VerticalAlignment="Center"  Padding="2">
                                 <TextBox.Text>
                                     <Binding Path="StartNumber"  UpdateSourceTrigger="PropertyChanged" >
                                         <Binding.ValidationRules >
-                                            <STD105ValidRule:CheckStringEmptyRule/>
+                                            <STD105ValidRule:CheckStringEmptyRule IsNullable="True"/>
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
                             </TextBox>
 
                             <CheckBox Content="預設長度："  Grid.Row="1" Grid.Column="0" IsChecked="{Binding MainLengthCheckboxBoolen}"/>
-                            <TextBox Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center"  Padding="2" Name="MainLengthTextBox" IsEnabled="{Binding MainLengthCheckboxBoolen}">
+                            <TextBox Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center"  Padding="2" Name="MainLengthTextBox">
                                 <TextBox.Text>
                                     <Binding Path="MainLengthMachine"  UpdateSourceTrigger="PropertyChanged" >
                                         <Binding.ValidationRules >
@@ -428,7 +428,7 @@
                             <Label Content="mm" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
                             <CheckBox Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Content="素材前端切除："  IsChecked="{Binding StartCutCheckboxBoolen}"/>
-                            <TextBox Name="MatchSettingStartCutTextBox" InputMethod.IsInputMethodEnabled="False"  Grid.Row="2" Grid.Column="1"  VerticalAlignment="Center" Padding="2" IsEnabled="{Binding StartCutCheckboxBoolen}">
+                            <TextBox Name="MatchSettingStartCutTextBox" InputMethod.IsInputMethodEnabled="False"  Grid.Row="2" Grid.Column="1"  VerticalAlignment="Center" Padding="2">
                                 <TextBox.Text>
                                     <Binding Path="MatchSettingStartCut" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" >
                                         <Binding.ValidationRules >
@@ -440,7 +440,7 @@
                             <Label Content="mm" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
                             <CheckBox Grid.Row="3" Grid.Column="0" Content="素材後端切除：" IsChecked="{Binding EndCutCheckboxBoolen}" />
-                            <TextBox Name="MatchSettingEndCutTextBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center"  Padding="2" IsEnabled="{Binding EndCutCheckboxBoolen}" >
+                            <TextBox Name="MatchSettingEndCutTextBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center"  Padding="2">
                                 <TextBox.Text>
                                     <Binding Path="MatchSettingEndCut" StringFormat="{}{0:N2}"  UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
@@ -692,7 +692,7 @@
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
-                                <ProgressBar Value="{c:Binding Row.Loss/Row.LengthStr}" Height="auto" Minimum="0" Maximum="1" Background="White" />
+                                <ProgressBar Value="{c:Binding Row.Loss/Row.LengthStr}" Height="auto" Minimum="0" Maximum="1" Background="White" Style="{StaticResource BaseStyle}" Margin="-1" />
                                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" >
                                     <TextBlock Text="{c:Binding Row.Loss/Row.LengthStr, StringFormat={}{0:P1}}"   />
                                 </StackPanel>
@@ -1205,7 +1205,10 @@
             </TabItem>
             <TabItem Header="2D">
                 <Grid>
-
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
                     <Border Style="{StaticResource bro}"/>
                     <spa:ModelExt x:Name="drawing" 
                             Loaded="drawing_Loaded"
@@ -1267,11 +1270,11 @@
                             </ddes:Viewport>
                         </ddes:Model.Viewports>
                     </spa:ModelExt>
-
+                    <local:DrawButtonBar Grid.Row="1"/>
                 </Grid>
             </TabItem>
         </TabControl>
-        <GridSplitter Style="{StaticResource MaterialDesignGridSplitter}"  Grid.Column="0" Grid.Row="1"  Background="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"  Height="8"   />
+        <GridSplitter Style="{StaticResource MaterialDesignGridSplitter}"  Grid.Column="0" Grid.Row="1"  Background="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"  Height="4" Margin="0,-0"   />
     </Grid>
 
 </WPFBase:BasePage>

@@ -49,7 +49,7 @@
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
                 <dxg:GridColumn Header="品牌" FieldName="Name" ReadOnly="True"/>
-                <dxg:GridColumn Header="直徑;(mm)" FieldName="Dia" ReadOnly="True"/>
+                <dxg:GridColumn Header="直徑(mm)" FieldName="Dia" ReadOnly="True"/>
                 <dxg:GridColumn Header="主軸轉速(RPM)" FieldName="Rpm" ReadOnly="True"/>
                 <dxg:GridColumn Header="鑽頭長度(mm)" FieldName="Length" ReadOnly="True"/>
                 <dxg:GridColumn Header="極限設定(M)" FieldName="Limit"/>

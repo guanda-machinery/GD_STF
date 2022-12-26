@@ -5,6 +5,7 @@
     xmlns:WPFBase="clr-namespace:WPFWindowsBase;assembly=WPFWindowsBase"
     xmlns:converters="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:local="clr-namespace:STD_105"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
@@ -143,7 +144,7 @@
                             IsHitTestVisible="False"
                             Text="{TemplateBinding Tag}"
                             Visibility="{TemplateBinding WPFBase:HasTextProperty.Value,
-                                                         Converter={WPFBase:BooleanToVisiblityConverter}}" />
+                                                         Converter={dx:BooleanToVisibilityConverter}}" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">

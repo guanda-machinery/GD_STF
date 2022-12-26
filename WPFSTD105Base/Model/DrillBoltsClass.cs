@@ -22,9 +22,6 @@ namespace WPFSTD105.Model
     [Serializable]
     public class DrillBoltsBase : WPFWindowsBase.BaseViewModel
     {
-
-
-
         private bool _dia_Identification = false;
         /// <summary>
         /// 當true時同一化

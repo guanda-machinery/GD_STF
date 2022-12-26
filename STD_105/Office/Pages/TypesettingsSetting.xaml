@@ -141,15 +141,14 @@
                         <RowDefinition Height="360"/>
                     </Grid.RowDefinitions>
                     <dxg:GridControl   
-                        Style="{StaticResource SiegCustom_CompactGridControl}"
+                        Style="{StaticResource SiegCustomGridControl_PartList}"
                         FilterGroupSortChanging="GridControl_FilterGroupSortChanging"
                         Name="PartsGridControl"
-                 
                         AutoGenerateColumns="None"
                         SelectionMode="row"
                        SelectedItems="{Binding SelectedParts ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                         MaxHeight="10000" 
-                        ItemsSource="{Binding DataViews}">
+                        ItemsSource="{Binding DataViews,UpdateSourceTrigger=PropertyChanged}">
                         <dxg:GridControl.View >
                             <dxg:TableView      
                                 AllowPaging="True"
@@ -215,9 +214,6 @@
                         </dxg:GridColumn>
                         <dxg:GridColumn FieldName="" Binding="{Binding ID,Converter={STD105:IListFilterToCountConverter} }"  IsSmart="True"  Width="45" Header="數量"  />
                         <dxg:GridColumn FieldName="AlreadyMatedMaterialCounts" IsSmart="True"  Width="45" Header="已配對"  />
-
-
-
                     </dxg:GridControl>
                     <StackPanel HorizontalAlignment="Center"  Margin="0"
                                         Grid.Column="1"
@@ -265,7 +261,7 @@
                         </Button>
                     </StackPanel>
                     <dxg:GridControl   Grid.Column="2"
-Style="{StaticResource SiegCustom_CompactGridControl}"
+                                       Style="{StaticResource SiegCustomGridControl_PartList}"
                                 FilterGroupSortChanging="GridControl_FilterGroupSortChanging"
                                 Name="SoftGridControl"
                                 AutoGenerateColumns="None"
@@ -320,16 +316,16 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
                         <dxg:GridColumn FieldName="Material"  IsSmart="True"  Header="材質"  Width="80"/>
                         <dxg:GridColumn FieldName="Length"  IsSmart="True"  Header="零件長" Width="70">
                             <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
+                                <dxe:TextEditSettings DisplayFormat="F0" HorizontalContentAlignment="Center"/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn  FieldName="PartWeight"  IsSmart="True"  Header="零件重"  Width="50" >
+                        <dxg:GridColumn FieldName="PartWeight" Binding="{c:Binding PartWeight/1000}"  IsSmart="True"  Header="零件重"  Width="50" >
                             <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings DisplayFormat="F2" HorizontalContentAlignment="Center"/>
+                                <dxe:TextEditSettings DisplayFormat="F1" HorizontalContentAlignment="Center"/>
                             </dxg:GridColumn.EditSettings>
                         </dxg:GridColumn>
-                        <dxg:GridColumn  FieldName="" Binding="{Binding ID , Converter={STD105:IListFilterToCountConverter} }"  IsSmart="True"  Width="45" Header="數量"  />
-                        <dxg:GridColumn  FieldName="AlreadyMatedMaterialCounts" IsSmart="True"  Width="45" Header="已配對"  />
+                        <dxg:GridColumn FieldName="" Binding="{Binding ID,Converter={STD105:IListFilterToCountConverter} }"  IsSmart="True"  Width="45" Header="數量"  />
+                        <dxg:GridColumn FieldName="AlreadyMatedMaterialCounts" IsSmart="True"  Width="45" Header="已配對"  />
 
 
                     </dxg:GridControl>
@@ -379,11 +375,11 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
                                         <Label Content="前置字串："/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
-                                        <TextBox IsEnabled="{Binding StartNumberCheckboxBoolen}">
+                                        <TextBox >
                                             <TextBox.Text>
                                                 <Binding Path="PreCode"  UpdateSourceTrigger="PropertyChanged" >
                                                     <Binding.ValidationRules >
-                                                        <STD105ValidRule:CheckStringEmptyRule/>
+                                                        <STD105ValidRule:CheckStringEmptyRule IsNullable="True"  StringLengthMax="16"/>
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </TextBox.Text>
@@ -393,11 +389,11 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
                                         <Label Content="起始號碼：" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Grid.Row="3" VerticalAlignment="Center">
-                                        <TextBox IsEnabled="{Binding StartNumberCheckboxBoolen}">
+                                        <TextBox>
                                             <TextBox.Text>
                                                 <Binding Path="StartNumber"  UpdateSourceTrigger="PropertyChanged" >
                                                     <Binding.ValidationRules >
-                                                        <STD105ValidRule:CheckStringEmptyRule/>
+                                                        <STD105ValidRule:CheckStringEmptyRule IsNullable="True" />
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </TextBox.Text>
@@ -424,7 +420,7 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
 
                                     <CheckBox Content="預設長度："  Grid.Row="1" Grid.Column="0" IsChecked="{Binding MainLengthCheckboxBoolen}"/>
 
-                                    <TextBox Name="MainLengthTextBox" Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center" IsEnabled="{Binding MainLengthCheckboxBoolen}">
+                                    <TextBox Name="MainLengthTextBox" Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center" >
                                         <TextBox.Text>
                                             <Binding Path="MainLength"  UpdateSourceTrigger="PropertyChanged" >
                                                 <Binding.ValidationRules >
@@ -437,7 +433,7 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
                                     <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0">
                                         <Label Content="單位：m/m"/>
                                     </StackPanel>
-                                    <TextBox Name="SecondaryLengthTextBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" IsEnabled="{Binding SecondaryLengthCheckboxBoolen}">
+                                    <TextBox Name="SecondaryLengthTextBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">
                                             <TextBox.Text>
                                                 <Binding Path="SecondaryLength"  UpdateSourceTrigger="PropertyChanged" >
                                                     <Binding.ValidationRules >
@@ -506,7 +502,7 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
                                     </StackPanel>
                                     <CheckBox Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="素材前端切除："  IsChecked="{Binding StartCutCheckboxBoolen}"/>
                                     <StackPanel Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center">
-                                        <TextBox Name="MatchSettingStartCutTextBox" InputMethod.IsInputMethodEnabled="False" IsEnabled="{Binding StartCutCheckboxBoolen}"
+                                        <TextBox Name="MatchSettingStartCutTextBox" InputMethod.IsInputMethodEnabled="False"
                                    MinWidth="100" >
                                             <TextBox.Text>
                                                 <Binding Path="MatchSettingStartCut" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" >
@@ -522,7 +518,7 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
                                         <Label Content="單位：m/m" />
                                     </StackPanel>
                                     <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Center">
-                                        <TextBox MinWidth="100" Name="MatchSettingEndCutTextBox" IsEnabled="{Binding EndCutCheckboxBoolen}">
+                                        <TextBox MinWidth="100" Name="MatchSettingEndCutTextBox">
                                             <TextBox.Text>
                                                 <Binding Path="MatchSettingEndCut" StringFormat="{}{0:N2}"  UpdateSourceTrigger="PropertyChanged">
                                                     <Binding.ValidationRules>
@@ -904,7 +900,7 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <ProgressBar Value="{c:Binding Row.Loss/Row.LengthStr}" Height="auto" Minimum="0" Maximum="1" Background="White" />
+                                    <ProgressBar Value="{c:Binding Row.Loss/Row.LengthStr}" Height="auto" Minimum="0" Maximum="1" Background="White"  Style="{StaticResource BaseStyle}" Margin="-1"/>
                                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" >
                                         <TextBlock Text="{c:Binding Row.Loss/Row.LengthStr, StringFormat={}{0:P1}}"   />
                                     </StackPanel>
@@ -1374,6 +1370,10 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
                 </TabItem>
                 <TabItem Header="2D"  x:Name="dr" >
                     <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
                         <Border Style="{StaticResource bro}"/>
                         <spa:ModelExt x:Name="drawing" 
                             Loaded="drawing_Loaded"
@@ -1435,6 +1435,7 @@ Style="{StaticResource SiegCustom_CompactGridControl}"
                                 </ddes:Viewport>
                             </ddes:Model.Viewports>
                         </spa:ModelExt>
+                        <local:DrawButtonBar Grid.Row="1"/>
                     </Grid>
 
                 </TabItem>

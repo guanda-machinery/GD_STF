@@ -101,5 +101,8 @@
     <Setting Name="Report_Moving" Type="System.String" Scope="User">
       <Value Profile="(Default)">#FFDC143C</Value>
     </Setting>
+    <Setting Name="Surplus" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#808080</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

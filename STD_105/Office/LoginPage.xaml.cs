@@ -258,7 +258,7 @@ namespace STD_105.Office
                                 MessageBoxImage.Exclamation,
                                 MessageBoxResult.None,
                                 MessageBoxOptions.None,
-                                FloatingMode.Popup);
+                                 FloatingMode.Window);
 
                                 IPSettings settings = new IPSettings();
                                 settings.ShowDialog();
@@ -331,7 +331,7 @@ namespace STD_105.Office
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
         }
         /// <summary>
         /// 關閉事件

@@ -489,7 +489,7 @@ namespace WPFSTD105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
             }
             return ApplicationViewModel.PanelButton.EMS;
         }
@@ -521,7 +521,7 @@ namespace WPFSTD105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return true;
             }
             else
@@ -547,7 +547,7 @@ namespace WPFSTD105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
             }
             return axisMode;
         }
@@ -570,7 +570,7 @@ namespace WPFSTD105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
             return true;
@@ -591,7 +591,7 @@ namespace WPFSTD105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
             return true;

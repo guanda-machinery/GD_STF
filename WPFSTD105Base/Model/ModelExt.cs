@@ -1619,7 +1619,8 @@ namespace WPFSTD105
                 {
                     // 將NC檔孔轉圖塊
                     Block b = new Block();
-                    BlockReference blockReference = new BlockReference(0, 0, 0, Guid.NewGuid().ToString(), 1, 1, 1, 0);//產生孔位群組參考圖塊
+                    //BlockReference blockReference = new BlockReference(0, 0, 0, Guid.NewGuid().ToString(), 1, 1, 1, 0);//產生孔位群組參考圖塊
+                    BlockReference blockReference = new BlockReference(0, 0, 0, x.GUID.Value.ToString(), 1, 1, 1, 0);//產生孔位群組參考圖塊
                     blockReference.EntityData = x;
                     blockReference.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
                     b.Entities.Add(blockReference);
@@ -1845,22 +1846,53 @@ namespace WPFSTD105
                                 Secondary.Entities.Remove((BlockReference)el.Item);
                                 if (((BlockReference)el.Item) != null && Blocks.Any(x => x.Name == ((BlockReference)el.Item).BlockName))
                                 {
+                                    Secondary.Blocks.Remove(Secondary.Blocks.FirstOrDefault(x => x.Name == ((BlockReference)el.Item).BlockName));
                                     Blocks.Remove(Blocks.FirstOrDefault(x => x.Name == ((BlockReference)el.Item).BlockName));
                                 }
                             });
-                            obSettingVM.Select2DItem.Where(x => x.Item.GetType() == typeof(Mesh)).ToList().ForEach(el => Secondary.Entities.Remove((Mesh)el.Item));
+
+                            //obSettingVM.Select2DItem.Where(x => x.Item.GetType() == typeof(Mesh)).ToList().ForEach(el =>
+                            //{
+                            //    Secondary.Entities.Remove((Mesh)el.Item);
+                            //    string bn = "";
+                            //    if (((Mesh)el.Item).EntityData.GetType()==typeof(GroupBoltsAttr))
+                            //    {
+                            //        bn = ((GroupBoltsAttr)(((Mesh)el.Item).EntityData)).GUID.Value.ToString();
+                            //    }
+                            //    if (((Mesh)el.Item) != null && Blocks.Any(x => x.Name == bn))
+                            //    {
+                            //        Blocks.Remove(Blocks.FirstOrDefault(x => x.Name == bn));
+                            //    }
+                            //});
+                            obSettingVM.Select2DItem.Where(x => x.Item != null && x.Item.GetType() == typeof(Mesh)).ToList().ForEach(el => Secondary.Entities.Remove((Mesh)el.Item));
+                            obSettingVM.Select2DItem.Where(x => x.Item != null && x.Item.GetType() == typeof(BlockReference)).ToList().ForEach(el => Secondary.Entities.Remove((BlockReference)el.Item));
                         }
                         else
                         {
-                            obSettingVM.Select3DItem.Where(x => x.Item.GetType() == typeof(BlockReference)).ToList().ForEach(el =>
+                            obSettingVM.Select3DItem.Where(x => x.Item != null && x.Item.GetType() == typeof(BlockReference)).ToList().ForEach(el =>
                             {
                                 Secondary.Entities.Remove((BlockReference)el.Item);
-                                if (((BlockReference)el.Item) != null && Secondary.Blocks.Any(x => x.Name == ((BlockReference)el.Item).BlockName))
+                                if (((BlockReference)el.Item) != null && Blocks.Any(x => x.Name == ((BlockReference)el.Item).BlockName))
                                 {
                                     Secondary.Blocks.Remove(Secondary.Blocks.FirstOrDefault(x => x.Name == ((BlockReference)el.Item).BlockName));
+                                    Blocks.Remove(Blocks.FirstOrDefault(x => x.Name == ((BlockReference)el.Item).BlockName));
                                 }
                             });
-                            obSettingVM.Select3DItem.Where(x => x.Item.GetType() == typeof(Mesh)).ToList().ForEach(el => Secondary.Entities.Remove((Mesh)el.Item));
+                            //obSettingVM.Select2DItem.Where(x => x.Item.GetType() == typeof(Mesh)).ToList().ForEach(el =>
+                            //{
+                            //    Secondary.Entities.Remove((Mesh)el.Item);
+                            //    string bn = "";
+                            //    if (((Mesh)el.Item).EntityData.GetType() == typeof(GroupBoltsAttr))
+                            //    {
+                            //        bn = ((GroupBoltsAttr)(((Mesh)el.Item).EntityData)).GUID.Value.ToString();
+                            //    }
+                            //    if (((Mesh)el.Item) != null && Blocks.Any(x => x.Name == bn))
+                            //    {
+                            //        Blocks.Remove(Blocks.FirstOrDefault(x => x.Name == bn));
+                            //    }
+                            //});
+                            obSettingVM.Select3DItem.Where(x => x.Item != null && x.Item.GetType() == typeof(Mesh)).ToList().ForEach(el => Secondary.Entities.Remove((Mesh)el.Item));
+                            obSettingVM.Select3DItem.Where(x => x.Item != null && x.Item.GetType() == typeof(BlockReference)).ToList().ForEach(el => Secondary.Entities.Remove((BlockReference)el.Item));
                         }
                         //STDSerialization ser = new STDSerialization();
                         //ser.SetPartModel(obSettingVM.SteelAttr.GUID.ToString(), this);
@@ -1906,7 +1938,9 @@ namespace WPFSTD105
 
                     //20221111 修改 避免按下任意按鍵都會導致連續重新整理
                     STDSerialization ser = new STDSerialization();
-                    ser.SetPartModel(obSettingVM.SteelAttr.GUID.ToString(), this);
+                    //ser.SetPartModel(obSettingVM.SteelAttr.GUID.ToString(), this);
+                    //ser.SetPartModel(obSettingVM.SteelAttr.GUID.ToString(), this.Name == "drawing" ? this.Secondary : this);
+                    ser.SetPartModel(obSettingVM.GuidProperty.Value.ToString(), this.Name == "drawing" ? this.Secondary : this);
                     this.Refresh();
                 }
             }

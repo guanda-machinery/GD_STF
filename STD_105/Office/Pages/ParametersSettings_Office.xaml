@@ -40,6 +40,9 @@
             <!--新建專案-->
             <TabItem Header="斷面規格目錄">
                 <Border BorderThickness="1" BorderBrush="Gray">
+                    <Border.DataContext>
+                        <STD105VM:SettingParVM/>
+                    </Border.DataContext>
                     <std:SectionSpecificationMenu_UserControl  Style="{StaticResource SectionSpecificationMenuWhiteStyle}"/>
                 </Border>
 
@@ -98,7 +101,7 @@
                                 <!--關鍵字過濾-->
 
                                 <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Label VerticalAlignment="Center" HorizontalContentAlignment="Center" Content=" 腹板切割記號位置" FontSize="16" />
+                                    <Label VerticalAlignment="Center" HorizontalContentAlignment="Center" Content=" 腹板切割記號位置" FontSize="16" Margin="5" />
                                     <Grid>
                                         <Image Source="{ StaticResource WEB_CUT_MARK }" Height="170" Width="170"/>
                                         <Canvas>
@@ -114,7 +117,7 @@
                                     </Grid>
                                 </StackPanel>
                                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" >
-                                    <Label VerticalAlignment="Center" HorizontalContentAlignment="Center" Content=" 翼板切割記號位置" FontSize="16" />
+                                    <Label VerticalAlignment="Center" HorizontalContentAlignment="Center" Content=" 翼板切割記號位置" FontSize="16"  Margin="5"/>
                                     <Grid>
                                         <Image Source="{ StaticResource WING_CUT_MARK }" Height="170" Width="170"/>
                                         <Canvas>
@@ -310,6 +313,7 @@
                     <!--型鋼加工區域設定-->
                     <Border BorderThickness="1" BorderBrush="Gray" Width="700" >
                         <GroupBox Header="型鋼加工區域設定" Style="{StaticResource ParameterGroupBox}">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <Grid>
                                 <Grid.Resources>
                                     <std:OBJECT_TYPE_ToStringConverter x:Key="obType" />
@@ -354,7 +358,7 @@
                                                     <Image Source="{ StaticResource H_TYPE }" Height="15" Width="15"/>
                                                 </ComboBoxItem>
                                                 <ComboBoxItem>
-                                                    <Image Source="{ StaticResource BOX_TYPE }" Height="15" Width="15"/>
+                                                    <Image Source="{ StaticResource BOX_TYPE }" Height="15" Width="15" Visibility="Collapsed"/>
                                                 </ComboBoxItem>
                                                 <ComboBoxItem>
                                                     <Image Source="{ StaticResource CH_TYPE }" Height="15" Width="15"/>
@@ -395,7 +399,7 @@
                                                 <RowDefinition Height="auto"/>
                                             </Grid.RowDefinitions>
                                             <!--H型鋼-->
-                                            <Grid Visibility="{Binding VisibleH_Process, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                            <Grid Visibility="{Binding VisibleH_Process, Converter={dx:NullableToVisibilityConverter}}">
 
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
@@ -524,7 +528,7 @@
 
                                             </Grid>
                                             <!--方管-->
-                                            <Grid Grid.Row="1" Visibility="{Binding VisibleBOX_Process, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}" >
+                                            <Grid Grid.Row="1" Visibility="{Binding VisibleBOX_Process, Converter={dx:NullableToVisibilityConverter}}" >
 
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
@@ -631,7 +635,7 @@
                                             </Grid>
 
                                             <!--槽鐵-->
-                                            <Grid Grid.Row="2" Visibility="{Binding VisibleCH_Process, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                            <Grid Grid.Row="2" Visibility="{Binding VisibleCH_Process, Converter={dx:BooleanToVisibilityConverter}}">
 
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
@@ -796,7 +800,8 @@
 
 
                                 </Grid>
-                            </Grid>
+                                </Grid>
+                            </ScrollViewer>
                         </GroupBox>
                     </Border>
 
@@ -806,58 +811,54 @@
                 </Grid>
             </TabItem>
             <TabItem Header="軟體版本">
-                <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="940">
-                    <Grid.Resources>
-                        <Style TargetType="TextBox"
-                   BasedOn="{ StaticResource tbx_BlueUnderline }">
-                            <Setter Property="Foreground"
-                        Value="{ StaticResource solidclr_Gray }" />
-                            <Setter Property="FontSize"
-                        Value="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" />
-                        </Style>
-                    </Grid.Resources>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="450" />
-                        <ColumnDefinition Width="400" />
-                    </Grid.ColumnDefinitions>
-                    <!--軟體版本-->
-                    <Grid Grid.Column="0" Background="WhiteSmoke">
+                <Border BorderThickness="1" Grid.ColumnSpan="2" BorderBrush="Gray">
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="940">
                         <Grid.Resources>
-                            <std:OBJECT_TYPE_ToStringConverter x:Key="obType" />
+                            <Style TargetType="TextBox"
+                   BasedOn="{ StaticResource tbx_BlueUnderline }">
+                                <Setter Property="Foreground"
+                        Value="{ StaticResource solidclr_Gray }" />
+                                <Setter Property="FontSize"
+                        Value="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" />
+                            </Style>
                         </Grid.Resources>
-
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-
-                        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="20,16">
-                            <StackPanel.Resources>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="FontSize" Value="25"/>
-                                    <Setter Property="FontStretch" Value="UltraExpanded"/>
-                                    <Setter Property="FontWeight" Value="UltraBold"/>
-                                    <Setter Property="FontFamily" Value="Calibri (本文)"/>
-                                </Style>
-                            </StackPanel.Resources>
-                            <TextBlock Text="G" Foreground="Crimson"/>
-                            <TextBlock Text="D" Foreground="{ StaticResource solidclr_DarkGray }"/>
-                            <TextBlock Text="-"  Foreground="{ StaticResource solidclr_DarkGray }"/>
-                            <TextBlock Text="S"  Foreground="{ StaticResource solidclr_DarkGray }"/>
-                            <TextBlock Text="T"  Foreground="Crimson"/>
-                            <TextBlock Text="D" Foreground="{ StaticResource solidclr_DarkGray }"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="20">
-                            <TextBlock Text="軟體" VerticalAlignment="Top"  HorizontalAlignment="Left" FontSize="16" />
-                            <TextBlock Text="V11.0(2022.16.1.2 e55928ee677f)" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="16" />
-                            <TextBlock Text="軟體是最新的" VerticalAlignment="Top"  HorizontalAlignment="Left" FontSize="16" Foreground="LightGray"  Margin="0,20,0,0"/>
-                        </StackPanel>
-
-
-                        <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="0"
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="450" />
+                            <ColumnDefinition Width="400" />
+                        </Grid.ColumnDefinitions>
+                        <!--軟體版本-->
+                        <Grid Grid.Column="0" Background="WhiteSmoke">
+                            <Grid.Resources>
+                                <std:OBJECT_TYPE_ToStringConverter x:Key="obType" />
+                            </Grid.Resources>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="20,16">
+                                <StackPanel.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontSize" Value="25"/>
+                                        <Setter Property="FontStretch" Value="UltraExpanded"/>
+                                        <Setter Property="FontWeight" Value="UltraBold"/>
+                                        <Setter Property="FontFamily" Value="Calibri (本文)"/>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <TextBlock Text="G" Foreground="Crimson"/>
+                                <TextBlock Text="D" Foreground="{ StaticResource solidclr_DarkGray }"/>
+                                <TextBlock Text="-"  Foreground="{ StaticResource solidclr_DarkGray }"/>
+                                <TextBlock Text="S"  Foreground="{ StaticResource solidclr_DarkGray }"/>
+                                <TextBlock Text="T"  Foreground="Crimson"/>
+                                <TextBlock Text="D" Foreground="{ StaticResource solidclr_DarkGray }"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="20">
+                                <TextBlock Text="軟體" VerticalAlignment="Top"  HorizontalAlignment="Left" FontSize="16" />
+                                <TextBlock Text="V11.0(2022.16.1.2 e55928ee677f)" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="16" />
+                                <TextBlock Text="軟體是最新的" VerticalAlignment="Top"  HorizontalAlignment="Left" FontSize="16" Foreground="LightGray"  Margin="0,20,0,0"/>
+                            </StackPanel>
+                            <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="0"
                                 Style="{StaticResource SiegCustomButtonGold}"
                              Margin="20"
                               Content="安裝"
@@ -865,26 +866,27 @@
                               FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
                               VerticalContentAlignment="Center"
                               Foreground="Black"
+                          BorderThickness="0.5"
                               BorderBrush="Gray"
                               Height="25"
                               Width="70"
                         Cursor="Hand"/>
-                    </Grid>
+                        </Grid>
+                        <Grid Grid.Column="1" Background="White">
+                            <Grid.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="25"/>
+                                    <Setter Property="FontStretch" Value="UltraExpanded"/>
+                                    <Setter Property="FontWeight" Value="UltraBold"/>
+                                    <Setter Property="FontFamily" Value="Calibri (本文)"/>
+                                </Style>
+                            </Grid.Resources>
+                            <TextBlock Text="發行說明" VerticalAlignment="Top"  HorizontalAlignment="Left"  Foreground="DeepSkyBlue" FontSize="20"  Margin="20,16"/>
+                            <TextBlock Text="說明字串" VerticalAlignment="Top"  HorizontalAlignment="Left"  Foreground="DeepSkyBlue"  Margin="0,50" Visibility="Collapsed"/>
+                        </Grid>
 
-                    <Grid Grid.Column="1" Background="White">
-                        <Grid.Resources>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="FontSize" Value="25"/>
-                                <Setter Property="FontStretch" Value="UltraExpanded"/>
-                                <Setter Property="FontWeight" Value="UltraBold"/>
-                                <Setter Property="FontFamily" Value="Calibri (本文)"/>
-                            </Style>
-                        </Grid.Resources>
-                        <TextBlock Text="發行說明" VerticalAlignment="Top"  HorizontalAlignment="Left"  Foreground="DeepSkyBlue" FontSize="20"  Margin="20,16"/>
-                        <TextBlock Text="說明字串" VerticalAlignment="Top"  HorizontalAlignment="Left"  Foreground="DeepSkyBlue"  Margin="0,50" Visibility="Collapsed"/>
                     </Grid>
-
-                </Grid>
+                </Border>
             </TabItem>
             <TabItem Header="選擇報表LOGO">
                 <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="940">

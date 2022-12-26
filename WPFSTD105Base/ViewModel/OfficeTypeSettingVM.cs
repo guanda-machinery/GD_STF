@@ -208,7 +208,7 @@ namespace WPFSTD105
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
                     }
 
                     //string current_time = DateTime.Now.ToString("yyyyMMdd");
@@ -237,7 +237,7 @@ namespace WPFSTD105
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
                     }
                     catch (Exception ex)
                     {
@@ -251,7 +251,7 @@ namespace WPFSTD105
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
                     }
 
                     
@@ -338,7 +338,7 @@ namespace WPFSTD105
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
                     }
 
                     //string current_time = DateTime.Now.ToString("yyyyMMdd");
@@ -367,7 +367,7 @@ namespace WPFSTD105
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
                     }
                     catch (Exception ex)
                     {
@@ -381,7 +381,7 @@ namespace WPFSTD105
                         MessageBoxImage.Exclamation,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
-                        FloatingMode.Popup);
+                         FloatingMode.Window);
                     }
 
                     
@@ -467,7 +467,7 @@ namespace WPFSTD105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 });
             }
         }

@@ -4,21 +4,24 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WPFWindowsBase;
 
 namespace STD_105
 {
-    internal class PositionStatusEnumToStringConverter : BaseValueConverter<PositionStatusEnumToStringConverter>
+    internal class SortableToForegroundConverter : WPFWindowsBase.BaseValueConverter<SortableToForegroundConverter>
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value is GD_STD.Enum.PositionStatusEnum)
+            if (value is bool)
             {
-                //加工所在位置 第二階段需支援多語系
-                return ((GD_STD.Enum.PositionStatusEnum)value).ToString();
+                if (!(bool)value)
+                {
+                    if (parameter is System.Windows.Media.SolidColorBrush)
+                        return parameter as System.Windows.Media.SolidColorBrush;
+                    else
+                        return System.Windows.Media.Brushes.Red;
+                }
             }
-            else 
-                return value;
+            return System.Windows.Media.Brushes.Black;
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

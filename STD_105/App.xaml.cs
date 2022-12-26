@@ -16,6 +16,7 @@ using DevExpress.Xpf.WindowsUI;
 using Newtonsoft.Json;
 using System.Windows.Controls;
 using System.Globalization;
+using Microsoft.Win32;
 
 
 namespace STD_105
@@ -115,29 +116,50 @@ namespace STD_105
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-#if DEBUG                        
-            MessageBoxResult messageBoxResult = MessageBox.Show($"測試環境是否要選擇工廠模式 ?", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
-            /* var messageBoxResult = WinUIMessageBox.Show(null,
-            $"是否要選擇工廠模式 ?",
-            "通知",
-            MessageBoxButton.YesNo,
-            MessageBoxImage.Information,
-            MessageBoxResult.None,
-            MessageBoxOptions.ServiceNotification,
-            FloatingMode.Window);*/
 
-            if (messageBoxResult == MessageBoxResult.Yes)//如果是工廠模式
-            {
+#if DEBUG
+
+
+            //MessageBoxResult messageBoxResult = MessageBox.Show($"測試環境是否要選擇工廠模式 ?", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+            ////* var messageBoxResult = WinUIMessageBox.Show(null,
+            //$"是否要選擇工廠模式 ?",
+            //"通知",
+            //MessageBoxButton.YesNo,
+            //MessageBoxImage.Information,
+            //MessageBoxResult.None,
+            //MessageBoxOptions.ServiceNotification,
+            //FloatingMode.Window);*/
+
+
+
+
+            //if (messageBoxResult == MessageBoxResult.Yes)//如果是工廠模式
+            //{
+            //    WPFSTD105.Properties.SofSetting.Default.OfficeMode = false;
+            //}
+            //else if(messageBoxResult == MessageBoxResult.No)
+            //{
+            //    WPFSTD105.Properties.SofSetting.Default.OfficeMode = true;
+            //}
+            //else
+            //{
+            //    Environment.Exit(0);
+            //}
+
+
+
+            // 讀取登錄檔登入模式 0 => 機台模式, 1=> 辦公室模式
+            string OfficeMode = GetRegistData("OfficeMode");
+            if (OfficeMode == "0")
+                WTRegedit("OfficeMode", OfficeMode);
+
+            if (OfficeMode == "0")//如果是工廠模式
                 WPFSTD105.Properties.SofSetting.Default.OfficeMode = false;
-            }
-            else if(messageBoxResult == MessageBoxResult.No)
-            {
+
+            else if (OfficeMode == "1")
                 WPFSTD105.Properties.SofSetting.Default.OfficeMode = true;
-            }
-            else
-            {
-                Environment.Exit(0);
-            }
+
+
             //WPFSTD105.Properties.SofSetting.Default.Save();
 #endif
             //初始化
@@ -267,6 +289,37 @@ namespace STD_105
                 ReadDuplexMemory.Abort();
 
             }
+        }
+
+        //讀登錄檔
+        private string GetRegistData(string name)
+        {
+            string registData;
+            RegistryKey hkml = Registry.CurrentUser;
+            RegistryKey software = hkml.OpenSubKey("SOFTWARE", true);
+            RegistryKey aimdir = software.OpenSubKey("GUANDA Corporation", true);
+            if (aimdir == null) return "0";
+            RegistryKey Paradir = aimdir.OpenSubKey("Preferences", true);
+            if (aimdir == null) return "0";
+
+            var registData1 = Paradir.GetValue(name);
+
+            if (registData1 == null) //無對應機碼
+            {
+                return "0";
+            }
+            registData = Paradir.GetValue(name).ToString();
+
+            return registData;
+        }
+        //寫登錄檔
+        private void WTRegedit(string name, string tovalue)
+        {
+            RegistryKey hklm = Registry.CurrentUser;
+            RegistryKey software = hklm.OpenSubKey("SOFTWARE", true);
+            RegistryKey aimdir = software.CreateSubKey("GUANDA Corporation", true);
+            RegistryKey Paradir = aimdir.CreateSubKey("Preferences", true);
+            Paradir.SetValue(name, tovalue);
         }
     }
 }

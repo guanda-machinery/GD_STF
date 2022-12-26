@@ -299,7 +299,7 @@
                             <TextBlock x:Name="tbk_EllipseTop"
                                        Text="{ Binding EllipseTopButtonDESC, StringFormat={}{0}, TargetNullValue=沒有作用 }"
                                        TextWrapping="Wrap"
-                                       Visibility="{ Binding DescriptionDisplayControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }" />
+                                       Visibility="{ Binding DescriptionDisplayControl, Converter={ dx:BooleanToVisibilityConverter Invert=True} }" />
                         </Button.Content>-->
                         </Button>
                         <!--左橢圓下按鈕-->
@@ -333,7 +333,7 @@
                             <TextBlock x:Name="tbk_EllipseBottom"
                                        Text="{ Binding EllipseBottomButtonDESC, StringFormat={}{0}, TargetNullValue=沒有作用 }"
                                        TextWrapping="Wrap"
-                                       Visibility="{ Binding DescriptionDisplayControl, Converter={ WPFBase:OppositeBooleanToVisibilityConverter } }" />
+                                       Visibility="{ Binding DescriptionDisplayControl, Converter={ dx:BooleanToVisibilityConverter Invert=True} }" />
                         </Button.Content>-->
                         </Button>
                         <!--按鈕上的橫槓-->

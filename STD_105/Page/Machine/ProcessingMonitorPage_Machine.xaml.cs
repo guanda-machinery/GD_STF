@@ -45,12 +45,11 @@ namespace STD_105
     /// <summary>
     /// 新加工監控 ProcessingMonitorPage_Machine.xaml 的互動邏輯
     /// </summary>
-    public partial class ProcessingMonitorPage_Machine : BasePage<ProcessingMonitor_MachineVM>
+    public partial class ProcessingMonitorPage_Machine
     {
-        //   public SplashScreenManager ScreenManager { get; set; } = SplashScreenManager.Create(() => new WaitIndicator(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
-        private DevExpress.Xpf.Core.SplashScreenManager ProcessingScreenWin = DevExpress.Xpf.Core.SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
-      
-        public ObSettingVM ViewModel { get; set; } = new ObSettingVM();
+        //   public SplashScreenManager ScreenManager { get; set; } = SplashScreenManager.Create(() => new WaitIndicator(), new DevExpress.Mvvm.DXSplashScreenObViewModel { });
+
+        public ObSettingVM ObViewModel { get; set; } = new ObSettingVM();
         /// <summary>
         /// nc 設定檔
         /// </summary>
@@ -61,21 +60,48 @@ namespace STD_105
         public ProcessingMonitorPage_Machine()
         {
             InitializeComponent();
-            model.DataContext = ViewModel;
-            drawing.DataContext = ViewModel;
+            model.DataContext = ObViewModel;
+            drawing.DataContext = ObViewModel;
             model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             drawing.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             model.ActionMode = actionType.None;
-            //DataList = new List<List<object>>();
             drawing.LineTypes.Add(Steel2DBlock.LineTypeName, new float[] { 35, -35, 35, -35 });
             model.Secondary = drawing;
             drawing.Secondary = model;
 
-            (this.DataContext as ProcessingMonitor_MachineVM).ScheduleGridC = MachiningSchedule_List_GridControl;
 
+            (this.DataContext as ProcessingMonitor_MachineVM).ScheduleGridC = MachiningSchedule_List_GridControl;
+            (this.DataContext as ProcessingMonitor_MachineVM).LogGridC = LogGridControl;
+            DevExpress.Xpf.Core.SplashScreenManager DProcessingScreenWin = DevExpress.Xpf.Core.SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
+            DProcessingScreenWin.Show();
+            DProcessingScreenWin.ViewModel.Status = "正在讀取3D模型...";
+
+            (this.DataContext as ProcessingMonitor_MachineVM).SetSerializationInit(model);
+            DProcessingScreenWin.Close();
+
+        }
+
+        private void ScrollOwner_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            IScrollInfo MachiningCombinational_List_TableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningCombinational_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
+            IScrollInfo MachiningSchedule_List_TableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningSchedule_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
+            if ((sender as DevExpress.Xpf.Grid.TableView).Name == MachiningCombinational_List_TableView.Name)
+            {
+                if (MachiningSchedule_List_TableView_ScrollElement != null && MachiningCombinational_List_TableView_ScrollElement != null)
+                    MachiningSchedule_List_TableView_ScrollElement.SetVerticalOffset(MachiningCombinational_List_TableView_ScrollElement.VerticalOffset);
+            }
+            if ((sender as DevExpress.Xpf.Grid.TableView).Name == MachiningSchedule_List_TableView.Name)
+            {
+                if (MachiningSchedule_List_TableView_ScrollElement != null)
+                    MachiningSchedule_List_TableView_ScrollElement.SetVerticalOffset(MachiningCombinational_List_TableView_ScrollElement.VerticalOffset);
+                //IScrollInfo PartsTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningCombinational_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
+                /*  if (MachiningSchedule_List_TableView_ScrollElement != null && MachiningCombinational_List_TableView_ScrollElement != null)
+                      MachiningCombinational_List_TableView_ScrollElement.SetVerticalOffset(MachiningSchedule_List_TableView_ScrollElement.VerticalOffset);*/
+            }
 
 
         }
+
         private void BasePage_Unloaded(object sender, RoutedEventArgs e)
         {
             if (DataContext is IDisposable disposable)
@@ -95,9 +121,7 @@ namespace STD_105
 
         private void Model3D_Loaded(object sender, RoutedEventArgs e)
         {
-          
-            ProcessingScreenWin.Show();
-            ProcessingScreenWin.ViewModel.Status = "正在讀取3D模型...";
+
             try
             {
                 #region Model 初始化
@@ -111,9 +135,9 @@ namespace STD_105
                 //平移滑鼠中鍵
                 model.Pan.MouseButton = new MouseButton(mouseButtonsZPR.Middle, modifierKeys.None);
                 model.ActionMode = actionType.SelectByBox;
-                if (ViewModel.Reductions == null)
+                if (ObViewModel.Reductions == null)
                 {
-                    ViewModel.Reductions = new ReductionList(model, drawing); //紀錄使用找操作
+                    ObViewModel.Reductions = new ReductionList(model, drawing); //紀錄使用找操作
                 }
 
                 #endregion
@@ -125,61 +149,10 @@ namespace STD_105
 
             }
 
-            ProcessingScreenWin.ViewModel.Status = "正在產生dm...";
-
-            (this.DataContext as ProcessingMonitor_MachineVM).SetSerializationInit(model)/*, model);*/;
-            //載入dm
-            //(this.DataContext as ProcessingMonitor_MachineVM).CreateFile();
-            ProcessingScreenWin.Close();
             model.Loaded -= Model3D_Loaded;
         }
 
 
-        private void ScrollOwner_ScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            if ((sender as DevExpress.Xpf.Grid.TableView).Name == MachiningCombinational_List_TableView.Name)
-            {
-                IScrollInfo SoftCountTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningSchedule_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
-                if (SoftCountTableView_ScrollElement != null)
-                    SoftCountTableView_ScrollElement.SetVerticalOffset(e.VerticalOffset);
-            }
-            if ((sender as DevExpress.Xpf.Grid.TableView).Name == MachiningSchedule_List_TableView.Name)
-            {
-                if (e.VerticalOffset != 0)
-                {
-                    IScrollInfo PartsTableView_ScrollElement = (DataPresenter)LayoutHelper.FindElement(LayoutHelper.FindElementByName(MachiningCombinational_List_TableView, "PART_ScrollContentPresenter"), (el) => el is DataPresenter);
-                    if (PartsTableView_ScrollElement != null)
-                        PartsTableView_ScrollElement.SetVerticalOffset(e.VerticalOffset);
-                }
-            }
-        }
-
-        private void MachineMessage_ItemsSourceChanged(object sender, ItemsSourceChangedEventArgs e)
-        {
-            var ItemList = ((sender as GridControl).ItemsSource as IEnumerable<OperatingLog>).ToList();
-
-            if (ItemList != null)
-            {
-               // var ItemList = ItemIEnum.ToList();
-                if (ItemList.Count() > 0)
-                {
-                    //等待0.1秒 等頁面刷新後再捲動
-                    //捲到最底下
-                    Task.Run(() =>
-                    {
-                        Thread.Sleep(500);
-                        MachineMessage_TableView.Dispatcher.Invoke(() =>
-                        {
-                            MachineMessage_TableView.TopRowIndex = ItemList.Count() - 1;
-                            (sender as GridControl).SelectedItem = ItemList[ItemList.Count() - 1];
-                        }
-                        ); 
-                    });
-                }
-            }
-
-
-        }
 
         /// <summary>
         /// 在模型內按下右鍵時觸發
@@ -192,7 +165,7 @@ namespace STD_105
             log4net.LogManager.GetLogger("在Model按下了右鍵").Debug("查看可用功能");
 #endif
             //開啟刪除功能
-            if (ViewModel.Select3DItem.Count >= 1 && ViewModel.Select3DItem[0].Item is BlockReference)
+            if (ObViewModel.Select3DItem.Count >= 1 && ObViewModel.Select3DItem[0].Item is BlockReference)
             {
 #if DEBUG
                 log4net.LogManager.GetLogger("啟用").Debug("刪除功能");
@@ -203,7 +176,7 @@ namespace STD_105
                 esc2D.Visibility = Visibility.Visible;
             }
             //開啟編輯功能
-            if (ViewModel.Select3DItem.Count == 1 && ViewModel.Select3DItem[0].Item is BlockReference)
+            if (ObViewModel.Select3DItem.Count == 1 && ObViewModel.Select3DItem[0].Item is BlockReference)
             {
 #if DEBUG
                 log4net.LogManager.GetLogger("啟用").Debug("編輯功能");
@@ -211,7 +184,7 @@ namespace STD_105
                 edit2D.Visibility = Visibility.Visible;
             }
             //關閉刪除功能與編輯功能
-            if (ViewModel.Select3DItem.Count == 0)
+            if (ObViewModel.Select3DItem.Count == 0)
             {
 #if DEBUG
                 log4net.LogManager.GetLogger("關閉").Debug("編輯功能、刪除功能、取消功能");
@@ -231,10 +204,10 @@ namespace STD_105
             model.ActionMode = actionType.SelectByBox;
             drawing.ActionMode = actionType.SelectByBox;
             model.Entities.ClearSelection();//清除全部選取的物件
-            ViewModel.Select3DItem.Clear();
-            ViewModel.tem3DRecycle.Clear();
-            ViewModel.Select2DItem.Clear();
-            ViewModel.tem2DRecycle.Clear();
+            ObViewModel.Select3DItem.Clear();
+            ObViewModel.tem3DRecycle.Clear();
+            ObViewModel.Select2DItem.Clear();
+            ObViewModel.tem2DRecycle.Clear();
             model.ClearAllPreviousCommandData();
             drawing.ClearAllPreviousCommandData();
             drawing.SetCurrent(null);
@@ -405,34 +378,7 @@ namespace STD_105
                 Esc();
                 esc.Visibility = Visibility.Collapsed;//關閉取消功能
             }
-//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.P)) //俯視圖
-//            {
-//#if DEBUG
-//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + P");
-//#endif
-//                model.InitialView = viewType.Top;
-//                model.ZoomFit();//在視口控件的工作區中適合整個模型。
-//            }
-//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Z)) //退回
-//            {
-//#if DEBUG
-//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z");
-//#endif
-//                ViewModel.Reductions.Previous();
-//#if DEBUG
-//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z 完成");
-//#endif
-//            }
-//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Y)) //退回
-//            {
-//#if DEBUG
-//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y");
-//#endif
-//                ViewModel.Reductions.Next();//回到上一個動作
-//#if DEBUG
-//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y 完成");
-//#endif
-//            }
+
             model.Invalidate();
             drawing.Invalidate();
 
@@ -440,7 +386,20 @@ namespace STD_105
 
         private void MachiningCombinational_List_TableView_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            ControlDraw3D();
+            Task.Run(() =>
+            {
+                (sender as UIElement).Dispatcher.Invoke(() =>
+                {
+                    try 
+                    { 
+                        ControlDraw3D();
+                    }
+                    catch(Exception ex)
+                    {
+
+                    }
+                });
+            });
         }
 
 
@@ -514,18 +473,7 @@ namespace STD_105
                 int partIndex = parts.FindIndex(el => el.Number == material.Parts[i].PartNumber); //回傳要使用的陣列位置
                 if (partIndex == -1)
                 {
-                    // 未找到對應零件編號
-                    //string tmp = material.Parts[i].PartNumber;
-                    //WinUIMessageBox.Show(null,
-                    //$"未找到對應零件編號" + tmp,
-                    //"通知",
-                    //MessageBoxButton.OK,
-                    //MessageBoxImage.Exclamation,
-                    //MessageBoxResult.None,
-                    //MessageBoxOptions.None,
-                    //FloatingMode.Window);
                     return;
-                    // throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
                 }
                 else
                 {
@@ -678,8 +626,6 @@ namespace STD_105
             drawing.Entities.AddRange(entities);
             //ser.SetMaterialModel(materialNumber + "2D", drawing); //儲存素材
 
-
-
             #region 備份
             //STDSerialization ser = new STDSerialization(); //序列化處理器
             //ObservableCollection<MaterialDataView> materialDataViews = ser.GetMaterialDataView(); //序列化列表
@@ -790,7 +736,6 @@ namespace STD_105
             //drawing.Entities.AddRange(entities);
             //ser.SetMaterialModel(materialNumber + "2D", drawing); //儲存素材
             #endregion
-
         }
 
 

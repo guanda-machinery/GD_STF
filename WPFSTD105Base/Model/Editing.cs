@@ -518,7 +518,7 @@ namespace WPFSTD105
         }
 
         /// <summary>
-        /// 新建兩點間線段打點
+        /// 新建兩點間線段打點(BlockName = HypotenuseTYPE.HypotenuseMan)
         /// </summary>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
@@ -592,7 +592,7 @@ namespace WPFSTD105
                 TmpBoltsArr.xCount = 1;
                 TmpBoltsArr.yCount = 1;
                 TmpBoltsArr.Mode = AXIS_MODE.POINT;
-                TmpBoltsArr.BlockName = "ManHypotenuse";
+                TmpBoltsArr.BlockName = HypotenuseTYPE.HypotenuseCustomer.ToString();
                 TmpBoltsArr.X = tmplist[z].X;
                 TmpBoltsArr.Y = tmplist[z].Y;
                 TmpBoltsArr.GUID = Guid.NewGuid();

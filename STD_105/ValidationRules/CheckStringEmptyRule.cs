@@ -9,8 +9,9 @@ namespace STD_105.ValidationRules
 {
     internal class CheckStringEmptyRule : ValidationRule
     {
-       public uint StringLengthMin { get; set; } = 0;
-       public uint? StringLengthMax { get;set; }
+        public uint StringLengthMin { get; set; } = 0;
+        public uint? StringLengthMax { get; set; }
+        public bool IsNullable{ get; set; }
         public override ValidationResult Validate(object value, System.Globalization.CultureInfo cultureInfo)
         {
             //先檢查參數
@@ -24,11 +25,17 @@ namespace STD_105.ValidationRules
 
             if (string.IsNullOrEmpty(ValidString))
             {
-                return new ValidationResult(false, $"不可為空字串");
+                if(!IsNullable)
+                    return new ValidationResult(false, $"不可為空字串");
+                else
+                    return ValidationResult.ValidResult;
             }
             else if(string.IsNullOrWhiteSpace(ValidString))
             {
-                return new ValidationResult(false, $"不可為空白!");
+                if (!IsNullable && ValidString is null)
+                    return ValidationResult.ValidResult;
+                else
+                    return new ValidationResult(false, $"不可為空白!");
             }
             else if (ValidString.Length < StringLengthMin)
             {

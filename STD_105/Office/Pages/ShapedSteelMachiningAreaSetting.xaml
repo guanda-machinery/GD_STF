@@ -5,6 +5,7 @@
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                   xmlns:STD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
                   xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                   d:DataContext="{d:DesignInstance Type=STD105VM:SettingParVM}"
@@ -17,7 +18,6 @@
                   xmlns:ST="clr-namespace:SectionData;assembly=WPFSTD105"
                   xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
                   xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-                  xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                   xmlns:local="clr-namespace:STD_105.Office"
                   xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
                   mc:Ignorable="d"
@@ -154,7 +154,7 @@
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <!--H型鋼-->
-                                <Grid Visibility="{Binding VisibleH_Process, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                <Grid Visibility="{Binding VisibleH_Process, Converter={dx:BooleanToVisibilityConverter}}">
 
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
@@ -283,7 +283,7 @@
 
                                 </Grid>
                                 <!--方管-->
-                                <Grid Grid.Row="1" Visibility="{Binding VisibleBOX_Process, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}" >
+                                <Grid Grid.Row="1" Visibility="{Binding VisibleBOX_Process, Converter={dx:BooleanToVisibilityConverter}}" >
 
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
@@ -390,7 +390,7 @@
                                 </Grid>
 
                                 <!--槽鐵-->
-                                <Grid Grid.Row="2" Visibility="{Binding VisibleCH_Process, Converter={WPFBase:NoNullBooleanToVisibilityConverter}}">
+                                <Grid Grid.Row="2" Visibility="{Binding VisibleCH_Process, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
 
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
@@ -558,19 +558,6 @@
                 </Grid>
             </GroupBox>
         </Border>
-
-        <!--打點設定-->
-        <!--
-        <GroupBox Grid.Column="4"
-                  Header="打點設定" 
-                  Visibility="Collapsed"/>
-        <Grid Grid.ColumnSpan="5">-->
-        <!--另存視窗-->
-        <!--<Grid Visibility="{ Binding SaveAsWindowsControl, Converter={WPFBase:BooleanToVisiblityConverter}}">
-                <STD:SaveAs SubmitButtonCommand="{Binding SaveModelRoSystemCommand}"
-                            CancelButtonCommand="{ Binding CloseSaveAsWindowsCommand }" />
-            </Grid>
-        </Grid>-->
 
 
     </Grid>

@@ -73,6 +73,7 @@ namespace WPFSTD105.ViewModel
             RightEntranceIsEnabled = _MecOptional.RightEntrance;
             RightExportIsEnabled = _MecOptional.RightExport;
             UpDate();
+
         }
         #region 公開屬性
         /// <summary>
@@ -139,6 +140,39 @@ namespace WPFSTD105.ViewModel
         /// 是否顯示 <see cref="DrillWarehouse.LeftEntrance"/> 的按鈕 
         /// </summary>
         public bool LeftEntranceIsEnabled { get; set; }
+
+
+
+        //20221220
+        /// <summary>
+        /// 是否顯示中軸刀庫的按鈕
+        /// </summary>
+        public Visibility MiddleVisibility { get { return GD_STD.Properties.Optional.Default.Middle ? Visibility.Visible : Visibility.Collapsed; } }
+        /// <summary>
+        /// 是否顯示左軸出口刀庫的按鈕 
+        /// </summary>
+        public Visibility LeftExportVisibility { get { return GD_STD.Properties.Optional.Default.LeftExport ? Visibility.Visible : Visibility.Collapsed; } }
+        /// <summary>
+        /// 是否顯示右軸出口刀庫的按鈕 
+        /// </summary>
+        public Visibility RightExportVisibility { get { return GD_STD.Properties.Optional.Default.RightExport ? Visibility.Visible : Visibility.Collapsed; } }
+        /// <summary>
+        /// 是否顯示 <see cref="DrillWarehouse.RightEntrance"/> 的按鈕 
+        /// </summary>
+        public Visibility RightEntranceVisibility { get { return GD_STD.Properties.Optional.Default.RightEntrance ? Visibility.Visible : Visibility.Collapsed; } }
+        /// <summary>
+        /// 是否顯示 <see cref="DrillWarehouse.LeftEntrance"/> 的按鈕 
+        /// </summary>
+        public Visibility LeftEntranceVisibility { get { return GD_STD.Properties.Optional.Default.LeftEntrance ? Visibility.Visible : Visibility.Collapsed; } }
+
+        public bool ToolMActivityButtonVisibilityBoolean { get; set; } = true;
+
+
+
+
+
+
+
         /// <summary>
         /// 選擇<see cref="DrillWarehouse.Middle"/>
         /// </summary>
@@ -147,10 +181,24 @@ namespace WPFSTD105.ViewModel
         #region 私有屬性
         private FluentAPI.OptionSettings _MecOptional = new STDSerialization().GetOptionSettings();
         private DRILL_POSITION DRILL_POSITION { get; set; } = DRILL_POSITION.MIDDLE;
+
+        private GD_STD.DrillWarehouse _drillwarehouse = null;
         /// <summary>
         /// 使用者刀庫設定
         /// </summary>
-        private GD_STD.DrillWarehouse _DrillWarehouse { get; set; }
+        private GD_STD.DrillWarehouse _DrillWarehouse
+        {
+            get
+            {
+                if (_drillwarehouse == null)
+                    _drillwarehouse = ReadCodesysMemor.GetDrillWarehouse();
+                return _drillwarehouse;
+            }
+            set
+            {
+                _drillwarehouse = value;
+            }
+        }
         #endregion
         #region 命令
         /// <summary>
@@ -196,6 +244,7 @@ namespace WPFSTD105.ViewModel
                 //DrillEditing = _MecOptional.Middle;
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.Middle));
                 UseSelected = DrillTools(_DrillWarehouse.Middle, true);
+                UpDate();
             });
         }
 
@@ -212,6 +261,7 @@ namespace WPFSTD105.ViewModel
                 //DrillEditing = _MecOptional.LeftExport;
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.LeftExport));
                 UseSelected = DrillTools(_DrillWarehouse.LeftExport, true);
+                UpDate();
             });
         }
 
@@ -228,6 +278,7 @@ namespace WPFSTD105.ViewModel
                 //DrillEditing = _MecOptional.RightExport;
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.RightExport));
                 UseSelected = DrillTools(_DrillWarehouse.RightExport, true);
+                UpDate();
             });
         }
 
@@ -259,6 +310,7 @@ namespace WPFSTD105.ViewModel
                 //DrillEditing = _MecOptional.LeftEntrance;
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.LeftEntrance));
                 UseSelected = DrillTools(_DrillWarehouse.LeftEntrance, true);
+                UpDate();
             });
         }
 
@@ -275,6 +327,7 @@ namespace WPFSTD105.ViewModel
                 //DrillEditing = _MecOptional.RightEntrance;
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.RightEntrance));
                 UseSelected = DrillTools(_DrillWarehouse.RightEntrance, true);
+                UpDate();
             });
         }
         /// <summary>
@@ -348,41 +401,98 @@ namespace WPFSTD105.ViewModel
         }
 
 
-        public WPFBase.RelayCommand CloseToolMagazineCommand 
+        public WPFBase.RelayParameterizedCommand ToolMagazineActiveCommand
         { 
             get
             {
-                return new WPFBase.RelayCommand(() =>
+                return new WPFBase.RelayParameterizedCommand(el =>
                 {
+                    _DrillWarehouse = ReadCodesysMemor.GetDrillWarehouse();
                     //A  MiddleCommand = Middle(); this.IsSelectdMiddle = true;
                     //B  LeftExportCommand = LeftExport(); this.IsSelectdLeftExport = true;
                     //C  RightExportCommand = RightExport(); this.IsSelectdRightExport = true;
                     //D  LeftEntranceCommand = LeftEntrance(); this.IsSelectdLeftEntrance = true;
                     //E  RightEntranceCommand = RightEntrance(); this.IsSelectdRightEntrance = true;
+                    if (el is bool)
+                    {
+                        var Activity = (bool)el;
+                        if (Optional.Default.Middle && this.IsSelectdMiddle)
+                        {
+                            _MecOptional.Middle = Activity;
+                            if (!Activity)
+                            {
+                                for (int i = 0; i < _DrillWarehouse.Middle.Length; i++)
+                                {
+                                    _DrillWarehouse.Middle[i] = new DrillSetting();
+                                    _DrillWarehouse.Middle[i].IsCurrent = (i == 0);
+                                }
+                            }
+                        }
 
-                    if (Optional.Default.Middle && this.IsSelectdMiddle)
-                        _MecOptional.Middle = !_MecOptional.Middle;
+                        if (Optional.Default.LeftExport && this.IsSelectdLeftExport)
+                        {
+                            _MecOptional.LeftExport = Activity;
+                            if (!Activity)
+                            {
+                                for (int i = 0; i < _DrillWarehouse.LeftExport.Length; i++)
+                                {
+                                    _DrillWarehouse.LeftExport[i] = new DrillSetting();
+                                    _DrillWarehouse.LeftExport[i].IsCurrent = (i == 0);
+                                }
+                            }
+                        }
 
-                    if (Optional.Default.LeftExport && this.IsSelectdLeftExport)
-                        _MecOptional.LeftExport = !_MecOptional.LeftExport;
+                        if (Optional.Default.LeftEntrance && this.IsSelectdLeftEntrance)
+                        {
+                            _MecOptional.LeftEntrance = Activity;
+                            if (!Activity)
+                            {
+                                for (int i = 0; i < _DrillWarehouse.LeftEntrance.Length; i++)
+                                {
+                                    _DrillWarehouse.LeftEntrance[i] = new DrillSetting();
+                                    _DrillWarehouse.LeftEntrance[i].IsCurrent = (i == 0);
+                                }
+                            }
+                        }
 
-                    if ( Optional.Default.LeftEntrance && this.IsSelectdLeftEntrance)
-                        _MecOptional.LeftEntrance = !_MecOptional.LeftEntrance;
+                        if (Optional.Default.RightEntrance && this.IsSelectdRightEntrance)
+                        {
+                            _MecOptional.RightEntrance = Activity;
+                            if (!Activity)
+                            {
+                                for (int i = 0; i < _DrillWarehouse.RightEntrance.Length; i++)
+                                {
+                                    _DrillWarehouse.RightEntrance[i] = new DrillSetting();
+                                    _DrillWarehouse.RightEntrance[i].IsCurrent = (i == 0);
+                                }
+                            }
+                        }
 
-                    if( Optional.Default.RightEntrance && this.IsSelectdRightEntrance)
-                        _MecOptional.RightEntrance = !_MecOptional.RightEntrance;
+                        if (Optional.Default.RightExport && this.IsSelectdRightExport)
+                        {
+                            _MecOptional.RightExport = Activity;
+                            if (!Activity)
+                            {
+                                for (int i = 0; i < _DrillWarehouse.RightExport.Length; i++)
+                                {
+                                    _DrillWarehouse.RightExport[i] = new DrillSetting();
+                                    _DrillWarehouse.RightExport[i].IsCurrent = (i == 0);
+                                }
+                            }
+                        }
 
-                    if ( Optional.Default.RightExport && this.IsSelectdRightExport)
-                        _MecOptional.RightExport = !_MecOptional.RightExport;
+                        //寫入設定檔
+                        new STDSerialization().SetOptionSettings(_MecOptional);
+
+                        //寫入codesys
+                        MecOptional mecOptional = JsonConvert.DeserializeObject<MecOptional>(_MecOptional.ToString());
+                        WriteCodesysMemor.SetMecOptional(mecOptional);//寫入記憶體''
+
+                        WriteCodesysMemor.SetDrillWarehouse(_DrillWarehouse);//寫入記憶體
+                        UpDate();
+                    }
 
 
-                    new STDSerialization().SetOptionSettings(_MecOptional);
-
-                    MecOptional mecOptional = JsonConvert.DeserializeObject<MecOptional>(_MecOptional.ToString());
-                    WriteCodesysMemor.SetMecOptional(mecOptional);//寫入記憶體''
-                  
-                    //WriteCodesysMemor.SetDrillWarehouse();
-                    UpDate();
                 });
             }
         }
@@ -398,52 +508,79 @@ namespace WPFSTD105.ViewModel
         private void UpDate()
         {
             _DrillWarehouse = ReadCodesysMemor.GetDrillWarehouse(); //讀取記憶體目前的刀庫參數
-
             //查看刀庫
-            /*if (!_MecOptional.LeftExport) //沒有左軸出口刀庫
+           /* if (!_MecOptional.LeftExport) //沒有左軸出口刀庫
             {
-                DrillSetting drill = _DrillWarehouse.LeftExport[0];
-                drill.IsCurrent = true;
-                _DrillWarehouse.LeftExport = new DrillSetting[1] { drill };
+                //DrillSetting drill = _DrillWarehouse.LeftExport[0];
+                //drill.IsCurrent = true;
+                // _DrillWarehouse.LeftExport = new DrillSetting[1] { drill };
 
             }
             if (!_MecOptional.LeftEntrance) //如果沒有入口刀庫
             {
-                this.LeftEntranceIsEnabled = false;
+                //this.LeftEntranceIsEnabled = false;
             }
             if (!_MecOptional.RightExport)
             {
-                DrillSetting drill = _DrillWarehouse.RightExport[0];
-                drill.IsCurrent = true;
-                _DrillWarehouse.RightExport = new DrillSetting[1] { drill };
+                //DrillSetting drill = _DrillWarehouse.RightExport[0];
+                //drill.IsCurrent = true;
+                //_DrillWarehouse.RightExport = new DrillSetting[1] { drill };
+                for (int i = 1; i < _DrillWarehouse.RightExport.Length; i++)
+                {
+                    _DrillWarehouse.RightExport[i] = new DrillSetting();
+                    _DrillWarehouse.RightExport[i].IsCurrent = false;
+                }
+                _DrillWarehouse.RightExport[0].IsCurrent = true;
             }
             if (!_MecOptional.RightEntrance)
             {
-                this.RightEntranceIsEnabled = false;
+                //this.RightEntranceIsEnabled = false;
             }
             if (!_MecOptional.Middle)
             {
                 //DrillEditing = false;
-                DrillSetting drill = _DrillWarehouse.Middle[0];
-                drill.IsCurrent = true;
-                _DrillWarehouse.Middle = new DrillSetting[1] { drill };
+                //DrillSetting drill = _DrillWarehouse.Middle[0];
+                //drill.IsCurrent = true;
+                //_DrillWarehouse.Middle = new DrillSetting[1] { drill };
+                for (int i = 1; i < _DrillWarehouse.Middle.Length; i++)
+                {
+                    _DrillWarehouse.Middle[i] = new DrillSetting();
+                    _DrillWarehouse.Middle[i].IsCurrent = false;
+                }
+                _DrillWarehouse.Middle[0].IsCurrent = true;
             }*/
             /*選擇刀庫的位置,並顯示在介面上(裝載在主軸上的刀具)*/
             //選擇中軸刀庫
             if (IsSelectdMiddle)
+            {
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.Middle));
+                ToolMActivityButtonVisibilityBoolean = !_MecOptional.Middle;
+
+            }
             //選擇左軸入料口刀庫
             else if (IsSelectdLeftEntrance)
+            {
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.LeftEntrance));
+                ToolMActivityButtonVisibilityBoolean = !_MecOptional.LeftEntrance;
+            }
             //選擇左軸出料口刀庫
             else if (IsSelectdLeftExport)
+            {
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.LeftExport));
+                ToolMActivityButtonVisibilityBoolean = !_MecOptional.LeftExport;
+            }
             //選擇右軸入料口刀庫
             else if (IsSelectdRightEntrance)
+            {
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.RightEntrance));
+                ToolMActivityButtonVisibilityBoolean = !_MecOptional.RightEntrance;
+            }
             //選擇右軸出料口刀庫
             else if (IsSelectdRightExport)
+            {
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.RightExport));
+                ToolMActivityButtonVisibilityBoolean = !_MecOptional.RightExport;
+            }
             /*選擇刀庫的位置,並顯示在介面上(裝載在主軸上面的刀具)*/
             //選擇中軸
             if (IsCurrentMiddle)

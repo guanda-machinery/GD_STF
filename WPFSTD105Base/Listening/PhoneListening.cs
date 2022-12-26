@@ -121,7 +121,7 @@ namespace WPFSTD105.Listening
             }
             catch (Exception ex)
             {
-                if (TimeoutNumber < 20)
+                if (TimeoutNumber < 50)
                 {
                     log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(ex.Message, ex.StackTrace, $"嘗試重新連線 {count} 次...");
                     TimeoutNumber++;

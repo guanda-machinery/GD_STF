@@ -33,7 +33,7 @@ namespace STD_105
     /// </summary>
     public partial class GraphWin : Window
     {
-        public ObSettingVM ViewModel { get; set; } = new ObSettingVM();
+        private ObSettingVM ObViewModel = new ObSettingVM();
         /// <summary>
         /// nc 設定檔
         /// </summary>
@@ -74,7 +74,7 @@ namespace STD_105
         public GraphWin()
         {
             InitializeComponent();
-            DataContext = ViewModel;
+            DataContext = ObViewModel;
             model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             drawing.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             model.ActionMode = actionType.None;
@@ -106,9 +106,9 @@ namespace STD_105
             //平移滑鼠中鍵
             model.Pan.MouseButton = new MouseButton(mouseButtonsZPR.Middle, modifierKeys.None);
             model.ActionMode = actionType.SelectByBox;
-            if (ViewModel.Reductions == null)
+            if (ObViewModel.Reductions == null)
             {
-                ViewModel.Reductions = new ReductionList(model, drawing); //紀錄使用找操作
+                ObViewModel.Reductions = new ReductionList(model, drawing); //紀錄使用找操作
             }
 
             #endregion
@@ -164,8 +164,8 @@ namespace STD_105
                 ReadFile readFile = new ReadFile($@"{ApplicationVM.DirectoryDevPart()}\{DataPath}.dm", new FileSerializerExt(devDept.Serialization.contentType.GeometryAndTessellation)); //讀取檔案內容
                 readFile.DoWork();//開始工作
                 readFile.AddToScene(model);//將讀取完的檔案放入到模型
-                ViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
-                ViewModel.GetSteelAttr();
+                ObViewModel.WriteSteelAttr((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData);//寫入到設定檔內
+                ObViewModel.GetSteelAttr();
                 model.Blocks[1] = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);//改變讀取到的圖塊變成自訂義格式
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
                 for (int i = 0; i < model.Entities.Count; i++)//逐步展開 3d 模型實體
@@ -252,7 +252,7 @@ namespace STD_105
 #if DEBUG
             log4net.LogManager.GetLogger("加入物件").Debug("檢測用戶輸入");
 #endif
-            if (ViewModel.SteelAttr.PartNumber == "" || ViewModel.SteelAttr.PartNumber == null)//檢測用戶是否有輸入零件編號
+            if (ObViewModel.SteelAttr.PartNumber == "" || ObViewModel.SteelAttr.PartNumber == null)//檢測用戶是否有輸入零件編號
             {
                 //MessageBox.Show("請輸入零件編號", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,
@@ -262,11 +262,11 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 
                 return false;
             }
-            if (ViewModel.SteelAttr.Length <= 0)//檢測用戶長度是否有大於0
+            if (ObViewModel.SteelAttr.Length <= 0)//檢測用戶長度是否有大於0
             {
                 //MessageBox.Show("長度不可以小於等於 0", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,
@@ -276,10 +276,10 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
-            if (ViewModel.SteelAttr.Number <= 0) //檢測用戶是否零件數量大於0
+            if (ObViewModel.SteelAttr.Number <= 0) //檢測用戶是否零件數量大於0
             {
                 //MessageBox.Show("數量不可以小於等於 0", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,
@@ -289,10 +289,10 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
-            if (ViewModel.DataCorrespond.FindIndex(el => el.Number == ViewModel.SteelAttr.PartNumber) != -1)
+            if (ObViewModel.DataCorrespond.FindIndex(el => el.Number == ObViewModel.SteelAttr.PartNumber) != -1)
             {
                 //MessageBox.Show("重複編號", "通知", MessageBoxButton.OK, MessageBoxImage.Exclamation, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                 WinUIMessageBox.Show(null,
@@ -302,7 +302,7 @@ namespace STD_105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                 return false;
             }
 #if DEBUG
@@ -321,7 +321,7 @@ namespace STD_105
             log4net.LogManager.GetLogger("在Model按下了右鍵").Debug("查看可用功能");
 #endif
             //開啟刪除功能
-            if (ViewModel.Select3DItem.Count >= 1 && ViewModel.Select3DItem[0].Item is BlockReference)
+            if (ObViewModel.Select3DItem.Count >= 1 && ObViewModel.Select3DItem[0].Item is BlockReference)
             {
 #if DEBUG
                 log4net.LogManager.GetLogger("啟用").Debug("刪除功能");
@@ -333,7 +333,7 @@ namespace STD_105
                 esc2D.Visibility = Visibility.Visible;
             }
             //開啟編輯功能
-            if (ViewModel.Select3DItem.Count == 1 && ViewModel.Select3DItem[0].Item is BlockReference)
+            if (ObViewModel.Select3DItem.Count == 1 && ObViewModel.Select3DItem[0].Item is BlockReference)
             {
 #if DEBUG
                 log4net.LogManager.GetLogger("啟用").Debug("編輯功能");
@@ -342,7 +342,7 @@ namespace STD_105
                 edit2D.Visibility = Visibility.Visible;
             }
             //關閉刪除功能與編輯功能
-            if (ViewModel.Select3DItem.Count == 0)
+            if (ObViewModel.Select3DItem.Count == 0)
             {
 #if DEBUG
                 log4net.LogManager.GetLogger("關閉").Debug("編輯功能、刪除功能、取消功能");
@@ -364,10 +364,10 @@ namespace STD_105
             model.ActionMode = actionType.SelectByBox;
             drawing.ActionMode = actionType.SelectByBox;
             model.Entities.ClearSelection();//清除全部選取的物件
-            ViewModel.Select3DItem.Clear();
-            ViewModel.tem3DRecycle.Clear();
-            ViewModel.Select2DItem.Clear();
-            ViewModel.tem2DRecycle.Clear();
+            ObViewModel.Select3DItem.Clear();
+            ObViewModel.tem3DRecycle.Clear();
+            ObViewModel.Select2DItem.Clear();
+            ObViewModel.tem2DRecycle.Clear();
             model.ClearAllPreviousCommandData();
             drawing.ClearAllPreviousCommandData();
             drawing.SetCurrent(null);
@@ -387,8 +387,8 @@ namespace STD_105
             //}, $@"{ApplicationVM.DirectoryDevPart()}\{ViewModel.SteelAttr.GUID.ToString()}.dm", new FileSerializerExt());
             //writeFile.DoWork();//存取檔案
             STDSerialization ser = new STDSerialization();
-            ser.SetPartModel(ViewModel.SteelAttr.GUID.ToString(), model);
-            ViewModel.SaveDataCorrespond();
+            ser.SetPartModel(ObViewModel.SteelAttr.GUID.ToString(), model);
+            ObViewModel.SaveDataCorrespond();
         }
         /// <summary>
         /// 載入模型

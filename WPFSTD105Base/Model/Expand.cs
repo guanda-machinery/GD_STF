@@ -85,7 +85,7 @@ namespace WPFSTD105.Model
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                     return;
 
                     //throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
@@ -201,7 +201,7 @@ namespace WPFSTD105.Model
                         {
                             var Path = ApplicationVM.DirectoryDevPart();
                             var _path = string.Empty;
-                            foreach (var p in Path)
+                            /*foreach (var p in Path)
                             {
                                 switch (p)
                                 {
@@ -212,16 +212,16 @@ namespace WPFSTD105.Model
                                         _path += p;
                                         break;
                                 }
-                            }
+                            }*/
 
                             WinUIMessageBox.Show(null,
-                                $"Dev_Part資料:{_path}\\{DataName}.dm\r\n讀取失敗",
+                                $"Dev_Part資料:{Path}\\{DataName}.dm\r\n讀取失敗",
                                 "通知",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Exclamation,
                                 MessageBoxResult.None,
                                 MessageBoxOptions.None,
-                                FloatingMode.Popup);
+                                 FloatingMode.Window);
                             return;
                         }
                         file.DoWork();
@@ -409,7 +409,7 @@ namespace WPFSTD105.Model
         //            MessageBoxImage.Exclamation,
         //            MessageBoxResult.None,
         //            MessageBoxOptions.None,
-        //            FloatingMode.Popup);
+        //             FloatingMode.Window);
         //            return;
 
         //            //throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
@@ -501,7 +501,7 @@ namespace WPFSTD105.Model
         //                        MessageBoxImage.Exclamation,
         //                        MessageBoxResult.None,
         //                        MessageBoxOptions.None,
-        //                        FloatingMode.Popup);
+        //                         FloatingMode.Window);
         //                    return;
         //                }
         //                file.DoWork();
@@ -1350,7 +1350,7 @@ namespace WPFSTD105.Model
 
 
                     ObSettingVM obvm = new ObSettingVM();
-                    obvm.RemoveHypotenusePoint(model, "ManHypotenuse");
+                    obvm.RemoveHypotenusePoint(model, HypotenuseTYPE.HypotenuseMan.ToString());
 
                     //isHypotenuse 可用(True) 表示 有斜邊
                     if (RunHypotenuseEnable(model))
@@ -1450,7 +1450,7 @@ namespace WPFSTD105.Model
                 for (int j = 0; j < model.Blocks[i].Entities.Count; j++)
                 {
                     var a = model.Blocks[i].Entities[j];
-                    if (a.EntityData is BoltAttr && ((BoltAttr)a.EntityData).BlockName == "ManHypotenuse")
+                    if (a.EntityData is BoltAttr && ((BoltAttr)a.EntityData).BlockName == HypotenuseTYPE.HypotenuseMan.ToString())
                         return;
                 }
             }
@@ -1459,13 +1459,13 @@ namespace WPFSTD105.Model
 
 
 
-            obvm.RemoveHypotenusePoint(model, "AutoHypotenuse");
+            obvm.RemoveHypotenusePoint(model, HypotenuseTYPE.HypotenuseAuto.ToString());
 
             // 斜邊自動執行程式
             SteelAttr TmpSteelAttr = (SteelAttr)model.Entities[model.Entities.Count - 1].EntityData;
             //GetViewToViewModel(false, TmpSteelAttr.GUID);
             obvm.SteelAttr = (SteelAttr)TmpSteelAttr.DeepClone();
-
+            obvm.GroupBoltsAttr = new GroupBoltsAttr();
             //List<GroupBoltsAttr> delList = model.Blocks
             //    .SelectMany(x => x.Entities)
             //    .Where(y =>
@@ -1562,8 +1562,9 @@ namespace WPFSTD105.Model
                     TmpUL = new Point3D(tmp1[1].min, tmp1[1].key);
                     TmpUR = new Point3D(tmp1[1].max, tmp1[1].key);
 
-                    if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
-                        return;
+                    //if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
+                        if ((Math.Abs(TmpUL.X - TmpDL.X) <= 0.5) && (Math.Abs(TmpUR.X - TmpDR.X) <= 0.5))
+                            return;
 
 
                     if (TmpUL.X > TmpDL.X)
@@ -1596,11 +1597,13 @@ namespace WPFSTD105.Model
                         tmplist1.Add(PointUR2);
                     }
 
-                    if (!model.Entities.Any(x => ((x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
-                    ((GroupBoltsAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT &&
-                    ((GroupBoltsAttr)x.EntityData).Face == FACE.BACK &&
-                    tmplist1.Select(y => y.X).ToList().Contains(((GroupBoltsAttr)x.EntityData).X) &&
-                    tmplist1.Select(y => y.Y).ToList().Contains(((GroupBoltsAttr)x.EntityData).Y)))))
+                    //if (!model.Entities.Any(x => ((x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
+                    //((GroupBoltsAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT &&
+                    //((GroupBoltsAttr)x.EntityData).Face == FACE.BACK &&
+                    //tmplist1.Select(y => y.X).ToList().Contains(((GroupBoltsAttr)x.EntityData).X) &&
+                    //tmplist1.Select(y => y.Y).ToList().Contains(((GroupBoltsAttr)x.EntityData).Y)))))
+
+                    if (!isHypotenusePointExist(model, FACE.BACK, AXIS_MODE.HypotenusePOINT, tmplist1))
                     {
                         for (int z = 0; z < tmplist1.Count; z++)
                         {
@@ -1612,7 +1615,7 @@ namespace WPFSTD105.Model
                             TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
                             TmpBoltsArr.X = tmplist1[z].X;
                             TmpBoltsArr.Y = tmplist1[z].Y;
-                            TmpBoltsArr.BlockName = "AutoHypotenuse";
+                            TmpBoltsArr.BlockName = HypotenuseTYPE.HypotenuseAuto.ToString();
                             TmpBoltsArr.GUID = Guid.NewGuid();
                             Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
                         }
@@ -1644,8 +1647,9 @@ namespace WPFSTD105.Model
                     TmpUL = new Point3D(tmp2[1].min, tmp2[1].key);
                     TmpUR = new Point3D(tmp2[1].max, tmp2[1].key);
 
-                    if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
-                        return;
+                    //if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
+                        if ((Math.Abs(TmpUL.X - TmpDL.X) <= 0.5) && (Math.Abs(TmpUR.X - TmpDR.X) <= 0.5))
+                            return;
 
 
                     if (TmpUL.X > TmpDL.X)
@@ -1677,11 +1681,12 @@ namespace WPFSTD105.Model
                         tmplist1.Add(PointUR1);
                         tmplist1.Add(PointUR2);
                     }
-                    if (!model.Entities.Any(x => (x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
-                    ((GroupBoltsAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT &&
-                    ((GroupBoltsAttr)x.EntityData).Face == FACE.FRONT &&
-                    tmplist1.Select(y => y.X).ToList().Contains(((GroupBoltsAttr)x.EntityData).X) &&
-                    tmplist1.Select(y => y.Y).ToList().Contains(((GroupBoltsAttr)x.EntityData).Y))))
+                    //if (!model.Entities.Any(x => (x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
+                    //((GroupBoltsAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT &&
+                    //((GroupBoltsAttr)x.EntityData).Face == FACE.FRONT &&
+                    //tmplist1.Select(y => y.X).ToList().Contains(((GroupBoltsAttr)x.EntityData).X) &&
+                    //tmplist1.Select(y => y.Y).ToList().Contains(((GroupBoltsAttr)x.EntityData).Y))))
+                    if (!isHypotenusePointExist(model, FACE.FRONT, AXIS_MODE.HypotenusePOINT, tmplist1))
                     {
                         for (int z = 0; z < tmplist1.Count; z++)
                         {
@@ -1693,7 +1698,7 @@ namespace WPFSTD105.Model
                             TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
                             TmpBoltsArr.X = tmplist1[z].X;
                             TmpBoltsArr.Y = tmplist1[z].Y;
-                            TmpBoltsArr.BlockName = "AutoHypotenuse";
+                            TmpBoltsArr.BlockName = HypotenuseTYPE.HypotenuseAuto.ToString();
                             TmpBoltsArr.GUID = Guid.NewGuid();
                             Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
                         }
@@ -1739,8 +1744,8 @@ namespace WPFSTD105.Model
                     else
                         TmpDL = new Point3D(YDOWN2List[1].min, YDOWN2List[1].key);
 
-
-                    if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
+                    // TmpUL.X == TmpDL.X && TmpUR.X == TmpDR.X && 
+                    if (( Math.Abs(TmpUL.X-TmpDL.X)<=0.5) && (Math.Abs(TmpUR.X - TmpDR.X) <= 0.5))
                         return;
 
 
@@ -1775,10 +1780,11 @@ namespace WPFSTD105.Model
                         tmplist1.Add(PointUR1);
                         tmplist1.Add(PointUR2);
                     }
-                    if (!model.Entities.Any(x => (x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
-                    ((GroupBoltsAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT &&
-                    ((GroupBoltsAttr)x.EntityData).Face == FACE.TOP &&
-                    tmplist1.Contains(new Point3D { X = ((GroupBoltsAttr)x.EntityData).X, Y = ((GroupBoltsAttr)x.EntityData).Y }))))
+                    //if (!model.Entities.Any(x => (x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
+                    //((GroupBoltsAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT &&
+                    //((GroupBoltsAttr)x.EntityData).Face == FACE.TOP &&
+                    //tmplist1.Contains(new Point3D { X = ((GroupBoltsAttr)x.EntityData).X, Y = ((GroupBoltsAttr)x.EntityData).Y }))))
+                    if(!isHypotenusePointExist(model,FACE.TOP, AXIS_MODE.HypotenusePOINT, tmplist1))
                     {
                         for (int z = 0; z < tmplist1.Count; z++)
                         {
@@ -1788,7 +1794,7 @@ namespace WPFSTD105.Model
                             TmpBoltsArr.xCount = 1;
                             TmpBoltsArr.yCount = 1;
                             TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
-                            TmpBoltsArr.BlockName = "AutoHypotenuse";
+                            TmpBoltsArr.BlockName = HypotenuseTYPE.HypotenuseAuto.ToString();
                             TmpBoltsArr.X = tmplist1[z].X;
                             TmpBoltsArr.Y = tmplist1[z].Y;
                             TmpBoltsArr.GUID = Guid.NewGuid();
@@ -1891,6 +1897,7 @@ namespace WPFSTD105.Model
                     }
 
                     B3DB = new List<Bolts3DBlock>();
+                    
                     for (int z = 0; z < HypotenusePoint.Count; z++)
                     {
                         GroupBoltsAttr TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.TOP, START_HOLE.START);
@@ -1902,15 +1909,49 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.X = HypotenusePoint[z].Item1;
                         TmpBoltsArr.Y = HypotenusePoint[z].Item2;
                         TmpBoltsArr.GUID = Guid.NewGuid();
-                        TmpBoltsArr.BlockName = "ManHypotenuse";
-                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool check);
-                        if (bolts.hasOutSteel)
+                        TmpBoltsArr.BlockName = HypotenuseTYPE.HypotenuseMan.ToString();
+                        Bolts3DBlock bolts = new Bolts3DBlock(new GroupBoltsAttr());
+                        List<Point3D> list = new List<Point3D> ();
+                        list.Add(new Point3D() { X = HypotenusePoint[z].Item1, Y = HypotenusePoint[z].Item2 });// HypotenusePoint[z].Select(x => new Point3D { X = x.Item1, Y = x.Item2 }).ToList();
+                        if (isHypotenusePointExist(model, FACE.TOP, AXIS_MODE.HypotenusePOINT, list))
                         {
-                            hasOutSteel = true;
+                            if (model.Blocks.Where(x => x.Name != "RootBlock")
+                                .SelectMany(x => x.Entities, (aa, bb) => new { Block = aa, aa.Entities, bb.EntityData })
+                                .Any(x => x.EntityData != null &&
+                                x.EntityData.GetType() == typeof(BoltAttr) &&
+                                ((BoltAttr)x.EntityData).Face == FACE.TOP &&
+                                ((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT &&
+                                list.Contains(new Point3D { X = ((BoltAttr)x.EntityData).X, Y = ((BoltAttr)x.EntityData).Y })
+                                ))
+                            {
+                                var entities = model.Blocks.Where(x => x.Name != "RootBlock")
+                                .SelectMany(x => x.Entities, (aa, bb) => new { Block = aa, aa.Entities, bb.EntityData })
+                                .FirstOrDefault(x => x.EntityData != null &&
+                                x.EntityData.GetType() == typeof(BoltAttr) &&
+                                ((BoltAttr)x.EntityData).Face == FACE.TOP &&
+                                ((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT &&
+                                list.Contains(new Point3D { X = ((BoltAttr)x.EntityData).X, Y = ((BoltAttr)x.EntityData).Y })
+                                ).Entities;
+                                bolts = new Bolts3DBlock(entities, TmpBoltsArr);
+                            }
                         }
-                        B3DB.Add(bolts);
+                        else
+                        {
+                            bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool check);
+                           
+                            if (bolts.hasOutSteel)
+                            {
+                                hasOutSteel = true;
+                            }
+                        }
+                            B3DB.Add(bolts);
+
+
+
+
                         //BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                         //Add2DHole(bolts, false);//加入孔位不刷新 2d 視圖
+
                     }
                     foreach (Bolts3DBlock item in B3DB)
                     {
@@ -1970,6 +2011,7 @@ namespace WPFSTD105.Model
                     }
 
                     B3DB = new List<Bolts3DBlock>();
+                    //list = HypotenusePoint.Select(x => new Point3D { X = x.Item1, Y = x.Item2 }).ToList();
                     for (int z = 0; z < HypotenusePoint.Count; z++)
                     {
                         GroupBoltsAttr TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.BACK, START_HOLE.START);
@@ -1981,8 +2023,24 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.X = HypotenusePoint[z].Item1;
                         TmpBoltsArr.Y = HypotenusePoint[z].Item2;
                         TmpBoltsArr.GUID = Guid.NewGuid();
-                        TmpBoltsArr.BlockName = "ManHypotenuse";
-                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+                        TmpBoltsArr.BlockName = HypotenuseTYPE.HypotenuseMan.ToString();
+                        Bolts3DBlock bolts; ;
+                        List<Point3D> list = new List<Point3D>();
+                        list.Add(new Point3D() { X = HypotenusePoint[z].Item1, Y = HypotenusePoint[z].Item2 });
+                        if (isHypotenusePointExist(model, FACE.TOP, AXIS_MODE.HypotenusePOINT, list))
+                        {
+                            var entities = model.Blocks.Where(x => x.Name != "RootBlock")
+                                .SelectMany(x => x.Entities, (aa, bb) => new { Block = aa, aa.Entities, bb.EntityData })
+                                .FirstOrDefault(x =>
+                                x.EntityData.GetType() == typeof(BoltAttr) &&
+                                ((BoltAttr)x.EntityData).Face == FACE.BACK &&
+                                ((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT &&
+                                list.Contains(new Point3D { X = ((GroupBoltsAttr)x.EntityData).X, Y = ((GroupBoltsAttr)x.EntityData).Y })
+                                ).Entities;
+                            bolts = new Bolts3DBlock(entities, TmpBoltsArr);
+                        }
+                        else { bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea); }
+
                         if (bolts.hasOutSteel)
                         {
                             hasOutSteel = true;
@@ -2047,6 +2105,7 @@ namespace WPFSTD105.Model
                     }
 
                     B3DB = new List<Bolts3DBlock>();
+                    //list = HypotenusePoint.Select(x => new Point3D { X = x.Item1, Y = x.Item2 }).ToList();
                     for (int z = 0; z < HypotenusePoint.Count; z++)
                     {
                         GroupBoltsAttr TmpBoltsArr = obvm.GetHypotenuseBoltsAttr(FACE.FRONT, START_HOLE.START);
@@ -2057,9 +2116,26 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.Mode = AXIS_MODE.HypotenusePOINT;
                         TmpBoltsArr.X = HypotenusePoint[z].Item1;
                         TmpBoltsArr.Y = HypotenusePoint[z].Item2;
-                        TmpBoltsArr.BlockName = "ManHypotenuse";
+                        TmpBoltsArr.BlockName = HypotenuseTYPE.HypotenuseMan.ToString();
                         TmpBoltsArr.GUID = Guid.NewGuid();
-                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+                        Bolts3DBlock bolts;
+                        List<Point3D> list = new List<Point3D>();
+                        list.Add(new Point3D() { X = HypotenusePoint[z].Item1, Y = HypotenusePoint[z].Item2 });
+                        if (isHypotenusePointExist(model, FACE.FRONT, AXIS_MODE.HypotenusePOINT, list))
+                        {
+                            var entities = model.Blocks.Where(x => x.Name != "RootBlock")
+                                .SelectMany(x => x.Entities, (aa, bb) => new { Block = aa, aa.Entities, bb.EntityData })
+                                .FirstOrDefault(x =>
+                                x.EntityData.GetType() == typeof(BoltAttr) &&
+                                ((BoltAttr)x.EntityData).Face == FACE.FRONT &&
+                                ((BoltAttr)x.EntityData).Mode == AXIS_MODE.HypotenusePOINT &&
+                                list.Contains(new Point3D { X = ((GroupBoltsAttr)x.EntityData).X, Y = ((GroupBoltsAttr)x.EntityData).Y })
+                                ).Entities;
+                            bolts = new Bolts3DBlock(entities, TmpBoltsArr);
+                        }
+                        else { bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea); }
+
+
                         if (bolts.hasOutSteel)
                         {
                             hasOutSteel = true;
@@ -2144,8 +2220,31 @@ namespace WPFSTD105.Model
 
         }
 
+        /// <summary>
+        /// 是否存在自定義斜邊打點，true存在
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static bool isHypotenuseCustomerExist(this devDept.Eyeshot.Model model)
+        {
+           bool exist = model.Blocks.Where(x => x.Name != "RootBlock").SelectMany(x => x.Entities, (a, b) => new { Block = a, a.Entities, b.EntityData })
+                .Any(x =>
+                x.EntityData.GetType() == typeof(BoltAttr) &&
+                ((BoltAttr)x.EntityData).BlockName == HypotenuseTYPE.HypotenuseCustomer.ToString());
+            return exist;
+        }
 
-
+        /// <summary>
+        /// 比對list中的點位是否在Entities中出現過，比對X.Y值、Face及鑽孔模式
+        /// </summary>
+        /// <returns></returns>
+        public static bool isHypotenusePointExist(this devDept.Eyeshot.Model model,FACE face,AXIS_MODE mode, List<Point3D> list) 
+        {
+            return model.Entities.Any(x => ((x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
+                          ((GroupBoltsAttr)x.EntityData).Mode == mode &&
+                          ((GroupBoltsAttr)x.EntityData).Face == face &&
+                          list.Contains(new Point3D { X = ((GroupBoltsAttr)x.EntityData).X, Y = ((GroupBoltsAttr)x.EntityData).Y }))));
+        }
 
 
 

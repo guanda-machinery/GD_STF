@@ -176,8 +176,8 @@ namespace WPFSTD105
 
 
                     //ProcessingScreenW.Show();
-                if (IsNcLoad || IsBomLoad) //如果有載入過報表
-                //if (false) //如果有載入過報表
+                //if (IsNcLoad || IsBomLoad) //如果有載入過報表
+                if (false) //如果有載入過報表
                 {
                         ProcessingScreenWin.Close();
                         // 2022/08/22 呂宗霖 因螺栓無法找到其歸屬零件編號，故架構師與副總討論後，決議先讓使用者只能匯入一次檔案，若要再次匯入，必須重新新增專案
@@ -188,7 +188,7 @@ namespace WPFSTD105
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
-                    FloatingMode.Popup);
+                     FloatingMode.Window);
                         return;
                     //MessageBoxResult saveAsResult = MessageBox.Show($"請問是否要備份之前載入的檔案", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
                     //if (saveAsResult == MessageBoxResult.Yes) //如果要備份檔案
@@ -440,13 +440,21 @@ namespace WPFSTD105
                        MessageBoxImage.Exclamation,
                        MessageBoxResult.None,
                        MessageBoxOptions.None,
-                       FloatingMode.Popup);
+                        FloatingMode.Window);
 
 
                     //頁面跳轉
                     ProcessingScreenWin.Show();
                     ProcessingScreenWin.ViewModel.Status = $"準備跳轉至製品設定頁面";
-                    WPFSTD105.ViewLocator.OfficeViewModel.CurrentPage = OfficePage.ProductSettings;
+                     if (!WPFSTD105.Properties.SofSetting.Default.OfficeMode)
+                    {
+                        WPFSTD105.ViewLocator.ApplicationViewModel.CurrentPage = ApplicationPage.MachineProductSetting;
+                    }
+                    else
+                    {
+                        WPFSTD105.ViewLocator.OfficeViewModel.CurrentPage = OfficePage.ProductSettings;
+                    }
+
                     ProcessingScreenWin.Close();
 
                 });

@@ -36,7 +36,8 @@ namespace STD_105
                 case OBJECT_TYPE.LB:
                     return "槽鐵";
                 case OBJECT_TYPE.CH:
-                    return "CH型鋼";
+                    //return "CH型鋼";
+                    return "槽鐵";
                 default:
                     return "未知型鋼";
             }
