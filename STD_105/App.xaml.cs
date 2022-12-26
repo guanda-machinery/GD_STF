@@ -145,20 +145,52 @@ namespace STD_105
             //{
             //    Environment.Exit(0);
             //}
+            bool ReadRegister = true;
+            //測試模式專用
+            if (Debugger.IsAttached)
+            {
+                MessageBoxResult DebugModeMessageBoxResult = MessageBox.Show($"目前處在測試環境，是否要跳出選單選擇模式?\r※本視窗只會在Debug模式下出現", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                if (DebugModeMessageBoxResult == MessageBoxResult.Yes)
+                {
+                    ReadRegister = false;
 
-
+                    MessageBoxResult messageBoxResult = MessageBox.Show($"是否要選擇工廠模式 ?", "通知", MessageBoxButton.YesNoCancel, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                    if (messageBoxResult == MessageBoxResult.Yes)//如果是工廠模式
+                    {
+                        WTRegedit("OfficeMode", "0");
+                        //WPFSTD105.Properties.SofSetting.Default.OfficeMode = false;
+                    }
+                    else if (messageBoxResult == MessageBoxResult.No)
+                    {
+                        WTRegedit("OfficeMode", "1");
+                        //WPFSTD105.Properties.SofSetting.Default.OfficeMode = true;
+                    }
+                    else
+                    {
+                        Environment.Exit(0);
+                    }
+                }
+            }
+            
 
             // 讀取登錄檔登入模式 0 => 機台模式, 1=> 辦公室模式
-            string OfficeMode = GetRegistData("OfficeMode");
-            if (OfficeMode == "0")
-                WTRegedit("OfficeMode", OfficeMode);
-
-            if (OfficeMode == "0")//如果是工廠模式
+            var OfficeMode = GetRegistData("OfficeMode");
+            if(OfficeMode is null)
+            {
+                WTRegedit("OfficeMode", "0");
                 WPFSTD105.Properties.SofSetting.Default.OfficeMode = false;
+            }
+            else 
+            {
+                if (OfficeMode ==  "0")//如果是工廠模式
+                    WPFSTD105.Properties.SofSetting.Default.OfficeMode = false;
 
-            else if (OfficeMode == "1")
-                WPFSTD105.Properties.SofSetting.Default.OfficeMode = true;
+                else if (OfficeMode == "1")
+                    WPFSTD105.Properties.SofSetting.Default.OfficeMode = true;
+            }
 
+
+            
 
             //WPFSTD105.Properties.SofSetting.Default.Save();
 #endif
@@ -306,7 +338,7 @@ namespace STD_105
 
             if (registData1 == null) //無對應機碼
             {
-                return "0";
+                return null;
             }
             registData = Paradir.GetValue(name).ToString();
 
