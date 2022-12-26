@@ -342,12 +342,12 @@
                             </dxg:GridControl.View>
                            <dxg:GridControl.ContextMenu>
                                 <ContextMenu>
-                                    <!--<MenuItem Command="{Binding RowAddCommand}"
+                                 <MenuItem Command="{Binding RowAddCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                               Header="加入任務" />
-                                   <MenuItem Command="{Binding DeleteCommand}"
+                                    <!-- <MenuItem Command="{Binding DeleteCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
-                                              Header="移除任務" />-->
+                                              Header="移除任務" /> -->
                                     <MenuItem Command="{Binding RecoverCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                               Visibility="{Binding Finish_UndoneDataViews_SelectedItems,ConverterParameter='Recover' ,Converter={local:MenuItem_FUDataViewsToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"

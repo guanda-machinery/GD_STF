@@ -90,7 +90,7 @@ namespace WPFSTD105.ViewModel
 
 
             //如果有問題再開啟
-            /* int synIndex = 0;
+             int synIndex = 0;
              if (ApplicationViewModel.PanelButton.Key != KEY_HOLE.AUTO) //如果沒有在自動狀況下
              {
                  //如有備份檔就寫回給 Codesys
@@ -133,7 +133,7 @@ namespace WPFSTD105.ViewModel
                          synIndex = i;
                      }
                  }
-             }*/
+             }
 
             //將設定的手臂模式寫入記憶體
             FluentAPI.OptionSettings optionSettings = ser.GetOptionSettings();//
@@ -311,7 +311,40 @@ namespace WPFSTD105.ViewModel
                     {
                         foreach (var EachMaterial in el as IEnumerable<GD_STD.Data.MaterialDataView>)
                         {
-                            InsertMaterial(EachMaterial);
+                            try
+                            {
+                                using (Memor.ReadMemorClient read = new Memor.ReadMemorClient())
+                                using (Memor.WriteMemorClient write = new Memor.WriteMemorClient())
+                                {
+                                    var index = read.GetIndex().ToList();
+                                    var workOther = read.GetWorkOther();
+                                    var workIndex = 0;
+                                    if (index.Count!=0)
+                                        workIndex = index[workOther.Current + 1];
+
+                                    long cWork = _WorkOffset + _WorkSize * workIndex;
+                                    long cInsert = cWork + Marshal.OffsetOf<WorkMaterial>(nameof(WorkMaterial.Insert)).ToInt64();
+                                    index.Insert(workOther.Current + 1, Convert.ToInt16(Finish_UndoneDataViews.IndexOf(EachMaterial)));
+                                    write.SetMonitorWorkOffset(new byte[] { 1 }, cInsert); //寫入準備加工的陣列位置
+                                    write.SetMonitorWorkOffset(index.ToByteArray(), Marshal.OffsetOf<MonitorWork>(nameof(MonitorWork.Index)).ToInt64()); //寫入準備加工的陣列位置
+                                }
+                                AddOperatingLog(LogSourceEnum.Machine, $"加入素材編號：{EachMaterial.MaterialNumber}成功", false);
+                                WinUIMessageBox.Show(null,
+                                    $"加入素材編號：{EachMaterial.MaterialNumber}成功",
+                                    $"通知",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Exclamation,
+                                    MessageBoxResult.None,
+                                    MessageBoxOptions.None,
+                                    FloatingMode.Adorner);
+
+                                //return true;
+
+                            }
+                            catch
+                            {
+                               // return false;
+                            }
                         }
                     }
 
@@ -443,40 +476,6 @@ namespace WPFSTD105.ViewModel
                              FloatingMode.Adorner);
                              AddOperatingLog(LogSourceEnum.Machine, "加入素材失敗！", true);
                          }
-                         /*
-                        try
-                        {
-
-                        using (Memor.ReadMemorClient read = new Memor.ReadMemorClient())
-                        using (Memor.WriteMemorClient write = new Memor.WriteMemorClient())
-                        {
-                            var index = read.GetIndex().ToList();
-                            var workOther = read.GetWorkOther();
-                            var workIndex = index[workOther.Current + 1];
-                            long cWork = _WorkOffset + _WorkSize * workIndex;
-                            long cInsert = cWork + Marshal.OffsetOf<WorkMaterial>(nameof(WorkMaterial.Insert)).ToInt64();
-                            index.Insert(workOther.Current + 1, Convert.ToInt16(Finish_UndoneDataViews.IndexOf(MaterialData)));
-                            write.SetMonitorWorkOffset(new byte[] { 1 }, cInsert); //寫入準備加工的陣列位置
-                            write.SetMonitorWorkOffset(index.ToByteArray(), Marshal.OffsetOf<MonitorWork>(nameof(MonitorWork.Index)).ToInt64()); //寫入準備加工的陣列位置
-                        }
-                        AddOperatingLog(LogSourceEnum.Machine, $"加入素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}成功", false);
-                        WinUIMessageBox.Show(null,
-                            $"加入素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}成功",
-                            $"通知",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Exclamation,
-                            MessageBoxResult.None,
-                            MessageBoxOptions.None,
-                            FloatingMode.Adorner);
-
-                        return true;
-
-                        }
-                        catch
-                        {
-                            return false;
-                        }
-                         */
 
                     }
                 }
@@ -2871,6 +2870,7 @@ namespace WPFSTD105.ViewModel
                             _CreateFileTask = Task.Run(() => { CreateFile(_Model); }, _Cts.Token);
                             _WriteCodesysTask = Task.Run(() => { WriteCodesys(); }, _Cts.Token);
                         }
+
 
                         //如有備份檔就寫回給 Codesys
                         for (int i = synIndex; i < Finish_UndoneDataViews.Count; i++)
