@@ -492,10 +492,10 @@ namespace WPFSTD105.Model
                    ((GroupBoltsAttr)(x.EntityData)).GUID.Value.ToString() == boltCheck[i].Block.Name))
                 {
                     GroupBoltsAttr gba =
-    (GroupBoltsAttr)model.Entities
-    .FirstOrDefault(x => x.EntityData != null &&
-    x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
-   ((GroupBoltsAttr)(x.EntityData)).GUID.Value.ToString() == boltCheck[i].Block.Name).EntityData;
+                        (GroupBoltsAttr)model.Entities
+                        .FirstOrDefault(x => x.EntityData != null &&
+                        x.EntityData.GetType() == typeof(GroupBoltsAttr) &&
+                        ((GroupBoltsAttr)(x.EntityData)).GUID.Value.ToString() == boltCheck[i].Block.Name).EntityData;
                     if (CheckWorkingRange(gba, type, checkValue, list))
                     {
                         if (bolt.Mode != AXIS_MODE.POINT && bolt.Mode != AXIS_MODE.HypotenusePOINT)
