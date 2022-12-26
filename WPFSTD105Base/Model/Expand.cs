@@ -1941,8 +1941,8 @@ namespace WPFSTD105.Model
                             {
                                 hasOutSteel = true;
                             }
-                            B3DB.Add(bolts);
                         }
+                            B3DB.Add(bolts);
 
 
 
