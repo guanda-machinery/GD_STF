@@ -1562,8 +1562,9 @@ namespace WPFSTD105.Model
                     TmpUL = new Point3D(tmp1[1].min, tmp1[1].key);
                     TmpUR = new Point3D(tmp1[1].max, tmp1[1].key);
 
-                    if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
-                        return;
+                    //if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
+                        if ((Math.Abs(TmpUL.X - TmpDL.X) <= 0.5) && (Math.Abs(TmpUR.X - TmpDR.X) <= 0.5))
+                            return;
 
 
                     if (TmpUL.X > TmpDL.X)
@@ -1646,8 +1647,9 @@ namespace WPFSTD105.Model
                     TmpUL = new Point3D(tmp2[1].min, tmp2[1].key);
                     TmpUR = new Point3D(tmp2[1].max, tmp2[1].key);
 
-                    if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
-                        return;
+                    //if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
+                        if ((Math.Abs(TmpUL.X - TmpDL.X) <= 0.5) && (Math.Abs(TmpUR.X - TmpDR.X) <= 0.5))
+                            return;
 
 
                     if (TmpUL.X > TmpDL.X)
