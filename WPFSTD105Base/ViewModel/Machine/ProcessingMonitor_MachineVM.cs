@@ -587,6 +587,7 @@ namespace WPFSTD105.ViewModel
                 {
                     AddOperatingLog(LogSourceEnum.Software, $"已選擇素材編號：{_finish_UndoneDataViews_SelectedItem.MaterialNumber}");
                     MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem);
+
                 }
             }
         }
@@ -668,7 +669,7 @@ namespace WPFSTD105.ViewModel
                         {
                             MachineDrillkeyValueDict[view.MaterialNumber] = GeneratekeyValuePairs(view);
                         }
-
+                        
 
                         var DrillBoltsListDict = new Dictionary<FACE, DrillBoltsBase>();
                         foreach (var keyValuePair in MachineDrillkeyValueDict[view.MaterialNumber])
@@ -794,6 +795,11 @@ namespace WPFSTD105.ViewModel
         }
 
 
+        /// <summary>
+        /// 取得素材加工資料
+        /// </summary>
+        /// <param name="view"></param>
+        /*
         private void GetDrillBoltsItemCollection(MaterialPartDetail view)
         {
             if (view == null)
@@ -903,7 +909,7 @@ namespace WPFSTD105.ViewModel
             }, null);
         }
 
-
+        */
 
 
 
@@ -955,7 +961,7 @@ namespace WPFSTD105.ViewModel
 
                 if (_finish_UndoneDataViewsDetail_SelectedItem != null)
                 {
-                    GetDrillBoltsItemCollection(_finish_UndoneDataViewsDetail_SelectedItem);
+                    //GetDrillBoltsItemCollection(_finish_UndoneDataViewsDetail_SelectedItem);
                     AddOperatingLog(LogSourceEnum.Software, $"已選擇零件編號：{_finish_UndoneDataViewsDetail_SelectedItem.PartNumber}");
                 }
             }
@@ -2517,7 +2523,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                     MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem);
                     HintStep1 = true;
                     //如果切換時有已排程但未加工的零件->清理掉狀態
-                    //ClearPairedMachineData();
+                    ClearPairedMachineData();
 
                 });
             }
@@ -2530,7 +2536,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                 AddOperatingLog(LogSourceEnum.Software, "切換到測試打孔模式");
                 MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem);
                 //如果切換時有已排程但未加工的零件->清理掉狀態並重新上傳
-                //ClearPairedMachineData();
+                ClearPairedMachineData();
 
                 //如果已在電腦模式 不跑這條
                 if (!Input_by_Computer_RadioButtonIsChecked)

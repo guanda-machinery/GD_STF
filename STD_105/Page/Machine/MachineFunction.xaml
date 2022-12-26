@@ -1210,60 +1210,54 @@
                                                 <RowDefinition />
                                             </Grid.RowDefinitions>
                                             <Grid>
-                                                <Border  Height="74"
-                                         Width="834"
+                                                <Border  Margin="0,5,0,15"
                                          Background="#FF242424"
                                          HorizontalAlignment="Center"
-                                         VerticalAlignment="Top"
                                          CornerRadius="12"
                                          BorderThickness="0,5,0,0"
-                                         BorderBrush="#FF1E1E1E" />
-                                                <Border  Height="74"
-                                         Width="834"
-                                         HorizontalAlignment="Center"
-                                         VerticalAlignment="Top"
-                                         CornerRadius="12"
-                                         BorderThickness="0,0,0,5"
-                                         BorderBrush="#FF373737" />
-                                                <StackPanel Orientation="Horizontal"
+                                         BorderBrush="#FF1E1E1E" >
+
+                                                    <StackPanel Orientation="Horizontal"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Top"
-                                            Margin="0,8">
-                                                    <local:ToolMagazineButton ButtonCommand="{Binding MiddleCommand}"
-                                                                        Visibility="{Binding MiddleVisibility}"
+                                            Margin="8">
+                                                        <local:ToolMagazineButton ButtonCommand="{Binding MiddleCommand}"
+                                                                        Visibility="{Binding Middle ,Source={x:Static GD_STD:Optional.Default} , Converter={dx:BooleanToVisibilityConverter}}"
                                                               ButtonImageSource="{StaticResource Clamping}"
                                                               StartState="{Binding IsSelectdMiddle}"
                                                               TitleText="A刀庫"
                                                               SubTitleText="中軸" />
-                                                    <!--  IsEnabled="{Binding MiddleIsEnabled}"-->
-                                                    <local:ToolMagazineButton ButtonCommand="{Binding LeftExportCommand}"
+                                                        <!--  IsEnabled="{Binding MiddleIsEnabled}"-->
+                                                        <local:ToolMagazineButton ButtonCommand="{Binding LeftExportCommand}"
                                                               ButtonImageSource="{StaticResource Clamping}"
                                                               StartState="{Binding IsSelectdLeftExport}"
-                                                                                                                                Visibility="{Binding LeftExportVisibility}"
+                                                                                                                                Visibility="{Binding LeftExport ,Source={x:Static GD_STD:Optional.Default} , Converter={dx:BooleanToVisibilityConverter}}"
                                                               TitleText="B刀庫"
                                                               SubTitleText="左軸"
                                                               Margin="1,0" />
-                                                    <local:ToolMagazineButton ButtonCommand="{Binding RightExportCommand}"
-                                                                              Visibility="{Binding RightExportVisibility}"
+                                                        <local:ToolMagazineButton ButtonCommand="{Binding RightExportCommand}"
+                                                                              Visibility="{Binding RightExport  ,Source={x:Static GD_STD:Optional.Default} , Converter={dx:BooleanToVisibilityConverter}}"
                                                                               ButtonImageSource="{StaticResource Clamping}"
                                                                               StartState="{Binding IsSelectdRightExport}"
                                                                               TitleText="C刀庫"
                                                                               SubTitleText="右軸" />
-                                                    <local:ToolMagazineButton ButtonCommand="{Binding LeftEntranceCommand}"
-                                                                              Visibility="{Binding LeftEntranceVisibility}"
+                                                        <local:ToolMagazineButton ButtonCommand="{Binding LeftEntranceCommand}"
+                                                                              Visibility="{Binding LeftEntrance ,Source={x:Static GD_STD:Optional.Default} , Converter={dx:BooleanToVisibilityConverter}}"
                                                                               ButtonImageSource="{StaticResource Clamping}"
                                                                               StartState="{Binding IsSelectdLeftEntrance}"
                                                                               TitleText="D刀庫"
                                                                               SubTitleText="左軸"
                                                                               Margin="1,0" />
-                                                    <local:ToolMagazineButton ButtonCommand="{Binding RightEntranceCommand}"
-                                                                              Visibility="{Binding RightEntranceVisibility}"
+                                                        <local:ToolMagazineButton ButtonCommand="{Binding RightEntranceCommand}"
+                                                                              Visibility="{Binding RightEntrance ,Source={x:Static GD_STD:Optional.Default} , Converter={dx:BooleanToVisibilityConverter}}"
                                                                               ButtonImageSource="{StaticResource Clamping}"
                                                                               StartState="{Binding IsSelectdRightEntrance}"
                                                                               TitleText="E刀庫"
                                                                               SubTitleText="右軸" />
 
-                                                </StackPanel>
+                                                    </StackPanel>
+                                                </Border>
+
                                             </Grid>
 
                                             <dxg:GridControl Grid.Row="1"  Visibility="{Binding ToolMActivityButtonVisibilityBoolean,Converter={dx:BooleanToVisibilityConverter Invert=True},UpdateSourceTrigger=PropertyChanged}"
