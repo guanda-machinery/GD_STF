@@ -2268,7 +2268,7 @@ namespace WPFSTD105.ViewModel
                                     Thread.Sleep(500);
                                     MecOptional mecOptional = JsonConvert.DeserializeObject<MecOptional>(optionSettings.ToString());
                                     WriteCodesysMemor.SetMecOptional(mecOptional);//寫入記憶體
-                                }
+                                } 
                             }
 
                         }
