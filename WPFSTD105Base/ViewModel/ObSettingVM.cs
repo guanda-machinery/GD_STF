@@ -404,6 +404,8 @@ namespace WPFSTD105.ViewModel
                 try
                 {
                     _ProfileType = value;
+                    //SteelTypeProperty_int= value;
+                    //this.SteelTypeProperty_int = _ProfileType;
                     List<SteelAttr> list = new List<SteelAttr>();
                     OBJECT_TYPE TYPE = (OBJECT_TYPE)value;
 
@@ -455,6 +457,7 @@ namespace WPFSTD105.ViewModel
         /// 製品長度
         /// </summary>
         public double ProductLengthProperty { get; set; }
+        private double _productWeightProperty = 0;
         /// <summary>
         /// 製品重
         /// </summary>
@@ -579,7 +582,7 @@ namespace WPFSTD105.ViewModel
                 //{
                 //    ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp");
                 //}
-
+                
                 return _ProfileIndex;
             }
             set
@@ -597,6 +600,18 @@ namespace WPFSTD105.ViewModel
                     _steelAttr = ProfileList[value];
 
                 Steelbuffer = (SteelAttr)_steelAttr.DeepClone();
+                
+                
+                //this.SteelSectionProperty= Steelbuffer.Profile;
+                //this.CurrentPartSteelAttr.H = Steelbuffer.H;
+                //this.HProperty = Steelbuffer.H;
+                //this.CurrentPartSteelAttr.W = Steelbuffer.W;
+                //this.WProperty = Steelbuffer.W;
+                //this.CurrentPartSteelAttr.t1 = Steelbuffer.t1;
+                //this.t1Property = Steelbuffer.t1;
+                //this.CurrentPartSteelAttr.t2 = Steelbuffer.t2;
+                //this.t2Property = Steelbuffer.t2;
+                //this.ProductWeightProperty = (this.ProductLengthProperty / 1000) * Steelbuffer.Kg;
             }
         }
 
@@ -1406,7 +1421,7 @@ namespace WPFSTD105.ViewModel
             DataViews = new ObservableCollection<ProductSettingsPageViewModel>(GetData());
             SteelAttr = new SteelAttr();
 
-            ShowSteelTypeCommand = ShowSteelType(); //20220829 張燕華 選擇型鋼型態
+            ShowSteelTypeCommand = ShowSteelType();//20220829 張燕華 選擇型鋼型態
             CalculateWeightCommand = CalculateWeight();
             rb_CutLinePosition_Command = rb_CutLinePosition();
 
@@ -1617,7 +1632,7 @@ namespace WPFSTD105.ViewModel
             return new WPFBase.RelayParameterizedCommand((object SelectedIndex) =>
             {
                 if ((int)SelectedIndex != -1)
-                {
+                    {
                     ProfileType = Convert.ToInt32(SelectedIndex);
                     if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp"))
                     {

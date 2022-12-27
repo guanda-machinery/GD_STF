@@ -428,9 +428,9 @@ namespace STD_105
 
                             ScrollViewbox.IsEnabled = true;
                             if (model.RunHypotenuseEnable()) { /*ScrollViewbox.IsEnabled = false;*/ } else { ScrollViewbox.IsEnabled = true; }
-                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
-                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
-                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
+                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.TOP);
+                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.FRONT);
+                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.BACK);
                             SaveModel(true, true);
 
                             ViewModel.fAddSteelPart = false; // hank 新設 新增零件旗號,暫不儲存
@@ -511,9 +511,9 @@ namespace STD_105
 
                             ScrollViewbox.IsEnabled = true;
                             if (model.RunHypotenuseEnable()) { /*ScrollViewbox.IsEnabled = false;*/ } else { ScrollViewbox.IsEnabled = true; }
-                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
-                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
-                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
+                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.TOP);
+                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.FRONT);
+                            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.BACK);
 
                             SaveModel(true, true);
                             #endregion
@@ -947,9 +947,9 @@ namespace STD_105
 
                     // 切割線打點
                     //ScrollViewbox.IsEnabled = !model.RunHypotenuseEnable();
-                    WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
-                    WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
-                    WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
+                    WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.TOP);
+                    WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.FRONT);
+                    WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.BACK);
                     #endregion
 
 
@@ -1042,9 +1042,9 @@ namespace STD_105
 
                     // 切割線打點
                     //ScrollViewbox.IsEnabled = !model.RunHypotenuseEnable();
-                    WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
-                    WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
-                    WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
+                    WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.TOP);
+                    WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.FRONT);
+                    WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.BACK);
 
                     if (!Bolts3DBlock.CheckBolts(model))
                     {
@@ -5087,7 +5087,7 @@ namespace STD_105
             //    ViewModel.ProductWeightProperty = CuurentSelectedPart.steelAttr.Weight;
             //    if (CuurentSelectedPart.steelAttr.Weight == 0) ViewModel.ProductWeightProperty = ViewModel.CalculateSinglePartWeight();
             //}
-            ViewModel.ProductWeightProperty = (ViewModel.ProductLengthProperty / 1000) * ViewModel.KGProperty;
+            ViewModel.ProductWeightProperty = ViewModel.CalculateSinglePartWeight();// (ViewModel.ProductLengthProperty / 1000) * ViewModel.KGProperty;
             ViewModel.SteelAttr.Weight = ViewModel.ProductWeightProperty;
             CuurentSelectedPart.Weight = ViewModel.ProductWeightProperty;
             CuurentSelectedPart.steelAttr.Weight = ViewModel.ProductWeightProperty;
@@ -5108,9 +5108,10 @@ namespace STD_105
             ViewModel.PointBackProperty = CuurentSelectedPart.steelAttr.PointBack;
             ViewModel.PointFrontProperty = CuurentSelectedPart.steelAttr.PointFront;
             ViewModel.PointTopProperty = CuurentSelectedPart.steelAttr.PointTop;
-            ViewModel.CurrentPartSteelAttr = ViewModel.ProfileList.FirstOrDefault(x => x.Profile == profile);
-            if (ViewModel.CurrentPartSteelAttr != null)
+            
+            if (ViewModel.ProfileList.Any(x => x.Profile == profile))
             {
+                ViewModel.CurrentPartSteelAttr = ViewModel.ProfileList.FirstOrDefault(x => x.Profile == profile);
                 ViewModel.CurrentPartSteelAttr.PointTop.DL = CuurentSelectedPart.steelAttr.PointTop.DL;
                 ViewModel.CurrentPartSteelAttr.PointTop.DR = CuurentSelectedPart.steelAttr.PointTop.DR;
                 ViewModel.CurrentPartSteelAttr.PointTop.UL = CuurentSelectedPart.steelAttr.PointTop.UL;
@@ -5286,9 +5287,9 @@ namespace STD_105
             ViewModel.AddBolts(model, drawing, out bool hasOutSteel, blocks, false, false);
             // 切割線打點
             ScrollViewbox.IsEnabled = !model.RunHypotenuseEnable();
-            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
-            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
-            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
+            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.TOP);
+            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.FRONT);
+            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.BACK);
 
 
 
@@ -5702,9 +5703,9 @@ namespace STD_105
                     // 切割線打點
                     ScrollViewbox.IsEnabled = true;
                     if (model.RunHypotenuseEnable()) { /*ScrollViewbox.IsEnabled = false;*/ } else { ScrollViewbox.IsEnabled = true; }
-                    WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
-                    WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
-                    WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
+                    WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.TOP);
+                    WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.FRONT);
+                    WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.BACK);
 
                     if (!Bolts3DBlock.CheckBolts(model, false))
                     {
@@ -5837,9 +5838,9 @@ namespace STD_105
             // 切割線打點
             ScrollViewbox.IsEnabled = true;
             if (model.RunHypotenuseEnable()) { /*ScrollViewbox.IsEnabled = false;*/ } else { ScrollViewbox.IsEnabled = true; }
-            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.TOP);
-            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.FRONT);
-            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, FACE.BACK);
+            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.TOP);
+            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.FRONT);
+            WPFSTD105.Model.Expand.ManHypotenusePoint(model, drawing, ViewModel, FACE.BACK);
             //// 建立型鋼
             //Steel3DBlock result = new Steel3DBlock((Mesh)model.Blocks[1].Entities[0]);
             //model.AddModelSteelAttr(sa, result);

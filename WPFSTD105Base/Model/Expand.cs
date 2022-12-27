@@ -1340,8 +1340,8 @@ namespace WPFSTD105.Model
                         });
                     }
                     #endregion
-                // 寫入oPoint,vPoint,uPoint
-                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = nc.SteelAttr.oPoint;
+                    // 寫入oPoint,vPoint,uPoint
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = nc.SteelAttr.oPoint;
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).vPoint = nc.SteelAttr.vPoint;
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).uPoint = nc.SteelAttr.uPoint;
                     ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).oPoint = nc.SteelAttr.oPoint;
@@ -1819,7 +1819,7 @@ namespace WPFSTD105.Model
         /// 手動斜邊打點
         /// </summary>
         /// <param name="face"></param>
-        public static void ManHypotenusePoint(devDept.Eyeshot.Model model, devDept.Eyeshot.Model drawing, FACE face)
+        public static void ManHypotenusePoint(devDept.Eyeshot.Model model, devDept.Eyeshot.Model drawing,ObSettingVM obvm, FACE face)
         {
 #if DEBUG
             log4net.LogManager.GetLogger("ManHypotenusePoint").Debug("");
@@ -1830,7 +1830,7 @@ namespace WPFSTD105.Model
             List<(double, double)> HypotenusePoint = new List<(double, double)>();
             List<Point3D> result = null;
             MyCs myCs = new MyCs();
-            ObSettingVM obvm = new ObSettingVM();
+            //ObSettingVM obvm = new ObSettingVM();
             STDSerialization ser = new STDSerialization();
             ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();//備份當前加工區域數值
 
