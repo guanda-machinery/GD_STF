@@ -3267,6 +3267,8 @@ namespace STD_105
             {
                 ViewModel.Reductions = new ReductionList(model, drawing); //紀錄使用找操作
             }
+            model.Refresh();
+            model.ZoomFit();
             #endregion
         }
         /// <summary>
@@ -4644,11 +4646,7 @@ namespace STD_105
             drawing.Pan.MouseButton = new MouseButton(mouseButtonsZPR.Middle, modifierKeys.None);
             drawing.ActionMode = actionType.SelectByBox;
 
-            drawing.ZoomFit();//設置道適合的視口
-            drawing.Refresh();//刷新模型
 
-            model.ZoomFit();
-            model.Refresh();
 
             STDSerialization ser = new STDSerialization();
             //// 建立dm檔 for 尚未建立dm檔的零件
@@ -4661,6 +4659,9 @@ namespace STD_105
                 GridReload();
                 fAfterFirstImportTeklaData = false;
             }
+            drawing.Refresh();//刷新模型
+            drawing.ZoomFit();//設置道適合的視口
+
         }
 
 

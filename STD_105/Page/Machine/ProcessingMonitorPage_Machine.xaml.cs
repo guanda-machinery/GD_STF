@@ -153,6 +153,10 @@ namespace STD_105
 
 
             model.Loaded -= Model3D_Loaded;
+
+            model.Refresh();//刷新模型
+            model.ZoomFit();//設置道適合的視口
+
         }
 
 
@@ -224,8 +228,8 @@ namespace STD_105
             drawing.Pan.MouseButton = new MouseButton(mouseButtonsZPR.Middle, modifierKeys.None);
             drawing.ActionMode = actionType.SelectByBox;
 
-            drawing.ZoomFit();//設置道適合的視口
             drawing.Refresh();//刷新模型
+            drawing.ZoomFit();//設置道適合的視口
 
         }
         /// <summary>
