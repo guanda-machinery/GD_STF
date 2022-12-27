@@ -5034,6 +5034,7 @@ namespace STD_105.Office
                 //ViewModel.ProfileIndex = cbx_SectionTypeComboBox.SelectedIndex;
                 ////cbx_SectionTypeComboBox.SelectedIndex = ViewModel.ProfileIndex;
                 //ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(cbx_SteelTypeComboBox.Text)}.inp");
+                ViewModel.SteelSectionProperty = ViewModel.ProfileList[cbx_SectionTypeComboBox.SelectedIndex].Profile;
                 var pf = ViewModel.ProfileList.FirstOrDefault(x => x.Profile == ViewModel.SteelSectionProperty);
                 if (pf == null)
                 {
@@ -5378,6 +5379,10 @@ namespace STD_105.Office
             }
         }
         /// <summary>
+        /// 斷面規格與NC檔不同，值為true為一般型鋼
+        /// </summary>
+        public static bool isNormalProfile = false;
+        /// <summary>
         /// Grid Select Change
         /// </summary>
         /// <param name="sender"></param>
@@ -5698,6 +5703,14 @@ namespace STD_105.Office
                     SteelAttr saDeepClone = (SteelAttr)sa.DeepClone();
                     List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
                     sa = ViewModel.ReadNCInfo(saDeepClone, ref groups, false);
+
+                    if (saDeepClone.Profile.Replace("*","X") != sa.Profile)
+                    {
+                        isNormalProfile = true;
+                    }
+                    else { isNormalProfile = false; }
+                    
+                    
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = sa.oPoint;
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).vPoint = sa.vPoint;
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).uPoint = sa.uPoint;
@@ -5707,7 +5720,7 @@ namespace STD_105.Office
                     List<Block> blocks = model.GetBoltFromBlock(groups);
 
                     // 步驟3.產生鋼構模型
-                    model.LoadNcToModel(focuseGUID, ObSettingVM.allowType, 0, null, sa, null, blocks, false);
+                    model.LoadNcToModel(focuseGUID, ObSettingVM.allowType, 0, null, sa, null, blocks, false, isNormalProfile);
                     // 步驟5.產生2D模型
                     BlockReference steel2D = ViewModel.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
                     //model.sycnModelEntitiesAndNewBolt(blocks);

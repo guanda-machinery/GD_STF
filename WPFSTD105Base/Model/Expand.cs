@@ -991,7 +991,7 @@ namespace WPFSTD105.Model
         /// <param name="blocks">model.Block...若有已編輯的孔，要傳block進去(舊有形鋼孔群 BlockReference & Mesh)</param>
         /// <param name="isRotate">新增孔群時是否翻轉(只有新增時需翻轉，grid查詢時不須翻轉)</param>
         public static void LoadNcToModel(this devDept.Eyeshot.Model model, string dataName, List<OBJECT_TYPE> allowType, double diffLength = 0,
-            DXSplashScreenViewModel vm = null, SteelAttr steelAttr = null, List<GroupBoltsAttr> oldBolts = null, List<Block> blocks = null, bool isRotate = true)
+            DXSplashScreenViewModel vm = null, SteelAttr steelAttr = null, List<GroupBoltsAttr> oldBolts = null, List<Block> blocks = null, bool isRotate = true,bool isNormalProfile = false)
         {
             STDSerialization ser = new STDSerialization(); //序列化處理器
             NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
@@ -1032,10 +1032,11 @@ namespace WPFSTD105.Model
 
             double midX = (nc.SteelAttr.Length + diffLength) / 2;
             // vpoint個代表原點經四點再回原點，Group X及Y只會有兩個數字，一般正常矩形型鋼，可切斜邊，所以要讀斜邊設定檔 將斜邊寫回
+            // 若NC檔與修改後的斷面規格不同，則為一般型鋼
             #region 一般型鋼
             if ((nc.SteelAttr.vPoint.Count == 5 &&
                    nc.SteelAttr.vPoint.GroupBy(x => x.X).Count() == 2 &&
-                   nc.SteelAttr.vPoint.GroupBy(x => x.Y).Count() == 2) || nc.SteelAttr.vPoint.Count == 0)
+                   nc.SteelAttr.vPoint.GroupBy(x => x.Y).Count() == 2) || nc.SteelAttr.vPoint.Count == 0 || isNormalProfile)
             {
                 try
                 {
