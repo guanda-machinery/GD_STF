@@ -5,6 +5,7 @@ using GD_STD.Enum;
 using GD_STD.IBase;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using WPFSTD105.Model;
@@ -16,7 +17,7 @@ namespace WPFSTD105.Attribute
     /// 主要鋼構物件自定義資訊
     /// </summary>
     [Serializable]
-    public class SteelAttr: AbsAttr, ISteelAttr, ISteelProfile
+    public class SteelAttr: AbsAttr, ISteelAttr, ISteelProfile, INotifyPropertyChanged
     {        
         /// <summary>
         /// 轉換器
@@ -46,8 +47,6 @@ namespace WPFSTD105.Attribute
             Profile = profile.Profile.Replace("*", "X").Replace(" ", "");
             Type = profile.Type;
             Material = profile.Material;
-            
-
             //GUID = Guid.NewGuid();
         }
         /// <summary>
@@ -206,6 +205,10 @@ namespace WPFSTD105.Attribute
         /// 預防破圖
         /// </summary>
         const double d = 10;
+
+        [field: NonSerialized()]
+        public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
+
         /// <summary>
         /// 取得切割線的三個點位
         /// </summary>

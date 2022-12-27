@@ -1631,6 +1631,8 @@ namespace STD_105.Office
                         ViewModel.Title1Property = String.Empty;
                         ViewModel.Title2Property = String.Empty;
                         ViewModel.ProductMaterialProperty = "";
+
+
                         this.asseNumber.Clear();
                         this.partNumber.Clear();
                         this.PartCount.Clear();
@@ -5034,6 +5036,8 @@ namespace STD_105.Office
                 ViewModel.SteelAttr.Kg = pf.Kg;
                 ViewModel.KGProperty = pf.Kg;
                 ViewModel.SteelAttr.Profile = pf.Profile;
+
+
                 //ViewModel.CurrentPartSteelAttr = pf; //ViewModel.SteelAttr;
                 ViewModel.SteelSectionProperty = pf.Profile;
                 cbx_SectionTypeComboBox.Text = pf.Profile;
@@ -5390,18 +5394,11 @@ namespace STD_105.Office
                    //int rowHandleByListIndex = this.PieceListGridControl.GetRowHandleByListIndex(selectIndex);
                    //int focusedRowHandle = this.PieceListGridControl.View.FocusedRowHandle;
 
-
-
-
-
-
                     //this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                     PieceListGridControl.SelectItem(focusedRowHandle);
                     
                     //99999999
                     //PieceListGridControl.View.FocusedRowHandle = selectIndex;
-                    
-                    
                     
                     //ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{item.Type}.inp");
                     //cbx_SectionTypeComboBox.Text = item.Profile;
@@ -5571,15 +5568,12 @@ namespace STD_105.Office
                     ViewModel.fGrid = true;
                     ViewModel.StateParaSetting(true, false, true);
 
-
-
                     model.Blocks.Clear();
                     model.Entities.Clear();
                     drawing.Blocks.Clear();
                     drawing.Entities.Clear();
                     model.Secondary = drawing;
                     drawing.Secondary = model;
-
 
                     int steelType = 0;
                     ReadFile readFile = ser.ReadPartModel(focuseGUID); //讀取檔案內容

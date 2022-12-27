@@ -25,7 +25,6 @@ namespace WPFSTD105.ViewModel
             //是否可由其他方法代替? 需查證
             Task.Run(() =>
             {
-                int PButtonCancelCount = 0;
                 while (Taskboolen)
                 {
                     //捕捉按鈕信號
@@ -33,47 +32,36 @@ namespace WPFSTD105.ViewModel
     
                     if (PButton.ClampDown)
                     {
-                        PButtonCancelCount = 0;
                         if (TabControlSelectedIndex != 0)
                             TabControlSelectedIndex = 0;    
                     }
                     else if (PButton.SideClamp)
                     {
-                        PButtonCancelCount = 0;
                         if (TabControlSelectedIndex != 1)
                             TabControlSelectedIndex = 1;
                     }
                     else if((PButton.EntranceRack || PButton.ExportRack))
                     {
-                        PButtonCancelCount = 0;
                         if (TabControlSelectedIndex != 2)
                             TabControlSelectedIndex = 2;
                     }
                     else if (PButton.Hand)
                     {
-                        PButtonCancelCount = 0;
                         if (TabControlSelectedIndex != 3)
                             TabControlSelectedIndex = 3;
                     }
                     else if (PButton.DrillWarehouse)
                     {
-                        PButtonCancelCount = 0;
                         if (TabControlSelectedIndex != 4)
                             TabControlSelectedIndex = 4;
                     }
                     else if (PButton.Volume)
                     {
-                        PButtonCancelCount = 0;
                         if (TabControlSelectedIndex != 5)
                             TabControlSelectedIndex = 5;
                     }
                     else
                     {
-                        if (PButtonCancelCount > 10)
-                        {
-                            TabControlSelectedIndex = -1;
-                        }
-                        PButtonCancelCount++;
                     }
                     //設定延遲避免閃爍的問題
                     Thread.Sleep(1000);
@@ -98,9 +86,6 @@ namespace WPFSTD105.ViewModel
                 var Exboolen = PButton.ExportRack;
                 //離開頁面時 先關掉頂升柱
                 //相反訊號
-
-
-
                 ClearPButtonModeValue(ref PButton);
                 switch (value)
                 {

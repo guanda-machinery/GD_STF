@@ -271,7 +271,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 導回原本的ViewModel
         /// </summary>
-        public ProductSettingsPageViewModel ProductSettingsPageViewModel = new ProductSettingsPageViewModel();
+       // public ProductSettingsPageViewModel ProductSettingsPageViewModel = new ProductSettingsPageViewModel();
 
         public string PartNumber { get; set; }
         /// <summary>
@@ -1325,15 +1325,25 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public bool fromModifyHole { get; set; } = false;
 
-        private ObservableCollection<ProductSettingsPageViewModel> _dataviews { get; set; } = new ObservableCollection<ProductSettingsPageViewModel>();
-
+       private ObservableCollection<ProductSettingsPageViewModel> _dataviews;
         /// <summary>
         /// 零件資訊
         /// </summary>
         public ObservableCollection<ProductSettingsPageViewModel> DataViews
         {
-            get => _dataviews;
-            set => _dataviews = value;
+            get 
+            {
+                if(_dataviews == null)
+                {
+                    _dataviews = new ObservableCollection<ProductSettingsPageViewModel>();
+                }
+                return _dataviews; 
+            }
+            set
+            {
+                _dataviews = value;
+                OnPropertyChanged(nameof(DataViews));
+            }
         }
         /// <summary>
         /// 所選到斷面規格在其斷面規格list中的index
@@ -2139,18 +2149,6 @@ namespace WPFSTD105.ViewModel
 
             Dictionary<string, ObservableCollection<SteelAttr>> saFile = ser.GetSteelAttr();
             SteelAttr temp = new SteelAttr();
-            //foreach (var item in source)
-
-
-            //var ProcessingScreenWin = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
-
-            //if (ShowProcessingScreenWin)
-            //{
-            //    ProcessingScreenWin.Show(inputBlock: InputBlockMode.Window, timeout: 700);
-            //}
-
-            //ProcessingScreenWin.ViewModel.Status = "取得專案內零件資訊";
-            //ProcessingScreenWin.ViewModel.IsIndeterminate = false;
             int ItemCount = 0;
 
             foreach (var item in group)
@@ -2237,12 +2235,9 @@ namespace WPFSTD105.ViewModel
                 aa.steelAttr.Weight = aa.Weight;
 
                 list.Add(aa);
-
-
                 ItemCount++;
             }
-            //ProcessingScreenWin.ViewModel.IsIndeterminate = true;
-            //ProcessingScreenWin.Close();
+
             return list;
         }
         /// <summary>
