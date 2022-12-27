@@ -424,7 +424,7 @@ namespace WPFSTD105.ViewModel
                                 for (int i = 0; i < _DrillWarehouse.Middle.Length; i++)
                                 {
                                     _DrillWarehouse.Middle[i] = new DrillSetting();
-                                    _DrillWarehouse.Middle[i].IsCurrent = (i == 0);
+                                    //_DrillWarehouse.Middle[i].IsCurrent = (i == 0);
                                 }
                             }
                         }
@@ -434,10 +434,11 @@ namespace WPFSTD105.ViewModel
                             _MecOptional.LeftExport = Activity;
                             if (!Activity)
                             {
+                                _DrillWarehouse.LeftEntrance[1].IsCurrent= true;
                                 for (int i = 0; i < _DrillWarehouse.LeftExport.Length; i++)
                                 {
                                     _DrillWarehouse.LeftExport[i] = new DrillSetting();
-                                    _DrillWarehouse.LeftExport[i].IsCurrent = (i == 0);
+                                    //_DrillWarehouse.LeftExport[i].IsCurrent = false;
                                 }
                             }
                         }
@@ -450,7 +451,7 @@ namespace WPFSTD105.ViewModel
                                 for (int i = 0; i < _DrillWarehouse.LeftEntrance.Length; i++)
                                 {
                                     _DrillWarehouse.LeftEntrance[i] = new DrillSetting();
-                                    _DrillWarehouse.LeftEntrance[i].IsCurrent = (i == 0);
+                                   // _DrillWarehouse.LeftEntrance[i].IsCurrent = (i == 0);
                                 }
                             }
                         }
@@ -463,7 +464,7 @@ namespace WPFSTD105.ViewModel
                                 for (int i = 0; i < _DrillWarehouse.RightEntrance.Length; i++)
                                 {
                                     _DrillWarehouse.RightEntrance[i] = new DrillSetting();
-                                    _DrillWarehouse.RightEntrance[i].IsCurrent = (i == 0);
+                                  //  _DrillWarehouse.RightEntrance[i].IsCurrent = (i == 0);
                                 }
                             }
                         }
@@ -476,7 +477,7 @@ namespace WPFSTD105.ViewModel
                                 for (int i = 0; i < _DrillWarehouse.RightExport.Length; i++)
                                 {
                                     _DrillWarehouse.RightExport[i] = new DrillSetting();
-                                    _DrillWarehouse.RightExport[i].IsCurrent = (i == 0);
+                                   // _DrillWarehouse.RightExport[i].IsCurrent = (i == 0);
                                 }
                             }
                         }
