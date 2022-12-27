@@ -57,6 +57,7 @@ using System.Reflection;
 using DevExpress.Xpf.Gauges;
 using DevExpress.Xpo.DB;
 using DocumentFormat.OpenXml.Wordprocessing;
+using DevExpress.XtraPrinting;
 
 namespace WPFSTD105.ViewModel
 {
@@ -87,8 +88,8 @@ namespace WPFSTD105.ViewModel
                 var DrillBData = ser.GetDrillBolts(el.MaterialNumber);
                 if (DrillBData != null)
                     AllDrillBoltsDict[el.MaterialNumber] = DrillBData;
-                else
-                    AllDrillBoltsDict[el.MaterialNumber] = GetDrillBoltsItemCollection(el);
+                /*else
+                    AllDrillBoltsDict[el.MaterialNumber] = GetDrillBoltsItemCollection(el);*/
             });
 
             //將設定的手臂模式寫入記憶體
@@ -177,19 +178,20 @@ namespace WPFSTD105.ViewModel
 
                     //監視是否有完成配對的 有配對才可點選台車選項
 
-                    var PairIndex = Finish_UndoneDataViews.FindIndex(x => (x.PositionEnum == PositionStatusEnum.軟體配對 ||
-                    x.PositionEnum == PositionStatusEnum.手機配對 ||
-                    x.PositionEnum == PositionStatusEnum.手動配對));
+                    var PairIndex = Finish_UndoneDataViews.FindIndex(x => (x.PositionEnum == PositionStatusEnum.已配對 ||
+                    x.PositionEnum == PositionStatusEnum.從手機配對 ||
+                    x.PositionEnum == PositionStatusEnum.從軟體配對));
                     //存在配對
                     if (PairIndex != -1)
                         PostageEnable = true;
                     else
                         PostageEnable = false;
 
-                    var Channel_Index = Finish_UndoneDataViews.FindIndex(x => (x.PositionEnum == PositionStatusEnum.軟體配對 ||
-                    x.PositionEnum == PositionStatusEnum.手機配對 ||
-                    x.PositionEnum == PositionStatusEnum.手動配對 ||
-                    x.ObjectType == OBJECT_TYPE.CH));
+                    var Channel_Index = Finish_UndoneDataViews.FindIndex(x => (x.PositionEnum == PositionStatusEnum.已配對 ||
+                    x.PositionEnum == PositionStatusEnum.從手機配對 ||
+                    x.PositionEnum == PositionStatusEnum.從軟體配對) &&
+                    x.ObjectType == OBJECT_TYPE.CH || 
+                    x.ObjectType == OBJECT_TYPE.LB);
                     //如果有槽鐵配對完成 禁用台車
                     if (Channel_Index != -1)
                         TrolleyEnable = true;
@@ -336,7 +338,7 @@ namespace WPFSTD105.ViewModel
                                         }
                                         else
                                         {
-                                            Finish_UndoneDataViews[EachMaterialIndex].PositionEnum = PositionStatusEnum.手動配對;
+                                            Finish_UndoneDataViews[EachMaterialIndex].PositionEnum = PositionStatusEnum.已配對;
                                         }
 
                                         var workIndex = index.Count;
@@ -419,7 +421,7 @@ namespace WPFSTD105.ViewModel
         }
 
 
-        private bool InsertMaterial(DXSplashScreenViewModel DXviewmodel,MaterialDataView MaterialData)
+        private bool InsertMaterial(DXSplashScreenViewModel DXviewmodel,MaterialDataView MaterialData, bool showWinUIMessageBox = true)
         {
             var MaterialIndex = Finish_UndoneDataViews.FindIndex(x => (x == MaterialData));
             if (MaterialIndex != -1)
@@ -453,7 +455,7 @@ namespace WPFSTD105.ViewModel
                                 //一次只會加入一筆資料 所以回傳資料list行直接取取[0]
                                 if (RegisterResult.data[0].errorCode == 0)
                                 {
-                                    Finish_UndoneDataViews[MaterialIndex].PositionEnum = PositionStatusEnum.軟體配對;
+                                    Finish_UndoneDataViews[MaterialIndex].PositionEnum = PositionStatusEnum.從軟體配對;
                                     Finish_UndoneDataViews[MaterialIndex].MachiningStartTime = null;
                                     Finish_UndoneDataViews[MaterialIndex].MachiningEndTime = null;
                                    // ScheduleGridC.RefreshGrid();
@@ -464,7 +466,9 @@ namespace WPFSTD105.ViewModel
                                     AddOperatingLog(LogSourceEnum.Machine, $"加入素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}成功", false);
                                     ScheduleGridC.Dispatcher.Invoke(() =>
                                     {
-                                        WinUIMessageBox.Show(null,
+                                        if (showWinUIMessageBox)
+                                        {
+                                            WinUIMessageBox.Show(null,
                                             $"加入素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}成功",
                                             $"通知",
                                             MessageBoxButton.OK,
@@ -472,6 +476,7 @@ namespace WPFSTD105.ViewModel
                                             MessageBoxResult.None,
                                             MessageBoxOptions.None,
                                             FloatingMode.Adorner);
+                                        }
                                     });
                                     return true;
                                 }
@@ -669,7 +674,6 @@ namespace WPFSTD105.ViewModel
                         {
                             MachineDrillkeyValueDict[view.MaterialNumber] = GeneratekeyValuePairs(view);
                         }
-                        
 
                         var DrillBoltsListDict = new Dictionary<FACE, DrillBoltsBase>();
                         foreach (var keyValuePair in MachineDrillkeyValueDict[view.MaterialNumber])
@@ -742,14 +746,15 @@ namespace WPFSTD105.ViewModel
         /// <returns></returns>
         private Dictionary<FACE, List<Drill>> GeneratekeyValuePairs(MaterialDataView view)
         {
+            Dictionary<FACE, List<Drill>> keyValue = null;
+            _SynchronizationContext.Send(t =>
+            {
             var _BufferModel = new devDept.Eyeshot.Model();
             _BufferModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
             _BufferModel.InitializeViewports();
             _BufferModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
             _BufferModel.Clear();
-            Dictionary<FACE, List<Drill>> keyValue = null;
-            _SynchronizationContext.Send(t =>
-            {
+
                 Dictionary<FACE, List<Drill>> keyValuePairs = new Dictionary<FACE, List<Drill>>();
                 STDSerialization ser = new STDSerialization();
                 ReadFile readFile = ser.ReadMaterialModel(view.MaterialNumber);
@@ -1116,7 +1121,9 @@ namespace WPFSTD105.ViewModel
         private long _BoltsCountROffset = Marshal.OffsetOf(typeof(WorkMaterial), nameof(WorkMaterial.BoltsCountR)).ToInt64();
         private long _DrLOffset = Marshal.OffsetOf(typeof(WorkMaterial), nameof(WorkMaterial.DrLeft)).ToInt64();
         private long _DrROffset = Marshal.OffsetOf(typeof(WorkMaterial), nameof(WorkMaterial.DrRight)).ToInt64();
-        private long DrMOffset = Marshal.OffsetOf(typeof(WorkMaterial), nameof(WorkMaterial.DrMiddle)).ToInt64();
+        private long _DrMOffset = Marshal.OffsetOf(typeof(WorkMaterial), nameof(WorkMaterial.DrMiddle)).ToInt64();
+
+        private long _ObjectTypeOffset = Marshal.OffsetOf(typeof(WorkMaterial), nameof(WorkMaterial.ProfileType)).ToInt64();
         #endregion
         #endregion
 
@@ -1206,7 +1213,7 @@ namespace WPFSTD105.ViewModel
                             var FIndex = Finish_UndoneDataViews.FindIndex(x => x == dataView);
                             if (FIndex != -1)
                             {
-                                Finish_UndoneDataViews[FIndex].PositionEnum = PositionStatusEnum.手動配對;
+                                Finish_UndoneDataViews[FIndex].PositionEnum = PositionStatusEnum.已配對;
                             }
                         }
                     }
@@ -1214,11 +1221,74 @@ namespace WPFSTD105.ViewModel
             }
         }
 
+        
 
-/// <summary>
-/// 強制完成
-/// </summary>
-public WPFBase.RelayParameterizedCommand FinishCommand
+       public WPFBase.RelayParameterizedCommand SelectedItemsAddCommand
+        {
+            get
+            {
+                return new WPFBase.RelayParameterizedCommand(el =>
+                {
+
+                    if (el is IEnumerable<GD_STD.Data.MaterialDataView>)
+                    {
+                        var MDV_SelectedItems = (el as IEnumerable<GD_STD.Data.MaterialDataView>).ToList();
+                        
+                        if (MDV_SelectedItems != null)
+                        {
+                            Task.Run(() =>
+                            {
+                                DevExpress.Xpf.Core.SplashScreenManager InsertMProcessingScreenWin = DevExpress.Xpf.Core.SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
+                                InsertMProcessingScreenWin.Show();
+                                for (int i = 0; i < MDV_SelectedItems.Count; i++)
+                                {
+                                    if (!Input_by_Computer_RadioButtonIsChecked)
+                                    {
+                                        WinUIMessageBox.Show(null,
+                                            $"需切換到電腦模式才可加入加工素材",
+                                            $"通知",
+                                            MessageBoxButton.OK,
+                                            MessageBoxImage.Exclamation,
+                                            MessageBoxResult.None,
+                                            MessageBoxOptions.None,
+                                            FloatingMode.Adorner);
+                                        return;
+                                    }
+                                    //若是則可開始加入零件
+                                    //電腦模式下才可加入零件
+                                    if (Input_by_Computer_RadioButtonIsChecked)
+                                    {
+
+                                        InsertMProcessingScreenWin.ViewModel.Status = $"正在加入零件{i + 1}/{MDV_SelectedItems.Count}";
+                                        InsertMaterial(InsertMProcessingScreenWin.ViewModel, MDV_SelectedItems[i],false);
+                                       
+                                    }
+                                }
+                                InsertMProcessingScreenWin.Close();
+                            });
+                        }
+                    }
+                    else
+                    {
+                        WinUIMessageBox.Show(null,
+                            $"SelectedItemsAddCommand出現問題 el不是IEnumerable<GD_STD.Data.MaterialDataView>",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Window);
+                    }
+
+                });
+            }
+        }
+
+
+        /// <summary>
+        /// 強制完成
+        /// </summary>
+        public WPFBase.RelayParameterizedCommand FinishCommand
         {
             get
             {
@@ -1247,6 +1317,8 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                                 {
                                     _WorkMaterials[selected].AssemblyNumber = new ushort[25];
                                 }
+                                //_WorkMaterials[selected].ProfileType = 
+
                                 _WorkMaterials[selected].Finish = 100;
                                 _WorkMaterials[selected].IsExport = true;
                                 _WorkMaterials[selected].Position = -2;
@@ -1281,37 +1353,37 @@ public WPFBase.RelayParameterizedCommand FinishCommand
 
         public WPFBase.RelayParameterizedCommand DeleteCommand
         {
-    get
-    {
-        return new WPFBase.RelayParameterizedCommand(el =>
-        {
-            var MDV_SelectedItems = el as IEnumerable<GD_STD.Data.MaterialDataView>;
-            if (MDV_SelectedItems != null)
+            get
             {
-                foreach (var dataView in MDV_SelectedItems)
+                return new WPFBase.RelayParameterizedCommand(el =>
                 {
-                    short[] index;
-                    using (Memor.ReadMemorClient read = new Memor.ReadMemorClient())
+                    var MDV_SelectedItems = el as IEnumerable<GD_STD.Data.MaterialDataView>;
+                    if (MDV_SelectedItems != null)
                     {
-                        index = read.GetIndex();
-                    }
-                    int selected = Finish_UndoneDataViews.IndexOf(dataView);
-                    int iIndex = Array.IndexOf(index, selected);
-                    if (iIndex != -1)
-                    {
-                        long indexOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.Index)).ToInt64(); //index 偏移量
-                        index[iIndex] = -1;
-                        var value = index.Where(e => e != -1).ToArray();
-                        var writeByte = value.ToByteArray();
-                        using (Memor.WriteMemorClient write = new Memor.WriteMemorClient())
-                            write.SetMonitorWorkOffset(writeByte, Marshal.OffsetOf<MonitorWork>(nameof(MonitorWork.Index)).ToInt64()); //寫入準備加工的陣列位置
-                    }
+                        foreach (var dataView in MDV_SelectedItems)
+                        {
+                            short[] index;
+                            using (Memor.ReadMemorClient read = new Memor.ReadMemorClient())
+                            {
+                                index = read.GetIndex();
+                            }
+                            int selected = Finish_UndoneDataViews.IndexOf(dataView);
+                            int iIndex = Array.IndexOf(index, selected);
+                            if (iIndex != -1)
+                            {
+                                long indexOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.Index)).ToInt64(); //index 偏移量
+                                index[iIndex] = -1;
+                                var value = index.Where(e => e != -1).ToArray();
+                                var writeByte = value.ToByteArray();
+                                using (Memor.WriteMemorClient write = new Memor.WriteMemorClient())
+                                    write.SetMonitorWorkOffset(writeByte, Marshal.OffsetOf<MonitorWork>(nameof(MonitorWork.Index)).ToInt64()); //寫入準備加工的陣列位置
+                            }
 
-                }
+                        }
+                    }
+                });
+
             }
-        });
-
-    }
         }
 
         //狀態註銷 復原素材狀態->會送資料給機台更改狀態 然後刪除備份檔案
@@ -1352,6 +1424,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                                 REProcessingScreenWin.Show();
 
                                 ClearAppServerPairWorkList(MDV_SelectedItems.Select(x => (x.MaterialNumber)).ToList());
+                                Thread.Sleep(2000); //延遲清理
                                 foreach (var Fu in MDV_SelectedItems)
                                 {
                                     var Xindex = Finish_UndoneDataViews.FindIndex(x => x == Fu);
@@ -1359,6 +1432,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                                     {
                                         REProcessingScreenWin.ViewModel.Status = $"正在註銷素材編號{Fu.MaterialNumber}...";
                                         AddOperatingLog(LogSourceEnum.Machine, $"清除素材編號{Fu.MaterialNumber}的加工資料");
+                                       
                                         ClearMonitorWorkList(Xindex);
                                     }
                                 }
@@ -1766,6 +1840,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                 long ct1 = cWork + _t1Offset;
                 long ct2 = cWork + _t2Offset;
                 long cGuid = cWork + _GuidOffset;
+                long cObjectType = cWork + _ObjectTypeOffset;
                 #endregion
                 STDSerialization ser = new STDSerialization();
                 var SteelPartCollection = ser.GetPart($"{view.Profile.GetHashCode()}");
@@ -1789,6 +1864,36 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                         Write.SetMonitorWorkOffset(steelPart.t1.ToByteArray(), ct1);//寫入腹板厚度
                         Write.SetMonitorWorkOffset(steelPart.t2.ToByteArray(), ct2);//寫入翼板厚度
                         Write.SetMonitorWorkOffset(Encoding.ASCII.GetBytes(view.MaterialNumber), cGuid);//寫入圖面 GUID
+
+                        PROFILE_TYPE ObjectPROFILE_TYPE = PROFILE_TYPE.H;
+
+                        switch (view.ObjectType)
+                        {
+                            case OBJECT_TYPE.RH:
+                            case OBJECT_TYPE.BH:
+                            case OBJECT_TYPE.H:
+                                ObjectPROFILE_TYPE = PROFILE_TYPE.H;
+                                break;
+                            case OBJECT_TYPE.LB:
+                            case OBJECT_TYPE.CH:
+                                ObjectPROFILE_TYPE = PROFILE_TYPE.U;
+                                break;
+                            case OBJECT_TYPE.BOX:
+                            case OBJECT_TYPE.TUBE:
+                                ObjectPROFILE_TYPE = PROFILE_TYPE.BOX;
+                                break;
+                            case OBJECT_TYPE.L:
+                                ObjectPROFILE_TYPE = PROFILE_TYPE.L; 
+                                break;
+                            case OBJECT_TYPE.PLATE:
+                                ObjectPROFILE_TYPE = PROFILE_TYPE.PLATE;
+                                break;
+                            default:
+                                AddOperatingLog(LogSourceEnum.Init, $"斷面規格{view.ObjectType}無法轉換成OBJECT_TYPE", true);
+                                break;
+                        }
+
+                        Write.SetMonitorWorkOffset(((int)ObjectPROFILE_TYPE).ToByteArray(), cObjectType);//寫入型鋼類型
 
                         var a = Encoding.ASCII.GetBytes(view.Profile);
                         var p1 = (view.Parts.Select(el => el.AssemblyNumber).Aggregate((str1, str2) => $"{str1},{str2}"));
@@ -1926,7 +2031,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                     if (ActualDrillDict.ContainsKey(FACE.FRONT))
                         SendDrillToMachine(_BoltsCountLOffset, _DrLOffset, ActualDrillDict[FACE.FRONT], steelPart, cWork, steelPart.W, Finish_UndoneDataViews[index].LengthStr, null);
                     if (ActualDrillDict.ContainsKey(FACE.TOP))
-                        SendDrillToMachine(_BoltsCountMOffset, DrMOffset, ActualDrillDict[FACE.TOP], steelPart, cWork, steelPart.H, Finish_UndoneDataViews[index].LengthStr, null);
+                        SendDrillToMachine(_BoltsCountMOffset, _DrMOffset, ActualDrillDict[FACE.TOP], steelPart, cWork, steelPart.H, Finish_UndoneDataViews[index].LengthStr, null);
                     if (ActualDrillDict.ContainsKey(FACE.BACK))
                         SendDrillToMachine(_BoltsCountROffset, _DrROffset, ActualDrillDict[FACE.BACK], steelPart, cWork, steelPart.W, Finish_UndoneDataViews[index].LengthStr, null);
                 }
@@ -2204,7 +2309,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                                     Thread.Sleep(500);
                                     MecOptional mecOptional = JsonConvert.DeserializeObject<MecOptional>(optionSettings.ToString());
                                     WriteCodesysMemor.SetMecOptional(mecOptional);//寫入記憶體
-                                }
+                                } 
                             }
 
                         }
@@ -2753,44 +2858,56 @@ public WPFBase.RelayParameterizedCommand FinishCommand
         /// </summary>
         private void WriteTourData()
         {
-            if (MachineAndPhoneAPI.AppServerCommunicate.GetAppPairingData(out var PairingData))
+            var GetAppDataBool = MachineAndPhoneAPI.AppServerCommunicate.GetAppPairingData(MachineAndPhoneAPI.AppServerCommunicate.RegeditMaterialSource.PC, out var PC_PairingData);
+            var GetPCDataBool = MachineAndPhoneAPI.AppServerCommunicate.GetAppPairingData(MachineAndPhoneAPI.AppServerCommunicate.RegeditMaterialSource.APP, out var APP_PairingData);
+            if (GetAppDataBool || GetPCDataBool)
             {
-                var TourTaskList = new List<Task>();
-
-                foreach (var EachPair in PairingData.data)
+                var PairingDataDict = new Dictionary<MachineAndPhoneAPI.AppServerCommunicate.RegeditMaterialSource,List<MachineAndPhoneAPI.Models.Assemblyinfo.Data>>();
+            
+                if (PC_PairingData.data != null)
                 {
-                    var Index = Finish_UndoneDataViews.ToList().FindIndex(x => (x.MaterialNumber == EachPair.materialNumber));
-                    if (Index != -1)
-                    {
-                        Func<object, bool> action = (object obj) =>
-                        {
-                            int MaterialIndex = (int)obj;
-                            while (Finish_UndoneDataViews[MaterialIndex].PositionEnum == PositionStatusEnum.初始化)
-                            {
-                                Thread.Sleep(1);
-                            }
-
-                            if (Finish_UndoneDataViews[MaterialIndex].PositionEnum == PositionStatusEnum.等待配對)
-                            {
-                                //軟體配對 
-                                //區別手機與機台配料->如果id中有包含專案名稱->機台的 沒有的話則是手機
-                                var ProjectNameBase64 = MachineAndPhoneAPI.AppServerCommunicate.StringToBase64Converter(ApplicationViewModel.ProjectName);
-                                if (EachPair.id.Contains(ProjectNameBase64))
-                                {
-                                    Finish_UndoneDataViews[MaterialIndex].PositionEnum = PositionStatusEnum.軟體配對;
-                                    AddOperatingLog(LogSourceEnum.Phone, $"素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}從軟體配料", false);
-                                }
-                            }
-                           
-                            return true;
-                        };
-                        TourTaskList.Add(Task<bool>.Factory.StartNew(action, Index));
-                    }
+                    PairingDataDict.Add(MachineAndPhoneAPI.AppServerCommunicate.RegeditMaterialSource.PC, PC_PairingData.data);
+                }
+                if (APP_PairingData.data != null)
+                {
+                    PairingDataDict.Add(MachineAndPhoneAPI.AppServerCommunicate.RegeditMaterialSource.APP,APP_PairingData.data);
                 }
 
+                var TourTaskList = new List<Task>();
+                foreach (var PairingDataKeyValue in PairingDataDict)
+                {
+                    foreach (var EachPair in PairingDataKeyValue.Value)
+                    {
+                        var Index = Finish_UndoneDataViews.ToList().FindIndex(x => (x.MaterialNumber == EachPair.materialNumber));
+                        if (Index != -1)
+                        {
+                            Func<object, bool> action = (object obj) =>
+                            {
+                                int MaterialIndex = (int)obj;
+                                //Finish_UndoneDataViews[MaterialIndex].PositionEnum == PositionStatusEnum.等待配對
+                                if (Finish_UndoneDataViews[MaterialIndex].PositionEnum == PositionStatusEnum.已配對)
+                                {
+                                    //軟體配對 
+                                    //區別手機與機台配料->如果id中有包含專案名稱->機台的 沒有的話則是手機
+                                    if (PairingDataKeyValue.Key is MachineAndPhoneAPI.AppServerCommunicate.RegeditMaterialSource.PC)
+                                    {
+                                        Finish_UndoneDataViews[MaterialIndex].PositionEnum = PositionStatusEnum.從軟體配對;
+                                    }
+
+                                    if (PairingDataKeyValue.Key is MachineAndPhoneAPI.AppServerCommunicate.RegeditMaterialSource.APP)
+                                    {
+                                        Finish_UndoneDataViews[MaterialIndex].PositionEnum = PositionStatusEnum.從手機配對;
+                                    }
+                                    AddOperatingLog(LogSourceEnum.Phone, $"素材編號：{Finish_UndoneDataViews[MaterialIndex].MaterialNumber}-{PairingDataKeyValue.Key}", false);
+                                }
+                                return true;
+                            };
+                            TourTaskList.Add(Task<bool>.Factory.StartNew(action, Index));
+                        }
+                    }
+                }
                 Task.WaitAll(TourTaskList.ToArray()); 
                 RefreshScheduleGridC();
-
             }
 
         }
@@ -2888,7 +3005,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                         {
                             if (FNDV.PositionEnum != PositionStatusEnum.完成)
                             {
-                                if (FNDV.ObjectType == GD_STD.Enum.OBJECT_TYPE.CH && FNDV.LengthStr > 9050)
+                                if ((FNDV.ObjectType == GD_STD.Enum.OBJECT_TYPE.CH || FNDV.ObjectType == GD_STD.Enum.OBJECT_TYPE.LB) && FNDV.LengthStr > 9050)
                                     FNDV.PositionEnum = PositionStatusEnum.不可配對;
                             }
                         }
@@ -3072,6 +3189,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                     AddOperatingLog(LogSourceEnum.Machine, $"排版編號{Finish_UndoneDataViews[noInfo[i]].MaterialNumber}加工訊息發送失敗", true);
             }
             //_SendIndex.AddRange(noInfo); //存取已經發送過的列表
+            //SerializationValue機台內有資料的都會在此陣列中
             List<short> SerializationValue = new List<short>(indexArray);
             List<short> delete = _LastTime.Except(SerializationValue).ToList(); //找出上次有序列化的文件
             SerializationValue.AddRange(delete);
@@ -3080,21 +3198,34 @@ public WPFBase.RelayParameterizedCommand FinishCommand
             _LastTime = indexArray.ToArray();
 
             //刷新初始化
-            for(int i = 0; i < Finish_UndoneDataViews.Count;i++ )
+            for (int i = 0; i < Finish_UndoneDataViews.Count; i++)
             {
-                if (_LastTime.ToList().Exists(x => x == i))
+                if (SerializationValue.ToList().Exists(x => x == i))
                     continue;
+                else
+                {
+                    if (Finish_UndoneDataViews[i].PositionEnum == PositionStatusEnum.初始化)
+                    {
+                        Finish_UndoneDataViews[i].PositionEnum = PositionStatusEnum.等待配對;
+                    }
+                    else if (Finish_UndoneDataViews[i].PositionEnum == PositionStatusEnum.未取得狀態)
+                    {
+                        Finish_UndoneDataViews[i].PositionEnum = PositionStatusEnum.等待配對;
+                    }
+                    //找出表格中是已配對 / 手機配對 / 軟體配對 但機台端沒有資料的->代表資料有誤或是被移除
 
-                if (Finish_UndoneDataViews[i].PositionEnum == PositionStatusEnum.初始化 )
-                {
-                    Finish_UndoneDataViews[i].PositionEnum = PositionStatusEnum.等待配對;
+                    else if (Finish_UndoneDataViews[i].PositionEnum == PositionStatusEnum.從軟體配對 ||
+                        Finish_UndoneDataViews[i].PositionEnum == PositionStatusEnum.從手機配對 ||
+                        Finish_UndoneDataViews[i].PositionEnum == PositionStatusEnum.已配對)
+                    {
+                        Finish_UndoneDataViews[i].PositionEnum = PositionStatusEnum.等待配對;
+                    }
                 }
-                if (Finish_UndoneDataViews[i].PositionEnum == PositionStatusEnum.未取得狀態)
-                {
-                    Finish_UndoneDataViews[i].PositionEnum = PositionStatusEnum.等待配對;
-                }
-                
             }
+         
+
+            
+
             RefreshScheduleGridC();
 
             IsSerializing = false;
@@ -3229,9 +3360,13 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                                 }
                                 else if (_WorkMaterials[value].Position == 0)
                                 {
-                                    if (Finish_UndoneDataViews[MIndex].PositionEnum != PositionStatusEnum.手機配對 && Finish_UndoneDataViews[MIndex].PositionEnum != PositionStatusEnum.手動配對)
-                                        if (Finish_UndoneDataViews[MIndex].PositionEnum == PositionStatusEnum.等待配對 || Finish_UndoneDataViews[MIndex].PositionEnum == PositionStatusEnum.初始化)
-                                            Finish_UndoneDataViews[MIndex].PositionEnum = PositionStatusEnum.軟體配對;
+                                    if (Finish_UndoneDataViews[MIndex].PositionEnum != PositionStatusEnum.從軟體配對 &&
+                                        Finish_UndoneDataViews[MIndex].PositionEnum != PositionStatusEnum.從手機配對 &&
+                                        Finish_UndoneDataViews[MIndex].PositionEnum != PositionStatusEnum.已配對)
+                                    {
+                                        Finish_UndoneDataViews[MIndex].PositionEnum = PositionStatusEnum.已配對;
+                                    }
+                                    //手機或機台狀態靠輪巡去修改
                                 }
                                 else
                                 {
@@ -3286,7 +3421,7 @@ public WPFBase.RelayParameterizedCommand FinishCommand
         private void ClearPairedMachineData()
         {
             //找出list
-            var PositionStatusEnumArray = new List<PositionStatusEnum> { PositionStatusEnum.軟體配對, PositionStatusEnum.手機配對, PositionStatusEnum.手動配對 };
+            var PositionStatusEnumArray = new List<PositionStatusEnum> { PositionStatusEnum.從軟體配對, PositionStatusEnum.從手機配對, PositionStatusEnum.已配對 };
 
             //當_finish_UndoneDataViews內的PositionEnum符合PositionStatusEnumArray中的任意一項時，將值取出
             var FUDV_List = Finish_UndoneDataViews.ToList().FindAll(x => PositionStatusEnumArray.Exists(y => y == x.PositionEnum));
@@ -3296,7 +3431,6 @@ public WPFBase.RelayParameterizedCommand FinishCommand
             //先清除手機伺服器 再清除機台
             var UnregisterMaterialList = FUDV_List.Select(x => x.MaterialNumber).ToList();
             ClearAppServerPairWorkList(UnregisterMaterialList);
-
 
             foreach(var Fu in FUDV_List)
             {
@@ -3337,10 +3471,12 @@ public WPFBase.RelayParameterizedCommand FinishCommand
                             AddOperatingLog(LogSourceEnum.Phone, $"素材編號{el}成功註銷");
                         }
                     }
-                    foreach (var el in MaterialList.Except(result.data))
+
+
+                    /*foreach (var el in MaterialList.Except(result.data))
                     {
                         AddOperatingLog(LogSourceEnum.Phone, $"素材編號{el}無法註銷", true);
-                    }
+                    }*/
                 }
                 else
                 {

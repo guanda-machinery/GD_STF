@@ -69,16 +69,6 @@ namespace STD_105
             model.Secondary = drawing;
             drawing.Secondary = model;
 
-
-            (this.DataContext as ProcessingMonitor_MachineVM).ScheduleGridC = MachiningSchedule_List_GridControl;
-            (this.DataContext as ProcessingMonitor_MachineVM).LogGridC = LogGridControl;
-            DevExpress.Xpf.Core.SplashScreenManager DProcessingScreenWin = DevExpress.Xpf.Core.SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
-            DProcessingScreenWin.Show();
-            DProcessingScreenWin.ViewModel.Status = "正在讀取3D模型...";
-
-            (this.DataContext as ProcessingMonitor_MachineVM).SetSerializationInit(model);
-            DProcessingScreenWin.Close();
-
         }
 
         private void ScrollOwner_ScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -124,6 +114,8 @@ namespace STD_105
 
             try
             {
+
+
                 #region Model 初始化
                 //model.InitialView = viewType.Top;
                 /*旋轉軸中心設定當前的鼠標光標位置。 如果模型全部位於相機視錐內部，
@@ -148,6 +140,17 @@ namespace STD_105
             {
 
             }
+
+            (this.DataContext as ProcessingMonitor_MachineVM).ScheduleGridC = MachiningSchedule_List_GridControl;
+            (this.DataContext as ProcessingMonitor_MachineVM).LogGridC = LogGridControl;
+            DevExpress.Xpf.Core.SplashScreenManager DProcessingScreenWin = DevExpress.Xpf.Core.SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
+            DProcessingScreenWin.Show();
+            DProcessingScreenWin.ViewModel.Status = "正在讀取3D模型...";
+
+            (this.DataContext as ProcessingMonitor_MachineVM).SetSerializationInit(model);
+            DProcessingScreenWin.Close();
+
+
 
             model.Loaded -= Model3D_Loaded;
         }
