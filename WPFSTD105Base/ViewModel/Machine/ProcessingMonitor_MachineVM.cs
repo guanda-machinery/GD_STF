@@ -1115,7 +1115,9 @@ namespace WPFSTD105.ViewModel
         private long _BoltsCountROffset = Marshal.OffsetOf(typeof(WorkMaterial), nameof(WorkMaterial.BoltsCountR)).ToInt64();
         private long _DrLOffset = Marshal.OffsetOf(typeof(WorkMaterial), nameof(WorkMaterial.DrLeft)).ToInt64();
         private long _DrROffset = Marshal.OffsetOf(typeof(WorkMaterial), nameof(WorkMaterial.DrRight)).ToInt64();
-        private long DrMOffset = Marshal.OffsetOf(typeof(WorkMaterial), nameof(WorkMaterial.DrMiddle)).ToInt64();
+        private long _DrMOffset = Marshal.OffsetOf(typeof(WorkMaterial), nameof(WorkMaterial.DrMiddle)).ToInt64();
+
+        private long _ObjectTypeOffset = Marshal.OffsetOf(typeof(WorkMaterial), nameof(WorkMaterial.ProfileType)).ToInt64();
         #endregion
         #endregion
 
@@ -1309,6 +1311,8 @@ namespace WPFSTD105.ViewModel
                                 {
                                     _WorkMaterials[selected].AssemblyNumber = new ushort[25];
                                 }
+                                //_WorkMaterials[selected].ProfileType = 
+
                                 _WorkMaterials[selected].Finish = 100;
                                 _WorkMaterials[selected].IsExport = true;
                                 _WorkMaterials[selected].Position = -2;
@@ -1830,6 +1834,7 @@ namespace WPFSTD105.ViewModel
                 long ct1 = cWork + _t1Offset;
                 long ct2 = cWork + _t2Offset;
                 long cGuid = cWork + _GuidOffset;
+                long cObjectType = cWork + _ObjectTypeOffset;
                 #endregion
                 STDSerialization ser = new STDSerialization();
                 var SteelPartCollection = ser.GetPart($"{view.Profile.GetHashCode()}");
@@ -1853,6 +1858,36 @@ namespace WPFSTD105.ViewModel
                         Write.SetMonitorWorkOffset(steelPart.t1.ToByteArray(), ct1);//寫入腹板厚度
                         Write.SetMonitorWorkOffset(steelPart.t2.ToByteArray(), ct2);//寫入翼板厚度
                         Write.SetMonitorWorkOffset(Encoding.ASCII.GetBytes(view.MaterialNumber), cGuid);//寫入圖面 GUID
+
+                        PROFILE_TYPE ObjectPROFILE_TYPE = PROFILE_TYPE.H;
+
+                        switch (view.ObjectType)
+                        {
+                            case OBJECT_TYPE.RH:
+                            case OBJECT_TYPE.BH:
+                            case OBJECT_TYPE.H:
+                                ObjectPROFILE_TYPE = PROFILE_TYPE.H;
+                                break;
+                            case OBJECT_TYPE.LB:
+                            case OBJECT_TYPE.CH:
+                                ObjectPROFILE_TYPE = PROFILE_TYPE.U;
+                                break;
+                            case OBJECT_TYPE.BOX:
+                            case OBJECT_TYPE.TUBE:
+                                ObjectPROFILE_TYPE = PROFILE_TYPE.BOX;
+                                break;
+                            case OBJECT_TYPE.L:
+                                ObjectPROFILE_TYPE = PROFILE_TYPE.L; 
+                                break;
+                            case OBJECT_TYPE.PLATE:
+                                ObjectPROFILE_TYPE = PROFILE_TYPE.PLATE;
+                                break;
+                            default:
+                                AddOperatingLog(LogSourceEnum.Init, $"斷面規格{view.ObjectType}無法轉換成OBJECT_TYPE", true);
+                                break;
+                        }
+
+                        Write.SetMonitorWorkOffset(((int)ObjectPROFILE_TYPE).ToByteArray(), cObjectType);//寫入型鋼類型
 
                         var a = Encoding.ASCII.GetBytes(view.Profile);
                         var p1 = (view.Parts.Select(el => el.AssemblyNumber).Aggregate((str1, str2) => $"{str1},{str2}"));
@@ -1990,7 +2025,7 @@ namespace WPFSTD105.ViewModel
                     if (ActualDrillDict.ContainsKey(FACE.FRONT))
                         SendDrillToMachine(_BoltsCountLOffset, _DrLOffset, ActualDrillDict[FACE.FRONT], steelPart, cWork, steelPart.W, Finish_UndoneDataViews[index].LengthStr, null);
                     if (ActualDrillDict.ContainsKey(FACE.TOP))
-                        SendDrillToMachine(_BoltsCountMOffset, DrMOffset, ActualDrillDict[FACE.TOP], steelPart, cWork, steelPart.H, Finish_UndoneDataViews[index].LengthStr, null);
+                        SendDrillToMachine(_BoltsCountMOffset, _DrMOffset, ActualDrillDict[FACE.TOP], steelPart, cWork, steelPart.H, Finish_UndoneDataViews[index].LengthStr, null);
                     if (ActualDrillDict.ContainsKey(FACE.BACK))
                         SendDrillToMachine(_BoltsCountROffset, _DrROffset, ActualDrillDict[FACE.BACK], steelPart, cWork, steelPart.W, Finish_UndoneDataViews[index].LengthStr, null);
                 }
