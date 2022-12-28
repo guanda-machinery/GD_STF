@@ -3157,7 +3157,8 @@ namespace WPFSTD105.ViewModel
                 if (SendDrill(noInfo[i], out var IsPinMode))
                 {
                     AddOperatingLog(LogSourceEnum.Machine, $"排版編號{Finish_UndoneDataViews[noInfo[i]].MaterialNumber}加工訊息發送成功", false);
-                   Finish_UndoneDataViews[noInfo[i]].DPinTestMode = IsPinMode;
+                   Finish_UndoneDataViews[0].DPinTestMode = IsPinMode;
+
                     _SendIndex.Add(noInfo[i]); //存取已經發送過的列表
                 }
                 else

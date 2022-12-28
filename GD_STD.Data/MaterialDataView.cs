@@ -399,30 +399,17 @@ namespace GD_STD.Data
         }
 
 
-        private bool? _dPinTestMode = null;
         /// <summary>
         /// null 不明狀態 - true 打點測試 - false 一般加工 
         /// </summary>
-        public bool? DPinTestMode
-        {
-            get
-            {
-                return _dPinTestMode;
-            }
-            set
-            {
-                _dPinTestMode = value;
-                OnPropertyChanged(nameof(DPinTestMode));
-            }
-        }
+        public bool DPinTestMode { get;set;  }
 
 
 
-
-/// <summary>
-/// 素材消耗
-/// </summary>
-[Excel("消耗", 5)]
+        /// <summary>
+        /// 素材消耗
+        /// </summary>
+        [Excel("消耗", 5)]
         public double Loss
         {
             get
