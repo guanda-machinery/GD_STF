@@ -8,7 +8,7 @@ namespace WPFSTD105.Model
 {
     public class OperatingLog: WPFWindowsBase.BaseViewModel
     {
-        public string LogSource { get; set; }
+        public LogSourceEnum LogSource { get; set; }
         public DateTime LogDatetime { get; set; }
         public string LogString { get; set; }
         public bool IsAlert { get; set; }
@@ -18,6 +18,7 @@ namespace WPFSTD105.Model
         Init ,
         Phone,
         Machine,
-        Software
+        Software,
+        
     }
 }

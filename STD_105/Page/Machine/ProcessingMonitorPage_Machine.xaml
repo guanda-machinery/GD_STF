@@ -22,6 +22,7 @@
                    xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding" 
                    xmlns:GD_STD_Enum="clr-namespace:GD_STD.Enum;assembly=GD_STD.Enum"
                    xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+
                    Title="加工監控"
                   KeepAlive="True"
                   Unloaded="BasePage_Unloaded"
@@ -344,10 +345,10 @@
                                     <MenuItem Command="{Binding SelectedItemsAddCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                                 Header="批量註冊"/>
-                                    <!-- <MenuItem Command="{Binding RowAddCommand}"
+                                     <MenuItem Command="{Binding RowAddCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                            
-                                              Header="加入任務到末端" />-->
+                                              Header="加入任務到末端" />
                                     <!--<MenuItem Command="{Binding DeleteCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                               Header="移除任務" /> -->
@@ -408,11 +409,13 @@
                             </dxg:GridColumn>
                             <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題一"  Width="auto"  />
                             <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題二"   Width="auto" />
+                            <dxg:GridColumn FieldName="DataPinTestMode"  IsSmart="True" Header="加工型態"   Width="auto" />
                             <dxg:GridColumn FieldName="MachiningSpanTime"  IsSmart="True" Header="加工時間"   Width="auto" >
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:TextEditSettings Mask="HH:mm:ss" MaskType="DateTime" MaskUseAsDisplayFormat="True"/>
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
+
                         </dxg:GridControl>
                     </TabItem>
                     <TabItem Header="加工細項" Name="MachiningDetailTabItem" >
@@ -527,7 +530,7 @@ AllowEditing="False"
                             </dxg:TableView>
                         </dxg:GridControl.View>
                         <!-- <dxg:GridColumn FieldName=""  MaxWidth="40" MinWidth="40"  FixedWidth="True" Header="狀態" />-->
-                        <dxg:GridColumn FieldName="PositionEnum"  Binding="{Binding PositionEnum, Converter={local:PositionStatusEnumToStringConverter},UpdateSourceTrigger=PropertyChanged}"
+                        <dxg:GridColumn  
                                         MaxWidth="70" MinWidth="70"  FixedWidth="True" Header="位置">
                             <dxg:GridColumn.CellStyle>
                                 <Style TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
@@ -544,7 +547,21 @@ AllowEditing="False"
                                     </Style.Triggers>
                                 </Style>
                             </dxg:GridColumn.CellStyle>
+
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding Row.PositionEnum,Converter={local:PositionStatusEnumToStringConverter},UpdateSourceTrigger=PropertyChanged}"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Row.EX_EN_count,UpdateSourceTrigger=PropertyChanged}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
+                        
                         <dxg:GridColumn MaxWidth="70" MinWidth="70" Header="進度(%)" >
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
@@ -1389,11 +1406,10 @@ AllowEditing="False"
                             <dxe:DateEditSettings Mask="HH:mm"  MaskUseAsDisplayFormat="True"/>
                         </dxg:GridColumn.EditSettings>
                     </dxg:GridColumn>
-                    <dxg:GridColumn FieldName="LogSource" Header="來源" Width="40" AllowMoving="false"  IsSmart="True">
+                    <dxg:GridColumn Binding="{Binding LogSource,Converter={local:LogSourceEnumToStringConverter}}" Header="來源" Width="40" AllowMoving="false"  IsSmart="True">
                         <dxg:GridColumn.EditSettings>
                             <dxe:TextEditSettings HorizontalContentAlignment="Center"/>
                         </dxg:GridColumn.EditSettings>
-
                     </dxg:GridColumn>
                     <dxg:GridColumn FieldName="LogString" Header="系統訊息" Width="*" AllowMoving="false"  IsSmart="True">
                         <dxg:GridColumn.EditSettings>
@@ -1461,14 +1477,18 @@ AllowEditing="False"
 
                         
                         <Border Grid.Row="0" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
+                        <Grid Grid.Row="0" Grid.ColumnSpan="2" IsEnabled="{Binding Finish_UndoneDataViews, Converter={local:ListCountToBooleanConverter}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
                         <RadioButton Grid.Column="0"  Grid.Row="0" 
                                      Name="DrillHole_RadioButton"  
                                      GroupName="Group_Drill"
                                      IsChecked="{Binding DrillHole_Mode_RadioButtonIsEnable}"
                                      Command="{Binding DrillHole_ModeCommand}">
-                        <Image Source="{StaticResource DrillHoleDrawingImage}" Height="60" Width="auto"  />
+                            <Image Source="{StaticResource DrillHoleDrawingImage}" Height="60" Width="auto"  />
                         </RadioButton>
-
                         <RadioButton Grid.Column="1" Grid.Row="0" 
                                      Name="DrillPin_RadioButton" 
                                      GroupName="Group_Drill"
@@ -1476,9 +1496,7 @@ AllowEditing="False"
                                      Command="{Binding DrillPin_ModeCommand}">
                             <Image Source="{StaticResource DrillPinDrawingImage}" Height="60" Width="auto"/>
                         </RadioButton>
-
-                        <Button Grid.Column="2" Grid.Row="0" Background="Red" Content="TestButton" Foreground="Black" Command="{Binding  Test_Input_by_Computer_Command }" Visibility="Collapsed"></Button>
-
+                        </Grid>
                         <Border Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
 
                         <StackPanel Grid.Column="0" Grid.Row="1" IsEnabled="{Binding Input_by_SmartPhone_RadioButtonVMEnable}">
