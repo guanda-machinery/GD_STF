@@ -1563,19 +1563,19 @@ namespace WPFSTD105.Model
                     TmpUL = new Point3D(tmp1[1].min, tmp1[1].key);
                     TmpUR = new Point3D(tmp1[1].max, tmp1[1].key);
 
-                    //if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
-                        if ((Math.Abs(TmpUL.X - TmpDL.X) <= 0.5) && (Math.Abs(TmpUR.X - TmpDR.X) <= 0.5))
-                            return;
+                    ////if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
+                    //    if ((Math.Abs(TmpUL.X - TmpDL.X) <= 0.5) || (Math.Abs(TmpUR.X - TmpDR.X) <= 0.5))
+                    //        return;
 
 
-                    if (TmpUL.X > TmpDL.X)
+                    if (TmpUL.X > TmpDL.X && Math.Abs(TmpUL.X-TmpDL.X)>0.05)
                     {
                         PointDL1 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioC, (TmpUL.Y - TmpDL.Y) * PosRatioC) + TmpDL;
                         PointDL2 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioD, (TmpUL.Y - TmpDL.Y) * PosRatioD) + TmpDL;
                         tmplist1.Add(PointDL1);
                         tmplist1.Add(PointDL2);
                     }
-                    else if (TmpUL.X < TmpDL.X)
+                    else if (TmpUL.X < TmpDL.X && Math.Abs(TmpUL.X - TmpDL.X) > 0.05)
                     {
                         PointDR1 = new Point3D((TmpUR.X - TmpDR.X) * PosRatioC, (TmpUR.Y - TmpDR.Y) * PosRatioC) + TmpDR;
                         PointDR2 = new Point3D((TmpUR.X - TmpDR.X) * PosRatioD, (TmpUR.Y - TmpDR.Y) * PosRatioD) + TmpDR;
@@ -1583,14 +1583,14 @@ namespace WPFSTD105.Model
                         tmplist1.Add(PointDR2);
                     }
 
-                    if (TmpUR.X > TmpDR.X)
+                    if (TmpUR.X > TmpDR.X && Math.Abs(TmpUR.X - TmpDR.X) > 0.05)
                     {
                         PointUL1 = new Point3D((TmpDL.X - TmpUL.X) * PosRatioC, (TmpDL.Y - TmpUL.Y) * PosRatioC) + TmpUL;
                         PointUL2 = new Point3D((TmpDL.X - TmpUL.X) * PosRatioD, (TmpDL.Y - TmpUL.Y) * PosRatioD) + TmpUL;
                         tmplist1.Add(PointUL1);
                         tmplist1.Add(PointUL2);
                     }
-                    else if (TmpUR.X < TmpDR.X)
+                    else if (TmpUR.X < TmpDR.X && Math.Abs(TmpUR.X - TmpDR.X) > 0.05)
                     {
                         PointUR1 = new Point3D((TmpDR.X - TmpUR.X) * PosRatioC, (TmpDR.Y - TmpUR.Y) * PosRatioC) + TmpUR;
                         PointUR2 = new Point3D((TmpDR.X - TmpUR.X) * PosRatioD, (TmpDR.Y - TmpUR.Y) * PosRatioD) + TmpUR;
@@ -1648,19 +1648,19 @@ namespace WPFSTD105.Model
                     TmpUL = new Point3D(tmp2[1].min, tmp2[1].key);
                     TmpUR = new Point3D(tmp2[1].max, tmp2[1].key);
 
-                    //if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
-                        if ((Math.Abs(TmpUL.X - TmpDL.X) <= 0.5) && (Math.Abs(TmpUR.X - TmpDR.X) <= 0.5))
-                            return;
+                    ////if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
+                    //    if ((Math.Abs(TmpUL.X - TmpDL.X) <= 0.5) || (Math.Abs(TmpUR.X - TmpDR.X) <= 0.5))
+                    //        return;
 
 
-                    if (TmpUL.X > TmpDL.X)
+                    if (TmpUL.X > TmpDL.X && Math.Abs(TmpUL.X-TmpDL.X)>0.05)
                     {
                         PointDL1 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioC, (TmpUL.Y - TmpDL.Y) * PosRatioC) + TmpDL;
                         PointDL2 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioD, (TmpUL.Y - TmpDL.Y) * PosRatioD) + TmpDL;
                         tmplist1.Add(PointDL1);
                         tmplist1.Add(PointDL2);
                     }
-                    else if (TmpUL.X < TmpDL.X)
+                    else if (TmpUL.X < TmpDL.X && Math.Abs(TmpUL.X - TmpDL.X) > 0.05)
                     {
                         PointDR1 = new Point3D((TmpUR.X - TmpDR.X) * PosRatioC, (TmpUR.Y - TmpDR.Y) * PosRatioC) + TmpDR;
                         PointDR2 = new Point3D((TmpUR.X - TmpDR.X) * PosRatioD, (TmpUR.Y - TmpDR.Y) * PosRatioD) + TmpDR;
@@ -1668,14 +1668,14 @@ namespace WPFSTD105.Model
                         tmplist1.Add(PointDR2);
                     }
 
-                    if (TmpUR.X > TmpDR.X)
+                    if (TmpUR.X > TmpDR.X && Math.Abs(TmpUR.X - TmpDR.X) > 0.05)
                     {
                         PointUL1 = new Point3D((TmpDL.X - TmpUL.X) * PosRatioC, (TmpDL.Y - TmpUL.Y) * PosRatioC) + TmpUL;
                         PointUL2 = new Point3D((TmpDL.X - TmpUL.X) * PosRatioD, (TmpDL.Y - TmpUL.Y) * PosRatioD) + TmpUL;
                         tmplist1.Add(PointUL1);
                         tmplist1.Add(PointUL2);
                     }
-                    else if (TmpUR.X < TmpDR.X)
+                    else if (TmpUR.X < TmpDR.X && Math.Abs(TmpUR.X - TmpDR.X) > 0.05)
                     {
                         PointUR1 = new Point3D((TmpDR.X - TmpUR.X) * PosRatioC, (TmpDR.Y - TmpUR.Y) * PosRatioC) + TmpUR;
                         PointUR2 = new Point3D((TmpDR.X - TmpUR.X) * PosRatioD, (TmpDR.Y - TmpUR.Y) * PosRatioD) + TmpUR;
@@ -1745,21 +1745,21 @@ namespace WPFSTD105.Model
                     else
                         TmpDL = new Point3D(YDOWN2List[1].min, YDOWN2List[1].key);
 
-                    // TmpUL.X == TmpDL.X && TmpUR.X == TmpDR.X && 
-                    if (( Math.Abs(TmpUL.X-TmpDL.X)<=0.5) && (Math.Abs(TmpUR.X - TmpDR.X) <= 0.5))
-                        return;
+                    //// TmpUL.X == TmpDL.X && TmpUR.X == TmpDR.X && 
+                    //if (( Math.Abs(TmpUL.X-TmpDL.X)<=0.5) || (Math.Abs(TmpUR.X - TmpDR.X) <= 0.5))
+                    //    return;
 
 
 
 
-                    if (TmpUL.X > TmpDL.X)
+                    if (TmpUL.X > TmpDL.X && Math.Abs(TmpUL.X - TmpDL.X) > 0.05)
                     {
                         PointDL1 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioA, (TmpUL.Y - TmpDL.Y) * PosRatioA) + TmpDL;
-                        PointDL2 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioB, (TmpUL.Y - TmpDL.Y) * PosRatioB) + TmpDL;
+                        PointDL2 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioB, (TmpUL.Y - TmpDL.Y) * PosRatioB) + TmpDL;                       
                         tmplist1.Add(PointDL1);
                         tmplist1.Add(PointDL2);
                     }
-                    else if (TmpUL.X < TmpDL.X)
+                    else if (TmpUL.X < TmpDL.X && Math.Abs(TmpUL.X - TmpDL.X) > 0.05)
                     {
                         PointUL1 = new Point3D((TmpDL.X - TmpUL.X) * PosRatioA, (TmpDL.Y - TmpUL.Y) * PosRatioA) + TmpUL;
                         PointUL2 = new Point3D((TmpDL.X - TmpUL.X) * PosRatioB, (TmpDL.Y - TmpUL.Y) * PosRatioB) + TmpUL;
@@ -1767,14 +1767,14 @@ namespace WPFSTD105.Model
                         tmplist1.Add(PointUL2);
                     }
 
-                    if (TmpUR.X > TmpDR.X)
+                    if (TmpUR.X > TmpDR.X && Math.Abs(TmpUR.X - TmpDR.X) > 0.05)
                     {
                         PointDR1 = new Point3D((TmpUR.X - TmpDR.X) * PosRatioA, (TmpUR.Y - TmpDR.Y) * PosRatioA) + TmpDR;
                         PointDR2 = new Point3D((TmpUR.X - TmpDR.X) * PosRatioB, (TmpUR.Y - TmpDR.Y) * PosRatioB) + TmpDR;
                         tmplist1.Add(PointDR1);
                         tmplist1.Add(PointDR2);
                     }
-                    else if (TmpUR.X < TmpDR.X)
+                    else if (TmpUR.X < TmpDR.X && Math.Abs(TmpUR.X - TmpDR.X) > 0.05)
                     {
                         PointUR1 = new Point3D((TmpDR.X - TmpUR.X) * PosRatioA, (TmpDR.Y - TmpUR.Y) * PosRatioA) + TmpUR;
                         PointUR2 = new Point3D((TmpDR.X - TmpUR.X) * PosRatioB, (TmpDR.Y - TmpUR.Y) * PosRatioB) + TmpUR;
