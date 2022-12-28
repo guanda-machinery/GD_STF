@@ -88,8 +88,8 @@ namespace WPFSTD105.ViewModel
                 var DrillBData = ser.GetDrillBolts(el.MaterialNumber);
                 if (DrillBData != null)
                     AllDrillBoltsDict[el.MaterialNumber] = DrillBData;
-                /*else
-                    AllDrillBoltsDict[el.MaterialNumber] = GetDrillBoltsItemCollection(el);*/
+                //else
+                   // AllDrillBoltsDict[el.MaterialNumber] = GetDrillBoltsItemCollection(el);
             });
 
             //將設定的手臂模式寫入記憶體
@@ -177,50 +177,42 @@ namespace WPFSTD105.ViewModel
                     }
 
                     //監視是否有完成配對的 有配對才可點選台車選項
+                    PositionStatusEnum[] AlreadyPairEnumArray = new PositionStatusEnum[] { PositionStatusEnum.已配對, PositionStatusEnum.從手機配對, PositionStatusEnum.從軟體配對 };
+                    OBJECT_TYPE[] CantUseTrolleyOBJECT_TYPEArray = new OBJECT_TYPE[] { OBJECT_TYPE.CH, OBJECT_TYPE.LB, OBJECT_TYPE.TUBE, OBJECT_TYPE.BOX };
 
-                    var PairIndex = Finish_UndoneDataViews.FindIndex(x => (x.PositionEnum == PositionStatusEnum.已配對 ||
-                    x.PositionEnum == PositionStatusEnum.從手機配對 ||
-                    x.PositionEnum == PositionStatusEnum.從軟體配對));
+                    var PairIndex = Finish_UndoneDataViews.FindIndex(x => AlreadyPairEnumArray.Contains(x.PositionEnum));
                     //存在配對
                     if (PairIndex != -1)
                         PostageEnable = true;
                     else
                         PostageEnable = false;
 
-                    var Channel_Index = Finish_UndoneDataViews.FindIndex(x => (x.PositionEnum == PositionStatusEnum.已配對 ||
-                    x.PositionEnum == PositionStatusEnum.從手機配對 ||
-                    x.PositionEnum == PositionStatusEnum.從軟體配對) &&
-                    x.ObjectType == OBJECT_TYPE.CH || 
-                    x.ObjectType == OBJECT_TYPE.LB);
+
+
+                    var Channel_Index = Finish_UndoneDataViews.FindIndex(x => AlreadyPairEnumArray.Contains(x.PositionEnum) &&
+                    CantUseTrolleyOBJECT_TYPEArray.Contains(x.ObjectType) );
                     //如果有槽鐵配對完成 禁用台車
                     if (Channel_Index != -1)
                         TrolleyEnable = true;
                     else
+                    {
+                   
                         TrolleyEnable = false;
+                        //跳出提示告訴使用者必須使用續接
+                        /*MessageBoxResult messageBoxResult = WinUIMessageBox.Show(null,
+                            $"復原的素材有包含正在加工中的素材，請確認是否要移除加工中的素材",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.ServiceNotification,
+                            FloatingMode.Adorner);*/
+                    }
 
-
-                    Thread.Sleep(50);
+                    Thread.Sleep(1000);
                 }
             });
 
-            //初始化 並掃描是否有手機配對(僅一次)
-            Task.Run(() =>
-            {
-                int RetryCount = 5;
-                for (int i = 0; i < RetryCount; i++)
-                {
-                    try
-                    {
-                        WriteTourData();
-                    }
-                    catch (Exception ex)
-                    {
-                        AddOperatingLog(LogSourceEnum.Software, $"取得手機連線模式失敗，", false);
-                        AddOperatingLog(LogSourceEnum.Software, $"正在重試({i + 1}/{RetryCount})", false);
-                        AddOperatingLog(LogSourceEnum.Init, ex.Message, true);
-                    }
-                }
-            });
 
             //定期存檔素材編輯孔位
             Task.Run(() =>
@@ -230,15 +222,35 @@ namespace WPFSTD105.ViewModel
                     //如果值不一樣才存檔
                     foreach (var el in AllDrillBoltsDict)
                     {
-                        if (el.Value != ser.GetDrillBolts(el.Key))
+                        if (!el.Value.Equals(ser.GetDrillBolts(el.Key)))
                             ser.SetDrillBolts(el.Key, el.Value);
                     }
-                    Thread.Sleep(1000);
+                    Thread.Sleep(3000);
                 }
 
             });
 
+            Task.Run(() =>
+            {
+                AddOperatingLog(LogSourceEnum.Software, "啟用輪巡", false);
+                while (true)
+                {
+                    try
+                    {
+                        WriteTourData();
 
+                        for (int i = 0; i < 5; i++)
+                        {
+                            Thread.Sleep(1000);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+                AddOperatingLog(LogSourceEnum.Software, "停用輪巡", false);
+            });
         }
 
         #region 公開屬性
@@ -592,6 +604,7 @@ namespace WPFSTD105.ViewModel
                 {
                     AddOperatingLog(LogSourceEnum.Software, $"已選擇素材編號：{_finish_UndoneDataViews_SelectedItem.MaterialNumber}");
                     MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem);
+
                 }
             }
         }
@@ -799,6 +812,11 @@ namespace WPFSTD105.ViewModel
         }
 
 
+        /// <summary>
+        /// 取得素材加工資料
+        /// </summary>
+        /// <param name="view"></param>
+        /*
         private void GetDrillBoltsItemCollection(MaterialPartDetail view)
         {
             if (view == null)
@@ -908,7 +926,7 @@ namespace WPFSTD105.ViewModel
             }, null);
         }
 
-
+        */
 
 
 
@@ -960,7 +978,7 @@ namespace WPFSTD105.ViewModel
 
                 if (_finish_UndoneDataViewsDetail_SelectedItem != null)
                 {
-                    GetDrillBoltsItemCollection(_finish_UndoneDataViewsDetail_SelectedItem);
+                    //GetDrillBoltsItemCollection(_finish_UndoneDataViewsDetail_SelectedItem);
                     AddOperatingLog(LogSourceEnum.Software, $"已選擇零件編號：{_finish_UndoneDataViewsDetail_SelectedItem.PartNumber}");
                 }
             }
@@ -1402,7 +1420,7 @@ namespace WPFSTD105.ViewModel
                                 MessageBoxOptions.ServiceNotification,
                                 FloatingMode.Adorner);
 
-                            if (messageBoxResult == MessageBoxResult.Yes)
+                            if (messageBoxResult == MessageBoxResult.No)
                                 MDV_SelectedItems.RemoveAll(e => (e.PositionEnum == PositionStatusEnum.加工中));
 
                             if (messageBoxResult == MessageBoxResult.Cancel)
@@ -1414,19 +1432,20 @@ namespace WPFSTD105.ViewModel
                             Task.Run(() =>
                             {
                                 DevExpress.Xpf.Core.SplashScreenManager REProcessingScreenWin = DevExpress.Xpf.Core.SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
-                                REProcessingScreenWin.ViewModel.Status = $"正在註銷零件...";
+                                REProcessingScreenWin.ViewModel.Status = $"正在註銷伺服器的零件...";
                                 REProcessingScreenWin.Show();
 
-                                ClearAppServerPairWorkList(MDV_SelectedItems.Select(x => (x.MaterialNumber)).ToList());
-                                Thread.Sleep(2000); //延遲清理
+                                if(MDV_SelectedItems.Count !=0)
+                                    ClearAppServerPairWorkList(MDV_SelectedItems.Select(x => (x.MaterialNumber)).ToList());
+
+                                Thread.Sleep(3000); //延遲清理
                                 foreach (var Fu in MDV_SelectedItems)
                                 {
                                     var Xindex = Finish_UndoneDataViews.FindIndex(x => x == Fu);
                                     if (Xindex != -1)
                                     {
-                                        REProcessingScreenWin.ViewModel.Status = $"正在註銷素材編號{Fu.MaterialNumber}...";
-                                        AddOperatingLog(LogSourceEnum.Machine, $"清除素材編號{Fu.MaterialNumber}的加工資料");
-                                       
+                                        REProcessingScreenWin.ViewModel.Status = $"正在註銷機台端的加工資料{Fu.MaterialNumber}...";
+                                        AddOperatingLog(LogSourceEnum.Machine, $"正在註銷機台端的加工資料{Fu.MaterialNumber}...");
                                         ClearMonitorWorkList(Xindex);
                                     }
                                 }
@@ -1440,7 +1459,7 @@ namespace WPFSTD105.ViewModel
                     }
                     catch (Exception ex)
                     {
-
+                        AddOperatingLog(LogSourceEnum.Machine, $"{ex.Message}");
                     }
                 });
              }
@@ -2622,7 +2641,7 @@ namespace WPFSTD105.ViewModel
                     MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem);
                     HintStep1 = true;
                     //如果切換時有已排程但未加工的零件->清理掉狀態
-                    //ClearPairedMachineData();
+                    ClearPairedMachineData();
 
                 });
             }
@@ -2635,7 +2654,7 @@ namespace WPFSTD105.ViewModel
                 AddOperatingLog(LogSourceEnum.Software, "切換到測試打孔模式");
                 MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem);
                 //如果切換時有已排程但未加工的零件->清理掉狀態並重新上傳
-                //ClearPairedMachineData();
+                ClearPairedMachineData();
 
                 //如果已在電腦模式 不跑這條
                 if (!Input_by_Computer_RadioButtonIsChecked)
@@ -2680,7 +2699,7 @@ namespace WPFSTD105.ViewModel
                     AddOperatingLog(LogSourceEnum.Software, "切換到機台模式");
                     Input_by_Computer_RadioButtonIsChecked = true;
 
-                    TourTaskStart();
+                    //TourTaskStart();
                     //TourTaskBoolean = false;
                     HintStep2 = true;
                 });
@@ -2723,7 +2742,6 @@ namespace WPFSTD105.ViewModel
                             Input_by_SmartPhone_RadioButtonIsChecked = true;
 
                             HintStep2 = true;
-                            TourTaskStart();
                         }
                         else
                         {
@@ -2778,9 +2796,9 @@ namespace WPFSTD105.ViewModel
 
 
         //啟用輪巡
-        Task TourTask;
-        bool TourTaskBoolean = false;
-        private void TourTaskStart()
+        //Task TourTask;
+        //bool TourTaskBoolean = false;
+        /*private void TourTaskStart()
         {
             try
             {
@@ -2800,53 +2818,8 @@ namespace WPFSTD105.ViewModel
 
             }
             //開始輪巡
-            TourTask = new Task(() =>
-            {
-                TourTaskBoolean = true;
-                AddOperatingLog(LogSourceEnum.Software, "啟用輪巡", false);
-                while (TourTaskBoolean)
-                {
-                    try
-                    {
-                        /*if (MachineAndPhoneAPI.AppServerCommunicate.GetEnableAppPairing(out var Result))
-                        {
-                            if (Result)
-                            {
-                                //若為手機連線模式
-                                Input_by_SmartPhone_RadioButtonIsChecked = true;
-                                Input_by_Computer_RadioButtonIsChecked = false;
-                            }
-                            else
-                            {
-                                Input_by_Computer_RadioButtonIsChecked = true;
-                                Input_by_SmartPhone_RadioButtonIsChecked = false;
-                            }
-                        }
-                        else
-                        {
-                            AddOperatingLog(LogSourceEnum.Software, "取得手機連線模式失敗", false);
-                        }*/
 
-                        WriteTourData();
-
-                        for (int i = 0; i < 10; i++)
-                        {
-                            Thread.Sleep(1000);
-                            if (!TourTaskBoolean)
-                            {
-                                break;
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-
-                    }
-                }
-                AddOperatingLog(LogSourceEnum.Software, "停用輪巡", false);
-            });
-            TourTask.Start();
-        }
+        }*/
         /// <summary>
         /// 將app配對寫入機台
         /// </summary>
@@ -3416,7 +3389,6 @@ namespace WPFSTD105.ViewModel
         {
             //找出list
             var PositionStatusEnumArray = new List<PositionStatusEnum> { PositionStatusEnum.從軟體配對, PositionStatusEnum.從手機配對, PositionStatusEnum.已配對 };
-
             //當_finish_UndoneDataViews內的PositionEnum符合PositionStatusEnumArray中的任意一項時，將值取出
             var FUDV_List = Finish_UndoneDataViews.ToList().FindAll(x => PositionStatusEnumArray.Exists(y => y == x.PositionEnum));
             if (FUDV_List.Count == 0)
@@ -3431,8 +3403,11 @@ namespace WPFSTD105.ViewModel
                 var Xindex = Finish_UndoneDataViews.FindIndex(x => x == Fu);
                 if (Xindex != -1)
                 {
-                    AddOperatingLog(LogSourceEnum.Machine, $"清除素材編號{Fu.MaterialNumber}的加工資料");
+                    AddOperatingLog(LogSourceEnum.Machine, $"清除素材編號{Fu.MaterialNumber}的機台端加工資料");
                     ClearMonitorWorkList(Xindex);
+
+                    AddOperatingLog(LogSourceEnum.Machine, $"清除素材編號{Fu.MaterialNumber}的加工點編輯紀錄");
+                    AllDrillBoltsDict.Remove(Finish_UndoneDataViews[Xindex].MaterialNumber);
                 }
             }
 
@@ -3462,11 +3437,9 @@ namespace WPFSTD105.ViewModel
                     {
                         foreach (var el in result.data)
                         {
-                            AddOperatingLog(LogSourceEnum.Phone, $"素材編號{el}成功註銷");
+                            AddOperatingLog(LogSourceEnum.Phone, $"素材編號{el}的伺服器資料成功註銷");
                         }
                     }
-
-
                     /*foreach (var el in MaterialList.Except(result.data))
                     {
                         AddOperatingLog(LogSourceEnum.Phone, $"素材編號{el}無法註銷", true);

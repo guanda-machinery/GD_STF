@@ -8,8 +8,9 @@
     <Grid Margin="0,0,0,-5" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions >
         <Grid.RowDefinitions>
@@ -19,9 +20,10 @@
             <Image Grid.Column="0" Source="{StaticResource DrillMachineDrawingImage}" Height="40"/>
             <Image Grid.Column="0" Source="{StaticResource Logo_colorchange}" Height="7" VerticalAlignment="Top" Margin="5"/>
         </Grid>
-        <TextBlock Text="←機台方向" Foreground="White" FontSize="16" Margin="10,0" Grid.Column="1" VerticalAlignment="Center"/>
-        <TextBlock  Text="手臂方向→" Foreground="White" FontSize="16" HorizontalAlignment="Right" Margin="10,0" Grid.Column="2" VerticalAlignment="Center"/>
+        <TextBlock Text="機台位置" Foreground="White" FontSize="16" Margin="10,0" Grid.Column="1" VerticalAlignment="Center"/>
+        <TextBlock Text="←進料方向" Foreground="White" FontSize="16" Margin="10,0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock  Text="手臂位置" Foreground="White" FontSize="16" HorizontalAlignment="Right" Margin="10,0" Grid.Column="2" VerticalAlignment="Center"/>
 
-        <Image Grid.Column="3"  Source="{StaticResource Transport_by_RobotDrawingImage}" Height="auto"  />
+        <Image Grid.Column="4"  Source="{StaticResource Transport_by_RobotDrawingImage}" Height="auto"  />
     </Grid>
 </UserControl>

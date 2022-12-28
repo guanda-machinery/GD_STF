@@ -271,7 +271,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 導回原本的ViewModel
         /// </summary>
-        public ProductSettingsPageViewModel ProductSettingsPageViewModel = new ProductSettingsPageViewModel();
+       // public ProductSettingsPageViewModel ProductSettingsPageViewModel = new ProductSettingsPageViewModel();
 
         public string PartNumber { get; set; }
         /// <summary>
@@ -404,6 +404,8 @@ namespace WPFSTD105.ViewModel
                 try
                 {
                     _ProfileType = value;
+                    //SteelTypeProperty_int= value;
+                    //this.SteelTypeProperty_int = _ProfileType;
                     List<SteelAttr> list = new List<SteelAttr>();
                     OBJECT_TYPE TYPE = (OBJECT_TYPE)value;
 
@@ -455,6 +457,7 @@ namespace WPFSTD105.ViewModel
         /// 製品長度
         /// </summary>
         public double ProductLengthProperty { get; set; }
+        private double _productWeightProperty = 0;
         /// <summary>
         /// 製品重
         /// </summary>
@@ -579,7 +582,7 @@ namespace WPFSTD105.ViewModel
                 //{
                 //    ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp");
                 //}
-
+                
                 return _ProfileIndex;
             }
             set
@@ -597,6 +600,18 @@ namespace WPFSTD105.ViewModel
                     _steelAttr = ProfileList[value];
 
                 Steelbuffer = (SteelAttr)_steelAttr.DeepClone();
+                
+                
+                //this.SteelSectionProperty= Steelbuffer.Profile;
+                //this.CurrentPartSteelAttr.H = Steelbuffer.H;
+                //this.HProperty = Steelbuffer.H;
+                //this.CurrentPartSteelAttr.W = Steelbuffer.W;
+                //this.WProperty = Steelbuffer.W;
+                //this.CurrentPartSteelAttr.t1 = Steelbuffer.t1;
+                //this.t1Property = Steelbuffer.t1;
+                //this.CurrentPartSteelAttr.t2 = Steelbuffer.t2;
+                //this.t2Property = Steelbuffer.t2;
+                //this.ProductWeightProperty = (this.ProductLengthProperty / 1000) * Steelbuffer.Kg;
             }
         }
 
@@ -1325,15 +1340,25 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public bool fromModifyHole { get; set; } = false;
 
-        private ObservableCollection<ProductSettingsPageViewModel> _dataviews { get; set; } = new ObservableCollection<ProductSettingsPageViewModel>();
-
+       private ObservableCollection<ProductSettingsPageViewModel> _dataviews;
         /// <summary>
         /// 零件資訊
         /// </summary>
         public ObservableCollection<ProductSettingsPageViewModel> DataViews
         {
-            get => _dataviews;
-            set => _dataviews = value;
+            get 
+            {
+                if(_dataviews == null)
+                {
+                    _dataviews = new ObservableCollection<ProductSettingsPageViewModel>();
+                }
+                return _dataviews; 
+            }
+            set
+            {
+                _dataviews = value;
+                OnPropertyChanged(nameof(DataViews));
+            }
         }
         /// <summary>
         /// 所選到斷面規格在其斷面規格list中的index
@@ -1406,7 +1431,7 @@ namespace WPFSTD105.ViewModel
             DataViews = new ObservableCollection<ProductSettingsPageViewModel>(GetData());
             SteelAttr = new SteelAttr();
 
-            ShowSteelTypeCommand = ShowSteelType(); //20220829 張燕華 選擇型鋼型態
+            ShowSteelTypeCommand = ShowSteelType();//20220829 張燕華 選擇型鋼型態
             CalculateWeightCommand = CalculateWeight();
             rb_CutLinePosition_Command = rb_CutLinePosition();
 
@@ -1617,7 +1642,7 @@ namespace WPFSTD105.ViewModel
             return new WPFBase.RelayParameterizedCommand((object SelectedIndex) =>
             {
                 if ((int)SelectedIndex != -1)
-                {
+                    {
                     ProfileType = Convert.ToInt32(SelectedIndex);
                     if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{(OBJECT_TYPE)ProfileType}.inp"))
                     {
@@ -2139,18 +2164,6 @@ namespace WPFSTD105.ViewModel
 
             Dictionary<string, ObservableCollection<SteelAttr>> saFile = ser.GetSteelAttr();
             SteelAttr temp = new SteelAttr();
-            //foreach (var item in source)
-
-
-            //var ProcessingScreenWin = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
-
-            //if (ShowProcessingScreenWin)
-            //{
-            //    ProcessingScreenWin.Show(inputBlock: InputBlockMode.Window, timeout: 700);
-            //}
-
-            //ProcessingScreenWin.ViewModel.Status = "取得專案內零件資訊";
-            //ProcessingScreenWin.ViewModel.IsIndeterminate = false;
             int ItemCount = 0;
 
             foreach (var item in group)
@@ -2237,12 +2250,9 @@ namespace WPFSTD105.ViewModel
                 aa.steelAttr.Weight = aa.Weight;
 
                 list.Add(aa);
-
-
                 ItemCount++;
             }
-            //ProcessingScreenWin.ViewModel.IsIndeterminate = true;
-            //ProcessingScreenWin.Close();
+
             return list;
         }
         /// <summary>

@@ -143,29 +143,25 @@ namespace WPFSTD105.ViewModel
 
 
 
-        //20221220
-        /// <summary>
-        /// 是否顯示中軸刀庫的按鈕
-        /// </summary>
-        public Visibility MiddleVisibility { get { return GD_STD.Properties.Optional.Default.Middle ? Visibility.Visible : Visibility.Collapsed; } }
-        /// <summary>
-        /// 是否顯示左軸出口刀庫的按鈕 
-        /// </summary>
-        public Visibility LeftExportVisibility { get { return GD_STD.Properties.Optional.Default.LeftExport ? Visibility.Visible : Visibility.Collapsed; } }
-        /// <summary>
-        /// 是否顯示右軸出口刀庫的按鈕 
-        /// </summary>
-        public Visibility RightExportVisibility { get { return GD_STD.Properties.Optional.Default.RightExport ? Visibility.Visible : Visibility.Collapsed; } }
-        /// <summary>
-        /// 是否顯示 <see cref="DrillWarehouse.RightEntrance"/> 的按鈕 
-        /// </summary>
-        public Visibility RightEntranceVisibility { get { return GD_STD.Properties.Optional.Default.RightEntrance ? Visibility.Visible : Visibility.Collapsed; } }
-        /// <summary>
-        /// 是否顯示 <see cref="DrillWarehouse.LeftEntrance"/> 的按鈕 
-        /// </summary>
-        public Visibility LeftEntranceVisibility { get { return GD_STD.Properties.Optional.Default.LeftEntrance ? Visibility.Visible : Visibility.Collapsed; } }
-
-        public bool ToolMActivityButtonVisibilityBoolean { get; set; } = true;
+        public bool ToolMActivityButtonVisibilityBoolean
+        {
+            get
+            {
+                if (IsSelectdMiddle)
+                    return !_MecOptional.Middle;
+                else if (IsSelectdLeftEntrance)
+                    return !_MecOptional.LeftEntrance;
+                else if (IsSelectdLeftExport)
+                    return !_MecOptional.LeftExport;
+                else if (IsSelectdRightEntrance)
+                    return !_MecOptional.RightEntrance;
+                //選擇右軸出料口刀庫
+                else if (IsSelectdRightExport)
+                    return !_MecOptional.RightExport;
+                else
+                    return false;
+            }
+        }
 
 
 
@@ -555,32 +551,31 @@ namespace WPFSTD105.ViewModel
             if (IsSelectdMiddle)
             {
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.Middle));
-                ToolMActivityButtonVisibilityBoolean = !_MecOptional.Middle;
-
+                //ToolMActivityButtonVisibilityBoolean = !_MecOptional.Middle;
             }
             //選擇左軸入料口刀庫
             else if (IsSelectdLeftEntrance)
             {
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.LeftEntrance));
-                ToolMActivityButtonVisibilityBoolean = !_MecOptional.LeftEntrance;
+                //ToolMActivityButtonVisibilityBoolean = !_MecOptional.LeftEntrance;
             }
             //選擇左軸出料口刀庫
             else if (IsSelectdLeftExport)
             {
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.LeftExport));
-                ToolMActivityButtonVisibilityBoolean = !_MecOptional.LeftExport;
+                //ToolMActivityButtonVisibilityBoolean = !_MecOptional.LeftExport;
             }
             //選擇右軸入料口刀庫
             else if (IsSelectdRightEntrance)
             {
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.RightEntrance));
-                ToolMActivityButtonVisibilityBoolean = !_MecOptional.RightEntrance;
+                //ToolMActivityButtonVisibilityBoolean = !_MecOptional.RightEntrance;
             }
             //選擇右軸出料口刀庫
             else if (IsSelectdRightExport)
             {
                 UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.RightExport));
-                ToolMActivityButtonVisibilityBoolean = !_MecOptional.RightExport;
+                //ToolMActivityButtonVisibilityBoolean = !_MecOptional.RightExport;
             }
             /*選擇刀庫的位置,並顯示在介面上(裝載在主軸上面的刀具)*/
             //選擇中軸
