@@ -604,12 +604,27 @@ namespace WPFSTD105
         static void WordTmplRendering(string ProjectName, string ProjectNumber, string TmpDocPath, string DesDocPath, double TotalLossBothSide)
         {
             //計算ProjectNumber-TwoSideCut, ProjectName-CutLoss這兩行各自需要的空格數目
+            //計算ProjectName & ProjectNumber中分別有幾個中文字, 在下面填補空白時列入計算
+            int count_ChineseCharacter_ProjectNumber = 0;
+            Match match_ProjectNumber = Regex.Match(ProjectNumber, @"[\u4e00-\u9fa5]");
+            while (match_ProjectNumber.Success)
+            {
+                count_ChineseCharacter_ProjectNumber += match_ProjectNumber.Captures.Count;
+                match_ProjectNumber = match_ProjectNumber.NextMatch();
+            }
+            int count_ChineseCharacter_ProjectName = 0;
+            Match match_ProjectName = Regex.Match(ProjectName, @"[\u4e00-\u9fa5]");
+            while (match_ProjectName.Success)
+            {
+                count_ChineseCharacter_ProjectName += match_ProjectName.Captures.Count;
+                match_ProjectName = match_ProjectName.NextMatch();
+            }
             //ProjectNumber-TwoSideCut
-            int NeedSpace_ProjectNumber2TwoSideCut = (70 - ProjectNumber.Length)/2;
+            int NeedSpace_ProjectNumber2TwoSideCut = (70 - (ProjectNumber.Length- count_ChineseCharacter_ProjectNumber) - count_ChineseCharacter_ProjectNumber * 2) /2;
             for (int i = 1; i < NeedSpace_ProjectNumber2TwoSideCut; i++) ProjectNumber += "  ";
             ProjectNumber += "雙邊切除：";
             //ProjectName-CutLoss
-            int NeedSpace_ProjectName2CutLoss = (70 - ProjectName.Length)/2;
+            int NeedSpace_ProjectName2CutLoss = (70 - (ProjectName.Length- count_ChineseCharacter_ProjectName)- count_ChineseCharacter_ProjectName*2) /2;
             for (int i = 0; i < NeedSpace_ProjectName2CutLoss; i++) ProjectName += "  ";
             ProjectName += "切割損耗：";
 
