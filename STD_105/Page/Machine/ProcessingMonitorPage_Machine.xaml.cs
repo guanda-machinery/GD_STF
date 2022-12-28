@@ -45,10 +45,9 @@ namespace STD_105
     /// <summary>
     /// 新加工監控 ProcessingMonitorPage_Machine.xaml 的互動邏輯
     /// </summary>
-    public partial class ProcessingMonitorPage_Machine
+    public partial class ProcessingMonitorPage_Machine 
     {
         //   public SplashScreenManager ScreenManager { get; set; } = SplashScreenManager.Create(() => new WaitIndicator(), new DevExpress.Mvvm.DXSplashScreenObViewModel { });
-
         public ObSettingVM ObViewModel { get; set; } = new ObSettingVM();
         /// <summary>
         /// nc 設定檔

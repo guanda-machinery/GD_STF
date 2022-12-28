@@ -1175,6 +1175,13 @@ namespace STD_105.Office
             Win.ShowDialog();
 
             Win.Close();
+
+            //變更後將Dev_Material/*.dm檔移除 以防錯誤
+
+            STDSerialization ser = new STDSerialization(); //序列化處理器
+            ser.DeleteMaterialModel(SelectedMaterial.MaterialNumber);
+
+
             Material_List_GridControl.RefreshData();
             ScreenManager.ViewModel.Status = "加入零件中...";
             ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
@@ -1190,10 +1197,10 @@ namespace STD_105.Office
         private void DeletePartButtonClick(object sender, RoutedEventArgs e)
         {
             
-            var MDataView = Material_List_GridControl.SelectedItem as GD_STD.Data.MaterialDataView;
+            var SelectedDataView = Material_List_GridControl.SelectedItem as GD_STD.Data.MaterialDataView;
 
             //ComponentGridControl
-            if (MDataView.Parts.Count == 0)
+            if (SelectedDataView.Parts.Count == 0)
             {
                 WinUIMessageBox.Show(null,
                     $"本素材不存在可刪除之零件，將會刪除本素材",
@@ -1204,11 +1211,11 @@ namespace STD_105.Office
                     MessageBoxOptions.None,
                      FloatingMode.Window);
             }
-            else if(MDataView.Parts.Count==1)
+            else if(SelectedDataView.Parts.Count==1)
             {
-                MDataView.SelectedPart = MDataView.Parts[0];
+                SelectedDataView.SelectedPart = SelectedDataView.Parts[0];
             }
-            else if (MDataView.SelectedPart == null)
+            else if (SelectedDataView.SelectedPart == null)
             {
                 WinUIMessageBox.Show(null,
                     $"需選擇要刪除之零件",
@@ -1222,12 +1229,12 @@ namespace STD_105.Office
             }
 
             var MessageBoxReturn = MessageBoxResult.None;
-            if (MDataView.Parts.Count != 0 )
+            if (SelectedDataView.Parts.Count != 0 )
             {
                 MessageBoxReturn = WinUIMessageBox.Show(null,
-                        $"是否要刪除素材編號:{MDataView.MaterialNumber}內的零件：\r\n" +
-                        $"構件編號：{MDataView.SelectedPart.AssemblyNumber}\r\n" +
-                        $"零件編號：{MDataView.SelectedPart.PartNumber}\r\n" +
+                        $"是否要刪除素材編號:{SelectedDataView.MaterialNumber}內的零件：\r\n" +
+                        $"構件編號：{SelectedDataView.SelectedPart.AssemblyNumber}\r\n" +
+                        $"零件編號：{SelectedDataView.SelectedPart.PartNumber}\r\n" +
                         $"按下「YES」會立即刪除",
                         "通知",
                         MessageBoxButton.YesNo,
@@ -1239,7 +1246,7 @@ namespace STD_105.Office
             else
             {
                 MessageBoxReturn = WinUIMessageBox.Show(null,
-                    $"是否要刪除素材編號:{MDataView.MaterialNumber}\r\n按下「YES」會立即刪除",
+                    $"是否要刪除素材編號:{SelectedDataView.MaterialNumber}\r\n按下「YES」會立即刪除",
                     "通知",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Exclamation,
@@ -1247,16 +1254,17 @@ namespace STD_105.Office
                     MessageBoxOptions.None,
                      FloatingMode.Window);
             }
+
             if (MessageBoxReturn == MessageBoxResult.Yes)
             {
                 STDSerialization ser = new STDSerialization(); //序列化處理器    
                 //以下代碼在第二階段需要重構->需放到VM層及讀取方式變更
                 //var OTS_VM = this. as WPFSTD105.OfficeTypeSettingVM;
 
-                ObservableCollection<SteelPart> steelParts = ser.GetPart(MDataView.Profile.GetHashCode().ToString());
-                if (MDataView.Parts.Count != 0)
+                ObservableCollection<SteelPart> steelParts = ser.GetPart(SelectedDataView.Profile.GetHashCode().ToString());
+                if (SelectedDataView.Parts.Count != 0)
                 {
-                    int index = ViewModel.DataViews.FindIndex(x => x == MDataView.SelectedPart);
+                    int index = ViewModel.DataViews.FindIndex(x => x == SelectedDataView.SelectedPart);
                     if (index != -1)
                     {
                         int m = ViewModel.DataViews[index].Match.FindLastIndex(x => x == false);
@@ -1267,7 +1275,7 @@ namespace STD_105.Office
                         }
                     }
 
-                    int steelIndex = steelParts.FindIndex(x => x.Number == MDataView.SelectedPart.PartNumber);
+                    int steelIndex = steelParts.FindIndex(x => x.Number == SelectedDataView.SelectedPart.PartNumber);
                     if (steelIndex != -1)
                     {
                         int partMatch = steelParts[steelIndex].Match.FindLastIndex(x => x == false);
@@ -1275,17 +1283,20 @@ namespace STD_105.Office
                             steelParts[steelIndex].Match[partMatch] = true;
                     }
 
-                    MDataView.Parts.Remove(MDataView.SelectedPart);
+                    SelectedDataView.Parts.Remove(SelectedDataView.SelectedPart);
 
-                    ser.SetPart(MDataView.Profile.GetHashCode().ToString(), new ObservableCollection<object>(steelParts));
+                    ser.SetPart(SelectedDataView.Profile.GetHashCode().ToString(), new ObservableCollection<object>(steelParts));
                 }
                 else
                 {
                     //無零件時 刪除素材
-                    ViewModel.MaterialDataViews.Remove(MDataView);
+                    ViewModel.MaterialDataViews.Remove(SelectedDataView);
                 }
                 //存檔
                 ser.SetMaterialDataView(Material_List_GridControl.ItemsSource as ObservableCollection<MaterialDataView>);
+
+                //變更後將Dev_Material/*.dm檔移除 以防錯誤
+                ser.DeleteMaterialModel(SelectedDataView.MaterialNumber);
 
                 ScreenManager.ViewModel.Status = "刪除零件中...";
                 ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
@@ -1365,6 +1376,10 @@ namespace STD_105.Office
                 SelectedDataView.Parts.Clear();
                 //存檔
                 ser.SetMaterialDataView(Material_List_GridControl.ItemsSource as ObservableCollection<MaterialDataView>);
+
+
+                //變更後將Dev_Material/*.dm檔移除 以防錯誤
+                ser.DeleteMaterialModel(SelectedDataView.MaterialNumber);
 
                 ScreenManager.ViewModel.Status = "刪除零件中...";
                 ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);

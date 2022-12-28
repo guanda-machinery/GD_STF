@@ -911,6 +911,13 @@ namespace STD_105
             Win.ShowDialog();
 
             Win.Close();
+
+            //變更後將Dev_Material/*.dm檔移除 以防錯誤
+
+            STDSerialization ser = new STDSerialization(); //序列化處理器
+            ser.DeleteMaterialModel(SelectedMaterial.MaterialNumber);
+
+
             Material_List_GridControl.RefreshData();
             ScreenManager.ViewModel.Status = "加入零件中...";
             ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
@@ -1021,6 +1028,9 @@ namespace STD_105
                 }
                 //存檔
                 ser.SetMaterialDataView(Material_List_GridControl.ItemsSource as ObservableCollection<MaterialDataView>);
+
+                //變更後將Dev_Material/*.dm檔移除 以防錯誤
+                ser.DeleteMaterialModel(MDataView.MaterialNumber);
 
                 ScreenManager.ViewModel.Status = "刪除零件中...";
                 ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);

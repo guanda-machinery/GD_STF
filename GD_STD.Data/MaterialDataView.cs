@@ -381,7 +381,28 @@ namespace GD_STD.Data
         }
 
 
+        private string ex_en_count = null;
+        /// <summary>
+        /// 等待(入) - 等待(出)計數器 僅供表格顯示用
+        /// </summary>
+        public string EX_EN_count
+        {
+            get
+            {
+                return ex_en_count;
+            }
+            set
+            {
+                ex_en_count = value;
+                OnPropertyChanged(nameof(EX_EN_count));
+            }
+        }
 
+
+        /// <summary>
+        /// Unknown 不明狀態 - PinTest 打點測試 - NormalMaching 一般加工 
+        /// </summary>
+        public MachiningType MachiningTypeMode { get; set; }
 
 
 
@@ -408,19 +429,19 @@ namespace GD_STD.Data
         }
 
 
-        public bool LockMark
-        {
-            get;set;
-        }
+        public bool LockMark{get;set;}
+
 
         /// <summary>
         /// 素材數量
         /// </summary>
         public double MeterialCount { get; set; }
 
+
+
         public DateTime? MachiningStartTime { get; set; } = null;
 
-        public DateTime? _machiningEndTime;
+        private DateTime? _machiningEndTime;
         public DateTime? MachiningEndTime 
         { 
             get 
@@ -438,6 +459,7 @@ namespace GD_STD.Data
                 OnPropertyChanged("MachiningEndTime");
             }
          }
+
         private TimeSpan? _machiningSpanTime;
         public TimeSpan? MachiningSpanTime 
         { 
@@ -447,10 +469,6 @@ namespace GD_STD.Data
                 OnPropertyChanged("MachiningSpanTime"); 
             } 
         } 
-
-
-
-
 
 
 

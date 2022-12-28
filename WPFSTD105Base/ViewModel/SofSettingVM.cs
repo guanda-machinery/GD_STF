@@ -311,6 +311,17 @@ namespace WPFSTD105.ViewModel
         }
         #endregion 
 
+        public bool DebugMode
+        {
+            get
+            {
+                return System.Diagnostics.Debugger.IsAttached;
+            }
+        }
+
+
+
+
         #region 私有方法
         #endregion
 
@@ -338,6 +349,7 @@ namespace WPFSTD105.ViewModel
         /// 選配設定
         /// </summary>
         public WPFSTD105.FluentAPI.OptionSettings OptionSettings { get; set; } //= new WPFSTD105.FluentAPI.OptionSettings();
+        
         #endregion
     }
 }

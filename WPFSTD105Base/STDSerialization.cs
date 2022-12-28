@@ -424,6 +424,20 @@ namespace WPFSTD105
             TransHypotenusePOINTtoPoint(model);
             SetModel(ApplicationVM.DirectoryMaterial(), dataName, model);
         }
+
+        public bool DeleteMaterialModel(string dataName)
+        {
+            try
+            {
+                File.Delete($@"{ApplicationVM.DirectoryMaterial()}\{dataName}.dm");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// 異動孔及孔群的鑽孔類型:斜邊打點(HypotenusePOINT)改為打點(Point)
         /// </summary>

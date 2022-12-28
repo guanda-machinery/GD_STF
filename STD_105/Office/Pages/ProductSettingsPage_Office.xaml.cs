@@ -3285,8 +3285,8 @@ namespace STD_105.Office
             {
                 ViewModel.Reductions = new ReductionList(model, drawing); //紀錄使用找操作
             }
-            model.Refresh();
             model.ZoomFit();
+            model.Refresh();
 
             #endregion
         }
@@ -4068,6 +4068,7 @@ namespace STD_105.Office
 
                 if (SteelAssemblies.Where(x => x.Number == ass.Number && x.Count != sa.Number && x.Length == sa.Length).Any())
                 {
+                    add = true;
                     // 原始構件ID
                     //buffer = SteelAssemblies.FirstOrDefault(x => x.Number == ass.Number && x.Count != ViewModel.SteelAttr.Number && x.Length == ViewModel.SteelAttr.Length).ID;
                     buffer = SteelAssemblies.FirstOrDefault(x => x.Number == ass.Number && x.Count != sa.Number && x.Length == sa.Length).ID;
@@ -4166,7 +4167,7 @@ namespace STD_105.Office
             #endregion
 
 
-            if (allPart1.Count > 0 && allPart1.Any(x => x.GUID == sa.GUID))
+            if (allPart1.Count > 0 && allPart1.Any(x => x.GUID == sa.GUID) && add)  // 2022/12/28 呂宗霖
             {
                 var oriFather = allPart1.FirstOrDefault(x => x.GUID == sa.GUID).Father;
                 ass.ID = ass.ID.Union(oriFather).ToList();
@@ -5760,13 +5761,13 @@ namespace STD_105.Office
                     //}, saFile);
                     //ViewModel.ProductWeightProperty = (sa).Weight;
                     //ViewModel.SteelAttr.Weight = (sa).Weight;
-
-                    model.Refresh();
+                    
                     model.ZoomFit();//設置道適合的視口
-                    model.Invalidate();//初始化模型
-                    drawing.Refresh();
+                    model.Refresh();
+                    //model.Invalidate();//初始化模型
                     drawing.ZoomFit();//設置道適合的視口
-                    drawing.Invalidate();//初始化模型
+                    drawing.Refresh();
+                    //drawing.Invalidate();//初始化模型
                 }
                 else
                 {
