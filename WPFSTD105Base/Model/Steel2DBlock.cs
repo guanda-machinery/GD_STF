@@ -563,17 +563,18 @@ namespace WPFSTD105.Model
         {
             try
             {
-                int outTime = 20;
+                int outTime = 999;
                 var result = lines.Where(el => el.StartPoint.Z >= minZ && el.EndPoint.Z >= minZ)?.ToList(); //在指定 Z 軸範圍內的線段
-                if (result == null || recursiveTime> outTime)
+                if (result == null )//|| recursiveTime> outTime)
                 {
-                    if (result == null)
-                    {
-                        return new List<Line>();
-                    }
-                    else {
-                        return result;
-                    }
+                    //if (result == null)
+                    //{
+                    //    return new List<Line>();
+                    //}
+                    //else {
+                    //    return result;
+                    //}
+                    return result;
                     
                 }
                 var noSuitable = lines.Where(el => !result.Contains(el)).ToList(); //在不再指定 Z 軸範圍內的線段(可能要改變的線段)
@@ -586,9 +587,10 @@ namespace WPFSTD105.Model
                     if ((maxY < noSuitable[i].StartPoint.Y || maxY < noSuitable[i].EndPoint.Y && SteelAttr.Type == OBJECT_TYPE.L)
                         || (noSuitable[i].StartPoint.X < minX || noSuitable[i].EndPoint.X > maxX && SteelAttr.Type != OBJECT_TYPE.L))
                     {
-                        minZ = noSuitable[i].StartPoint.Z;
-                        recursiveTime++;
-                        return ModifyLine(lines, minZ,ref recursiveTime);
+                        //minZ = noSuitable[i].StartPoint.Z;
+                        //recursiveTime++;
+                        //return ModifyLine(lines, minZ,ref recursiveTime);
+                        continue;
                     }
                     else
                     {
