@@ -606,7 +606,9 @@ namespace WPFSTD105.ViewModel
                     AddOperatingLog(LogSourceEnum.Software, $"已選擇素材編號：{_finish_UndoneDataViews_SelectedItem.MaterialNumber}");
 
                     //AllDrillBoltsDict[_finish_UndoneDataViews_SelectedItem.MaterialNumber].ForEach(el => el.Value.PinTestMode = DrillPin_Mode_RadioButtonIsEnable);
-                    MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(_finish_UndoneDataViews_SelectedItem);
+                   
+
+                    MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(DrillPin_Mode_RadioButtonIsEnable ,  _finish_UndoneDataViews_SelectedItem);
                     //如果切換時有已排程但未加工的零件->清理掉狀態並重新上傳
                     ClearPairedMachineData(_finish_UndoneDataViews_SelectedItem);
                 }
@@ -650,9 +652,9 @@ namespace WPFSTD105.ViewModel
         /// 單一零件加工孔位表
         /// </summary>
         public Dictionary<FACE, DrillBoltsBase> MachiningDetail_DrillBoltsItemSource { get; set; } = new Dictionary<FACE, DrillBoltsBase>();
-        
+
         //產生加工參考表->標示工件要如何加工 實際加工時會參考此處之設定值
-        private Dictionary<FACE, DrillBoltsBase> GetDrillBoltsItemCollection(MaterialDataView view)
+        private Dictionary<FACE, DrillBoltsBase> GetDrillBoltsItemCollection(bool PinMode , MaterialDataView view)
         {
             var Dict = new Dictionary<FACE, DrillBoltsBase>();
             if (view == null)
@@ -686,6 +688,8 @@ namespace WPFSTD105.ViewModel
                                 if (!DrillBoltsListDict.ContainsKey(keyValuePair.Key))
                                     DrillBoltsListDict.Add(keyValuePair.Key, new DrillBoltsBase());
 
+
+
                                 var DrillBIndex = DrillBoltsListDict[keyValuePair.Key].DrillBoltList.FindIndex(x => (x.Origin_WorkAXIS_MODE == DrillData.AXIS_MODE && x.DrillHoleDiameter == DrillData.Dia));
                                 if (DrillBIndex != -1)
                                 {
@@ -693,6 +697,7 @@ namespace WPFSTD105.ViewModel
                                 }
                                 else
                                 {
+                                    DrillBoltsListDict[keyValuePair.Key].PinTestMode = PinMode;
                                     DrillBoltsListDict[keyValuePair.Key].DrillBoltList.Add(new DrillBolt()
                                     {
                                         DrillWork = true,
@@ -2641,7 +2646,7 @@ namespace WPFSTD105.ViewModel
                 return new WPFBase.RelayCommand(() =>
                 {
                     AddOperatingLog(LogSourceEnum.Software, "切換到一般加工模式");
-                    MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(Finish_UndoneDataViews_SelectedItem);
+                    MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(false,Finish_UndoneDataViews_SelectedItem);
                     HintStep1 = true;
                     //如果切換時有已排程但未加工的零件->清理掉狀態
                     //若目前已選取的為等待配對資料 改變其鑽孔/打點狀態
@@ -2657,7 +2662,7 @@ namespace WPFSTD105.ViewModel
             get => new WPFBase.RelayCommand(() =>
             {
                 AddOperatingLog(LogSourceEnum.Software, "切換到測試打孔模式");
-                MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(Finish_UndoneDataViews_SelectedItem);
+                MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(true,Finish_UndoneDataViews_SelectedItem);
                 //若目前已選取的為等待配對資料 改變其鑽孔/打點狀態
                 MachiningCombinational_DrillBoltsItemSource.ForEach(el => el.Value.PinTestMode = true);
 
@@ -3157,8 +3162,7 @@ namespace WPFSTD105.ViewModel
                 if (SendDrill(noInfo[i], out var IsPinMode))
                 {
                     AddOperatingLog(LogSourceEnum.Machine, $"排版編號{Finish_UndoneDataViews[noInfo[i]].MaterialNumber}加工訊息發送成功", false);
-                   Finish_UndoneDataViews[0].DPinTestMode = IsPinMode;
-
+                    Finish_UndoneDataViews[noInfo[i]].MachiningTypeMode = IsPinMode? MachiningType.PinTest : MachiningType.NormalMaching;
                     _SendIndex.Add(noInfo[i]); //存取已經發送過的列表
                 }
                 else
@@ -3306,38 +3310,36 @@ namespace WPFSTD105.ViewModel
 
                             STDSerialization ser = new STDSerialization();
                             ser.SetWorkMaterialBackup(_WorkMaterials[value]);
-                            string number = _WorkMaterials[value].MaterialNumber.Where(el => el != 0).Select(el => Convert.ToChar(el).ToString()).Aggregate((str1, str2) => str1 + str2);
+                            //string number = _WorkMaterials[value].MaterialNumber.Where(el => el != 0).Select(el => Convert.ToChar(el).ToString()).Aggregate((str1, str2) => str1 + str2);
+                            //int MIndex = Finish_UndoneDataViews.ToList().FindIndex(el => el.MaterialNumber == number);
 
-                            int MIndex = Finish_UndoneDataViews.ToList().FindIndex(el => el.MaterialNumber == number);
-                            if (MIndex != -1)
-                            {
-                                Finish_UndoneDataViews[MIndex].EX_EN_count = "";
+                                Finish_UndoneDataViews[value].EX_EN_count = "";
 
                                 if (_WorkMaterials[value].Position == -2) //如果已經完成
                                 {
-                                    Finish_UndoneDataViews[MIndex].Schedule = 100;
-                                    Finish_UndoneDataViews[MIndex].Finish = true;
-                                    Finish_UndoneDataViews[MIndex].PositionEnum = PositionStatusEnum.完成;
+                                    Finish_UndoneDataViews[value].Schedule = 100;
+                                    Finish_UndoneDataViews[value].Finish = true;
+                                    Finish_UndoneDataViews[value].PositionEnum = PositionStatusEnum.完成;
                                     _Finish.Add(value); //加入到完成列表
 
-                                    if (Finish_UndoneDataViews[MIndex].MachiningEndTime == null)
-                                        Finish_UndoneDataViews[MIndex].MachiningEndTime = DateTime.Now;
+                                    if (Finish_UndoneDataViews[value].MachiningEndTime == null)
+                                        Finish_UndoneDataViews[value].MachiningEndTime = DateTime.Now;
                                 }
                                 else if (_WorkMaterials[value].Position == -1)
                                 {
-                                    Finish_UndoneDataViews[MIndex].Schedule = _WorkMaterials[value].Finish;
-                                    Finish_UndoneDataViews[MIndex].PositionEnum = PositionStatusEnum.加工中;
+                                    Finish_UndoneDataViews[value].Schedule = _WorkMaterials[value].Finish;
+                                    Finish_UndoneDataViews[value].PositionEnum = PositionStatusEnum.加工中;
 
-                                    if (Finish_UndoneDataViews[MIndex].MachiningStartTime == null)
-                                        Finish_UndoneDataViews[MIndex].MachiningStartTime = DateTime.Now;
+                                    if (Finish_UndoneDataViews[value].MachiningStartTime == null)
+                                        Finish_UndoneDataViews[value].MachiningStartTime = DateTime.Now;
                                 }
                                 else if (_WorkMaterials[value].Position == 0)
                                 {
-                                    if (Finish_UndoneDataViews[MIndex].PositionEnum != PositionStatusEnum.從軟體配對 &&
-                                        Finish_UndoneDataViews[MIndex].PositionEnum != PositionStatusEnum.從手機配對 &&
-                                        Finish_UndoneDataViews[MIndex].PositionEnum != PositionStatusEnum.已配對)
+                                    if (Finish_UndoneDataViews[value].PositionEnum != PositionStatusEnum.從軟體配對 &&
+                                        Finish_UndoneDataViews[value].PositionEnum != PositionStatusEnum.從手機配對 &&
+                                        Finish_UndoneDataViews[value].PositionEnum != PositionStatusEnum.已配對)
                                     {
-                                        Finish_UndoneDataViews[MIndex].PositionEnum = PositionStatusEnum.已配對;
+                                        Finish_UndoneDataViews[value].PositionEnum = PositionStatusEnum.已配對;
                                     }
                                     //手機或機台狀態靠輪巡去修改
                                 }
@@ -3346,26 +3348,26 @@ namespace WPFSTD105.ViewModel
                                     if (_WorkMaterials[value].IsExport) //出口處
                                     {
                                         //以防完成時沒加到
-                                        if (Finish_UndoneDataViews[MIndex].MachiningEndTime == null)
-                                            Finish_UndoneDataViews[MIndex].MachiningEndTime = DateTime.Now;
+                                        if (Finish_UndoneDataViews[value].MachiningEndTime == null)
+                                            Finish_UndoneDataViews[value].MachiningEndTime = DateTime.Now;
 
-                                        Finish_UndoneDataViews[MIndex].Schedule = _WorkMaterials[value].Finish;
-                                        Finish_UndoneDataViews[MIndex].PositionEnum = PositionStatusEnum.等待出料;//$"等待(出)-{exCount}";
+                                        Finish_UndoneDataViews[value].Schedule = _WorkMaterials[value].Finish;
+                                        Finish_UndoneDataViews[value].PositionEnum = PositionStatusEnum.等待出料;//$"等待(出)-{exCount}";
 
-                                        Finish_UndoneDataViews[MIndex].EX_EN_count = $"-{exCount.ToString()}";//$"等待(出)-{exCount}";
+                                        Finish_UndoneDataViews[value].EX_EN_count = $"-{exCount.ToString()}";//$"等待(出)-{exCount}";
                                         exCount++;
                                     }
                                     else
                                     {
-                                        Finish_UndoneDataViews[MIndex].MachiningStartTime = null;
-                                        Finish_UndoneDataViews[MIndex].MachiningEndTime = null;
+                                        Finish_UndoneDataViews[value].MachiningStartTime = null;
+                                        Finish_UndoneDataViews[value].MachiningEndTime = null;
 
-                                        Finish_UndoneDataViews[MIndex].PositionEnum = PositionStatusEnum.等待入料;//$"等待(入)-{enCount}";
-                                        Finish_UndoneDataViews[MIndex].EX_EN_count = $"-{enCount.ToString()}";//$"等待(入)-{enCount}";
+                                        Finish_UndoneDataViews[value].PositionEnum = PositionStatusEnum.等待入料;//$"等待(入)-{enCount}";
+                                        Finish_UndoneDataViews[value].EX_EN_count = $"-{enCount.ToString()}";//$"等待(入)-{enCount}";
                                         enCount++;
                                     }
                                 }
-                            }
+                            
                         }
 
 
@@ -3410,6 +3412,7 @@ namespace WPFSTD105.ViewModel
                         {
                             AddOperatingLog(LogSourceEnum.Machine, $"素材編號{_Mdataview.MaterialNumber}的加工資料已上傳到機台");
                             _SendIndex.RemoveAll(z => z == Xindex);
+                            Finish_UndoneDataViews[Xindex].MachiningTypeMode = MachiningType.Unknown;
                             AddOperatingLog(LogSourceEnum.Machine, $"準備重新上傳素材編號{_Mdataview.MaterialNumber}的加工資料");
                         }
                     }
@@ -3523,6 +3526,7 @@ namespace WPFSTD105.ViewModel
 
                 //復原加工資料
                 Finish_UndoneDataViews[dataViewIndex].PositionEnum = PositionStatusEnum.未取得狀態;
+                Finish_UndoneDataViews[dataViewIndex].MachiningTypeMode = MachiningType.Unknown;
                 Finish_UndoneDataViews[dataViewIndex].Schedule = 0;
                 Finish_UndoneDataViews[dataViewIndex].Finish = false;
                 Finish_UndoneDataViews[dataViewIndex].MachiningStartTime = null;

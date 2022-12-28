@@ -347,7 +347,6 @@
                                                 Header="批量註冊"/>
                                      <MenuItem Command="{Binding RowAddCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
-                                           
                                               Header="加入任務到末端" />
                                     <!--<MenuItem Command="{Binding DeleteCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
@@ -409,7 +408,7 @@
                             </dxg:GridColumn>
                             <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題一"  Width="auto"  />
                             <dxg:GridColumn FieldName=""  IsSmart="True" Header="標題二"   Width="auto" />
-                            <dxg:GridColumn FieldName="DataPinTestMode"  IsSmart="True" Header="加工型態"   Width="auto" />
+
                             <dxg:GridColumn FieldName="MachiningSpanTime"  IsSmart="True" Header="加工時間"   Width="auto" >
                                 <dxg:GridColumn.EditSettings>
                                     <dxe:TextEditSettings Mask="HH:mm:ss" MaskType="DateTime" MaskUseAsDisplayFormat="True"/>
@@ -530,8 +529,9 @@ AllowEditing="False"
                             </dxg:TableView>
                         </dxg:GridControl.View>
                         <!-- <dxg:GridColumn FieldName=""  MaxWidth="40" MinWidth="40"  FixedWidth="True" Header="狀態" />-->
+
                         <dxg:GridColumn  
-                                        MaxWidth="70" MinWidth="70"  FixedWidth="True" Header="位置">
+                                        MaxWidth="70"  Header="位置">
                             <dxg:GridColumn.CellStyle>
                                 <Style TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
                                     <Setter Property="Background" Value="{Binding Row.PositionEnum, Converter={local:TypeSettingDataViewToSolidColorBrushConverter}}" />
@@ -547,7 +547,6 @@ AllowEditing="False"
                                     </Style.Triggers>
                                 </Style>
                             </dxg:GridColumn.CellStyle>
-
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -573,6 +572,15 @@ AllowEditing="False"
                                             <TextBlock Text="{Binding Row.Schedule,UpdateSourceTrigger=PropertyChanged}"   />
                                             <TextBlock Text="%"/>
                                         </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn IsSmart="True" Header="加工型態"   Width="70" >
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="20">
+                                        <TextBlock Text="{Binding Row.MachiningTypeMode,Converter={local:MachiningTypeModeConverter}, UpdateSourceTrigger=PropertyChanged}"/>
                                     </Grid>
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>

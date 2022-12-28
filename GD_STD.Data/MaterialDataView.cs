@@ -400,9 +400,9 @@ namespace GD_STD.Data
 
 
         /// <summary>
-        /// null 不明狀態 - true 打點測試 - false 一般加工 
+        /// Unknown 不明狀態 - PinTest 打點測試 - NormalMaching 一般加工 
         /// </summary>
-        public bool DPinTestMode { get;set;  }
+        public MachiningType MachiningTypeMode { get; set; }
 
 
 

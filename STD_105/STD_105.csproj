@@ -935,6 +935,7 @@
     <Compile Include="ValidationRules\CheckNumberArrayRule.cs" />
     <Compile Include="ValidationRules\CheckNumberRule.cs" />
     <Compile Include="ValidationRules\CheckStringEmptyRule.cs" />
+    <Compile Include="ValueConverters\MachiningTypeModeConverter.cs" />
     <Compile Include="ValueConverters\LogSourceEnumToStringConverter.cs" />
     <Compile Include="ValueConverters\AntiLogicConverter.cs" />
     <Compile Include="ValueConverters\ApplicationPageConverter.cs" />
