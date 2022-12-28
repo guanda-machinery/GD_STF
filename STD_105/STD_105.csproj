@@ -935,6 +935,8 @@
     <Compile Include="ValidationRules\CheckNumberArrayRule.cs" />
     <Compile Include="ValidationRules\CheckNumberRule.cs" />
     <Compile Include="ValidationRules\CheckStringEmptyRule.cs" />
+    <Compile Include="ValueConverters\MachiningTypeModeConverter.cs" />
+    <Compile Include="ValueConverters\LogSourceEnumToStringConverter.cs" />
     <Compile Include="ValueConverters\AntiLogicConverter.cs" />
     <Compile Include="ValueConverters\ApplicationPageConverter.cs" />
     <Compile Include="UserControls\PageHost.xaml.cs">
@@ -949,6 +951,7 @@
     <Compile Include="ValueConverters\ConverterAssemblyNumber.cs" />
     <Compile Include="ValueConverters\ConverterToPartNumber.cs" />
     <Compile Include="ValueConverters\DateTimeConverter.cs" />
+    <Compile Include="ValueConverters\ListCountToBooleanConverter.cs" />
     <Compile Include="ValueConverters\ListCountToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\MaterialGridControlDataCheckConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\BooleanArrayIntersectToBooleanConverter.cs" />
