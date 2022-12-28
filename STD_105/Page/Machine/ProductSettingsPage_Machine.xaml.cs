@@ -4068,6 +4068,7 @@ namespace STD_105
 
                 if (SteelAssemblies.Where(x => x.Number == ass.Number && x.Count != sa.Number && x.Length == sa.Length).Any())
                 {
+                    add = true;
                     // 原始構件ID
                     //buffer = SteelAssemblies.FirstOrDefault(x => x.Number == ass.Number && x.Count != ViewModel.SteelAttr.Number && x.Length == ViewModel.SteelAttr.Length).ID;
                     buffer = SteelAssemblies.FirstOrDefault(x => x.Number == ass.Number && x.Count != sa.Number && x.Length == sa.Length).ID;
@@ -4658,8 +4659,8 @@ namespace STD_105
                 drawing.CurrentModel = false;
             }
 
-            model.Refresh();
-            model.ZoomFit();
+            //model.Refresh();
+            //model.ZoomFit();
         }
 
         private void drawing_Loaded(object sender, RoutedEventArgs e)
