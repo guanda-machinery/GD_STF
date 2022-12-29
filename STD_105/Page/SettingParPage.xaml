@@ -8,6 +8,7 @@
                   mc:Ignorable="d"
                   xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                   d:DataContext="{d:DesignInstance Type=STD105VM:SettingParVM}"
+          
                   xmlns:fluentAPI="clr-namespace:WPFSTD105.FluentAPI;assembly=WPFSTD105"
                   xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
                   xmlns:STD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
@@ -1626,7 +1627,7 @@
             </TabItem>
             <!--校機參數-->
             <!--Style="{StaticResource tabitem_STD}"-->
-            <TabItem Header="校機參數">
+            <TabItem Header="校機參數" Visibility="{Binding DebugMode, Converter={dx:BooleanToVisibilityConverter}}" >
                 <TabItem.DataContext>
                     <STD105VM:SofSettingVM />
                 </TabItem.DataContext>
@@ -1677,7 +1678,7 @@
             </TabItem>
             <!--選配設定-->
             <!--   Style="{StaticResource tabitem_STD}"-->
-            <TabItem Header="選配設定">
+            <TabItem Header="選配設定" Visibility="{Binding DebugMode, Converter={dx:BooleanToVisibilityConverter}}">
                 <TabItem.DataContext>
                     <STD105VM:SofSettingVM />
                 </TabItem.DataContext>
@@ -1719,6 +1720,7 @@
                         </dxlc:DataLayoutControl>
                     </dxlc:LayoutControl>
                     <!--強制更改頁面-->
+                  
                     <GroupBox Grid.Row="1" Visibility="Collapsed"
                               Header="測試"
                               VerticalAlignment="Bottom"

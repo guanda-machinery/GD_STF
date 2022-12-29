@@ -118,7 +118,10 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public double CurrentValue { get; set; } = 2;
 
+
+
         public double EntranceRack_CurrentValue { get; set; } = 2;
+      
         /// <summary>
         /// 目前數量-出口
         /// </summary>

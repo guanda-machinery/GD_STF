@@ -991,7 +991,7 @@ namespace WPFSTD105.Model
         /// <param name="blocks">model.Block...若有已編輯的孔，要傳block進去(舊有形鋼孔群 BlockReference & Mesh)</param>
         /// <param name="isRotate">新增孔群時是否翻轉(只有新增時需翻轉，grid查詢時不須翻轉)</param>
         public static void LoadNcToModel(this devDept.Eyeshot.Model model, string dataName, List<OBJECT_TYPE> allowType, double diffLength = 0,
-            DXSplashScreenViewModel vm = null, SteelAttr steelAttr = null, List<GroupBoltsAttr> oldBolts = null, List<Block> blocks = null, bool isRotate = true)
+            DXSplashScreenViewModel vm = null, SteelAttr steelAttr = null, List<GroupBoltsAttr> oldBolts = null, List<Block> blocks = null, bool isRotate = true,bool isNormalProfile = false)
         {
             STDSerialization ser = new STDSerialization(); //序列化處理器
             NcTempList ncTemps = ser.GetNcTempList(); //尚未實體化的nc檔案
@@ -1032,10 +1032,11 @@ namespace WPFSTD105.Model
 
             double midX = (nc.SteelAttr.Length + diffLength) / 2;
             // vpoint個代表原點經四點再回原點，Group X及Y只會有兩個數字，一般正常矩形型鋼，可切斜邊，所以要讀斜邊設定檔 將斜邊寫回
+            // 若NC檔與修改後的斷面規格不同，則為一般型鋼
             #region 一般型鋼
             if ((nc.SteelAttr.vPoint.Count == 5 &&
                    nc.SteelAttr.vPoint.GroupBy(x => x.X).Count() == 2 &&
-                   nc.SteelAttr.vPoint.GroupBy(x => x.Y).Count() == 2) || nc.SteelAttr.vPoint.Count == 0)
+                   nc.SteelAttr.vPoint.GroupBy(x => x.Y).Count() == 2) || nc.SteelAttr.vPoint.Count == 0 || isNormalProfile)
             {
                 try
                 {
@@ -1340,8 +1341,8 @@ namespace WPFSTD105.Model
                         });
                     }
                     #endregion
-                // 寫入oPoint,vPoint,uPoint
-                ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = nc.SteelAttr.oPoint;
+                    // 寫入oPoint,vPoint,uPoint
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = nc.SteelAttr.oPoint;
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).vPoint = nc.SteelAttr.vPoint;
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).uPoint = nc.SteelAttr.uPoint;
                     ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).oPoint = nc.SteelAttr.oPoint;
@@ -1562,19 +1563,19 @@ namespace WPFSTD105.Model
                     TmpUL = new Point3D(tmp1[1].min, tmp1[1].key);
                     TmpUR = new Point3D(tmp1[1].max, tmp1[1].key);
 
-                    //if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
-                        if ((Math.Abs(TmpUL.X - TmpDL.X) <= 0.5) && (Math.Abs(TmpUR.X - TmpDR.X) <= 0.5))
-                            return;
+                    ////if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
+                    //    if ((Math.Abs(TmpUL.X - TmpDL.X) <= 0.5) || (Math.Abs(TmpUR.X - TmpDR.X) <= 0.5))
+                    //        return;
 
 
-                    if (TmpUL.X > TmpDL.X)
+                    if (TmpUL.X > TmpDL.X && Math.Abs(TmpUL.X-TmpDL.X)>0.05)
                     {
                         PointDL1 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioC, (TmpUL.Y - TmpDL.Y) * PosRatioC) + TmpDL;
                         PointDL2 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioD, (TmpUL.Y - TmpDL.Y) * PosRatioD) + TmpDL;
                         tmplist1.Add(PointDL1);
                         tmplist1.Add(PointDL2);
                     }
-                    else if (TmpUL.X < TmpDL.X)
+                    else if (TmpUL.X < TmpDL.X && Math.Abs(TmpUL.X - TmpDL.X) > 0.05)
                     {
                         PointDR1 = new Point3D((TmpUR.X - TmpDR.X) * PosRatioC, (TmpUR.Y - TmpDR.Y) * PosRatioC) + TmpDR;
                         PointDR2 = new Point3D((TmpUR.X - TmpDR.X) * PosRatioD, (TmpUR.Y - TmpDR.Y) * PosRatioD) + TmpDR;
@@ -1582,14 +1583,14 @@ namespace WPFSTD105.Model
                         tmplist1.Add(PointDR2);
                     }
 
-                    if (TmpUR.X > TmpDR.X)
+                    if (TmpUR.X > TmpDR.X && Math.Abs(TmpUR.X - TmpDR.X) > 0.05)
                     {
                         PointUL1 = new Point3D((TmpDL.X - TmpUL.X) * PosRatioC, (TmpDL.Y - TmpUL.Y) * PosRatioC) + TmpUL;
                         PointUL2 = new Point3D((TmpDL.X - TmpUL.X) * PosRatioD, (TmpDL.Y - TmpUL.Y) * PosRatioD) + TmpUL;
                         tmplist1.Add(PointUL1);
                         tmplist1.Add(PointUL2);
                     }
-                    else if (TmpUR.X < TmpDR.X)
+                    else if (TmpUR.X < TmpDR.X && Math.Abs(TmpUR.X - TmpDR.X) > 0.05)
                     {
                         PointUR1 = new Point3D((TmpDR.X - TmpUR.X) * PosRatioC, (TmpDR.Y - TmpUR.Y) * PosRatioC) + TmpUR;
                         PointUR2 = new Point3D((TmpDR.X - TmpUR.X) * PosRatioD, (TmpDR.Y - TmpUR.Y) * PosRatioD) + TmpUR;
@@ -1647,19 +1648,19 @@ namespace WPFSTD105.Model
                     TmpUL = new Point3D(tmp2[1].min, tmp2[1].key);
                     TmpUR = new Point3D(tmp2[1].max, tmp2[1].key);
 
-                    //if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
-                        if ((Math.Abs(TmpUL.X - TmpDL.X) <= 0.5) && (Math.Abs(TmpUR.X - TmpDR.X) <= 0.5))
-                            return;
+                    ////if ((TmpUL.X == TmpDL.X) && (TmpUR.X == TmpDR.X))
+                    //    if ((Math.Abs(TmpUL.X - TmpDL.X) <= 0.5) || (Math.Abs(TmpUR.X - TmpDR.X) <= 0.5))
+                    //        return;
 
 
-                    if (TmpUL.X > TmpDL.X)
+                    if (TmpUL.X > TmpDL.X && Math.Abs(TmpUL.X-TmpDL.X)>0.05)
                     {
                         PointDL1 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioC, (TmpUL.Y - TmpDL.Y) * PosRatioC) + TmpDL;
                         PointDL2 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioD, (TmpUL.Y - TmpDL.Y) * PosRatioD) + TmpDL;
                         tmplist1.Add(PointDL1);
                         tmplist1.Add(PointDL2);
                     }
-                    else if (TmpUL.X < TmpDL.X)
+                    else if (TmpUL.X < TmpDL.X && Math.Abs(TmpUL.X - TmpDL.X) > 0.05)
                     {
                         PointDR1 = new Point3D((TmpUR.X - TmpDR.X) * PosRatioC, (TmpUR.Y - TmpDR.Y) * PosRatioC) + TmpDR;
                         PointDR2 = new Point3D((TmpUR.X - TmpDR.X) * PosRatioD, (TmpUR.Y - TmpDR.Y) * PosRatioD) + TmpDR;
@@ -1667,14 +1668,14 @@ namespace WPFSTD105.Model
                         tmplist1.Add(PointDR2);
                     }
 
-                    if (TmpUR.X > TmpDR.X)
+                    if (TmpUR.X > TmpDR.X && Math.Abs(TmpUR.X - TmpDR.X) > 0.05)
                     {
                         PointUL1 = new Point3D((TmpDL.X - TmpUL.X) * PosRatioC, (TmpDL.Y - TmpUL.Y) * PosRatioC) + TmpUL;
                         PointUL2 = new Point3D((TmpDL.X - TmpUL.X) * PosRatioD, (TmpDL.Y - TmpUL.Y) * PosRatioD) + TmpUL;
                         tmplist1.Add(PointUL1);
                         tmplist1.Add(PointUL2);
                     }
-                    else if (TmpUR.X < TmpDR.X)
+                    else if (TmpUR.X < TmpDR.X && Math.Abs(TmpUR.X - TmpDR.X) > 0.05)
                     {
                         PointUR1 = new Point3D((TmpDR.X - TmpUR.X) * PosRatioC, (TmpDR.Y - TmpUR.Y) * PosRatioC) + TmpUR;
                         PointUR2 = new Point3D((TmpDR.X - TmpUR.X) * PosRatioD, (TmpDR.Y - TmpUR.Y) * PosRatioD) + TmpUR;
@@ -1744,21 +1745,21 @@ namespace WPFSTD105.Model
                     else
                         TmpDL = new Point3D(YDOWN2List[1].min, YDOWN2List[1].key);
 
-                    // TmpUL.X == TmpDL.X && TmpUR.X == TmpDR.X && 
-                    if (( Math.Abs(TmpUL.X-TmpDL.X)<=0.5) && (Math.Abs(TmpUR.X - TmpDR.X) <= 0.5))
-                        return;
+                    //// TmpUL.X == TmpDL.X && TmpUR.X == TmpDR.X && 
+                    //if (( Math.Abs(TmpUL.X-TmpDL.X)<=0.5) || (Math.Abs(TmpUR.X - TmpDR.X) <= 0.5))
+                    //    return;
 
 
 
 
-                    if (TmpUL.X > TmpDL.X)
+                    if (TmpUL.X > TmpDL.X && Math.Abs(TmpUL.X - TmpDL.X) > 0.05)
                     {
                         PointDL1 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioA, (TmpUL.Y - TmpDL.Y) * PosRatioA) + TmpDL;
-                        PointDL2 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioB, (TmpUL.Y - TmpDL.Y) * PosRatioB) + TmpDL;
+                        PointDL2 = new Point3D((TmpUL.X - TmpDL.X) * PosRatioB, (TmpUL.Y - TmpDL.Y) * PosRatioB) + TmpDL;                       
                         tmplist1.Add(PointDL1);
                         tmplist1.Add(PointDL2);
                     }
-                    else if (TmpUL.X < TmpDL.X)
+                    else if (TmpUL.X < TmpDL.X && Math.Abs(TmpUL.X - TmpDL.X) > 0.05)
                     {
                         PointUL1 = new Point3D((TmpDL.X - TmpUL.X) * PosRatioA, (TmpDL.Y - TmpUL.Y) * PosRatioA) + TmpUL;
                         PointUL2 = new Point3D((TmpDL.X - TmpUL.X) * PosRatioB, (TmpDL.Y - TmpUL.Y) * PosRatioB) + TmpUL;
@@ -1766,14 +1767,14 @@ namespace WPFSTD105.Model
                         tmplist1.Add(PointUL2);
                     }
 
-                    if (TmpUR.X > TmpDR.X)
+                    if (TmpUR.X > TmpDR.X && Math.Abs(TmpUR.X - TmpDR.X) > 0.05)
                     {
                         PointDR1 = new Point3D((TmpUR.X - TmpDR.X) * PosRatioA, (TmpUR.Y - TmpDR.Y) * PosRatioA) + TmpDR;
                         PointDR2 = new Point3D((TmpUR.X - TmpDR.X) * PosRatioB, (TmpUR.Y - TmpDR.Y) * PosRatioB) + TmpDR;
                         tmplist1.Add(PointDR1);
                         tmplist1.Add(PointDR2);
                     }
-                    else if (TmpUR.X < TmpDR.X)
+                    else if (TmpUR.X < TmpDR.X && Math.Abs(TmpUR.X - TmpDR.X) > 0.05)
                     {
                         PointUR1 = new Point3D((TmpDR.X - TmpUR.X) * PosRatioA, (TmpDR.Y - TmpUR.Y) * PosRatioA) + TmpUR;
                         PointUR2 = new Point3D((TmpDR.X - TmpUR.X) * PosRatioB, (TmpDR.Y - TmpUR.Y) * PosRatioB) + TmpUR;
@@ -1819,7 +1820,7 @@ namespace WPFSTD105.Model
         /// 手動斜邊打點
         /// </summary>
         /// <param name="face"></param>
-        public static void ManHypotenusePoint(devDept.Eyeshot.Model model, devDept.Eyeshot.Model drawing, FACE face)
+        public static void ManHypotenusePoint(devDept.Eyeshot.Model model, devDept.Eyeshot.Model drawing,ObSettingVM obvm, FACE face)
         {
 #if DEBUG
             log4net.LogManager.GetLogger("ManHypotenusePoint").Debug("");
@@ -1830,7 +1831,7 @@ namespace WPFSTD105.Model
             List<(double, double)> HypotenusePoint = new List<(double, double)>();
             List<Point3D> result = null;
             MyCs myCs = new MyCs();
-            ObSettingVM obvm = new ObSettingVM();
+            //ObSettingVM obvm = new ObSettingVM();
             STDSerialization ser = new STDSerialization();
             ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();//備份當前加工區域數值
 

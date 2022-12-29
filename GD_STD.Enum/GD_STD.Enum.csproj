@@ -86,6 +86,7 @@
     <Compile Include="JOYSTICK.cs" />
     <Compile Include="KEY_HOLE.cs" />
     <Compile Include="LOGIN_STATUS.cs" />
+    <Compile Include="MachiningType.cs" />
     <Compile Include="MACTH.cs" />
     <Compile Include="MAGNIFICATION.cs" />
     <Compile Include="MATERIAL.cs" />

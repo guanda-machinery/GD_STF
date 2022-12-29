@@ -399,7 +399,7 @@
                                                 <RowDefinition Height="auto"/>
                                             </Grid.RowDefinitions>
                                             <!--H型鋼-->
-                                            <Grid Visibility="{Binding VisibleH_Process, Converter={dx:NullableToVisibilityConverter}}">
+                                            <Grid Visibility="{Binding VisibleH_Process, Converter={dx:BooleanToVisibilityConverter}}">
 
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
@@ -528,7 +528,7 @@
 
                                             </Grid>
                                             <!--方管-->
-                                            <Grid Grid.Row="1" Visibility="{Binding VisibleBOX_Process, Converter={dx:NullableToVisibilityConverter}}" >
+                                            <Grid Grid.Row="1" Visibility="{Binding VisibleBOX_Process, Converter={dx:BooleanToVisibilityConverter}}" >
 
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
@@ -823,8 +823,8 @@
                             </Style>
                         </Grid.Resources>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="450" />
-                            <ColumnDefinition Width="400" />
+                            <ColumnDefinition Width="350" />
+                            <ColumnDefinition Width="500" />
                         </Grid.ColumnDefinitions>
                         <!--軟體版本-->
                         <Grid Grid.Column="0" Background="WhiteSmoke">
@@ -858,7 +858,7 @@
                                 <TextBlock Text="V11.0(2022.16.1.2 e55928ee677f)" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="16" />
                                 <TextBlock Text="軟體是最新的" VerticalAlignment="Top"  HorizontalAlignment="Left" FontSize="16" Foreground="LightGray"  Margin="0,20,0,0"/>
                             </StackPanel>
-                            <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="0"
+                            <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="0" Visibility="Collapsed"
                                 Style="{StaticResource SiegCustomButtonGold}"
                              Margin="20"
                               Content="安裝"
@@ -873,16 +873,46 @@
                         Cursor="Hand"/>
                         </Grid>
                         <Grid Grid.Column="1" Background="White">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
                             <Grid.Resources>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="FontSize" Value="25"/>
                                     <Setter Property="FontStretch" Value="UltraExpanded"/>
                                     <Setter Property="FontWeight" Value="UltraBold"/>
                                     <Setter Property="FontFamily" Value="Calibri (本文)"/>
+                                    <Setter Property="Foreground" Value="LightGray"/>
                                 </Style>
                             </Grid.Resources>
-                            <TextBlock Text="發行說明" VerticalAlignment="Top"  HorizontalAlignment="Left"  Foreground="DeepSkyBlue" FontSize="20"  Margin="20,16"/>
-                            <TextBlock Text="說明字串" VerticalAlignment="Top"  HorizontalAlignment="Left"  Foreground="DeepSkyBlue"  Margin="0,50" Visibility="Collapsed"/>
+                            <TextBlock Text="發行說明"  Foreground="DeepSkyBlue" FontSize="20"  Margin="20,16"/>
+                            <StackPanel Grid.Row="1" Margin="10,0">
+                                <StackPanel.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontSize" Value="15"/>
+                                        <Setter Property="FontStretch" Value="UltraExpanded"/>
+                                        <Setter Property="FontWeight" Value="UltraBold"/>
+                                        <Setter Property="FontFamily" Value="Calibri (本文)"/>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <TextBlock Text="專案管理"  Margin="10,20,10,5" Foreground="Gray"  FontSize="20"/>
+                                <TextBlock Text="- 新增/編輯專案"   Margin="10,5"  />
+                                <TextBlock Text="- 匯入 NC 檔與 BOM 表"   Margin="10,5"  />
+                                <TextBlock Text="製品設定"  Margin="10,20,10,5" Foreground="Gray"  FontSize="20" />
+                                <TextBlock Text="- 零件清單"   Margin="10,5"  />
+                                <TextBlock Text="- 3D 視圖"   Margin="10,5"  />
+                                <TextBlock Text="- 2D 視圖"   Margin="10,5"  />
+                                <TextBlock Text="- 編輯零件（鑽孔/切割線）"  Margin="10,5"  />
+                                <TextBlock Text="排版設定"  Margin="10,20,10,5" Foreground="Gray"    FontSize="20"/>
+                                <TextBlock Text="- 排版參數設定"   Margin="10,5"  />
+                                <TextBlock Text="- 素材清單"   Margin="10,5"  />
+                                <TextBlock Text="- 瀏覽專案資料夾"   Margin="10,5"  />
+                                <TextBlock Text="參數設定"   Margin="10,20,10,5" Foreground="Gray"    FontSize="20"/>
+                                <TextBlock Text="- 斷面規格目錄"   Margin="10,5"  />
+                                <TextBlock Text="- 切割線設定"   Margin="10,5"  />
+                                <TextBlock Text="- 型鋼加工區域設定"   Margin="10,5"  />
+                            </StackPanel>
                         </Grid>
 
                     </Grid>

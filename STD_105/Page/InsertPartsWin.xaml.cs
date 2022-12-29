@@ -156,9 +156,6 @@ namespace STD_105
 
 
 
-
-
-
             ExitWin();
         }
 

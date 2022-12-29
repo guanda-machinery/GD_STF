@@ -54,7 +54,6 @@ namespace STD_105.Office
                 //20220816 蘇冠綸 排版設定
                 case OfficePage.old_PartsList:
                     basePage = new TypeSettingPage();//舊版頁面
-
                     break;
 
                 // 加工監控
