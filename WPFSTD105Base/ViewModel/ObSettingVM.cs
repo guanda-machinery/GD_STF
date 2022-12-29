@@ -3,6 +3,7 @@ using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
+using DevExpress.Utils;
 using DevExpress.Xpf.CodeView;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.WindowsUI;
@@ -205,6 +206,7 @@ namespace WPFSTD105.ViewModel
         #endregion
 
         #region 公開屬性
+        public String _componentVisible { get; set; } = Debugger.IsAttached ? "Visible" : "Collapsed";
         /// <summary>
         /// 限制Grid出現之內容
         /// </summary>
@@ -2261,7 +2263,17 @@ namespace WPFSTD105.ViewModel
                 list.Add(aa);
                 ItemCount++;
             }
-
+            // NC/BOM匯入後 建立 BOM表與零件之長度關係，修改長度後需比對此長度再與模型頂點進行計算求得新頂點座標
+            if (!File.Exists(ApplicationVM.FileBomLengthList()))
+            {
+                ObservableCollection<SteelAttr> list1 = new ObservableCollection<SteelAttr>();
+                if (list.Any() && !string.IsNullOrEmpty(list.FirstOrDefault().DataName))
+                {
+                    list1.AddRange(list.Select(x => new SteelAttr { GUID = Guid.Parse(x.DataName), Length = x.Length }).ToList());
+                    ser.SetBomLengthList(list1);
+                }
+               
+            }
             return list;
         }
         /// <summary>
