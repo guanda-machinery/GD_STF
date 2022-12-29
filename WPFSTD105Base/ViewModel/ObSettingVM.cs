@@ -7,6 +7,7 @@ using DevExpress.Utils;
 using DevExpress.Xpf.CodeView;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.WindowsUI;
+using DocumentFormat.OpenXml.EMMA;
 using GD_STD;
 using GD_STD.Data;
 using GD_STD.Enum;
@@ -1439,6 +1440,13 @@ namespace WPFSTD105.ViewModel
             rb_CutLinePosition_Command = rb_CutLinePosition();
 
             InitializeSteelAttr();
+
+
+
+
+
+
+
         }
         #region 私有屬性
         /// <summary>

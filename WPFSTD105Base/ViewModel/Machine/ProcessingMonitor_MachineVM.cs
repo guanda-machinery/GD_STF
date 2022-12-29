@@ -58,6 +58,7 @@ using DevExpress.Xpf.Gauges;
 using DevExpress.Xpo.DB;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DevExpress.XtraPrinting;
+using DocumentFormat.OpenXml.Drawing;
 
 namespace WPFSTD105.ViewModel
 {
@@ -3491,13 +3492,14 @@ namespace WPFSTD105.ViewModel
             {
                 //不要在序列化中途清除加工陣列
                 while (IsSerializing)
-                    Thread.Sleep(1);
+                    Thread.Sleep(1000);
 
                 short[] index;
                 using (Memor.ReadMemorClient read = new Memor.ReadMemorClient())
                 {
                     index = read.GetIndex();
                 }
+
                 while (true)
                 {
                     int iIndex = index.FindIndex(x => x == dataViewIndex);
@@ -3535,6 +3537,11 @@ namespace WPFSTD105.ViewModel
                 STDSerialization ser = new STDSerialization();
                 ser.SetMaterialDataView(Finish_UndoneDataViews);
                 ser.SetWorkMaterialBackup(_WorkMaterials[dataViewIndex]);
+                //寫入加工陣列
+
+                //寫入備份
+                ser.SetWorkMaterialIndexBackup(index);
+
                 //如果有備份檔 把紀錄刪掉
                 ser.DeleteWorkMaterialBackup(Finish_UndoneDataViews[dataViewIndex].MaterialNumber);
                 RefreshScheduleGridC();

@@ -315,7 +315,8 @@ namespace WPFSTD105.ViewModel
         {
             get
             {
-                return System.Diagnostics.Debugger.IsAttached;
+                return true;
+                //return System.Diagnostics.Debugger.IsAttached;
             }
         }
 
