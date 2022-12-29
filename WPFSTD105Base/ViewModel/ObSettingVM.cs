@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -203,6 +204,7 @@ namespace WPFSTD105.ViewModel
         #endregion
 
         #region 公開屬性
+        public String _componentVisible { get; set; } = Debugger.IsAttached ? "Visible" : "Collapsed";
         /// <summary>
         /// 限制Grid出現之內容
         /// </summary>
