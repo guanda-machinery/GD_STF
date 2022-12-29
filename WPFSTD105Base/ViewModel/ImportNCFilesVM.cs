@@ -14,6 +14,7 @@ using Ionic.Zip;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -37,7 +38,7 @@ namespace WPFSTD105
         /// <summary>
         /// 畫面管理器(進度條型)
         /// </summary>
-        private  SplashScreenManager ProcessingScreenWin = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
+        private SplashScreenManager ProcessingScreenWin = SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
 
         /// <summary>
         /// 畫面管理器(轉圈型)
@@ -114,7 +115,9 @@ namespace WPFSTD105
         /// <summary>
         /// 匯入 nc 命令
         /// </summary>
-        public ICommand ImportNcCommand { get
+        public ICommand ImportNcCommand
+        {
+            get
             {
                 return new WPFWindowsBase.RelayCommand(() =>
                 {
@@ -136,13 +139,13 @@ namespace WPFSTD105
                 {
                     DXOpenFileDialog dX = new DXOpenFileDialog();
                     dX.Filter = "Csv 檔案 |*.csv";
-                    try 
-                    { 
-                    dX.ShowDialog();//Show 視窗
-                    BomPath = dX.FileName;
+                    try
+                    {
+                        dX.ShowDialog();//Show 視窗
+                        BomPath = dX.FileName;
                     }
-                    catch(Exception ex)
-                    { 
+                    catch (Exception ex)
+                    {
                     }
                 });
             }
@@ -176,9 +179,16 @@ namespace WPFSTD105
 
 
                     //ProcessingScreenW.Show();
-                //if (IsNcLoad || IsBomLoad) //如果有載入過報表
-                if (false) //如果有載入過報表
-                {
+
+                    // 若在Debugger模式下 可連續匯入，否則正常判斷(不可連續匯入)
+                    bool importType = IsNcLoad || IsBomLoad;
+                    if (Debugger.IsAttached)
+                    {
+                        importType = false;
+                    }
+                    //if (IsNcLoad || IsBomLoad) //如果有載入過報表
+                    if (importType) //如果有載入過報表
+                    {
                         ProcessingScreenWin.Close();
                         // 2022/08/22 呂宗霖 因螺栓無法找到其歸屬零件編號，故架構師與副總討論後，決議先讓使用者只能匯入一次檔案，若要再次匯入，必須重新新增專案
                         WinUIMessageBox.Show(null,
@@ -190,37 +200,37 @@ namespace WPFSTD105
                     MessageBoxOptions.None,
                      FloatingMode.Window);
                         return;
-                    //MessageBoxResult saveAsResult = MessageBox.Show($"請問是否要備份之前載入的檔案", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
-                    //if (saveAsResult == MessageBoxResult.Yes) //如果要備份檔案
-                    //{
-                    //    FolderBrowserDialogService service = DevExpand.NewFolder("請選擇另存路徑"); //文件夾瀏覽器對話服務
-                    //    IFolderBrowserDialogService folder = service;
-                    //    folder.ShowDialog();//Show 視窗
-                    //    string path = folder.ResultPath;//用戶選擇的路徑
-                    //    if (path != string.Empty) //如果有選擇路徑
-                    //    {
-                    //        string dataName = $"{CommonViewModel.ProjectName}{DateTime.Now.ToString("yy-MM-dd-HH-mm-ss")}.zip";//壓縮檔名稱
-                    //        string zipPath = $@"{path}\{dataName}";//壓縮檔完整路徑
-                    //        if (File.Exists(zipPath))//如果有重複的壓縮檔
-                    //        {
-                    //            MessageBoxResult coverResult = MessageBox.Show($"發現重複的檔案名稱 '{dataName}'，請問是否覆蓋此壓縮檔", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
-                    //            if (coverResult == MessageBoxResult.Yes)//如果選擇要覆蓋檔案
-                    //            {
-                    //                File.Delete(zipPath);//刪除檔案
-                    //                BackupFile(zipPath);//備份檔案
-                    //            }
-                    //        }
-                    //        else
-                    //        {
-                    //            BackupFile(zipPath);//備份檔案
-                    //        }
-                    //    }
-                    //}
-                    //if (NcPath != string.Empty)//有選擇nc路徑
-                    //    DeleteFolder(ApplicationVM.DirectoryNc());//刪除既有nc檔案
-                    //if (BomPath != string.Empty)//有選擇報表路徑
-                    //    File.Delete(ApplicationVM.FileTeklaBom());//刪除既有的報表
-                }
+                        //MessageBoxResult saveAsResult = MessageBox.Show($"請問是否要備份之前載入的檔案", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                        //if (saveAsResult == MessageBoxResult.Yes) //如果要備份檔案
+                        //{
+                        //    FolderBrowserDialogService service = DevExpand.NewFolder("請選擇另存路徑"); //文件夾瀏覽器對話服務
+                        //    IFolderBrowserDialogService folder = service;
+                        //    folder.ShowDialog();//Show 視窗
+                        //    string path = folder.ResultPath;//用戶選擇的路徑
+                        //    if (path != string.Empty) //如果有選擇路徑
+                        //    {
+                        //        string dataName = $"{CommonViewModel.ProjectName}{DateTime.Now.ToString("yy-MM-dd-HH-mm-ss")}.zip";//壓縮檔名稱
+                        //        string zipPath = $@"{path}\{dataName}";//壓縮檔完整路徑
+                        //        if (File.Exists(zipPath))//如果有重複的壓縮檔
+                        //        {
+                        //            MessageBoxResult coverResult = MessageBox.Show($"發現重複的檔案名稱 '{dataName}'，請問是否覆蓋此壓縮檔", "通知", MessageBoxButton.YesNo, MessageBoxImage.Information, MessageBoxResult.None, MessageBoxOptions.ServiceNotification);
+                        //            if (coverResult == MessageBoxResult.Yes)//如果選擇要覆蓋檔案
+                        //            {
+                        //                File.Delete(zipPath);//刪除檔案
+                        //                BackupFile(zipPath);//備份檔案
+                        //            }
+                        //        }
+                        //        else
+                        //        {
+                        //            BackupFile(zipPath);//備份檔案
+                        //        }
+                        //    }
+                        //}
+                        //if (NcPath != string.Empty)//有選擇nc路徑
+                        //    DeleteFolder(ApplicationVM.DirectoryNc());//刪除既有nc檔案
+                        //if (BomPath != string.Empty)//有選擇報表路徑
+                        //    File.Delete(ApplicationVM.FileTeklaBom());//刪除既有的報表
+                    }
 
 
                     ProcessingScreenWin.Show(inputBlock: InputBlockMode.Window, timeout: 100);
@@ -228,9 +238,9 @@ namespace WPFSTD105
                     //ScreenManagerWaitIndicator.Show(inputBlock: InputBlockMode.None, timeout: 100);
                     STDSerialization ser = new STDSerialization();//序列化處理器
                                                                   //ObSettingVM obvm = new ObSettingVM();
-                    //Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
-                    //ProcessingScreenWin.ViewModel.Status = "複製文件到 Model 中 ...";
-                    //ScreenManagerWaitIndicator.ViewModel.Status = "複製文件到 Model 中 ...";
+                                                                  //Thread.Sleep(1000); //暫停兩秒為了要顯示 ScreenManager
+                                                                  //ProcessingScreenWin.ViewModel.Status = "複製文件到 Model 中 ...";
+                                                                  //ScreenManagerWaitIndicator.ViewModel.Status = "複製文件到 Model 中 ...";
                     Thread.Sleep(500); //暫停兩秒為了要顯示 ScreenManager
 
 
@@ -329,7 +339,7 @@ namespace WPFSTD105
                     // 取得NC檔之檔名(零件)
                     List<String> hasNCPart = GetAllNcPath(path).Select(x => x.Substring(x.LastIndexOf("\\") + 1, x.LastIndexOf(".nc1") - x.LastIndexOf("\\") - 1)).ToList();
                     // 取得無NC之零件
-                    List<SteelPart> hasNoNCPart = part.SelectMany(x => x.Value).Where(x => hasNCPart.IndexOf(x.Number)==-1).ToList();
+                    List<SteelPart> hasNoNCPart = part.SelectMany(x => x.Value).Where(x => hasNCPart.IndexOf(x.Number) == -1).ToList();
                     ObservableCollection<DataCorrespond> dc = new ObservableCollection<DataCorrespond>();
                     //ModelExt model = new ModelExt();
                     //devDept.Eyeshot.Model model = new devDept.Eyeshot.Model();
@@ -337,7 +347,7 @@ namespace WPFSTD105
                     foreach (SteelPart item in hasNoNCPart)
                     {
                         SteelAttr sa = new SteelAttr()
-                        {      
+                        {
                             PartNumber = item.Number,
                             Length = item.Length,
                             H = item.H,
@@ -379,17 +389,17 @@ namespace WPFSTD105
                     }
                     ser.SetDataCorrespond(dc);
 
-                
+
                     #endregion
 
-                #region 只跑NC1
-                // 只跑NC1 && string.IsNullOrEmpty(BomPath)
+                    #region 只跑NC1
+                    // 只跑NC1 && string.IsNullOrEmpty(BomPath)
                     if (NcPath != string.Empty) //如果有選擇nc路徑
                     {
                         DeleteFolder(ApplicationVM.DirectoryNc());//刪除既有nc檔案
                         CopyFolder(NcPath);//複製nc路徑的nc1檔案
                         var profile = ser.GetSteelAttr();
-                        
+
 
                         ProcessingScreenWin.ViewModel.Status = $"正在載入NC表檔案到模型";
                         bool loadNcResult = factory.Load(ProcessingScreenWin.ViewModel); //載入NC檔案
@@ -446,7 +456,7 @@ namespace WPFSTD105
                     //頁面跳轉
                     ProcessingScreenWin.Show();
                     ProcessingScreenWin.ViewModel.Status = $"準備跳轉至製品設定頁面";
-                     if (!WPFSTD105.Properties.SofSetting.Default.OfficeMode)
+                    if (!WPFSTD105.Properties.SofSetting.Default.OfficeMode)
                     {
                         WPFSTD105.ViewLocator.ApplicationViewModel.CurrentPage = ApplicationPage.MachineProductSetting;
                     }
