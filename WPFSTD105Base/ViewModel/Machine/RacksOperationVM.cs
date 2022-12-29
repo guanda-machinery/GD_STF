@@ -121,12 +121,34 @@ namespace WPFSTD105.ViewModel
 
 
         public double EntranceRack_CurrentValue { get; set; } = 2;
-      
+
         /// <summary>
         /// 目前數量-出口
         /// </summary>
         public double ExportRack_CurrentValue { get; set; } = 2;
+
+
+
+
+        // MaxValue="{Binding EntranceTraverseNumber, Source={x:Static GD_STD:Optional.Default}}"
+        /// <summary>
+        /// 強迫給值 待修正
+        /// </summary>
+        public double EntranceRack_MaxValue { get; set; } = 7;
+
+        /// <summary>
+        /// 目前數量-出口
+        /// </summary>
+        public double ExportRack_MaxValue { get; set; } = 0;
+
         #endregion
+
+
+
+
+
+
+
 
         #region 命令
 

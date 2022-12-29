@@ -171,7 +171,7 @@
             <Style TargetType="dxe:TextEditSettings">
                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
             </Style>
-            
+
             <Style TargetType="dxg:GridControl" BasedOn="{StaticResource SiegCustomGridControl}" x:Key="MachiningGridControl">
                 <Style.Resources>
                     <Style TargetType="dxg:TableView">
@@ -340,12 +340,12 @@
                                     </dxg:TableView.Header>
                                 </dxg:TableView>
                             </dxg:GridControl.View>
-                           <dxg:GridControl.ContextMenu>
+                            <dxg:GridControl.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Command="{Binding SelectedItemsAddCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                                 Header="批量註冊"/>
-                                     <MenuItem Command="{Binding RowAddCommand}"
+                                    <MenuItem Command="{Binding RowAddCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                               Header="加入任務到末端" />
                                     <!--<MenuItem Command="{Binding DeleteCommand}"
@@ -355,7 +355,7 @@
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                             
                                               Header="狀態註銷" />
-                                   <!-- <MenuItem Command="{Binding UnregisterCommand}"
+                                    <!-- <MenuItem Command="{Binding UnregisterCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                               Header="解除綁定" /> -->
                                     <MenuItem Command="{Binding FinishCommand}"
@@ -560,7 +560,7 @@ AllowEditing="False"
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
-                        
+
                         <dxg:GridColumn MaxWidth="70" MinWidth="70" Header="進度(%)" >
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
@@ -632,7 +632,7 @@ AllowEditing="False"
                                                  Converter="{local:AntiLogicConverter}"/>
                     </MultiBinding.Bindings>
                 </MultiBinding>
-            </TabControl.IsEnabled> 
+            </TabControl.IsEnabled>
 
             <TabControl.Resources>
                 <Style TargetType="TabItem">
@@ -768,11 +768,15 @@ AllowEditing="False"
             </TabItem>
             <TabItem Header="2D">
                 <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="149*"/>
+                        <ColumnDefinition Width="684*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <Border Style="{StaticResource bro}" Grid.RowSpan="2"/>
+                    <Border Style="{StaticResource bro}" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
                     <spa:ModelExt x:Name="drawing" 
                             Loaded="drawing_Loaded"
                             AutoRefresh ="True"
@@ -784,7 +788,7 @@ AllowEditing="False"
                             Focusable="True" 
                             AntiAliasingSamples="x16" 
                             Renderer="NativeExperimental" 
-                            ShowFps="false" SelectionChanged="model_SelectionChanged">
+                            ShowFps="false" SelectionChanged="model_SelectionChanged" Grid.ColumnSpan="2">
                         <spa:ModelExt.ContextMenu>
                             <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
                                 <MenuItem Name="esc2D" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
@@ -833,11 +837,11 @@ AllowEditing="False"
                             </ddes:Viewport>
                         </ddes:Model.Viewports>
                     </spa:ModelExt>
-                    <local:DrawButtonBar Grid.Row="1"/>
+                    <local:DrawButtonBar Grid.Row="1" Grid.ColumnSpan="2"/>
                 </Grid>
             </TabItem>
         </TabControl>
-      
+
         <Grid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Width="139" Height="30" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -901,7 +905,7 @@ AllowEditing="False"
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            
+
 
 
                             <materialDesign:DialogHost  Grid.Column="0"  DialogTheme="Inherit">
@@ -917,7 +921,7 @@ AllowEditing="False"
                                             UpdateSourceTrigger=PropertyChanged}"/>
                                             <TextBlock Text="統一刀徑" Margin="8,2"/>
                                         </StackPanel>
-                                        
+
                                         <ComboBox Margin="0,5"  Height="20" SelectedValue="{Binding MachiningCombinational_DrillBoltsItemSource, 
                                             ConverterParameter={x:Static GD_STD_Enum:FACE.FRONT},
                                             Converter={local:TypesettingsSettingsToUnitaryToolConverter}, 
@@ -1034,7 +1038,7 @@ AllowEditing="False"
                                     <StackPanel Margin="8" >
                                         <!--統一孔徑-->
                                         <StackPanel Orientation="Horizontal">
-                                        <CheckBox IsThreeState="False" Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiTop"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                            <CheckBox IsThreeState="False" Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiTop"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
                                             ConverterParameter={x:Static GD_STD_Enum:FACE.TOP}, 
                                             Converter={local:TypesettingsSettingsToBooleanConverter}, 
                                             Mode=TwoWay , 
@@ -1470,8 +1474,8 @@ AllowEditing="False"
                                     </Style>
                                 </Style.Resources>
                             </Style>
-                            
-                            
+
+
                             <SolidColorBrush x:Key="SecondaryHueMidBrush" Color="#67b32c"/>
 
                             <Style TargetType="ProgressBar" BasedOn="{StaticResource MaterialDesignCircularProgressBar}">
@@ -1483,27 +1487,27 @@ AllowEditing="False"
                         </Grid.Resources>
 
 
-                        
+
                         <Border Grid.Row="0" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
                         <Grid Grid.Row="0" Grid.ColumnSpan="2" IsEnabled="{Binding Finish_UndoneDataViews, Converter={local:ListCountToBooleanConverter}}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                        <RadioButton Grid.Column="0"  Grid.Row="0" 
+                            <RadioButton Grid.Column="0"  Grid.Row="0" 
                                      Name="DrillHole_RadioButton"  
                                      GroupName="Group_Drill"
                                      IsChecked="{Binding DrillHole_Mode_RadioButtonIsEnable}"
                                      Command="{Binding DrillHole_ModeCommand}">
-                            <Image Source="{StaticResource DrillHoleDrawingImage}" Height="60" Width="auto"  />
-                        </RadioButton>
-                        <RadioButton Grid.Column="1" Grid.Row="0" 
+                                <Image Source="{StaticResource DrillHoleDrawingImage}" Height="60" Width="auto"  />
+                            </RadioButton>
+                            <RadioButton Grid.Column="1" Grid.Row="0" 
                                      Name="DrillPin_RadioButton" 
                                      GroupName="Group_Drill"
                                      IsChecked="{Binding DrillPin_Mode_RadioButtonIsEnable}" 
                                      Command="{Binding DrillPin_ModeCommand}">
-                            <Image Source="{StaticResource DrillPinDrawingImage}" Height="60" Width="auto"/>
-                        </RadioButton>
+                                <Image Source="{StaticResource DrillPinDrawingImage}" Height="60" Width="auto"/>
+                            </RadioButton>
                         </Grid>
                         <Border Grid.Row="1" Grid.ColumnSpan="3" BorderThickness="0,0,0,1" BorderBrush="Gray"/>
 
@@ -1514,27 +1518,27 @@ AllowEditing="False"
                                          Command="{Binding Set_Input_by_SmartPhone_Command}"
                                          CommandParameter="{Binding ElementName=Input_by_SmartPhone_RadioButton}">
                                 <Image Source="{StaticResource Input_by_SmartPhoneDrawingImage}" Height="45" Width="45" />
-                        </RadioButton>
+                            </RadioButton>
                         </StackPanel>
                         <ProgressBar  Grid.Column="0" Grid.Row="1" Visibility="{Binding ProgressBar_Visible_Input_by_SmartPhone,Converter={dx:BooleanToVisibilityConverter}}"/>
 
                         <StackPanel  Grid.Column="1" Grid.Row="1" IsEnabled="{Binding Input_by_Computer_RadioButtonVMEnable}" >
-                        <RadioButton  GroupName="Group_Input" Name="Input_by_Computer_RadioButton"
+                            <RadioButton  GroupName="Group_Input" Name="Input_by_Computer_RadioButton"
                                           IsChecked="{Binding Input_by_Computer_RadioButtonIsChecked}"
                                           Command="{Binding Set_Input_by_Computer_Command}"
                                           CommandParameter="{Binding ElementName=Input_by_Computer_RadioButton}">
-                            <RadioButton.IsEnabled>
-                                <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
+                                <RadioButton.IsEnabled>
+                                    <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
                                         <MultiBinding.Bindings>
                                             <Binding ElementName="DrillHole_RadioButton" Path="IsChecked"/>
-                                        <Binding ElementName="DrillPin_RadioButton" Path="IsChecked"/>
-                                    </MultiBinding.Bindings>
-                                </MultiBinding>
-                            </RadioButton.IsEnabled>
-                            <Image Source="{StaticResource Input_by_ComputerDrawingImage}"  Height="50" Width="50" />
-                        </RadioButton>
+                                            <Binding ElementName="DrillPin_RadioButton" Path="IsChecked"/>
+                                        </MultiBinding.Bindings>
+                                    </MultiBinding>
+                                </RadioButton.IsEnabled>
+                                <Image Source="{StaticResource Input_by_ComputerDrawingImage}"  Height="50" Width="50" />
+                            </RadioButton>
                         </StackPanel>
-                         <ProgressBar  Grid.Column="1" Grid.Row="1" Visibility="{Binding ProgressBar_Visible_Input_by_Computer,Converter={dx:BooleanToVisibilityConverter}}"/>
+                        <ProgressBar  Grid.Column="1" Grid.Row="1" Visibility="{Binding ProgressBar_Visible_Input_by_Computer,Converter={dx:BooleanToVisibilityConverter}}"/>
 
                         <Grid Grid.Row="2" Grid.ColumnSpan="3"  IsEnabled="{Binding TransportGridIsEnable,UpdateSourceTrigger=PropertyChanged}">
                             <Grid.ColumnDefinitions>
@@ -1563,7 +1567,7 @@ AllowEditing="False"
                                     </RadioButton.IsEnabled>
                                     <Image Source="{StaticResource TransportDrawingImage}" />
                                 </RadioButton>
-                                
+
                             </StackPanel>
                             <ProgressBar  Visibility="{Binding ProgressBar_Visible_Transport_Visibility,Converter={dx:BooleanToVisibilityConverter}}" />
                             <StackPanel Grid.Column="1" IsEnabled="{Binding Transport_by_Continue_RadioButtonIsEnable}">
@@ -1614,7 +1618,7 @@ AllowEditing="False"
                                 </MultiBinding>
                             </TextBlock.Visibility>
                         </TextBlock>
-                        
+
                         <!--自動連線時改為三-->
                         <TextBlock Text="❸" Style="{StaticResource HintTextBlock}" Margin="5" Grid.Row="2"
                                    IsEnabled="{Binding HintStep4}">

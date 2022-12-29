@@ -6,6 +6,7 @@ using devDept.Geometry;
 using DevExpress.Xpf.CodeView;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.WindowsUI;
+using DocumentFormat.OpenXml.EMMA;
 using GD_STD;
 using GD_STD.Data;
 using GD_STD.Enum;
@@ -13,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -1436,6 +1438,13 @@ namespace WPFSTD105.ViewModel
             rb_CutLinePosition_Command = rb_CutLinePosition();
 
             InitializeSteelAttr();
+
+
+
+
+
+
+
         }
         #region 私有屬性
         /// <summary>

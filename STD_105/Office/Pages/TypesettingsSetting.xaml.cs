@@ -466,20 +466,29 @@ namespace STD_105.Office
             }
             try
             {
+
                 if (modelExt.Entities.Count > 0)
                 {
-                    modelExt.Entities.ForEach(el =>
-                    {
-                        if (el.EntityData is SteelAttr)
-                        {
-                            el.Selectable = true;
-                        }
-                    });
                     modelExt.ClearAllPreviousCommandData();
+                    modelExt.Entities.ForEach(el => el.Selectable = true);// = true;
                     modelExt.ActionMode = actionType.None;
                     modelExt.objectSnapEnabled = true;
                     return;
                 }
+                //if (modelExt.Entities.Count > 0)
+                //{
+                //    modelExt.Entities.ForEach(el =>
+                //    {
+                //        if (el.EntityData is SteelAttr)
+                //        {
+                //            el.Selectable = true;
+                //        }
+                //    });
+                //    modelExt.ClearAllPreviousCommandData();
+                //    modelExt.ActionMode = actionType.None;
+                //    modelExt.objectSnapEnabled = true;
+                //    return;
+                //}
             }
             catch (Exception ex)
             {

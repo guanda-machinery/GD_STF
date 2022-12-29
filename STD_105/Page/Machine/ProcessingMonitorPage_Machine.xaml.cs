@@ -59,6 +59,51 @@ namespace STD_105
         public ProcessingMonitorPage_Machine()
         {
             InitializeComponent();
+
+            ObViewModel.ClearDim = new RelayCommand(() =>
+            {
+                try
+                {
+                    ModelExt modelExt = null;
+                    if (DrawTabControl.SelectedIndex == 0)
+                    {
+                        modelExt = model;
+                    }
+                    else
+                    {
+                        // 2022.06.24 呂宗霖 還原註解
+                        modelExt = drawing;
+                    }
+                    List<Entity> dimensions = new List<Entity>();//標註物件
+                    modelExt.Entities.ForEach(el =>
+                    {
+#if DEBUG
+                        log4net.LogManager.GetLogger("清除標註").Debug("開始");
+#endif
+                        if (el is Dimension dim)
+                        {
+                            dimensions.Add(dim);
+                        }
+#if DEBUG
+                        log4net.LogManager.GetLogger("清除標註").Debug("結束");
+#endif
+                    });
+                    modelExt.Entities.Remove(dimensions);
+                    modelExt.Invalidate();//刷新模型
+                }
+                catch (Exception ex)
+                {
+                    log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(ex.Message, ex.StackTrace);
+                    Debugger.Break();
+                }
+            });
+
+
+
+
+
+
+
             model.DataContext = ObViewModel;
             drawing.DataContext = ObViewModel;
             model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
@@ -313,20 +358,31 @@ namespace STD_105
             }
             try
             {
+
                 if (modelExt.Entities.Count > 0)
                 {
-                    modelExt.Entities.ForEach(el =>
-                    {
-                        if (el.EntityData is SteelAttr)
-                        {
-                            el.Selectable = true;
-                        }
-                    });
                     modelExt.ClearAllPreviousCommandData();
+                    // modelExt.Entities[modelExt.Entities.Count - 1].Selectable = true;
+                    modelExt.Entities.ForEach(el => el.Selectable = true);// = true;
                     modelExt.ActionMode = actionType.None;
                     modelExt.objectSnapEnabled = true;
                     return;
                 }
+
+                //if (modelExt.Entities.Count > 0)
+                //{
+                //    modelExt.Entities.ForEach(el =>
+                //    {
+                //        if (el.EntityData is SteelAttr)
+                //        {
+                //            el.Selectable = true;
+                //        }
+                //    });
+                //    modelExt.ClearAllPreviousCommandData();
+                //    modelExt.ActionMode = actionType.None;
+                //    modelExt.objectSnapEnabled = true;
+                //    return;
+                //}
             }
             catch (Exception ex)
             {
