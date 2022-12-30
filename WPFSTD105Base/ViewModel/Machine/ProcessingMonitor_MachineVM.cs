@@ -1803,15 +1803,16 @@ namespace WPFSTD105.ViewModel
                 {
                     STDSerialization ser = new STDSerialization();
                     short[] dataIndex = ser.GetWorkMaterialIndexBackup();
-
-                    if (ApplicationViewModel.ProjectName == read.GetProjectName()) //如果相同專案名稱
+                    if (dataIndex.Length != 0)
                     {
-                        Array.Copy(dataIndex, index, dataIndex.Length); //複製備份檔的 index 到要發送的 index
-                    }
-                    else //如果不同專案名稱
-                    {
-                        if (dataIndex.Length != 0)
+                        if (ApplicationViewModel.ProjectName == read.GetProjectName()) //如果相同專案名稱
+                        {
+                            Array.Copy(dataIndex, index, dataIndex.Length); //複製備份檔的 index 到要發送的 index
+                        }
+                        else //如果不同專案名稱
+                        {
                             Array.Copy(dataIndex, index, current == -1 ? 0 : current + 1); //複製備份檔的 index 到要發送的 index
+                        }
                     }
                 }
 
@@ -1823,12 +1824,22 @@ namespace WPFSTD105.ViewModel
 
                 MCurrent = current;
 
+                ProcessingScreenWin.ViewModel.Status = $"寫入Current{current}";
+
                 write.SetMonitorWorkOffset(current.ToByteArray(), currentOffset);//寫入Current
                 write.SetMonitorWorkOffset(enOccupy.ToByteArray(), enOccupyOffset); //寫入入口料架占用長度
                 write.SetMonitorWorkOffset(exOccupy1.ToByteArray(), exOccupy1Offset);//寫入出口料架占用長度 (1) 
                 write.SetMonitorWorkOffset(exOccupy2.ToByteArray(), exOccupy2Offset);//寫入出口料架占用長度 (2) 
                 write.SetMonitorWorkOffset(Convert.ToInt16(Finish_UndoneDataViews.Count).ToByteArray(), Marshal.OffsetOf<MonitorWork>(nameof(MonitorWork.Count)).ToInt64()); //寫入準備加工的陣列位置
                 write.SetMonitorWorkOffset(index.ToByteArray(), Marshal.OffsetOf<MonitorWork>(nameof(MonitorWork.Index)).ToInt64()); //寫入準備加工的陣列位置
+
+                if (index.Count() > 0)
+                {
+                    var workstring = "";
+                    index.ForEach(x => workstring += (x.ToString() + ","));
+                    workstring = workstring.Trim(',');
+                    ProcessingScreenWin.ViewModel.Status = $"寫入加工陣列{index}";
+                }
             }
 
 
