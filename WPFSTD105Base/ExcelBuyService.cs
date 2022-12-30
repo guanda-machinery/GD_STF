@@ -1033,10 +1033,18 @@ namespace WPFSTD105
                                             sheet.Cells[row, column++].Value = $"1-2model.Blocks[{firstIndex}].Entities[{secondIndex}]";
                                             sheet.Cells[row, column++].Value = $"{entities.GetType().Name}";
                                             sheet.Cells[row, column++].Value = $"{entities.EntityData.GetType().Name}";
-                                            sheet.Cells[row, column++].Value = (mesh.Vertices.Count() > 0 ? "有Vertices" : "無Vertices");
                                             sheet.Cells[row, column++].Value = $"{mesh.MaterialName}";
                                             sheet.Cells[row, column++].Value = $"{mesh.Faces}";
-                                            sheet.Cells[row++, column++].Value = $"{mesh.LineTypeName}";
+                                            sheet.Cells[row, column++].Value = $"{mesh.LineTypeName}";
+                                            sheet.Cells[row, column++].Value = (mesh.Vertices.Count() > 0 ? "有Vertices" : "無Vertices");
+
+                                            foreach (var item in mesh.Vertices)
+                                            {
+                                                sheet.Cells[row, column++].Value =$"{item.X},{item.Y},{item.Z}";
+                                            }
+                                            row++;
+
+
                                             column = 0;
                                             break;
                                         default:

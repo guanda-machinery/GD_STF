@@ -1154,6 +1154,20 @@ namespace WPFSTD105
             throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }
         /// <summary>
+        /// BOM表長度對應檔
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public static string FileBomLengthList()
+        {
+            string projectName = CommonViewModel.ProjectName; //專案名稱
+
+            if (projectName != null)
+                return $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\BomLength.lis";
+
+            throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
+        }
+        /// <summary>
         /// 型鋼加工區域設定 - 設定數值儲存的檔案位置 20220811 張燕華
         /// </summary>
         /// <param name="SectionType"></param>

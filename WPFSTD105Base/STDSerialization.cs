@@ -258,7 +258,22 @@ namespace WPFSTD105
         {
             GZipSerializeBinary(bolts, $@"{ApplicationVM.DirectorySteelBolts()}\{profile}.lis");
         }
-
+        /// <summary>
+        ///  儲存序列化切割線資料
+        /// </summary>
+        /// <param name="SteelCutSetting"></param>
+        public void SetBomLengthList(ObservableCollection<SteelAttr> bomLengthList)
+        {
+            GZipSerializeBinary(bomLengthList, ApplicationVM.FileBomLengthList());
+        }
+        /// <summary>
+        ///  取得序列化切割線資料
+        /// </summary>
+        public ObservableCollection<SteelAttr> GetBomLengthList()
+        {
+            ObservableCollection<SteelAttr> temp_corr = GZipDeserialize<ObservableCollection<SteelAttr>>(ApplicationVM.FileBomLengthList());
+            return GZipDeserialize<ObservableCollection<SteelAttr>>(ApplicationVM.FileBomLengthList());
+        }
         /// <summary>
         ///  儲存序列化切割線資料
         /// </summary>

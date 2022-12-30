@@ -525,17 +525,20 @@ namespace WPFSTD105.Model
                             // if (!((Mesh)model.Entities[model.Entities.Count - 1]).IsPointInside(testPoint))
                             {
                                 check = false;
+                                return check;
                             }
                         }
                     }
                     else
                     {
                         check = false;
+                        return check;
                     }
                     // 若起始座標小於半徑，不可加入
                     if (gba.X < gba.Dia / 2 && gba.dX != "0" && gba.Mode != AXIS_MODE.POINT && gba.Mode != AXIS_MODE.HypotenusePOINT)
                     {
                         check = false;
+                        return check;
                     }
                 }
             }

@@ -563,7 +563,7 @@ namespace WPFSTD105.Model
         {
             try
             {
-                int outTime = 20;
+                int outTime = 999;
                 var result = lines.Where(el => el.StartPoint.Z >= minZ && el.EndPoint.Z >= minZ)?.ToList(); //在指定 Z 軸範圍內的線段
                 if (result == null || recursiveTime> outTime)
                 {

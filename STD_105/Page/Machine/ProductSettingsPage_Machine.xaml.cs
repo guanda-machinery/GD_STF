@@ -27,6 +27,7 @@ using System.Windows.Media;
 using WPFSTD105;
 using WPFSTD105.Attribute;
 using WPFSTD105.Model;
+using WPFSTD105.Tekla;
 using WPFSTD105.ViewModel;
 using WPFWindowsBase;
 using static devDept.Eyeshot.Entities.Mesh;
@@ -86,14 +87,6 @@ namespace STD_105
                 System.Windows.MessageBox.Show("You Select " + ViewModel.rbtn_DrillingFace.ToString());
             });
 
-            #region 3D
-            model.DataContext = ViewModel;
-            model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
-            model.InitializeViewports();
-            //model.Unlock("UF20-HN12H-22P6C-71M1-FXP4");
-            this.PageUnloadAnimation = PageAnimation.SlideAndFadeOutToRight;
-            model.Secondary = drawing;
-            #endregion
 
             #region 2D
             drawing.DataContext = ViewModel;
@@ -104,6 +97,16 @@ namespace STD_105
             drawing.Secondary = model;
             //drawing.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
             #endregion
+
+            #region 3D
+            model.DataContext = ViewModel;
+            model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
+            model.InitializeViewports();
+            //model.Unlock("UF20-HN12H-22P6C-71M1-FXP4");
+            this.PageUnloadAnimation = PageAnimation.SlideAndFadeOutToRight;
+            model.Secondary = drawing;
+            #endregion
+
 
             tabControl.SelectedIndex = 1;
 
@@ -544,6 +547,7 @@ namespace STD_105
                     else
                     {
                         #region 一般新增
+
                         sa = GetViewToSteelAttr(sa, true);
                         sa.Creation = DateTime.Now;
                         ViewModel.WriteSteelAttr(sa);
@@ -1629,6 +1633,8 @@ namespace STD_105
                         ViewModel.Title1Property = String.Empty;
                         ViewModel.Title2Property = String.Empty;
                         ViewModel.ProductMaterialProperty = "";
+
+
                         this.asseNumber.Clear();
                         this.partNumber.Clear();
                         this.PartCount.Clear();
@@ -3064,7 +3070,7 @@ namespace STD_105
             steelAttr.AsseNumber = ViewModel.AssemblyNumberProperty;
             steelAttr.PartNumber = ViewModel.PartNumberProperty;
             steelAttr.Length = ViewModel.ProductLengthProperty;
-            steelAttr.Kg = ViewModel.CurrentPartSteelAttr.Kg;
+            steelAttr.Kg = ViewModel.KGProperty;
             steelAttr.Weight = ViewModel.ProductWeightProperty;
             steelAttr.Name = ViewModel.ProductNameProperty;
             steelAttr.Material = ViewModel.ProductMaterialProperty;
@@ -3078,6 +3084,19 @@ namespace STD_105
             //ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(steelAttr.Type).ToString()}.inp");
             //this.cbx_SectionTypeComboBox.Text = profileStr;
             this.cbx_SectionTypeComboBox.Text = ViewModel.SteelSectionProperty;
+            ViewModel.ProfileIndex = ViewModel.ProfileList.FindIndex(x => x.Profile == ViewModel.SteelSectionProperty);
+            var pl = ViewModel.ProfileList.FirstOrDefault(x => x.Profile == ViewModel.SteelSectionProperty);
+            ViewModel.CurrentPartSteelAttr.H = pl.H;
+            ViewModel.CurrentPartSteelAttr.W = pl.W;
+            ViewModel.CurrentPartSteelAttr.t1 = pl.t1;
+            ViewModel.CurrentPartSteelAttr.t2 = pl.t2;
+            ViewModel.CurrentPartSteelAttr.Profile = pl.Profile;
+
+
+
+
+
+
             //steelAttr.Profile = profileStr;
             steelAttr.Profile = ViewModel.SteelSectionProperty;
             steelAttr.H = ViewModel.CurrentPartSteelAttr.H;
@@ -3267,6 +3286,9 @@ namespace STD_105
             {
                 ViewModel.Reductions = new ReductionList(model, drawing); //紀錄使用找操作
             }
+            model.ZoomFit();
+            model.Refresh();
+
             #endregion
         }
         /// <summary>
@@ -4047,6 +4069,7 @@ namespace STD_105
 
                 if (SteelAssemblies.Where(x => x.Number == ass.Number && x.Count != sa.Number && x.Length == sa.Length).Any())
                 {
+                    add = true;
                     // 原始構件ID
                     //buffer = SteelAssemblies.FirstOrDefault(x => x.Number == ass.Number && x.Count != ViewModel.SteelAttr.Number && x.Length == ViewModel.SteelAttr.Length).ID;
                     buffer = SteelAssemblies.FirstOrDefault(x => x.Number == ass.Number && x.Count != sa.Number && x.Length == sa.Length).ID;
@@ -4145,7 +4168,7 @@ namespace STD_105
             #endregion
 
 
-            if (allPart1.Count > 0 && allPart1.Any(x => x.GUID == sa.GUID))
+            if (allPart1.Count > 0 && allPart1.Any(x => x.GUID == sa.GUID) && add)  // 2022/12/28 呂宗霖
             {
                 var oriFather = allPart1.FirstOrDefault(x => x.GUID == sa.GUID).Father;
                 ass.ID = ass.ID.Union(oriFather).ToList();
@@ -4636,6 +4659,9 @@ namespace STD_105
             {
                 drawing.CurrentModel = false;
             }
+
+            //model.Refresh();
+            //model.ZoomFit();
         }
 
         private void drawing_Loaded(object sender, RoutedEventArgs e)
@@ -4643,12 +4669,6 @@ namespace STD_105
             //平移滑鼠中鍵
             drawing.Pan.MouseButton = new MouseButton(mouseButtonsZPR.Middle, modifierKeys.None);
             drawing.ActionMode = actionType.SelectByBox;
-
-            drawing.ZoomFit();//設置道適合的視口
-            drawing.Refresh();//刷新模型
-
-            model.ZoomFit();
-            model.Refresh();
 
             STDSerialization ser = new STDSerialization();
             //// 建立dm檔 for 尚未建立dm檔的零件
@@ -4661,6 +4681,10 @@ namespace STD_105
                 GridReload();
                 fAfterFirstImportTeklaData = false;
             }
+            drawing.Refresh();//刷新模型
+            drawing.ZoomFit();//設置道適合的視口
+
+
         }
 
 
@@ -5032,6 +5056,8 @@ namespace STD_105
                 ViewModel.SteelAttr.Kg = pf.Kg;
                 ViewModel.KGProperty = pf.Kg;
                 ViewModel.SteelAttr.Profile = pf.Profile;
+
+
                 //ViewModel.CurrentPartSteelAttr = pf; //ViewModel.SteelAttr;
                 ViewModel.SteelSectionProperty = pf.Profile;
                 cbx_SectionTypeComboBox.Text = pf.Profile;
@@ -5043,7 +5069,7 @@ namespace STD_105
                     ViewModel.CurrentPartSteelAttr.t2 = pf.t2;
                     ViewModel.CurrentPartSteelAttr.Profile = pf.Profile;
                 }
-              
+
                 //this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
             }
         }
@@ -5056,10 +5082,12 @@ namespace STD_105
             ViewModel.fPartListOrManuall = true;
 
             string profile = CuurentSelectedPart.steelAttr.Profile;
-            //ViewModel.ProfileType = 0;
-            //ViewModel.SteelTypeProperty_int = 0;
-            //ViewModel.ProfileIndex = 0;
-            //ViewModel.ProfileType = (int)CuurentSelectedPart.steelAttr.Type;
+
+            //ViewModel.ProfileType = (int)CuurentSelectedPart.steelAttr.Type;      
+            //ViewModel.ProfileIndex = ViewModel.ProfileList.FindIndex(x => x.Profile == CuurentSelectedPart.Profile);      
+            //ViewModel.SteelTypeProperty_int = ViewModel.ProfileIndex;
+            //ViewModel.SteelSectionProperty = CuurentSelectedPart.Profile;
+
             //ViewModel.SteelTypeProperty_int= (int)CuurentSelectedPart.steelAttr.Type;
             //ViewModel.ProfileIndex = ViewModel.ProfileList.FindIndex(x => x.Profile == profile);
             //this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
@@ -5109,10 +5137,9 @@ namespace STD_105
             ViewModel.PointBackProperty = CuurentSelectedPart.steelAttr.PointBack;
             ViewModel.PointFrontProperty = CuurentSelectedPart.steelAttr.PointFront;
             ViewModel.PointTopProperty = CuurentSelectedPart.steelAttr.PointTop;
-            
             if (ViewModel.ProfileList.Any(x => x.Profile == profile))
             {
-                ViewModel.CurrentPartSteelAttr = ViewModel.ProfileList.FirstOrDefault(x => x.Profile == profile);
+                //ViewModel.CurrentPartSteelAttr = ViewModel.ProfileList.FirstOrDefault(x => x.Profile == profile);
                 ViewModel.CurrentPartSteelAttr.PointTop.DL = CuurentSelectedPart.steelAttr.PointTop.DL;
                 ViewModel.CurrentPartSteelAttr.PointTop.DR = CuurentSelectedPart.steelAttr.PointTop.DR;
                 ViewModel.CurrentPartSteelAttr.PointTop.UL = CuurentSelectedPart.steelAttr.PointTop.UL;
@@ -5356,10 +5383,10 @@ namespace STD_105
                 }
             }
         }
+        /// <summary>
         /// 斷面規格與NC檔不同，值為true為一般型鋼
         /// </summary>
         public static bool isNormalProfile = false;
-        /// <summary>
         /// <summary>
         /// Grid Select Change
         /// </summary>
@@ -5393,18 +5420,11 @@ namespace STD_105
                     //int rowHandleByListIndex = this.PieceListGridControl.GetRowHandleByListIndex(selectIndex);
                     //int focusedRowHandle = this.PieceListGridControl.View.FocusedRowHandle;
 
-
-
-
-
-
                     //this.cbx_SectionTypeComboBox.SelectionChanged -= new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                     PieceListGridControl.SelectItem(focusedRowHandle);
 
                     //99999999
                     //PieceListGridControl.View.FocusedRowHandle = selectIndex;
-
-
 
                     //ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{item.Type}.inp");
                     //cbx_SectionTypeComboBox.Text = item.Profile;
@@ -5558,12 +5578,12 @@ namespace STD_105
                             //PieceListGridControl.SelectItem(selectIndex);
                             PieceListGridControl.View.FocusedRowHandle = focusedRowHandle;
                             this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
-                       
+
                             //this.cbx_SectionTypeComboBox.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.CBOX_SectionTypeChanged);
                             //ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{item.Type}.inp");
                             cbx_SectionTypeComboBox.Text = item.Profile;
                             //ViewModel.SteelSectionProperty = item.Profile;
-                            }
+                        }
                     }
                     #endregion
 
@@ -5574,15 +5594,12 @@ namespace STD_105
                     ViewModel.fGrid = true;
                     ViewModel.StateParaSetting(true, false, true);
 
-
-
                     model.Blocks.Clear();
                     model.Entities.Clear();
                     drawing.Blocks.Clear();
                     drawing.Entities.Clear();
                     model.Secondary = drawing;
                     drawing.Secondary = model;
-
 
                     int steelType = 0;
                     ReadFile readFile = ser.ReadPartModel(focuseGUID); //讀取檔案內容
@@ -5691,10 +5708,6 @@ namespace STD_105
                     SteelAttr saDeepClone = (SteelAttr)sa.DeepClone();
                     List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
                     sa = ViewModel.ReadNCInfo(saDeepClone, ref groups, false);
-                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = sa.oPoint;
-                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).vPoint = sa.vPoint;
-                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).uPoint = sa.uPoint;
-                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).CutList = sa.CutList;
 
                     if (saDeepClone.Profile.Replace("*", "X") != sa.Profile)
                     {
@@ -5702,12 +5715,32 @@ namespace STD_105
                     }
                     else { isNormalProfile = false; }
 
+                    // 取得零件長度(BOM的長度)
+
+                    double LengthBom = 0;
+                    double diff = 0;
+                    var blList = ser.GetBomLengthList();
+                    if (blList.Any(x => ((SteelAttr)x).GUID == sa.GUID))
+                    {
+                        LengthBom = blList.FirstOrDefault(x => ((SteelAttr)x).GUID == sa.GUID).Length;
+                        diff = LengthBom - sa.Length;
+                    }
+
+
+                    //Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
+                    //if (part.Values.SelectMany(x => x).Any(x => x.GUID == ViewModel.GuidProperty)) LengthBom = part.Values.SelectMany(x => x).FirstOrDefault(x => x.GUID == ViewModel.GuidProperty).Length;
+
+
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = sa.oPoint;
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).vPoint = sa.vPoint;
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).uPoint = sa.uPoint;
+                    ((SteelAttr)model.Blocks[1].Entities[0].EntityData).CutList = sa.CutList;
 
                     // 舊有形鋼上的孔群
                     List<Block> blocks = model.GetBoltFromBlock(groups);
 
                     // 步驟3.產生鋼構模型
-                    model.LoadNcToModel(focuseGUID, ObSettingVM.allowType, 0, null, sa, null, blocks, false, isNormalProfile);
+                    model.LoadNcToModel(focuseGUID, ObSettingVM.allowType, diff, null, sa, null, blocks, false, isNormalProfile);
                     // 步驟5.產生2D模型
                     BlockReference steel2D = ViewModel.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
                     //model.sycnModelEntitiesAndNewBolt(blocks);
@@ -5748,12 +5781,12 @@ namespace STD_105
                     //ViewModel.ProductWeightProperty = (sa).Weight;
                     //ViewModel.SteelAttr.Weight = (sa).Weight;
 
-                    model.Refresh();
                     model.ZoomFit();//設置道適合的視口
-                    model.Invalidate();//初始化模型
-                    drawing.Refresh();
+                    model.Refresh();
+                    //model.Invalidate();//初始化模型
                     drawing.ZoomFit();//設置道適合的視口
-                    drawing.Invalidate();//初始化模型
+                    drawing.Refresh();
+                    //drawing.Invalidate();//初始化模型
                 }
                 else
                 {
