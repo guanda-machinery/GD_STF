@@ -9,6 +9,9 @@ using static WPFSTD105.ViewLocator;
 using static WPFSTD105.CodesysIIS;
 using System.Threading;
 using System.Windows.Input;
+using System.Runtime.Remoting.Messaging;
+using DevExpress.CodeParser;
+using WPFSTD105.FluentAPI;
 
 namespace WPFSTD105.ViewModel
 {
@@ -134,12 +137,39 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 強迫給值 待修正
         /// </summary>
-        public double EntranceRack_MaxValue { get; set; } = 7;
 
+        STDSerialization ser = new STDSerialization();
+                          
+        public double EntranceRack_MaxValue
+        {
+            get
+            {
+                FluentAPI.OptionSettings optionSettings = ser.GetOptionSettings();
+                return optionSettings.EntranceTraverseNumber;
+            }
+           /* set
+            {
+                FluentAPI.OptionSettings optionSettings = ser.GetOptionSettings();
+                optionSettings.EntranceTraverseNumber = value;
+                FluentAPI.OptionSettings optionSettings = ser.SetOptionSettings();
+                return optionSettings.EntranceTraverseNumber;
+            }*/
+        }
         /// <summary>
         /// 目前數量-出口
         /// </summary>
-        public double ExportRack_MaxValue { get; set; } = 0;
+        public double ExportRack_MaxValue
+        {
+            get
+            {
+                FluentAPI.OptionSettings optionSettings = ser.GetOptionSettings();
+                return optionSettings.ExportTraverseNumber;
+            }
+           /* set
+            {
+
+            }*/
+        }
 
         #endregion
 
