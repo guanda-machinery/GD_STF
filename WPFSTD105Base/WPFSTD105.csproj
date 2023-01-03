@@ -524,7 +524,6 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="DevExpand.cs" />
-    <Compile Include="DrillBrand.cs" />
     <Compile Include="Model\ProjectInfo.cs" />
     <Compile Include="NcTemp.cs" />
     <Compile Include="NcTempList.cs" />

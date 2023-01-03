@@ -689,8 +689,6 @@ namespace WPFSTD105.ViewModel
                                 if (!DrillBoltsListDict.ContainsKey(keyValuePair.Key))
                                     DrillBoltsListDict.Add(keyValuePair.Key, new DrillBoltsBase());
 
-
-
                                 var DrillBIndex = DrillBoltsListDict[keyValuePair.Key].DrillBoltList.FindIndex(x => (x.Origin_WorkAXIS_MODE == DrillData.AXIS_MODE && x.DrillHoleDiameter == DrillData.Dia));
                                 if (DrillBIndex != -1)
                                 {
@@ -699,13 +697,51 @@ namespace WPFSTD105.ViewModel
                                 else
                                 {
                                     DrillBoltsListDict[keyValuePair.Key].PinTestMode = PinMode;
-                                    DrillBoltsListDict[keyValuePair.Key].DrillBoltList.Add(new DrillBolt()
+                                    if (PinMode)
                                     {
-                                        DrillWork = true,
-                                        Origin_WorkAXIS_MODE = DrillData.AXIS_MODE,
-                                        DrillHoleCount = 1,
-                                        Origin_DrillHoleDiameter = DrillData.Dia
-                                    });
+                                        if (DrillData.AXIS_MODE == AXIS_MODE.POINT)
+                                        {
+                                            DrillBoltsListDict[keyValuePair.Key].DrillBoltList.Add(new DrillBolt()
+                                            {
+                                                DrillWork = true,
+                                                Origin_WorkAXIS_MODE = DrillData.AXIS_MODE,
+                                                DrillHoleCount = 1,
+                                                Origin_DrillHoleDiameter = DrillData.Dia,
+                                            });
+                                        }
+                                        else if (DrillData.AXIS_MODE == AXIS_MODE.PIERCE)
+                                        {
+                                            DrillBoltsListDict[keyValuePair.Key].DrillBoltList.Add(new DrillBolt()
+                                            {
+                                                DrillWork = true,
+                                                Origin_WorkAXIS_MODE = DrillData.AXIS_MODE,
+                                                DrillHoleCount = 1,
+                                                Origin_DrillHoleDiameter = DrillData.Dia,
+                                                WorkAXIS_modeIsChanged = true,
+                                                Changed_WorkAXIS_MODE = AXIS_MODE.POINT
+                                            });
+                                        }
+                                        else
+                                        {
+                                            DrillBoltsListDict[keyValuePair.Key].DrillBoltList.Add(new DrillBolt()
+                                            {
+                                                DrillWork = false,
+                                                Origin_WorkAXIS_MODE = DrillData.AXIS_MODE,
+                                                DrillHoleCount = 1,
+                                                Origin_DrillHoleDiameter = DrillData.Dia,
+                                            });
+                                        }
+                                    }
+                                    else
+                                    {
+                                        DrillBoltsListDict[keyValuePair.Key].DrillBoltList.Add(new DrillBolt()
+                                        {
+                                            DrillWork = true,
+                                            Origin_WorkAXIS_MODE = DrillData.AXIS_MODE,
+                                            DrillHoleCount = 1,
+                                            Origin_DrillHoleDiameter = DrillData.Dia,
+                                        });
+                                    }
                                 }
                             }
                         }
@@ -2663,7 +2699,7 @@ namespace WPFSTD105.ViewModel
                     //如果切換時有已排程但未加工的零件->清理掉狀態
                     //若目前已選取的為等待配對資料 改變其鑽孔/打點狀態
 
-                    MachiningCombinational_DrillBoltsItemSource.ForEach(el => el.Value.PinTestMode = false);
+                    //MachiningCombinational_DrillBoltsItemSource.ForEach(el => el.Value.PinTestMode = false);
                     ClearPairedMachineData(Finish_UndoneDataViews_SelectedItem);
                 });
             }
@@ -2676,7 +2712,7 @@ namespace WPFSTD105.ViewModel
                 AddOperatingLog(LogSourceEnum.Software, "切換到測試打孔模式");
                 MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(true,Finish_UndoneDataViews_SelectedItem);
                 //若目前已選取的為等待配對資料 改變其鑽孔/打點狀態
-                MachiningCombinational_DrillBoltsItemSource.ForEach(el => el.Value.PinTestMode = true);
+                //MachiningCombinational_DrillBoltsItemSource.ForEach(el => el.Value.PinTestMode = true);
 
                 //如果切換時有已排程但未加工的零件->清理掉狀態並重新上傳
                 ClearPairedMachineData(Finish_UndoneDataViews_SelectedItem);
