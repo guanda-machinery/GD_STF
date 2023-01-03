@@ -1841,7 +1841,7 @@ namespace WPFSTD105
 
                         if (Name == "model")
                         {
-                            obSettingVM.Select2DItem.Where(x => x.Item.GetType() == typeof(BlockReference)).ToList().ForEach(el =>
+                            obSettingVM.Select2DItem.Where(x =>x.Item != null && x.Item.GetType() == typeof(BlockReference)).ToList().ForEach(el =>
                             {
                                 Secondary.Entities.Remove((BlockReference)el.Item);
                                 if (((BlockReference)el.Item) != null && Blocks.Any(x => x.Name == ((BlockReference)el.Item).BlockName))

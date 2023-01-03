@@ -27,6 +27,7 @@ using System.Windows.Media;
 using WPFSTD105;
 using WPFSTD105.Attribute;
 using WPFSTD105.Model;
+using WPFSTD105.Tekla;
 using WPFSTD105.ViewModel;
 using WPFWindowsBase;
 using static devDept.Eyeshot.Entities.Mesh;
@@ -5714,6 +5715,21 @@ namespace STD_105
                     }
                     else { isNormalProfile = false; }
 
+                    // 取得零件長度(BOM的長度)
+
+                    double LengthBom = 0;
+                    double diff = 0;
+                    var blList = ser.GetBomLengthList();
+                    if (blList.Any(x => ((SteelAttr)x).GUID == sa.GUID))
+                    {
+                        LengthBom = blList.FirstOrDefault(x => ((SteelAttr)x).GUID == sa.GUID).Length;
+                        diff = LengthBom - sa.Length;
+                    }
+
+
+                    //Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
+                    //if (part.Values.SelectMany(x => x).Any(x => x.GUID == ViewModel.GuidProperty)) LengthBom = part.Values.SelectMany(x => x).FirstOrDefault(x => x.GUID == ViewModel.GuidProperty).Length;
+
 
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).oPoint = sa.oPoint;
                     ((SteelAttr)model.Blocks[1].Entities[0].EntityData).vPoint = sa.vPoint;
@@ -5724,7 +5740,7 @@ namespace STD_105
                     List<Block> blocks = model.GetBoltFromBlock(groups);
 
                     // 步驟3.產生鋼構模型
-                    model.LoadNcToModel(focuseGUID, ObSettingVM.allowType, 0, null, sa, null, blocks, false, isNormalProfile);
+                    model.LoadNcToModel(focuseGUID, ObSettingVM.allowType, diff, null, sa, null, blocks, false, isNormalProfile);
                     // 步驟5.產生2D模型
                     BlockReference steel2D = ViewModel.SteelTriangulation(drawing, model.Blocks[1].Name, (Mesh)model.Blocks[1].Entities[0]);//產生2D圖塊
                     //model.sycnModelEntitiesAndNewBolt(blocks);
