@@ -1712,6 +1712,11 @@ namespace WPFSTD105.Model
 
                     var Vertices = model.Blocks[1].Entities[0].Vertices.Where(z => z.Z == 0).ToList();
 
+                    if (!Vertices.Any())
+                    {
+                        return;
+                    }
+
                     var tmp3 = Vertices.GroupBy(uu => uu.Y).Select(q => new
                     {
                         key = q.Key,

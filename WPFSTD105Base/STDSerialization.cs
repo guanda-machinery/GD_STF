@@ -259,7 +259,7 @@ namespace WPFSTD105
             GZipSerializeBinary(bolts, $@"{ApplicationVM.DirectorySteelBolts()}\{profile}.lis");
         }
         /// <summary>
-        ///  儲存序列化切割線資料
+        ///  儲存序列化BOM表長度資料
         /// </summary>
         /// <param name="SteelCutSetting"></param>
         public void SetBomLengthList(ObservableCollection<SteelAttr> bomLengthList)
@@ -267,7 +267,7 @@ namespace WPFSTD105
             GZipSerializeBinary(bomLengthList, ApplicationVM.FileBomLengthList());
         }
         /// <summary>
-        ///  取得序列化切割線資料
+        ///  取得序列化BOM表長度資料
         /// </summary>
         public ObservableCollection<SteelAttr> GetBomLengthList()
         {
