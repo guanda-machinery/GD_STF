@@ -463,6 +463,8 @@ namespace WPFSTD105
         {
             return new WPFBase.RelayParameterizedCommand(e =>
             {
+
+
                 //機台正在加工
                 if (ReadCodesysMemor.GetHost().CodesysStatus == CODESYS_STATUS.RUN)
                 {
@@ -491,9 +493,22 @@ namespace WPFSTD105
                         //比較目前要開啟的專案和plc內的專案名稱是否相同
                         if(e.ToString() == RCMProjectName)
                         {
+                           /* var messageBoxResult = WinUIMessageBox.Show(null,
+                                $"本次開啟專案「{e.ToString()}」與PLC內專案名稱相同。",
+                                "通知", MessageBoxButton.YesNo,
+                                MessageBoxImage.Exclamation,
+                                MessageBoxResult.None,
+                                MessageBoxOptions.ServiceNotification,
+                                FloatingMode.Window);*/
+
+                            int size = Marshal.SizeOf(typeof(GD_STD.Phone.MonitorWork));
+                            using (WPFSTD105.Memor.MemorClient memory = new Memor.MemorClient())
+                            {
+                                memory.IniWork();
+                            }
                             //若相同則問是否要續接
 
-                            var messageBoxResult = WinUIMessageBox.Show(null,
+                            /*var messageBoxResult = WinUIMessageBox.Show(null,
                                 $"本次開啟專案「{e.ToString()}」與PLC內專案名稱相同\n請確認是否續接專案，\n選是為續接專案\n選否將會初始化所有工件的當前位置。", 
                                 "通知", MessageBoxButton.YesNo, 
                                 MessageBoxImage.Exclamation, 
@@ -519,7 +534,7 @@ namespace WPFSTD105
                                     }
                                 }
 
-                            });
+                            });*/
                             base.OpenProject().Execute(e);
                         }
                         else

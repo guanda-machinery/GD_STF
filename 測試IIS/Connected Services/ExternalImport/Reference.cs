@@ -461,36 +461,47 @@ namespace 測試IIS.ExternalImport {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
         Unknown = 10,
-
-        //20220729 張燕華 斷面規格目錄-增加斷面規格
+        
         [System.Runtime.Serialization.EnumMemberAttribute()]
         TUBE = 11,
+        
         [System.Runtime.Serialization.EnumMemberAttribute()]
         H = 12,
+        
         [System.Runtime.Serialization.EnumMemberAttribute()]
         I = 13,
+        
         [System.Runtime.Serialization.EnumMemberAttribute()]
         LB = 14,
+        
         [System.Runtime.Serialization.EnumMemberAttribute()]
         BT = 15,
+        
         [System.Runtime.Serialization.EnumMemberAttribute()]
         CT = 16,
+        
         [System.Runtime.Serialization.EnumMemberAttribute()]
         T = 17,
+        
         [System.Runtime.Serialization.EnumMemberAttribute()]
         TURN_BUCKLE = 18,
+        
         [System.Runtime.Serialization.EnumMemberAttribute()]
         WELD = 19,
+        
         [System.Runtime.Serialization.EnumMemberAttribute()]
         SA = 20,
+        
         [System.Runtime.Serialization.EnumMemberAttribute()]
         GRATING = 21,
+        
         [System.Runtime.Serialization.EnumMemberAttribute()]
         HNUT = 22,
+        
         [System.Runtime.Serialization.EnumMemberAttribute()]
         NUT = 23,
     }
-
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(Namespace="http://HMI.ExternalImportDuplex", ConfigurationName="ExternalImport.IExternalImport", CallbackContract=typeof(測試IIS.ExternalImport.IExternalImportCallback), SessionMode=System.ServiceModel.SessionMode.Required)]
     public interface IExternalImport {
