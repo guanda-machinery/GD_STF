@@ -134,7 +134,8 @@ namespace STD_105
             {
                 ObViewModel.Reductions = new ReductionList(model, drawing); //紀錄使用找操作
             }
-
+            model.Refresh();
+            model.ZoomFit();
             #endregion
         }
 
