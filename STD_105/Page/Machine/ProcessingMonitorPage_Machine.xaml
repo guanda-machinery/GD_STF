@@ -564,7 +564,7 @@ AllowEditing="False"
                         <dxg:GridColumn MaxWidth="70" MinWidth="70" Header="進度(%)" >
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Grid>
+                                    <Grid Height="20">
                                         <ProgressBar Value="{Binding Row.Schedule,UpdateSourceTrigger=PropertyChanged}" 
                                                      Style="{StaticResource BaseStyle}"  Margin="-1"
                                                      Height="auto" Minimum="0" Maximum="100" Background="White" />
@@ -579,8 +579,8 @@ AllowEditing="False"
                         <dxg:GridColumn IsSmart="True" Header="加工型態"   Width="70" >
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="20">
-                                        <TextBlock Text="{Binding Row.MachiningTypeMode,Converter={local:MachiningTypeModeConverter}, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <Grid>
+                                        <TextBlock Text="{Binding Row.MachiningTypeMode,Converter={local:MachiningTypeModeConverter}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                     </Grid>
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
