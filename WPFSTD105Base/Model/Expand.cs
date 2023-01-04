@@ -226,20 +226,42 @@ namespace WPFSTD105.Model
                         }
                         file.DoWork();
                         file.AddToScene(model);
-                        Entity _entity = null;
-                        SteelAttr _steelAttr = null;
+                        //Entity _entity = null;
+                        //SteelAttr _steelAttr = null;
                         model.Entities.ForEach(el =>
                         {
                             if (el.GetType() != typeof(LinearDim))
                             {
-                                model.Blocks[((BlockReference)el).BlockName].Entities.ForEach(entity =>
-                                {
-                                    if (entity.EntityData is SteelAttr steelAttr)
-                                    {
-                                        _entity = entity;
-                                        _steelAttr = steelAttr;
-                                    }
-                                });
+                                //if (el is BlockReference)
+                                //{
+
+                                //    if (model.Blocks.FindIndex(x=> x.Name==((BlockReference)el).BlockName) != -1)
+                                //    {
+                                //        if (model.Blocks[((BlockReference)el).BlockName].Entities != null)
+                                //        {
+                                //            model.Blocks[((BlockReference)el).BlockName].Entities.ForEach(entity =>
+                                //            {
+                                //                if (entity.EntityData is SteelAttr steelAttr)
+                                //                {
+                                //                    _entity = entity;
+                                //                    _steelAttr = steelAttr;
+                                //                }
+                                //            });
+                                //        }
+                                //        else
+                                //        {
+
+                                //        }
+                                //    }
+                                //    else
+                                //    {
+
+                                //    }
+                                //}
+                                //else
+                                //{
+
+                                //}
                                 el.GroupIndex = i;
                                 el.Translate(place[i].Start, 0);
                                 el.Selectable = false;
