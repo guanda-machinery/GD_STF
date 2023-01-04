@@ -342,12 +342,12 @@
                             </dxg:GridControl.View>
                             <dxg:GridControl.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Command="{Binding SelectedItemsAddCommand}"
+                                   <!-- <MenuItem Command="{Binding SelectedItemsAddCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
-                                                Header="批量註冊"/>
-                                    <MenuItem Command="{Binding RowAddCommand}"
+                                                Header="批量註冊"/>-->
+                                  <!--  <MenuItem Command="{Binding RowAddCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
-                                              Header="加入任務到末端" />
+                                              Header="加入任務到末端" />-->
                                     <!--<MenuItem Command="{Binding DeleteCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                               Header="移除任務" /> -->
