@@ -1962,7 +1962,7 @@ namespace WPFSTD105.ViewModel
                 workIndex++;
             }
             ProcessingScreenWin.ViewModel.IsIndeterminate = true;
-            ProcessingScreenWin.ViewModel.Status = "正在寫入Codesys資料 - ";
+            ProcessingScreenWin.ViewModel.Status = "寫入Codesys資料 - ";
             ProcessingScreenWin.Close();
         }
         /// <summary>

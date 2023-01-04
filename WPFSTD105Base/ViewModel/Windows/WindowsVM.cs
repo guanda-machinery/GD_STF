@@ -501,6 +501,7 @@ namespace WPFSTD105
                                 MessageBoxOptions.ServiceNotification,
                                 FloatingMode.Window);*/
 
+                            //更改為統一清除機台資料
                             int size = Marshal.SizeOf(typeof(GD_STD.Phone.MonitorWork));
                             using (WPFSTD105.Memor.MemorClient memory = new Memor.MemorClient())
                             {
