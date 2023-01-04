@@ -5948,6 +5948,7 @@ namespace STD_105
 
             (sa).Weight = ObSettingVM.PartWeight(new ProductSettingsPageViewModel()
             {
+                steelAttr = sa,
                 Length = sa.Length,
                 SteelType = (int)sa.Type,
                 Profile = sa.Profile,
