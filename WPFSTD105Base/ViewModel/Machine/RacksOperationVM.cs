@@ -43,11 +43,7 @@ namespace WPFSTD105.ViewModel
 
 
 
-            STDSerialization ser = new STDSerialization();
-            FluentAPI.OptionSettings optionSettings = ser.GetOptionSettings();
 
-            EntranceRack_MaxValue = optionSettings.EntranceTraverseNumber;
-            ExportRack_MaxValue = optionSettings.ExportTraverseNumber;
 
         }
 
