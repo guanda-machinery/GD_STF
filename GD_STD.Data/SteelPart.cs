@@ -80,7 +80,7 @@ namespace GD_STD.Data
             Title1 = title1;
             Length = length;
             Lock = lockMark;
-            Creation = DateTime.Now;
+            //Creation = DateTime.Now;
             Revise = DateTime.Now;
         }
         #region 公開屬性
