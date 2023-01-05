@@ -380,12 +380,20 @@ namespace STD_105.Office
                             // 來源不為Tekla
                             sa.TeklaPartID = "";
                             sa.Length = g_length;
-                            sa.Name = gridItem.steelAttr.Name;
-                            sa.Material = gridItem.steelAttr.Material;
-                            sa.Phase = null;
-                            sa.ShippingNumber = null;
-                            sa.Title1 = "";
-                            sa.Title2 = "";
+                            // 名稱改為畫面上名稱
+                            //sa.Name = gridItem.steelAttr.Name;
+                            sa.Name = ViewModel.ProductNameProperty;
+                            // 材質改為畫面上材質
+                            //sa.Material = gridItem.steelAttr.Material;
+                            sa.Material = ViewModel.ProductMaterialProperty;
+                            //sa.Phase = null;
+                            sa.Phase = ViewModel.PhaseProperty;
+                            //sa.ShippingNumber = null;
+                            sa.ShippingNumber = ViewModel.ShippingNumberProperty;
+                            //sa.Title1 = "";
+                            sa.Title1 = ViewModel.Title1Property;
+                            //sa.Title2 = "";
+                            sa.Title2 = ViewModel.Title2Property;
                             sa.Creation = DateTime.Now;
                             #endregion
 
@@ -487,12 +495,26 @@ namespace STD_105.Office
                             sa = GetViewToSteelAttr(sa, true);
                             sa.GUID = Guid.NewGuid();
                             sa.Length = g_length;
-                            sa.Name = gridItem.steelAttr.Name;
-                            sa.Material = gridItem.steelAttr.Material;
-                            sa.Phase = 0;
-                            sa.ShippingNumber = 0;
-                            sa.Title1 = "";
-                            sa.Title2 = "";
+                            //sa.Name = gridItem.steelAttr.Name;
+                            //sa.Material = gridItem.steelAttr.Material;
+                            //sa.Phase = 0;
+                            //sa.ShippingNumber = 0;
+                            //sa.Title1 = "";
+                            //sa.Title2 = "";
+                            // 名稱改為畫面上名稱
+                            //sa.Name = gridItem.steelAttr.Name;
+                            sa.Name = ViewModel.ProductNameProperty;
+                            // 材質改為畫面上材質
+                            //sa.Material = gridItem.steelAttr.Material;
+                            sa.Material = ViewModel.ProductMaterialProperty;
+                            //sa.Phase = null;
+                            sa.Phase = ViewModel.PhaseProperty;
+                            //sa.ShippingNumber = null;
+                            sa.ShippingNumber = ViewModel.ShippingNumberProperty;
+                            //sa.Title1 = "";
+                            sa.Title1 = ViewModel.Title1Property;
+                            //sa.Title2 = "";
+                            sa.Title2 = ViewModel.Title2Property;
                             sa.PartNumber = ViewModel.PartNumberProperty;
                             sa.Creation = DateTime.Now;
                             #endregion
@@ -528,15 +550,28 @@ namespace STD_105.Office
                             drawing.ZoomFit();
                             drawing.Refresh();
 
+                            //GridReload();
 
-                            ObservableCollection<ProductSettingsPageViewModel> source = (ObservableCollection<ProductSettingsPageViewModel>)PieceListGridControl.ItemsSource;
-                            this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
-                            int PreIndex = source.FindIndex(x => x.DataName == sa.GUID.Value.ToString());
+                            ViewModel.fclickOK = true;
+                            // 取得最新資料集
+                            ViewModel.DataViews = (ObservableCollection<ProductSettingsPageViewModel>)PieceListGridControl.ItemsSource;
+                            // 取得該GUID資料
+                            PreIndex = ViewModel.DataViews.FindIndex(x => x.DataName == sa.GUID.Value.ToString());
+                            // Grid 指標指於該 Guid
                             PieceListGridControl.View.FocusedRowHandle = PreIndex;
                             PieceListGridControl.SelectItem(PreIndex);
-                            //ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(sa.Type).ToString()}.inp");
-                            cbx_SectionTypeComboBox.Text = sa.Profile;
-                            this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
+                            //ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(ViewModel.DataViews[PreIndex].Type).ToString()}.inp");
+                            //cbx_SectionTypeComboBox.Text = ViewModel.DataViews[PreIndex].Profile;
+                            ConfirmCurrentSteelSection(((ProductSettingsPageViewModel)PieceListGridControl.SelectedItem));
+
+                            //ObservableCollection<ProductSettingsPageViewModel> source = (ObservableCollection<ProductSettingsPageViewModel>)PieceListGridControl.ItemsSource;
+                            //this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
+                            //int PreIndex = source.FindIndex(x => x.DataName == sa.GUID.Value.ToString());
+                            //PieceListGridControl.View.FocusedRowHandle = PreIndex;
+                            //PieceListGridControl.SelectItem(PreIndex);
+                            ////ViewModel.ProfileList = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryPorfile()}\{(sa.Type).ToString()}.inp");
+                            //cbx_SectionTypeComboBox.Text = sa.Profile;
+                            //this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
 
                             return;
                         }
@@ -4255,6 +4290,7 @@ namespace STD_105.Office
             // 給定 零件 數量vsID
             steelPart.ID = buffer1.ToList();
             steelPart.Count = ass.ID.Count();
+            //steelPart.Creation = sa.Creation;
             steelPart.Revise = (sa.Revise.HasValue ? sa.Revise.Value : DateTime.Now);
             steelPart.ExclamationMark = exclamationMark;
             oldGuid = (oldGuid == null ? steelPart.GUID : oldGuid);
@@ -5945,6 +5981,7 @@ namespace STD_105.Office
 
             (sa).Weight = ObSettingVM.PartWeight(new ProductSettingsPageViewModel()
             {
+                steelAttr = sa,
                 Length = sa.Length,
                 SteelType = (int)sa.Type,
                 Profile = sa.Profile,
@@ -6067,7 +6104,7 @@ namespace STD_105.Office
                 ViewModel.DataViews = collection;
                 this.PieceListGridControl.SelectedItemChanged += new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);
                 //PreIndex = collection.FindIndex(x => x.DataName == aa.DataName);
-                PreIndex = collection.FindIndex(x => x.DataName == ViewModel.GuidProperty.ToString() && x.AssemblyNumber== ViewModel.AssemblyNumberProperty);
+                PreIndex = collection.FindIndex(x => x.DataName == ViewModel.SteelAttr.GUID.Value.ToString() && x.AssemblyNumber== ViewModel.AssemblyNumberProperty);
                 if (PreIndex != -1)
                 {
                     this.PieceListGridControl.SelectedItemChanged -= new DevExpress.Xpf.Grid.SelectedItemChangedEventHandler(this.Grid_SelectedChange);

@@ -462,7 +462,6 @@ namespace STD_105
                 if (modelExt.Entities.Count > 0)
                 {
                     modelExt.ClearAllPreviousCommandData();
-                   // modelExt.Entities[modelExt.Entities.Count - 1].Selectable = true;
                     modelExt.Entities.ForEach(el => el.Selectable = true);// = true;
                     modelExt.ActionMode = actionType.None;
                     modelExt.objectSnapEnabled = true;

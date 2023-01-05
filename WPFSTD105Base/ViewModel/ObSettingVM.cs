@@ -921,13 +921,13 @@ namespace WPFSTD105.ViewModel
                         {
                             case OBJECT_TYPE.BH:
                             case OBJECT_TYPE.RH:
+                            case OBJECT_TYPE.H:
                                 Boltsbuffer.Z = Steelbuffer.W * 0.5 - Steelbuffer.t1 * 0.5;
                                 break;
                             case OBJECT_TYPE.TUBE:
                             case OBJECT_TYPE.BOX:
                             case OBJECT_TYPE.CH:
                             case OBJECT_TYPE.LB:
-                            case OBJECT_TYPE.H:
                                 Boltsbuffer.Z = Steelbuffer.W - Steelbuffer.t1;
                                 break;
                             case OBJECT_TYPE.L:

@@ -40,9 +40,14 @@ namespace WPFSTD105.ViewModel
 
             Joystick_RIGHT_DESC_Trigger_Parameter = MOBILE_RACK.OUTER;
             Joystick_RIGHT_DESC_Release_Parameter = MOBILE_RACK.NULL;
+
+
+
+
+
         }
-      
-      //解構
+
+        //解構
 
 
 
@@ -50,9 +55,9 @@ namespace WPFSTD105.ViewModel
 
         #region 公開屬性
 
-            /// <summary>
-            /// 啟動動力滾輪
-            /// </summary>
+        /// <summary>
+        /// 啟動動力滾輪
+        /// </summary>
         public bool OpenRoll
         {
             get => _openRoll;
@@ -67,19 +72,19 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 入口料架唯讀狀態
         /// </summary>
-        public bool EntranceReadOnly 
-        { 
+        public bool EntranceReadOnly
+        {
             get
             {
-                return GD_STD.Properties.Optional.Default.EntranceTraverseNumber !=0;
+                return GD_STD.Properties.Optional.Default.EntranceTraverseNumber != 0;
             }
-        } 
+        }
         /// <summary>
         /// 出口料架唯讀狀態
         /// </summary>
         public bool ExportReadOnly
         {
-            get 
+            get
             {
                 return GD_STD.Properties.Optional.Default.ExportTraverseNumber != 0;
             }
@@ -130,12 +135,8 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public double ExportRack_CurrentValue { get; set; } = 2;
 
-
-
-
-        // MaxValue="{Binding EntranceTraverseNumber, Source={x:Static GD_STD:Optional.Default}}"
         /// <summary>
-        /// 強迫給值 待修正
+        /// 
         /// </summary>
 
         STDSerialization ser = new STDSerialization();
@@ -171,20 +172,40 @@ namespace WPFSTD105.ViewModel
             }*/
         }
 
+
+        /// <summary>
+        /// 入口按鈕可用
+        /// </summary>
+        public bool EntranceRack_IsEnable
+        {
+            get
+            {
+                return EntranceRack_MaxValue > 0;
+            }
+        }
+        /// <summary>
+        /// 出口按鈕可用
+        /// </summary>
+        public bool ExportRack_IsEnable
+        {
+            get
+            {
+                return ExportRack_MaxValue > 0;
+            }
+        }
+
+
+
         #endregion
 
 
 
 
+            #region 命令
 
-
-
-
-        #region 命令
-
-        /// <summary>
-        /// 動力滾輪命令
-        /// </summary>
+            /// <summary>
+            /// 動力滾輪命令
+            /// </summary>
         public WPFWindowsBase.RelayParameterizedCommand RollerCommand
         {
             get
@@ -304,7 +325,8 @@ namespace WPFSTD105.ViewModel
                 return new WPFWindowsBase.RelayCommand(() =>
                 {
                     PanelButton panelButton = ApplicationViewModel.PanelButton;
-                    panelButton.Count = CountResult(panelButton.Count, GD_STD.Properties.Optional.Default.EntranceTraverseNumber );
+                    //panelButton.Count = CountResult(panelButton.Count, GD_STD.Properties.Optional.Default.EntranceTraverseNumber );
+                    panelButton.Count = CountResult(panelButton.Count, Convert.ToByte(EntranceRack_MaxValue));
                     EntranceRack_CurrentValue = panelButton.Count;
                     WriteCodesysMemor.SetPanel(panelButton);
                 });
@@ -320,7 +342,8 @@ namespace WPFSTD105.ViewModel
                 return new WPFWindowsBase.RelayCommand(() =>
                 {
                     PanelButton panelButton = ApplicationViewModel.PanelButton;
-                    panelButton.Count = CountResult(panelButton.Count, GD_STD.Properties.Optional.Default.ExportTraverseNumber);
+                    //panelButton.Count = CountResult(panelButton.Count, GD_STD.Properties.Optional.Default.ExportTraverseNumber);
+                    panelButton.Count = CountResult(panelButton.Count, Convert.ToByte(ExportRack_MaxValue));
                     ExportRack_CurrentValue = panelButton.Count;
                     WriteCodesysMemor.SetPanel(panelButton);
                 });

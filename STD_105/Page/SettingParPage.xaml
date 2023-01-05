@@ -8,7 +8,7 @@
                   mc:Ignorable="d"
                   xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                   d:DataContext="{d:DesignInstance Type=STD105VM:SettingParVM}"
-          
+
                   xmlns:fluentAPI="clr-namespace:WPFSTD105.FluentAPI;assembly=WPFSTD105"
                   xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
                   xmlns:STD105VM="clr-namespace:WPFSTD105.ViewModel;assembly=WPFSTD105"
@@ -1684,8 +1684,9 @@
                 </TabItem.DataContext>
                 <Grid Margin="4">
                     <Grid.RowDefinitions>
-                        <RowDefinition />
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <dxlc:LayoutControl Name="layoutControl1" Padding="0"
                                         dx:ThemeManager.ThemeName="VS2019Dark"
@@ -1720,8 +1721,47 @@
                         </dxlc:DataLayoutControl>
                     </dxlc:LayoutControl>
                     <!--強制更改頁面-->
-                  
-                    <GroupBox Grid.Row="1" Visibility="Collapsed"
+                    
+                         <GroupBox Grid.Row="1" Header="刀庫顯示">
+                        <Grid>
+                            <Grid.Resources>
+                                <Style TargetType="TextBlock" >
+                                    <Setter Property="Foreground" Value="Gray"/>
+                                    <Setter Property="FontSize" Value="12"/>
+                                </Style>
+                                <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignDarkCheckBox}">
+                
+                                    <Setter Property="Background" Value="black"/>
+                                </Style>
+
+                            </Grid.Resources>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="中軸刀庫顯示"/>
+                            <CheckBox Grid.Column="1" Grid.Row="0" IsThreeState="False" IsChecked="{Binding Middle ,Source={x:Static Optional:Optional.Default}}" />
+
+                            <TextBlock Grid.Column="0" Grid.Row="1" Text="左軸入口刀庫顯示"/>
+                            <CheckBox Grid.Column="1" Grid.Row="1" IsThreeState="False" IsChecked="{Binding LeftEntrance ,Source={x:Static Optional:Optional.Default}}" />
+                            <TextBlock Grid.Column="2" Grid.Row="1" Text="左軸出口刀庫顯示"/>
+                            <CheckBox Grid.Column="3" Grid.Row="1" IsThreeState="False" IsChecked="{Binding LeftExport,Source={x:Static Optional:Optional.Default}}" />
+
+                            <TextBlock Grid.Column="0" Grid.Row="2" Text="右軸出口刀庫顯示"/>
+                            <CheckBox Grid.Column="1" Grid.Row="2" IsThreeState="False" IsChecked="{Binding RightExport ,Source={x:Static Optional:Optional.Default}}" />
+                            <TextBlock Grid.Column="2" Grid.Row="2" Text="右軸入口刀庫顯示"/>
+                            <CheckBox Grid.Column="3" Grid.Row="2" IsThreeState="False" IsChecked="{Binding RightEntrance ,Source={x:Static Optional:Optional.Default}}" />
+
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Grid.Row="2" Visibility="Collapsed"
                               Header="測試"
                               VerticalAlignment="Bottom"
                               HorizontalAlignment="Left"
@@ -1740,7 +1780,7 @@
                                   SelectedItem="{ Binding ApplicationViewModel.CurrentPage, Source={x:Static WPFSTD:ViewLocator.Instance} }"
                                   Style="{ StaticResource cbb_DarkMain }" />
                     </GroupBox>
-                    <StackPanel Grid.Row="1"
+                    <StackPanel Grid.Row="2"
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Right"
                                 Margin="10,0">
