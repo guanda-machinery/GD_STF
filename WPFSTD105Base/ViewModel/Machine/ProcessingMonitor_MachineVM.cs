@@ -2104,11 +2104,19 @@ namespace WPFSTD105.ViewModel
                     //把加工種類狀態記錄進表格
                     long cWork = _WorkOffset + _WorkSize * index;
                     if (ActualDrillDict.ContainsKey(FACE.FRONT))
-                        SendDrillToMachine(_BoltsCountLOffset, _DrLOffset, ActualDrillDict[FACE.FRONT], steelPart, cWork, steelPart.W, Finish_UndoneDataViews[index].LengthStr, null);
+                        SendDrillToMachine(_BoltsCountLOffset, _DrLOffset, ActualDrillDict[FACE.FRONT], steelPart, cWork, steelPart.W, view.LengthStr, null);
+                    else
+                        SendDrillToMachine(_BoltsCountLOffset, _DrLOffset, new List<Drill>(), steelPart, cWork, steelPart.W, view.LengthStr, null);
+
                     if (ActualDrillDict.ContainsKey(FACE.TOP))
-                        SendDrillToMachine(_BoltsCountMOffset, _DrMOffset, ActualDrillDict[FACE.TOP], steelPart, cWork, steelPart.H, Finish_UndoneDataViews[index].LengthStr, null);
+                        SendDrillToMachine(_BoltsCountMOffset, _DrMOffset, ActualDrillDict[FACE.TOP], steelPart, cWork, steelPart.H, view.LengthStr, null);
+                    else
+                        SendDrillToMachine(_BoltsCountLOffset, _DrMOffset, new List<Drill>(), steelPart, cWork, steelPart.W,  view.LengthStr, null);
+
                     if (ActualDrillDict.ContainsKey(FACE.BACK))
-                        SendDrillToMachine(_BoltsCountROffset, _DrROffset, ActualDrillDict[FACE.BACK], steelPart, cWork, steelPart.W, Finish_UndoneDataViews[index].LengthStr, null);
+                        SendDrillToMachine(_BoltsCountROffset, _DrROffset, ActualDrillDict[FACE.BACK], steelPart, cWork, steelPart.W, view.LengthStr, null);
+                    else
+                        SendDrillToMachine(_BoltsCountLOffset, _DrROffset, new List<Drill>(), steelPart, cWork, steelPart.W, view.LengthStr, null);
                 }
                 else
                 {

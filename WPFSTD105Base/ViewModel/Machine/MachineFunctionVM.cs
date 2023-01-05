@@ -62,6 +62,7 @@ namespace WPFSTD105.ViewModel
                     }
                     else
                     {
+                        TabControlSelectedIndex = -1;
                     }
                     //設定延遲避免閃爍的問題
                     Thread.Sleep(1000);
