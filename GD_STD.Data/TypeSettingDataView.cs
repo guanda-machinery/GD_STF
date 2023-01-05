@@ -54,6 +54,8 @@ namespace GD_STD.Data
             t1 = steelPart.t1;
             t2 = steelPart.t2;
             PartWeight = steelPart.UnitWeight * Length; //零件重 20220901 張燕華 //1118 CYH 新增的UnitWeight=0
+            Title1 = steelPart.Title1;
+            Title2 = steelPart.Title2;
 
             Count = ID.Count;
         }
