@@ -211,8 +211,8 @@ namespace WPFSTD105.ViewModel
         /// 限制Grid出現之內容
         /// </summary>
         public static List<OBJECT_TYPE> allowType = new List<OBJECT_TYPE> {
-            OBJECT_TYPE.RH, OBJECT_TYPE.BH,OBJECT_TYPE.CH,OBJECT_TYPE.LB};
-        //, OBJECT_TYPE.H,
+            OBJECT_TYPE.RH, OBJECT_TYPE.BH,OBJECT_TYPE.CH,OBJECT_TYPE.LB
+        , OBJECT_TYPE.H};
         //OBJECT_TYPE.BOX, OBJECT_TYPE.TUBE,
         //OBJECT_TYPE.LB, 
 
