@@ -676,9 +676,10 @@ namespace WPFSTD105.ViewModel
                 {
                     if (File.Exists($@"{ApplicationVM.DirectoryMaterial()}\{view.MaterialNumber}.dm"))
                     {
+                        //若沒有紀錄則產生一個新的原始加工表
                         if (!MachineDrillkeyValueDict.ContainsKey(view.MaterialNumber))
                         {
-                            MachineDrillkeyValueDict[view.MaterialNumber] = GeneratekeyValuePairs(view);
+                            MachineDrillkeyValueDict[view.MaterialNumber] = GenerateMachiningDataPairs(view);
                         }
 
                         var DrillBoltsListDict = new Dictionary<FACE, DrillBoltsBase>();
@@ -772,6 +773,11 @@ namespace WPFSTD105.ViewModel
                         //之後需要改資料時只需更動任一資料型
                         //AllDrillBoltsDict[view.MaterialNumber].Dia_Identification;
                         AllDrillBoltsDict[view.MaterialNumber] = DrillBoltsListDict;
+
+                        //紀錄目前的加工類型? 是否要寫在這?
+                        //
+
+
                         //如果有紀錄->查詢->變更DrillWork的值
                         return DrillBoltsListDict;
                     }
@@ -785,11 +791,11 @@ namespace WPFSTD105.ViewModel
         }
 
         /// <summary>
-        /// 產生加工陣列
+        /// 依據原始dm產生未變更的加工陣列
         /// </summary>
         /// <param name="view"></param>
         /// <returns></returns>
-        private Dictionary<FACE, List<Drill>> GeneratekeyValuePairs(MaterialDataView view)
+        private Dictionary<FACE, List<Drill>> GenerateMachiningDataPairs(MaterialDataView view)
         {
             Dictionary<FACE, List<Drill>> keyValue = null;
             _SynchronizationContext.Send(t =>
@@ -839,7 +845,7 @@ namespace WPFSTD105.ViewModel
             }, null);
             while(keyValue == null)
             {
-                Thread.Sleep(1);
+                Thread.Sleep(100);
             }
             return keyValue;
         }
@@ -2040,9 +2046,9 @@ namespace WPFSTD105.ViewModel
                 {
                     if (!MachineDrillkeyValueDict.ContainsKey(view.MaterialNumber))
                     {
-                        MachineDrillkeyValueDict[view.MaterialNumber] = GeneratekeyValuePairs(view);
+                        MachineDrillkeyValueDict[view.MaterialNumber] = GenerateMachiningDataPairs(view);
                     }
-                    var keyValuePairs = MachineDrillkeyValueDict[view.MaterialNumber];
+                   // var keyValuePairs = MachineDrillkeyValueDict[view.MaterialNumber];
                     //實際加工的資料 
                     var ActualDrillDict = new Dictionary<FACE, List<Drill>>();
                     //使用判斷式只保留要加工的孔位/加工方法
@@ -2062,7 +2068,7 @@ namespace WPFSTD105.ViewModel
                                     try
                                     {
                                         //以db的原始孔位做比較
-                                        var Addrange = keyValuePairs[el.Key].FindAll(x => (x.Dia == DB.Origin_DrillHoleDiameter&& x.AXIS_MODE == DB.Origin_WorkAXIS_MODE)).ToArray();
+                                        var Addrange = MachineDrillkeyValueDict[view.MaterialNumber][el.Key].FindAll(x => (x.Dia == DB.Origin_DrillHoleDiameter&& x.AXIS_MODE == DB.Origin_WorkAXIS_MODE)).ToArray();
 
                                         for (int i = 0; i < Addrange.Count(); i++)
                                         {
@@ -2088,7 +2094,7 @@ namespace WPFSTD105.ViewModel
                     }
                     else
                     {
-                        ActualDrillDict = new Dictionary<FACE, List<Drill>>(keyValuePairs);
+                        ActualDrillDict = new Dictionary<FACE, List<Drill>>(MachineDrillkeyValueDict[view.MaterialNumber]);
                     }
 
                     STDSerialization ser = new STDSerialization();
@@ -3211,6 +3217,9 @@ namespace WPFSTD105.ViewModel
                 {
                     AddOperatingLog(LogSourceEnum.Machine, $"排版編號{Finish_UndoneDataViews[noInfo[i]].MaterialNumber}加工訊息發送成功", false);
                     Finish_UndoneDataViews[noInfo[i]].MachiningTypeMode = IsPinMode? MachiningType.PinTest : MachiningType.NormalMaching;
+
+                    //把更新後的MachiningTypeMode寫入資料表中
+                    ser.SetMaterialDataView(Finish_UndoneDataViews);
                     _SendIndex.Add(noInfo[i]); //存取已經發送過的列表
                 }
                 else
