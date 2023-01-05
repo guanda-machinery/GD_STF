@@ -4202,11 +4202,15 @@ namespace STD_105.Office
             }
             #endregion
 
-
+            
             if (allPart1.Count > 0 && allPart1.Any(x => x.GUID == sa.GUID) && add)  // 2022/12/28 呂宗霖
             {
                 var oriFather = allPart1.FirstOrDefault(x => x.GUID == sa.GUID).Father;
                 ass.ID = ass.ID.Union(oriFather).ToList();
+            }
+            else if(allPart1.Any(x => x.GUID == sa.GUID))
+            {
+                ass.ID = allPart1.FirstOrDefault(x => x.GUID == sa.GUID).Father;
             }
 
 
