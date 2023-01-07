@@ -27,30 +27,30 @@ namespace WPFSTD105.FluentAPI
 
         }
         /// <summary>
-        /// 中軸刀庫
+        /// (A)中軸刀庫
         /// </summary>
         [MVVM("A軸刀庫", true)]
         public bool Middle { get; set; }
 
         /// <summary>
-        /// 左軸出口刀庫
+        /// (B)左軸出口刀庫
         /// </summary>
         [MVVM("B軸刀庫", true)]
         public bool LeftExport { get; set; }
 
         /// <summary>
-        /// 右軸出口刀庫
+        /// (C)右軸出口刀庫
         /// </summary>
         [MVVM("C軸刀庫", true)]
         public bool RightExport { get; set; }
 
         /// <summary>
-        /// 左軸入口刀庫
+        /// (D)左軸入口刀庫
         /// </summary>
         [MVVM("D軸刀庫", true)]
         public bool LeftEntrance { get; set; }
         /// <summary>
-        /// 右軸入口刀庫
+        /// (E)右軸入口刀庫
         /// </summary>
         [MVVM("E軸刀庫", true)]
         public bool RightEntrance { get; set; }

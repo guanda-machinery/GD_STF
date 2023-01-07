@@ -11,7 +11,7 @@
         /// </summary>
         public static ViewLocator Instance { get; private set; } = new ViewLocator();
         /// <summary>
-        /// 應用程序視圖模型
+        /// 機台應用程序視圖模型
         /// </summary>
         public static ApplicationVM ApplicationViewModel => IoC.Get<ApplicationVM>();
         /// <summary>

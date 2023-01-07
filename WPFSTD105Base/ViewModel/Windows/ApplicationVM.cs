@@ -79,7 +79,6 @@ namespace WPFSTD105
             set
             {
                 PreviousPage = _CurrentPage;//紀錄上一頁
-
                 //如果目前是機台監控，且在自動模式下企圖離開時，跳出提示並阻擋動作
 
                 //有換頁需求
@@ -1302,6 +1301,10 @@ namespace WPFSTD105
                     File.Copy(file, aimPath + Path.GetFileName(file), true);
             }
         }
+
+
+
+
         #endregion
 
         #region 公開方法
@@ -1347,5 +1350,6 @@ namespace WPFSTD105
             }
         }
         #endregion
+
     }
 }

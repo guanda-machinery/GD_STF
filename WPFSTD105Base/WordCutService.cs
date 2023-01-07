@@ -219,230 +219,224 @@ namespace WPFSTD105
         /// <param name="DocPath">儲存路徑</param>
         public void CreateFile(string ProjectName, string ProjectNumber, string DocTmplatePath, string DocPath, ObservableCollection<MaterialDataView> dataViews, double TotalLossBothSide)
         {
-            try
+            ReadOnlyCollection<MaterialDataView> materialDataViews = new ReadOnlyCollection<MaterialDataView>(dataViews);
+            string a = ApplicationVM.DirectoryPorfile();
+
+            //計算每種profile的數量
+            Dictionary<string, int> DicProfileCount = new Dictionary<string, int>();
+            foreach (var line in materialDataViews.GroupBy(info => info.Profile)
+                    .Select(group => new
+                    {
+                        Metric = group.Key,
+                        Count = group.Count()
+                    })
+                    .OrderBy(x => x.Metric))
             {
-                ReadOnlyCollection<MaterialDataView> materialDataViews = new ReadOnlyCollection<MaterialDataView>(dataViews);
-                string a = ApplicationVM.DirectoryPorfile();
+                DicProfileCount.Add(line.Metric, line.Count);
+            }
 
-                //計算每種profile的數量
-                Dictionary<string, int> DicProfileCount = new Dictionary<string, int>();
-                foreach (var line in materialDataViews.GroupBy(info => info.Profile)
-                        .Select(group => new
-                        {
-                            Metric = group.Key,
-                            Count = group.Count()
-                        })
-                        .OrderBy(x => x.Metric))
+            //找出有幾種型鋼型態以顯示型鋼圖片
+            string[] ListSteelType = new string[materialDataViews.Count];
+            var pattern = @"[A-Z]+";
+            for (int i = 0; i < materialDataViews.Count; i++)
+            {
+                if (Regex.Match(materialDataViews[i].Profile, pattern).Value != "X")
                 {
-                    DicProfileCount.Add(line.Metric, line.Count);
+                    ListSteelType[i] = Regex.Match(materialDataViews[i].Profile, pattern).Value;
                 }
-
-                //找出有幾種型鋼型態以顯示型鋼圖片
-                string[] ListSteelType = new string[materialDataViews.Count];
-                var pattern = @"[A-Z]+";
-                for (int i = 0; i < materialDataViews.Count; i++)
+                else
                 {
-                    if (Regex.Match(materialDataViews[i].Profile, pattern).Value != "X")
+                    ListSteelType[i] = "CH"; //僅有槽鐵(CH)斷面規格不是英文字開始 ex:[200X80X7.5X11
+                }
+            }
+            string[] temp_DistinctSteelType = ListSteelType.Distinct().ToArray();//找出有幾種型鋼
+            List<string> ListDistinctSteelType = temp_DistinctSteelType.ToList();
+            for (int i = 0; i < (3 - temp_DistinctSteelType.Count()); i++)
+            {
+                ListDistinctSteelType.Add("");
+            }
+            string[] DistinctSteelType = ListDistinctSteelType.ToArray();//要加多少空白型鋼圖片，可使"加工長度包含雙邊切除與切割損耗"文字貼齊外框
+
+            //產生word
+            string tmplPath = DocTmplatePath;//"AllFileTemplate/CutDocTemp.docx"; //模板DOC路徑
+            string destPath = DocPath; //模板DOC路徑
+
+            WordTmplRendering(ProjectName, ProjectNumber, tmplPath, destPath, TotalLossBothSide);//替換模板DOC字串
+
+            string[] ReportLogoList = { "ReportLogo" };
+            var document_ReportLogo = WordprocessingDocument.Open(destPath, true);
+            ReplaceStringToSteelTypePicToWordDocument(document_ReportLogo, "ReportLogo", ReportLogoList, 0.6m, 0.6m, 47000L);//以型鋼圖示群替換指定字串
+            document_ReportLogo.Close();
+
+            var document_toPic = WordprocessingDocument.Open(destPath, true);
+            ReplaceStringToSteelTypePicToWordDocument(document_toPic, "SteelTypePicture", DistinctSteelType, 0.4m, 0.4m, 35000L);//以型鋼圖示群替換指定字串
+            document_toPic.Close();
+
+            int ItemCount = 1;
+            List<string[]> List_CurrentTableContent = new List<string[]>();
+            string[] CurrentMaterial = new string[9];
+            string[] CurrentSteelPart = new string[9];
+
+            //表格內的格線：有為true，無為false
+            bool InsideBorder = false;
+
+            //將相同內容的零件合計
+            //ObservableCollection<MaterialDataView> Result_materialDataViews = FindSameMaterial(materialDataViews);
+            ObservableCollection<MaterialDataView> Result_materialDataViews = JsonConvert.DeserializeObject<ObservableCollection<MaterialDataView>>(JsonConvert.SerializeObject(materialDataViews));
+
+            AddHorizontalLine_Bottom(destPath);
+            foreach (string steel_type in temp_DistinctSteelType)//以型鋼型態分類
+            {
+                //AddHorizontalLine_Bottom(destPath);
+                OpenAndAddTextToWordDocument(destPath, "_", "2");
+                OpenAndAddTextToWordDocument(destPath, $"型鋼型態：{steel_type}", "18");
+                //將表格標題型鋼文字替換成圖片
+                //var document_HeaderAddPic = WordprocessingDocument.Open(destPath, true);
+                //string[] HeaderPiclist = { $"{steel_type}" };
+                //ReplaceStringToSteelTypePicToWordDocument(document_HeaderAddPic, $"{steel_type}", HeaderPiclist, 0.4m, 0.4m, 35000L);//以型鋼圖示群替換指定字串
+                //document_HeaderAddPic.Close();
+                string[] TableColumnName = { "項目", "組合編號", "斷面規格", "材質", "購料長", "餘料長", "總數量", "購料來源", "狀態" };
+                List_CurrentTableContent.Add(TableColumnName);
+
+                var document = WordprocessingDocument.Open(destPath, true);
+                InsideBorder = true;
+                AddTableToWordDocument(document, List_CurrentTableContent, InsideBorder, "18", "850", "");
+                List_CurrentTableContent.Clear();
+
+                for (int i = 0; i < Result_materialDataViews.Count; i++)
+                {
+                    string current_steel_type = "";
+                    if (Regex.Match(Result_materialDataViews[i].Profile, pattern).Value != "X")
                     {
-                        ListSteelType[i] = Regex.Match(materialDataViews[i].Profile, pattern).Value;
+                        current_steel_type = Regex.Match(Result_materialDataViews[i].Profile, pattern).Value;
                     }
-                    else 
+                    else
                     {
-                        ListSteelType[i] = "CH"; //僅有槽鐵(CH)斷面規格不是英文字開始 ex:[200X80X7.5X11
+                        current_steel_type = "CH"; //僅有槽鐵(CH)斷面規格不是英文字開始 ex:[200X80X7.5X11
                     }
-                }
-                string[] temp_DistinctSteelType = ListSteelType.Distinct().ToArray();//找出有幾種型鋼
-                List<string> ListDistinctSteelType = temp_DistinctSteelType.ToList();
-                for (int i = 0; i < (3 - temp_DistinctSteelType.Count()); i++)
-                {
-                    ListDistinctSteelType.Add("");
-                }
-                string[] DistinctSteelType = ListDistinctSteelType.ToArray();//要加多少空白型鋼圖片，可使"加工長度包含雙邊切除與切割損耗"文字貼齊外框
 
-                //產生word
-                string tmplPath = DocTmplatePath;//"AllFileTemplate/CutDocTemp.docx"; //模板DOC路徑
-                string destPath = DocPath; //模板DOC路徑
-
-                WordTmplRendering(ProjectName, ProjectNumber, tmplPath, destPath, TotalLossBothSide);//替換模板DOC字串
-
-                string[] ReportLogoList = { "ReportLogo" };
-                var document_ReportLogo = WordprocessingDocument.Open(destPath, true);
-                ReplaceStringToSteelTypePicToWordDocument(document_ReportLogo, "ReportLogo", ReportLogoList, 0.6m, 0.6m, 47000L);//以型鋼圖示群替換指定字串
-                document_ReportLogo.Close();
-
-                var document_toPic = WordprocessingDocument.Open(destPath, true);
-                ReplaceStringToSteelTypePicToWordDocument(document_toPic, "SteelTypePicture", DistinctSteelType, 0.4m, 0.4m, 35000L);//以型鋼圖示群替換指定字串
-                document_toPic.Close();
-
-                int ItemCount = 1;
-                List<string[]> List_CurrentTableContent = new List<string[]>();
-                string[] CurrentMaterial = new string[9];
-                string[] CurrentSteelPart = new string[9];
-
-                //表格內的格線：有為true，無為false
-                bool InsideBorder = false;
-
-                //將相同內容的零件合計
-                //ObservableCollection<MaterialDataView> Result_materialDataViews = FindSameMaterial(materialDataViews);
-                ObservableCollection<MaterialDataView> Result_materialDataViews = JsonConvert.DeserializeObject<ObservableCollection<MaterialDataView>>(JsonConvert.SerializeObject(materialDataViews));
-
-                AddHorizontalLine_Bottom(destPath);
-                foreach (string steel_type in temp_DistinctSteelType)//以型鋼型態分類
-                {
-                    //AddHorizontalLine_Bottom(destPath);
-                    OpenAndAddTextToWordDocument(destPath, "_", "2");
-                    OpenAndAddTextToWordDocument(destPath, $"型鋼型態：{steel_type}", "18");
-                    //將表格標題型鋼文字替換成圖片
-                    //var document_HeaderAddPic = WordprocessingDocument.Open(destPath, true);
-                    //string[] HeaderPiclist = { $"{steel_type}" };
-                    //ReplaceStringToSteelTypePicToWordDocument(document_HeaderAddPic, $"{steel_type}", HeaderPiclist, 0.4m, 0.4m, 35000L);//以型鋼圖示群替換指定字串
-                    //document_HeaderAddPic.Close();
-                    string[] TableColumnName = { "項目", "組合編號", "斷面規格", "材質", "購料長", "餘料長", "總數量", "購料來源", "狀態" };
-                    List_CurrentTableContent.Add(TableColumnName);
-
-                    var document = WordprocessingDocument.Open(destPath, true);
-                    InsideBorder = true;
-                    AddTableToWordDocument(document, List_CurrentTableContent, InsideBorder, "18","850","");
-                    List_CurrentTableContent.Clear();
-
-                    for (int i = 0; i < Result_materialDataViews.Count; i++)
+                    if (steel_type == current_steel_type)
                     {
-                        string current_steel_type = "";
-                        if (Regex.Match(Result_materialDataViews[i].Profile, pattern).Value != "X")
+                        //單一素材資料
+                        CurrentMaterial[0] = Convert.ToString(ItemCount);
+                        CurrentMaterial[1] = Convert.ToString(Result_materialDataViews[i].MaterialNumber);
+                        CurrentMaterial[2] = Convert.ToString(Result_materialDataViews[i].Profile);
+                        CurrentMaterial[3] = Convert.ToString(Result_materialDataViews[i].Material);
+                        CurrentMaterial[4] = Convert.ToString(Result_materialDataViews[i].LengthStr);
+                        CurrentMaterial[5] = (Result_materialDataViews[i].LengthStr - Result_materialDataViews[i].Loss).ToString("#0.00");
+                        //CurrentMaterial[6] = Convert.ToString(Result_materialDataViews[i].MeterialCount);
+                        CurrentMaterial[6] = "1";//素材數量皆為1，因帶有素材編號的素材是唯一的
+                        CurrentMaterial[7] = Convert.ToString("");
+                        CurrentMaterial[8] = Convert.ToString("");
+
+                        List_CurrentTableContent.Add(CurrentMaterial);
+                        InsideBorder = true;
+                        AddTableToWordDocument(document, List_CurrentTableContent, InsideBorder, "16", "850", "");
+                        List_CurrentTableContent.Clear();
+                        for (int ii = 0; ii < CurrentMaterial.Length; ii++) CurrentMaterial[ii] = "";
+
+                        //string[] PartColumnName = { "QR_code", "", "構件編號", "零件編號", "長度", "數量", "Phase", "車次", "條碼" };//合併儲存格的起點儲存格內容，將覆蓋其他儲存格內容
+                        string[] PartColumnName = { "QR_code", "", "構件編號", "零件編號", "長度", "數量", "標題一", "標題二", "條碼" };//合併儲存格的起點儲存格內容，將覆蓋其他儲存格內容
+                        List_CurrentTableContent.Add(PartColumnName);
+                        InsideBorder = false;
+                        AddTableToWordDocument(document, List_CurrentTableContent, InsideBorder, "16", "1400", "START");
+                        List_CurrentTableContent.Clear();
+
+                        var part_group = Result_materialDataViews[i].Parts.GroupBy(el => (el.Length, el.AssemblyNumber, el.PartNumber, el.Count, el.Title1, el.Title2), el => (el.Length, el.AssemblyNumber, el.PartNumber, el.Count, el.Title1, el.Title2));
+                        foreach (var part in part_group)
                         {
-                            current_steel_type = Regex.Match(Result_materialDataViews[i].Profile, pattern).Value;
-                        }
-                        else 
-                        {
-                            current_steel_type = "CH"; //僅有槽鐵(CH)斷面規格不是英文字開始 ex:[200X80X7.5X11
-                        }
-
-                        if (steel_type == current_steel_type)
-                        {
-                            //單一素材資料
-                            CurrentMaterial[0] = Convert.ToString(ItemCount);
-                            CurrentMaterial[1] = Convert.ToString(Result_materialDataViews[i].MaterialNumber);
-                            CurrentMaterial[2] = Convert.ToString(Result_materialDataViews[i].Profile);
-                            CurrentMaterial[3] = Convert.ToString(Result_materialDataViews[i].Material);
-                            CurrentMaterial[4] = Convert.ToString(Result_materialDataViews[i].LengthStr);
-                            CurrentMaterial[5] = (Result_materialDataViews[i].LengthStr - Result_materialDataViews[i].Loss).ToString("#0.00");
-                            //CurrentMaterial[6] = Convert.ToString(Result_materialDataViews[i].MeterialCount);
-                            CurrentMaterial[6] = "1";//素材數量皆為1，因帶有素材編號的素材是唯一的
-                            CurrentMaterial[7] = Convert.ToString("");
-                            CurrentMaterial[8] = Convert.ToString("");
-
-                            List_CurrentTableContent.Add(CurrentMaterial);
-                            InsideBorder = true;
-                            AddTableToWordDocument(document, List_CurrentTableContent, InsideBorder, "16","850","");
-                            List_CurrentTableContent.Clear();
-                            for (int ii = 0; ii < CurrentMaterial.Length; ii++) CurrentMaterial[ii] = "";
-
-                            //string[] PartColumnName = { "QR_code", "", "構件編號", "零件編號", "長度", "數量", "Phase", "車次", "條碼" };//合併儲存格的起點儲存格內容，將覆蓋其他儲存格內容
-                            string[] PartColumnName = { "QR_code", "", "構件編號", "零件編號", "長度", "數量", "標題一", "標題二", "條碼" };//合併儲存格的起點儲存格內容，將覆蓋其他儲存格內容
-                            List_CurrentTableContent.Add(PartColumnName);
-                            InsideBorder = false;
-                            AddTableToWordDocument(document, List_CurrentTableContent, InsideBorder, "16","1400","START");
-                            List_CurrentTableContent.Clear();
-
-                            var part_group = Result_materialDataViews[i].Parts.GroupBy(el => (el.Length, el.AssemblyNumber, el.PartNumber, el.Count, el.Title1, el.Title2), el => (el.Length, el.AssemblyNumber, el.PartNumber, el.Count, el.Title1, el.Title2));
-                            foreach (var part in part_group)
+                            foreach (var part_item in part)
                             {
-                                foreach (var part_item in part)
-                                { 
-                                    CurrentSteelPart[0] = Convert.ToString("");//這是被合併的儲存格
-                                    CurrentSteelPart[1] = Convert.ToString("");//這是被合併的儲存格
-                                    CurrentSteelPart[2] = Convert.ToString(part_item.AssemblyNumber);
-                                    CurrentSteelPart[3] = Convert.ToString(part_item.PartNumber);
-                                    CurrentSteelPart[4] = Convert.ToString(part_item.Length);
+                                CurrentSteelPart[0] = Convert.ToString("");//這是被合併的儲存格
+                                CurrentSteelPart[1] = Convert.ToString("");//這是被合併的儲存格
+                                CurrentSteelPart[2] = Convert.ToString(part_item.AssemblyNumber);
+                                CurrentSteelPart[3] = Convert.ToString(part_item.PartNumber);
+                                CurrentSteelPart[4] = Convert.ToString(part_item.Length);
 
-                                    int part_count = 0;
-                                    for(int j=0;j< Result_materialDataViews[i].Parts.Count;j++)
+                                int part_count = 0;
+                                for (int j = 0; j < Result_materialDataViews[i].Parts.Count; j++)
+                                {
+                                    if (Result_materialDataViews[i].Parts[j].AssemblyNumber == part_item.AssemblyNumber &&
+                                        Result_materialDataViews[i].Parts[j].PartNumber == part_item.PartNumber &&
+                                        Result_materialDataViews[i].Parts[j].AssemblyNumber == part_item.AssemblyNumber &&
+                                        Result_materialDataViews[i].Parts[j].Length == part_item.Length &&
+                                        //Result_materialDataViews[i].Parts[j].Phase == part_item.Phase &&
+                                        //Result_materialDataViews[i].Parts[j].ShippingNumber == part_item.ShippingNumber
+                                        Result_materialDataViews[i].Parts[j].Title1 == part_item.Title1 &&
+                                        Result_materialDataViews[i].Parts[j].Title2 == part_item.Title2
+                                        )
                                     {
-                                        if (Result_materialDataViews[i].Parts[j].AssemblyNumber == part_item.AssemblyNumber &&
-                                            Result_materialDataViews[i].Parts[j].PartNumber == part_item.PartNumber &&
-                                            Result_materialDataViews[i].Parts[j].AssemblyNumber == part_item.AssemblyNumber &&
-                                            Result_materialDataViews[i].Parts[j].Length == part_item.Length &&
-                                            //Result_materialDataViews[i].Parts[j].Phase == part_item.Phase &&
-                                            //Result_materialDataViews[i].Parts[j].ShippingNumber == part_item.ShippingNumber
-                                            Result_materialDataViews[i].Parts[j].Title1 == part_item.Title1 &&
-                                            Result_materialDataViews[i].Parts[j].Title2 == part_item.Title2
-                                            )
-                                        {
-                                            part_count ++;
-                                        }
+                                        part_count++;
                                     }
-
-                                    CurrentSteelPart[5] = Convert.ToString(part_count);
-                                    //CurrentSteelPart[6] = "";//part_item.Phase
-                                    //CurrentSteelPart[7] = "";//part_item.ShippingNumber
-                                    CurrentSteelPart[6] = part_item.Title1;
-                                    CurrentSteelPart[7] = part_item.Title2;
-
-                                    CurrentSteelPart[8] = Convert.ToString("Bar_code");
-                                    List_CurrentTableContent.Add(CurrentSteelPart);
-                                    InsideBorder = false;
-                                    AddTableToWordDocument(document, List_CurrentTableContent, InsideBorder, "16","1400", "CONTINUE");
-                                    List_CurrentTableContent.Clear();
-                                    for (int ii = 0; ii < CurrentSteelPart.Length; ii++) CurrentSteelPart[ii] = "";
-
-                                    BarcodeWriter _writer = new BarcodeWriter();
-                                    _writer.Format = BarcodeFormat.CODE_128;//由CODEBAR改成CODE_128，避免小於1000數字無法掃出的問題
-                                    QrCodeEncodingOptions _qrCodeEncoding = new QrCodeEncodingOptions()
-                                    {
-                                        DisableECI = true,//設定內容編碼
-                                        CharacterSet = "UTF-8", //設定二維碼的寬度和高度
-                                        Width = 80,
-                                        Height = 15,
-                                        Margin = 0,//設定二維碼的邊距,單位不是固定畫素
-                                    };
-                                    _writer.Options = _qrCodeEncoding;
-                                    _writer.Write(Convert.ToInt64(part_item.Length).ToString()).Save("Barcode.png"); ;
-
-                                    string[] Barcodelist = { "Bar_code" };
-                                    ReplaceStringToSteelTypePicToWordDocument(document, "Bar_code", Barcodelist, 1.5m, 0.3m, 0L);
-
-                                    break;
                                 }
+
+                                CurrentSteelPart[5] = Convert.ToString(part_count);
+                                //CurrentSteelPart[6] = "";//part_item.Phase
+                                //CurrentSteelPart[7] = "";//part_item.ShippingNumber
+                                CurrentSteelPart[6] = part_item.Title1;
+                                CurrentSteelPart[7] = part_item.Title2;
+
+                                CurrentSteelPart[8] = Convert.ToString("Bar_code");
+                                List_CurrentTableContent.Add(CurrentSteelPart);
+                                InsideBorder = false;
+                                AddTableToWordDocument(document, List_CurrentTableContent, InsideBorder, "16", "1400", "CONTINUE");
+                                List_CurrentTableContent.Clear();
+                                for (int ii = 0; ii < CurrentSteelPart.Length; ii++) CurrentSteelPart[ii] = "";
+
+                                BarcodeWriter _writer = new BarcodeWriter();
+                                _writer.Format = BarcodeFormat.CODE_128;//由CODEBAR改成CODE_128，避免小於1000數字無法掃出的問題
+                                QrCodeEncodingOptions _qrCodeEncoding = new QrCodeEncodingOptions()
+                                {
+                                    DisableECI = true,//設定內容編碼
+                                    CharacterSet = "UTF-8", //設定二維碼的寬度和高度
+                                    Width = 80,
+                                    Height = 15,
+                                    Margin = 0,//設定二維碼的邊距,單位不是固定畫素
+                                };
+                                _writer.Options = _qrCodeEncoding;
+                                _writer.Write(Convert.ToInt64(part_item.Length).ToString()).Save("Barcode.png"); ;
+
+                                string[] Barcodelist = { "Bar_code" };
+                                ReplaceStringToSteelTypePicToWordDocument(document, "Bar_code", Barcodelist, 1.5m, 0.3m, 0L);
+
+                                break;
                             }
-                            BarcodeWriter _writerQR = new BarcodeWriter();
-                            _writerQR.Format = BarcodeFormat.QR_CODE;//由CODEBAR改成CODE_128，避免小於1000數字無法掃出的問題
-                            QrCodeEncodingOptions _qrCodeEncodingQR = new QrCodeEncodingOptions()
-                            {
-                                DisableECI = true,//設定內容編碼
-                                CharacterSet = "UTF-8", //設定二維碼的寬度和高度
-                                Width = 60,
-                                Height = 60,
-                                Margin = 0,//設定二維碼的邊距,單位不是固定畫素
-                            };
-                            _writerQR.Options = _qrCodeEncodingQR;
-                            _writerQR.Write(Result_materialDataViews[i].MaterialNumber).Save("QRcode.png"); ;
-
-                            string[] QRcodelist = { "QR_code" };
-                            ReplaceStringToSteelTypePicToWordDocument(document, "QR_code", QRcodelist, 1.5m, 1.5m, 0L);
-
-                            ItemCount++;
                         }
+                        BarcodeWriter _writerQR = new BarcodeWriter();
+                        _writerQR.Format = BarcodeFormat.QR_CODE;//由CODEBAR改成CODE_128，避免小於1000數字無法掃出的問題
+                        QrCodeEncodingOptions _qrCodeEncodingQR = new QrCodeEncodingOptions()
+                        {
+                            DisableECI = true,//設定內容編碼
+                            CharacterSet = "UTF-8", //設定二維碼的寬度和高度
+                            Width = 60,
+                            Height = 60,
+                            Margin = 0,//設定二維碼的邊距,單位不是固定畫素
+                        };
+                        _writerQR.Options = _qrCodeEncodingQR;
+                        _writerQR.Write(Result_materialDataViews[i].MaterialNumber).Save("QRcode.png"); ;
+
+                        string[] QRcodelist = { "QR_code" };
+                        ReplaceStringToSteelTypePicToWordDocument(document, "QR_code", QRcodelist, 1.5m, 1.5m, 0L);
+
+                        ItemCount++;
                     }
-                    document.Close();
-
-                    //測試連結不同寬度表格
-                    //OpenAndAddTextToWordDocument(destPath, "_", "1");
-
-                    //var document_test = WordprocessingDocument.Open(destPath, true);
-                    //
-                    //string[] TestPartColumnName = { "QR_code", "KKK", "構件編號", "零件編號", "長度", "數量", "Phase", "車次", "條碼" };//合併儲存格的起點儲存格內容，將覆蓋其他儲存格內容
-                    //List_CurrentTableContent.Add(TestPartColumnName);
-                    //InsideBorder = true;
-                    //AddTableToWordDocument(document_test, List_CurrentTableContent, InsideBorder, "16", "400", "");
-                    //List_CurrentTableContent.Clear();
-                    //
-                    //document_test.Close();
                 }
+                document.Close();
+
+                //測試連結不同寬度表格
+                //OpenAndAddTextToWordDocument(destPath, "_", "1");
+
+                //var document_test = WordprocessingDocument.Open(destPath, true);
+                //
+                //string[] TestPartColumnName = { "QR_code", "KKK", "構件編號", "零件編號", "長度", "數量", "Phase", "車次", "條碼" };//合併儲存格的起點儲存格內容，將覆蓋其他儲存格內容
+                //List_CurrentTableContent.Add(TestPartColumnName);
+                //InsideBorder = true;
+                //AddTableToWordDocument(document_test, List_CurrentTableContent, InsideBorder, "16", "400", "");
+                //List_CurrentTableContent.Clear();
+                //
+                //document_test.Close();
             }
-            catch (Exception)
-            {
-                throw;
-            }
+
         }
 
         public static ObservableCollection<MaterialDataView> FindSameMaterial(ReadOnlyCollection<MaterialDataView> materialDataViews)

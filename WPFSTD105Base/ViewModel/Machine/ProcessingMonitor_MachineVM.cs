@@ -2692,7 +2692,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 最上層 當有物料是配對完成狀態才可用
         /// </summary>
-        public bool TransportGridIsEnable { get { return _transportGridIsEnable; } set { _transportGridIsEnable = value; OnPropertyChanged(nameof(TransportGridIsEnable); } } 
+        public bool TransportGridIsEnable { get { return _transportGridIsEnable; } set { _transportGridIsEnable = value; OnPropertyChanged(nameof(TransportGridIsEnable)); } } 
 
         public bool Transport_RadioButtonIsEnable { get; set; } = true;
         public bool Transport_by_Continue_RadioButtonIsEnable { get; set; } = true;

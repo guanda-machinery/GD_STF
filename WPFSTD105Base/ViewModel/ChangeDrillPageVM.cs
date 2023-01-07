@@ -767,7 +767,7 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public int DrillTypeIndex { get; set; }
         /// <summary>
-        /// 鑽孔極限
+        /// 已加工深度
         /// </summary>
         public short Limit
         {
@@ -777,11 +777,11 @@ namespace WPFSTD105.ViewModel
             }
             set
             {
-                /*DrillSetting _ = _DrillSetting;
+                DrillSetting _ = _DrillSetting;
                 _.Limit = value;
-                _DrillSetting = _;*/
-                limit =value;
+                _DrillSetting = _;
 
+                limit =value;
             }
         }
         public DrillSetting GetStruc()
