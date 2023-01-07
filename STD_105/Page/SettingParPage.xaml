@@ -65,6 +65,11 @@
                 <Setter Property="Background" Value="#303030"/>
                 <Style.Resources>
                     <Style TargetType="TabItem"  BasedOn="{StaticResource BaseStyle}">
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.3" />
+                            </Trigger>
+                        </Style.Triggers>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type TabItem}">
@@ -109,8 +114,8 @@
                                     </Grid>
                                 </ControlTemplate>
                             </Setter.Value>
-                        </Setter>
 
+                        </Setter>
                     </Style>
                 </Style.Resources>
             </Style>
@@ -126,427 +131,9 @@
           Margin="5">
         <TabControl x:Name="Main"
                     SelectedIndex="2">
-            <TabItem Header="{ DynamicResource LANGUAGE_SectionSettings }" Margin="-5,0,0,0" >
+            <TabItem Header="{ DynamicResource LANGUAGE_SectionSettings }" Margin="-5,0,0,0" 
+                       IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance},Converter={local:NullToEnabledConverter}}">
                 <local:SectionSpecificationMenu_UserControl Margin="5" Style="{StaticResource SectionSpecificationMenuDarkStyle }"/>
-            </TabItem>
-            <!-- 斷面設定(舊)-->
-            <TabItem Header="{ DynamicResource LANGUAGE_SectionSettings }" Visibility="Collapsed"
-                     Style="{ StaticResource tabitem_STD }"
-                     IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance},Converter={local:NullToEnabledConverter}}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*" />
-                        <ColumnDefinition Width="5" />
-                        <ColumnDefinition Width="4*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="80" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Border Grid.RowSpan="3"
-                                Style="{ StaticResource bor_LightThinLine }"
-                                BorderBrush="{ StaticResource solidclr_Gray }"
-                                CornerRadius="5" />
-                        <!--關鍵字過濾-->
-                        <TextBox x:Name="tbxFilter"
-                                 DockPanel.Dock="Top"
-                                 Foreground="{ StaticResource solidclr_DimGray }"
-                                 FontSize="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }"
-                                 Style="{ StaticResource tbx_BlueUnderline }"
-                                 Margin="40,10"
-                                 wpf:HintAssist.Hint="關鍵字過濾"
-                                 wpf:HintAssist.Background="Transparent"
-                                 wpf:HintAssist.IsFloating="True"
-                                 wpf:TextFieldAssist.HasClearButton="True"
-                                 wpf:TextFieldAssist.HasOutlinedTextField="True"
-                                 wpf:TextFieldAssist.DecorationVisibility="Collapsed"
-                                 wpf:TextFieldAssist.TextFieldCornerRadius="5">
-                            <TextBox.InputBindings>
-                                <KeyBinding Key="Enter"
-                                            Command="{ Binding FilterCommand }"
-                                            CommandParameter="{ Binding ElementName=tbxFilter, Path=Text }" />
-                            </TextBox.InputBindings>
-                        </TextBox>
-                        <!--樹狀圖-->
-                        <TreeView Grid.Row="1"
-                                  Name="tree"
-                                  Style="{ StaticResource treeView_STD }"
-                                  Margin="0">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectedItemChanged">
-                                    <i:InvokeCommandAction Command="{ Binding SegmentString }"
-                                                           CommandParameter="{ Binding ElementName=tree, Path=SelectedItem }" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                            <TreeView.Resources>
-                                <Style TargetType="TreeViewItem"
-                                       BasedOn="{ StaticResource treeViewItem_STD }"></Style>
-                            </TreeView.Resources>
-                            <TreeViewItem ItemsSource="{Binding TUBE}"
-                                          DisplayMemberPath="Profile">
-                                <TreeViewItem.Header>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <Image Source="{ StaticResource BOX }"
-                                               Width="20"
-                                               Height="20"
-                                               Margin="0,0,5,0" />
-                                        <TextBlock Grid.Column="1"
-                                                   Margin="0,2,0,0" 
-                                                   Text="TUBE-->X"/>
-                                    </Grid>
-                                </TreeViewItem.Header>
-                            </TreeViewItem>
-                            <TreeViewItem ItemsSource="{Binding BOX}"
-                                          DisplayMemberPath="Profile">
-                                <TreeViewItem.Header>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <Image Source="{ StaticResource BOX }"
-                                               Width="20"
-                                               Height="20"
-                                               Margin="0,0,5,0" />
-                                        <TextBlock Grid.Column="1"
-                                                   Margin="0,2,0,0" 
-                                                   Text="BOX-->X"/>
-                                    </Grid>
-                                </TreeViewItem.Header>
-                            </TreeViewItem>
-                            <TreeViewItem ItemsSource="{Binding BH}"
-                                          DisplayMemberPath="Profile">
-                                <TreeViewItem.Header>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <Image Source="{ StaticResource Beam }"
-                                               Width="20"
-                                               Height="20"
-                                               Margin="0,0,5,0" />
-                                        <TextBlock Grid.Column="1"
-                                                   Margin="0,2,0,0" 
-                                                   Text="BH-->X"/>
-                                    </Grid>
-                                </TreeViewItem.Header>
-                            </TreeViewItem>
-                            <TreeViewItem ItemsSource="{Binding H}"
-                                          DisplayMemberPath="Profile">
-                                <TreeViewItem.Header>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <Image Source="{ StaticResource Beam }"
-                                               Width="20"
-                                               Height="20"
-                                               Margin="0,0,5,0" />
-                                        <TextBlock Grid.Column="1"
-                                                   Margin="0,2,0,0" 
-                                                   Text="H-->X"/>
-                                    </Grid>
-                                </TreeViewItem.Header>
-                            </TreeViewItem>
-                            <TreeViewItem ItemsSource="{Binding RH}"
-                                          DisplayMemberPath="Profile">
-                                <TreeViewItem.Header>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <Image Source="{ StaticResource Beam }"
-                                               Width="20"
-                                               Height="20"
-                                               Margin="0,0,5,0" />
-                                        <TextBlock Grid.Column="1"
-                                                   Margin="0,2,0,0" 
-                                                   Text="RH-->X"/>
-                                    </Grid>
-                                </TreeViewItem.Header>
-                            </TreeViewItem>
-                            <TreeViewItem ItemsSource="{Binding LB}"
-                                          DisplayMemberPath="Profile">
-                                <TreeViewItem.Header>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <Image Source="{ StaticResource CH }"
-                                               Width="20"
-                                               Height="20"
-                                               Margin="0,0,5,0" />
-                                        <TextBlock Grid.Column="1"
-                                                   Margin="0,2,0,0" 
-                                                   Text="[-->X"/>
-                                    </Grid>
-                                </TreeViewItem.Header>
-                            </TreeViewItem>
-                            <TreeViewItem ItemsSource="{Binding CH}"
-                                          DisplayMemberPath="Profile">
-                                <TreeViewItem.Header>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <Image Source="{ StaticResource CH }"
-                                               Width="20"
-                                               Height="20"
-                                               Margin="0,0,5,0" />
-                                        <TextBlock Grid.Column="1"
-                                                   Margin="0,2,0,0" 
-                                                   Text="CH-->X"/>
-                                    </Grid>
-                                </TreeViewItem.Header>
-                            </TreeViewItem>
-                        </TreeView>
-                    </Grid>
-                    <Grid Grid.Column="2">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition Height="100" />
-                        </Grid.RowDefinitions>
-                        <StackPanel>
-                            <StackPanel.Resources>
-                                <Style TargetType="TextBox"
-                                       BasedOn="{ StaticResource tbx_BlueUnderline }">
-                                    <Setter Property="Foreground"
-                                            Value="{ StaticResource solidclr_DimGray }" />
-                                    <Setter Property="FontSize"
-                                            Value="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" />
-                                </Style>
-                                <Style TargetType="ComboBox"
-                                       BasedOn="{ StaticResource cbb_DarkMain }">
-                                    <Setter Property="Foreground"
-                                            Value="{ StaticResource solidclr_DimGray }" />
-                                    <Setter Property="FontSize"
-                                            Value="{ Binding SubTitleFontSize, Source={ x:Static SofSetting:SofSetting.Default } }" />
-                                </Style>
-                            </StackPanel.Resources>
-                            <!--斷面規格名稱-->
-                            <GroupBox Header="{ DynamicResource LANGUAGE_SectionSpecificationName }">
-                                <TextBox x:Name="tbx_SectionName"
-                                         Grid.Column="1"
-                                         Text="{ Binding ProfileName}" />
-                            </GroupBox>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <!--斷面規格類型-->
-                                <GroupBox Grid.Row="2"
-                                          Header="{ DynamicResource LANGUAGE_SectionSpecificationType }">
-                                    <Grid>
-                                        <ComboBox SelectedIndex="{Binding SelectType}"
-                                                  ItemsSource="{Binding Source={StaticResource  obType} , Path=Strings}" />
-                                    </Grid>
-                                </GroupBox>
-                                <!--單位重量-->
-                                <GroupBox Grid.Column="1"
-                                          Header="{ DynamicResource LANGUAGE_UnitWeight }">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="5*" />
-                                            <ColumnDefinition Width="2*" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBox Grid.Column="0"
-                                                 Text="{Binding SelectSteelAtte.Kg}"
-                                                 Height="30" />
-                                        <Label Grid.Column="1"
-                                               Content="kg/m"
-                                               Foreground="{ StaticResource solidclr_DimGray }"
-                                               Style="{ StaticResource lab_Description }"
-                                               VerticalAlignment="Center" />
-                                    </Grid>
-                                </GroupBox>
-                            </Grid>
-                            <!--2D圖形-->
-                            <GroupBox Header="{ DynamicResource LANGUAGE_2DGraphics }"
-                                      MinHeight="350"
-                                      MaxHeight="400">
-                                <Grid>
-                                    <Grid.Resources>
-                                        <Style TargetType="Label"
-                                               BasedOn="{ StaticResource lab_Description }">
-                                            <Setter Property="Foreground"
-                                                    Value="{ StaticResource solidclr_DimGray }" />
-                                            <Setter Property="FontSize"
-                                                    Value="60" />
-                                        </Style>
-                                    </Grid.Resources>
-                                    <!--BOX-->
-                                    <Viewbox Visibility="{Binding VisibilityBOX, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
-                                        <Canvas Name="can_BOX"
-                                                Width="1280"
-                                                Height="1024">
-                                            <Image Source="{ StaticResource Box_Profile }"
-                                                   Canvas.Left="260"
-                                                   Canvas.Top="60" />
-                                            <Label Content="{ Binding InsertionData[0].Value}"
-                                                   ContentStringFormat="H=0.#"
-                                                   Canvas.Left="70"
-                                                   Canvas.Top="445" />
-                                            <Label Content="{ Binding  InsertionData[1].Value}"
-                                                   ContentStringFormat="W=0.#"
-                                                   Canvas.Left="580"
-                                                   Canvas.Top="920" />
-                                            <Label Content="{ Binding  InsertionData[2].Value}"
-                                                   ContentStringFormat="t=0.#"
-                                                   Canvas.Left="1050"
-                                                   Canvas.Top="445" />
-                                        </Canvas>
-                                    </Viewbox>
-                                    <!--Beam-->
-                                    <Viewbox Visibility="{Binding VisibilityH, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
-                                        <Canvas Name="can_Beam"
-                                                Width="1280"
-                                                Height="1024">
-                                            <Image Source="{ StaticResource Beam_Profile }"
-                                                   Canvas.Left="260"
-                                                   Canvas.Top="90" />
-                                            <Label Content="{ Binding InsertionData[0].Value}"
-                                                   ContentStringFormat="H=0.#"
-                                                   Canvas.Left="1000"
-                                                   Canvas.Top="450" />
-                                            <Label Content="{ Binding InsertionData[1].Value }"
-                                                   ContentStringFormat="W=0.#"
-                                                   Canvas.Left="520"
-                                                   Canvas.Top="950" />
-                                            <Label Content="{ Binding InsertionData[2].Value }"
-                                                   ContentStringFormat="t1=0.#"
-                                                   Canvas.Left="320"
-                                                   Canvas.Top="450" />
-                                            <Label Content="{ Binding InsertionData[3].Value }"
-                                                   ContentStringFormat="t2=0.#"
-                                                   Canvas.Left="700"
-                                                   Canvas.Top="0" />
-                                        </Canvas>
-                                    </Viewbox>
-                                    <!--CH-->
-                                    <Viewbox Visibility="{Binding VisibilityCH, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
-                                        <Canvas Name="can_CH"
-                                                Width="1280"
-                                                Height="1024">
-                                            <Image Source="{ StaticResource CH_Profile }"
-                                                   Canvas.Left="420"
-                                                   Canvas.Top="60" />
-                                            <Label Content="{Binding InsertionData[0].Value }"
-                                                   ContentStringFormat="H=0.#"
-                                                   Canvas.Left="210"
-                                                   Canvas.Top="425" />
-                                            <Label Content="{Binding InsertionData[1].Value }"
-                                                   ContentStringFormat="W=0.#"
-                                                   Canvas.Left="580"
-                                                   Canvas.Top="940" />
-                                            <Label Content="{Binding InsertionData[2].Value }"
-                                                   ContentStringFormat="t1=0.#"
-                                                   Canvas.Left="650"
-                                                   Canvas.Top="425" />
-                                            <Label Content="{Binding InsertionData[3].Value}"
-                                                   ContentStringFormat="t2=0.#"
-                                                   Canvas.Left="600"
-                                                   Canvas.Top="-20" />
-                                        </Canvas>
-                                    </Viewbox>
-                                    <!--L-->
-                                    <Viewbox Visibility="{Binding VisibilityL, Converter={dx:BooleanToVisibilityConverter Invert=True}}">
-                                        <Canvas Name="can_L"
-                                                Width="1280"
-                                                Height="1024">
-                                            <Image Source="{ StaticResource L_Profile }"
-                                                   Canvas.Left="420"
-                                                   Canvas.Top="60" />
-                                            <Label Content="{ Binding InsertionData[0].Value }"
-                                                   ContentStringFormat="H=0.#"
-                                                   Canvas.Left="240"
-                                                   Canvas.Top="410" />
-                                            <Label Content="{ Binding InsertionData[1].Value }"
-                                                   ContentStringFormat="W=0.#"
-                                                   Canvas.Left="650"
-                                                   Canvas.Top="950" />
-                                            <Label Content="{ Binding InsertionData[2].Value}"
-                                                   ContentStringFormat="t1=0.#"
-                                                   Canvas.Left="730"
-                                                   Canvas.Top="410" />
-                                        </Canvas>
-                                    </Viewbox>
-                                </Grid>
-                            </GroupBox>
-                            <!--斷面規格屬性-->
-                            <GroupBox Header="斷面屬性">
-                                <dxg:GridControl MaxHeight="300"
-                                                 dx:ThemeManager.ThemeName="Office2019DarkGray"
-                                                 ItemsSource="{ Binding InsertionData }">
-                                    <dxg:GridControl.View>
-                                        <dxg:TableView ShowGroupPanel="False"/>
-                                    </dxg:GridControl.View>
-                                    <dxg:GridControl.Columns>
-                                        <dxg:GridColumn Header="性質"
-                                                        FieldName="Property"
-                                                        ReadOnly="True" />
-                                        <dxg:GridColumn Header="符號"
-                                                        FieldName="Symbol"
-                                                        ReadOnly="True" />
-                                        <dxg:GridColumn Header="數值"
-                                                        FieldName="Value" />
-                                        <dxg:GridColumn Header="單位"
-                                                        FieldName="Unit"
-                                                        ReadOnly="True" />
-                                    </dxg:GridControl.Columns>
-                                </dxg:GridControl>
-                                <!--
-                                <DataGrid ItemsSource="{ Binding InsertionData }" Style="{ StaticResource dataGrid_STD }" CanUserAddRows="False" CanUserDeleteRows="False"
-                                     CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" Visibility="Collapsed">
-                                    <DataGrid.Resources>
-                                        <Style TargetType="DataGridColumnHeader" BasedOn="{ StaticResource dataGridColumnHeader_STD }"/>
-                                        <Style TargetType="DataGridCell" BasedOn="{ StaticResource dataGridCell_STD }"/>
-                                        <Style TargetType="DataGridRow" BasedOn="{ StaticResource dataRow_STD }"/>
-                                    </DataGrid.Resources>
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="性質" Width="4*" Binding="{ Binding Property }" IsReadOnly="True"/>
-                                        <DataGridTextColumn Header="符號" Width="3*" Binding="{ Binding Symbol }" IsReadOnly="True"/>
-                                        <DataGridTextColumn Header="數值" Width="3*" Binding="{ Binding Value }" EditingElementStyle="{ StaticResource datagrid_EditingTextBox}"/>
-                                        <DataGridTextColumn Header="單位" Width="3*" Binding="{ Binding Unit }" IsReadOnly="True"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>-->
-                            </GroupBox>
-                        </StackPanel>
-                        <StackPanel Grid.Row="1"
-                                    Orientation="Horizontal"
-                                    HorizontalAlignment="Center">
-                            <StackPanel.Resources>
-                                <Style TargetType="Button"
-                                       BasedOn="{ StaticResource btn_CommonFunctionKey_STD }" />
-                            </StackPanel.Resources>
-                            <Button Name="material"
-                                    Content="{ DynamicResource LANGUAGE_New }"
-                                    Command="{Binding NewCommand}"
-                                    CommandParameter="{ Binding RelativeSource={ x:Static RelativeSource.Self }, Path=Name}" />
-                            <Button Content="{ DynamicResource LANGUAGE_Delete }"
-                                    Command="{Binding DeleteCommand}"
-                                    CommandParameter="{ Binding ElementName=tree, Path=SelectedItem }" />
-                            <Button Content="{ DynamicResource LANGUAGE_Update }"
-                                    Command="{Binding UpdateTreeCommand}"
-                                    CommandParameter="{ Binding ElementName=tree, Path=SelectedItem }" />
-                        </StackPanel>
-                    </Grid>
-                    <!--選擇儲存修改位置-->
-                    <!--
-                    <Grid Grid.ColumnSpan="2" Visibility="{ Binding DisplaySavePosition, Converter={ dx:BooleanToVisibilityConverter Invert=True }}">
-                        <local:SaveAs SubmitButtonCommand="{Binding SaveProfileCommand}" CancelButtonCommand="{ Binding CloseSavePosition }"/>
-                    </Grid>-->
-                </Grid>
             </TabItem>
             <!--材質設定-->
             <TabItem Header="材質設定"
@@ -1721,46 +1308,110 @@
                         </dxlc:DataLayoutControl>
                     </dxlc:LayoutControl>
                     <!--強制更改頁面-->
-                    
-                         <GroupBox Grid.Row="1" Header="刀庫顯示">
+                    <StackPanel  Grid.Row="1">
+                        <StackPanel.Resources>
+                            <Style TargetType="{x:Type GroupBox}">
+                                <Setter Property="FontFamily" Value="{Binding FontFamily, Source={x:Static SofSetting:SofSetting.Default}}" />
+                                <Setter Property="FontSize" Value="{Binding SubTitleFontSize, Source={x:Static SofSetting:SofSetting.Default}}" />
+                                <Setter Property="Foreground" Value="{StaticResource solidclr_CreamyGray}" />
+                                <Setter Property="Background" Value="{StaticResource solidclr_Gray}" />
+                                <Setter Property="BorderBrush" Value="{StaticResource solidclr_DarkGray}" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="GroupBox">
+                                            <Grid>
+                                                <Border
+                            Grid.RowSpan="2"
+                            Background="Transparent"
+                            BorderBrush="#49FFFFFF"
+                            BorderThickness="2,2,0,0"
+                            CornerRadius="3" />
+                                                <Border
+                            Grid.RowSpan="2"
+                            Margin="3,3,0,0"
+                            Background="Transparent"
+                            BorderBrush="#49000000"
+                            BorderThickness="0,0,3,3"
+                            CornerRadius="3" />
+                                                <Grid Margin="2,2,3,3">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="*" />
+                                                    </Grid.RowDefinitions>
+                                                    <Border
+                                Margin="0,0,0,-1"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="3,3,0,0">
+                                                        <ContentPresenter
+                                    Margin="8,0,0,3"
+                                    ContentSource="Header"
+                                    RecognizesAccessKey="True"
+                                    TextBlock.FontFamily="{TemplateBinding FontFamily}"
+                                    TextBlock.FontSize="{TemplateBinding FontSize}"
+                                    TextBlock.FontWeight="{TemplateBinding FontWeight}"
+                                    TextBlock.Foreground="{TemplateBinding Foreground}" />
+                                                    </Border>
+                                                    <Border Grid.Row="1" Background="{TemplateBinding Background}">
+                                                        <Grid>
+                                                            <Border Margin="0" Background="{StaticResource solidclr_SilverGray}" />
+                                                            <ContentPresenter Margin="10" />
+                                                        </Grid>
+                                                    </Border>
+                                                </Grid>
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Opacity" Value="0.5" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </StackPanel.Resources>
+                    <GroupBox Background="#666666" Margin="0,5" Header="刀庫顯示">
                         <Grid>
                             <Grid.Resources>
                                 <Style TargetType="TextBlock" >
-                                    <Setter Property="Foreground" Value="Gray"/>
+                                    <Setter Property="Foreground" Value="#666666"/>
                                     <Setter Property="FontSize" Value="12"/>
                                 </Style>
                                 <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignDarkCheckBox}">
-                
                                     <Setter Property="Background" Value="black"/>
                                 </Style>
 
                             </Grid.Resources>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="112"/>
                                 <ColumnDefinition/>
-                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="112"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Column="0" Grid.Row="0" Text="中軸刀庫顯示"/>
-                            <CheckBox Grid.Column="1" Grid.Row="0" IsThreeState="False" IsChecked="{Binding Middle ,Source={x:Static Optional:Optional.Default}}" />
+                                    <RowDefinition Height="25"/>
+                                    <RowDefinition Height="25"/>
+                                    <RowDefinition Height="25"/>
+                                </Grid.RowDefinitions>
+                            <TextBlock Grid.Column="0" VerticalAlignment="Center" Grid.Row="0" Text="A軸刀庫顯示"/>
+                            <CheckBox Grid.Column="1" Grid.Row="0"  IsThreeState="False" IsChecked="{Binding Middle ,Source={x:Static Optional:Optional.Default}}" />
 
-                            <TextBlock Grid.Column="0" Grid.Row="1" Text="左軸入口刀庫顯示"/>
-                            <CheckBox Grid.Column="1" Grid.Row="1" IsThreeState="False" IsChecked="{Binding LeftEntrance ,Source={x:Static Optional:Optional.Default}}" />
-                            <TextBlock Grid.Column="2" Grid.Row="1" Text="左軸出口刀庫顯示"/>
-                            <CheckBox Grid.Column="3" Grid.Row="1" IsThreeState="False" IsChecked="{Binding LeftExport,Source={x:Static Optional:Optional.Default}}" />
+                                <TextBlock Grid.Column="0" VerticalAlignment="Center" Grid.Row="1" Text="B軸刀庫顯示"/>
+                            <CheckBox Grid.Column="1" Grid.Row="1" IsThreeState="False" IsChecked="{Binding LeftExport,Source={x:Static Optional:Optional.Default}}" />
 
-                            <TextBlock Grid.Column="0" Grid.Row="2" Text="右軸出口刀庫顯示"/>
+                                <TextBlock Grid.Column="0" VerticalAlignment="Center" Grid.Row="2" Text="C軸刀庫顯示"/>
                             <CheckBox Grid.Column="1" Grid.Row="2" IsThreeState="False" IsChecked="{Binding RightExport ,Source={x:Static Optional:Optional.Default}}" />
-                            <TextBlock Grid.Column="2" Grid.Row="2" Text="右軸入口刀庫顯示"/>
+
+                                <TextBlock Grid.Column="2" VerticalAlignment="Center" Grid.Row="1" Text="D軸刀庫顯示"/>
+                                <CheckBox Grid.Column="3" Grid.Row="1" IsThreeState="False" IsChecked="{Binding LeftEntrance ,Source={x:Static Optional:Optional.Default}}" />
+
+                                <TextBlock Grid.Column="2" VerticalAlignment="Center" Grid.Row="2" Text="E軸刀庫顯示"/>
                             <CheckBox Grid.Column="3" Grid.Row="2" IsThreeState="False" IsChecked="{Binding RightEntrance ,Source={x:Static Optional:Optional.Default}}" />
 
                         </Grid>
-                    </GroupBox>
+                        </GroupBox>
+                    </StackPanel>
+
+
                     <GroupBox Grid.Row="2" Visibility="Collapsed"
                               Header="測試"
                               VerticalAlignment="Bottom"

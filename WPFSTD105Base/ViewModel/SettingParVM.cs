@@ -3664,15 +3664,17 @@ namespace WPFSTD105.ViewModel
             //讀入SplitLineSetting.lis中切割線設定值
             STDSerialization ser = new STDSerialization(); //序列化處理器
             ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();//備份當前加工區域數值
-            
-            HowManyParts_Value = ReadSplitLineSettingData[0].HowManyParts;
-            PointA_Value = ReadSplitLineSettingData[0].A;
-            PointB_Value = ReadSplitLineSettingData[0].B;
-            PointC_Value = ReadSplitLineSettingData[0].C;
-            PointD_Value = ReadSplitLineSettingData[0].D;
-            CutThickness = ReadSplitLineSettingData[0].Thickness;
-            SplitRemainingLength = ReadSplitLineSettingData[0].RemainingLength;
-            
+
+            if (ReadSplitLineSettingData != null && ReadSplitLineSettingData.Count > 0)
+            {
+                HowManyParts_Value = ReadSplitLineSettingData[0].HowManyParts;
+                PointA_Value = ReadSplitLineSettingData[0].A;
+                PointB_Value = ReadSplitLineSettingData[0].B;
+                PointC_Value = ReadSplitLineSettingData[0].C;
+                PointD_Value = ReadSplitLineSettingData[0].D;
+                CutThickness = ReadSplitLineSettingData[0].Thickness;
+                SplitRemainingLength = ReadSplitLineSettingData[0].RemainingLength;
+            }
 
             //char[] HowManyParts_AB = new char[ReadSplitLineSettingData[0].A.Length];
             //using (StringReader sr = new StringReader(ReadSplitLineSettingData[0].A))
