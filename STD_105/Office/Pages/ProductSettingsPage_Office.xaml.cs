@@ -350,18 +350,6 @@ namespace STD_105.Office
 
                             #region 讀取dm檔
                             ReadFile readFile = ser.ReadPartModel(g_GUID.ToString()); //讀取檔案內容
-                            //if (readFile == null)
-                            //{
-                            //    WinUIMessageBox.Show(null,
-                            //        $"專案Dev_Part資料夾讀取失敗",
-                            //        "通知",
-                            //        MessageBoxButton.OK,
-                            //        MessageBoxImage.Exclamation,
-                            //        MessageBoxResult.None,
-                            //        MessageBoxOptions.None,
-                            //         FloatingMode.Window);
-                            //    return;
-                            //}
                             readFile.DoWork();//開始工作
                             readFile.AddToScene(model);//將讀取完的檔案放入到模型 
                             #endregion
@@ -397,6 +385,10 @@ namespace STD_105.Office
                             sa.Creation = DateTime.Now;
                             #endregion
 
+                            #region 複製切割線設定檔
+                            ViewModel.SaveCut(g_GUID, sa.GUID);
+                            #endregion
+
                             #region 讀NC檔
                             List<GroupBoltsAttr> groupBolts = new List<GroupBoltsAttr>();
                             SteelAttr saDeepClone = (SteelAttr)sa.DeepClone();
@@ -410,18 +402,6 @@ namespace STD_105.Office
                             #region 孔位資訊
                             List<Block> block = model.GetBoltFromBlock(groupBolts);
                             #endregion
-                            //var profile = ser.GetSteelAttr();
-                            //TeklaNcFactory t = new TeklaNcFactory();
-                            //Steel3DBlock s3Db = new Steel3DBlock();
-                            //SteelAttr steelAttrNC = new SteelAttr();
-                            //List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
-
-                            //s3Db.ReadNcFile($@"{ApplicationVM.DirectoryNc()}\{ViewModel.PartNumberProperty}.nc1", profile, sa, ref steelAttrNC, ref groups);
-                            //sa.GUID = Guid.NewGuid();
-                            //sa.oPoint = steelAttrNC.oPoint;
-                            //sa.vPoint = steelAttrNC.vPoint;
-                            //sa.uPoint = steelAttrNC.uPoint;
-                            //sa.CutList = steelAttrNC.CutList;
 
                             #region 建模(以舊有形鋼為底新增)
                             // 建立型鋼
@@ -519,6 +499,9 @@ namespace STD_105.Office
                             sa.Creation = DateTime.Now;
                             #endregion
 
+                            #region 複製切割線設定檔
+                            ViewModel.SaveCut(g_GUID, sa.GUID);
+                            #endregion
 
                             #region 建模(以舊有形鋼為底新增)
                             // 建立型鋼
@@ -581,8 +564,7 @@ namespace STD_105.Office
                     #region 零件編號不同 長度 / 型鋼類型 / 斷面規格其一不同
                     else
                     {
-                        #region 一般新增
-                        
+                        #region 一般新增                        
                         sa = GetViewToSteelAttr(sa, true);
                         sa.Creation = DateTime.Now;
                         ViewModel.WriteSteelAttr(sa);
@@ -592,6 +574,10 @@ namespace STD_105.Office
                             // 若ViewModel.SteelAttr.PartNumber代表取值又失敗了，只好強制給值囉~
                             GetViewToViewModel(true);
                         }
+
+                        #region 複製切割線設定檔
+                        ViewModel.SaveCut(g_GUID, sa.GUID);
+                        #endregion
 
                         #region 建模(全新型鋼)
                         // 建立型鋼
@@ -3126,11 +3112,6 @@ namespace STD_105.Office
             ViewModel.CurrentPartSteelAttr.t1 = pl.t1;
             ViewModel.CurrentPartSteelAttr.t2 = pl.t2;
             ViewModel.CurrentPartSteelAttr.Profile = pl.Profile;
-
-
-
-
-
 
             //steelAttr.Profile = profileStr;
             steelAttr.Profile = ViewModel.SteelSectionProperty;

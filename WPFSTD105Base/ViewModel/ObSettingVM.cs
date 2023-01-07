@@ -1316,6 +1316,46 @@ namespace WPFSTD105.ViewModel
             }
 
         }
+
+        /// <summary>
+        /// 複製切割線設定檔
+        /// </summary>
+        /// <param name="oldGuid"></param>
+        /// <param name="newGuid"></param>
+        /// <param name=""></param>
+        public void SaveCut(Guid? oldGuid, Guid? newGuid)
+        {
+            STDSerialization ser = new STDSerialization(); //序列化處理器
+            ObservableCollection<SteelCutSetting> steelcutSettings = new ObservableCollection<SteelCutSetting>();
+            ObservableCollection<SteelCutSetting> newSettings = new ObservableCollection<SteelCutSetting>();
+            steelcutSettings = ser.GetCutSettingList();
+            steelcutSettings = steelcutSettings ?? new ObservableCollection<SteelCutSetting>();
+            if (steelcutSettings.Any(x => x.GUID == oldGuid))
+            {
+                foreach (SteelCutSetting item in steelcutSettings.Where(x => x.GUID == oldGuid))
+                {
+                    newSettings.Add(new SteelCutSetting()
+                    {
+                        GUID = newGuid,
+                        face = item.face,
+                        DLX = item.DLX,
+                        DLY = item.DLY,
+                        DRX = item.DRX,
+                        DRY = item.DRY,
+                        ULX = item.ULX,
+                        ULY = item.ULY,
+                        URX = item.URX,
+                        URY = item.URY
+                    });
+                }
+            }
+            steelcutSettings.AddRange(newSettings);
+            ser.SetCutSettingList(steelcutSettings);
+        }
+
+
+
+
         /// <summary>
         /// 計算單一支型鋼重量
         /// </summary>
