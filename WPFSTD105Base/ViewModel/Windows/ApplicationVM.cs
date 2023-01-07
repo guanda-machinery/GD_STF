@@ -498,8 +498,9 @@ namespace WPFSTD105
 
             if (projectName != null)
                 return $@"{DirectoryModel()}\{ModelPath.DefaultParameterSetting}";
-
-            throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
+            else
+                return null;
+            //throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }
         /// <summary>
         /// 取得所有dm檔
@@ -1193,7 +1194,8 @@ namespace WPFSTD105
 
             if (projectName != null)
                 return $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\ParameterSetting\SplitLineSetting.lis";
-
+            else
+                return null;
             throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }
         /// <summary>
@@ -1270,7 +1272,7 @@ namespace WPFSTD105
             }
             else
             {
-                throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
+                //throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
             }
             return CheckDir;
         }

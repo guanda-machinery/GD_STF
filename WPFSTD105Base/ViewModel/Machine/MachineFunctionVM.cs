@@ -84,42 +84,44 @@ namespace WPFSTD105.ViewModel
             }
             set
             {
-                GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                var Exboolen = PButton.ExportRack;
-                //離開頁面時 先關掉頂升柱
-                //相反訊號
-                ClearPButtonModeValue(ref PButton);
-                switch (value)
-                {
-                    case 0:
-                        PButton.ClampDown = true;
-                        break;
-                    case 1:
-                        PButton.SideClamp = true;
-                        break;
-                    case 2:
-                        if(!Exboolen)   
-                            PButton.EntranceRack = true;
-                        else
-                            PButton.ExportRack = true;
-                        break;
-                    case 3:
-                        PButton.Hand = true;
-                        break;
-                    case 4:
-                        PButton.DrillWarehouse = true;
-                        break;
-                    case 5:
-                        PButton.Volume = true;
-                        break;
-                    default:
-                        break;
-                }
-                //比較值 若功能沒變則不寫入
-                if(!PanelButtonIsEqual(ViewLocator.ApplicationViewModel.PanelButton, PButton))
-                    CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                
                 _tabControlSelectedIndex = value;
+                Task.Run(() =>
+                {
+                    GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+                    var Exboolen = PButton.ExportRack;
+                    //離開頁面時 先關掉頂升柱
+                    //相反訊號
+                    ClearPButtonModeValue(ref PButton);
+                    switch (value)
+                    {
+                        case 0:
+                            PButton.ClampDown = true;
+                            break;
+                        case 1:
+                            PButton.SideClamp = true;
+                            break;
+                        case 2:
+                            if (!Exboolen)
+                                PButton.EntranceRack = true;
+                            else
+                                PButton.ExportRack = true;
+                            break;
+                        case 3:
+                            PButton.Hand = true;
+                            break;
+                        case 4:
+                            PButton.DrillWarehouse = true;
+                            break;
+                        case 5:
+                            PButton.Volume = true;
+                            break;
+                        default:
+                            break;
+                    }
+                    //比較值 若功能沒變則不寫入
+                    if (!PanelButtonIsEqual(ViewLocator.ApplicationViewModel.PanelButton, PButton))
+                        CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                });
 
             }
         }

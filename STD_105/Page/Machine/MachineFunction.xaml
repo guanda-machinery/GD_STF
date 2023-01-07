@@ -1318,6 +1318,8 @@
                                                     ReadOnly="True" />
                                                     <dxg:GridColumn FieldName="Limit"
                                                     Header="極限設定(M)" />
+                                                    <dxg:GridColumn
+                                                    Header="加工累積深度(M)" />
                                                 </dxg:GridControl.Columns>
                                             </dxg:GridControl>
                                             <dxg:GridControl Grid.Row="1"  Visibility="{Binding ToolMActivityButtonVisibilityBoolean,Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"

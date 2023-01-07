@@ -130,23 +130,7 @@ namespace WPFSTD105
         /// </summary>
         public bool isPressAddCutKey { get; set; }
 
-        /// <summary>
-        /// 斷面規格最大高度
-        /// </summary>
-        public int SectionSpecificationMaxHeight { get; set; } = 1050;
-        /// <summary>
-        /// 斷面規格最小高度
-        /// </summary>
-        public int SectionSpecificationMinHeight { get; set; } = 150;
 
-        /// <summary>
-        /// 斷面規格最大寬度
-        /// </summary>
-        public int SectionSpecificationMaxWidth { get; set; } = 500;
-        /// <summary>
-        /// 斷面規格最小寬度
-        /// </summary>
-        public int SectionSpecificationMinWidth { get; set; } = 75;
 
 
 

@@ -305,8 +305,12 @@ namespace WPFSTD105.ViewModel
         {
             return new WPFWindowsBase.RelayCommand(() =>
             {
+                //儲存選配資料
                 STDSerialization ser = new STDSerialization();
                 ser.SetOptionSettings(OptionSettings);
+
+                //儲存default
+                Optional.Default.Save();
             });
         }
         #endregion 

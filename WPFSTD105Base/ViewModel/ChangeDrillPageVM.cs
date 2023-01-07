@@ -67,11 +67,11 @@ namespace WPFSTD105.ViewModel
             {
                 DrillBrands.Add(DrillBrand.GetNull());
             }
-            MiddleIsEnabled = _MecOptional.Middle;
-            LeftEntranceIsEnabled = _MecOptional.LeftEntrance;
-            LeftExportIsEnabled = _MecOptional.LeftExport;
-            RightEntranceIsEnabled = _MecOptional.RightEntrance;
-            RightExportIsEnabled = _MecOptional.RightExport;
+            //MiddleIsEnabled = _MecOptional.Middle;
+            //LeftEntranceIsEnabled = _MecOptional.LeftEntrance;
+            //LeftExportIsEnabled = _MecOptional.LeftExport;
+            //RightEntranceIsEnabled = _MecOptional.RightEntrance;
+            //RightExportIsEnabled = _MecOptional.RightExport;
             UpDate();
 
         }
@@ -123,23 +123,23 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 是否顯示中軸刀庫的按鈕
         /// </summary>
-        public bool MiddleIsEnabled { get; set; }
+       // public bool MiddleIsEnabled { get; set; }
         /// <summary>
         /// 是否顯示左軸出口刀庫的按鈕 
         /// </summary>
-        public bool LeftExportIsEnabled { get; set; }
+       // public bool LeftExportIsEnabled { get; set; }
         /// <summary>
         /// 是否顯示右軸出口刀庫的按鈕 
         /// </summary>
-        public bool RightExportIsEnabled { get; set; }
+       // public bool RightExportIsEnabled { get; set; }
         /// <summary>
         /// 是否顯示 <see cref="DrillWarehouse.RightEntrance"/> 的按鈕 
         /// </summary>
-        public bool RightEntranceIsEnabled { get; set; }
+        //public bool RightEntranceIsEnabled { get; set; }
         /// <summary>
         /// 是否顯示 <see cref="DrillWarehouse.LeftEntrance"/> 的按鈕 
         /// </summary>
-        public bool LeftEntranceIsEnabled { get; set; }
+        //public bool LeftEntranceIsEnabled { get; set; }
 
 
 
@@ -739,6 +739,7 @@ namespace WPFSTD105.ViewModel
                 f = _DrillBrands[settingIndex].f;
                 Length =  _DrillBrands[settingIndex].SumLength;
                 Limit = _DrillSetting.Limit;
+
                 DrillSetting drill = new DrillSetting()
                 {
                     Dia =  _DrillBrands[settingIndex].Dia,
@@ -776,9 +777,9 @@ namespace WPFSTD105.ViewModel
             }
             set
             {
-                DrillSetting _ = _DrillSetting;
+                /*DrillSetting _ = _DrillSetting;
                 _.Limit = value;
-                _DrillSetting = _;
+                _DrillSetting = _;*/
                 limit =value;
 
             }
