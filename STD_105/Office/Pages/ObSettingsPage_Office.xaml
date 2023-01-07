@@ -95,7 +95,7 @@
                                   Focusable="True"
                                   AntiAliasingSamples="x16"
                                   Renderer="NativeExperimental"
-                                  ShowFps="True">
+                                  ShowFps="False">
                         <spa:ModelExt.ContextMenu>
                             <ContextMenu Style="{StaticResource BaseStyle}" Visibility="Hidden"
                                          FontSize="12">
@@ -221,7 +221,7 @@
                                   PreviewMouseRightButtonDown="model_PreviewMouseRightButtonDown"
                                   Focusable="True" AntiAliasingSamples="x16" 
                                   Renderer="NativeExperimental" 
-                                  ShowFps="True" Margin="0,-5,0,0">
+                                  ShowFps="False" Margin="0,-5,0,0">
                         <spa:ModelExt.ContextMenu>
                             <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
                                 <MenuItem x:Name="esc2D" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>

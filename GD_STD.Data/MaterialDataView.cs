@@ -381,20 +381,20 @@ namespace GD_STD.Data
         }
 
 
-        private string ex_en_count = null;
+        private string _position_count = null;
         /// <summary>
-        /// 等待(入) - 等待(出)計數器 僅供表格顯示用
+        /// 各種計數器 僅供表格顯示用
         /// </summary>
-        public string EX_EN_count
+        public string Position_count
         {
             get
             {
-                return ex_en_count;
+                return _position_count;
             }
             set
             {
-                ex_en_count = value;
-                OnPropertyChanged(nameof(EX_EN_count));
+                _position_count = value;
+                OnPropertyChanged(nameof(Position_count));
             }
         }
 

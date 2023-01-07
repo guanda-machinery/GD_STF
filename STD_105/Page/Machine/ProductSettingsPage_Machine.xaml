@@ -703,7 +703,7 @@
                                   Focusable="True"
                                   AntiAliasingSamples="x16"
                                   Renderer="NativeExperimental"                                  
-                                  ShowFps="True">
+                                  ShowFps="False">
                         <WPFSTD:ModelExt.ContextMenu>
                             <ContextMenu Style="{StaticResource BaseStyle}"
                                          FontSize="12">
@@ -822,7 +822,7 @@
                         SelectionColor="{Binding Setting.SelectionColor, Converter={local:StringToDrawingColoConverter}}"
                         ActionMode="{Binding ActionMode}" DefaultColor="Beige" AutoRefresh ="True" KeyDown="model_KeyDown"
                         PreviewMouseRightButtonDown="model_PreviewMouseRightButtonDown"
-                        Focusable="True" AntiAliasingSamples="x16" Renderer="NativeExperimental" ShowFps="True" Margin="0,0,0,0">
+                        Focusable="True" AntiAliasingSamples="x16" Renderer="NativeExperimental" ShowFps="False" Margin="0,0,0,0">
                         <WPFSTD:ModelExt.ContextMenu>
                             <ContextMenu Style="{StaticResource BaseStyle}" FontSize="12">
                                 <MenuItem Name="esc2D" Header="取消" Style="{StaticResource BaseStyle}" Command="{Binding Esc}"/>
@@ -933,14 +933,19 @@
                         <Style TargetType="GroupBox" BasedOn="{StaticResource BaseStyle}" >
                             <Setter Property="Foreground" Value="#3b3b3b"/>
                             <Setter Property="Margin" Value="5"/>
+                            <Setter Property="FontSize" Value="16"/>
                         </Style>
                         <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignStyleCustomTextBox}">
                             <Setter Property="Margin" Value="10,5"/>
-
+                            <Setter Property="Height" Value="24"/>
+                            <Setter Property="FontSize" Value="16"/>
+                        </Style>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="FontSize" Value="16"/>
                         </Style>
                     </TabItem.Resources>
-                    <DockPanel Width="245">
-                        <Grid DockPanel.Dock="Top">
+                    <DockPanel MinWidth="245">
+                        <Grid DockPanel.Dock="Top" Margin="-5,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
@@ -1036,15 +1041,15 @@
                                                          Style="{StaticResource rad_Gray}"
                                                          IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={local:DrillingFaceConverter}, ConverterParameter=0}"
                                                          Content="頂面"/>
-                                        <RadioButton  Grid.Column="0" GroupName="DrillingPosition" Foreground="Black" HorizontalAlignment="Center"
+                                        <RadioButton  Grid.Column="2" GroupName="DrillingPosition" Foreground="Black" HorizontalAlignment="Center"
                                                           Style="{StaticResource rad_Gray}"
                                                           IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={local:DrillingFaceConverter}, ConverterParameter=1}"
-                                                          Content="前面"/>
+                                                          Content="後面"/>
 
-                                        <RadioButton Grid.Column="2" GroupName="DrillingPosition" Foreground="Black" HorizontalAlignment="Center"
+                                        <RadioButton Grid.Column="0" GroupName="DrillingPosition" Foreground="Black" HorizontalAlignment="Center"
                                                           Style="{StaticResource rad_Gray}" 
                                                           IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={local:DrillingFaceConverter}, ConverterParameter=2}"
-                                                           Content="後面"/>
+                                                           Content="前面"/>
 
 
                                     </Grid>
@@ -1155,7 +1160,17 @@
 
                 </TabItem>
                 <TabItem Header="切割線" Name="CutTabItem"  >
-                    <DockPanel Width="245" >
+                    <TabItem.Resources>
+                        <Style TargetType="GroupBox" BasedOn="{StaticResource BaseStyle}" >
+                            <Setter Property="Foreground" Value="#3b3b3b"/>
+                            <Setter Property="Margin" Value="5"/>
+                            <Setter Property="FontSize" Value="16"/>
+                        </Style>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="FontSize" Value="16"/>
+                        </Style>
+                    </TabItem.Resources>
+                    <DockPanel MinWidth="245" >
                         <Grid  DockPanel.Dock="Top" Name="ScrollViewbox">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
@@ -1167,7 +1182,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <GroupBox Header="位置" Style="{StaticResource BaseStyle}" Margin="5" Name="CuttingGroupPosition">
+                                <GroupBox Header="位置"  Margin="5" Name="CuttingGroupPosition">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
@@ -1181,12 +1196,12 @@
                                                          GroupName="CutLinePosition" Foreground="Black"  
                                                          Style="{StaticResource rad_Gray}"
                                                          IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={local:CutFaceConverter}, ConverterParameter=0}"/>
-                                    <RadioButton Content="前面" Grid.Column="0" 
+                                    <RadioButton Content="後面" Grid.Column="2" 
                                                          GroupName="CutLinePosition" Foreground="Black" 
                                                          Style="{StaticResource rad_Gray}"
                                                          IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={local:CutFaceConverter}, ConverterParameter=1}"/>
 
-                                    <RadioButton Content="後面"  Grid.Column="2" 
+                                    <RadioButton Content="前面"  Grid.Column="0" 
                                                          GroupName="CutLinePosition" Foreground="Black"  
                                                          Style="{StaticResource rad_Gray}"
                                                          IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={local:CutFaceConverter}, ConverterParameter=2}"/>
@@ -1214,7 +1229,7 @@
                                     <Label Content="打點刪除" Foreground="Black"  HorizontalAlignment="Center"/>
                                 </StackPanel>
                             </StackPanel>
-                            <GroupBox Header="切割位置" Style="{StaticResource BaseStyle}" Grid.Row="3" Margin="5" Name="CuttingGroupBox" >
+                            <GroupBox Header="切割位置" Grid.Row="3" Margin="5" Name="CuttingGroupBox" >
                                     <Grid  Background="#c0c0c0">
                                         <Grid>
                                             <Grid.Resources>
