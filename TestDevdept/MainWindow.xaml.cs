@@ -2,6 +2,8 @@
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DevExpress.Xpf.CodeView;
+using DevExpress.XtraRichEdit.Model;
+using GD_STD.Enum;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -125,7 +127,7 @@ namespace TestDevdept
             W = 125,                /// 寬
             t1 = (float)9  ,        /// 腹板厚度
             t2 = 6,                 /// 翼板厚度
-            Length = 1933.05        ///長
+            Length = 3000.05        ///長
         };
 
         List<NcPoint3D> VKGetPoint = new List<NcPoint3D>();
@@ -262,8 +264,12 @@ namespace TestDevdept
             SteelAttr.Type = GD_STD.Enum.OBJECT_TYPE.BH;
             model1.Entities.Add(vMesh);//加入物件到圖塊內
 
+            Mesh modifym = cutasm(SteelAttr);
+            Solid modifys = modifym.ConvertToSolid();
+            modifys = modifys.Difference(solids);
 
-
+            modifys.Translate(0, 500, 0);
+            model1.Entities.Add(modifys);
 
             model1.ZoomFit();
             model1.Refresh();
@@ -274,6 +280,83 @@ namespace TestDevdept
 
 
         }
+
+
+
+        public Mesh cutasm(SteelAttr steelAttr)
+        {
+
+
+            List<ICurve> curves = new List<ICurve>() { BaseProfile(steelAttr.H, steelAttr.W, 0, 0) };
+    
+                //組合實際斷面規格
+                switch (steelAttr.Type)
+                {
+                    case OBJECT_TYPE.H: //20220805 張燕華 新增斷面規格H型鋼
+                    case OBJECT_TYPE.BH:
+                    case OBJECT_TYPE.RH:
+                        curves.Add(BaseProfile(steelAttr.H - (steelAttr.t2 * 2), (steelAttr.W * 0.5) - (steelAttr.t1 * 0.5), 0, steelAttr.t2));
+                        curves.Add(BaseProfile(steelAttr.H - (steelAttr.t2 * 2), (steelAttr.W * 0.5) - (steelAttr.t1 * 0.5), (steelAttr.W * 0.5) + (steelAttr.t1 * 0.5), steelAttr.t2));
+
+                        break;
+
+                }
+                // 區域實體定義。 按照慣例，列表中的第一個輪廓是位於外部，並具有逆時針方向。 內環是順時針方向的。摘要：輪廓，平面和排序標誌構造函數的列表
+                devDept.Eyeshot.Entities.Region region = new devDept.Eyeshot.Entities.Region(curves, Plane.XY, false);
+                Mesh result = region.ExtrudeAsMesh<Mesh>(new Vector3D(steelAttr.Length, 0, 0), 1e-6, Mesh.natureType.Plain);// 拉伸輪廓以創建新的devDept.Eyeshot.Entities.Mesh。
+                result.EntityData = steelAttr;
+
+                ////切割物件
+                //CutLine(ref result, FACE.TOP);
+                ////CutLine(ref result, FACE.BACK);
+                //CutLine(ref result, FACE.FRONT);
+
+                //result.EntityData = steelAttr.DeepClone();
+                // 零件顏色 #調整顏色
+                result.Color = ColorTranslator.FromHtml(WPFSTD105.Properties.SofSetting.Default.Part);
+                result.ColorMethod = colorMethodType.byEntity;
+
+
+            return result;
+
+        }
+
+
+
+        /// <summary>
+        /// 繪製方形輪廓
+        /// </summary>
+        /// <param name="h">高度</param>
+        /// <param name="w">寬度</param>
+        /// <param name="startZ">起始點Z</param>
+        /// <param name="startY">起始點Y</param>
+        /// <returns></returns>
+        private static ICurve BaseProfile(double h, double w, double startZ, double startY)
+        {
+            //2D繪製矩形
+            Point3D[] point3Ds = new Point3D[]
+            {
+                new Point3D(0,startY,startZ),
+                new Point3D(0,h +startY,startZ),
+                new Point3D(0,h+startY,w+startZ),
+                new Point3D(0,startY,w+startZ),
+                new Point3D(0,startY,startZ),
+            };
+
+            LinearPath result = new LinearPath(point3Ds);
+
+            for (int i = 0; i < point3Ds.Length; i++)
+            {
+                Console.WriteLine($"new Point3D(0, {point3Ds[i].Y}, {point3Ds[i].Z})");
+                log4net.LogManager.GetLogger($"產生Base[{i}]").Debug($@"{point3Ds[i]}");
+            }
+
+
+            return result;
+        }
+
+
+
         /// <summary>
         /// 刪除未使用的三角面
         /// </summary>
@@ -438,6 +521,16 @@ namespace TestDevdept
         }
 
         private void button_Click()
+        {
+
+        }
+
+        private void button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void button_Click_2(object sender, RoutedEventArgs e)
         {
 
         }

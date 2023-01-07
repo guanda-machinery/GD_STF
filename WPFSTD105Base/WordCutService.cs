@@ -337,13 +337,14 @@ namespace WPFSTD105
                             List_CurrentTableContent.Clear();
                             for (int ii = 0; ii < CurrentMaterial.Length; ii++) CurrentMaterial[ii] = "";
 
-                            string[] PartColumnName = { "QR_code", "", "構件編號", "零件編號", "長度", "數量", "Phase", "車次", "條碼" };//合併儲存格的起點儲存格內容，將覆蓋其他儲存格內容
+                            //string[] PartColumnName = { "QR_code", "", "構件編號", "零件編號", "長度", "數量", "Phase", "車次", "條碼" };//合併儲存格的起點儲存格內容，將覆蓋其他儲存格內容
+                            string[] PartColumnName = { "QR_code", "", "構件編號", "零件編號", "長度", "數量", "標題一", "標題二", "條碼" };//合併儲存格的起點儲存格內容，將覆蓋其他儲存格內容
                             List_CurrentTableContent.Add(PartColumnName);
                             InsideBorder = false;
                             AddTableToWordDocument(document, List_CurrentTableContent, InsideBorder, "16","1400","START");
                             List_CurrentTableContent.Clear();
 
-                            var part_group = Result_materialDataViews[i].Parts.GroupBy(el => (el.Length, el.AssemblyNumber, el.PartNumber, el.Count, el.Phase, el.ShippingNumber), el => (el.Length, el.AssemblyNumber, el.PartNumber, el.Count, el.Phase, el.ShippingNumber));
+                            var part_group = Result_materialDataViews[i].Parts.GroupBy(el => (el.Length, el.AssemblyNumber, el.PartNumber, el.Count, el.Title1, el.Title2), el => (el.Length, el.AssemblyNumber, el.PartNumber, el.Count, el.Title1, el.Title2));
                             foreach (var part in part_group)
                             {
                                 foreach (var part_item in part)
@@ -361,8 +362,10 @@ namespace WPFSTD105
                                             Result_materialDataViews[i].Parts[j].PartNumber == part_item.PartNumber &&
                                             Result_materialDataViews[i].Parts[j].AssemblyNumber == part_item.AssemblyNumber &&
                                             Result_materialDataViews[i].Parts[j].Length == part_item.Length &&
-                                            Result_materialDataViews[i].Parts[j].Phase == part_item.Phase &&
-                                            Result_materialDataViews[i].Parts[j].ShippingNumber == part_item.ShippingNumber
+                                            //Result_materialDataViews[i].Parts[j].Phase == part_item.Phase &&
+                                            //Result_materialDataViews[i].Parts[j].ShippingNumber == part_item.ShippingNumber
+                                            Result_materialDataViews[i].Parts[j].Title1 == part_item.Title1 &&
+                                            Result_materialDataViews[i].Parts[j].Title2 == part_item.Title2
                                             )
                                         {
                                             part_count ++;
@@ -370,8 +373,10 @@ namespace WPFSTD105
                                     }
 
                                     CurrentSteelPart[5] = Convert.ToString(part_count);
-                                    CurrentSteelPart[6] = "";//part_item.Phase
-                                    CurrentSteelPart[7] = "";//part_item.ShippingNumber
+                                    //CurrentSteelPart[6] = "";//part_item.Phase
+                                    //CurrentSteelPart[7] = "";//part_item.ShippingNumber
+                                    CurrentSteelPart[6] = part_item.Title1;
+                                    CurrentSteelPart[7] = part_item.Title2;
 
                                     CurrentSteelPart[8] = Convert.ToString("Bar_code");
                                     List_CurrentTableContent.Add(CurrentSteelPart);

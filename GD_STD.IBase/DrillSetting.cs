@@ -74,7 +74,7 @@ namespace GD_STD.Base
         [DataMember]
         public DRILL_LEVEL Level { get; set; }
         /// <summary>
-        /// 鑽頭鑽過幾米內要通知換刀
+        /// 目前刀具已加工鑽孔深度
         /// </summary>
         [DataMember]
         public short Limit { get; set; }

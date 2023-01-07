@@ -152,7 +152,7 @@
                           Loaded="model_Loaded"
                           Renderer="NativeExperimental"
                              SelectionColor="{Binding Setting.SelectionColor, Converter={std:StringToDrawingColoConverter}}"
-                          ShowFps="True">
+                          ShowFps="False">
                 <WPFSTD:ModelExt.ContextMenu>
                     <ContextMenu FontSize="12"
                                  Style="{StaticResource BaseStyle}">
