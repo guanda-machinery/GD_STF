@@ -397,6 +397,10 @@ namespace STD_105
                             sa.Creation = DateTime.Now;
                             #endregion
 
+                            #region 複製切割線設定檔
+                            ViewModel.SaveCut(g_GUID, sa.GUID);
+                            #endregion
+
                             #region 讀NC檔
                             List<GroupBoltsAttr> groupBolts = new List<GroupBoltsAttr>();
                             SteelAttr saDeepClone = (SteelAttr)sa.DeepClone();
@@ -518,7 +522,10 @@ namespace STD_105
                             sa.PartNumber = ViewModel.PartNumberProperty;
                             sa.Creation = DateTime.Now;
                             #endregion
-
+                            
+                            #region 複製切割線設定檔
+                            ViewModel.SaveCut(g_GUID, sa.GUID);
+                            #endregion
 
                             #region 建模(以舊有形鋼為底新增)
                             // 建立型鋼
