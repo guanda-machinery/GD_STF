@@ -65,7 +65,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Content="Button"
-            PreviewMouseLeftButtonUp="button_PreviewMouseLeftButtonUp" Margin="0,0,40,74" Grid.Column="1" />
+            PreviewMouseLeftButtonUp="button_PreviewMouseLeftButtonUp" Margin="0,0,40,74" Grid.Column="1" Click="button_Click_2" />
         <Button
             x:Name="button_Copy"
             Width="87"

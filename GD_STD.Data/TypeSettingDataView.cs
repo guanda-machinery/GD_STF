@@ -223,7 +223,8 @@ namespace GD_STD.Data
         /// <summary>
         /// 斷面規格最小高度
         /// </summary>
-        public double SectionSpecificationMinHeight { get; set; } = 150;
+        public double SectionSpecificationMinHeight { get; set; } = 145;
+        //public double SectionSpecificationMinHeight { get; set; } = 150;
 
         /// <summary>
         /// 斷面規格最大寬度
