@@ -905,6 +905,13 @@ namespace STD_105.Office
                                     }
                                 }
 
+                                //// 2023/01/08 呂宗霖 某些狀況下 會造成上方if找不到符合條件的資料 故icount == model.Entities.Count 因而在下方Entities無法找到該索引之資料
+                                //// 詳細原因尚未查清，暫不註解，註解會造成無孔
+                                //if (model.Entities.Count == icount)
+                                //{
+                                //    break;
+                                //}
+
                                 BlockReference blockReference = (BlockReference)model.Entities[icount]; //取得參考圖塊
                                 Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
                                 
