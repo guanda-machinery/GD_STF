@@ -293,10 +293,25 @@ namespace WPFSTD105
         /// </summary>
         public ObservableCollection<TypeSettingDataView> DataViews { get { return dataViews; } set { dataViews = value; OnPropertyChanged(nameof(DataViews)); } } 
         public ObservableCollection<TypeSettingDataView> SelectedParts { get; set; } = new ObservableCollection<TypeSettingDataView>();
+
+
+
+        private ObservableCollection<MaterialDataView> _materialDataViews = new ObservableCollection<MaterialDataView>();
         /// <summary>
         /// 素材組合列表
         /// </summary>
-        public ObservableCollection<MaterialDataView> MaterialDataViews { get; set; } = new ObservableCollection<MaterialDataView>();
+        public ObservableCollection<MaterialDataView> MaterialDataViews 
+        { 
+            get 
+            { 
+                return _materialDataViews; 
+            }
+            set
+            { 
+                _materialDataViews = value;
+                OnPropertyChanged(nameof(MaterialDataViews)); 
+            }
+        }
 
 
         /// <summary>
@@ -726,6 +741,44 @@ namespace WPFSTD105
                     }
                 }
                 );
+            }
+        }
+        /// <summary>
+        /// 加入所有存在
+        /// </summary>
+        public ICommand AddEveryMaterial
+        {
+            get
+            {
+                return new WPFBase.RelayParameterizedCommand(obj =>
+                {
+                    var PartGirdControl = (DevExpress.Xpf.Grid.GridControl)obj;
+  
+                    foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in DataViews)
+                    {
+                        if (PartGridColumn.Sortable)
+                        {
+                            //數量
+                            var IDCount = PartGridColumn.ID.Count;
+                            //已配對
+                            var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
+
+                            PartGridColumn.SortCount = IDCount - alreadyMatchCount;
+                            //已配對
+                            //  PartGridColumn.Match.FindAll(x => (x == true)).Count;
+
+                            // DataViews[];
+                            //取得構件編號，將資料寫入datagrid
+
+                            //需要重整才能更新data binding 
+                            PartGirdControl.Dispatcher.Invoke(() =>
+                            {
+                                PartGirdControl.RefreshData();
+                            });
+                        }
+                    }
+
+                });
             }
         }
 
