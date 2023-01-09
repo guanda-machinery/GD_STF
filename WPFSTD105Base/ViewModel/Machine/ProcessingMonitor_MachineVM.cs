@@ -3072,15 +3072,9 @@ namespace WPFSTD105.ViewModel
                             }
                         }
 
-                        foreach (var FNDV in Finish_UndoneDataViews)
-                        {
-                            if (FNDV.PositionEnum != PositionStatusEnum.完成)
-                            {
-                                if ((FNDV.ObjectType == GD_STD.Enum.OBJECT_TYPE.CH || FNDV.ObjectType == GD_STD.Enum.OBJECT_TYPE.LB) && FNDV.LengthStr > 9050)
-                                    FNDV.PositionEnum = PositionStatusEnum.不可配對;
-                            }
-                        }
-                    }   //如果是在自動狀況下
+
+                    }   
+                    //如果是在自動狀況下
                     else if (ApplicationViewModel.PanelButton.Key == KEY_HOLE.AUTO) //如果有在自動狀況下
                     {
                         using (Memor.ReadMemorClient client = new Memor.ReadMemorClient())
@@ -3089,14 +3083,38 @@ namespace WPFSTD105.ViewModel
                             for (int i = 0; i < Finish_UndoneDataViews.Count; i++)
                             {
                                 _WorkMaterials[i] = client.GetWorkMaterial(Convert.ToUInt16(i));
+                                //有傳入加工資料
                                 if (_WorkMaterials[i].BoltsCountL != 0 || _WorkMaterials[i].BoltsCountR != 0 || _WorkMaterials[i].IndexBoltsM != 0)
                                 {
                                     _SendIndex.Add(Convert.ToInt16(i));
                                 }
-                              
+
+                                //已完成
+                                else if (_WorkMaterials[i].Position == -2)
+                                {
+                                    var work = _WorkMaterials[i];
+                                    long workOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.WorkMaterial)).ToInt64();
+                                    int workSize = Marshal.SizeOf(typeof(WorkMaterial));
+                                    work.Finish = 100;
+                                    work.IsExport = true;
+                                    WriteCodesysMemor.SetMonitorWorkOffset(work.ToByteArray(), workOffset + (workSize * i)); //發送加工陣列
+                                    _SendIndex.Add(Convert.ToInt16(i));
+                                }
+
                             }
                         }
+
                     }
+
+                    foreach (var FNDV in Finish_UndoneDataViews)
+                    {
+                        if (FNDV.PositionEnum != PositionStatusEnum.完成)
+                        {
+                            if ((FNDV.ObjectType == GD_STD.Enum.OBJECT_TYPE.CH || FNDV.ObjectType == GD_STD.Enum.OBJECT_TYPE.LB) && FNDV.LengthStr > 9050)
+                                FNDV.PositionEnum = PositionStatusEnum.不可配對;
+                        }
+                    }
+
 
                     using (Memor.WriteMemorClient Write = new Memor.WriteMemorClient())
                     {
