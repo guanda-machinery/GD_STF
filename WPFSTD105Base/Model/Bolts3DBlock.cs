@@ -360,7 +360,7 @@ namespace WPFSTD105.Model
             {
                 check = false;
             }
-
+            
             //if ((this.Info.Face == FACE.FRONT || this.Info.Face == FACE.BACK) && isRotate)
             //{
             //    this.Entities.ForEach(x =>

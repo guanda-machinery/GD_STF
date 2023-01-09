@@ -753,6 +753,7 @@ namespace WPFSTD105.ViewModel
         public GroupBoltsAttr GetHypotenuseBoltsAttr(FACE Face, START_HOLE SHoleType)
         {
             this.Steelbuffer = (SteelAttr)SteelAttr.Clone();
+            Boltsbuffer.groupBoltsType = GroupBoltsAttr.groupBoltsType;
             Boltsbuffer.GUID = GroupBoltsAttr.GUID;
             //直徑設定
             if (CheckDia)
@@ -861,6 +862,7 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public GroupBoltsAttr GetGroupBoltsAttr()
         {
+            Boltsbuffer.groupBoltsType = GroupBoltsAttr.groupBoltsType;
             Boltsbuffer.BlockName = GroupBoltsAttr.BlockName;
             Boltsbuffer.GUID = GroupBoltsAttr.GUID;
             //直徑設定

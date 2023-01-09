@@ -81,6 +81,7 @@
     <Compile Include="ErrorCodeAttribute.cs" />
     <Compile Include="ERROR_CODE.cs" />
     <Compile Include="Expand.cs" />
+    <Compile Include="GroupBoltsType.cs" />
     <Compile Include="FACE.cs" />
     <Compile Include="GROUP_DEVICE.cs" />
     <Compile Include="JOYSTICK.cs" />
