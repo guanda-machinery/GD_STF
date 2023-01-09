@@ -642,11 +642,25 @@ namespace WPFSTD105.ViewModel
         {
             //當歷程記錄AddOperatingLog與ShowMessageBox顯示同時使用時，需先執行ShowMessageBox，
             //否則會發生歷程記錄無法自動捲動之情況
-
-            _SynchronizationContext.Send(t =>
+            if (_SynchronizationContext != null)
             {
-                LogDataList.Add(new OperatingLog { LogString = _Logstring, LogSource = LogSourceEnum, LogDatetime = DateTime.Now, IsAlert = _IsAlert });
-            }, null);
+                _SynchronizationContext.Send(t =>
+                {
+                    LogDataList.Add(new OperatingLog { LogString = _Logstring, LogSource = LogSourceEnum, LogDatetime = DateTime.Now, IsAlert = _IsAlert });
+                }, null);
+            }
+            else
+            {
+                WinUIMessageBox.Show(null,
+                            $"{_Logstring}",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Window);
+
+            }
             RefreshLogGridC();
 
             //需加入自動捲動功能
@@ -2130,12 +2144,12 @@ namespace WPFSTD105.ViewModel
                     if (ActualDrillDict.ContainsKey(FACE.TOP))
                         SendDrillToMachine(_BoltsCountMOffset, _DrMOffset, ActualDrillDict[FACE.TOP], steelPart, cWork, steelPart.H, view.LengthStr, null);
                     else
-                        SendDrillToMachine(_BoltsCountLOffset, _DrMOffset, new List<Drill>(), steelPart, cWork, steelPart.W,  view.LengthStr, null);
+                        SendDrillToMachine(_BoltsCountMOffset, _DrMOffset, new List<Drill>(), steelPart, cWork, steelPart.W,  view.LengthStr, null);
 
                     if (ActualDrillDict.ContainsKey(FACE.BACK))
                         SendDrillToMachine(_BoltsCountROffset, _DrROffset, ActualDrillDict[FACE.BACK], steelPart, cWork, steelPart.W, view.LengthStr, null);
                     else
-                        SendDrillToMachine(_BoltsCountLOffset, _DrROffset, new List<Drill>(), steelPart, cWork, steelPart.W, view.LengthStr, null);
+                        SendDrillToMachine(_BoltsCountROffset, _DrROffset, new List<Drill>(), steelPart, cWork, steelPart.W, view.LengthStr, null);
                 }
                 else
                 {
@@ -2274,8 +2288,6 @@ namespace WPFSTD105.ViewModel
         {
             try
             {
-
-
                 STDSerialization ser = new STDSerialization();
 
                 DevExpress.Xpf.Core.SplashScreenManager ProcessingScreenWin = DevExpress.Xpf.Core.SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
@@ -2327,6 +2339,7 @@ namespace WPFSTD105.ViewModel
 
                 _SynchronizationContext.Send(t => _Model.Clear(), null);
                 await Task.Yield();
+
                 ser.SetMaterialDataView(Finish_UndoneDataViews);
             }
             catch(Exception ex)
@@ -2360,10 +2373,23 @@ namespace WPFSTD105.ViewModel
                     _WriteCodesysTask?.Dispose();
 
                     TaskBoolean = false;
+
+                    try
+                    {
+                        STDSerialization ser = new STDSerialization();
+                        ser.SetMaterialDataView(Finish_UndoneDataViews);
+                    }
+                    catch
+                    {
+
+                    }
+
                 }
                 // TODO: 釋出非受控資源 (非受控物件) 並覆寫完成項
                 // TODO: 將大型欄位設為 Null
                 _DsposedValue = true;
+
+
             }
         }
         /// <summary>
@@ -3244,6 +3270,8 @@ namespace WPFSTD105.ViewModel
 
             ser.SetWorkMaterialOtherBackup(workOther);
             ser.SetWorkMaterialIndexBackup(indexArray); //備份 indexArray
+            
+
             //解除配對時需把工作陣列全清除
             var noInfo = indexArray.Except(_SendIndex).ToArray(); //查詢尚未發送加工孔位的 index 
             for (int i = 0; i < noInfo.Length; i++) //找出沒發送過的工作陣列
@@ -3257,7 +3285,7 @@ namespace WPFSTD105.ViewModel
                     Finish_UndoneDataViews[noInfo[i]].MachiningTypeMode = IsPinMode? MachiningType.PinTest : MachiningType.NormalMaching;
 
                     //把更新後的MachiningTypeMode寫入資料表中
-                    ser.SetMaterialDataView(Finish_UndoneDataViews);
+
                     _SendIndex.Add(noInfo[i]); //存取已經發送過的列表
                 }
                 else
@@ -3305,7 +3333,7 @@ namespace WPFSTD105.ViewModel
 
             IsSerializing = false;
 
-            ser.SetMaterialDataView(Finish_UndoneDataViews);
+
 
             Thread.Sleep(1000); //等待 2 秒後執行
         }
@@ -3403,6 +3431,7 @@ namespace WPFSTD105.ViewModel
                     try
                     {
                         var serIndex = index.Except(_Finish); //差集未完成的陣列數值
+
                         foreach (var value in serIndex)
                         {
                             _WorkMaterials[value] = client.GetWorkMaterial(Convert.ToUInt16(value));
@@ -3470,12 +3499,25 @@ namespace WPFSTD105.ViewModel
 
                         }
 
-                        //if (_WorkMaterials.FindIndex(x => x.Position == 0 || x.Position == -1) != -1)
-                        if (_WorkMaterials.FindIndex(x => x.Position == 0) != -1)
+                        //取得待加工的素材
+                        var WaitMachining_MaterialList = new List<string>();
+
+                        foreach (var value in serIndex)
                         {
-                            if(!TransportGridIsEnable)
+                            if (_WorkMaterials[value].Position == 0)
                             {
-                                AddOperatingLog(LogSourceEnum.Machine, "工件正在等待搬運");
+                                WaitMachining_MaterialList.Add(Finish_UndoneDataViews[value].MaterialNumber);
+                            }
+                        }
+
+                        if (WaitMachining_MaterialList.Count != 0)
+                        {
+                            if (!TransportGridIsEnable)
+                            {
+                                foreach (var WaitMachining_MaterialNumber in WaitMachining_MaterialList)
+                                {
+                                    AddOperatingLog(LogSourceEnum.Machine, $"素材編號{WaitMachining_MaterialNumber}正在等待入料");
+                                }
                             }
                             HintStep3 = true;
                             TransportGridIsEnable = true;
@@ -3484,11 +3526,21 @@ namespace WPFSTD105.ViewModel
                         {
                             if (TransportGridIsEnable)
                             {
-                                AddOperatingLog(LogSourceEnum.Machine, "沒有待加工之工件");
+                                AddOperatingLog(LogSourceEnum.Machine, "沒有待加工之素材");
                             }
                             HintStep3 = false;
+                            HintStep4 = false;
+
+                            if (Transport_RadioButtonIsChecked)
+                                Transport_RadioButtonIsChecked = false;
+
+                            if (Transport_by_Continue_RadioButtonIsChecked)
+                                Transport_by_Continue_RadioButtonIsChecked = false;
+
                             TransportGridIsEnable = false;
                         }
+
+
                         RefreshScheduleGridC();
                     }
                     catch (Exception ex)

@@ -623,7 +623,10 @@ namespace WPFSTD105
         public ObservableCollection<MaterialDataView> GetMaterialDataView(string ModelPath)
         {
             return GZipDeserialize<ObservableCollection<MaterialDataView>>(ModelPath);
-        }
+        }    
+
+
+
         /// <summary>
         /// 存取排版設定
         /// </summary>

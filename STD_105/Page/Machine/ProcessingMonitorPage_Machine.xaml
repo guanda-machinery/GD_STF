@@ -618,7 +618,7 @@ AllowEditing="False"
                 </TextBlock.Visibility>
             </TextBlock>
         </Grid>
-        <TabControl Grid.Row="1" Margin="5"
+        <TabControl Grid.Row="1" Margin="5,0,5,10"
                         BorderThickness="0"
                         Background="#303030"
                         x:Name="DrawTabControl"
@@ -1005,7 +1005,7 @@ AllowEditing="False"
                                         UpdateSourceTrigger=PropertyChanged}">
                                         <dxg:GridControl.View >
                                             <dxg:TableView
-                                Header="前面(左翼板)" >
+                                Header="後面(左翼板)" >
                                                 <dxg:TableView.CellStyle>
                                                     <Style>
                                                         <Setter Property="TextBlock.FontSize" Value="12"/>
@@ -1253,7 +1253,7 @@ AllowEditing="False"
                                         UpdateSourceTrigger=PropertyChanged}">
                                         <dxg:GridControl.View >
                                             <dxg:TableView
-                                Header="背面(右翼板)" >
+                                Header="前面(右翼板)" >
                                                 <dxg:TableView.CellStyle>
                                                     <Style>
                                                         <Setter Property="TextBlock.FontSize" Value="12"/>
