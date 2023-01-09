@@ -1512,18 +1512,6 @@ namespace STD_105.Office
         }
 
 
-
-        /// <summary>
-        /// 刪掉素材
-        /// </summary>
-        private void DeleteMaterial()
-        {
-            //會先清空零件
-           // DeleteAllPart();
-
-        }
-
-
         private void ReloadMaterialGrid()
         {
             //紀錄卷軸位置
