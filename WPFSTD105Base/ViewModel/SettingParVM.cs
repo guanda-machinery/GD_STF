@@ -2397,6 +2397,8 @@ namespace WPFSTD105.ViewModel
                     {
                         //ObservableCollection<SteelAttr> system = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryModel()}\{ModelPath.Profile}\{strType}.inp");//系統的斷面規格
                         ObservableCollection<SteelAttr> system = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>(System.AppDomain.CurrentDomain.BaseDirectory + $@"Profile\{strType}.inp");//系統的斷面規格(在輸出目錄中)
+                        log4net.LogManager.GetLogger("檢查").Debug("系統斷面規格儲存位置："+ System.AppDomain.CurrentDomain.BaseDirectory + $@"Profile\{strType}.inp");
+
                         //SteelAttr steelAttr = GetSettingSteelAttr(); //取得設定好的斷面規格
                         if (system.IndexOf(e => e.Profile == steelAttr_system.Profile) != -1) //如果有相同的斷面規格
                         {
