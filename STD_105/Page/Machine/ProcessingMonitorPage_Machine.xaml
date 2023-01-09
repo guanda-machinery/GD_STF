@@ -555,7 +555,7 @@ AllowEditing="False"
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="{Binding Row.PositionEnum,Converter={local:PositionStatusEnumToStringConverter},UpdateSourceTrigger=PropertyChanged}"/>
-                                        <TextBlock Grid.Column="1" Text="{Binding Row.EX_EN_count,UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding Row.Position_count,UpdateSourceTrigger=PropertyChanged}" />
                                     </Grid>
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
@@ -1005,7 +1005,7 @@ AllowEditing="False"
                                         UpdateSourceTrigger=PropertyChanged}">
                                         <dxg:GridControl.View >
                                             <dxg:TableView
-                                Header="前面(右翼板)" >
+                                Header="前面(左翼板)" >
                                                 <dxg:TableView.CellStyle>
                                                     <Style>
                                                         <Setter Property="TextBlock.FontSize" Value="12"/>
@@ -1253,7 +1253,7 @@ AllowEditing="False"
                                         UpdateSourceTrigger=PropertyChanged}">
                                         <dxg:GridControl.View >
                                             <dxg:TableView
-                                Header="背面" >
+                                Header="背面(右翼板)" >
                                                 <dxg:TableView.CellStyle>
                                                     <Style>
                                                         <Setter Property="TextBlock.FontSize" Value="12"/>
@@ -1361,7 +1361,7 @@ AllowEditing="False"
                                 UpdateSourceTrigger=PropertyChanged}">
                                 <dxg:GridControl.View >
                                     <dxg:TableView  
-                                Header="後面(左翼板)" >
+                                Header="後面(右翼板)" >
                                         <dxg:TableView.CellStyle>
                                             <Style>
                                                 <Setter Property="TextBlock.FontSize" Value="12"/>

@@ -68,51 +68,56 @@ namespace WPFSTD105
             {
                 ObservableCollection<SteelPart> buffer = eachPart.Value;
                 //只將 BH RH L TUBE BOX CH H LB([)加入到列表內
-                if (buffer != null && ObSettingVM.allowType.Contains(buffer[0].Type))
-                {
-                    foreach (var item in buffer.Where(x => x.ExclamationMark == false || x.ExclamationMark is null)) //逐步展開零件
-                    {
-                        if (item.Father != null)
-                        {
-                            for (int i = 0; i < item.Father.Count; i++)  //逐步展開零件  id or match
-                            {
-                                int index = assemblies.FindIndex(el => el.ID.Contains(item.Father[i])); //找出構件列表內是零件的 Father 位置
-                                if (index == -1) //找不到物件
-                                {
-                                    //throw new Exception("index 不可以是 -1");
-                                    continue;
-                                }
 
-                                int idIndex = assemblies[index].ID.IndexOf(item.Father[i]); //找出構件 id 所在的陣列位置
-                                TypeSettingDataView view = new TypeSettingDataView(item, assemblies[index], idIndex, i);
-                                view.SortCount = 0;
-                                int dataIndex = LoadedDataViews.ToList().IndexOf(view); //搜尋指定的物件
-                                if (dataIndex == -1) //如果找不到物件
+                if (buffer != null && buffer.Count !=0)
+                {
+                    if (ObSettingVM.allowType.Contains(buffer[0].Type))
+                    {
+                        foreach (var item in buffer.Where(x => x.ExclamationMark == false || x.ExclamationMark is null)) //逐步展開零件
+                        {
+                            if (item.Father != null)
+                            {
+                                for (int i = 0; i < item.Father.Count; i++)  //逐步展開零件  id or match
                                 {
-                                    LoadedDataViews.Add(view);
-                                }
-                                else
-                                {
-                                    LoadedDataViews[dataIndex].Add(item, i);
+                                    int index = assemblies.FindIndex(el => el.ID.Contains(item.Father[i])); //找出構件列表內是零件的 Father 位置
+                                    if (index == -1) //找不到物件
+                                    {
+                                        //throw new Exception("index 不可以是 -1");
+                                        continue;
+                                    }
+
+                                    int idIndex = assemblies[index].ID.IndexOf(item.Father[i]); //找出構件 id 所在的陣列位置
+                                    TypeSettingDataView view = new TypeSettingDataView(item, assemblies[index], idIndex, i);
+                                    view.SortCount = 0;
+                                    int dataIndex = LoadedDataViews.ToList().IndexOf(view); //搜尋指定的物件
+                                    if (dataIndex == -1) //如果找不到物件
+                                    {
+                                        LoadedDataViews.Add(view);
+                                    }
+                                    else
+                                    {
+                                        LoadedDataViews[dataIndex].Add(item, i);
+                                    }
                                 }
                             }
-                        }
-                        else
-                        {
-                            LoadedDataViews.Add(new TypeSettingDataView()
+                            else
                             {
-                                Profile = item.Profile,
-                                Length = item.Length,
-                                AssemblyNumber = item.Number,
-                                PartNumber = item.Number,
-                                Material = item.Material,
-                                SortCount = 0,
-                                Match = item.Match,
-                                Weigth = item.UnitWeight
-                            });
+                                LoadedDataViews.Add(new TypeSettingDataView()
+                                {
+                                    Profile = item.Profile,
+                                    Length = item.Length,
+                                    AssemblyNumber = item.Number,
+                                    PartNumber = item.Number,
+                                    Material = item.Material,
+                                    SortCount = 0,
+                                    Match = item.Match,
+                                    Weigth = item.UnitWeight
+                                });
+                            }
                         }
                     }
                 }
+
             }
             return LoadedDataViews;
         }
@@ -288,10 +293,25 @@ namespace WPFSTD105
         /// </summary>
         public ObservableCollection<TypeSettingDataView> DataViews { get { return dataViews; } set { dataViews = value; OnPropertyChanged(nameof(DataViews)); } } 
         public ObservableCollection<TypeSettingDataView> SelectedParts { get; set; } = new ObservableCollection<TypeSettingDataView>();
+
+
+
+        private ObservableCollection<MaterialDataView> _materialDataViews = new ObservableCollection<MaterialDataView>();
         /// <summary>
         /// 素材組合列表
         /// </summary>
-        public ObservableCollection<MaterialDataView> MaterialDataViews { get; set; } = new ObservableCollection<MaterialDataView>();
+        public ObservableCollection<MaterialDataView> MaterialDataViews 
+        { 
+            get 
+            { 
+                return _materialDataViews; 
+            }
+            set
+            { 
+                _materialDataViews = value;
+                OnPropertyChanged(nameof(MaterialDataViews)); 
+            }
+        }
 
 
         /// <summary>
@@ -721,6 +741,44 @@ namespace WPFSTD105
                     }
                 }
                 );
+            }
+        }
+        /// <summary>
+        /// 加入所有存在
+        /// </summary>
+        public ICommand AddEveryMaterial
+        {
+            get
+            {
+                return new WPFBase.RelayParameterizedCommand(obj =>
+                {
+                    var PartGirdControl = (DevExpress.Xpf.Grid.GridControl)obj;
+  
+                    foreach (GD_STD.Data.TypeSettingDataView PartGridColumn in DataViews)
+                    {
+                        if (PartGridColumn.Sortable)
+                        {
+                            //數量
+                            var IDCount = PartGridColumn.ID.Count;
+                            //已配對
+                            var alreadyMatchCount = PartGridColumn.Match.FindAll(x => (x == false)).Count;
+
+                            PartGridColumn.SortCount = IDCount - alreadyMatchCount;
+                            //已配對
+                            //  PartGridColumn.Match.FindAll(x => (x == true)).Count;
+
+                            // DataViews[];
+                            //取得構件編號，將資料寫入datagrid
+
+                            //需要重整才能更新data binding 
+                            PartGirdControl.Dispatcher.Invoke(() =>
+                            {
+                                PartGirdControl.RefreshData();
+                            });
+                        }
+                    }
+
+                });
             }
         }
 

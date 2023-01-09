@@ -193,8 +193,17 @@ namespace WPFSTD105
                     ActivateLoading();
                     try
                     {
+
+                        var a = $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx";
+                        var DocPath = Path.Combine(Properties.SofSetting.Default.LoadPath, CommonViewModel.ProjectName, "切割明細表.docx");
+
                         string startup_path = System.Windows.Forms.Application.StartupPath;
-                        word.CreateFile($@"{CommonViewModel.ProjectName}", $@"{CommonViewModel.ProjectProperty.Number}", $@"{startup_path}\AllFileTemplate\CutDocTemp.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", MaterialDataViews, TotalLoss_BothSide);
+                        word.CreateFile($@"{CommonViewModel.ProjectName}", 
+                            $@"{CommonViewModel.ProjectProperty.Number}", 
+                            $@"{startup_path}\AllFileTemplate\CutDocTemp.docx", 
+                            $@"{DocPath}", 
+                            MaterialDataViews, 
+                            TotalLoss_BothSide);
                     }
                     catch (Exception ex)
                     {
@@ -215,10 +224,13 @@ namespace WPFSTD105
 
                     try 
                     { 
+
+
+
                         //Word轉PDF
                         Microsoft.Office.Interop.Word.Application appWord = new Microsoft.Office.Interop.Word.Application();
-                        wordDocument = appWord.Documents.Open($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx");
-                        wordDocument.ExportAsFixedFormat($@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf", WdExportFormat.wdExportFormatPDF);
+                        wordDocument = appWord.Documents.Open(Path.Combine(Properties.SofSetting.Default.LoadPath,CommonViewModel.ProjectName,"切割明細表.docx"));
+                        wordDocument.ExportAsFixedFormat(Path.Combine(Properties.SofSetting.Default.LoadPath, CommonViewModel.ProjectName, $"切割明細表_{current_time}.pdf"), WdExportFormat.wdExportFormatPDF);
                         wordDocument.Close(false);
 
                         //刪除已產生的報表WORD檔&目前所有的WINWORD程序
@@ -226,7 +238,10 @@ namespace WPFSTD105
                         {
                             DeleteWordFileAfterDelay(1000, $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表.docx", $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\切割明細表_{current_time}.pdf");
                         }
-                        catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+                        catch (Exception ex) 
+                        { 
+                            Console.WriteLine(ex.ToString());
+                        }
 
                         DeactivateLoading();
 
@@ -244,8 +259,9 @@ namespace WPFSTD105
                         DeactivateLoading();
                         Console.WriteLine(ex.ToString());
 
+                        //$"產生切割明細表PDF檔發生錯誤",
                         WinUIMessageBox.Show(null,
-                        $"產生切割明細表PDF檔發生錯誤",
+                        $"{ex.Message}",
                         "通知",
                         MessageBoxButton.OK,
                         MessageBoxImage.Exclamation,

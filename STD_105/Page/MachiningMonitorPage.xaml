@@ -73,7 +73,7 @@
                               Loaded="model_Loaded"
                               Renderer="NativeExperimental"
                               SelectionColor="{Binding Setting.SelectionColor, Converter={local:StringToDrawingColoConverter}}"
-                              ShowFps="True">
+                              ShowFps="False">
                     <spa:ModelExt.ContextMenu>
                         <ContextMenu FontSize="12"
                                      Style="{StaticResource BaseStyle}">

@@ -397,6 +397,10 @@ namespace STD_105
                             sa.Creation = DateTime.Now;
                             #endregion
 
+                            #region 複製切割線設定檔
+                            ViewModel.SaveCut(g_GUID, sa.GUID);
+                            #endregion
+
                             #region 讀NC檔
                             List<GroupBoltsAttr> groupBolts = new List<GroupBoltsAttr>();
                             SteelAttr saDeepClone = (SteelAttr)sa.DeepClone();
@@ -518,7 +522,10 @@ namespace STD_105
                             sa.PartNumber = ViewModel.PartNumberProperty;
                             sa.Creation = DateTime.Now;
                             #endregion
-
+                            
+                            #region 複製切割線設定檔
+                            //ViewModel.SaveCut(g_GUID, sa.GUID);
+                            #endregion
 
                             #region 建模(以舊有形鋼為底新增)
                             // 建立型鋼
@@ -592,6 +599,10 @@ namespace STD_105
                             // 若ViewModel.SteelAttr.PartNumber代表取值又失敗了，只好強制給值囉~
                             GetViewToViewModel(true);
                         }
+
+                        #region 複製切割線設定檔
+                        //ViewModel.SaveCut(g_GUID, sa.GUID);
+                        #endregion
 
                         #region 建模(全新型鋼)
                         // 建立型鋼
@@ -1843,7 +1854,7 @@ namespace STD_105
                 //查看用戶是否有選擇圖塊
                 if (ViewModel.Select3DItem.Count > 0)
                 {
-                    if (!ViewModel.CheckData_ModifyHole(ViewModel.PartNumberProperty, model))
+                    if (!ViewModel.CheckData_ModifyHole(ViewModel.PartNumberProperty, model, ViewModel.Select3DItem))
                     {
                         return;
                     }
@@ -2888,7 +2899,7 @@ namespace STD_105
             //刪除孔位(孔群)
             ViewModel.DeleteHole = new RelayCommand(() =>
             {
-                if (!ViewModel.CheckData_DelHole(ViewModel.PartNumberProperty, model))
+                if (!ViewModel.CheckData_DelHole(ViewModel.PartNumberProperty, model, ViewModel.Select3DItem))
                 {
                     return;
                 }
@@ -3218,7 +3229,8 @@ namespace STD_105
             {
                 case "add":
                     // 2022/10/13 呂宗霖 新增:零件是否已存在專案中，存在的話不允許新增
-                    if (part.Any(x => x.Value.Any(y => y.Number == ViewModel.PartNumberProperty)))
+                    //if (part.Any(x => x.Value.Any(y => y.Number == ViewModel.PartNumberProperty)))
+                    if (!ViewModel.CheckOption_IsNotOfficialPart(part, ViewModel.PartNumberProperty))
                     {
                         WinUIMessageBox.Show(null,
                        $"零件編號已存在，不可新增",
@@ -3234,16 +3246,16 @@ namespace STD_105
                 case "edit":
                     ObservableCollection<DataCorrespond> DataCorrespond = ser.GetDataCorrespond();
 
-                    if (!part.Values.SelectMany(x => x).Any(x => x.GUID == ViewModel.GuidProperty))
+                    if (ViewModel.CheckOption_IsNotOfficialPart(part, ViewModel.PartNumberProperty))
                     {
                         WinUIMessageBox.Show(null,
-                      $"零件編號不存在，不可編輯",
-                      "通知",
-                      MessageBoxButton.OK,
-                      MessageBoxImage.Exclamation,
-                      MessageBoxResult.None,
-                      MessageBoxOptions.None,
-                       FloatingMode.Window);
+                            $"零件編號不存在，不可編輯",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Window);
                         return false;
                     }
 
@@ -3293,7 +3305,19 @@ namespace STD_105
                             FloatingMode.Window);
                         return false;
                     }
-
+                    //if (!part.Values.SelectMany(x => x).Any(x => x.Number == ViewModel.PartNumber && x.Match.Where(y => y == false).Count() > 0))
+                    if (ViewModel.CheckOption_IsPartTypesetting(part, ViewModel.PartNumberProperty))
+                    {
+                        WinUIMessageBox.Show(null,
+                            $"零件已排版，不可編輯",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Window);
+                        return false;
+                    }
                     break;
             }
             return true;
@@ -4035,6 +4059,11 @@ namespace STD_105
             {
                 SteelAssemblies = new ObservableCollection<SteelAssembly>();
             }
+            if (!SteelAssemblies.Any(x => x.Number == sa.AsseNumber))
+            {
+                add = true;
+            }
+            else { add = false; }
             var ass = new GD_STD.Data.SteelAssembly()
             {
                 //GUID = Guid.NewGuid(),
@@ -4089,7 +4118,7 @@ namespace STD_105
                 // 若此構件已存在(同編號 同長度 同數量，代表編輯零件)，取得ID
                 // add 改為 false
                 //if (SteelAssemblies.Where(x => x.Number == ass.Number && x.Count == ViewModel.SteelAttr.Number && x.Length == ViewModel.SteelAttr.Length
-                if (SteelAssemblies.Where(x => x.Number == ass.Number && x.Count == sa.Number && x.Length == sa.Length).Any())
+                if (SteelAssemblies.Any(x => x.Number == ass.Number && x.Count == sa.Number && x.Length == sa.Length))
                 {
                     // 取得目前構件ID
                     ass.ID = SteelAssemblies.FirstOrDefault(x =>
@@ -4102,7 +4131,7 @@ namespace STD_105
                     add = false;
                 }
 
-                if (SteelAssemblies.Where(x => x.Number == ass.Number && x.Count != sa.Number && x.Length == sa.Length).Any())
+                if (SteelAssemblies.Any(x => x.Number == ass.Number && x.Count != sa.Number && x.Length == sa.Length))
                 {
                     add = true;
                     // 原始構件ID
@@ -4294,6 +4323,7 @@ namespace STD_105
             // 給定 零件 數量vsID
             steelPart.ID = buffer1.ToList();
             steelPart.Count = ass.ID.Count();
+            steelPart.Creation = sa.Creation;
             steelPart.Revise = (sa.Revise.HasValue ? sa.Revise.Value : DateTime.Now);
             steelPart.ExclamationMark = exclamationMark;
             oldGuid = (oldGuid == null ? steelPart.GUID : oldGuid);
@@ -4330,6 +4360,7 @@ namespace STD_105
                         single.Length = steelPart.Length;
                         single.Title1 = steelPart.Title1;
                         single.Title2 = steelPart.Title2;
+                        single.Creation = steelPart.Creation;
                         single.Revise = steelPart.Revise;
                         single.Material = steelPart.Material;
                         single.ShippingNumber = steelPart.ShippingNumber;

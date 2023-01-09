@@ -502,14 +502,14 @@ namespace WPFSTD105
                                 FloatingMode.Window);*/
 
                             //更改為統一清除機台資料
-                            int size = Marshal.SizeOf(typeof(GD_STD.Phone.MonitorWork));
+                            /*int size = Marshal.SizeOf(typeof(GD_STD.Phone.MonitorWork));
                             using (WPFSTD105.Memor.MemorClient memory = new Memor.MemorClient())
                             {
                                 memory.IniWork();
-                            }
+                            }     */
                             //若相同則問是否要續接
 
-                            /*var messageBoxResult = WinUIMessageBox.Show(null,
+                            var messageBoxResult = WinUIMessageBox.Show(null,
                                 $"本次開啟專案「{e.ToString()}」與PLC內專案名稱相同\n請確認是否續接專案，\n選是為續接專案\n選否將會初始化所有工件的當前位置。", 
                                 "通知", MessageBoxButton.YesNo, 
                                 MessageBoxImage.Exclamation, 
@@ -521,10 +521,10 @@ namespace WPFSTD105
                             ApplicationViewModel.CurrentPage = ApplicationPage.Home;
                             Task.Run(() =>
                             {
-                                while (!ApplicationViewModel.IsHome)
-                                {
-                                    Task.Delay(300);
-                                }
+                                //while (!ApplicationViewModel.IsHome)
+                                //{
+                                //    Task.Delay(300);
+                               // }
 
                                 if (messageBoxResult == MessageBoxResult.No)
                                 {
@@ -535,7 +535,8 @@ namespace WPFSTD105
                                     }
                                 }
 
-                            });*/
+                            });
+
                             base.OpenProject().Execute(e);
                         }
                         else

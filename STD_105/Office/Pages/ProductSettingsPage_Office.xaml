@@ -346,7 +346,7 @@
                                   Focusable="True"
                                   AntiAliasingSamples="x16"
                                   Renderer="NativeExperimental"                                  
-                                  ShowFps="True">
+                                  ShowFps="False">
                         <WPFSTD:ModelExt.ContextMenu>
                             <ContextMenu Style="{StaticResource BaseStyle}"
                                          FontSize="12">
@@ -1050,16 +1050,14 @@
                                                 <RowDefinition Height="*"/>
                                                 <RowDefinition Height="*"/>
                                             </Grid.RowDefinitions>
-
-                                            <RadioButton  Margin="0,3,0,0" Grid.Row="0" GroupName="DrillingPosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=1}">
+                                            <RadioButton  Margin="0,3,0,0" Grid.Row="0" GroupName="DrillingPosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=2}">
                                                 <RadioButton.Content>
-                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,-2" >
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,-2">
                                                         <Label Content="前面"/>
-                                                        <Label Margin="40,0,0,0" Content="右翼板" />
+                                                        <Label Margin="40,0,0,0" Content="左翼板" />
                                                     </StackPanel>
                                                 </RadioButton.Content>
                                             </RadioButton>
-
                                             <RadioButton Margin="0,3,0,0" Grid.Row="1" VerticalAlignment="Center" GroupName="DrillingPosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=0}">
                                                 <RadioButton.Content>
                                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,-2">
@@ -1069,14 +1067,17 @@
                                                 </RadioButton.Content>
                                             </RadioButton>
 
-                                            <RadioButton  Margin="0,3,0,0" Grid.Row="2" GroupName="DrillingPosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=2}">
+
+                                            <RadioButton  Margin="0,3,0,0" Grid.Row="2" GroupName="DrillingPosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=1}">
                                                 <RadioButton.Content>
-                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,-2">
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,-2" >
                                                         <Label Content="後面"/>
-                                                        <Label Margin="40,0,0,0" Content="左翼板" />
+                                                        <Label Margin="40,0,0,0" Content="右翼板" />
                                                     </StackPanel>
                                                 </RadioButton.Content>
                                             </RadioButton>
+
+                                            
 
 
                                         </Grid>
@@ -1164,11 +1165,12 @@
                                                 <RowDefinition Height="*"/>
                                             </Grid.RowDefinitions>
 
-                                            <RadioButton  Margin="0,0,0,0" Grid.Row="0" GroupName="CutLinePosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=1}" Command="{Binding rb_CutLinePosition_Command}">
+
+                                            <RadioButton  Margin="0,0,0,0" Grid.Row="0" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=2}" Command="{Binding rb_CutLinePosition_Command}">
                                                 <RadioButton.Content>
-                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0" >
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                                                         <Label Content="前面"/>
-                                                        <Label Margin="40,0,0,0" Content="右翼板" />
+                                                        <Label Margin="40,0,0,0" Content="左翼板" />
                                                     </StackPanel>
                                                 </RadioButton.Content>
                                             </RadioButton>
@@ -1182,15 +1184,14 @@
                                                 </RadioButton.Content>
                                             </RadioButton>
 
-                                            <RadioButton  Margin="0,-10,0,0" Grid.Row="2" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=2}" Command="{Binding rb_CutLinePosition_Command}">
+                                            <RadioButton  Margin="0,-10,0,0" Grid.Row="2" GroupName="CutLinePosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=1}" Command="{Binding rb_CutLinePosition_Command}">
                                                 <RadioButton.Content>
-                                                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0" >
                                                         <Label Content="後面"/>
-                                                        <Label Margin="40,0,0,0" Content="左翼板" />
+                                                        <Label Margin="40,0,0,0" Content="右翼板" />
                                                     </StackPanel>
                                                 </RadioButton.Content>
                                             </RadioButton>
-
                                         </Grid>
 
 

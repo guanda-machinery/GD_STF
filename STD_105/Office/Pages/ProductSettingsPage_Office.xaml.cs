@@ -350,18 +350,6 @@ namespace STD_105.Office
 
                             #region 讀取dm檔
                             ReadFile readFile = ser.ReadPartModel(g_GUID.ToString()); //讀取檔案內容
-                            //if (readFile == null)
-                            //{
-                            //    WinUIMessageBox.Show(null,
-                            //        $"專案Dev_Part資料夾讀取失敗",
-                            //        "通知",
-                            //        MessageBoxButton.OK,
-                            //        MessageBoxImage.Exclamation,
-                            //        MessageBoxResult.None,
-                            //        MessageBoxOptions.None,
-                            //         FloatingMode.Window);
-                            //    return;
-                            //}
                             readFile.DoWork();//開始工作
                             readFile.AddToScene(model);//將讀取完的檔案放入到模型 
                             #endregion
@@ -397,6 +385,10 @@ namespace STD_105.Office
                             sa.Creation = DateTime.Now;
                             #endregion
 
+                            #region 複製切割線設定檔
+                            ViewModel.SaveCut(g_GUID, sa.GUID);
+                            #endregion
+
                             #region 讀NC檔
                             List<GroupBoltsAttr> groupBolts = new List<GroupBoltsAttr>();
                             SteelAttr saDeepClone = (SteelAttr)sa.DeepClone();
@@ -410,18 +402,6 @@ namespace STD_105.Office
                             #region 孔位資訊
                             List<Block> block = model.GetBoltFromBlock(groupBolts);
                             #endregion
-                            //var profile = ser.GetSteelAttr();
-                            //TeklaNcFactory t = new TeklaNcFactory();
-                            //Steel3DBlock s3Db = new Steel3DBlock();
-                            //SteelAttr steelAttrNC = new SteelAttr();
-                            //List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
-
-                            //s3Db.ReadNcFile($@"{ApplicationVM.DirectoryNc()}\{ViewModel.PartNumberProperty}.nc1", profile, sa, ref steelAttrNC, ref groups);
-                            //sa.GUID = Guid.NewGuid();
-                            //sa.oPoint = steelAttrNC.oPoint;
-                            //sa.vPoint = steelAttrNC.vPoint;
-                            //sa.uPoint = steelAttrNC.uPoint;
-                            //sa.CutList = steelAttrNC.CutList;
 
                             #region 建模(以舊有形鋼為底新增)
                             // 建立型鋼
@@ -519,6 +499,9 @@ namespace STD_105.Office
                             sa.Creation = DateTime.Now;
                             #endregion
 
+                            #region 複製切割線設定檔
+                            ViewModel.SaveCut(g_GUID, sa.GUID);
+                            #endregion
 
                             #region 建模(以舊有形鋼為底新增)
                             // 建立型鋼
@@ -581,8 +564,7 @@ namespace STD_105.Office
                     #region 零件編號不同 長度 / 型鋼類型 / 斷面規格其一不同
                     else
                     {
-                        #region 一般新增
-                        
+                        #region 一般新增                        
                         sa = GetViewToSteelAttr(sa, true);
                         sa.Creation = DateTime.Now;
                         ViewModel.WriteSteelAttr(sa);
@@ -592,6 +574,10 @@ namespace STD_105.Office
                             // 若ViewModel.SteelAttr.PartNumber代表取值又失敗了，只好強制給值囉~
                             GetViewToViewModel(true);
                         }
+
+                        #region 複製切割線設定檔
+                        //ViewModel.SaveCut(g_GUID, sa.GUID);
+                        #endregion
 
                         #region 建模(全新型鋼)
                         // 建立型鋼
@@ -1843,7 +1829,7 @@ namespace STD_105.Office
                 //查看用戶是否有選擇圖塊
                 if (ViewModel.Select3DItem.Count > 0)
                 {
-                    if (!ViewModel.CheckData_ModifyHole(ViewModel.PartNumberProperty, model))
+                    if (!ViewModel.CheckData_ModifyHole(ViewModel.PartNumberProperty, model, ViewModel.Select3DItem))
                     {
                         return;
                     }
@@ -2888,7 +2874,7 @@ namespace STD_105.Office
             //刪除孔位(孔群)
             ViewModel.DeleteHole = new RelayCommand(() =>
             {
-                if (!ViewModel.CheckData_DelHole(ViewModel.PartNumberProperty, model))
+                if (!ViewModel.CheckData_DelHole(ViewModel.PartNumberProperty, model,ViewModel.Select3DItem))
                 {
                     return;
                 }
@@ -3127,11 +3113,6 @@ namespace STD_105.Office
             ViewModel.CurrentPartSteelAttr.t2 = pl.t2;
             ViewModel.CurrentPartSteelAttr.Profile = pl.Profile;
 
-
-
-
-
-
             //steelAttr.Profile = profileStr;
             steelAttr.Profile = ViewModel.SteelSectionProperty;
             steelAttr.H = ViewModel.CurrentPartSteelAttr.H;
@@ -3218,7 +3199,8 @@ namespace STD_105.Office
             {
                 case "add":
                     // 2022/10/13 呂宗霖 新增:零件是否已存在專案中，存在的話不允許新增
-                    if (part.Any(x => x.Value.Any(y => y.Number == ViewModel.PartNumberProperty)))
+                    //if (part.Any(x => x.Value.Any(y => y.Number == ViewModel.PartNumberProperty)))
+                    if (!ViewModel.CheckOption_IsNotOfficialPart(part, ViewModel.PartNumberProperty))
                     {
                         WinUIMessageBox.Show(null,
                        $"零件編號已存在，不可新增",
@@ -3234,16 +3216,16 @@ namespace STD_105.Office
                 case "edit":
                     ObservableCollection<DataCorrespond> DataCorrespond = ser.GetDataCorrespond();
 
-                    if (!part.Values.SelectMany(x => x).Any(x => x.GUID == ViewModel.GuidProperty))
+                    if (ViewModel.CheckOption_IsNotOfficialPart(part, ViewModel.PartNumberProperty))
                     {
                         WinUIMessageBox.Show(null,
-                      $"零件編號不存在，不可編輯",
-                      "通知",
-                      MessageBoxButton.OK,
-                      MessageBoxImage.Exclamation,
-                      MessageBoxResult.None,
-                      MessageBoxOptions.None,
-                       FloatingMode.Window);
+                            $"零件編號不存在，不可編輯",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Window);
                         return false;
                     }
 
@@ -3293,7 +3275,19 @@ namespace STD_105.Office
                             FloatingMode.Window);
                         return false;
                     }
-
+                    //if (!part.Values.SelectMany(x => x).Any(x => x.Number == ViewModel.PartNumber && x.Match.Where(y => y == false).Count() > 0))
+                    if (ViewModel.CheckOption_IsPartTypesetting(part, ViewModel.PartNumberProperty))
+                    {
+                        WinUIMessageBox.Show(null,
+                            $"零件已排版，不可編輯",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Window);
+                        return false;
+                    }
                     break;
             }
             return true;
@@ -4035,6 +4029,11 @@ namespace STD_105.Office
             {
                 SteelAssemblies = new ObservableCollection<SteelAssembly>();
             }
+            if (!SteelAssemblies.Any(x=>x.Number==sa.AsseNumber))
+            {
+                add = true;
+            }
+            else { add = false; }
             var ass = new GD_STD.Data.SteelAssembly()
             {
                 //GUID = Guid.NewGuid(),
@@ -4089,7 +4088,7 @@ namespace STD_105.Office
                 // 若此構件已存在(同編號 同長度 同數量，代表編輯零件)，取得ID
                 // add 改為 false
                 //if (SteelAssemblies.Where(x => x.Number == ass.Number && x.Count == ViewModel.SteelAttr.Number && x.Length == ViewModel.SteelAttr.Length
-                if (SteelAssemblies.Where(x => x.Number == ass.Number && x.Count == sa.Number && x.Length == sa.Length).Any())
+                if (SteelAssemblies.Any(x => x.Number == ass.Number && x.Count == sa.Number && x.Length == sa.Length))
                 {
                     // 取得目前構件ID
                     ass.ID = SteelAssemblies.FirstOrDefault(x =>
@@ -4102,7 +4101,7 @@ namespace STD_105.Office
                     add = false;
                 }
 
-                if (SteelAssemblies.Where(x => x.Number == ass.Number && x.Count != sa.Number && x.Length == sa.Length).Any())
+                if (SteelAssemblies.Any(x => x.Number == ass.Number && x.Count != sa.Number && x.Length == sa.Length))
                 {
                     add = true;
                     // 原始構件ID
@@ -4294,7 +4293,7 @@ namespace STD_105.Office
             // 給定 零件 數量vsID
             steelPart.ID = buffer1.ToList();
             steelPart.Count = ass.ID.Count();
-            //steelPart.Creation = sa.Creation;
+            steelPart.Creation = sa.Creation;
             steelPart.Revise = (sa.Revise.HasValue ? sa.Revise.Value : DateTime.Now);
             steelPart.ExclamationMark = exclamationMark;
             oldGuid = (oldGuid == null ? steelPart.GUID : oldGuid);
@@ -4331,6 +4330,7 @@ namespace STD_105.Office
                         single.Length = steelPart.Length;
                         single.Title1 = steelPart.Title1;
                         single.Title2 = steelPart.Title2;
+                        single.Creation=steelPart.Creation;
                         single.Revise = steelPart.Revise;
                         single.Material = steelPart.Material;
                         single.ShippingNumber = steelPart.ShippingNumber;

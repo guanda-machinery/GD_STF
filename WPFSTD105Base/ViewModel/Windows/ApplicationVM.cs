@@ -79,7 +79,6 @@ namespace WPFSTD105
             set
             {
                 PreviousPage = _CurrentPage;//紀錄上一頁
-
                 //如果目前是機台監控，且在自動模式下企圖離開時，跳出提示並阻擋動作
 
                 //有換頁需求
@@ -498,8 +497,9 @@ namespace WPFSTD105
 
             if (projectName != null)
                 return $@"{DirectoryModel()}\{ModelPath.DefaultParameterSetting}";
-
-            throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
+            else
+                return null;
+            //throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }
         /// <summary>
         /// 取得所有dm檔
@@ -1193,7 +1193,8 @@ namespace WPFSTD105
 
             if (projectName != null)
                 return $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\ParameterSetting\SplitLineSetting.lis";
-
+            else
+                return null;
             throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }
         /// <summary>
@@ -1270,7 +1271,7 @@ namespace WPFSTD105
             }
             else
             {
-                throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
+                //throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
             }
             return CheckDir;
         }
@@ -1300,6 +1301,10 @@ namespace WPFSTD105
                     File.Copy(file, aimPath + Path.GetFileName(file), true);
             }
         }
+
+
+
+
         #endregion
 
         #region 公開方法
@@ -1345,5 +1350,6 @@ namespace WPFSTD105
             }
         }
         #endregion
+
     }
 }
