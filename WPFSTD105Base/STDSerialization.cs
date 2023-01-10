@@ -798,6 +798,34 @@ namespace WPFSTD105
 
 
 
+        /// <summary>
+        /// 存取加工時間紀錄 (壓縮)
+        /// </summary>
+        /// <param name="values">陣列索引列表</param>
+        public void SetMachiningTimeBackup(string materialNumber,MachiningTimeClass values)
+        {
+            if (!Directory.Exists(ApplicationVM.MachiningTimeBackup()))
+                Directory.CreateDirectory(ApplicationVM.MachiningTimeBackup());
+            GZipSerializeBinary(values, $@"{ApplicationVM.MachiningTimeBackup()}\{materialNumber}.db");
+        }
+        /// <summary>
+        /// 讀取加工時間紀錄 (壓縮)
+        /// </summary>
+        public MachiningTimeClass GetMachiningTimeBackup(string materialNumber)
+        {
+            try
+            {
+                return GZipDeserialize<MachiningTimeClass>($@"{ApplicationVM.MachiningTimeBackup()}\{materialNumber}.db");//解壓縮反序列化回傳資料 
+            }
+            catch
+            {
+                return new MachiningTimeClass();
+            }
+        }
+
+
+
+
 
 
 
