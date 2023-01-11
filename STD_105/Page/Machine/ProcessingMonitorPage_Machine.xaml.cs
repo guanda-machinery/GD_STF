@@ -434,17 +434,26 @@ namespace STD_105
 
         private void model_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Escape) //取消所有功能
+            try
             {
-                log4net.LogManager.GetLogger("按下鍵盤").Debug("Esc");
-                Esc();
-                esc.Visibility = Visibility.Collapsed;//關閉取消功能
+
+
+                if (e.Key == Key.Escape) //取消所有功能
+                {
+                    log4net.LogManager.GetLogger("按下鍵盤").Debug("Esc");
+                    Esc();
+                    esc.Visibility = Visibility.Collapsed;//關閉取消功能
+                }
+
+                model.Invalidate();
+                drawing.Invalidate();
+            }
+            catch(Exception ex)
+            {
+
             }
 
-            model.Invalidate();
-            drawing.Invalidate();
-
-        }
+            }
 
         private void MachiningCombinational_List_TableView_MouseDown(object sender, MouseButtonEventArgs e)
         {

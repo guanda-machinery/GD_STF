@@ -564,12 +564,31 @@ namespace GD_STD.Enum
         [ErrorCodeAttribute("外罩門二未關閉_30028", null)]
         //外罩門二未關閉_30028
         Case_2_No_Close,
+        
         [ErrorCodeAttribute("研華電池沒電", null)]
         //研華電池沒電
         Advantech_battery_No_Power,
+        
         [ErrorCodeAttribute("刀具使用中超過1把", null)]
         //刀具使用中超過1把
         FUN_Double_Use,
+
+        [ErrorCodeAttribute("無刀庫選配但有資料", null)]
+        //無刀庫選配但有資料
+        DrillDateError,
+
+        [ErrorCodeAttribute("刀庫資訊有問題", null)]
+        //刀庫資訊有問題
+        DrillHomeDataError,
+
+        [ErrorCodeAttribute("MotionEthercat連線異常", null)]
+        //MotionEthercat連線異常
+        MotionEthercatError,
+
+        [ErrorCodeAttribute("IO Ethercat連線異常", null)]
+        //IO Ethercat連線異常
+        IOEthercatError,
+
 
         //[ErrorCodeAttribute("外罩門三未關閉_30029", null)]
         //外罩門三未關閉_30029
@@ -830,51 +849,52 @@ namespace GD_STD.Enum
         //有軸向的位置跑掉異常,需跳警報告知回原點自動重新定位
         //Axis_Position_NG,
 
-        [ErrorCodeAttribute("左X馬達Error_Stop", null)]
-        //左X馬達Error_Stop
-        L_X_Error_Stop,
-        [ErrorCodeAttribute("左Y馬達Error_Stop", null)]
-        //左Y馬達Error_Stop
-        L_Y_Error_Stop,
-        [ErrorCodeAttribute("左Z馬達Error_Stop", null)]
-        //左Z馬達Error_Stop
-        L_Z_Error_Stop,
-        [ErrorCodeAttribute("中X馬達Error_Stop", null)]
-        //中X馬達Error_Stop
-        M_X_Error_Stop,
-        [ErrorCodeAttribute("中Y馬達Error_Stop", null)]
-        //中Y馬達Error_Stop
-        M_Y_Error_Stop,
-        [ErrorCodeAttribute("中Z馬達Error_Stop", null)]
-        //中Z馬達Error_Stop
-        M_Z_Error_Stop,
-        [ErrorCodeAttribute("右X馬達Error_Stop", null)]
-        //右X馬達Error_Stop
-        R_X_Error_Stop,
-        [ErrorCodeAttribute("右Y馬達Error_Stop", null)]
-        //右Y馬達Error_Stop
-        R_Y_Error_Stop,
-        [ErrorCodeAttribute("右Z馬達Error_Stop", null)]
-        //右Z馬達Error_Stop
-        R_Z_Error_Stop,
-        [ErrorCodeAttribute("手臂_X馬達Error_Stop", null)]
-        //手臂_X馬達Error_Stop
-        Arm_X_Error_Stop,
-        [ErrorCodeAttribute("手臂_IN_Z馬達Error_Stop", null)]
-        //手臂_IN_Z馬達Error_Stop
-        Arm_In_Z_Error_Stop,
-        [ErrorCodeAttribute("手臂_Out_Z馬達Error_Stop", null)]
-        //手臂_Out_Z馬達Error_Stop
-        Arm_Out_Z_Error_Stop,
-        [ErrorCodeAttribute("左主軸Error_Stop", null)]
-        //左主軸Error_Stop
-        L_Spindle_Error_Stop,
-        [ErrorCodeAttribute("中主軸Error_Stop", null)]
-        //中主軸Error_Stop
-        M_Spindle_Error_Stop,
-        [ErrorCodeAttribute("右主軸Error_Stop", null)]
-        //右主軸Error_Stop
-        R_Spindle_Error_Stop,
+
+        //[ErrorCodeAttribute("左X馬達Error_Stop", null)]
+        ////左X馬達Error_Stop
+        //L_X_Error_Stop,
+        //[ErrorCodeAttribute("左Y馬達Error_Stop", null)]
+        ////左Y馬達Error_Stop
+        //L_Y_Error_Stop,
+        //[ErrorCodeAttribute("左Z馬達Error_Stop", null)]
+        ////左Z馬達Error_Stop
+        //L_Z_Error_Stop,
+        //[ErrorCodeAttribute("中X馬達Error_Stop", null)]
+        ////中X馬達Error_Stop
+        //M_X_Error_Stop,
+        //[ErrorCodeAttribute("中Y馬達Error_Stop", null)]
+        ////中Y馬達Error_Stop
+        //M_Y_Error_Stop,
+        //[ErrorCodeAttribute("中Z馬達Error_Stop", null)]
+        ////中Z馬達Error_Stop
+        //M_Z_Error_Stop,
+        //[ErrorCodeAttribute("右X馬達Error_Stop", null)]
+        ////右X馬達Error_Stop
+        //R_X_Error_Stop,
+        //[ErrorCodeAttribute("右Y馬達Error_Stop", null)]
+        ////右Y馬達Error_Stop
+        //R_Y_Error_Stop,
+        //[ErrorCodeAttribute("右Z馬達Error_Stop", null)]
+        ////右Z馬達Error_Stop
+        //R_Z_Error_Stop,
+        //[ErrorCodeAttribute("手臂_X馬達Error_Stop", null)]
+        ////手臂_X馬達Error_Stop
+        //Arm_X_Error_Stop,
+        //[ErrorCodeAttribute("手臂_IN_Z馬達Error_Stop", null)]
+        ////手臂_IN_Z馬達Error_Stop
+        //Arm_In_Z_Error_Stop,
+        //[ErrorCodeAttribute("手臂_Out_Z馬達Error_Stop", null)]
+        ////手臂_Out_Z馬達Error_Stop
+        //Arm_Out_Z_Error_Stop,
+        //[ErrorCodeAttribute("左主軸Error_Stop", null)]
+        ////左主軸Error_Stop
+        //L_Spindle_Error_Stop,
+        //[ErrorCodeAttribute("中主軸Error_Stop", null)]
+        ////中主軸Error_Stop
+        //M_Spindle_Error_Stop,
+        //[ErrorCodeAttribute("右主軸Error_Stop", null)]
+        ////右主軸Error_Stop
+        //R_Spindle_Error_Stop,
 
         [ErrorCodeAttribute("無錯誤碼", null)]
         //最大值(無錯誤碼給的值)

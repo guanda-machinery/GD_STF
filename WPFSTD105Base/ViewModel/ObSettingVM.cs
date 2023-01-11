@@ -216,9 +216,9 @@ namespace WPFSTD105.ViewModel
         //OBJECT_TYPE.BOX, OBJECT_TYPE.TUBE,
         //OBJECT_TYPE.LB, 
 
-            /// <summary>
-            /// 構件資訊列表
-            /// </summary>
+        /// <summary>
+        /// 構件資訊列表
+        /// </summary>
         public ObservableCollection<SteelAssembly> SteelAssemblies { get; private set; } = new ObservableCollection<SteelAssembly>();
         /// <summary>
         /// 零件字典檔
@@ -553,20 +553,65 @@ namespace WPFSTD105.ViewModel
 
 
 
+        public class GroupBoltsTypeComboxItem
+        {
+            public string GroupBoltsDisplayName { get; set; }
+            public GroupBoltsType _GroupBoltsType { get; set; }
+        }
 
 
+        public List<GroupBoltsTypeComboxItem> GroupBoltsTypeList
+        {
+            get
+            {
+                var GBT_List = new List<GroupBoltsTypeComboxItem>();
 
+                var values = System.Enum.GetValues(typeof(GroupBoltsType)).Cast<GroupBoltsType>();
 
+                foreach (var value in values)
+                {
+                    var DisplayName = "";
 
+                    FieldInfo fi = value.GetType().GetField(value.ToString());
+                    var attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
 
+                    if (attributes.Length > 0)
+                        DisplayName = attributes[0].Description;
+                    else
+                        DisplayName = value.GetDisplayName();
 
+                    GBT_List.Add(new GroupBoltsTypeComboxItem { _GroupBoltsType = value, GroupBoltsDisplayName = DisplayName });
+                }
 
+                return GBT_List;
+            }
+        }
+
+        public GroupBoltsTypeComboxItem GroupBoltsTypeComboxItemSelected { get; set; }
+        private GroupBoltsType ComboBoxSelected_GroupBoltsType { get => GroupBoltsTypeComboxItemSelected._GroupBoltsType; }
 
 
         /// <summary>
-        /// 標示資料來源的flag：true表示由零件清單, false表示由手動選擇
+        /// 接頭打點
         /// </summary>
-        public bool fPartListOrManuall { get; set; } = false;
+        public class JointPoint
+        {
+            public double X_Position { get; set; }
+            public double Y_Position { get; set; }
+        }
+        public ObservableCollection<JointPoint> JointPointList { get; set; }
+
+
+
+
+                 
+
+
+
+    /// <summary>
+    /// 標示資料來源的flag：true表示由零件清單, false表示由手動選擇
+    /// </summary>
+    public bool fPartListOrManuall { get; set; } = false;
         /// <summary>
         /// 紀錄前端當前所選的零件資訊
         /// </summary>
@@ -3441,6 +3486,10 @@ namespace WPFSTD105.ViewModel
                 fGrid = grid;
             }
         }
+
+
+
+
 
     }
 }

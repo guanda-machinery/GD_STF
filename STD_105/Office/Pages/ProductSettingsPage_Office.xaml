@@ -10,7 +10,7 @@
                   xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
                   xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
                   xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"   
-                  xmlns:GD_STDEnum="clr-namespace:GD_STD.Enum;assembly=GD_STD.Enum"
+
                   mc:Ignorable="d"
                   xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
                   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"                  
@@ -919,6 +919,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <GroupBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" BorderThickness="0,0,0,1" >
                                     <!--直徑設定-->
@@ -1083,6 +1084,12 @@
                                         </Grid>
                                     </GroupBox>
                                 </DockPanel>
+                                <GroupBox Grid.Column="0" Grid.Row="2" Visibility="Hidden" Header="孔群類型">
+                                    <ComboBox 
+                                       DisplayMemberPath="GroupBoltsDisplayName"
+                                        SelectedItem="{Binding GroupBoltsTypeComboxItemSelected}"
+                                        ItemsSource="{Binding GroupBoltsTypeList}" />
+                                </GroupBox>
                                 <!-- X軸數量-->
                                 <!--StackPanel Grid.Row="2"
                                     Grid.Column="1"
