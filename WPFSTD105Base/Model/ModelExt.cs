@@ -785,7 +785,7 @@ namespace WPFSTD105
             CurrentlySnapping = false;
             //current.TransformBy(new Transformation(plane.Origin, plane.AxisX, plane.AxisY, plane.AxisZ));
             // 如果ObjectSnap為ON，我們需要找到最接近的頂點（如果有）
-            if (objectSnapEnabled && snapPoints != null && snapPoints.Length > 0)
+             if (objectSnapEnabled && snapPoints != null && snapPoints.Length > 0)
             {
                 snap = FindClosestPoint(snapPoints);
                 current = snap;

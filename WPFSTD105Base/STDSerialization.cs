@@ -623,7 +623,10 @@ namespace WPFSTD105
         public ObservableCollection<MaterialDataView> GetMaterialDataView(string ModelPath)
         {
             return GZipDeserialize<ObservableCollection<MaterialDataView>>(ModelPath);
-        }
+        }    
+
+
+
         /// <summary>
         /// 存取排版設定
         /// </summary>
@@ -790,6 +793,34 @@ namespace WPFSTD105
             if(!Directory.Exists(ApplicationVM.DirectoryDrillBoltsBackup()))
                 Directory.CreateDirectory(ApplicationVM.DirectoryDrillBoltsBackup());
             GZipSerializeBinary(new DrillBoltsModel(){ DrillBoltsDict = values }, $@"{ApplicationVM.DirectoryDrillBoltsBackup()}\{materialNumber}.db");
+        }
+
+
+
+
+        /// <summary>
+        /// 存取加工時間紀錄 (壓縮)
+        /// </summary>
+        /// <param name="values">陣列索引列表</param>
+        public void SetMachiningTimeBackup(string materialNumber,MachiningTimeClass values)
+        {
+            if (!Directory.Exists(ApplicationVM.MachiningTimeBackup()))
+                Directory.CreateDirectory(ApplicationVM.MachiningTimeBackup());
+            GZipSerializeBinary(values, $@"{ApplicationVM.MachiningTimeBackup()}\{materialNumber}.db");
+        }
+        /// <summary>
+        /// 讀取加工時間紀錄 (壓縮)
+        /// </summary>
+        public MachiningTimeClass GetMachiningTimeBackup(string materialNumber)
+        {
+            try
+            {
+                return GZipDeserialize<MachiningTimeClass>($@"{ApplicationVM.MachiningTimeBackup()}\{materialNumber}.db");//解壓縮反序列化回傳資料 
+            }
+            catch
+            {
+                return new MachiningTimeClass();
+            }
         }
 
 

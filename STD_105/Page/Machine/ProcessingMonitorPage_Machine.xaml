@@ -618,7 +618,7 @@ AllowEditing="False"
                 </TextBlock.Visibility>
             </TextBlock>
         </Grid>
-        <TabControl Grid.Row="1" Margin="5"
+        <TabControl Grid.Row="1" Margin="5,0,5,10"
                         BorderThickness="0"
                         Background="#303030"
                         x:Name="DrawTabControl"
@@ -1005,7 +1005,7 @@ AllowEditing="False"
                                         UpdateSourceTrigger=PropertyChanged}">
                                         <dxg:GridControl.View >
                                             <dxg:TableView
-                                Header="前面(左翼板)" >
+                                Header="後面(左翼板)" >
                                                 <dxg:TableView.CellStyle>
                                                     <Style>
                                                         <Setter Property="TextBlock.FontSize" Value="12"/>
@@ -1253,7 +1253,7 @@ AllowEditing="False"
                                         UpdateSourceTrigger=PropertyChanged}">
                                         <dxg:GridControl.View >
                                             <dxg:TableView
-                                Header="背面(右翼板)" >
+                                Header="前面(右翼板)" >
                                                 <dxg:TableView.CellStyle>
                                                     <Style>
                                                         <Setter Property="TextBlock.FontSize" Value="12"/>
@@ -1540,7 +1540,7 @@ AllowEditing="False"
                         </StackPanel>
                         <ProgressBar  Grid.Column="1" Grid.Row="1" Visibility="{Binding ProgressBar_Visible_Input_by_Computer,Converter={dx:BooleanToVisibilityConverter}}"/>
 
-                        <Grid Grid.Row="2" Grid.ColumnSpan="3"  IsEnabled="{Binding TransportGridIsEnable,UpdateSourceTrigger=PropertyChanged}">
+                        <Grid Grid.Row="2" Grid.ColumnSpan="3">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
@@ -1551,6 +1551,7 @@ AllowEditing="False"
                                 <StackPanel.IsEnabled>
                                     <MultiBinding Converter="{local:BooleanArrayIntersectToBooleanConverter}">
                                         <MultiBinding.Bindings>
+                                            <Binding Path="TransportGridIsEnableBool"/>
                                             <Binding Path="Transport_RadioButtonIsEnable" />
                                         </MultiBinding.Bindings>
                                     </MultiBinding>
@@ -1570,7 +1571,15 @@ AllowEditing="False"
 
                             </StackPanel>
                             <ProgressBar  Visibility="{Binding ProgressBar_Visible_Transport_Visibility,Converter={dx:BooleanToVisibilityConverter}}" />
-                            <StackPanel Grid.Column="1" IsEnabled="{Binding Transport_by_Continue_RadioButtonIsEnable}">
+                            <StackPanel Grid.Column="1">
+                                <StackPanel.IsEnabled>
+                                    <MultiBinding Converter="{local:BooleanArrayIntersectToBooleanConverter}">
+                                        <MultiBinding.Bindings>
+                                            <Binding Path="TransportGridIsEnableBool_Continue"/>
+                                            <Binding Path="Transport_by_Continue_RadioButtonIsEnable" />
+                                        </MultiBinding.Bindings>
+                                    </MultiBinding>
+                                </StackPanel.IsEnabled>
                                 <RadioButton GroupName="Group_Transport" Name="Transport_by_Continue_RadioButton" IsChecked="{Binding Transport_by_Continue_RadioButtonIsChecked}" Command="{Binding ChangeTransportMode_To_Continue_Command}" >
                                     <RadioButton.IsEnabled>
                                         <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">
@@ -1584,7 +1593,15 @@ AllowEditing="False"
                                 </RadioButton>
                             </StackPanel>
                             <ProgressBar  Grid.Column="1" Visibility="{Binding ProgressBar_Visible_Transport_by_Continue_Visibility,Converter={dx:BooleanToVisibilityConverter}}"/>
-                            <StackPanel Grid.Column="2" IsEnabled="{Binding Transport_by_Hand_RadioButtonIsEnable}">
+                            <StackPanel Grid.Column="2">
+                                <StackPanel.IsEnabled>
+                                    <MultiBinding Converter="{local:BooleanArrayIntersectToBooleanConverter}">
+                                        <MultiBinding.Bindings>
+                                            <Binding Path="TransportGridIsEnableBool_Continue"/>
+                                            <Binding Path="Transport_by_Hand_RadioButtonIsEnable" />
+                                        </MultiBinding.Bindings>
+                                    </MultiBinding>
+                                </StackPanel.IsEnabled>
                                 <RadioButton GroupName="Group_Transport" Name="Transport_by_Hand_RadioButton"   IsChecked="{Binding Transport_by_Hand_RadioButtonIsChecked}" Command="{Binding ChangeTransportMode_To_Hand_Command}" CommandParameter="{Binding ElementName=Transport_by_Hand_RadioButton}">
                                     <RadioButton.IsEnabled>
                                         <MultiBinding Converter="{local:BooleanArrayUnionToBooleanConverter}">

@@ -408,6 +408,15 @@ namespace WPFSTD105
         {
             return $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\{ModelPath.WorkMaterialIndexBackup}";
         }
+
+        /// <summary>
+        /// 加工列表時間備份檔案
+        /// </summary>
+        public static string MachiningTimeBackup()
+        {
+            return $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\{ModelPath.MachiningTimeBackup}";
+        }
+
         /// <summary>
         /// 刀具品牌
         /// </summary>
