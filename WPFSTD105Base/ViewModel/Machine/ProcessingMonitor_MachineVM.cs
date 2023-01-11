@@ -75,6 +75,7 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public ProcessingMonitor_MachineVM()
         {
+            _SynchronizationContext = SynchronizationContext.Current;
             STDSerialization ser = new STDSerialization();
             Display3DViewerCommand = Display3DViewer();
             Finish_UndoneDataViews = ser.GetMaterialDataView();
@@ -98,7 +99,6 @@ namespace WPFSTD105.ViewModel
                 AddOperatingLog(LogSourceEnum.Init, "程式中斷", true);
                 return;
             }
-            _SynchronizationContext = SynchronizationContext.Current;
             _WorkMaterials = new WorkMaterial[Finish_UndoneDataViews.Count];
             SelectedMaterial_Info_Button_Visibility = Visibility.Collapsed;
 
@@ -115,9 +115,6 @@ namespace WPFSTD105.ViewModel
                 Input_by_SmartPhone_RadioButtonIsChecked = true;
                 Input_by_Computer_RadioButtonIsChecked = false;
             }
-
-
-
             //啟動一執行序持續掃描各種按鈕及錯誤訊息
 
             var ReadErrorInfoTask = Task.Factory.StartNew(() =>
@@ -3030,7 +3027,7 @@ namespace WPFSTD105.ViewModel
                     }
 
                     //int synIndex = 0;
-                    if (ApplicationViewModel.PanelButton.Key == KEY_HOLE.MANUAL) //如果沒有在自動狀況下
+                    if (ApplicationViewModel.PanelButton.Key == KEY_HOLE.MANUAL) //手動情況下
                     {
                         if (errorCount == 0) //如果沒有發送失敗
                         {
@@ -3058,7 +3055,7 @@ namespace WPFSTD105.ViewModel
                                     {
                                         Finish_UndoneDataViews[i].Schedule = 100; 
                                         Finish_UndoneDataViews[i].PositionEnum = PositionStatusEnum.完成;       //"完成";
-                                        _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
+                                      //  _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
                                         
                                         //更改參數
                                         work.Finish = 100;
@@ -3099,6 +3096,8 @@ namespace WPFSTD105.ViewModel
                                     work.IsExport = true;
                                     WriteCodesysMemor.SetMonitorWorkOffset(work.ToByteArray(), workOffset + (workSize * i)); //發送加工陣列
                                     _SendIndex.Add(Convert.ToInt16(i));
+
+                                  //  _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
                                 }
 
                             }
