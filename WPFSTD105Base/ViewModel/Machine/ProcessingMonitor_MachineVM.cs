@@ -75,6 +75,7 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public ProcessingMonitor_MachineVM()
         {
+            _SynchronizationContext = SynchronizationContext.Current;
             STDSerialization ser = new STDSerialization();
             Display3DViewerCommand = Display3DViewer();
             Finish_UndoneDataViews = ser.GetMaterialDataView();
@@ -119,7 +120,6 @@ namespace WPFSTD105.ViewModel
                 AddOperatingLog(LogSourceEnum.Init, "程式中斷", true);
                 return;
             }
-            _SynchronizationContext = SynchronizationContext.Current;
             _WorkMaterials = new WorkMaterial[Finish_UndoneDataViews.Count];
             SelectedMaterial_Info_Button_Visibility = Visibility.Collapsed;
 
@@ -136,9 +136,6 @@ namespace WPFSTD105.ViewModel
                 Input_by_SmartPhone_RadioButtonIsChecked = true;
                 Input_by_Computer_RadioButtonIsChecked = false;
             }
-
-
-
             //啟動一執行序持續掃描各種按鈕及錯誤訊息
 
             var ReadErrorInfoTask = Task.Factory.StartNew(() =>
@@ -3101,7 +3098,7 @@ namespace WPFSTD105.ViewModel
                     }
 
                     //int synIndex = 0;
-                    if (ApplicationViewModel.PanelButton.Key == KEY_HOLE.MANUAL) //如果沒有在自動狀況下
+                    if (ApplicationViewModel.PanelButton.Key == KEY_HOLE.MANUAL) //手動情況下
                     {
                         if (errorCount == 0) //如果沒有發送失敗
                         {
@@ -3129,7 +3126,7 @@ namespace WPFSTD105.ViewModel
                                     {
                                         Finish_UndoneDataViews[i].Schedule = 100; 
                                         Finish_UndoneDataViews[i].PositionEnum = PositionStatusEnum.完成;       //"完成";
-                                        _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
+                                      //  _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
                                         
                                         //更改參數
                                         work.Finish = 100;
@@ -3143,15 +3140,9 @@ namespace WPFSTD105.ViewModel
                             }
                         }
 
-                        foreach (var FNDV in Finish_UndoneDataViews)
-                        {
-                            if (FNDV.PositionEnum != PositionStatusEnum.完成)
-                            {
-                                if ((FNDV.ObjectType == GD_STD.Enum.OBJECT_TYPE.CH || FNDV.ObjectType == GD_STD.Enum.OBJECT_TYPE.LB) && FNDV.LengthStr > 9050)
-                                    FNDV.PositionEnum = PositionStatusEnum.不可配對;
-                            }
-                        }
-                    }   //如果是在自動狀況下
+
+                    }   
+                    //如果是在自動狀況下
                     else if (ApplicationViewModel.PanelButton.Key == KEY_HOLE.AUTO) //如果有在自動狀況下
                     {
                         using (Memor.ReadMemorClient client = new Memor.ReadMemorClient())
@@ -3160,14 +3151,40 @@ namespace WPFSTD105.ViewModel
                             for (int i = 0; i < Finish_UndoneDataViews.Count; i++)
                             {
                                 _WorkMaterials[i] = client.GetWorkMaterial(Convert.ToUInt16(i));
+                                //有傳入加工資料
                                 if (_WorkMaterials[i].BoltsCountL != 0 || _WorkMaterials[i].BoltsCountR != 0 || _WorkMaterials[i].IndexBoltsM != 0)
                                 {
                                     _SendIndex.Add(Convert.ToInt16(i));
                                 }
-                              
+
+                                //已完成
+                                else if (_WorkMaterials[i].Position == -2)
+                                {
+                                    var work = _WorkMaterials[i];
+                                    long workOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.WorkMaterial)).ToInt64();
+                                    int workSize = Marshal.SizeOf(typeof(WorkMaterial));
+                                    work.Finish = 100;
+                                    work.IsExport = true;
+                                    WriteCodesysMemor.SetMonitorWorkOffset(work.ToByteArray(), workOffset + (workSize * i)); //發送加工陣列
+                                    _SendIndex.Add(Convert.ToInt16(i));
+
+                                  //  _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
+                                }
+
                             }
                         }
+
                     }
+
+                    foreach (var FNDV in Finish_UndoneDataViews)
+                    {
+                        if (FNDV.PositionEnum != PositionStatusEnum.完成)
+                        {
+                            if ((FNDV.ObjectType == GD_STD.Enum.OBJECT_TYPE.CH || FNDV.ObjectType == GD_STD.Enum.OBJECT_TYPE.LB) && FNDV.LengthStr > 9050)
+                                FNDV.PositionEnum = PositionStatusEnum.不可配對;
+                        }
+                    }
+
 
                     using (Memor.WriteMemorClient Write = new Memor.WriteMemorClient())
                     {
@@ -3341,11 +3358,10 @@ namespace WPFSTD105.ViewModel
             //_SendIndex.AddRange(noInfo); //存取已經發送過的列表
             //SerializationValue機台內有資料的都會在此陣列中
             List<short> SerializationValue = new List<short>(indexArray);
-            List<short> delete = _LastTime.Except(SerializationValue).ToList(); //找出上次有序列化的文件
-            SerializationValue.AddRange(delete);
-
+           // List<short> delete = _LastTime.Except(SerializationValue).ToList(); //找出上次有序列化的文件
+           // SerializationValue.AddRange(delete);
             Serialization(SerializationValue);
-            _LastTime = indexArray.ToArray();
+           //_LastTime = indexArray.ToArray();
 
             //刷新初始化
             for (int i = 0; i < Finish_UndoneDataViews.Count; i++)
@@ -3396,7 +3412,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 上一次的 Index
         /// </summary>
-        private short[] _LastTime { get; set; } = new short[0];
+        //private short[] _LastTime { get; set; } = new short[0];
 
         /// <summary>
         /// 持續監看 Host
