@@ -1238,8 +1238,11 @@ namespace WPFSTD105.ViewModel
             {
                 return new WPFBase.RelayCommand(() =>
                 {
+
+                    AddOperatingLog(LogSourceEnum.Software, "發送續接命令");
                     using (Memor.WriteMemorClient write = new Memor.WriteMemorClient())
                         write.SetMonitorWorkOffset(new byte[1] { 1 }, Marshal.OffsetOf<MonitorWork>(nameof(MonitorWork.ContinueWork)).ToInt64()); //寫入準備加工的陣列位置
+
                 });
             }
         }
@@ -1252,6 +1255,7 @@ namespace WPFSTD105.ViewModel
             {
                 return new WPFBase.RelayCommand(() =>
                 {
+                    AddOperatingLog(LogSourceEnum.Software, "發送呼叫台車命令");
                     ushort[] reply = null;
                     using (Memor.WriteMemorClient write = new Memor.WriteMemorClient())
                     using (Memor.ReadMemorClient read = new Memor.ReadMemorClient())
@@ -1486,7 +1490,7 @@ namespace WPFSTD105.ViewModel
             }
         }
 
-        //狀態註銷 復原素材狀態->會送資料給機台更改狀態 然後刪除備份檔案
+        //狀態強制註銷 復原素材狀態->會送資料給機台更改狀態 然後刪除備份檔案
         public WPFBase.RelayParameterizedCommand RecoverCommand
         {
             get
@@ -2522,6 +2526,18 @@ namespace WPFSTD105.ViewModel
             {
                 return new WPFBase.RelayParameterizedCommand(obj =>
                 {
+                    if (ApplicationViewModel.PanelButton.Run)
+                    {
+                        AddOperatingLog(LogSourceEnum.Software, "機台運轉時不可發送續接命令", true);
+
+                        if (obj is UIElement)
+                        {
+                            ShowMessageBox(obj as UIElement, "機台運轉時不可發送續接命令");
+                        }
+                        return;         
+                    }
+
+
                     HintStep4 = false;
                     ProgressBar_Visible_Transport_by_Continue_Visibility = true;
                     Transport_by_Continue_RadioButtonIsChecked = false;
@@ -2727,11 +2743,29 @@ namespace WPFSTD105.ViewModel
         public bool DrillPin_Mode_RadioButtonIsEnable { get; set; }
 
 
-        private bool _transportGridIsEnable = false;
+        private bool _transportGridIsEnableBool = false;
         /// <summary>
         /// 最上層 當有物料是配對完成狀態才可用
         /// </summary>
-        public bool TransportGridIsEnable { get { return _transportGridIsEnable; } set { _transportGridIsEnable = value; OnPropertyChanged(nameof(TransportGridIsEnable)); } } 
+        public bool TransportGridIsEnableBool 
+        { 
+            get 
+            {
+                return _transportGridIsEnableBool;
+            } 
+            set 
+            { 
+                _transportGridIsEnableBool = value;
+                OnPropertyChanged(nameof(TransportGridIsEnableBool)) ;
+            } 
+        }
+
+        /// <summary>
+        /// 續接專用
+        /// </summary>
+        public bool TransportGridIsEnableBool_Continue { get; set; }
+
+
 
         public bool Transport_RadioButtonIsEnable { get; set; } = true;
         public bool Transport_by_Continue_RadioButtonIsEnable { get; set; } = true;
@@ -2925,9 +2959,7 @@ namespace WPFSTD105.ViewModel
         /// 使用多重綁定時當Input_by_SmartPhoneVMEnable=false時 Enable 直接為false，其餘狀況依照聯集結果而定
         /// </summary>
         public bool Input_by_SmartPhone_RadioButtonVMEnable { get; set; } = true;
-        /// <summary>
-        /// 使用多重綁定時當Input_by_Computer_RadioButtonVMEnable=false時 Enable 直接為false，其餘狀況依照聯集結果而定
-        /// </summary>
+
         public bool Input_by_Computer_RadioButtonVMEnable { get; set; } = true;
 
         public bool ProgressBar_Visible_Input_by_SmartPhone { get; set; } = false;
@@ -3330,14 +3362,19 @@ namespace WPFSTD105.ViewModel
                     else if (Finish_UndoneDataViews[i].PositionEnum == PositionStatusEnum.未取得狀態)
                     {
                         Finish_UndoneDataViews[i].PositionEnum = PositionStatusEnum.等待配對;
+                        Finish_UndoneDataViews[i].Position_count = "";
                     }
                     //找出表格中是已配對 / 手機配對 / 軟體配對 但機台端沒有資料的->代表資料有誤或是被移除
-
                     else if (Finish_UndoneDataViews[i].PositionEnum == PositionStatusEnum.從軟體配對 ||
                         Finish_UndoneDataViews[i].PositionEnum == PositionStatusEnum.從手機配對 ||
                         Finish_UndoneDataViews[i].PositionEnum == PositionStatusEnum.已配對)
                     {
                         Finish_UndoneDataViews[i].PositionEnum = PositionStatusEnum.等待配對;
+                        Finish_UndoneDataViews[i].Position_count = "";
+                    }
+                    else
+                    {
+
                     }
                 }
             }
@@ -3409,7 +3446,7 @@ namespace WPFSTD105.ViewModel
                         WPFBase.AskingDrillMatch windows = new WPFBase.AskingDrillMatch();
                         windows.ShowDialog();
                     }
-                    else
+                    else                                    
                     {
                         //葉:略過孔位要做啥事？
                     }
@@ -3430,7 +3467,8 @@ namespace WPFSTD105.ViewModel
             if (index.Count == 0)
             {
                 HintStep3 = false;
-                TransportGridIsEnable = false;
+                TransportGridIsEnableBool = false;
+                TransportGridIsEnableBool_Continue = false;
                 return;
             }
             int exCount = 1, //出口數量
@@ -3500,8 +3538,10 @@ namespace WPFSTD105.ViewModel
                                 {
                                     Finish_UndoneDataViews[value].PositionEnum = PositionStatusEnum.已配對;
                                 }
-                                //手機或機台狀態靠輪巡去修改
+                                //手機或機台狀態靠輪巡去修改                                                                          
                                 Finish_UndoneDataViews[value].Position_count = $"-{PairedCount.ToString()}";//$"已配對-{exCount}";
+                                PairedCount++;
+                                //Finish_UndoneDataViews[value].Position_count = $"";//$"已配對";
                             }
                             else
                             {
@@ -3530,12 +3570,12 @@ namespace WPFSTD105.ViewModel
 
                         }
 
-                        //取得待加工的及加工中的素材
+                        //取得待加工的素材                                         
                         var WaitMachining_MaterialList = new List<string>();
 
                         foreach (var value in serIndex)
                         {
-                            if (_WorkMaterials[value].Position == 0 || _WorkMaterials[value].Position == -1)
+                            if (_WorkMaterials[value].Position == 0 )
                             {
                                 WaitMachining_MaterialList.Add(Finish_UndoneDataViews[value].MaterialNumber);
                             }
@@ -3543,21 +3583,22 @@ namespace WPFSTD105.ViewModel
 
                         if (WaitMachining_MaterialList.Count != 0)
                         {
-                            if (!TransportGridIsEnable)
+                            if (!TransportGridIsEnableBool)
                             {
                                 foreach (var WaitMachining_MaterialNumber in WaitMachining_MaterialList)
                                 {
-                                    AddOperatingLog(LogSourceEnum.Machine, $"素材編號{WaitMachining_MaterialNumber}正在等待入料");
+                                    AddOperatingLog(LogSourceEnum.Machine, $"素材編號{WaitMachining_MaterialNumber}正在搬運命令或續接");
                                 }
                             }
                             HintStep3 = true;
-                            TransportGridIsEnable = true;
-                        }
+                            TransportGridIsEnableBool = true;
+                            TransportGridIsEnableBool_Continue = true;
+                        }                   
                         else
                         {
-                            if (TransportGridIsEnable)
+                            if (TransportGridIsEnableBool)
                             {
-                                AddOperatingLog(LogSourceEnum.Machine, "沒有待加工之素材");
+                                AddOperatingLog(LogSourceEnum.Machine, "進料手臂上沒有待加工之素材");
                             }
                             HintStep3 = false;
                             HintStep4 = false;
@@ -3568,8 +3609,27 @@ namespace WPFSTD105.ViewModel
                             if (Transport_by_Continue_RadioButtonIsChecked)
                                 Transport_by_Continue_RadioButtonIsChecked = false;
 
-                            TransportGridIsEnable = false;
+                            TransportGridIsEnableBool = false;
+
+                            //若有在加工中的物件 將續接及手動手臂按鈕轉亮 但當機台正在加工時仍轉暗
+                            if(_WorkMaterials.FindIndex(x=>x.Position == -1) != -1)
+                            {
+                                if (!ApplicationViewModel.PanelButton.Run)
+                                {
+                                    TransportGridIsEnableBool_Continue = true;
+                                }
+                                else
+                                {
+                                    TransportGridIsEnableBool_Continue = false;
+                                }
+                            }
+                            else
+                            {
+                                TransportGridIsEnableBool_Continue = false;
+                            }
                         }
+
+
 
 
                         RefreshScheduleGridC();
