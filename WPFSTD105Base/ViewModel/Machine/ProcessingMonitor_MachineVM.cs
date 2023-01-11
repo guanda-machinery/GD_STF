@@ -3358,11 +3358,10 @@ namespace WPFSTD105.ViewModel
             //_SendIndex.AddRange(noInfo); //存取已經發送過的列表
             //SerializationValue機台內有資料的都會在此陣列中
             List<short> SerializationValue = new List<short>(indexArray);
-            List<short> delete = _LastTime.Except(SerializationValue).ToList(); //找出上次有序列化的文件
-            SerializationValue.AddRange(delete);
-
+           // List<short> delete = _LastTime.Except(SerializationValue).ToList(); //找出上次有序列化的文件
+           // SerializationValue.AddRange(delete);
             Serialization(SerializationValue);
-            _LastTime = indexArray.ToArray();
+           //_LastTime = indexArray.ToArray();
 
             //刷新初始化
             for (int i = 0; i < Finish_UndoneDataViews.Count; i++)
@@ -3413,7 +3412,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 上一次的 Index
         /// </summary>
-        private short[] _LastTime { get; set; } = new short[0];
+        //private short[] _LastTime { get; set; } = new short[0];
 
         /// <summary>
         /// 持續監看 Host
