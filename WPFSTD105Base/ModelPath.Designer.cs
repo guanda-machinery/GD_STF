@@ -142,6 +142,15 @@ namespace WPFSTD105 {
         }
         
         /// <summary>
+        ///   查詢類似 MachiningTimeBackup 的當地語系化字串。
+        /// </summary>
+        public static string MachiningTimeBackup {
+            get {
+                return ResourceManager.GetString("MachiningTimeBackup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 Mater.lis 的當地語系化字串。
         /// </summary>
         public static string Material {

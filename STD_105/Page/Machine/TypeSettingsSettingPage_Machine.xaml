@@ -512,9 +512,15 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="素材清單"  FontSize="16"></TextBlock>
-                    <TextBox Grid.Column="1" materialDesign:HintAssist.Hint="Search Tasks(Ctrl + F)" BorderBrush="#cfcfcf"
+                    <TextBlock Text="素材清單"  FontSize="16"/>
+                    <Button  Grid.Column="1" 
+                                 Margin="10,0" Style="{StaticResource SiegCustomButtonWhite}" 
+                                 Width="auto" Padding="10,0"
+                                 Content="刪除所有素材" 
+                                 Click="DeleteAllMaterialButtonClick"/>
+                    <TextBox Grid.Column="2" materialDesign:HintAssist.Hint="Search Tasks(Ctrl + F)" BorderBrush="#cfcfcf"
                                  Text="{Binding MaterialGridSearchString, Mode=TwoWay , UpdateSourceTrigger=PropertyChanged}" 
                                 FontSize="14" 
                                  MaxWidth="250" Width="200" HorizontalAlignment="Right" Margin="0" Padding="0" />
@@ -797,6 +803,8 @@
                                             <dxg:GridColumn FieldName="" Header="Phase"   MinWidth="40" Width="40"/>
                                             <dxg:GridColumn FieldName="" Header="拆運"   MinWidth="40" Width="40" />
                                         </dxg:GridControl>
+
+
                                         <StackPanel Orientation="Horizontal">
                                             <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
                                                 <Button  
@@ -816,13 +824,10 @@
                                                 </Button>
                                                 <TextBlock Text="加入新零件" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                             </StackPanel>
-                                            <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
+                                            <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal" Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}">
                                                 <Button 
-                                                        Click="DeletePartButtonClick"
+                                                        Click="DeletePartButtonClick"  
                                                         IsEnabled="{Binding ButtonEnable}">
-                                                    <!-- Command="{Binding DeletePartCommand}" 
-                                                        CommandParameter="{Binding ElementName=ComponentGridControl}"-->
-
                                                     <Button.Content>
                                                         <Grid>
                                                             <Grid.ColumnDefinitions>
@@ -831,14 +836,32 @@
                                                             </Grid.ColumnDefinitions>
 
                                                             <materialDesign:PackIcon Kind="MinusThick" />
-                                                            <materialDesign:PackIcon Kind="ScrewLag" Grid.Column="1"  Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"/>
-                                                            <materialDesign:PackIcon Kind="Delete" Grid.Column="1"  Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter Invert=True},UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <materialDesign:PackIcon Kind="ScrewLag" Grid.Column="1"/>
                                                         </Grid>
                                                     </Button.Content>
                                                 </Button>
-                                                <TextBlock Text="刪除零件" VerticalAlignment="Center" Margin="10,0,0,0" Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"/>
-                                                <TextBlock Text="刪除素材" VerticalAlignment="Center" Margin="10,0,0,0" Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter Invert=True},UpdateSourceTrigger=PropertyChanged}"/>
+                                                <TextBlock Text="刪除零件" VerticalAlignment="Center" Margin="10,0,0,0" />
                                             </StackPanel>
+
+                                            <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
+                                                <Button 
+                                                        Click="DeleteMaterialButtonClick"  
+                                                        IsEnabled="{Binding ButtonEnable}">
+                                                    <Button.Content>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <materialDesign:PackIcon Kind="MinusThick" />
+                                                            <materialDesign:PackIcon Kind="Delete" Grid.Column="1" />
+                                                        </Grid>
+                                                    </Button.Content>
+                                                </Button>
+                                                <TextBlock Text="刪除素材" VerticalAlignment="Center" Margin="10,0,0,0" />
+                                            </StackPanel>
+
+
                                             <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
                                                 <Button  Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter ListLimitCount=1},UpdateSourceTrigger=PropertyChanged}"
                                                         Click="DeleteAllPartButtonClick"  
@@ -851,6 +874,9 @@
                                                 <TextBlock Text="刪除全部零件" VerticalAlignment="Center" Margin="10,0,0,0" Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter ListLimitCount=1},UpdateSourceTrigger=PropertyChanged}"/>
                                             </StackPanel>
                                         </StackPanel>
+
+
+
                                     </StackPanel>
 
                                     <GridSplitter Style="{StaticResource MaterialDesignGridSplitter}" 

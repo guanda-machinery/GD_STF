@@ -2395,8 +2395,11 @@ namespace WPFSTD105.ViewModel
 
                     if (str == "模型&系統")//如果確定要變更系統
                     {
+                        log4net.LogManager.GetLogger("檢查").Debug("系統斷面規格儲存位置：" + System.AppDomain.CurrentDomain.BaseDirectory + $@"Profile\{strType}.inp");
+
                         //ObservableCollection<SteelAttr> system = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>($@"{ApplicationVM.DirectoryModel()}\{ModelPath.Profile}\{strType}.inp");//系統的斷面規格
                         ObservableCollection<SteelAttr> system = SerializationHelper.Deserialize<ObservableCollection<SteelAttr>>(System.AppDomain.CurrentDomain.BaseDirectory + $@"Profile\{strType}.inp");//系統的斷面規格(在輸出目錄中)
+
                         //SteelAttr steelAttr = GetSettingSteelAttr(); //取得設定好的斷面規格
                         if (system.IndexOf(e => e.Profile == steelAttr_system.Profile) != -1) //如果有相同的斷面規格
                         {
@@ -3664,15 +3667,17 @@ namespace WPFSTD105.ViewModel
             //讀入SplitLineSetting.lis中切割線設定值
             STDSerialization ser = new STDSerialization(); //序列化處理器
             ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();//備份當前加工區域數值
-            
-            HowManyParts_Value = ReadSplitLineSettingData[0].HowManyParts;
-            PointA_Value = ReadSplitLineSettingData[0].A;
-            PointB_Value = ReadSplitLineSettingData[0].B;
-            PointC_Value = ReadSplitLineSettingData[0].C;
-            PointD_Value = ReadSplitLineSettingData[0].D;
-            CutThickness = ReadSplitLineSettingData[0].Thickness;
-            SplitRemainingLength = ReadSplitLineSettingData[0].RemainingLength;
-            
+
+            if (ReadSplitLineSettingData != null && ReadSplitLineSettingData.Count > 0)
+            {
+                HowManyParts_Value = ReadSplitLineSettingData[0].HowManyParts;
+                PointA_Value = ReadSplitLineSettingData[0].A;
+                PointB_Value = ReadSplitLineSettingData[0].B;
+                PointC_Value = ReadSplitLineSettingData[0].C;
+                PointD_Value = ReadSplitLineSettingData[0].D;
+                CutThickness = ReadSplitLineSettingData[0].Thickness;
+                SplitRemainingLength = ReadSplitLineSettingData[0].RemainingLength;
+            }
 
             //char[] HowManyParts_AB = new char[ReadSplitLineSettingData[0].A.Length];
             //using (StringReader sr = new StringReader(ReadSplitLineSettingData[0].A))

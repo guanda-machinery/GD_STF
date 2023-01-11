@@ -141,14 +141,31 @@ namespace STD_105
                     int partMatch = steelParts[steelIndex].Match.FindIndex(x => x == true);
                     if (partMatch != -1)
                     {
-                        _PartItem.Match[partMatch] = false;
+                       // _PartItem.Match[partMatch] = false;
                         steelParts[steelIndex].Match[partMatch] = false;
                     }
                     else
                     {
-                        _PartItem.Match.Add(false);
+                        //_PartItem.Match.Add(false);
                         steelParts[steelIndex].Match.Add(false);
                     }
+
+                    int PartItemMatch = _PartItem.Match.FindIndex(x => x == true);
+                    if (PartItemMatch != -1)
+                    {
+                        _PartItem.Match[PartItemMatch] = false;
+                        //steelParts[steelIndex].Match[partMatch] = false;
+                    }
+                    else
+                    {
+                        _PartItem.Match.Add(false);
+                        //steelParts[steelIndex].Match.Add(false);
+                    }
+
+
+
+
+
                 }
                 _PartItem.Revise = DateTime.Now;
                 ser.SetPart(_PartItem.Profile.GetHashCode().ToString(), new ObservableCollection<object>(steelParts));

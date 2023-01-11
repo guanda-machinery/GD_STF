@@ -178,8 +178,9 @@
                 <local:MainFunctionButton ButtonCommand="{Binding SettingParCommand}"
                                           ButtonImageSource="{StaticResource SoftwareSettings}"
                                           TitleText="{ DynamicResource LANGUAGE_ParameterSettings }"
-                                          IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
                                           FontColor="{ StaticResource solidclr_DimGray }" />
+                <!--
+                                          IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"-->
                 <!--多國語言-->
                 <local:MainFunctionButton ButtonCommand="{Binding LanguageSwitchCommand }"
                                           ButtonImageSource="{StaticResource LanguageSwitcher}"

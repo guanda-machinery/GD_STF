@@ -51,7 +51,7 @@ namespace STD_105.Office
         public SplashScreenManager ScreenManager { get; set; } = SplashScreenManager.Create(() => new WaitIndicator(), new DevExpress.Mvvm.DXSplashScreenViewModel { });
 
         public bool bResult;
-       public ObSettingVM ObViewModel { get; set; } = new ObSettingVM();
+        public ObSettingVM ObViewModel { get; set; } = new ObSettingVM();
         /// <summary>
         /// nc 設定檔
         /// </summary>
@@ -108,7 +108,7 @@ namespace STD_105.Office
             if (NcTemp != null)
             {
                 STDSerialization ser = new STDSerialization(); //序列化處理器
-                
+
                 Steel3DBlock.AddSteel(NcTemp.SteelAttr, model, out BlockReference steelBlock); //加入 3d 鋼構參考圖塊
                 SteelTriangulation((Mesh)model.Blocks[1].Entities[0]);//產生2D參考圖塊
                 for (int i = 0; i < NcTemp.GroupBoltsAttrs.Count; i++) //逐步展開 nc 檔案的螺栓
@@ -117,7 +117,7 @@ namespace STD_105.Office
                     if (!B3DB.hasOutSteel)
                     {
                         Add2DHole((Bolts3DBlock)model.Blocks[botsBlock.BlockName], false);//加入孔位不刷新 2d 視圖
-                    }                    
+                    }
                 }
                 ser.SetPartModel(NcTemp.SteelAttr.GUID.ToString(), model);//儲存 3d 視圖
             }
@@ -196,34 +196,34 @@ namespace STD_105.Office
                 Esc();
                 esc.Visibility = Visibility.Collapsed;//關閉取消功能
             }
-//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.P)) //俯視圖
-//            {
-//#if DEBUG
-//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + P");
-//#endif
-//                model.InitialView = viewType.Top;
-//                model.ZoomFit();//在視口控件的工作區中適合整個模型。
-//            }
-//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Z)) //退回
-//            {
-//#if DEBUG
-//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z");
-//#endif
-//                ViewModel.Reductions.Previous();
-//#if DEBUG
-//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z 完成");
-//#endif
-//            }
-//            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Y)) //退回
-//            {
-//#if DEBUG
-//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y");
-//#endif
-//                ViewModel.Reductions.Next();//回到上一個動作
-//#if DEBUG
-//                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y 完成");
-//#endif
-//            }
+            //            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.P)) //俯視圖
+            //            {
+            //#if DEBUG
+            //                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + P");
+            //#endif
+            //                model.InitialView = viewType.Top;
+            //                model.ZoomFit();//在視口控件的工作區中適合整個模型。
+            //            }
+            //            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Z)) //退回
+            //            {
+            //#if DEBUG
+            //                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z");
+            //#endif
+            //                ViewModel.Reductions.Previous();
+            //#if DEBUG
+            //                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Z 完成");
+            //#endif
+            //            }
+            //            else if (Keyboard.IsKeyDown(Key.LeftCtrl) | Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.Y)) //退回
+            //            {
+            //#if DEBUG
+            //                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y");
+            //#endif
+            //                ViewModel.Reductions.Next();//回到上一個動作
+            //#if DEBUG
+            //                log4net.LogManager.GetLogger("按下鍵盤").Debug("Ctrl + Y 完成");
+            //#endif
+            //            }
             model.Invalidate();
             drawing.Invalidate();
         }
@@ -527,7 +527,7 @@ namespace STD_105.Office
             {
                 var item = e.AddedItems[index];
 
-                if (item is SelectedFace)                                                                           
+                if (item is SelectedFace)
                 {
                     var faceItem = (SelectedFace)item;
                     var ent = faceItem.Item;
@@ -688,7 +688,7 @@ namespace STD_105.Office
                 if (e.OldItem is GD_STD.Data.MaterialDataView)
                 {
                     var EOldItem = (GD_STD.Data.MaterialDataView)e.OldItem;
-                    EOldItem.ButtonEnable = false; 
+                    EOldItem.ButtonEnable = false;
                     var OldHandle = SenderC.FindRow(e.OldItem);
                     SenderC.RefreshRow(OldHandle);//畫面裡刷新上面該列的設定值
                 }
@@ -702,7 +702,7 @@ namespace STD_105.Office
         private void ControlDraw3D()
         {
             var SelectedData = (GD_STD.Data.MaterialDataView)Material_List_GridControl.SelectedItem;
-          //未選擇目標 不畫圖
+            //未選擇目標 不畫圖
             if (SelectedData == null)
                 return;
 
@@ -710,9 +710,9 @@ namespace STD_105.Office
             model.ActionMode = actionType.SelectByBox;
             string content = SelectedData.MaterialNumber; //素材編號
 
-            
+
             model.AssemblyPart(content);
-            AssemblyPart2D(model,content);
+            AssemblyPart2D(model, content);
 
             //drawing.Entities.Regen();
             //model.Entities.Regen();
@@ -739,7 +739,7 @@ namespace STD_105.Office
         /// </summary>
         /// <param name="model"></param>
         /// <param name="materialNumber"></param>
-        public void AssemblyPart2D(devDept.Eyeshot.Model model,string materialNumber)
+        public void AssemblyPart2D(devDept.Eyeshot.Model model, string materialNumber)
         {
             //ObSettingVM obvm = new ObSettingVM();
             STDSerialization ser = new STDSerialization(); //序列化處理器
@@ -778,7 +778,7 @@ namespace STD_105.Office
                     //MessageBoxOptions.None,
                     // FloatingMode.Window);
                     return;
-                  // throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
+                    // throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
                 }
                 else
                 {
@@ -820,7 +820,7 @@ namespace STD_105.Office
 
                 if (place[i].IsCut) //如果是切割物件
                 {
-                    Entity cut1 = Draw2DCutMesh(parts[0], model, place[i].Start, place[i].End, "Cut"+ i);
+                    Entity cut1 = Draw2DCutMesh(parts[0], model, place[i].Start, place[i].End, "Cut" + i);
                     if (cut1 != null)
                     {
                         entities.Add(cut1);
@@ -860,7 +860,7 @@ namespace STD_105.Office
                         for (int searchboltindex = FindSteelBlockIndex; searchboltindex < model.Blocks.Count; searchboltindex++)
                         {
                             //沒找到零件
-                            if(searchboltindex ==-1)
+                            if (searchboltindex == -1)
                             {
                                 findsteel = false;
                                 break;
@@ -871,7 +871,7 @@ namespace STD_105.Office
                                 findsteel = false;
                                 break;
                             }
-                            
+
 
                             if (model.Blocks[searchboltindex].Entities[0].EntityData is SteelAttr && !findsteel)
                             {
@@ -889,31 +889,48 @@ namespace STD_105.Office
                                 findsteel = true;
                             }
 
-                            if ((model.Blocks[searchboltindex].Entities[0].EntityData is BoltAttr) && findsteel )
+                            if ((model.Blocks[searchboltindex].Entities[0].EntityData is BoltAttr) && findsteel)
                             {
 
                                 Steel2DBlock steel2DBlock = new Steel2DBlock((devDept.Eyeshot.Entities.Mesh)model.Blocks[FindSteelBlockIndex].Entities[0], model.Blocks[FindSteelBlockIndex].Name);   // 產生2D
 
-                                int icount;
-                                for (icount = 0; icount < model.Entities.Count; icount++)
+
+                                //int icount = model.Entities.FindIndex(x=>((BlockReference)x) )
+                                int jcount = -1;
+                                for (int j = 0; j < model.Entities.Count; j++)
                                 {
-                                    BlockReference aa = (BlockReference)model.Entities[icount]; //取得參考圖塊
+                                    BlockReference aa = (BlockReference)model.Entities[j]; //取得參考圖塊
                                     Block bb = model.Blocks[aa.BlockName]; //取得圖塊 
-                                    if (model.Blocks[searchboltindex].Name==bb.Name)
+                                    if (model.Blocks[searchboltindex].Name == bb.Name)
                                     {
+                                        jcount = j;
                                         break;
                                     }
                                 }
 
-                                BlockReference blockReference = (BlockReference)model.Entities[icount]; //取得參考圖塊
+                                //20230107 功發有發生找不到參考圖塊之情況
+                                if(jcount == -1)
+                                {
+                                    WinUIMessageBox.Show(null,
+                                        $"找不到參考圖塊",
+                                        "通知",
+                                        MessageBoxButton.OK,
+                                        MessageBoxImage.Exclamation,
+                                        MessageBoxResult.None,
+                                        MessageBoxOptions.None,
+                                        FloatingMode.Window);
+                                    return;
+                                }
+
+                                BlockReference blockReference = (BlockReference)model.Entities[jcount]; //取得參考圖塊
                                 Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
-                                
+
                                 Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生3D螺栓圖塊
                                 Bolts2DBlock bolts2DBlock = new Bolts2DBlock(bolts3DBlock, steel2DBlock); //產生2D螺栓圖塊
 
-                                int tmpindex=drawing.Blocks.FindIndex(x => x.Name == bolts2DBlock.Name);
-                                if (tmpindex ==-1)
-                                drawing.Blocks.Add(bolts2DBlock); //加入螺栓圖塊
+                                int tmpindex = drawing.Blocks.FindIndex(x => x.Name == bolts2DBlock.Name);
+                                if (tmpindex == -1)
+                                    drawing.Blocks.Add(bolts2DBlock); //加入螺栓圖塊
 
                                 BlockReference block2D = new BlockReference(0, 0, 0, bolts2DBlock.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
 
@@ -1080,7 +1097,7 @@ namespace STD_105.Office
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
-        {                                         
+        {
             model.ActionMode = actionType.SelectByBox;
 
             for (int i = 0; i < model.Entities.Count; i++)
@@ -1103,7 +1120,7 @@ namespace STD_105.Office
             ((DevExpress.Xpf.Grid.TableView)sender).FocusedRowHandle = DevExpress.Xpf.Grid.GridControl.InvalidRowHandle;
         }
 
-        
+
         private void ScrollOwner_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if ((sender as DevExpress.Xpf.Grid.TableView).Name == PartListTableView.Name)
@@ -1160,8 +1177,8 @@ namespace STD_105.Office
             //取出相同斷面規格
             var ITEM_Profile = (this.PartsGridControl.ItemsSource as IEnumerable<GD_STD.Data.TypeSettingDataView>).ToList().FindAll(x => (x.Profile == SelectedMaterial.Profile));
             var IPW = new InsertPartsWin(Material_List_GridControl);
-            foreach(var item in  ITEM_Profile)
-           {
+            foreach (var item in ITEM_Profile)
+            {
                 item.SortCount = 0;
             }
 
@@ -1173,12 +1190,12 @@ namespace STD_105.Office
                 Title = "素材新增零件",
                 ShowInTaskbar = false,
                 Content = IPW,
-                MinWidth =900,
+                MinWidth = 900,
                 MinHeight = 550,
-                Width=900,
-                Height= 550,
+                Width = 900,
+                Height = 550,
                 Padding = new Thickness(0),
-                
+
             };
 
             Win.ShowDialog();
@@ -1199,28 +1216,26 @@ namespace STD_105.Office
             ScreenManager.ViewModel.Status = "完成...";
             System.Threading.Thread.Sleep(100);
             ScreenManager.Close();
-
-
         }
+
 
         private void DeletePartButtonClick(object sender, RoutedEventArgs e)
         {
-            
             var SelectedDataView = Material_List_GridControl.SelectedItem as GD_STD.Data.MaterialDataView;
-
             //ComponentGridControl
             if (SelectedDataView.Parts.Count == 0)
             {
                 WinUIMessageBox.Show(null,
-                    $"本素材不存在可刪除之零件，將會刪除本素材",
+                    $"本素材不存在可刪除之零件",
                     "通知",
                     MessageBoxButton.OK,
                     MessageBoxImage.Exclamation,
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
                      FloatingMode.Window);
+                return;
             }
-            else if(SelectedDataView.Parts.Count==1)
+            else if (SelectedDataView.Parts.Count == 1)
             {
                 SelectedDataView.SelectedPart = SelectedDataView.Parts[0];
             }
@@ -1238,7 +1253,7 @@ namespace STD_105.Office
             }
 
             var MessageBoxReturn = MessageBoxResult.None;
-            if (SelectedDataView.Parts.Count != 0 )
+            if (SelectedDataView.Parts.Count != 0)
             {
                 MessageBoxReturn = WinUIMessageBox.Show(null,
                         $"是否要刪除素材編號:{SelectedDataView.MaterialNumber}內的零件：\r\n" +
@@ -1266,46 +1281,7 @@ namespace STD_105.Office
 
             if (MessageBoxReturn == MessageBoxResult.Yes)
             {
-                STDSerialization ser = new STDSerialization(); //序列化處理器    
-                //以下代碼在第二階段需要重構->需放到VM層及讀取方式變更
-                //var OTS_VM = this. as WPFSTD105.OfficeTypeSettingVM;
-
-                ObservableCollection<SteelPart> steelParts = ser.GetPart(SelectedDataView.Profile.GetHashCode().ToString());
-                if (SelectedDataView.Parts.Count != 0)
-                {
-                    int index = ViewModel.DataViews.FindIndex(x => x == SelectedDataView.SelectedPart);
-                    if (index != -1)
-                    {
-                        int m = ViewModel.DataViews[index].Match.FindLastIndex(x => x == false);
-                        if (m != -1)
-                        {
-                            ViewModel.DataViews[index].Match[m] = true;
-                            ViewModel.DataViews[index].Revise = DateTime.Now;
-                        }
-                    }
-
-                    int steelIndex = steelParts.FindIndex(x => x.Number == SelectedDataView.SelectedPart.PartNumber);
-                    if (steelIndex != -1)
-                    {
-                        int partMatch = steelParts[steelIndex].Match.FindLastIndex(x => x == false);
-                        if (partMatch != -1)
-                            steelParts[steelIndex].Match[partMatch] = true;
-                    }
-
-                    SelectedDataView.Parts.Remove(SelectedDataView.SelectedPart);
-
-                    ser.SetPart(SelectedDataView.Profile.GetHashCode().ToString(), new ObservableCollection<object>(steelParts));
-                }
-                else
-                {
-                    //無零件時 刪除素材
-                    ViewModel.MaterialDataViews.Remove(SelectedDataView);
-                }
-                //存檔
-                ser.SetMaterialDataView(Material_List_GridControl.ItemsSource as ObservableCollection<MaterialDataView>);
-
-                //變更後將Dev_Material/*.dm檔移除 以防錯誤
-                ser.DeleteMaterialModel(SelectedDataView.MaterialNumber);
+                DeletePart(SelectedDataView);
 
                 ScreenManager.ViewModel.Status = "刪除零件中...";
                 ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
@@ -1321,13 +1297,11 @@ namespace STD_105.Office
                     MessageBoxResult.None,
                     MessageBoxOptions.None,
                      FloatingMode.Window);
-
-
-
             }
         }
-            
-       private void DeleteAllPartButtonClick(object sender, RoutedEventArgs e)
+
+
+        private void DeleteAllPartButtonClick(object sender, RoutedEventArgs e)
         {
             var SelectedDataView = Material_List_GridControl.SelectedItem as GD_STD.Data.MaterialDataView;
 
@@ -1356,40 +1330,7 @@ namespace STD_105.Office
 
             if (MessageBoxReturn == MessageBoxResult.Yes)
             {
-                STDSerialization ser = new STDSerialization(); //序列化處理器
-                                          
-                //需要重構
-                //var OTS_VM = this. as WPFSTD105.OfficeTypeSettingVM;
-                ObservableCollection<SteelPart> steelParts = ser.GetPart(SelectedDataView.Profile.GetHashCode().ToString());
-                SelectedDataView.Parts.ForEach(DelPart =>
-                {
-                    int index = ViewModel.DataViews.FindIndex(x => x == DelPart);
-                    if (index != -1)
-                    {
-                        int m = ViewModel.DataViews[index].Match.FindLastIndex(x => x == false);
-                        if (m != -1)
-                            ViewModel.DataViews[index].Match[m] = true;
-
-                        ViewModel.DataViews[index].Revise = DateTime.Now;
-                    }
-
-                    int steelIndex = steelParts.FindIndex(x => x.Number == DelPart.PartNumber);
-                    if (steelIndex != -1)
-                    {
-                        int partMatch = steelParts[steelIndex].Match.FindLastIndex(x => x == false);
-                        if (partMatch != -1)
-                            steelParts[steelIndex].Match[partMatch] = true;
-                    }
-                    ser.SetPart(SelectedDataView.Profile.GetHashCode().ToString(), new ObservableCollection<object>(steelParts));
-                });
-                SelectedDataView.Parts.Clear();
-                //存檔
-                ser.SetMaterialDataView(Material_List_GridControl.ItemsSource as ObservableCollection<MaterialDataView>);
-
-
-                //變更後將Dev_Material/*.dm檔移除 以防錯誤
-                ser.DeleteMaterialModel(SelectedDataView.MaterialNumber);
-
+                DeleteAllPart(SelectedDataView);
                 ScreenManager.ViewModel.Status = "刪除零件中...";
                 ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
                 ReloadMaterialGrid();
@@ -1410,6 +1351,167 @@ namespace STD_105.Office
         }
 
 
+        private void DeleteMaterialButtonClick(object sender, RoutedEventArgs e)
+        {
+            var SelectedDataView = Material_List_GridControl.SelectedItem as GD_STD.Data.MaterialDataView;
+            var MessageBoxReturn = WinUIMessageBox.Show(null,
+                        $"是否要刪除素材編號:{SelectedDataView.MaterialNumber}：\r\n" +
+                        $"按下「YES」會立即刪除",
+                        "通知",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                         FloatingMode.Window);
+
+            if (MessageBoxReturn == MessageBoxResult.Yes)
+            {
+                ScreenManager.ViewModel.Status = "刪除素材中...";
+                ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
+
+                DeleteAllPart(SelectedDataView);
+                ViewModel.MaterialDataViews.Remove(SelectedDataView);
+                new STDSerialization().SetMaterialDataView(ViewModel.MaterialDataViews as ObservableCollection<MaterialDataView>);
+
+                ReloadMaterialGrid();
+                ScreenManager.ViewModel.Status = "完成....";
+                System.Threading.Thread.Sleep(100);
+                ScreenManager.Close();
+                WinUIMessageBox.Show(null,
+                    $"刪除成功！",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                     FloatingMode.Window);
+            }
+
+
+        }
+
+        /// <summary>
+        /// 刪掉所有素材
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DeleteAllMaterialButtonClick(object sender, RoutedEventArgs e)
+        {
+            var MessageBoxReturn = WinUIMessageBox.Show(null,
+                        $"是否要刪除所有已配對的素材：\r\n" +
+                        $"按下「YES」會立即刪除",
+                        "通知",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                         FloatingMode.Window);
+
+            if (MessageBoxReturn == MessageBoxResult.Yes)
+            {
+                ScreenManager.ViewModel.Status = "刪除素材中...";
+                ScreenManager.Show(inputBlock: InputBlockMode.None, timeout: 100);
+
+
+                //複製陣列出來進行命令 直接ForEach會有源頭被更改的錯誤
+                ViewModel.MaterialDataViews.ToArray().ForEach(SelectedDataView =>
+                {
+                    DeleteAllPart(SelectedDataView);
+                    var mIndex = ViewModel.MaterialDataViews.FindIndex(x => (x.MaterialNumber == SelectedDataView.MaterialNumber));
+                    if(mIndex!=-1)
+                        ViewModel.MaterialDataViews.RemoveAt(mIndex);
+                    new STDSerialization().SetMaterialDataView(ViewModel.MaterialDataViews as ObservableCollection<MaterialDataView>);
+                    ReloadMaterialGrid();
+                }); 
+
+
+                ScreenManager.ViewModel.Status = "完成....";
+                System.Threading.Thread.Sleep(100);
+                ScreenManager.Close();
+                WinUIMessageBox.Show(null,
+                    $"刪除成功！",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                     FloatingMode.Window);
+            }
+
+
+        }
+
+
+        /// <summary>
+        /// 刪除素材內的單一零件
+        /// </summary>
+        /// <param name="SelectedDataView"></param>
+        private void DeletePart(MaterialDataView SelectedDataView)
+        {
+            STDSerialization ser = new STDSerialization(); //序列化處理器    
+            DeletePartVoid(SelectedDataView.Profile, SelectedDataView.SelectedPart);
+
+            SelectedDataView.Parts.Remove(SelectedDataView.SelectedPart);
+            //存檔
+            ser.SetMaterialDataView(ViewModel.MaterialDataViews as ObservableCollection<MaterialDataView>);
+            //變更後將Dev_Material/*.dm檔移除 以防錯誤
+            ser.DeleteMaterialModel(SelectedDataView.MaterialNumber);
+        }
+
+        /// <summary>
+        /// 刪掉素材內的所有零件
+        /// </summary>
+        private void DeleteAllPart(MaterialDataView SelectedDataView)
+        {
+            STDSerialization ser = new STDSerialization(); //序列化處理器
+            SelectedDataView.Parts.ForEach(DelPart =>
+            {
+                DeletePartVoid(SelectedDataView.Profile, DelPart);
+            });
+            SelectedDataView.Parts.Clear();
+            ser.SetMaterialDataView(ViewModel.MaterialDataViews as ObservableCollection<MaterialDataView>);
+            ser.DeleteMaterialModel(SelectedDataView.MaterialNumber);
+        }
+
+        /// <summary>
+        /// 零件刪除VOID
+        /// </summary>
+        /// <param name="MaterialProfile"></param>
+        /// <param name="selectedPart"></param>
+        private void DeletePartVoid(string MaterialProfile, TypeSettingDataView selectedPart)
+        {
+            STDSerialization ser = new STDSerialization(); //序列化處理器    
+                                                           //以下代碼在第二階段需要重構->需放到VM層及讀取方式變更
+            ObservableCollection<SteelPart> steelParts = ser.GetPart(MaterialProfile.GetHashCode().ToString());
+            int index = ViewModel.DataViews.FindIndex(x => x == selectedPart);
+            if (index != -1)
+            {
+                int m = ViewModel.DataViews[index].Match.FindLastIndex(x => x == false);
+                if (m != -1)
+                {
+                    ViewModel.DataViews[index].Match[m] = true;
+                    ViewModel.DataViews[index].Revise = DateTime.Now;
+                }
+            }
+
+            int steelIndex = steelParts.FindIndex(x => x.Number == selectedPart.PartNumber);
+            if (steelIndex != -1)
+            {
+                int partMatch = steelParts[steelIndex].Match.FindLastIndex(x => x == false);
+                if (partMatch != -1)
+                    steelParts[steelIndex].Match[partMatch] = true;
+            }
+
+            ser.SetPart(MaterialProfile.GetHashCode().ToString(), new ObservableCollection<object>(steelParts));
+
+            //else
+
+            //無零件時 刪除素材
+            //ViewModel.MaterialDataViews.Remove(SelectedDataView);
+
+        }
+
+
         private void ReloadMaterialGrid()
         {
             //紀錄卷軸位置
@@ -1425,8 +1527,11 @@ namespace STD_105.Office
                 ExpandedList[i] = Material_List_GridControl.IsMasterRowExpanded(i);
             }
             var Selected = Material_List_GridControl.SelectedItem as MaterialDataView;
-            var Handle = (Material_List_GridControl.ItemsSource as ObservableCollection<MaterialDataView>).FindIndex(x => (x.MaterialNumber == Selected.MaterialNumber));
-
+            var Handle = -1;
+            if (Selected != null)
+            {
+                Handle = (Material_List_GridControl.ItemsSource as ObservableCollection<MaterialDataView>).FindIndex(x => (x.MaterialNumber == Selected.MaterialNumber));
+            }
             //var OTS_VM = this. as WPFSTD105.OfficeTypeSettingVM;
             ViewModel.MaterialDataViews.Clear();
             STDSerialization ser = new STDSerialization(); //序列化處理器
@@ -1528,7 +1633,6 @@ namespace STD_105.Office
                 GridC.RefreshData();
             }
         }
-
 
     }
 }

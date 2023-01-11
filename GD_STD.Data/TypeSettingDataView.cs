@@ -12,7 +12,6 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using DevExpress.Mvvm.UI;
 
-
 namespace GD_STD.Data
 {
     /// <summary>
@@ -198,7 +197,6 @@ namespace GD_STD.Data
 
 
 
-
         /// <summary>
         /// 是否可排版(依長寬決定)
         /// </summary>
@@ -215,7 +213,6 @@ namespace GD_STD.Data
             }
         }
 
-
         /// <summary>
         /// 斷面規格最大高度
         /// </summary>
@@ -223,8 +220,7 @@ namespace GD_STD.Data
         /// <summary>
         /// 斷面規格最小高度
         /// </summary>
-        public double SectionSpecificationMinHeight { get; set; } = 145;
-        //public double SectionSpecificationMinHeight { get; set; } = 150;
+        public double SectionSpecificationMinHeight { get; set; } = 140;
 
         /// <summary>
         /// 斷面規格最大寬度
@@ -234,6 +230,8 @@ namespace GD_STD.Data
         /// 斷面規格最小寬度
         /// </summary>
         public double SectionSpecificationMinWidth { get; set; } = 75;
+
+
 
 
 

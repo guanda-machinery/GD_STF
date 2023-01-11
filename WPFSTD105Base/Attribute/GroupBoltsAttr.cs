@@ -1,5 +1,6 @@
 ﻿#define Debug 
 using devDept.Geometry;
+using GD_STD.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,6 +78,12 @@ namespace WPFSTD105.Attribute
         /// 起始孔位置
         /// </summary>
         public START_HOLE StartHole { get; set; }
+        /// <summary>
+        /// 孔群種類
+        /// </summary>
+        public GroupBoltsType groupBoltsType { get; set; } = GroupBoltsType.Rectangle;
+
+
         /// <summary>
         /// 加總 X 向間距
         /// </summary>
