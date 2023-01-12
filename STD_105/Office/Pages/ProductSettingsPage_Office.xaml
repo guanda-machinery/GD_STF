@@ -21,7 +21,9 @@
                   xmlns:STD105="clr-namespace:STD_105"
                   xmlns:STD105ValidRule="clr-namespace:STD_105.ValidationRules"
                   xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-                  xmlns:System="clr-namespace:System;assembly=mscorlib"
+                  xmlns:System="clr-namespace:System;assembly=mscorlib" 
+                  xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+                  xmlns:GD_STD_Enum="clr-namespace:GD_STD.Enum;assembly=GD_STD.Enum"
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Title="製品設定">
@@ -1085,10 +1087,38 @@
                                     </GroupBox>
                                 </DockPanel>
                                 <GroupBox Grid.Column="0" Grid.Row="2" Header="孔群類型">
-                                    <ComboBox 
-                                       DisplayMemberPath="GroupBoltsDisplayName"
-                                        SelectedItem="{Binding GroupBoltsTypeComboxItemSelected}"
-                                        ItemsSource="{Binding GroupBoltsTypeList}" />
+                                    <!--技術文件參照:https://community.devexpress.com/blogs/wpf/archive/2015/01/27/devexpress-mvvm-framework-enumitemsourcebehavior.aspx-->
+                                        <dxe:ComboBoxEdit 
+                                        EditValue="{Binding ComboxEdit_GroupBoltsTypeSelected}">
+                                        <dxmvvm:Interaction.Behaviors>
+                                            <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:GroupBoltsType}" />
+                                            <!--SortMode="DisplayName"-->
+                                        </dxmvvm:Interaction.Behaviors>
+                                        <dxe:ComboBoxEdit.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition/>
+                                                        <ColumnDefinition/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition/>
+                                                        <RowDefinition/>
+                                                    </Grid.RowDefinitions>
+                                                    <Image 
+                                                        MaxHeight="20" Margin="5"
+                                                        Grid.Column="0" Grid.RowSpan="2"
+                                                        Source="{Binding RelativeSource={RelativeSource self},Path=DataContext ,Converter={STD105:GroupBoltsTypeToImageConverter}}" 
+                                                           />
+                                                    
+                                                    <TextBlock Text="{Binding Name}" Grid.Column="1"/>
+                                                    <TextBlock Text="{Binding Description}" Grid.Column="1" Grid.Row="1" FontSize="10"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                            
+                                        </dxe:ComboBoxEdit.ItemTemplate>
+
+                                    </dxe:ComboBoxEdit>
                                 </GroupBox>
                                 <!-- X軸數量-->
                                 <!--StackPanel Grid.Row="2"
