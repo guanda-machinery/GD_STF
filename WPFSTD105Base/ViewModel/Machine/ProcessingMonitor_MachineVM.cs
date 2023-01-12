@@ -293,7 +293,26 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 當前值
         /// </summary>
-        public int MCurrent { get { return _mCurrent; } set { _mCurrent = value; OnPropertyChanged(nameof(MCurrent)); } } 
+        public int MCurrent 
+        { 
+            get 
+            { 
+                return _mCurrent;
+            } 
+            set 
+            { 
+                _mCurrent = value;
+                OnPropertyChanged(nameof(MCurrent));
+
+                MCurrentMaterialNumber = Finish_UndoneDataViews[_mCurrent].MaterialNumber;
+                OnPropertyChanged(nameof(MCurrentMaterialNumber));
+            }
+        }
+
+        /// <summary>
+        /// 當前素材編號 依據 MCurrent變更
+        /// </summary>
+        public string MCurrentMaterialNumber { get; set; }
 
         /// <summary>
         /// 送料許可(最上層)
@@ -3085,9 +3104,13 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public void SetSerializationInit(WPFSTD105.ModelExt _Model)
         {
+            DevExpress.Xpf.Core.SplashScreenManager DProcessingScreenWin = DevExpress.Xpf.Core.SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
+            DProcessingScreenWin.Show();
+
+            DProcessingScreenWin.ViewModel.Status = "正在初始化監控頁面...";
             //await Task.Yield();
             int errorCount = 0;
-            while (errorCount < 50)
+            while (true)
             {
                 try
                 {
@@ -3196,8 +3219,9 @@ namespace WPFSTD105.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    if (errorCount < 20) //如果同步失敗 20 次
+                    if (errorCount < 5) //如果同步失敗 5 次
                     {
+                        AddOperatingLog(LogSourceEnum.Init, $"同步失敗 次數-{errorCount+1}", true);
                         log4net.LogManager.GetLogger("同步失敗").Debug($"同步失敗");
                         ;
                     }
@@ -3214,6 +3238,9 @@ namespace WPFSTD105.ViewModel
 
             _SerializationThread.Start();
             _HostThread.Start();
+            
+            DProcessingScreenWin.ViewModel.Status = "監控頁面初始化完成...";
+            DProcessingScreenWin.Close();
 
         }
 
@@ -3303,13 +3330,11 @@ namespace WPFSTD105.ViewModel
             _HostThread.IsBackground = true;
         }
 
-        private bool IsSerializing = false;
         /// <summary>
         /// 持續序列化及發送工作陣列
         /// </summary>
         private void ContinuedSerialization()
         {
-            IsSerializing = true;
             STDSerialization ser = new STDSerialization();
             short[] indexArray = null;
             WorkOther workOther = null;
@@ -3322,11 +3347,29 @@ namespace WPFSTD105.ViewModel
             }
 
             if (MCurrent != workOther.Current)
-            {
-                if (workOther.Current != -1)
-                    AddOperatingLog(LogSourceEnum.Machine, $"切換加工索引到：{workOther.Current}");
-                else
-                    AddOperatingLog(LogSourceEnum.Machine, $"目前無等待加工之索引");
+            {     try
+                {
+
+
+                    if (workOther.Current != -1)
+                    {
+
+                        //AddOperatingLog(LogSourceEnum.Machine, $"切換加工索引到：{workOther.Current}");
+                        AddOperatingLog(LogSourceEnum.Machine, $"準備加工素材：{Finish_UndoneDataViews[workOther.Current].MaterialNumber}");
+                        var CurrentIndex = indexArray.FindIndex(x => x == workOther.Current);
+                        if (CurrentIndex != -1)
+                        {
+                            if (indexArray[CurrentIndex] != -1)
+                                AddOperatingLog(LogSourceEnum.Machine, $"下一個待加工素材：{Finish_UndoneDataViews[indexArray[CurrentIndex]].MaterialNumber}");
+                        }
+                    }
+                    else
+                        AddOperatingLog(LogSourceEnum.Machine, $"目前無等待加工之索引");
+                }
+                catch                                       (Exception ex)
+                {
+                    AddOperatingLog(LogSourceEnum.Machine, $"{ex.Message}", true);
+                }
             }
             MCurrent = workOther.Current;
 
@@ -3358,11 +3401,13 @@ namespace WPFSTD105.ViewModel
             //_SendIndex.AddRange(noInfo); //存取已經發送過的列表
             //SerializationValue機台內有資料的都會在此陣列中
             List<short> SerializationValue = new List<short>(indexArray);
-           // List<short> delete = _LastTime.Except(SerializationValue).ToList(); //找出上次有序列化的文件
-           // SerializationValue.AddRange(delete);
-            Serialization(SerializationValue);
-           //_LastTime = indexArray.ToArray();
+            List<short> delete = _LastTime.Except(SerializationValue).ToList(); //找出上次有序列化的文件
+            SerializationValue.AddRange(delete);
 
+            Serialization(SerializationValue);
+            _LastTime = indexArray.ToArray();
+
+            //刷新初始化
             //刷新初始化
             for (int i = 0; i < Finish_UndoneDataViews.Count; i++)
             {
@@ -3397,8 +3442,6 @@ namespace WPFSTD105.ViewModel
          
             RefreshScheduleGridC();
 
-            IsSerializing = false;
-
 
 
             Thread.Sleep(1000); //等待 2 秒後執行
@@ -3412,7 +3455,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 上一次的 Index
         /// </summary>
-        //private short[] _LastTime { get; set; } = new short[0];
+        private short[] _LastTime { get; set; } = new short[0];
 
         /// <summary>
         /// 持續監看 Host
@@ -3756,9 +3799,6 @@ namespace WPFSTD105.ViewModel
         {
             Task.Run(() =>
             {
-                //不要在序列化中途清除加工陣列
-                while (IsSerializing)
-                    Thread.Sleep(1000);
 
                 short[] index;
                 using (Memor.ReadMemorClient read = new Memor.ReadMemorClient())

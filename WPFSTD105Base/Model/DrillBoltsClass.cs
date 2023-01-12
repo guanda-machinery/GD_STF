@@ -305,20 +305,27 @@ namespace WPFSTD105.Model
         }
 
         /// <summary>
-        /// 孔直徑
+        ///  鑽孔模式的刀徑  0或10   
+        /// </summary>
+        public const double PinDrillTool_Diameter = 0;
+        /// <summary>
+        /// 實際要加工的孔直徑
         /// </summary>
         public double DrillHoleDiameter
         {
             get
             {
+                //鑽孔模式統一0或10為刀徑                   
+                if (Changed_WorkAXIS_MODE == AXIS_MODE.POINT)
+                {
+                    DrillHoleDiameterIsChangeBool = true;
+                    return PinDrillTool_Diameter;
+                }
+
                 if (!DrillHoleDiameterIsChangeBool)
-                {
                     return Origin_DrillHoleDiameter;
-                }
                 else
-                {
                     return Changed_DrillHoleDiameter;
-                }
             }
         }
 
