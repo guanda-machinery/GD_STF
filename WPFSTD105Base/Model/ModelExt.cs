@@ -459,6 +459,7 @@ namespace WPFSTD105
                     objectSnapEnabled = false;
                     this.Entities[Entities.Count - 1].Selectable = false;
                     this.ActionMode = actionType.SelectByBox;
+                     
                 }
                 //對齊式標註
                 else if (drawingAlignedDim && points.Count == 3)

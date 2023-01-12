@@ -596,15 +596,16 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public class JointPoint
         {
-            public double X_Position { get; set; }
-            public double Y_Position { get; set; }
+
+            public Point3D XYZ_Position { get; set; }
+
         }
         public ObservableCollection<JointPoint> JointPointList { get; set; }
 
 
 
+        
 
-                 
 
 
 
