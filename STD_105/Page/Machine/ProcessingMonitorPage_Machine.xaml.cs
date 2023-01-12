@@ -187,12 +187,13 @@ namespace STD_105
 
             (this.DataContext as ProcessingMonitor_MachineVM).ScheduleGridC = MachiningSchedule_List_GridControl;
             (this.DataContext as ProcessingMonitor_MachineVM).LogGridC = LogGridControl;
-            DevExpress.Xpf.Core.SplashScreenManager DProcessingScreenWin = DevExpress.Xpf.Core.SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
-            DProcessingScreenWin.Show();
-            DProcessingScreenWin.ViewModel.Status = "正在讀取3D模型...";
 
-            (this.DataContext as ProcessingMonitor_MachineVM).SetSerializationInit(model);
-            DProcessingScreenWin.Close();
+            // (this.DataContext as ProcessingMonitor_MachineVM).SetSerializationInit();
+            Task.Run(() =>
+            {
+                (this.DataContext as ProcessingMonitor_MachineVM).SetSerializationInit(model);
+            });
+
 
 
 

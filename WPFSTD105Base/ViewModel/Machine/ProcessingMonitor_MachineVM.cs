@@ -75,6 +75,7 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public ProcessingMonitor_MachineVM()
         {
+            _SynchronizationContext = SynchronizationContext.Current;
             STDSerialization ser = new STDSerialization();
             Display3DViewerCommand = Display3DViewer();
             Finish_UndoneDataViews = ser.GetMaterialDataView();
@@ -119,7 +120,6 @@ namespace WPFSTD105.ViewModel
                 AddOperatingLog(LogSourceEnum.Init, "程式中斷", true);
                 return;
             }
-            _SynchronizationContext = SynchronizationContext.Current;
             _WorkMaterials = new WorkMaterial[Finish_UndoneDataViews.Count];
             SelectedMaterial_Info_Button_Visibility = Visibility.Collapsed;
 
@@ -136,9 +136,6 @@ namespace WPFSTD105.ViewModel
                 Input_by_SmartPhone_RadioButtonIsChecked = true;
                 Input_by_Computer_RadioButtonIsChecked = false;
             }
-
-
-
             //啟動一執行序持續掃描各種按鈕及錯誤訊息
 
             var ReadErrorInfoTask = Task.Factory.StartNew(() =>
@@ -296,7 +293,26 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 當前值
         /// </summary>
-        public int MCurrent { get { return _mCurrent; } set { _mCurrent = value; OnPropertyChanged(nameof(MCurrent)); } } 
+        public int MCurrent 
+        { 
+            get 
+            { 
+                return _mCurrent;
+            } 
+            set 
+            { 
+                _mCurrent = value;
+                OnPropertyChanged(nameof(MCurrent));
+
+                MCurrentMaterialNumber = Finish_UndoneDataViews[_mCurrent].MaterialNumber;
+                OnPropertyChanged(nameof(MCurrentMaterialNumber));
+            }
+        }
+
+        /// <summary>
+        /// 當前素材編號 依據 MCurrent變更
+        /// </summary>
+        public string MCurrentMaterialNumber { get; set; }
 
         /// <summary>
         /// 送料許可(最上層)
@@ -3088,9 +3104,13 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public void SetSerializationInit(WPFSTD105.ModelExt _Model)
         {
+            DevExpress.Xpf.Core.SplashScreenManager DProcessingScreenWin = DevExpress.Xpf.Core.SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
+            DProcessingScreenWin.Show();
+
+            DProcessingScreenWin.ViewModel.Status = "正在初始化監控頁面...";
             //await Task.Yield();
             int errorCount = 0;
-            while (errorCount < 50)
+            while (true)
             {
                 try
                 {
@@ -3101,7 +3121,7 @@ namespace WPFSTD105.ViewModel
                     }
 
                     //int synIndex = 0;
-                    if (ApplicationViewModel.PanelButton.Key == KEY_HOLE.MANUAL) //如果沒有在自動狀況下
+                    if (ApplicationViewModel.PanelButton.Key == KEY_HOLE.MANUAL) //手動情況下
                     {
                         if (errorCount == 0) //如果沒有發送失敗
                         {
@@ -3129,7 +3149,7 @@ namespace WPFSTD105.ViewModel
                                     {
                                         Finish_UndoneDataViews[i].Schedule = 100; 
                                         Finish_UndoneDataViews[i].PositionEnum = PositionStatusEnum.完成;       //"完成";
-                                        _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
+                                      //  _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
                                         
                                         //更改參數
                                         work.Finish = 100;
@@ -3143,15 +3163,9 @@ namespace WPFSTD105.ViewModel
                             }
                         }
 
-                        foreach (var FNDV in Finish_UndoneDataViews)
-                        {
-                            if (FNDV.PositionEnum != PositionStatusEnum.完成)
-                            {
-                                if ((FNDV.ObjectType == GD_STD.Enum.OBJECT_TYPE.CH || FNDV.ObjectType == GD_STD.Enum.OBJECT_TYPE.LB) && FNDV.LengthStr > 9050)
-                                    FNDV.PositionEnum = PositionStatusEnum.不可配對;
-                            }
-                        }
-                    }   //如果是在自動狀況下
+
+                    }   
+                    //如果是在自動狀況下
                     else if (ApplicationViewModel.PanelButton.Key == KEY_HOLE.AUTO) //如果有在自動狀況下
                     {
                         using (Memor.ReadMemorClient client = new Memor.ReadMemorClient())
@@ -3160,14 +3174,40 @@ namespace WPFSTD105.ViewModel
                             for (int i = 0; i < Finish_UndoneDataViews.Count; i++)
                             {
                                 _WorkMaterials[i] = client.GetWorkMaterial(Convert.ToUInt16(i));
+                                //有傳入加工資料
                                 if (_WorkMaterials[i].BoltsCountL != 0 || _WorkMaterials[i].BoltsCountR != 0 || _WorkMaterials[i].IndexBoltsM != 0)
                                 {
                                     _SendIndex.Add(Convert.ToInt16(i));
                                 }
-                              
+
+                                //已完成
+                                else if (_WorkMaterials[i].Position == -2)
+                                {
+                                    var work = _WorkMaterials[i];
+                                    long workOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.WorkMaterial)).ToInt64();
+                                    int workSize = Marshal.SizeOf(typeof(WorkMaterial));
+                                    work.Finish = 100;
+                                    work.IsExport = true;
+                                    WriteCodesysMemor.SetMonitorWorkOffset(work.ToByteArray(), workOffset + (workSize * i)); //發送加工陣列
+                                    _SendIndex.Add(Convert.ToInt16(i));
+
+                                  //  _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
+                                }
+
                             }
                         }
+
                     }
+
+                    foreach (var FNDV in Finish_UndoneDataViews)
+                    {
+                        if (FNDV.PositionEnum != PositionStatusEnum.完成)
+                        {
+                            if ((FNDV.ObjectType == GD_STD.Enum.OBJECT_TYPE.CH || FNDV.ObjectType == GD_STD.Enum.OBJECT_TYPE.LB) && FNDV.LengthStr > 9050)
+                                FNDV.PositionEnum = PositionStatusEnum.不可配對;
+                        }
+                    }
+
 
                     using (Memor.WriteMemorClient Write = new Memor.WriteMemorClient())
                     {
@@ -3179,8 +3219,9 @@ namespace WPFSTD105.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    if (errorCount < 20) //如果同步失敗 20 次
+                    if (errorCount < 5) //如果同步失敗 5 次
                     {
+                        AddOperatingLog(LogSourceEnum.Init, $"同步失敗 次數-{errorCount+1}", true);
                         log4net.LogManager.GetLogger("同步失敗").Debug($"同步失敗");
                         ;
                     }
@@ -3197,6 +3238,9 @@ namespace WPFSTD105.ViewModel
 
             _SerializationThread.Start();
             _HostThread.Start();
+            
+            DProcessingScreenWin.ViewModel.Status = "監控頁面初始化完成...";
+            DProcessingScreenWin.Close();
 
         }
 
@@ -3286,13 +3330,11 @@ namespace WPFSTD105.ViewModel
             _HostThread.IsBackground = true;
         }
 
-        private bool IsSerializing = false;
         /// <summary>
         /// 持續序列化及發送工作陣列
         /// </summary>
         private void ContinuedSerialization()
         {
-            IsSerializing = true;
             STDSerialization ser = new STDSerialization();
             short[] indexArray = null;
             WorkOther workOther = null;
@@ -3305,11 +3347,29 @@ namespace WPFSTD105.ViewModel
             }
 
             if (MCurrent != workOther.Current)
-            {
-                if (workOther.Current != -1)
-                    AddOperatingLog(LogSourceEnum.Machine, $"切換加工索引到：{workOther.Current}");
-                else
-                    AddOperatingLog(LogSourceEnum.Machine, $"目前無等待加工之索引");
+            {     try
+                {
+
+
+                    if (workOther.Current != -1)
+                    {
+
+                        //AddOperatingLog(LogSourceEnum.Machine, $"切換加工索引到：{workOther.Current}");
+                        AddOperatingLog(LogSourceEnum.Machine, $"準備加工素材：{Finish_UndoneDataViews[workOther.Current].MaterialNumber}");
+                        var CurrentIndex = indexArray.FindIndex(x => x == workOther.Current);
+                        if (CurrentIndex != -1)
+                        {
+                            if (indexArray[CurrentIndex] != -1)
+                                AddOperatingLog(LogSourceEnum.Machine, $"下一個待加工素材：{Finish_UndoneDataViews[indexArray[CurrentIndex]].MaterialNumber}");
+                        }
+                    }
+                    else
+                        AddOperatingLog(LogSourceEnum.Machine, $"目前無等待加工之索引");
+                }
+                catch                                       (Exception ex)
+                {
+                    AddOperatingLog(LogSourceEnum.Machine, $"{ex.Message}", true);
+                }
             }
             MCurrent = workOther.Current;
 
@@ -3348,6 +3408,7 @@ namespace WPFSTD105.ViewModel
             _LastTime = indexArray.ToArray();
 
             //刷新初始化
+            //刷新初始化
             for (int i = 0; i < Finish_UndoneDataViews.Count; i++)
             {
                 if (SerializationValue.ToList().Exists(x => x == i))
@@ -3380,8 +3441,6 @@ namespace WPFSTD105.ViewModel
             }
          
             RefreshScheduleGridC();
-
-            IsSerializing = false;
 
 
 
@@ -3740,9 +3799,6 @@ namespace WPFSTD105.ViewModel
         {
             Task.Run(() =>
             {
-                //不要在序列化中途清除加工陣列
-                while (IsSerializing)
-                    Thread.Sleep(1000);
 
                 short[] index;
                 using (Memor.ReadMemorClient read = new Memor.ReadMemorClient())

@@ -485,6 +485,7 @@
     <Compile Include="MachineAndPhoneAPI\Models\RegisterAssembly.cs" />
     <Compile Include="MachineAndPhoneAPI\Models\UnreigisterAssembly.cs" />
     <Compile Include="Model\DrillBoltsClass.cs" />
+    <Compile Include="Model\JointPoint.cs" />
     <Compile Include="Model\MachiningTimeClass.cs" />
     <Compile Include="Model\OperatingLog.cs" />
     <Compile Include="UserControls\ProcessingScreenWindow.xaml.cs">

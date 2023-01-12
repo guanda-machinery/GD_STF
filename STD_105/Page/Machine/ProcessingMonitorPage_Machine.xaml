@@ -848,8 +848,8 @@ AllowEditing="False"
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
             <Border Background="White" Grid.ColumnSpan="2" CornerRadius="5" />
-            <Label Content="目前加工索引" Margin="5,0"/>
-            <Label Grid.Column="1" Content="{Binding MCurrent,UpdateSourceTrigger=PropertyChanged}" Margin="5,0"/>
+            <Label Content="目前加工素材" Margin="5,0"/>
+            <Label Grid.Column="1" Content="{Binding MCurrentMaterialNumber,UpdateSourceTrigger=PropertyChanged}" Margin="5,0"/>
         </Grid>
 
 
