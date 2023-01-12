@@ -592,26 +592,51 @@ namespace WPFSTD105.ViewModel
 
 
         /// <summary>
-        /// 接頭打點
-        /// </summary>
-        public class JointPoint
-        {
-            public double X_Position { get; set; }
-            public double Y_Position { get; set; }
-        }
+        /// 異孔偏移孔群
+        /// </summary>          
         public ObservableCollection<JointPoint> JointPointList { get; set; }
 
 
 
+        private ObservableCollection<JointPoint> _arbitrarilyJointPointList = null;
 
-                 
+        /// <summary>
+        /// 任意打點
+        /// </summary>
+        public ObservableCollection<JointPoint> ArbitrarilyJointPointList
+        {
+            get
+            {
+                if (_arbitrarilyJointPointList == null)
+                {
+                    var DefaultJPArray = new List<JointPoint>();
+                    for (int i = 0; i < 8; i++)
+                    {
+                        DefaultJPArray.Add(new JointPoint() { X_Position = 0, Y_Position = 0 });
+                    }
+                    _arbitrarilyJointPointList = new ObservableCollection<JointPoint>(DefaultJPArray);
+                 }
+
+                return _arbitrarilyJointPointList;
+            }
+            set
+            {
+                _arbitrarilyJointPointList = value;
+                OnPropertyChanged(nameof(ArbitrarilyJointPointList));
+            }
+        }
 
 
 
-    /// <summary>
-    /// 標示資料來源的flag：true表示由零件清單, false表示由手動選擇
-    /// </summary>
-    public bool fPartListOrManuall { get; set; } = false;
+
+
+
+
+
+        /// <summary>
+        /// 標示資料來源的flag：true表示由零件清單, false表示由手動選擇
+        /// </summary>
+        public bool fPartListOrManuall { get; set; } = false;
         /// <summary>
         /// 紀錄前端當前所選的零件資訊
         /// </summary>
