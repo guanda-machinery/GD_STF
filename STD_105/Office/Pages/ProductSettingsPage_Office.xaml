@@ -1084,11 +1084,12 @@
                                         </Grid>
                                     </GroupBox>
                                 </DockPanel>
-                                <GroupBox Grid.Column="0" Grid.Row="2" Visibility="Hidden" Header="孔群類型">
+                                <GroupBox Grid.Column="0" Grid.Row="2" Visibility="Visible" Header="孔群類型">
                                     <ComboBox 
                                        DisplayMemberPath="GroupBoltsDisplayName"
                                         SelectedItem="{Binding GroupBoltsTypeComboxItemSelected}"
-                                        ItemsSource="{Binding GroupBoltsTypeList}" />
+                                        ItemsSource="{Binding GroupBoltsTypeList}"
+                                        SelectedValue="{Binding GroupBoltsTypeProperty}"/>
                                 </GroupBox>
                                 <!-- X軸數量-->
                                 <!--StackPanel Grid.Row="2"

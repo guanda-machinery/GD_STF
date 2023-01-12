@@ -1712,7 +1712,7 @@ namespace STD_105
                 log4net.LogManager.GetLogger("加入孔位").Debug("產生圖塊");
 #endif
 
-                if (!ViewModel.CheckData_AddHole(ViewModel.PartNumberProperty, model))
+                if (!ViewModel.CheckData_AddHole( model))
                 {
                     return;
                 }
@@ -1854,7 +1854,7 @@ namespace STD_105
                 //查看用戶是否有選擇圖塊
                 if (ViewModel.Select3DItem.Count > 0)
                 {
-                    if (!ViewModel.CheckData_ModifyHole(ViewModel.PartNumberProperty, model, ViewModel.Select3DItem))
+                    if (!ViewModel.CheckData_ModifyHole( model))
                     {
                         return;
                     }
@@ -2000,7 +2000,7 @@ namespace STD_105
 #if DEBUG
                 log4net.LogManager.GetLogger("加入切割線").Debug("開始");
 #endif
-                if (!ViewModel.CheckData_AddCutLine(ViewModel.PartNumberProperty, model))
+                if (!ViewModel.CheckData_AddCutLine(model))
                 {
                     return;
                 }
@@ -2899,7 +2899,7 @@ namespace STD_105
             //刪除孔位(孔群)
             ViewModel.DeleteHole = new RelayCommand(() =>
             {
-                if (!ViewModel.CheckData_DelHole(ViewModel.PartNumberProperty, model, ViewModel.Select3DItem))
+                if (!ViewModel.CheckData_DelHole(model))
                 {
                     return;
                 }
@@ -3306,7 +3306,7 @@ namespace STD_105
                         return false;
                     }
                     //if (!part.Values.SelectMany(x => x).Any(x => x.Number == ViewModel.PartNumber && x.Match.Where(y => y == false).Count() > 0))
-                    if (ViewModel.CheckOption_IsPartTypesetting(part, ViewModel.PartNumberProperty))
+                    if (ViewModel.CheckOption_IsPartTypesetting(part))
                     {
                         WinUIMessageBox.Show(null,
                             $"零件已排版，不可編輯",
