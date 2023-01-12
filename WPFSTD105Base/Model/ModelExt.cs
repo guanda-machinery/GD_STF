@@ -458,8 +458,9 @@ namespace WPFSTD105
                     drawingLinearDim = false;
                     objectSnapEnabled = false;
                     this.Entities[Entities.Count - 1].Selectable = false;
-                    this.ActionMode = actionType.SelectByBox;
-                     
+                    //this.ActionMode = actionType.SelectByBox;
+                    this.ActionMode = actionType.None;
+
                 }
                 //對齊式標註
                 else if (drawingAlignedDim && points.Count == 3)
@@ -515,6 +516,7 @@ namespace WPFSTD105
                     angularDim.Selectable = false;
                     AddAndRefresh(angularDim, ActiveLayerName);
                     drawingAngularDim = false;
+                    this.ActionMode = actionType.None;
                     #region 備份
                     //if (!drawingAngularDimFromLines)
                     //{
@@ -877,7 +879,10 @@ namespace WPFSTD105
                 else
                 {
                     if (drawingLinearDim)
+                    {
                         DrawInteractiveLinearDim();
+                      //  this.Entities.ForEach(el => el.Selectable = false);
+                    }
                     else if (drawingAlignedDim)
                         DrawInteractiveAlignedDim();
 
