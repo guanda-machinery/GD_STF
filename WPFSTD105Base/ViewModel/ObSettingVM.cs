@@ -560,7 +560,7 @@ namespace WPFSTD105.ViewModel
         }
 
 
-        public List<GroupBoltsTypeComboxItem> GroupBoltsTypeList
+       /* public List<GroupBoltsTypeComboxItem> GroupBoltsTypeList
         {
             get
             {
@@ -585,10 +585,28 @@ namespace WPFSTD105.ViewModel
 
                 return GBT_List;
             }
-        }
+        }                    */
 
-        public GroupBoltsTypeComboxItem GroupBoltsTypeComboxItemSelected { get; set; }
-        private GroupBoltsType ComboBoxSelected_GroupBoltsType { get => GroupBoltsTypeComboxItemSelected._GroupBoltsType; }
+       /* public List<GroupBoltsType> GroupBoltsTypeList
+        {
+            get
+            {
+                var GBT_List = new List<GroupBoltsType>();
+
+                var values = System.Enum.GetValues(typeof(GroupBoltsType)).Cast<GroupBoltsType>();
+
+                foreach (var value in values)
+                {
+                    GBT_List.Add(value);
+                }
+
+                return GBT_List;
+            }
+        }           */
+
+
+
+        public GroupBoltsType ComboxEdit_GroupBoltsTypeSelected { get; set; }
 
 
         /// <summary>
