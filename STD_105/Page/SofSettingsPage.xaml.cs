@@ -25,6 +25,7 @@ namespace STD_105
     {
         public SofSettingsPage()
         {
+
             InitializeComponent();
             this.PageUnloadAnimation = PageAnimation.SlideAndFadeOutToRight;
             //DataLayoutControl

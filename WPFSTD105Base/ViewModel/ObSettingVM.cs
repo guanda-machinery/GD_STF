@@ -552,43 +552,7 @@ namespace WPFSTD105.ViewModel
         public bool? ExclamationMarkProperty { get; set; }
 
 
-
-        public class GroupBoltsTypeComboxItem
-        {
-            public string GroupBoltsDisplayName { get; set; }
-            public GroupBoltsType _GroupBoltsType { get; set; }
-        }
-
-
-        public List<GroupBoltsTypeComboxItem> GroupBoltsTypeList
-        {
-            get
-            {
-                var GBT_List = new List<GroupBoltsTypeComboxItem>();
-
-                var values = System.Enum.GetValues(typeof(GroupBoltsType)).Cast<GroupBoltsType>();
-
-                foreach (var value in values)
-                {
-                    var DisplayName = "";
-
-                    FieldInfo fi = value.GetType().GetField(value.ToString());
-                    var attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
-
-                    if (attributes.Length > 0)
-                        DisplayName = attributes[0].Description;
-                    else
-                        DisplayName = value.GetDisplayName();
-
-                    GBT_List.Add(new GroupBoltsTypeComboxItem { _GroupBoltsType = value, GroupBoltsDisplayName = DisplayName });
-                }
-
-                return GBT_List;
-            }
-        }
-
-        public GroupBoltsTypeComboxItem GroupBoltsTypeComboxItemSelected { get; set; }
-        private GroupBoltsType ComboBoxSelected_GroupBoltsType { get => GroupBoltsTypeComboxItemSelected._GroupBoltsType; }
+        public GroupBoltsType ComboxEdit_GroupBoltsTypeSelected { get; set; }
 
 
         /// <summary>
