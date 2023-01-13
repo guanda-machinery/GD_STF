@@ -459,6 +459,7 @@ namespace WPFSTD105
                     objectSnapEnabled = false;
                     this.Entities[Entities.Count - 1].Selectable = false;
                     this.ActionMode = actionType.SelectByBox;
+                     
                 }
                 //對齊式標註
                 else if (drawingAlignedDim && points.Count == 3)
@@ -876,7 +877,10 @@ namespace WPFSTD105
                 else
                 {
                     if (drawingLinearDim)
+                    {
                         DrawInteractiveLinearDim();
+                      //  this.Entities.ForEach(el => el.Selectable = false);
+                    }
                     else if (drawingAlignedDim)
                         DrawInteractiveAlignedDim();
 
@@ -2023,6 +2027,7 @@ namespace WPFSTD105
             selEntity = null;
             selEntityIndex = -1;
             snapPoint = null;
+
             drawingArc = false;
             drawingCircle = false;
             drawingCurve = false;
@@ -2040,6 +2045,7 @@ namespace WPFSTD105
             drawingQuadrantPoint = false;
             drawingAngularDim = false;
             drawingAngularDimFromLines = false;
+
             setPlane = false;
             firstClick = true;
             doingMirror = false;
@@ -2063,6 +2069,7 @@ namespace WPFSTD105
             ActionMode = actionType.SelectByBox;
             Entities.ClearSelection();
             ObjectManipulator.Cancel();
+            
         }
     }
 }
