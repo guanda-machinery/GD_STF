@@ -83,7 +83,7 @@ namespace WPFSTD105.Attribute
         /// </summary>
         public GroupBoltsType groupBoltsType { get; set; } = GroupBoltsType.Rectangle;
 
-
+   
         /// <summary>
         /// 加總 X 向間距
         /// </summary>

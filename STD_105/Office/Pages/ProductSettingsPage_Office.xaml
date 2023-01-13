@@ -10,7 +10,7 @@
                   xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
                   xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
                   xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"   
-
+   xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding" 
                   mc:Ignorable="d"
                   xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105"
                   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"                  
@@ -21,7 +21,9 @@
                   xmlns:STD105="clr-namespace:STD_105"
                   xmlns:STD105ValidRule="clr-namespace:STD_105.ValidationRules"
                   xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-                  xmlns:System="clr-namespace:System;assembly=mscorlib"
+                  xmlns:System="clr-namespace:System;assembly=mscorlib" 
+                  xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+                  xmlns:GD_STD_Enum="clr-namespace:GD_STD.Enum;assembly=GD_STD.Enum"
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   Title="製品設定">
@@ -1084,12 +1086,39 @@
                                         </Grid>
                                     </GroupBox>
                                 </DockPanel>
-                                <GroupBox Grid.Column="0" Grid.Row="2" Visibility="Visible" Header="孔群類型">
-                                    <ComboBox 
-                                       DisplayMemberPath="GroupBoltsDisplayName"
-                                        SelectedItem="{Binding GroupBoltsTypeComboxItemSelected}"
-                                        ItemsSource="{Binding GroupBoltsTypeList}"
-                                        SelectedValue="{Binding GroupBoltsTypeProperty}"/>
+                                <GroupBox Grid.Column="0" Grid.Row="2" Header="孔群類型">
+                                    <!--技術文件參照:https://community.devexpress.com/blogs/wpf/archive/2015/01/27/devexpress-mvvm-framework-enumitemsourcebehavior.aspx-->
+                                        <dxe:ComboBoxEdit 
+                                        EditValue="{Binding ComboxEdit_GroupBoltsTypeSelected}">
+                                        <dxmvvm:Interaction.Behaviors>
+                                            <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:GroupBoltsType}" />
+                                            <!--SortMode="DisplayName"-->
+                                        </dxmvvm:Interaction.Behaviors>
+                                        <dxe:ComboBoxEdit.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition/>
+                                                        <ColumnDefinition/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition/>
+                                                        <RowDefinition/>
+                                                    </Grid.RowDefinitions>
+                                                    <Image 
+                                                        MaxHeight="20" Margin="5"
+                                                        Grid.Column="0" Grid.RowSpan="2"
+                                                        Source="{Binding RelativeSource={RelativeSource self},Path=DataContext ,Converter={STD105:GroupBoltsTypeToImageConverter}}" 
+                                                           />
+                                                    
+                                                    <TextBlock Text="{Binding Name}" Grid.Column="1"/>
+                                                    <TextBlock Text="{Binding Description}" Grid.Column="1" Grid.Row="1" FontSize="10"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                            
+                                        </dxe:ComboBoxEdit.ItemTemplate>
+
+                                    </dxe:ComboBoxEdit>
                                 </GroupBox>
                                 <!-- X軸數量-->
                                 <!--StackPanel Grid.Row="2"
@@ -1395,6 +1424,154 @@
                                 </StackPanel>
                             </Grid>
                         </ScrollViewer>
+                    </TabItem>
+                    <TabItem Header="切割線B" Name="Cut_B_TabItem">
+                            <Grid >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Orientation="Horizontal">
+                                    <GroupBox Header="位置" Style="{StaticResource BaseStyle}" Padding="0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+
+                                            <RadioButton  Margin="0,0,0,0" Grid.Row="0" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=2}" Command="{Binding rb_CutLinePosition_Command}">
+                                                <RadioButton.Content>
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                                        <Label Content="前面"/>
+                                                        <Label Margin="40,0,0,0" Content="左翼板" />
+                                                    </StackPanel>
+                                                </RadioButton.Content>
+                                            </RadioButton>
+
+                                            <RadioButton Margin="0,-10,0,0" Grid.Row="1" VerticalAlignment="Center" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=0}" Command="{Binding rb_CutLinePosition_Command}">
+                                                <RadioButton.Content>
+                                                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0" >
+                                                        <Label Content="頂面"/>
+                                                        <Label Margin="40,0,0,0" Content="腹板" />
+                                                    </StackPanel>
+                                                </RadioButton.Content>
+                                            </RadioButton>
+
+                                            <RadioButton  Margin="0,-10,0,0" Grid.Row="2" GroupName="CutLinePosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=1}" Command="{Binding rb_CutLinePosition_Command}">
+                                                <RadioButton.Content>
+                                                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0" >
+                                                        <Label Content="後面"/>
+                                                        <Label Margin="40,0,0,0" Content="右翼板" />
+                                                    </StackPanel>
+                                                </RadioButton.Content>
+                                            </RadioButton>
+                                        </Grid>
+
+
+
+                                    </GroupBox>
+                                  
+                                </StackPanel>
+                                <StackPanel Grid.Row="1" Background="#303030" Height="0.5" Margin="0,5,0,0"/>
+                                <GroupBox Header="MR接頭打點" Style="{StaticResource BaseStyle}" Grid.Row="2" Margin="5" Padding="0" Height="255">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="這裡要放圖片" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                    <dxg:GridControl Grid.Column="1" 
+                        Style="{StaticResource SiegCustomGridControl_PartList}"
+                        Name="PartsGridControl"
+                        AutoGenerateColumns="None"
+                        SelectionMode="row"
+                   ItemsSource="{Binding ArbitrarilyJointPointList , UpdateSourceTrigger=PropertyChanged}"
+                        MaxHeight="10000" 
+                                                     >
+                                        <dxg:GridControl.View >
+                                            <dxg:TableView      
+                                AllowPaging="False"
+                                HighlightItemOnHover="True"
+                               ShowCheckBoxSelectorColumn="False"
+                               NavigationStyle="Row"
+                               AllowCascadeUpdate="True"
+                                IsColumnMenuEnabled ="False"
+                                AllowColumnFiltering="False"    
+                                AllowColumnMoving="False"       
+                                AllowSorting="True"
+                           
+                                IsColumnChooserVisible="False"     
+                                AllowEditing="true"
+                                    VerticalScrollbarVisibility="Disabled"
+                                    HorizontalScrollbarVisibility="Auto"
+                                    ShowGroupPanel="False"
+                                    ShowSearchPanelMode="Never"
+                                    SearchPanelNullText="Search Tasks(Ctrl + F)" 
+                                    SearchPanelFindMode="Always" ShowIndicator="True"  
+                                    SearchDelay="0">
+                                                <dxg:TableView.CellStyle>
+                                                    <Style>
+                                                        <Setter Property="TextBlock.FontSize" Value="12"/>
+                                                    </Style>
+
+                                                </dxg:TableView.CellStyle>
+
+                                                <dxg:TableView.RowIndicatorContentTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Grid.Resources>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="TextAlignment" Value="Center"/>
+                                                                    <Setter Property="FontSize" Value="12"/>
+                                                                    <Setter Property="Foreground" Value="Gray"/>
+                                                                </Style>
+                                                            </Grid.Resources>
+                                                            <TextBlock Text="{c:Binding RowHandle.Value +1}" Margin="1,0"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </dxg:TableView.RowIndicatorContentTemplate>
+                                            </dxg:TableView>
+                                        </dxg:GridControl.View>
+                                        <dxg:GridColumn FieldName="X_Position" IsSmart="True" AllowEditing="true"   Header="X" Width="30"/>
+                                        <dxg:GridColumn FieldName="Y_Position" IsSmart="True" AllowEditing="true"  Header="Y" Width="30" />
+
+                                    </dxg:GridControl>
+
+
+
+                                </Grid>
+                            </GroupBox>
+
+                                <StackPanel  Grid.Row="3" Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button Command="{Binding SetAllCheckboxCheckedCommand}" Style="{StaticResource SiegCustomButtonGray}" CommandParameter="{Binding ElementName=CutTabItem}" Width="80" Margin="2,0"   Cursor="Hand" >
+                                        <Button.Content >
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="CheckboxOutline" />
+                                                <TextBlock Text="／"/>
+                                                <materialDesign:PackIcon Kind="CheckboxBlankOutline" />
+                                            </StackPanel>
+                                        </Button.Content>
+                                    </Button>
+                                    <Button Content="輸入" Command="{Binding AddCut}" Margin="5,0"></Button>
+                                    <!--
+                                    <STD105:DataButtons_Office Style="{StaticResource BaseStyle}"
+                                                           Modify="{Binding ModifyCut}"
+                                                           Add="{Binding AddCut}"
+                                                           Delete="{Binding DeleteCut}"
+                                                           ReadVisibility="Collapsed" 
+                                                           VerticalAlignment="Bottom"
+                                                           Margin="0,0,0,0" />-->
+                                </StackPanel>
+                            </Grid>
+
                     </TabItem>
                 </TabControl>
             </Border>

@@ -163,9 +163,6 @@ namespace STD_105
                     }
 
 
-
-
-
                 }
                 _PartItem.Revise = DateTime.Now;
                 ser.SetPart(_PartItem.Profile.GetHashCode().ToString(), new ObservableCollection<object>(steelParts));

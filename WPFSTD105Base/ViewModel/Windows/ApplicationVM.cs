@@ -126,7 +126,7 @@ namespace WPFSTD105
                 }
 
                 //如果是首頁或加工監控頁面開啟聆聽軸向位置
-                if (value == ApplicationPage.Home || value == ApplicationPage.Monitor)
+                if (value == ApplicationPage.Home || value == ApplicationPage.Monitor || value == ApplicationPage.MachineMonitor)
                 {
                     //如果是加工監控
                     if (value == ApplicationPage.Monitor)
@@ -1337,7 +1337,7 @@ namespace WPFSTD105
         #region 私有屬性
         private ApplicationPage _CurrentPage { get; set; } = ApplicationPage.Lock;
         #endregion
-
+      
         #region 私有方法
         /// <summary>
         /// 判斷 Codesys 是否有啟動，自動調整 <see cref="PanelButton"/> and <see cref="AxisInfoListening"/>
