@@ -39,6 +39,7 @@ using DevExpress.Utils.Serializing;
 using DevExpress.Pdf.ContentGeneration;
 using System.Web.UI.WebControls.WebParts;
 using DevExpress.XtraToolbox;
+using DevExpress.Charts.Model;
 //using TriangleNet;
 
 namespace STD_105.Office
@@ -354,6 +355,7 @@ namespace STD_105.Office
             drawing.ClearAllPreviousCommandData();
             drawing.SetCurrent(null);
             model.SetCurrent(null);//層級 To 要編輯的BlockReference
+            drawing.Entities.ForEach(el => el.Selectable = false);
         }
         /// <summary>
         /// 存取模型
@@ -395,6 +397,12 @@ namespace STD_105.Office
             Dim(out modelExt);
             modelExt.drawingAngularDim = true;
         }
+        protected override void OnMouseUp(MouseButtonEventArgs e)
+        {
+            if (drawing.points.Count == 3)   //捕捉排版框選零件造成 索引超出範圍
+                Esc();
+        }
+
         /// <summary>
         /// 線性標註
         /// </summary>
@@ -402,50 +410,52 @@ namespace STD_105.Office
         /// <param name="e"></param>
         private void LinearDim(object sender, EventArgs e)
         {
-            //#if DEBUG
-            //            log4net.LogManager.GetLogger("觸發線性標註").Debug("");
-            //#endif
-            //            ModelExt modelExt = null;
-
-            //            if (tabControl.SelectedIndex == 0)
-            //            {
-            //                modelExt = model;
-            //            }
-            //            else
-            //            {
-            //                modelExt = drawing;
-            //            }
-            //            try
-            //            {
-            //                if (model.Entities.Count > 0)
-            //                {
-            //#if DEBUG
-            //                    log4net.LogManager.GetLogger("層級 To 要主件的BlockReference").Debug("成功");
-            //#endif
-            //                    modelExt.Entities[0].Selectable = true;
-            //                    modelExt.ClearAllPreviousCommandData();
-            //                    modelExt.ActionMode = actionType.None;
-            //                    modelExt.objectSnapEnabled = true;
-            //                    modelExt.drawingLinearDim = true;
-            //                    return;
-            //                }
-            //#if DEBUG
-            //                else
-            //                {
-            //                    throw new Exception("層級 To 主件的BlockReference 失敗，找不到主件");
-            //                }
-            //#endif
-
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(ex.Message, ex.StackTrace);
-            //                Debugger.Break();
-            //            }
 #if DEBUG
             log4net.LogManager.GetLogger("觸發線性標註").Debug("");
 #endif
-            ModelExt modelExt;
+            ModelExt modelExt = null;
+
+            if (DrawTabControl.SelectedIndex == 0)
+            {
+                modelExt = model;
+            }
+            else
+            {
+                modelExt = drawing;
+            }
+            try
+            {
+                if (model.Entities.Count > 0)
+                {
+#if DEBUG
+                    log4net.LogManager.GetLogger("層級 To 要主件的BlockReference").Debug("成功");
+#endif
+                    //modelExt.Entities[0].Selectable = true;
+                    
+                    modelExt.ClearAllPreviousCommandData();
+                    modelExt.Entities.ForEach(el => el.Selectable = true);
+                    modelExt.ActionMode = actionType.None;
+                    modelExt.objectSnapEnabled = true;
+                    modelExt.drawingLinearDim = true;
+                    return;
+                }
+#if DEBUG
+                else
+                {
+                    throw new Exception("層級 To 主件的BlockReference 失敗，找不到主件");
+                }
+#endif
+
+            }
+            catch (Exception ex)
+            {
+                log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(ex.Message, ex.StackTrace);
+                Debugger.Break();
+            }
+#if DEBUG
+            log4net.LogManager.GetLogger("觸發線性標註").Debug("");
+#endif
+           // ModelExt modelExt;
             Dim(out modelExt);
             modelExt.drawingLinearDim = true;
 
