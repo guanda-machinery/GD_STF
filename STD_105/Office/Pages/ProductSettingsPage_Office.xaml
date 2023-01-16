@@ -1493,57 +1493,57 @@
                         Name="PartsGridControl"
                         AutoGenerateColumns="None"
                         SelectionMode="row"
-                   ItemsSource="{Binding ArbitrarilyJointPointList , UpdateSourceTrigger=PropertyChanged}"
-                        MaxHeight="10000" 
-                                                     >
-                                        <dxg:GridControl.View >
-                                            <dxg:TableView      
-                                AllowPaging="False"
-                                HighlightItemOnHover="True"
-                               ShowCheckBoxSelectorColumn="False"
-                               NavigationStyle="Row"
-                               AllowCascadeUpdate="True"
-                                IsColumnMenuEnabled ="False"
-                                AllowColumnFiltering="False"    
-                                AllowColumnMoving="False"       
-                                AllowSorting="True"
-                           
-                                IsColumnChooserVisible="False"     
-                                AllowEditing="true"
-                                    VerticalScrollbarVisibility="Disabled"
-                                    HorizontalScrollbarVisibility="Auto"
-                                    ShowGroupPanel="False"
-                                    ShowSearchPanelMode="Never"
-                                    SearchPanelNullText="Search Tasks(Ctrl + F)" 
-                                    SearchPanelFindMode="Always" ShowIndicator="True"  
-                                    SearchDelay="0">
-                                                <dxg:TableView.CellStyle>
-                                                    <Style>
-                                                        <Setter Property="TextBlock.FontSize" Value="12"/>
-                                                    </Style>
+                        ItemsSource="{Binding ArbitrarilyJointPointList , UpdateSourceTrigger=PropertyChanged}"
+                        MaxHeight="10000">
+                                        
+                                <dxg:GridControl.View >
+                                    <dxg:TableView      
+                                        AllowPaging="False"
+                                        HighlightItemOnHover="True"
+                                        ShowCheckBoxSelectorColumn="False"
+                                        NavigationStyle="Row"
+                                        AllowCascadeUpdate="True"
+                                        IsColumnMenuEnabled ="False"
+                                        AllowColumnFiltering="False"    
+                                        AllowColumnMoving="False"       
+                                        AllowSorting="True"
+                                        IsColumnChooserVisible="False"
+                                        VerticalScrollbarVisibility="Disabled"
+                                        HorizontalScrollbarVisibility="Auto"
+                                        ShowGroupPanel="False"
+                                        ShowSearchPanelMode="Never"
+                                        SearchPanelNullText="Search Tasks(Ctrl + F)" 
+                                        SearchPanelFindMode="Always" ShowIndicator="True"  
+                                        SearchDelay="0" AutoWidth="True">
 
-                                                </dxg:TableView.CellStyle>
+                                        <dxg:TableView.CellStyle>
+                                            <Style>
+                                                <Setter Property="TextBlock.FontSize" Value="12"/>
+                                            </Style>
 
-                                                <dxg:TableView.RowIndicatorContentTemplate>
-                                                    <DataTemplate>
-                                                        <Grid>
-                                                            <Grid.Resources>
-                                                                <Style TargetType="TextBlock">
-                                                                    <Setter Property="TextAlignment" Value="Center"/>
-                                                                    <Setter Property="FontSize" Value="12"/>
-                                                                    <Setter Property="Foreground" Value="Gray"/>
-                                                                </Style>
-                                                            </Grid.Resources>
-                                                            <TextBlock Text="{c:Binding RowHandle.Value +1}" Margin="1,0"/>
-                                                        </Grid>
-                                                    </DataTemplate>
-                                                </dxg:TableView.RowIndicatorContentTemplate>
-                                            </dxg:TableView>
-                                        </dxg:GridControl.View>
-                                        <dxg:GridColumn FieldName="X_Position" IsSmart="True" AllowEditing="true"   Header="X" Width="30"/>
-                                        <dxg:GridColumn FieldName="Y_Position" IsSmart="True" AllowEditing="true"  Header="Y" Width="30" />
+                                        </dxg:TableView.CellStyle>
 
-                                    </dxg:GridControl>
+                                        <dxg:TableView.RowIndicatorContentTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.Resources>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Center"/>
+                                                            <Setter Property="FontSize" Value="12"/>
+                                                            <Setter Property="Foreground" Value="Gray"/>
+                                                        </Style>
+                                                    </Grid.Resources>
+                                                    <TextBlock Text="{c:Binding RowHandle.Value +1}" Margin="1,0"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </dxg:TableView.RowIndicatorContentTemplate>
+                                    </dxg:TableView>    
+                                </dxg:GridControl.View>
+                                        
+                                <dxg:GridColumn FieldName="X_Position" IsSmart="True" AllowEditing="true"   Header="X" Width="30"/>
+                                <dxg:GridColumn FieldName="Y_Position" IsSmart="True" AllowEditing="true"  Header="Y" Width="30" />
+
+                            </dxg:GridControl>
 
 
 
