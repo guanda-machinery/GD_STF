@@ -267,6 +267,7 @@ namespace STD_105
             drawing.ClearAllPreviousCommandData();
             drawing.SetCurrent(null);
             model.SetCurrent(null);//層級 To 要編輯的BlockReference
+            drawing.Entities.ForEach(el => el.Selectable = false);
         }
 
 
@@ -394,6 +395,13 @@ namespace STD_105
                 Debugger.Break();
             }
         }
+
+        protected override void OnMouseUp(MouseButtonEventArgs e)
+        {
+            if (drawing.points.Count == 3)   //捕捉排版框選零件造成 索引超出範圍
+                Esc();
+        }
+
         /// <summary>
         /// 選擇面
         /// </summary>

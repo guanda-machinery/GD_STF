@@ -1,40 +1,31 @@
-﻿using GD_STD;
+﻿using DevExpress.Data.Extensions;
+using DevExpress.Utils.Extensions;
+using DevExpress.Xpf.Core;
+using DevExpress.Xpf.Dialogs;
+using DevExpress.Xpf.WindowsUI;
+using GD_STD;
+using GD_STD.Base;
+using GD_STD.Data;
 using GD_STD.Enum;
-using GD_STD.IBase;
-using GD_STD.Properties;
+using SectionData;
+using SplitLineSettingData;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
+using System.Windows;
 using System.Windows.Input;
+using WPFSTD105;
+using WPFSTD105.Attribute;
 using WPFSTD105.Listening;
-using static GD_STD.Attribute.CodesysAttribute;
-using static WPFSTD105.Properties.MecSetting;
 using static WPFSTD105.CodesysIIS;
 using static WPFSTD105.ViewLocator;
 using WPFBase = WPFWindowsBase;
-using WPFSTD105.Properties;
-using GD_STD.Base;
-using WPFSTD105.Attribute;
-using System.Windows;
-using static WPFSTD105.SettingHelper;
-using GD_STD.Phone;
-using GD_STD.Data;
-using DevExpress.Utils.Extensions;
-using System.Reflection;
-using DevExpress.Data.Extensions;
-using System.Windows.Controls;
-using DevExpress.Xpf.WindowsUI;
-using DevExpress.Xpf.Core;
-using System.IO;
-using System.Collections;
-using SectionData;
-using SplitLineSettingData;
-
-using DevExpress.Xpf.Dialogs;
-using WPFSTD105;
 
 namespace WPFSTD105.ViewModel
 {

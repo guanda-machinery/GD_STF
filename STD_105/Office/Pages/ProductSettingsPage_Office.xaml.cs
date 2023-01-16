@@ -821,8 +821,8 @@ namespace STD_105.Office
                     SelectedItem sele2D = new SelectedItem(drawing.Entities[drawing.Entities.Count - 1]);
                     //SelectedItem sele2D = new SelectedItem(drawing.Entities[drawing.Entities.Count - 1]);
 
-                    BlockReference reference3D = (BlockReference)sele3D.Item;
-                    BlockReference reference2D = (BlockReference)sele2D.Item;
+                    //BlockReference reference3D = (BlockReference)sele3D.Item;
+                    //BlockReference reference2D = (BlockReference)sele2D.Item;
 
                     //模擬用戶實際選擇編輯
                     ViewModel.Select3DItem.Add(sele3D);
@@ -844,10 +844,10 @@ namespace STD_105.Office
 
                 //層級 To 要編輯的BlockReference
                 //model.SetCurrent((BlockReference)model.Entities.Where(x=>x.EntityData.GetType().Name == "SteelAttr").LastOrDefault());
-                model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);
+                //model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);
 
                 //drawing.SetCurrent((BlockReference)drawing.Entities.Where(x=>((BlockReference)x).BlockName == ViewModel.SteelAttr.GUID.ToString()).LastOrDefault());
-                drawing.SetCurrent((BlockReference)drawing.Entities[drawing.Entities.Count - 1]);
+                //drawing.SetCurrent((BlockReference)drawing.Entities[drawing.Entities.Count - 1]);
                 ////0→     drawing.Entities.Count - 1
                 //drawing.SetCurrent((BlockReference)drawing.Entities[drawing.Entities.Count - 1]);
 
@@ -1322,8 +1322,29 @@ namespace STD_105.Office
                 //如果模型裡面有物件
                 else if (model.Entities.Count > 0)
                 {
-                    model.SetCurrent((BlockReference)model.Blocks[model.CurrentBlock.Name].Entities.Where(x => x.EntityData.GetType().Name == "SteelAttr").LastOrDefault());
-                    ViewModel.WriteSteelAttr((SteelAttr)(model.Blocks[model.CurrentBlock.Name].Entities.Where(x => x.EntityData.GetType().Name == "SteelAttr")).LastOrDefault().EntityData);
+                    STDSerialization ser = new STDSerialization();
+                    ReadFile readFile = ser.ReadPartModel(ViewModel.GuidProperty.Value.ToString()); //讀取檔案內容
+                    if (readFile == null)
+                    {
+                        WinUIMessageBox.Show(null,
+                            $"專案Dev_Part資料夾讀取失敗",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                             FloatingMode.Window);
+                        return;
+                    }
+                    readFile.DoWork();//開始工作
+                    readFile.AddToScene(model);//將讀取完的檔案放入到模型
+
+
+
+
+                    ViewModel.WriteSteelAttr((SteelAttr)(model.Blocks[1].Entities[0].EntityData));
+                    //model.SetCurrent((BlockReference)model.Blocks[model.CurrentBlock.Name].Entities.Where(x => x.EntityData.GetType().Name == "SteelAttr").LastOrDefault());
+                    //ViewModel.WriteSteelAttr((SteelAttr)(model.Blocks[model.CurrentBlock.Name].Entities.Where(x => x.EntityData.GetType().Name == "SteelAttr")).LastOrDefault().EntityData);
                     if (string.IsNullOrEmpty(ViewModel.SteelAttr.PartNumber))
                     {
                         // 若ViewModel.SteelAttr.PartNumber代表取值又失敗了，只好強制給值囉~
@@ -1687,7 +1708,7 @@ namespace STD_105.Office
                 log4net.LogManager.GetLogger("加入孔位").Debug("產生圖塊");
 #endif
 
-                if (!ViewModel.CheckData_AddHole(ViewModel.PartNumberProperty, model))
+                if (!ViewModel.CheckData_AddHole(model))
                 {
                     return;
                 }
@@ -1724,10 +1745,16 @@ namespace STD_105.Office
                 ViewModel.SteelAttr.Title1 = ViewModel.Title1Property;
                 ViewModel.SteelAttr.Title2 = ViewModel.Title2Property;
                 ViewModel.GetSteelAttr();
+                GroupBoltsAttr gba = ViewModel.GetGroupBoltsAttr();
+
+                if (!ViewModel.CheckGroupBoltsAttr(gba) && ViewModel.showMessage)
+                {
+                    return;
+                }
 
                 Steel3DBlock.FillCutSetting(sa);
 
-                Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference, out bool check);
+                Bolts3DBlock bolts = Bolts3DBlock.AddBolts(gba, model, out BlockReference blockReference, out bool check);
 
                 if (ViewModel.fromModifyHole)
                 {
@@ -1829,7 +1856,7 @@ namespace STD_105.Office
                 //查看用戶是否有選擇圖塊
                 if (ViewModel.Select3DItem.Count > 0)
                 {
-                    if (!ViewModel.CheckData_ModifyHole(ViewModel.PartNumberProperty, model, ViewModel.Select3DItem))
+                    if (!ViewModel.CheckData_ModifyHole( model))
                     {
                         return;
                     }
@@ -1975,7 +2002,7 @@ namespace STD_105.Office
 #if DEBUG
                 log4net.LogManager.GetLogger("加入切割線").Debug("開始");
 #endif
-                if (!ViewModel.CheckData_AddCutLine(ViewModel.PartNumberProperty, model))
+                if (!ViewModel.CheckData_AddCutLine(model))
                 {
                     return;
                 }
@@ -2874,7 +2901,7 @@ namespace STD_105.Office
             //刪除孔位(孔群)
             ViewModel.DeleteHole = new RelayCommand(() =>
             {
-                if (!ViewModel.CheckData_DelHole(ViewModel.PartNumberProperty, model,ViewModel.Select3DItem))
+                if (!ViewModel.CheckData_DelHole(model))
                 {
                     return;
                 }
@@ -3276,7 +3303,7 @@ namespace STD_105.Office
                         return false;
                     }
                     //if (!part.Values.SelectMany(x => x).Any(x => x.Number == ViewModel.PartNumber && x.Match.Where(y => y == false).Count() > 0))
-                    if (ViewModel.CheckOption_IsPartTypesetting(part, ViewModel.PartNumberProperty))
+                    if (ViewModel.CheckOption_IsPartTypesetting(part))
                     {
                         WinUIMessageBox.Show(null,
                             $"零件已排版，不可編輯",
@@ -4682,6 +4709,28 @@ namespace STD_105.Office
                 edit2D.Visibility = Visibility.Collapsed;
             }
 
+            if (ViewModel.Select3DItem.Count() > 0)
+            {
+                var aa = ViewModel.Select3DItem.Where(x => x.Item != null).ToList();
+                if (aa.Any())
+                {
+                    if (aa[0].Item.GetType() == typeof(BlockReference))
+                    {
+                        if (((BlockReference)aa[0].Item).EntityData.GetType() == typeof(GroupBoltsAttr))
+                        {
+                            GroupBoltsAttr gba = (GroupBoltsAttr)((BlockReference)aa[0].Item).EntityData;
+                            ViewModel.GroupBoltsAttr = gba;
+                            ViewModel.WriteGroupBoltsAttr(gba);
+                            ViewModel.rbtn_DrillingFace = (int)gba.Face;
+                            ViewModel.StartHoleType = (int)gba.StartHole;
+                            ViewModel.AxisModeType = (int)gba.Mode;
+                            //ViewModel.StartY = gba.Y;
+                            ViewModel.ComboxEdit_GroupBoltsTypeSelected = gba.groupBoltsType;
+                        }
+                    }
+                }
+            }
+
         }
 
         /// <summary>
@@ -5436,7 +5485,7 @@ namespace STD_105.Office
                 if (model != null && PieceListGridControl.SelectedItem != null)
                 {                   
                     Esc();
-
+                    
                     ProductSettingsPageViewModel item = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
                     item.steelAttr.GUID = Guid.Parse(item.DataName);
                     item.steelAttr.Number = (int)item.Count;

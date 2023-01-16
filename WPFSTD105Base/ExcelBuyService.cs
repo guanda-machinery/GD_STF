@@ -1145,6 +1145,7 @@ namespace WPFSTD105
                                                 sheet.Cells[row, column++].Value = gba.Z.ToString();
                                                 sheet.Cells[row, column++].Value = gba.Dia.ToString();
                                                 sheet.Cells[row, column++].Value = gba.StartHole.ToString();
+                                                sheet.Cells[row, column++].Value = gba.groupBoltsType.ToString();
                                                 sheet.Cells[row++, column++].Value = gba.Count.ToString();
                                                 column = 0;
                                                 break;
@@ -1312,6 +1313,7 @@ namespace WPFSTD105
                                                 sheet.Cells[row, column++].Value = gba.Z.ToString();
                                                 sheet.Cells[row, column++].Value = gba.Dia.ToString();
                                                 sheet.Cells[row, column++].Value = gba.StartHole.ToString();
+                                                sheet.Cells[row, column++].Value = gba.groupBoltsType.ToString();
                                                 sheet.Cells[row++, column++].Value = gba.Count.ToString();
                                                 column = 0;
                                                 break;
@@ -1413,6 +1415,7 @@ namespace WPFSTD105
                                     sheet.Cells[row, column++].Value = $"{gba.Count}";
                                     sheet.Cells[row, column++].Value = gba.Dia.ToString();
                                     sheet.Cells[row, column++].Value = gba.StartHole.ToString();
+                                    sheet.Cells[row, column++].Value = gba.groupBoltsType.ToString();
                                     sheet.Cells[row++, column++].Value = ((AXIS_MODE)gba.Mode).ToString();//Count
                                     column = 0;
                                     break;

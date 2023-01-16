@@ -1,4 +1,6 @@
-﻿namespace WPFSTD105.Attribute
+﻿using GD_STD.Enum;
+
+namespace WPFSTD105.Attribute
 {
 #pragma warning disable CS1591 // 遺漏公用可見類型或成員 'IGroupBoltsAttr' 的 XML 註解
     public interface IGroupBoltsAttr
@@ -24,5 +26,9 @@
         /// Y 向螺栓數量
         /// </summary>
         int yCount { get; set; }
+        /// <summary>
+        /// 孔群類型
+        /// </summary>
+        GroupBoltsType groupBoltsType { get; set; }
     }
 }

@@ -482,8 +482,8 @@
                                 <MenuItem Name="edit2D" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}" Visibility="Collapsed"/>
                                 <MenuItem x:Name="delete2D" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}" Visibility="Collapsed"/>
                                 <MenuItem Header="清除標註" Command="{Binding ClearDim}" Style="{StaticResource BaseStyle}"/>
-                                <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
-                                        <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
+                                        <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}" Visibility="Collapsed"/>
+                                        <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}" Visibility="Collapsed"/>
                                         <!--<MenuItem Header="{Binding EditObjectVisibility, UpdateSourceTrigger=PropertyChanged}" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>-->
                                     </ContextMenu>
                         </WPFSTD:ModelExt.ContextMenu>
