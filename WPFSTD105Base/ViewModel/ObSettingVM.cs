@@ -551,8 +551,30 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public bool? ExclamationMarkProperty { get; set; }
 
+        /// <summary>
+        /// 特殊孔位checkbox
+        /// </summary>
+        public bool ComboxEdit_GroupBoltsTypeSelected_IsChecked { get; set; }
 
-        public GroupBoltsType ComboxEdit_GroupBoltsTypeSelected { get; set; }
+        private GroupBoltsType _comboxEdit_GroupBoltsTypeSelected = GroupBoltsType.Rectangle;
+        /// <summary>
+        /// 特殊孔位combobox
+        /// </summary>
+        public GroupBoltsType ComboxEdit_GroupBoltsTypeSelected 
+        {
+            get
+            { 
+                if(!ComboxEdit_GroupBoltsTypeSelected_IsChecked)
+                    return GroupBoltsType.Rectangle;
+                else
+                    return _comboxEdit_GroupBoltsTypeSelected;
+            }
+            set 
+            {
+                _comboxEdit_GroupBoltsTypeSelected = value;
+                OnPropertyChanged(nameof(ComboxEdit_GroupBoltsTypeSelected));
+            }
+        }
 
 
         /// <summary>

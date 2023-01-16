@@ -48,34 +48,11 @@ namespace WPFSTD105.Model
         {
             get
             {
-                return _pinTestMode ;
+                return _pinTestMode;
             }
             set
             {
                 _pinTestMode = value;
-                for (int i = 0; i < DrillBoltList.Count; i++)
-                {
-                    DrillBoltList[i].WorkAXIS_modeIsChanged = value;
-                    if (value)
-                    {
-                        if (DrillBoltList[i].Origin_WorkAXIS_MODE == AXIS_MODE.PIERCE)
-                        {
-                            DrillBoltList[i].Changed_WorkAXIS_MODE = AXIS_MODE.POINT;
-                        }
-                        else if (DrillBoltList[i].Origin_WorkAXIS_MODE == AXIS_MODE.POINT)
-                        {
-                            DrillBoltList[i].Changed_WorkAXIS_MODE = AXIS_MODE.POINT;
-                        }
-                        else
-                        {
-                            DrillBoltList[i].DrillWork = false;
-                        }
-                    }
-                    else
-                    {
-                        DrillBoltList[i].Changed_WorkAXIS_MODE = DrillBoltList[i].Origin_WorkAXIS_MODE;
-                    }
-                }
             }
         }
 
@@ -252,7 +229,7 @@ namespace WPFSTD105.Model
                 }
             }
         }
-        
+
         private bool _workAXIS_modeIsChanged = false;
         /// <summary>
         /// 加工模式被變更被變更 -> 紀錄變更後的值來比較
@@ -305,27 +282,20 @@ namespace WPFSTD105.Model
         }
 
         /// <summary>
-        ///  鑽孔模式的刀徑  0或10   
-        /// </summary>
-        public const double PinDrillTool_Diameter = 0;
-        /// <summary>
-        /// 實際要加工的孔直徑
+        /// 孔直徑(實際加工值)
         /// </summary>
         public double DrillHoleDiameter
         {
             get
             {
-                //鑽孔模式統一0或10為刀徑                   
-                if (Changed_WorkAXIS_MODE == AXIS_MODE.POINT)
-                {
-                    DrillHoleDiameterIsChangeBool = true;
-                    return PinDrillTool_Diameter;
-                }
-
                 if (!DrillHoleDiameterIsChangeBool)
+                {
                     return Origin_DrillHoleDiameter;
+                }
                 else
+                {
                     return Changed_DrillHoleDiameter;
+                }
             }
         }
 

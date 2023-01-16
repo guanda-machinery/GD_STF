@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace STD_105
 {
@@ -25,11 +26,17 @@ namespace STD_105
                 {
                     if (parameter is System.Windows.Media.SolidColorBrush)
                         return parameter as System.Windows.Media.SolidColorBrush;
+                    else if(parameter is string)
+                    {
+                        if (!parameter.ToString().Contains("#"))
+                            return (SolidColorBrush)(new BrushConverter().ConvertFrom($"#{parameter}"));
+                        else
+                            return (SolidColorBrush)(new BrushConverter().ConvertFrom($"{parameter}"));
+                    }
                     else
-                        return System.Windows.Media.Brushes.Red;
+                        return System.Windows.Media.Brushes.BlueViolet;
                 }
             }
-
 
             return System.Windows.Media.Brushes.Transparent;
         }

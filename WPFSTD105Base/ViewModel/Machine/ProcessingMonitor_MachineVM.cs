@@ -253,6 +253,15 @@ namespace WPFSTD105.ViewModel
                         if (!el.Value.Equals(ser.GetDrillBolts(el.Key)))
                             ser.SetDrillBolts(el.Key, el.Value);
                     }
+
+                   /* foreach(var FaceDrillBolts in  MachiningCombinational_DrillBoltsItemSource)
+                    {
+                        FaceDrillBolts.Value.edit
+                        if ()
+                            SelectedMaterial_Info_Button_Visibility = Visibility.Collapsed;
+                    }*/
+
+
                     Thread.Sleep(3000);
                 }
 
@@ -652,9 +661,10 @@ namespace WPFSTD105.ViewModel
                     AddOperatingLog(LogSourceEnum.Software, $"已選擇素材編號：{_finish_UndoneDataViews_SelectedItem.MaterialNumber}");
 
                     //AllDrillBoltsDict[_finish_UndoneDataViews_SelectedItem.MaterialNumber].ForEach(el => el.Value.PinTestMode = DrillPin_Mode_RadioButtonIsEnable);
-                   
-
                     MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(DrillPin_Mode_RadioButtonIsEnable ,  _finish_UndoneDataViews_SelectedItem);
+
+
+
                     //如果切換時有已排程但未加工的零件->清理掉狀態並重新上傳
                     ClearPairedMachineData(_finish_UndoneDataViews_SelectedItem);
                 }
@@ -749,7 +759,7 @@ namespace WPFSTD105.ViewModel
                                 if (!DrillBoltsListDict.ContainsKey(keyValuePair.Key))
                                     DrillBoltsListDict.Add(keyValuePair.Key, new DrillBoltsBase());
 
-                                var DrillBIndex = DrillBoltsListDict[keyValuePair.Key].DrillBoltList.FindIndex(x => (x.Origin_WorkAXIS_MODE == DrillData.AXIS_MODE && x.DrillHoleDiameter == DrillData.Dia));
+                                var DrillBIndex = DrillBoltsListDict[keyValuePair.Key].DrillBoltList.FindIndex(x => (x.Origin_WorkAXIS_MODE == DrillData.AXIS_MODE && x.Origin_DrillHoleDiameter == DrillData.Dia));
                                 if (DrillBIndex != -1)
                                 {
                                     DrillBoltsListDict[keyValuePair.Key].DrillBoltList[DrillBIndex].DrillHoleCount++;
@@ -759,6 +769,8 @@ namespace WPFSTD105.ViewModel
                                     DrillBoltsListDict[keyValuePair.Key].PinTestMode = PinMode;
                                     if (PinMode)
                                     {
+                                        const double PinModeDrillDia = 0;
+
                                         if (DrillData.AXIS_MODE == AXIS_MODE.POINT)
                                         {
                                             DrillBoltsListDict[keyValuePair.Key].DrillBoltList.Add(new DrillBolt()
@@ -767,6 +779,8 @@ namespace WPFSTD105.ViewModel
                                                 Origin_WorkAXIS_MODE = DrillData.AXIS_MODE,
                                                 DrillHoleCount = 1,
                                                 Origin_DrillHoleDiameter = DrillData.Dia,
+                                                Changed_DrillHoleDiameter = PinModeDrillDia,
+                                                DrillHoleDiameterIsChangeBool = true,
                                             });
                                         }
                                         else if (DrillData.AXIS_MODE == AXIS_MODE.PIERCE)
@@ -778,7 +792,9 @@ namespace WPFSTD105.ViewModel
                                                 DrillHoleCount = 1,
                                                 Origin_DrillHoleDiameter = DrillData.Dia,
                                                 WorkAXIS_modeIsChanged = true,
-                                                Changed_WorkAXIS_MODE = AXIS_MODE.POINT
+                                                DrillHoleDiameterIsChangeBool= true,
+                                                Changed_WorkAXIS_MODE = AXIS_MODE.POINT,
+                                                Changed_DrillHoleDiameter = PinModeDrillDia,
                                             });
                                         }
                                         else
@@ -789,6 +805,8 @@ namespace WPFSTD105.ViewModel
                                                 Origin_WorkAXIS_MODE = DrillData.AXIS_MODE,
                                                 DrillHoleCount = 1,
                                                 Origin_DrillHoleDiameter = DrillData.Dia,
+                                                Changed_DrillHoleDiameter = PinModeDrillDia,
+                                                DrillHoleDiameterIsChangeBool = true,
                                             });
                                         }
                                     }
@@ -859,54 +877,61 @@ namespace WPFSTD105.ViewModel
             Dictionary<FACE, List<Drill>> keyValue = null;
             _SynchronizationContext.Send(t =>
             {
-            var _BufferModel = new devDept.Eyeshot.Model();
-            _BufferModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
-            _BufferModel.InitializeViewports();
-            _BufferModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
-            _BufferModel.Clear();
-
-                Dictionary<FACE, List<Drill>> keyValuePairs = new Dictionary<FACE, List<Drill>>();
-                STDSerialization ser = new STDSerialization();
-                ReadFile readFile = ser.ReadMaterialModel(view.MaterialNumber);
-                _BufferModel.Clear();
-                readFile.DoWork();
-                readFile.AddToScene(_BufferModel);
-                var steelPart = ser.GetPart($"{view.Profile.GetHashCode()}")[0];
-                _BufferModel.Entities.ForEach(el =>
+                try
                 {
-                    if (el is BlockReference)
-                    {
-                        BlockReference blockReference = (BlockReference)el;
-                        if (blockReference.Attributes.ContainsKey("Bolts"))
-                        {
-                            Entity[] entities = blockReference.Explode(_BufferModel.Blocks); //返回圖塊引用單個實體列表
-                            BoltAttr attr = (BoltAttr)entities[0].EntityData;
-                            if (!keyValuePairs.ContainsKey(attr.Face))
-                            {
-                                keyValuePairs.Add(attr.Face, new List<Drill>());
-                            }
+                    var _BufferModel = new devDept.Eyeshot.Model();
+                    _BufferModel.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
+                    _BufferModel.InitializeViewports();
+                    _BufferModel.renderContext = new devDept.Graphics.D3DRenderContextWPF(new System.Drawing.Size(100, 100), new devDept.Graphics.ControlData());
+                    _BufferModel.Clear();
 
-                            if (attr.Face == FACE.TOP)
+                    Dictionary<FACE, List<Drill>> keyValuePairs = new Dictionary<FACE, List<Drill>>();
+                    STDSerialization ser = new STDSerialization();
+                    ReadFile readFile = ser.ReadMaterialModel(view.MaterialNumber);
+                    _BufferModel.Clear();
+                    readFile.DoWork();
+                    readFile.AddToScene(_BufferModel);
+                    var steelPart = ser.GetPart($"{view.Profile.GetHashCode()}")[0];
+                    _BufferModel.Entities.ForEach(el =>
+                    {
+                        if (el is BlockReference)
+                        {
+                            BlockReference blockReference = (BlockReference)el;
+                            if (blockReference.Attributes.ContainsKey("Bolts"))
                             {
-                                keyValuePairs[attr.Face].AddRange(BoltAsDrill(entities, new Transformation(new Point3D(0, steelPart.H, 0), Vector3D.AxisX, new Vector3D(0, -1), Vector3D.AxisZ)));
+                                Entity[] entities = blockReference.Explode(_BufferModel.Blocks); //返回圖塊引用單個實體列表
+                                BoltAttr attr = (BoltAttr)entities[0].EntityData;
+                                if (!keyValuePairs.ContainsKey(attr.Face))
+                                {
+                                    keyValuePairs.Add(attr.Face, new List<Drill>());
+                                }
+
+                                if (attr.Face == FACE.TOP)
+                                {
+                                    keyValuePairs[attr.Face].AddRange(BoltAsDrill(entities, new Transformation(new Point3D(0, steelPart.H, 0), Vector3D.AxisX, new Vector3D(0, -1), Vector3D.AxisZ)));
+                                }
+                                else
+                                {
+                                    keyValuePairs[attr.Face].AddRange(BoltAsDrill(entities));
+                                }
                             }
-                            else
+                            else if (blockReference.Attributes.ContainsKey("Steel"))
                             {
-                                keyValuePairs[attr.Face].AddRange(BoltAsDrill(entities));
+                                SteelAttr steelAttr = (SteelAttr)blockReference.EntityData;
                             }
                         }
-                        else if (blockReference.Attributes.ContainsKey("Steel"))
+                        else
                         {
-                            SteelAttr steelAttr = (SteelAttr)blockReference.EntityData;
+
                         }
-                    }
-                    else
-                    {
+                    });
 
-                    }
-                });
+                    keyValue = keyValuePairs;
+                }
+                catch
+                {
 
-                keyValue = keyValuePairs;
+                }
             }, null);
             while(keyValue == null)
             {
@@ -1471,6 +1496,7 @@ namespace WPFSTD105.ViewModel
             }
         }
 
+
         public WPFBase.RelayParameterizedCommand DeleteCommand
         {
             get
@@ -1916,14 +1942,15 @@ namespace WPFSTD105.ViewModel
                     short[] dataIndex = ser.GetWorkMaterialIndexBackup();
                     if (dataIndex.Length != 0)
                     {
-                        if (ApplicationViewModel.ProjectName == read.GetProjectName()) //如果相同專案名稱
+                        Array.Copy(dataIndex, index, dataIndex.Length); //複製備份檔的 index 到要發送的 index
+                        /*if (ApplicationViewModel.ProjectName == read.GetProjectName()) //如果相同專案名稱
                         {
                             Array.Copy(dataIndex, index, dataIndex.Length); //複製備份檔的 index 到要發送的 index
                         }
                         else //如果不同專案名稱
                         {
                             Array.Copy(dataIndex, index, current == -1 ? 0 : current + 1); //複製備份檔的 index 到要發送的 index
-                        }
+                        }*/
                     }
                 }
 
@@ -2195,6 +2222,7 @@ namespace WPFSTD105.ViewModel
                 else
                 {
                     AddOperatingLog(LogSourceEnum.Software, $"找不到{view.MaterialNumber}.dm", true);
+                    return false;
                 }
                 return true;
             }
@@ -2367,8 +2395,21 @@ namespace WPFSTD105.ViewModel
                                 }
                             }
 
-
                             ProcessCount++;
+
+                            //有產生新dm的話 加工孔位資料要重新設定
+                            try
+                            {
+                                var FIndex = Finish_UndoneDataViews.FindIndex(x => (x.MaterialNumber == el_MaterialNumber));
+                                if(FIndex !=-1)
+                                    MachineDrillkeyValueDict[el_MaterialNumber] = GenerateMachiningDataPairs(Finish_UndoneDataViews[FIndex]);
+                                else
+                                    MachineDrillkeyValueDict.Remove(el_MaterialNumber);
+                            }
+                            catch( Exception ex)
+                            {
+
+                            }
 
                         }, null);
                     }
@@ -2781,7 +2822,7 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public bool TransportGridIsEnableBool_Continue { get; set; }
 
-
+        public bool TransportGridIsEnableBool_HandAuto { get; set; }
 
         public bool Transport_RadioButtonIsEnable { get; set; } = true;
         public bool Transport_by_Continue_RadioButtonIsEnable { get; set; } = true;
@@ -3274,6 +3315,10 @@ namespace WPFSTD105.ViewModel
 
                         ContinuedSerialization();
                         
+
+
+
+
                         count = 0;
                     }
                     catch (Exception ex)
@@ -3527,6 +3572,7 @@ namespace WPFSTD105.ViewModel
                 HintStep3 = false;
                 TransportGridIsEnableBool = false;
                 TransportGridIsEnableBool_Continue = false;
+                TransportGridIsEnableBool_HandAuto = false;
                 return;
             }
             int exCount = 1, //出口數量
@@ -3645,12 +3691,13 @@ namespace WPFSTD105.ViewModel
                             {
                                 foreach (var WaitMachining_MaterialNumber in WaitMachining_MaterialList)
                                 {
-                                    AddOperatingLog(LogSourceEnum.Machine, $"素材編號{WaitMachining_MaterialNumber}正在搬運命令或續接");
+                                    AddOperatingLog(LogSourceEnum.Machine, $"素材編號{WaitMachining_MaterialNumber}正在等待入料命令");
                                 }
                             }
                             HintStep3 = true;
                             TransportGridIsEnableBool = true;
                             TransportGridIsEnableBool_Continue = true;
+                            TransportGridIsEnableBool_HandAuto=true;
                         }                   
                         else
                         {
@@ -3674,15 +3721,18 @@ namespace WPFSTD105.ViewModel
                             {
                                 if (!ApplicationViewModel.PanelButton.Run)
                                 {
+                                    TransportGridIsEnableBool_HandAuto = true;
                                     TransportGridIsEnableBool_Continue = true;
                                 }
                                 else
                                 {
+                                    TransportGridIsEnableBool_HandAuto = false;
                                     TransportGridIsEnableBool_Continue = false;
                                 }
                             }
                             else
                             {
+                                TransportGridIsEnableBool_HandAuto = false;
                                 TransportGridIsEnableBool_Continue = false;
                             }
                         }
