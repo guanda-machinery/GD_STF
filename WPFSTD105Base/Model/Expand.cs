@@ -1111,6 +1111,7 @@ namespace WPFSTD105.Model
                                 X = bolt.X,
                                 Y = bolt.Y,
                                 Z = bolt.Z,
+                                groupBoltsType = bolt.groupBoltsType
                             };
                             bool check = true;
                             // 更新此孔群的GUID 以model.Entities為主
@@ -1158,6 +1159,7 @@ namespace WPFSTD105.Model
                                 {
                                     var entities = model.Entities.FirstOrDefault(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID == temp.GUID);
                                     entities.EntityData = temp;
+                                    ((BlockReference)entities).BlockName = temp.GUID.Value.ToString();
                                 }
                             }
                             else
@@ -1306,6 +1308,7 @@ namespace WPFSTD105.Model
                                 X = bolt.X,
                                 Y = bolt.Y,
                                 Z = bolt.Z,
+                                groupBoltsType = bolt.groupBoltsType,
                             };
 
                             EntityList meshes = new EntityList();
@@ -1353,6 +1356,7 @@ namespace WPFSTD105.Model
                                 {
                                     var entities = model.Entities.FirstOrDefault(x => x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID == temp.GUID);
                                     entities.EntityData = temp;
+                                    ((BlockReference)entities).BlockName = temp.GUID.Value.ToString();
                                 }
                             }
                             else

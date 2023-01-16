@@ -81,7 +81,7 @@ namespace WPFSTD105.Attribute
         /// <summary>
         /// 孔群種類
         /// </summary>
-        public GroupBoltsType groupBoltsType { get; set; } = GroupBoltsType.Rectangle;
+        public GroupBoltsType groupBoltsType { get; set; } 
 
    
         /// <summary>

@@ -1034,8 +1034,11 @@ namespace WPFSTD105.Model
             {
                 model.Entities.Insert(0, blockOut);//加入參考圖塊到模型
             }
-
-
+            var a = model.Entities.Where(x => x.GetType()==typeof(BlockReference) && x.EntityData != null && x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID.Value.ToString() != ((BlockReference)x).BlockName).ToList();
+            foreach (BlockReference item in a)
+            {
+                ((BlockReference)item).BlockName = ((GroupBoltsAttr)item.EntityData).GUID.Value.ToString();
+            }
 
 
 
