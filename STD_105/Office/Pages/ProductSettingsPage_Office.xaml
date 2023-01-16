@@ -991,14 +991,24 @@
                                     </Grid>
                                 </GroupBox>
 
-                                <DockPanel Grid.Column="0" Grid.Row="1" >
-                                    <GroupBox Header="孔群設定" Grid.Column="0" Grid.Row="1">
+                                <Grid Grid.Column="0" Grid.Row="1" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <GroupBox Header="孔群設定" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
                                             <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
                                                 <RowDefinition/>
                                                 <RowDefinition/>
                                                 <RowDefinition/>
@@ -1034,9 +1044,35 @@
                                                 </TextBox.Text>
                                             </TextBox>
 
+                                            <!--技術文件參照:https://community.devexpress.com/blogs/wpf/archive/2015/01/27/devexpress-mvvm-framework-enumitemsourcebehavior.aspx-->
+
+                                            <CheckBox Grid.Row="3"  Content="特殊孔位：" IsThreeState="False" IsChecked="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"/>
+                                            <dxe:ComboBoxEdit  IsTextEditable="False" Grid.Column="0" Grid.ColumnSpan="2"   Grid.Row="4"  Margin="0,10,5,0" IsEnabled="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"
+                                                           ApplyItemTemplateToSelectedItem="True" 
+                                        EditValue="{Binding ComboxEdit_GroupBoltsTypeSelected}">
+                                                    <dxmvvm:Interaction.Behaviors>
+                                                        <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:GroupBoltsType}" ImageSize="95,95" />
+                                                        <!--SortMode="DisplayName"-->
+                                                    </dxmvvm:Interaction.Behaviors>
+                                                    <dxe:ComboBoxEdit.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel>
+                                                                <TextBlock Text="{Binding Name}" FontSize="16"/>
+                                                                <TextBlock Text="{Binding Description}" Grid.Row="1" FontSize="10"/>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+
+                                                    </dxe:ComboBoxEdit.ItemTemplate>
+
+                                                </dxe:ComboBoxEdit>
+                      
+
+
+
+
                                         </Grid>
                                     </GroupBox>
-                                    <GroupBox Header="位置" Grid.Column="1" Grid.Row="1">
+                                    <GroupBox Header="位置" Grid.Column="1" Grid.Row="0">
                                         <!--舊下拉式選單-->
                                         <!--
                                         <StackPanel Orientation="Horizontal" Visibility="Collapsed">
@@ -1053,11 +1089,11 @@
                                                 <RowDefinition Height="*"/>
                                                 <RowDefinition Height="*"/>
                                             </Grid.RowDefinitions>
-                                            <RadioButton  Margin="0,3,0,0" Grid.Row="0" GroupName="DrillingPosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=2}">
+                                            <RadioButton  Margin="0,3,0,0" Grid.Row="0" VerticalAlignment="Center"  GroupName="DrillingPosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=2}">
                                                 <RadioButton.Content>
                                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,-2">
                                                         <Label Content="前面"/>
-                                                        <Label Margin="40,0,0,0" Content="左翼板" />
+                                                        <Label Margin="15,0,0,0" Content="左翼板" />
                                                     </StackPanel>
                                                 </RadioButton.Content>
                                             </RadioButton>
@@ -1065,17 +1101,17 @@
                                                 <RadioButton.Content>
                                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,-2">
                                                         <Label Content="頂面"/>
-                                                        <Label Margin="40,0,0,0" Content="腹板" />
+                                                        <Label Margin="15,0,0,0" Content="腹板" />
                                                     </StackPanel>
                                                 </RadioButton.Content>
                                             </RadioButton>
 
 
-                                            <RadioButton  Margin="0,3,0,0" Grid.Row="2" GroupName="DrillingPosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=1}">
+                                            <RadioButton  Margin="0,3,0,0" Grid.Row="2"  VerticalAlignment="Center"  GroupName="DrillingPosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=1}">
                                                 <RadioButton.Content>
                                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,-2" >
                                                         <Label Content="後面"/>
-                                                        <Label Margin="40,0,0,0" Content="右翼板" />
+                                                        <Label Margin="15,0,0,0" Content="右翼板" />
                                                     </StackPanel>
                                                 </RadioButton.Content>
                                             </RadioButton>
@@ -1085,41 +1121,15 @@
 
                                         </Grid>
                                     </GroupBox>
-                                </DockPanel>
-                                <GroupBox Grid.Column="0" Grid.Row="2" Header="孔群類型" Visibility="Hidden">
-                                    <!--技術文件參照:https://community.devexpress.com/blogs/wpf/archive/2015/01/27/devexpress-mvvm-framework-enumitemsourcebehavior.aspx-->
-                                        <dxe:ComboBoxEdit 
-                                        EditValue="{Binding ComboxEdit_GroupBoltsTypeSelected}">
-                                        <dxmvvm:Interaction.Behaviors>
-                                            <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:GroupBoltsType}" />
-                                            <!--SortMode="DisplayName"-->
-                                        </dxmvvm:Interaction.Behaviors>
-                                        <dxe:ComboBoxEdit.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition/>
-                                                        <ColumnDefinition/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition/>
-                                                        <RowDefinition/>
-                                                    </Grid.RowDefinitions>
-                                                    <Image 
-                                                        MaxHeight="20" Margin="5"
-                                                        Grid.Column="0" Grid.RowSpan="2"
-                                                        Source="{Binding RelativeSource={RelativeSource self},Path=DataContext ,Converter={STD105:GroupBoltsTypeToImageConverter}}" 
-                                                           />
-                                                    
-                                                    <TextBlock Text="{Binding Name}" Grid.Column="1"/>
-                                                    <TextBlock Text="{Binding Description}" Grid.Column="1" Grid.Row="1" FontSize="10"/>
-                                                </Grid>
-                                            </DataTemplate>
-                                            
-                                        </dxe:ComboBoxEdit.ItemTemplate>
+                                    <GroupBox Header="位置" Grid.Column="1" Grid.Row="1">
+                                        <StackPanel>
+                                            <CheckBox/>
+                                            <TextBox/>
+                                        </StackPanel>
+                                    </GroupBox>
 
-                                    </dxe:ComboBoxEdit>
-                                </GroupBox>
+                                </Grid>
+
                                 <!-- X軸數量-->
                                 <!--StackPanel Grid.Row="2"
                                     Grid.Column="1"
@@ -1488,63 +1498,88 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" Text="這裡要放圖片" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-                                    <dxg:GridControl Grid.Column="1" 
-                        Style="{StaticResource SiegCustomGridControl_PartList}"
-                        Name="PartsGridControl"
-                        AutoGenerateColumns="None"
-                        SelectionMode="row"
-                        ItemsSource="{Binding ArbitrarilyJointPointList , UpdateSourceTrigger=PropertyChanged}"
-                        MaxHeight="10000">
-                                        
-                                <dxg:GridControl.View >
-                                    <dxg:TableView      
-                                        AllowPaging="False"
-                                        HighlightItemOnHover="True"
-                                        ShowCheckBoxSelectorColumn="False"
-                                        NavigationStyle="Row"
-                                        AllowCascadeUpdate="True"
-                                        IsColumnMenuEnabled ="False"
-                                        AllowColumnFiltering="False"    
-                                        AllowColumnMoving="False"       
-                                        AllowSorting="True"
-                                        IsColumnChooserVisible="False"
-                                        VerticalScrollbarVisibility="Disabled"
-                                        HorizontalScrollbarVisibility="Auto"
-                                        ShowGroupPanel="False"
-                                        ShowSearchPanelMode="Never"
-                                        SearchPanelNullText="Search Tasks(Ctrl + F)" 
-                                        SearchPanelFindMode="Always" ShowIndicator="True"  
-                                        SearchDelay="0" AutoWidth="True">
-
-                                        <dxg:TableView.CellStyle>
-                                            <Style>
-                                                <Setter Property="TextBlock.FontSize" Value="12"/>
+                                    <dxg:GridControl x:Name="ToolgridControl" Grid.Column="1" 
+                                     Style="{StaticResource SiegCustomGridControl}" 
+                                                   
+                                         MaxHeight="10000"
+                                         dx:ThemeManager.ThemeName="Win10Light"
+                                         ItemsSource="{Binding ArbitrarilyJointPointList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <dxg:GridControl.Resources>
+                                            <Style TargetType="ScrollBar" BasedOn="{StaticResource VerticalScrollBar_Office}"/>
+                                            <Style TargetType="dxg:GridColumn" >
+                                                <Setter Property="HorizontalHeaderContentAlignment" Value="Center"/>
+                                                <Setter Property="AllowGrouping" Value="false"/>
                                             </Style>
+                                            <Style TargetType="dxe:TextEditSettings">
+                                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                            </Style>
+                                        </dxg:GridControl.Resources>
 
-                                        </dxg:TableView.CellStyle>
+                                        <dxg:GridControl.View>
+                                            <dxg:TableView 
+                                AllowPaging="False"
+                                HighlightItemOnHover="True"
+                               ShowCheckBoxSelectorColumn="False"
 
-                                        <dxg:TableView.RowIndicatorContentTemplate>
-                                            <DataTemplate>
-                                                <Grid>
-                                                    <Grid.Resources>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="TextAlignment" Value="Center"/>
-                                                            <Setter Property="FontSize" Value="12"/>
-                                                            <Setter Property="Foreground" Value="Gray"/>
-                                                        </Style>
-                                                    </Grid.Resources>
-                                                    <TextBlock Text="{c:Binding RowHandle.Value +1}" Margin="1,0"/>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </dxg:TableView.RowIndicatorContentTemplate>
-                                    </dxg:TableView>    
-                                </dxg:GridControl.View>
-                                        
-                                <dxg:GridColumn FieldName="X_Position" IsSmart="True" AllowEditing="true"   Header="X" Width="30"/>
-                                <dxg:GridColumn FieldName="Y_Position" IsSmart="True" AllowEditing="true"  Header="Y" Width="30" />
+                                                                               NavigationStyle="Cell"
+                               AllowCascadeUpdate="True"
+                                IsColumnMenuEnabled ="False"
+                                AllowSorting="false"
+                                AllowColumnFiltering="False"
+                                AllowColumnMoving="False"
+                                ShowGroupPanel="False"
+                                AllowFixedColumnMenu="True"
+                                ColumnHeaderContentStyle="{ StaticResource SiegCustomGridControlHeaderStyle }" 
 
-                            </dxg:GridControl>
+                                IsColumnChooserVisible="False"     
+                                AllowEditing="true"
+                                    VerticalScrollbarVisibility="Disabled"
+                                    HorizontalScrollbarVisibility="Auto"
 
+                                    ShowSearchPanelMode="Never"
+                                    SearchPanelNullText="Search Tasks(Ctrl + F)" 
+                                    SearchPanelFindMode="Always" ShowIndicator="True"  
+                                    SearchDelay="0"
+                                                
+                                                NewItemRowPosition="Bottom"
+                                                
+                                                
+                                                >
+                                                <dxg:TableView.CellStyle>
+                                                    <Style>
+                                                        <Setter Property="TextBlock.FontSize" Value="14"/>
+                                                        <Setter Property="TextBlock.Foreground" Value="Black"/>
+                                                    </Style>
+                                                </dxg:TableView.CellStyle>
+
+
+                                                <dxg:TableView.RowIndicatorContentTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Grid.Resources>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="TextAlignment" Value="Center"/>
+                                                                    <Setter Property="FontSize" Value="12"/>
+                                                                    <Setter Property="Foreground" Value="Gray"/>
+                                                                </Style>
+                                                            </Grid.Resources>
+                                                            <TextBlock Text="{c:Binding RowHandle.Value +1}" Margin="1,0" VerticalAlignment="Center"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </dxg:TableView.RowIndicatorContentTemplate>
+                                            </dxg:TableView>
+
+
+
+
+
+                                        </dxg:GridControl.View>
+                                        <dxg:GridControl.Columns>
+                                            <dxg:GridColumn FieldName="X_Position" IsSmart="True" AllowEditing="true"  Header="X" Width="75"/>
+                                            <dxg:GridColumn FieldName="Y_Position" IsSmart="True" AllowEditing="true"  Header="Y" Width="75" />
+
+                                        </dxg:GridControl.Columns>
+                                    </dxg:GridControl>
 
 
                                 </Grid>

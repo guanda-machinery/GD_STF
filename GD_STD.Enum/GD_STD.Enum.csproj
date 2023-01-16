@@ -113,5 +113,12 @@
   <ItemGroup>
     <None Include="GD_STD.Enum.cd" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImageSVG\Drill_DisalignmentLeft.svg" />
+    <Resource Include="ImageSVG\Drill_DisalignmentRight.svg" />
+    <Resource Include="ImageSVG\Drill_HypotenuseLeft.svg" />
+    <Resource Include="ImageSVG\Drill_HypotenuseRight.svg" />
+    <Resource Include="ImageSVG\Drill_Rectangle.svg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

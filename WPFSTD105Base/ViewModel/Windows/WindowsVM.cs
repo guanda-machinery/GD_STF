@@ -596,7 +596,7 @@ namespace WPFSTD105
                         else
                         {
                             var RBoxResult = WinUIMessageBox.Show(null,
-                                $"機台上次加工的專案為「{RCMProjectName}」，\n是否要切換成「{e.ToString()}」?\n切換後會初始化所有工件的當前位置", 
+                                $"機台上次加工的專案為「{RCMProjectName}」，\n是否要切換成「{e}」?\n切換後會初始化所有工件的當前位置", 
                                 "通知", 
                                 MessageBoxButton.YesNo,
                                 MessageBoxImage.Exclamation, 

@@ -4,6 +4,7 @@
     xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
     xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+    
     xmlns:local="clr-namespace:STD_105">
     <!--  GridControl Row Style  -->
     <Style TargetType="dxg:RowControl">
@@ -178,23 +179,25 @@
         <Setter Property="SearchPanelFindMode" Value="Always"/>
         <Setter Property="ShowIndicator" Value="False"/>
          <Setter Property="SearchDelay" Value="0"/>
-                <Setter Property="CellStyle">
+                
+         <Setter Property="CellStyle">
                     <Setter.Value>
                         <Style TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
                             <Setter Property="TextBlock.FontSize" Value="14"/>
-                            <Style.Triggers>
-                                <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
-                                    <Setter Property="Background" Value="Transparent"/>
-                                </Trigger>
-                            </Style.Triggers>
+
                         </Style>
                     </Setter.Value>
                 </Setter>
-                <Setter Property="RowStyle">
+                <Setter Property="RowStyle" >
                     <Setter.Value>
                         <Style TargetType="{x:Type dxg:RowControl}">
                             <Setter Property="Opacity" Value="{Binding Row.DrillWork,Converter={local:BooleanToOpacityConverter},ConverterParameter=0.2}"/>
-                            <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChangeBool,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
+                                    <Setter Property="Opacity" Value="{Binding Row.DrillWork,Converter={local:BooleanToOpacityConverter}}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                            <!--  <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChangeBool,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
                                     <Setter Property="Opacity" Value="{Binding Row.DrillWork,Converter={local:BooleanToOpacityConverter}}"/>
@@ -203,7 +206,7 @@
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter Property="Background" Value="LightSlateGray" />
                                 </Trigger>
-                            </Style.Triggers>
+                            </Style.Triggers>-->
                         </Style>
                     </Setter.Value>
                 </Setter>
@@ -220,7 +223,7 @@
                     <Setter.Value>
                         <Style TargetType="dxg:LightweightCellEditor" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}">
                             <Setter Property="TextBlock.FontSize" Value="14"/>
-                            <Style.Triggers>
+                           <Style.Triggers>
                                 <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
                                     <Setter Property="Background" Value="Transparent"/>
                                     <Setter Property="Foreground" Value="{Binding Row.IsAlert , Converter={local:BooleanToForefroundConverter} ,ConverterParameter={StaticResource solidclr_WhiteSmoke}}"/>
@@ -250,7 +253,10 @@
         </Style.Resources>
     </Style>
 
-    
-    
+
+
+
+
+
 
 </ResourceDictionary>

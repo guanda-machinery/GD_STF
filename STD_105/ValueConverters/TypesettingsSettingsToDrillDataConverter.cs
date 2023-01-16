@@ -83,7 +83,17 @@ namespace STD_105
                 if (parameter is GD_STD.Enum.FACE)
                     if ((value as Dictionary<GD_STD.Enum.FACE, DrillBoltsBase>).TryGetValue((GD_STD.Enum.FACE)parameter, out var DBClass))
                         if (DBClass.DrillBoltList.Count != 0)
-                            return DBClass.DrillBoltList.Select(x => (x.Origin_DrillHoleDiameter));
+                        {
+                            var DrillDiaList =  DBClass.DrillBoltList.Select(x => (x.Origin_DrillHoleDiameter)).ToList();
+                            //加入0的刀(打點用)
+                            if(!DrillDiaList.Exists(x=>(x == 0)))
+                            {
+                                DrillDiaList.Add(0);
+                            }
+                            DrillDiaList.Sort();
+                            return DrillDiaList;
+                        }
+
             return null;
         }
 

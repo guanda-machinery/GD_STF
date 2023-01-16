@@ -191,7 +191,10 @@ namespace STD_105
             // (this.DataContext as ProcessingMonitor_MachineVM).SetSerializationInit();
             Task.Run(() =>
             {
-                (this.DataContext as ProcessingMonitor_MachineVM).SetSerializationInit(model);
+                model.Dispatcher.Invoke(()=>
+                {
+                    (this.DataContext as ProcessingMonitor_MachineVM).SetSerializationInit(model);
+                });
             });
 
 

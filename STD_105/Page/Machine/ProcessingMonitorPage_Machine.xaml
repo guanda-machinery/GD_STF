@@ -345,23 +345,23 @@
                                    <!-- <MenuItem Command="{Binding SelectedItemsAddCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                                 Header="批量註冊"/>-->
-                                  <!--  <MenuItem Command="{Binding RowAddCommand}"
-                                              CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
-                                              Header="加入任務到末端" />-->
+
                                     <!--<MenuItem Command="{Binding DeleteCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                               Header="移除任務" /> -->
                                     <MenuItem Command="{Binding RecoverCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
-                                            
                                               Header="狀態註銷" />
                                     <!-- <MenuItem Command="{Binding UnregisterCommand}"
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                               Header="解除綁定" /> -->
                                     <MenuItem Command="{Binding FinishCommand}"
-                                         
                                               CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
                                               Header="強制完成" />
+
+                                    <!--MenuItem Command="{Binding RowAddCommand}"
+                                              CommandParameter="{Binding Finish_UndoneDataViews_SelectedItems}"
+                                              Header="加入任務到末端" /-->
                                 </ContextMenu>
                             </dxg:GridControl.ContextMenu>
 
@@ -973,7 +973,7 @@ AllowEditing="False"
                                                 </dxg:GridColumn.CellTemplate>
                                             </dxg:GridColumn>
                                             <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                            <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                            <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" AllowEditing="false"/>
                                         </dxg:GridControl>
 
 
@@ -1013,9 +1013,39 @@ AllowEditing="False"
                                                 </dxg:TableView.CellStyle>
                                             </dxg:TableView>
                                         </dxg:GridControl.View>
-                                        <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                        <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                        <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                        <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                            <dxg:GridColumn.CellStyle>
+                                                <Style TargetType="{x:Type dxg:LightweightCellEditor}" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}" >
+                                                    <Setter Property="Background" Value="{Binding Row.WorkAXIS_modeIsChanged,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter= '#FFFFD700',UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
+                                                            <Setter Property="Opacity" Value="0.8"/>
+                                                            <Setter Property="Background" Value="{Binding Row.WorkAXIS_modeIsChanged,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter='#FFFFD700',UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="LightSlateGray" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </dxg:GridColumn.CellStyle>
+                                        </dxg:GridColumn>
+                                        <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                            <dxg:GridColumn.CellStyle>
+                                                <Style TargetType="{x:Type dxg:LightweightCellEditor}" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}" >
+                                                    <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChangeBool,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
+                                                            <Setter Property="Opacity" Value="0.8"/>
+                                                            <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChangeBool,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="LightSlateGray" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </dxg:GridColumn.CellStyle>
+                                        </dxg:GridColumn>
+                                        <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" AllowEditing="false"/>
                                     </dxg:GridControl>
                                     <StackPanel Grid.Row="1" Visibility="{Binding SelectedMaterial_Info_Button_Visibility}">
                                         <Button Height="30" Margin="5" 
@@ -1097,7 +1127,7 @@ AllowEditing="False"
                                                 </dxg:GridColumn.CellTemplate>
                                             </dxg:GridColumn>
                                             <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                            <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                            <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" AllowEditing="false"/>
                                         </dxg:GridControl>
                                         <Button Grid.Column="0" Width="80"  HorizontalAlignment="Center"
                                                 Style="{StaticResource SiegCustomButtonGray}"
@@ -1135,11 +1165,40 @@ AllowEditing="False"
                                                 </dxg:TableView.CellStyle>
                                             </dxg:TableView>
                                         </dxg:GridControl.View>
-                                        <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                        <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                        <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                        <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                            <dxg:GridColumn.CellStyle>
+                                                <Style TargetType="{x:Type dxg:LightweightCellEditor}" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}" >
+                                                    <Setter Property="Background" Value="{Binding Row.WorkAXIS_modeIsChanged,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter= '#FFFFD700',UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
+                                                            <Setter Property="Opacity" Value="0.8"/>
+                                                            <Setter Property="Background" Value="{Binding Row.WorkAXIS_modeIsChanged,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter='#FFFFD700',UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="LightSlateGray" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </dxg:GridColumn.CellStyle>
+                                        </dxg:GridColumn>
+                                        <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                            <dxg:GridColumn.CellStyle>
+                                                <Style TargetType="{x:Type dxg:LightweightCellEditor}" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}" >
+                                                    <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChangeBool,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
+                                                            <Setter Property="Opacity" Value="0.8"/>
+                                                            <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChangeBool,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="LightSlateGray" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </dxg:GridColumn.CellStyle>
+                                        </dxg:GridColumn>
+                                        <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" AllowEditing="false"/>
                                     </dxg:GridControl>
-
 
                                     <StackPanel Grid.Row="1" Visibility="{Binding SelectedMaterial_Info_Button_Visibility}">
                                         <Button Height="30" Margin="5"  
@@ -1221,7 +1280,7 @@ AllowEditing="False"
                                                 </dxg:GridColumn.CellTemplate>
                                             </dxg:GridColumn>
                                             <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                            <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                            <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" AllowEditing="false"/>
                                         </dxg:GridControl>
 
 
@@ -1261,9 +1320,39 @@ AllowEditing="False"
                                                 </dxg:TableView.CellStyle>
                                             </dxg:TableView>
                                         </dxg:GridControl.View>
-                                        <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                        <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                        <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                        <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                            <dxg:GridColumn.CellStyle>
+                                                <Style TargetType="{x:Type dxg:LightweightCellEditor}" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}" >
+                                                    <Setter Property="Background" Value="{Binding Row.WorkAXIS_modeIsChanged,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter= '#FFFFD700',UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
+                                                            <Setter Property="Opacity" Value="0.8"/>
+                                                            <Setter Property="Background" Value="{Binding Row.WorkAXIS_modeIsChanged,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter='#FFFFD700',UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="LightSlateGray" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </dxg:GridColumn.CellStyle>
+                                        </dxg:GridColumn>
+                                        <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                            <dxg:GridColumn.CellStyle>
+                                                <Style TargetType="{x:Type dxg:LightweightCellEditor}" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}" >
+                                                    <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChangeBool,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
+                                                            <Setter Property="Opacity" Value="0.8"/>
+                                                            <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChangeBool,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="LightSlateGray" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </dxg:GridColumn.CellStyle>
+                                        </dxg:GridColumn>
+                                        <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" AllowEditing="false"/>
                                     </dxg:GridControl>
 
                                     <StackPanel Grid.Row="1" Visibility="{Binding SelectedMaterial_Info_Button_Visibility}">
@@ -1322,7 +1411,7 @@ AllowEditing="False"
                                 </dxg:GridControl.View>
                                 <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
                                 <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" AllowEditing="false"/>
                             </dxg:GridControl>
                             <dxg:GridControl
                                 Margin="0,0,0,0"
@@ -1347,7 +1436,7 @@ AllowEditing="False"
                                 </dxg:GridControl.View>
                                 <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
                                 <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" AllowEditing="false"/>
                             </dxg:GridControl>
                             <dxg:GridControl
                                 Grid.Column="2"
@@ -1371,7 +1460,7 @@ AllowEditing="False"
                                 </dxg:GridControl.View>
                                 <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
                                 <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" AllowEditing="false"/>
                             </dxg:GridControl>
 
                         </Grid>
@@ -1597,7 +1686,7 @@ AllowEditing="False"
                                 <StackPanel.IsEnabled>
                                     <MultiBinding Converter="{local:BooleanArrayIntersectToBooleanConverter}">
                                         <MultiBinding.Bindings>
-                                            <Binding Path="TransportGridIsEnableBool_Continue"/>
+                                            <Binding Path="TransportGridIsEnableBool_HandAuto"/>
                                             <Binding Path="Transport_by_Hand_RadioButtonIsEnable" />
                                         </MultiBinding.Bindings>
                                     </MultiBinding>
