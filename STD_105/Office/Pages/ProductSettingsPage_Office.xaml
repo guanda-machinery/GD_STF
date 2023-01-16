@@ -482,8 +482,8 @@
                                 <MenuItem Name="edit2D" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}" Visibility="Collapsed"/>
                                 <MenuItem x:Name="delete2D" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}" Visibility="Collapsed"/>
                                 <MenuItem Header="清除標註" Command="{Binding ClearDim}" Style="{StaticResource BaseStyle}"/>
-                                <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
-                                        <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
+                                        <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}" Visibility="Collapsed"/>
+                                        <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}" Visibility="Collapsed"/>
                                         <!--<MenuItem Header="{Binding EditObjectVisibility, UpdateSourceTrigger=PropertyChanged}" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>-->
                                     </ContextMenu>
                         </WPFSTD:ModelExt.ContextMenu>
@@ -1086,7 +1086,7 @@
                                         </Grid>
                                     </GroupBox>
                                 </DockPanel>
-                                <GroupBox Grid.Column="0" Grid.Row="2" Header="孔群類型">
+                                <GroupBox Grid.Column="0" Grid.Row="2" Header="孔群類型" Visibility="Hidden">
                                     <!--技術文件參照:https://community.devexpress.com/blogs/wpf/archive/2015/01/27/devexpress-mvvm-framework-enumitemsourcebehavior.aspx-->
                                         <dxe:ComboBoxEdit 
                                         EditValue="{Binding ComboxEdit_GroupBoltsTypeSelected}">

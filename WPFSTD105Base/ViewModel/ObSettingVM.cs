@@ -551,8 +551,18 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public bool? ExclamationMarkProperty { get; set; }
 
+        private GroupBoltsType _groupBoltsType { get; set; }
+        public GroupBoltsType ComboxEdit_GroupBoltsTypeSelected
+        {
+            get { return _groupBoltsType; }
+            set
+            {
+                _groupBoltsType = value;
+                //GroupBoltsAttr.groupBoltsType = (GD_STD.Enum.GroupBoltsType)value;
+            }
+        }
 
-        public GroupBoltsType ComboxEdit_GroupBoltsTypeSelected { get; set; }
+
 
 
         /// <summary>
@@ -780,6 +790,66 @@ namespace WPFSTD105.ViewModel
             return result;
         }
 
+        /// <summary>
+        /// 檢查孔群條件
+        /// </summary>
+        /// <param name="att"></param>
+        /// <returns></returns>
+        public bool CheckGroupBoltsAttr(GroupBoltsAttr att) 
+        {
+            switch (att.groupBoltsType)
+            {
+                case GroupBoltsType.Rectangle:
+                    break;
+                case GroupBoltsType.DisalignmentLeft:
+                    if (att.dXs.Distinct().Count()>1)
+                    {
+                        WinUIMessageBox.Show(null,
+                            $"x孔距需統一",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Window);
+                        return false;
+                    }
+                    break;
+                case GroupBoltsType.DisalignmentRight:
+                    if (att.dXs.Distinct().Count() > 1)
+                    {
+                        WinUIMessageBox.Show(null,
+                            $"x孔距需統一",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Window);
+                        return false;
+                    }
+                    break;
+                case GroupBoltsType.HypotenuseLeft:
+                case GroupBoltsType.HypotenuseRight:
+                    if (att.xCount != att.yCount)
+                    {
+                        WinUIMessageBox.Show(null,
+                            $"x及y軸數量不同，無法製作斜孔",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Window);
+                        return false;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return true;
+        }
+
 
         /// <summary>
         /// 切割線打點設定值
@@ -896,7 +966,13 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public GroupBoltsAttr GetGroupBoltsAttr()
         {
-            Boltsbuffer.groupBoltsType = GroupBoltsAttr.groupBoltsType;
+            GroupBoltsType gbt = GroupBoltsType.Rectangle;
+            if (this.ComboxEdit_GroupBoltsTypeSelected == null)
+            {
+                gbt = GroupBoltsType.Rectangle;
+            }
+            else { gbt = this.ComboxEdit_GroupBoltsTypeSelected; }
+            Boltsbuffer.groupBoltsType = gbt;
             Boltsbuffer.BlockName = GroupBoltsAttr.BlockName;
             Boltsbuffer.GUID = GroupBoltsAttr.GUID;
             //直徑設定
@@ -2977,16 +3053,16 @@ namespace WPFSTD105.ViewModel
             sw.Close();
         }
 
-        public bool CheckData_AddCutLine(String partNumber, ModelExt model)
+        public bool CheckData_AddCutLine(ModelExt model)
         {
             STDSerialization ser = new STDSerialization();
             Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
 
             //if (!part.Any(x => x.Value.Any(y => y.Number == partNumber)) && showMessage)
-            if (CheckOption_IsNotOfficialPart(part, partNumber) && showMessage)
+            if (CheckOption_IsNotOfficialPart(part, this.PartNumberProperty) && showMessage)
             {
                 WinUIMessageBox.Show(null,
-               $"零件編號{partNumber}尚未點擊OK",
+               $"零件編號{this.PartNumberProperty}尚未點擊OK",
                "通知",
                MessageBoxButton.OK,
                MessageBoxImage.Exclamation,
@@ -3015,7 +3091,7 @@ namespace WPFSTD105.ViewModel
             }
 
             //if (part.Values.SelectMany(x => x).Where(x => x.Number == this.PartNumberProperty && x.Match.Where(y => y == false).Count() > 0).Count() > 0 && showMessage)
-            if (CheckOption_IsPartTypesetting(part, this.PartNumberProperty) && showMessage)
+            if (CheckOption_IsPartTypesetting(part) && showMessage)
             {
                 WinUIMessageBox.Show(null,
               $"零件已排版，不可編輯",
@@ -3035,16 +3111,16 @@ namespace WPFSTD105.ViewModel
         /// <param name="partNumber"></param>
         /// <param name="model"></param>
         /// <returns>fasle不可繼續</returns>
-        public bool CheckData_AddHole(String partNumber, ModelExt model)
+        public bool CheckData_AddHole(ModelExt model)
         {
             STDSerialization ser = new STDSerialization();
             Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
 
             //if (!part.Any(x => x.Value.Any(y => y.Number == partNumber)) && showMessage)
-            if (CheckOption_IsNotOfficialPart(part, partNumber) && showMessage)
+            if (CheckOption_IsNotOfficialPart(part, this.PartNumberProperty) && showMessage)
             {
                 WinUIMessageBox.Show(null,
-               $"零件編號{partNumber}尚未點擊OK",
+               $"零件編號{this.PartNumberProperty}尚未點擊OK",
                "通知",
                MessageBoxButton.OK,
                MessageBoxImage.Exclamation,
@@ -3087,7 +3163,7 @@ namespace WPFSTD105.ViewModel
             }
 
             //if (part.Values.SelectMany(x => x).Where(x => x.Number == this.PartNumberProperty && x.Match.Where(y => y == false).Count() > 0).Count() > 0 && showMessage)
-            if (CheckOption_IsPartTypesetting(part, this.PartNumberProperty) && showMessage)
+            if (CheckOption_IsPartTypesetting(part) && showMessage)
             {
                 WinUIMessageBox.Show(null,
               $"零件已排版，不可編輯",
@@ -3099,6 +3175,36 @@ namespace WPFSTD105.ViewModel
                FloatingMode.Window);
                 return false;
             }
+
+            //if (part.Values.SelectMany(x => x).Where(x => x.Number == this.PartNumberProperty && x.Match.Where(y => y == false).Count() > 0).Count() > 0 && showMessage)
+            if (CheckOption_IsPartTypesetting(part) && showMessage)
+            {
+                WinUIMessageBox.Show(null,
+              $"零件已排版，不可編輯",
+              "通知",
+              MessageBoxButton.OK,
+              MessageBoxImage.Exclamation,
+              MessageBoxResult.None,
+              MessageBoxOptions.None,
+               FloatingMode.Window);
+                return false;
+            }
+
+
+            //if (part.Values.SelectMany(x => x).Where(x => x.Number == this.PartNumberProperty && x.Match.Where(y => y == false).Count() > 0).Count() > 0 && showMessage)
+            if (string.IsNullOrEmpty(this.ComboxEdit_GroupBoltsTypeSelected == null ? "" : this.ComboxEdit_GroupBoltsTypeSelected.ToString()) && showMessage)
+            {
+                WinUIMessageBox.Show(null,
+              $"請選擇孔群類型",
+              "通知",
+              MessageBoxButton.OK,
+              MessageBoxImage.Exclamation,
+              MessageBoxResult.None,
+              MessageBoxOptions.None,
+               FloatingMode.Window);
+                return false;
+            }
+
             return true;
         }
         /// <summary>
@@ -3108,7 +3214,7 @@ namespace WPFSTD105.ViewModel
         /// <param name="model"></param>
         /// <param name="selected3DItem"></param>
         /// <returns>fasle不可繼續</returns>
-        public bool CheckData_ModifyHole(String partNumber, ModelExt model, List<SelectedItem> selected3DItem)
+        public bool CheckData_ModifyHole( ModelExt model)
         {
             STDSerialization ser = new STDSerialization();
             Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
@@ -3130,10 +3236,10 @@ namespace WPFSTD105.ViewModel
             }
 
             //if (!part.Any(x => x.Value.Any(y => y.Number == partNumber)) && showMessage)
-            if (CheckOption_IsNotOfficialPart(part, partNumber) && showMessage)
+            if (CheckOption_IsNotOfficialPart(part, this.PartNumberProperty) && showMessage)
             {
                 WinUIMessageBox.Show(null,
-               $"零件編號{partNumber}尚未點擊OK",
+               $"零件編號{this.PartNumberProperty}尚未點擊OK",
                "通知",
                MessageBoxButton.OK,
                MessageBoxImage.Exclamation,
@@ -3145,7 +3251,7 @@ namespace WPFSTD105.ViewModel
                 return false;
             }
 
-            if (CheckOption_IsNotSelected(selected3DItem) && showMessage)
+            if (CheckOption_IsNotSelected(this.Select3DItem) && showMessage)
             {
                 WinUIMessageBox.Show(null,
                 $"請選擇孔，才可修改",
@@ -3161,7 +3267,7 @@ namespace WPFSTD105.ViewModel
             }
 
             //if (part.Values.SelectMany(x => x).Where(x => x.Number == this.PartNumberProperty && x.Match.Where(y => y == false).Count() > 0).Count() > 0 && showMessage)
-            if (CheckOption_IsPartTypesetting(part, this.PartNumberProperty) && showMessage)
+            if (CheckOption_IsPartTypesetting(part) && showMessage)
             {
                 WinUIMessageBox.Show(null,
               $"零件已排版，不可編輯",
@@ -3181,7 +3287,7 @@ namespace WPFSTD105.ViewModel
         /// <param name="partNumber"></param>
         /// <param name="model"></param>
         /// <returns>fasle不可繼續</returns>
-        public bool CheckData_DelHole(String partNumber, ModelExt model, List<SelectedItem> selected3DItem)
+        public bool CheckData_DelHole(ModelExt model)
         {
             STDSerialization ser = new STDSerialization();
             Dictionary<string, ObservableCollection<SteelPart>> part = ser.GetPart();
@@ -3203,10 +3309,10 @@ namespace WPFSTD105.ViewModel
             }
 
             //if (!part.Any(x => x.Value.Any(y => y.Number == partNumber)) && showMessage)
-            if (CheckOption_IsNotOfficialPart(part, partNumber) && showMessage)
+            if (CheckOption_IsNotOfficialPart(part, this.PartNumberProperty) && showMessage)
             {
                 WinUIMessageBox.Show(null,
-                    $"零件編號{partNumber}尚未點擊OK",
+                    $"零件編號{this.PartNumberProperty}尚未點擊OK",
                     "通知",
                     MessageBoxButton.OK,
                     MessageBoxImage.Exclamation,
@@ -3218,7 +3324,7 @@ namespace WPFSTD105.ViewModel
                 return false;
             }            
 
-            if (CheckOption_IsNotSelected(selected3DItem) && showMessage)
+            if (CheckOption_IsNotSelected(this.Select3DItem) && showMessage)
             {
                 WinUIMessageBox.Show(null,
                 $"請選擇孔，才可刪除",
@@ -3234,7 +3340,7 @@ namespace WPFSTD105.ViewModel
             }
 
             //if ((part.Values.SelectMany(x => x).Where(x => x.Number == this.PartNumberProperty && x.Match.Where(y => y == false).Count() > 0).Count() > 0) && showMessage)
-            if (CheckOption_IsPartTypesetting(part, this.PartNumberProperty) && showMessage)
+            if (CheckOption_IsPartTypesetting(part) && showMessage)
             {
                 WinUIMessageBox.Show(null,
               $"零件已排版，不可編輯",
@@ -3280,7 +3386,7 @@ namespace WPFSTD105.ViewModel
         /// <param name="part"></param>
         /// <param name="partNumber"></param>
         /// <returns></returns>
-        public bool CheckOption_IsPartTypesetting(Dictionary<string, ObservableCollection<SteelPart>> part, string partNumber)
+        public bool CheckOption_IsPartTypesetting(Dictionary<string, ObservableCollection<SteelPart>> part)
         {
             return (part.Values.SelectMany(x => x).Where(x => x.Number == this.PartNumberProperty && x.Match.Where(y => y == false).Count() > 0).Count() > 0);
         }
