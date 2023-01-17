@@ -22,8 +22,7 @@
         </Grid>
         <TextBlock Text="機台位置" Foreground="White" FontSize="16" Margin="10,0" Grid.Column="1" VerticalAlignment="Center"/>
         <TextBlock Text="←進料方向" Foreground="White" FontSize="16" Margin="10,0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <TextBlock  Text="手臂位置" Foreground="White" FontSize="16" HorizontalAlignment="Right" Margin="10,0" Grid.Column="2" VerticalAlignment="Center"/>
-
+        <TextBlock  Text="手臂位置" Foreground="White" FontSize="16" HorizontalAlignment="Right" Margin="10,0" Grid.Column="3" VerticalAlignment="Center"/>
         <Image Grid.Column="4"  Source="{StaticResource Transport_by_RobotDrawingImage}" Height="auto"  />
     </Grid>
 </UserControl>

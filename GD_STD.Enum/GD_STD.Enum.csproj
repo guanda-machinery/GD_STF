@@ -116,6 +116,7 @@
     <Compile Include="SELECT_DEVICE.cs" />
     <Compile Include="SHELF.cs" />
     <Compile Include="PositionStatusEnum.cs" />
+    <Compile Include="START_HOLE.cs" />
     <Compile Include="STATUS_CODE.cs" />
   </ItemGroup>
   <ItemGroup>

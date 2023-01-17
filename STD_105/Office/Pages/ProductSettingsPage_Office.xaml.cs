@@ -4723,7 +4723,7 @@ namespace STD_105.Office
                             ViewModel.WriteGroupBoltsAttr(gba);
                             //ViewModel.rbtn_DrillingFace = (int)gba.Face;
                             ViewModel.rbtn_DrillingFace = gba.Face;
-                            ViewModel.StartHoleType = (int)gba.StartHole;
+                            ViewModel.StartHoleType = gba.StartHole;
                             ViewModel.AxisModeType = (int)gba.Mode;
                             //ViewModel.StartY = gba.Y;
                             ViewModel.ComboxEdit_GroupBoltsTypeSelected = gba.groupBoltsType;

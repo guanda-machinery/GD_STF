@@ -3255,14 +3255,11 @@ namespace WPFSTD105.ViewModel
                                 FNDV.PositionEnum = PositionStatusEnum.不可配對;
                         }
                     }
-
-
                     using (Memor.WriteMemorClient Write = new Memor.WriteMemorClient())
                     {
                         long ImportProjectOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.ImportProject)).ToInt64();
                         Write.SetMonitorWorkOffset(new byte[1] { 1 }, ImportProjectOffset);//寫入匯入專案完成
                     }
-
                     break;
                 }
                 catch (Exception ex)
@@ -3704,6 +3701,7 @@ namespace WPFSTD105.ViewModel
                             HintStep3 = true;
                             TransportGridIsEnableBool = true;
                             TransportGridIsEnableBool_Continue = true;
+
                             TransportGridIsEnableBool_HandAuto=true;
                         }                   
                         else
@@ -3715,6 +3713,7 @@ namespace WPFSTD105.ViewModel
                             HintStep3 = false;
                             HintStep4 = false;
 
+                            //將按鈕取消選取
                             if (Transport_RadioButtonIsChecked)
                                 Transport_RadioButtonIsChecked = false;
 
@@ -3723,8 +3722,9 @@ namespace WPFSTD105.ViewModel
 
                             TransportGridIsEnableBool = false;
 
-                            //若有在加工中的物件 將續接及手動手臂按鈕轉亮 但當機台正在加工時仍轉暗
-                            if(_WorkMaterials.FindIndex(x=>x.Position == -1) != -1)
+                            //若有在加工中的物件 將續接轉亮 但當機台正在加工時仍轉暗
+
+                            if (_WorkMaterials.FindIndex(x=>x.Position == -1) != -1)
                             {
                                 if (!ApplicationViewModel.PanelButton.Run)
                                 {
