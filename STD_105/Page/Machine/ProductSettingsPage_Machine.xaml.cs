@@ -4597,7 +4597,6 @@ namespace STD_105
 
         }
 
-
         /// <summary>
         /// 刪除線段打點
         /// </summary>
@@ -4711,6 +4710,8 @@ namespace STD_105
             {
                 edit2D.Visibility = Visibility.Collapsed;
             }
+
+            ViewModel.GetGroupBoltsAttInfo();
 
         }
 

@@ -1124,14 +1124,57 @@ namespace WPFSTD105.ViewModel
                     throw new Exception("找不到類型");
             }
         }
+
+        /// <summary>
+        /// 取得所選孔群資訊
+        /// </summary>
+        public void GetGroupBoltsAttInfo() 
+        {
+            if (Select3DItem.Count() > 0)
+            {
+                var aa = Select3DItem.Where(x => x.Item != null).ToList();
+                if (aa.Any())
+                {
+                    if (aa[0].Item.GetType() == typeof(BlockReference))
+                    {
+                        if (((BlockReference)aa[0].Item).EntityData.GetType() == typeof(GroupBoltsAttr))
+                        {
+                            GroupBoltsAttr gba = (GroupBoltsAttr)((BlockReference)aa[0].Item).EntityData;
+                            // 2023/01/17 呂宗霖 選斜邊打點 出事啦！!!! 會記錄Mode 所以直接不選取斜邊打點
+                            if (gba != null && gba.Mode != AXIS_MODE.HypotenusePOINT)
+                            {
+                                GroupBoltsAttr = gba;
+                                WriteGroupBoltsAttr(gba);
+                                rbtn_DrillingFace = (int)gba.Face;
+                                StartHoleType = (int)gba.StartHole;
+                                AxisModeType = (int)gba.Mode;
+                                switch (gba.Face)
+                                {
+                                    case FACE.TOP:
+                                        StartY = gba.Y;
+                                        break;
+                                    case FACE.FRONT:
+                                    case FACE.BACK:
+                                        StartY = gba.Z;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                ComboxEdit_GroupBoltsTypeSelected = gba.groupBoltsType;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
         /// <summary>
         /// 寫入主件設定檔 To VM
         /// </summary>
         /// <param name="steelAttr"></param>
         public void WriteSteelAttr(SteelAttr steelAttr)
         {
-
-
             this.SteelAttr = steelAttr;
             this.Steelbuffer = (SteelAttr)steelAttr.Clone();
             //if (File.Exists($@"{ApplicationVM.DirectoryPorfile()}\{steelAttr.Type}.inp"))
@@ -1288,116 +1331,7 @@ namespace WPFSTD105.ViewModel
                 STDSerialization ser = new STDSerialization(); //序列化處理器
                 ObservableCollection<SteelCutSetting> steelcutSettings = new ObservableCollection<SteelCutSetting>();
                 steelcutSettings = ser.GetCutSettingList();
-                steelcutSettings = steelcutSettings ?? new ObservableCollection<SteelCutSetting>();
-
-                //switch ((FACE)temp_CutFace)
-                //{
-                //    case FACE.TOP:
-                //        if (steelcutSettings.Any(x => x.GUID == this.GuidProperty && x.face == (FACE)temp_CutFace))
-                //        {
-                //            // 有該零件 該面之斜邊資訊 更新資料
-                //            SteelCutSetting cs = steelcutSettings.FirstOrDefault(x => x.GUID == this.GuidProperty && x.face == (FACE)temp_CutFace);
-                //            cs.face = (FACE)temp_CutFace;
-                //            cs.DLX = this.DLPoint.X;
-                //            cs.DLY = this.DLPoint.Y;
-                //            cs.ULX = this.ULPoint.X;
-                //            cs.ULY = this.ULPoint.Y;
-                //            cs.DRX = this.DRPoint.X;
-                //            cs.DRY = this.DRPoint.Y;
-                //            cs.URX = this.URPoint.X;
-                //            cs.URY = this.URPoint.Y;
-                //            ser.SetCutSettingList(steelcutSettings);
-                //        }
-                //        else
-                //        {
-                //            // 沒有該零件 該面之斜邊資訊 新增資料
-                //            SteelCutSetting cs = new SteelCutSetting()
-                //            {
-                //                GUID = this.GuidProperty,
-                //                face = (FACE)temp_CutFace,
-                //                DLX = this.DLPoint.X,
-                //                DLY = this.DLPoint.Y,
-                //                ULX = this.ULPoint.X,
-                //                ULY = this.ULPoint.Y,
-                //                DRX = this.DRPoint.X,
-                //                DRY = this.DRPoint.Y,
-                //                URX = this.URPoint.X,
-                //                URY = this.URPoint.Y,
-                //            };
-                //            steelcutSettings.Add(cs);
-                //            ser.SetCutSettingList(steelcutSettings);
-                //        }
-                //        break;
-                //    case FACE.FRONT:
-                //    //case FACE.BACK:
-                //        if (steelcutSettings.Any(x => x.GUID == this.GuidProperty && (x.face == FACE.FRONT)))
-                //        {
-                //            // 有該零件 該面之斜邊資訊 更新資料
-                //            SteelCutSetting cs = steelcutSettings.FirstOrDefault(x => x.GUID == this.GuidProperty && x.face == FACE.FRONT);
-                //            cs.face = FACE.FRONT;
-                //            cs.DLX = this.DLPoint.X;
-                //            cs.DLY = this.DLPoint.Y;
-                //            cs.ULX = this.ULPoint.X;
-                //            cs.ULY = this.ULPoint.Y;
-                //            cs.DRX = this.DRPoint.X;
-                //            cs.DRY = this.DRPoint.Y;
-                //            cs.URX = this.URPoint.X;
-                //            cs.URY = this.URPoint.Y;
-                //            ser.SetCutSettingList(steelcutSettings);
-                //        }
-                //        else
-                //        {
-                //            // 沒有該零件 該面之斜邊資訊 新增資料
-                //            steelcutSettings.Add(new SteelCutSetting()
-                //            {
-                //                GUID = this.GuidProperty,
-                //                face = FACE.FRONT,
-                //                DLX = this.DLPoint.X,
-                //                DLY = this.DLPoint.Y,
-                //                ULX = this.ULPoint.X,
-                //                ULY = this.ULPoint.Y,
-                //                DRX = this.DRPoint.X,
-                //                DRY = this.DRPoint.Y,
-                //                URX = this.URPoint.X,
-                //                URY = this.URPoint.Y,
-                //            });
-                //        }
-                //        if (steelcutSettings.Any(x => x.GUID == this.GuidProperty && (x.face == FACE.BACK)))
-                //        {
-                //            // 有該零件 該面之斜邊資訊 更新資料
-                //            SteelCutSetting cs = steelcutSettings.FirstOrDefault(x => x.GUID == this.GuidProperty && x.face == FACE.BACK);
-                //            cs.face = FACE.BACK;
-                //            cs.DLX = this.DLPoint.X;
-                //            cs.DLY = this.DLPoint.Y;
-                //            cs.ULX = this.ULPoint.X;
-                //            cs.ULY = this.ULPoint.Y;
-                //            cs.DRX = this.DRPoint.X;
-                //            cs.DRY = this.DRPoint.Y;
-                //            cs.URX = this.URPoint.X;
-                //            cs.URY = this.URPoint.Y;
-                //            ser.SetCutSettingList(steelcutSettings);
-                //        }
-                //        else
-                //        {
-                //            steelcutSettings.Add(new SteelCutSetting()
-                //            {
-                //                GUID = this.GuidProperty,
-                //                face = FACE.BACK,
-                //                DLX = this.DLPoint.X,
-                //                DLY = this.DLPoint.Y,
-                //                ULX = this.ULPoint.X,
-                //                ULY = this.ULPoint.Y,
-                //                DRX = this.DRPoint.X,
-                //                DRY = this.DRPoint.Y,
-                //                URX = this.URPoint.X,
-                //                URY = this.URPoint.Y,
-                //            });
-                //            ser.SetCutSettingList(steelcutSettings);
-                //        }
-                //        break;
-                //    default:
-                //        break;
-                //}
+                steelcutSettings = steelcutSettings ?? new ObservableCollection<SteelCutSetting>();                            
 
                 if (steelcutSettings.Any(x => x.GUID == this.GuidProperty && x.face == (FACE)temp_CutFace))
                 {

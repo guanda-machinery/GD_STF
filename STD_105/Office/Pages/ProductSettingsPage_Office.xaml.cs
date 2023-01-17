@@ -1713,24 +1713,6 @@ namespace STD_105.Office
                     return;
                 }
 
-
-
-
-                //if (ComparisonBolts())  // 欲新增孔位重複比對
-                //{
-                //    WinUIMessageBox.Show(null,
-                //    $"新增孔位重複，請重新輸入",
-                //    "通知",
-                //    MessageBoxButton.OK,
-                //    MessageBoxImage.Exclamation,
-                //    MessageBoxResult.None,
-                //    MessageBoxOptions.None,
-                //     FloatingMode.Window);
-                //   ViewModel.fclickOK = true;
-                //    return;
-                //}
-
-
                 SteelAttr sa = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
                 sa = GetViewToSteelAttr(sa, false, sa.GUID);
                 sa.Revise = DateTime.Now;
@@ -4709,27 +4691,7 @@ namespace STD_105.Office
                 edit2D.Visibility = Visibility.Collapsed;
             }
 
-            if (ViewModel.Select3DItem.Count() > 0)
-            {
-                var aa = ViewModel.Select3DItem.Where(x => x.Item != null).ToList();
-                if (aa.Any())
-                {
-                    if (aa[0].Item.GetType() == typeof(BlockReference))
-                    {
-                        if (((BlockReference)aa[0].Item).EntityData.GetType() == typeof(GroupBoltsAttr))
-                        {
-                            GroupBoltsAttr gba = (GroupBoltsAttr)((BlockReference)aa[0].Item).EntityData;
-                            ViewModel.GroupBoltsAttr = gba;
-                            ViewModel.WriteGroupBoltsAttr(gba);
-                            ViewModel.rbtn_DrillingFace = (int)gba.Face;
-                            ViewModel.StartHoleType = (int)gba.StartHole;
-                            ViewModel.AxisModeType = (int)gba.Mode;
-                            //ViewModel.StartY = gba.Y;
-                            ViewModel.ComboxEdit_GroupBoltsTypeSelected = gba.groupBoltsType;
-                        }
-                    }
-                }
-            }
+            ViewModel.GetGroupBoltsAttInfo();
 
         }
 

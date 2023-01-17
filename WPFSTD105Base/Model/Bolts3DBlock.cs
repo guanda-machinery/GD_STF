@@ -237,6 +237,7 @@ namespace WPFSTD105.Model
                 BoltAttr boltAttrEach = (BoltAttr)((BoltAttr)resultY[i - 1].EntityData).DeepClone();
                 // 此時 boltAttrEach XYZ 與 resultY 相同
                 boltAttrEach.GUID = Guid.NewGuid();
+
                 double valueY = 0d;
                 if (i - 1 < dYList.Count) //判斷孔位Y向矩陣列表是否有超出長度
                     valueY = dYList[i - 1];
@@ -363,8 +364,8 @@ namespace WPFSTD105.Model
                 check = false;
             }
             int rowCount = this.Info.yCount;
+            // 平移長度
             double diff = this.Info.dXs[0] / 2;
-            //this.Info.groupBoltsType = GroupBoltsType.DisalignmentLeft;
             switch (this.Info.groupBoltsType)
             {
                 case GroupBoltsType.Rectangle:
@@ -374,7 +375,7 @@ namespace WPFSTD105.Model
                     List<double> diffList = new List<double>();
                     int yCount = this.Info.yCount;
                     // 偶數列或奇數列
-                    switch ((yCount-1) % 2)
+                    switch ((yCount - 1) % 2)
                     {
                         // 奇數列 60 2*70 60
                         case 0:
@@ -384,20 +385,22 @@ namespace WPFSTD105.Model
                             diffList.Add(-diff);
                             for (int i = 0; i < this.Entities.Count(); i++)
                             {
-                               if (i% rowCount==0 || (i + 1) % (rowCount)== rowCount)
-                               {
-                                   j = 0;
-                               }
+                                // 頭或尾 同邊 因為孔為S型紀錄 所以 j要歸0
+                                // rowCount = 4
+                                //  3   4   11  12
+                                //  2   5   10  13
+                                //  1   6   9   14  
+                                //  0   7   8   15
+                                if (i % rowCount == 0 || (i + 1) % (rowCount) == rowCount)
+                                {
+                                    j = 0;
+                                }
                                 if (j == 2)
                                 {
                                     j = 0;
                                 }
                                 this.Entities[i].Translate(diffList[j], 0, 0);
                                 j++;
-                               //if (i+1% rowCount==0)
-                               //{
-                               //    j = 0;
-                               //}
                             }
                             break;
                         // 偶數列 2*10 10 2*10
@@ -409,7 +412,7 @@ namespace WPFSTD105.Model
                             bool middleSecond = false;
                             for (int i = 0; i < yCount; i++)
                             {
-                                if ( i % yCount == (rowCount / 2) || i %  rowCount== (rowCount / 2) - 1)
+                                if (i % yCount == (rowCount / 2) || i % rowCount == (rowCount / 2) - 1)
                                 {
                                     if (!middleSecond)
                                     {
@@ -420,7 +423,8 @@ namespace WPFSTD105.Model
                                         else { diffList.Add(0); }
                                         middleSecond = true;
                                     }
-                                    else {
+                                    else
+                                    {
                                         diffList.Add(diffList.Last());
                                     }
                                 }
@@ -444,75 +448,22 @@ namespace WPFSTD105.Model
                                     }
                                 }
                             }
-                             j = 0;
+                            j = 0;
                             for (int i = 0; i < this.Entities.Count(); i++)
                             {
-                                if (i % (rowCount)==0)
+                                if (i % (rowCount) == 0)
                                 {
-                                    j= 0;
+                                    j = 0;
                                 }
                                 this.Entities[i].Translate(diffList[j], 0, 0);
                                 j++;
                             }
 
-                            
+
                             break;
                         default:
                             break;
                     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    //if ((rowCount - 1) % 2 == 0)
-                    //{
-                    //    for (int i = 0; i < this.Entities.Count(); i++)
-                    //    {
-                    //        switch ((Math.Floor((Decimal)(i / rowCount))) % 2)
-                    //        {
-                    //            case 0:
-                    //                if (i % 2 == 1)
-                    //                {
-                    //                    this.Entities[i].Translate(-diff, 0, 0);
-                    //                }
-                    //                break;
-                    //            case 1:
-                    //                if (i % 2 == 0)
-                    //                {
-                    //                    this.Entities[i].Translate(-diff, 0, 0);
-                    //                }
-                    //                break;
-                    //            default:
-                    //                break;
-                    //        }
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    int j = 0;
-                    //    for (int i = 0; i < this.Entities.Count(); i++)
-                    //    {
-                    //        if (j == 2)
-                    //        {
-                    //            j = 0;
-                    //        }
-                    //        this.Entities[i].Translate(diffList[j], 0, 0);
-                    //        j++;
-                    //    }
-                    //}
                     break;
                 case GroupBoltsType.DisalignmentRight:
                     diffList = new List<double>();
@@ -538,10 +489,6 @@ namespace WPFSTD105.Model
                                 }
                                 this.Entities[i].Translate(diffList[j], 0, 0);
                                 j++;
-                                //if (i+1% rowCount==0)
-                                //{
-                                //    j = 0;
-                                //}
                             }
                             break;
                         // 偶數列 2*10 10 2*10
@@ -605,26 +552,6 @@ namespace WPFSTD105.Model
                         default:
                             break;
                     }
-                    //for (int i = 0; i < this.Entities.Count(); i++)
-                    //{
-                    //    switch ((Math.Floor((Decimal)(i / rowCount))) % 2)
-                    //    {
-                    //        case 0:
-                    //            if (i % 2 == 1)
-                    //            {
-                    //                this.Entities[i].Translate(diff, 0, 0);
-                    //            }
-                    //            break;
-                    //        case 1:
-                    //            if (i % 2 == 0)
-                    //            {
-                    //                this.Entities[i].Translate(diff, 0, 0);
-                    //            }
-                    //            break;
-                    //        default:
-                    //            break;
-                    //    }
-                    //}
                     break;
                 case GroupBoltsType.HypotenuseRight:
                     // 取得完整矩陣邊長數量

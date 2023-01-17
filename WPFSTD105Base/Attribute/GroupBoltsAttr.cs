@@ -61,7 +61,7 @@ namespace WPFSTD105.Attribute
         /// <summary>
         /// 第一顆螺栓的絕對座標 Z 向
         /// </summary>
-        public override double Z { get;  set; }
+        public override double Z { get; set; }
         /// <inheritdoc/>
         public string dX { get; set; } = "60 2*70 60";
         /// <inheritdoc/>
@@ -69,7 +69,7 @@ namespace WPFSTD105.Attribute
         /// <summary>
         /// X 向螺栓數量
         /// </summary>
-        public int xCount { get => CalBoltNumber(dX); set => CalBoltNumber(dX); } 
+        public int xCount { get => CalBoltNumber(dX); set => CalBoltNumber(dX); }
         /// <summary>
         /// Y 向螺栓數量
         /// </summary>
@@ -81,9 +81,9 @@ namespace WPFSTD105.Attribute
         /// <summary>
         /// 孔群種類
         /// </summary>
-        public GroupBoltsType groupBoltsType { get; set; } 
+        public GroupBoltsType groupBoltsType { get; set; }
 
-   
+
         /// <summary>
         /// 加總 X 向間距
         /// </summary>
@@ -214,6 +214,26 @@ namespace WPFSTD105.Attribute
                 }
             }
             return count + 1;
+        }
+
+        /// <summary>
+        /// 計算右側起步點
+        /// </summary>
+        /// <returns></returns>
+        public double RightXStart(double SteelLength)
+        {
+            double x = 0;
+            if (dXs.Count() > 2)
+            {
+                //    [r]|[r]60[r][r]70[r][r]70[r][r]60[r]|[(dx)]
+                //     
+                x = this.X + (Dia / 2) + dXs.Sum() + (dXs.Count() - 1) * Dia + (Dia / 2);
+            }
+            else {
+                x = this.X;
+            }
+            double rightXStart = SteelLength - x;
+            return 0;
         }
     }
 }
