@@ -1046,8 +1046,8 @@
 
                                             <!--技術文件參照:https://community.devexpress.com/blogs/wpf/archive/2015/01/27/devexpress-mvvm-framework-enumitemsourcebehavior.aspx-->
 
-                                            <CheckBox Grid.Row="3"  Content="特殊孔位：" IsThreeState="False" IsChecked="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"/>
-                                            <dxe:ComboBoxEdit  IsTextEditable="False" Grid.Column="0" Grid.ColumnSpan="2"   Grid.Row="4"  Margin="0,10,5,0" IsEnabled="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"
+                                            <CheckBox Grid.Row="3"  Content="特殊孔位：" IsThreeState="False" Visibility="Collapsed" IsChecked="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"/>
+                                            <dxe:ComboBoxEdit Visibility="Collapsed" IsTextEditable="False" Grid.Column="0" Grid.ColumnSpan="2"   Grid.Row="4"  Margin="0,10,5,0" IsEnabled="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"
                                                            ApplyItemTemplateToSelectedItem="True" 
                                         EditValue="{Binding ComboxEdit_GroupBoltsTypeSelected}">
                                                     <dxmvvm:Interaction.Behaviors>
