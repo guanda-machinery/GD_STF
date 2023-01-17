@@ -910,6 +910,12 @@ namespace WPFSTD105.ViewModel
                                 {
                                     keyValuePairs[attr.Face].AddRange(BoltAsDrill(entities, new Transformation(new Point3D(0, steelPart.H, 0), Vector3D.AxisX, new Vector3D(0, -1), Vector3D.AxisZ)));
                                 }
+                                else if (attr.Face == FACE.FRONTandBack)
+                                {
+                                    //同時加入
+                                    keyValuePairs[FACE.FRONT].AddRange(BoltAsDrill(entities));
+                                    keyValuePairs[FACE.BACK].AddRange(BoltAsDrill(entities));
+                                }
                                 else
                                 {
                                     keyValuePairs[attr.Face].AddRange(BoltAsDrill(entities));
@@ -2281,6 +2287,7 @@ namespace WPFSTD105.ViewModel
                         break;
                     case GD_STD.Enum.FACE.FRONT:
                     case GD_STD.Enum.FACE.BACK:
+                    case GD_STD.Enum.FACE.FRONTandBack:
                         drills[i].X = center.X;
                         drills[i].Y = center.Z;
                         break;
@@ -3248,14 +3255,11 @@ namespace WPFSTD105.ViewModel
                                 FNDV.PositionEnum = PositionStatusEnum.不可配對;
                         }
                     }
-
-
                     using (Memor.WriteMemorClient Write = new Memor.WriteMemorClient())
                     {
                         long ImportProjectOffset = Marshal.OffsetOf(typeof(MonitorWork), nameof(MonitorWork.ImportProject)).ToInt64();
                         Write.SetMonitorWorkOffset(new byte[1] { 1 }, ImportProjectOffset);//寫入匯入專案完成
                     }
-
                     break;
                 }
                 catch (Exception ex)
@@ -3697,6 +3701,7 @@ namespace WPFSTD105.ViewModel
                             HintStep3 = true;
                             TransportGridIsEnableBool = true;
                             TransportGridIsEnableBool_Continue = true;
+
                             TransportGridIsEnableBool_HandAuto=true;
                         }                   
                         else
@@ -3708,6 +3713,7 @@ namespace WPFSTD105.ViewModel
                             HintStep3 = false;
                             HintStep4 = false;
 
+                            //將按鈕取消選取
                             if (Transport_RadioButtonIsChecked)
                                 Transport_RadioButtonIsChecked = false;
 
@@ -3716,8 +3722,9 @@ namespace WPFSTD105.ViewModel
 
                             TransportGridIsEnableBool = false;
 
-                            //若有在加工中的物件 將續接及手動手臂按鈕轉亮 但當機台正在加工時仍轉暗
-                            if(_WorkMaterials.FindIndex(x=>x.Position == -1) != -1)
+                            //若有在加工中的物件 將續接轉亮 但當機台正在加工時仍轉暗
+
+                            if (_WorkMaterials.FindIndex(x=>x.Position == -1) != -1)
                             {
                                 if (!ApplicationViewModel.PanelButton.Run)
                                 {

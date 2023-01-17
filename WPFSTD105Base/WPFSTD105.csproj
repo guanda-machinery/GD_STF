@@ -605,7 +605,6 @@
     </Compile>
     <Compile Include="Reduction.cs" />
     <Compile Include="ReductionList.cs" />
-    <Compile Include="START_HOLE.cs" />
     <Compile Include="Surrogate\GroupBoltsAttrSurrogate.cs" />
     <Compile Include="Surrogate\ProjectPropertySurrogate.cs" />
     <Compile Include="Surrogate\SteelAttrSurrogate.cs" />

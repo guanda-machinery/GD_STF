@@ -18,7 +18,13 @@
                   xmlns:uc_language="clr-namespace:LanguageSettingDialog.View"
                   xmlns:uc_sticker="clr-namespace:StickerDialog.View"
                    mc:Ignorable="d" 
-                  xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" xmlns:STD105ValidRule="clr-namespace:STD_105.ValidationRules" xmlns:ST="clr-namespace:SectionData;assembly=WPFSTD105" xmlns:LanguageVM="clr-namespace:LanguageSettingDialog.ViewModel" xmlns:StickerDialogVM="clr-namespace:StickerDialog.ViewModel"
+                  xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+                  xmlns:STD105ValidRule="clr-namespace:STD_105.ValidationRules"
+                  xmlns:ST="clr-namespace:SectionData;assembly=WPFSTD105"
+                  xmlns:LanguageVM="clr-namespace:LanguageSettingDialog.ViewModel"
+                  xmlns:StickerDialogVM="clr-namespace:StickerDialog.ViewModel" 
+                  xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                                  xmlns:GD_STD_Enum="clr-namespace:GD_STD.Enum;assembly=GD_STD.Enum" xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                    Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                   
@@ -810,6 +816,62 @@
 
                 </Grid>
             </TabItem>
+            <TabItem Header="客製孔群設定">
+                <Grid   dx:ThemeManager.ThemeName="Win10Light" >
+                    <Grid.DataContext>
+                        <STD105VM:SettingParVM/>
+                    </Grid.DataContext>
+                    <Grid.Resources>
+                        <Style TargetType="GroupBox"
+                               BasedOn="{ StaticResource ParameterBaseStyleGroupBox }">
+                        </Style>
+
+                        <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource WordBlue}"/>
+                        <Style TargetType="Button"  BasedOn="{StaticResource MaterialDesignFlatButton}"   >
+                            <Setter Property="Background" Value="White"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                            <Setter Property="BorderBrush" Value="#CFCFCF"/>
+                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="FontSize" Value="14"/>
+                        </Style>
+
+                        <Style TargetType="Label">
+                            <Setter Property="FontSize" Value="14"/>
+                        </Style>
+
+
+                        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBoxBase}">
+                            <Setter Property="Foreground" Value="{ StaticResource solidclr_DimGray }" />
+                            <Setter Property="FontSize" Value="14" />
+                            <Setter Property="Padding" Value="1" />
+                            <Setter Property="FontFamily" Value="Microsoft JhengHei"/>
+                            <Setter Property="Background" Value="White"/>
+                            <Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="BorderBrush" Value="Gray"/>
+                        </Style>
+
+                        <Style TargetType="CheckBox" BasedOn="{StaticResource BaseStyle}">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                        <Style TargetType="ComboBox"
+                   BasedOn="{ StaticResource BaseStyle }">
+                            <Setter Property="Height" Value="24"/>
+                            <Setter Property="FontSize" Value="16"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <!--客製孔群設定-->
+                    <Grid MinWidth="400" MinHeight="350" VerticalAlignment="Top" >
+                        <std:CustomizedBoltsGroupSettingUserControl/>
+                    </Grid>
+
+
+
+
+                </Grid>
+            </TabItem>
             <TabItem Header="軟體版本">
                 <Border BorderThickness="1" Grid.ColumnSpan="2" BorderBrush="Gray">
                     <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="940">
@@ -971,7 +1033,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <StackPanel Margin="12,253,0,0" Width="240"  HorizontalAlignment="Left"  >
+        <StackPanel Margin="12,297,0,0" Width="240"  HorizontalAlignment="Left"  >
             <StackPanel.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource CustomDesignButton}">
                     <Setter Property="Opacity"

@@ -231,7 +231,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 起始孔類型
         /// </summary>
-        public int StartHoleType { get; set; } = 0;
+        public START_HOLE StartHoleType { get; set; }
         /// <summary>
         /// 加入螺栓選擇的面
         /// </summary>
@@ -415,7 +415,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 切割面
         /// </summary>
-        public int CutFaceType { get; set; } = 0;
+        public FACE CutFaceType { get; set; } 
         /// <summary>
         /// 左邊上緣切割點
         /// </summary>
@@ -763,7 +763,7 @@ namespace WPFSTD105.ViewModel
             this.GroupBoltsAttr = boltsAttr;
             this.Boltsbuffer = (GroupBoltsAttr)boltsAttr.Clone();
             this.BoltsFaceType = (int)boltsAttr.Face;
-            this.StartHoleType = (int)boltsAttr.StartHole;
+            this.StartHoleType = boltsAttr.StartHole;
             this.StartY = boltsAttr.Y;
         }
         /// <summary>
@@ -777,6 +777,7 @@ namespace WPFSTD105.ViewModel
                 case GD_STD.Enum.FACE.TOP:
                     WriteCutAttr(steelAttr.PointTop);
                     break;
+                case GD_STD.Enum.FACE.FRONTandBack:
                 case GD_STD.Enum.FACE.FRONT:
                 case GD_STD.Enum.FACE.BACK:
                     WriteCutAttr(steelAttr.PointFront);
