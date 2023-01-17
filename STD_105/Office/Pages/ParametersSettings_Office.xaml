@@ -429,12 +429,12 @@
                                                         <TextBox.Text>
                                                             <Binding Path="ProcessingZone_A" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                                 <Binding.ValidationRules>
-                                                                    <STD105ValidRule:CheckNumberRule NumberMin="40"/>
+                                                                    <STD105ValidRule:CheckNumberRule NumberMin="35"/>
                                                                 </Binding.ValidationRules>
                                                             </Binding>
                                                         </TextBox.Text>
                                                     </TextBox>
-                                                    <Label Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於40mm)" Foreground="DarkRed" Margin="5,0"/>
+                                                    <Label Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" Content="(不得小於35mm)" Foreground="DarkRed" Margin="5,0"/>
 
                                                     <CheckBox IsChecked="{Binding chb_H_Bvalue}" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" />
                                                     <Label Content="B值："  Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" />
