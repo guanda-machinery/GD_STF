@@ -1112,15 +1112,12 @@
 
 
                                     </GroupBox>
-                                    <materialDesign:DialogHost   DialogTheme="Inherit" Grid.Column="1" Grid.Row="1">
+                                    <materialDesign:DialogHost  DialogTheme="Inherit" Grid.Column="1" Grid.Row="1">
                                         <materialDesign:DialogHost.DialogContent>
-                                            <StackPanel Margin="8" Width="500" Height="500">
-                                                <!--統一孔徑-->
-
-                                                <StackPanel Orientation="Horizontal">
-
-                                                </StackPanel>
-                                                <Button Grid.Column="0" Width="80"  HorizontalAlignment="Center"
+                                            <!--統一孔徑-->
+                                            <StackPanel MinWidth="400" MinHeight="350" VerticalAlignment="Top" Background="#f8f8f8" >
+                                                <STD105:CustomizedBoltsGroupSettingUserControl/>
+                                                <Button Grid.Column="0" Width="80" Height="30"  HorizontalAlignment="Center"
                                                 Style="{StaticResource SiegCustomButtonGray}"
                                                 IsDefault="True"
                                                 Margin="0,8,8,0"
@@ -1136,7 +1133,6 @@
                                                     <RowDefinition/>
                                                 </Grid.RowDefinitions>
                                                 <ComboBox />
-
                                                 <Button Height="30" Margin="5,0" Visibility="Visible" Grid.Row="1" VerticalAlignment="Bottom"
                                             Style="{StaticResource SiegCustomButtonGray}"
                                             Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
