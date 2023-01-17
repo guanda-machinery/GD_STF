@@ -4,8 +4,9 @@
     xmlns:SofSetting="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
     xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     
-    xmlns:local="clr-namespace:STD_105">
+    xmlns:local="clr-namespace:STD_105" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core">
     <!--  GridControl Row Style  -->
     <Style TargetType="dxg:RowControl">
         <Setter Property="FontFamily" Value="{Binding FontFamily, Source={x:Static SofSetting:SofSetting.Default}}" />
@@ -253,6 +254,41 @@
         </Style.Resources>
     </Style>
 
+    <Style TargetType="{x:Type dxe:ComboBoxEdit}" BasedOn="{StaticResource BaseStyle}"  x:Key="SiegPositionComboBoxEdit">
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.RowSpan="2" Source="{Binding Image}" Height="30" Margin="5,0"/>
+                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Name}" FontSize="14"/>
+                        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Description}" FontSize="10"/>
+                    </Grid>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style TargetType="{x:Type dxe:ComboBoxEdit}" BasedOn="{StaticResource BaseStyle}"  x:Key="SiegPositionComboBoxEditOnlyIcon">
+        
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid >
+                        <Image Source="{Binding Image}" Margin="5,0"/>
+                    </Grid>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 
 

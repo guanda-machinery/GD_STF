@@ -928,9 +928,10 @@
                                     <Grid Margin="0,-30,0,0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="auto" />
                                             <ColumnDefinition Width="auto"/>
                                             <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*"/>
@@ -987,6 +988,29 @@
                                                 </Binding>
                                             </TextBox.Text>
                                         </TextBox>
+
+                                        <dxe:ComboBoxEdit Grid.Column="4" Grid.Row="0" IsTextEditable="False" Style="{StaticResource SiegPositionComboBoxEditOnlyIcon}" Height="24"
+                                                           ApplyItemTemplateToSelectedItem="True" 
+                                        EditValue="{Binding X_BoltsArrayDirection}">
+                                            <dxmvvm:Interaction.Behaviors>
+                                                <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:ArrayDirection}" ImageSize="20,20" AllowImages="False" />
+                                                <!--SortMode="DisplayName"-->
+                                            </dxmvvm:Interaction.Behaviors>
+
+                                        </dxe:ComboBoxEdit>
+                                        <dxe:ComboBoxEdit Grid.Column="4" Grid.Row="1" IsTextEditable="False" Style="{StaticResource SiegPositionComboBoxEditOnlyIcon}" Height="24"
+                                                           ApplyItemTemplateToSelectedItem="True" 
+                                        EditValue="{Binding Y_BoltsArrayDirection}">
+                                            <dxmvvm:Interaction.Behaviors>
+                                                <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:ArrayDirection}" ImageSize="20,20" AllowImages="False" />
+                                                <!--SortMode="DisplayName"-->
+                                            </dxmvvm:Interaction.Behaviors>
+
+                                        </dxe:ComboBoxEdit>
+
+ 
+
+
 
                                     </Grid>
                                 </GroupBox>
@@ -1047,7 +1071,7 @@
                                             <!--技術文件參照:https://community.devexpress.com/blogs/wpf/archive/2015/01/27/devexpress-mvvm-framework-enumitemsourcebehavior.aspx-->
 
                                             <CheckBox Grid.Row="3"  Content="特殊孔位：" IsThreeState="False" IsChecked="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"/>
-                                            <dxe:ComboBoxEdit  IsTextEditable="False" Grid.Column="0" Grid.ColumnSpan="2"   Grid.Row="4"  Margin="0,10,5,0" IsEnabled="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"
+                                            <dxe:ComboBoxEdit  IsTextEditable="False" Grid.Column="0" Grid.ColumnSpan="2"   Grid.Row="4"  Margin="0,5,5,0" IsEnabled="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"
                                                            ApplyItemTemplateToSelectedItem="True" 
                                         EditValue="{Binding ComboxEdit_GroupBoltsTypeSelected}">
                                                     <dxmvvm:Interaction.Behaviors>
@@ -1057,8 +1081,8 @@
                                                     <dxe:ComboBoxEdit.ItemTemplate>
                                                         <DataTemplate>
                                                             <StackPanel>
-                                                                <TextBlock Text="{Binding Name}" FontSize="16"/>
-                                                                <TextBlock Text="{Binding Description}" Grid.Row="1" FontSize="10"/>
+                                                                <TextBlock Text="{Binding Name}" FontSize="18"/>
+                                                                <TextBlock Text="{Binding Description}" Grid.Row="1" FontSize="12"/>
                                                             </StackPanel>
                                                         </DataTemplate>
 
@@ -1080,46 +1104,19 @@
                                             <ComboBox ItemsSource="{Binding Source={StaticResource Face},Path=Strings}"
                                                       SelectedIndex="{Binding BoltsFaceType}" Width="50"/>
                                         </StackPanel>-->
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-                                            <RadioButton  Margin="0,3,0,0" Grid.Row="0" VerticalAlignment="Center"  GroupName="DrillingPosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=2}">
-                                                <RadioButton.Content>
-                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,-2">
-                                                        <Label Content="前面"/>
-                                                        <Label Margin="15,0,0,0" Content="左翼板" />
-                                                    </StackPanel>
-                                                </RadioButton.Content>
-                                            </RadioButton>
-                                            <RadioButton Margin="0,3,0,0" Grid.Row="1" VerticalAlignment="Center" GroupName="DrillingPosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=0}">
-                                                <RadioButton.Content>
-                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,-2">
-                                                        <Label Content="頂面"/>
-                                                        <Label Margin="15,0,0,0" Content="腹板" />
-                                                    </StackPanel>
-                                                </RadioButton.Content>
-                                            </RadioButton>
+
+                                        <dxe:ComboBoxEdit  IsTextEditable="False" MinWidth="110" Style="{StaticResource SiegPositionComboBoxEdit}"
+                                                           ApplyItemTemplateToSelectedItem="True" 
+                                        EditValue="{Binding rbtn_DrillingFace}">
+                                            <dxmvvm:Interaction.Behaviors>
+                                                <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:FACE}" ImageSize="40,40" AllowImages="False" />
+                                                <!--SortMode="DisplayName"-->
+                                            </dxmvvm:Interaction.Behaviors>
+
+                                        </dxe:ComboBoxEdit>
 
 
-                                            <RadioButton  Margin="0,3,0,0" Grid.Row="2"  VerticalAlignment="Center"  GroupName="DrillingPosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={STD105:DrillingFaceConverter}, ConverterParameter=1}">
-                                                <RadioButton.Content>
-                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,-2" >
-                                                        <Label Content="後面"/>
-                                                        <Label Margin="15,0,0,0" Content="右翼板" />
-                                                    </StackPanel>
-                                                </RadioButton.Content>
-                                            </RadioButton>
 
-                                            
-
-
-                                        </Grid>
                                     </GroupBox>
                                     <GroupBox Header="位置" Grid.Column="1" Grid.Row="1">
                                         <StackPanel>
@@ -1202,45 +1199,16 @@
                                 </Grid.RowDefinitions>
                                 <StackPanel Orientation="Horizontal">
                                     <GroupBox Header="位置" Style="{StaticResource BaseStyle}" Padding="0">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
 
-
-                                            <RadioButton  Margin="0,0,0,0" Grid.Row="0" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=2}" Command="{Binding rb_CutLinePosition_Command}">
-                                                <RadioButton.Content>
-                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                                                        <Label Content="前面"/>
-                                                        <Label Margin="40,0,0,0" Content="左翼板" />
-                                                    </StackPanel>
-                                                </RadioButton.Content>
-                                            </RadioButton>
-
-                                            <RadioButton Margin="0,-10,0,0" Grid.Row="1" VerticalAlignment="Center" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=0}" Command="{Binding rb_CutLinePosition_Command}">
-                                                <RadioButton.Content>
-                                                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0" >
-                                                        <Label Content="頂面"/>
-                                                        <Label Margin="40,0,0,0" Content="腹板" />
-                                                    </StackPanel>
-                                                </RadioButton.Content>
-                                            </RadioButton>
-
-                                            <RadioButton  Margin="0,-10,0,0" Grid.Row="2" GroupName="CutLinePosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=1}" Command="{Binding rb_CutLinePosition_Command}">
-                                                <RadioButton.Content>
-                                                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0" >
-                                                        <Label Content="後面"/>
-                                                        <Label Margin="40,0,0,0" Content="右翼板" />
-                                                    </StackPanel>
-                                                </RadioButton.Content>
-                                            </RadioButton>
-                                        </Grid>
-
+                                        <dxe:ComboBoxEdit  IsTextEditable="False" MinWidth="110" Style="{StaticResource SiegPositionComboBoxEdit}" VerticalAlignment="Center" 
+                                                           ApplyItemTemplateToSelectedItem="True"
+                                        EditValue="{Binding rbtn_DrillingFace}">
+                                            <dxmvvm:Interaction.Behaviors>
+                                                <dxmvvm:EventToCommand EventName="EditValueChanged" Command="{Binding rb_CutLinePosition_Command}" CommandParameter="{Binding rbtn_DrillingFace}" UseDispatcher="True"/>
+                                                <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:FACE}" ImageSize="40,40" AllowImages="False" />
+                                                    <!--SortMode="DisplayName"-->
+                                                </dxmvvm:Interaction.Behaviors>
+                                            </dxe:ComboBoxEdit>
 
 
                                     </GroupBox>
@@ -1446,43 +1414,17 @@
                                 <StackPanel Orientation="Horizontal">
                                     <GroupBox Header="位置" Style="{StaticResource BaseStyle}" Padding="0">
                                         <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
 
-
-                                            <RadioButton  Margin="0,0,0,0" Grid.Row="0" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=2}" Command="{Binding rb_CutLinePosition_Command}">
-                                                <RadioButton.Content>
-                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                                                        <Label Content="前面"/>
-                                                        <Label Margin="40,0,0,0" Content="左翼板" />
-                                                    </StackPanel>
-                                                </RadioButton.Content>
-                                            </RadioButton>
-
-                                            <RadioButton Margin="0,-10,0,0" Grid.Row="1" VerticalAlignment="Center" GroupName="CutLinePosition" Foreground="Black"  Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=0}" Command="{Binding rb_CutLinePosition_Command}">
-                                                <RadioButton.Content>
-                                                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0" >
-                                                        <Label Content="頂面"/>
-                                                        <Label Margin="40,0,0,0" Content="腹板" />
-                                                    </StackPanel>
-                                                </RadioButton.Content>
-                                            </RadioButton>
-
-                                            <RadioButton  Margin="0,-10,0,0" Grid.Row="2" GroupName="CutLinePosition" Foreground="Black" Style="{StaticResource rad_Gray}" IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={STD105:CutFaceConverter}, ConverterParameter=1}" Command="{Binding rb_CutLinePosition_Command}">
-                                                <RadioButton.Content>
-                                                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0" >
-                                                        <Label Content="後面"/>
-                                                        <Label Margin="40,0,0,0" Content="右翼板" />
-                                                    </StackPanel>
-                                                </RadioButton.Content>
-                                            </RadioButton>
-                                        </Grid>
+                                        <dxe:ComboBoxEdit  IsTextEditable="False" MinWidth="110" Style="{StaticResource SiegPositionComboBoxEdit}" VerticalAlignment="Center" 
+                                                           ApplyItemTemplateToSelectedItem="True" 
+                                                           EditValue="{Binding rbtn_DrillingFace}">
+                                            <dxmvvm:Interaction.Behaviors>
+                                                <dxmvvm:EventToCommand EventName="EditValueChanged" Command="{Binding rb_CutLinePosition_Command}" CommandParameter="{Binding rbtn_DrillingFace}" UseDispatcher="True"/>
+                                                <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:FACE}" ImageSize="40,40" AllowImages="False" />
+                                                <!--SortMode="DisplayName"-->
+                                            </dxmvvm:Interaction.Behaviors>
+                                        </dxe:ComboBoxEdit>
+                                    </Grid>
 
 
 
@@ -1490,15 +1432,21 @@
                                   
                                 </StackPanel>
                                 <StackPanel Grid.Row="1" Background="#303030" Height="0.5" Margin="0,5,0,0"/>
-                                <GroupBox Header="MR接頭打點" Style="{StaticResource BaseStyle}" Grid.Row="2" Margin="5" Padding="0" Height="255">
+                            <GroupBox Header="任意座標打點" Style="{StaticResource BaseStyle}" Grid.Row="2" Margin="5" Padding="0" Height="255">
                                 <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="這裡要放圖片" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    
+                                    <TextBlock Grid.Row="0" Text="MR接頭打點" HorizontalAlignment="Center" FontSize="30" Margin="-10,5,0,10"/>
+                                    <Image Grid.Row="1" Source="{StaticResource Drill_AnyPointDrawingImage}"  Margin="0,10,10,0"/>
 
-                                    <dxg:GridControl x:Name="ToolgridControl" Grid.Column="1" 
+                                    <dxg:GridControl x:Name="ToolgridControl" Grid.Column="1"  Grid.RowSpan="2"
                                      Style="{StaticResource SiegCustomGridControl}" 
                                                    
                                          MaxHeight="10000"

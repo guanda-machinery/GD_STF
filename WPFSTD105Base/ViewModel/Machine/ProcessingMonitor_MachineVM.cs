@@ -910,6 +910,12 @@ namespace WPFSTD105.ViewModel
                                 {
                                     keyValuePairs[attr.Face].AddRange(BoltAsDrill(entities, new Transformation(new Point3D(0, steelPart.H, 0), Vector3D.AxisX, new Vector3D(0, -1), Vector3D.AxisZ)));
                                 }
+                                else if (attr.Face == FACE.FRONTandBack)
+                                {
+                                    //同時加入
+                                    keyValuePairs[FACE.FRONT].AddRange(BoltAsDrill(entities));
+                                    keyValuePairs[FACE.BACK].AddRange(BoltAsDrill(entities));
+                                }
                                 else
                                 {
                                     keyValuePairs[attr.Face].AddRange(BoltAsDrill(entities));
@@ -2281,6 +2287,7 @@ namespace WPFSTD105.ViewModel
                         break;
                     case GD_STD.Enum.FACE.FRONT:
                     case GD_STD.Enum.FACE.BACK:
+                    case GD_STD.Enum.FACE.FRONTandBack:
                         drills[i].X = center.X;
                         drills[i].Y = center.Z;
                         break;

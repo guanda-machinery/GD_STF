@@ -4721,7 +4721,8 @@ namespace STD_105.Office
                             GroupBoltsAttr gba = (GroupBoltsAttr)((BlockReference)aa[0].Item).EntityData;
                             ViewModel.GroupBoltsAttr = gba;
                             ViewModel.WriteGroupBoltsAttr(gba);
-                            ViewModel.rbtn_DrillingFace = (int)gba.Face;
+                            //ViewModel.rbtn_DrillingFace = (int)gba.Face;
+                            ViewModel.rbtn_DrillingFace = gba.Face;
                             ViewModel.StartHoleType = (int)gba.StartHole;
                             ViewModel.AxisModeType = (int)gba.Mode;
                             //ViewModel.StartY = gba.Y;
@@ -5249,7 +5250,7 @@ namespace STD_105.Office
             {
                 SteelCutSetting cs = steelcutSettings.FirstOrDefault(x => x.GUID == ViewModel.GuidProperty);
 
-                ViewModel.rbtn_CutFace = (int)cs.face;
+                ViewModel.rbtn_CutFace = cs.face;
                 ViewModel.DLPoint.X = cs.DLX;
                 ViewModel.DLPoint.Y = cs.DLY;
                 ViewModel.ULPoint.X = cs.ULX;

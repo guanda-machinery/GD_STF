@@ -3,6 +3,7 @@ using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
+using DevExpress.DirectX.Common.DirectWrite;
 using DevExpress.Utils;
 using DevExpress.Xpf.CodeView;
 using DevExpress.Xpf.Core;
@@ -243,11 +244,17 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 鑽孔radio button 頂面,前面,後面
         /// </summary>
-        public int rbtn_DrillingFace { get; set; } = 0;
+        //public int rbtn_DrillingFace { get; set; } = 0;
+
+
+        /// <summary>
+        /// 選擇加工面
+        /// </summary>
+        public FACE rbtn_DrillingFace { get; set; }
         /// <summary>
         /// 切割線radio button 頂面,前面,後面
         /// </summary>
-        public int rbtn_CutFace { get; set; }
+        public FACE rbtn_CutFace { get; set; }
         /// <summary>
         /// 選擇物件的面的功能開啟
         /// </summary>
@@ -317,6 +324,12 @@ namespace WPFSTD105.ViewModel
                 GroupBoltsAttr.Face = (GD_STD.Enum.FACE)value;
             }
         }
+
+        public ArrayDirection X_BoltsArrayDirection { get; set; }
+        public ArrayDirection Y_BoltsArrayDirection { get; set; }
+
+
+
         /// <summary>
         /// 主要零件設定檔
         /// </summary>
@@ -1021,17 +1034,18 @@ namespace WPFSTD105.ViewModel
             //要產生的面
             if (CheckFace)
             {
-                int temp_BoltsFace;
+                //int temp_BoltsFace;
                 if (OfficeViewModel.CurrentPage == OfficePage.ProductSettings || ViewLocator.ApplicationViewModel.CurrentPage == ApplicationPage.MachineProductSetting)//若為新版製品設定頁面
                 {
-                    temp_BoltsFace = rbtn_DrillingFace;
+                    Boltsbuffer.Face = rbtn_DrillingFace;
                 }
                 else
                 {
-                    temp_BoltsFace = BoltsFaceType;
+                    Boltsbuffer.Face = (GD_STD.Enum.FACE)BoltsFaceType;
+                   // temp_BoltsFace = BoltsFaceType;
                 }
 
-                Boltsbuffer.Face = (GD_STD.Enum.FACE)temp_BoltsFace;
+                //Boltsbuffer.Face = (GD_STD.Enum.FACE)temp_BoltsFace;
             }
             //double value = 0d;
             if (CheckStartHole)
@@ -1176,21 +1190,22 @@ namespace WPFSTD105.ViewModel
         /// <param name="steelAttr">主件設定檔</param>
         public void WriteCutAttr(SteelAttr steelAttr)
         {
-            int temp_CutFace;
+            FACE temp_CutFace;
             if (OfficeViewModel.CurrentPage == OfficePage.ProductSettings || ViewLocator.ApplicationViewModel.CurrentPage == ApplicationPage.MachineProductSetting)//若為新版製品設定頁面
             {
                 temp_CutFace = rbtn_CutFace;
             }
             else
             {
-                temp_CutFace = CutFaceType;
+                temp_CutFace = (GD_STD.Enum.FACE)CutFaceType;
             }
 
-            switch ((GD_STD.Enum.FACE)temp_CutFace)
+            switch (temp_CutFace)
             {
                 case GD_STD.Enum.FACE.TOP:
                     WriteCutAttr(steelAttr.PointTop);
                     break;
+                case GD_STD.Enum.FACE.FRONTandBack:
                 case GD_STD.Enum.FACE.FRONT:
                 case GD_STD.Enum.FACE.BACK:
                     WriteCutAttr(steelAttr.PointFront);
@@ -1231,18 +1246,18 @@ namespace WPFSTD105.ViewModel
         {
             try
             {
-                int temp_CutFace;
+                FACE temp_CutFace;
                 if (OfficeViewModel.CurrentPage == OfficePage.ProductSettings || ViewLocator.ApplicationViewModel.CurrentPage == ApplicationPage.MachineProductSetting)//若為新版製品設定頁面
                 {
                     temp_CutFace = rbtn_CutFace;
                 }
                 else
                 {
-                    temp_CutFace = CutFaceType;
+                    temp_CutFace =  (GD_STD.Enum.FACE)CutFaceType;
                 }
 
                 CutList bufferCutList = null;
-                switch ((GD_STD.Enum.FACE)temp_CutFace)
+                switch (temp_CutFace)
                 {
                     case GD_STD.Enum.FACE.BACK:
                     //bufferCutList = new CutList
@@ -1843,9 +1858,9 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 20221125 張燕華 根據型鋼位置載入切割線數值
         /// </summary>
-        private WPFBase.RelayCommand rb_CutLinePosition()
+        private WPFBase.RelayParameterizedCommand rb_CutLinePosition()
         {
-            return new WPFBase.RelayCommand(() =>
+            return new WPFBase.RelayParameterizedCommand(obj =>
             {
                 // 讀取切割線設定檔
                 STDSerialization ser = new STDSerialization(); //序列化處理器
@@ -1853,48 +1868,50 @@ namespace WPFSTD105.ViewModel
                 steelcutSettings = ser.GetCutSettingList();
                 steelcutSettings = steelcutSettings ?? new ObservableCollection<SteelCutSetting>();
 
-
-                if (steelcutSettings.Any(x => x.GUID == this.GuidProperty && x.face == (FACE)rbtn_CutFace))
+                if (obj is FACE)
                 {
-                    SteelCutSetting cs = steelcutSettings.FirstOrDefault(x => x.GUID == this.GuidProperty && x.face == (FACE)rbtn_CutFace);
-
-                    DLPoint.X = cs.DLX;
-                    DLPoint.Y = cs.DLY;
-                    ULPoint.X = cs.ULX;
-                    ULPoint.Y = cs.ULY;
-                    DRPoint.X = cs.DRX;
-                    DRPoint.Y = cs.DRY;
-                    URPoint.X = cs.URX;
-                    URPoint.Y = cs.URY;
-                }
-                else
-                {
-                    SteelCutSetting cs = new SteelCutSetting()
+                    var obj_CutFace = (FACE)obj ; 
+                    if (steelcutSettings.Any(x => x.GUID == this.GuidProperty && x.face == obj_CutFace))
                     {
-                        GUID = this.GuidProperty,
-                        face = (FACE)rbtn_CutFace,
-                        DLX = 0,
-                        DLY = 0,
-                        ULX = 0,
-                        ULY = 0,
-                        DRX = 0,
-                        DRY = 0,
-                        URX = 0,
-                        URY = 0,
-                    };
-                    steelcutSettings.Add(cs);
-                    ser.SetCutSettingList(steelcutSettings);
+                        SteelCutSetting cs = steelcutSettings.FirstOrDefault(x => x.GUID == this.GuidProperty && x.face == obj_CutFace);
 
-                    DLPoint.X = 0;
-                    DLPoint.Y = 0;
-                    ULPoint.X = 0;
-                    ULPoint.Y = 0;
-                    DRPoint.X = 0;
-                    DRPoint.Y = 0;
-                    URPoint.X = 0;
-                    URPoint.Y = 0;
+                        DLPoint.X = cs.DLX;
+                        DLPoint.Y = cs.DLY;
+                        ULPoint.X = cs.ULX;
+                        ULPoint.Y = cs.ULY;
+                        DRPoint.X = cs.DRX;
+                        DRPoint.Y = cs.DRY;
+                        URPoint.X = cs.URX;
+                        URPoint.Y = cs.URY;
+                    }
+                    else
+                    {
+                        SteelCutSetting cs = new SteelCutSetting()
+                        {
+                            GUID = this.GuidProperty,
+                            face = rbtn_CutFace,
+                            DLX = 0,
+                            DLY = 0,
+                            ULX = 0,
+                            ULY = 0,
+                            DRX = 0,
+                            DRY = 0,
+                            URX = 0,
+                            URY = 0,
+                        };
+                        steelcutSettings.Add(cs);
+                        ser.SetCutSettingList(steelcutSettings);
+
+                        DLPoint.X = 0;
+                        DLPoint.Y = 0;
+                        ULPoint.X = 0;
+                        ULPoint.Y = 0;
+                        DRPoint.X = 0;
+                        DRPoint.Y = 0;
+                        URPoint.X = 0;
+                        URPoint.Y = 0;
+                    }
                 }
-
 
             });
         }
