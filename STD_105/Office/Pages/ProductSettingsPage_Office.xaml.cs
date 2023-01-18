@@ -1738,6 +1738,7 @@ namespace STD_105.Office
 
                 Bolts3DBlock bolts = Bolts3DBlock.AddBolts(gba, model, out BlockReference blockReference, out bool check);
 
+                BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                 if (ViewModel.fromModifyHole)
                 {
                     if (!check && ViewModel.showMessage)
@@ -1788,9 +1789,8 @@ namespace STD_105.Office
                         ViewModel.fclickOK = false;
                     }
                 }
-                BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
-                                                                 //if (!ViewModel.fAddSteelPart)
 
+                //if (!ViewModel.fAddSteelPart)
                 //if (!ViewModel.fNewPart.Value)
                 SaveModel(false, true);//存取檔案
 

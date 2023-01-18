@@ -16,7 +16,7 @@ namespace GD_STD.Enum
         /// <remarks>
         /// 中軸
         /// </remarks>
-        [Image(imageUri: @"pack://application:,,,/GD_STD.Enum;component/ImageSVG/SelectPlate_Front.svg"), Display(Name = "頂面", Description = "腹板")]
+        [Image(imageUri: @"pack://application:,,,/GD_STD.Enum;component/ImageSVG/SelectPlate_Front.svg"), Display(Name = "前面", Description = "腹板")]
         TOP,
         /// <summary>
         /// 前面

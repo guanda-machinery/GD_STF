@@ -66,7 +66,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 客製孔群 - 建立日期
         /// </summary>
-        public DateTime Creation { get; }
+        public DateTime Creation { get; set; }
         /// <summary>
         /// 客製孔群 - 修改日期
         /// </summary>

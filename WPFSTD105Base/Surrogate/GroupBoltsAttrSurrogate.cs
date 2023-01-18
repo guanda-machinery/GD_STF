@@ -50,6 +50,8 @@ namespace WPFSTD105.Surrogate
         public int yCount { get; set; }
         /// <inheritdoc/>
         public GroupBoltsType groupBoltsType { get; set; }
+        /// <inheritdoc/>
+        public ArrayDirection X_BoltsArrayDirection { get; set; }
 
 #pragma warning disable CS1591 // 遺漏公用可見類型或成員 'GroupBoltsAttrSurrogate.ConvertToObject()' 的 XML 註解
         protected override GroupBoltsAttr ConvertToObject()
@@ -80,6 +82,7 @@ namespace WPFSTD105.Surrogate
             Z = obj.Z;
             yCount = obj.yCount;
             groupBoltsType = obj.groupBoltsType;
+            X_BoltsArrayDirection = obj.X_BoltsArrayDirection;
         }
 
 #pragma warning disable CS1591 // 遺漏公用可見類型或成員 'GroupBoltsAttrSurrogate.CopyDataToObject(GroupBoltsAttr)' 的 XML 註解
@@ -101,6 +104,7 @@ namespace WPFSTD105.Surrogate
             obj.yCount = yCount;
             obj.Z = Z;
             obj.groupBoltsType = groupBoltsType;
+            obj.X_BoltsArrayDirection = X_BoltsArrayDirection;
         }
         /// <summary>
         /// 在反序列化過程中將代理轉換為相關對象。

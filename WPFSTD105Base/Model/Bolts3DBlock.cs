@@ -127,14 +127,17 @@ namespace WPFSTD105.Model
             }
             double high = this.Info.t + h * 2;
             resultY.Add(Mesh.CreateCylinder(this.Info.Dia * 0.5, high, 36));//創建一個圓柱體// Vertices XY有值 Z=0
-            //建立螺栓參數
+                                                                            //建立螺栓參數
+
+            double xStart = Info.X_BoltsArrayDirection == ArrayDirection.Left_To_Right ? Info.X : Info.RightXStart(steelAttr.Length);
+
             resultY[0].EntityData = new BoltAttr()
             {
                 Dia = this.Info.Dia,
                 t = this.Info.t,
                 Face = this.Info.Face,
                 Mode = this.Info.Mode,
-                X = Info.X,
+                X = xStart,
                 Y = Info.Y,
                 Z = Info.Z,
                 GUID = Guid.NewGuid(),
@@ -169,7 +172,8 @@ namespace WPFSTD105.Model
             {
                 case GD_STD.Enum.FACE.TOP:
                     //resultY[0].Translate(0, 0, -h);
-                    resultY[0].Translate(Info.X, Info.Y, Info.Z - h);
+                    // Info.X改xStart
+                    resultY[0].Translate(xStart, Info.Y, Info.Z - h);
                     break;
                 case GD_STD.Enum.FACE.FRONT:
                 case GD_STD.Enum.FACE.BACK:
@@ -186,7 +190,8 @@ namespace WPFSTD105.Model
                     //((BoltAttr)resultY[0].EntityData).Y = a.Y;
                     //((BoltAttr)resultY[0].EntityData).Z = a.Z;
                     resultY[0].Rotate(Math.PI / 2, Vector3D.AxisX); //XYZ的YZ不動 只會旋轉Vertices的YZ // 將原螺栓(TOP面)做翻轉至前/後平面
-                    resultY[0].Translate(Info.X, Info.Y + h, Info.Z);// 平移Vertices //EntityDataXY不變 Vertices // 故EntityData之XYZ存檔時需維持再TOP平面之座標
+                    // Info.X改xStart
+                    resultY[0].Translate(xStart, Info.Y + h, Info.Z);// 平移Vertices //EntityDataXY不變 Vertices // 故EntityData之XYZ存檔時需維持再TOP平面之座標
 
                     // 此時Vertices與YZ皆轉換Vertices
                     // EntityData XYZ有值(不變)
@@ -957,8 +962,13 @@ namespace WPFSTD105.Model
             blockOut.EntityData = result.Info;
             //blockOut.BlockName = result.Info.GUID.Value.ToString();
             blockOut.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-            if (!model.Entities.Any(x => x.EntityData != null && x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID == Guid.Parse(result.Name)))
+            // 2023/01/18 呂宗霖 條件移除 x.EntityData != null
+            if (!model.Entities.Any(x =>x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID == Guid.Parse(result.Name)))
             {
+                if (true)
+                {
+
+                }
                 model.Entities.Insert(0, blockOut);//加入參考圖塊到模型
             }
             var a = model.Entities.Where(x => x.GetType()==typeof(BlockReference) && x.EntityData != null && x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID.Value.ToString() != ((BlockReference)x).BlockName).ToList();
@@ -966,7 +976,13 @@ namespace WPFSTD105.Model
             {
                 ((BlockReference)item).BlockName = ((GroupBoltsAttr)item.EntityData).GUID.Value.ToString();
             }
+            foreach (var item in model.Blocks)
+            {
+                if (item.GetType()==typeof(Block))
+                {
 
+                }
+            }
 
 
             ////// model有無此BlockName
