@@ -402,6 +402,7 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <CheckBox Grid.Column="0" Grid.Row="0"  Content="排版編號" IsChecked="{Binding StartNumberCheckboxBoolen}" />
 
@@ -426,38 +427,41 @@
                                 </TextBox.Text>
                             </TextBox>
                             <Label Content="mm" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" />
-
-                            <CheckBox Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Content="素材前端切除："  IsChecked="{Binding StartCutCheckboxBoolen}"/>
-                            <TextBox Name="MatchSettingStartCutTextBox" InputMethod.IsInputMethodEnabled="False"  Grid.Row="2" Grid.Column="1"  VerticalAlignment="Center" Padding="2">
+                            
+                            <StackPanel Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="18,0,10,0">
+                                <Label Content="素材切除值不可小於5" Foreground="Red" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            </StackPanel>
+                            <CheckBox Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Content="素材前端切除："  IsChecked="{Binding StartCutCheckboxBoolen}"/>
+                            <TextBox Name="MatchSettingStartCutTextBox" InputMethod.IsInputMethodEnabled="False"  Grid.Row="3" Grid.Column="1"  VerticalAlignment="Center" Padding="2">
                                 <TextBox.Text>
                                     <Binding Path="MatchSettingStartCut" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" >
                                         <Binding.ValidationRules >
-                                            <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                            <STD105ValidRule:CheckNumberRule NumberMin="5" SpecificValue="0"/>
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
                             </TextBox>
-                            <Label Content="mm" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                            <Label Content="mm" Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
-                            <CheckBox Grid.Row="3" Grid.Column="0" Content="素材後端切除：" IsChecked="{Binding EndCutCheckboxBoolen}" />
-                            <TextBox Name="MatchSettingEndCutTextBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center"  Padding="2">
+                            <CheckBox Grid.Row="4" Grid.Column="0" Content="素材後端切除：" IsChecked="{Binding EndCutCheckboxBoolen}" />
+                            <TextBox Name="MatchSettingEndCutTextBox" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center"  Padding="2">
                                 <TextBox.Text>
                                     <Binding Path="MatchSettingEndCut" StringFormat="{}{0:N2}"  UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
-                                            <STD105ValidRule:CheckNumberRule  NumberMin="0"/>
+                                            <STD105ValidRule:CheckNumberRule NumberMin="5" SpecificValue="0"/>
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
                             </TextBox>
 
-                            <Label Content="mm" Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                            <Label Content="mm" Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
 
 
-                            <StackPanel Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="18,0">
+                            <StackPanel Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="18,0">
                                 <Label Content="鋸床切割損耗：" />
                             </StackPanel>
-                            <StackPanel Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" Orientation="Horizontal">
+                            <StackPanel Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" Orientation="Horizontal">
                                 <Label Content="{ Binding MatchSetting.Cut }" />
                                 <Label Content="mm" Margin="5,0,0,0" />
                             </StackPanel>

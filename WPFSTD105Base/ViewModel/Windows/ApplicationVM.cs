@@ -1204,7 +1204,7 @@ namespace WPFSTD105
                 return $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\ParameterSetting\SplitLineSetting.lis";
             else
                 return null;
-            throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
+           // throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }
         
         
@@ -1214,22 +1214,24 @@ namespace WPFSTD105
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public static void CheckGroupBoltsTypeDirectory()
+        public static bool CheckGroupBoltsTypeDirectory()
         {
             string projectName = CommonViewModel.ProjectName; //專案名稱
-            string DirPath = $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\GroupBoltsType";
+          
+            string DirPath = Path.Combine(Properties.SofSetting.Default.LoadPath, CommonViewModel.ProjectName, "GroupBoltsType");
 
             if (projectName != null)
             {
-                bool fileExist = Directory.Exists(DirPath);
-                if (fileExist)
+                if (Directory.Exists(DirPath))
                 {
                     Directory.CreateDirectory(DirPath);
                 }
+                return true;
             }
             else
             {
-                throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
+                return false;
+               // throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
             }
         }
 

@@ -12,7 +12,7 @@ namespace WPFWindowsBase
     /// <summary>
     /// 多重綁訂做四則運算轉換器
     /// </summary>
-    public class MulitiBindingArithmeticConverter : BaseMultiValueConverter<MulitiBindingArithmeticConverter>
+    public class MultiBindingArithmeticConverter : BaseMultiValueConverter<MultiBindingArithmeticConverter>
     {
         /// <summary>
         /// 預設實現A+B

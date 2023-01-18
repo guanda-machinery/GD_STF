@@ -94,6 +94,7 @@
     <Compile Include="Expand.cs" />
     <Compile Include="GroupBoltsType.cs" />
     <Compile Include="FACE.cs" />
+    <Compile Include="GroupBoltsTypeByTarget.cs" />
     <Compile Include="GROUP_DEVICE.cs" />
     <Compile Include="HoleArrayDirection.cs" />
     <Compile Include="JOYSTICK.cs" />

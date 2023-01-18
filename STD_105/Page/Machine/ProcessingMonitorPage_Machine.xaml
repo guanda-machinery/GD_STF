@@ -1102,8 +1102,7 @@ AllowEditing="False"
                                             Mode=TwoWay , 
                                             UpdateSourceTrigger=PropertyChanged}">
                                             <dxg:GridControl.View >
-                                                <dxg:TableView 
-                                Header="加工選擇" >
+                                                <dxg:TableView Header="加工選擇" >
                                                     <dxg:TableView.CellStyle>
                                                         <Style>
                                                             <Setter Property="TextBlock.FontSize" Value="12"/>

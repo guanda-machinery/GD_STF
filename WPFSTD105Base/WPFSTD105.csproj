@@ -488,6 +488,7 @@
     <Compile Include="Model\JointPoint.cs" />
     <Compile Include="Model\MachiningTimeClass.cs" />
     <Compile Include="Model\OperatingLog.cs" />
+    <Compile Include="Model\SettingParGroupBoltsTypeModel.cs" />
     <Compile Include="UserControls\ProcessingScreenWindow.xaml.cs">
       <DependentUpon>ProcessingScreenWindow.xaml</DependentUpon>
     </Compile>
@@ -654,7 +655,6 @@
     <Compile Include="ViewModel\Windows\IWindowsVM.cs" />
     <Compile Include="ViewModel\Windows\OfficeVM.cs" />
     <Compile Include="ViewModel\OpenOldFileDialogViewModel.cs" />
-    <Compile Include="ViewModel\Windows\PopupVM.cs" />
     <Compile Include="ViewModel\SplashScreenMainViewModel.cs" />
     <Compile Include="ViewModel\Windows\AbsBaseWindowView.cs" />
     <Compile Include="ViewModel\Windows\ViewLocator.cs" />

@@ -617,7 +617,7 @@ namespace WPFSTD105.ViewModel
                 if (_arbitrarilyJointPointList == null)
                 {
                     var DefaultJPArray = new List<JointPoint>();
-                    for (int i = 0; i < 8; i++)
+                    for (int i = 0; i < 1; i++)
                     {
                         DefaultJPArray.Add(new JointPoint() { X_Position = 0, Y_Position = 0 });
                     }
