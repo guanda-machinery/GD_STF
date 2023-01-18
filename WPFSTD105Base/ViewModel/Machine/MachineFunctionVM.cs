@@ -203,17 +203,21 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public Dpad_Joystick_ViewModel ToolMagazineControl_VM { get; set; } = new Dpad_Joystick_ViewModel()
         {
-            JoyStick_CIRCLE_BOTTOM_isEnabled = false,
             Button_Up_IsEnabled = false,
             Button_Down_IsEnabled = false,
             JoyStick_ELLIPSE_TOP_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.EXPORT_L,
             JoyStick_ELLIPSE_BOTTOM_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.ENTRANCE_L,
 
-            //有疑慮->CIRCLE_TOP實際上是對EXPORT_R動作
             JoyStick_CIRCLE_TOP_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.ENTRANCE_R,
-            //有疑慮->CIRCLE_MIDDLE實際上是對ENTRANCE_R動作
             JoyStick_CIRCLE_MIDDLE_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.EXPORT_R,
             JoyStick_CIRCLE_BOTTOM_Trigger_CommandParameter = GD_STD.Enum.DRILL_POSITION.MIDDLE,
+
+
+            JoyStick_ELLIPSE_TOP_isEnabled  = GD_STD.Properties.Optional.Default.LeftEntrance,
+            JoyStick_ELLIPSE_BOTTOM_isEnabled = GD_STD.Properties.Optional.Default.LeftExport,
+            JoyStick_CIRCLE_TOP_isEnabled = GD_STD.Properties.Optional.Default.RightEntrance,
+            JoyStick_CIRCLE_MIDDLE_isEnabled = GD_STD.Properties.Optional.Default.RightExport,
+            JoyStick_CIRCLE_BOTTOM_isEnabled = false,
         };
 
         /// <summary>

@@ -23,7 +23,8 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"                  
     xmlns:WPFSTD="clr-namespace:WPFSTD105;assembly=WPFSTD105" 
     xmlns:ddgr="http://schemas.devdept.com/winfx/2008/xaml/graphics" 
-    xmlns:ddes="http://schemas.devdept.com/winfx/2008/xaml/control"
+    xmlns:ddes="http://schemas.devdept.com/winfx/2008/xaml/control" xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:GD_STD_Enum="clr-namespace:GD_STD.Enum;assembly=GD_STD.Enum"
     mc:Ignorable="d"
       Title="Product">
     <WPFBase:BasePage.Resources>
@@ -41,7 +42,6 @@
             <local:OBJECT_TYPE_ToStringConverter x:Key="obType" />
             <!--<local:MATERIAL_ToStringConverter x:Key="Material"/>-->
             <local:FACE_ToStringConverter x:Key="Face" />
-            <local:START_HOLE_ToStringConverter x:Key="StartHole" />
             <Style x:Key="MaterialDesignStyleCustomTextBox" TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBoxBase}">
                 <Setter Property="Foreground" Value="{ StaticResource solidclr_DimGray }" />
                 <Setter Property="FontSize" Value="12" />
@@ -980,9 +980,12 @@
                                     <!--孔的起始位置-->
                                     <CheckBox  Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"  IsChecked="{Binding CheckStartHole}" Content="位置"/>
 
-                                    <ComboBox SelectedIndex="{Binding StartHoleType}"  Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="10,0" 
-                                                  ItemsSource="{Binding Source={StaticResource StartHole}, Path=Strings}"
-                                                  Padding="5,1,0,0"/>
+                                    <dxe:ComboBoxEdit EditValue="{Binding StartHoleType}"  Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Padding="2,0" Margin="10,0">
+                                        <dxmvvm:Interaction.Behaviors>
+                                            <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:START_HOLE}" AllowImages="False" />
+                                            <!--SortMode="DisplayName"-->
+                                        </dxmvvm:Interaction.Behaviors>
+                                    </dxe:ComboBoxEdit>
 
 
                                     <CheckBox Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"  Content="孔輪廓" Visibility="Collapsed" Margin="10,0"/>
@@ -1025,8 +1028,13 @@
                                     <!--舊下拉式選單-->
                                     <StackPanel Orientation="Horizontal" Visibility="Collapsed">
                                         <CheckBox IsChecked="{Binding CheckFace}" />
-                                        <ComboBox ItemsSource="{Binding Source={StaticResource Face},Path=Strings}"
-                                                      SelectedIndex="{Binding BoltsFaceType}" Width="50"/>
+                                        <ComboBox  SelectedItem="{Binding BoltsFaceType}" Width="50">
+                                            <dxmvvm:Interaction.Behaviors>
+                                                <dxmvvm:EventToCommand EventName="EditValueChanged" Command="{Binding rb_CutLinePosition_Command}" CommandParameter="{Binding rbtn_DrillingFace}" UseDispatcher="True"/>
+                                                <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:FACE}" ImageSize="40,40" AllowImages="False" />
+                                                <!--SortMode="DisplayName"-->
+                                            </dxmvvm:Interaction.Behaviors>
+                                        </ComboBox>
                                     </StackPanel>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -1037,6 +1045,9 @@
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
+                                        
+                                        
+                                        
                                         <RadioButton  Grid.Column="1" VerticalAlignment="Center" GroupName="DrillingPosition" Foreground="Black" HorizontalAlignment="Center"
                                                          Style="{StaticResource rad_Gray}"
                                                          IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={local:DrillingFaceConverter}, ConverterParameter=0}"
@@ -1069,9 +1080,9 @@
 
                                     <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="true" VerticalAlignment="Center" Content="形狀："/>
 
-                                    <ComboBox Grid.Column="2" Grid.Row="0" Margin="5" VerticalAlignment="Center" SelectedIndex="0" Padding="5,1,0,0">
-                                        <ComboBoxItem Content="陣列"/>
-                                    </ComboBox>
+                                    <dxe:ComboBoxEdit Grid.Column="2" Grid.Row="0" Margin="10,0" VerticalAlignment="Center" SelectedIndex="0" IsTextEditable="False" Padding="5,1,0,0">
+                                        <dxe:ComboBoxEditItem Content="陣列"/>
+                                    </dxe:ComboBoxEdit>
 
                                     <CheckBox  Grid.Column="0" Grid.Row="1"  IsChecked="{Binding CheckX}" Content="孔X向間距："/>
 
@@ -1183,30 +1194,16 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <GroupBox Header="位置"  Margin="5" Name="CuttingGroupPosition">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <RadioButton Content="頂面" Grid.Column="1" VerticalAlignment="Center" 
-                                                         GroupName="CutLinePosition" Foreground="Black"  
-                                                         Style="{StaticResource rad_Gray}"
-                                                         IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={local:CutFaceConverter}, ConverterParameter=0}"/>
-                                    <RadioButton Content="後面" Grid.Column="2" 
-                                                         GroupName="CutLinePosition" Foreground="Black" 
-                                                         Style="{StaticResource rad_Gray}"
-                                                         IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={local:CutFaceConverter}, ConverterParameter=1}"/>
 
-                                    <RadioButton Content="前面"  Grid.Column="0" 
-                                                         GroupName="CutLinePosition" Foreground="Black"  
-                                                         Style="{StaticResource rad_Gray}"
-                                                         IsChecked="{Binding Path=rbtn_CutFace, Mode=TwoWay, Converter={local:CutFaceConverter}, ConverterParameter=2}"/>
 
-                                </Grid>
+                                    <dxe:ComboBoxEdit  IsTextEditable="False" MinWidth="110" Style="{StaticResource SiegPositionComboBoxEdit}"
+                                                           ApplyItemTemplateToSelectedItem="True"  EditValue="{Binding rbtn_DrillingFace}">
+                                        <dxmvvm:Interaction.Behaviors>
+                                            <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:FACE}" ImageSize="40,40" AllowImages="False" />
+                                        </dxmvvm:Interaction.Behaviors>
+                                    </dxe:ComboBoxEdit>
+                                        
+
                             </GroupBox>
 
                                 <StackPanel Grid.Row="1" Background="#303030" Height="0.5" Margin="0,0,0,5" />
@@ -1274,11 +1271,17 @@
                                         <Grid.Resources>
                                             <Style TargetType="TextBlock" BasedOn="{StaticResource fileNameStyle}"></Style>
                                         </Grid.Resources>
-                                        <ComboBox Visibility="Hidden"
+                                        <dxe:ComboBoxEdit Visibility="Hidden"
                                                       Width="94"
                                                           Grid.Row="2"  Grid.ColumnSpan="2"
-                                                      ItemsSource="{Binding Source={StaticResource Face},Path=Strings}"
-                                                      SelectedIndex="{Binding CutFaceType}" />
+                                                      EditValue="{Binding CutFaceType}" >
+                                            <dxmvvm:Interaction.Behaviors>
+                                                <dxmvvm:EventToCommand EventName="EditValueChanged" UseDispatcher="True"/>
+                                                <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:FACE}" ImageSize="40,40" AllowImages="False" />
+                                                <!--SortMode="DisplayName"-->
+                                            </dxmvvm:Interaction.Behaviors>
+                                        </dxe:ComboBoxEdit>
+
                                         <Path x:Name="pa"
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Center"

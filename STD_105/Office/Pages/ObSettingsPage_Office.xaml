@@ -16,7 +16,10 @@
                   xmlns:STD105="clr-namespace:STD_105"
                   xmlns:SofSettings="clr-namespace:WPFSTD105.Properties;assembly=WPFSTD105"
                   xmlns:spa="clr-namespace:WPFSTD105;assembly=WPFSTD105"
-                  xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+                  xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                  xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+                  xmlns:GD_STD_Enum="clr-namespace:GD_STD.Enum;assembly=GD_STD.Enum" 
+                  xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
                   Width="{Binding OfficeViewModel.PageHostWidth, Source={x:Static spa:ViewLocator.Instance}}"
                   Height="{Binding OfficeViewModel.PageHostHeight, Source={x:Static spa:ViewLocator.Instance}}"
                   Title="製品設定">
@@ -26,7 +29,7 @@
             <STD105:OBJECT_TYPE_ToStringConverter x:Key="obType" />
             <!--<local:MATERIAL_ToStringConverter x:Key="Material"/>-->
             <STD105:FACE_ToStringConverter x:Key="Face" />
-            <STD105:START_HOLE_ToStringConverter x:Key="StartHole" />
+  
         </ResourceDictionary>
     </WPFBase:BasePage.Resources>
     <!--物件設定與設定完成的物件列表-->
@@ -454,8 +457,12 @@
                         <StackPanel Grid.Row="1"
                                     Orientation="Horizontal">
                             <CheckBox  IsChecked="{Binding CheckStartHole}" />
-                            <ComboBox SelectedIndex="{Binding StartHoleType}"
-                                      ItemsSource="{Binding Strings, Source={StaticResource StartHole}}" />
+                            <ComboBox SelectedItem="{Binding StartHoleType}"  Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Padding="5,1,0,0">
+                                <dxmvvm:Interaction.Behaviors>
+                                    <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:START_HOLE}" AllowImages="False" />
+                                    <!--SortMode="DisplayName"-->
+                                </dxmvvm:Interaction.Behaviors>
+                            </ComboBox>
                         </StackPanel>
                         <StackPanel Grid.Row="1"
                                     Grid.Column="1"
@@ -563,13 +570,18 @@
                         <Viewbox x:Name="Viewbox">
                             <Canvas Width="280"
                                     Height="280">
-                                <ComboBox FontSize="12"
+                                <dxe:ComboBoxEdit FontSize="12"
                                           Width="94"
                                           Style="{StaticResource cbb_DarkMain}"
                                           Canvas.Left="96"
                                           Canvas.Top="109"
-                                          ItemsSource="{Binding Strings, Source={StaticResource Face}}"
-                                          SelectedIndex="{Binding CutFaceType}" />
+                                          EditValue="{Binding CutFaceType}" >
+                                    <dxmvvm:Interaction.Behaviors>
+                                        <dxmvvm:EventToCommand EventName="EditValueChanged" UseDispatcher="True"/>
+                                        <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:FACE}" ImageSize="40,40" AllowImages="False" />
+                                        <!--SortMode="DisplayName"-->
+                                    </dxmvvm:Interaction.Behaviors>
+                                </dxe:ComboBoxEdit>
                                 <Path x:Name="pa"
                                       VerticalAlignment="Center"
                                       HorizontalAlignment="Center"

@@ -1341,9 +1341,11 @@ namespace WPFSTD105.Model
                             // 頂視圖:(H-2A)/2 頭尾可編輯長度
                             editLengh = H - 2 * a;
                             // 起始座標 = a + 半徑
-                            start1 = a + radius;
+                            // 2023/01/17 呂宗霖 與暐淇討論後 腹板不看半徑
+                            start1 = a + radius- radius;
                             // 結束座標 = lengh - a - 半徑
-                            end1 = H - a - radius;
+                            // 2023/01/17 呂宗霖 與暐淇討論後 腹板不看半徑
+                            end1 = H - a - radius + radius;
                             list.Add(start1);
                             list.Add(end1);
                             break;

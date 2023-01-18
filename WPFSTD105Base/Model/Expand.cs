@@ -1101,7 +1101,7 @@ namespace WPFSTD105.Model
                         model.Blocks[1] = result;//加入鋼構圖塊到模型
                     }
                     BlockReference blockReference = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);
-                    blockReference.EntityData = steelAttr;
+                    blockReference.EntityData = nc.SteelAttr;
                     blockReference.Selectable = false;//關閉用戶選擇
                     blockReference.Attributes.Add("steel", new AttributeReference(0, 0, 0));
                     if (model.Entities.Count == 0)
@@ -1196,6 +1196,27 @@ namespace WPFSTD105.Model
                             }
                         });
                     }
+
+                    // 取得該零件並更新驚嘆號Loading
+                    ObservableCollection<SteelPart> parts = ser.GetPart(nc.SteelAttr.Profile.GetHashCode().ToString());//零件列表
+                    SteelPart part = parts.FirstOrDefault(x => x.GUID == nc.SteelAttr.GUID);
+                    if (!Bolts3DBlock.CheckBolts(model, false))
+                    {
+                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                        ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
+
+                        part.ExclamationMark = true;
+                        ser.SetPart(nc.SteelAttr.Profile.GetHashCode().ToString(), new ObservableCollection<object>(parts));
+                    }
+                    else
+                    {
+                        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+                        ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = false;
+
+                        part.ExclamationMark = false;
+                        ser.SetPart(nc.SteelAttr.Profile.GetHashCode().ToString(), new ObservableCollection<object>(parts));
+                    }
+
                 }
                 catch (Exception ex)
                 {

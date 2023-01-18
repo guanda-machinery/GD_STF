@@ -1206,6 +1206,52 @@ namespace WPFSTD105
                 return null;
             throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
         }
+        
+        
+        
+        /// <summary>
+        /// 客製孔群設定 - 檢查設定值資料夾是否存在，不存在則新增
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public static void CheckGroupBoltsTypeDirectory()
+        {
+            string projectName = CommonViewModel.ProjectName; //專案名稱
+            string DirPath = $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\GroupBoltsType";
+
+            if (projectName != null)
+            {
+                bool fileExist = Directory.Exists(DirPath);
+                if (fileExist)
+                {
+                    Directory.CreateDirectory(DirPath);
+                }
+            }
+            else
+            {
+                throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
+            }
+        }
+
+        /// <summary>
+        /// 客製孔群設定檔(資料夾路徑)
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public static string FileGroupBoltsTypeList(string groupBoltsTypeName)
+        {
+            string projectName = CommonViewModel.ProjectName; //專案名稱
+
+            if (projectName != null)
+                return $@"{Properties.SofSetting.Default.LoadPath}\{CommonViewModel.ProjectName}\GroupBoltsType\"+$@"{groupBoltsTypeName}.lis";
+
+            throw new Exception($"沒有專案路徑 (CommonViewModel.ProjectName is null)");
+        }
+
+
+
+
+
         /// <summary>
         /// 切割線設定 - 檢查設定值檔案是否存在 20220818 張燕華
         /// </summary>

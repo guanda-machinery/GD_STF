@@ -23,6 +23,7 @@ using devDept.Eyeshot.Entities;
 using devDept.Eyeshot;
 using System.Diagnostics;
 using static WPFSTD105.Model.DrillBoltsModel;
+using GD_STD.Enum;
 
 namespace WPFSTD105
 {
@@ -824,7 +825,20 @@ namespace WPFSTD105
         }
 
 
-
+        #region 客製孔群
+        public void SetGroupBoltsTypeList_Cus(string groupBoltsTypeName, ObservableCollection<SettingParGroupBoltsTypeVM> list)
+        {
+            GZipSerializeBinary(list, $@"{ApplicationVM.FileGroupBoltsTypeList(groupBoltsTypeName)}");
+        }
+        /// <summary>
+        ///  取得序列化客製孔群資料
+        /// </summary>
+        public ObservableCollection<SettingParGroupBoltsTypeVM> GetGroupBoltsTypeList(string groupBoltsTypeName)
+        {
+            ObservableCollection<SettingParGroupBoltsTypeVM> temp_corr = GZipDeserialize<ObservableCollection<SettingParGroupBoltsTypeVM>>(ApplicationVM.FileGroupBoltsTypeList(groupBoltsTypeName));
+            return temp_corr;
+        }
+        #endregion
 
 
 

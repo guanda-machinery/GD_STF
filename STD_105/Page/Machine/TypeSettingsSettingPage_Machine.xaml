@@ -844,6 +844,18 @@
                                             </StackPanel>
 
                                             <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
+                                                <Button  Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter ListLimitCount=1},UpdateSourceTrigger=PropertyChanged}"
+                                                        Click="DeleteAllPartButtonClick"  
+                                                        IsEnabled="{Binding ButtonEnable}">
+                                                    <Button.Content>
+                                                        <materialDesign:PackIcon Kind="GarbageCanEmpty"  />
+                                                    </Button.Content>
+                                                </Button>
+
+                                                <TextBlock Text="刪除全部零件" VerticalAlignment="Center" Margin="10,0,0,0" Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter ListLimitCount=1},UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+                                            
+                                            <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
                                                 <Button 
                                                         Click="DeleteMaterialButtonClick"  
                                                         IsEnabled="{Binding ButtonEnable}">
@@ -862,17 +874,6 @@
                                             </StackPanel>
 
 
-                                            <StackPanel Margin="20,5,5,5" HorizontalAlignment="Left" Orientation="Horizontal">
-                                                <Button  Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter ListLimitCount=1},UpdateSourceTrigger=PropertyChanged}"
-                                                        Click="DeleteAllPartButtonClick"  
-                                                        IsEnabled="{Binding ButtonEnable}">
-                                                    <Button.Content>
-                                                        <materialDesign:PackIcon Kind="GarbageCanEmpty"  />
-                                                    </Button.Content>
-                                                </Button>
-
-                                                <TextBlock Text="刪除全部零件" VerticalAlignment="Center" Margin="10,0,0,0" Visibility="{Binding Parts ,Converter={local:ListCountToVisibilityConverter ListLimitCount=1},UpdateSourceTrigger=PropertyChanged}"/>
-                                            </StackPanel>
                                         </StackPanel>
 
 

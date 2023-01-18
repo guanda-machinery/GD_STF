@@ -16,8 +16,12 @@ namespace STD_105
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            IList ts = (IList)value;
-            return ts.Count;
+            if (value is IList)
+            {
+                IList ts = (IList)value;
+                return ts.Count;
+            }
+            return null;
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

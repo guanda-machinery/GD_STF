@@ -76,6 +76,29 @@ namespace WPFSTD105.ViewModel
 
         #region 公開方法
 
+        public void Insert() 
+        {
+            // 檢查專案中 客製孔群資料夾狀態
+            ApplicationVM.CheckGroupBoltsTypeDirectory();
+            SettingParGroupBoltsTypeVM gbt = new SettingParGroupBoltsTypeVM();
+
+            // 讀檔
+            STDSerialization ser = new STDSerialization();
+            ObservableCollection<SettingParGroupBoltsTypeVM> collection =  ser.GetGroupBoltsTypeList(gbt.groupBoltsTypeName);
+        }
+        /// <summary>
+        /// 客製孔群檢查
+        /// </summary>
+        /// <param name="groupBoltsTypeName"></param>
+        /// <returns></returns>
+        public bool CheckGroupBoltsTypeSetting(string groupBoltsTypeName) 
+        {
+            if (File.Exists(ApplicationVM.FileGroupBoltsTypeList(groupBoltsTypeName)))
+            {
+                return true;
+            }
+            else return false;
+        }
         #endregion
 
         #region 命令
