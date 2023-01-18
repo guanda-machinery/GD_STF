@@ -11,7 +11,7 @@
              xmlns:STD105ValidRule="clr-namespace:STD_105.ValidationRules" xmlns:WPFSTD105="clr-namespace:WPFSTD105;assembly=WPFSTD105"
              mc:Ignorable="d">
     <UserControl.DataContext>
-        <WPFSTD105:CustomizeGroupBoltsUserControlVM/>
+        <WPFSTD105:SettingParGroupBoltsTypeVM/>
     </UserControl.DataContext>
     <Border BorderThickness="1" BorderBrush="Gray" >
     <GroupBox Header="客製孔群設定" Style="{StaticResource ParameterGroupBox}">
@@ -26,9 +26,17 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
 
-                <GroupBox Grid.Column="0" Grid.Row="0" Header="孔參數" Margin="2">
+                    <dxe:ComboBoxEdit Margin="5" Width="200"   ApplyItemTemplateToSelectedItem="True" 
+                                                                   EditValue="{Binding GroupBoltsTypeByTargetSelected}">
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:GroupBoltsTypeByTarget}" ImageSize="95,95" />
+                            <!--SortMode="DisplayName"-->
+                        </dxmvvm:Interaction.Behaviors>
+                    </dxe:ComboBoxEdit>
+                    <GroupBox Grid.Column="0" Grid.Row="1" Header="孔參數" Margin="2">
                     <!--直徑設定-->
                     <Grid Margin="0,0,0,0">
                         <Grid.ColumnDefinitions>
@@ -42,7 +50,7 @@
                         <CheckBox Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" IsChecked="{Binding CheckDia}" Content="孔直徑" />
                         <TextBox Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Margin="5,0">
                             <TextBox.Text>
-                                <Binding Path="_GroupBoltsAttr.Dia" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                <Binding Path="SettingParGroupBoltsTypeModel.groupBoltsAttr.Dia" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                     <Binding.ValidationRules>
                                         <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                     </Binding.ValidationRules>
@@ -51,7 +59,7 @@
                         </TextBox>
                         <!--孔的起始位置-->
                         <CheckBox  Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"  IsChecked="{Binding CheckStartHole}" Content="位置"/>
-                            <dxe:ComboBoxEdit EditValue="{Binding _GroupBoltsAttr.StartHole}"  Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Padding="2,3,0,0" Margin="5,0">
+                            <dxe:ComboBoxEdit EditValue="{Binding SettingParGroupBoltsTypeModel.groupBoltsAttr.StartHole}"  Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Padding="2,3,0,0" Margin="5,0">
                             <dxmvvm:Interaction.Behaviors>
                                 <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:START_HOLE}" AllowImages="False" />
                                 <!--SortMode="DisplayName"-->
@@ -60,7 +68,7 @@
                     </Grid>
                 </GroupBox>
 
-                    <GroupBox Grid.Column="1" Header="起步點" Margin="2">
+                    <GroupBox Grid.Column="1" Grid.Row="1" Header="起步點" Margin="2">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
@@ -74,7 +82,7 @@
                         <CheckBox  Grid.Column="0" Grid.Row="0" IsChecked="False"  Content="XS：" ToolTip="孔X向起步點" />
                         <TextBox Grid.Column="1" Grid.Row="0" VerticalAlignment="Center">
                             <TextBox.Text>
-                                <Binding Path="_GroupBoltsAttr.X" UpdateSourceTrigger="PropertyChanged" >
+                                <Binding Path="SettingParGroupBoltsTypeModel.groupBoltsAttr.X" UpdateSourceTrigger="PropertyChanged" >
                                     <Binding.ValidationRules>
                                         <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                     </Binding.ValidationRules>
@@ -84,7 +92,7 @@
                         <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="False" Content="YS：" ToolTip="孔Y向起步點：" />
                         <TextBox Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
                             <TextBox.Text>
-                                    <Binding Path="_GroupBoltsAttr.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                    <Binding Path="SettingParGroupBoltsTypeModel.groupBoltsAttr.Y" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                     <Binding.ValidationRules>
                                         <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                     </Binding.ValidationRules>
@@ -103,16 +111,16 @@
                         </Grid>
                     </GroupBox>
 
-                    <GroupBox Header="位置" Grid.Column="0" Grid.Row="1" Margin="2" Grid.ColumnSpan="2" >
+                    <GroupBox Header="位置" Grid.Column="0" Grid.Row="2" Margin="2" Grid.ColumnSpan="2" >
                     <dxe:ComboBoxEdit  IsTextEditable="False" MinWidth="110" Style="{StaticResource SiegPositionComboBoxEdit}"
-                                                           ApplyItemTemplateToSelectedItem="True"  EditValue="{Binding Path= _GroupBoltsAttr.Face}">
+                                                           ApplyItemTemplateToSelectedItem="True"  EditValue="{Binding Path= SettingParGroupBoltsTypeModel.groupBoltsAttr.Face}">
                         <dxmvvm:Interaction.Behaviors>
                             <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:FACE}" ImageSize="40,40" AllowImages="False" />
                         </dxmvvm:Interaction.Behaviors>
                     </dxe:ComboBoxEdit>
                 </GroupBox>
 
-                <GroupBox Header="孔群設定" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Margin="2">
+                <GroupBox Header="孔群設定" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="2">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -135,7 +143,7 @@
                             <CheckBox  Grid.Column="0" Grid.Row="1"  IsChecked="{Binding CheckX}" Content="XP" ToolTip="孔X向間距："/>
                             <TextBox  Grid.Column="1" Grid.Row="1" MinWidth="100" VerticalAlignment="Center" >
                             <TextBox.Text>
-                                <Binding Path="_GroupBoltsAttr.dX" UpdateSourceTrigger="PropertyChanged" >
+                                <Binding Path="SettingParGroupBoltsTypeModel.groupBoltsAttr.dX" UpdateSourceTrigger="PropertyChanged" >
                                     <Binding.ValidationRules>
                                         <STD105ValidRule:CheckHoleGroupArrayStringRule/>
                                     </Binding.ValidationRules>
@@ -147,7 +155,7 @@
                         <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding CheckY}" Content="YP" ToolTip="孔Y向間距：" />
                         <TextBox  Grid.Column="1" Grid.Row="2"  MinWidth="100" VerticalAlignment="Center">
                             <TextBox.Text>
-                                <Binding Path="_GroupBoltsAttr.dY" UpdateSourceTrigger="PropertyChanged" >
+                                <Binding Path="SettingParGroupBoltsTypeModel.groupBoltsAttr.dY" UpdateSourceTrigger="PropertyChanged" >
                                     <Binding.ValidationRules>
                                         <STD105ValidRule:CheckHoleGroupArrayStringRule/>
                                     </Binding.ValidationRules>
@@ -160,7 +168,7 @@
                         <CheckBox Grid.Row="3"  Content="特殊孔位：" IsThreeState="False" IsChecked="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"/>
                         <dxe:ComboBoxEdit  IsTextEditable="False" Grid.Column="0" Grid.ColumnSpan="2"   Grid.Row="4"  Margin="0,5,5,0" IsEnabled="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"
                                                            ApplyItemTemplateToSelectedItem="True" 
-                                                                   EditValue="{Binding _GroupBoltsAttr.groupBoltsType}">
+                                                                   EditValue="{Binding SettingParGroupBoltsTypeModel.groupBoltsAttr.groupBoltsType}">
                             <dxmvvm:Interaction.Behaviors>
                                 <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:GroupBoltsType}" ImageSize="95,95" />
                                 <!--SortMode="DisplayName"-->
@@ -183,7 +191,7 @@
 
                     </Grid>
                 </GroupBox>
-                <StackPanel  Grid.Row="3" Orientation="Horizontal"  Grid.ColumnSpan="2">
+                <StackPanel  Grid.Row="4" Orientation="Horizontal"  Grid.ColumnSpan="2">
                     <dxe:ComboBoxEdit Margin="5" Width="200"/>
                     <Button Style="{StaticResource SiegCustomButtonWhite}" Height="30"  Padding="10,0" Margin="5" Content="儲存孔群" Command="{Binding SaveGroupBoltsCommand}"/>
                     <Button Style="{StaticResource SiegCustomButtonWhite}" Height="30"  Padding="10,0" Margin="5" Content="刪除孔群" Command="{Binding DeleteGroupBoltsCommand}"/>

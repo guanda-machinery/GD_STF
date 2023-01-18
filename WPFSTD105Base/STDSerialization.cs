@@ -858,10 +858,17 @@ namespace WPFSTD105
         /// <summary>
         ///  取得序列化客製孔群資料
         /// </summary>
-        public ObservableCollection<SettingParGroupBoltsTypeVM> GetGroupBoltsTypeList(string groupBoltsTypeName)
+        public ObservableCollection<SettingParGroupBoltsTypeModel> GetGroupBoltsTypeList(string groupBoltsTypeName)
         {
-            ObservableCollection<SettingParGroupBoltsTypeVM> temp_corr = GZipDeserialize<ObservableCollection<SettingParGroupBoltsTypeVM>>(ApplicationVM.FileGroupBoltsTypeList(groupBoltsTypeName));
-            return temp_corr;
+            try
+            {
+                ObservableCollection<SettingParGroupBoltsTypeModel> temp_corr = GZipDeserialize<ObservableCollection<SettingParGroupBoltsTypeModel>>(ApplicationVM.FileGroupBoltsTypeList(groupBoltsTypeName));
+                return temp_corr;
+            }
+            catch
+            {
+                return null;
+            }
         }
         #endregion
 
