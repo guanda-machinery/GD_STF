@@ -491,6 +491,7 @@
     <Compile Include="UserControls\ProcessingScreenWindow.xaml.cs">
       <DependentUpon>ProcessingScreenWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\CustomizeGroupBoltsUserControlVM.cs" />
     <Compile Include="ViewModel\Machine\Dpad\joystick\GrabArm_ViewModel.cs" />
     <Compile Include="ViewModel\Machine\Dpad\joystick\MainSpindle_ViewModel.cs" />
     <Compile Include="ViewModel\Machine\Dpad\joystick\Dpad_Joystick_ViewModel.cs" />
@@ -654,7 +655,6 @@
     <Compile Include="ViewModel\Windows\IWindowsVM.cs" />
     <Compile Include="ViewModel\Windows\OfficeVM.cs" />
     <Compile Include="ViewModel\OpenOldFileDialogViewModel.cs" />
-    <Compile Include="ViewModel\Windows\PopupVM.cs" />
     <Compile Include="ViewModel\SplashScreenMainViewModel.cs" />
     <Compile Include="ViewModel\Windows\AbsBaseWindowView.cs" />
     <Compile Include="ViewModel\Windows\ViewLocator.cs" />

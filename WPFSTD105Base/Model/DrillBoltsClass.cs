@@ -35,7 +35,11 @@ namespace WPFSTD105.Model
             set
             {
                 _dia_Identification = value;
-                DrillBoltList.ForEach(x => x.DrillHoleDiameterIsChangeBool = value);
+                DrillBoltList.ForEach(x => 
+                {
+                    x.DrillHoleDiameterIsChangeBool = value;
+                 });
+                //統一刀徑指令無法將打點變更為0或10以外的值
             }
         }
 
@@ -271,8 +275,16 @@ namespace WPFSTD105.Model
         {
             get
             {
+
+
                 if (_changed_DrillHoleDiameter == null)
                     _changed_DrillHoleDiameter = Origin_DrillHoleDiameter;
+
+                if (Actual_WorkAXIS_MODE == AXIS_MODE.POINT)
+                {
+                    if(_changed_DrillHoleDiameter.Value !=0 && _changed_DrillHoleDiameter.Value != 10)
+                        _changed_DrillHoleDiameter = 0;
+                }
                 return _changed_DrillHoleDiameter.Value;
             }
             set

@@ -796,7 +796,32 @@ namespace WPFSTD105
             GZipSerializeBinary(new DrillBoltsModel(){ DrillBoltsDict = values }, $@"{ApplicationVM.DirectoryDrillBoltsBackup()}\{materialNumber}.db");
         }
 
+        /// <summary>
+        /// 刪除加工監控時編輯孔位資料
+        /// </summary>
+        /// <param name="materialNumber"></param>
+        /// <returns></returns>
 
+        public bool DeleteDrillBolts(string materialNumber)
+        {
+            string dataPath = $@"{ApplicationVM.DirectoryDrillBoltsBackup()}\{materialNumber}.db";
+            if (File.Exists(dataPath))
+            {
+                try
+                {
+                    File.Delete(dataPath);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
 
 
         /// <summary>
