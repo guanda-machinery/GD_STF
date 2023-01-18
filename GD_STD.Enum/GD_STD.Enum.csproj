@@ -13,6 +13,8 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,6 +57,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.Mvvm.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="MaterialDesignColors, Version=2.0.0.2422, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.2.0.0\lib\net452\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=4.0.0.2422, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.4.0.0\lib\net452\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -87,6 +95,7 @@
     <Compile Include="GroupBoltsType.cs" />
     <Compile Include="FACE.cs" />
     <Compile Include="GROUP_DEVICE.cs" />
+    <Compile Include="HoleArrayDirection.cs" />
     <Compile Include="JOYSTICK.cs" />
     <Compile Include="KEY_HOLE.cs" />
     <Compile Include="LOGIN_STATUS.cs" />
@@ -107,11 +116,12 @@
     <Compile Include="SELECT_DEVICE.cs" />
     <Compile Include="SHELF.cs" />
     <Compile Include="PositionStatusEnum.cs" />
+    <Compile Include="START_HOLE.cs" />
     <Compile Include="STATUS_CODE.cs" />
-    <Compile Include="TimelyPopup.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GD_STD.Enum.cd" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ImageSVG\Drill_DisalignmentLeft.svg" />
@@ -120,5 +130,22 @@
     <Resource Include="ImageSVG\Drill_HypotenuseRight.svg" />
     <Resource Include="ImageSVG\Drill_Rectangle.svg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImageSVG\SelectPlate_Bottom.svg" />
+    <Resource Include="ImageSVG\SelectPlate_Front.svg" />
+    <Resource Include="ImageSVG\SelectPlate_Top.svg" />
+    <Resource Include="ImageSVG\SelectPlate_Top_Bottom.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ImageSVG\ArrowLtoR.svg" />
+    <Resource Include="ImageSVG\ArrowRtoL.svg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>此專案參考這部電腦上所缺少的 NuGet 套件。請啟用 NuGet 套件還原，以下載該套件。如需詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的檔案是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets'))" />
+  </Target>
 </Project>

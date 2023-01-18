@@ -633,6 +633,9 @@
     <Compile Include="UserControls\DPadUserControl.xaml.cs">
       <DependentUpon>DPadUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\ParametersSettings\CustomizedBoltsGroupSettingUserControl.xaml.cs">
+      <DependentUpon>CustomizedBoltsGroupSettingUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ParametersSettings\ParametersSettings_Office_Sticker.xaml.cs">
       <DependentUpon>ParametersSettings_Office_Sticker.xaml</DependentUpon>
     </Compile>
@@ -998,7 +1001,6 @@
     <Compile Include="ValueConverters\RowValueToBackgroundConverter.cs" />
     <Compile Include="ValueConverters\RowValueToForegroundConverter.cs" />
     <Compile Include="ValueConverters\SectionTreeImageConverter.cs" />
-    <Compile Include="ValueConverters\START_HOLE_ToStringConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\SteelMultiValueConverter.cs" />
     <Compile Include="ValueConverters\StringToBrushConverter.cs" />
     <Compile Include="ValueConverters\StringToDrawingColoConverter.cs" />
@@ -1142,6 +1144,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\DPadUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ParametersSettings\CustomizedBoltsGroupSettingUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

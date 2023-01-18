@@ -1240,7 +1240,7 @@
                                                         <local:ToolMagazineButton ButtonCommand="{Binding LeftExportCommand}"
                                                               ButtonImageSource="{StaticResource Clamping}"
                                                               StartState="{Binding IsSelectdLeftExport}"
-                                                                                                                                Visibility="{Binding LeftExport ,Source={x:Static GD_STD:Optional.Default} , Converter={dx:BooleanToVisibilityConverter}}"
+                                                              Visibility="{Binding LeftExport ,Source={x:Static GD_STD:Optional.Default} , Converter={dx:BooleanToVisibilityConverter}}"
                                                               TitleText="B刀庫"
                                                               SubTitleText="左軸"
                                                               Margin="1,0" />

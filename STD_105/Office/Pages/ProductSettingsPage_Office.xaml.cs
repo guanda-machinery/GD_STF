@@ -5211,7 +5211,7 @@ namespace STD_105.Office
             {
                 SteelCutSetting cs = steelcutSettings.FirstOrDefault(x => x.GUID == ViewModel.GuidProperty);
 
-                ViewModel.rbtn_CutFace = (int)cs.face;
+                ViewModel.rbtn_CutFace = cs.face;
                 ViewModel.DLPoint.X = cs.DLX;
                 ViewModel.DLPoint.Y = cs.DLY;
                 ViewModel.ULPoint.X = cs.ULX;

@@ -1,6 +1,7 @@
 ﻿using DevExpress.Data.Extensions;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Grid;
+using DevExpress.Xpf.WindowsUI;
 using DevExpress.XtraRichEdit.Model;
 using GD_STD.Data;
 using System;
@@ -130,42 +131,72 @@ namespace STD_105
                                                         //零件存檔
             //素材存檔
             ser.SetMaterialDataView(_materialListGridControl.ItemsSource as ObservableCollection<GD_STD.Data.MaterialDataView>);
-   
+
             //零件存檔
             foreach (var _PartItem in SortItems)
             {
-                ObservableCollection<SteelPart> steelParts = ser.GetPart(_PartItem.Profile.GetHashCode().ToString());
-                int steelIndex = steelParts.FindIndex(x => x.Number == _PartItem.PartNumber);
-                if (steelIndex != -1)
+                try
                 {
-                    int partMatch = steelParts[steelIndex].Match.FindIndex(x => x == true);
-                    if (partMatch != -1)
+                    ObservableCollection<SteelPart> steelParts = ser.GetPart(_PartItem.Profile.GetHashCode().ToString());
+                    if (steelParts != null)
                     {
-                       // _PartItem.Match[partMatch] = false;
-                        steelParts[steelIndex].Match[partMatch] = false;
+                        for (int i = 0; i < _PartItem.SortCount; i++)
+                        {
+                            int steelIndex = steelParts.FindIndex(x => x.Number == _PartItem.PartNumber);
+                            if (steelIndex != -1)
+                            {
+                                int partMatch = steelParts[steelIndex].Match.FindIndex(x => x == true);
+                                if (partMatch != -1)
+                                {
+                                    // _PartItem.Match[partMatch] = false;
+                                    steelParts[steelIndex].Match[partMatch] = false;
+                                }
+                                else
+                                {
+                                    //_PartItem.Match.Add(false);
+                                    steelParts[steelIndex].Match.Add(false);
+                                }
+
+                                int PartItemMatch = _PartItem.Match.FindIndex(x => x == true);
+                                if (PartItemMatch != -1)
+                                {
+                                    _PartItem.Match[PartItemMatch] = false;
+                                    //steelParts[steelIndex].Match[partMatch] = false;
+                                }
+                                else
+                                {
+                                    _PartItem.Match.Add(false);
+                                    //steelParts[steelIndex].Match.Add(false);
+                                }
+                            }
+                            _PartItem.Revise = DateTime.Now;
+                        }
+                        ser.SetPart(_PartItem.Profile.GetHashCode().ToString(), new ObservableCollection<object>(steelParts));
                     }
                     else
                     {
-                        //_PartItem.Match.Add(false);
-                        steelParts[steelIndex].Match.Add(false);
+                        
+                        WinUIMessageBox.Show(null,
+                            $"加入失敗，專案中找不到「構件編號{_PartItem.AssemblyNumber}－零件編號{_PartItem.PartNumber}」之零件",
+                            "錯誤",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            DevExpress.Xpf.Core.FloatingMode.Window);
                     }
-
-                    int PartItemMatch = _PartItem.Match.FindIndex(x => x == true);
-                    if (PartItemMatch != -1)
-                    {
-                        _PartItem.Match[PartItemMatch] = false;
-                        //steelParts[steelIndex].Match[partMatch] = false;
-                    }
-                    else
-                    {
-                        _PartItem.Match.Add(false);
-                        //steelParts[steelIndex].Match.Add(false);
-                    }
-
-
                 }
-                _PartItem.Revise = DateTime.Now;
-                ser.SetPart(_PartItem.Profile.GetHashCode().ToString(), new ObservableCollection<object>(steelParts));
+                catch(Exception ex)
+                {
+                    WinUIMessageBox.Show(null,
+                    $"{ex.Message}",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                     DevExpress.Xpf.Core.FloatingMode.Window);
+                }
             }
 
 
