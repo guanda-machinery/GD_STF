@@ -121,9 +121,16 @@ namespace WPFSTD105.ViewModel
         /// 加入切割線
         /// </summary>
         public ICommand AddCut { get; set; }
+
+        /// <summary>
+        /// 新增任意打點
+        /// </summary>
+        public ICommand AddJointPointCutB { get; set; }
+
         /// <summary>
         /// 修改切割線
         /// </summary>
+        /// 
         public ICommand ModifyCut { get; set; }
         /// <summary>
         /// 清除標註
@@ -882,6 +889,86 @@ namespace WPFSTD105.ViewModel
             }
             return true;
         }
+
+        /// <summary>
+        /// 任意打點設定值
+        /// </summary>
+        public GroupBoltsAttr GetJointPointBoltsAttr()
+        {
+            this.Steelbuffer = (SteelAttr)SteelAttr.Clone();
+            Boltsbuffer.groupBoltsType = GroupBoltsAttr.groupBoltsType;
+            Boltsbuffer.GUID = GroupBoltsAttr.GUID;
+            //直徑設定
+
+                Boltsbuffer.Dia = GroupBoltsAttr.Dia;
+                Boltsbuffer.Mode = (AXIS_MODE)AxisModeType;
+     
+            //水平螺栓間距
+
+                Boltsbuffer.dX = GroupBoltsAttr.dX;
+                Boltsbuffer.xCount = GroupBoltsAttr.xCount;
+
+            //垂直螺栓
+
+                Boltsbuffer.dY = GroupBoltsAttr.dY;
+                Boltsbuffer.yCount = GroupBoltsAttr.yCount;
+
+            //要產生的面
+
+                Boltsbuffer.Face = (GD_STD.Enum.FACE)GroupBoltsAttr.Face;
+
+
+                //目前座標是2D座標只是需要先判斷 X Y 座標
+                switch (Boltsbuffer.Face)
+                {
+                    case FACE.TOP:
+                        Boltsbuffer.t = Steelbuffer.t1; //孔位高度
+                        //斷面規格類型
+                        switch (Steelbuffer.Type)
+                        {
+                            case OBJECT_TYPE.BH:
+                            case OBJECT_TYPE.RH:
+                                Boltsbuffer.Z = Steelbuffer.W * 0.5 - Steelbuffer.t1 * 0.5;
+                                break;
+                            case OBJECT_TYPE.BOX:
+                            case OBJECT_TYPE.LB:
+                            case OBJECT_TYPE.CH:
+                                Boltsbuffer.Z = Steelbuffer.W - Steelbuffer.t1;
+                                break;
+                            case OBJECT_TYPE.L:
+                                Boltsbuffer.Z = 0;
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case FACE.FRONT:
+                        Boltsbuffer.t = Steelbuffer.t2;
+                        Boltsbuffer.Z = Steelbuffer.t2;
+                        break;
+                    case FACE.BACK:
+                        Boltsbuffer.t = Steelbuffer.t2;
+                        Boltsbuffer.Z = Steelbuffer.H;
+                        break;
+                    default:
+                        break;
+                }
+                //改變 Y 座標起始點類型
+
+                Boltsbuffer.StartHole = START_HOLE.START;
+
+                Boltsbuffer.X = GroupBoltsAttr.X;
+            
+
+                //Y 軸起始座標
+                Boltsbuffer.Y = this.StartY;
+
+
+            return (GroupBoltsAttr)Boltsbuffer.DeepClone();
+        }
+
+
+
 
 
         /// <summary>
@@ -3631,7 +3718,6 @@ namespace WPFSTD105.ViewModel
                 fGrid = grid;
             }
         }
-
 
 
 
