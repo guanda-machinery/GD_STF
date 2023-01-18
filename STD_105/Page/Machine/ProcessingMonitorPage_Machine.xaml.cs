@@ -563,21 +563,35 @@ namespace STD_105
                     double startCurrent = place[place.Count - 1].End,//當前物件放置起始點的座標
                                   endCurrent = startCurrent + parts[partIndex].Length;//當前物件放置結束點的座標
                     place.Add((Start: startCurrent, End: endCurrent, IsCut: false, Number: parts[partIndex].Number));
-                    Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
                     //計算切割物件
                     double startCut = place[place.Count - 1].End, //當前切割物件放置起始點的座標
                                   endCut;//當前切割物件放置結束點的座標
                     if (i + 1 >= material.Parts.Count) //下一次迴圈結束
                     {
                         //endCut = material.LengthStr + material.StartCut + material.EndCut;//當前切割物件放置結束點的座標
-                        endCut = material.LengthStr;// - material.StartCut - material.EndCut;//當前切割物件放置結束點的座標
+                        //endCut = material.LengthStr;// - material.StartCut - material.EndCut;//當前切割物件放置結束點的座標
+                        if (material.EndCut == 0)
+                        {
+                            endCut = material.LengthStr;
+                            place.Add((Start: startCut, End: endCut, IsCut: true, Number: "SuperFluous")); //素材零件位置
+                        }
+                        else
+                        {
+                            endCut = startCut + material.EndCut + material.Cut;
+                            place.Add((Start: startCut, End: endCut, IsCut: true, Number: "EndCut")); //素材零件位置
+
+                            startCut = endCut;
+                            endCut = material.LengthStr;
+                            place.Add((Start: startCut, End: endCut, IsCut: true, Number: "SuperFluous")); //素材零件位置
+                        }
+
+
                     }
                     else //下一次迴圈尚未結束
                     {
                         endCut = startCut + material.Cut;//當前切割物件放置結束點的座標
+                        place.Add((Start: startCut, End: endCut, IsCut: true, Number: "")); //素材零件位置
                     }
-                    place.Add((Start: startCut, End: endCut, IsCut: true, Number: "")); //素材零件位置
-                    Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
                 }
             }
 

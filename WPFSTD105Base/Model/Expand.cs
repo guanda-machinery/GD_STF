@@ -68,9 +68,13 @@ namespace WPFSTD105.Model
             }
 
 
+
             var place = new List<(double Start, double End, bool IsCut, string Number)>();//放置位置參數
-            place.Add((Start: 0, End: material.StartCut, IsCut: true, Number: "")); //素材起始切割物件
-            Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
+
+            if (material.StartCut != 0) material.StartCut += material.Cut;  // 素材前端切除有設定 ，須加上鋸床切割厚度  
+            place.Add((Start: 0, End: material.StartCut, IsCut: true, Number: "StartCut")); //素材起始切割物件
+            
+
             for (int i = 0; i < material.Parts.Count; i++)
             {
                 int partIndex = parts.FindIndex(el => el.Number == material.Parts[i].PartNumber); //回傳要使用的陣列位置
@@ -95,25 +99,41 @@ namespace WPFSTD105.Model
                     double startCurrent = place[place.Count - 1].End,//當前物件放置起始點的座標
                                   endCurrent = startCurrent + parts[partIndex].Length;//當前物件放置結束點的座標
                     place.Add((Start: startCurrent, End: endCurrent, IsCut: false, Number: parts[partIndex].Number));
-                    Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
                     //計算切割物件
                     double startCut = place[place.Count - 1].End, //當前切割物件放置起始點的座標
                                   endCut;//當前切割物件放置結束點的座標
                     if (i + 1 >= material.Parts.Count) //下一次迴圈結束
                     {
                         //endCut = material.LengthStr + material.StartCut + material.EndCut;//當前切割物件放置結束點的座標
-                        endCut = material.LengthStr;// - material.StartCut - material.EndCut;//當前切割物件放置結束點的座標
+                        //endCut = material.LengthStr;// - material.StartCut - material.EndCut;//當前切割物件放置結束點的座標
+                        if (material.EndCut == 0)
+                        {
+                            endCut = material.LengthStr;
+                            place.Add((Start: startCut, End: endCut, IsCut: true, Number: "SuperFluous")); //素材零件位置
+                        }
+                        else
+                        {
+                            endCut = startCut + material.EndCut + material.Cut;
+                            place.Add((Start: startCut, End: endCut, IsCut: true, Number: "EndCut")); //素材零件位置
+
+                            startCut = endCut;
+                            endCut = material.LengthStr;
+                            place.Add((Start: startCut, End: endCut, IsCut: true, Number: "SuperFluous")); //素材零件位置
+                        }
+
+                        
                     }
                     else //下一次迴圈尚未結束
                     {
                         endCut = startCut + material.Cut;//當前切割物件放置結束點的座標
+                        place.Add((Start: startCut, End: endCut, IsCut: true, Number: "")); //素材零件位置
                     }
-                    place.Add((Start: startCut, End: endCut, IsCut: true, Number: "")); //素材零件位置
-                    Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
+                    
                 }
             }
             EntityList entities = new EntityList();
-            // 依序取出素材零件位置
+
+            // 依序取出素材零件位置, 產出實體
             for (int i = 0; i < place.Count; i++)
             {
                 if (place.Count == 1) // count=1表示素材沒有零件組成,只有(前端切除)程序紀錄
@@ -124,6 +144,8 @@ namespace WPFSTD105.Model
                 if (place[i].End == 0) // 素材前端切除設為0時 ,不打點
                     continue;
 
+
+
                 if (place[i].IsCut) //如果是切割物件
                 {
                     Entity cut1 = DrawCutMesh(parts[0], model, place[i].Start, place[i].End, "Cut");
@@ -131,6 +153,9 @@ namespace WPFSTD105.Model
                     {
                         entities.Add(cut1);
                     }
+
+                    if (place[i].Number == "SuperFluous")    // 最後餘料 , 只秀圖不打點
+                        continue;
 
                     MyCs myCs = new MyCs();
                     ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();                          //  備份當前加工區域數值
@@ -140,8 +165,10 @@ namespace WPFSTD105.Model
                     var SteelCut1 = (SteelAttr)cut1.EntityData;
                     obvm.WriteSteelAttr(SteelCut1);
                     double tmpXPos = place[i].Start;                            // X 位置座標
-                    if (i == 0)
+                    if (place[i].Number == "StartCut")
                         tmpXPos = place[i].End - (material.Cut) / 2;            // 判斷是否為第一切割線,是 =>打點位置
+                    else if (place[i].Number== "EndCut")
+                        tmpXPos= place[i].End + (material.Cut) / 2;
                     else
                         tmpXPos = place[i].Start + (material.Cut) / 2;
 

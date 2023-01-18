@@ -596,46 +596,51 @@ namespace STD_105
 
 
             var place = new List<(double Start, double End, bool IsCut, string Number)>();//放置位置參數
-            place.Add((Start: 0, End: material.StartCut, IsCut: true, Number: "")); //素材起始切割物件
-            Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
+
+            if (material.StartCut != 0) material.StartCut += material.Cut;  // 素材前端切除有設定 ，須加上鋸床切割厚度  
+            place.Add((Start: 0, End: material.StartCut, IsCut: true, Number: "StartCut")); //素材起始切割物件
+
             for (int i = 0; i < material.Parts.Count; i++)
             {
                 int partIndex = parts.FindIndex(el => el.Number == material.Parts[i].PartNumber); //回傳要使用的陣列位置
                 if (partIndex == -1)
                 {
-                    // 未找到對應零件編號
-                    //string tmp = material.Parts[i].PartNumber;
-                    //WinUIMessageBox.Show(null,
-                    //$"未找到對應零件編號" + tmp,
-                    //"通知",
-                    //MessageBoxButton.OK,
-                    //MessageBoxImage.Exclamation,
-                    //MessageBoxResult.None,
-                    //MessageBoxOptions.None,
-                    //FloatingMode.Window);
                     return;
-                    // throw new Exception($"在 ObservableCollection<SteelPart> 找不到 {material.Parts[i].PartNumber}");
                 }
                 else
                 {
                     double startCurrent = place[place.Count - 1].End,//當前物件放置起始點的座標
                                   endCurrent = startCurrent + parts[partIndex].Length;//當前物件放置結束點的座標
                     place.Add((Start: startCurrent, End: endCurrent, IsCut: false, Number: parts[partIndex].Number));
-                    Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
                     //計算切割物件
                     double startCut = place[place.Count - 1].End, //當前切割物件放置起始點的座標
                                   endCut;//當前切割物件放置結束點的座標
                     if (i + 1 >= material.Parts.Count) //下一次迴圈結束
                     {
                         //endCut = material.LengthStr + material.StartCut + material.EndCut;//當前切割物件放置結束點的座標
-                        endCut = material.LengthStr;// - material.StartCut - material.EndCut;//當前切割物件放置結束點的座標
+                        //endCut = material.LengthStr;// - material.StartCut - material.EndCut;//當前切割物件放置結束點的座標
+                        if (material.EndCut == 0)
+                        {
+                            endCut = material.LengthStr;
+                            place.Add((Start: startCut, End: endCut, IsCut: true, Number: "SuperFluous")); //素材零件位置
+                        }
+                        else
+                        {
+                            endCut = startCut + material.EndCut + material.Cut;
+                            place.Add((Start: startCut, End: endCut, IsCut: true, Number: "EndCut")); //素材零件位置
+
+                            startCut = endCut;
+                            endCut = material.LengthStr;
+                            place.Add((Start: startCut, End: endCut, IsCut: true, Number: "SuperFluous")); //素材零件位置
+                        }
+
+
                     }
                     else //下一次迴圈尚未結束
                     {
                         endCut = startCut + material.Cut;//當前切割物件放置結束點的座標
+                        place.Add((Start: startCut, End: endCut, IsCut: true, Number: "")); //素材零件位置
                     }
-                    place.Add((Start: startCut, End: endCut, IsCut: true, Number: "")); //素材零件位置
-                    Debug.WriteLine($"Start = {place[place.Count - 1].Start}, End : {place[place.Count - 1].End}, IsCut : {place[place.Count - 1].IsCut}");//除錯工具
                 }
             }
 

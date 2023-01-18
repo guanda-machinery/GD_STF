@@ -2071,6 +2071,120 @@ namespace STD_105.Office
                 log4net.LogManager.GetLogger("加入切割線").Debug("結束");
 #endif
             });
+
+            //任意打點
+            ViewModel.AddJointPointCutB = new RelayCommand(() =>
+            {
+
+                //切割線B的命令
+
+                SteelAttr sa = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
+                ViewModel.SteelAttr = sa;
+                ViewModel.GetSteelAttr();
+            
+                /*3D螺栓*/
+
+                foreach (var item in ViewModel.ArbitrarilyJointPointList)
+                {
+
+                 //   GroupBoltsAttr TmpBoltsArr = ViewModel.GetJointPointBoltsAttr();
+                    //if (!ViewModel.CheckGroupBoltsAttr(gba) && ViewModel.showMessage)
+                    //{
+                    //    return;
+                    //}
+
+                    // Steel3DBlock.FillCutSetting(sa);
+
+
+
+                    //GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(FACE.FRONT, START_HOLE.START);
+                    GroupBoltsAttr TmpBoltsArr = new GroupBoltsAttr();
+
+                    TmpBoltsArr = ViewModel.GetJointPointBoltsAttr();
+                    TmpBoltsArr.dX = "0";
+                    TmpBoltsArr.dY = "0";
+                    TmpBoltsArr.xCount = 1;
+                    TmpBoltsArr.yCount = 1;
+                    TmpBoltsArr.Mode = AXIS_MODE.POINT;
+                    TmpBoltsArr.X = item.X_Position;
+                    TmpBoltsArr.Y = item.Y_Position;
+                    TmpBoltsArr.Face = (GD_STD.Enum.FACE)ViewModel.rbtn_CutFace;
+                    TmpBoltsArr.GUID = Guid.NewGuid();
+                    Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+
+
+
+                    //if (ViewModel.fromModifyHole)
+                    //{
+                    //    if (!check && ViewModel.showMessage)
+                    //    {
+                    //        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                    //        ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
+                    //        WinUIMessageBox.Show(null,
+                    //                     $"孔群落入非加工區域，請再確認",
+                    //                     "通知",
+                    //                     MessageBoxButton.OK,
+                    //                     MessageBoxImage.Exclamation,
+                    //                     MessageBoxResult.None,
+                    //                     MessageBoxOptions.None,
+                    //                      FloatingMode.Window);
+                    //        ViewModel.fclickOK = true;
+                    //        //return;
+                    //    }
+                    //    else
+                    //    {
+                    //        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+                    //        ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = false;
+
+                    //        ViewModel.fclickOK = false;
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    if (!check)
+                    //    {
+                    //        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
+                    //        ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
+                    //        WinUIMessageBox.Show(null,
+                    //                     $"孔群落入非加工區域，請再確認",
+                    //                     "通知",
+                    //                     MessageBoxButton.OK,
+                    //                     MessageBoxImage.Exclamation,
+                    //                     MessageBoxResult.None,
+                    //                     MessageBoxOptions.None,
+                    //                      FloatingMode.Window);
+                    //        ViewModel.fclickOK = true;
+                    //        //return;
+                    //    }
+                    //    else
+                    //    {
+                    //        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
+                    //        ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = false;
+
+                    //        ViewModel.fclickOK = false;
+                    //    }
+                    //}
+                    BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+
+
+
+                
+
+
+
+
+
+
+
+
+                }
+                SaveModel(false, true);//存取檔案
+                //刷新模型
+                model.Refresh();
+                drawing.Refresh();
+
+            });
+
             //修改切割線設定
             ViewModel.ModifyCut = new RelayCommand(() =>
             {

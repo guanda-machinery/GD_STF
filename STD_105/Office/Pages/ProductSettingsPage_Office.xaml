@@ -1595,7 +1595,7 @@
                                             </StackPanel>
                                         </Button.Content>
                                     </Button>
-                                    <Button Content="輸入" Command="{Binding AddCut}" Margin="5,0"></Button>
+                                <Button Content="輸入" Command="{Binding AddJointPointCutB}" Margin="5,0"></Button>
                                     <!--
                                     <STD105:DataButtons_Office Style="{StaticResource BaseStyle}"
                                                            Modify="{Binding ModifyCut}"
