@@ -133,10 +133,9 @@
                         </ComboBox>
 
                             <CheckBox  Grid.Column="0" Grid.Row="1"  IsChecked="{Binding CheckX}" Content="XP" ToolTip="孔X向間距："/>
-
-                        <TextBox  Grid.Column="1" Grid.Row="1" MinWidth="100" VerticalAlignment="Center" >
+                            <TextBox  Grid.Column="1" Grid.Row="1" MinWidth="100" VerticalAlignment="Center" >
                             <TextBox.Text>
-                                <Binding Path="_GroupBoltd1sAttr.dX" UpdateSourceTrigger="PropertyChanged" >
+                                <Binding Path="_GroupBoltsAttr.dX" UpdateSourceTrigger="PropertyChanged" >
                                     <Binding.ValidationRules>
                                         <STD105ValidRule:CheckHoleGroupArrayStringRule/>
                                     </Binding.ValidationRules>
@@ -161,7 +160,7 @@
                         <CheckBox Grid.Row="3"  Content="特殊孔位：" IsThreeState="False" IsChecked="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"/>
                         <dxe:ComboBoxEdit  IsTextEditable="False" Grid.Column="0" Grid.ColumnSpan="2"   Grid.Row="4"  Margin="0,5,5,0" IsEnabled="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"
                                                            ApplyItemTemplateToSelectedItem="True" 
-                                                                   EditValue="{Binding ComboxEdit_GroupBoltsTypeSelected}">
+                                                                   EditValue="{Binding _GroupBoltsAttr.groupBoltsType}">
                             <dxmvvm:Interaction.Behaviors>
                                 <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:GroupBoltsType}" ImageSize="95,95" />
                                 <!--SortMode="DisplayName"-->
