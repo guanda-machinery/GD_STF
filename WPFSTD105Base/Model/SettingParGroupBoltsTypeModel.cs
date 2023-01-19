@@ -20,12 +20,12 @@ namespace WPFSTD105
         /// 客製孔群 - 孔群資料
         /// Dia, StartHole, Mode, dX, dY, Face, groupBoltsType
         /// </summary>
-        public GroupBoltsAttr groupBoltsAttr { get; set; } = new GroupBoltsAttr();
+        public GroupBoltsAttr groupBoltsAttr { get; set; }
 
         /// <summary>
         /// 客製孔群 - 建立日期
         /// </summary>
-        public DateTime Creation { get; }
+        public DateTime Creation { get; set; }
         /// <summary>
         /// 客製孔群 - 修改日期
         /// </summary>

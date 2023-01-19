@@ -142,6 +142,15 @@ namespace WPFSTD105 {
         }
         
         /// <summary>
+        ///   查詢類似 GroupBoltsType 的當地語系化字串。
+        /// </summary>
+        public static string GroupBoltsType {
+            get {
+                return ResourceManager.GetString("GroupBoltsType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 MachiningTimeBackup 的當地語系化字串。
         /// </summary>
         public static string MachiningTimeBackup {

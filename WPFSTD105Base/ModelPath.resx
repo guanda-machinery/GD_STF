@@ -221,4 +221,8 @@
     <value>MachiningTimeBackup</value>
     <comment>加工列表的加工時間紀錄資料夾</comment>
   </data>
+  <data name="GroupBoltsType" xml:space="preserve">
+    <value>GroupBoltsType</value>
+    <comment>客製孔群資料表</comment>
+  </data>
 </root>
