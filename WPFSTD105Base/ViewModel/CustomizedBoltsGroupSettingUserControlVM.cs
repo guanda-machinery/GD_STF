@@ -61,6 +61,10 @@ namespace WPFSTD105
                     BNameList.Add(obj.groupBoltsTypeName);
                 };
                 SettingParGroupBoltsNameList = BNameList;
+                if (BNameList.Count > 0)
+                    SelectedGroupBoltName = BNameList.First();
+                else
+                    SelectedGroupBoltName = null;
             }
         }
 
@@ -78,17 +82,26 @@ namespace WPFSTD105
             set
             {
                 _selectedGroupBoltName = value;
-                var index = SettingParGroupBoltsTypeList.FindIndex(x => x.groupBoltsTypeName == value);
-                if (index != -1)
-                    SettingParGroupBoltsType = SettingParGroupBoltsTypeList[index];
-                else
-                    SettingParGroupBoltsType = null;
-
                 OnPropertyChanged(nameof(SelectedGroupBoltName));
+                if(string.IsNullOrEmpty(_selectedGroupBoltName))
+                {
+                    SettingParGroupBoltsType = null;
+                }
             }
         }
 
-
+        public ICommand ReadSelectGroupBolt
+        {
+            get
+            {
+                return new RelayCommand(() =>
+                {
+                    var index = SettingParGroupBoltsTypeList.FindIndex(x => x.groupBoltsTypeName == SelectedGroupBoltName);
+                    if (index != -1)
+                        SettingParGroupBoltsType = SettingParGroupBoltsTypeList[index];
+                });
+            }
+        }
 
 
         private ObservableCollection<SettingParGroupBoltsTypeModel> SettingParGroupBoltsTypeList

@@ -28,9 +28,9 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <StackPanel>
-                        <dxe:ComboBoxEdit Margin="5" Width="200"   ApplyItemTemplateToSelectedItem="True"   EditValuePostMode="Immediate"  
-                                                                   EditValue="{Binding GroupBolts0      TypeByTargetSelected, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                    <StackPanel Orientation="Horizontal">
+                        <dxe:ComboBoxEdit Margin="5" Width="200"   ApplyItemTemplateToSelectedItem="True"   IsTextEditable="False"
+                                                                   EditValue="{Binding GroupBoltsTypeByTargetSelected, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                             <dxmvvm:Interaction.Behaviors>
                                 <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:GroupBoltsTypeByTarget}" ImageSize="95,95" />
                                 <!--SortMode="DisplayName"-->
@@ -43,7 +43,7 @@
 
                         </dxe:ComboBoxEdit>
                         <TextBox Text="{Binding SettingParGroupBoltsType.groupBoltsTypeName , UpdateSourceTrigger=PropertyChanged}"/>
-
+                        <Button Command="{Binding ReadSelectGroupBolt}" Content="讀取紀錄" />
 
                     </StackPanel>
                     <GroupBox Grid.Column="0" Grid.Row="1" Header="孔參數" Margin="2">
