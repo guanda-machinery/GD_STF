@@ -29,6 +29,10 @@ namespace WPFSTD105.Attribute
         /// <summary>
         /// 孔群類型
         /// </summary>
-        GroupBoltsType groupBoltsType { get; set; }
+        GroupBoltsType groupBoltsType { get; set; }        
+        /// <summary>
+        /// /// x座標左起算或右起算
+        /// /// </summary>
+        ArrayDirection X_BoltsArrayDirection { get; set; }
     }
 }

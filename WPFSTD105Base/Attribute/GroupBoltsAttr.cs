@@ -61,7 +61,7 @@ namespace WPFSTD105.Attribute
         /// <summary>
         /// 第一顆螺栓的絕對座標 Z 向
         /// </summary>
-        public override double Z { get;  set; }
+        public override double Z { get; set; }
         /// <inheritdoc/>
         public string dX { get; set; } = "60 2*70 60";
         /// <inheritdoc/>
@@ -69,7 +69,7 @@ namespace WPFSTD105.Attribute
         /// <summary>
         /// X 向螺栓數量
         /// </summary>
-        public int xCount { get => CalBoltNumber(dX); set => CalBoltNumber(dX); } 
+        public int xCount { get => CalBoltNumber(dX); set => CalBoltNumber(dX); }
         /// <summary>
         /// Y 向螺栓數量
         /// </summary>
@@ -81,9 +81,12 @@ namespace WPFSTD105.Attribute
         /// <summary>
         /// 孔群種類
         /// </summary>
-        public GroupBoltsType groupBoltsType { get; set; } 
+        public GroupBoltsType groupBoltsType { get; set; }
+        /// <summary>
+        /// x座標左起算或右起算
+        /// </summary>
+        public ArrayDirection X_BoltsArrayDirection { get; set; }
 
-   
         /// <summary>
         /// 加總 X 向間距
         /// </summary>
@@ -214,6 +217,34 @@ namespace WPFSTD105.Attribute
                 }
             }
             return count + 1;
+        }
+
+        /// <summary>
+        /// 計算右側起步點
+        /// </summary>
+        /// <returns></returns>
+        public double RightXStart(double SteelLength)
+        {
+            double x = 0;
+            //第一顆螺栓的絕對座標 X 向
+            double dx = this.X;
+            //半徑
+            double r = 0;// Dia / 2;
+
+            if (dXs.Count() == 1 && dXs[0] == 0)
+            {
+                x = this.X;
+            }
+            else
+            {
+                //    [r]|[r]60 70 70 60[r]|[(dx)]
+                //    dXs.Sum() = 60 + 70 + 70 + 60
+                //    (dXs.Count() - 1) = 中間三個孔徑
+                //    r * 2 = 中間三個直徑
+                x = dx + r + dXs.Sum() + (dXs.Count() - 1) * (r * 2) + r;
+            }
+            double rightXStart = SteelLength - x;
+            return rightXStart;
         }
     }
 }
