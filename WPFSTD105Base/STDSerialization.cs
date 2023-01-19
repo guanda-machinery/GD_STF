@@ -851,25 +851,91 @@ namespace WPFSTD105
 
 
         #region 客製孔群
-        public void SetGroupBoltsTypeList_Cus(string groupBoltsTypeName, ObservableCollection<SettingParGroupBoltsTypeVM> list)
+        /// <summary>
+        /// 儲存客製孔群資料
+        /// </summary>
+        /// <param name="groupBoltsTypeName"></param>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public bool SetGroupBoltsTypeList(GroupBoltsTypeByTarget Target , SettingParGroupBoltsTypeModel SettingParGroupBolts)
         {
-            GZipSerializeBinary(list, $@"{ApplicationVM.FileGroupBoltsTypeList(groupBoltsTypeName)}");
+            if(string.IsNullOrEmpty(SettingParGroupBolts.groupBoltsTypeName))
+            {
+                SettingParGroupBolts.groupBoltsTypeName = "0001";
+            }
+            try
+            {
+               var GroupBoltsTypeDir = ApplicationVM.GetGroupBoltsTypeDirectory(Target);
+                if (!string.IsNullOrEmpty(GroupBoltsTypeDir))
+                {
+
+
+                    var FilePath = Path.Combine(GroupBoltsTypeDir, SettingParGroupBolts.groupBoltsTypeName);
+                    Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
+                    if (string.IsNullOrEmpty(Path.GetExtension(FilePath)))
+                    {
+                        FilePath += ".db";
+                    }
+                    GZipSerializeBinary(SettingParGroupBolts, FilePath);
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
         }
         /// <summary>
-        ///  取得序列化客製孔群資料
+        ///  取得特定序列化客製孔群資料
         /// </summary>
-        public ObservableCollection<SettingParGroupBoltsTypeModel> GetGroupBoltsTypeList(string groupBoltsTypeName)
+        public SettingParGroupBoltsTypeModel GetGroupBoltsType(GroupBoltsTypeByTarget Target , string groupBoltsTypeName)
         {
             try
             {
-                ObservableCollection<SettingParGroupBoltsTypeModel> temp_corr = GZipDeserialize<ObservableCollection<SettingParGroupBoltsTypeModel>>(ApplicationVM.FileGroupBoltsTypeList(groupBoltsTypeName));
-                return temp_corr;
+                return  GetGroupBoltsTypeList(Target).ToList().Find(x=>(x.groupBoltsTypeName == groupBoltsTypeName));
             }
             catch
             {
                 return null;
             }
         }
+        /// <summary>
+        ///  取得資料夾內所有序列化客製孔群資料
+        /// </summary>
+        public ObservableCollection< SettingParGroupBoltsTypeModel> GetGroupBoltsTypeList(GroupBoltsTypeByTarget Target)
+        {
+            ObservableCollection<SettingParGroupBoltsTypeModel> temp_corr = new ObservableCollection<SettingParGroupBoltsTypeModel>();
+            try
+            {
+                var FilesPath  =Directory.GetFiles(ApplicationVM.GetGroupBoltsTypeDirectory(Target));
+
+                foreach(var eachFile in FilesPath)
+                {
+                    try
+                    {
+                        //嘗試反序列化 若檔案錯誤則不反序列化
+                        var File_ParGroupBoltsType = GZipDeserialize<SettingParGroupBoltsTypeModel>(eachFile);
+                        temp_corr.Add(File_ParGroupBoltsType);
+                    }
+                    catch(Exception ex)
+                    {
+
+                    }
+                }
+
+            }
+            catch
+            {
+               
+            }
+
+            return temp_corr;
+
+        }
+
+
+
         #endregion
 
 
