@@ -510,14 +510,17 @@
                                     <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="5,0,0,0">
                                         <Label Content="單位：m/m"  />
                                     </StackPanel>
-                                    <CheckBox Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="素材前端切除："  IsChecked="{Binding StartCutCheckboxBoolen}"/>
+                                    <CheckBox Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="素材前端切除：" IsChecked="{Binding StartCutCheckboxBoolen}"/>
+                                    <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="18,0,10,0">
+                                        <Label Content="值不可小於5" Foreground="Red" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                    </StackPanel>
                                     <StackPanel Grid.Row="1" Grid.Column="1"  VerticalAlignment="Center">
                                         <TextBox Name="MatchSettingStartCutTextBox" InputMethod.IsInputMethodEnabled="False"
                                    MinWidth="100" >
                                             <TextBox.Text>
                                                 <Binding Path="MatchSettingStartCut" StringFormat="{}{0:N2}" UpdateSourceTrigger="PropertyChanged" >
                                                     <Binding.ValidationRules >
-                                                        <STD105ValidRule:CheckNumberRule NumberMin="0"/>
+                                                        <STD105ValidRule:CheckNumberRule SpecificValue="0" NumberMin="5"/>
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </TextBox.Text>
@@ -532,7 +535,7 @@
                                             <TextBox.Text>
                                                 <Binding Path="MatchSettingEndCut" StringFormat="{}{0:N2}"  UpdateSourceTrigger="PropertyChanged">
                                                     <Binding.ValidationRules>
-                                                        <STD105ValidRule:CheckNumberRule  NumberMin="0"/>
+                                                        <STD105ValidRule:CheckNumberRule SpecificValue="0"  NumberMin="5" />
                                                     </Binding.ValidationRules>
                                                 </Binding>
                                             </TextBox.Text>

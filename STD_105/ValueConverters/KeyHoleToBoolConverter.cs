@@ -8,9 +8,21 @@ namespace STD_105
     /// </summary>
     public class KeyHoleToBoolConverter : WPFBase.BaseValueConverter<KeyHoleToBoolConverter>
     {
+        public bool Invert { get; set; }
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (GD_STD.Enum.KEY_HOLE)value == GD_STD.Enum.KEY_HOLE.MANUAL ? true : false;
+            if(value is GD_STD.Enum.KEY_HOLE)
+            {
+                var _KeyHole = GD_STD.Enum.KEY_HOLE.MANUAL;
+                if (parameter is GD_STD.Enum.KEY_HOLE)
+                {
+                    _KeyHole = (GD_STD.Enum.KEY_HOLE)parameter;
+                }
+                var ReturnValue = (GD_STD.Enum.KEY_HOLE)value == _KeyHole;
+
+                return (!Invert) ? ReturnValue : !ReturnValue;
+            }
+            return (!Invert);
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -11,6 +11,7 @@
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         xmlns:local="clr-namespace:STD_105"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:GD_STD_Enum="clr-namespace:GD_STD.Enum;assembly=GD_STD.Enum" 
         WindowState="Maximized"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -119,6 +120,7 @@
                                           FontColor="{ StaticResource solidclr_DimGray }"
                                           Opacity="1" />
                 <!--油壓開關-->
+
                 <local:MainFunctionButton ButtonCommand="{Binding OillCommand}"
                                           ButtonImageSource="{Binding ApplicationViewModel.PanelButton.Oil, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:OillBoolToImageSourceConverter}}"
                                           IsEnabled="{Binding ApplicationViewModel.PanelButton.Alarm, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:ConditionToIsEnabledConerter}}"
@@ -130,10 +132,8 @@
                                           Lock="{Binding ApplicationViewModel.PanelButton.Origin, Source={x:Static WPFSTD:ViewLocator.Instance}}"
                                           TitleText="{DynamicResource LANGUAGE_ReturnButton}"
                                           FontColor="{ StaticResource solidclr_DimGray }" />
-
-
-
-                <!--主軸模式-->
+                <StackPanel IsEnabled="{Binding Path=ApplicationViewModel.PanelButton.Key ,Source={x:Static WPFSTD:ViewLocator.Instance}, ConverterParameter={x:Static GD_STD_Enum:KEY_HOLE.MANUAL},Converter={local:KeyHoleToBoolConverter}}">    
+                  <!--主軸模式-->
                 <local:MainFunctionButton ButtonCommand="{Binding MainSpindleCommand }"
                                           ButtonImageSource="{StaticResource Spindle}"
                                           TitleText="{ DynamicResource LANGUAGE_SpindleMode }"
@@ -153,13 +153,12 @@
                         </MultiBinding>
                     </local:MainFunctionButton.IsEnabled>
                 </local:MainFunctionButton>
-
                 <!--機台其他功能-->
                 <local:MainFunctionButton ButtonCommand="{Binding MachineFunctionCommand }"
                                           ButtonImageSource="{StaticResource Apps}"
                                           TitleText="{ DynamicResource LANGUAGE_MachineFuctions }"
                                           FontColor="{ StaticResource solidclr_DimGray }" >
-                    <!--    <local:MainFunctionButton.IsEnabled>
+                    <local:MainFunctionButton.IsEnabled>
                         <MultiBinding Converter="{local:DoubleConditionToIsEnabledConerter}">
                             <MultiBinding.Bindings>
                                 <Binding Path="ApplicationViewModel.PanelButton.Key"
@@ -172,7 +171,7 @@
                                          Source="{x:Static WPFSTD:ViewLocator.Instance}" />
                             </MultiBinding.Bindings>
                         </MultiBinding>
-                    </local:MainFunctionButton.IsEnabled>-->
+                    </local:MainFunctionButton.IsEnabled>
                 </local:MainFunctionButton>
                 <!--參數設定-->
                 <local:MainFunctionButton ButtonCommand="{Binding SettingParCommand}"
@@ -182,15 +181,23 @@
                 <!--
                                           IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"-->
                 <!--多國語言-->
+                 </StackPanel>
                 <local:MainFunctionButton ButtonCommand="{Binding LanguageSwitchCommand }"
                                           ButtonImageSource="{StaticResource LanguageSwitcher}"
                                           TitleText="{ DynamicResource LANGUAGE_Multilingual }"
                                           FontColor="{ StaticResource solidclr_DimGray }" />
                 <!--專案管理-->
-                <local:MainFunctionButton ButtonCommand="{Binding ProjectManagerCommand }"
+                <local:MainFunctionButton ButtonCommand="{Binding ProjectManagerCommand }" 
+                                          IsEnabled="{Binding Path=ApplicationViewModel.PanelButton.Key ,Source={x:Static WPFSTD:ViewLocator.Instance}, ConverterParameter={x:Static GD_STD_Enum:KEY_HOLE.MANUAL},Converter={local:KeyHoleToBoolConverter}}"
                                           ButtonImageSource="{StaticResource Management}"
                                           TitleText="{ DynamicResource LANGUAGE_ProjectManagement }"
                                           FontColor="{ StaticResource solidclr_DimGray }" />
+           
+                
+                
+                
+                
+                
                 <!--舊主軸模式-->
                 <local:MainFunctionButton Visibility="Collapsed"
                     x:Name="mainSpindle"
@@ -715,11 +722,13 @@
                     </Grid.RowDefinitions>
                     <!--  新建專案  -->
                     <local:MainFunctionButton ButtonCommand="{Binding NewProjectShowCommand}"
+                                              IsEnabled="{Binding Path=ApplicationViewModel.PanelButton.Key ,Source={x:Static WPFSTD:ViewLocator.Instance}, ConverterParameter={x:Static GD_STD_Enum:KEY_HOLE.MANUAL},Converter={local:KeyHoleToBoolConverter}}"
                                               ButtonImageSource="{StaticResource NewProject}"
                                               TitleText="{DynamicResource LANGUAGE_NewProject}"
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <!--  專案瀏覽  -->
                     <local:MainFunctionButton Grid.Row="1"
+                                              IsEnabled="{Binding Path=ApplicationViewModel.PanelButton.Key ,Source={x:Static WPFSTD:ViewLocator.Instance}, ConverterParameter={x:Static GD_STD_Enum:KEY_HOLE.MANUAL},Converter={local:KeyHoleToBoolConverter}}"
                                               ButtonCommand="{Binding WatchProjectCommand}"
                                               ButtonImageSource="{StaticResource WatchProject}"
                                               TitleText="{DynamicResource LANGUAGE_ProjectBrowser}"
@@ -728,9 +737,18 @@
                     <local:MainFunctionButton Grid.Row="2"
                                               ButtonCommand="{Binding ImportFileCommand}"
                                               ButtonImageSource="{StaticResource ImportFile}"
-                                              IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
+                                  
                                               TitleText="{DynamicResource LANGUAGE_ImportFiles}"
-                                              FontColor="{ StaticResource solidclr_CreamyGray }" />
+                                              FontColor="{ StaticResource solidclr_CreamyGray }" >
+                        <local:MainFunctionButton.IsEnabled>
+                            <MultiBinding Converter="{local:BooleanArrayIntersectToBooleanConverter}">
+                                <MultiBinding.Bindings>
+                                    <Binding Path="ApplicationViewModel.ProjectName" Source="{x:Static WPFSTD:ViewLocator.Instance}" Converter="{local:NullToEnabledConverter}" UpdateSourceTrigger="PropertyChanged"/>
+                                    <Binding Path="ApplicationViewModel.PanelButton.Key" Source="{x:Static WPFSTD:ViewLocator.Instance}" ConverterParameter="{x:Static GD_STD_Enum:KEY_HOLE.MANUAL}" Converter="{local:KeyHoleToBoolConverter}" UpdateSourceTrigger="PropertyChanged"/>
+                                </MultiBinding.Bindings>
+                            </MultiBinding>
+                        </local:MainFunctionButton.IsEnabled>
+                    </local:MainFunctionButton>
                     <!--  製品設定(舊)  -->
                     <local:MainFunctionButton Grid.Column="1" Grid.Row="5" Visibility="Collapsed"
                                               ButtonCommand="{Binding ProductSettingCommand}"
@@ -757,21 +775,39 @@
                                               FontColor="{ StaticResource solidclr_CreamyGray }" />
                     <!--排版設定(新)-->
 
-                        <local:MainFunctionButton Grid.Row="1"
+                    <local:MainFunctionButton Grid.Row="1"
                                               Grid.Column="1"
                                               ButtonCommand="{Binding MachineTypeSettingCommand}"
                                               ButtonImageSource="{StaticResource Layout}"
-                                              IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
+                                          
                                               TitleText="{DynamicResource LANGUAGE_TypesettingSettings}"
-                                              FontColor="{ StaticResource solidclr_CreamyGray }" />
+                                              FontColor="{ StaticResource solidclr_CreamyGray }" >
+                        <local:MainFunctionButton.IsEnabled>
+                            <MultiBinding Converter="{local:BooleanArrayIntersectToBooleanConverter}">
+                                <MultiBinding.Bindings>
+                                    <Binding Path="ApplicationViewModel.ProjectName" Source="{x:Static WPFSTD:ViewLocator.Instance}" Converter="{local:NullToEnabledConverter}" UpdateSourceTrigger="PropertyChanged"/>
+                                    <Binding Path="ApplicationViewModel.PanelButton.Key" Source="{x:Static WPFSTD:ViewLocator.Instance}" ConverterParameter="{x:Static GD_STD_Enum:KEY_HOLE.MANUAL}" Converter="{local:KeyHoleToBoolConverter}" UpdateSourceTrigger="PropertyChanged"/>
+                                </MultiBinding.Bindings>
+                            </MultiBinding>
+                        </local:MainFunctionButton.IsEnabled>
+                    </local:MainFunctionButton>
                     <!--製品設定(新)-->
                     <local:MainFunctionButton Grid.Row="0"
                                               Grid.Column="1"
                                               ButtonCommand="{Binding MachineProductSettingCommand}"            
                                               ButtonImageSource="{StaticResource NewProductSettings}"
-                                              IsEnabled="{Binding ApplicationViewModel.ProjectName, Source={x:Static WPFSTD:ViewLocator.Instance}, Converter={local:NullToEnabledConverter}}"
+                                           
                                               TitleText="{DynamicResource LANGUAGE_ProductsSettings}"
-                                              FontColor="{ StaticResource solidclr_CreamyGray }" />
+                                              FontColor="{ StaticResource solidclr_CreamyGray }" >
+                        <local:MainFunctionButton.IsEnabled>
+                            <MultiBinding Converter="{local:BooleanArrayIntersectToBooleanConverter}">
+                                <MultiBinding.Bindings>
+                                    <Binding Path="ApplicationViewModel.ProjectName" Source="{x:Static WPFSTD:ViewLocator.Instance}" Converter="{local:NullToEnabledConverter}" UpdateSourceTrigger="PropertyChanged"/>
+                                    <Binding Path="ApplicationViewModel.PanelButton.Key" Source="{x:Static WPFSTD:ViewLocator.Instance}" ConverterParameter="{x:Static GD_STD_Enum:KEY_HOLE.MANUAL}" Converter="{local:KeyHoleToBoolConverter}" UpdateSourceTrigger="PropertyChanged"/>
+                                </MultiBinding.Bindings>
+                            </MultiBinding>
+                        </local:MainFunctionButton.IsEnabled>
+                    </local:MainFunctionButton>
                     <!--  加工監控(新)  -->
                     <local:MainFunctionButton Grid.Row="2"
                                               Grid.Column="1"

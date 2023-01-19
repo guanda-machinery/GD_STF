@@ -109,6 +109,7 @@ namespace WPFSTD105.ViewModel
 
                     //初始化後載入備份檔案 並產生
                     //AllDrillBoltsDict
+                
                     var DrillBData = ser.GetDrillBolts(el.MaterialNumber);
                     if (DrillBData != null)
                         AllDrillBoltsDict[el.MaterialNumber] = DrillBData;
@@ -766,11 +767,10 @@ namespace WPFSTD105.ViewModel
                                 }
                                 else
                                 {
+                                    const double PinModeDrillDia = 0;
                                     DrillBoltsListDict[keyValuePair.Key].PinTestMode = PinMode;
                                     if (PinMode)
                                     {
-                                        const double PinModeDrillDia = 0;
-
                                         if (DrillData.AXIS_MODE == AXIS_MODE.POINT)
                                         {
                                             DrillBoltsListDict[keyValuePair.Key].DrillBoltList.Add(new DrillBolt()
@@ -812,13 +812,31 @@ namespace WPFSTD105.ViewModel
                                     }
                                     else
                                     {
-                                        DrillBoltsListDict[keyValuePair.Key].DrillBoltList.Add(new DrillBolt()
+                                        if (DrillData.AXIS_MODE == AXIS_MODE.POINT)
                                         {
-                                            DrillWork = true,
-                                            Origin_WorkAXIS_MODE = DrillData.AXIS_MODE,
-                                            DrillHoleCount = 1,
-                                            Origin_DrillHoleDiameter = DrillData.Dia,
-                                        });
+                                            var _drillB = new DrillBolt()
+                                            {
+                                                DrillWork = true,
+                                                Origin_WorkAXIS_MODE = DrillData.AXIS_MODE,
+                                                DrillHoleCount = 1,
+                                                Origin_DrillHoleDiameter = DrillData.Dia,
+                                                Changed_DrillHoleDiameter = PinModeDrillDia
+                                            };
+                                            if (_drillB.Origin_DrillHoleDiameter != 0 && _drillB.Origin_DrillHoleDiameter != 10)
+                                                _drillB.DrillHoleDiameterIsChangeBool = true;
+                                            DrillBoltsListDict[keyValuePair.Key].DrillBoltList.Add(_drillB);
+                                        }
+                                        else
+                                        {
+                                            DrillBoltsListDict[keyValuePair.Key].DrillBoltList.Add(new DrillBolt()
+                                            {
+                                                DrillWork = true,
+                                                Origin_WorkAXIS_MODE = DrillData.AXIS_MODE,
+                                                DrillHoleCount = 1,
+                                                Origin_DrillHoleDiameter = DrillData.Dia,
+                                            });
+
+                                        }
                                     }
                                 }
                             }
@@ -2408,10 +2426,17 @@ namespace WPFSTD105.ViewModel
                             try
                             {
                                 var FIndex = Finish_UndoneDataViews.FindIndex(x => (x.MaterialNumber == el_MaterialNumber));
-                                if(FIndex !=-1)
+                                if (FIndex != -1)
+                                {
                                     MachineDrillkeyValueDict[el_MaterialNumber] = GenerateMachiningDataPairs(Finish_UndoneDataViews[FIndex]);
+                                
+                                }
                                 else
-                                    MachineDrillkeyValueDict.Remove(el_MaterialNumber);
+                                {
+                                    MachineDrillkeyValueDict.Remove(el_MaterialNumber); 
+                                    AllDrillBoltsDict.Remove(el_MaterialNumber);
+                                    ser.DeleteDrillBolts(el_MaterialNumber);
+                                }
                             }
                             catch( Exception ex)
                             {
@@ -2422,10 +2447,8 @@ namespace WPFSTD105.ViewModel
                     }
                 }
 
-
                 ProcessingScreenWin.ViewModel.IsIndeterminate = true;
                 ProcessingScreenWin.Close();
-
                 _SynchronizationContext.Send(t => _Model.Clear(), null);
                 await Task.Yield();
 
