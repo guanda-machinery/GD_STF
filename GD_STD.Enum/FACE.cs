@@ -24,7 +24,7 @@ namespace GD_STD.Enum
         /// <remarks>
         /// 右軸
         /// </remarks>
-        [Image(imageUri: @"pack://application:,,,/GD_STD.Enum;component/ImageSVG/SelectPlate_Top.svg"), Display(Name = "上面", Description = "右翼板")]
+        [Image(imageUri: @"pack://application:,,,/GD_STD.Enum;component/ImageSVG/SelectPlate_Bottom.svg"), Display(Name = "下面", Description = "左翼板")]
         FRONT,
         /// <summary>
         /// 後面
@@ -32,7 +32,7 @@ namespace GD_STD.Enum
         /// <remarks>
         /// 左軸
         /// </remarks>
-        [Image(imageUri: @"pack://application:,,,/GD_STD.Enum;component/ImageSVG/SelectPlate_Bottom.svg"), Display(Name = "下面", Description = "左翼板")]
+        [Image(imageUri: @"pack://application:,,,/GD_STD.Enum;component/ImageSVG/SelectPlate_Top.svg"), Display(Name = "上面", Description = "右翼板")]
         BACK,
         /// <summary>           
         /// 翼板同時選取

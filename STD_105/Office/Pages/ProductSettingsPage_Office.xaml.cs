@@ -2076,12 +2076,15 @@ namespace STD_105.Office
             ViewModel.AddJointPointCutB = new RelayCommand(() =>
             {
 
+
                 //切割線B的命令
 
                 SteelAttr sa = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
-                ViewModel.SteelAttr = sa;
-                ViewModel.GetSteelAttr();
-            
+                //ViewModel.SteelAttr = sa;
+                //ViewModel.GetSteelAttr();
+
+                ViewModel.WriteSteelAttr(sa);
+
                 /*3D螺栓*/
 
                 foreach (var item in ViewModel.ArbitrarilyJointPointList)
@@ -2108,7 +2111,7 @@ namespace STD_105.Office
                     TmpBoltsArr.Mode = AXIS_MODE.POINT;
                     TmpBoltsArr.X = item.X_Position;
                     TmpBoltsArr.Y = item.Y_Position;
-                    TmpBoltsArr.Face = (GD_STD.Enum.FACE)ViewModel.rbtn_CutFace;
+                    TmpBoltsArr.Face = (GD_STD.Enum.FACE)ViewModel.rbtn_DrillingFace;
                     TmpBoltsArr.GUID = Guid.NewGuid();
                     Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
 
