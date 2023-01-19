@@ -421,7 +421,7 @@ namespace WPFSTD105.Model
                                 {
                                     if (!middleSecond)
                                     {
-                                        if (diffList.Last() == 0)
+                                        if (diffList.Count > 0 && diffList.Last() == 0)
                                         {
                                             diffList.Add(-diff);
                                         }
@@ -509,7 +509,7 @@ namespace WPFSTD105.Model
                                 {
                                     if (!middleSecond)
                                     {
-                                        if (diffList.Last() == 0)
+                                        if (diffList.Count > 0 && diffList.Last() == 0)
                                         {
                                             diffList.Add(diff);
                                         }
@@ -958,6 +958,11 @@ namespace WPFSTD105.Model
                 model.Blocks.Add(result);
             }
 
+            var a = model.Entities.Where(x => x.GetType()==typeof(BlockReference) && x.EntityData != null && x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID.Value.ToString() != ((BlockReference)x).BlockName).ToList();
+            foreach (BlockReference item in a)
+            {
+                ((GroupBoltsAttr)item.EntityData).GUID = Guid.Parse(((BlockReference)item).BlockName);
+            }
             blockOut = new BlockReference(0, 0, 0, result.Name, 1, 1, 1, 0);//產生孔位群組參考圖塊
             blockOut.EntityData = result.Info;
             //blockOut.BlockName = result.Info.GUID.Value.ToString();
@@ -970,18 +975,6 @@ namespace WPFSTD105.Model
 
                 }
                 model.Entities.Insert(0, blockOut);//加入參考圖塊到模型
-            }
-            var a = model.Entities.Where(x => x.GetType()==typeof(BlockReference) && x.EntityData != null && x.EntityData.GetType() == typeof(GroupBoltsAttr) && ((GroupBoltsAttr)x.EntityData).GUID.Value.ToString() != ((BlockReference)x).BlockName).ToList();
-            foreach (BlockReference item in a)
-            {
-                ((BlockReference)item).BlockName = ((GroupBoltsAttr)item.EntityData).GUID.Value.ToString();
-            }
-            foreach (var item in model.Blocks)
-            {
-                if (item.GetType()==typeof(Block))
-                {
-
-                }
             }
 
 
