@@ -24,12 +24,17 @@ namespace STD_105.ValidationRules
         /// <summary>
         /// 是否為整數型
         /// </summary>
-        public bool IsINTValidate { get; set; } = false;
+        public bool IsINTValidate { get; set; } 
 
         /// <summary>
         /// 欄位是否可為空
         /// </summary>
-        public bool IsNullable { get; set; } = false;
+        public bool IsNullable { get; set; } 
+
+        /// <summary>
+        /// 若數值為特定值則直接通過
+        /// </summary>
+        public double? SpecificValue { get; set; }
 
         /// <summary>
         /// 驗證<paramref name="value"/>值
@@ -50,6 +55,22 @@ namespace STD_105.ValidationRules
             {
                 if (double.TryParse((string)value, out var DoubleValue))
                 {
+                    if (IsINTValidate is true)
+                    {
+                        if (int.TryParse((string)value, out var IntValue))
+                        {
+
+                        }
+                        else
+                        {
+                            return new ValidationResult(false, $"須為整數數字!");
+                        }
+                    }
+
+                        if(SpecificValue != null) 
+                            if (DoubleValue == SpecificValue)
+                                return ValidationResult.ValidResult;
+
                     if (NumberMax != null)
                     {
                         if (DoubleValue > NumberMin)
@@ -66,17 +87,7 @@ namespace STD_105.ValidationRules
                         }
                     }
 
-                    if(IsINTValidate)
-                    {
-                        if( int.TryParse((string)value, out var IntValue))
-                        {
 
-                        }
-                        else
-                        {
-                            return new ValidationResult(false, $"須為整數數字!");
-                        }
-                    }
                 }
                 else
                 {

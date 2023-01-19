@@ -796,7 +796,32 @@ namespace WPFSTD105
             GZipSerializeBinary(new DrillBoltsModel(){ DrillBoltsDict = values }, $@"{ApplicationVM.DirectoryDrillBoltsBackup()}\{materialNumber}.db");
         }
 
+        /// <summary>
+        /// 刪除加工監控時編輯孔位資料
+        /// </summary>
+        /// <param name="materialNumber"></param>
+        /// <returns></returns>
 
+        public bool DeleteDrillBolts(string materialNumber)
+        {
+            string dataPath = $@"{ApplicationVM.DirectoryDrillBoltsBackup()}\{materialNumber}.db";
+            if (File.Exists(dataPath))
+            {
+                try
+                {
+                    File.Delete(dataPath);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
 
 
         /// <summary>
@@ -833,10 +858,17 @@ namespace WPFSTD105
         /// <summary>
         ///  取得序列化客製孔群資料
         /// </summary>
-        public ObservableCollection<SettingParGroupBoltsTypeVM> GetGroupBoltsTypeList(string groupBoltsTypeName)
+        public ObservableCollection<SettingParGroupBoltsTypeModel> GetGroupBoltsTypeList(string groupBoltsTypeName)
         {
-            ObservableCollection<SettingParGroupBoltsTypeVM> temp_corr = GZipDeserialize<ObservableCollection<SettingParGroupBoltsTypeVM>>(ApplicationVM.FileGroupBoltsTypeList(groupBoltsTypeName));
-            return temp_corr;
+            try
+            {
+                ObservableCollection<SettingParGroupBoltsTypeModel> temp_corr = GZipDeserialize<ObservableCollection<SettingParGroupBoltsTypeModel>>(ApplicationVM.FileGroupBoltsTypeList(groupBoltsTypeName));
+                return temp_corr;
+            }
+            catch
+            {
+                return null;
+            }
         }
         #endregion
 

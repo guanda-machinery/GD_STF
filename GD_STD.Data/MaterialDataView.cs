@@ -102,7 +102,7 @@ namespace GD_STD.Data
         }
 
         public TypeSettingDataView SelectedPart { get; set; } 
-
+        
 
         #region ButtonCommand
 
@@ -417,11 +417,14 @@ namespace GD_STD.Data
                 double AllPartAggregate = 0;
                 double CutLoss = 0;
 
-                if (_parts.Count != 0)
+                if (_parts.Count > 0)
                 {
                     AllPartAggregate = _parts.Select(el => el.Length).Aggregate((l1, l2) => l1 + l2); //總零件長
-                    CutLoss = Cut * (_parts.Count - 1d > 0d ? _parts.Count - 1d : 0d); //鋸床切割損耗
                 }
+
+                var CutCount = (_parts.Count - 1 > 0 ? _parts.Count - 1d : 0d) + (StartCut > 0 ? 1d : 0d) +(EndCut > 0 ? 1d : 0d);//鋸片切割次數
+                CutLoss = Cut * CutCount; //鋸床切割損耗
+
 
                 //材料前後端切除
                 return AllPartAggregate + CutLoss + StartCut + EndCut;

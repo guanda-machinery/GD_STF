@@ -928,7 +928,7 @@
                     </ResourceDictionary>
                 </TabControl.Resources>
 
-                <TabItem Margin="0,0,0,0" Header="鑽孔" Name="DrillTabItem"  >
+                <TabItem Margin="0,0,0,0" Header="鑽孔" Name="DrillTabItem" Cursor="Hand"  >
                     <TabItem.Resources>
                         <Style TargetType="GroupBox" BasedOn="{StaticResource BaseStyle}" >
                             <Setter Property="Foreground" Value="#3b3b3b"/>
@@ -1024,47 +1024,15 @@
                                 </Grid>
                             </GroupBox>
                             <GroupBox Header="位置" Grid.Column="1" Grid.Row="1">
-                                <StackPanel >
-                                    <!--舊下拉式選單-->
-                                    <StackPanel Orientation="Horizontal" Visibility="Collapsed">
-                                        <CheckBox IsChecked="{Binding CheckFace}" />
-                                        <ComboBox  SelectedItem="{Binding BoltsFaceType}" Width="50">
-                                            <dxmvvm:Interaction.Behaviors>
-                                                <dxmvvm:EventToCommand EventName="EditValueChanged" Command="{Binding rb_CutLinePosition_Command}" CommandParameter="{Binding rbtn_DrillingFace}" UseDispatcher="True"/>
-                                                <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:FACE}" ImageSize="40,40" AllowImages="False" />
-                                                <!--SortMode="DisplayName"-->
-                                            </dxmvvm:Interaction.Behaviors>
-                                        </ComboBox>
-                                    </StackPanel>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        
-                                        
-                                        
-                                        <RadioButton  Grid.Column="1" VerticalAlignment="Center" GroupName="DrillingPosition" Foreground="Black" HorizontalAlignment="Center"
-                                                         Style="{StaticResource rad_Gray}"
-                                                         IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={local:DrillingFaceConverter}, ConverterParameter=0}"
-                                                         Content="頂面"/>
-                                        <RadioButton  Grid.Column="2" GroupName="DrillingPosition" Foreground="Black" HorizontalAlignment="Center"
-                                                          Style="{StaticResource rad_Gray}"
-                                                          IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={local:DrillingFaceConverter}, ConverterParameter=1}"
-                                                          Content="後面"/>
+                                <dxe:ComboBoxEdit  IsTextEditable="False" MinWidth="110" Style="{StaticResource SiegPositionComboBoxEdit}"
+                                                           ApplyItemTemplateToSelectedItem="True" 
+                                        EditValue="{Binding rbtn_DrillingFace}">
+                                    <dxmvvm:Interaction.Behaviors>
+                                        <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:FACE}" ImageSize="40,40" AllowImages="False" />
+                                        <!--SortMode="DisplayName"-->
+                                    </dxmvvm:Interaction.Behaviors>
 
-                                        <RadioButton Grid.Column="0" GroupName="DrillingPosition" Foreground="Black" HorizontalAlignment="Center"
-                                                          Style="{StaticResource rad_Gray}" 
-                                                          IsChecked="{Binding Path=rbtn_DrillingFace, Mode=TwoWay, Converter={local:DrillingFaceConverter}, ConverterParameter=2}"
-                                                           Content="前面"/>
-
-
-                                    </Grid>
-                                </StackPanel>
+                                </dxe:ComboBoxEdit>
                             </GroupBox>
                             <GroupBox Header="孔群設定" Grid.Column="0" Grid.Row="2">
                                 <Grid>
@@ -1170,7 +1138,7 @@
                     </DockPanel>
 
                 </TabItem>
-                <TabItem Header="切割線" Name="CutTabItem"  >
+                <TabItem Header="切割線" Name="CutTabItem" Cursor="Hand" >
                     <TabItem.Resources>
                         <Style TargetType="GroupBox" BasedOn="{StaticResource BaseStyle}" >
                             <Setter Property="Foreground" Value="#3b3b3b"/>
