@@ -29,6 +29,10 @@ namespace GD_STD
             {
                 try
                 {
+                    //可優化方向->先序列化->再將舊檔案刪除->再將新檔案更改為舊檔案
+                    //先建立資料夾
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+
                     using (FileStream fileStream = new FileStream(path, FileMode.OpenOrCreate))
                     {
                         using (GZipStream zip = new GZipStream(fileStream, CompressionMode.Compress))

@@ -497,7 +497,7 @@
     <Compile Include="ViewModel\Machine\Dpad\joystick\Dpad_Joystick_ViewModel.cs" />
     <Compile Include="ViewModel\Machine\MachineFunctionVM.cs" />
     <Compile Include="ViewModel\Machine\ProcessingMonitor_MachineVM.cs" />
-    <Compile Include="ViewModel\SettingParGroupBoltsTypeVM.cs" />
+    <Compile Include="ViewModel\CustomizedBoltsGroupSettingUserControlVM.cs" />
     <Compile Include="WordToPdfService.cs" />
     <Compile Include="WordCutService.cs" />
     <Compile Include="WordBuyService.cs" />
