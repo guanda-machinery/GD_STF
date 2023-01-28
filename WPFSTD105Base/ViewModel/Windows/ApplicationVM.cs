@@ -1237,6 +1237,30 @@ namespace WPFSTD105
             var PATHC =  Path.Combine(DirPath, ModelPath.GroupBoltsType);
             return PATHC.Replace('/' , '\\');
         }
+        /// <summary>
+        /// 客製孔群設定 - 檢查設定值資料夾是否存在，不存在則新增
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public static string GetGroupBoltsTypeDirectory_NO_CREATE(GroupBoltsTypeByTarget Target)
+        {
+            string DirPath = "";
+            if (Target == GroupBoltsTypeByTarget.System)
+                DirPath = System.Environment.CurrentDirectory;
+            else if (Target == GroupBoltsTypeByTarget.Project)
+            {
+                if (CommonViewModel.ProjectName != null)
+                {
+                    DirPath = Path.Combine(Properties.SofSetting.Default.LoadPath, CommonViewModel.ProjectName);                   
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            var PATHC = Path.Combine(DirPath, ModelPath.GroupBoltsType);
+            return PATHC.Replace('/', '\\');
+        }
 
         /// <summary>
         /// 切割線設定 - 檢查設定值檔案是否存在 20220818 張燕華

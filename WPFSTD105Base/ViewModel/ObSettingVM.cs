@@ -296,29 +296,7 @@ namespace WPFSTD105.ViewModel
         /// 樹狀邏輯
         /// </summary>
         public ObservableCollection<TreeNode> TreeNode { get; set; } = new ObservableCollection<TreeNode>();
-        /// <summary>
-        /// 孔位起始點 X 座標
-        /// </summary>
-        public double StartY { get; set; } = 0;
-        /// <summary>
-        /// 鑽孔模式
-        /// </summary>
-        /// <remarks>
-        /// <see cref="GD_STD.Enum.AXIS_MODE"/>
-        /// </remarks>
-        public int AxisModeType
-        {
-            get => _AxisModeType;
-            set
-            {
-                _AxisModeType = value;
-                GroupBoltsAttr.Mode = (GD_STD.Enum.AXIS_MODE)value;
-            }
-        }
-        /// <summary>
-        /// 起始孔類型
-        /// </summary>
-        public START_HOLE StartHoleType { get; set; } 
+
         /// <summary>
         /// 加入螺栓選擇的面
         /// </summary>
@@ -602,7 +580,45 @@ namespace WPFSTD105.ViewModel
             }
         }
 
-
+        /// <summary>
+        /// 直徑
+        /// </summary>
+        public double DiaProperty { get; set; } = 20;
+        /// <summary>
+        /// 絕對X座標
+        /// </summary>
+        public double XProperty { get; set; }
+        /// <summary>
+        /// 孔位起始點 X 座標
+        /// </summary>
+        public double StartY { get; set; } = 0;
+        /// <summary>
+        /// 鑽孔模式
+        /// </summary>
+        /// <remarks>
+        /// <see cref="GD_STD.Enum.AXIS_MODE"/>
+        /// </remarks>
+        public int AxisModeType
+        {
+            get => _AxisModeType;
+            set
+            {
+                _AxisModeType = value;
+                GroupBoltsAttr.Mode = (GD_STD.Enum.AXIS_MODE)value;
+            }
+        }
+        /// <summary>
+        /// 起始孔類型
+        /// </summary>
+        public START_HOLE StartHoleType { get; set; }
+        /// <summary>
+        /// 用戶輸入螺栓 X 向間距
+        /// </summary>
+        public string dXProperyy { get; set; } = "60 2*70 60";
+        /// <summary>
+        /// 用戶輸入螺栓 X 向間距
+        /// </summary>
+        public string dYProperyy { get; set; } = "60 2*70 60";
 
         /// <summary>
         /// 異孔偏移孔群
@@ -1078,8 +1094,21 @@ namespace WPFSTD105.ViewModel
 
 
 
-
-
+        /// <summary>
+        /// 因原本Binding會使用GroupBoltsAtter做綁定，故將元件綁定改為Property的方式與前端做切割
+        /// </summary>
+        public void GetGroupBoltsAttrFromViewToVM() 
+        {
+            this.GroupBoltsAttr.Dia = DiaProperty;
+            this.GroupBoltsAttr.dX = dXProperyy;
+            this.GroupBoltsAttr.dY= dYProperyy;
+            this.GroupBoltsAttr.X = XProperty;
+            this.GroupBoltsAttr.Y = StartY;
+            this.GroupBoltsAttr.groupBoltsType = this.ComboxEdit_GroupBoltsTypeSelected;
+            this.GroupBoltsAttr.X_BoltsArrayDirection = this.X_BoltsArrayDirection;
+            this.GroupBoltsAttr.Face = this.rbtn_DrillingFace;
+            this.GroupBoltsAttr.groupBoltsType = this.ComboxEdit_GroupBoltsTypeSelected;
+        }
 
 
         /// <summary>
@@ -3565,7 +3594,7 @@ namespace WPFSTD105.ViewModel
                     AddBoltsList.AddRange(AddBoltsListNew);
                     break;
                 case GroupBoltsType.HypotenuseLeft:
-                    for (int i = 0; i < AddBoltsList.Count() - 1; i++)
+                    for (int i = 1; i < AddBoltsList.Count() - 1; i++)
                     {
                         if (i % (TmpBoltsArr.yCount-1) == 0)
                         {

@@ -934,8 +934,6 @@ namespace WPFSTD105
 
         }
 
-
-
         #endregion
 
 

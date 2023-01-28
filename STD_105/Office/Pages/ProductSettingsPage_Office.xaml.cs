@@ -1720,6 +1720,8 @@ namespace STD_105.Office
                 ViewModel.SteelAttr = sa;
 
                 /*3D螺栓*/
+
+                ViewModel.GetGroupBoltsAttrFromViewToVM();
                 ViewModel.GroupBoltsAttr.GUID = Guid.NewGuid();
                 ViewModel.SteelAttr.Name = ViewModel.ProductNameProperty;
                 ViewModel.SteelAttr.Phase = ViewModel.PhaseProperty;

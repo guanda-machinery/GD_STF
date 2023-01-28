@@ -1,6 +1,7 @@
 ﻿using DevExpress.CodeParser;
 using DevExpress.Data.Extensions;
 using DevExpress.Utils.Extensions;
+using DevExpress.Xpf.WindowsUI;
 using GD_STD.Enum;
 using GrapeCity.Documents.Pdf.Parser;
 using System;
@@ -10,9 +11,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using WPFSTD105.Attribute;
 using WPFWindowsBase;
+using DevExpress.Xpf.Core;
 
 
 //CustomizeGroupBoltsUserControlVM
@@ -35,9 +38,10 @@ namespace WPFSTD105
         public CustomizedBoltsGroupSettingUserControlVM()
         {
             GroupBoltsTypeByTargetSelected = GroupBoltsTypeByTarget.Project;
+            
         }
 
-        private SettingParGroupBoltsTypeModel _settingParGroupBoltsType = new SettingParGroupBoltsTypeModel();
+        private SettingParGroupBoltsTypeModel _settingParGroupBoltsType = new SettingParGroupBoltsTypeModel() { groupBoltsAttr = new GroupBoltsAttr() };
         public SettingParGroupBoltsTypeModel SettingParGroupBoltsType
         {
             get => _settingParGroupBoltsType;
@@ -56,7 +60,7 @@ namespace WPFSTD105
                 _groupBoltsTypeByTargetSelected = value;
 
                 var BNameList = new List<string>();
-               foreach(var obj in SettingParGroupBoltsTypeList)
+                foreach (var obj in SettingParGroupBoltsTypeList)
                 {
                     BNameList.Add(obj.groupBoltsTypeName);
                 };
@@ -70,7 +74,7 @@ namespace WPFSTD105
 
 
 
-        public List<string> SettingParGroupBoltsNameList    { get; set; }
+        public List<string> SettingParGroupBoltsNameList { get; set; }
 
         private string _selectedGroupBoltName;
         public string SelectedGroupBoltName
@@ -83,7 +87,7 @@ namespace WPFSTD105
             {
                 _selectedGroupBoltName = value;
                 OnPropertyChanged(nameof(SelectedGroupBoltName));
-                if(string.IsNullOrEmpty(_selectedGroupBoltName))
+                if (string.IsNullOrEmpty(_selectedGroupBoltName))
                 {
                     SettingParGroupBoltsType = null;
                 }
@@ -121,16 +125,17 @@ namespace WPFSTD105
 
         //新增/修改/刪除
         public ICommand Add_SettingParGroupBolts
-        { 
+        {
             get
             {
                 return new RelayCommand(() =>
                 {
                     STDSerialization ser = new STDSerialization();
+                    SettingParGroupBoltsType.Creation = DateTime.Now;
                     ser.SetGroupBoltsTypeList(GroupBoltsTypeByTargetSelected, SettingParGroupBoltsType);
                     SettingParGroupBoltsTypeList.Add(SettingParGroupBoltsType);
 
-                    if(!SettingParGroupBoltsNameList.Exists(x=>x == SettingParGroupBoltsType.groupBoltsTypeName))
+                    if (!SettingParGroupBoltsNameList.Exists(x => x == SettingParGroupBoltsType.groupBoltsTypeName))
                         SettingParGroupBoltsNameList.Add(SettingParGroupBoltsType.groupBoltsTypeName);
 
                     var CopyArray = SettingParGroupBoltsNameList.ToArray();
@@ -139,17 +144,16 @@ namespace WPFSTD105
                 });
             }
         }
-        
 
-       
+
+
         public ICommand Edit_SettingParGroupBolts
         {
             get
             {
-
                 return new RelayCommand(() =>
                 {
-
+                    EditGroupBoltsType();
                 });
             }
         }
@@ -159,25 +163,119 @@ namespace WPFSTD105
             {
                 return new RelayCommand(() =>
                 {
-                    var Index = SettingParGroupBoltsTypeList.FindIndex(x => x.groupBoltsTypeName == SettingParGroupBoltsType.groupBoltsTypeName);
-                    if (Index != -1)
-                    {
-                        SettingParGroupBoltsTypeList.RemoveAt(Index);
-                    }
+                    DeleteGroupBoltsType();
                 });
 
             }
         }
 
-        public void Insert() 
+        public void Insert()
         {
             // 讀檔
-      
+
             //var a = ser.GetGroupBoltsTypeList(GroupBoltsTypeByTargetSelected);
             //ser.SetGroupBoltsTypeList_Cus();
         }
 
+        public void DeleteGroupBoltsType()
+        {
+            var Index = SettingParGroupBoltsTypeList.FindIndex(x => x.groupBoltsTypeName == SettingParGroupBoltsType.groupBoltsTypeName);
+            if (Index != -1)
+            {
+                SettingParGroupBoltsTypeList.RemoveAt(Index);
+            }
+            STDSerialization ser = new STDSerialization();
+            SettingParGroupBoltsTypeModel gbt = ser.GetGroupBoltsType(GroupBoltsTypeByTargetSelected, SettingParGroupBoltsType.groupBoltsTypeName);
+            if (gbt != null)
+            {
 
+                string dataPath = $@"{ApplicationVM.GetGroupBoltsTypeDirectory_NO_CREATE(GroupBoltsTypeByTargetSelected)}\{SettingParGroupBoltsType.groupBoltsTypeName}.db";
+                if (File.Exists(dataPath))
+                {
+                    try
+                    {
+                        File.Delete(dataPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        string message = (ex.InnerException != null ? ex.InnerException.Message : string.Empty);
+                        WinUIMessageBox.Show(null,
+                             $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}刪除失敗\n 錯誤訊息:{message}",
+                             "通知",
+                             MessageBoxButton.OK,
+                             MessageBoxImage.Exclamation,
+                             MessageBoxResult.None,
+                             MessageBoxOptions.None,
+                              FloatingMode.Window);
+                        return;
+                    }
+                    WinUIMessageBox.Show(null,
+                                  $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}已刪除",
+                                  "通知",
+                                  MessageBoxButton.OK,
+                                  MessageBoxImage.Exclamation,
+                                  MessageBoxResult.None,
+                                  MessageBoxOptions.None,
+                                   FloatingMode.Window);
+                    SettingParGroupBoltsNameList.Remove(SettingParGroupBoltsType.groupBoltsTypeName);
+                    var CopyArray = SettingParGroupBoltsNameList.ToArray();
+                    SettingParGroupBoltsNameList = null;
+                    SettingParGroupBoltsNameList = CopyArray.ToList();
+                    return;
+                }
+                else
+                {
+                    WinUIMessageBox.Show(null,
+                               $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}不存在，無法刪除",
+                               "通知",
+                               MessageBoxButton.OK,
+                               MessageBoxImage.Exclamation,
+                               MessageBoxResult.None,
+                               MessageBoxOptions.None,
+                                FloatingMode.Window);
+                    return;
+                }
+
+            }
+            else
+            {
+                WinUIMessageBox.Show(null,
+                           $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}不存在，無法刪除",
+                           "通知",
+                           MessageBoxButton.OK,
+                           MessageBoxImage.Exclamation,
+                           MessageBoxResult.None,
+                           MessageBoxOptions.None,
+                            FloatingMode.Window);
+                return;
+            }
+        }
+
+
+        public void EditGroupBoltsType()
+        {
+            STDSerialization ser = new STDSerialization();
+            ObservableCollection<SettingParGroupBoltsTypeModel> list = ser.GetGroupBoltsTypeList(GroupBoltsTypeByTargetSelected);
+            if (list.Any(x => x.groupBoltsTypeName == SettingParGroupBoltsType.groupBoltsTypeName))
+            {
+                SettingParGroupBoltsTypeModel gbt = list.FirstOrDefault(x => x.groupBoltsTypeName == SettingParGroupBoltsType.groupBoltsTypeName);
+                gbt.groupBoltsAttr = SettingParGroupBoltsType.groupBoltsAttr;
+                gbt.Revise = DateTime.Now;
+                ser.SetGroupBoltsTypeList(GroupBoltsTypeByTargetSelected, gbt);
+            }
+            else
+            {
+                WinUIMessageBox.Show(null,
+                                   $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}不存在，無法編輯",
+                                   "通知",
+                                   MessageBoxButton.OK,
+                                   MessageBoxImage.Exclamation,
+                                   MessageBoxResult.None,
+                                   MessageBoxOptions.None,
+                                    FloatingMode.Window);
+                return;
+            }
+        }
 
 
     }
