@@ -909,33 +909,40 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 任意打點設定值
         /// </summary>
-        public GroupBoltsAttr GetJointPointBoltsAttr()
+        public GroupBoltsAttr GetJointPointBoltsAttr(FACE Face)
         {
             this.Steelbuffer = (SteelAttr)SteelAttr.Clone();
             Boltsbuffer.groupBoltsType = GroupBoltsAttr.groupBoltsType;
             Boltsbuffer.GUID = GroupBoltsAttr.GUID;
             //直徑設定
 
-                Boltsbuffer.Dia = GroupBoltsAttr.Dia;
-                Boltsbuffer.Mode = (AXIS_MODE)AxisModeType;
-     
+            // Boltsbuffer.Dia = GroupBoltsAttr.Dia;
+            // Boltsbuffer.Mode = (AXIS_MODE)AxisModeType;
+            Boltsbuffer.Dia = GroupBoltsAttr.Dia;
+            Boltsbuffer.Mode = AXIS_MODE.POINT;
+
             //水平螺栓間距
 
-                Boltsbuffer.dX = GroupBoltsAttr.dX;
-                Boltsbuffer.xCount = GroupBoltsAttr.xCount;
+            //Boltsbuffer.dX = GroupBoltsAttr.dX;
+            //Boltsbuffer.xCount = GroupBoltsAttr.xCount;
+            Boltsbuffer.dX = "0" ;
+            Boltsbuffer.xCount = 1 ;
+
 
             //垂直螺栓
 
-                Boltsbuffer.dY = GroupBoltsAttr.dY;
-                Boltsbuffer.yCount = GroupBoltsAttr.yCount;
+            //Boltsbuffer.dY = GroupBoltsAttr.dY;
+            //Boltsbuffer.yCount = GroupBoltsAttr.yCount;
+            Boltsbuffer.dY = "0" ;
+            Boltsbuffer.yCount = 1 ;
 
             //要產生的面
 
-                Boltsbuffer.Face = (GD_STD.Enum.FACE)GroupBoltsAttr.Face;
+            //Boltsbuffer.Face = (GD_STD.Enum.FACE)this.rbtn_DrillingFace;
+            Boltsbuffer.Face = (GD_STD.Enum.FACE)Face;
 
-
-                //目前座標是2D座標只是需要先判斷 X Y 座標
-                switch (Boltsbuffer.Face)
+            //目前座標是2D座標只是需要先判斷 X Y 座標
+            switch (Boltsbuffer.Face)
                 {
                     case FACE.TOP:
                         Boltsbuffer.t = Steelbuffer.t1; //孔位高度

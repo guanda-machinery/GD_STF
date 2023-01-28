@@ -3,6 +3,7 @@ using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
 using DevExpress.Data.Extensions;
+using DevExpress.Dialogs.Core.View;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Core.Native;
@@ -11,6 +12,7 @@ using DevExpress.Xpf.WindowsUI;
 using GD_STD;
 using GD_STD.Data;
 using GD_STD.Enum;
+using SplitLineSettingData;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -2056,112 +2058,109 @@ namespace STD_105.Office
 #endif
             });
 
+
+
             //任意打點
             ViewModel.AddJointPointCutB = new RelayCommand(() =>
             {
 
+               if (ViewModel.ArbitrarilyJointPointList.Count % 2 != 0)  // 是否為偶數列, 否則跳出
+                {
+                    WinUIMessageBox.Show(null,
+                        $"輸入列數必須為偶數列",
+                        "通知",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                        FloatingMode.Window);
+                    return;
+                }
+
                 //切割線B的命令
+            
+                STDSerialization ser = new STDSerialization(); //序列化處理器
+                MyCs myCs = new MyCs();
+                ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();                          //  備份當前加工區域數值
+                double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].A);       //  依照腹板斜邊打點比列(短)
+                double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].B);       //  依照腹板斜邊打點比列(長)
+                double tp1x, tpr1x, tpr2x;
+                double tp1y, tpr1y, tpr2y;
+
 
                 SteelAttr sa = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
-                ViewModel.SteelAttr = sa;
-                ViewModel.GetSteelAttr();
-            
-                /*3D螺栓*/
 
-                foreach (var item in ViewModel.ArbitrarilyJointPointList)
+                ViewModel.WriteSteelAttr(sa);
+
+
+
+                var _TmpPosXY = ViewModel.ArbitrarilyJointPointList;
+                for ( int i = 0; i < ViewModel.ArbitrarilyJointPointList.Count ; i ++ )
                 {
+                   
+                    if (i % 2 == 0)
+                    {
+                       continue;
+                    }
 
-                 //   GroupBoltsAttr TmpBoltsArr = ViewModel.GetJointPointBoltsAttr();
-                    //if (!ViewModel.CheckGroupBoltsAttr(gba) && ViewModel.showMessage)
-                    //{
-                    //    return;
-                    //}
+                    List<Point3D> tmplist = new List<Point3D>() { };
+                    // 計算斜邊打點位置
+                    tp1x = _TmpPosXY[i].X_Position - _TmpPosXY[i-1].X_Position;
+                    tpr1x = Math.Round((_TmpPosXY[i].X_Position - (tp1x * PosRatioA)),2);
+                    tpr2x = Math.Round((_TmpPosXY[i].X_Position - (tp1x * PosRatioB)),2);
 
-                    // Steel3DBlock.FillCutSetting(sa);
+                    tp1y = _TmpPosXY[i].Y_Position - _TmpPosXY[i-1].Y_Position;
+                    tpr1y = Math.Round((_TmpPosXY[i].Y_Position - (tp1y * PosRatioA)),2);
+                    tpr2y = Math.Round((_TmpPosXY[i].Y_Position - (tp1y * PosRatioB)),2);
+                    //
+
+                    // 紀錄2孔打點位置
+                    Point3D PointH1 = new Point3D(tpr1x, tpr1y);
+                    tmplist.Add(PointH1);
+                    Point3D PointH2 = new Point3D(tpr2x, tpr2y);
+                    tmplist.Add(PointH2);
 
 
 
-                    //GroupBoltsAttr TmpBoltsArr = ViewModel.GetHypotenuseBoltsAttr(FACE.FRONT, START_HOLE.START);
+                    /*3D螺栓*/
                     GroupBoltsAttr TmpBoltsArr = new GroupBoltsAttr();
 
-                    TmpBoltsArr = ViewModel.GetJointPointBoltsAttr();
-                    TmpBoltsArr.dX = "0";
-                    TmpBoltsArr.dY = "0";
-                    TmpBoltsArr.xCount = 1;
-                    TmpBoltsArr.yCount = 1;
-                    TmpBoltsArr.Mode = AXIS_MODE.POINT;
-                    TmpBoltsArr.X = item.X_Position;
-                    TmpBoltsArr.Y = item.Y_Position;
-                    TmpBoltsArr.Face = (GD_STD.Enum.FACE)ViewModel.rbtn_CutFace;
-                    TmpBoltsArr.GUID = Guid.NewGuid();
-                    Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+                    for (int z = 0; z < 2; z++)
+                    {
+
+                        if (ViewModel.rbtn_DrillingFace==FACE.FRONTandBack)      // 判斷如果是兩側翼板 則先打點於一邊翼板
+                        {
+                            TmpBoltsArr = ViewModel.GetJointPointBoltsAttr(FACE.FRONT);
+                        }
+                        else
+                        {
+                            TmpBoltsArr = ViewModel.GetJointPointBoltsAttr(ViewModel.rbtn_DrillingFace);    // 依目前選擇面打點
+                        }
+                        TmpBoltsArr.X = tmplist[z].X;
+                        TmpBoltsArr.Y = tmplist[z].Y;
+                        TmpBoltsArr.GUID = Guid.NewGuid();
+                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+                        BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                    }
+
+                    if (ViewModel.rbtn_DrillingFace == FACE.FRONTandBack)  // 判斷如果是兩側翼板 則打點於另一翼板
+                    {
+
+                        for (int z = 0; z < 2; z++)
+                        {
+                            TmpBoltsArr = ViewModel.GetJointPointBoltsAttr(FACE.BACK);
+                            TmpBoltsArr.X = tmplist[z].X;
+                            TmpBoltsArr.Y = tmplist[z].Y;
+                            TmpBoltsArr.GUID = Guid.NewGuid();
+                            Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+                            BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                        }
 
 
-
-                    //if (ViewModel.fromModifyHole)
-                    //{
-                    //    if (!check && ViewModel.showMessage)
-                    //    {
-                    //        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
-                    //        ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
-                    //        WinUIMessageBox.Show(null,
-                    //                     $"孔群落入非加工區域，請再確認",
-                    //                     "通知",
-                    //                     MessageBoxButton.OK,
-                    //                     MessageBoxImage.Exclamation,
-                    //                     MessageBoxResult.None,
-                    //                     MessageBoxOptions.None,
-                    //                      FloatingMode.Window);
-                    //        ViewModel.fclickOK = true;
-                    //        //return;
-                    //    }
-                    //    else
-                    //    {
-                    //        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
-                    //        ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = false;
-
-                    //        ViewModel.fclickOK = false;
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    if (!check)
-                    //    {
-                    //        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = true;
-                    //        ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = true;
-                    //        WinUIMessageBox.Show(null,
-                    //                     $"孔群落入非加工區域，請再確認",
-                    //                     "通知",
-                    //                     MessageBoxButton.OK,
-                    //                     MessageBoxImage.Exclamation,
-                    //                     MessageBoxResult.None,
-                    //                     MessageBoxOptions.None,
-                    //                      FloatingMode.Window);
-                    //        ViewModel.fclickOK = true;
-                    //        //return;
-                    //    }
-                    //    else
-                    //    {
-                    //        ((SteelAttr)model.Blocks[1].Entities[0].EntityData).ExclamationMark = false;
-                    //        ((SteelAttr)model.Entities[model.Entities.Count - 1].EntityData).ExclamationMark = false;
-
-                    //        ViewModel.fclickOK = false;
-                    //    }
-                    //}
-                    BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
-
-
-
-                
-
-
-
-
-
-
-
+                    }
 
                 }
+
                 SaveModel(false, true);//存取檔案
                 //刷新模型
                 model.Refresh();

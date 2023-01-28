@@ -1586,7 +1586,7 @@
                             </GroupBox>
 
                                 <StackPanel  Grid.Row="3" Grid.ColumnSpan="2"  Orientation="Horizontal" HorizontalAlignment="Right">
-                                                             <Button Content="輸入" Command="{Binding AddCut}" Margin="5,0"></Button>
+                                <Button Content="輸入" Command="{Binding AddJointPointCutB}" Margin="5,0"></Button>
                                     <!--
                                     <STD105:DataButtons_Office Style="{StaticResource BaseStyle}"
                                                            Modify="{Binding ModifyCut}"
