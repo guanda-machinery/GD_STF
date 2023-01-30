@@ -130,17 +130,7 @@ namespace WPFSTD105
             {
                 return new RelayCommand(() =>
                 {
-                    STDSerialization ser = new STDSerialization();
-                    SettingParGroupBoltsType.Creation = DateTime.Now;
-                    ser.SetGroupBoltsTypeList(GroupBoltsTypeByTargetSelected, SettingParGroupBoltsType);
-                    SettingParGroupBoltsTypeList.Add(SettingParGroupBoltsType);
-
-                    if (!SettingParGroupBoltsNameList.Exists(x => x == SettingParGroupBoltsType.groupBoltsTypeName))
-                        SettingParGroupBoltsNameList.Add(SettingParGroupBoltsType.groupBoltsTypeName);
-
-                    var CopyArray = SettingParGroupBoltsNameList.ToArray();
-                    SettingParGroupBoltsNameList = null;
-                    SettingParGroupBoltsNameList = CopyArray.ToList();
+                    AddGroupBoltsType();
                 });
             }
         }
@@ -177,6 +167,27 @@ namespace WPFSTD105
             //ser.SetGroupBoltsTypeList_Cus();
         }
 
+        /// <summary>
+        /// 新增客製孔群
+        /// </summary>
+        public void AddGroupBoltsType() 
+        {
+            STDSerialization ser = new STDSerialization();
+            SettingParGroupBoltsType.Creation = DateTime.Now;
+            ser.SetGroupBoltsTypeList(GroupBoltsTypeByTargetSelected, SettingParGroupBoltsType);
+            SettingParGroupBoltsTypeList.Add(SettingParGroupBoltsType);
+
+            if (!SettingParGroupBoltsNameList.Exists(x => x == SettingParGroupBoltsType.groupBoltsTypeName))
+                SettingParGroupBoltsNameList.Add(SettingParGroupBoltsType.groupBoltsTypeName);
+
+            var CopyArray = SettingParGroupBoltsNameList.ToArray();
+            SettingParGroupBoltsNameList = null;
+            SettingParGroupBoltsNameList = CopyArray.ToList();
+        }
+
+        /// <summary>
+        /// 刪除客製孔群
+        /// </summary>
         public void DeleteGroupBoltsType()
         {
             var Index = SettingParGroupBoltsTypeList.FindIndex(x => x.groupBoltsTypeName == SettingParGroupBoltsType.groupBoltsTypeName);
@@ -251,7 +262,9 @@ namespace WPFSTD105
             }
         }
 
-
+        /// <summary>
+        /// 編輯客製孔群
+        /// </summary>
         public void EditGroupBoltsType()
         {
             STDSerialization ser = new STDSerialization();
