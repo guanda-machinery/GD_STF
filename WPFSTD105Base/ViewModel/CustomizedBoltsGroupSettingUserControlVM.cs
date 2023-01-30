@@ -57,12 +57,12 @@ namespace WPFSTD105
 
                 var BNameList = new List<string>();
                foreach(var obj in SettingParGroupBoltsTypeList)
-                {
+               {
                     BNameList.Add(obj.groupBoltsTypeName);
-                };
+               };
                 SettingParGroupBoltsNameList = BNameList;
-                if (BNameList.Count > 0)
-                    SelectedGroupBoltName = BNameList.First();
+                if (SettingParGroupBoltsNameList.Count > 0)
+                    SelectedGroupBoltName = SettingParGroupBoltsNameList.First();
                 else
                     SelectedGroupBoltName = null;
             }
@@ -70,7 +70,32 @@ namespace WPFSTD105
 
 
 
-        public List<string> SettingParGroupBoltsNameList    { get; set; }
+        private List<string> _settingParGroupBoltsNameList =new List<string>();
+
+
+        public List<string> SettingParGroupBoltsNameList
+        {
+            get
+            {
+                var SettingParGroupBoltsList = new List<string>();
+
+                const string NotSelectGroupBolts = "未選擇孔群";
+                //固定補充一個[未選擇選項]
+
+                SettingParGroupBoltsList.Add(NotSelectGroupBolts);
+                SettingParGroupBoltsList.AddRange(_settingParGroupBoltsNameList);
+                return SettingParGroupBoltsList;
+            }
+            set
+            {
+                _settingParGroupBoltsNameList = value;
+            }
+        }
+
+
+
+
+
 
         private string _selectedGroupBoltName;
         public string SelectedGroupBoltName
@@ -90,6 +115,17 @@ namespace WPFSTD105
             }
         }
 
+        public ICommand BuiltNewGroupBolt
+        {
+            get
+            {
+                return new RelayCommand(() =>
+                {
+                        SettingParGroupBoltsType =  new SettingParGroupBoltsTypeModel();
+                });
+            }
+        }
+
         public ICommand ReadSelectGroupBolt
         {
             get
@@ -99,6 +135,8 @@ namespace WPFSTD105
                     var index = SettingParGroupBoltsTypeList.FindIndex(x => x.groupBoltsTypeName == SelectedGroupBoltName);
                     if (index != -1)
                         SettingParGroupBoltsType = SettingParGroupBoltsTypeList[index];
+                    else
+                        SettingParGroupBoltsType = null;
                 });
             }
         }
@@ -162,7 +200,7 @@ namespace WPFSTD105
                     var Index = SettingParGroupBoltsTypeList.FindIndex(x => x.groupBoltsTypeName == SettingParGroupBoltsType.groupBoltsTypeName);
                     if (Index != -1)
                     {
-                        SettingParGroupBoltsTypeList.RemoveAt(Index);
+                       SettingParGroupBoltsTypeList.RemoveAt(Index);
                     }
                 });
 

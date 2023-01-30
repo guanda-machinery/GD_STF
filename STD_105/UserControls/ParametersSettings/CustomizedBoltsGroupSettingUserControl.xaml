@@ -28,7 +28,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
                         <dxe:ComboBoxEdit Margin="5" Width="200"   ApplyItemTemplateToSelectedItem="True"   IsTextEditable="False"
                                                                    EditValue="{Binding GroupBoltsTypeByTargetSelected, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                             <dxmvvm:Interaction.Behaviors>
@@ -38,12 +38,13 @@
                         </dxe:ComboBoxEdit>
 
                         <dxe:ComboBoxEdit Margin="5" Width="200"   ApplyItemTemplateToSelectedItem="True" 
-                                          EditValue="{Binding SelectedGroupBoltName}"
+                                          EditValue="{Binding SelectedGroupBoltName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                           ItemsSource="{Binding SettingParGroupBoltsNameList}">
 
                         </dxe:ComboBoxEdit>
                         <TextBox Text="{Binding SettingParGroupBoltsType.groupBoltsTypeName , UpdateSourceTrigger=PropertyChanged}"/>
-                        <Button Command="{Binding ReadSelectGroupBolt}" Content="讀取紀錄" />
+                        <Button Command="{Binding BuiltNewGroupBolt}" Content="新建孔群" />
+                        <Button Command="{Binding ReadSelectGroupBolt}" Content="讀取孔群" />
 
                     </StackPanel>
                     <GroupBox Grid.Column="0" Grid.Row="1" Header="孔參數" Margin="2">
@@ -82,7 +83,7 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition MinWidth="50"/>
                                 <ColumnDefinition  Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
@@ -111,7 +112,7 @@
                         </TextBox>
                         <dxe:ComboBoxEdit Grid.Column="2" Grid.Row="0" Margin="2,0" IsTextEditable="False" Style="{StaticResource SiegPositionComboBoxEditOnlyIcon}" Height="24"
                                                            ApplyItemTemplateToSelectedItem="True" 
-                                        EditValue="{Binding X_BoltsArrayDirection}">
+                                        EditValue="{Binding SettingParGroupBoltsType.groupBoltsAttr.X_BoltsArrayDirection}">
                             <dxmvvm:Interaction.Behaviors>
                                 <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:ArrayDirection}" ImageSize="20,20" AllowImages="False" />
                                 <!--SortMode="DisplayName"-->

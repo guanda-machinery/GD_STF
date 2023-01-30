@@ -313,8 +313,8 @@ namespace WPFSTD105.ViewModel
             { 
                 _mCurrent = value;
                 OnPropertyChanged(nameof(MCurrent));
-
-                MCurrentMaterialNumber = Finish_UndoneDataViews[_mCurrent].MaterialNumber;
+                if(Finish_UndoneDataViews.Count >0)
+                    MCurrentMaterialNumber = Finish_UndoneDataViews[_mCurrent].MaterialNumber;
                 OnPropertyChanged(nameof(MCurrentMaterialNumber));
             }
         }
@@ -473,12 +473,59 @@ namespace WPFSTD105.ViewModel
             {
                 if (args.Item is MaterialDataView)
                 {
+                    var MaterialData = args.Item as MaterialDataView;
+                    //檢查是否可加工
+
+                    if (!MachineDrillkeyValueDict.ContainsKey(MaterialData.MaterialNumber))
+                    {
+                        MachineDrillkeyValueDict[MaterialData.MaterialNumber] = GenerateMachiningDataPairs(MaterialData);
+                    }
+
+                    foreach (var DrillKeyValuePair in MachineDrillkeyValueDict[MaterialData.MaterialNumber])
+                    {
+                        if (DrillKeyValuePair.Value.Exists(Va => (Va.X < 5)))
+                        {
+                            AddOperatingLog(LogSourceEnum.Machine, $"素材編號：{MaterialData.MaterialNumber}加工座標有誤，加工孔不可在入料端邊緣的5mm之內", false);
+                            ScheduleGridC.Dispatcher.Invoke(() =>
+                            {
+                                WinUIMessageBox.Show(null,
+                                $"素材編號：{MaterialData.MaterialNumber}加工座標有誤，加工孔不可在入料端邊緣的5mm之內",
+                                $"通知",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Exclamation,
+                                MessageBoxResult.None,
+                                MessageBoxOptions.None,
+                                FloatingMode.Adorner);
+                            }); 
+                            return;
+                        }
+
+                        if (DrillKeyValuePair.Value.Exists(Va => ((MaterialData.LengthStr - Va.X )< 5)))
+                        {
+                            AddOperatingLog(LogSourceEnum.Machine, $"素材編號：{MaterialData.MaterialNumber}加工座標有誤，加工孔不可在出料端邊緣的5mm之內", false);
+                            ScheduleGridC.Dispatcher.Invoke(() =>
+                            {
+                                WinUIMessageBox.Show(null,
+                                $"素材編號：{MaterialData.MaterialNumber}加工座標有誤，加工孔不可在出料端邊緣的5mm之內",
+                                $"通知",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Exclamation,
+                                MessageBoxResult.None,
+                                MessageBoxOptions.None,
+                                FloatingMode.Adorner);
+                            });
+                            return;
+                        }
+                    }
+
+
+
                     Task.Run(() =>
                     {
                         DevExpress.Xpf.Core.SplashScreenManager InsertMProcessingScreenWin = DevExpress.Xpf.Core.SplashScreenManager.Create(() => new ProcessingScreenWindow(), new DXSplashScreenViewModel { });
                         InsertMProcessingScreenWin.Show();
                         InsertMProcessingScreenWin.ViewModel.Status = "正在加入零件";
-                        InsertMaterial(InsertMProcessingScreenWin.ViewModel, args.Item as MaterialDataView ); 
+                        InsertMaterial(InsertMProcessingScreenWin.ViewModel, MaterialData);
                         InsertMProcessingScreenWin.Close();
                     });
                 }
@@ -2429,7 +2476,6 @@ namespace WPFSTD105.ViewModel
                                 if (FIndex != -1)
                                 {
                                     MachineDrillkeyValueDict[el_MaterialNumber] = GenerateMachiningDataPairs(Finish_UndoneDataViews[FIndex]);
-                                
                                 }
                                 else
                                 {
