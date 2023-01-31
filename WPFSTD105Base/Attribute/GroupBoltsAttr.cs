@@ -77,7 +77,7 @@ namespace WPFSTD105.Attribute
         /// <summary>
         /// 起始孔位置
         /// </summary>
-        public START_HOLE StartHole { get; set; }
+        public START_HOLE StartHole { get; set; } = START_HOLE.MIDDLE;
         /// <summary>
         /// 孔群種類
         /// </summary>

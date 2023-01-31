@@ -1121,25 +1121,27 @@ namespace WPFSTD105.Model
                         bool hasOutSteel = false;
                         nc.GroupBoltsAttrs.ForEach(bolt =>
                         {
-                            GroupBoltsAttr temp = new GroupBoltsAttr()
-                            {
-                                BlockName = bolt.BlockName,
-                                Dia = bolt.Dia,
-                                dX = bolt.dX,
-                                dY = bolt.dY,
-                                Face = bolt.Face,
-                                GUID = bolt.GUID,
-                                Mode = bolt.Mode,
-                                StartHole = bolt.StartHole,
-                                t = bolt.t,
-                                Type = bolt.Type,
-                                xCount = bolt.xCount,
-                                yCount = bolt.yCount,
-                                X = bolt.X,
-                                Y = bolt.Y,
-                                Z = bolt.Z,
-                                groupBoltsType = bolt.groupBoltsType
-                            };
+                            GroupBoltsAttr temp = (GroupBoltsAttr)bolt.DeepClone();
+                            //new GroupBoltsAttr()
+                            //{
+                            //    BlockName = bolt.BlockName,
+                            //    Dia = bolt.Dia,
+                            //    dX = bolt.dX,
+                            //    dY = bolt.dY,
+                            //    Face = bolt.Face,
+                            //    GUID = bolt.GUID,
+                            //    Mode = bolt.Mode,
+                            //    StartHole = bolt.StartHole,
+                            //    t = bolt.t,
+                            //    Type = bolt.Type,
+                            //    xCount = bolt.xCount,
+                            //    yCount = bolt.yCount,
+                            //    X = bolt.X,
+                            //    Y = bolt.Y,
+                            //    Z = bolt.Z,
+                            //    groupBoltsType = bolt.groupBoltsType,
+                            //    X_BoltsArrayDirection = bolt.X_BoltsArrayDirection,
+                            //};
                             bool check = true;
                             // 更新此孔群的GUID 以model.Entities為主
                             ObSettingVM.UpdateNewGroupBoltsAttrGUID(model, temp);
@@ -1339,25 +1341,27 @@ namespace WPFSTD105.Model
                         nc.GroupBoltsAttrs.ForEach(bolt =>
                         {
                             // 原型鋼的孔oldBolts
-                            GroupBoltsAttr temp = new GroupBoltsAttr()
-                            {
-                                BlockName = bolt.BlockName,
-                                Dia = bolt.Dia,
-                                dX = bolt.dX,
-                                dY = bolt.dY,
-                                Face = bolt.Face,
-                                GUID = bolt.GUID,
-                                Mode = bolt.Mode,
-                                StartHole = bolt.StartHole,
-                                t = bolt.t,
-                                Type = bolt.Type,
-                                xCount = bolt.xCount,
-                                yCount = bolt.yCount,
-                                X = bolt.X,
-                                Y = bolt.Y,
-                                Z = bolt.Z,
-                                groupBoltsType = bolt.groupBoltsType,
-                            };
+                            GroupBoltsAttr temp = (GroupBoltsAttr)bolt.DeepClone();
+                            //new GroupBoltsAttr()
+                            //{
+                            //    BlockName = bolt.BlockName,
+                            //    Dia = bolt.Dia,
+                            //    dX = bolt.dX,
+                            //    dY = bolt.dY,
+                            //    Face = bolt.Face,
+                            //    GUID = bolt.GUID,
+                            //    Mode = bolt.Mode,
+                            //    StartHole = bolt.StartHole,
+                            //    t = bolt.t,
+                            //    Type = bolt.Type,
+                            //    xCount = bolt.xCount,
+                            //    yCount = bolt.yCount,
+                            //    X = bolt.X,
+                            //    Y = bolt.Y,
+                            //    Z = bolt.Z,
+                            //    groupBoltsType = bolt.groupBoltsType,
+                            //    X_BoltsArrayDirection = bolt.X_BoltsArrayDirection,
+                            //};
 
                             EntityList meshes = new EntityList();
                             Block blockTemp = new Block();
