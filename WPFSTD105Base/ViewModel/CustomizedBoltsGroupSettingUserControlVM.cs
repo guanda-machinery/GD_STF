@@ -16,6 +16,7 @@ using System.Windows.Input;
 using WPFSTD105.Attribute;
 using WPFWindowsBase;
 using DevExpress.Xpf.Core;
+using DevExpress.Mvvm.Native;
 
 
 //CustomizeGroupBoltsUserControlVM
@@ -37,20 +38,35 @@ namespace WPFSTD105
         /// </summary>
         public CustomizedBoltsGroupSettingUserControlVM()
         {
-            GroupBoltsTypeByTargetSelected = GroupBoltsTypeByTarget.Project;
-            
+             GroupBoltsTypeByTargetSelected = GroupBoltsTypeByTarget.Project;
+            SettingParGroupBoltsType = new SettingParGroupBoltsTypeModel() { groupBoltsTypeName = "NewGroupBolts", groupBoltsAttr = new GroupBoltsAttr() };
         }
 
-        private SettingParGroupBoltsTypeModel _settingParGroupBoltsType = new SettingParGroupBoltsTypeModel() { groupBoltsAttr = new GroupBoltsAttr() };
+        private SettingParGroupBoltsTypeModel _settingParGroupBoltsType= null;
+        /// <summary>
+        /// combobox用
+        /// </summary>
         public SettingParGroupBoltsTypeModel SettingParGroupBoltsType
         {
-            get => _settingParGroupBoltsType;
-            set { _settingParGroupBoltsType = value; OnPropertyChanged(nameof(SettingParGroupBoltsType)); }
+            get
+            {
+                if(_settingParGroupBoltsType == null)
+                {
+                    _settingParGroupBoltsType = new SettingParGroupBoltsTypeModel() { groupBoltsTypeName = "NewGroupBolts", groupBoltsAttr = new GroupBoltsAttr() };
+                }
+                return _settingParGroupBoltsType; 
+            }
+            set
+            {
+                _settingParGroupBoltsType = value;
+                OnPropertyChanged(nameof(SettingParGroupBoltsType)); 
+            }
         }
+
 
         private GroupBoltsTypeByTarget _groupBoltsTypeByTargetSelected;
         /// <summary>
-        /// 客製孔群 - 依附類別(系統客製、專案客製)(下拉或核選元件)
+        /// 讀取客製孔群 - 依附類別(系統客製、專案客製)(下拉或核選元件)
         /// </summary>
         public GroupBoltsTypeByTarget GroupBoltsTypeByTargetSelected
         {
@@ -58,66 +74,20 @@ namespace WPFSTD105
             set
             {
                 _groupBoltsTypeByTargetSelected = value;
-
-                var BNameList = new List<string>();
-               foreach(var obj in SettingParGroupBoltsTypeList)
-               {
-                    BNameList.Add(obj.groupBoltsTypeName);
-               };
-                SettingParGroupBoltsNameList = BNameList;
-                if (SettingParGroupBoltsNameList.Count > 0)
-                    SelectedGroupBoltName = SettingParGroupBoltsNameList.First();
-                else
-                    SelectedGroupBoltName = null;
+                SettingParGroupBoltsTypeList = new STDSerialization().GetGroupBoltsTypeList(_groupBoltsTypeByTargetSelected);
+                SettingParGroupBoltsType = SettingParGroupBoltsTypeModel.NotSelectGroupBoltsTypeModel; 
             }
         }
 
 
 
-        private List<string> _settingParGroupBoltsNameList =new List<string>();
+        /// <summary>
+        /// 客製孔群寫入目標
+        /// </summary>
+        public GroupBoltsTypeByTarget GroupBoltsTypeWriteTarget{ get; set; }
 
 
-        public List<string> SettingParGroupBoltsNameList
-        {
-            get
-            {
-                var SettingParGroupBoltsList = new List<string>();
-
-                const string NotSelectGroupBolts = "未選擇孔群";
-                //固定補充一個[未選擇選項]
-
-                SettingParGroupBoltsList.Add(NotSelectGroupBolts);
-                SettingParGroupBoltsList.AddRange(_settingParGroupBoltsNameList);
-                return SettingParGroupBoltsList;
-            }
-            set
-            {
-                _settingParGroupBoltsNameList = value;
-            }
-        }
-
-
-
-
-
-
-        private string _selectedGroupBoltName;
-        public string SelectedGroupBoltName
-        {
-            get
-            {
-                return _selectedGroupBoltName;
-            }
-            set
-            {
-                _selectedGroupBoltName = value;
-                OnPropertyChanged(nameof(SelectedGroupBoltName));
-                if (string.IsNullOrEmpty(_selectedGroupBoltName))
-                {
-                    SettingParGroupBoltsType = null;
-                }
-            }
-        }
+        private bool IsReadHistoryGroupBolt = false;
 
         public ICommand BuiltNewGroupBolt
         {
@@ -125,55 +95,122 @@ namespace WPFSTD105
             {
                 return new RelayCommand(() =>
                 {
-                        SettingParGroupBoltsType =  new SettingParGroupBoltsTypeModel();
+                        SettingParGroupBoltsType =  new SettingParGroupBoltsTypeModel() {  groupBoltsTypeName= "NewGroupBolts", groupBoltsAttr = new GroupBoltsAttr()};
+                    IsReadHistoryGroupBolt = false;
                 });
             }
         }
 
-        public ICommand ReadSelectGroupBolt
+        public ICommand ReadGroupBolt
         {
             get
             {
                 return new RelayCommand(() =>
                 {
-                    var index = SettingParGroupBoltsTypeList.FindIndex(x => x.groupBoltsTypeName == SelectedGroupBoltName);
-                    if (index != -1)
-                        SettingParGroupBoltsType = SettingParGroupBoltsTypeList[index];
-                    else
-                        SettingParGroupBoltsType = null;
+                    if(!IsReadHistoryGroupBolt)
+                        SettingParGroupBoltsType = SettingParGroupBoltsTypeModel.NotSelectGroupBoltsTypeModel;
+                    IsReadHistoryGroupBolt = true;
                 });
             }
         }
 
 
-        private ObservableCollection<SettingParGroupBoltsTypeModel> SettingParGroupBoltsTypeList
+        private List<SettingParGroupBoltsTypeModel> _settingParGroupBoltsTypeList = new List<SettingParGroupBoltsTypeModel>();
+        public List<SettingParGroupBoltsTypeModel> SettingParGroupBoltsTypeList
         {
             get
             {
-                if (GroupBoltsTypeByTargetSelected == GroupBoltsTypeByTarget.System)
-                    return new STDSerialization().GetGroupBoltsTypeList(GroupBoltsTypeByTarget.System);
-                else if (GroupBoltsTypeByTargetSelected == GroupBoltsTypeByTarget.Project)
-                    return new STDSerialization().GetGroupBoltsTypeList(GroupBoltsTypeByTarget.Project);
-                else
-                    return new ObservableCollection<SettingParGroupBoltsTypeModel>();
+                var ReturnList = new List<SettingParGroupBoltsTypeModel>(); ;
+                if (!_settingParGroupBoltsTypeList.Exists(x=>(x.groupBoltsTypeName == SettingParGroupBoltsTypeModel.NotSelectGroupBoltsTypeModel.groupBoltsTypeName)))
+                {
+                    ReturnList.Add(SettingParGroupBoltsTypeModel.NotSelectGroupBoltsTypeModel);
+                }
+                ReturnList.AddRange(_settingParGroupBoltsTypeList);
+                return ReturnList;
+            }
+            set
+            {
+                _settingParGroupBoltsTypeList = value;
             }
         }
 
 
 
         //新增/修改/刪除
+        /// <summary>
+        /// 新增客製孔群
+        /// </summary>
+
         public ICommand Add_SettingParGroupBolts
         {
             get
             {
                 return new RelayCommand(() =>
                 {
-                    AddGroupBoltsType();
+                    STDSerialization ser = new STDSerialization();
+                    SettingParGroupBoltsType.Creation = DateTime.Now;
+
+                    //需檢查是否有重複檔案 若有重複則提示是否改名 
+ 
+                    var ExistedBoltsTypeList = ser.GetGroupBoltsTypeList(GroupBoltsTypeWriteTarget);
+
+                    if(ExistedBoltsTypeList.Exists(x=>x.groupBoltsTypeName == SettingParGroupBoltsType.groupBoltsTypeName))
+                    {
+                        var NewFileName = SettingParGroupBoltsType.groupBoltsTypeName;
+                      
+                        var BoxResult = WinUIMessageBox.Show(null,
+                            $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}已存在\n" +
+                            $"按下「Yes」會取代檔案，按下「No」則不儲存",
+                            "通知",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.DefaultDesktopOnly,
+                            FloatingMode.Adorner);
+
+                        if(BoxResult == MessageBoxResult.Yes)
+                        {
+
+                        }
+                        if(BoxResult == MessageBoxResult.No)
+                        {
+                            return;
+                            //SettingParGroupBoltsType.groupBoltsTypeName = NewFileName;
+                        }
+                        if (BoxResult == MessageBoxResult.Cancel)
+                        {
+                            return;
+                        }
+                    }
+
+
+
+                    ser.SetGroupBoltsTypeList(GroupBoltsTypeWriteTarget, SettingParGroupBoltsType);
+                 
+                    SettingParGroupBoltsTypeList = new STDSerialization().GetGroupBoltsTypeList(_groupBoltsTypeByTargetSelected);
+
+                    //重整孔群名稱的列表
+
+                  
+                    WinUIMessageBox.Show(null,
+                   $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}成功儲存",
+                   "通知",
+                   MessageBoxButton.OK,
+                   MessageBoxImage.Exclamation,
+                   MessageBoxResult.None,
+                   MessageBoxOptions.DefaultDesktopOnly,
+                    FloatingMode.Adorner);
+
+
                 });
             }
         }
 
 
+
+        /// <summary>
+        /// 編輯客製孔群
+        /// </summary>
 
         public ICommand Edit_SettingParGroupBolts
         {
@@ -181,157 +218,156 @@ namespace WPFSTD105
             {
                 return new RelayCommand(() =>
                 {
-                    EditGroupBoltsType();
+                    STDSerialization ser = new STDSerialization();
+                    List<SettingParGroupBoltsTypeModel> list = ser.GetGroupBoltsTypeList(GroupBoltsTypeByTargetSelected);
+                    try
+                    {
+                        //刪除原始檔案
+                        File.Delete(SettingParGroupBoltsType.OriginalFilePath);
+                        //變更路徑到新檔案
+                        var FilePath = Path.Combine(Path.GetDirectoryName(SettingParGroupBoltsType.OriginalFilePath), SettingParGroupBoltsType.groupBoltsTypeName);
+                       if (string.IsNullOrEmpty(Path.GetExtension(FilePath)))
+                        {
+                            FilePath += ".db";
+                        }
+                        SettingParGroupBoltsType.OriginalFilePath = FilePath; 
+                    }
+                    catch(Exception ex)
+                    {
+
+                    }
+                    SettingParGroupBoltsType.Revise= DateTime.Now;
+                    if(ser.SetGroupBoltsTypeList(GroupBoltsTypeByTargetSelected, SettingParGroupBoltsType))
+                    {
+                        WinUIMessageBox.Show(null,
+                                           $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}成功儲存",
+                                           "通知",
+                                           MessageBoxButton.OK,
+                                           MessageBoxImage.Exclamation,
+                                           MessageBoxResult.None,
+                                           MessageBoxOptions.DefaultDesktopOnly,
+                                            FloatingMode.Window);
+
+                    }
+                    else
+                    {
+                        WinUIMessageBox.Show(null,
+                   $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}不存在，無法編輯",
+                   "通知",
+                   MessageBoxButton.OK,
+                   MessageBoxImage.Exclamation,
+                   MessageBoxResult.None,
+                   MessageBoxOptions.DefaultDesktopOnly,
+                    FloatingMode.Window);
+                    }
+                    
+                  /*  else
+                    {
+                        WinUIMessageBox.Show(null,
+                                           $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}不存在，無法編輯",
+                                           "通知",
+                                           MessageBoxButton.OK,
+                                           MessageBoxImage.Exclamation,
+                                           MessageBoxResult.None,
+                                           MessageBoxOptions.DefaultDesktopOnly,
+                                            FloatingMode.Window);
+                        return;
+                    }*/
                 });
             }
-        }
+        }    
+        
+        /// <summary>
+        /// 刪除客製孔群
+        /// </summary>
         public ICommand Delete_SettingParGroupBolts
         {
             get
             {
                 return new RelayCommand(() =>
                 {
-                    DeleteGroupBoltsType();
-                    var Index = SettingParGroupBoltsTypeList.FindIndex(x => x.groupBoltsTypeName == SettingParGroupBoltsType.groupBoltsTypeName);
-                    if (Index != -1)
+                    STDSerialization ser = new STDSerialization();
+                    var gbtList = ser.GetGroupBoltsTypeList(GroupBoltsTypeByTargetSelected);
+                    // SettingParGroupBoltsTypeModel gbt = ser.GetGroupBoltsType(GroupBoltsTypeByTargetSelected, SettingParGroupBoltsType.groupBoltsTypeName);
+                    var GBIndex = gbtList.FindIndex(x => (x.groupBoltsTypeName == SettingParGroupBoltsType.groupBoltsTypeName));
+                    if (GBIndex !=-1)
                     {
-                       SettingParGroupBoltsTypeList.RemoveAt(Index);
+                       // string dataPath = $@"{ApplicationVM.GetGroupBoltsTypeDirectory_NO_CREATE(GroupBoltsTypeByTargetSelected)}\{SettingParGroupBoltsType.FileName}";
+                        string dataPath = gbtList[GBIndex].OriginalFilePath;
+                        if (File.Exists(dataPath))
+                        {
+                            try
+                            {
+                                File.Delete(dataPath);
+                            }
+                            catch (Exception ex)
+                            {
+                                string message = (ex.InnerException != null ? ex.InnerException.Message : string.Empty);
+                                WinUIMessageBox.Show(null,
+                                     $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}刪除失敗\n 錯誤訊息:{message}",
+                                     "通知",
+                                     MessageBoxButton.OK,
+                                     MessageBoxImage.Exclamation,
+                                     MessageBoxResult.None,
+                                     MessageBoxOptions.DefaultDesktopOnly,
+                                      FloatingMode.Window);
+                                return;
+                            }
+
+                            WinUIMessageBox.Show(null,
+                                          $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}已刪除",
+                                          "通知",
+                                          MessageBoxButton.OK,
+                                          MessageBoxImage.Exclamation,
+                                          MessageBoxResult.None,
+                                          MessageBoxOptions.DefaultDesktopOnly,
+                                           FloatingMode.Window);
+
+                            //刪除之後要重整孔群名稱的列表 並將名稱重新指向未選擇
+                            SettingParGroupBoltsTypeList = new STDSerialization().GetGroupBoltsTypeList(_groupBoltsTypeByTargetSelected);
+                            SettingParGroupBoltsType = SettingParGroupBoltsTypeModel.NotSelectGroupBoltsTypeModel;
+
+                            /* SettingParGroupBoltsNameList.Remove(SettingParGroupBoltsType.groupBoltsTypeName);
+                             var CopyArray = SettingParGroupBoltsNameList.ToArray();
+                             SettingParGroupBoltsNameList = null;
+                             SettingParGroupBoltsNameList = CopyArray.ToList();*/
+                            return;
+                        }
+                        else
+                        {
+                            WinUIMessageBox.Show(null,
+                                       $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}不存在，無法刪除",
+                                       "通知",
+                                       MessageBoxButton.OK,
+                                       MessageBoxImage.Exclamation,
+                                       MessageBoxResult.None,
+                                       MessageBoxOptions.DefaultDesktopOnly,
+                                        FloatingMode.Window);
+                            return;
+                        }
+
                     }
+                    else
+                    {
+                        WinUIMessageBox.Show(null,
+                                   $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}不存在，無法刪除",
+                                   "通知",
+                                   MessageBoxButton.OK,
+                                   MessageBoxImage.Exclamation,
+                                   MessageBoxResult.None,
+                                   MessageBoxOptions.DefaultDesktopOnly,
+                                    FloatingMode.Window);
+                        return;
+                    }
+
+
                 });
 
             }
         }
 
-        public void Insert()
-        {
-            // 讀檔
 
-            //var a = ser.GetGroupBoltsTypeList(GroupBoltsTypeByTargetSelected);
-            //ser.SetGroupBoltsTypeList_Cus();
-        }
 
-        /// <summary>
-        /// 新增客製孔群
-        /// </summary>
-        public void AddGroupBoltsType() 
-        {
-            STDSerialization ser = new STDSerialization();
-            SettingParGroupBoltsType.Creation = DateTime.Now;
-            ser.SetGroupBoltsTypeList(GroupBoltsTypeByTargetSelected, SettingParGroupBoltsType);
-            SettingParGroupBoltsTypeList.Add(SettingParGroupBoltsType);
-
-            if (!SettingParGroupBoltsNameList.Exists(x => x == SettingParGroupBoltsType.groupBoltsTypeName))
-                SettingParGroupBoltsNameList.Add(SettingParGroupBoltsType.groupBoltsTypeName);
-
-            var CopyArray = SettingParGroupBoltsNameList.ToArray();
-            SettingParGroupBoltsNameList = null;
-            SettingParGroupBoltsNameList = CopyArray.ToList();
-        }
-
-        /// <summary>
-        /// 刪除客製孔群
-        /// </summary>
-        public void DeleteGroupBoltsType()
-        {
-            var Index = SettingParGroupBoltsTypeList.FindIndex(x => x.groupBoltsTypeName == SettingParGroupBoltsType.groupBoltsTypeName);
-            if (Index != -1)
-            {
-                SettingParGroupBoltsTypeList.RemoveAt(Index);
-            }
-            STDSerialization ser = new STDSerialization();
-            SettingParGroupBoltsTypeModel gbt = ser.GetGroupBoltsType(GroupBoltsTypeByTargetSelected, SettingParGroupBoltsType.groupBoltsTypeName);
-            if (gbt != null)
-            {
-
-                string dataPath = $@"{ApplicationVM.GetGroupBoltsTypeDirectory_NO_CREATE(GroupBoltsTypeByTargetSelected)}\{SettingParGroupBoltsType.groupBoltsTypeName}.db";
-                if (File.Exists(dataPath))
-                {
-                    try
-                    {
-                        File.Delete(dataPath);
-                    }
-                    catch (Exception ex)
-                    {
-                        string message = (ex.InnerException != null ? ex.InnerException.Message : string.Empty);
-                        WinUIMessageBox.Show(null,
-                             $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}刪除失敗\n 錯誤訊息:{message}",
-                             "通知",
-                             MessageBoxButton.OK,
-                             MessageBoxImage.Exclamation,
-                             MessageBoxResult.None,
-                             MessageBoxOptions.None,
-                              FloatingMode.Window);
-                        return;
-                    }
-                    WinUIMessageBox.Show(null,
-                                  $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}已刪除",
-                                  "通知",
-                                  MessageBoxButton.OK,
-                                  MessageBoxImage.Exclamation,
-                                  MessageBoxResult.None,
-                                  MessageBoxOptions.None,
-                                   FloatingMode.Window);
-                    SettingParGroupBoltsNameList.Remove(SettingParGroupBoltsType.groupBoltsTypeName);
-                    var CopyArray = SettingParGroupBoltsNameList.ToArray();
-                    SettingParGroupBoltsNameList = null;
-                    SettingParGroupBoltsNameList = CopyArray.ToList();
-                    return;
-                }
-                else
-                {
-                    WinUIMessageBox.Show(null,
-                               $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}不存在，無法刪除",
-                               "通知",
-                               MessageBoxButton.OK,
-                               MessageBoxImage.Exclamation,
-                               MessageBoxResult.None,
-                               MessageBoxOptions.None,
-                                FloatingMode.Window);
-                    return;
-                }
-
-            }
-            else
-            {
-                WinUIMessageBox.Show(null,
-                           $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}不存在，無法刪除",
-                           "通知",
-                           MessageBoxButton.OK,
-                           MessageBoxImage.Exclamation,
-                           MessageBoxResult.None,
-                           MessageBoxOptions.None,
-                            FloatingMode.Window);
-                return;
-            }
-        }
-
-        /// <summary>
-        /// 編輯客製孔群
-        /// </summary>
-        public void EditGroupBoltsType()
-        {
-            STDSerialization ser = new STDSerialization();
-            ObservableCollection<SettingParGroupBoltsTypeModel> list = ser.GetGroupBoltsTypeList(GroupBoltsTypeByTargetSelected);
-            if (list.Any(x => x.groupBoltsTypeName == SettingParGroupBoltsType.groupBoltsTypeName))
-            {
-                SettingParGroupBoltsTypeModel gbt = list.FirstOrDefault(x => x.groupBoltsTypeName == SettingParGroupBoltsType.groupBoltsTypeName);
-                gbt.groupBoltsAttr = SettingParGroupBoltsType.groupBoltsAttr;
-                gbt.Revise = DateTime.Now;
-                ser.SetGroupBoltsTypeList(GroupBoltsTypeByTargetSelected, gbt);
-            }
-            else
-            {
-                WinUIMessageBox.Show(null,
-                                   $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}不存在，無法編輯",
-                                   "通知",
-                                   MessageBoxButton.OK,
-                                   MessageBoxImage.Exclamation,
-                                   MessageBoxResult.None,
-                                   MessageBoxOptions.None,
-                                    FloatingMode.Window);
-                return;
-            }
-        }
 
 
     }

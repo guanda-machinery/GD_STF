@@ -607,7 +607,7 @@ AllowEditing="False"
             <TextBlock Text="❸"  Style="{StaticResource HintTextBlock}" Margin="5" Grid.Row="1"                       
                        IsEnabled="{Binding HintStep3}">
                 <TextBlock.Visibility>
-                    <MultiBinding Converter="{local:BooleanArrayUnionToVisableConverter}">
+                    <MultiBinding Converter="{local:BooleanArrayUnionToVisibilityConverter}">
                         <MultiBinding.Bindings>
                             <Binding ElementName="ShowHintBlockCheckBox" Path="IsChecked"  />
                             <Binding Path="ApplicationViewModel.AppManualConnect"
@@ -1714,7 +1714,7 @@ AllowEditing="False"
                         <TextBlock Text="❹" Style="{StaticResource HintTextBlock}" Margin="5" Grid.Row="2"
                                    IsEnabled="{Binding HintStep4}">
                             <TextBlock.Visibility>
-                                <MultiBinding Converter="{local:BooleanArrayUnionToVisableConverter}">
+                                <MultiBinding Converter="{local:BooleanArrayUnionToVisibilityConverter}">
                                     <MultiBinding.Bindings>
                                         <Binding ElementName="ShowHintBlockCheckBox" Path="IsChecked"   />
                                         <Binding Path="ApplicationViewModel.AppManualConnect"
@@ -1728,7 +1728,7 @@ AllowEditing="False"
                         <TextBlock Text="❸" Style="{StaticResource HintTextBlock}" Margin="5" Grid.Row="2"
                                    IsEnabled="{Binding HintStep4}">
                             <TextBlock.Visibility>
-                                <MultiBinding Converter="{local:BooleanArrayUnionToVisableConverter}">
+                                <MultiBinding Converter="{local:BooleanArrayUnionToVisibilityConverter}">
                                     <MultiBinding.Bindings>
                                         <Binding ElementName="ShowHintBlockCheckBox" Path="IsChecked"   />
                                         <Binding Path="ApplicationViewModel.AppManualConnect"
