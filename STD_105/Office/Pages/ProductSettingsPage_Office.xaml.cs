@@ -5,6 +5,7 @@ using devDept.Geometry;
 using DevExpress.Data.Extensions;
 using DevExpress.Dialogs.Core.View;
 using DevExpress.Mvvm;
+using DevExpress.Utils.Extensions;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Grid;
@@ -2094,26 +2095,23 @@ namespace STD_105.Office
 
                 ViewModel.WriteSteelAttr(sa);
 
-
-
-                var _TmpPosXY = ViewModel.ArbitrarilyJointPointList;
-                for ( int i = 0; i < ViewModel.ArbitrarilyJointPointList.Count ; i ++ )
+                var _TmpPosXY = ViewModel.ArbitrarilyJointPointList.ToList();
+                _TmpPosXY.RemoveAll(x => (!x.X_Position.HasValue || !x.Y_Position.HasValue));
+                for ( int i = 0; i < _TmpPosXY.Count ; i ++ )
                 {
-                   
                     if (i % 2 == 0)
                     {
                        continue;
                     }
-
                     List<Point3D> tmplist = new List<Point3D>() { };
                     // 計算斜邊打點位置
-                    tp1x = _TmpPosXY[i].X_Position - _TmpPosXY[i-1].X_Position;
-                    tpr1x = Math.Round((_TmpPosXY[i].X_Position - (tp1x * PosRatioA)),2);
-                    tpr2x = Math.Round((_TmpPosXY[i].X_Position - (tp1x * PosRatioB)),2);
+                    tp1x = _TmpPosXY[i].X_Position.Value - _TmpPosXY[i-1].X_Position.Value;
+                    tpr1x = Math.Round((_TmpPosXY[i].X_Position.Value - (tp1x * PosRatioA)),2);
+                    tpr2x = Math.Round((_TmpPosXY[i].X_Position.Value - (tp1x * PosRatioB)),2);
 
-                    tp1y = _TmpPosXY[i].Y_Position - _TmpPosXY[i-1].Y_Position;
-                    tpr1y = Math.Round((_TmpPosXY[i].Y_Position - (tp1y * PosRatioA)),2);
-                    tpr2y = Math.Round((_TmpPosXY[i].Y_Position - (tp1y * PosRatioB)),2);
+                    tp1y = _TmpPosXY[i].Y_Position.Value - _TmpPosXY[i-1].Y_Position.Value;
+                    tpr1y = Math.Round((_TmpPosXY[i].Y_Position.Value - (tp1y * PosRatioA)),2);
+                    tpr2y = Math.Round((_TmpPosXY[i].Y_Position.Value - (tp1y * PosRatioB)),2);
                     //
 
                     // 紀錄2孔打點位置

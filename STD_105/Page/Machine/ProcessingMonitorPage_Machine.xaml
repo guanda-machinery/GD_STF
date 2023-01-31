@@ -607,7 +607,7 @@ AllowEditing="False"
             <TextBlock Text="❸"  Style="{StaticResource HintTextBlock}" Margin="5" Grid.Row="1"                       
                        IsEnabled="{Binding HintStep3}">
                 <TextBlock.Visibility>
-                    <MultiBinding Converter="{local:BooleanArrayUnionToVisableConverter}">
+                    <MultiBinding Converter="{local:BooleanArrayUnionToVisibilityConverter}">
                         <MultiBinding.Bindings>
                             <Binding ElementName="ShowHintBlockCheckBox" Path="IsChecked"  />
                             <Binding Path="ApplicationViewModel.AppManualConnect"
@@ -1125,7 +1125,11 @@ AllowEditing="False"
                                                     </DataTemplate>
                                                 </dxg:GridColumn.CellTemplate>
                                             </dxg:GridColumn>
-                                            <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                            <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                                <!--dxg:GridColumn.EditSettings>
+                                                    <dxe:ComboBoxEditSettings ItemsSource="{Binding ToolList}"  DisplayMember="FiscalYear" ValueMember="FiscalYear"/>
+                                                </dxg:GridColumn.EditSettings-->
+                                            </dxg:GridColumn>
                                             <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" AllowEditing="false"/>
                                         </dxg:GridControl>
                                         <Button Grid.Column="0" Width="80"  HorizontalAlignment="Center"
@@ -1714,7 +1718,7 @@ AllowEditing="False"
                         <TextBlock Text="❹" Style="{StaticResource HintTextBlock}" Margin="5" Grid.Row="2"
                                    IsEnabled="{Binding HintStep4}">
                             <TextBlock.Visibility>
-                                <MultiBinding Converter="{local:BooleanArrayUnionToVisableConverter}">
+                                <MultiBinding Converter="{local:BooleanArrayUnionToVisibilityConverter}">
                                     <MultiBinding.Bindings>
                                         <Binding ElementName="ShowHintBlockCheckBox" Path="IsChecked"   />
                                         <Binding Path="ApplicationViewModel.AppManualConnect"
@@ -1728,7 +1732,7 @@ AllowEditing="False"
                         <TextBlock Text="❸" Style="{StaticResource HintTextBlock}" Margin="5" Grid.Row="2"
                                    IsEnabled="{Binding HintStep4}">
                             <TextBlock.Visibility>
-                                <MultiBinding Converter="{local:BooleanArrayUnionToVisableConverter}">
+                                <MultiBinding Converter="{local:BooleanArrayUnionToVisibilityConverter}">
                                     <MultiBinding.Bindings>
                                         <Binding ElementName="ShowHintBlockCheckBox" Path="IsChecked"   />
                                         <Binding Path="ApplicationViewModel.AppManualConnect"

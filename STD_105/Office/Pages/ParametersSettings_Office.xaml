@@ -863,7 +863,15 @@
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
                     <!--客製孔群設定-->
-                    <Grid MinWidth="400" MinHeight="350" VerticalAlignment="Top" >
+                    <Grid MinWidth="400" MinHeight="350" VerticalAlignment="Top">
+                        <Grid.Resources>
+                            <Style TargetType="GroupBox">
+                                <Setter Property="FontSize" Value="16"/>
+                            </Style>
+                            <Style TargetType="RadioButton">
+                                <Setter Property="FontSize" Value="16"/>
+                            </Style>
+                        </Grid.Resources>
                         <std:CustomizedBoltsGroupSettingUserControl/>
                     </Grid>
 

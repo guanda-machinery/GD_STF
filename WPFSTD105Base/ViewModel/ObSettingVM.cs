@@ -639,9 +639,9 @@ namespace WPFSTD105.ViewModel
                 if (_arbitrarilyJointPointList == null)
                 {
                     var DefaultJPArray = new List<JointPoint>();
-                    for (int i = 0; i < 1; i++)
+                    for (int i = 0; i < 8; i++)
                     {
-                        DefaultJPArray.Add(new JointPoint() { X_Position = 0, Y_Position = 0 });
+                        DefaultJPArray.Add(new JointPoint() { X_Position = null, Y_Position = null });
                     }
                     _arbitrarilyJointPointList = new ObservableCollection<JointPoint>(DefaultJPArray);
                  }
@@ -1703,8 +1703,8 @@ namespace WPFSTD105.ViewModel
 
             InitializeSteelAttr();
 
-
-
+            GroupBoltsTypeByTargetSelected = GroupBoltsTypeByTarget.System;
+            SettingParGroupBoltsTypeList = new STDSerialization().GetGroupBoltsTypeList(_groupBoltsTypeByTargetSelected);
 
 
 
@@ -3864,6 +3864,85 @@ namespace WPFSTD105.ViewModel
                 // 是否在Grid進行動作
                 fGrid = grid;
             }
+        }
+
+        public bool CustomizedBoltsGroupSettingUC_IsPopup { get; set; }
+
+        private GroupBoltsTypeByTarget _groupBoltsTypeByTargetSelected;
+        /// <summary>
+        /// 讀取客製孔群 - 依附類別(系統客製、專案客製)(下拉或核選元件)
+        /// </summary>
+        public GroupBoltsTypeByTarget GroupBoltsTypeByTargetSelected
+        {
+            get => _groupBoltsTypeByTargetSelected;
+            set
+            {
+                _groupBoltsTypeByTargetSelected = value;
+                SettingParGroupBoltsTypeList = new STDSerialization().GetGroupBoltsTypeList(_groupBoltsTypeByTargetSelected);
+                SettingParGroupBoltsType = SettingParGroupBoltsTypeModel.NotSelectGroupBoltsTypeModel;
+            }
+        }
+
+        private List<SettingParGroupBoltsTypeModel> _settingParGroupBoltsTypeList = new List<SettingParGroupBoltsTypeModel>();
+        public List<SettingParGroupBoltsTypeModel> SettingParGroupBoltsTypeList
+        {
+            get
+            {
+                var ReturnList = new List<SettingParGroupBoltsTypeModel>(); ;
+                if (!_settingParGroupBoltsTypeList.Exists(x => (x.groupBoltsTypeName == SettingParGroupBoltsTypeModel.NotSelectGroupBoltsTypeModel.groupBoltsTypeName)))
+                {
+                    ReturnList.Add(SettingParGroupBoltsTypeModel.NotSelectGroupBoltsTypeModel);
+                }
+                ReturnList.AddRange(_settingParGroupBoltsTypeList);
+                return ReturnList;
+            }
+            set
+            {
+                _settingParGroupBoltsTypeList = value;
+            }
+        }
+
+        private SettingParGroupBoltsTypeModel _settingParGroupBoltsType = null;
+        /// <summary>
+        /// combobox用
+        /// </summary>
+        public SettingParGroupBoltsTypeModel SettingParGroupBoltsType
+        {
+            get
+            {
+                if (_settingParGroupBoltsType == null)
+                {
+                  
+                }
+                return _settingParGroupBoltsType;
+            }
+            set
+            {
+                _settingParGroupBoltsType = value;
+                OnPropertyChanged(nameof(SettingParGroupBoltsType));
+            }
+        }
+
+        public ICommand LoadSettingParGroupBoltsTypeCommand
+        { 
+            get
+            {
+                return new RelayCommand(() =>
+                {
+                    if(SettingParGroupBoltsType.groupBoltsAttr != null)
+                    {
+                        this.DiaProperty = SettingParGroupBoltsType.groupBoltsAttr.Dia;
+                        this.dXProperty = SettingParGroupBoltsType.groupBoltsAttr.dX;
+                        this.dYProperty = SettingParGroupBoltsType.groupBoltsAttr.dY;
+                        this.XProperty = SettingParGroupBoltsType.groupBoltsAttr.X;
+                        this.StartY = SettingParGroupBoltsType.groupBoltsAttr.Y;
+                        this.X_BoltsArrayDirection = SettingParGroupBoltsType.groupBoltsAttr.X_BoltsArrayDirection;
+                        this.ComboxEdit_GroupBoltsTypeSelected = SettingParGroupBoltsType.groupBoltsAttr.groupBoltsType;
+                        this.rbtn_DrillingFace = SettingParGroupBoltsType.groupBoltsAttr.Face;
+                        this.StartHoleType = SettingParGroupBoltsType.groupBoltsAttr.StartHole;
+                    }
+                });
+        }
         }
 
 
