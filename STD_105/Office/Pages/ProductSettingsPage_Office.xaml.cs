@@ -1815,6 +1815,8 @@ namespace STD_105.Office
                     });
                 }
 
+
+
                 //// 符合孔位加入件
                 //if (check)
                 //{
@@ -5560,6 +5562,9 @@ namespace STD_105.Office
                 if (model != null && PieceListGridControl.SelectedItem != null)
                 {                   
                     Esc();
+
+                    // 重置鑽孔屬性
+                    ViewModel.SetGroupBoltsInfo(new GroupBoltsAttr());
                     
                     ProductSettingsPageViewModel item = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
                     item.steelAttr.GUID = Guid.Parse(item.DataName);
