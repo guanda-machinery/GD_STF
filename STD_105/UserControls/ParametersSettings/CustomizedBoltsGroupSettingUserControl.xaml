@@ -16,7 +16,7 @@
     </UserControl.DataContext>
 
         <GroupBox Header="客製孔群設定" Style="{StaticResource ParameterGroupBox}">
-            <ScrollViewer>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" Margin="10,2" >
                     <RadioButton Command="{Binding BuiltNewGroupBolt}" Name="BuiltNewGroupBoltRadioButton"  Content="新建孔群"/>

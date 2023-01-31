@@ -1704,7 +1704,7 @@ namespace WPFSTD105.ViewModel
             InitializeSteelAttr();
 
             GroupBoltsTypeByTargetSelected = GroupBoltsTypeByTarget.System;
-
+            SettingParGroupBoltsTypeList = new STDSerialization().GetGroupBoltsTypeList(_groupBoltsTypeByTargetSelected);
 
 
 
@@ -3923,7 +3923,7 @@ namespace WPFSTD105.ViewModel
             }
         }
 
-        public ICommand LoadSettingParGroupBoltsType
+        public ICommand LoadSettingParGroupBoltsTypeCommand
         { 
             get
             {
@@ -3939,6 +3939,7 @@ namespace WPFSTD105.ViewModel
                         this.X_BoltsArrayDirection = SettingParGroupBoltsType.groupBoltsAttr.X_BoltsArrayDirection;
                         this.ComboxEdit_GroupBoltsTypeSelected = SettingParGroupBoltsType.groupBoltsAttr.groupBoltsType;
                         this.rbtn_DrillingFace = SettingParGroupBoltsType.groupBoltsAttr.Face;
+                        this.StartHoleType = SettingParGroupBoltsType.groupBoltsAttr.StartHole;
                     }
                 });
         }

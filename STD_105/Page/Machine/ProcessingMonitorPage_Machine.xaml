@@ -1125,7 +1125,11 @@ AllowEditing="False"
                                                     </DataTemplate>
                                                 </dxg:GridColumn.CellTemplate>
                                             </dxg:GridColumn>
-                                            <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                            <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                                <!--dxg:GridColumn.EditSettings>
+                                                    <dxe:ComboBoxEditSettings ItemsSource="{Binding ToolList}"  DisplayMember="FiscalYear" ValueMember="FiscalYear"/>
+                                                </dxg:GridColumn.EditSettings-->
+                                            </dxg:GridColumn>
                                             <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" AllowEditing="false"/>
                                         </dxg:GridControl>
                                         <Button Grid.Column="0" Width="80"  HorizontalAlignment="Center"

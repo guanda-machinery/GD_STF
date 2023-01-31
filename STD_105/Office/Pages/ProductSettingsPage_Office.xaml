@@ -1068,8 +1068,8 @@
 
                                             <!--技術文件參照:https://community.devexpress.com/blogs/wpf/archive/2015/01/27/devexpress-mvvm-framework-enumitemsourcebehavior.aspx-->
 
-                                            <CheckBox Grid.Row="3"  Content="特殊孔位：" IsThreeState="False" IsChecked="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}" Visibility="Collapsed"/>
-                                            <dxe:ComboBoxEdit  IsTextEditable="False" Grid.Column="0" Grid.ColumnSpan="2"   Grid.Row="4"  Margin="0,5,5,0" IsEnabled="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}" Visibility="Collapsed"
+                                            <CheckBox Grid.Row="3"  Content="特殊孔位：" IsThreeState="False" IsChecked="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}" />
+                                            <dxe:ComboBoxEdit  IsTextEditable="False" Grid.Column="0" Grid.ColumnSpan="2"   Grid.Row="4"  Margin="0,5,5,0" IsEnabled="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}" 
                                                            ApplyItemTemplateToSelectedItem="True" 
                                         EditValue="{Binding ComboxEdit_GroupBoltsTypeSelected}">
                                                     <dxmvvm:Interaction.Behaviors>
@@ -1088,9 +1088,6 @@
 
                                                 </dxe:ComboBoxEdit>
                       
-
-
-
 
                                         </Grid>
                                     </GroupBox>
@@ -1184,7 +1181,7 @@
                                                                   ItemsSource="{Binding SettingParGroupBoltsTypeList}"
                                                                   />
                                                 <Button  Grid.Column="1" Grid.Row="0" Width="auto" Content="載入"  Padding="10,0"
-                                                         Command="{Binding LoadSettingParGroupBoltsType}"
+                                                         Command="{Binding LoadSettingParGroupBoltsTypeCommand}"
                                                         IsEnabled="{Binding ElementName=GroupBoltNameComboboxEdit, Path=SelectedIndex, Converter={STD105:IntToBooleanConverter}}"/>
                                             </Grid>
                                             <Label Content="客製孔群設定" Margin="5,0"/>
