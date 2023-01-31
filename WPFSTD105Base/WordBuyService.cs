@@ -328,8 +328,11 @@ namespace WPFSTD105
                     //                                  { "12020", "1","3122*1, 3054*2, 2760*1","SN4908","12019","0.01","598.8","","" },
                     //                                  { "12020", "1","3122*1, 3054*2, 2760*1","SN4908","12019","0.01","598.8","","" }};
                     string[] TableColumnName = { "購料長(mm)", "數量", "切割長度組合(mm)", "材質", "加工長度(mm)", "損耗(%)", "購料重量(Kg)", "購料預設來源", "狀態" };
+                    List<string[]> List_CurrentTableContent_Title = new List<string[]>();
+                    List_CurrentTableContent_Title.Add(TableColumnName);
+                    AddTableToWordDocument(destPath, List_CurrentTableContent_Title, "16");
+
                     List<string[]> List_CurrentTableContent = new List<string[]>();
-                    List_CurrentTableContent.Add(TableColumnName);
 
                     //將素材中相同切割長度的部分合計
                     double SumPartWeight = 0.0;
@@ -392,7 +395,7 @@ namespace WPFSTD105
                         SumPartWeight += (index == -1 ? 0 : item.LengthStr / 1000 * steelAttrs[index].Kg);
                     }
 
-                    AddTableToWordDocument(destPath, List_CurrentTableContent);
+                    AddTableToWordDocument(destPath, List_CurrentTableContent, "20");
 
                     string[] b = { "合計", $"{DicProfileCount[el.Key]}", "", "", "", "", $"{SumPartWeight.ToString("#0.00")}(Kg)", "", "" };
                     AddTable_StatisticToWordDocument(destPath, b);
@@ -654,7 +657,7 @@ namespace WPFSTD105
 
         // Take the data from a two-dimensional array and build a table at the 
         // end of the supplied document.
-        public static void AddTableToWordDocument(string fileName, List<string[]> data)
+        public static void AddTableToWordDocument(string fileName, List<string[]> data, string setFontSize)
         {
             using (var document = WordprocessingDocument.Open(fileName, true))
             {
@@ -767,9 +770,9 @@ namespace WPFSTD105
                                                     new Justification() { Val = flag_JustificationValues },
                                                     new SpacingBetweenLines { LineRule = LineSpacingRuleValues.AtLeast, BeforeLines = 0, AfterLines = 0 }),
                                                     new Run(new RunProperties(
-                                                            new FontSize { Val = "16" },
+                                                            new FontSize { Val = setFontSize },
                                                             new RunFonts() { Ascii = "Calibri Light" },
-                                                            new FontSizeComplexScript { Val = "16" }),
+                                                            new FontSizeComplexScript { Val = setFontSize }),
                                                             new Text(data[i][j]))));
 
                         tc.Append(new TableCellProperties(
