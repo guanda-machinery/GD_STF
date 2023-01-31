@@ -3262,8 +3262,9 @@ namespace WPFSTD105.ViewModel
 
             if (ComparisonBolts(model) && showMessage)  // 欲新增孔位重複比對
             {
+                //\n若新增斜孔，請先刪除重疊之中間孔
                 WinUIMessageBox.Show(null,
-                $"新增孔位重複，請重新輸入\n若新增斜孔，請先刪除重疊之中間孔",
+                $"新增孔位重複，請重新輸入",
                 "通知",
                 MessageBoxButton.OK,
                 MessageBoxImage.Exclamation,
