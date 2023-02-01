@@ -7,6 +7,14 @@ using System.Threading.Tasks;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows;
+using DevExpress.XtraBars;
+using System.Windows.Interop;
+
+using System.Windows.Controls;
+using System.Windows.Threading;
+using System.Windows.Media;
+using DevExpress.CodeParser;
+using DevExpress.Xpf.Core;
 
 namespace STD_105
 {
@@ -54,6 +62,9 @@ namespace STD_105
                 e.Handled = true;
             }
         }
+
+
+
     }
 }
     

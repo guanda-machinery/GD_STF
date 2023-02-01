@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CalcBinding.Inversion;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -13,18 +14,22 @@ namespace STD_105
     /// <summary>
     /// 
     /// </summary>
-
-
+    
     /// <summary>
     /// 聯集布林
     /// </summary>
-    public class BooleanArrayUnionToVisableConverter : WPFWindowsBase.BaseMultiValueConverter<BooleanArrayUnionToVisableConverter>
+    public class BooleanArrayUnionToVisibilityConverter : WPFWindowsBase.BaseMultiValueConverter<BooleanArrayUnionToVisibilityConverter>
     {
+        public bool Invert { get; set; }
         //只要出現false就不顯示
         public override object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             var BooleanList = values.ToList();
-            bool ReturnBoolean = BooleanList.Exists(x =>x is false);
+            bool ReturnBoolean = false;
+            if (!Invert)
+                ReturnBoolean = BooleanList.Exists(x => x is false);
+           else
+                ReturnBoolean = BooleanList.Exists(x => x is true);
 
             return ReturnBoolean? Visibility.Collapsed : Visibility.Visible;
         }

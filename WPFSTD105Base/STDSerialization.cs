@@ -854,23 +854,27 @@ namespace WPFSTD105
         /// <summary>
         /// 儲存客製孔群資料
         /// </summary>
-        /// <param name="groupBoltsTypeName"></param>
-        /// <param name="list"></param>
+        /// <param name="Target">系統/專案</param>
+        /// <param name="SettingParGroupBolts">孔群資料</param>
         /// <returns></returns>
         public bool SetGroupBoltsTypeList(GroupBoltsTypeByTarget Target , SettingParGroupBoltsTypeModel SettingParGroupBolts)
         {
-            if(string.IsNullOrEmpty(SettingParGroupBolts.groupBoltsTypeName))
+            if(SettingParGroupBolts.groupBoltsAttr == null)
+            { 
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(SettingParGroupBolts.groupBoltsTypeName))
             {
-                SettingParGroupBolts.groupBoltsTypeName = "0001";
+                SettingParGroupBolts.groupBoltsTypeName = "NewGroupBolt";
             }
             try
             {
                var GroupBoltsTypeDir = ApplicationVM.GetGroupBoltsTypeDirectory(Target);
                 if (!string.IsNullOrEmpty(GroupBoltsTypeDir))
                 {
-
-
                     var FilePath = Path.Combine(GroupBoltsTypeDir, SettingParGroupBolts.groupBoltsTypeName);
+                    
                     Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
                     if (string.IsNullOrEmpty(Path.GetExtension(FilePath)))
                     {
@@ -903,19 +907,20 @@ namespace WPFSTD105
         /// <summary>
         ///  取得資料夾內所有序列化客製孔群資料
         /// </summary>
-        public ObservableCollection< SettingParGroupBoltsTypeModel> GetGroupBoltsTypeList(GroupBoltsTypeByTarget Target)
+        public List< SettingParGroupBoltsTypeModel> GetGroupBoltsTypeList(GroupBoltsTypeByTarget Target)
         {
-            ObservableCollection<SettingParGroupBoltsTypeModel> temp_corr = new ObservableCollection<SettingParGroupBoltsTypeModel>();
+            List<SettingParGroupBoltsTypeModel> temp_corr = new List<SettingParGroupBoltsTypeModel>();
             try
             {
                 var FilesPath  =Directory.GetFiles(ApplicationVM.GetGroupBoltsTypeDirectory(Target));
 
-                foreach(var eachFile in FilesPath)
+                foreach(var eachFilePath in FilesPath)
                 {
                     try
                     {
                         //嘗試反序列化 若檔案錯誤則不反序列化
-                        var File_ParGroupBoltsType = GZipDeserialize<SettingParGroupBoltsTypeModel>(eachFile);
+                        var File_ParGroupBoltsType = GZipDeserialize<SettingParGroupBoltsTypeModel>(eachFilePath);
+                        File_ParGroupBoltsType.OriginalFilePath = eachFilePath;
                         temp_corr.Add(File_ParGroupBoltsType);
                     }
                     catch(Exception ex)
