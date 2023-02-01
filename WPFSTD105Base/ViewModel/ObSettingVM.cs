@@ -1115,6 +1115,7 @@ namespace WPFSTD105.ViewModel
             Boltsbuffer.X_BoltsArrayDirection = this.X_BoltsArrayDirection;
             Boltsbuffer.Face = this.rbtn_DrillingFace;
             Boltsbuffer.Mode = AXIS_MODE.PIERCE;
+            Boltsbuffer.StartHole = StartHoleType;
             //this.GroupBoltsAttr.Mode = AXIS_MODE.PIERCE;
             this.AxisModeType = (int)AXIS_MODE.PIERCE;
         }
@@ -1122,8 +1123,9 @@ namespace WPFSTD105.ViewModel
 
         /// <summary>
         /// 取得設定好的值
+        /// FRONTandBack才需傳遞specialFace參數
         /// </summary>
-        public GroupBoltsAttr GetGroupBoltsAttr()
+        public GroupBoltsAttr GetGroupBoltsAttr(FACE specialFace = FACE.FRONT)
         {
             Boltsbuffer.groupBoltsType = this.ComboxEdit_GroupBoltsTypeSelected;
             Boltsbuffer.X_BoltsArrayDirection = this.X_BoltsArrayDirection;
@@ -1220,6 +1222,21 @@ namespace WPFSTD105.ViewModel
                         Boltsbuffer.Z = Steelbuffer.H;
                         //value = Steelbuffer.W;
                         break;
+                    case FACE.FRONTandBack:
+                        switch (specialFace)
+                        {
+                            case FACE.FRONT:
+                                Boltsbuffer.t = Steelbuffer.t2;
+                                Boltsbuffer.Z = Steelbuffer.t2;
+                                break;
+                            case FACE.BACK:
+                                Boltsbuffer.t = Steelbuffer.t2;
+                                Boltsbuffer.Z = Steelbuffer.H;
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -1307,6 +1324,7 @@ namespace WPFSTD105.ViewModel
         /// <param name="gba"></param>
         public void SetGroupBoltsInfo(GroupBoltsAttr gba) 
         {
+            Steelbuffer = (SteelAttr)SteelAttr.DeepClone();
             this.dXProperty = gba.dX;
             this.dYProperty = gba.dY;
             this.DiaProperty = gba.Dia;
@@ -1315,18 +1333,42 @@ namespace WPFSTD105.ViewModel
             rbtn_DrillingFace = gba.Face;
             StartHoleType = gba.StartHole;
             AxisModeType = (int)gba.Mode;
-            switch (gba.Face)
+            if (StartHoleType == START_HOLE.MIDDLE)
             {
-                case FACE.TOP:
-                    StartY = gba.Y;
-                    break;
-                case FACE.FRONT:
-                case FACE.BACK:
-                    StartY = gba.Z;
-                    break;
-                default:
-                    break;
+                StartY = (GetBoltZ() * 0.5) - (gba.SumdY() * 0.5);
             }
+            else
+            {
+                switch (gba.Face)
+                {
+                    case FACE.TOP:
+                        StartY = gba.Y;
+                        break;
+                    case FACE.BACK:
+                    case FACE.FRONT:
+                        StartY = gba.Z;
+                        break;
+                    case FACE.FRONTandBack:
+                        break;
+                    default:
+                        break;
+                }
+                
+            }
+
+            //switch (gba.Face)
+            //{
+            //    case FACE.TOP:
+            //        StartY = gba.Y;
+            //        break;
+            //    case FACE.FRONT:
+            //    case FACE.BACK:
+            //        StartY = gba.Z;
+            //        break;
+            //    default:
+            //        break;
+            //}
+
             ComboxEdit_GroupBoltsTypeSelected = gba.groupBoltsType;
             X_BoltsArrayDirection = gba.X_BoltsArrayDirection;
         }
@@ -1576,8 +1618,43 @@ namespace WPFSTD105.ViewModel
             ser.SetCutSettingList(steelcutSettings);
         }
 
+        /// <summary>
+        /// 新增孔(因為有FRONTandBack，故需分開新增，寫Function帶參數較方便
+        /// </summary>
+        /// <param name="gba"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool AddHoleVM(GroupBoltsAttr gba, ModelExt model,ref Bolts3DBlock bolts, out BlockReference blockReference)
+        {
+            gba.GUID = Guid.NewGuid();
+            GroupBoltsAttr = (GroupBoltsAttr)gba.DeepClone();
+            if (!CheckGroupBoltsAttr(gba) && showMessage)
+            {
+                blockReference = null;
+                return false;
+            }
+            bolts = Bolts3DBlock.AddBolts(gba, model, out  blockReference, out bool check);
+            return check;
+        }
 
-
+        public void AddHoleReduce(BlockReference blockReference, BlockReference referenceBolts) 
+        {
+            //不是修改孔位狀態
+            if (!modifyHole)
+            {
+                Reductions.Add(new Reduction()
+                {
+                    Recycle = new List<List<Entity>>() { new List<Entity>() { blockReference } },
+                    SelectReference = null,
+                    User = new List<ACTION_USER>() { ACTION_USER.Add }
+                }, new Reduction()
+                {
+                    Recycle = new List<List<Entity>>() { new List<Entity>() { referenceBolts } },
+                    SelectReference = null,
+                    User = new List<ACTION_USER>() { ACTION_USER.Add }
+                });
+            }
+        }
 
         /// <summary>
         /// 計算單一支型鋼重量
@@ -3766,13 +3843,14 @@ namespace WPFSTD105.ViewModel
                 .Where(x => x.EntityData.GetType() == typeof(BoltAttr) && ((BoltAttr)x.EntityData).Mode == AXIS_MODE.PIERCE)
                 .Select(x=>(BoltAttr)(x.EntityData)).ToList();
 
-          var distinctBolts=  boltsList.GroupBy(x => new { x.X, x.Y, x.Z }).Where(g => g.Count() > 1).Select(x =>new { x.Key.X, x.Key.Y, x.Key.Z }).ToList();
+          var distinctBolts=  boltsList.GroupBy(x => new { x.X, x.Y, x.Z,x.Face }).Where(g => g.Count() > 1).Select(x =>new { x.Key.X, x.Key.Y, x.Key.Z,x.Key.Face }).ToList();
 
             foreach (var item in distinctBolts)
             {
                 double _x = item.X;
                 double _y = item.Y;
                 double _z = item.Z;
+                FACE _face = item.Face;
                 Block doubleBlock = model.Blocks
                 .Where(x => x.Name != "RootBlock")
                 .SelectMany(x => x.Entities, (a, b) => new { Block = a, a.Entities, b.EntityData })
@@ -3781,7 +3859,8 @@ namespace WPFSTD105.ViewModel
                 ((BoltAttr)x.EntityData).Mode == AXIS_MODE.PIERCE &&
                 ((BoltAttr)x.EntityData).X == _x &&
                 ((BoltAttr)x.EntityData).Y == _y &&
-                ((BoltAttr)x.EntityData).Z == _z).Select(x=>x.Block).LastOrDefault();
+                ((BoltAttr)x.EntityData).Z == _z &&
+                ((BoltAttr)x.EntityData).Face == _face).Select(x=>x.Block).LastOrDefault();
                 String blockName = ((Block)doubleBlock).Name;
                 var removeEntity = model.Entities.Where(x => ((BlockReference)x).BlockName == blockName);
                 var removeBlock = model.Blocks.Where(x => ((Block)x).Name == blockName);
