@@ -1114,7 +1114,7 @@ namespace WPFSTD105.ViewModel
             Boltsbuffer.groupBoltsType = this.ComboxEdit_GroupBoltsTypeSelected;
             Boltsbuffer.X_BoltsArrayDirection = this.X_BoltsArrayDirection;
             Boltsbuffer.Face = this.rbtn_DrillingFace;
-            Boltsbuffer.groupBoltsType = this.ComboxEdit_GroupBoltsTypeSelected;
+            Boltsbuffer.Mode = AXIS_MODE.PIERCE;
             //this.GroupBoltsAttr.Mode = AXIS_MODE.PIERCE;
             this.AxisModeType = (int)AXIS_MODE.PIERCE;
         }
