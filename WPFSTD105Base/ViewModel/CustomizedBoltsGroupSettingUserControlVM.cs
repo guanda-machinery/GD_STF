@@ -162,8 +162,8 @@ namespace WPFSTD105
                             $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}已存在\n" +
                             $"按下「Yes」會取代檔案，按下「No」則不儲存",
                             "通知",
-                            MessageBoxButton.YesNo,
-                            MessageBoxImage.Exclamation,
+                            MessageBoxButton.YesNo, 
+                        MessageBoxImage.Exclamation,
                             MessageBoxResult.None,
                             MessageBoxOptions.DefaultDesktopOnly,
                             FloatingMode.Adorner);
@@ -183,15 +183,8 @@ namespace WPFSTD105
                         }
                     }
 
-
-
                     ser.SetGroupBoltsTypeList(GroupBoltsTypeWriteTarget, SettingParGroupBoltsType);
-                 
-                    SettingParGroupBoltsTypeList = new STDSerialization().GetGroupBoltsTypeList(_groupBoltsTypeByTargetSelected);
-
                     //重整孔群名稱的列表
-
-                  
                     WinUIMessageBox.Show(null,
                    $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}成功儲存",
                    "通知",
@@ -199,7 +192,9 @@ namespace WPFSTD105
                    MessageBoxImage.Exclamation,
                    MessageBoxResult.None,
                    MessageBoxOptions.DefaultDesktopOnly,
-                    FloatingMode.Adorner);
+                    FloatingMode.Window);
+
+                    SettingParGroupBoltsTypeList = new STDSerialization().GetGroupBoltsTypeList(_groupBoltsTypeByTargetSelected);
 
 
                 });

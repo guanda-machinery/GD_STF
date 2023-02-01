@@ -49,7 +49,8 @@ namespace GD_STD
                 }
                 catch(Exception e)
                 {
-                    throw e;
+                    break;
+                    //throw e;
                 }
             }
         }
@@ -63,13 +64,20 @@ namespace GD_STD
         {
             try
             {
-                using (FileStream fileStream = new FileStream(path, FileMode.Open))
+                if (File.Exists(path))
                 {
-                    using (GZipStream zip = new GZipStream(fileStream, CompressionMode.Decompress))
+                    using (FileStream fileStream = new FileStream(path, FileMode.Open))
                     {
-                        BinaryFormatter binaryFormatter = new BinaryFormatter();
-                        return (T)binaryFormatter.Deserialize(zip);
+                        using (GZipStream zip = new GZipStream(fileStream, CompressionMode.Decompress))
+                        {
+                            BinaryFormatter binaryFormatter = new BinaryFormatter();
+                            return (T)binaryFormatter.Deserialize(zip);
+                        }
                     }
+                }
+                else
+                {
+                    return default(T);
                 }
             }
             catch (Exception ex)

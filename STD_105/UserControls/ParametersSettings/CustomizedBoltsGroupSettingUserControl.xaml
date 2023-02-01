@@ -232,7 +232,8 @@
                     </GroupBox>
                     <GroupBox Header="孔群編輯"  Grid.Row="4" Grid.ColumnSpan="2">
                         <StackPanel  Orientation="Vertical"  >
-                            <GroupBox Header="新增孔群儲存位置" IsEnabled="{Binding ElementName=ReadGroupBoltRadioButton,Path=IsChecked,Converter={dx:BoolInverseConverter}}">
+                            <GroupBox Name="AddBoltGroupBox" Header="新增孔群儲存位置" IsEnabled="{Binding ElementName=ReadGroupBoltRadioButton,Path=IsChecked,Converter={dx:BoolInverseConverter}}"
+                                 >
                                 <StackPanel Orientation="Horizontal">
                                     <dxe:ComboBoxEdit Margin="5" Width="200"   ApplyItemTemplateToSelectedItem="True"   IsTextEditable="False" HorizontalAlignment="Left"
                                                                    EditValue="{Binding GroupBoltsTypeWriteTarget, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
@@ -244,7 +245,8 @@
                                     <Button Style="{StaticResource SiegCustomButtonWhite}" Height="30"  Padding="10,0" Margin="5" Content="新增孔群" Command="{Binding Add_SettingParGroupBolts}"/>
                                 </StackPanel>
                             </GroupBox>
-                            <GroupBox Header="編輯現有孔群" IsEnabled="{Binding ElementName=ReadGroupBoltRadioButton,Path=IsChecked}">
+                            <GroupBox Name="EditBoltGroupBox" Header="編輯現有孔群" IsEnabled="{Binding ElementName=ReadGroupBoltRadioButton,Path=IsChecked}"
+                                        >
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,-5">
                                     <Button Style="{StaticResource SiegCustomButtonWhite}" Height="30"  Padding="10,0" Margin="5" Content="修改孔群" Command="{Binding Edit_SettingParGroupBolts}"   />
                                     <Button Style="{StaticResource SiegCustomButtonWhite}" Height="30"  Padding="10,0" Margin="5" Content="刪除孔群" Command="{Binding Delete_SettingParGroupBolts}"  />

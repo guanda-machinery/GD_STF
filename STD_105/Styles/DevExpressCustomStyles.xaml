@@ -198,11 +198,11 @@
                                     <Setter Property="Opacity" Value="{Binding Row.DrillWork,Converter={local:BooleanToOpacityConverter}}"/>
                                 </DataTrigger>
                             </Style.Triggers>
-                            <!--  <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChangeBool,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
+                            <!--  <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChanged,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
                                     <Setter Property="Opacity" Value="{Binding Row.DrillWork,Converter={local:BooleanToOpacityConverter}}"/>
-                                    <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChangeBool,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
+                                    <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChanged,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
                                 </DataTrigger>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter Property="Background" Value="LightSlateGray" />
