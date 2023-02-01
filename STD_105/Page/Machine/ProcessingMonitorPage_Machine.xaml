@@ -913,13 +913,14 @@ AllowEditing="False"
                                     <StackPanel Margin="8" >
                                         <!--統一孔徑-->
 
+                                        
                                         <StackPanel Orientation="Horizontal">
-                                            <CheckBox IsThreeState="False" Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiFRONT"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                            <CheckBox IsThreeState="False" Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiFRONT"  ToolTip="刀徑全變更" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
                                             ConverterParameter={x:Static GD_STD_Enum:FACE.FRONT}, 
                                             Converter={local:TypesettingsSettingsToBooleanConverter}, 
                                             Mode=TwoWay , 
                                             UpdateSourceTrigger=PropertyChanged}"/>
-                                            <TextBlock Text="統一刀徑" Margin="8,2"/>
+                                            <TextBlock Text="刀徑全變更" Margin="8,2"/>
                                         </StackPanel>
 
                                         <ComboBox Margin="0,5"  Height="20" SelectedValue="{Binding MachiningCombinational_DrillBoltsItemSource, 
@@ -929,11 +930,14 @@ AllowEditing="False"
                                             UpdateSourceTrigger=PropertyChanged}"
                                                   
                                              Visibility="{Binding ElementName=IdentiFRONT , Path=IsChecked, Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-                                             ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource, 
+                                             ItemsSource="{Binding LeftToolList}"
+                                                  />
+                                        <!--                                                  ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource, 
                                             ConverterParameter={x:Static GD_STD_Enum:FACE.FRONT},
                                             Converter={local:TypesettingsSettingsToDrillDiaConverter}, 
                                             Mode=OneWay , 
-                                            UpdateSourceTrigger=PropertyChanged}"/>
+                                            UpdateSourceTrigger=PropertyChanged}"-->
+                                        
 
                                         <dxg:GridControl  
                                             HorizontalAlignment="Left" 
@@ -957,23 +961,48 @@ AllowEditing="False"
                                                     </dxg:TableView.CellStyle>
                                                 </dxg:TableView>
                                             </dxg:GridControl.View>
-                                            <dxg:GridColumn FieldName="DrillWork" Header=""  Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
-                                                <dxg:GridColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <CheckBox IsChecked="{Binding Row.DrillWork}" HorizontalAlignment="Center" Margin="2,0,0,0" />
-                                                    </DataTemplate>
-                                                </dxg:GridColumn.CellTemplate>
-                                            </dxg:GridColumn>
-                                            <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
-                                            <dxg:GridColumn FieldName="Dia" Visible="False" Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
-                                                <dxg:GridColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <CheckBox IsChecked="{Binding Row.DrillHoleDiameterIsChangeBool}" HorizontalAlignment="Center" Margin="2,0,0,0" />
-                                                    </DataTemplate>
-                                                </dxg:GridColumn.CellTemplate>
-                                            </dxg:GridColumn>
-                                            <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                            <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" AllowEditing="false"/>
+                                            <dxg:GridControl.Bands>
+                                                <dxg:GridControlBand Header="加工型" HorizontalHeaderContentAlignment="Center">
+                                                    <dxg:GridColumn FieldName="DrillWork" Header=""  Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                                        <dxg:GridColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <CheckBox IsChecked="{Binding Row.DrillWork}" HorizontalAlignment="Center" Margin="2,0,0,0" />
+                                                            </DataTemplate>
+                                                        </dxg:GridColumn.CellTemplate>
+                                                    </dxg:GridColumn>
+                                                    <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
+                                                </dxg:GridControlBand>
+                                                <dxg:GridControlBand Header="刀具直徑" HorizontalHeaderContentAlignment="Center">
+                                                    <dxg:GridColumn FieldName="Dia" Visible="False" Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                                        <dxg:GridColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <CheckBox IsChecked="{Binding Row.DrillHoleDiameterIsChanged}" HorizontalAlignment="Center" Margin="2,0,0,0" />
+                                                            </DataTemplate>
+                                                        </dxg:GridColumn.CellTemplate>
+                                                    </dxg:GridColumn>
+                                                    <dxg:GridColumn FieldName="SetDrillHoleDiameterIsVariablable" Header=""  Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                                        <dxg:GridColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <CheckBox IsChecked="{Binding Row.SetDrillHoleDiameterIsVariablable}" IsThreeState="False" HorizontalAlignment="Center" Margin="2,0,0,0" />
+                                                            </DataTemplate>
+                                                        </dxg:GridColumn.CellTemplate>
+                                                    </dxg:GridColumn>
+                                                    <dxg:GridColumn FieldName="Changed_DrillHoleDiameter" 
+                                                                    Header="變更值" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" IsEnabledBinding="{Binding SetDrillHoleDiameterIsVariablable}">
+                                                        <dxg:GridColumn.EditSettings>
+                                                            <dxe:ComboBoxEditSettings  
+                                                                HorizontalContentAlignment="Center"
+                                                                IsTextEditable="False" ItemsSource="{Binding LeftToolList}" DisplayMember="{Binding Changed_DrillHoleDiameter}" />
+                                                        </dxg:GridColumn.EditSettings>
+                                                    </dxg:GridColumn>
+
+                                                    <dxg:GridColumn FieldName="Origin_DrillHoleDiameter" Header="原始值" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                                </dxg:GridControlBand>
+                                                <dxg:GridControlBand  Header="" HorizontalHeaderContentAlignment="Center">
+                                                    <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" AllowEditing="false"/>
+                                                </dxg:GridControlBand>
+                                            </dxg:GridControl.Bands>
+
                                         </dxg:GridControl>
 
 
@@ -1032,11 +1061,11 @@ AllowEditing="False"
                                         <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True">
                                             <dxg:GridColumn.CellStyle>
                                                 <Style TargetType="{x:Type dxg:LightweightCellEditor}" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}" >
-                                                    <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChangeBool,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChanged,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
                                                     <Style.Triggers>
                                                         <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
                                                             <Setter Property="Opacity" Value="0.8"/>
-                                                            <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChangeBool,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChanged,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
                                                         </Trigger>
                                                         <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter Property="Background" Value="LightSlateGray" />
@@ -1068,12 +1097,12 @@ AllowEditing="False"
                                     <StackPanel Margin="8" >
                                         <!--統一孔徑-->
                                         <StackPanel Orientation="Horizontal">
-                                            <CheckBox IsThreeState="False" Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiTop"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                            <CheckBox IsThreeState="False" Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiTop"  ToolTip="刀徑全變更" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
                                             ConverterParameter={x:Static GD_STD_Enum:FACE.TOP}, 
                                             Converter={local:TypesettingsSettingsToBooleanConverter}, 
                                             Mode=TwoWay , 
                                             UpdateSourceTrigger=PropertyChanged}"/>
-                                            <TextBlock Text="統一刀徑" Margin="8,2"/>
+                                            <TextBlock Text="刀徑全變更" Margin="8,2"/>
                                         </StackPanel>
 
                                         <ComboBox Margin="0,0,0,5"  Height="20" SelectedValue="{Binding MachiningCombinational_DrillBoltsItemSource, 
@@ -1083,11 +1112,7 @@ AllowEditing="False"
                                             UpdateSourceTrigger=PropertyChanged}"
                                                   
                                              Visibility="{Binding ElementName=IdentiTop , Path=IsChecked,Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-                                             ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource, 
-                                            ConverterParameter={x:Static GD_STD_Enum:FACE.TOP},
-                                            Converter={local:TypesettingsSettingsToDrillDiaConverter}, 
-                                            Mode=OneWay , 
-                                            UpdateSourceTrigger=PropertyChanged}"/>
+                                             ItemsSource="{Binding MiddleToolList}"/>
 
                                         <dxg:GridControl  
                                             HorizontalAlignment="Left" 
@@ -1110,27 +1135,47 @@ AllowEditing="False"
                                                     </dxg:TableView.CellStyle>
                                                 </dxg:TableView>
                                             </dxg:GridControl.View>
-                                            <dxg:GridColumn FieldName="DrillWork" Header=""  Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
-                                                <dxg:GridColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <CheckBox IsChecked="{Binding Row.DrillWork}" HorizontalAlignment="Center" Margin="2,0,0,0" />
-                                                    </DataTemplate>
-                                                </dxg:GridColumn.CellTemplate>
-                                            </dxg:GridColumn>
-                                            <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
-                                            <dxg:GridColumn FieldName="Dia" Visible="False" Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
-                                                <dxg:GridColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <CheckBox IsChecked="{Binding Row.DrillHoleDiameterIsChangeBool}" HorizontalAlignment="Center" Margin="2,0,0,0" />
-                                                    </DataTemplate>
-                                                </dxg:GridColumn.CellTemplate>
-                                            </dxg:GridColumn>
-                                            <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True">
-                                                <!--dxg:GridColumn.EditSettings>
-                                                    <dxe:ComboBoxEditSettings ItemsSource="{Binding ToolList}"  DisplayMember="FiscalYear" ValueMember="FiscalYear"/>
-                                                </dxg:GridColumn.EditSettings-->
-                                            </dxg:GridColumn>
-                                            <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" AllowEditing="false"/>
+                                            <dxg:GridControl.Bands>
+                                                <dxg:GridControlBand Header="加工型" HorizontalHeaderContentAlignment="Center">
+                                                    <dxg:GridColumn FieldName="DrillWork" Header=""  Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                                        <dxg:GridColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <CheckBox IsChecked="{Binding Row.DrillWork}" HorizontalAlignment="Center" Margin="2,0,0,0" />
+                                                            </DataTemplate>
+                                                        </dxg:GridColumn.CellTemplate>
+                                                    </dxg:GridColumn>
+                                                    <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
+                                                </dxg:GridControlBand>
+                                                <dxg:GridControlBand Header="刀具直徑" HorizontalHeaderContentAlignment="Center">
+                                                    <dxg:GridColumn FieldName="Dia" Visible="False" Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                                        <dxg:GridColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <CheckBox IsChecked="{Binding Row.DrillHoleDiameterIsChanged}" HorizontalAlignment="Center" Margin="2,0,0,0" />
+                                                            </DataTemplate>
+                                                        </dxg:GridColumn.CellTemplate>
+                                                    </dxg:GridColumn>
+                                                    <dxg:GridColumn FieldName="SetDrillHoleDiameterIsVariablable" Header=""  Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                                        <dxg:GridColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <CheckBox IsChecked="{Binding Row.SetDrillHoleDiameterIsVariablable}" IsThreeState="False" HorizontalAlignment="Center" Margin="2,0,0,0" />
+                                                            </DataTemplate>
+                                                        </dxg:GridColumn.CellTemplate>
+                                                    </dxg:GridColumn>
+                                                    <dxg:GridColumn FieldName="Changed_DrillHoleDiameter" 
+                                                                    Header="變更值" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" IsEnabledBinding="{Binding SetDrillHoleDiameterIsVariablable}">
+                                                        <dxg:GridColumn.EditSettings>
+                                                            <dxe:ComboBoxEditSettings  
+                                                                HorizontalContentAlignment="Center"
+                                                                IsTextEditable="False" ItemsSource="{Binding MiddleToolList}" DisplayMember="{Binding Changed_DrillHoleDiameter}" />
+                                                        </dxg:GridColumn.EditSettings>
+                                                    </dxg:GridColumn>
+
+                                                    <dxg:GridColumn FieldName="Origin_DrillHoleDiameter" Header="原始值" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                                </dxg:GridControlBand>
+                                                <dxg:GridControlBand  Header="" HorizontalHeaderContentAlignment="Center">
+                                                <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" AllowEditing="false"/>
+                                                </dxg:GridControlBand>
+                                            </dxg:GridControl.Bands>
                                         </dxg:GridControl>
                                         <Button Grid.Column="0" Width="80"  HorizontalAlignment="Center"
                                                 Style="{StaticResource SiegCustomButtonGray}"
@@ -1187,11 +1232,11 @@ AllowEditing="False"
                                         <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True">
                                             <dxg:GridColumn.CellStyle>
                                                 <Style TargetType="{x:Type dxg:LightweightCellEditor}" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}" >
-                                                    <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChangeBool,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChanged,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
                                                     <Style.Triggers>
                                                         <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
                                                             <Setter Property="Opacity" Value="0.8"/>
-                                                            <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChangeBool,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChanged,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
                                                         </Trigger>
                                                         <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter Property="Background" Value="LightSlateGray" />
@@ -1224,12 +1269,12 @@ AllowEditing="False"
                                     <StackPanel Margin="8" >
                                         <!--統一孔徑-->
                                         <StackPanel Orientation="Horizontal">
-                                            <CheckBox IsThreeState="False" Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiBACK"  ToolTip="統一刀徑" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
+                                            <CheckBox IsThreeState="False" Height="20" Margin="0,0,0,5" Style="{StaticResource GreenSwitch}" Name="IdentiBACK"  ToolTip="刀徑全變更" IsChecked="{Binding MachiningCombinational_DrillBoltsItemSource,
                                             ConverterParameter={x:Static GD_STD_Enum:FACE.BACK}, 
                                             Converter={local:TypesettingsSettingsToBooleanConverter}, 
                                             Mode=TwoWay , 
                                             UpdateSourceTrigger=PropertyChanged}"/>
-                                            <TextBlock Text="統一刀徑" Margin="8,2"/>
+                                            <TextBlock Text="刀徑全變更" Margin="8,2"/>
                                         </StackPanel>
 
                                         <ComboBox Margin="0,5"  Height="20" SelectedValue="{Binding MachiningCombinational_DrillBoltsItemSource, 
@@ -1239,11 +1284,7 @@ AllowEditing="False"
                                             UpdateSourceTrigger=PropertyChanged}"
                                                   
                                              Visibility="{Binding ElementName=IdentiBACK , Path=IsChecked, Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
-                                             ItemsSource="{Binding MachiningCombinational_DrillBoltsItemSource, 
-                                            ConverterParameter={x:Static GD_STD_Enum:FACE.BACK},
-                                            Converter={local:TypesettingsSettingsToDrillDiaConverter}, 
-                                            Mode=OneWay , 
-                                            UpdateSourceTrigger=PropertyChanged}"/>
+                                             ItemsSource="{Binding RightToolList}"/>
 
                                         <dxg:GridControl  
                                             HorizontalAlignment="Left" 
@@ -1267,23 +1308,54 @@ AllowEditing="False"
                                                     </dxg:TableView.CellStyle>
                                                 </dxg:TableView>
                                             </dxg:GridControl.View>
-                                            <dxg:GridColumn FieldName="DrillWork" Header=""  Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
-                                                <dxg:GridColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <CheckBox IsChecked="{Binding Row.DrillWork}" HorizontalAlignment="Center" Margin="2,0,0,0" />
-                                                    </DataTemplate>
-                                                </dxg:GridColumn.CellTemplate>
-                                            </dxg:GridColumn>
-                                            <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
-                                            <dxg:GridColumn FieldName="Dia" Visible="False" Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
-                                                <dxg:GridColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <CheckBox IsChecked="{Binding Row.DrillHoleDiameterIsChangeBool}" HorizontalAlignment="Center" Margin="2,0,0,0" />
-                                                    </DataTemplate>
-                                                </dxg:GridColumn.CellTemplate>
-                                            </dxg:GridColumn>
-                                            <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
-                                            <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" AllowEditing="false"/>
+
+
+                                            <dxg:GridControl.Bands>
+                                                <dxg:GridControlBand Header="加工型" HorizontalHeaderContentAlignment="Center">
+                                                    <dxg:GridColumn FieldName="DrillWork" Header=""  Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                                        <dxg:GridColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <CheckBox IsChecked="{Binding Row.DrillWork}" HorizontalAlignment="Center" Margin="2,0,0,0" />
+                                                            </DataTemplate>
+                                                        </dxg:GridColumn.CellTemplate>
+                                                    </dxg:GridColumn>
+                                                    <dxg:GridColumn FieldName="WorkType" Header="加工" Width="auto" MinWidth="30" AllowResizing="false" AllowMoving="false"  IsSmart="True" />
+                                                </dxg:GridControlBand>
+                                                <dxg:GridControlBand Header="刀具直徑" HorizontalHeaderContentAlignment="Center">
+                                                    <dxg:GridColumn FieldName="Dia" Visible="False" Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                                        <dxg:GridColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <CheckBox IsChecked="{Binding Row.DrillHoleDiameterIsChanged}" HorizontalAlignment="Center" Margin="2,0,0,0" />
+                                                            </DataTemplate>
+                                                        </dxg:GridColumn.CellTemplate>
+                                                    </dxg:GridColumn>
+                                                    <dxg:GridColumn FieldName="SetDrillHoleDiameterIsVariablable" Header=""  Width="auto" AllowResizing="false" AllowMoving="false"  IsSmart="True">
+                                                        <dxg:GridColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <CheckBox IsChecked="{Binding Row.SetDrillHoleDiameterIsVariablable}" IsThreeState="False" HorizontalAlignment="Center" Margin="2,0,0,0" />
+                                                            </DataTemplate>
+                                                        </dxg:GridColumn.CellTemplate>
+                                                    </dxg:GridColumn>
+                                                    <dxg:GridColumn FieldName="Changed_DrillHoleDiameter" 
+                                                                    Header="變更值" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" IsEnabledBinding="{Binding SetDrillHoleDiameterIsVariablable}">
+                                                        <dxg:GridColumn.EditSettings>
+                                                            <dxe:ComboBoxEditSettings  
+                                                                HorizontalContentAlignment="Center"
+                                                                IsTextEditable="False" ItemsSource="{Binding RightToolList}" DisplayMember="{Binding Changed_DrillHoleDiameter}" />
+                                                        </dxg:GridColumn.EditSettings>
+                                                    </dxg:GridColumn>
+
+                                                    <dxg:GridColumn FieldName="Origin_DrillHoleDiameter" Header="原始值" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True"/>
+                                                </dxg:GridControlBand>
+                                                <dxg:GridControlBand  Header="" HorizontalHeaderContentAlignment="Center">
+                                                    <dxg:GridColumn FieldName="DrillHoleCount" Header="數量" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True" AllowEditing="false"/>
+                                                </dxg:GridControlBand>
+                                            </dxg:GridControl.Bands>
+
+
+
+
+
                                         </dxg:GridControl>
 
 
@@ -1342,11 +1414,11 @@ AllowEditing="False"
                                         <dxg:GridColumn FieldName="DrillHoleDiameter" Header="直徑" Width="auto" MinWidth="35" AllowResizing="false" AllowMoving="false"  IsSmart="True">
                                             <dxg:GridColumn.CellStyle>
                                                 <Style TargetType="{x:Type dxg:LightweightCellEditor}" BasedOn="{StaticResource {dxgt:GridRowThemeKey ResourceKey=LightweightCellStyle}}" >
-                                                    <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChangeBool,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChanged,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
                                                     <Style.Triggers>
                                                         <Trigger Property="dxg:DataViewBase.IsFocusedCell" Value="True" >
                                                             <Setter Property="Opacity" Value="0.8"/>
-                                                            <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChangeBool,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
+                                                            <Setter Property="Background" Value="{Binding Row.DrillHoleDiameterIsChanged,Converter={local:BooleanToSolidColorBrushConverter},ConverterParameter={StaticResource solidclr_Orange},UpdateSourceTrigger=PropertyChanged}"/>
                                                         </Trigger>
                                                         <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter Property="Background" Value="LightSlateGray" />

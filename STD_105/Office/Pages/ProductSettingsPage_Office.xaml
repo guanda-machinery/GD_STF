@@ -992,7 +992,6 @@
                                                 </Binding>
                                             </TextBox.Text>
                                         </TextBox>
-
                                         <dxe:ComboBoxEdit Grid.Column="4" Grid.Row="0" IsTextEditable="False" Style="{StaticResource SiegPositionComboBoxEditOnlyIcon}" Height="24"
                                                            ApplyItemTemplateToSelectedItem="True" 
                                         EditValue="{Binding X_BoltsArrayDirection}">
@@ -1002,11 +1001,6 @@
                                             </dxmvvm:Interaction.Behaviors>
 
                                         </dxe:ComboBoxEdit>
-
-
- 
-
-
 
                                     </Grid>
                                 </GroupBox>
@@ -1115,41 +1109,43 @@
                                     </GroupBox>
 
                                     <STD105:DraggablePopup IsOpen="{Binding CustomizedBoltsGroupSettingUC_IsPopup}"
-                                                            MinWidth="400">
-                                        <Grid  Background="#f8f8f8">
-                                            <STD105:CustomizedBoltsGroupSettingUserControl/>
-                                            <dxe:CheckEdit Width="35" Height="35" HorizontalAlignment="Right" VerticalAlignment="Top"  IsChecked="{Binding CustomizedBoltsGroupSettingUC_IsPopup}"
+                                                            MinWidth="400" Height="auto">
+                                        <Border BorderBrush="Gray" Background="#f8f8f8" BorderThickness="1">
+                                            <Grid>
+                                                <STD105:CustomizedBoltsGroupSettingUserControl/>
+                                                <dxe:CheckEdit Width="35" Height="35" HorizontalAlignment="Right" VerticalAlignment="Top"  IsChecked="{Binding CustomizedBoltsGroupSettingUC_IsPopup}"
                     Margin="1">
-                                                <dxe:CheckEdit.Style>
-                                                    <Style TargetType="{x:Type dxe:CheckEdit}">
-                                                        <Setter Property="Background" Value="Transparent"/>
-                                                        <Setter Property="Template">
-                                                            <Setter.Value>
-                                                                <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
-                                                                    <Grid Background="{TemplateBinding Background}">
-                                                                        <Image Source="{ StaticResource Window_Close}" Width="14" />
-                                                                    </Grid>
-                                                                </ControlTemplate>
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                        <Style.Triggers>
-                                                            <Trigger Property="IsMouseOver" Value="True">
-                                                                <Setter Property="Background" Value="#e81123"/>
-                                                                <Setter Property="Template">
-                                                                    <Setter.Value>
-                                                                        <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
-                                                                            <Grid Background="{TemplateBinding Background}">
-                                                                                <Image Source="{ StaticResource Window_Close_Light  }" Width="14" />
-                                                                            </Grid>
-                                                                        </ControlTemplate>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </Trigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </dxe:CheckEdit.Style>
-                                            </dxe:CheckEdit>
-                                        </Grid>
+                                                    <dxe:CheckEdit.Style>
+                                                        <Style TargetType="{x:Type dxe:CheckEdit}">
+                                                            <Setter Property="Background" Value="Transparent"/>
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
+                                                                        <Grid Background="{TemplateBinding Background}">
+                                                                            <Image Source="{ StaticResource Window_Close}" Width="14" />
+                                                                        </Grid>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Style.Triggers>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Background" Value="#e81123"/>
+                                                                    <Setter Property="Template">
+                                                                        <Setter.Value>
+                                                                            <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
+                                                                                <Grid Background="{TemplateBinding Background}">
+                                                                                    <Image Source="{ StaticResource Window_Close_Light  }" Width="14" />
+                                                                                </Grid>
+                                                                            </ControlTemplate>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </dxe:CheckEdit.Style>
+                                                </dxe:CheckEdit>
+                                            </Grid>
+                                        </Border>
                                     </STD105:DraggablePopup>
                                     <GroupBox Header="客製孔群" Grid.Column="1" Grid.Row="1" >
                                         <StackPanel>     
@@ -1185,7 +1181,7 @@
                                                         IsEnabled="{Binding ElementName=GroupBoltNameComboboxEdit, Path=SelectedIndex, Converter={STD105:IntToBooleanConverter}}"/>
                                             </Grid>
                                             <Label Content="客製孔群設定" Margin="5,0"/>
-                                            <dxe:CheckEdit Height="auto" Margin="6" Visibility="Visible" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left"
+                                            <dxe:CheckEdit Height="auto" Margin="6" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left"
                                                            IsChecked="{Binding CustomizedBoltsGroupSettingUC_IsPopup}"    >
                                                     <dxe:CheckEdit.Style>
                                                         <Style TargetType="{x:Type dxe:CheckEdit}">
@@ -1220,6 +1216,37 @@
                                                         </Style>
                                                     </dxe:CheckEdit.Style>
                                                 </dxe:CheckEdit>
+
+                                            <materialDesign:DialogHost     Visibility="Collapsed"                                           DialogTheme="Inherit">
+                                                <materialDesign:DialogHost.DialogContent>
+
+                                                    <StackPanel>
+                                                        <TextBlock Text="1231231321131"/>
+                                                        <Button
+                                                                Style="{StaticResource SiegCustomButton}"
+                                                                IsCancel="True"
+                                                                Content="關閉"
+                                                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                                                            <Button.CommandParameter>
+                                                                <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                                                    False
+                                                                </system:Boolean>
+                                                            </Button.CommandParameter>
+                                                        </Button>
+                                                    </StackPanel>
+
+                                                </materialDesign:DialogHost.DialogContent>
+                                                <Button
+                                                            Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
+                                                            Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                                            VerticalAlignment="Bottom"
+                                                            HorizontalAlignment="Right"
+                                                            Grid.Row="0"
+                                                            Content="{materialDesign:PackIcon Kind=Plus, Size=22}" />
+                                            </materialDesign:DialogHost>
+
+
+
 
                                         </StackPanel>
 

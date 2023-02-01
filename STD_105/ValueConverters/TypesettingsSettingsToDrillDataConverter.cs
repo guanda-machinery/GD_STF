@@ -74,6 +74,7 @@ namespace STD_105
     /// <summary>
     /// 產生刀具combobox
     /// </summary>
+     [Obsolete]
     internal class TypesettingsSettingsToDrillDiaConverter : BaseValueConverter<TypesettingsSettingsToDrillDiaConverter>
     {
         //combobox用 回傳double

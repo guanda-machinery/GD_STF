@@ -880,6 +880,23 @@
 
                 </Grid>
             </TabItem>
+
+            <TabItem Header="產線佈局">
+                <Grid   dx:ThemeManager.ThemeName="Win10Light" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                     <TextBlock Text="出口"  Grid.Column="0"/>
+                    <TextBlock Text="帶鋸機"  Grid.Column="1" Height="200"/>
+                    <TextBlock Text="STD105"  Grid.Column="2"/>
+
+                </Grid>
+            </TabItem>
             <TabItem Header="軟體版本">
                 <Border BorderThickness="1" Grid.ColumnSpan="2" BorderBrush="Gray">
                     <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Height="940">
@@ -1041,7 +1058,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <StackPanel Margin="12,297,0,0" Width="240"  HorizontalAlignment="Left"  >
+        <StackPanel Margin="12,341,0,0" Width="240"  HorizontalAlignment="Left"  >
             <StackPanel.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource CustomDesignButton}">
                     <Setter Property="Opacity"

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static WPFSTD105.ViewModel.ProcessingMonitor_MachineVM;
 
 namespace WPFSTD105.Model
 {
@@ -37,7 +38,7 @@ namespace WPFSTD105.Model
                 _dia_Identification = value;
                 DrillBoltList.ForEach(x => 
                 {
-                    x.DrillHoleDiameterIsChangeBool = value;
+                    x.SetDrillHoleDiameterIsVariablable = value;
                  });
                 //統一刀徑指令無法將打點變更為0或10以外的值
             }
@@ -275,8 +276,6 @@ namespace WPFSTD105.Model
         {
             get
             {
-
-
                 if (_changed_DrillHoleDiameter == null)
                     _changed_DrillHoleDiameter = Origin_DrillHoleDiameter;
 
@@ -289,6 +288,8 @@ namespace WPFSTD105.Model
             }
             set
             {
+                if (Origin_DrillHoleDiameter != value)
+                    SetDrillHoleDiameterIsVariablable = true;
                 _changed_DrillHoleDiameter = value;
             }
         }
@@ -300,7 +301,7 @@ namespace WPFSTD105.Model
         {
             get
             {
-                if (!DrillHoleDiameterIsChangeBool)
+                if (!SetDrillHoleDiameterIsVariablable)
                 {
                     return Origin_DrillHoleDiameter;
                 }
@@ -311,23 +312,44 @@ namespace WPFSTD105.Model
             }
         }
 
-        private bool _drillHoleDiameterIsChangeBool = false;
+        private bool _DrillHoleDiameterIsVariablable = false;
         /// <summary>
         /// 孔直徑被變更 -> 紀錄變更後的值來比較
         /// 可切換true false來得到值
         /// </summary>
-        public bool DrillHoleDiameterIsChangeBool
+        public bool SetDrillHoleDiameterIsVariablable
         {
             get
             {
-                return (Origin_DrillHoleDiameter != Changed_DrillHoleDiameter) ? _drillHoleDiameterIsChangeBool : false;
+                return _DrillHoleDiameterIsVariablable;
             }
             set
             {
-                _drillHoleDiameterIsChangeBool = value;
-                OnPropertyChanged("DrillHoleDiameter");
+                _DrillHoleDiameterIsVariablable = value;
             }
         }
+
+        /// <summary>
+        /// 孔直徑被變更 -> 紀錄變更後的值來比較
+        /// </summary>
+        public bool DrillHoleDiameterIsChanged
+        {
+            get
+            {
+                return (Origin_DrillHoleDiameter != Changed_DrillHoleDiameter) ? SetDrillHoleDiameterIsVariablable : false;
+            }
+        }
+      
+        /// <summary>
+        /// 可用的加工列表
+        /// </summary>
+        public List<double> DrillToolTable{get; set;} = new List<double>();
+
+
+
+
+
+
     }
 
 }

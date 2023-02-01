@@ -60,6 +60,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using DevExpress.XtraPrinting;
 using DocumentFormat.OpenXml.Drawing;
 using DevExpress.XtraPrinting.Native;
+using DevExpress.Xpf.CodeView;
 
 namespace WPFSTD105.ViewModel
 {
@@ -80,11 +81,11 @@ namespace WPFSTD105.ViewModel
             Display3DViewerCommand = Display3DViewer();
             Finish_UndoneDataViews = ser.GetMaterialDataView();
 
-        
+         
 
             if (Finish_UndoneDataViews != null)
             {
-              
+
                 Finish_UndoneDataViews.ForEach(el =>
                 {
                     el.PositionEnum = PositionStatusEnum.初始化;
@@ -101,7 +102,7 @@ namespace WPFSTD105.ViewModel
                             el.MachiningEndTime = MachiningTimeBK.MachiningEndTime;
                         }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         AddOperatingLog(LogSourceEnum.Init, ex.Message, true);
                     }
@@ -109,7 +110,7 @@ namespace WPFSTD105.ViewModel
 
                     //初始化後載入備份檔案 並產生
                     //AllDrillBoltsDict
-                
+
                     var DrillBData = ser.GetDrillBolts(el.MaterialNumber);
                     if (DrillBData != null)
                         AllDrillBoltsDict[el.MaterialNumber] = DrillBData;
@@ -132,6 +133,10 @@ namespace WPFSTD105.ViewModel
             MecOptional mecOptional = JsonConvert.DeserializeObject<MecOptional>(optionSettings.ToString());
             WriteCodesysMemor.SetMecOptional(mecOptional);//寫入記憶體
 
+
+
+
+
             if (ViewLocator.ApplicationViewModel.AppManualConnect)
             {
                 Input_by_SmartPhone_RadioButtonIsChecked = true;
@@ -151,7 +156,7 @@ namespace WPFSTD105.ViewModel
                         ERROR_CODE error = ApplicationViewModel.PanelButton.Alarm;
                         if (error != ERROR_CODE.Null)
                         {
-                            if (!errorList.Exists(x=> x == error))
+                            if (!errorList.Exists(x => x == error))
                             {
                                 var Local_ErrorInfo = string.Empty;
                                 if (error == ERROR_CODE.Unknown)
@@ -219,13 +224,13 @@ namespace WPFSTD105.ViewModel
 
 
                     var Channel_Index = Finish_UndoneDataViews.FindIndex(x => AlreadyPairEnumArray.Contains(x.PositionEnum) &&
-                    CantUseTrolleyOBJECT_TYPEArray.Contains(x.ObjectType) );
+                    CantUseTrolleyOBJECT_TYPEArray.Contains(x.ObjectType));
                     //如果有槽鐵配對完成 禁用台車
                     if (Channel_Index != -1)
                         TrolleyEnable = true;
                     else
                     {
-                   
+
                         TrolleyEnable = false;
                         //跳出提示告訴使用者必須使用續接
                         /*MessageBoxResult messageBoxResult = WinUIMessageBox.Show(null,
@@ -255,12 +260,12 @@ namespace WPFSTD105.ViewModel
                             ser.SetDrillBolts(el.Key, el.Value);
                     }
 
-                   /* foreach(var FaceDrillBolts in  MachiningCombinational_DrillBoltsItemSource)
-                    {
-                        FaceDrillBolts.Value.edit
-                        if ()
-                            SelectedMaterial_Info_Button_Visibility = Visibility.Collapsed;
-                    }*/
+                    /* foreach(var FaceDrillBolts in  MachiningCombinational_DrillBoltsItemSource)
+                     {
+                         FaceDrillBolts.Value.edit
+                         if ()
+                             SelectedMaterial_Info_Button_Visibility = Visibility.Collapsed;
+                     }*/
 
 
                     Thread.Sleep(3000);
@@ -291,6 +296,8 @@ namespace WPFSTD105.ViewModel
             });
         }
 
+
+
         #region 公開屬性
         /// <summary>
         /// 控制3D頁面顯示
@@ -303,17 +310,17 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 當前值
         /// </summary>
-        public int MCurrent 
-        { 
-            get 
-            { 
+        public int MCurrent
+        {
+            get
+            {
                 return _mCurrent;
-            } 
-            set 
-            { 
+            }
+            set
+            {
                 _mCurrent = value;
                 OnPropertyChanged(nameof(MCurrent));
-                if(Finish_UndoneDataViews.Count >0)
+                if (Finish_UndoneDataViews.Count > 0)
                     MCurrentMaterialNumber = Finish_UndoneDataViews[_mCurrent].MaterialNumber;
                 OnPropertyChanged(nameof(MCurrentMaterialNumber));
             }
@@ -362,10 +369,10 @@ namespace WPFSTD105.ViewModel
                                         var workOther = read.GetWorkOther();
 
                                         //如果已經存在加工序列->跳過
-                                        if (index.Exists(x=> x ==EachMaterialIndex))
+                                        if (index.Exists(x => x == EachMaterialIndex))
                                         {
                                             //如果在完成清單狀態
-                                            if (_Finish.Exists(x=> x == EachMaterialIndex))
+                                            if (_Finish.Exists(x => x == EachMaterialIndex))
                                             {
                                                 WinUIMessageBox.Show(null,
                                                     $"素材編號：{EachMaterial.MaterialNumber}已經加工完成",
@@ -417,8 +424,8 @@ namespace WPFSTD105.ViewModel
                                         index.Add(EachMaterialIndex);//最末端
                                         //write.SetMonitorWorkOffset(new byte[] { 1 }, cInsert); //寫入準備加工的陣列位置
                                         write.SetMonitorWorkOffset(index.ToArray().ToByteArray(), Marshal.OffsetOf<MonitorWork>(nameof(MonitorWork.Index)).ToInt64()); //寫入準備加工的陣列位置
-                                   
-                                    
+
+
                                     }
 
                                     AddOperatingLog(LogSourceEnum.Machine, $"加入素材編號：{EachMaterial.MaterialNumber}成功", false);
@@ -453,7 +460,6 @@ namespace WPFSTD105.ViewModel
         [DevExpress.Mvvm.DataAnnotations.Command]
         private void RowDoubleClick(DevExpress.Mvvm.Xpf.RowClickArgs args)
         {
-
             //檢查是否是電腦模式->若不是則跳出彈窗
             if (!Input_by_Computer_RadioButtonIsChecked)
             {
@@ -496,11 +502,11 @@ namespace WPFSTD105.ViewModel
                                 MessageBoxResult.None,
                                 MessageBoxOptions.None,
                                 FloatingMode.Adorner);
-                            }); 
+                            });
                             return;
                         }
 
-                        if (DrillKeyValuePair.Value.Exists(Va => ((MaterialData.LengthStr - Va.X )< 5)))
+                        if (DrillKeyValuePair.Value.Exists(Va => ((MaterialData.LengthStr - Va.X) < 5)))
                         {
                             AddOperatingLog(LogSourceEnum.Machine, $"素材編號：{MaterialData.MaterialNumber}加工座標有誤，加工孔不可在出料端邊緣的5mm之內", false);
                             ScheduleGridC.Dispatcher.Invoke(() =>
@@ -517,8 +523,6 @@ namespace WPFSTD105.ViewModel
                             return;
                         }
                     }
-
-
 
                     Task.Run(() =>
                     {
@@ -537,7 +541,7 @@ namespace WPFSTD105.ViewModel
         }
 
 
-        private bool InsertMaterial(DXSplashScreenViewModel DXviewmodel,MaterialDataView MaterialData, bool showWinUIMessageBox = true)
+        private bool InsertMaterial(DXSplashScreenViewModel DXviewmodel, MaterialDataView MaterialData, bool showWinUIMessageBox = true)
         {
             var MaterialIndex = Finish_UndoneDataViews.FindIndex(x => (x == MaterialData));
             if (MaterialIndex != -1)
@@ -574,7 +578,7 @@ namespace WPFSTD105.ViewModel
                                     Finish_UndoneDataViews[MaterialIndex].PositionEnum = PositionStatusEnum.從軟體配對;
                                     Finish_UndoneDataViews[MaterialIndex].MachiningStartTime = null;
                                     Finish_UndoneDataViews[MaterialIndex].MachiningEndTime = null;
-                                   // ScheduleGridC.RefreshGrid();
+                                    // ScheduleGridC.RefreshGrid();
                                     RefreshScheduleGridC();
                                     SelectedMaterial_Info_Button_Visibility = Visibility.Visible;
 
@@ -709,9 +713,7 @@ namespace WPFSTD105.ViewModel
                     AddOperatingLog(LogSourceEnum.Software, $"已選擇素材編號：{_finish_UndoneDataViews_SelectedItem.MaterialNumber}");
 
                     //AllDrillBoltsDict[_finish_UndoneDataViews_SelectedItem.MaterialNumber].ForEach(el => el.Value.PinTestMode = DrillPin_Mode_RadioButtonIsEnable);
-                    MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(DrillPin_Mode_RadioButtonIsEnable ,  _finish_UndoneDataViews_SelectedItem);
-
-
+                    MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(DrillPin_Mode_RadioButtonIsEnable, _finish_UndoneDataViews_SelectedItem);
 
                     //如果切換時有已排程但未加工的零件->清理掉狀態並重新上傳
                     ClearPairedMachineData(_finish_UndoneDataViews_SelectedItem);
@@ -772,7 +774,7 @@ namespace WPFSTD105.ViewModel
         public Dictionary<FACE, DrillBoltsBase> MachiningDetail_DrillBoltsItemSource { get; set; } = new Dictionary<FACE, DrillBoltsBase>();
 
         //產生加工參考表->標示工件要如何加工 實際加工時會參考此處之設定值
-        private Dictionary<FACE, DrillBoltsBase> GetDrillBoltsItemCollection(bool PinMode , MaterialDataView view)
+        private Dictionary<FACE, DrillBoltsBase> GetDrillBoltsItemCollection(bool PinMode, MaterialDataView view)
         {
             var Dict = new Dictionary<FACE, DrillBoltsBase>();
             if (view == null)
@@ -783,7 +785,7 @@ namespace WPFSTD105.ViewModel
             {
                 if (view.PositionEnum == PositionStatusEnum.等待配對)
                     SelectedMaterial_Info_Button_Visibility = Visibility.Visible;
-                else if(view.PositionEnum == PositionStatusEnum.初始化)
+                else if (view.PositionEnum == PositionStatusEnum.初始化)
                     SelectedMaterial_Info_Button_Visibility = Visibility.Visible;
                 else
                     SelectedMaterial_Info_Button_Visibility = Visibility.Collapsed;
@@ -827,7 +829,7 @@ namespace WPFSTD105.ViewModel
                                                 DrillHoleCount = 1,
                                                 Origin_DrillHoleDiameter = DrillData.Dia,
                                                 Changed_DrillHoleDiameter = PinModeDrillDia,
-                                                DrillHoleDiameterIsChangeBool = true,
+                                                SetDrillHoleDiameterIsVariablable = true,
                                             });
                                         }
                                         else if (DrillData.AXIS_MODE == AXIS_MODE.PIERCE)
@@ -839,7 +841,7 @@ namespace WPFSTD105.ViewModel
                                                 DrillHoleCount = 1,
                                                 Origin_DrillHoleDiameter = DrillData.Dia,
                                                 WorkAXIS_modeIsChanged = true,
-                                                DrillHoleDiameterIsChangeBool= true,
+                                                SetDrillHoleDiameterIsVariablable = true,
                                                 Changed_WorkAXIS_MODE = AXIS_MODE.POINT,
                                                 Changed_DrillHoleDiameter = PinModeDrillDia,
                                             });
@@ -853,7 +855,7 @@ namespace WPFSTD105.ViewModel
                                                 DrillHoleCount = 1,
                                                 Origin_DrillHoleDiameter = DrillData.Dia,
                                                 Changed_DrillHoleDiameter = PinModeDrillDia,
-                                                DrillHoleDiameterIsChangeBool = true,
+                                                SetDrillHoleDiameterIsVariablable = true,
                                             });
                                         }
                                     }
@@ -870,7 +872,7 @@ namespace WPFSTD105.ViewModel
                                                 Changed_DrillHoleDiameter = PinModeDrillDia
                                             };
                                             if (_drillB.Origin_DrillHoleDiameter != 0 && _drillB.Origin_DrillHoleDiameter != 10)
-                                                _drillB.DrillHoleDiameterIsChangeBool = true;
+                                                _drillB.SetDrillHoleDiameterIsVariablable = true;
                                             DrillBoltsListDict[keyValuePair.Key].DrillBoltList.Add(_drillB);
                                         }
                                         else
@@ -1004,7 +1006,7 @@ namespace WPFSTD105.ViewModel
 
                 }
             }, null);
-            while(keyValue == null)
+            while (keyValue == null)
             {
                 Thread.Sleep(100);
             }
@@ -1220,7 +1222,7 @@ namespace WPFSTD105.ViewModel
         }
 
 
-        public GridControl ScheduleGridC { get; set; } 
+        public GridControl ScheduleGridC { get; set; }
         public GridControl LogGridC { get; set; }
         /// <summary>
         /// 未加工的控制項
@@ -1437,9 +1439,9 @@ namespace WPFSTD105.ViewModel
             }
         }
 
-        
 
-       public WPFBase.RelayParameterizedCommand SelectedItemsAddCommand
+
+        public WPFBase.RelayParameterizedCommand SelectedItemsAddCommand
         {
             get
             {
@@ -1449,7 +1451,7 @@ namespace WPFSTD105.ViewModel
                     if (el is IEnumerable<GD_STD.Data.MaterialDataView>)
                     {
                         var MDV_SelectedItems = (el as IEnumerable<GD_STD.Data.MaterialDataView>).ToList();
-                        
+
                         if (MDV_SelectedItems != null)
                         {
                             Task.Run(() =>
@@ -1476,8 +1478,8 @@ namespace WPFSTD105.ViewModel
                                     {
 
                                         InsertMProcessingScreenWin.ViewModel.Status = $"正在加入零件{i + 1}/{MDV_SelectedItems.Count}";
-                                        InsertMaterial(InsertMProcessingScreenWin.ViewModel, MDV_SelectedItems[i],false);
-                                       
+                                        InsertMaterial(InsertMProcessingScreenWin.ViewModel, MDV_SelectedItems[i], false);
+
                                     }
                                 }
                                 InsertMProcessingScreenWin.Close();
@@ -1640,7 +1642,7 @@ namespace WPFSTD105.ViewModel
                                 REProcessingScreenWin.ViewModel.Status = $"正在註銷伺服器的零件...";
                                 REProcessingScreenWin.Show();
 
-                                if(MDV_SelectedItems.Count !=0)
+                                if (MDV_SelectedItems.Count != 0)
                                     ClearAppServerPairWorkList(MDV_SelectedItems.Select(x => (x.MaterialNumber)).ToList());
 
                                 Thread.Sleep(3000); //延遲清理
@@ -1667,11 +1669,11 @@ namespace WPFSTD105.ViewModel
                         AddOperatingLog(LogSourceEnum.Machine, $"{ex.Message}");
                     }
                 });
-             }
+            }
         }
 
 
-                #endregion
+        #endregion
 
 
         private void VM_AssemblyPart(devDept.Eyeshot.Model model, string materialNumber)
@@ -2025,9 +2027,15 @@ namespace WPFSTD105.ViewModel
                     }
                 }
 
-                if (ApplicationViewModel.ProjectName != read.GetProjectName()) //如果相同專案
+                var ProjectName = ApplicationViewModel.ProjectName;
+
+                if(ProjectName.Length>=20)
+                    ProjectName = ProjectName.Substring(0,20);
+
+
+                if (ProjectName != read.GetProjectName()) //如果相同專案
                 {
-                    byte[] project = ApplicationViewModel.ProjectName.ToByteArray(); //目前專案名稱
+                    byte[] project = ProjectName.ToByteArray(); //目前專案名稱
                     write.SetMonitorWorkOffset(project, Marshal.OffsetOf<MonitorWork>(nameof(MonitorWork.ProjectName)).ToInt64()); //寫入專案名稱
                 }
 
@@ -2053,7 +2061,7 @@ namespace WPFSTD105.ViewModel
 
 
             ProcessingScreenWin.ViewModel.Status = $"{ProcessingScreenWinPrefix} - 專案清單";
-            ProcessingScreenWin.ViewModel.IsIndeterminate= false;
+            ProcessingScreenWin.ViewModel.IsIndeterminate = false;
             int workIndex = 0;
             foreach (var view in Finish_UndoneDataViews)
             {
@@ -2079,8 +2087,8 @@ namespace WPFSTD105.ViewModel
                     var steelPart = SteelPartCollection[0];
                     using (Memor.WriteMemorClient Write = new Memor.WriteMemorClient())
                     {
-                        ProcessingScreenWin.ViewModel.Status = $"{ProcessingScreenWinPrefix} - 寫入素材編號{view.MaterialNumber} ({workIndex+1}/{Finish_UndoneDataViews.Count})";
-                        ProcessingScreenWin.ViewModel.Progress = ((double)(workIndex))*100 / ((double)Finish_UndoneDataViews.Count);
+                        ProcessingScreenWin.ViewModel.Status = $"{ProcessingScreenWinPrefix} - 寫入素材編號{view.MaterialNumber} ({workIndex + 1}/{Finish_UndoneDataViews.Count})";
+                        ProcessingScreenWin.ViewModel.Progress = ((double)(workIndex)) * 100 / ((double)Finish_UndoneDataViews.Count);
 
                         Write.SetMonitorWorkOffset(view.MaterialNumber.ToByteArray(), cMaterialNumber);//寫入素材編號
                         Write.SetMonitorWorkOffset(Encoding.ASCII.GetBytes(view.Profile), cProfile);//寫入斷面規格
@@ -2118,7 +2126,7 @@ namespace WPFSTD105.ViewModel
                                 ObjectPROFILE_TYPE = PROFILE_TYPE.BOX;
                                 break;
                             case OBJECT_TYPE.L:
-                                ObjectPROFILE_TYPE = PROFILE_TYPE.L; 
+                                ObjectPROFILE_TYPE = PROFILE_TYPE.L;
                                 break;
                             case OBJECT_TYPE.PLATE:
                                 ObjectPROFILE_TYPE = PROFILE_TYPE.PLATE;
@@ -2134,7 +2142,7 @@ namespace WPFSTD105.ViewModel
                         var p1 = (view.Parts.Select(el => el.AssemblyNumber).Aggregate((str1, str2) => $"{str1},{str2}"));
                         var p2 = (view.Parts.Select(el => el.AssemblyNumber).Aggregate((str1, str2) => $"{str1},{str2}").ToByteArray());
 
-                        ProcessingScreenWin.ViewModel.Progress = ((double)(workIndex + 1))*100 / ((double)Finish_UndoneDataViews.Count);
+                        ProcessingScreenWin.ViewModel.Progress = ((double)(workIndex + 1)) * 100 / ((double)Finish_UndoneDataViews.Count);
                     }
                 }
                 workIndex++;
@@ -2156,7 +2164,7 @@ namespace WPFSTD105.ViewModel
         private void SendDrillToMachine(long boltsCountOffset, long drOffset, List<Drill> drills, SteelPart steelPart, long cWork, double h, double length, double[] cutPointX = null)
         {
             List<Drill> dList = new List<Drill>();
-            foreach(var el in drills)
+            foreach (var el in drills)
             {
                 if (dList.FindIndex(e => el.X == e.X && e.Y == el.Y) == -1)
                 {
@@ -2207,7 +2215,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 發送加工訊息
         /// </summary>
-        private bool SendDrill(int index , out bool isPinMode)
+        private bool SendDrill(int index, out bool isPinMode)
         {
             isPinMode = false;
             _CreateDMFileTask?.Wait(); //等待 Task CreateFile 完成 link:ProcessingMonitorVM.cs:CreateFile()
@@ -2220,7 +2228,7 @@ namespace WPFSTD105.ViewModel
                     {
                         MachineDrillkeyValueDict[view.MaterialNumber] = GenerateMachiningDataPairs(view);
                     }
-                   // var keyValuePairs = MachineDrillkeyValueDict[view.MaterialNumber];
+                    // var keyValuePairs = MachineDrillkeyValueDict[view.MaterialNumber];
                     //實際加工的資料 
                     var ActualDrillDict = new Dictionary<FACE, List<Drill>>();
                     //使用判斷式只保留要加工的孔位/加工方法
@@ -2240,13 +2248,13 @@ namespace WPFSTD105.ViewModel
                                     try
                                     {
                                         //以db的原始孔位做比較
-                                        var Addrange = MachineDrillkeyValueDict[view.MaterialNumber][el.Key].FindAll(x => (x.Dia == DB.Origin_DrillHoleDiameter&& x.AXIS_MODE == DB.Origin_WorkAXIS_MODE)).ToArray();
+                                        var Addrange = MachineDrillkeyValueDict[view.MaterialNumber][el.Key].FindAll(x => (x.Dia == DB.Origin_DrillHoleDiameter && x.AXIS_MODE == DB.Origin_WorkAXIS_MODE)).ToArray();
 
                                         for (int i = 0; i < Addrange.Count(); i++)
                                         {
                                             //如果有更改過孔位
                                             //保險起見 事實上DrillHoleDiameter已有切換孔的功能
-                                            if (DB.DrillHoleDiameterIsChangeBool)
+                                            if (DB.SetDrillHoleDiameterIsVariablable)
                                                 Addrange[i].Dia = DB.DrillHoleDiameter;
                                             //保險起見 事實上WorkAXIS_modeIsChanged已有切換的功能
                                             if (DB.WorkAXIS_modeIsChanged)
@@ -2283,7 +2291,7 @@ namespace WPFSTD105.ViewModel
                     if (ActualDrillDict.ContainsKey(FACE.TOP))
                         SendDrillToMachine(_BoltsCountMOffset, _DrMOffset, ActualDrillDict[FACE.TOP], steelPart, cWork, steelPart.H, view.LengthStr, null);
                     else
-                        SendDrillToMachine(_BoltsCountMOffset, _DrMOffset, new List<Drill>(), steelPart, cWork, steelPart.W,  view.LengthStr, null);
+                        SendDrillToMachine(_BoltsCountMOffset, _DrMOffset, new List<Drill>(), steelPart, cWork, steelPart.W, view.LengthStr, null);
 
                     if (ActualDrillDict.ContainsKey(FACE.BACK))
                         SendDrillToMachine(_BoltsCountROffset, _DrROffset, ActualDrillDict[FACE.BACK], steelPart, cWork, steelPart.W, view.LengthStr, null);
@@ -2392,7 +2400,7 @@ namespace WPFSTD105.ViewModel
                 var DrillList = new List<Drill>();
 
                 //foreach(var el in drills)
-                for (int i =0; i < drills.Length;i++)
+                for (int i = 0; i < drills.Length; i++)
                 {
                     if (drills[i].AXIS_MODE == AXIS_MODE.PIERCE)
                     {
@@ -2425,7 +2433,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 產生 <see cref="MaterialDataView"/> 所有dm檔
         /// </summary>
-         private async void CreateDMFile(WPFSTD105.ModelExt _Model)
+        private async void CreateDMFile(WPFSTD105.ModelExt _Model)
         {
             try
             {
@@ -2479,12 +2487,12 @@ namespace WPFSTD105.ViewModel
                                 }
                                 else
                                 {
-                                    MachineDrillkeyValueDict.Remove(el_MaterialNumber); 
+                                    MachineDrillkeyValueDict.Remove(el_MaterialNumber);
                                     AllDrillBoltsDict.Remove(el_MaterialNumber);
                                     ser.DeleteDrillBolts(el_MaterialNumber);
                                 }
                             }
-                            catch( Exception ex)
+                            catch (Exception ex)
                             {
 
                             }
@@ -2500,7 +2508,7 @@ namespace WPFSTD105.ViewModel
 
                 //ser.SetMaterialDataView(Finish_UndoneDataViews);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
@@ -2595,7 +2603,7 @@ namespace WPFSTD105.ViewModel
                                     Thread.Sleep(500);
                                     MecOptional mecOptional = JsonConvert.DeserializeObject<MecOptional>(optionSettings.ToString());
                                     WriteCodesysMemor.SetMecOptional(mecOptional);//寫入記憶體
-                                } 
+                                }
                             }
 
                         }
@@ -2667,7 +2675,7 @@ namespace WPFSTD105.ViewModel
                         {
                             ShowMessageBox(obj as UIElement, "機台運轉時不可發送續接命令");
                         }
-                        return;         
+                        return;
                     }
 
 
@@ -2869,10 +2877,10 @@ namespace WPFSTD105.ViewModel
 
 
 
-        public Visibility SelectedMaterial_Info_Button_Visibility { get; set; } 
+        public Visibility SelectedMaterial_Info_Button_Visibility { get; set; }
 
 
-        public bool DrillHole_Mode_RadioButtonIsEnable { get; set; } 
+        public bool DrillHole_Mode_RadioButtonIsEnable { get; set; }
         public bool DrillPin_Mode_RadioButtonIsEnable { get; set; }
 
 
@@ -2880,17 +2888,17 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 最上層 當有物料是配對完成狀態才可用
         /// </summary>
-        public bool TransportGridIsEnableBool 
-        { 
-            get 
+        public bool TransportGridIsEnableBool
+        {
+            get
             {
                 return _transportGridIsEnableBool;
-            } 
-            set 
-            { 
+            }
+            set
+            {
                 _transportGridIsEnableBool = value;
-                OnPropertyChanged(nameof(TransportGridIsEnableBool)) ;
-            } 
+                OnPropertyChanged(nameof(TransportGridIsEnableBool));
+            }
         }
 
         /// <summary>
@@ -2941,7 +2949,7 @@ namespace WPFSTD105.ViewModel
                 return new WPFBase.RelayCommand(() =>
                 {
                     AddOperatingLog(LogSourceEnum.Software, "切換到一般加工模式");
-                    MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(false,Finish_UndoneDataViews_SelectedItem);
+                    MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(false, Finish_UndoneDataViews_SelectedItem);
                     HintStep1 = true;
                     //如果切換時有已排程但未加工的零件->清理掉狀態
                     //若目前已選取的為等待配對資料 改變其鑽孔/打點狀態
@@ -2957,7 +2965,7 @@ namespace WPFSTD105.ViewModel
             get => new WPFBase.RelayCommand(() =>
             {
                 AddOperatingLog(LogSourceEnum.Software, "切換到測試打孔模式");
-                MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(true,Finish_UndoneDataViews_SelectedItem);
+                MachiningCombinational_DrillBoltsItemSource = GetDrillBoltsItemCollection(true, Finish_UndoneDataViews_SelectedItem);
                 //若目前已選取的為等待配對資料 改變其鑽孔/打點狀態
                 //MachiningCombinational_DrillBoltsItemSource.ForEach(el => el.Value.PinTestMode = true);
 
@@ -3134,15 +3142,15 @@ namespace WPFSTD105.ViewModel
             var GetPCDataBool = MachineAndPhoneAPI.AppServerCommunicate.GetAppPairingData(MachineAndPhoneAPI.AppServerCommunicate.RegeditMaterialSource.APP, out var APP_PairingData);
             if (GetAppDataBool || GetPCDataBool)
             {
-                var PairingDataDict = new Dictionary<MachineAndPhoneAPI.AppServerCommunicate.RegeditMaterialSource,List<MachineAndPhoneAPI.Models.Assemblyinfo.Data>>();
-            
+                var PairingDataDict = new Dictionary<MachineAndPhoneAPI.AppServerCommunicate.RegeditMaterialSource, List<MachineAndPhoneAPI.Models.Assemblyinfo.Data>>();
+
                 if (PC_PairingData.data != null)
                 {
                     PairingDataDict.Add(MachineAndPhoneAPI.AppServerCommunicate.RegeditMaterialSource.PC, PC_PairingData.data);
                 }
                 if (APP_PairingData.data != null)
                 {
-                    PairingDataDict.Add(MachineAndPhoneAPI.AppServerCommunicate.RegeditMaterialSource.APP,APP_PairingData.data);
+                    PairingDataDict.Add(MachineAndPhoneAPI.AppServerCommunicate.RegeditMaterialSource.APP, APP_PairingData.data);
                 }
 
                 var TourTaskList = new List<Task>();
@@ -3175,11 +3183,11 @@ namespace WPFSTD105.ViewModel
                                 }
                                 return true;
                             };
-                            TourTaskList.Add(Task<bool>.Factory.StartNew(action, Index));         
+                            TourTaskList.Add(Task<bool>.Factory.StartNew(action, Index));
                         }
                     }
                 }
-                Task.WaitAll(TourTaskList.ToArray()); 
+                Task.WaitAll(TourTaskList.ToArray());
                 RefreshScheduleGridC();
             }
 
@@ -3253,7 +3261,7 @@ namespace WPFSTD105.ViewModel
                         {
                             //葉:需要比對衝突
                             STDSerialization ser = new STDSerialization();
-                            
+
                             WorkMaterial? Mwork = ser.GetWorkMaterialBackup(Finish_UndoneDataViews[i].MaterialNumber);
                             if (Mwork != null)
                             {
@@ -3262,16 +3270,16 @@ namespace WPFSTD105.ViewModel
                                 int workSize = Marshal.SizeOf(typeof(WorkMaterial));
                                 if (work.AssemblyNumber != null && work.MaterialNumber != null)
                                 {
-                                    if (work.Position == -2 ) //如果是完成的狀態
+                                    if (work.Position == -2) //如果是完成的狀態
                                     {
-                                        Finish_UndoneDataViews[i].Schedule = 100; 
+                                        Finish_UndoneDataViews[i].Schedule = 100;
                                         Finish_UndoneDataViews[i].PositionEnum = PositionStatusEnum.完成;       //"完成";
-                                      //  _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
-                                        
+                                                                                                              //  _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
+
                                         //更改參數
                                         work.Finish = 100;
                                         work.IsExport = true;
-                                    }   
+                                    }
                                     //把資料寫回機台
                                     WriteCodesysMemor.SetMonitorWorkOffset(work.ToByteArray(), workOffset + (workSize * i)); //發送加工陣列
                                     _SendIndex.Add(Convert.ToInt16(i));
@@ -3281,7 +3289,7 @@ namespace WPFSTD105.ViewModel
                         }
 
 
-                    }   
+                    }
                     //如果是在自動狀況下
                     else if (ApplicationViewModel.PanelButton.Key == KEY_HOLE.AUTO) //如果有在自動狀況下
                     {
@@ -3308,7 +3316,7 @@ namespace WPFSTD105.ViewModel
                                     WriteCodesysMemor.SetMonitorWorkOffset(work.ToByteArray(), workOffset + (workSize * i)); //發送加工陣列
                                     _SendIndex.Add(Convert.ToInt16(i));
 
-                                  //  _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
+                                    //  _Finish.Add(Convert.ToInt16(i)); //加入到完成列表
                                 }
 
                             }
@@ -3335,7 +3343,7 @@ namespace WPFSTD105.ViewModel
                 {
                     if (errorCount < 5) //如果同步失敗 5 次
                     {
-                        AddOperatingLog(LogSourceEnum.Init, $"同步失敗 次數-{errorCount+1}", true);
+                        AddOperatingLog(LogSourceEnum.Init, $"同步失敗 次數-{errorCount + 1}", true);
                         log4net.LogManager.GetLogger("同步失敗").Debug($"同步失敗");
                         ;
                     }
@@ -3352,7 +3360,7 @@ namespace WPFSTD105.ViewModel
 
             _SerializationThread.Start();
             _HostThread.Start();
-            
+
             DProcessingScreenWin.ViewModel.Status = "監控頁面初始化完成...";
             DProcessingScreenWin.Close();
 
@@ -3387,7 +3395,7 @@ namespace WPFSTD105.ViewModel
                         //要有點選才序列化
 
                         ContinuedSerialization();
-                        
+
 
 
 
@@ -3465,7 +3473,7 @@ namespace WPFSTD105.ViewModel
             }
 
             if (MCurrent != workOther.Current)
-            {     try
+            { try
                 {
 
 
@@ -3484,7 +3492,7 @@ namespace WPFSTD105.ViewModel
                     else
                         AddOperatingLog(LogSourceEnum.Machine, $"目前無等待加工之索引");
                 }
-                catch                                       (Exception ex)
+                catch (Exception ex)
                 {
                     AddOperatingLog(LogSourceEnum.Machine, $"{ex.Message}", true);
                 }
@@ -3493,7 +3501,7 @@ namespace WPFSTD105.ViewModel
 
             ser.SetWorkMaterialOtherBackup(workOther);
             ser.SetWorkMaterialIndexBackup(indexArray); //備份 indexArray
-            
+
 
             //解除配對時需把工作陣列全清除
             var noInfo = indexArray.Except(_SendIndex).ToArray(); //查詢尚未發送加工孔位的 index 
@@ -3505,7 +3513,7 @@ namespace WPFSTD105.ViewModel
                 if (SendDrill(noInfo[i], out var IsPinMode))
                 {
                     AddOperatingLog(LogSourceEnum.Machine, $"排版編號{Finish_UndoneDataViews[noInfo[i]].MaterialNumber}加工訊息發送成功", false);
-                    Finish_UndoneDataViews[noInfo[i]].MachiningTypeMode = IsPinMode? MachiningType.PinTest : MachiningType.NormalMaching;
+                    Finish_UndoneDataViews[noInfo[i]].MachiningTypeMode = IsPinMode ? MachiningType.PinTest : MachiningType.NormalMaching;
 
                     //把更新後的MachiningTypeMode寫入資料表中
                     _SendIndex.Add(noInfo[i]); //存取已經發送過的列表
@@ -3556,7 +3564,7 @@ namespace WPFSTD105.ViewModel
                     }
                 }
             }
-         
+
             RefreshScheduleGridC();
 
 
@@ -3622,7 +3630,7 @@ namespace WPFSTD105.ViewModel
                         WPFBase.AskingDrillMatch windows = new WPFBase.AskingDrillMatch();
                         windows.ShowDialog();
                     }
-                    else                                    
+                    else
                     {
                         //葉:略過孔位要做啥事？
                     }
@@ -3651,7 +3659,7 @@ namespace WPFSTD105.ViewModel
             int exCount = 1, //出口數量
                 enCount = 1, //入口數量
                 PairedCount = 1;//已配對編號
-                             //_SynchronizationContext.Send(t =>
+                                //_SynchronizationContext.Send(t =>
             try
             {
                 using (Memor.ReadMemorClient client = new Memor.ReadMemorClient())
@@ -3699,11 +3707,11 @@ namespace WPFSTD105.ViewModel
                                 if (Finish_UndoneDataViews[value].MachiningStartTime == null)
                                 {
                                     Finish_UndoneDataViews[value].MachiningStartTime = DateTime.Now;
-                                    ser.SetMachiningTimeBackup(Finish_UndoneDataViews[value].MaterialNumber,  
-                                        new MachiningTimeClass()              
-                                        {                                     
-                                            MachiningStartTime = Finish_UndoneDataViews[value].MachiningStartTime,  
-                                            MachiningEndTime = Finish_UndoneDataViews[value].MachiningEndTime   
+                                    ser.SetMachiningTimeBackup(Finish_UndoneDataViews[value].MaterialNumber,
+                                        new MachiningTimeClass()
+                                        {
+                                            MachiningStartTime = Finish_UndoneDataViews[value].MachiningStartTime,
+                                            MachiningEndTime = Finish_UndoneDataViews[value].MachiningEndTime
                                         });
                                 }
                             }
@@ -3752,7 +3760,7 @@ namespace WPFSTD105.ViewModel
 
                         foreach (var value in serIndex)
                         {
-                            if (_WorkMaterials[value].Position == 0 )
+                            if (_WorkMaterials[value].Position == 0)
                             {
                                 WaitMachining_MaterialList.Add(Finish_UndoneDataViews[value].MaterialNumber);
                             }
@@ -3771,8 +3779,8 @@ namespace WPFSTD105.ViewModel
                             TransportGridIsEnableBool = true;
                             TransportGridIsEnableBool_Continue = true;
 
-                            TransportGridIsEnableBool_HandAuto=true;
-                        }                   
+                            TransportGridIsEnableBool_HandAuto = true;
+                        }
                         else
                         {
                             if (TransportGridIsEnableBool)
@@ -3793,7 +3801,7 @@ namespace WPFSTD105.ViewModel
 
                             //若有在加工中的物件 將續接轉亮 但當機台正在加工時仍轉暗
 
-                            if (_WorkMaterials.FindIndex(x=>x.Position == -1) != -1)
+                            if (_WorkMaterials.FindIndex(x => x.Position == -1) != -1)
                             {
                                 if (!ApplicationViewModel.PanelButton.Run)
                                 {
@@ -3976,10 +3984,6 @@ namespace WPFSTD105.ViewModel
                 //如果有備份檔 把紀錄刪掉
                 ser.DeleteWorkMaterialBackup(Finish_UndoneDataViews[dataViewIndex].MaterialNumber);
                 RefreshScheduleGridC();
-
-
-
-
             });
         }
 
@@ -4028,9 +4032,103 @@ namespace WPFSTD105.ViewModel
         }
 
 
+        private List<double> _middleToolList = null;
+        /// <summary>
+        /// 中軸可用刀具表
+        /// </summary>
+        public List<double> MiddleToolList
+        {
+            get
+            {
+                if (_middleToolList is null)
+                {
+                    var _DrillWarehouse = ReadCodesysMemor.GetDrillWarehouse();
+                    //取出上 左 右軸的刀具表 依照上左右分類
+                    var _MiddleTList = DiscreteDrillWarehouseData(_DrillWarehouse.Middle);
+                    _MiddleTList.Sort();
+                    _middleToolList = _MiddleTList.Distinct().ToList();
+                }
+                return _middleToolList.Distinct().ToList();
+            }
+            set
+            {
+                _middleToolList = value;
+            }
+        }
+
+        private List<double> _leftToolList = null;
+        /// <summary>
+        /// 左軸可用刀具表
+        /// </summary>
+        public List<double> LeftToolList
+        {
+            get
+            {
+                if (_leftToolList is null)
+                {
+                    var _DrillWarehouse = ReadCodesysMemor.GetDrillWarehouse();
+                    //取出上 左 右軸的刀具表 依照上左右分類
+                    var _LeftTList = new List<double>();
+                    _LeftTList.AddRange(DiscreteDrillWarehouseData(_DrillWarehouse.LeftEntrance));
+                    _LeftTList.AddRange(DiscreteDrillWarehouseData(_DrillWarehouse.LeftExport));
+                    _LeftTList.Sort();
+                    _leftToolList = _LeftTList.Distinct().ToList();
+                }
+                return _leftToolList;
+            }
+            set
+            {
+                _leftToolList = value;
+            }
+        }
+
+        private List<double> _rightToolList = null;
+        /// <summary>
+        /// 右軸可用刀具表
+        /// </summary>
+        public List<double> RightToolList
+        {
+            get
+            {
+              
+                if (_middleToolList is null)
+                {
+                    var _RightTList = new List<double>();
+                    var _DrillWarehouse = ReadCodesysMemor.GetDrillWarehouse();
+                    _RightTList.AddRange(DiscreteDrillWarehouseData(_DrillWarehouse.RightEntrance));
+                    _RightTList.AddRange(DiscreteDrillWarehouseData(_DrillWarehouse.RightExport));
+                    _RightTList.Sort();
+                    _rightToolList = _RightTList.Distinct().ToList();
+                }
+                return _rightToolList;
+            }
+            set
+            {
+                _rightToolList = value;
+            }
+        }
+
+
+        private List<double> DiscreteDrillWarehouseData(DrillSetting[] _DrillSetting)
+        {
+            var ToolData = new List<double>();
+            foreach (var _DrillS in _DrillSetting)
+            {
+                if (_DrillS.DrillType == DRILL_TYPE.DRILL && _DrillS.Dia > 0)
+                {
+                    if (!ToolData.Contains(_DrillS.Dia))
+                    {
+                        ToolData.Add(_DrillS.Dia);
+                    }
+                }
+            }
+            return ToolData;
+        }
+
+
+
+
+
 
     }
-
-
-    
 }
