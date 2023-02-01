@@ -1,4 +1,5 @@
-﻿using devDept.Eyeshot.Entities;
+﻿using devDept.Eyeshot;
+using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using DevExpress.CodeParser;
 using DevExpress.Xpf.Gauges;
@@ -548,18 +549,25 @@ namespace WPFSTD105
                 p1.Y = p1.Y + steelAttr.W + 150;
                 p2.Y = p2.Y + steelAttr.W + 150;
             }
-            else if (p1.Y >= steelAttr.W + 150 + steelAttr.H)  //  判斷Y位置落在哪一面  ( 背面 )
+            else if (p1.Y >= steelAttr.W + 150 )  //  判斷Y位置落在哪一面  ( 背面 )
             {
-                return; // 
                 bback = true; 
-                //p1.Y = p1.Y - steelAttr.H - steelAttr.W - 150;
-                //p2.Y = p2.Y - steelAttr.H - steelAttr.W - 150;
                 p1.Y = p1.Y - steelAttr.H - 150;
                 p2.Y = p2.Y - steelAttr.H - 150;
             }
             else  //  判斷Y位置落在哪一面  ( 頂面 )
             {
                 btop= true;
+            }
+
+            if (bback == false)
+            {
+
+            }
+            else
+            {
+
+
             }
 
             // 計算斜邊打點位置
@@ -570,6 +578,7 @@ namespace WPFSTD105
             tp1y = p1.Y - p2.Y;
             tpr1y = p1.Y - (tp1y * PosRatioA);
             tpr2y = p1.Y - (tp1y * PosRatioB);
+           
             //
 
             // 紀錄2孔打點位置
@@ -596,8 +605,23 @@ namespace WPFSTD105
                 TmpBoltsArr.X = tmplist[z].X;
                 TmpBoltsArr.Y = tmplist[z].Y;
                 TmpBoltsArr.GUID = Guid.NewGuid();
+
+
                 Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, Secondary, out BlockReference blockReference, out bool CheckArea);
                 obvm.Add2DHole(this, bolts, false);//加入孔位不刷新 2d 視圖       
+
+                //BlockReference b = new BlockReference(0, 0, 0, TmpBoltsArr.GUID.Value.ToString(), 1, 1, 1, 0);
+                //b.EntityData = TmpBoltsArr;
+
+                //b.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
+
+                //Bolts3DBlock bolts = new Bolts3DBlock(TmpBoltsArr);
+                //Secondary.Entities.Insert(0, b);//加入參考圖塊到模型
+
+
+                //bolts.Entities.Add(b);
+                //obvm.Add2DHole(this, bolts, false);//加入孔位不刷新 2d 視圖     
+
             }
 
         }

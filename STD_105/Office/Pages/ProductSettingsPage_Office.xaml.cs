@@ -2093,7 +2093,7 @@ namespace STD_105.Office
 
 
                 var _TmpPosXY = ViewModel.ArbitrarilyJointPointList;
-                for ( int i = 0; i < ViewModel.ArbitrarilyJointPointList.Count ; i ++ )
+                for ( int i = 0; i < _TmpPosXY.Count ; i ++ )
                 {
                    
                     if (i % 2 == 0)
@@ -3400,15 +3400,15 @@ namespace STD_105.Office
                     //if (!part.Values.SelectMany(x => x).Any(x => x.Number == ViewModel.PartNumber && x.Match.Where(y => y == false).Count() > 0))
                     if (ViewModel.CheckOption_IsPartTypesetting(part))
                     {
-                        WinUIMessageBox.Show(null,
-                            $"零件已排版，不可編輯",
-                            "通知",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Exclamation,
-                            MessageBoxResult.None,
-                            MessageBoxOptions.None,
-                            FloatingMode.Window);
-                        return false;
+                        //WinUIMessageBox.Show(null,
+                        //    $"零件已排版，不可編輯",
+                        //    "通知",
+                        //    MessageBoxButton.OK,
+                        //    MessageBoxImage.Exclamation,
+                        //    MessageBoxResult.None,
+                        //    MessageBoxOptions.None,
+                        //    FloatingMode.Window);
+                        //return false;
                     }
                     break;
             }
