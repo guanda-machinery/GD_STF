@@ -916,6 +916,7 @@ namespace WPFSTD105.Model
                 TmpBoltsArr.StartHole = START_HOLE.START;
                 TmpBoltsArr.dX = "0";
                 TmpBoltsArr.dY = "0";
+                TmpBoltsArr.groupBoltsType = GroupBoltsType.Rectangle;
                 TmpBoltsArr.xCount = 1;
                 TmpBoltsArr.yCount = 1;
                 TmpBoltsArr.Mode = AXIS_MODE.POINT;
