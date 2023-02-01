@@ -12,6 +12,12 @@ namespace WPFSTD105
     public class SettingParGroupBoltsTypeModel
     {
         #region GroupBoltsType 客製孔群設定
+
+        /// <summary>
+        /// 只會在讀取才用到的值 剛新增的孔群不會有值
+        /// </summary>
+        public string OriginalFilePath { get; set; }
+
         /// <summary>
         /// 客製孔群 - 孔群編號
         /// </summary>
@@ -31,5 +37,17 @@ namespace WPFSTD105
         /// </summary>
         public DateTime Revise { get; set; }
         #endregion
+
+
+        [NonSerialized]
+        public static readonly SettingParGroupBoltsTypeModel NotSelectGroupBoltsTypeModel = new SettingParGroupBoltsTypeModel()
+        {
+            groupBoltsTypeName = NotSelectGroupBolts,
+            groupBoltsAttr = null,
+            OriginalFilePath = null,
+        };
+
+        [NonSerialized]
+        public const string NotSelectGroupBolts = "未選擇孔群";
     }
 }

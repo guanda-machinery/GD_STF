@@ -379,7 +379,7 @@ namespace WPFSTD105
                                 CurrentSteelPart[8] = Convert.ToString("Bar_code");
                                 List_CurrentTableContent.Add(CurrentSteelPart);
                                 InsideBorder = false;
-                                AddTableToWordDocument(document, List_CurrentTableContent, InsideBorder, "16", "1400", "CONTINUE");
+                                AddTableToWordDocument(document, List_CurrentTableContent, InsideBorder, "20", "1400", "CONTINUE");
                                 List_CurrentTableContent.Clear();
                                 for (int ii = 0; ii < CurrentSteelPart.Length; ii++) CurrentSteelPart[ii] = "";
 

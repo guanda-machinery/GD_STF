@@ -940,8 +940,9 @@
                                         <CheckBox Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" IsChecked="{Binding CheckDia}" Content="孔直徑" />
                                         <TextBox Grid.Column="1" Grid.Row="0" VerticalAlignment="Center">
                                             <TextBox.Text>
-                                                <Binding Path="GroupBoltsAttr.Dia" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
-                                                    <Binding.ValidationRules>
+                                                <!--<Binding Path="GroupBoltsAttr.Dia" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >-->
+                                                <Binding Path="DiaProperty" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules>
                                                         <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                     </Binding.ValidationRules>
                                                 </Binding>
@@ -971,8 +972,9 @@
 
                                         <TextBox Grid.Column="3" Grid.Row="0" VerticalAlignment="Center">
                                             <TextBox.Text>
-                                                <Binding Path="GroupBoltsAttr.X" UpdateSourceTrigger="PropertyChanged" >
-                                                    <Binding.ValidationRules>
+                                                <!--<Binding Path="GroupBoltsAttr.X" UpdateSourceTrigger="PropertyChanged" >-->
+                                                    <Binding Path="XProperty" UpdateSourceTrigger="PropertyChanged" >
+                                                        <Binding.ValidationRules>
                                                         <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                     </Binding.ValidationRules>
                                                 </Binding>
@@ -990,7 +992,6 @@
                                                 </Binding>
                                             </TextBox.Text>
                                         </TextBox>
-
                                         <dxe:ComboBoxEdit Grid.Column="4" Grid.Row="0" IsTextEditable="False" Style="{StaticResource SiegPositionComboBoxEditOnlyIcon}" Height="24"
                                                            ApplyItemTemplateToSelectedItem="True" 
                                         EditValue="{Binding X_BoltsArrayDirection}">
@@ -1000,11 +1001,6 @@
                                             </dxmvvm:Interaction.Behaviors>
 
                                         </dxe:ComboBoxEdit>
-
-
- 
-
-
 
                                     </Grid>
                                 </GroupBox>
@@ -1040,10 +1036,11 @@
 
                                             <CheckBox  Grid.Column="0" Grid.Row="1"  IsChecked="{Binding CheckX}" Content="XP" ToolTip="孔X向間距："/>
 
-                                            <TextBox  Grid.Column="1" Grid.Row="1" MinWidth="100" VerticalAlignment="Center" >
+                                            <TextBox  Grid.Column="1" Grid.Row="1" Width="auto" VerticalAlignment="Center" >
                                                 <TextBox.Text>
-                                                    <Binding Path="GroupBoltsAttr.dX" UpdateSourceTrigger="PropertyChanged" >
-                                                        <Binding.ValidationRules>
+                                                    <!--<Binding Path="GroupBoltsAttr.dX" UpdateSourceTrigger="PropertyChanged" >-->
+                                                        <Binding Path="dXProperty" UpdateSourceTrigger="PropertyChanged" >
+                                                            <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckHoleGroupArrayStringRule/>
                                                         </Binding.ValidationRules>
                                                     </Binding>
@@ -1052,10 +1049,11 @@
                                             </TextBox>
 
                                             <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding CheckY}" Content="YP" ToolTip="孔Y向間距：" />
-                                            <TextBox  Grid.Column="1" Grid.Row="2"  MinWidth="100" VerticalAlignment="Center">
+                                            <TextBox  Grid.Column="1" Grid.Row="2"  Width="auto" VerticalAlignment="Center">
                                                 <TextBox.Text>
-                                                    <Binding Path="GroupBoltsAttr.dY" UpdateSourceTrigger="PropertyChanged" >
-                                                        <Binding.ValidationRules>
+                                                    <!--<Binding Path="GroupBoltsAttr.dY" UpdateSourceTrigger="PropertyChanged" >-->
+                                                        <Binding Path="dYProperty" UpdateSourceTrigger="PropertyChanged" >
+                                                            <Binding.ValidationRules>
                                                             <STD105ValidRule:CheckHoleGroupArrayStringRule/>
                                                         </Binding.ValidationRules>
                                                     </Binding>
@@ -1064,8 +1062,8 @@
 
                                             <!--技術文件參照:https://community.devexpress.com/blogs/wpf/archive/2015/01/27/devexpress-mvvm-framework-enumitemsourcebehavior.aspx-->
 
-                                            <CheckBox Grid.Row="3"  Content="特殊孔位：" IsThreeState="False" IsChecked="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"/>
-                                            <dxe:ComboBoxEdit  IsTextEditable="False" Grid.Column="0" Grid.ColumnSpan="2"   Grid.Row="4"  Margin="0,5,5,0" IsEnabled="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"
+                                            <CheckBox Grid.Row="3"  Content="特殊孔位：" IsThreeState="False" IsChecked="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}" />
+                                            <dxe:ComboBoxEdit  IsTextEditable="False" Grid.Column="0" Grid.ColumnSpan="2"   Grid.Row="4"  Margin="0,5,5,0" IsEnabled="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}" 
                                                            ApplyItemTemplateToSelectedItem="True" 
                                         EditValue="{Binding ComboxEdit_GroupBoltsTypeSelected}">
                                                     <dxmvvm:Interaction.Behaviors>
@@ -1084,9 +1082,6 @@
 
                                                 </dxe:ComboBoxEdit>
                       
-
-
-
 
                                         </Grid>
                                     </GroupBox>
@@ -1113,56 +1108,147 @@
 
                                     </GroupBox>
 
-                                            <!--統一孔徑-->
-                                    <STD105:DraggablePopup x:Name="CustomizedBoltsGroupSettingUC_Popup" 
-                                                            MinWidth="400" MinHeight="350"         >
-                                        <Grid VerticalAlignment="Top" Background="#f8f8f8" >
-
-                                            <STD105:CustomizedBoltsGroupSettingUserControl/>
-                                            <CheckBox Width="35" Height="35" HorizontalAlignment="Right" VerticalAlignment="Top"  IsChecked="{Binding ElementName=CustomizedBoltsGroupSettingUC_Popup,Path=IsOpen}"
+                                    <STD105:DraggablePopup IsOpen="{Binding CustomizedBoltsGroupSettingUC_IsPopup}"
+                                                            MinWidth="400" Height="auto">
+                                        <Border BorderBrush="Gray" Background="#f8f8f8" BorderThickness="1">
+                                            <Grid>
+                                                <STD105:CustomizedBoltsGroupSettingUserControl/>
+                                                <dxe:CheckEdit Width="35" Height="35" HorizontalAlignment="Right" VerticalAlignment="Top"  IsChecked="{Binding CustomizedBoltsGroupSettingUC_IsPopup}"
                     Margin="1">
-                                                <CheckBox.Style>
-                                                    <Style TargetType="{x:Type CheckBox}">
-                                                        <Setter Property="Background" Value="Transparent"/>
-                                                        <Setter Property="Template">
-                                                            <Setter.Value>
-                                                                <ControlTemplate TargetType="{x:Type CheckBox}">
-                                                                    <Grid Background="{TemplateBinding Background}">
-                                                                        <Image Source="{ StaticResource Window_Close}" Width="14" />
-                                                                    </Grid>
-                                                                </ControlTemplate>
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                        <Style.Triggers>
-                                                            <Trigger Property="IsMouseOver" Value="True">
-                                                                <Setter Property="Background" Value="#e81123"/>
-                                                                <Setter Property="Template">
-                                                                    <Setter.Value>
-                                                                        <ControlTemplate TargetType="{x:Type CheckBox}">
-                                                                            <Grid Background="{TemplateBinding Background}">
-                                                                                <Image Source="{ StaticResource Window_Close_Light  }" Width="14" />
-                                                                            </Grid>
-                                                                        </ControlTemplate>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </Trigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </CheckBox.Style>
-                                            </CheckBox>
-                                        </Grid>
+                                                    <dxe:CheckEdit.Style>
+                                                        <Style TargetType="{x:Type dxe:CheckEdit}">
+                                                            <Setter Property="Background" Value="Transparent"/>
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
+                                                                        <Grid Background="{TemplateBinding Background}">
+                                                                            <Image Source="{ StaticResource Window_Close}" Width="14" />
+                                                                        </Grid>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Style.Triggers>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Background" Value="#e81123"/>
+                                                                    <Setter Property="Template">
+                                                                        <Setter.Value>
+                                                                            <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
+                                                                                <Grid Background="{TemplateBinding Background}">
+                                                                                    <Image Source="{ StaticResource Window_Close_Light  }" Width="14" />
+                                                                                </Grid>
+                                                                            </ControlTemplate>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </dxe:CheckEdit.Style>
+                                                </dxe:CheckEdit>
+                                            </Grid>
+                                        </Border>
                                     </STD105:DraggablePopup>
                                     <GroupBox Header="客製孔群" Grid.Column="1" Grid.Row="1" >
-                                        <Grid>
-                                            <ComboBox VerticalAlignment="Top"/>
+                                        <StackPanel>     
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition Width="auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                </Grid.RowDefinitions>
+                                            <dxe:ComboBoxEdit  Name="GroupBoltSourceComboboxEdit" VerticalAlignment="Top" Margin="5" IsTextEditable="False"
+                                                               EditValue="{Binding GroupBoltsTypeByTargetSelected}"
+                                                               >
+                                                <dxmvvm:Interaction.Behaviors>
+                                                    <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:GroupBoltsTypeByTarget}" ImageSize="95,95" />
+                                                    <!--SortMode="DisplayName"-->
+                                                </dxmvvm:Interaction.Behaviors>
+                                            </dxe:ComboBoxEdit>
 
-                                            <CheckBox Height="30" Margin="5,0" Visibility="Visible" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left"
-                                            Style="{StaticResource Editor}"  
-                                                     IsChecked="{Binding ElementName=CustomizedBoltsGroupSettingUC_Popup,Path=IsOpen}"
-                                         >
-                                            </CheckBox>
-
+                                                <dxe:ComboBoxEdit
+                                                    Grid.Row="1" Grid.ColumnSpan="2"
+                                                     MaxWidth="125"
+                                                    Name="GroupBoltNameComboboxEdit" VerticalAlignment="Top" Margin="5" IsTextEditable="False"
+                                                                  IsEnabled="{Binding ElementName=GroupBoltSourceComboboxEdit, Path=EditValue, Converter={STD105:NullToEnabledConverter}}"
+                                                                  DisplayMember="groupBoltsTypeName"
+                                                                  EditValue="{Binding SettingParGroupBoltsType}"
+                                                                  ItemsSource="{Binding SettingParGroupBoltsTypeList}"
+                                                                  />
+                                                <Button  Grid.Column="1" Grid.Row="0" Width="auto" Content="載入"  Padding="10,0"
+                                                         Command="{Binding LoadSettingParGroupBoltsTypeCommand}"
+                                                        IsEnabled="{Binding ElementName=GroupBoltNameComboboxEdit, Path=SelectedIndex, Converter={STD105:IntToBooleanConverter}}"/>
                                             </Grid>
+                                            <Label Content="客製孔群設定" Margin="5,0"/>
+                                            <dxe:CheckEdit Height="auto" Margin="6" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left"
+                                                           IsChecked="{Binding CustomizedBoltsGroupSettingUC_IsPopup}"    >
+                                                    <dxe:CheckEdit.Style>
+                                                        <Style TargetType="{x:Type dxe:CheckEdit}">
+                                                            <Setter Property="Width" Value="60" />
+                                                            <Setter Property="Height" Value="{Binding Width}" />
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="{x:Type dxe:CheckEdit}">
+                                                                        <DockPanel>
+                                                                            <Viewbox Height="{TemplateBinding Height}">
+                                                                                <Image
+                                                                                Name="img"
+                                                                                Width="{TemplateBinding Width}"
+                                                                                Height="{TemplateBinding Height}"
+                                                                                Source="{StaticResource edit_Gray}" />
+                                                                            </Viewbox>
+                                                                        </DockPanel>
+                                                                        <ControlTemplate.Triggers>
+                                                                            <Trigger Property="IsChecked" Value="True">
+                                                                                <Setter TargetName="img" Property="Image.Source" Value="{StaticResource edit_Blue}" />
+                                                                            </Trigger>
+                                                                            <Trigger Property="IsEnabled" Value="False">
+                                                                                <!--  ToDo: Add Style for Isenabled == False  -->
+                                                                            </Trigger>
+                                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                                <Setter Property="Cursor" Value="Hand" />
+                                                                            </Trigger>
+                                                                        </ControlTemplate.Triggers>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </dxe:CheckEdit.Style>
+                                                </dxe:CheckEdit>
+
+                                            <materialDesign:DialogHost     Visibility="Collapsed"                                           DialogTheme="Inherit">
+                                                <materialDesign:DialogHost.DialogContent>
+
+                                                    <StackPanel>
+                                                        <TextBlock Text="1231231321131"/>
+                                                        <Button
+                                                                Style="{StaticResource SiegCustomButton}"
+                                                                IsCancel="True"
+                                                                Content="關閉"
+                                                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                                                            <Button.CommandParameter>
+                                                                <system:Boolean xmlns:system="clr-namespace:System;assembly=mscorlib">
+                                                                    False
+                                                                </system:Boolean>
+                                                            </Button.CommandParameter>
+                                                        </Button>
+                                                    </StackPanel>
+
+                                                </materialDesign:DialogHost.DialogContent>
+                                                <Button
+                                                            Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
+                                                            Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                                            VerticalAlignment="Bottom"
+                                                            HorizontalAlignment="Right"
+                                                            Grid.Row="0"
+                                                            Content="{materialDesign:PackIcon Kind=Plus, Size=22}" />
+                                            </materialDesign:DialogHost>
+
+
+
+
+                                        </StackPanel>
 
                                     </GroupBox>
 
@@ -1516,8 +1602,7 @@
                                 AllowPaging="False"
                                 HighlightItemOnHover="True"
                                ShowCheckBoxSelectorColumn="False"
-
-                                                                               NavigationStyle="Cell"
+                               NavigationStyle="Cell"
                                AllowCascadeUpdate="True"
                                 IsColumnMenuEnabled ="False"
                                 AllowSorting="false"
@@ -1536,8 +1621,7 @@
                                     SearchPanelNullText="Search Tasks(Ctrl + F)" 
                                     SearchPanelFindMode="Always" ShowIndicator="True"  
                                     SearchDelay="0"
-                                                
-                                                NewItemRowPosition="Bottom"
+                                                NewItemRowPosition="None"
                                                 
                                                 
                                                 >

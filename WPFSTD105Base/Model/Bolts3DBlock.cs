@@ -1,7 +1,9 @@
 ﻿using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
+using DevExpress.Mvvm.Native;
 using DevExpress.Utils.About;
+using DocumentFormat.OpenXml.Bibliography;
 using GD_STD;
 using GD_STD.Enum;
 using GeometryGym.Ifc;
@@ -370,7 +372,7 @@ namespace WPFSTD105.Model
             }
             int rowCount = this.Info.yCount;
             // 平移長度
-            double diff = this.Info.dXs[0] / 2;
+            double diff = this.Info.Dia / 2;
             switch (this.Info.groupBoltsType)
             {
                 case GroupBoltsType.Rectangle:
@@ -414,45 +416,46 @@ namespace WPFSTD105.Model
                             // 單數不動 偶數動 (總列數/2)+-0.5=列數為同側
                             //diffList.Add(0);
                             //diffList.Add(-diff);
-                            bool middleSecond = false;
-                            for (int i = 0; i < yCount; i++)
-                            {
-                                if (i % yCount == (rowCount / 2) || i % rowCount == (rowCount / 2) - 1)
-                                {
-                                    if (!middleSecond)
-                                    {
-                                        if (diffList.Count > 0 && diffList.Last() == 0)
-                                        {
-                                            diffList.Add(-diff);
-                                        }
-                                        else { diffList.Add(0); }
-                                        middleSecond = true;
-                                    }
-                                    else
-                                    {
-                                        diffList.Add(diffList.Last());
-                                    }
-                                }
-                                else
-                                {
-                                    if (i % 2 == 0 && !middleSecond)
-                                    {
-                                        diffList.Add(0);
-                                    }
-                                    if (i % 2 == 0 && middleSecond)
-                                    {
-                                        diffList.Add(-diff);
-                                    }
-                                    if (i % 2 == 1 && !middleSecond)
-                                    {
-                                        diffList.Add(-diff);
-                                    }
-                                    if (i % 2 == 1 && middleSecond)
-                                    {
-                                        diffList.Add(0);
-                                    }
-                                }
-                            }
+                            //bool middleSecond = false;
+                            //for (int i = 0; i < yCount; i++)
+                            //{
+                            //    if (i % yCount == (rowCount / 2) || i % rowCount == (rowCount / 2) - 1)
+                            //    {
+                            //        if (!middleSecond)
+                            //        {
+                            //            if (diffList.Count > 0 && diffList.Last() == 0)
+                            //            {
+                            //                diffList.Add(-diff);
+                            //            }
+                            //            else { diffList.Add(0); }
+                            //            middleSecond = true;
+                            //        }
+                            //        else
+                            //        {
+                            //            diffList.Add(diffList.Last());
+                            //        }
+                            //    }
+                            //    else
+                            //    {
+                            //        if (i % 2 == 0 && !middleSecond)
+                            //        {
+                            //            diffList.Add(0);
+                            //        }
+                            //        if (i % 2 == 0 && middleSecond)
+                            //        {
+                            //            diffList.Add(-diff);
+                            //        }
+                            //        if (i % 2 == 1 && !middleSecond)
+                            //        {
+                            //            diffList.Add(-diff);
+                            //        }
+                            //        if (i % 2 == 1 && middleSecond)
+                            //        {
+                            //            diffList.Add(0);
+                            //        }
+                            //    }
+                            //}
+                            diffList = getFinalGroupBoltsDiff(yCount, rowCount, -diff);
                             j = 0;
                             for (int i = 0; i < this.Entities.Count(); i++)
                             {
@@ -502,45 +505,46 @@ namespace WPFSTD105.Model
                             // 單數不動 偶數動 (總列數/2)+-0.5=列數為同側
                             //diffList.Add(0);
                             //diffList.Add(-diff);
-                            bool middleSecond = false;
-                            for (int i = 0; i < yCount; i++)
-                            {
-                                if (i % yCount == (rowCount / 2) || i % rowCount == (rowCount / 2) - 1)
-                                {
-                                    if (!middleSecond)
-                                    {
-                                        if (diffList.Count > 0 && diffList.Last() == 0)
-                                        {
-                                            diffList.Add(diff);
-                                        }
-                                        else { diffList.Add(0); }
-                                        middleSecond = true;
-                                    }
-                                    else
-                                    {
-                                        diffList.Add(diffList.Last());
-                                    }
-                                }
-                                else
-                                {
-                                    if (i % 2 == 0 && !middleSecond)
-                                    {
-                                        diffList.Add(0);
-                                    }
-                                    if (i % 2 == 0 && middleSecond)
-                                    {
-                                        diffList.Add(diff);
-                                    }
-                                    if (i % 2 == 1 && !middleSecond)
-                                    {
-                                        diffList.Add(diff);
-                                    }
-                                    if (i % 2 == 1 && middleSecond)
-                                    {
-                                        diffList.Add(0);
-                                    }
-                                }
-                            }
+                            ////bool middleSecond = false;
+                            ////for (int i = 0; i < yCount; i++)
+                            ////{
+                            ////    if (i % yCount == (rowCount / 2) || i % rowCount == (rowCount / 2) - 1)
+                            ////    {
+                            ////        if (!middleSecond)
+                            ////        {
+                            ////            if (diffList.Count > 0 && diffList.Last() == 0)
+                            ////            {
+                            ////                diffList.Add(diff);
+                            ////            }
+                            ////            else { diffList.Add(0); }
+                            ////            middleSecond = true;
+                            ////        }
+                            ////        else
+                            ////        {
+                            ////            diffList.Add(diffList.Last());
+                            ////        }
+                            ////    }
+                            ////    else
+                            ////    {
+                            ////        if (i % 2 == 0 && !middleSecond)
+                            ////        {
+                            ////            diffList.Add(0);
+                            ////        }
+                            ////        if (i % 2 == 0 && middleSecond)
+                            ////        {
+                            ////            diffList.Add(diff);
+                            ////        }
+                            ////        if (i % 2 == 1 && !middleSecond)
+                            ////        {
+                            ////            diffList.Add(diff);
+                            ////        }
+                            ////        if (i % 2 == 1 && middleSecond)
+                            ////        {
+                            ////            diffList.Add(0);
+                            ////        }
+                            ////    }
+                            ////}
+                            diffList = getFinalGroupBoltsDiff(yCount, rowCount, diff);
                             j = 0;
                             for (int i = 0; i < this.Entities.Count(); i++)
                             {
@@ -551,19 +555,165 @@ namespace WPFSTD105.Model
                                 this.Entities[i].Translate(diffList[j], 0, 0);
                                 j++;
                             }
-
-
                             break;
                         default:
                             break;
                     }
                     break;
                 case GroupBoltsType.HypotenuseRight:
+                //// 取得完整矩陣邊長數量
+                //List<int> allowIndex = getFinalGroupBoltsIndex(this.Info);
+                ////int a = this.Info.xCount-1;
+                ////int b = 0;
+                ////int aa = 0;
+                ////allowIndex.Add(aa);
+                ////for (int i = a; i > 0; i = i - 2)
+                ////{
+                ////    aa = aa + i + (i - 1) + 1;
+                ////    //i = i - 2;
+                ////    allowIndex.Add(aa);
+                ////    for (int j = b + 1; j < a; j = j + 2)
+                ////    {
+                ////        aa = aa + j + (j + 1) + 1;
+                ////        allowIndex.Add(aa);
+                ////        b = b + 2;
+                ////        break;
+                ////    }
+                ////}
+                //List<Mesh> mesh = new List<Mesh>();
+                //for (int j = 0; j < this.Entities.Count(); j++)
+                //{
+                //    if (allowIndex.Contains(j))
+                //    {
+                //        mesh.Add((Mesh)this.Entities[j]);
+                //    }
+                //}
+                //this.Entities.Clear();
+                //this.Entities.AddRange(mesh);
+                //break;
+                case GroupBoltsType.HypotenuseLeft:
+
+                    //// 取得完整矩陣邊長數量
+                    List<int> allowIndex = getFinalGroupBoltsIndex(this.Info);
+                    //b = this.Info.xCount;
+                    //a = 0;
+                    //aa = rowCount - 1;
+                    //allowIndex.Add(aa);
+                    //for (int i = a; i < this.Info.xCount-1; i = i + 2)
+                    //{
+                    //    aa = aa + i + (i + 1) + 1;
+                    //    //i = i - 2;
+                    //    allowIndex.Add(aa);
+                    //    for (int j = b -2; j > a; j = j - 2)
+                    //    {
+                    //        aa = aa + j + (j - 1) + 1;
+                    //        allowIndex.Add(aa);
+                    //        b = b - 2;
+                    //        break;
+                    //    }
+                    //}
+                    List<Mesh> mesh = new List<Mesh>();
+                    for (int j = 0; j < this.Entities.Count(); j++)
+                    {
+                        if (allowIndex.Contains(j))
+                        {
+                            mesh.Add((Mesh)this.Entities[j]);
+                        }
+                    }
+                    this.Entities.Clear();
+                    this.Entities.AddRange(mesh);
+                    break;
+                default:
+                    break;
+            }
+        }
+        /// <summary>
+        /// 取得錯位差值
+        /// </summary>
+        /// <param name="yCount"></param>
+        /// <param name="rowCount"></param>
+        /// <param name="diff"></param>
+        /// <returns></returns>
+        public static List<double> getFinalGroupBoltsDiff(int yCount,int rowCount,double diff) 
+        {
+            bool middleSecond = false;
+            List<double> diffList = new List<double>();
+            for (int i = 0; i < yCount; i++)
+            {
+                if (i % yCount == (rowCount / 2) || i % rowCount == (rowCount / 2) - 1)
+                {
+                    if (!middleSecond)
+                    {
+                        if (diffList.Count > 0 && diffList.Last() == 0)
+                        {
+                            diffList.Add(diff);
+                        }
+                        else { diffList.Add(0); }
+                        middleSecond = true;
+                    }
+                    else
+                    {
+                        diffList.Add(diffList.Last());
+                    }
+                }
+                else
+                {
+                    if (i % 2 == 0 && !middleSecond)
+                    {
+                        diffList.Add(0);
+                    }
+                    if (i % 2 == 0 && middleSecond)
+                    {
+                        diffList.Add(diff);
+                    }
+                    if (i % 2 == 1 && !middleSecond)
+                    {
+                        diffList.Add(diff);
+                    }
+                    if (i % 2 == 1 && middleSecond)
+                    {
+                        diffList.Add(0);
+                    }
+                }
+            }
+            return diffList;
+        }
+
+        /// <summary>
+        /// 取得斜孔允許索引
+        /// </summary>
+        /// <param name="gba"></param>
+        /// <returns></returns>
+        public static List<int> getFinalGroupBoltsIndex(GroupBoltsAttr gba)         
+        {
+            List<int> allowIndex = new List<int>();
+            switch (gba.groupBoltsType) 
+            {
+                case GroupBoltsType.HypotenuseLeft:
                     // 取得完整矩陣邊長數量
-                    List<int> allowIndex = new List<int>(); 
-                    int a = this.Info.xCount-1;
-                    int b = 0;
-                    int aa = 0;
+                    allowIndex = new List<int>();
+                    int b = gba.xCount;
+                    int a = 0;
+                    int aa = gba.yCount - 1;
+                    allowIndex.Add(aa);
+                    for (int i = a; i < gba.xCount - 1; i = i + 2)
+                    {
+                        aa = aa + i + (i + 1) + 1;
+                        //i = i - 2;
+                        allowIndex.Add(aa);
+                        for (int j = b - 2; j > a; j = j - 2)
+                        {
+                            aa = aa + j + (j - 1) + 1;
+                            allowIndex.Add(aa);
+                            b = b - 2;
+                            break;
+                        }
+                    }
+                    break;
+                case GroupBoltsType.HypotenuseRight:
+                     a = gba.xCount - 1;
+                     b = 0;
+                     aa = 0;
                     allowIndex.Add(aa);
                     for (int i = a; i > 0; i = i - 2)
                     {
@@ -578,65 +728,271 @@ namespace WPFSTD105.Model
                             break;
                         }
                     }
-                    List<Mesh> mesh = new List<Mesh>();
-                    for (int j = 0; j < this.Entities.Count(); j++)
-                    {
-                        if (allowIndex.Contains(j))
-                        {
-                            mesh.Add((Mesh)this.Entities[j]);
-                        }
-                    }
-                    this.Entities.Clear();
-                    this.Entities.AddRange(mesh);
-                    break;
-                case GroupBoltsType.HypotenuseLeft:
-                    // 取得完整矩陣邊長數量
-                    allowIndex = new List<int>();
-                    b = this.Info.xCount;
-                    a = 0;
-                    aa = rowCount - 1;
-                    allowIndex.Add(aa);
-                    for (int i = a; i < this.Info.xCount-1; i = i + 2)
-                    {
-                        aa = aa + i + (i + 1) + 1;
-                        //i = i - 2;
-                        allowIndex.Add(aa);
-                        for (int j = b -2; j > a; j = j - 2)
-                        {
-                            aa = aa + j + (j - 1) + 1;
-                            allowIndex.Add(aa);
-                            b = b - 2;
-                            break;
-                        }
-                    }
-                     mesh = new List<Mesh>();
-                    for (int j = 0; j < this.Entities.Count(); j++)
-                    {
-                        if (allowIndex.Contains(j))
-                        {
-                            mesh.Add((Mesh)this.Entities[j]);
-                        }
-                    }
-                    this.Entities.Clear();
-                    this.Entities.AddRange(mesh);
                     break;
                 default:
                     break;
             }
-
-            //if ((this.Info.Face == FACE.FRONT || this.Info.Face == FACE.BACK) && isRotate)
-            //{
-            //    this.Entities.ForEach(x =>
-            //    {
-            //        double yy = 0, zz = 0;
-            //         yy = ((BoltAttr)x.EntityData).Y;
-            //         zz = ((BoltAttr)x.EntityData).Z;
-            //        ((BoltAttr)x.EntityData).Y = zz;
-            //        ((BoltAttr)x.EntityData).Z = yy;                        
-            //    });
-            //}
-            //}
+            return allowIndex;
         }
+
+
+
+
+        //public void getFinalGroupBolts() 
+        //{
+        //    switch (this.Info.groupBoltsType)
+        //    {
+        //        case GroupBoltsType.Rectangle:
+        //            break;
+        //        case GroupBoltsType.DisalignmentLeft:
+
+        //            List<double> diffList = new List<double>();
+        //            int yCount = this.Info.yCount;
+        //            // 偶數列或奇數列
+        //            switch ((yCount - 1) % 2)
+        //            {
+        //                // 奇數列 60 2*70 60
+        //                case 0:
+
+        //                    int j = 0;// 跑diffList
+        //                    diffList.Add(0);
+        //                    diffList.Add(-diff);
+        //                    for (int i = 0; i < this.Entities.Count(); i++)
+        //                    {
+        //                        // 頭或尾 同邊 因為孔為S型紀錄 所以 j要歸0
+        //                        // rowCount = 4
+        //                        //  3   4   11  12
+        //                        //  2   5   10  13
+        //                        //  1   6   9   14  
+        //                        //  0   7   8   15
+        //                        if (i % rowCount == 0 || (i + 1) % (rowCount) == rowCount)
+        //                        {
+        //                            j = 0;
+        //                        }
+        //                        if (j == 2)
+        //                        {
+        //                            j = 0;
+        //                        }
+        //                        this.Entities[i].Translate(diffList[j], 0, 0);
+        //                        j++;
+        //                    }
+        //                    break;
+        //                // 偶數列 2*10 10 2*10
+        //                case 1:
+        //                    // 第一組模板
+        //                    // 單數不動 偶數動 (總列數/2)+-0.5=列數為同側
+        //                    //diffList.Add(0);
+        //                    //diffList.Add(-diff);
+        //                    bool middleSecond = false;
+        //                    for (int i = 0; i < yCount; i++)
+        //                    {
+        //                        if (i % yCount == (rowCount / 2) || i % rowCount == (rowCount / 2) - 1)
+        //                        {
+        //                            if (!middleSecond)
+        //                            {
+        //                                if (diffList.Count > 0 && diffList.Last() == 0)
+        //                                {
+        //                                    diffList.Add(-diff);
+        //                                }
+        //                                else { diffList.Add(0); }
+        //                                middleSecond = true;
+        //                            }
+        //                            else
+        //                            {
+        //                                diffList.Add(diffList.Last());
+        //                            }
+        //                        }
+        //                        else
+        //                        {
+        //                            if (i % 2 == 0 && !middleSecond)
+        //                            {
+        //                                diffList.Add(0);
+        //                            }
+        //                            if (i % 2 == 0 && middleSecond)
+        //                            {
+        //                                diffList.Add(-diff);
+        //                            }
+        //                            if (i % 2 == 1 && !middleSecond)
+        //                            {
+        //                                diffList.Add(-diff);
+        //                            }
+        //                            if (i % 2 == 1 && middleSecond)
+        //                            {
+        //                                diffList.Add(0);
+        //                            }
+        //                        }
+        //                    }
+        //                    j = 0;
+        //                    for (int i = 0; i < this.Entities.Count(); i++)
+        //                    {
+        //                        if (i % (rowCount) == 0)
+        //                        {
+        //                            j = 0;
+        //                        }
+        //                        this.Entities[i].Translate(diffList[j], 0, 0);
+        //                        j++;
+        //                    }
+
+
+        //                    break;
+        //                default:
+        //                    break;
+        //            }
+        //            break;
+        //        case GroupBoltsType.DisalignmentRight:
+        //            diffList = new List<double>();
+        //            yCount = this.Info.yCount;
+        //            // 偶數列或奇數列
+        //            switch ((yCount - 1) % 2)
+        //            {
+        //                // 奇數列 60 2*70 60
+        //                case 0:
+
+        //                    int j = 0;// 跑diffList
+        //                    diffList.Add(0);
+        //                    diffList.Add(diff);
+        //                    for (int i = 0; i < this.Entities.Count(); i++)
+        //                    {
+        //                        if (i % rowCount == 0 || (i + 1) % (rowCount) == rowCount)
+        //                        {
+        //                            j = 0;
+        //                        }
+        //                        if (j == 2)
+        //                        {
+        //                            j = 0;
+        //                        }
+        //                        this.Entities[i].Translate(diffList[j], 0, 0);
+        //                        j++;
+        //                    }
+        //                    break;
+        //                // 偶數列 2*10 10 2*10
+        //                case 1:
+        //                    // 第一組模板
+        //                    // 單數不動 偶數動 (總列數/2)+-0.5=列數為同側
+        //                    //diffList.Add(0);
+        //                    //diffList.Add(-diff);
+        //                    bool middleSecond = false;
+        //                    for (int i = 0; i < yCount; i++)
+        //                    {
+        //                        if (i % yCount == (rowCount / 2) || i % rowCount == (rowCount / 2) - 1)
+        //                        {
+        //                            if (!middleSecond)
+        //                            {
+        //                                if (diffList.Count > 0 && diffList.Last() == 0)
+        //                                {
+        //                                    diffList.Add(diff);
+        //                                }
+        //                                else { diffList.Add(0); }
+        //                                middleSecond = true;
+        //                            }
+        //                            else
+        //                            {
+        //                                diffList.Add(diffList.Last());
+        //                            }
+        //                        }
+        //                        else
+        //                        {
+        //                            if (i % 2 == 0 && !middleSecond)
+        //                            {
+        //                                diffList.Add(0);
+        //                            }
+        //                            if (i % 2 == 0 && middleSecond)
+        //                            {
+        //                                diffList.Add(diff);
+        //                            }
+        //                            if (i % 2 == 1 && !middleSecond)
+        //                            {
+        //                                diffList.Add(diff);
+        //                            }
+        //                            if (i % 2 == 1 && middleSecond)
+        //                            {
+        //                                diffList.Add(0);
+        //                            }
+        //                        }
+        //                    }
+        //                    j = 0;
+        //                    for (int i = 0; i < this.Entities.Count(); i++)
+        //                    {
+        //                        if (i % (rowCount) == 0)
+        //                        {
+        //                            j = 0;
+        //                        }
+        //                        this.Entities[i].Translate(diffList[j], 0, 0);
+        //                        j++;
+        //                    }
+
+
+        //                    break;
+        //                default:
+        //                    break;
+        //            }
+        //            break;
+        //        case GroupBoltsType.HypotenuseRight:
+        //            // 取得完整矩陣邊長數量
+        //            List<int> allowIndex = new List<int>();
+        //            int a = this.Info.xCount - 1;
+        //            int b = 0;
+        //            int aa = 0;
+        //            allowIndex.Add(aa);
+        //            for (int i = a; i > 0; i = i - 2)
+        //            {
+        //                aa = aa + i + (i - 1) + 1;
+        //                //i = i - 2;
+        //                allowIndex.Add(aa);
+        //                for (int j = b + 1; j < a; j = j + 2)
+        //                {
+        //                    aa = aa + j + (j + 1) + 1;
+        //                    allowIndex.Add(aa);
+        //                    b = b + 2;
+        //                    break;
+        //                }
+        //            }
+        //            List<Mesh> mesh = new List<Mesh>();
+        //            for (int j = 0; j < this.Entities.Count(); j++)
+        //            {
+        //                if (allowIndex.Contains(j))
+        //                {
+        //                    mesh.Add((Mesh)this.Entities[j]);
+        //                }
+        //            }
+        //            this.Entities.Clear();
+        //            this.Entities.AddRange(mesh);
+        //            break;
+        //        case GroupBoltsType.HypotenuseLeft:
+        //            // 取得完整矩陣邊長數量
+        //            allowIndex = new List<int>();
+        //            b = this.Info.xCount;
+        //            a = 0;
+        //            aa = rowCount - 1;
+        //            allowIndex.Add(aa);
+        //            for (int i = a; i < this.Info.xCount - 1; i = i + 2)
+        //            {
+        //                aa = aa + i + (i + 1) + 1;
+        //                //i = i - 2;
+        //                allowIndex.Add(aa);
+        //                for (int j = b - 2; j > a; j = j - 2)
+        //                {
+        //                    aa = aa + j + (j - 1) + 1;
+        //                    allowIndex.Add(aa);
+        //                    b = b - 2;
+        //                    break;
+        //                }
+        //            }
+        //            mesh = new List<Mesh>();
+        //            for (int j = 0; j < this.Entities.Count(); j++)
+        //            {
+        //                if (allowIndex.Contains(j))
+        //                {
+        //                    mesh.Add((Mesh)this.Entities[j]);
+        //                }
+        //            }
+        //            this.Entities.Clear();
+        //            this.Entities.AddRange(mesh);
+        //            break;
+        //        default:
+        //            break;
+        //    }
+        //}
 
         /// <summary>
         /// 檢查是否在可加工範圍
@@ -788,13 +1144,15 @@ namespace WPFSTD105.Model
                             // if (!((Mesh)model.Entities[model.Entities.Count - 1]).IsPointInside(testPoint))
                             {
                                 check = false;
-                                return check;
+                                //((Mesh)(boltCheck[i].Entities[0])).Color = Color.Blue;
+                                    return check;
                             }
                         }
                     }
                     else
                     {
                         check = false;
+                        //((Mesh)(boltCheck[i].Entities[0])).Color = Color.Blue;
                         return check;
                     }
                     // 若起始座標小於半徑，不可加入

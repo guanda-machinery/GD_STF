@@ -296,29 +296,7 @@ namespace WPFSTD105.ViewModel
         /// 樹狀邏輯
         /// </summary>
         public ObservableCollection<TreeNode> TreeNode { get; set; } = new ObservableCollection<TreeNode>();
-        /// <summary>
-        /// 孔位起始點 X 座標
-        /// </summary>
-        public double StartY { get; set; } = 0;
-        /// <summary>
-        /// 鑽孔模式
-        /// </summary>
-        /// <remarks>
-        /// <see cref="GD_STD.Enum.AXIS_MODE"/>
-        /// </remarks>
-        public int AxisModeType
-        {
-            get => _AxisModeType;
-            set
-            {
-                _AxisModeType = value;
-                GroupBoltsAttr.Mode = (GD_STD.Enum.AXIS_MODE)value;
-            }
-        }
-        /// <summary>
-        /// 起始孔類型
-        /// </summary>
-        public START_HOLE StartHoleType { get; set; } 
+
         /// <summary>
         /// 加入螺栓選擇的面
         /// </summary>
@@ -602,7 +580,45 @@ namespace WPFSTD105.ViewModel
             }
         }
 
-
+        /// <summary>
+        /// 直徑
+        /// </summary>
+        public double DiaProperty { get; set; } = 20;
+        /// <summary>
+        /// 絕對X座標
+        /// </summary>
+        public double XProperty { get; set; }
+        /// <summary>
+        /// 孔位起始點 X 座標
+        /// </summary>
+        public double StartY { get; set; } = 0;
+        /// <summary>
+        /// 鑽孔模式
+        /// </summary>
+        /// <remarks>
+        /// <see cref="GD_STD.Enum.AXIS_MODE"/>
+        /// </remarks>
+        public int AxisModeType
+        {
+            get => _AxisModeType;
+            set
+            {
+                _AxisModeType = value;
+                GroupBoltsAttr.Mode = (GD_STD.Enum.AXIS_MODE)value;
+            }
+        }
+        /// <summary>
+        /// 起始孔類型
+        /// </summary>
+        public START_HOLE StartHoleType { get; set; } = START_HOLE.MIDDLE;
+        /// <summary>
+        /// 用戶輸入螺栓 X 向間距
+        /// </summary>
+        public string dXProperty { get; set; } = "60 2*70 60";
+        /// <summary>
+        /// 用戶輸入螺栓 X 向間距
+        /// </summary>
+        public string dYProperty { get; set; } = "60 2*70 60";
 
         /// <summary>
         /// 異孔偏移孔群
@@ -623,9 +639,9 @@ namespace WPFSTD105.ViewModel
                 if (_arbitrarilyJointPointList == null)
                 {
                     var DefaultJPArray = new List<JointPoint>();
-                    for (int i = 0; i < 1; i++)
+                    for (int i = 0; i < 8; i++)
                     {
-                        DefaultJPArray.Add(new JointPoint() { X_Position = 0, Y_Position = 0 });
+                        DefaultJPArray.Add(new JointPoint() { X_Position = null, Y_Position = null });
                     }
                     _arbitrarilyJointPointList = new ObservableCollection<JointPoint>(DefaultJPArray);
                  }
@@ -1085,14 +1101,31 @@ namespace WPFSTD105.ViewModel
 
 
 
-
-
+        /// <summary>
+        /// 因原本Binding會使用GroupBoltsAtter做綁定，故將元件綁定改為Property的方式與前端做切割
+        /// </summary>
+        public void GetGroupBoltsAttrFromViewToVM() 
+        {
+            Boltsbuffer.Dia = DiaProperty;
+            Boltsbuffer.dX = dXProperty;
+            Boltsbuffer.dY= dYProperty;
+            Boltsbuffer.X = XProperty;
+            Boltsbuffer.Y = StartY;
+            Boltsbuffer.groupBoltsType = this.ComboxEdit_GroupBoltsTypeSelected;
+            Boltsbuffer.X_BoltsArrayDirection = this.X_BoltsArrayDirection;
+            Boltsbuffer.Face = this.rbtn_DrillingFace;
+            Boltsbuffer.Mode = AXIS_MODE.PIERCE;
+            Boltsbuffer.StartHole = StartHoleType;
+            //this.GroupBoltsAttr.Mode = AXIS_MODE.PIERCE;
+            this.AxisModeType = (int)AXIS_MODE.PIERCE;
+        }
 
 
         /// <summary>
         /// 取得設定好的值
+        /// FRONTandBack才需傳遞specialFace參數
         /// </summary>
-        public GroupBoltsAttr GetGroupBoltsAttr()
+        public GroupBoltsAttr GetGroupBoltsAttr(FACE specialFace = FACE.FRONT)
         {
             Boltsbuffer.groupBoltsType = this.ComboxEdit_GroupBoltsTypeSelected;
             Boltsbuffer.X_BoltsArrayDirection = this.X_BoltsArrayDirection;
@@ -1101,14 +1134,17 @@ namespace WPFSTD105.ViewModel
             //直徑設定
             if (CheckDia == true)
             {
-                Boltsbuffer.Dia = GroupBoltsAttr.Dia;
+                //Boltsbuffer.Dia = GroupBoltsAttr.Dia;
+                Boltsbuffer.Dia = DiaProperty;
                 Boltsbuffer.Mode = (AXIS_MODE)AxisModeType;
             }
             //水平螺栓間距
             if (CheckX)
             {
-                Boltsbuffer.dX = GroupBoltsAttr.dX;
-                Boltsbuffer.xCount = CalBoltNumber(GroupBoltsAttr.dX);
+                //Boltsbuffer.dX = GroupBoltsAttr.dX;
+                //Boltsbuffer.xCount = CalBoltNumber(GroupBoltsAttr.dX);
+                Boltsbuffer.dX = dXProperty;
+                Boltsbuffer.xCount = CalBoltNumber(dXProperty);
                 //Boltsbuffer.xCount = GroupBoltsAttr.xCount;
             }
             else
@@ -1119,8 +1155,10 @@ namespace WPFSTD105.ViewModel
             //垂直螺栓
             if (CheckY)
             {
-                Boltsbuffer.dY = GroupBoltsAttr.dY;
-                Boltsbuffer.yCount = CalBoltNumber(GroupBoltsAttr.dY);
+                //Boltsbuffer.dY = GroupBoltsAttr.dY;
+                //Boltsbuffer.yCount = CalBoltNumber(GroupBoltsAttr.dY);
+                Boltsbuffer.dY = dYProperty;
+                Boltsbuffer.yCount = CalBoltNumber(dYProperty);
                 //Boltsbuffer.yCount = GroupBoltsAttr.yCount;
             }
             else
@@ -1184,25 +1222,41 @@ namespace WPFSTD105.ViewModel
                         Boltsbuffer.Z = Steelbuffer.H;
                         //value = Steelbuffer.W;
                         break;
+                    case FACE.FRONTandBack:
+                        switch (specialFace)
+                        {
+                            case FACE.FRONT:
+                                Boltsbuffer.t = Steelbuffer.t2;
+                                Boltsbuffer.Z = Steelbuffer.t2;
+                                break;
+                            case FACE.BACK:
+                                Boltsbuffer.t = Steelbuffer.t2;
+                                Boltsbuffer.Z = Steelbuffer.H;
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
                     default:
                         break;
                 }
                 //改變 Y 座標起始點類型
                 Boltsbuffer.StartHole = StartHoleType;
-               /* switch ((START_HOLE)StartHoleType)
-                {
-                    case START_HOLE.MIDDLE:
-                        Boltsbuffer.StartHole = START_HOLE.MIDDLE;
-                        //Boltsbuffer.Y = (GetBoltZ() * 0.5) - (Boltsbuffer.SumdY() * 0.5);
-                        break;
-                    case START_HOLE.START:
-                        Boltsbuffer.StartHole = START_HOLE.START;
-                        //Boltsbuffer.Y = this.StartY;
-                        break;
-                    default:
-                        break;
-                }*/
-                Boltsbuffer.X = GroupBoltsAttr.X;
+                /* switch ((START_HOLE)StartHoleType)
+                 {
+                     case START_HOLE.MIDDLE:
+                         Boltsbuffer.StartHole = START_HOLE.MIDDLE;
+                         //Boltsbuffer.Y = (GetBoltZ() * 0.5) - (Boltsbuffer.SumdY() * 0.5);
+                         break;
+                     case START_HOLE.START:
+                         Boltsbuffer.StartHole = START_HOLE.START;
+                         //Boltsbuffer.Y = this.StartY;
+                         break;
+                     default:
+                         break;
+                 }*/
+                //Boltsbuffer.X = GroupBoltsAttr.X;
+                Boltsbuffer.X = XProperty;
             }
             //判斷 Y 軸起始座標
             if (Boltsbuffer.StartHole == START_HOLE.MIDDLE)
@@ -1231,6 +1285,7 @@ namespace WPFSTD105.ViewModel
                     return Steelbuffer.H;
                 case GD_STD.Enum.FACE.FRONT:
                 case GD_STD.Enum.FACE.BACK:
+                case GD_STD.Enum.FACE.FRONTandBack:
                     return Steelbuffer.W;
                 default:
                     throw new Exception("找不到類型");
@@ -1253,32 +1308,69 @@ namespace WPFSTD105.ViewModel
                         {
                             GroupBoltsAttr gba = (GroupBoltsAttr)((BlockReference)aa[0].Item).EntityData;
                             // 2023/01/17 呂宗霖 選斜邊打點 出事啦！!!! 會記錄Mode 所以直接不選取斜邊打點
-                            if (gba != null && gba.Mode != AXIS_MODE.HypotenusePOINT)
+                            if (gba != null && gba.Mode != AXIS_MODE.HypotenusePOINT && gba.BlockName != "HypotenuseCustomer")
                             {
-                                GroupBoltsAttr = gba;
-                                WriteGroupBoltsAttr(gba);
-                                rbtn_DrillingFace = gba.Face;
-                                StartHoleType = gba.StartHole;
-                                AxisModeType = (int)gba.Mode;
-                                switch (gba.Face)
-                                {
-                                    case FACE.TOP:
-                                        StartY = gba.Y;
-                                        break;
-                                    case FACE.FRONT:
-                                    case FACE.BACK:
-                                        StartY = gba.Z;
-                                        break;
-                                    default:
-                                        break;
-                                }
-                                ComboxEdit_GroupBoltsTypeSelected = gba.groupBoltsType;
-                                X_BoltsArrayDirection = gba.X_BoltsArrayDirection;
+                                SetGroupBoltsInfo(gba);
                             }
                         }
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 設定鑽孔屬性至ViewModel
+        /// </summary>
+        /// <param name="gba"></param>
+        public void SetGroupBoltsInfo(GroupBoltsAttr gba) 
+        {
+            Steelbuffer = (SteelAttr)SteelAttr.DeepClone();
+            this.dXProperty = gba.dX;
+            this.dYProperty = gba.dY;
+            this.DiaProperty = gba.Dia;
+            this.XProperty = gba.X;
+            WriteGroupBoltsAttr(gba);
+            rbtn_DrillingFace = gba.Face;
+            StartHoleType = gba.StartHole;
+            AxisModeType = (int)gba.Mode;
+            if (StartHoleType == START_HOLE.MIDDLE)
+            {
+                StartY = (GetBoltZ() * 0.5) - (gba.SumdY() * 0.5);
+            }
+            else
+            {
+                switch (gba.Face)
+                {
+                    case FACE.TOP:
+                        StartY = gba.Y;
+                        break;
+                    case FACE.BACK:
+                    case FACE.FRONT:
+                        StartY = gba.Z;
+                        break;
+                    case FACE.FRONTandBack:
+                        break;
+                    default:
+                        break;
+                }
+                
+            }
+
+            //switch (gba.Face)
+            //{
+            //    case FACE.TOP:
+            //        StartY = gba.Y;
+            //        break;
+            //    case FACE.FRONT:
+            //    case FACE.BACK:
+            //        StartY = gba.Z;
+            //        break;
+            //    default:
+            //        break;
+            //}
+
+            ComboxEdit_GroupBoltsTypeSelected = gba.groupBoltsType;
+            X_BoltsArrayDirection = gba.X_BoltsArrayDirection;
         }
 
 
@@ -1526,8 +1618,43 @@ namespace WPFSTD105.ViewModel
             ser.SetCutSettingList(steelcutSettings);
         }
 
+        /// <summary>
+        /// 新增孔(因為有FRONTandBack，故需分開新增，寫Function帶參數較方便
+        /// </summary>
+        /// <param name="gba"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool AddHoleVM(GroupBoltsAttr gba, ModelExt model,ref Bolts3DBlock bolts, out BlockReference blockReference)
+        {
+            gba.GUID = Guid.NewGuid();
+            GroupBoltsAttr = (GroupBoltsAttr)gba.DeepClone();
+            if (!CheckGroupBoltsAttr(gba) && showMessage)
+            {
+                blockReference = null;
+                return false;
+            }
+            bolts = Bolts3DBlock.AddBolts(gba, model, out  blockReference, out bool check);
+            return check;
+        }
 
-
+        public void AddHoleReduce(BlockReference blockReference, BlockReference referenceBolts) 
+        {
+            //不是修改孔位狀態
+            if (!modifyHole)
+            {
+                Reductions.Add(new Reduction()
+                {
+                    Recycle = new List<List<Entity>>() { new List<Entity>() { blockReference } },
+                    SelectReference = null,
+                    User = new List<ACTION_USER>() { ACTION_USER.Add }
+                }, new Reduction()
+                {
+                    Recycle = new List<List<Entity>>() { new List<Entity>() { referenceBolts } },
+                    SelectReference = null,
+                    User = new List<ACTION_USER>() { ACTION_USER.Add }
+                });
+            }
+        }
 
         /// <summary>
         /// 計算單一支型鋼重量
@@ -1654,8 +1781,8 @@ namespace WPFSTD105.ViewModel
 
             InitializeSteelAttr();
 
-
-
+            GroupBoltsTypeByTargetSelected = GroupBoltsTypeByTarget.System;
+            SettingParGroupBoltsTypeList = new STDSerialization().GetGroupBoltsTypeList(_groupBoltsTypeByTargetSelected);
 
 
 
@@ -2781,7 +2908,7 @@ namespace WPFSTD105.ViewModel
             {
                 if (model.Entities[i].EntityData is GroupBoltsAttr gba)
                 {
-                    if (gba.X == groupBoltsAttr.X && gba.Y == groupBoltsAttr.Y && gba.Z == groupBoltsAttr.Z && gba.Face == groupBoltsAttr.Face && gba.Mode == groupBoltsAttr.Mode)
+                    if (gba.X == groupBoltsAttr.X && gba.Y == groupBoltsAttr.Y && gba.Z == groupBoltsAttr.Z && gba.Face == groupBoltsAttr.Face && gba.Mode == groupBoltsAttr.Mode && gba.X_BoltsArrayDirection == groupBoltsAttr.X_BoltsArrayDirection)
                     {
                         guid = gba.GUID;
                         break;
@@ -3211,20 +3338,6 @@ namespace WPFSTD105.ViewModel
                 return false;
             }
 
-            if (ComparisonBolts(model) && showMessage)  // 欲新增孔位重複比對
-            {
-                WinUIMessageBox.Show(null,
-                $"新增孔位重複，請重新輸入",
-                "通知",
-                MessageBoxButton.OK,
-                MessageBoxImage.Exclamation,
-                MessageBoxResult.None,
-                MessageBoxOptions.None,
-                 FloatingMode.Window);
-                fclickOK = true;
-                return false;
-            }
-
             //if (part.Values.SelectMany(x => x).Where(x => x.Number == this.PartNumberProperty && x.Match.Where(y => y == false).Count() > 0).Count() > 0 && showMessage)
             if (CheckOption_IsPartTypesetting(part) && showMessage)
             {
@@ -3480,199 +3593,307 @@ namespace WPFSTD105.ViewModel
         /// </summary>
         public bool ComparisonBolts(ModelExt model)
         {
-            GroupBoltsAttr TmpBoltsArr = new GroupBoltsAttr();
-            TmpBoltsArr = GetGroupBoltsAttr();
-            SteelAttr steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
-            double xStart = TmpBoltsArr.X_BoltsArrayDirection == ArrayDirection.Left_To_Right ? 0d : GroupBoltsAttr.RightXStart(steelAttr.Length);
-            // 0d改xStart
-            double valueX = xStart;
-            double valueY = 0d;
-            double TmpXPos = xStart;
-            double TmpYPos = 0d;
-            bool bFindSamePos = false;
-            List<(double, double)> AddBoltsList = new List<(double, double)>();
 
-            //  TmpBoltsArr.X 改 xStart
-            TmpXPos = xStart;
-            TmpYPos = TmpBoltsArr.Y;
+            return ComparisonBoltsInFile(model);
 
-            // 分解與儲存預建立之孔群各孔座標於LIST
-            for (int i = 1; i <= TmpBoltsArr.xCount; i++)
-            {
-                AddBoltsList.Add((TmpXPos, TmpYPos));
 
-                for (int j = 1; j < TmpBoltsArr.yCount; j++)
-                {
-                    if (j < TmpBoltsArr.dYs.Count) //判斷孔位Y向矩陣列表是否有超出長度,超過都取最後一位偏移量
-                        valueY = TmpBoltsArr.dYs[j - 1];
-                    else
-                        valueY = TmpBoltsArr.dYs[TmpBoltsArr.dYs.Count - 1];
 
-                    TmpYPos = TmpYPos + valueY;
+            ////////////GroupBoltsAttr TmpBoltsArr = new GroupBoltsAttr();
+            ////////////GetSteelAttr();
+            ////////////TmpBoltsArr = GetGroupBoltsAttr();
+            ////////////SteelAttr steelAttr = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
+            ////////////double xStart = TmpBoltsArr.X_BoltsArrayDirection == ArrayDirection.Left_To_Right ? TmpBoltsArr.X : GroupBoltsAttr.RightXStart(steelAttr.Length);
+            ////////////// 0d改xStart
+            ////////////double valueX = xStart;
+            ////////////double valueY = 0d;
+            ////////////double TmpXPos = xStart;
+            ////////////double TmpYPos = 0d;
+            ////////////bool bFindSamePos = false;
+            ////////////List<(double, double)> AddBoltsList = new List<(double, double)>();
 
-                    AddBoltsList.Add((TmpXPos, TmpYPos));
-                }
+            //////////////  TmpBoltsArr.X 改 xStart
+            ////////////TmpXPos = xStart;
+            ////////////TmpYPos = TmpBoltsArr.Y;
 
-                if (i < TmpBoltsArr.dXs.Count) //判斷孔位X向矩陣列表是否有超出長度,超過都取最後一位偏移量
-                    valueX = TmpBoltsArr.dXs[i - 1];
-                else
-                    valueX = TmpBoltsArr.dXs[TmpBoltsArr.dXs.Count - 1];
+            ////////////// 分解與儲存預建立之孔群各孔座標於LIST
+            ////////////for (int i = 1; i <= TmpBoltsArr.xCount; i++)
+            ////////////{
+            ////////////    AddBoltsList.Add((TmpXPos, TmpYPos));
 
-                TmpXPos = TmpXPos + valueX;
+            ////////////    for (int j = 1; j < TmpBoltsArr.yCount; j++)
+            ////////////    {
+            ////////////        if (j < TmpBoltsArr.dYs.Count) //判斷孔位Y向矩陣列表是否有超出長度,超過都取最後一位偏移量
+            ////////////            valueY = TmpBoltsArr.dYs[j - 1];
+            ////////////        else
+            ////////////            valueY = TmpBoltsArr.dYs[TmpBoltsArr.dYs.Count - 1];
 
-                TmpYPos = TmpBoltsArr.Y;
-            }
+            ////////////        TmpYPos = TmpYPos + valueY;
 
-            // 依孔群形狀異動座標
-            int diff = 1;
-            bool change = false;
-            List<(double, double)> AddBoltsListNew = new List<(double, double)>();
-            switch (TmpBoltsArr.groupBoltsType)
-            {
-                case GroupBoltsType.Rectangle:
-                    break;
-                case GroupBoltsType.DisalignmentLeft:
-                    for (int i = 0; i < AddBoltsList.Count() - 1; i++)
-                    {
-                        if (i % TmpBoltsArr.yCount == 0 || i % TmpBoltsArr.yCount == (TmpBoltsArr.yCount - 1))
-                        {
-                            (double, double) newCoordinate = (AddBoltsList[i].Item1 - (TmpBoltsArr.Dia / 2), AddBoltsList[i].Item2);
-                            AddBoltsListNew.Add(newCoordinate);
-                        }
-                        if (i % TmpBoltsArr.yCount == (TmpBoltsArr.yCount/2) || i % TmpBoltsArr.yCount == (TmpBoltsArr.yCount / 2)+1)
-                        {
-                            if ((TmpBoltsArr.yCount/2/2) % 2 == 0)
-                            {
-                                (double, double) newCoordinate = (AddBoltsList[i].Item1 - (TmpBoltsArr.Dia / 2), AddBoltsList[i].Item2);
-                                AddBoltsListNew.Add(newCoordinate);
-                            }
-                        }
-                    }
-                    AddBoltsList.Clear();
-                    AddBoltsList.AddRange(AddBoltsListNew);
-                    break;
-                case GroupBoltsType.DisalignmentRight:
-                    for (int i = 0; i < AddBoltsList.Count() - 1; i++)
-                    {
-                        if (i % TmpBoltsArr.yCount == 0 || i % TmpBoltsArr.yCount == (TmpBoltsArr.yCount - 1))
-                        {
-                            (double, double) newCoordinate = (AddBoltsList[i].Item1 + (TmpBoltsArr.Dia / 2), AddBoltsList[i].Item2);
-                            AddBoltsListNew.Add(newCoordinate);
-                        }
-                        if (i % TmpBoltsArr.yCount == (TmpBoltsArr.yCount / 2) || i % TmpBoltsArr.yCount == (TmpBoltsArr.yCount / 2) + 1)
-                        {
-                            if ((TmpBoltsArr.yCount / 2 / 2) % 2 == 0)
-                            {
-                                (double, double) newCoordinate = (AddBoltsList[i].Item1 + (TmpBoltsArr.Dia / 2), AddBoltsList[i].Item2);
-                                AddBoltsListNew.Add(newCoordinate);
-                            }
-                        }
-                    }
-                    AddBoltsList.Clear();
-                    AddBoltsList.AddRange(AddBoltsListNew);
-                    break;
-                case GroupBoltsType.HypotenuseLeft:
-                    for (int i = 0; i < AddBoltsList.Count() - 1; i++)
-                    {
-                        if (i % (TmpBoltsArr.yCount-1) == 0)
-                        {
-                            (double, double) newCoordinate = (AddBoltsList[i].Item1, AddBoltsList[i].Item2);
-                            AddBoltsListNew.Add(newCoordinate);
-                        }
-                    }
-                    AddBoltsList.Clear();
-                    AddBoltsList.AddRange(AddBoltsListNew);
-                    break;
-                case GroupBoltsType.HypotenuseRight:
-                    for (int i = 0; i < AddBoltsList.Count() - 1; i++)
-                    {
-                        if (i % (TmpBoltsArr.yCount+1) == 0)
-                        {
-                            (double, double) newCoordinate = (AddBoltsList[i].Item1, AddBoltsList[i].Item2);
-                            AddBoltsListNew.Add(newCoordinate);
-                        }
-                    }
-                    AddBoltsList.Clear();
-                    AddBoltsList.AddRange(AddBoltsListNew);
-                    break;
-                default:
-                    break;
-            }
+            ////////////        AddBoltsList.Add((TmpXPos, TmpYPos));
+            ////////////    }
 
-            TmpXPos = 0d;
-            TmpYPos = 0d;
+            ////////////    if (i < TmpBoltsArr.dXs.Count) //判斷孔位X向矩陣列表是否有超出長度,超過都取最後一位偏移量
+            ////////////        valueX = TmpBoltsArr.dXs[i - 1];
+            ////////////    else
+            ////////////        valueX = TmpBoltsArr.dXs[TmpBoltsArr.dXs.Count - 1];
 
-            // 原3D模組各孔位座標存於各LIST
-            List<(double, double)> AllBoltsAddList = new List<(double, double)>();
-            List<(double, double)> TopBoltsAddList = new List<(double, double)>();
-            List<(double, double)> FRONTBoltsAddList = new List<(double, double)>();
-            List<(double, double)> BACKBoltsAddList = new List<(double, double)>();
+            ////////////    TmpXPos = TmpXPos + valueX;
 
-            for (int i = 0; i < model.Entities.Count; i++)//逐步展開孔群資訊
-            {
-                if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //判斷孔群
-                {
-                    BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
-                    Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
-                    Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生孔群圖塊
+            ////////////    TmpYPos = TmpBoltsArr.Y;
+            ////////////}
 
-                    for (int j = 0; j < bolts3DBlock.Entities.Count; j++)
-                    {
-                        TmpXPos = ((BoltAttr)bolts3DBlock.Entities[j].EntityData).X;
-                        TmpYPos = ((BoltAttr)bolts3DBlock.Entities[j].EntityData).Y;
+            //////////////// 依孔群形狀異動座標
+            //////////////double diff = TmpBoltsArr.Dia / 2;
+            //////////////bool change = false;
+            //////////////int rowCount = TmpBoltsArr.yCount;
+            //////////////List<(double, double)> AddBoltsListNew = new List<(double, double)>();
+            //////////////List<double> diffList = new List<double>();
+            //////////////(double, double) newCoordinate;
+            //////////////switch (TmpBoltsArr.groupBoltsType)
+            //////////////{
+            //////////////    case GroupBoltsType.Rectangle:
+            //////////////        break;
+            //////////////    case GroupBoltsType.DisalignmentLeft:
+            //////////////        diffList.Add(0);
+            //////////////        diffList.Add(-diff);
+            //////////////        switch (TmpBoltsArr.dYs.Count() % 2)
+            //////////////        {
+            //////////////            case 0:
+            //////////////                for (int i = 0; i < AddBoltsList.Count() - 1; i++)
+            //////////////                {
+            //////////////                    if (i+1 == AddBoltsList.Count())
+            //////////////                    {
 
-                        switch (boltsAttr.Face)
-                        {
-                            case GD_STD.Enum.FACE.TOP:
-                                TopBoltsAddList.Add((TmpXPos, TmpYPos));
-                                break;
-                            case GD_STD.Enum.FACE.FRONT:
-                                FRONTBoltsAddList.Add((TmpXPos, TmpYPos));
-                                break;
-                            case GD_STD.Enum.FACE.BACK:
-                                BACKBoltsAddList.Add((TmpXPos, TmpYPos));
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
-            }
+            //////////////                    }
+            //////////////                }
+            //////////////                break;
+            //////////////            case 1:
+            //////////////                // dYs 是偶數
+            //////////////                int j = 0;
+            //////////////                for (int i = 0; i < AddBoltsList.Count() - 1; i++)
+            //////////////                {
+            //////////////                    if (((i+1)% (TmpBoltsArr.dYs.Count()+1))==0)
+            //////////////                    {
+            //////////////                        diffList.Reverse();
+            //////////////                        j = 0;
+            //////////////                    }
+            //////////////                    newCoordinate = (AddBoltsList[i - 1].Item1 + diffList[j], AddBoltsList[i - 1].Item2);
+            //////////////                    AddBoltsListNew.Add(newCoordinate);
+            //////////////                    j++;
+            //////////////                }
+            //////////////                break;
+            //////////////            default:
+            //////////////                break;
+            //////////////        }
 
-            // 將原3D各孔群座標存於共用LIST
-            switch (TmpBoltsArr.Face)
-            {
-                case GD_STD.Enum.FACE.TOP:
-                    AllBoltsAddList = TopBoltsAddList;
-                    break;
-                case GD_STD.Enum.FACE.FRONT:
-                    AllBoltsAddList = FRONTBoltsAddList;
-                    break;
-                case GD_STD.Enum.FACE.BACK:
-                    AllBoltsAddList = BACKBoltsAddList;
-                    break;
-                default:
-                    break;
-            }
+                       
+                   
 
-            // 指定LIST比對是否有相同座標
-            foreach (var x in AddBoltsList)
-            {
-                if (AllBoltsAddList.Contains(x))
-                {
-                    bFindSamePos = true;
-                    break;
-                }
-                else
-                    bFindSamePos = false;
-            }
-            return bFindSamePos;
+
+
+
+
+
+
+
+
+            //////////////            for (int i = 1; i <= AddBoltsList.Count() ; i++)
+            //////////////        {
+            //////////////            if ((i+1) % TmpBoltsArr.yCount == 0 || (i + 1) % TmpBoltsArr.yCount == (TmpBoltsArr.yCount - 1))
+            //////////////            {
+            //////////////                newCoordinate = (AddBoltsList[i-1].Item1 - (TmpBoltsArr.Dia / 2), AddBoltsList[i-1].Item2);
+            //////////////                AddBoltsListNew.Add(newCoordinate);
+            //////////////            }
+            //////////////            if ((i + 1) % TmpBoltsArr.yCount == (TmpBoltsArr.yCount / 2) || (i + 1) % TmpBoltsArr.yCount == (TmpBoltsArr.yCount / 2) + 1)
+            //////////////            {
+            //////////////                if ((TmpBoltsArr.yCount / 2 / 2) % 2 == 0)
+            //////////////                {
+            //////////////                    newCoordinate = (AddBoltsList[i-1].Item1 - (TmpBoltsArr.Dia / 2), AddBoltsList[i-1].Item2);
+            //////////////                    AddBoltsListNew.Add(newCoordinate);
+            //////////////                }
+            //////////////            }
+            //////////////        }
+            //////////////        AddBoltsList.Clear();
+            //////////////        AddBoltsList.AddRange(AddBoltsListNew);
+            //////////////        break;
+            //////////////    case GroupBoltsType.DisalignmentRight:
+            //////////////        for (int i = 1; i <= AddBoltsList.Count() ; i++)
+            //////////////        {
+            //////////////            if ((i + 1) % TmpBoltsArr.yCount == 0 || (i + 1) % TmpBoltsArr.yCount == (TmpBoltsArr.yCount - 1))
+            //////////////            {
+            //////////////                newCoordinate = (AddBoltsList[i - 1].Item1 + (TmpBoltsArr.Dia / 2), AddBoltsList[i - 1].Item2);
+            //////////////                AddBoltsListNew.Add(newCoordinate);
+            //////////////            }
+            //////////////            if ((i + 1) % TmpBoltsArr.yCount == (TmpBoltsArr.yCount / 2) || (i + 1) % TmpBoltsArr.yCount == (TmpBoltsArr.yCount / 2) + 1)
+            //////////////            {
+            //////////////                if ((TmpBoltsArr.yCount / 2 / 2) % 2 == 0)
+            //////////////                {
+            //////////////                    newCoordinate = (AddBoltsList[i - 1].Item1 + (TmpBoltsArr.Dia / 2), AddBoltsList[i - 1].Item2);
+            //////////////                    AddBoltsListNew.Add(newCoordinate);
+            //////////////                }
+            //////////////            }
+            //////////////        }
+            //////////////        AddBoltsList.Clear();
+            //////////////        AddBoltsList.AddRange(AddBoltsListNew);
+            //////////////        break;
+            //////////////    case GroupBoltsType.HypotenuseRight:
+            //////////////        for (int i = 0; i < AddBoltsList.Count() ; i++)
+            //////////////        {
+            //////////////            if (i % (TmpBoltsArr.yCount + 1) == 0)
+            //////////////            {
+            //////////////                newCoordinate = (AddBoltsList[i].Item1, AddBoltsList[i].Item2);
+            //////////////                AddBoltsListNew.Add(newCoordinate);
+            //////////////            }
+            //////////////        }
+            //////////////        AddBoltsList.Clear();
+            //////////////        AddBoltsList.AddRange(AddBoltsListNew);
+            //////////////        break;
+            //////////////    case GroupBoltsType.HypotenuseLeft:                  
+            //////////////        for (int i = 1; i < AddBoltsList.Count()-1; i++)
+            //////////////        {
+            //////////////            if (i % (TmpBoltsArr.yCount - 1) == 0)
+            //////////////            {
+            //////////////                newCoordinate = (AddBoltsList[i].Item1, AddBoltsList[i].Item2);
+            //////////////                AddBoltsListNew.Add(newCoordinate);
+            //////////////            }
+            //////////////        }
+            //////////////        AddBoltsList.Clear();
+            //////////////        AddBoltsList.AddRange(AddBoltsListNew);
+            //////////////        break;
+            //////////////    default:
+            //////////////        break;
+            //////////////}
+
+            ////////////TmpXPos = 0d;
+            ////////////TmpYPos = 0d;
+
+            ////////////// 原3D模組各孔位座標存於各LIST
+            ////////////List<(double, double)> AllBoltsAddList = new List<(double, double)>();
+            ////////////List<(double, double)> TopBoltsAddList = new List<(double, double)>();
+            ////////////List<(double, double)> FRONTBoltsAddList = new List<(double, double)>();
+            ////////////List<(double, double)> BACKBoltsAddList = new List<(double, double)>();
+
+            ////////////for (int i = 0; i < model.Entities.Count; i++)//逐步展開孔群資訊
+            ////////////{
+            ////////////    if (model.Entities[i].EntityData is GroupBoltsAttr boltsAttr) //判斷孔群
+            ////////////    {
+            ////////////        BlockReference blockReference = (BlockReference)model.Entities[i]; //取得參考圖塊
+            ////////////        Block block = model.Blocks[blockReference.BlockName]; //取得圖塊 
+            ////////////        Bolts3DBlock bolts3DBlock = new Bolts3DBlock(block.Entities, (GroupBoltsAttr)blockReference.EntityData); //產生孔群圖塊
+
+            ////////////        for (int j = 0; j < bolts3DBlock.Entities.Count; j++)
+            ////////////        {
+            ////////////            TmpXPos = ((BoltAttr)bolts3DBlock.Entities[j].EntityData).X;
+            ////////////            TmpYPos = ((BoltAttr)bolts3DBlock.Entities[j].EntityData).Y;
+
+            ////////////            switch (boltsAttr.Face)
+            ////////////            {
+            ////////////                case GD_STD.Enum.FACE.TOP:
+            ////////////                    TopBoltsAddList.Add((TmpXPos, TmpYPos));
+            ////////////                    break;
+            ////////////                case GD_STD.Enum.FACE.FRONT:
+            ////////////                    FRONTBoltsAddList.Add((TmpXPos, TmpYPos));
+            ////////////                    break;
+            ////////////                case GD_STD.Enum.FACE.BACK:
+            ////////////                    BACKBoltsAddList.Add((TmpXPos, TmpYPos));
+            ////////////                    break;
+            ////////////                default:
+            ////////////                    break;
+            ////////////            }
+            ////////////        }
+            ////////////    }
+            ////////////}
+
+            ////////////// 將原3D各孔群座標存於共用LIST
+            ////////////switch (TmpBoltsArr.Face)
+            ////////////{
+            ////////////    case GD_STD.Enum.FACE.TOP:
+            ////////////        AllBoltsAddList = TopBoltsAddList;
+            ////////////        break;
+            ////////////    case GD_STD.Enum.FACE.FRONT:
+            ////////////        AllBoltsAddList = FRONTBoltsAddList;
+            ////////////        break;
+            ////////////    case GD_STD.Enum.FACE.BACK:
+            ////////////        AllBoltsAddList = BACKBoltsAddList;
+            ////////////        break;
+            ////////////    default:
+            ////////////        break;
+            ////////////}
+
+            ////////////// 指定LIST比對是否有相同座標
+            ////////////foreach (var x in AddBoltsList)
+            ////////////{
+            ////////////    if (AllBoltsAddList.Contains(x))
+            ////////////    {
+            ////////////        bFindSamePos = true;
+            ////////////        break;
+            ////////////    }
+            ////////////    else
+            ////////////        bFindSamePos = false;
+            ////////////}
+            ////////////return bFindSamePos;
         }
 
+        public bool ComparisonBoltsInFile(ModelExt model)
+        {
+            // 取得鑽孔資料
+            List<BoltAttr> boltsList = model.Blocks
+                .Where(x => x.Name != "RootBlock")
+                .SelectMany(x => x.Entities, (a, b) => new { Block = a, a.Entities, b.EntityData })
+                .Where(x => x.EntityData.GetType() == typeof(BoltAttr) && ((BoltAttr)x.EntityData).Mode == AXIS_MODE.PIERCE)
+                .Select(x=>(BoltAttr)(x.EntityData)).ToList();
+
+          var distinctBolts=  boltsList.GroupBy(x => new { x.X, x.Y, x.Z,x.Face }).Where(g => g.Count() > 1).Select(x =>new { x.Key.X, x.Key.Y, x.Key.Z,x.Key.Face }).ToList();
+
+            foreach (var item in distinctBolts)
+            {
+                double _x = item.X;
+                double _y = item.Y;
+                double _z = item.Z;
+                FACE _face = item.Face;
+                Block doubleBlock = model.Blocks
+                .Where(x => x.Name != "RootBlock")
+                .SelectMany(x => x.Entities, (a, b) => new { Block = a, a.Entities, b.EntityData })
+                .Where(x =>
+                x.EntityData.GetType() == typeof(BoltAttr) &&
+                ((BoltAttr)x.EntityData).Mode == AXIS_MODE.PIERCE &&
+                ((BoltAttr)x.EntityData).X == _x &&
+                ((BoltAttr)x.EntityData).Y == _y &&
+                ((BoltAttr)x.EntityData).Z == _z &&
+                ((BoltAttr)x.EntityData).Face == _face).Select(x=>x.Block).LastOrDefault();
+                String blockName = ((Block)doubleBlock).Name;
+                var removeEntity = model.Entities.Where(x => ((BlockReference)x).BlockName == blockName);
+                var removeBlock = model.Blocks.Where(x => ((Block)x).Name == blockName);
+                if(removeEntity.Any()) model.Entities.Remove(removeEntity.FirstOrDefault());
+                if (removeBlock.Any()) model.Blocks.Remove(removeBlock.FirstOrDefault());
+                model.Entities.Regen();
+                ////\n若新增斜孔，請先刪除重疊之中間孔
+                //WinUIMessageBox.Show(null,
+                //$"新增孔位重複，請重新輸入",
+                //"通知",
+                //MessageBoxButton.OK,
+                //MessageBoxImage.Exclamation,
+                //MessageBoxResult.None,
+                //MessageBoxOptions.None,
+                // FloatingMode.Window);
+                //fclickOK = true;
+                return false;
+            }
+            return true;
+        }
+
+
+
+
+
+
+
+
+
         #region 功能可用時機判斷參數
-        /// <summary>
-        /// 是否第一次按新增 點擊OK true
-        /// </summary>
+            /// <summary>
+            /// 是否第一次按新增 點擊OK true
+            /// </summary>
         public bool? fFirstAdd = true;
         /// <summary>
         /// 是否為新零件 dm
@@ -3724,6 +3945,85 @@ namespace WPFSTD105.ViewModel
                 // 是否在Grid進行動作
                 fGrid = grid;
             }
+        }
+
+        public bool CustomizedBoltsGroupSettingUC_IsPopup { get; set; }
+
+        private GroupBoltsTypeByTarget _groupBoltsTypeByTargetSelected;
+        /// <summary>
+        /// 讀取客製孔群 - 依附類別(系統客製、專案客製)(下拉或核選元件)
+        /// </summary>
+        public GroupBoltsTypeByTarget GroupBoltsTypeByTargetSelected
+        {
+            get => _groupBoltsTypeByTargetSelected;
+            set
+            {
+                _groupBoltsTypeByTargetSelected = value;
+                SettingParGroupBoltsTypeList = new STDSerialization().GetGroupBoltsTypeList(_groupBoltsTypeByTargetSelected);
+                SettingParGroupBoltsType = SettingParGroupBoltsTypeModel.NotSelectGroupBoltsTypeModel;
+            }
+        }
+
+        private List<SettingParGroupBoltsTypeModel> _settingParGroupBoltsTypeList = new List<SettingParGroupBoltsTypeModel>();
+        public List<SettingParGroupBoltsTypeModel> SettingParGroupBoltsTypeList
+        {
+            get
+            {
+                var ReturnList = new List<SettingParGroupBoltsTypeModel>(); ;
+                if (!_settingParGroupBoltsTypeList.Exists(x => (x.groupBoltsTypeName == SettingParGroupBoltsTypeModel.NotSelectGroupBoltsTypeModel.groupBoltsTypeName)))
+                {
+                    ReturnList.Add(SettingParGroupBoltsTypeModel.NotSelectGroupBoltsTypeModel);
+                }
+                ReturnList.AddRange(_settingParGroupBoltsTypeList);
+                return ReturnList;
+            }
+            set
+            {
+                _settingParGroupBoltsTypeList = value;
+            }
+        }
+
+        private SettingParGroupBoltsTypeModel _settingParGroupBoltsType = null;
+        /// <summary>
+        /// combobox用
+        /// </summary>
+        public SettingParGroupBoltsTypeModel SettingParGroupBoltsType
+        {
+            get
+            {
+                if (_settingParGroupBoltsType == null)
+                {
+                  
+                }
+                return _settingParGroupBoltsType;
+            }
+            set
+            {
+                _settingParGroupBoltsType = value;
+                OnPropertyChanged(nameof(SettingParGroupBoltsType));
+            }
+        }
+
+        public ICommand LoadSettingParGroupBoltsTypeCommand
+        { 
+            get
+            {
+                return new RelayCommand(() =>
+                {
+                    if(SettingParGroupBoltsType.groupBoltsAttr != null)
+                    {
+                        this.DiaProperty = SettingParGroupBoltsType.groupBoltsAttr.Dia;
+                        this.dXProperty = SettingParGroupBoltsType.groupBoltsAttr.dX;
+                        this.dYProperty = SettingParGroupBoltsType.groupBoltsAttr.dY;
+                        this.XProperty = SettingParGroupBoltsType.groupBoltsAttr.X;
+                        this.StartY = SettingParGroupBoltsType.groupBoltsAttr.Y;
+                        this.X_BoltsArrayDirection = SettingParGroupBoltsType.groupBoltsAttr.X_BoltsArrayDirection;
+                        this.ComboxEdit_GroupBoltsTypeSelected = SettingParGroupBoltsType.groupBoltsAttr.groupBoltsType;
+                        this.rbtn_DrillingFace = SettingParGroupBoltsType.groupBoltsAttr.Face;
+                        this.StartHoleType = SettingParGroupBoltsType.groupBoltsAttr.StartHole;
+                    }
+                });
+        }
         }
 
 
