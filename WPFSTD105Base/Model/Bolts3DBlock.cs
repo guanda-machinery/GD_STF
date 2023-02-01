@@ -1144,7 +1144,7 @@ namespace WPFSTD105.Model
                             // if (!((Mesh)model.Entities[model.Entities.Count - 1]).IsPointInside(testPoint))
                             {
                                 check = false;
-                                ((Mesh)(boltCheck[i].Entities[0])).Color = Color.Blue;
+                                //((Mesh)(boltCheck[i].Entities[0])).Color = Color.Blue;
                                     return check;
                             }
                         }
@@ -1152,7 +1152,7 @@ namespace WPFSTD105.Model
                     else
                     {
                         check = false;
-                        ((Mesh)(boltCheck[i].Entities[0])).Color = Color.Blue;
+                        //((Mesh)(boltCheck[i].Entities[0])).Color = Color.Blue;
                         return check;
                     }
                     // 若起始座標小於半徑，不可加入

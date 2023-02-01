@@ -1608,6 +1608,20 @@ namespace WPFSTD105
                 }
                 i++;
             });
+            Block_OldBolt.Clear();
+            Block_OldBolt.AddRange(this.Blocks
+                .Where(x => x.Name != "RootBlock")
+                .SelectMany(x =>
+                x.Entities, (a, b) => new { Block = a, a.Entities, b.EntityData })
+                .Where(x =>
+                x.EntityData.GetType() == typeof(BoltAttr) &&
+                ((BoltAttr)x.EntityData).Mode != AXIS_MODE.HypotenusePOINT)
+                .Select(x => x.Block).ToList());
+
+
+
+
+
 
 
             //// 舊有形鋼上的孔群:目前有兩種

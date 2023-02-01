@@ -1724,7 +1724,7 @@ namespace STD_105.Office
                 /*3D螺栓*/
 
                 ViewModel.GetGroupBoltsAttrFromViewToVM();
-                ViewModel.GroupBoltsAttr.GUID = Guid.NewGuid();
+                //ViewModel.GroupBoltsAttr.GUID = Guid.NewGuid();
                 ViewModel.SteelAttr.Name = ViewModel.ProductNameProperty;
                 ViewModel.SteelAttr.Phase = ViewModel.PhaseProperty;
                 ViewModel.SteelAttr.ShippingNumber = ViewModel.ShippingNumberProperty;
@@ -1732,6 +1732,8 @@ namespace STD_105.Office
                 ViewModel.SteelAttr.Title2 = ViewModel.Title2Property;
                 ViewModel.GetSteelAttr();
                 GroupBoltsAttr gba = ViewModel.GetGroupBoltsAttr();
+                gba.GUID = Guid.NewGuid();
+                ViewModel.GroupBoltsAttr = (GroupBoltsAttr)gba.DeepClone();
 
                 if (!ViewModel.CheckGroupBoltsAttr(gba) && ViewModel.showMessage)
                 {
@@ -1741,6 +1743,24 @@ namespace STD_105.Office
                 Steel3DBlock.FillCutSetting(sa);
 
                 Bolts3DBlock bolts = Bolts3DBlock.AddBolts(gba, model, out BlockReference blockReference, out bool check);
+
+                if (!ViewModel.ComparisonBolts(model) && ViewModel.showMessage)  // 欲新增孔位重複比對
+                {
+                    //\n若新增斜孔，請先刪除重疊之中間孔
+                    WinUIMessageBox.Show(null,
+                    $"新增孔位重複，請重新輸入",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                     FloatingMode.Window);
+                    SaveModel(false, true);//存取檔案
+                    model.Refresh();
+                    drawing.Refresh();
+                    return;
+                }
+
 
                 BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                 if (ViewModel.fromModifyHole)

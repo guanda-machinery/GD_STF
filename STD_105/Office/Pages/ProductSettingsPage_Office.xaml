@@ -1068,8 +1068,8 @@
 
                                             <!--技術文件參照:https://community.devexpress.com/blogs/wpf/archive/2015/01/27/devexpress-mvvm-framework-enumitemsourcebehavior.aspx-->
 
-                                            <CheckBox Grid.Row="3"  Content="特殊孔位：" IsThreeState="False" IsChecked="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}" Visibility="Collapsed"/>
-                                            <dxe:ComboBoxEdit  IsTextEditable="False" Grid.Column="0" Grid.ColumnSpan="2"   Grid.Row="4"  Margin="0,5,5,0" IsEnabled="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}" Visibility="Collapsed"
+                                            <CheckBox Grid.Row="3"  Content="特殊孔位：" IsThreeState="False" IsChecked="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}" Visibility="Visible"/>
+                                            <dxe:ComboBoxEdit  IsTextEditable="False" Grid.Column="0" Grid.ColumnSpan="2"   Grid.Row="4"  Margin="0,5,5,0" IsEnabled="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}" Visibility="Visible"
                                                            ApplyItemTemplateToSelectedItem="True" 
                                         EditValue="{Binding ComboxEdit_GroupBoltsTypeSelected}">
                                                     <dxmvvm:Interaction.Behaviors>
@@ -1156,7 +1156,7 @@
                                             </CheckBox>
                                         </Grid>
                                     </STD105:DraggablePopup>
-                                    <GroupBox Header="客製孔群" Grid.Column="1" Grid.Row="1" Visibility="Collapsed" >
+                                    <GroupBox Header="客製孔群" Grid.Column="1" Grid.Row="1" Visibility="Visible" >
                                         <Grid>
                                             <ComboBox VerticalAlignment="Top"/>
 
