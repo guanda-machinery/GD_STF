@@ -240,17 +240,29 @@ namespace GD_STD.Enum
         //右軸測刀長Sensor異常
         R_Measuring_Drill_Sensor_Error,
 
-        [ErrorCodeAttribute("強電箱安全門未關", null)]
+        [ErrorCodeAttribute("強電箱安全門鎖定異常", null)]
         //強電箱安全門鎖定異常
-        Electrical_BOX_Error,
+        Electrical_BOX_NOT_Lock,
+
+        [ErrorCodeAttribute("外罩安全門(1)鎖定異常", null)]
+        //外罩安全門(1)鎖定異常
+        Case_1_NOT_Lock,
+
+        [ErrorCodeAttribute("外罩安全門(2)鎖定異常", null)]
+        //外罩安全門(2)鎖定異常
+        Case_2_NOT_Lock,
+
+        [ErrorCodeAttribute("強電箱安全門未關", null)]
+        //強電箱安全門未關
+        Electrical_BOX_NOT_Close,
 
         [ErrorCodeAttribute("外罩安全門(1)未關", null)]
-        //外罩安全門(1)鎖定異常
-        Case_1_Error,
+        //外罩安全門(1)未關
+        Case_1_NOT_Close,
 
         [ErrorCodeAttribute("外罩安全門(2)未關", null)]
-        //外罩安全門(2)鎖定異常
-        Case_2_Error,
+        //外罩安全門(2)未關
+        Case_2_NOT_Close,
 
         [ErrorCodeAttribute("放刀索引錯誤", null)]
         //放刀索引錯誤
@@ -430,6 +442,10 @@ namespace GD_STD.Enum
         [ErrorCodeAttribute("素材小於5米且無使用T1夾取", null)]
         //素材小於5米且無使用T1夾取
         No_Use_T1_Clip,
+
+        [ErrorCodeAttribute("刀長異常(無量測模式)", null)]
+        //刀長異常(無量測模式)
+        Drill_Length_Error,
 
         //(*Error_Code20000 開始為使用APP時發生的Error*) //***************************************
 

@@ -204,6 +204,7 @@ namespace WPFSTD105.Tekla
                 result.yCount = 1;
                 result.Face = face;
                 result.Mode = AXIS_MODE.PIERCE;
+                result.groupBoltsType = GroupBoltsType.Rectangle;
             }
             return result;
         }

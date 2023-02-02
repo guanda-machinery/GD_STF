@@ -22,7 +22,6 @@ using Region = devDept.Eyeshot.Entities.Region;
 using devDept.Graphics;
 using devDept.Serialization;
 using GD_STD.Enum;
-using System.Windows.Media;
 using static DevExpress.Utils.Menu.DXMenuItemPainter;
 using DevExpress.Mvvm;
 using SplitLineSettingData;
@@ -33,6 +32,8 @@ using DevExpress.Diagram.Core.Shapes;
 using Line = devDept.Eyeshot.Entities.Line;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.IO;
+using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Presentation;
 //using TriangleNet;
 
 namespace WPFSTD105.Model
@@ -194,6 +195,7 @@ namespace WPFSTD105.Model
                         TmpBoltsArr.BlockName = "TopCutPoint";                  // 孔群名稱
                         Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool check);  // 依孔群列別設定資訊 建立孔群
                         entities.Add(blockReference);                           // 孔群加入model.entities
+
                     }
 
                     continue;
@@ -213,9 +215,16 @@ namespace WPFSTD105.Model
                             Entity copy = (Entity)el.Clone(); //複製物件
                             copy.GroupIndex = i;
                             copy.Translate(place[i].Start - place[placeIndex].Start, 0);
+
                             ent.Add(copy);
                         });
+                  
+
+
+
                     entities.AddRange(ent);
+
+
                 }
                 else
                 {
@@ -253,8 +262,49 @@ namespace WPFSTD105.Model
                         }
                         file.DoWork();
                         file.AddToScene(model);
-                        //Entity _entity = null;
-                        //SteelAttr _steelAttr = null;
+                        Entity _entity = null;
+                        SteelAttr _steelAttr = null;
+
+
+
+
+
+
+                        //model.Entities.ForEach(el =>
+                        //{
+                        //    if (((BlockReference)el).BlockName == DataName)
+                        //    {
+
+                        //        //_steelAttr
+
+                        //    }
+                        //});
+
+
+                        //model.Entities.ForEach(el =>
+                        //{
+                        //    if (el.GetType() != typeof(LinearDim))
+                        //    {
+                        //        model.Blocks[((BlockReference)el).BlockName].Entities.ForEach(entity =>
+                        //        {
+
+                        //            if (entity.EntityData is SteelAttr steelAttr)
+                        //            { 
+                        //                if (((SteelAttr)entity.EntityData).GUID == parts[partIndex].GUID)
+                        //                {
+                        //                    _entity = entity;
+                        //                    _steelAttr = (SteelAttr)entity.EntityData;
+                        //                    JudgingByVertex(_entity, _steelAttr);
+                        //                }
+                        //            }  
+
+
+                        //        });
+                        //    }
+                        //});
+
+
+
                         model.Entities.ForEach(el =>
                         {
                             if (el.GetType() != typeof(LinearDim))
@@ -266,14 +316,14 @@ namespace WPFSTD105.Model
                                 //    {
                                 //        if (model.Blocks[((BlockReference)el).BlockName].Entities != null)
                                 //        {
-                                //            model.Blocks[((BlockReference)el).BlockName].Entities.ForEach(entity =>
-                                //            {
-                                //                if (entity.EntityData is SteelAttr steelAttr)
-                                //                {
-                                //                    _entity = entity;
-                                //                    _steelAttr = steelAttr;
-                                //                }
-                                //            });
+                                //model.Blocks[((BlockReference)el).BlockName].Entities.ForEach(entity =>
+                                //{
+                                //    if (entity.EntityData is SteelAttr steelAttr)
+                                //    {
+                                //        _entity = entity;
+                                //        _steelAttr = steelAttr;
+                                //    }
+                                //});
                                 //        }
                                 //        else
                                 //        {
@@ -292,9 +342,20 @@ namespace WPFSTD105.Model
                                 el.GroupIndex = i;
                                 el.Translate(place[i].Start, 0);
                                 el.Selectable = false;
+
+
+                                //  el.Rotate(Math.PI, Vector3D.AxisX, new Point3D() { Y = _steelAttr.H / 2, Z = _steelAttr.W / 2 });
+                  
+
                                 entities.Add(el);//加入到暫存列表
+
                             }
                         });
+
+
+                      //  Rotate(entities, new Point3D() { Y = _steelAttr.H / 2, Z = _steelAttr.W / 2 });
+
+
                         //Func<List<Point3D>, double> minFunc = (point3d) => point3d.Min(e => e.X);
                         //Func<List<Point3D>, double> maxFunc = (point3d) => point3d.Max(e => e.X);
                         //Transformation transformation = new Transformation(new Point3D(0, _steelAttr.H / 2, _steelAttr.W), Vector3D.AxisX, new Vector3D(0, 0, 1), new Vector3D(0, -1, 0));
@@ -378,7 +439,7 @@ namespace WPFSTD105.Model
                     }
                 }
             }
-
+          
             //model.AssemblySelectionMode = devDept.Eyeshot.Environment.assemblySelectionType.Leaf;
             model.Refresh();
             model.Entities.Clear();
@@ -408,11 +469,17 @@ namespace WPFSTD105.Model
 
             //}
             //EntityList result =  entities.Where(el => !((BlockReference)el).Attributes.ContainsKey("Cut")).ToList();
+
+
             model.Entities.AddRange(entities);
             model.Entities.AddRange(resultSolid);
+            
             //ser.TransHypotenusePOINTtoPoint(model);
             ser.SetMaterialModel(materialNumber, model); //儲存素材
         }
+
+
+        #region AssemblyPart程式碼備份 
 
         //AssemblyPart程式碼備份
         ///// <summary>
@@ -692,6 +759,72 @@ namespace WPFSTD105.Model
         //    ser.SetMaterialModel(materialNumber, model); //儲存素材
         //}
 
+        #endregion
+
+
+        public static void JudgingByVertex(Entity _entity , SteelAttr _steelAttr)
+        {
+
+            Func<List<Point3D>, double> minFunc = (point3d) => point3d.Min(e => e.X);
+            Func<List<Point3D>, double> maxFunc = (point3d) => point3d.Max(e => e.X);
+            Transformation transformation = new Transformation(new Point3D(0, _steelAttr.H / 2, _steelAttr.W), Vector3D.AxisX, new Vector3D(0, 0, 1), new Vector3D(0, -1, 0));
+
+            var minTopFlip = Flip((Entity)_entity.Clone(), minFunc, _steelAttr, -100, out double minTopAngle1, out double minTopAngle2, out double topMinX);
+            var maxTopFlip = Flip((Entity)_entity.Clone(), maxFunc, _steelAttr, 100, out double maxTopAngle1, out double maxTopAngle2, out double topMaxX);
+            var minBackFlip = Flip((Entity)_entity.Clone(), minFunc, _steelAttr, -100, out double minBackAngle1, out double minBackAngle2, out double backMinX, transformation);
+            var maxBackFlip = Flip((Entity)_entity.Clone(), maxFunc, _steelAttr, 100, out double maxBackAngle1, out double maxBackAngle2, out double backMaxX, transformation);
+            var minFrontFlip = Flip((Entity)_entity.Clone(), minFunc, _steelAttr, -100, out double minFrontAngle1, out double minFrontAngle2, out double frontMinX, transformation);
+            var maxFrontFlip = Flip((Entity)_entity.Clone(), maxFunc, _steelAttr, 100, out double maxFrontAngle1, out double maxFrontAngle2, out double frontMaxX, transformation);
+            if ((minBackFlip && minFrontFlip) || (maxBackFlip && maxFrontFlip))
+            {
+                if (minTopFlip || maxTopFlip)
+                {
+                    _steelAttr.StartAngle = minTopAngle1 == 0 ? minTopAngle2 : minTopAngle1;
+                    _steelAttr.EndAngle = maxTopAngle1 == 0 ? maxTopAngle2 : maxTopAngle1;
+                    if (_steelAttr.StartAngle > 90 || _steelAttr.EndAngle > 90)
+                    {
+                        //  Rotate(entities.Where(el => el.GroupIndex == i), (_entity.BoxMin + _entity.BoxMax) / 2);
+                         //  Rotate(Math.PI, Vector3D.AxisX, new Point3D() { Y = _steelAttr.H / 2, Z = _steelAttr.W / 2 });
+                    }
+                }
+                else if (backMinX < frontMinX)
+                    _steelAttr.StartAngle = minBackAngle1 == 0 ? minBackAngle2 : minBackAngle1;
+                else
+                    _steelAttr.StartAngle = minFrontAngle1 == 0 ? minFrontAngle2 : minFrontAngle1;
+
+                if (backMaxX < frontMaxX)
+                {
+                    _steelAttr.EndAngle = maxBackAngle1 == 0 ? maxBackAngle2 : maxBackAngle1;
+                }
+                else
+                {
+                    _steelAttr.EndAngle = maxFrontAngle1 == 0 ? maxFrontAngle2 : maxFrontAngle1;
+                }
+            }
+            else if (minBackFlip || maxBackFlip)
+            {
+                _steelAttr.StartAngle = minBackAngle1 == 0 ? minBackAngle2 : minBackAngle1;
+                _steelAttr.EndAngle = maxBackAngle1 == 0 ? maxBackAngle2 : maxBackAngle1;
+            }
+            else if (minFrontFlip || maxFrontFlip)
+            {
+                _steelAttr.StartAngle = minFrontAngle1 == 0 ? minFrontAngle2 : minFrontAngle1;
+                _steelAttr.EndAngle = maxFrontAngle1 == 0 ? maxFrontAngle2 : maxFrontAngle1;
+            }
+            else if (minTopFlip || maxTopFlip)
+            {
+                _steelAttr.StartAngle = minTopAngle1 == 0 ? minTopAngle2 : minTopAngle1;
+                _steelAttr.EndAngle = maxTopAngle1 == 0 ? maxTopAngle2 : maxTopAngle1;
+                if (_steelAttr.StartAngle > 90 || _steelAttr.EndAngle > 90)
+                {
+                   // Rotate(entities.Where(el => el.GroupIndex == i), (_entity.BoxMin + _entity.BoxMax) / 2);
+                }
+            }
+
+
+
+        }
+
 
         private static void Rotate(IEnumerable<Entity> entities, Point3D origin)
         {
@@ -916,6 +1049,7 @@ namespace WPFSTD105.Model
                 TmpBoltsArr.StartHole = START_HOLE.START;
                 TmpBoltsArr.dX = "0";
                 TmpBoltsArr.dY = "0";
+                TmpBoltsArr.groupBoltsType = GroupBoltsType.Rectangle;
                 TmpBoltsArr.xCount = 1;
                 TmpBoltsArr.yCount = 1;
                 TmpBoltsArr.Mode = AXIS_MODE.POINT;
@@ -1245,7 +1379,7 @@ namespace WPFSTD105.Model
                     //前視圖
                     Mesh vMesh = ConvertNcPointToMesh(nc.SteelAttr.vPoint, nc.SteelAttr.t1);
                     List<Mesh> vCut = GetCutMesh(nc.SteelAttr.vPoint, nc.SteelAttr.t1);
-                    Mesh cut1 = Mesh.CreateBox(nc.SteelAttr.Length + diffLength + 10, nc.SteelAttr.t2, nc.SteelAttr.t1);//切割前視圖翼板輪廓
+                    Mesh cut1 = Mesh.CreateBox(nc.SteelAttr.Length + diffLength + 10, nc.SteelAttr.t2, nc.SteelAttr.t1);//切割前視圖翼板輪廓(BACK)
                     cut1.Translate(-5, 0);//(-5,0)
                     Mesh otherCut1 = (Mesh)cut1.Clone();
                     Mesh cut2 = (Mesh)cut1.Clone();
@@ -1271,7 +1405,7 @@ namespace WPFSTD105.Model
                         });
                         mesh.Regen(1E3);
                     });
-                    vCut.Add(cut1);// Front
+                    vCut.Add(cut1);// Front //腹板與前後翼板交接處
                     vCut.Add(cut2);
                     Solid vSolid = vMesh.ConvertToSolid();
                     vSolid = vSolid.Difference(vCut);
@@ -1280,7 +1414,7 @@ namespace WPFSTD105.Model
                     vMesh.ColorMethod = colorMethodType.byEntity;
                     vMesh.Translate(0, 0, nc.SteelAttr.W * 0.5 - nc.SteelAttr.t1 * 0.5);
                     #endregion
-
+                    //var a = vSolid.Portions[0];
                     #region 頂視圖
                     //頂視圖
                     Mesh oMesh = ConvertNcPointToMesh(nc.SteelAttr.oPoint, nc.SteelAttr.t2);
@@ -1292,7 +1426,7 @@ namespace WPFSTD105.Model
                     oSolid.Translate(0, nc.SteelAttr.H);
                     //oSolid = oSolid.Difference(cutMeshs);
                     oMesh = oSolid.ConvertToMesh();
-                    oMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
+                    oMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Surplus);
                     oMesh.ColorMethod = colorMethodType.byEntity;
                     #endregion
 
@@ -1306,7 +1440,7 @@ namespace WPFSTD105.Model
                     uSolid.Translate(0, nc.SteelAttr.t2);
                     //uSolid = uSolid.Difference(cutMeshs);
                     uMesh = uSolid.ConvertToMesh();
-                    uMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
+                    uMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Point);
                     uMesh.ColorMethod = colorMethodType.byEntity;
                     #endregion
 

@@ -371,8 +371,8 @@ namespace WPFSTD105.Model
                 check = false;
             }
             int rowCount = this.Info.yCount;
-            // 平移長度
-            double diff = this.Info.Dia / 2;
+            // 平移長度:X孔距一半
+            double diff = this.Info.dXs[0] / 2;
             switch (this.Info.groupBoltsType)
             {
                 case GroupBoltsType.Rectangle:
@@ -1144,7 +1144,7 @@ namespace WPFSTD105.Model
                             // if (!((Mesh)model.Entities[model.Entities.Count - 1]).IsPointInside(testPoint))
                             {
                                 check = false;
-                                ((Mesh)(boltCheck[i].Entities[0])).Color = Color.Blue;
+                                //((Mesh)(boltCheck[i].Entities[0])).Color = Color.Blue;
                                     return check;
                             }
                         }
@@ -1152,7 +1152,7 @@ namespace WPFSTD105.Model
                     else
                     {
                         check = false;
-                        ((Mesh)(boltCheck[i].Entities[0])).Color = Color.Blue;
+                        //((Mesh)(boltCheck[i].Entities[0])).Color = Color.Blue;
                         return check;
                     }
                     // 若起始座標小於半徑，不可加入

@@ -93,7 +93,7 @@ namespace WPFSTD105.Model
             //result[2].Y += Math.Tan(alpha) * x;
             //result[0].X -= Math.Tan(beta) * x;
             //result[0].Y -= x;
-           
+
             return result;
         }
         /// <summary>

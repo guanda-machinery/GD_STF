@@ -482,6 +482,8 @@ namespace WPFSTD105
                     #region 第一層
                     foreach (var block in blocksList)
                     {
+                        row++;
+                        column = 0;
                         switch (block.GetType().Name)
                         {
                             case "Block":
@@ -489,11 +491,12 @@ namespace WPFSTD105
                                 sheet.Cells[row, column++].Value = $"1-1-0model.Blocks[{firstIndex}]";
                                 sheet.Cells[row, column++].Value = $"{block.GetType().Name}";
                                 sheet.Cells[row++, column++].Value = $"{b.Name}";
-                                column = 0;
                                 #region 第二層
                                 secondIndex = 0;
                                 foreach (Entity entities in (EntityList)b.Entities)
                                 {
+                                    row = 0;
+                                    column = 0;
                                     switch (entities.GetType().Name)
                                     {
                                         case "BlockReference":
@@ -509,7 +512,7 @@ namespace WPFSTD105
                                             ColumnShow_Circle(circle, sheet, row, column);
                                             break;
                                         case "Mesh":
-                                            Mesh mesh = (Mesh)entities.EntityData;
+                                            Mesh mesh = (Mesh)entities;
                                             ColumnShow_Mesh(mesh, sheet, row, column);
                                             break;
                                         default:
@@ -524,6 +527,7 @@ namespace WPFSTD105
                                     thirdIndex = 0;
                                     if (entities.EntityData == null)
                                     {
+                                        row = 0;
                                         switch (entities.GetType().Name)
                                         {
                                             case "Mesh":
@@ -533,7 +537,15 @@ namespace WPFSTD105
                                             case "Block":
                                             case "Line":
                                             case "SteelAttr":
+                                                SteelAttr sa = (SteelAttr)entities.EntityData;
+                                                sheet.Cells[row++, column++].Value = $"1-3model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData";
+                                                ColumnShow_SteelAttr(sa, sheet, row, column);
+                                                break;
                                             case "BoltAttr":
+                                                BoltAttr ba = (BoltAttr)entities.EntityData;//Dia Model Type Face
+                                                sheet.Cells[row++, column++].Value = $"1-3model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData";
+                                                ColumnShow_BoltAttr(ba, sheet, row, column);
+                                                break;
                                             case "BlockReference":
                                             default:
                                                 sheet.Cells[row, column++].Value = $"*1-3model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData = null";
@@ -547,16 +559,17 @@ namespace WPFSTD105
                                     }
                                     else
                                     {
+                                        row = 0;
                                         switch (entities.EntityData.GetType().Name)
                                         {
                                             case "BoltAttr":
                                                 BoltAttr ba = (BoltAttr)entities.EntityData;//Dia Model Type Face
-                                                sheet.Cells[row, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData";
+                                                sheet.Cells[row++, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData";
                                                 ColumnShow_BoltAttr(ba, sheet, row, column);
                                                 break;
                                             case "SteelAttr":
                                                 SteelAttr sa = (SteelAttr)entities.EntityData;
-                                                sheet.Cells[row, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData";
+                                                sheet.Cells[row++, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData";
                                                 ColumnShow_SteelAttr(sa, sheet, row, column);
                                                 break;
                                             case "Mesh":
@@ -565,7 +578,7 @@ namespace WPFSTD105
                                                 break;
                                             case "GroupBoltsAttr":
                                                 GroupBoltsAttr gba = (GroupBoltsAttr)entities.EntityData;
-                                                sheet.Cells[row, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData";
+                                                sheet.Cells[row++, column++].Value = $"1-4model.Blocks[{firstIndex}].Entities[{secondIndex}].EntityData";
                                                 ColumnShow_GroupBoltsAttr(gba, sheet, row, column);
                                                 break;
                                             default:
@@ -592,6 +605,8 @@ namespace WPFSTD105
                                 secondIndex = 0;
                                 foreach (Entity entities in (EntityList)sdb.Entities)
                                 {
+                                    row = 0;
+                                    column = 0;
                                     sheet.Cells[row, column++].Value = $"1-2model.Blocks[{firstIndex}].Entities[{secondIndex}]";
                                     switch (entities.GetType().Name)
                                     {
@@ -622,6 +637,7 @@ namespace WPFSTD105
                                     thirdIndex = 0;
                                     if (entities.EntityData == null)
                                     {
+                                        row = 0;
                                         switch (entities.GetType().Name)
                                         {
                                             case "Mesh":
@@ -646,6 +662,7 @@ namespace WPFSTD105
                                     }
                                     else
                                     {
+                                        row = 0;
                                         switch (entities.EntityData.GetType().Name)
                                         {
                                             case "BoltAttr":
@@ -693,6 +710,8 @@ namespace WPFSTD105
                                 secondIndex = 0;
                                 foreach (Entity entities in (EntityList)bdb.Entities)
                                 {
+                                    row = 0;
+                                    column = 0;
                                     sheet.Cells[row, column++].Value = $"1-2model.Blocks[{firstIndex}].Entities[{secondIndex}]";
                                     switch (entities.GetType().Name)
                                     {
@@ -723,6 +742,7 @@ namespace WPFSTD105
                                     thirdIndex = 0;
                                     if (entities.EntityData == null)
                                     {
+                                        row = 0;
                                         switch (entities.GetType().Name)
                                         {
                                             case "Mesh":
@@ -746,6 +766,7 @@ namespace WPFSTD105
                                     }
                                     else
                                     {
+                                        row = 0;
                                         switch (entities.EntityData.GetType().Name)
                                         {
                                             case "BoltAttr":
@@ -801,11 +822,14 @@ namespace WPFSTD105
                 sheet.Cells[row++, column].Value = "model.Entities";
                 for (int i = 0; i < modelEntityList.Count; i++)
                 {
+                    column = 0;
                     Entity[] entities = (Entity[])modelEntityList[i];
                     #region 第一層
                     firstIndex = 0;
                     foreach (var entity in entities)
                     {
+                        row++;
+                        column = 0;
                         sheet.Cells[row, column++].Value = $"2-1-0model.Entities[{firstIndex}]";
                         switch (entity.GetType().Name)
                         {
@@ -1003,10 +1027,12 @@ namespace WPFSTD105
                     readFile.DoWork();
                     readFile.AddToScene(_BufferModel);
                     int index_Block = 0, index_Entities = 0, index_EntityData = 0;
+                    sheet.Cells[row++, column++].Value = $"{materialNumber}";
                     #region Block
                     _BufferModel.Blocks.ForEach(block =>
-                                {
-                                    column = 0;
+                    {
+                        row++;
+                        column = 0;
                                     sheet.Cells[row, column++].Value = $"model.Block[{index_Block}]";
                                     switch (block.GetType().Name)
                                     {
@@ -1028,6 +1054,7 @@ namespace WPFSTD105
                                     index_Entities = 0;
                                     block.Entities.ForEach(e =>
                                     {
+                                        row++;
                                         column = 0;
                                         sheet.Cells[row, column++].Value = $"model.Block[{index_Block}].Entities[{index_Entities}]";
                                         switch (e.GetType().Name)
@@ -1093,6 +1120,7 @@ namespace WPFSTD105
                     index_Entities = 0;
                     _BufferModel.Entities.ForEach(e =>
                     {
+                        row++;
                         column = 0;
                         sheet.Cells[row, column++].Value = $"model.Entities[{index_Entities++}]";
                         switch (e.GetType().Name)
@@ -1135,7 +1163,7 @@ namespace WPFSTD105
                         //row++;
                         index_Entities++;
                     });
-                    //row++;
+                    row++;
                     column = 0;
                 }
                 sheet.Cells.AutoFitColumns();
