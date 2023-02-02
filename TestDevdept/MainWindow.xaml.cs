@@ -264,17 +264,17 @@ namespace TestDevdept
             SteelAttr.Type = GD_STD.Enum.OBJECT_TYPE.BH;
             model1.Entities.Add(vMesh);//加入物件到圖塊內
 
-            Mesh modifym = cutasm(SteelAttr);
-            Solid modifys = modifym.ConvertToSolid();
-            modifys = modifys.Difference(solids);
+          //  Mesh modifym = cutasm(SteelAttr);
+         //   Solid modifys = modifym.ConvertToSolid();
+        //    modifys = modifys.Difference(solids);
 
-            modifys.Translate(0, 500, 0);
-            model1.Entities.Add(modifys);
+         //   modifys.Translate(0, 500, 0);
+           // model1.Entities.Add(modifys);
 
             model1.ZoomFit();
             model1.Refresh();
 
-
+         
 
 
 
@@ -461,17 +461,32 @@ namespace TestDevdept
             }
             return result;
         }
-        private bool Flip(List<Point3D> point3Ds, Func<double> func, SteelAttr steelAttr, double extendX, out double angleP1, out double angleP2)
+
+
+
+
+        public static bool Flip(Entity entity, Func<List<Point3D>, double> func, SteelAttr steelAttr, double extendX, out double angleP1, out double angleP2, out double x, Transformation transformation = null)
         {
-            double x = func.Invoke();
-            var point = point3Ds.Where(el => el.X == x).OrderBy(el => el.Y).FirstOrDefault();
+
+            //var minTopFlip = Flip((Entity)_entity.Clone(), minFunc, _steelAttr, -100, out double minTopAngle1, out double minTopAngle2, out double topMinX);
+
+            List<Point3D> point3Ds = entity.Vertices.ToList();
+            if (transformation != null)
+                point3Ds.ForEach(p => p.TransformBy(transformation));
+            List<Point2D> point2Ds = point3Ds.Select(e => new Point2D(e.X, e.Y)).ToList();
+            point3Ds = UtilityEx.ConvexHull2D(point2Ds, true).Select(e => new Point3D(e.X, e.Y)).ToList();
+            double _x = func.Invoke(point3Ds);
+            var point = point3Ds.Where(el => el.X == _x).OrderBy(el => el.Y).FirstOrDefault();
             int index = point3Ds.FindIndex(el => el == point);
             //int maxIndex = point3Ds.FindIndex(el => el == maxPoint);
-            var center = point3Ds[index];
+            var origin = point3Ds[index];
             var p1 = point3Ds[CycleIndex(point3Ds, index - 1)];
             var p2 = point3Ds[CycleIndex(point3Ds, index + 1)];
-            angleP1 = WPFSTD105.Tekla.AK.Angle(center, p1, new Point3D(center.X + extendX, center.Y));
-            angleP2 = WPFSTD105.Tekla.AK.Angle(center, p2, new Point3D(center.X + extendX, center.Y));
+            x = origin.X;
+            angleP1 = WPFSTD105.Tekla.AK.Angle(origin, p1, new Point3D(origin.X + extendX, origin.Y));
+            angleP2 = WPFSTD105.Tekla.AK.Angle(origin, p2, new Point3D(origin.X + extendX, origin.Y));
+            angleP1 = Math.Abs(WPFSTD105.Tekla.AK.SideLengthC(p1.Y - origin.Y, angleP1)) > 50 ? angleP1 : 0;
+            angleP2 = Math.Abs(WPFSTD105.Tekla.AK.SideLengthC(p2.Y - origin.Y, angleP1)) > 50 ? angleP2 : 0;
             if (angleP1 % 90 != 0 || angleP2 % 90 != 0)
             {
                 return true;
@@ -481,7 +496,33 @@ namespace TestDevdept
                 return false;
             }
         }
-        public int CycleIndex(List<Point3D> point3Ds, int index)
+
+
+
+        //private bool Flip(List<Point3D> point3Ds, Func<double> func, SteelAttr steelAttr, double extendX, out double angleP1, out double angleP2)
+        //{
+        //    double x = func.Invoke();
+        //    var point = point3Ds.Where(el => el.X == x).OrderBy(el => el.Y).FirstOrDefault();
+        //    int index = point3Ds.FindIndex(el => el == point);
+        //    //int maxIndex = point3Ds.FindIndex(el => el == maxPoint);
+        //    var center = point3Ds[index];
+        //    var p1 = point3Ds[CycleIndex(point3Ds, index - 1)];
+        //    var p2 = point3Ds[CycleIndex(point3Ds, index + 1)];
+        //    angleP1 = WPFSTD105.Tekla.AK.Angle(center, p1, new Point3D(center.X + extendX, center.Y));
+        //    angleP2 = WPFSTD105.Tekla.AK.Angle(center, p2, new Point3D(center.X + extendX, center.Y));
+        //    if (angleP1 % 90 != 0 || angleP2 % 90 != 0)
+        //    {
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
+        //}
+
+
+
+        public static int CycleIndex(List<Point3D> point3Ds, int index)
         {
             if (index >= point3Ds.Count)
             {
@@ -496,6 +537,23 @@ namespace TestDevdept
                 return index;
             }
         }
+
+
+        //public int CycleIndex(List<Point3D> point3Ds, int index)
+        //{
+        //    if (index >= point3Ds.Count)
+        //    {
+        //        return 1;
+        //    }
+        //    else if (index < 0)
+        //    {
+        //        return point3Ds.Count - 2;
+        //    }
+        //    else
+        //    {
+        //        return index;
+        //    }
+        //}
         /// <summary>
         /// 取得數值
         /// </summary>
