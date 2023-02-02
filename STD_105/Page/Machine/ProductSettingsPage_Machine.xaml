@@ -966,7 +966,7 @@
                                 <Grid Margin="-10,-30,-10,-5">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="85" />
+                                        <ColumnDefinition Width="70" />
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
@@ -987,22 +987,24 @@
                                     <!--孔的起始位置-->
                                     <CheckBox  Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"  IsChecked="{Binding CheckStartHole}" Content="位置"/>
 
-                                    <dxe:ComboBoxEdit EditValue="{Binding StartHoleType}" IsTextEditable="False"  Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Padding="2,0" Margin="10,0">
+                                    <dxe:ComboBoxEdit EditValue="{Binding StartHoleType}" IsTextEditable="False" 
+                                                      ShowEditorButtons="False"
+                                                      Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Padding="2,0" Margin="10,0">
                                         <dxmvvm:Interaction.Behaviors>
                                             <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:START_HOLE}" AllowImages="False" />
                                             <!--SortMode="DisplayName"-->
                                         </dxmvvm:Interaction.Behaviors>
                                     </dxe:ComboBoxEdit>
 
-                                    <Label  Grid.Column="2" Grid.Row="0"   Content="XS" ToolTip="孔X向起步點"/>
+                                    <CheckBox  Grid.Column="2" Grid.Row="0"   Content="XS" ToolTip="孔X向起步點" IsChecked="{Binding CheckXProperty}"/>
 
                                     <Grid Grid.Column="3" Grid.Row="0" >
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
-                                        
-                                    <TextBox Grid.Column="0" Grid.Row="0" VerticalAlignment="Center">
+
+                                        <TextBox Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Margin="10,0,3,0">
                                         <TextBox.Text>
                                             <!--<Binding Path="GroupBoltsAttr.X" UpdateSourceTrigger="PropertyChanged" >-->
                                             <Binding Path="XProperty" UpdateSourceTrigger="PropertyChanged" >
@@ -1013,7 +1015,7 @@
                                         </TextBox.Text>
                                     </TextBox>
                                         <dxe:ComboBoxEdit IsTextEditable="False" Style="{StaticResource SiegPositionComboBoxEditOnlyIcon}"  Margin="0,5"  
-                                                          Grid.Column="1"
+                                                          Grid.Column="1" ShowEditorButtons="False"
                                                            ApplyItemTemplateToSelectedItem="True" 
                                         EditValue="{Binding X_BoltsArrayDirection}">
                                             <dxmvvm:Interaction.Behaviors>
@@ -1023,9 +1025,9 @@
 
                                         </dxe:ComboBoxEdit>
                                     </Grid>
-                                    <Label Grid.Column="2" Grid.Row="1" Content="YS" ToolTip="孔Y向起步點：" />
+                                    <CheckBox Grid.Column="2" Grid.Row="1" Content="YS" ToolTip="孔Y向起步點："  IsChecked="{Binding CheckStartY}" />
 
-                                    <TextBox Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" Margin="10,5,0,3">
+                                    <TextBox Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" Margin="10,5,0,3"  >
                                         <TextBox.Text>
                                             <Binding Path="StartY" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
                                                 <Binding.ValidationRules>
@@ -1081,7 +1083,7 @@
 
                                     </TextBox>
 
-                                    <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding CheckY}" Content="YP" ToolTip="孔Y向間距：" />
+                                    <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding CheckY}" Content="YP：" ToolTip="孔Y向間距：" />
                                     <TextBox  Grid.Column="1" Grid.Row="2"  MinWidth="40" VerticalAlignment="Center">
                                         <TextBox.Text>
                                             <!--<Binding Path="GroupBoltsAttr.dY" UpdateSourceTrigger="PropertyChanged" >-->
@@ -1095,7 +1097,7 @@
 
 
                                     <CheckBox Grid.Row="3" Grid.Column="0"  Content="特殊孔位：" IsThreeState="False" IsChecked="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}" />
-                                    <dxe:ComboBoxEdit   IsTextEditable="False" Grid.Column="1" Grid.ColumnSpan="2"   Grid.Row="4"  Margin="10,0" IsEnabled="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}" 
+                                    <dxe:ComboBoxEdit   IsTextEditable="False" Grid.Column="1" Grid.ColumnSpan="2"   Grid.Row="4"  Margin="10,0" 
                                                         ApplyItemTemplateToSelectedItem="True" 
                                         EditValue="{Binding ComboxEdit_GroupBoltsTypeSelected}">
                                         <dxmvvm:Interaction.Behaviors>
@@ -1292,7 +1294,7 @@
                     </DockPanel>
 
                 </TabItem>
-                <TabItem Header="切割線" Name="CutTabItem" Cursor="Hand" >
+                <TabItem Header="切割線A" Name="CutTabItem" Cursor="Hand" >
                     <TabItem.Resources>
                         <Style TargetType="GroupBox" BasedOn="{StaticResource BaseStyle}" >
                             <Setter Property="Foreground" Value="#3b3b3b"/>
@@ -1317,14 +1319,14 @@
                                 </Grid.ColumnDefinitions>
                                 <GroupBox Header="位置"  Margin="5" Name="CuttingGroupPosition" >
 
-                                    <dxe:ComboBoxEdit  IsTextEditable="False" MinWidth="110"
+                                <dxe:ComboBoxEdit  IsTextEditable="False" MinWidth="110"
                                                        Margin="0,0,0,-5"
                                                        Style="{StaticResource SiegPositionComboBoxEdit}" 
-                                                           ApplyItemTemplateToSelectedItem="True"  EditValue="{Binding rbtn_DrillingFace}">
-                                        <dxmvvm:Interaction.Behaviors>
-                                            <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:FACE}" ImageSize="40,40" AllowImages="False" />
-                                        </dxmvvm:Interaction.Behaviors>
-                                    </dxe:ComboBoxEdit>
+                                                           ApplyItemTemplateToSelectedItem="True"  EditValue="{Binding rbtn_CutFace}">
+                                    <dxmvvm:Interaction.Behaviors>
+                                        <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:FACE}" ImageSize="40,40" AllowImages="False" />
+                                    </dxmvvm:Interaction.Behaviors>
+                                </dxe:ComboBoxEdit>
                                         
 
                             </GroupBox>

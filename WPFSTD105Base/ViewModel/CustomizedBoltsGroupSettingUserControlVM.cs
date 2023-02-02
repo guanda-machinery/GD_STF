@@ -17,7 +17,10 @@ using WPFSTD105.Attribute;
 using WPFWindowsBase;
 using DevExpress.Xpf.Core;
 using DevExpress.Mvvm.Native;
-
+using System.Web.UI;
+using devDept.Geometry;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System.ComponentModel.DataAnnotations;
 
 //CustomizeGroupBoltsUserControlVM
 namespace WPFSTD105
@@ -154,25 +157,33 @@ namespace WPFSTD105
  
                     var ExistedBoltsTypeList = ser.GetGroupBoltsTypeList(GroupBoltsTypeWriteTarget);
 
-                    if(ExistedBoltsTypeList.Exists(x=>x.groupBoltsTypeName == SettingParGroupBoltsType.groupBoltsTypeName))
+                    if (ExistedBoltsTypeList.Exists(x => x.groupBoltsTypeName == SettingParGroupBoltsType.groupBoltsTypeName))
                     {
                         var NewFileName = SettingParGroupBoltsType.groupBoltsTypeName;
-                      
-                        var BoxResult = WinUIMessageBox.Show(null,
-                            $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}已存在\n" +
-                            $"按下「Yes」會取代檔案，按下「No」則不儲存",
-                            "通知",
-                            MessageBoxButton.YesNo, 
-                        MessageBoxImage.Exclamation,
-                            MessageBoxResult.None,
-                            MessageBoxOptions.DefaultDesktopOnly,
-                            FloatingMode.Adorner);
 
-                        if(BoxResult == MessageBoxResult.Yes)
+                        /*     WinUIDialogWindow winuidialog = new WinUIDialogWindow("Information", MessageBoxButton.OKCancel);
+                             winuidialog.Topmost = true;
+                             winuidialog.Content = new TextBlock() { Text = "This is a WPF DXDialog!" };
+                             winuidialog.ShowDialog();
+                             Window window = new WinUIMessageBoxCreator.Default.CreateWindow();*/
+
+                    
+
+                        var BoxResult = WinUIMessageBox.Show(null,
+                        $"({GroupBoltsTypeByTargetSelected.GetAttribute<DisplayAttribute>().Name})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}已存在\n" +
+                        $"按下「Yes」會取代檔案，按下「No」則不儲存",
+                        "通知",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.DefaultDesktopOnly,
+                        FloatingMode.Adorner);
+
+                        if (BoxResult == MessageBoxResult.Yes)
                         {
 
                         }
-                        if(BoxResult == MessageBoxResult.No)
+                        if (BoxResult == MessageBoxResult.No)
                         {
                             return;
                             //SettingParGroupBoltsType.groupBoltsTypeName = NewFileName;
@@ -184,19 +195,19 @@ namespace WPFSTD105
                     }
 
                     ser.SetGroupBoltsTypeList(GroupBoltsTypeWriteTarget, SettingParGroupBoltsType);
+
+                    
                     //重整孔群名稱的列表
                     WinUIMessageBox.Show(null,
-                   $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}成功儲存",
+                   $"({GroupBoltsTypeByTargetSelected.GetAttribute<DisplayAttribute>().Name})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}成功儲存",
                    "通知",
                    MessageBoxButton.OK,
                    MessageBoxImage.Exclamation,
                    MessageBoxResult.None,
                    MessageBoxOptions.DefaultDesktopOnly,
-                    FloatingMode.Window);
-
-                    SettingParGroupBoltsTypeList = new STDSerialization().GetGroupBoltsTypeList(_groupBoltsTypeByTargetSelected);
-
-
+                    FloatingMode.Popup);
+                 
+                    SettingParGroupBoltsTypeList = new STDSerialization().GetGroupBoltsTypeList(GroupBoltsTypeByTargetSelected);
                 });
             }
         }
@@ -235,7 +246,7 @@ namespace WPFSTD105
                     if(ser.SetGroupBoltsTypeList(GroupBoltsTypeByTargetSelected, SettingParGroupBoltsType))
                     {
                         WinUIMessageBox.Show(null,
-                                           $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}成功儲存",
+                                           $"({GroupBoltsTypeByTargetSelected.GetAttribute<DisplayAttribute>().Name})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}成功儲存",
                                            "通知",
                                            MessageBoxButton.OK,
                                            MessageBoxImage.Exclamation,
@@ -247,7 +258,7 @@ namespace WPFSTD105
                     else
                     {
                         WinUIMessageBox.Show(null,
-                   $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}不存在，無法編輯",
+                   $"({GroupBoltsTypeByTargetSelected.GetAttribute<DisplayAttribute>().Name})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}不存在，無法編輯",
                    "通知",
                    MessageBoxButton.OK,
                    MessageBoxImage.Exclamation,
@@ -259,7 +270,7 @@ namespace WPFSTD105
                   /*  else
                     {
                         WinUIMessageBox.Show(null,
-                                           $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}不存在，無法編輯",
+                                           $"({GroupBoltsTypeByTargetSelected.GetAttribute<DisplayAttribute>().Name})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}不存在，無法編輯",
                                            "通知",
                                            MessageBoxButton.OK,
                                            MessageBoxImage.Exclamation,
@@ -299,7 +310,7 @@ namespace WPFSTD105
                             {
                                 string message = (ex.InnerException != null ? ex.InnerException.Message : string.Empty);
                                 WinUIMessageBox.Show(null,
-                                     $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}刪除失敗\n 錯誤訊息:{message}",
+                                     $"({GroupBoltsTypeByTargetSelected.GetAttribute<DisplayAttribute>().Name})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}刪除失敗\n 錯誤訊息:{message}",
                                      "通知",
                                      MessageBoxButton.OK,
                                      MessageBoxImage.Exclamation,
@@ -310,7 +321,7 @@ namespace WPFSTD105
                             }
 
                             WinUIMessageBox.Show(null,
-                                          $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}已刪除",
+                                          $"({GroupBoltsTypeByTargetSelected.GetAttribute<DisplayAttribute>().Name})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}已刪除",
                                           "通知",
                                           MessageBoxButton.OK,
                                           MessageBoxImage.Exclamation,
@@ -319,7 +330,7 @@ namespace WPFSTD105
                                            FloatingMode.Window);
 
                             //刪除之後要重整孔群名稱的列表 並將名稱重新指向未選擇
-                            SettingParGroupBoltsTypeList = new STDSerialization().GetGroupBoltsTypeList(_groupBoltsTypeByTargetSelected);
+                            SettingParGroupBoltsTypeList = new STDSerialization().GetGroupBoltsTypeList(GroupBoltsTypeByTargetSelected);
                             SettingParGroupBoltsType = SettingParGroupBoltsTypeModel.NotSelectGroupBoltsTypeModel;
 
                             /* SettingParGroupBoltsNameList.Remove(SettingParGroupBoltsType.groupBoltsTypeName);
@@ -331,7 +342,7 @@ namespace WPFSTD105
                         else
                         {
                             WinUIMessageBox.Show(null,
-                                       $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}不存在，無法刪除",
+                                       $"({GroupBoltsTypeByTargetSelected.GetAttribute<DisplayAttribute>().Name})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}不存在，無法刪除",
                                        "通知",
                                        MessageBoxButton.OK,
                                        MessageBoxImage.Exclamation,
@@ -345,7 +356,7 @@ namespace WPFSTD105
                     else
                     {
                         WinUIMessageBox.Show(null,
-                                   $"({GroupBoltsTypeByTargetSelected})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}不存在，無法刪除",
+                                   $"({GroupBoltsTypeByTargetSelected.GetAttribute<DisplayAttribute>().Name})孔群編號{SettingParGroupBoltsType.groupBoltsTypeName}不存在，無法刪除",
                                    "通知",
                                    MessageBoxButton.OK,
                                    MessageBoxImage.Exclamation,

@@ -16,7 +16,7 @@
     </UserControl.DataContext>
 
         <GroupBox Header="客製孔群設定" Style="{StaticResource ParameterGroupBox}">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <dx:ScrollViewerBase VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" Margin="10,2" >
                     <RadioButton Command="{Binding BuiltNewGroupBolt}" Name="BuiltNewGroupBoltRadioButton"  Content="新建孔群"/>
@@ -179,7 +179,7 @@
                                 <ComboBoxItem Content="陣列"/>
                             </ComboBox>
 
-                            <CheckBox  Grid.Column="0" Grid.Row="1"  IsChecked="{Binding CheckX}" Content="XP" ToolTip="孔X向間距："/>
+                            <CheckBox  Grid.Column="0" Grid.Row="1"  IsChecked="{Binding CheckX}" Content="XP：" ToolTip="孔X向間距："/>
                             <TextBox  Grid.Column="1" Grid.Row="1" MinWidth="100" VerticalAlignment="Center" >
                                 <TextBox.Text>
                                     <Binding Path="SettingParGroupBoltsType.groupBoltsAttr.dX" UpdateSourceTrigger="PropertyChanged" >
@@ -191,7 +191,7 @@
 
                             </TextBox>
 
-                            <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding CheckY}" Content="YP" ToolTip="孔Y向間距：" />
+                            <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding CheckY}" Content="YP：" ToolTip="孔Y向間距：" />
                             <TextBox  Grid.Column="1" Grid.Row="2"  MinWidth="100" VerticalAlignment="Center">
                                 <TextBox.Text>
                                     <Binding Path="SettingParGroupBoltsType.groupBoltsAttr.dY" UpdateSourceTrigger="PropertyChanged" >
@@ -232,8 +232,7 @@
                     </GroupBox>
                     <GroupBox Header="孔群編輯"  Grid.Row="4" Grid.ColumnSpan="2">
                         <StackPanel  Orientation="Vertical"  >
-                            <GroupBox Name="AddBoltGroupBox" Header="新增孔群儲存位置" IsEnabled="{Binding ElementName=ReadGroupBoltRadioButton,Path=IsChecked,Converter={dx:BoolInverseConverter}}"
-                                 >
+                            <GroupBox Name="AddBoltGroupBox" Header="新增孔群儲存位置" IsEnabled="{Binding ElementName=ReadGroupBoltRadioButton,Path=IsChecked,Converter={dx:BoolInverseConverter}}">
                                 <StackPanel Orientation="Horizontal">
                                     <dxe:ComboBoxEdit Margin="5" Width="200"   ApplyItemTemplateToSelectedItem="True"   IsTextEditable="False" HorizontalAlignment="Left"
                                                                    EditValue="{Binding GroupBoltsTypeWriteTarget, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
@@ -256,7 +255,7 @@
                     </GroupBox>
                 </Grid>
             </StackPanel>
-            </ScrollViewer>
+            </dx:ScrollViewerBase>
         </GroupBox>
 
 </UserControl>

@@ -23,6 +23,7 @@ using DevExpress.Xpf.Core;
 using WPFSTD105.Model;
 using System.Diagnostics;
 using DevExpress.Mvvm.Native;
+using static WPFSTD105.ViewModel.SettingParVM;
 
 namespace WPFSTD105
 {
@@ -472,11 +473,11 @@ namespace WPFSTD105
                         return;
                     }
 
-                    if (DataViews.ToList().Exists(x => (x.SortCount > 0 && x.Length > LengthList.Max())))
+                    if (DataViews.ToList().Exists(x => x.SortCount > 0 && x.Length > LengthList.Max()))
                     {
-                        var MaData = DataViews.ToList().Find(x => (x.SortCount > 0 && x.Length > LengthList.Max()));
+                        var MaData = DataViews.ToList().Find(x => x.SortCount > 0 && x.Length > LengthList.Max());
                         WinUIMessageBox.Show(null,
-                            $"預排零件：構件編號「{MaData.AssemblyNumber}」的長度「{MaData.Length}」超過素材最大長度「{LengthList.Max()}」！需更要更長的素材才能加工該零件",
+                            $"預排零件：構件編號「{MaData.AssemblyNumber}」的長度「{MaData.Length}」超過素材最大長度「{LengthList.Max()}」！需要更長的素材才能加工該零件",
                             "通知",
                             MessageBoxButton.OK,
                             MessageBoxImage.Exclamation,
@@ -485,6 +486,36 @@ namespace WPFSTD105
                             FloatingMode.Window);
                         return;
                     }
+
+                    if (DataViews.ToList().Exists(x => x.SortCount > 0 && x.Length > LengthList.Max()))
+                    {
+                        var MaDataList = DataViews.ToList().FindAll(x => x.SortCount > 0 && x.Length > LengthList.Max());
+                        var NumberString = ""; 
+                        var LengthString = "";
+                        foreach (var MaData in MaDataList)
+                        {
+                            NumberString+=$"「{ MaData.AssemblyNumber}」";
+                            LengthString += $"「{MaData.Length}";
+                        }
+
+                       var Result = WinUIMessageBox.Show(null,
+                            $"預排零件：構件編號{NumberString}的長度{LengthString}於切割後會超過素材最大長度「{LengthList.Max()}」！需注意是否配置錯誤，按下Yes會繼續排版，按下No則會取消排版作業",
+                            "通知",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Window);
+                      if(Result == MessageBoxResult.No || Result == MessageBoxResult.Cancel)
+                        {
+                            return;
+                        }
+                    }
+
+
+
+
+
 
 
                     AutoMatchAsyncV2();
@@ -902,7 +933,7 @@ private string _preCode = "";
         /// 預設長度checkbox
         /// </summary>
         public bool? MainLengthCheckboxBoolen { get; set; } = true;
-        private string _mainLength;
+        private string _mainLength = MainLengthDefault;
         /// <summary>
         /// 預設長度
         /// </summary>
@@ -910,11 +941,11 @@ private string _preCode = "";
         {
             get
             {
-                if (string.IsNullOrEmpty(_mainLength ))
+                /*if (string.IsNullOrEmpty(_mainLength ))
                 {
                     _mainLength = MainLengthDefault;
                     return _mainLength;
-                }
+                }*/
 
                 if (MainLengthCheckboxBoolen is true)
                 {
@@ -967,7 +998,7 @@ private string _preCode = "";
         /// 次要條件checkbox
         /// </summary>
         public bool? SecondaryLengthCheckboxBoolen { get; set; } = true;
-        private string _secondaryLength;
+        private string _secondaryLength = SecondaryLengthDefault;
         /// <summary>
         /// 次要條件
         /// </summary>
@@ -975,11 +1006,11 @@ private string _preCode = "";
         {
             get
             {
-                if (string.IsNullOrEmpty(_secondaryLength))
+              /*  if (string.IsNullOrEmpty(_secondaryLength))
                 {
                     _secondaryLength = SecondaryLengthDefault;
                     return _secondaryLength;
-                }
+                }*/
 
                 if (SecondaryLengthCheckboxBoolen is true)
                 {
@@ -1003,7 +1034,7 @@ private string _preCode = "";
         /// 前端切除Checkbox
         /// </summary>
         public bool? StartCutCheckboxBoolen { get; set; } = true;
-        private double _matchSettingStartCut = 10;
+        private double _matchSettingStartCut = StartCutDefault;
         /// <summary>
         /// 前端切除Binding
         /// </summary>
@@ -1036,7 +1067,7 @@ private string _preCode = "";
         /// 後端切除Checkbox
         /// </summary>
         public bool? EndCutCheckboxBoolen { get; set; } = true;
-        private double _matchSettingEndCut = 10;
+        private double _matchSettingEndCut = EndCutDefault;
         /// <summary>
         /// 後端切除Binding
         /// </summary>
@@ -1301,11 +1332,12 @@ private string _preCode = "";
                     {
                         //同一零件排複數個 要跳兩次
                         //1110 排版計算前添加鋸床切割損耗，DataViews中Part的Length此時已被變動 CYH
-                        item.Length += 3;
+
+                        item.Length += MatchSetting.Cut;
                         foreach (var steel in steels.Where(x => x.Number == item.PartNumber))
                         {
                             //1110 排版計算前添加鋸床切割損耗 CYH
-                            steel.Length += 3;
+                            steel.Length += MatchSetting.Cut;
 
                            var _Findwhere = DataViews
                            .Where(el =>
@@ -1331,10 +1363,10 @@ private string _preCode = "";
                             }
 
                             //1111 排版計算前添加鋸床切割損耗, 復原長度 CYH
-                            steel.Length -= 3;
+                            steel.Length -= MatchSetting.Cut;
                         }
                         //1111 排版計算前添加鋸床切割損耗, 復原長度 CYH
-                        item.Length -= 3;
+                        item.Length -= MatchSetting.Cut;
                     }
 
                     ser.SetPart(profiles[i].GetHashCode().ToString(), new ObservableCollection<object>(steels));
