@@ -434,7 +434,7 @@
                                         <TextBox.Text>
                                             <Binding Path="MainLength"  UpdateSourceTrigger="PropertyChanged" >
                                                 <Binding.ValidationRules >
-                                                    <STD105ValidRule:CheckNumberArrayRule/>
+                                                    <STD105ValidRule:CheckNumberArrayRule Nullable="False"/>
                                                 </Binding.ValidationRules>
                                             </Binding>
                                         </TextBox.Text>
