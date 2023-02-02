@@ -1280,7 +1280,7 @@ namespace WPFSTD105.Model
                     vMesh.ColorMethod = colorMethodType.byEntity;
                     vMesh.Translate(0, 0, nc.SteelAttr.W * 0.5 - nc.SteelAttr.t1 * 0.5);
                     #endregion
-                    var a = vSolid.Portions[0];
+                    //var a = vSolid.Portions[0];
                     #region 頂視圖
                     //頂視圖
                     Mesh oMesh = ConvertNcPointToMesh(nc.SteelAttr.oPoint, nc.SteelAttr.t2);
