@@ -371,8 +371,8 @@ namespace WPFSTD105.Model
                 check = false;
             }
             int rowCount = this.Info.yCount;
-            // 平移長度
-            double diff = this.Info.Dia / 2;
+            // 平移長度:X孔距一半
+            double diff = this.Info.dXs[0] / 2;
             switch (this.Info.groupBoltsType)
             {
                 case GroupBoltsType.Rectangle:

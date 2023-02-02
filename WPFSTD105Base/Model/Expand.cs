@@ -22,7 +22,6 @@ using Region = devDept.Eyeshot.Entities.Region;
 using devDept.Graphics;
 using devDept.Serialization;
 using GD_STD.Enum;
-using System.Windows.Media;
 using static DevExpress.Utils.Menu.DXMenuItemPainter;
 using DevExpress.Mvvm;
 using SplitLineSettingData;
@@ -1380,7 +1379,7 @@ namespace WPFSTD105.Model
                     //前視圖
                     Mesh vMesh = ConvertNcPointToMesh(nc.SteelAttr.vPoint, nc.SteelAttr.t1);
                     List<Mesh> vCut = GetCutMesh(nc.SteelAttr.vPoint, nc.SteelAttr.t1);
-                    Mesh cut1 = Mesh.CreateBox(nc.SteelAttr.Length + diffLength + 10, nc.SteelAttr.t2, nc.SteelAttr.t1);//切割前視圖翼板輪廓
+                    Mesh cut1 = Mesh.CreateBox(nc.SteelAttr.Length + diffLength + 10, nc.SteelAttr.t2, nc.SteelAttr.t1);//切割前視圖翼板輪廓(BACK)
                     cut1.Translate(-5, 0);//(-5,0)
                     Mesh otherCut1 = (Mesh)cut1.Clone();
                     Mesh cut2 = (Mesh)cut1.Clone();
@@ -1406,7 +1405,7 @@ namespace WPFSTD105.Model
                         });
                         mesh.Regen(1E3);
                     });
-                    vCut.Add(cut1);// Front
+                    vCut.Add(cut1);// Front //腹板與前後翼板交接處
                     vCut.Add(cut2);
                     Solid vSolid = vMesh.ConvertToSolid();
                     vSolid = vSolid.Difference(vCut);
@@ -1415,7 +1414,7 @@ namespace WPFSTD105.Model
                     vMesh.ColorMethod = colorMethodType.byEntity;
                     vMesh.Translate(0, 0, nc.SteelAttr.W * 0.5 - nc.SteelAttr.t1 * 0.5);
                     #endregion
-
+                    //var a = vSolid.Portions[0];
                     #region 頂視圖
                     //頂視圖
                     Mesh oMesh = ConvertNcPointToMesh(nc.SteelAttr.oPoint, nc.SteelAttr.t2);
@@ -1427,7 +1426,7 @@ namespace WPFSTD105.Model
                     oSolid.Translate(0, nc.SteelAttr.H);
                     //oSolid = oSolid.Difference(cutMeshs);
                     oMesh = oSolid.ConvertToMesh();
-                    oMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
+                    oMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Surplus);
                     oMesh.ColorMethod = colorMethodType.byEntity;
                     #endregion
 
@@ -1441,7 +1440,7 @@ namespace WPFSTD105.Model
                     uSolid.Translate(0, nc.SteelAttr.t2);
                     //uSolid = uSolid.Difference(cutMeshs);
                     uMesh = uSolid.ConvertToMesh();
-                    uMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Part);
+                    uMesh.Color = ColorTranslator.FromHtml(Properties.SofSetting.Default.Point);
                     uMesh.ColorMethod = colorMethodType.byEntity;
                     #endregion
 

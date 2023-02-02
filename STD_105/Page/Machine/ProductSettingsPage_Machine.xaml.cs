@@ -46,7 +46,7 @@ namespace STD_105
     {
         #region 變數宣告
         ApplicationVM appVM = new ApplicationVM();
-        //ObSettingVM sr = new ObSettingVM();
+        //public ObSettingVM sr = new ObSettingVM();
 
         /// <summary>
         /// 是否產生新零件
@@ -351,18 +351,6 @@ namespace STD_105
 
                             #region 讀取dm檔
                             ReadFile readFile = ser.ReadPartModel(g_GUID.ToString()); //讀取檔案內容
-                            //if (readFile == null)
-                            //{
-                            //    WinUIMessageBox.Show(null,
-                            //        $"專案Dev_Part資料夾讀取失敗",
-                            //        "通知",
-                            //        MessageBoxButton.OK,
-                            //        MessageBoxImage.Exclamation,
-                            //        MessageBoxResult.None,
-                            //        MessageBoxOptions.None,
-                            //         FloatingMode.Window);
-                            //    return;
-                            //}
                             readFile.DoWork();//開始工作
                             readFile.AddToScene(model);//將讀取完的檔案放入到模型 
                             #endregion
@@ -415,18 +403,6 @@ namespace STD_105
                             #region 孔位資訊
                             List<Block> block = model.GetBoltFromBlock(groupBolts);
                             #endregion
-                            //var profile = ser.GetSteelAttr();
-                            //TeklaNcFactory t = new TeklaNcFactory();
-                            //Steel3DBlock s3Db = new Steel3DBlock();
-                            //SteelAttr steelAttrNC = new SteelAttr();
-                            //List<GroupBoltsAttr> groups = new List<GroupBoltsAttr>();
-
-                            //s3Db.ReadNcFile($@"{ApplicationVM.DirectoryNc()}\{ViewModel.PartNumberProperty}.nc1", profile, sa, ref steelAttrNC, ref groups);
-                            //sa.GUID = Guid.NewGuid();
-                            //sa.oPoint = steelAttrNC.oPoint;
-                            //sa.vPoint = steelAttrNC.vPoint;
-                            //sa.uPoint = steelAttrNC.uPoint;
-                            //sa.CutList = steelAttrNC.CutList;
 
                             #region 建模(以舊有形鋼為底新增)
                             // 建立型鋼
@@ -523,9 +499,9 @@ namespace STD_105
                             sa.PartNumber = ViewModel.PartNumberProperty;
                             sa.Creation = DateTime.Now;
                             #endregion
-                            
+
                             #region 複製切割線設定檔
-                            //ViewModel.SaveCut(g_GUID, sa.GUID);
+                            ViewModel.SaveCut(g_GUID, sa.GUID);
                             #endregion
 
                             #region 建模(以舊有形鋼為底新增)
@@ -589,8 +565,7 @@ namespace STD_105
                     #region 零件編號不同 長度 / 型鋼類型 / 斷面規格其一不同
                     else
                     {
-                        #region 一般新增
-
+                        #region 一般新增                        
                         sa = GetViewToSteelAttr(sa, true);
                         sa.Creation = DateTime.Now;
                         ViewModel.WriteSteelAttr(sa);
@@ -847,8 +822,8 @@ namespace STD_105
                     SelectedItem sele2D = new SelectedItem(drawing.Entities[drawing.Entities.Count - 1]);
                     //SelectedItem sele2D = new SelectedItem(drawing.Entities[drawing.Entities.Count - 1]);
 
-                    BlockReference reference3D = (BlockReference)sele3D.Item;
-                    BlockReference reference2D = (BlockReference)sele2D.Item;
+                    //BlockReference reference3D = (BlockReference)sele3D.Item;
+                    //BlockReference reference2D = (BlockReference)sele2D.Item;
 
                     //模擬用戶實際選擇編輯
                     ViewModel.Select3DItem.Add(sele3D);
@@ -870,10 +845,10 @@ namespace STD_105
 
                 //層級 To 要編輯的BlockReference
                 //model.SetCurrent((BlockReference)model.Entities.Where(x=>x.EntityData.GetType().Name == "SteelAttr").LastOrDefault());
-                model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);
+                //model.SetCurrent((BlockReference)model.Entities[model.Entities.Count - 1]);
 
                 //drawing.SetCurrent((BlockReference)drawing.Entities.Where(x=>((BlockReference)x).BlockName == ViewModel.SteelAttr.GUID.ToString()).LastOrDefault());
-                drawing.SetCurrent((BlockReference)drawing.Entities[drawing.Entities.Count - 1]);
+                //drawing.SetCurrent((BlockReference)drawing.Entities[drawing.Entities.Count - 1]);
                 ////0→     drawing.Entities.Count - 1
                 //drawing.SetCurrent((BlockReference)drawing.Entities[drawing.Entities.Count - 1]);
 
@@ -1348,8 +1323,29 @@ namespace STD_105
                 //如果模型裡面有物件
                 else if (model.Entities.Count > 0)
                 {
-                    model.SetCurrent((BlockReference)model.Blocks[model.CurrentBlock.Name].Entities.Where(x => x.EntityData.GetType().Name == "SteelAttr").LastOrDefault());
-                    ViewModel.WriteSteelAttr((SteelAttr)(model.Blocks[model.CurrentBlock.Name].Entities.Where(x => x.EntityData.GetType().Name == "SteelAttr")).LastOrDefault().EntityData);
+                    STDSerialization ser = new STDSerialization();
+                    ReadFile readFile = ser.ReadPartModel(ViewModel.GuidProperty.Value.ToString()); //讀取檔案內容
+                    if (readFile == null)
+                    {
+                        WinUIMessageBox.Show(null,
+                            $"專案Dev_Part資料夾讀取失敗",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                             FloatingMode.Window);
+                        return;
+                    }
+                    readFile.DoWork();//開始工作
+                    readFile.AddToScene(model);//將讀取完的檔案放入到模型
+
+
+
+
+                    ViewModel.WriteSteelAttr((SteelAttr)(model.Blocks[1].Entities[0].EntityData));
+                    //model.SetCurrent((BlockReference)model.Blocks[model.CurrentBlock.Name].Entities.Where(x => x.EntityData.GetType().Name == "SteelAttr").LastOrDefault());
+                    //ViewModel.WriteSteelAttr((SteelAttr)(model.Blocks[model.CurrentBlock.Name].Entities.Where(x => x.EntityData.GetType().Name == "SteelAttr")).LastOrDefault().EntityData);
                     if (string.IsNullOrEmpty(ViewModel.SteelAttr.PartNumber))
                     {
                         // 若ViewModel.SteelAttr.PartNumber代表取值又失敗了，只好強制給值囉~
@@ -1713,28 +1709,10 @@ namespace STD_105
                 log4net.LogManager.GetLogger("加入孔位").Debug("產生圖塊");
 #endif
 
-                if (!ViewModel.CheckData_AddHole( model))
+                if (!ViewModel.CheckData_AddHole(model))
                 {
                     return;
                 }
-
-
-
-
-                //if (ComparisonBolts())  // 欲新增孔位重複比對
-                //{
-                //    WinUIMessageBox.Show(null,
-                //    $"新增孔位重複，請重新輸入",
-                //    "通知",
-                //    MessageBoxButton.OK,
-                //    MessageBoxImage.Exclamation,
-                //    MessageBoxResult.None,
-                //    MessageBoxOptions.None,
-                //     FloatingMode.Window);
-                //   ViewModel.fclickOK = true;
-                //    return;
-                //}
-
 
                 SteelAttr sa = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
                 sa = GetViewToSteelAttr(sa, false, sa.GUID);
@@ -1743,17 +1721,119 @@ namespace STD_105
                 ViewModel.SteelAttr = sa;
 
                 /*3D螺栓*/
-                ViewModel.GroupBoltsAttr.GUID = Guid.NewGuid();
+
+                ViewModel.GetGroupBoltsAttrFromViewToVM();
+                //ViewModel.GroupBoltsAttr.GUID = Guid.NewGuid();
                 ViewModel.SteelAttr.Name = ViewModel.ProductNameProperty;
                 ViewModel.SteelAttr.Phase = ViewModel.PhaseProperty;
                 ViewModel.SteelAttr.ShippingNumber = ViewModel.ShippingNumberProperty;
                 ViewModel.SteelAttr.Title1 = ViewModel.Title1Property;
                 ViewModel.SteelAttr.Title2 = ViewModel.Title2Property;
                 ViewModel.GetSteelAttr();
-
+                GroupBoltsAttr gba = ViewModel.GetGroupBoltsAttr();
                 Steel3DBlock.FillCutSetting(sa);
+                bool check = true;//一般或Back
+                bool check1 = true;// Front
+                Bolts3DBlock bolts = new Bolts3DBlock(new GroupBoltsAttr());
+                if (ViewModel.rbtn_DrillingFace == FACE.FRONTandBack)
+                {
+                    double startYTemp = ViewModel.StartY;
+                    #region FRONT
 
-                Bolts3DBlock bolts = Bolts3DBlock.AddBolts(ViewModel.GetGroupBoltsAttr(), model, out BlockReference blockReference, out bool check);
+                    gba = ViewModel.GetGroupBoltsAttr(FACE.FRONT);
+                    gba.Face = FACE.FRONT;
+                    check1 = ViewModel.AddHoleVM(gba, model, ref bolts, out BlockReference blockReferenceFRONT);
+                    if (!ViewModel.ComparisonBolts(model) && ViewModel.showMessage)  // 欲新增孔位重複比對
+                    {
+                        //\n若新增斜孔，請先刪除重疊之中間孔
+                        WinUIMessageBox.Show(null,
+                        $"新增{gba.Face.GetDisplayName()}孔位重複，請重新輸入",
+                        "通知",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                         FloatingMode.Window);
+                        SaveModel(false, true);//存取檔案
+                        model.Refresh();
+                        drawing.Refresh();
+                        return;
+                    }
+                    BlockReference referenceBoltsFRONT = Add2DHole(bolts);//加入孔位到2D 
+                    ViewModel.AddHoleReduce(blockReferenceFRONT, referenceBoltsFRONT);
+                    #endregion
+                    #region BACK
+                    gba = ViewModel.GetGroupBoltsAttr(FACE.BACK);
+                    gba.Face = FACE.BACK;
+                    if (gba.StartHole == START_HOLE.START)
+                    {
+                        ViewModel.StartY = startYTemp;
+
+                    }
+
+                    check = ViewModel.AddHoleVM(gba, model, ref bolts, out BlockReference blockReferenceBACK);
+                    if (!ViewModel.ComparisonBolts(model) && ViewModel.showMessage)  // 欲新增孔位重複比對
+                    {
+                        //\n若新增斜孔，請先刪除重疊之中間孔
+                        WinUIMessageBox.Show(null,
+                        $"新增{gba.Face.GetDisplayName()}孔位重複，請重新輸入",
+                        "通知",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                         FloatingMode.Window);
+                        SaveModel(false, true);//存取檔案
+                        model.Refresh();
+                        drawing.Refresh();
+                        ViewModel.rbtn_DrillingFace = FACE.BACK;
+                        return;
+                    }
+                    BlockReference referenceBoltsBACK = Add2DHole(bolts);//加入孔位到2D
+                    ViewModel.AddHoleReduce(blockReferenceBACK, referenceBoltsBACK);
+                    ViewModel.rbtn_DrillingFace = FACE.BACK;
+                    #endregion
+
+                    // 其一不對，顯示孔群不在工作範圍內
+                    if (check1 && check)
+                    {
+                        check = true;
+                    }
+                    else { check = false; }
+                }
+                else
+                {
+                    check = ViewModel.AddHoleVM(gba, model, ref bolts, out BlockReference blockReference);
+                    if (!ViewModel.ComparisonBolts(model) && ViewModel.showMessage)  // 欲新增孔位重複比對
+                    {
+                        //\n若新增斜孔，請先刪除重疊之中間孔
+                        WinUIMessageBox.Show(null,
+                        $"新增{gba.Face.GetDisplayName()}孔位重複，請重新輸入",
+                        "通知",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                         FloatingMode.Window);
+                        SaveModel(false, true);//存取檔案
+                        model.Refresh();
+                        drawing.Refresh();
+                        return;
+                    }
+                    BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                    ViewModel.AddHoleReduce(blockReference, referenceBolts);
+
+                    //gba.GUID = Guid.NewGuid();
+                    //ViewModel.GroupBoltsAttr = (GroupBoltsAttr)gba.DeepClone();
+                    //if (!ViewModel.CheckGroupBoltsAttr(gba) && ViewModel.showMessage)
+                    //{
+                    //    return;
+                    //}
+                    //Bolts3DBlock bolts = Bolts3DBlock.AddBolts(gba, model, out BlockReference blockReference, out bool check);
+                }
+
+
+
 
                 if (ViewModel.fromModifyHole)
                 {
@@ -1805,27 +1885,14 @@ namespace STD_105
                         ViewModel.fclickOK = false;
                     }
                 }
-                BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
-                                                                 //if (!ViewModel.fAddSteelPart)
 
+                //if (!ViewModel.fAddSteelPart)
                 //if (!ViewModel.fNewPart.Value)
                 SaveModel(false, true);//存取檔案
 
-                //不是修改孔位狀態
-                if (!ViewModel.modifyHole)
-                {
-                    ViewModel.Reductions.Add(new Reduction()
-                    {
-                        Recycle = new List<List<Entity>>() { new List<Entity>() { blockReference } },
-                        SelectReference = null,
-                        User = new List<ACTION_USER>() { ACTION_USER.Add }
-                    }, new Reduction()
-                    {
-                        Recycle = new List<List<Entity>>() { new List<Entity>() { referenceBolts } },
-                        SelectReference = null,
-                        User = new List<ACTION_USER>() { ACTION_USER.Add }
-                    });
-                }
+
+
+
 
                 //// 符合孔位加入件
                 //if (check)
@@ -1855,7 +1922,7 @@ namespace STD_105
                 //查看用戶是否有選擇圖塊
                 if (ViewModel.Select3DItem.Count > 0)
                 {
-                    if (!ViewModel.CheckData_ModifyHole( model))
+                    if (!ViewModel.CheckData_ModifyHole(model))
                     {
                         return;
                     }
@@ -1873,6 +1940,16 @@ namespace STD_105
                             ViewModel.showMessage = true;
                         }
                         BlockReference blockReference = (BlockReference)selectItem[i].Item;
+
+                        //如果 DataName 在model中找不到 ，不繼續
+                        if (!model.Blocks.Any(x => x.Name == blockReference.BlockName))
+                        {
+                            return;
+                        }
+
+
+
+
                         //如果在編輯模式
                         if (model.CurrentBlockReference != null && ViewModel.showMessage)
                         {
@@ -2179,6 +2256,114 @@ namespace STD_105
                 log4net.LogManager.GetLogger("加入切割線").Debug("結束");
 #endif
             });
+
+
+
+            //任意打點
+            ViewModel.AddJointPointCutB = new RelayCommand(() =>
+            {
+
+                if (ViewModel.ArbitrarilyJointPointList.Count % 2 != 0)  // 是否為偶數列, 否則跳出
+                {
+                    WinUIMessageBox.Show(null,
+                        $"輸入列數必須為偶數列",
+                        "通知",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.None,
+                        MessageBoxOptions.None,
+                        FloatingMode.Window);
+                    return;
+                }
+
+                //切割線B的命令
+
+                STDSerialization ser = new STDSerialization(); //序列化處理器
+                MyCs myCs = new MyCs();
+                ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();                          //  備份當前加工區域數值
+                double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].A);       //  依照腹板斜邊打點比列(短)
+                double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].B);       //  依照腹板斜邊打點比列(長)
+                double tp1x, tpr1x, tpr2x;
+                double tp1y, tpr1y, tpr2y;
+
+
+                SteelAttr sa = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
+
+                ViewModel.WriteSteelAttr(sa);
+
+                var _TmpPosXY = ViewModel.ArbitrarilyJointPointList.ToList();
+                _TmpPosXY.RemoveAll(x => (!x.X_Position.HasValue || !x.Y_Position.HasValue));
+                for (int i = 0; i < _TmpPosXY.Count; i++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        continue;
+                    }
+                    List<Point3D> tmplist = new List<Point3D>() { };
+                    // 計算斜邊打點位置
+                    tp1x = _TmpPosXY[i].X_Position.Value - _TmpPosXY[i - 1].X_Position.Value;
+                    tpr1x = Math.Round((_TmpPosXY[i].X_Position.Value - (tp1x * PosRatioA)), 2);
+                    tpr2x = Math.Round((_TmpPosXY[i].X_Position.Value - (tp1x * PosRatioB)), 2);
+
+                    tp1y = _TmpPosXY[i].Y_Position.Value - _TmpPosXY[i - 1].Y_Position.Value;
+                    tpr1y = Math.Round((_TmpPosXY[i].Y_Position.Value - (tp1y * PosRatioA)), 2);
+                    tpr2y = Math.Round((_TmpPosXY[i].Y_Position.Value - (tp1y * PosRatioB)), 2);
+                    //
+
+                    // 紀錄2孔打點位置
+                    Point3D PointH1 = new Point3D(tpr1x, tpr1y);
+                    tmplist.Add(PointH1);
+                    Point3D PointH2 = new Point3D(tpr2x, tpr2y);
+                    tmplist.Add(PointH2);
+
+
+
+                    /*3D螺栓*/
+                    GroupBoltsAttr TmpBoltsArr = new GroupBoltsAttr();
+
+                    for (int z = 0; z < 2; z++)
+                    {
+
+                        if (ViewModel.rbtn_DrillingFace == FACE.FRONTandBack)      // 判斷如果是兩側翼板 則先打點於一邊翼板
+                        {
+                            TmpBoltsArr = ViewModel.GetJointPointBoltsAttr(FACE.FRONT);
+                        }
+                        else
+                        {
+                            TmpBoltsArr = ViewModel.GetJointPointBoltsAttr(ViewModel.rbtn_DrillingFace);    // 依目前選擇面打點
+                        }
+                        TmpBoltsArr.X = tmplist[z].X;
+                        TmpBoltsArr.Y = tmplist[z].Y;
+                        TmpBoltsArr.GUID = Guid.NewGuid();
+                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+                        BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                    }
+
+                    if (ViewModel.rbtn_DrillingFace == FACE.FRONTandBack)  // 判斷如果是兩側翼板 則打點於另一翼板
+                    {
+
+                        for (int z = 0; z < 2; z++)
+                        {
+                            TmpBoltsArr = ViewModel.GetJointPointBoltsAttr(FACE.BACK);
+                            TmpBoltsArr.X = tmplist[z].X;
+                            TmpBoltsArr.Y = tmplist[z].Y;
+                            TmpBoltsArr.GUID = Guid.NewGuid();
+                            Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
+                            BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
+                        }
+
+
+                    }
+
+                }
+
+                SaveModel(false, true);//存取檔案
+                //刷新模型
+                model.Refresh();
+                drawing.Refresh();
+
+            });
+
             //修改切割線設定
             ViewModel.ModifyCut = new RelayCommand(() =>
             {
@@ -3247,11 +3432,6 @@ namespace STD_105
             ViewModel.CurrentPartSteelAttr.t1 = pl.t1;
             ViewModel.CurrentPartSteelAttr.t2 = pl.t2;
             ViewModel.CurrentPartSteelAttr.Profile = pl.Profile;
-
-
-
-
-
 
             //steelAttr.Profile = profileStr;
             steelAttr.Profile = ViewModel.SteelSectionProperty;
@@ -4707,6 +4887,7 @@ namespace STD_105
 
         }
 
+
         /// <summary>
         /// 刪除線段打點
         /// </summary>
@@ -4840,9 +5021,6 @@ namespace STD_105
             {
                 drawing.CurrentModel = false;
             }
-
-            //model.Refresh();
-            //model.ZoomFit();
         }
 
         private void drawing_Loaded(object sender, RoutedEventArgs e)
@@ -5580,6 +5758,9 @@ namespace STD_105
                 if (model != null && PieceListGridControl.SelectedItem != null)
                 {
                     Esc();
+
+                    // 重置鑽孔屬性
+                    ViewModel.SetGroupBoltsInfo(new GroupBoltsAttr());
 
                     ProductSettingsPageViewModel item = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
                     item.steelAttr.GUID = Guid.Parse(item.DataName);
@@ -6580,7 +6761,6 @@ namespace STD_105
             }
             return rtn;
         }
-
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
 
