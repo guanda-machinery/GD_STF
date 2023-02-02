@@ -15,11 +15,15 @@ using System.Windows.Threading;
 using System.Windows.Media;
 using DevExpress.CodeParser;
 using DevExpress.Xpf.Core;
+using System.ComponentModel;
+using System.Windows.Markup;
+using System.Runtime.InteropServices;
 
 namespace STD_105
-{
-    public class DraggablePopup : Popup
-    {
+{ 
+    public class DraggablePopup : NonTopmostPopup
+    {     
+
         Point _initialMousePosition;
         bool _isDragging;
 
@@ -32,7 +36,6 @@ namespace STD_105
             contents.MouseLeftButtonUp += Child_MouseLeftButtonUp;
             contents.MouseMove += Child_MouseMove;
         }
-
         private void Child_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var element = sender as FrameworkElement;
@@ -41,7 +44,6 @@ namespace STD_105
             _isDragging = true;
             e.Handled = true;
         }
-
         private void Child_MouseMove(object sender, MouseEventArgs e)
         {
             if (_isDragging)
@@ -51,7 +53,6 @@ namespace STD_105
                 VerticalOffset = VerticalOffset + (currentPoint.Y - _initialMousePosition.Y);
             }
         }
-
         private void Child_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (_isDragging)
@@ -62,9 +63,6 @@ namespace STD_105
                 e.Handled = true;
             }
         }
-
-
-
     }
 }
     

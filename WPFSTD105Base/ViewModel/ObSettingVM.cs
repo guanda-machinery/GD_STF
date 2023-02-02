@@ -22,6 +22,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows;
+//using System.Windows.Forms;
 using System.Windows.Input;
 using WPFSTD105.Attribute;
 using WPFSTD105.Model;
@@ -30,14 +31,14 @@ using WPFSTD105.Tekla;
 using WPFWindowsBase;
 using static devDept.Eyeshot.Environment;
 using static WPFSTD105.ViewLocator;
-using WPFBase = WPFWindowsBase;
+
 
 namespace WPFSTD105.ViewModel
 {
     /// <summary>
     /// 物件設定
     /// </summary>
-    public class ObSettingVM : WPFBase.BaseViewModel
+    public class ObSettingVM : WPFWindowsBase.BaseViewModel
     {
         #region 命令
         /// <summary>
@@ -262,6 +263,13 @@ namespace WPFSTD105.ViewModel
         /// 切割線radio button 頂面,前面,後面
         /// </summary>
         public FACE rbtn_CutFace { get; set; }
+
+        /// <summary>
+        /// 切割線B
+        /// </summary>
+        public FACE rbtn_CutFace_typeB { get; set; }
+
+
         /// <summary>
         /// 選擇物件的面的功能開啟
         /// </summary>
@@ -555,7 +563,7 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 特殊孔位checkbox
         /// </summary>
-        public bool ComboxEdit_GroupBoltsTypeSelected_IsChecked { get; set; }
+        public bool ComboxEdit_GroupBoltsTypeSelected_IsChecked { get; set; } = true;
 
         private GroupBoltsType _comboxEdit_GroupBoltsTypeSelected = GroupBoltsType.Rectangle;
         /// <summary>
@@ -580,18 +588,74 @@ namespace WPFSTD105.ViewModel
             }
         }
 
+
+        private const double _DiaPropertyDefault = 20;
+        private double _diaProperty = _DiaPropertyDefault;
         /// <summary>
         /// 直徑
         /// </summary>
-        public double DiaProperty { get; set; } = 20;
+        public double DiaProperty
+        {
+            get
+            {
+                if (!CheckDia)
+                    return _DiaPropertyDefault;
+                return _diaProperty;
+            }
+            set
+            {
+                CheckDia = true;
+                _diaProperty = value;
+            }
+        }
+
+
+        public bool CheckXProperty { get; set; } = true;
+
+        private const double _xPropertyDefault = 0;
+        private double _xProperty = _xPropertyDefault;
         /// <summary>
         /// 絕對X座標
         /// </summary>
-        public double XProperty { get; set; }
+        public double XProperty
+        {
+            get
+            {
+                if (!CheckXProperty)
+                    return _xPropertyDefault;
+                return _xProperty;
+            }
+            set
+            {
+                CheckXProperty = true;
+                _xProperty = value;
+            }
+        }
+
+
+
+
+        public bool CheckStartY { get; set; } = true;
+
+        private const double _startYDefault = 0;
+        private double _startY = _startYDefault;
         /// <summary>
         /// 孔位起始點 X 座標
         /// </summary>
-        public double StartY { get; set; } = 0;
+        public double StartY 
+        {
+            get
+            {
+                if (!CheckStartY)
+                    return _startYDefault;
+                return _startY;
+            }
+            set 
+            {
+                CheckStartY = true;
+                _startY = value;
+            }
+        } 
         /// <summary>
         /// 鑽孔模式
         /// </summary>
@@ -607,18 +671,71 @@ namespace WPFSTD105.ViewModel
                 GroupBoltsAttr.Mode = (GD_STD.Enum.AXIS_MODE)value;
             }
         }
+
+
+        public START_HOLE _startHoleType;
         /// <summary>
         /// 起始孔類型
         /// </summary>
-        public START_HOLE StartHoleType { get; set; } = START_HOLE.MIDDLE;
+        public START_HOLE StartHoleType
+        {
+            get 
+            {
+                if(!CheckStartHole)
+                    return START_HOLE.MIDDLE;
+                return _startHoleType;
+            }
+            set 
+            {
+                CheckStartHole = true;
+                _startHoleType = value;
+            }
+        } 
+
+
+        private const string _dxPropertydefault = "60 2*70 60";
+        private string _dxProperty = _dxPropertydefault;
         /// <summary>
         /// 用戶輸入螺栓 X 向間距
         /// </summary>
-        public string dXProperty { get; set; } = "60 2*70 60";
+        public string dXProperty
+        { 
+            get 
+            { 
+                if(!CheckX)
+                {
+                    return _dxPropertydefault;
+                }
+                return _dxProperty;
+            }
+            set 
+            {
+                CheckX = true;
+                _dxProperty = value;
+            }
+        }
+
+        private const string _dyPropertydefault = "60 2*70 60";
+        private string _dyProperty = _dyPropertydefault;
         /// <summary>
         /// 用戶輸入螺栓 X 向間距
         /// </summary>
-        public string dYProperty { get; set; } = "60 2*70 60";
+        public string dYProperty
+        {
+            get
+            {
+                if (!CheckY)
+                {
+                    return _dyPropertydefault;
+                }
+                return _dyProperty;
+            }
+            set
+            {
+                CheckY = true;
+                _dyProperty = value;
+            }
+        } 
 
         /// <summary>
         /// 異孔偏移孔群
@@ -1944,9 +2061,9 @@ namespace WPFSTD105.ViewModel
             DLPoint = cutList.DL;
             ULPoint = cutList.UL;
         }
-        private WPFBase.RelayCommand Display3DViewer()
+        private WPFWindowsBase.RelayCommand Display3DViewer()
         {
-            return new WPFBase.RelayCommand(() =>
+            return new WPFWindowsBase.RelayCommand(() =>
             {
                 if (ThreeDimensionalDisplayControl)
                     ThreeDimensionalDisplayControl = false;
@@ -1955,9 +2072,9 @@ namespace WPFSTD105.ViewModel
             });
         }
 
-        private WPFBase.RelayCommand DisplayCreatedList()
+        private WPFWindowsBase.RelayCommand DisplayCreatedList()
         {
-            return new WPFBase.RelayCommand(() =>
+            return new WPFWindowsBase.RelayCommand(() =>
             {
                 if (DisplayCreatedListControl)
                     DisplayCreatedListControl = false;
@@ -1965,9 +2082,9 @@ namespace WPFSTD105.ViewModel
                     DisplayCreatedListControl = true;
             });
         }
-        private WPFBase.RelayCommand DisplayParts()
+        private WPFWindowsBase.RelayCommand DisplayParts()
         {
-            return new WPFBase.RelayCommand(() =>
+            return new WPFWindowsBase.RelayCommand(() =>
             {
                 if (DisplayPartsControl)
                     DisplayPartsControl = false;
@@ -1975,9 +2092,9 @@ namespace WPFSTD105.ViewModel
                     DisplayPartsControl = true;
             });
         }
-        private WPFBase.RelayCommand DisplayHole()
+        private WPFWindowsBase.RelayCommand DisplayHole()
         {
-            return new WPFBase.RelayCommand(() =>
+            return new WPFWindowsBase.RelayCommand(() =>
             {
                 if (DisplayHoleControl)
                     DisplayHoleControl = false;
@@ -1988,9 +2105,9 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 選擇型鋼型態 20220829 張燕華
         /// </summary>
-        private WPFBase.RelayParameterizedCommand ShowSteelType()
+        private WPFWindowsBase.RelayParameterizedCommand ShowSteelType()
         {
-            return new WPFBase.RelayParameterizedCommand((object SelectedIndex) =>
+            return new WPFWindowsBase.RelayParameterizedCommand((object SelectedIndex) =>
             {
                 if ((int)SelectedIndex != -1)
                     {
@@ -2005,9 +2122,9 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 計算製品重量 20220913 張燕華
         /// </summary>
-        private WPFBase.RelayCommand CalculateWeight()
+        private WPFWindowsBase.RelayCommand CalculateWeight()
         {
-            return new WPFBase.RelayCommand(() =>
+            return new WPFWindowsBase.RelayCommand(() =>
             {
                 if (fPartListOrManuall == false)
                 {
@@ -2018,9 +2135,9 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 20221125 張燕華 根據型鋼位置載入切割線數值
         /// </summary>
-        private WPFBase.RelayParameterizedCommand rb_CutLinePosition()
+        private WPFWindowsBase.RelayParameterizedCommand rb_CutLinePosition()
         {
-            return new WPFBase.RelayParameterizedCommand(obj =>
+            return new WPFWindowsBase.RelayParameterizedCommand(obj =>
             {
                 // 讀取切割線設定檔
                 STDSerialization ser = new STDSerialization(); //序列化處理器
@@ -4012,6 +4129,7 @@ namespace WPFSTD105.ViewModel
                 {
                     if(SettingParGroupBoltsType.groupBoltsAttr != null)
                     {
+
                         this.DiaProperty = SettingParGroupBoltsType.groupBoltsAttr.Dia;
                         this.dXProperty = SettingParGroupBoltsType.groupBoltsAttr.dX;
                         this.dYProperty = SettingParGroupBoltsType.groupBoltsAttr.dY;
@@ -4021,6 +4139,18 @@ namespace WPFSTD105.ViewModel
                         this.ComboxEdit_GroupBoltsTypeSelected = SettingParGroupBoltsType.groupBoltsAttr.groupBoltsType;
                         this.rbtn_DrillingFace = SettingParGroupBoltsType.groupBoltsAttr.Face;
                         this.StartHoleType = SettingParGroupBoltsType.groupBoltsAttr.StartHole;
+
+                        this.CheckDia = true;
+                        this.CheckX = true;
+                        this.CheckY = true;
+                        this.CheckXProperty = true;
+                        this.CheckStartY = true;
+                     //   this.X_BoltsArrayDirection = true;
+                        this.ComboxEdit_GroupBoltsTypeSelected_IsChecked = true;
+                       // this.rbtn_DrillingFace = true;
+                        this.CheckStartHole = true;
+
+
                     }
                 });
         }

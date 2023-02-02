@@ -10,6 +10,7 @@ namespace STD_105.ValidationRules
 {
     internal class CheckNumberArrayRule : ValidationRule
     {
+        public bool Nullable { get; set; } = true;
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             if (((string)value).Length > 0)
@@ -43,6 +44,11 @@ namespace STD_105.ValidationRules
                     }
                 }
             }
+            else if(!Nullable)
+            {
+                return new ValidationResult(false, $"需輸入數值!");
+            }
+
 
             return ValidationResult.ValidResult;
         }
