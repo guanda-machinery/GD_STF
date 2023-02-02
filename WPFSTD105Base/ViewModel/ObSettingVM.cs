@@ -263,6 +263,13 @@ namespace WPFSTD105.ViewModel
         /// 切割線radio button 頂面,前面,後面
         /// </summary>
         public FACE rbtn_CutFace { get; set; }
+
+        /// <summary>
+        /// 切割線B
+        /// </summary>
+        public FACE rbtn_CutFace_typeB { get; set; }
+
+
         /// <summary>
         /// 選擇物件的面的功能開啟
         /// </summary>

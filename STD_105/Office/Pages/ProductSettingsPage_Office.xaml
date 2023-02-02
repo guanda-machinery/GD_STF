@@ -1581,9 +1581,9 @@
 
                                         <dxe:ComboBoxEdit  IsTextEditable="False" MinWidth="110" Style="{StaticResource SiegPositionComboBoxEdit}" VerticalAlignment="Center" 
                                                            ApplyItemTemplateToSelectedItem="True" 
-                                                           EditValue="{Binding rbtn_DrillingFace}">
+                                                           EditValue="{Binding rbtn_CutFace_typeB}">
                                             <dxmvvm:Interaction.Behaviors>
-                                                <dxmvvm:EventToCommand EventName="EditValueChanged" Command="{Binding rb_CutLinePosition_Command}" CommandParameter="{Binding rbtn_DrillingFace}" UseDispatcher="True"/>
+                                                <dxmvvm:EventToCommand EventName="EditValueChanged" Command="{Binding rb_CutLinePosition_Command}" CommandParameter="{Binding rbtn_CutFace_typeB}" UseDispatcher="True"/>
                                                 <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:FACE}" ImageSize="40,40" AllowImages="False" />
                                                 <!--SortMode="DisplayName"-->
                                             </dxmvvm:Interaction.Behaviors>
