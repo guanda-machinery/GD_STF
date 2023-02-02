@@ -282,27 +282,27 @@ namespace WPFSTD105.Model
                         //});
 
 
-                        model.Entities.ForEach(el =>
-                        {
-                            if (el.GetType() != typeof(LinearDim))
-                            {
-                                model.Blocks[((BlockReference)el).BlockName].Entities.ForEach(entity =>
-                                {
+                        //model.Entities.ForEach(el =>
+                        //{
+                        //    if (el.GetType() != typeof(LinearDim))
+                        //    {
+                        //        model.Blocks[((BlockReference)el).BlockName].Entities.ForEach(entity =>
+                        //        {
 
-                                    if (entity.EntityData is SteelAttr steelAttr)
-                                    { 
-                                        if (((SteelAttr)entity.EntityData).GUID == parts[partIndex].GUID)
-                                        {
-                                            _entity = entity;
-                                            _steelAttr = (SteelAttr)entity.EntityData;
-                                            JudgingByVertex(_entity, _steelAttr);
-                                        }
-                                    }  
+                        //            if (entity.EntityData is SteelAttr steelAttr)
+                        //            { 
+                        //                if (((SteelAttr)entity.EntityData).GUID == parts[partIndex].GUID)
+                        //                {
+                        //                    _entity = entity;
+                        //                    _steelAttr = (SteelAttr)entity.EntityData;
+                        //                    JudgingByVertex(_entity, _steelAttr);
+                        //                }
+                        //            }  
 
 
-                                });
-                            }
-                        });
+                        //        });
+                        //    }
+                        //});
 
 
 
