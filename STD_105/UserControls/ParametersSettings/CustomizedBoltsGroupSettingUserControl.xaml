@@ -173,14 +173,14 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <CheckBox Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Content="形狀："/>
+                            <CheckBox Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Content="形狀：" Visibility="Collapsed"/>
 
-                            <ComboBox Grid.Column="2" Grid.Row="0" Margin="5" VerticalAlignment="Center" SelectedIndex="0" Padding="5,1,0,0">
+                            <ComboBox Grid.Column="2" Grid.Row="0" Margin="5" VerticalAlignment="Center" SelectedIndex="0" Padding="5,1,0,0" Visibility="Collapsed">
                                 <ComboBoxItem Content="陣列"/>
                             </ComboBox>
 
-                            <CheckBox  Grid.Column="0" Grid.Row="1"  IsChecked="{Binding CheckX}" Content="XP" ToolTip="孔X向間距："/>
-                            <TextBox  Grid.Column="1" Grid.Row="1" MinWidth="100" VerticalAlignment="Center" >
+                            <CheckBox  Grid.Column="0" Grid.Row="0"  IsChecked="{Binding CheckX}" Content="XP" ToolTip="孔X向間距："/>
+                            <TextBox  Grid.Column="1" Grid.Row="0" MinWidth="100" VerticalAlignment="Center" >
                                 <TextBox.Text>
                                     <Binding Path="SettingParGroupBoltsType.groupBoltsAttr.dX" UpdateSourceTrigger="PropertyChanged" >
                                         <Binding.ValidationRules>
@@ -191,8 +191,8 @@
 
                             </TextBox>
 
-                            <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding CheckY}" Content="YP" ToolTip="孔Y向間距：" />
-                            <TextBox  Grid.Column="1" Grid.Row="2"  MinWidth="100" VerticalAlignment="Center">
+                            <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding CheckY}" Content="YP" ToolTip="孔Y向間距：" />
+                            <TextBox  Grid.Column="1" Grid.Row="1"  MinWidth="100" VerticalAlignment="Center">
                                 <TextBox.Text>
                                     <Binding Path="SettingParGroupBoltsType.groupBoltsAttr.dY" UpdateSourceTrigger="PropertyChanged" >
                                         <Binding.ValidationRules>
@@ -204,8 +204,8 @@
 
                             <!--技術文件參照:https://community.devexpress.com/blogs/wpf/archive/2015/01/27/devexpress-mvvm-framework-enumitemsourcebehavior.aspx-->
 
-                            <CheckBox Grid.Row="3"  Content="特殊孔位：" IsThreeState="False" IsChecked="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"/>
-                            <dxe:ComboBoxEdit  IsTextEditable="False" Grid.Column="0" Grid.ColumnSpan="2"   Grid.Row="4"  Margin="0,5,5,0" IsEnabled="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"
+                            <CheckBox Grid.Row="2"  Content="特殊孔位：" IsThreeState="False" IsChecked="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"/>
+                            <dxe:ComboBoxEdit  IsTextEditable="False" Grid.Column="0" Grid.ColumnSpan="2"   Grid.Row="3"  Margin="0,5,5,0" IsEnabled="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"
                                                            ApplyItemTemplateToSelectedItem="True" 
                                                                    EditValue="{Binding SettingParGroupBoltsType.groupBoltsAttr.groupBoltsType}">
                                 <dxmvvm:Interaction.Behaviors>
