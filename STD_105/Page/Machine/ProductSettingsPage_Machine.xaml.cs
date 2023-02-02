@@ -2074,111 +2074,6 @@ namespace STD_105
             });
 
 
-            //任意打點
-            ViewModel.AddJointPointCutB = new RelayCommand(() =>
-            {
-
-                if (ViewModel.ArbitrarilyJointPointList.Count % 2 != 0)  // 是否為偶數列, 否則跳出
-                {
-                    WinUIMessageBox.Show(null,
-                        $"輸入列數必須為偶數列",
-                        "通知",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Exclamation,
-                        MessageBoxResult.None,
-                        MessageBoxOptions.None,
-                        FloatingMode.Window);
-                    return;
-                }
-
-                //切割線B的命令
-
-                STDSerialization ser = new STDSerialization(); //序列化處理器
-                MyCs myCs = new MyCs();
-                ObservableCollection<SplitLineSettingClass> ReadSplitLineSettingData = ser.GetSplitLineData();                          //  備份當前加工區域數值
-                double PosRatioA = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].A);       //  依照腹板斜邊打點比列(短)
-                double PosRatioB = myCs.DivSymbolConvert(ReadSplitLineSettingData == null ? "0" : ReadSplitLineSettingData[0].B);       //  依照腹板斜邊打點比列(長)
-                double tp1x, tpr1x, tpr2x;
-                double tp1y, tpr1y, tpr2y;
-
-
-                SteelAttr sa = (SteelAttr)model.Blocks[1].Entities[0].EntityData;
-
-                ViewModel.WriteSteelAttr(sa);
-
-                var _TmpPosXY = ViewModel.ArbitrarilyJointPointList.ToList();
-                _TmpPosXY.RemoveAll(x => (!x.X_Position.HasValue || !x.Y_Position.HasValue));
-                for (int i = 0; i < _TmpPosXY.Count; i++)
-                {
-                    if (i % 2 == 0)
-                    {
-                        continue;
-                    }
-                    List<Point3D> tmplist = new List<Point3D>() { };
-                    // 計算斜邊打點位置
-                    tp1x = _TmpPosXY[i].X_Position.Value - _TmpPosXY[i - 1].X_Position.Value;
-                    tpr1x = Math.Round((_TmpPosXY[i].X_Position.Value - (tp1x * PosRatioA)), 2);
-                    tpr2x = Math.Round((_TmpPosXY[i].X_Position.Value - (tp1x * PosRatioB)), 2);
-
-                    tp1y = _TmpPosXY[i].Y_Position.Value - _TmpPosXY[i - 1].Y_Position.Value;
-                    tpr1y = Math.Round((_TmpPosXY[i].Y_Position.Value - (tp1y * PosRatioA)), 2);
-                    tpr2y = Math.Round((_TmpPosXY[i].Y_Position.Value - (tp1y * PosRatioB)), 2);
-                    //
-
-                    // 紀錄2孔打點位置
-                    Point3D PointH1 = new Point3D(tpr1x, tpr1y);
-                    tmplist.Add(PointH1);
-                    Point3D PointH2 = new Point3D(tpr2x, tpr2y);
-                    tmplist.Add(PointH2);
-
-
-
-                    /*3D螺栓*/
-                    GroupBoltsAttr TmpBoltsArr = new GroupBoltsAttr();
-
-                    for (int z = 0; z < 2; z++)
-                    {
-
-                        if (ViewModel.rbtn_DrillingFace == FACE.FRONTandBack)      // 判斷如果是兩側翼板 則先打點於一邊翼板
-                        {
-                            TmpBoltsArr = ViewModel.GetJointPointBoltsAttr(FACE.FRONT);
-                        }
-                        else
-                        {
-                            TmpBoltsArr = ViewModel.GetJointPointBoltsAttr(ViewModel.rbtn_DrillingFace);    // 依目前選擇面打點
-                        }
-                        TmpBoltsArr.X = tmplist[z].X;
-                        TmpBoltsArr.Y = tmplist[z].Y;
-                        TmpBoltsArr.GUID = Guid.NewGuid();
-                        Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
-                        BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
-                    }
-
-                    if (ViewModel.rbtn_DrillingFace == FACE.FRONTandBack)  // 判斷如果是兩側翼板 則打點於另一翼板
-                    {
-
-                        for (int z = 0; z < 2; z++)
-                        {
-                            TmpBoltsArr = ViewModel.GetJointPointBoltsAttr(FACE.BACK);
-                            TmpBoltsArr.X = tmplist[z].X;
-                            TmpBoltsArr.Y = tmplist[z].Y;
-                            TmpBoltsArr.GUID = Guid.NewGuid();
-                            Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, model, out BlockReference blockReference, out bool CheckArea);
-                            BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
-                        }
-
-
-                    }
-
-                }
-
-                SaveModel(false, true);//存取檔案
-                //刷新模型
-                model.Refresh();
-                drawing.Refresh();
-
-            });
-
 
 
             //加入或修改切割線
@@ -2324,13 +2219,13 @@ namespace STD_105
                     for (int z = 0; z < 2; z++)
                     {
 
-                        if (ViewModel.rbtn_DrillingFace == FACE.FRONTandBack)      // 判斷如果是兩側翼板 則先打點於一邊翼板
+                        if (ViewModel.rbtn_CutFace_typeB == FACE.FRONTandBack)      // 判斷如果是兩側翼板 則先打點於一邊翼板
                         {
                             TmpBoltsArr = ViewModel.GetJointPointBoltsAttr(FACE.FRONT);
                         }
                         else
                         {
-                            TmpBoltsArr = ViewModel.GetJointPointBoltsAttr(ViewModel.rbtn_DrillingFace);    // 依目前選擇面打點
+                            TmpBoltsArr = ViewModel.GetJointPointBoltsAttr(ViewModel.rbtn_CutFace_typeB);    // 依目前選擇面打點
                         }
                         TmpBoltsArr.X = tmplist[z].X;
                         TmpBoltsArr.Y = tmplist[z].Y;
@@ -2339,7 +2234,7 @@ namespace STD_105
                         BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                     }
 
-                    if (ViewModel.rbtn_DrillingFace == FACE.FRONTandBack)  // 判斷如果是兩側翼板 則打點於另一翼板
+                    if (ViewModel.rbtn_CutFace_typeB == FACE.FRONTandBack)  // 判斷如果是兩側翼板 則打點於另一翼板
                     {
 
                         for (int z = 0; z < 2; z++)
