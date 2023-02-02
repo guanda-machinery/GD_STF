@@ -1383,7 +1383,9 @@ namespace WPFSTD105.Model
                     cut1.Translate(-5, 0);//(-5,0)
                     Mesh otherCut1 = (Mesh)cut1.Clone();
                     Mesh cut2 = (Mesh)cut1.Clone();
-                    cut2.Translate(0, nc.SteelAttr.H - nc.SteelAttr.t2);//0, nc.SteelAttr.H - nc.SteelAttr.t2
+                    //double aa = nc.SteelAttr.H - nc.SteelAttr.t2;
+                    //cut2.Translate(0, aa);//0, nc.SteelAttr.H - nc.SteelAttr.t2
+                    cut2.Translate(0, nc.SteelAttr.H - nc.SteelAttr.t2);
                     Mesh otherCut2 = (Mesh)cut2.Clone();
                     List<Solid> solids = new List<Solid>();
                     Solid[] s1 = Solid.Difference(otherCut1.ConvertToSolid(), vMesh.ConvertToSolid());
@@ -1414,7 +1416,7 @@ namespace WPFSTD105.Model
                     vMesh.ColorMethod = colorMethodType.byEntity;
                     vMesh.Translate(0, 0, nc.SteelAttr.W * 0.5 - nc.SteelAttr.t1 * 0.5);
                     #endregion
-                    //var a = vSolid.Portions[0];
+
                     #region 頂視圖
                     //頂視圖
                     Mesh oMesh = ConvertNcPointToMesh(nc.SteelAttr.oPoint, nc.SteelAttr.t2);
