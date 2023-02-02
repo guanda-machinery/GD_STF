@@ -560,13 +560,21 @@ namespace WPFSTD105
                 btop= true;
             }
 
+
+
+
+
             if (bback == false)
             {
 
             }
             else
             {
-
+                Point3D _p1 = new Point3D(p2.X,p1.Y,p1.Z);
+                Point3D _p2 = new Point3D(p1.X, p2.Y,p2.Z);
+                p1 = _p1;
+                p2 = _p2;   
+             
 
             }
 
