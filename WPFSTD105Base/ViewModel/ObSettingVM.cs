@@ -3283,15 +3283,15 @@ namespace WPFSTD105.ViewModel
             //if (part.Values.SelectMany(x => x).Where(x => x.Number == this.PartNumberProperty && x.Match.Where(y => y == false).Count() > 0).Count() > 0 && showMessage)
             if (CheckOption_IsPartTypesetting(part) && showMessage)
             {
-              //  WinUIMessageBox.Show(null,
-              //$"零件已排版，不可編輯",
-              //"通知",
-              //MessageBoxButton.OK,
-              //MessageBoxImage.Exclamation,
-              //MessageBoxResult.None,
-              //MessageBoxOptions.None,
-              // FloatingMode.Window);
-              //  return false;
+                WinUIMessageBox.Show(null,
+              $"零件已排版，不可編輯",
+              "通知",
+              MessageBoxButton.OK,
+              MessageBoxImage.Exclamation,
+              MessageBoxResult.None,
+              MessageBoxOptions.None,
+               FloatingMode.Window);
+                return false;
             }
             return true;
         }
@@ -3341,29 +3341,29 @@ namespace WPFSTD105.ViewModel
             //if (part.Values.SelectMany(x => x).Where(x => x.Number == this.PartNumberProperty && x.Match.Where(y => y == false).Count() > 0).Count() > 0 && showMessage)
             if (CheckOption_IsPartTypesetting(part) && showMessage)
             {
-              //  WinUIMessageBox.Show(null,
-              //$"零件已排版，不可編輯",
-              //"通知",
-              //MessageBoxButton.OK,
-              //MessageBoxImage.Exclamation,
-              //MessageBoxResult.None,
-              //MessageBoxOptions.None,
-              // FloatingMode.Window);
-              //  return false;
+                WinUIMessageBox.Show(null,
+              $"零件已排版，不可編輯",
+              "通知",
+              MessageBoxButton.OK,
+              MessageBoxImage.Exclamation,
+              MessageBoxResult.None,
+              MessageBoxOptions.None,
+               FloatingMode.Window);
+                return false;
             }
 
             //if (part.Values.SelectMany(x => x).Where(x => x.Number == this.PartNumberProperty && x.Match.Where(y => y == false).Count() > 0).Count() > 0 && showMessage)
             if (CheckOption_IsPartTypesetting(part) && showMessage)
             {
-              //  WinUIMessageBox.Show(null,
-              //$"零件已排版，不可編輯",
-              //"通知",
-              //MessageBoxButton.OK,
-              //MessageBoxImage.Exclamation,
-              //MessageBoxResult.None,
-              //MessageBoxOptions.None,
-              // FloatingMode.Window);
-              //  return false;
+                WinUIMessageBox.Show(null,
+              $"零件已排版，不可編輯",
+              "通知",
+              MessageBoxButton.OK,
+              MessageBoxImage.Exclamation,
+              MessageBoxResult.None,
+              MessageBoxOptions.None,
+               FloatingMode.Window);
+                return false;
             }
 
 
@@ -3445,15 +3445,15 @@ namespace WPFSTD105.ViewModel
             //if (part.Values.SelectMany(x => x).Where(x => x.Number == this.PartNumberProperty && x.Match.Where(y => y == false).Count() > 0).Count() > 0 && showMessage)
             if (CheckOption_IsPartTypesetting(part) && showMessage)
             {
-              //  WinUIMessageBox.Show(null,
-              //$"零件已排版，不可編輯",
-              //"通知",
-              //MessageBoxButton.OK,
-              //MessageBoxImage.Exclamation,
-              //MessageBoxResult.None,
-              //MessageBoxOptions.None,
-              // FloatingMode.Window);
-              //  return false;
+                WinUIMessageBox.Show(null,
+              $"零件已排版，不可編輯",
+              "通知",
+              MessageBoxButton.OK,
+              MessageBoxImage.Exclamation,
+              MessageBoxResult.None,
+              MessageBoxOptions.None,
+               FloatingMode.Window);
+                return false;
             }
             return true;
         }
@@ -3518,15 +3518,15 @@ namespace WPFSTD105.ViewModel
             //if ((part.Values.SelectMany(x => x).Where(x => x.Number == this.PartNumberProperty && x.Match.Where(y => y == false).Count() > 0).Count() > 0) && showMessage)
             if (CheckOption_IsPartTypesetting(part) && showMessage)
             {
-              //  WinUIMessageBox.Show(null,
-              //$"零件已排版，不可編輯",
-              //"通知",
-              //MessageBoxButton.OK,
-              //MessageBoxImage.Exclamation,
-              //MessageBoxResult.None,
-              //MessageBoxOptions.None,
-              // FloatingMode.Window);
-              //  return false;
+                WinUIMessageBox.Show(null,
+              $"零件已排版，不可編輯",
+              "通知",
+              MessageBoxButton.OK,
+              MessageBoxImage.Exclamation,
+              MessageBoxResult.None,
+              MessageBoxOptions.None,
+               FloatingMode.Window);
+                return false;
             }
             return true;
         }

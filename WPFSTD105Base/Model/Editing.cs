@@ -549,7 +549,7 @@ namespace WPFSTD105
                 p1.Y = p1.Y + steelAttr.W + 150;
                 p2.Y = p2.Y + steelAttr.W + 150;
             }
-            else if (p1.Y >= steelAttr.W + 150 )  //  判斷Y位置落在哪一面  ( 背面 )
+            else if (p1.Y > steelAttr.W + 150 || p2.Y > steelAttr.W + 150)  //  判斷Y位置落在哪一面  ( 背面 )
             {
                 bback = true; 
                 p1.Y = p1.Y - steelAttr.H - 150;
@@ -561,21 +561,12 @@ namespace WPFSTD105
             }
 
 
-
-
-
-            if (bback == false)
+            if (bback == true)          // 因2D BACK 因原點方向為左上方 需做處理
             {
-
-            }
-            else
-            {
-                Point3D _p1 = new Point3D(p2.X,p1.Y,p1.Z);
-                Point3D _p2 = new Point3D(p1.X, p2.Y,p2.Z);
+                Point3D _p1 = new Point3D(p2.X, p1.Y, p1.Z);
+                Point3D _p2 = new Point3D(p1.X, p2.Y, p2.Z);
                 p1 = _p1;
                 p2 = _p2;   
-             
-
             }
 
             // 計算斜邊打點位置
@@ -586,8 +577,6 @@ namespace WPFSTD105
             tp1y = p1.Y - p2.Y;
             tpr1y = p1.Y - (tp1y * PosRatioA);
             tpr2y = p1.Y - (tp1y * PosRatioB);
-           
-            //
 
             // 紀錄2孔打點位置
             Point3D PointH1 = new Point3D(tpr1x, tpr1y);
@@ -617,19 +606,7 @@ namespace WPFSTD105
 
                 Bolts3DBlock bolts = Bolts3DBlock.AddBolts(TmpBoltsArr, Secondary, out BlockReference blockReference, out bool CheckArea);
                 obvm.Add2DHole(this, bolts, false);//加入孔位不刷新 2d 視圖       
-
-                //BlockReference b = new BlockReference(0, 0, 0, TmpBoltsArr.GUID.Value.ToString(), 1, 1, 1, 0);
-                //b.EntityData = TmpBoltsArr;
-
-                //b.Attributes.Add("Bolts", new AttributeReference(0, 0, 0));
-
-                //Bolts3DBlock bolts = new Bolts3DBlock(TmpBoltsArr);
-                //Secondary.Entities.Insert(0, b);//加入參考圖塊到模型
-
-
-                //bolts.Entities.Add(b);
-                //obvm.Add2DHole(this, bolts, false);//加入孔位不刷新 2d 視圖     
-
+ 
             }
 
         }
