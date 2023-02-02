@@ -3,7 +3,6 @@ using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
 using DevExpress.Data.Extensions;
-using DevExpress.Dialogs.Core.View;
 using DevExpress.Mvvm;
 using DevExpress.Utils.Extensions;
 using DevExpress.Xpf.Core;
@@ -26,11 +25,9 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using WPFSTD105;
 using WPFSTD105.Attribute;
 using WPFSTD105.Model;
-using WPFSTD105.Tekla;
 using WPFSTD105.ViewModel;
 using WPFWindowsBase;
 using static devDept.Eyeshot.Entities.Mesh;
@@ -6654,7 +6651,6 @@ namespace STD_105.Office
             }
             return rtn;
         }
-
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
 
@@ -6664,5 +6660,6 @@ namespace STD_105.Office
                 drawing.drawingHypotenusePoint = false;
             }
         }
+    
     }
 }
