@@ -1430,11 +1430,11 @@
                                         <MenuItem Header="放大選取範圍" Style="{StaticResource BaseStyle}" Command="{Binding ZoomWindow}"/>
                                         <MenuItem Header="縮放" Style="{StaticResource BaseStyle}" Command="{Binding Zoom}"/>
                                         <MenuItem Header="平移" Style="{StaticResource BaseStyle}" Command="{Binding Pan}"/>
-                                        <MenuItem Name="edit2D" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}"/>
-                                        <MenuItem x:Name="delete2D" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}"/>
+                                    <MenuItem Name="edit2D" Header="編輯已選擇" Style="{StaticResource BaseStyle}" Command="{Binding EditObject}" Visibility="Collapsed"/>
+                                    <MenuItem x:Name="delete2D" Header="刪除已選擇" Style="{StaticResource BaseStyle}" Command="{Binding Delete}" Visibility="Collapsed"/>
                                         <MenuItem Header="清除標註" Command="{Binding ClearDim}" Style="{StaticResource BaseStyle}"/>
-                                        <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
-                                        <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}"/>
+                                    <MenuItem Header="恢復上一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}" Visibility="Collapsed"/>
+                                    <MenuItem Header="恢復下一個動作" Command="{Binding Recovery}" Style="{StaticResource BaseStyle}" Visibility="Collapsed"/>
                                     </ContextMenu>
                                 </spa:ModelExt.ContextMenu>
                                 <ddes:Model.ProgressBar>
