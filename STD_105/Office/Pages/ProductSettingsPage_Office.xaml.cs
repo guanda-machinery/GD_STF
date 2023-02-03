@@ -21,10 +21,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Media;
 using WPFSTD105;
 using WPFSTD105.Attribute;
 using WPFSTD105.Model;
@@ -2214,13 +2217,13 @@ namespace STD_105.Office
                     for (int z = 0; z < 2; z++)
                     {
 
-                        if (ViewModel.rbtn_DrillingFace==FACE.FRONTandBack)      // 判斷如果是兩側翼板 則先打點於一邊翼板
+                        if (ViewModel.rbtn_CutFace_typeB==FACE.FRONTandBack)      // 判斷如果是兩側翼板 則先打點於一邊翼板
                         {
                             TmpBoltsArr = ViewModel.GetJointPointBoltsAttr(FACE.FRONT);
                         }
                         else
                         {
-                            TmpBoltsArr = ViewModel.GetJointPointBoltsAttr(ViewModel.rbtn_DrillingFace);    // 依目前選擇面打點
+                            TmpBoltsArr = ViewModel.GetJointPointBoltsAttr(ViewModel.rbtn_CutFace_typeB);    // 依目前選擇面打點
                         }
                         TmpBoltsArr.X = tmplist[z].X;
                         TmpBoltsArr.Y = tmplist[z].Y;
@@ -2229,7 +2232,7 @@ namespace STD_105.Office
                         BlockReference referenceBolts = Add2DHole(bolts);//加入孔位到2D
                     }
 
-                    if (ViewModel.rbtn_DrillingFace == FACE.FRONTandBack)  // 判斷如果是兩側翼板 則打點於另一翼板
+                    if (ViewModel.rbtn_CutFace_typeB == FACE.FRONTandBack)  // 判斷如果是兩側翼板 則打點於另一翼板
                     {
 
                         for (int z = 0; z < 2; z++)
@@ -3488,15 +3491,15 @@ namespace STD_105.Office
                     //if (!part.Values.SelectMany(x => x).Any(x => x.Number == ViewModel.PartNumber && x.Match.Where(y => y == false).Count() > 0))
                     if (ViewModel.CheckOption_IsPartTypesetting(part))
                     {
-                        //WinUIMessageBox.Show(null,
-                        //    $"零件已排版，不可編輯",
-                        //    "通知",
-                        //    MessageBoxButton.OK,
-                        //    MessageBoxImage.Exclamation,
-                        //    MessageBoxResult.None,
-                        //    MessageBoxOptions.None,
-                        //    FloatingMode.Window);
-                        //return false;
+                        WinUIMessageBox.Show(null,
+                            $"零件已排版，不可編輯",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Exclamation,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            FloatingMode.Window);
+                        return false;
                     }
                     break;
             }

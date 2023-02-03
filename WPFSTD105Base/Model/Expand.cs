@@ -289,14 +289,14 @@ namespace WPFSTD105.Model
                         //        {
 
                         //            if (entity.EntityData is SteelAttr steelAttr)
-                        //            { 
+                        //            {
                         //                if (((SteelAttr)entity.EntityData).GUID == parts[partIndex].GUID)
                         //                {
                         //                    _entity = entity;
                         //                    _steelAttr = (SteelAttr)entity.EntityData;
                         //                    JudgingByVertex(_entity, _steelAttr);
                         //                }
-                        //            }  
+                        //            }
 
 
                         //        });

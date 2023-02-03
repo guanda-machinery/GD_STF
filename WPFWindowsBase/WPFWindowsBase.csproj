@@ -339,6 +339,7 @@
     <Compile Include="Base\CommandAync.cs" />
     <Compile Include="Base\AyncParameterizedCommand.cs" />
     <Compile Include="Base\BaseUserControl.cs" />
+    <Compile Include="Base\GetEnumDisplayData.cs" />
     <Compile Include="Base\IAsyncCommand.cs" />
     <Compile Include="Base\SystemType.cs" />
     <Compile Include="Connected Services\PC\Reference.cs">

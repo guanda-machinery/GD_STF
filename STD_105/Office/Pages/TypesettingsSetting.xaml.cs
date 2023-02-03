@@ -67,6 +67,93 @@ namespace STD_105.Office
         {
             InitializeComponent();
 
+
+
+            //清除標註
+            ObViewModel.ClearDim = new RelayCommand(() =>
+            {
+                try
+                {
+                    ModelExt modelExt = null;
+                    if (DrawTabControl.SelectedIndex == 0)
+                    {
+                        modelExt = model;
+                    }
+                    else
+                    {
+                        // 2022.06.24 呂宗霖 還原註解
+                        modelExt = drawing;
+                    }
+                    List<Entity> dimensions = new List<Entity>();//標註物件
+                    modelExt.Entities.ForEach(el =>
+                    {
+#if DEBUG
+                        log4net.LogManager.GetLogger("清除標註").Debug("開始");
+#endif
+                        if (el is Dimension dim)
+                        {
+                            dimensions.Add(dim);
+                        }
+#if DEBUG
+                        log4net.LogManager.GetLogger("清除標註").Debug("結束");
+#endif
+                    });
+                    modelExt.Entities.Remove(dimensions);
+                    modelExt.Invalidate();//刷新模型
+                }
+                catch (Exception ex)
+                {
+                    log4net.LogManager.GetLogger("嚴重錯誤").ErrorFormat(ex.Message, ex.StackTrace);
+                    Debugger.Break();
+                }
+            });
+
+
+
+            //取消
+            ObViewModel.Esc = new RelayCommand(() =>
+            {
+#if DEBUG
+                log4net.LogManager.GetLogger("按下選單命令").Debug("取消");
+#endif
+                Esc();
+                //刷新模型
+                model.Refresh();
+                //更新模型
+                drawing.Refresh();
+            });
+
+            //放大縮小
+            ObViewModel.Zoom = new RelayCommand(() =>
+            {
+#if DEBUG
+                log4net.LogManager.GetLogger("按下選單命令").Debug("放大縮小");
+#endif
+                //使用放大縮小
+                model.ActionMode = actionType.Zoom;
+            });
+            //放大到框選舉型視窗
+            ObViewModel.ZoomWindow = new RelayCommand(() =>
+            {
+#if DEBUG
+                log4net.LogManager.GetLogger("按下選單命令").Debug("放大到框選舉型視窗");
+#endif
+                //使用放大到框選舉型
+                model.ActionMode = actionType.ZoomWindow;
+            });
+
+            //平移
+            ObViewModel.Pan = new RelayCommand(() =>
+            {
+#if DEBUG
+                log4net.LogManager.GetLogger("按下選單命令").Debug("平移");
+#endif
+                model.ActionMode = actionType.Pan;
+            });
+
+
+
+
             model.DataContext = ObViewModel;
             drawing.DataContext = ObViewModel;
             model.Unlock("UF20-HM12N-F7K3M-MCRA-FDGT");
