@@ -2030,7 +2030,7 @@ namespace WPFSTD105.ViewModel
 
                 if (obj is FACE)
                 {
-                    var obj_CutFace = (FACE)obj ; 
+                    var obj_CutFace = (FACE)rbtn_CutFace ; 
                     if (steelcutSettings.Any(x => x.GUID == this.GuidProperty && x.face == obj_CutFace))
                     {
                         SteelCutSetting cs = steelcutSettings.FirstOrDefault(x => x.GUID == this.GuidProperty && x.face == obj_CutFace);
@@ -2046,21 +2046,21 @@ namespace WPFSTD105.ViewModel
                     }
                     else
                     {
-                        SteelCutSetting cs = new SteelCutSetting()
-                        {
-                            GUID = this.GuidProperty,
-                            face = rbtn_CutFace,
-                            DLX = 0,
-                            DLY = 0,
-                            ULX = 0,
-                            ULY = 0,
-                            DRX = 0,
-                            DRY = 0,
-                            URX = 0,
-                            URY = 0,
-                        };
-                        steelcutSettings.Add(cs);
-                        ser.SetCutSettingList(steelcutSettings);
+                        //SteelCutSetting cs = new SteelCutSetting()
+                        //{
+                        //    GUID = this.GuidProperty,
+                        //    face = rbtn_CutFace,
+                        //    DLX = 0,
+                        //    DLY = 0,
+                        //    ULX = 0,
+                        //    ULY = 0,
+                        //    DRX = 0,
+                        //    DRY = 0,
+                        //    URX = 0,
+                        //    URY = 0,
+                        //};
+                        //steelcutSettings.Add(cs);
+                        //ser.SetCutSettingList(steelcutSettings);
 
                         DLPoint.X = 0;
                         DLPoint.Y = 0;

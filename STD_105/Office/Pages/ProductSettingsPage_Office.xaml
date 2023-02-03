@@ -1329,9 +1329,9 @@
                                     <GroupBox Header="位置" Style="{StaticResource BaseStyle}" Padding="0">
 
                                         <dxe:ComboBoxEdit  IsTextEditable="False" MinWidth="110" Style="{StaticResource SiegPositionComboBoxEdit}" VerticalAlignment="Center" 
-                                                    ApplyItemTemplateToSelectedItem="True" EditValue="{Binding rbtn_DrillingFace}">
+                                                    ApplyItemTemplateToSelectedItem="True" EditValue="{Binding rbtn_CutFace}">
                                             <dxmvvm:Interaction.Behaviors>
-                                                <dxmvvm:EventToCommand EventName="EditValueChanged" Command="{Binding rb_CutLinePosition_Command}" CommandParameter="{Binding rbtn_DrillingFace}" UseDispatcher="True"/>
+                                                <dxmvvm:EventToCommand EventName="EditValueChanged" Command="{Binding rb_CutLinePosition_Command}" CommandParameter="{Binding rbtn_CutFace}" UseDispatcher="True"/>
                                                 <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:FACE}" ImageSize="40,40" AllowImages="False" />
                                                     <!--SortMode="DisplayName"-->
                                                 </dxmvvm:Interaction.Behaviors>
@@ -1370,7 +1370,7 @@
                                                       Canvas.Top="109"
                                                       EditValue="{Binding CutFaceType}" >
                                                 <dxmvvm:Interaction.Behaviors>
-                                                    <dxmvvm:EventToCommand EventName="EditValueChanged" Command="{Binding rb_CutLinePosition_Command}" CommandParameter="{Binding rbtn_DrillingFace}" UseDispatcher="True"/>
+                                                    <dxmvvm:EventToCommand EventName="EditValueChanged" Command="{Binding rb_CutLinePosition_Command}" CommandParameter="{Binding rbtn_CutFace}" UseDispatcher="True"/>
                                                     <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type GD_STD_Enum:FACE}" ImageSize="40,40" AllowImages="False" />
                                                     <!--SortMode="DisplayName"-->
                                                 </dxmvvm:Interaction.Behaviors>
