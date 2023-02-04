@@ -131,6 +131,11 @@ namespace GD_STD
         /// <returns></returns>
         public static DrillBrand GetNull() => new DrillBrand() { DataName = "不使用刀具", Guid = new Guid() };
     }
+
+
+
+
+
     /// <summary>
     /// <see cref="DrillBrand"/>動態集合列表
     /// </summary>
@@ -143,7 +148,7 @@ namespace GD_STD
         }
         public DrillBrands(DrillBrands drillBrands) : base(drillBrands.ToArray())
         {
-
+       
         }
     }
 }

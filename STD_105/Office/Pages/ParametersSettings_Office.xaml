@@ -894,6 +894,20 @@
                      <TextBlock Text="出口"  Grid.Column="0"/>
                     <TextBlock Text="帶鋸機"  Grid.Column="1" Height="200"/>
                     <TextBlock Text="STD105"  Grid.Column="2"/>
+                    <Grid Margin="1,5">
+                        <Image Grid.Column="0" Source="{StaticResource DrillMachineDrawingImage}" Height="100" RenderTransformOrigin="0.5,0.5">
+                            <Image.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="-90"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </Image.RenderTransform>
+                        </Image>
+                        <Image Grid.Column="0" Source="{StaticResource Logo_colorchange}" Height="7" VerticalAlignment="Top" Margin="5"/>
+                    </Grid>
+
 
                 </Grid>
             </TabItem>

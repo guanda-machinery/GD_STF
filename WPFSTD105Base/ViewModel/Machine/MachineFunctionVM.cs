@@ -21,6 +21,13 @@ namespace WPFSTD105.ViewModel
         private bool Taskboolen = true;
         public MachineFunctionVM()
         {
+            //一進來就檢查 若機台尚未準備則跳到刀具表
+            if(!MachineIsReady)
+            {
+                ChangeDrillVisable = true;
+                _tabControlSelectedIndex = 4;
+            }
+
             //初始化時建立一個task監督GD_STD.PanelButton
             //是否可由其他方法代替? 需查證
             Task.Run(() =>
@@ -62,10 +69,10 @@ namespace WPFSTD105.ViewModel
                     }
                     else
                     {
-                        _tabControlSelectedIndex = -1;
+                        //_tabControlSelectedIndex = -1;
                     }
                     //設定延遲避免閃爍的問題
-                    Thread.Sleep(1500);
+                    Thread.Sleep(500);
                    // Task.Delay(1000);
                 }
             });
@@ -80,47 +87,49 @@ namespace WPFSTD105.ViewModel
             }
             set
             {
-                _tabControlSelectedIndex = value;
-                Task.Run(() =>
+                if (_tabControlSelectedIndex != value)
                 {
-                    GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
-                    var Exboolen = PButton.ExportRack;
-                    //離開頁面時 先關掉頂升柱
-                    //相反訊號
-                    ClearPButtonModeValue(ref PButton);
-                    switch (value)
+                    Task.Run(() =>
                     {
-                        case 0:
-                            PButton.ClampDown = true;
-                            break;
-                        case 1:
-                            PButton.SideClamp = true;
-                            break;
-                        case 2:
-                            if (!Exboolen)
-                                PButton.EntranceRack = true;
-                            else
-                                PButton.ExportRack = true;
-                            break;
-                        case 3:
-                            PButton.Hand = true;
-                            break;
-                        case 4:
-                            PButton.DrillWarehouse = true;
-                            break;
-                        case 5:
-                            PButton.Volume = true;
-                            break;
-                        default:
-                            break;
-                    }
-                    //比較值 若功能沒變則不寫入
-                    if (!PanelButtonIsEqual(ViewLocator.ApplicationViewModel.PanelButton, PButton))
-                        CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
-                });
+                        GD_STD.PanelButton PButton = ViewLocator.ApplicationViewModel.PanelButton;
+                        var Exboolen = PButton.ExportRack;
+                        //離開頁面時 先關掉頂升柱
+                        //相反訊號
+                        ClearPButtonModeValue(ref PButton);
+                        switch (value)
+                        {
+                            case 0:
+                                PButton.ClampDown = true;
+                                break;
+                            case 1:
+                                PButton.SideClamp = true;
+                                break;
+                            case 2:
+                                if (!Exboolen)
+                                    PButton.EntranceRack = true;
+                                else
+                                    PButton.ExportRack = true;
+                                break;
+                            case 3:
+                                PButton.Hand = true;
+                                break;
+                            case 4:
+                                PButton.DrillWarehouse = true;
+                                break;
+                            case 5:
+                                PButton.Volume = true;
+                                break;
+                            default:
+                                break;
+                        }
+                        //比較值 若功能沒變則不寫入
+                        if (!PanelButtonIsEqual(ViewLocator.ApplicationViewModel.PanelButton, PButton))
+                            CodesysIIS.WriteCodesysMemor.SetPanel(PButton);
+                    });
+                }
+                _tabControlSelectedIndex = value;
             }
         }
-
 
         private void ClearPButtonModeValue(ref GD_STD.PanelButton PButton)
         {
@@ -161,8 +170,21 @@ namespace WPFSTD105.ViewModel
                 {
                     ChangeDrillVisable = !ChangeDrillVisable;
                 });
-            } 
+            }
         }
+
+        public bool MachineIsReady
+        {
+            get
+            {
+                return
+                ViewLocator.ApplicationViewModel.PanelButton.Key == KEY_HOLE.MANUAL &&
+                ViewLocator.ApplicationViewModel.PanelButton.Alarm == ERROR_CODE.Null &&
+                !ViewLocator.ApplicationViewModel.AppManualConnect &&
+                ViewLocator.ApplicationViewModel.FirstOrigin;
+            }
+        }
+
 
 
 

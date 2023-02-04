@@ -1377,8 +1377,8 @@
                                     <Setter Property="FontSize" Value="12"/>
                                 </Style>
                                 <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignDarkCheckBox}">
-                                    <Setter Property="Background" Value="black"/>
-                                </Style>
+                                        <Setter Property="Background" Value="black"/>
+                                    </Style>
 
                             </Grid.Resources>
                             <Grid.ColumnDefinitions>

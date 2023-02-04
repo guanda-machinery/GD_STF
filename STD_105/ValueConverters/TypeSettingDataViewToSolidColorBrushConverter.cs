@@ -27,9 +27,11 @@ namespace STD_105
                     case PositionStatusEnum.等待配對:
                         return (SolidColorBrush)new BrushConverter().ConvertFrom(WPFSTD105.Properties.SofSetting.Default.Report_Waiting);
                     case PositionStatusEnum.等待入料:
-                        return (SolidColorBrush)new BrushConverter().ConvertFrom(WPFSTD105.Properties.SofSetting.Default.Report_Moving);
+                        return (SolidColorBrush)new BrushConverter().ConvertFrom("#47edff");
+                        //return (SolidColorBrush)new BrushConverter().ConvertFrom(WPFSTD105.Properties.SofSetting.Default.Report_Moving);
                     case PositionStatusEnum.等待出料:
-                        return (SolidColorBrush)new BrushConverter().ConvertFrom(WPFSTD105.Properties.SofSetting.Default.Report_Moving);
+                        return (SolidColorBrush)new BrushConverter().ConvertFrom("#ff479a");
+                       // return (SolidColorBrush)new BrushConverter().ConvertFrom(WPFSTD105.Properties.SofSetting.Default.Report_Moving);
                     case PositionStatusEnum.不可配對:
                         return (SolidColorBrush)new BrushConverter().ConvertFrom("#ff4747");
                     default:

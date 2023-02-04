@@ -154,24 +154,10 @@
                     </local:MainFunctionButton.IsEnabled>
                 </local:MainFunctionButton>
                 <!--機台其他功能-->
-                <local:MainFunctionButton ButtonCommand="{Binding MachineFunctionCommand }"
+                    <local:MainFunctionButton ButtonCommand="{Binding MachineFunctionCommand }"
                                           ButtonImageSource="{StaticResource Apps}"
                                           TitleText="{ DynamicResource LANGUAGE_MachineFuctions }"
                                           FontColor="{ StaticResource solidclr_DimGray }" >
-                        <local:MainFunctionButton.IsEnabled>
-                            <MultiBinding Converter="{local:DoubleConditionToIsEnabledConerter}">
-                                <MultiBinding.Bindings>
-                                    <Binding Path="ApplicationViewModel.PanelButton.Key"
-                                         Source="{x:Static WPFSTD:ViewLocator.Instance}" />
-                                    <Binding Path="ApplicationViewModel.PanelButton.Alarm"
-                                         Source="{x:Static WPFSTD:ViewLocator.Instance}" />
-                                    <Binding Path="ApplicationViewModel.AppManualConnect"
-                                         Source="{x:Static WPFSTD:ViewLocator.Instance}" />
-                                    <Binding Path="ApplicationViewModel.FirstOrigin"
-                                         Source="{x:Static WPFSTD:ViewLocator.Instance}" />
-                                </MultiBinding.Bindings>
-                            </MultiBinding>
-                        </local:MainFunctionButton.IsEnabled>
                     </local:MainFunctionButton>
                 <!--參數設定-->
                 <local:MainFunctionButton ButtonCommand="{Binding SettingParCommand}"

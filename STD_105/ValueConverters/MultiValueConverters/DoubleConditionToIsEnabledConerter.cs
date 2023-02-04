@@ -20,6 +20,8 @@ namespace STD_105
                 return false;
             else
                 return true;
+
+
         }
 
         public override object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

@@ -1002,6 +1002,84 @@
 
                                         </dxe:ComboBoxEdit>
 
+                                    
+                                        
+                                        <STD105:DraggablePopup x:Name="PreviewDrawingPopUp"
+                                                           PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                                            MinWidth="400" Height="auto">
+                                            <Border BorderBrush="Gray" Background="#f8f8f8" BorderThickness="1">
+                                                <Grid>
+                                                <ToggleButton Width="35" Height="35" HorizontalAlignment="Right" VerticalAlignment="Top" 
+                                                              IsChecked="{Binding ElementName=PreviewDrawingPopUp,Path=IsOpen}"
+                    Margin="1">
+                                                    <ToggleButton.Style>
+                                                        <Style TargetType="{x:Type ToggleButton}">
+                                                            <Setter Property="Background" Value="Transparent"/>
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                                        <Grid Background="{TemplateBinding Background}">
+                                                                            <Image Source="{ StaticResource Window_Close}" Width="14" />
+                                                                        </Grid>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Style.Triggers>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Background" Value="#e81123"/>
+                                                                    <Setter Property="Template">
+                                                                        <Setter.Value>
+                                                                            <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                                                <Grid Background="{TemplateBinding Background}">
+                                                                                    <Image Source="{ StaticResource Window_Close_Light  }" Width="14" />
+                                                                                </Grid>
+                                                                            </ControlTemplate>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </ToggleButton.Style>
+                                                </ToggleButton>
+                                                    <Image Source="{StaticResource Drill_PreviewDrawingImage}" Width="0" Height="0"/>
+                                                </Grid>
+                                            </Border>
+                                        </STD105:DraggablePopup>
+
+                                        <ToggleButton Width="24" Margin="0" Grid.Column="4" Grid.Row="1"   HorizontalAlignment="Left"
+                                                      IsChecked="{Binding ElementName=PreviewDrawingPopUp,Path=IsOpen}"    >
+                                            <ToggleButton.Style>
+                                                <Style TargetType="{x:Type ToggleButton}">
+                                                    <Setter Property="Height" Value="{Binding Width}" />
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                                <DockPanel>
+                                                                    <Viewbox Height="{TemplateBinding Height}">
+                                                                        <Image
+                                                                                Name="img"
+                                                                                Width="{TemplateBinding Width}"
+                                                                                Height="{TemplateBinding Height}"
+                                                                                Source="{StaticResource edit_Gray}" />
+                                                                    </Viewbox>
+                                                                </DockPanel>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsChecked" Value="True">
+                                                                        <Setter TargetName="img" Property="Image.Source" Value="{StaticResource edit_Blue}" />
+                                                                    </Trigger>
+                                                                    <Trigger Property="IsEnabled" Value="False">
+                                                                    </Trigger>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter Property="Cursor" Value="Hand" />
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ToggleButton.Style>
+                                        </ToggleButton>
+
                                         <materialDesign:DialogHost  DialogTheme="Inherit" Grid.Row="1" Grid.Column="4" Visibility="Collapsed" >
                                             <materialDesign:DialogHost.DialogContent>
                                                 <GroupBox Header="123">
@@ -1167,7 +1245,7 @@
                                         <Border BorderBrush="Gray" Background="#f8f8f8" BorderThickness="1">
                                             <Grid>
                                                 <STD105:CustomizedBoltsGroupSettingUserControl/>
-
+                                                
                                                 <ToggleButton Width="35" Height="35" HorizontalAlignment="Right" VerticalAlignment="Top"  IsChecked="{Binding CustomizedBoltsGroupSettingUC_IsPopup}"
                     Margin="1">
                                                 <ToggleButton.Style>

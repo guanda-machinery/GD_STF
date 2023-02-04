@@ -15,7 +15,7 @@
     xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf" 
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
-    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" xmlns:System="clr-namespace:System;assembly=mscorlib"
     mc:Ignorable="d"    
     Title="MachineFunction"
     >
@@ -47,9 +47,14 @@
                 <TabControl.Resources>
                     <ResourceDictionary>
                         <Style TargetType="TabItem">
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter  Property="Opacity" Value="0.3" />
+                                </Trigger>
+                            </Style.Triggers>
                             <Setter Property="Template">
                                 <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type TabItem}">
+                                    <ControlTemplate TargetType="{x:Type TabItem}" >
                                         <Grid x:Name="Root">
                                             <Border x:Name="Border" Margin="10"
                                                     Width="{Binding ElementName=ContentSite, Path=Width}"
@@ -69,7 +74,6 @@
                                             </Border>
                                             <VisualStateManager.VisualStateGroups>
                                                 <VisualStateGroup x:Name="CommonStates">
-
                                                     <VisualState x:Name="Normal" />
                                                     <VisualState x:Name="Selected">
                                                         <Storyboard>
@@ -87,13 +91,17 @@
                                                 </VisualStateGroup>
                                             </VisualStateManager.VisualStateGroups>
                                         </Grid>
+
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
                         </Style>
                     </ResourceDictionary>
                 </TabControl.Resources>
-                <TabItem x:Name="HSteel_Clamp_TabItem">
+
+
+
+                <TabItem x:Name="HSteel_Clamp_TabItem" IsEnabled="{Binding MachineIsReady}">
                     <TabItem.Header>
                         <Image Source="{StaticResource HSteel_ClampDrawingImage}" Width="100"  Height="100"/>
                     </TabItem.Header>
@@ -208,7 +216,7 @@
 
                     </Border>
                 </TabItem>
-                <TabItem Name="HSteel_Grab_TabItem">
+                <TabItem Name="HSteel_Grab_TabItem" IsEnabled="{Binding MachineIsReady}">
                     <TabItem.Header>
                         <Image Source="{StaticResource HSteel_GrabDrawingImage}" Height="100"/>
                     </TabItem.Header>
@@ -265,7 +273,7 @@
 
                     </Border>
                 </TabItem>
-                <TabItem Name="Transport_TabItem">
+                <TabItem Name="Transport_TabItem" IsEnabled="{Binding MachineIsReady}">
                     <TabItem.Header>
                         <Grid Width="100" Height="100">
                             <Image Source="{StaticResource TransportDrawingImage}"/>
@@ -846,7 +854,7 @@
 
                     </Border>
                 </TabItem>
-                <TabItem Name="Transport_by_Robot_TabItem">
+                <TabItem Name="Transport_by_Robot_TabItem" IsEnabled="{Binding MachineIsReady}">
                     <TabItem.Header>
                         <Grid Width="100" Height="100">
                             <Image Source="{StaticResource Transport_by_RobotDrawingImage}" VerticalAlignment="Bottom"  Margin="0,25"/>
@@ -1233,13 +1241,13 @@
                                                         <local:ToolMagazineButton ButtonCommand="{Binding MiddleCommand}"
                                                                         Visibility="{Binding Middle ,Source={x:Static GD_STD:Optional.Default} , Converter={dx:BooleanToVisibilityConverter}}"
                                                               ButtonImageSource="{StaticResource Clamping}"
-                                                              StartState="{Binding IsSelectdMiddle}"
+                                                              StartState="{Binding IsSelectedMiddle}"
                                                               TitleText="A刀庫"
                                                               SubTitleText="中軸" />
                                                         <!--  IsEnabled="{Binding MiddleIsEnabled}"-->
                                                         <local:ToolMagazineButton ButtonCommand="{Binding LeftExportCommand}"
                                                               ButtonImageSource="{StaticResource Clamping}"
-                                                              StartState="{Binding IsSelectdLeftExport}"
+                                                              StartState="{Binding IsSelectedLeftExport}"
                                                               Visibility="{Binding LeftExport ,Source={x:Static GD_STD:Optional.Default} , Converter={dx:BooleanToVisibilityConverter}}"
                                                               TitleText="B刀庫"
                                                               SubTitleText="左軸"
@@ -1247,20 +1255,20 @@
                                                         <local:ToolMagazineButton ButtonCommand="{Binding RightExportCommand}"
                                                                               Visibility="{Binding RightExport  ,Source={x:Static GD_STD:Optional.Default} , Converter={dx:BooleanToVisibilityConverter}}"
                                                                               ButtonImageSource="{StaticResource Clamping}"
-                                                                              StartState="{Binding IsSelectdRightExport}"
+                                                                              StartState="{Binding IsSelectedRightExport}"
                                                                               TitleText="C刀庫"
                                                                               SubTitleText="右軸" />
                                                         <local:ToolMagazineButton ButtonCommand="{Binding LeftEntranceCommand}"
                                                                               Visibility="{Binding LeftEntrance ,Source={x:Static GD_STD:Optional.Default} , Converter={dx:BooleanToVisibilityConverter}}"
                                                                               ButtonImageSource="{StaticResource Clamping}"
-                                                                              StartState="{Binding IsSelectdLeftEntrance}"
+                                                                              StartState="{Binding IsSelectedLeftEntrance}"
                                                                               TitleText="D刀庫"
                                                                               SubTitleText="左軸"
                                                                               Margin="1,0" />
                                                         <local:ToolMagazineButton ButtonCommand="{Binding RightEntranceCommand}"
                                                                               Visibility="{Binding RightEntrance ,Source={x:Static GD_STD:Optional.Default} , Converter={dx:BooleanToVisibilityConverter}}"
                                                                               ButtonImageSource="{StaticResource Clamping}"
-                                                                              StartState="{Binding IsSelectdRightEntrance}"
+                                                                              StartState="{Binding IsSelectedRightEntrance}"
                                                                               TitleText="E刀庫"
                                                                               SubTitleText="右軸" />
 
@@ -1279,12 +1287,13 @@
                                                         IsColumnMenuEnabled ="False"
                                                         AllowResizing="False"
                                                         AllowSorting="false"
+                                                        AllowEditing="false"
                                                         AllowColumnFiltering="False"
                                                         AllowColumnMoving="False"
                                                         ShowGroupPanel="False" 
                                                         VerticalScrollbarVisibility="Auto"
                                                         ColumnHeaderContentStyle="{ StaticResource SiegCustomGridControlHeaderStyle }"  
-                                                        AllowEditing="{Binding DrillEditing}" >
+                                                         >
                                                         <dxg:TableView.CellStyle>
                                                             <Style>
                                                                 <Setter Property="TextBlock.FontSize" Value="12"/>
@@ -1294,17 +1303,17 @@
                                                     </dxg:TableView>
                                                 </dxg:GridControl.View>
                                                 <dxg:GridControl.Columns>
-                                                    <dxg:GridColumn FieldName="Index" AllowResizing="false"  Width="50"
+                                                    <dxg:GridColumn FieldName="Index" AllowResizing="false"  Width="50"  AllowEditing="false"
                                                     Header="位置" />
-                                                    <dxg:GridColumn FieldName="SettingName" Width="100"
+                                                    <dxg:GridColumn FieldName="SettingName" Width="auto" AllowResizing="true" AllowEditing="true"
                                                     Header="設定檔名稱">
                                                         <dxg:GridColumn.EditSettings>
-                                                            <dxe:ComboBoxEditSettings DisplayMember="DataName"
+                                                            <dxe:ComboBoxEditSettings DisplayMember="DataName" IsTextEditable="False" 
                                                                       ItemsSource="{Binding DrillBrands}"
                                                                       ValueMember="DataName" />
                                                         </dxg:GridColumn.EditSettings>
                                                     </dxg:GridColumn>
-                                                    <dxg:GridColumn FieldName="Name" 
+                                                    <dxg:GridColumn FieldName="Name"  Width="auto" MinWidth="50"
                                                     Header="品牌"
                                                     ReadOnly="True" />
                                                     <dxg:GridColumn FieldName="Dia"
@@ -1318,6 +1327,8 @@
                                                     ReadOnly="True" />
                                                     <dxg:GridColumn FieldName="Limit"
                                                     Header="加工累積深度(m)" />
+                                                    <dxg:GridColumn FieldName="IsCurrent" AllowEditing="true" Width="auto"
+                                                    Header="主軸刀" />
                                                 </dxg:GridControl.Columns>
                                             </dxg:GridControl>
                                             <dxg:GridControl Grid.Row="1"  Visibility="{Binding ToolMActivityButtonVisibilityBoolean,Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"
@@ -1335,7 +1346,7 @@
                                                         ShowGroupPanel="False" 
                                                         VerticalScrollbarVisibility="Auto"
                                                         ColumnHeaderContentStyle="{ StaticResource SiegCustomGridControlHeaderStyle }"  
-                                                        AllowEditing="{Binding DrillEditing}" >
+                                                        AllowEditing="False" >
                                                         <dxg:TableView.CellStyle>
                                                             <Style>
                                                                 <Setter Property="TextBlock.FontSize" Value="12"/>
@@ -1374,6 +1385,13 @@
 
                                             <Border Grid.Row="1" BorderThickness="0.1" BorderBrush="Black" />
                                             <Grid Grid.Row="2">
+                                                <Grid.Resources>
+                                                    <Style BasedOn="{StaticResource SiegCustomButton}"
+                                               TargetType="{x:Type Button}">
+                                                        <Setter Property="Width" Value="100"/>
+                                                        <Setter Property="Margin" Value="10"/>
+                                                    </Style>
+                                                </Grid.Resources>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition/>
                                                     <RowDefinition />
@@ -1381,29 +1399,30 @@
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="auto"/>
 
+                                                    <ColumnDefinition Width="auto"/>
                                                     <ColumnDefinition/>
                                                 </Grid.ColumnDefinitions>
                                                 <local:DrillLevelTitleControl  Grid.Row="0"
                                                               Visibility="Collapsed" />
 
                                                 <TextBlock  Grid.Row="1" Grid.Column="0"  Text="※本刀庫被關閉" FontSize="20" Foreground="DarkRed" FontWeight="UltraBold" HorizontalAlignment="Left"  Visibility="{Binding ToolMActivityButtonVisibilityBoolean , Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}"/>
-                                                <StackPanel Grid.Row="1" Grid.Column="1"
+                                                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                                                    <Button Content="讀取存檔刀具" Command="{Binding ReadDrillWarehouse}" />
+                                                    <Button Content="備份刀具資料" Command="{Binding SaveDrillWarehouse}"/>
+                                                </StackPanel>
+                                                <StackPanel Grid.Row="1" Grid.Column="2">
+                                                    <StackPanel 
                                             VerticalAlignment="Bottom" HorizontalAlignment="Right"
                                             Orientation="Horizontal">
-                                                    <StackPanel.Resources>
-                                                        <Style BasedOn="{StaticResource SiegCustomButton}"
-                                               TargetType="{x:Type Button}">
-                                                            <Setter Property="Width" Value="100"/>
-                                                            <Setter Property="Margin" Value="10"/>
-                                                        </Style>
-                                                    </StackPanel.Resources>
-                                                    <Button Content="開啟刀庫功能" Command="{Binding ToolMagazineActiveCommand}" CommandParameter="{WPFBase:SystemType Bool=True}" Visibility="{Binding ToolMActivityButtonVisibilityBoolean , Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}" />
+                                                        <Button Content="開啟刀庫功能" Command="{Binding ToolMagazineActiveCommand}" CommandParameter="{WPFBase:SystemType Bool=True}" Visibility="{Binding ToolMActivityButtonVisibilityBoolean , Converter={dx:BooleanToVisibilityConverter},UpdateSourceTrigger=PropertyChanged}" />
+                                                
                                                     <Button Style="{StaticResource SiegCustomButtonBlue}" Width="100" Margin="10" Content="關閉刀庫功能" Command="{Binding ToolMagazineActiveCommand }" CommandParameter="{WPFBase:SystemType Bool=False}"  Visibility="{Binding ToolMActivityButtonVisibilityBoolean ,Converter={dx:BooleanToVisibilityConverter Invert=True},UpdateSourceTrigger=PropertyChanged}"/>
 
                                                     <Button Command="{Binding UpDateCommand}"
                                             Content="重新讀取" />
                                                     <Button Command="{Binding UnusedSaveCommand}"
                                             Content="寫入機台" />
+                                                </StackPanel>
                                                 </StackPanel>
                                             </Grid>
                                         </Grid>
@@ -1494,10 +1513,10 @@
                                                             <Setter Property="Margin" Value="10"/>
                                                         </Style>
                                                     </StackPanel.Resources>
-                                                    <Button Command="{Binding UpDateCommand}" 
+                                                    <!--Button Command="{Binding UpDateCommand}" 
                                             Content="重新讀取" />
                                                     <Button Command="{Binding UnusedSaveCommand}"
-                                            Content="寫入機台" />
+                                            Content="寫入機台" /-->
                                                 </StackPanel>
                                             </Grid>
                                         </Grid>
@@ -1505,14 +1524,14 @@
                                 </Grid>
                             </Grid>
                             <Grid  Grid.Row="1">
-                            <Button Width="220" Height="60" HorizontalAlignment="Right" Margin="20,10" FontSize="24"
+                                <Button Width="220" Height="60" HorizontalAlignment="Right" Margin="20,10" FontSize="24" IsEnabled="{Binding MachineIsReady}"
                                 Content="切換頁面" Style="{StaticResource SiegCustomButtonGold}" Command="{Binding ChangeDrillVisCommand}" />
                             </Grid>
                         </Grid>
                     </Border>
 
                 </TabItem>
-                <TabItem Name="Crumb_Conveyor_TabItem">
+                <TabItem Name="Crumb_Conveyor_TabItem" IsEnabled="{Binding MachineIsReady}">
                     <TabItem.Header>
                         <Grid Width="100" Height="100">
                             <Image Source="{StaticResource Crumb_ConveyorDrawingImage}" Margin="10"/>

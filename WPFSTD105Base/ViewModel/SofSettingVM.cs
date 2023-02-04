@@ -18,6 +18,8 @@ using WPFSTD105.Attribute;
 using WPFWindowsBase;
 using System.Drawing.Text;
 using System.Windows.Media;
+using DevExpress.Xpf.WindowsUI;
+using DevExpress.Xpf.Core;
 
 namespace WPFSTD105.ViewModel
 {
@@ -290,6 +292,14 @@ namespace WPFSTD105.ViewModel
             {
                 STDSerialization ser = new STDSerialization();
                 ser.SetMecSetting(MecSetting);
+                WinUIMessageBox.Show(null,
+    $"成功存檔",
+    "通知",
+    MessageBoxButton.OK,
+    MessageBoxImage.Information,
+    MessageBoxResult.None,
+    MessageBoxOptions.None,
+    FloatingMode.Window);
             });
         }
 
@@ -311,6 +321,16 @@ namespace WPFSTD105.ViewModel
 
                 //儲存default
                 Optional.Default.Save();
+
+                WinUIMessageBox.Show(null,
+                    $"成功存檔",
+                    "通知",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information,
+                    MessageBoxResult.None,
+                    MessageBoxOptions.None,
+                    FloatingMode.Window);
+
             });
         }
         #endregion 
