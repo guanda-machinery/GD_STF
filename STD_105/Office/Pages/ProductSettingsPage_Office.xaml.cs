@@ -3447,10 +3447,10 @@ namespace STD_105.Office
                     // 2022/10/13 呂宗霖 編輯:零件編號須一致才可按編輯
                     ProductSettingsPageViewModel row = (ProductSettingsPageViewModel)PieceListGridControl.SelectedItem;
                     //if (ViewModel.PartNumberProperty != this.partNumber.Text)
-                    if (ViewModel.PartNumberProperty != row.steelAttr.PartNumber)
+                    if (ViewModel.PartNumberProperty != row.steelAttr.PartNumber || ViewModel.AssemblyNumberProperty != row.steelAttr.AsseNumber)
                     {
                         WinUIMessageBox.Show(null,
-                       $"零件編號相同，才可修改",
+                       $"零/構件編號相同，才可修改",
                        "通知",
                        MessageBoxButton.OK,
                        MessageBoxImage.Exclamation,
@@ -4268,7 +4268,10 @@ namespace STD_105.Office
             Random random = new Random();
             // 若無構件資訊或異動數量，新增資訊
             //if (ViewModel.SteelAssemblies.IndexOf(ass) == -1 && add)
-            if (SteelAssemblies.Count == 0 || SteelAssemblies == null || !SteelAssemblies.Any(x => x.Number == ass.Number && x.Length == ass.Length) && add)
+            if (SteelAssemblies.Count == 0 || SteelAssemblies == null || 
+                //(!SteelAssemblies.Any(x => x.Number == ass.Number && x.Length == ass.Length) && add) ||
+                (SteelAssemblies.Count(x => x.Number == ass.Number && x.Length == ass.Length)==0)
+                )
             ////if (!ViewModel.SteelAssemblies.Where(x => x.Number == ass.Number && x.Count == ViewModel.SteelAttr.Number).Any() && add)
             {
                 //ass = new SteelAssembly()
@@ -4295,6 +4298,7 @@ namespace STD_105.Office
                 }
                 ass.ID.AddRange(buffer.ToArray());
                 SteelAssemblies.Add(ass);
+                add = true;
             }
             else
             {
@@ -5411,11 +5415,11 @@ namespace STD_105.Office
             ObservableCollection<SteelCutSetting> steelcutSettings = new ObservableCollection<SteelCutSetting>();
             steelcutSettings = ser.GetCutSettingList();
             steelcutSettings = steelcutSettings ?? new ObservableCollection<SteelCutSetting>();
-            if (steelcutSettings.Any(x => x.GUID == ViewModel.GuidProperty))
+            if (steelcutSettings.Any(x => x.GUID == ViewModel.GuidProperty && x.face == ViewModel.rbtn_CutFace))
             {
-                SteelCutSetting cs = steelcutSettings.FirstOrDefault(x => x.GUID == ViewModel.GuidProperty);
+                SteelCutSetting cs = steelcutSettings.FirstOrDefault(x => x.GUID == ViewModel.GuidProperty && x.face == ViewModel.rbtn_CutFace);
 
-                ViewModel.rbtn_CutFace = cs.face;
+                //ViewModel.rbtn_CutFace = cs.face;
                 ViewModel.DLPoint.X = cs.DLX;
                 ViewModel.DLPoint.Y = cs.DLY;
                 ViewModel.ULPoint.X = cs.ULX;
@@ -5430,7 +5434,7 @@ namespace STD_105.Office
                 SteelCutSetting cs = new SteelCutSetting()
                 {
                     GUID = ViewModel.GuidProperty,
-                    face = (FACE)ViewModel.rbtn_CutFace,
+                    face = ViewModel.rbtn_CutFace,
                     DLX = 0,
                     DLY = 0,
                     ULX = 0,
@@ -5442,7 +5446,7 @@ namespace STD_105.Office
                 };
                 steelcutSettings.Add(cs);
                 ser.SetCutSettingList(steelcutSettings);
-
+                //ViewModel.rbtn_CutFace = FACE.TOP;
                 ViewModel.DLPoint.X = 0;
                 ViewModel.DLPoint.Y = 0;
                 ViewModel.ULPoint.X = 0;

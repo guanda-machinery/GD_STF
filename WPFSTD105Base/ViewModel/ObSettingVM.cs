@@ -259,15 +259,73 @@ namespace WPFSTD105.ViewModel
         /// 選擇加工面
         /// </summary>
         public FACE rbtn_DrillingFace { get; set; }
+        private FACE _CutFace { get; set; }
         /// <summary>
         /// 切割線radio button 頂面,前面,後面
         /// </summary>
-        public FACE rbtn_CutFace { get; set; }
+        public FACE rbtn_CutFace { 
+            get => _CutFace; 
+            set { 
+                _CutFace = value;
+                ReadCutLineInfo();
+            } }
+        public void ReadCutLineInfo()
+        {
+            // 讀取切割線設定檔，並顯示TOP上的值
+            STDSerialization ser = new STDSerialization(); //序列化處理器
+            ObservableCollection<SteelCutSetting> steelcutSettings = new ObservableCollection<SteelCutSetting>();
+            steelcutSettings = ser.GetCutSettingList();
+            steelcutSettings = steelcutSettings ?? new ObservableCollection<SteelCutSetting>();
+            if (steelcutSettings.Any(x => x.GUID == GuidProperty && x.face == rbtn_CutFace))
+            {
+                SteelCutSetting cs = steelcutSettings.FirstOrDefault(x => x.GUID == GuidProperty && x.face == rbtn_CutFace);
 
-        /// <summary>
-        /// 切割線B
-        /// </summary>
-        public FACE rbtn_CutFace_typeB { get; set; }
+                //rbtn_CutFace = cs.face;
+                DLPoint.X = cs.DLX;
+                DLPoint.Y = cs.DLY;
+                ULPoint.X = cs.ULX;
+                ULPoint.Y = cs.ULY;
+                DRPoint.X = cs.DRX;
+                DRPoint.Y = cs.DRY;
+                URPoint.X = cs.URX;
+                URPoint.Y = cs.URY;
+            }
+            else
+            {
+                SteelCutSetting cs = new SteelCutSetting()
+                {
+                    GUID = GuidProperty,
+                    face = (FACE)rbtn_CutFace,
+                    DLX = 0,
+                    DLY = 0,
+                    ULX = 0,
+                    ULY = 0,
+                    DRX = 0,
+                    DRY = 0,
+                    URX = 0,
+                    URY = 0,
+                };
+                steelcutSettings.Add(cs);
+                ser.SetCutSettingList(steelcutSettings);
+                //rbtn_CutFace = FACE.TOP;
+                DLPoint.X = 0;
+                DLPoint.Y = 0;
+                ULPoint.X = 0;
+                ULPoint.Y = 0;
+                DRPoint.X = 0;
+                DRPoint.Y = 0;
+                URPoint.X = 0;
+                URPoint.Y = 0;
+            }
+
+
+        }
+
+
+/// <summary>
+/// 切割線B
+/// </summary>
+public FACE rbtn_CutFace_typeB { get; set; }
 
 
         /// <summary>
@@ -2147,7 +2205,7 @@ namespace WPFSTD105.ViewModel
 
                 if (obj is FACE)
                 {
-                    var obj_CutFace = (FACE)obj ; 
+                    var obj_CutFace = (FACE)rbtn_CutFace ; 
                     if (steelcutSettings.Any(x => x.GUID == this.GuidProperty && x.face == obj_CutFace))
                     {
                         SteelCutSetting cs = steelcutSettings.FirstOrDefault(x => x.GUID == this.GuidProperty && x.face == obj_CutFace);
@@ -2163,21 +2221,21 @@ namespace WPFSTD105.ViewModel
                     }
                     else
                     {
-                        SteelCutSetting cs = new SteelCutSetting()
-                        {
-                            GUID = this.GuidProperty,
-                            face = rbtn_CutFace,
-                            DLX = 0,
-                            DLY = 0,
-                            ULX = 0,
-                            ULY = 0,
-                            DRX = 0,
-                            DRY = 0,
-                            URX = 0,
-                            URY = 0,
-                        };
-                        steelcutSettings.Add(cs);
-                        ser.SetCutSettingList(steelcutSettings);
+                        //SteelCutSetting cs = new SteelCutSetting()
+                        //{
+                        //    GUID = this.GuidProperty,
+                        //    face = rbtn_CutFace,
+                        //    DLX = 0,
+                        //    DLY = 0,
+                        //    ULX = 0,
+                        //    ULY = 0,
+                        //    DRX = 0,
+                        //    DRY = 0,
+                        //    URX = 0,
+                        //    URY = 0,
+                        //};
+                        //steelcutSettings.Add(cs);
+                        //ser.SetCutSettingList(steelcutSettings);
 
                         DLPoint.X = 0;
                         DLPoint.Y = 0;
