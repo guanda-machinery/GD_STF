@@ -1046,7 +1046,7 @@
                                             </Border>
                                         </STD105:DraggablePopup>
 
-                                        <ToggleButton Width="24" Margin="0" Grid.Column="4" Grid.Row="1"   HorizontalAlignment="Left"
+                                        <ToggleButton Width="24" Margin="0" Grid.Column="4" Grid.Row="1"   HorizontalAlignment="Left" Visibility="Collapsed"
                                                       IsChecked="{Binding ElementName=PreviewDrawingPopUp,Path=IsOpen}"    >
                                             <ToggleButton.Style>
                                                 <Style TargetType="{x:Type ToggleButton}">
