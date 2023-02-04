@@ -1383,9 +1383,9 @@ namespace WPFSTD105.Model
                     cut1.Translate(-5, 0);//(-5,0)
                     Mesh otherCut1 = (Mesh)cut1.Clone();
                     Mesh cut2 = (Mesh)cut1.Clone();
-                    //double aa = nc.SteelAttr.H - nc.SteelAttr.t2;
-                    //cut2.Translate(0, aa);//0, nc.SteelAttr.H - nc.SteelAttr.t2
-                    cut2.Translate(0, nc.SteelAttr.H - nc.SteelAttr.t2);
+                    double aa = nc.SteelAttr.H - nc.SteelAttr.t2;
+                    cut2.Translate(0, aa);//0, nc.SteelAttr.H - nc.SteelAttr.t2
+                    //cut2.Translate(0, nc.SteelAttr.H - nc.SteelAttr.t2);
                     Mesh otherCut2 = (Mesh)cut2.Clone();
                     List<Solid> solids = new List<Solid>();
                     Solid[] s1 = Solid.Difference(otherCut1.ConvertToSolid(), vMesh.ConvertToSolid());
