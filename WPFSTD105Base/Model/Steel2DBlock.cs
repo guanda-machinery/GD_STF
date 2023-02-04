@@ -387,7 +387,9 @@ namespace WPFSTD105.Model
                         fromList.Add(from);
 
                     AddLine(topList, top);//加入線段進 topList 內
+                    //back.Color = Color.Red;
                     AddLine(backList, back);//加入線段進 backList 內
+                    //from.Color = Color.Blue;
                     AddLine(fromList, from);//加入線段進 fromList 內
 
                 }
