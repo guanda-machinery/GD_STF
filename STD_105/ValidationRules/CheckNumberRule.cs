@@ -53,6 +53,10 @@ namespace STD_105.ValidationRules
 
             if (!string.IsNullOrEmpty((string)value))
             {
+                if(((string)value).EndsWith("."))
+                    return new ValidationResult(false, $"結尾不可為小數點");
+
+
                 if (double.TryParse((string)value, out var DoubleValue))
                 {
                     if (IsINTValidate is true)

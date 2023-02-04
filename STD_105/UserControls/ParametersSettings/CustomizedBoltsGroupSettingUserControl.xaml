@@ -17,7 +17,12 @@
 
         <GroupBox Header="客製孔群設定" Style="{StaticResource ParameterGroupBox}">
             <dx:ScrollViewerBase VerticalScrollBarVisibility="Auto">
-            <StackPanel Orientation="Vertical">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Margin="10,2" >
                     <RadioButton Command="{Binding BuiltNewGroupBolt}" Name="BuiltNewGroupBoltRadioButton"  Content="新建孔群"/>
                     <RadioButton Name="ReadGroupBoltRadioButton" Content="讀取孔群" Command="{Binding ReadGroupBolt}" Margin="10,0"/>
@@ -204,8 +209,8 @@
 
                             <!--技術文件參照:https://community.devexpress.com/blogs/wpf/archive/2015/01/27/devexpress-mvvm-framework-enumitemsourcebehavior.aspx-->
 
-                            <CheckBox Grid.Row="2"  Content="特殊孔位：" IsThreeState="False" IsChecked="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"/>
-                            <dxe:ComboBoxEdit  IsTextEditable="False" Grid.Column="0" Grid.ColumnSpan="2"   Grid.Row="3"  Margin="0,5,5,0" IsEnabled="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"
+                            <CheckBox Grid.Row="3"  Content="特殊孔位：" IsThreeState="False" IsChecked="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"/>
+                            <dxe:ComboBoxEdit  IsTextEditable="False" Grid.Column="0" Grid.ColumnSpan="2"   Grid.Row="4"  Margin="0,5,5,0" IsEnabled="{Binding ComboxEdit_GroupBoltsTypeSelected_IsChecked}"
                                                            ApplyItemTemplateToSelectedItem="True" 
                                                                    EditValue="{Binding SettingParGroupBoltsType.groupBoltsAttr.groupBoltsType}">
                                 <dxmvvm:Interaction.Behaviors>
@@ -254,7 +259,7 @@
                         </StackPanel>
                     </GroupBox>
                 </Grid>
-            </StackPanel>
+            </Grid>
             </dx:ScrollViewerBase>
         </GroupBox>
 

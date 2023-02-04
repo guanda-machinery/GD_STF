@@ -977,7 +977,7 @@
                                     <CheckBox Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" IsChecked="{Binding CheckDia}" Content="孔徑" />
                                     <TextBox Grid.Column="1" Grid.Row="0" VerticalAlignment="Center">
                                         <TextBox.Text>
-                                            <Binding Path="DiaProperty" StringFormat="{}" UpdateSourceTrigger="PropertyChanged" >
+                                            <Binding Path="DiaProperty" UpdateSourceTrigger="PropertyChanged">
                                                 <Binding.ValidationRules>
                                                     <STD105ValidRule:CheckNumberRule NumberMin="0"/>
                                                 </Binding.ValidationRules>
