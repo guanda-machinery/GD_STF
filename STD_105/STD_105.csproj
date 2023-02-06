@@ -94,9 +94,6 @@
     <Reference Include="CalcBinding, Version=2.5.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CalcBinding.2.5.2\lib\net45\CalcBinding.dll</HintPath>
     </Reference>
-    <Reference Include="ControlzEx, Version=5.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
-      <HintPath>..\packages\ControlzEx.5.0.2\lib\net462\ControlzEx.dll</HintPath>
-    </Reference>
     <Reference Include="devDept.Eyeshot.Control.Wpf.v2020, Version=2020.3.428.0, Culture=neutral, PublicKeyToken=5385d83d2fb4d7d9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files\devDept Software\Eyeshot Ultimate 2020\Bin\devDept.Eyeshot.Control.Wpf.v2020.dll</HintPath>
@@ -981,6 +978,7 @@
     <Compile Include="ValueConverters\MaterialDesignPackIconToBitmapSourceConverter.cs" />
     <Compile Include="ValueConverters\MultiValueConverters\MultiObjectArrayToBooleanConverter.cs" />
     <Compile Include="ValueConverters\NullableIntConverter.cs" />
+    <Compile Include="ValueConverters\ObjectEqualToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\ObjectIsNullToBooleanConverter.cs" />
     <Compile Include="ValueConverters\PositionStatusEnumToStringConverter.cs" />
     <Compile Include="ValueConverters\SectionSpecificationToEnabledConverter.cs" />

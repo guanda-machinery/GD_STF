@@ -842,6 +842,12 @@ AllowEditing="False"
             </TabItem>
         </TabControl>
 
+        <!--除錯用 以後可用來強制更動陣列-->
+        <StackPanel Visibility="Collapsed" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="300,0" Background="White">
+            <Button Content="testbutton" Command="{Binding FocusEditCurrent}" CommandParameter="{Binding ElementName=FocusEditCurrentTextbox, Path=Text}"/>
+            <TextBox Name="FocusEditCurrentTextbox"/>
+        </StackPanel>
+
         <Grid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Width="139" Height="30" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>

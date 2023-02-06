@@ -59,8 +59,6 @@ using DevExpress.Xpo.DB;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DevExpress.XtraPrinting;
 using DocumentFormat.OpenXml.Drawing;
-using DevExpress.XtraPrinting.Native;
-using DevExpress.Xpf.CodeView;
 
 namespace WPFSTD105.ViewModel
 {
@@ -306,11 +304,11 @@ namespace WPFSTD105.ViewModel
 
 
 
-        private int _mCurrent = -1;
+        //private int _mCurrent = -1;
         /// <summary>
         /// 當前值
         /// </summary>
-        public int MCurrent
+      /*  public int MCurrent
         {
             get
             {
@@ -321,10 +319,20 @@ namespace WPFSTD105.ViewModel
                 _mCurrent = value;
                 OnPropertyChanged(nameof(MCurrent));
                 if (Finish_UndoneDataViews.Count > 0)
-                    MCurrentMaterialNumber = Finish_UndoneDataViews[_mCurrent].MaterialNumber;
+                {
+                    if (Finish_UndoneDataViews.Count > _mCurrent)
+                    {
+                        MCurrentMaterialNumber = Finish_UndoneDataViews[indexArray[_mCurrent]].MaterialNumber;
+                       // MCurrentMaterialNumber = Finish_UndoneDataViews[_mCurrent].MaterialNumber;
+                    }
+                    else
+                    {
+                        MCurrentMaterialNumber = $"找不到索引{_mCurrent}";
+                    }
+                }
                 OnPropertyChanged(nameof(MCurrentMaterialNumber));
             }
-        }
+        }*/
 
         /// <summary>
         /// 當前素材編號 依據 MCurrent變更
@@ -448,6 +456,29 @@ namespace WPFSTD105.ViewModel
                 });
             }
         }
+
+        public  ICommand FocusEditCurrent
+        {
+            get
+            {
+                return new WPFBase.RelayParameterizedCommand(obj =>
+                {
+                    try
+                    {
+                       var NewCurrent = Convert.ToInt32(obj);
+                       using (Memor.WriteMemorClient write = new Memor.WriteMemorClient())
+                            write.SetMonitorWorkOffset(NewCurrent.ToByteArray(), Marshal.OffsetOf<MonitorWork>(nameof(MonitorWork.Current)).ToInt64());//寫入Current
+                    }
+                    catch
+                    {
+
+                    }
+
+                });
+            }
+        }
+
+
 
         public DevExpress.Mvvm.ICommand<DevExpress.Mvvm.Xpf.RowClickArgs> RowDoubleClickCommand
         {
@@ -1605,7 +1636,9 @@ namespace WPFSTD105.ViewModel
             }
         }
 
-        //狀態強制註銷 復原素材狀態->會送資料給機台更改狀態 然後刪除備份檔案
+        /// <summary>
+        /// 狀態強制註銷 復原素材狀態->會送資料給機台更改狀態 然後刪除備份檔案
+        /// </summary>
         public WPFBase.RelayParameterizedCommand RecoverCommand
         {
             get
@@ -2039,9 +2072,8 @@ namespace WPFSTD105.ViewModel
                     write.SetMonitorWorkOffset(project, Marshal.OffsetOf<MonitorWork>(nameof(MonitorWork.ProjectName)).ToInt64()); //寫入專案名稱
                 }
 
-                MCurrent = current;
-
-                ProcessingScreenWin.ViewModel.Status = $"寫入Current{current}";
+                //MCurrent = current;
+                //ProcessingScreenWin.ViewModel.Status = $"寫入Current{current}";
 
                 write.SetMonitorWorkOffset(current.ToByteArray(), currentOffset);//寫入Current
                 write.SetMonitorWorkOffset(enOccupy.ToByteArray(), enOccupyOffset); //寫入入口料架占用長度
@@ -2050,12 +2082,37 @@ namespace WPFSTD105.ViewModel
                 write.SetMonitorWorkOffset(Convert.ToInt16(Finish_UndoneDataViews.Count).ToByteArray(), Marshal.OffsetOf<MonitorWork>(nameof(MonitorWork.Count)).ToInt64()); //寫入準備加工的陣列位置
                 write.SetMonitorWorkOffset(index.ToByteArray(), Marshal.OffsetOf<MonitorWork>(nameof(MonitorWork.Index)).ToInt64()); //寫入準備加工的陣列位置
 
-                if (index.Count() > 0)
+               var WorkIList =  index.ToList().FindAll(x => (x != -1));
+                if (WorkIList.Count() > 0)
                 {
                     var workstring = "";
-                    index.ForEach(x => workstring += (x.ToString() + ","));
+
+                    WorkIList.ForEach(x => workstring += (x.ToString() + ","));
                     workstring = workstring.Trim(',');
-                    ProcessingScreenWin.ViewModel.Status = $"寫入加工陣列{index}";
+                    ProcessingScreenWin.ViewModel.Status = $"寫入加工陣列{workstring}";
+                    AddOperatingLog(LogSourceEnum.Init, $"寫入加工陣列{workstring}");
+
+                    if (current != -1)
+                    {
+                        if (WorkIList.Count > current)
+                        {
+                            if(WorkIList[current] !=-1)
+                            {
+                                if(Finish_UndoneDataViews .Count > WorkIList[current])
+                                    AddOperatingLog(LogSourceEnum.Init, $"加工素材為{Finish_UndoneDataViews[WorkIList[current]].MaterialNumber}");
+                            }
+                        }
+                        else
+                        {
+                            AddOperatingLog(LogSourceEnum.Init, $"加工位址{current}落在加工陣列(長度：{WorkIList.Count})外！",true);
+                        }
+                    }
+                    else
+                    {
+                        AddOperatingLog(LogSourceEnum.Init, $"沒有加工位址");
+                    }
+
+
                 }
             }
 
@@ -3456,6 +3513,9 @@ namespace WPFSTD105.ViewModel
             _HostThread.IsBackground = true;
         }
 
+        private bool WorkError = false;
+
+        private short LastCurrent = -1;
         /// <summary>
         /// 持續序列化及發送工作陣列
         /// </summary>
@@ -3472,32 +3532,51 @@ namespace WPFSTD105.ViewModel
                 host = read.GetHost();
             }
 
-            if (MCurrent != workOther.Current)
-            { try
+
+            if (workOther.Current >=0)
+            {
+                try
                 {
-
-
-                    if (workOther.Current != -1)
+                    var DataviewIndex =   indexArray[workOther.Current];
+                    if (LastCurrent != DataviewIndex)
                     {
-
-                        //AddOperatingLog(LogSourceEnum.Machine, $"切換加工索引到：{workOther.Current}");
-                        AddOperatingLog(LogSourceEnum.Machine, $"準備加工素材：{Finish_UndoneDataViews[workOther.Current].MaterialNumber}");
-                        var CurrentIndex = indexArray.FindIndex(x => x == workOther.Current);
-                        if (CurrentIndex != -1)
+                        if (Finish_UndoneDataViews.Count > DataviewIndex)
                         {
-                            if (indexArray[CurrentIndex] != -1)
-                                AddOperatingLog(LogSourceEnum.Machine, $"下一個待加工素材：{Finish_UndoneDataViews[indexArray[CurrentIndex]].MaterialNumber}");
+                            MCurrentMaterialNumber = Finish_UndoneDataViews[DataviewIndex].MaterialNumber;
+                            AddOperatingLog(LogSourceEnum.Machine, $"目前加工素材：{MCurrentMaterialNumber}"); 
+                            WorkError = false;
+                        }
+                        else
+                        {
+                            MCurrentMaterialNumber = "找不到索引";
+                            AddOperatingLog(LogSourceEnum.Machine, $"素材列表中找不到索引：{DataviewIndex}" , true); 
+                            WorkError = true;
                         }
                     }
-                    else
-                        AddOperatingLog(LogSourceEnum.Machine, $"目前無等待加工之索引");
+                    LastCurrent = DataviewIndex; 
+                
                 }
-                catch (Exception ex)
+                catch
                 {
-                    AddOperatingLog(LogSourceEnum.Machine, $"{ex.Message}", true);
-                }
+                    MCurrentMaterialNumber = "加工位址錯誤";
+                    if (!WorkError)
+                    {
+                        AddOperatingLog(LogSourceEnum.Machine, $"加工位址{workOther.Current}落在加工陣列(長度：{indexArray.Count()})外！", true);
+                        WorkError = true ;
+                    }
+               }
             }
-            MCurrent = workOther.Current;
+            else
+            {
+                MCurrentMaterialNumber = "無加工需求";
+            }
+
+
+
+                //AddOperatingLog(LogSourceEnum.Machine, $"{ex.Message}", true);
+
+            
+
 
             ser.SetWorkMaterialOtherBackup(workOther);
             ser.SetWorkMaterialIndexBackup(indexArray); //備份 indexArray
@@ -3932,25 +4011,69 @@ namespace WPFSTD105.ViewModel
         {
             Task.Run(() =>
             {
-
                 short[] index;
+                //WorkOther workOther
+                short MCurrent;
                 using (Memor.ReadMemorClient read = new Memor.ReadMemorClient())
                 {
                     index = read.GetIndex();
+                    MCurrent = read.GetWorkOther().Current;
                 }
 
-                while (true)
+                //如果MCurrent是-1或0 不需要更動current值
+                if (MCurrent > 0)
                 {
-                    int iIndex = index.FindIndex(x => x == dataViewIndex);
-                    if (iIndex != -1)
-                        index[iIndex] = -1;
+                    if (index.Count() > MCurrent)
+                    {
+                        var dataViewIndex_In_WorkArray_Index = index.FindIndex(x => (x == dataViewIndex));
+                        if (dataViewIndex_In_WorkArray_Index != -1)
+                        {
+                            //dataViewIndex_In_WorkArray_Index落在Mcurrnet之後 不影響Mcurrnet的值
+                            if (dataViewIndex_In_WorkArray_Index > MCurrent)
+                            {
+
+                            }
+                            else
+                            {
+                                //dataViewIndex_In_WorkArray_Index落在Mcurrnet之前 Mcurrnet的值需-1
+                                //前面已經篩選過 到此判斷時MCurrent最小值為1
+                                var NewCurrent = MCurrent - 1;
+                                AddOperatingLog(LogSourceEnum.Machine, $"Current從{MCurrent}搬移到{NewCurrent}");
+                                using (Memor.WriteMemorClient write = new Memor.WriteMemorClient())
+                                    write.SetMonitorWorkOffset(NewCurrent.ToByteArray(), Marshal.OffsetOf<MonitorWork>(nameof(MonitorWork.Current)).ToInt64());//寫入Current
+                            }
+                        }
+                        else
+                        {
+                            //要刪除的資料不在工作陣列內 不處理
+                            //AddOperatingLog(LogSourceEnum.Machine, $"Current的位置{MCurrent}落在工作陣列長度{index.Count()}外", true);
+                        }
+                    }
                     else
-                        break;
+                    {
+                        AddOperatingLog(LogSourceEnum.Machine, $"Current的位置{MCurrent}落在工作陣列長度{index.Count()}外" , true);
+                    }
+                }
+                else
+                {
+                    AddOperatingLog(LogSourceEnum.Machine, $"Current保持在{MCurrent}");
                 }
 
-                var writeByte = index.ToByteArray();
-                using (Memor.WriteMemorClient write = new Memor.WriteMemorClient())
-                    write.SetMonitorWorkOffset(writeByte, Marshal.OffsetOf<MonitorWork>(nameof(MonitorWork.Index)).ToInt64()); //寫入準備加工的陣列
+                var IndexList = index.ToList().FindAll(x => (x != dataViewIndex));
+                var writeIndexArray = IndexList.ToArray(); 
+      
+
+
+                if (writeIndexArray.Length != 0)
+                {
+                    short[] Newindex = new short[typeof(MonitorWork).ArrayLength(nameof(MonitorWork.Index))] //初始化 index
+                                                    .Select(el => el = -1)
+                                                    .ToArray();
+                    Array.Copy(writeIndexArray, Newindex, writeIndexArray.Length);
+                    using (Memor.WriteMemorClient write = new Memor.WriteMemorClient())
+                        write.SetMonitorWorkOffset(Newindex.ToByteArray() , Marshal.OffsetOf<MonitorWork>(nameof(MonitorWork.Index)).ToInt64()); //寫入準備加工的陣列
+                }
+                
 
                 //將加工列表的資料清除
                 _WorkMaterials[dataViewIndex].Finish = 0;
