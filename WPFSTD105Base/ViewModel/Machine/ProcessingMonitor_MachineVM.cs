@@ -466,12 +466,17 @@ namespace WPFSTD105.ViewModel
                     try
                     {
                        var NewCurrent = Convert.ToInt32(obj);
+                        
                        using (Memor.WriteMemorClient write = new Memor.WriteMemorClient())
                             write.SetMonitorWorkOffset(NewCurrent.ToByteArray(), Marshal.OffsetOf<MonitorWork>(nameof(MonitorWork.Current)).ToInt64());//寫入Current
-                    }
-                    catch
-                    {
 
+                        AddOperatingLog(LogSourceEnum.Software, "設定加工位址成功");
+                        AddOperatingLog(LogSourceEnum.Software, $"加工位址變更至{NewCurrent}");
+                    }
+                    catch(Exception ex)
+                    {
+                        AddOperatingLog(LogSourceEnum.Software, "設定加工位址出錯", true);
+                        AddOperatingLog(LogSourceEnum.Software, ex.Message, true) ;
                     }
 
                 });
@@ -3513,7 +3518,10 @@ namespace WPFSTD105.ViewModel
             _HostThread.IsBackground = true;
         }
 
-        private bool WorkError = false;
+
+
+        public List<MaterialDataView> MaterialDataViews_WorkArray { get; set; }= new List<MaterialDataView>();
+        public bool WorkArrayIndexError { get; set; } = false;
 
         private short LastCurrent = -1;
         /// <summary>
@@ -3533,6 +3541,17 @@ namespace WPFSTD105.ViewModel
             }
 
 
+            if (MaterialDataViews_WorkArray.Count != indexArray.Length)
+            {
+                var NewList = new List<MaterialDataView>();
+                foreach (var WorkdataIndex in indexArray)
+                {
+                    if(Finish_UndoneDataViews.Count > WorkdataIndex)
+                        NewList.Add(Finish_UndoneDataViews[WorkdataIndex]);
+                }
+                MaterialDataViews_WorkArray = NewList;
+            }
+
             if (workOther.Current >=0)
             {
                 try
@@ -3543,26 +3562,25 @@ namespace WPFSTD105.ViewModel
                         if (Finish_UndoneDataViews.Count > DataviewIndex)
                         {
                             MCurrentMaterialNumber = Finish_UndoneDataViews[DataviewIndex].MaterialNumber;
-                            AddOperatingLog(LogSourceEnum.Machine, $"目前加工素材：{MCurrentMaterialNumber}"); 
-                            WorkError = false;
+                            AddOperatingLog(LogSourceEnum.Machine, $"目前加工素材：{MCurrentMaterialNumber}");
+                            WorkArrayIndexError = false;
                         }
                         else
                         {
                             MCurrentMaterialNumber = "找不到索引";
-                            AddOperatingLog(LogSourceEnum.Machine, $"素材列表中找不到索引：{DataviewIndex}" , true); 
-                            WorkError = true;
+                            AddOperatingLog(LogSourceEnum.Machine, $"素材列表中找不到索引：{DataviewIndex}" , true);
+                            WorkArrayIndexError = true; 
                         }
                     }
                     LastCurrent = DataviewIndex; 
-                
                 }
                 catch
                 {
                     MCurrentMaterialNumber = "加工位址錯誤";
-                    if (!WorkError)
+                    if (!WorkArrayIndexError)
                     {
                         AddOperatingLog(LogSourceEnum.Machine, $"加工位址{workOther.Current}落在加工陣列(長度：{indexArray.Count()})外！", true);
-                        WorkError = true ;
+                        WorkArrayIndexError = true ;
                     }
                }
             }

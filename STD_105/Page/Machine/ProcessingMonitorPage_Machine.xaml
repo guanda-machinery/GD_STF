@@ -842,13 +842,28 @@ AllowEditing="False"
             </TabItem>
         </TabControl>
 
-        <!--除錯用 以後可用來強制更動陣列-->
-        <StackPanel Visibility="Collapsed" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="300,0" Background="White">
-            <Button Content="testbutton" Command="{Binding FocusEditCurrent}" CommandParameter="{Binding ElementName=FocusEditCurrentTextbox, Path=Text}"/>
-            <TextBox Name="FocusEditCurrentTextbox"/>
-        </StackPanel>
-
-        <Grid Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Width="139" Height="30" >
+        <Grid  Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <!--除錯用 以後可用來強制更動陣列-->
+            <Border Grid.Column="0" VerticalAlignment="Top" Background="White" Margin="10,0" CornerRadius="5" 
+                     Visibility="{Binding WorkArrayIndexError , Converter={dx:BooleanToVisibilityConverter}}">
+                <StackPanel   
+                      Orientation="Horizontal"
+                     >
+                <Label Content="變更加工素材為" Margin="5,0"></Label>
+ <dxe:ComboBoxEdit Name="FocusEditCurrentComboboxEdit" Width="70" ItemsSource="{Binding MaterialDataViews_WorkArray}" DisplayMember="MaterialNumber"/>
+                <Button Content="變更" Margin="5,0"
+                        Padding="10,5"
+                        Style="{StaticResource SiegCustomButtonBlue}"
+                        Command="{Binding FocusEditCurrent}"
+                        CommandParameter="{Binding ElementName=FocusEditCurrentComboboxEdit, Path=SelectedIndex}"/>
+                <!--CommandParameter="{Binding ElementName=FocusEditCurrentTextbox, Path=Text}"-->
+            </StackPanel>
+            </Border>
+        <Grid Grid.Column="1" Width="139" Height="30" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="auto" />
@@ -857,7 +872,7 @@ AllowEditing="False"
             <Label Content="目前加工素材" Margin="5,0"/>
             <Label Grid.Column="1" Content="{Binding MCurrentMaterialNumber,UpdateSourceTrigger=PropertyChanged}" Margin="5,0"/>
         </Grid>
-
+        </Grid>
 
         <Grid Grid.Row="2" Height="250">
             <Grid.ColumnDefinitions>

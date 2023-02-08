@@ -33,6 +33,16 @@ using Newtonsoft.Json;
 using log4net;
 using WPFSTD105.FluentAPI;
 using DevExpress.Xpf.WindowsUI;
+using System.Windows.Forms;
+using MessageBoxOptions = System.Windows.MessageBoxOptions;
+using System.IO;
+using System.Collections;
+using System.Globalization;
+using CsvHelper.Configuration;
+using CsvHelper;
+using CsvHelper.Configuration.Attributes;
+using System.Text;
+using DevExpress.XtraLayout.Filtering.Templates;
 
 namespace WPFSTD105.ViewModel
 {
@@ -60,7 +70,7 @@ namespace WPFSTD105.ViewModel
             RightExportCommand = RightExport();
             LeftEntranceCommand = LeftEntrance();
             RightEntranceCommand = RightEntrance();
-            UseSaveCommand = UseSave();
+            //UseSaveCommand = UseSave();
             UnusedSaveCommand = UnusedSave();
            // UpDateCommand = UpDateDrill();
             DrillBrands =  new STDSerialization().GetDrillBrands();
@@ -201,17 +211,29 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 變更 <see cref="UseSelected"/>
         /// </summary>
-        public ICommand UseSaveCommand { get; set; }
-        private WPFBase.RelayCommand UseSave()
-        {
-            return new WPFBase.RelayCommand(() =>
-            {
-                if (UseSelected.Count > 0)
-                {
+        /*  public ICommand UseSaveCommand { get; set; }
+          private WPFBase.RelayCommand UseSave()
+          {
+              return new WPFBase.RelayCommand(() =>
+              {
+                  if (UseSelected.Count > 0)
+                  {
 
-                }
-            });
+                  }
+              });
+          }*/
+
+        
+       private  string GetToolMagazineSavePath 
+        { 
+            get
+            {
+                const string ToolMagazineDirectoryBackup = "ToolMagazineDirectoryBackup";
+                return Path.Combine(System.Environment.CurrentDirectory  , ToolMagazineDirectoryBackup);
+            }
         }
+
+
         /// <summary>
         /// 變更 <see cref="UnusedSelected"/>
         /// </summary>
@@ -299,8 +321,6 @@ namespace WPFSTD105.ViewModel
                         return;
                     }
 
-
-
                     for (int i = 0; i < UnusedSelected.Count; i++)
                     {
                         DrillChange(UnusedSelected[i]);
@@ -308,13 +328,49 @@ namespace WPFSTD105.ViewModel
                     WriteCodesysMemor.SetDrillWarehouse(_DrillWarehouse);//寫入記憶體
 
                     WinUIMessageBox.Show(null,
-                        $"設定成功",
+                        $"機台設定成功",
                         "通知",
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning,
                         MessageBoxResult.None,
                         MessageBoxOptions.None,
                         DevExpress.Xpf.Core.FloatingMode.Window);
+
+                    try
+                    {
+
+
+                        var FileName = "DefalutName";
+                        if (this.IsSelectedMiddle)
+                            FileName = "ToolMagazine_Middle";
+                        if (this.IsSelectedLeftExport)
+                            FileName = "ToolMagazine_LeftExport";
+                        if (this.IsSelectedRightExport)
+                            FileName = "ToolMagazine_RightExport";
+                        if (this.IsSelectedLeftEntrance)
+                            FileName = "ToolMagazine_LeftEntrance";
+                        if (this.IsSelectedRightEntrance)
+                            FileName = "ToolMagazine_RightEntrancet";
+                        FileName += DateTime.Now.ToString("-yyyyMMdd-HHmmss");
+                        FileName += ".csv";
+
+                        var FileNamePath = Path.Combine(GetToolMagazineSavePath, FileName);
+                        SaveDrillWarehouseCSV(FileNamePath);
+                        WinUIMessageBox.Show(null,
+                            $"自動產生刀庫備份檔案\r\n{FileNamePath}",
+                            "通知",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning,
+                            MessageBoxResult.None,
+                            MessageBoxOptions.None,
+                            DevExpress.Xpf.Core.FloatingMode.Window);
+                    }
+                    catch
+                    {
+                    }
+
+
+
 
                     UpDate();
                 }
@@ -494,7 +550,9 @@ namespace WPFSTD105.ViewModel
             });
         }
 
-
+        /// <summary>
+        /// 啟動 / 關閉刀庫
+        /// </summary>
         public WPFBase.RelayParameterizedCommand ToolMagazineActiveCommand
         { 
             get
@@ -502,11 +560,6 @@ namespace WPFSTD105.ViewModel
                 return new WPFBase.RelayParameterizedCommand(el =>
                 {
                     _DrillWarehouse = ReadCodesysMemor.GetDrillWarehouse();
-                    //A  MiddleCommand = Middle(); this.IsSelectedMiddle = true;
-                    //B  LeftExportCommand = LeftExport(); this.IsSelectedLeftExport = true;
-                    //C  RightExportCommand = RightExport(); this.IsSelectedRightExport = true;
-                    //D  LeftEntranceCommand = LeftEntrance(); this.IsSelectedLeftEntrance = true;
-                    //E  RightEntranceCommand = RightEntrance(); this.IsSelectedRightEntrance = true;
                     if (el is bool)
                     {
                         var Activity = (bool)el;
@@ -655,6 +708,14 @@ namespace WPFSTD105.ViewModel
         }
 
 
+
+        public class CSV_DrillWarehouse_Entity
+        {
+            public int Index { get; set; }
+            //public string SettingName { get; set; }
+            public byte[] GUID { get; set; }
+        }
+
         /// <summary>
         /// 刀庫讀取
         /// </summary>
@@ -663,23 +724,95 @@ namespace WPFSTD105.ViewModel
         {
             get
             {
-                return new WPFBase.RelayCommand(() =>
+                return new WPFBase.RelayCommand(( )=>
                 {
-                    var Temp_Mid = this.IsSelectedMiddle;
-                    var Temp_LEx = this.IsSelectedLeftExport;
-                    var Temp_REx = this.IsSelectedRightExport;
-                    var Temp_LEn = this.IsSelectedLeftEntrance;
-                    var Temp_REn = this.IsSelectedRightEntrance;
-                    ClearSelectd();
-                    this.IsSelectedMiddle = Temp_Mid;
-                    this.IsSelectedLeftExport = Temp_LEx;
-                    this.IsSelectedRightExport = Temp_REx;
-                    this.IsSelectedLeftEntrance = Temp_LEn;
-                    this.IsSelectedRightEntrance = Temp_REn;
+                    OpenFileDialog sfd = new OpenFileDialog();
+                    sfd.Filter = "CSV files (*.csv)|*.csv";
 
-                    /*UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.LeftEntrance));
-                    UseSelected = DrillTools(_DrillWarehouse.LeftEntrance, true);
-                    UpDate();*/
+                    if (this.IsSelectedMiddle)
+                        sfd.FileName = "ToolMagazine_Middle";
+                    if (this.IsSelectedLeftExport)
+                        sfd.FileName = "ToolMagazine_LeftExport";
+                    if (this.IsSelectedRightExport)
+                        sfd.FileName = "ToolMagazine_RightExport";
+                    if (this.IsSelectedLeftEntrance)
+                        sfd.FileName = "ToolMagazine_LeftEntrance";
+                    if (this.IsSelectedRightEntrance)
+                        sfd.FileName = "ToolMagazine_RightEntrancet";
+
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        try
+                        {
+                            string fileName = sfd.FileName;
+                            var readConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture)
+                            {
+                                HasHeaderRecord = true
+                            };
+
+                            using (var reader = new StreamReader(fileName))
+                            using (var csv = new CsvReader(reader, readConfiguration))
+                            {
+                                var records = csv.GetRecords<CSV_DrillWarehouse_Entity>();
+                                var ToolCSV = new ObservableCollection<_drillSetting>();
+                                foreach (var record in records)
+                                {
+                                    //ToolCSV.Add(new _drillSetting { Index = record.Index, SettingName = record.SettingName });
+                                    var toolindex = UnusedSelected.FindIndex(x => x.Index == record.Index);
+                                    if (toolindex != -1)
+                                    {
+                                        try
+                                        {
+                                            UnusedSelected[toolindex] = new _drillSetting(new DrillSetting() {Index = (short)record.Index ,  GUID = record .GUID}, DrillBrands);
+                                        }
+                                        catch (Exception ex)
+                                        {
+
+                                        }
+                                    }
+
+
+                                }
+                                //    
+                                //  UnusedSelected
+                                //UnusedSelected
+                            }
+
+
+                            WinUIMessageBox.Show(null,
+                                $"已載入刀庫資料，需再按下「寫入機台」才會將資料寫入",
+                                "通知",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information,
+                                MessageBoxResult.None,
+                                MessageBoxOptions.None,
+                                DevExpress.Xpf.Core.FloatingMode.Window);
+                        }
+                        catch(FormatException FormatEx)
+                        {
+                            WinUIMessageBox.Show(null,
+                                $"檔案內部格式不正確，無法讀取資料",
+                                "通知",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error,
+                                MessageBoxResult.None,
+                                MessageBoxOptions.None,
+                                DevExpress.Xpf.Core.FloatingMode.Window);
+
+                        }
+                        catch (Exception ex)
+                        {
+                            WinUIMessageBox.Show(null,
+                                $"{ex.Message}",
+                                "通知",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error,
+                                MessageBoxResult.None,
+                                MessageBoxOptions.None,
+                                DevExpress.Xpf.Core.FloatingMode.Window);
+
+                        }
+                    }
                 });
             }
         }
@@ -694,26 +827,96 @@ namespace WPFSTD105.ViewModel
             {
                 return new WPFBase.RelayCommand(() =>
                 {
-                    var Temp_Mid = this.IsSelectedMiddle;
-                    var Temp_LEx = this.IsSelectedLeftExport;
-                    var Temp_REx = this.IsSelectedRightExport;
-                    var Temp_LEn = this.IsSelectedLeftEntrance;
-                    var Temp_REn = this.IsSelectedRightEntrance;
-                    ClearSelectd();
-                    this.IsSelectedMiddle = Temp_Mid;
-                    this.IsSelectedLeftExport = Temp_LEx;
-                    this.IsSelectedRightExport = Temp_REx;
-                    this.IsSelectedLeftEntrance = Temp_LEn;
-                    this.IsSelectedRightEntrance = Temp_REn;
+                    SaveFileDialog sfd = new SaveFileDialog
+                    {
+                        Filter = "CSV files (*.csv)|*.csv"
+                    };
 
-                    /*UnusedSelected = new ObservableCollection<_drillSetting>(GetDrillSetting(_DrillWarehouse.LeftEntrance));
-                    UseSelected = DrillTools(_DrillWarehouse.LeftEntrance, true);
-                    UpDate();*/
+                    if (this.IsSelectedMiddle)
+                        sfd.FileName = "ToolMagazine_Middle";
+                    if (this.IsSelectedLeftExport)
+                        sfd.FileName = "ToolMagazine_LeftExport";
+                    if (this.IsSelectedRightExport)
+                        sfd.FileName = "ToolMagazine_RightExport";
+                    if (this.IsSelectedLeftEntrance)
+                        sfd.FileName = "ToolMagazine_LeftEntrance";
+                    if (this.IsSelectedRightEntrance)
+                        sfd.FileName = "ToolMagazine_RightEntrancet";
+
+                    while (true)
+                    {
+                        if (sfd.ShowDialog() == DialogResult.OK)
+                        {
+                            try
+                            {
+                                SaveDrillWarehouseCSV(sfd.FileName);
+
+                                WinUIMessageBox.Show(null,
+                                $"已備份刀庫資料",
+                                "通知",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error,
+                                MessageBoxResult.None,
+                                MessageBoxOptions.None,
+                                DevExpress.Xpf.Core.FloatingMode.Window);
+                                break;
+                            }
+                            catch (IOException IOex)
+                            {
+                                WinUIMessageBox.Show(null,
+                                    $"{IOex.Message}\r\n請關閉占用該檔案之程序或使用其他名稱",
+                                    "通知",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Error,
+                                    MessageBoxResult.None,
+                                    MessageBoxOptions.None,
+                                    DevExpress.Xpf.Core.FloatingMode.Window);
+                            }
+                            catch (Exception ex)
+                            {
+                                WinUIMessageBox.Show(null,
+                                    $"{ex.Message}",
+                                    "通知",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Error,
+                                    MessageBoxResult.None,
+                                    MessageBoxOptions.None,
+                                    DevExpress.Xpf.Core.FloatingMode.Window);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
                 });
             }
         }
 
+        private void SaveDrillWarehouseCSV(string fileName)
+        {
+           // string fileName = sfd.FileName;
+            var writeConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = true
+            };
+            var CSVDrillData = new List<CSV_DrillWarehouse_Entity>();
 
+
+            foreach (var UTool in UnusedSelected)
+            {
+                CSVDrillData.Add(new CSV_DrillWarehouse_Entity { Index = UTool.Index, GUID = UTool._DrillSetting.GUID });
+            }
+
+            Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+            using (var writer = new StreamWriter(fileName, false))
+            using (var csv = new CsvWriter(writer, writeConfiguration))
+            {
+                csv.WriteRecords(CSVDrillData);
+            }
+
+        }
 
 
 
@@ -906,7 +1109,8 @@ namespace WPFSTD105.ViewModel
     public class _drillSetting : DrillBrand
     {
         DrillBrands _DrillBrands { get; set; }
-        DrillSetting _DrillSetting { get; set; }
+
+        public DrillSetting _DrillSetting { get; set; }
         ///// <summary>
         ///// 設定檔索引
         ///// </summary>
@@ -914,13 +1118,19 @@ namespace WPFSTD105.ViewModel
         /// <summary>
         /// 設定檔案名稱
         /// </summary>
+        
         private string settingName;
         private short limit;
+
+
+        /// <summary>
+        /// 刀庫位置
+        /// </summary>
+        public int Index { get; set; }
 
         /// <summary>
         /// 設定檔名稱
         /// </summary>
-
         public string SettingName
         {
             get
@@ -930,8 +1140,11 @@ namespace WPFSTD105.ViewModel
             set
             {
                 settingName = value;
-
                 int settingIndex = _DrillBrands.FindIndex(el => el.DataName == value);
+                if(settingIndex ==-1)
+                {
+                    settingIndex = 0;
+                }
                 this.Dia = _DrillBrands[settingIndex].Dia;
                 this.Rpm = _DrillBrands[settingIndex].Rpm;
                 this.Name = _DrillBrands[settingIndex].Name;
@@ -955,11 +1168,9 @@ namespace WPFSTD105.ViewModel
                 };
             }
         }
+
         public float Length { get; set; }
-        /// <summary>
-        /// 刀庫位置
-        /// </summary>
-        public int Index { get; set; }
+
         /// <summary>
         /// 鑽頭類型索引
         /// </summary>

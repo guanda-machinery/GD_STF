@@ -211,7 +211,7 @@
 
                     <!--<dxg:GridColumn Binding="{Binding steelAttr.ExclamationMark}" IsSmart="True"   Header="構件編號111" Width="auto" Visible="true"/>-->
                     
-                    <dxg:GridColumn FieldName="LockMark"  IsSmart="True" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True" Visible="false">
+                    <dxg:GridColumn FieldName="LockMark"  IsSmart="True" Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
                     <dxg:GridColumn.HeaderImageStyle>
                         <Style TargetType="Image">
                             <Setter Property="Width" Value="20"></Setter>
@@ -220,7 +220,7 @@
                     </dxg:GridColumn.HeaderImageStyle>
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
-                            <dxe:CheckEdit x:Name="PART_Edit" IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                            <dxe:CheckEdit x:Name="PART_Edit" IsChecked="{Binding Row.Lock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                                 <dxe:CheckEdit.Template>
                                     <ControlTemplate>
                                         <dx:DXImage  Width="25" Height="25">
@@ -241,7 +241,37 @@
                         </DataTemplate>
                     </dxg:GridColumn.CellTemplate>
                 </dxg:GridColumn>
-                <!--<dxg:GridColumn FieldName="{Binding Creation, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="建立日期"  >-->
+
+                    <dxg:GridColumn FieldName="Lock"  IsSmart="True"  AllowEditing="true"
+                                    Image="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" 
+                                    ImageAlignment="Center" MaxWidth="35" FixedWidth="True">
+                        <dxg:GridColumn.HeaderImageStyle>
+                            <Style TargetType="Image">
+                                <Setter Property="Width" Value="20"></Setter>
+                                <Setter Property="Margin" Value="0"></Setter>
+                            </Style>
+                        </dxg:GridColumn.HeaderImageStyle>
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:CheckEditSettings IsThreeState="False"
+                                                   UncheckedGlyph  ="{dx:DXImage 'SvgImages/Icon Builder/Security_Unlock.svg'}" 
+                                                   CheckedGlyph   ="{dx:DXImage 'SvgImages/Icon Builder/Security_Lock.svg'}" >
+                                <dxe:CheckEditSettings.GlyphTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding}" Height="20" Width="20"/>
+                                    </DataTemplate>
+                                </dxe:CheckEditSettings.GlyphTemplate>
+                                <dxe:CheckEditSettings.StyleSettings>
+                                    <dxe:ImageCheckEditStyleSettings />
+                                </dxe:CheckEditSettings.StyleSettings>
+                            </dxe:CheckEditSettings>
+                        </dxg:GridColumn.EditSettings>
+
+
+
+
+                    </dxg:GridColumn>
+
+                    <!--<dxg:GridColumn FieldName="{Binding Creation, Converter={STD105:DateTimeConverter} }" IsSmart="True" Header="建立日期"  >-->
                 <dxg:GridColumn FieldName="Creation" IsSmart="True" Header="建立日期"  Width="90">
                     <dxg:GridColumn.CellStyle>
                         <Style>
